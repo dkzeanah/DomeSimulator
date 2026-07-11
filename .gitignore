@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.mp4
+# Generated exports (recreate with flatten.py / F6 in-app)
+dome_flat.md
+dome_flat.txt
+dome_bom.txt
+
+# Local editor/tool state
+.claude/
+.vscode/
