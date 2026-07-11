@@ -29,10 +29,13 @@ class VisionTracker:
         self.ema_objects = 0.0
         self.ema_occupancy = 0.0
         self.type_counts: dict[str, int] = {}
+        self.action_counts: dict[str, int] = {}
         self.current: list[str] = []
+        self.current_actions: list[str] = []
         self.person_now = False
 
-    def update(self, model, ptz, console, player_pos, dt: float) -> None:
+    def update(self, model, ptz, console, player_pos, dt: float,
+               workers: list[dict] | None = None) -> None:
         self.timer += dt
         if self.timer < SAMPLE_PERIOD or not console:
             return
@@ -55,6 +58,7 @@ class VisionTracker:
         fh = model.foundation.height
         ox, oy = float(model.origin[0]), float(model.origin[1])
         seen: list[str] = []
+        actions: list[str] = []
         for entry in model.config.props:
             prop = workshop.PROP_TYPE_BY_NAME.get(entry.get("type"))
             if prop is None:
@@ -79,7 +83,23 @@ class VisionTracker:
                 self.type_counts["Person"] = \
                     self.type_counts.get("Person", 0) + 1
 
+        for worker in workers or []:
+            if int(worker.get("dome", -1)) != getattr(model, "site_index", -1):
+                continue
+            pos = worker.get("pos")
+            if pos is None:
+                continue
+            if in_view((float(pos[0]), float(pos[1]), float(pos[2]) + 0.9)):
+                action = str(worker.get("action", "Working"))
+                seen.append("Worker")
+                actions.append(action)
+                self.type_counts["Worker"] = \
+                    self.type_counts.get("Worker", 0) + 1
+                self.action_counts[action] = \
+                    self.action_counts.get(action, 0) + 1
+
         self.current = seen
+        self.current_actions = actions
         self.ema_objects += EMA_ALPHA * (len(seen) - self.ema_objects)
         self.ema_occupancy += EMA_ALPHA * (person - self.ema_occupancy)
 
@@ -87,8 +107,12 @@ class VisionTracker:
         if not self.current:
             return (f"DETECT 0 obj · avg {self.ema_objects:.1f} · "
                     f"occ {self.ema_occupancy * 100:.0f}%")
-        shown = ", ".join(sorted(set(self.current))[:3])
-        more = len(set(self.current)) - 3
+        visible = sorted(set(self.current))
+        if self.current_actions:
+            visible.append(
+                "Act:" + "/".join(sorted(set(self.current_actions))[:2]))
+        shown = ", ".join(visible[:3])
+        more = len(visible) - 3
         if more > 0:
             shown += f" +{more}"
         return (f"DETECT {len(self.current)}: {shown} · "

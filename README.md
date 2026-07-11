@@ -80,6 +80,13 @@ options — add workers (diminishing returns: a crew of 3 cuts a 47-hour
 dome to ~2 site-days) or cancel the job. The BOM includes the full
 construction estimate.
 
+The **Crew** toolbar widget adds worker management: each worker has a
+target dome, assigned task focus, detected action, labor hours, and
+walking distance. Right-click the construction status bar to add/remove
+workers, assign the crew to a specific dome, or shift the task focus.
+PTZ cameras identify visible workers and the action they appear to be
+doing, then roll those counts into the live worker display.
+
 **Electrical system** (`File > Electrify dome`): adds a battery bank,
 charge controller, and LCD power meter, rings the outer wall with wall
 outlets, and converts a south band of shell panels to solar. Devices
@@ -188,11 +195,13 @@ total solar kW.
 | `C` | Remote camera control from anywhere (toolbar: Cam) |
 | `Left-click` lamp/appliance | Switch it on/off (walks over if far) |
 | `N` / toolbar **Power** | Live power-system meter |
+| Toolbar **Crew** | Worker assignments, actions, and stats |
 | `[` / `]` | Construction sim speed |
 | `Del` | Pack the aimed prop into the backpack |
 | Toolbar **Preset** | Cycle the out-of-the-box dome setups |
 | `Shift+Click` panel | Swap that panel (Shift+right-click = back) |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
+| `Alt+drag` overlay widget | Move that widget |
 | Mouse wheel | Zoom the camera (PTZ zoom while at helm) |
 | Toolbar | Build / Rooms / Props / Bag / Roof / POV / 360 / Save / BOM |
 | `R` | Toggle transparent roof (aerial view of the interior) |

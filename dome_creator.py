@@ -727,6 +727,8 @@ class DomeCreatorApp:
         self.inventory_origin = (0, 0)
         self.toolbar_rects: list = []
         self.toolbar_origin = (0, 0)
+        self.widget_offsets: dict[str, tuple[float, float]] = {}
+        self.widget_drag: dict | None = None
         self.toolbar_dirty = True
         self.inventory_dirty = True
         self.avatar_buffers = self._upload_mesh(build_avatar_mesh())
@@ -746,6 +748,9 @@ class DomeCreatorApp:
         self.sim: dict | None = None
         self.worker_buffers = self._upload_mesh(build_worker_mesh())
         self.worker_states: list[dict] = []
+        self.worker_open = True
+        self.worker_dirty = True
+        self.worker_seq = 0
         self.energy = ElectricalSystem()
         self.energy_open = False
 
@@ -1346,6 +1351,8 @@ class DomeCreatorApp:
             return "The last dome cannot be removed"
         if self.sim and self.sim["dome"] == idx:
             self.sim = None
+            self.worker_states = []
+            self.worker_dirty = True
         self._release_buffers(self.dome_buffers_list[idx])
         feed = self.feeds[idx]
         feed["fbo"].release()
@@ -1363,6 +1370,9 @@ class DomeCreatorApp:
             for k, v in self.render_limits.items()}
         if self.sim and self.sim["dome"] > idx:
             self.sim["dome"] -= 1
+        for worker in self.worker_states:
+            if worker.get("dome", 0) > idx:
+                worker["dome"] -= 1
         if self.active_dome >= len(self.domes):
             self.active_dome = len(self.domes) - 1
         self.menu_items = self._build_menu_items()
@@ -1409,6 +1419,42 @@ class DomeCreatorApp:
         # Diminishing returns: 4 workers ≈ 3.2x, 8 ≈ 5.9x.
         return max(1, workers) ** 0.85
 
+    @staticmethod
+    def _action_for_label(label: str) -> str:
+        text = label.lower()
+        if any(word in text for word in ("foundation", "floor", "deck")):
+            return "Setting base"
+        if any(word in text for word in ("strut", "hub", "frame")):
+            return "Framing"
+        if any(word in text for word in ("panel", "skin", "window")):
+            return "Installing panels"
+        if any(word in text for word in ("monitor", "camera", "computer")):
+            return "Commissioning"
+        if any(word in text for word in ("light", "wire", "outlet", "power")):
+            return "Electrical"
+        return "Building"
+
+    def _new_worker(self, dome_idx: int, pos) -> dict:
+        self.worker_seq += 1
+        return {
+            "id": self.worker_seq,
+            "name": f"W{self.worker_seq:02d}",
+            "dome": dome_idx,
+            "task": f"Dome {dome_idx + 1} construction",
+            "action": "Dispatching",
+            "pos": np.array(pos, dtype=np.float64),
+            "yaw": 0.0,
+            "hours": 0.0,
+            "distance": 0.0,
+            "completed": 0,
+        }
+
+    def _set_worker_count(self, count: int) -> None:
+        if not self.sim:
+            return
+        self.sim["workers"] = int(np.clip(count, 1, 8))
+        self.worker_dirty = True
+
     def start_construction(self, dome_idx: int) -> None:
         events = self.dome_events_list[dome_idx]
         if not events:
@@ -1420,12 +1466,11 @@ class DomeCreatorApp:
             "speed": 1.0,          # simulated labor-hours per real second
             "step": 0,
             "workers": 1,
+            "task": f"Dome {dome_idx + 1} construction",
         }
         self.render_limits[dome_idx] = (0, 0)
-        self.worker_states = [{
-            "pos": np.array(events[0]["pos"], dtype=np.float64),
-            "yaw": 0.0,
-        }]
+        self.worker_states = [self._new_worker(dome_idx, events[0]["pos"])]
+        self.worker_dirty = True
         self._flash("Construction started — [ ] speed, right-click the "
                     "status bar for crew options")
         self.help_dirty = True
@@ -1455,10 +1500,12 @@ class DomeCreatorApp:
 
         # Crew members spread across the next work stations.
         while len(self.worker_states) < sim["workers"]:
-            self.worker_states.append({
-                "pos": self.worker_states[0]["pos"].copy(),
-                "yaw": 0.0})
+            self.worker_states.append(
+                self._new_worker(sim["dome"], self.worker_states[0]["pos"]))
         del self.worker_states[sim["workers"]:]
+        step_label = events[min(step, len(events) - 1)]["label"]
+        action = self._action_for_label(step_label)
+        labor_delta = dt * sim["speed"] / max(1, sim["workers"])
         for w, worker in enumerate(self.worker_states):
             idx = min(step + w, len(events) - 1)
             t = np.array(events[idx]["pos"], dtype=np.float64)
@@ -1468,7 +1515,14 @@ class DomeCreatorApp:
                 walk = min(2.2 * dt * max(sim["speed"], 1.0), dist)
                 worker["pos"][:2] += gap[:2] / dist * walk
                 worker["yaw"] = math.atan2(float(gap[0]), float(gap[1]))
+                worker["distance"] = worker.get("distance", 0.0) + walk
             worker["pos"][2] = t[2]
+            worker["dome"] = sim["dome"]
+            worker["task"] = sim.get("task", f"Dome {sim['dome'] + 1}")
+            worker["action"] = "Walking" if dist > 0.15 else action
+            worker["hours"] = worker.get("hours", 0.0) + labor_delta
+            worker["completed"] = max(worker.get("completed", 0), step)
+        self.worker_dirty = True
 
         if sim["elapsed"] >= sim["total"]:
             dome = sim["dome"]
@@ -1477,6 +1531,7 @@ class DomeCreatorApp:
             workers = sim["workers"]
             self.sim = None
             self.worker_states = []
+            self.worker_dirty = True
             days = total / (8.0 * self._crew_factor(workers))
             self._flash(
                 f"Dome {dome + 1} complete: {total:,.0f} labor-hours, "
@@ -1560,6 +1615,59 @@ class DomeCreatorApp:
         w, h = (VIDEO_WINDOW_SIZE_HELM if self.helm_active
                 else VIDEO_WINDOW_SIZE)
         return 16, height - h - 64, w, h
+
+    def _default_widget_origin(self, name: str) -> tuple[float, float]:
+        width, height = pygame.display.get_window_size()
+        entry = self.overlay_textures.get(name)
+        size = entry["size"] if entry else (0, 0)
+        if name == "video_osd":
+            vx, vy, _, _ = self._video_window_rect()
+            return vx, vy
+        if name == "construction":
+            return (width - size[0]) / 2, 12
+        if name == "energy":
+            return (width - size[0]) / 2, 84 if self.sim is not None else 12
+        if name == "domes":
+            menu_w = (self.overlay_textures["menu"]["size"][0]
+                      if self.menu_open and "menu"
+                      in self.overlay_textures else 0)
+            return 16 + (menu_w + 12 if self.menu_open else 0), 16
+        if name == "menu":
+            return 16, 16
+        if name == "stats":
+            return width - size[0] - 16, 16
+        if name == "help":
+            return 16, height - size[1] - 12
+        if name == "toolbar":
+            return (width - size[0]) / 2, height - size[1] - 62
+        if name == "inventory":
+            return width - size[0] - 16, height - size[1] - 110
+        if name == "workers":
+            return width - size[0] - 16, 142
+        if name == "legend":
+            return self._legend_origin()
+        return 16, 16
+
+    def _widget_origin(self, name: str) -> tuple[float, float]:
+        dx, dy = self.widget_offsets.get(name, (0.0, 0.0))
+        ox, oy = self._default_widget_origin(name)
+        entry = self.overlay_textures.get(name)
+        if entry:
+            width, height = pygame.display.get_window_size()
+            ox = float(np.clip(ox + dx, 0, max(0, width - entry["size"][0])))
+            oy = float(np.clip(oy + dy, 0, max(0, height - entry["size"][1])))
+            return ox, oy
+        return ox + dx, oy + dy
+
+    def _draw_widget(self, name: str) -> None:
+        ox, oy = self._widget_origin(name)
+        self._draw_overlay(name, ox, oy)
+        if name == "toolbar":
+            self.toolbar_origin = (ox, oy)
+        elif name == "inventory":
+            self.inventory_origin = (ox, oy)
+        elif name == "domes":
+            self.domes_origin = (ox, oy)
 
     def _refresh_overlays(self) -> None:
         now = time.perf_counter()
@@ -1672,6 +1780,7 @@ class DomeCreatorApp:
                 ("cam", "Cam", self.helm_active),
                 ("roof", "Roof", self.roof_hidden),
                 ("pov", "POV", self.control_mode == "fp"),
+                ("crew", "Crew", self.worker_open),
                 ("power", "Power", self.energy_open),
                 ("keys", "Keys", self.legend_open),
                 ("save", "Save", False),
@@ -1701,6 +1810,24 @@ class DomeCreatorApp:
                 self._update_overlay("energy", overlay_ui.render_energy(
                     self.fonts, e, len(self._all_models())))
                 self._energy_state = energy_state
+
+        if self.worker_open:
+            worker_state = (
+                tuple((w.get("name"), w.get("dome"), w.get("task"),
+                       w.get("action"), round(w.get("hours", 0.0), 1),
+                       round(w.get("distance", 0.0), 1))
+                      for w in self.worker_states),
+                None if self.sim is None else (
+                    self.sim.get("dome"), self.sim.get("task"),
+                    self.sim.get("step"), round(self.sim.get("elapsed", 0.0), 1),
+                    round(self.sim.get("total", 0.0), 1)),
+                tuple(tuple(t.current_actions) for t in self.trackers),
+            )
+            if self.worker_dirty or getattr(self, "_worker_state", None) != worker_state:
+                self._update_overlay("workers", overlay_ui.render_workers(
+                    self.fonts, self.sim, self.worker_states, self.trackers))
+                self._worker_state = worker_state
+                self.worker_dirty = False
 
         if self.sim is not None:
             events = self._sim_events()
@@ -1742,53 +1869,33 @@ class DomeCreatorApp:
         self.ctx.disable(moderngl.DEPTH_TEST)
 
         # The PTZ video window is always on screen, minimap-style.
-        vx, vy, vw, vh = self._video_window_rect()
+        _, _, vw, vh = self._video_window_rect()
+        vx, vy = self._widget_origin("video_osd")
         self._draw_texture(self.ptz_texture, (vw, vh), vx, vy, flip=True)
         self._draw_overlay("video_osd", vx, vy)
 
         if self.sim is not None and "construction" in self.overlay_textures:
-            entry = self.overlay_textures["construction"]
-            self._draw_overlay("construction",
-                               (width - entry["size"][0]) / 2, 12)
+            self._draw_widget("construction")
         if self.energy_open and "energy" in self.overlay_textures:
-            entry = self.overlay_textures["energy"]
-            ey = 84 if self.sim is not None else 12
-            self._draw_overlay("energy",
-                               (width - entry["size"][0]) / 2, ey)
+            self._draw_widget("energy")
+        if self.worker_open and "workers" in self.overlay_textures:
+            self._draw_widget("workers")
 
         if self.show_hud:
             if self.legend_open or "legend" in self.overlay_textures:
-                lx, ly = self._legend_origin()
-                self._draw_overlay("legend", lx, ly)
+                self._draw_widget("legend")
             if self.domes_open and "domes" in self.overlay_textures:
-                menu_w = (self.overlay_textures["menu"]["size"][0]
-                          if self.menu_open and "menu"
-                          in self.overlay_textures else 0)
-                self.domes_origin = (16 + (menu_w + 12 if self.menu_open
-                                           else 0), 16)
-                self._draw_overlay("domes", *self.domes_origin)
+                self._draw_widget("domes")
             if self.menu_open and "menu" in self.overlay_textures:
-                self._draw_overlay("menu", 16, 16)
+                self._draw_widget("menu")
             if "stats" in self.overlay_textures:
-                entry = self.overlay_textures["stats"]
-                self._draw_overlay(
-                    "stats", width - entry["size"][0] - 16, 16)
+                self._draw_widget("stats")
             if "help" in self.overlay_textures:
-                entry = self.overlay_textures["help"]
-                self._draw_overlay(
-                    "help", 16, height - entry["size"][1] - 12)
+                self._draw_widget("help")
             if "toolbar" in self.overlay_textures:
-                entry = self.overlay_textures["toolbar"]
-                tx = (width - entry["size"][0]) / 2
-                ty = height - entry["size"][1] - 62
-                self.toolbar_origin = (tx, ty)
-                self._draw_overlay("toolbar", tx, ty)
+                self._draw_widget("toolbar")
             if self.inventory_open and "inventory" in self.overlay_textures:
-                entry = self.overlay_textures["inventory"]
-                ix = width - entry["size"][0] - 16
-                iy = height - entry["size"][1] - 110
-                self.inventory_origin = (ix, iy)
-                self._draw_overlay("inventory", ix, iy)
+                self._draw_widget("inventory")
             if self.control_mode == "fp" \
                     and "crosshair" in self.overlay_textures:
                 entry = self.overlay_textures["crosshair"]
@@ -1825,6 +1932,15 @@ class DomeCreatorApp:
                 self._handle_key(event.key)
 
             elif event.type == pygame.MOUSEMOTION:
+                if self.widget_drag is not None:
+                    name = self.widget_drag["name"]
+                    base = self._default_widget_origin(name)
+                    offset = (event.pos[0] - self.widget_drag["grab"][0] -
+                              base[0],
+                              event.pos[1] - self.widget_drag["grab"][1] -
+                              base[1])
+                    self.widget_offsets[name] = offset
+                    continue
                 if self.control_mode == "orbit" and event.buttons[1]:
                     self.orbit_yaw += event.rel[0] * 0.008
                     self.orbit_pitch = float(np.clip(
@@ -1836,8 +1952,9 @@ class DomeCreatorApp:
                         self.context_menu["hover"] = row
                         self._render_context_overlay()
                 elif self.menu_open and not self.mouse_captured:
-                    lx = event.pos[0] - 16
-                    ly = event.pos[1] - 16
+                    ox, oy = self._widget_origin("menu")
+                    lx = event.pos[0] - ox
+                    ly = event.pos[1] - oy
                     hover = None
                     for index, rect in self.menu_hit_map.get("rows", []):
                         if rect.collidepoint(lx, ly):
@@ -1850,6 +1967,10 @@ class DomeCreatorApp:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button in (1, 3):
                     self._on_mouse_button(event.button)
+
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    self.widget_drag = None
 
             elif event.type == pygame.MOUSEWHEEL:
                 if self.helm_active:
@@ -1885,45 +2006,66 @@ class DomeCreatorApp:
                 return "context"
         if self.domes_open:
             entry = self.overlay_textures.get("domes")
-            if entry and pygame.Rect(*self.domes_origin,
+            if entry and pygame.Rect(*self._widget_origin("domes"),
                                      *entry["size"]).collidepoint(x, y):
                 return "domes"
         entry = self.overlay_textures.get("legend")
-        if entry and pygame.Rect(*self._legend_origin(),
+        if entry and pygame.Rect(*self._widget_origin("legend"),
                                  *entry["size"]).collidepoint(x, y):
             return "legend"
         if self.menu_open:
             entry = self.overlay_textures.get("menu")
-            if entry and pygame.Rect(16, 16,
+            if entry and pygame.Rect(*self._widget_origin("menu"),
                                      *entry["size"]).collidepoint(x, y):
                 return "menu"
-        for name, origin in (("stats", None),
-                             ("help", None), ("video_osd", None),
-                             ("energy", None), ("construction", None)):
+        if self.worker_open:
+            entry = self.overlay_textures.get("workers")
+            if entry and pygame.Rect(*self._widget_origin("workers"),
+                                     *entry["size"]).collidepoint(x, y):
+                return "workers"
+        for name in ("stats", "help", "video_osd", "energy", "construction"):
             entry = self.overlay_textures.get(name)
             if not entry:
                 continue
             if name == "energy":
                 if not self.energy_open:
                     continue
-                width, _ = pygame.display.get_window_size()
-                origin = ((width - entry["size"][0]) / 2,
-                          84 if self.sim is not None else 12)
-            if name == "construction":
+            elif name == "construction":
                 if self.sim is None:
                     continue
-                width, _ = pygame.display.get_window_size()
-                origin = ((width - entry["size"][0]) / 2, 12)
-            if name == "stats":
-                width, _ = pygame.display.get_window_size()
-                origin = (width - entry["size"][0] - 16, 16)
-            elif name == "help":
-                _, height = pygame.display.get_window_size()
-                origin = (16, height - entry["size"][1] - 12)
-            elif name == "video_osd":
-                vx, vy, _, _ = self._video_window_rect()
-                origin = (vx, vy)
+            origin = self._widget_origin(name)
             if pygame.Rect(*origin, *entry["size"]).collidepoint(x, y):
+                return name
+        return None
+
+    def _widget_at(self, pos) -> str | None:
+        names = [
+            "context", "toolbar", "inventory", "workers", "domes", "menu",
+            "energy", "construction", "stats", "legend", "video_osd", "help",
+        ]
+        for name in names:
+            entry = self.overlay_textures.get(name)
+            if not entry:
+                continue
+            if name == "context" and self.context_menu is None:
+                continue
+            if name == "inventory" and not self.inventory_open:
+                continue
+            if name == "workers" and not self.worker_open:
+                continue
+            if name == "domes" and not self.domes_open:
+                continue
+            if name == "menu" and not self.menu_open:
+                continue
+            if name == "energy" and not self.energy_open:
+                continue
+            if name == "construction" and self.sim is None:
+                continue
+            if name == "legend" and not self.legend_open:
+                continue
+            origin = (self.context_menu["origin"] if name == "context"
+                      else self._widget_origin(name))
+            if pygame.Rect(*origin, *entry["size"]).collidepoint(*pos):
                 return name
         return None
 
@@ -2101,10 +2243,24 @@ class DomeCreatorApp:
     def _construction_context_entries(self) -> list:
         entries = []
         if self.sim:
-            entries.append(("Add worker", lambda: self.sim.update(
-                {"workers": min(self.sim["workers"] + 1, 8)})))
-            entries.append(("Remove worker", lambda: self.sim.update(
-                {"workers": max(self.sim["workers"] - 1, 1)})))
+            tasks = [
+                "Frame assembly", "Panel install", "Electrical rough-in",
+                "Interior setup", "Safety inspection",
+            ]
+            entries.append(("Add worker", lambda: self._set_worker_count(
+                self.sim["workers"] + 1)))
+            entries.append(("Remove worker", lambda: self._set_worker_count(
+                self.sim["workers"] - 1)))
+            entries.append((
+                f"Assign crew to active dome {self.active_dome + 1}",
+                lambda: self.start_construction(self.active_dome)))
+            for task in tasks:
+                entries.append((
+                    f"Task focus: {task}",
+                    lambda task=task: (
+                        self.sim.update({"task": task}),
+                        [w.update({"task": task}) for w in self.worker_states],
+                        setattr(self, "worker_dirty", True))))
             entries.append(("Speed x2", lambda: self.sim.update(
                 {"speed": min(self.sim["speed"] * 2, 32.0)})))
             entries.append(("Speed /2", lambda: self.sim.update(
@@ -2114,6 +2270,7 @@ class DomeCreatorApp:
                 self.render_limits.pop(self.sim["dome"], None)
                 self.sim = None
                 self.worker_states = []
+                self.worker_dirty = True
                 self._flash("Construction cancelled")
 
             entries.append(("Cancel construction", cancel))
@@ -2121,8 +2278,9 @@ class DomeCreatorApp:
         return entries
 
     def _menu_panel_click(self, pos, button: int) -> None:
-        lx = pos[0] - 16
-        ly = pos[1] - 16
+        ox, oy = self._widget_origin("menu")
+        lx = pos[0] - ox
+        ly = pos[1] - oy
         for page, rect in self.menu_hit_map.get("tabs", []):
             if rect.collidepoint(lx, ly):
                 self.menu_page = page
@@ -2381,6 +2539,9 @@ class DomeCreatorApp:
                 self._set_helm(True, remote=True)
         elif bid == "power":
             self.energy_open = not self.energy_open
+        elif bid == "crew":
+            self.worker_open = not self.worker_open
+            self.worker_dirty = True
         elif bid == "domes":
             self.domes_open = not self.domes_open
             self._domes_state = None
@@ -2405,7 +2566,18 @@ class DomeCreatorApp:
 
     def _on_mouse_button(self, button: int) -> None:
         shift = bool(pygame.key.get_mods() & pygame.KMOD_SHIFT)
+        alt = bool(pygame.key.get_mods() & pygame.KMOD_ALT)
         mouse_pos = pygame.mouse.get_pos()
+
+        if button == 1 and alt and not self.mouse_captured:
+            widget = self._widget_at(mouse_pos)
+            if widget is not None and widget != "context":
+                ox, oy = self._widget_origin(widget)
+                self.widget_drag = {
+                    "name": widget,
+                    "grab": (mouse_pos[0] - ox, mouse_pos[1] - oy),
+                }
+                return
 
         # An open context menu captures the next click.
         if self.context_menu is not None:
@@ -3006,9 +3178,10 @@ class DomeCreatorApp:
 
         # Every dome's vision system samples what its camera can see.
         for i, model in enumerate(self.domes):
+            model.site_index = i
             self.trackers[i].update(
                 model, self.ptzs[i], self.consoles[i],
-                self.camera.position, delta_time)
+                self.camera.position, delta_time, self.worker_states)
 
         # Hover/crosshair picking: console screen, then props, then panels.
         origin, direction = self._interaction_ray()

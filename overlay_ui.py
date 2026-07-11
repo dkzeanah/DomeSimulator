@@ -477,6 +477,65 @@ def render_construction(
     return surf
 
 
+def render_workers(
+    fonts: Fonts,
+    sim: dict | None,
+    workers: list[dict],
+    trackers: list,
+) -> pygame.Surface:
+    width = 360
+    rows = max(3, min(8, len(workers)))
+    height = 76 + rows * 42
+    surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    surf.fill((15, 20, 24, 230))
+    pygame.draw.rect(surf, (80, 160, 210, 255), surf.get_rect(), 2)
+    pygame.draw.rect(surf, (22, 42, 52, 235), (2, 2, width - 4, 25))
+
+    title = "WORKER MANAGEMENT"
+    surf.blit(fonts.body.render(title, True, HEADER), (10, 6))
+    if sim:
+        dome = int(sim.get("dome", 0)) + 1
+        progress = float(sim.get("elapsed", 0.0)) / max(
+            float(sim.get("total", 1.0)), 0.01)
+        task = str(sim.get("task", "Construct dome"))
+        surf.blit(fonts.small.render(
+            f"DOME {dome}  {task}  {progress * 100:4.0f}%",
+            True, VALUE), (10, 33))
+        pygame.draw.rect(surf, (40, 58, 62), (10, 55, width - 20, 8))
+        pygame.draw.rect(surf, GOOD,
+                         (10, 55, int((width - 20) * min(progress, 1.0)), 8))
+    else:
+        surf.blit(fonts.small.render(
+            "No active assignment. Right-click a dome to dispatch.",
+            True, DIM), (10, 35))
+
+    if not workers:
+        surf.blit(fonts.small.render(
+            "Crew idle.", True, DIM), (10, 76))
+        return surf
+
+    y = 72
+    for worker in workers[:rows]:
+        name = str(worker.get("name", "Worker"))
+        action = str(worker.get("action", "Idle"))
+        task = str(worker.get("task", "Unassigned"))
+        dome = int(worker.get("dome", 0)) + 1
+        hours = float(worker.get("hours", 0.0))
+        visible = ""
+        if 0 <= dome - 1 < len(trackers):
+            tracker = trackers[dome - 1]
+            if action in getattr(tracker, "current_actions", []):
+                visible = "  CAM"
+        surf.blit(fonts.small.render(
+            f"{name}  D{dome}  {action}{visible}", True, TEXT), (10, y))
+        y += 17
+        surf.blit(fonts.small.render(
+            f"  {task[:30]:30} {hours:5.1f} h",
+            True, DIM), (10, y))
+        y += 25
+    return surf
+
+
 def render_context_menu(
     fonts: Fonts,
     entries: list[str],
@@ -512,6 +571,7 @@ LEGEND_LINES = [
     ("MOUSE", HEADER),
     ("L-click   walk / use / next", TEXT),
     ("R-click   options menu", TEXT),
+    ("Alt-drag  move widgets", TEXT),
     ("Mid-drag  rotate view", TEXT),
     ("Wheel     zoom", TEXT),
     ("KEYS", HEADER),
