@@ -802,6 +802,7 @@ class DomeCreatorApp:
         self.menu_dirty = True
         self.stats_dirty = True
         self.stats_open = True
+        self.help_open = True
         self.help_dirty = True
         self.aimed_panel = None
         self.aimed_panel_dome = 0
@@ -1779,10 +1780,9 @@ class DomeCreatorApp:
         self._draw_texture(entry["texture"], entry["size"], x, y)
 
     def _video_window_rect(self) -> tuple[float, float, int, int]:
-        _, height = pygame.display.get_window_size()
         w, h = (VIDEO_WINDOW_SIZE_HELM if self.helm_active
                 else VIDEO_WINDOW_SIZE)
-        return 16, height - h - 64, w, h
+        return 16, 16, w, h
 
     def _default_widget_origin(self, name: str) -> tuple[float, float]:
         width, height = pygame.display.get_window_size()
@@ -1798,9 +1798,13 @@ class DomeCreatorApp:
             menu_w = (self._widget_display_size("menu")[0]
                       if self.menu_open and "menu"
                       in self.overlay_textures else 0)
-            return 16 + (menu_w + 12 if self.menu_open else 0), 16
+            menu_x = self._default_widget_origin("menu")[0]
+            return (menu_x + menu_w + 12 if self.menu_open else menu_x), 16
         if name == "menu":
-            return 16, 16
+            video_w = self._widget_display_size("video_osd")[0]
+            if video_w <= 0:
+                video_w = self._video_window_rect()[2]
+            return 16 + video_w + 12, 16
         if name == "stats":
             return width - RIGHT_RAIL_WIDTH + 12, 520
         if name == "help":
@@ -2019,6 +2023,7 @@ class DomeCreatorApp:
                 ("crew", "Crew", self.worker_open),
                 ("power", "Power", self.energy_open),
                 ("materials", "Materials", self.stats_open),
+                ("help", "Help", self.help_open),
                 ("keys", "Keys", self.legend_open),
                 ("save", "Save", False),
                 ("bom", "BOM", False),
@@ -2173,7 +2178,7 @@ class DomeCreatorApp:
                 self._draw_widget("menu")
             if self.stats_open and "stats" in self.overlay_textures:
                 self._draw_widget("stats")
-            if "help" in self.overlay_textures:
+            if self.help_open and "help" in self.overlay_textures:
                 self._draw_widget("help")
             if "toolbar" in self.overlay_textures:
                 self._draw_widget("toolbar")
@@ -2362,6 +2367,9 @@ class DomeCreatorApp:
             elif name == "stats":
                 if not self.stats_open:
                     continue
+            elif name == "help":
+                if not self.help_open:
+                    continue
             elif name == "construction":
                 if self.sim is None:
                     continue
@@ -2396,6 +2404,8 @@ class DomeCreatorApp:
             if name == "energy" and not self.energy_open:
                 continue
             if name == "stats" and not self.stats_open:
+                continue
+            if name == "help" and not self.help_open:
                 continue
             if name == "construction" and self.sim is None:
                 continue
@@ -2960,6 +2970,8 @@ class DomeCreatorApp:
             self.energy_open = not self.energy_open
         elif bid == "materials":
             self.stats_open = not self.stats_open
+        elif bid == "help":
+            self.help_open = not self.help_open
         elif bid == "crew":
             self.worker_open = not self.worker_open
             self.worker_dirty = True
@@ -3030,6 +3042,9 @@ class DomeCreatorApp:
                     self._update_overlay(
                         "legend", overlay_ui.render_legend(
                             self.fonts, not self.legend_open))
+                elif hit == "help" and button == 1:
+                    self.help_open = False
+                    self.toolbar_dirty = True
                 elif hit == "construction" and button == 3:
                     self._open_context(
                         self._construction_context_entries(), mouse_pos)
