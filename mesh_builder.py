@@ -593,11 +593,11 @@ def build_avatar_mesh() -> Mesh:
     body = (0.22, 0.32, 0.52)
     skin = (0.85, 0.68, 0.52)
     b.cylinder((0, 0, 0.05), (0, 0, 0.95), 0.17, 10, body, cap_ends=True)
-    b.cylinder((0, 0, 0.95), (0, 0, 1.38), 0.14, 10,
+    b.cylinder((0, 0, 0.95), (0, 0, 1.49), 0.14, 10,
                (0.28, 0.38, 0.58), cap_ends=True)
-    b.cylinder((0, 0, 1.40), (0, 0, 1.66), 0.11, 10, skin, cap_ends=True)
+    b.cylinder((0, 0, 1.51), (0, 0, 1.83), 0.11, 10, skin, cap_ends=True)
     # Nose marker so the facing direction reads clearly.
-    b.cylinder((0, 0.10, 1.52), (0, 0.16, 1.52), 0.025, 6, skin,
+    b.cylinder((0, 0.10, 1.67), (0, 0.16, 1.67), 0.025, 6, skin,
                cap_ends=True)
     return b.build()
 
@@ -607,11 +607,11 @@ def build_worker_mesh() -> Mesh:
     b = MeshBuilder()
     b.cylinder((0, 0, 0.05), (0, 0, 0.95), 0.17, 10,
                (0.30, 0.30, 0.34), cap_ends=True)          # work pants
-    b.cylinder((0, 0, 0.95), (0, 0, 1.38), 0.15, 10,
+    b.cylinder((0, 0, 0.95), (0, 0, 1.49), 0.15, 10,
                (0.95, 0.45, 0.08), cap_ends=True)          # hi-vis vest
-    b.cylinder((0, 0, 1.40), (0, 0, 1.62), 0.11, 10,
+    b.cylinder((0, 0, 1.51), (0, 0, 1.76), 0.11, 10,
                (0.85, 0.68, 0.52), cap_ends=True)
-    b.cylinder((0, 0, 1.62), (0, 0, 1.72), 0.13, 10,
+    b.cylinder((0, 0, 1.76), (0, 0, 1.86), 0.13, 10,
                (0.95, 0.85, 0.10), cap_ends=True)          # hard hat
     return b.build()
 

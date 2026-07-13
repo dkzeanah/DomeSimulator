@@ -9,6 +9,13 @@ structure, swap the recessed panels between the struts one by one
 layers, pick a foundation — and watch a complete material breakdown
 (weights, costs, strut cut list, trees to harvest) update live.
 
+This is also a live investor-demo presentation tool. Geometry stays in
+real-world scale, the player/avatar is a six-foot reference, and hover
+tooltips explain what the audience is seeing as you explore. Press `T`
+while hovering a dome, panel, prop, or camera to edit the presentation
+note; notes are saved in `dome_demo.sqlite3` and persist between
+sessions.
+
 Includes the original 360° six-point perspective renderer (press `Tab`).
 
 Every dome ships with its **workshop monitoring system**: a PTZ
@@ -116,9 +123,10 @@ them with the toolbar **Preset** button or load one from menu page
 2. **Glass Studio Loft** — 4V glass on a wood deck, office/lounge/bath
 3. **Split-Log Homestead** — 2V hubless quarter-wedge frame, cedar
    shakes, kitchen/bath/lounge
-4. **Whole Trunk Lodge - 20 ft** — full round tree-trunk struts made
-   from 20 ft trunks with 25 in circumference; trunk stock counts appear
-   in the live material panel and BOM
+4. **Whole Trunk Lodge - 20 ft** — massive full-round tree-trunk frame,
+   scaled so its longest members are just under 20 ft, using 25 in
+   circumference trunks; trunk stock counts appear in the live material
+   panel and BOM
 5. **Grow Dome** — aluminum + polycarb greenhouse with grow racks
 
 Applying a preset replaces the whole design — save yours first (`F5`).
@@ -205,6 +213,7 @@ total solar kW.
 | `Shift+Click` panel | Swap that panel (Shift+right-click = back) |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
 | `Alt+drag` overlay widget | Move that widget |
+| Hover object/dome + `T` | Edit persistent investor-demo tooltip |
 | Mouse wheel | Zoom the camera (PTZ zoom while at helm) |
 | Toolbar | Build / Rooms / Props / Bag / Roof / POV / 360 / Save / BOM |
 | `R` | Toggle transparent roof (aerial view of the interior) |

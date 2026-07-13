@@ -218,9 +218,78 @@ def render_help(
     help_line = (
         "Click: walk / pick up / take helm | Shift+Click: swap panel | "
         "C camera control | Mid-drag+arrows: view | Wheel: zoom | "
-        "R roof | B bag | P first-person | M menu | F5/F9/F6 file"
+        "T edit hover note | R roof | B bag | P first-person | M menu"
     )
     surf.blit(fonts.small.render(help_line, True, DIM), (12, 26))
+    return surf
+
+
+def _wrap_words(font, text: str, max_width: int) -> list[str]:
+    lines: list[str] = []
+    current = ""
+    for word in text.split():
+        trial = word if not current else current + " " + word
+        if font.size(trial)[0] <= max_width:
+            current = trial
+        else:
+            if current:
+                lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return lines or [""]
+
+
+def render_tooltip(
+    fonts: Fonts,
+    title: str,
+    body: str,
+    note: str = "",
+) -> pygame.Surface:
+    width = 390
+    max_text = width - 24
+    body_lines = _wrap_words(fonts.small, body, max_text)[:5]
+    note_lines = _wrap_words(fonts.small, note, max_text)[:4] if note else []
+    height = 54 + len(body_lines) * 17 + len(note_lines) * 17
+    if note_lines:
+        height += 20
+    surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    surf.fill((18, 22, 26, 238))
+    pygame.draw.rect(surf, (255, 190, 70, 255), surf.get_rect(), 2)
+    surf.blit(fonts.body.render(title[:46], True, VALUE), (12, 8))
+    surf.blit(fonts.small.render("Hover insight  |  T edit  |  Enter save",
+                                 True, DIM), (12, 29))
+    y = 52
+    for line in body_lines:
+        surf.blit(fonts.small.render(line, True, TEXT), (12, y))
+        y += 17
+    if note_lines:
+        y += 6
+        surf.blit(fonts.small.render("Saved investor note", True, HEADER),
+                  (12, y))
+        y += 17
+        for line in note_lines:
+            surf.blit(fonts.small.render(line, True, GOOD), (12, y))
+            y += 17
+    return surf
+
+
+def render_note_editor(fonts: Fonts, title: str, text: str) -> pygame.Surface:
+    width = 560
+    lines = _wrap_words(fonts.body, text + "|", width - 28)[:7]
+    height = 78 + len(lines) * 20
+    surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    surf.fill((10, 12, 14, 245))
+    pygame.draw.rect(surf, (120, 200, 255, 255), surf.get_rect(), 2)
+    surf.blit(fonts.title.render("EDIT PRESENTATION NOTE", True, HEADER),
+              (14, 10))
+    surf.blit(fonts.small.render(title[:64], True, VALUE), (14, 35))
+    surf.blit(fonts.small.render("Type note. Enter saves. Esc cancels.",
+                                 True, DIM), (14, 54))
+    y = 76
+    for line in lines:
+        surf.blit(fonts.body.render(line, True, TEXT), (14, y))
+        y += 20
     return surf
 
 

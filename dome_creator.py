@@ -38,6 +38,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import sqlite3
 import sys
 import time
 from dataclasses import dataclass
@@ -76,12 +77,13 @@ from workshop import PROP_TYPES, ROOM_TYPES, ROOM_TYPE_BY_NAME
 WINDOW_WIDTH = 1400
 WINDOW_HEIGHT = 900
 CUBE_FACE_SIZE = 768
-PLAYER_HEIGHT = 1.75
+PLAYER_HEIGHT = 1.83
 NEAR_PLANE = 0.06
 FAR_PLANE = 500.0
 
 DESIGN_FILE = "dome_design.json"
 BOM_FILE = "dome_bom.txt"
+DEMO_DB_FILE = "dome_demo.sqlite3"
 
 PTZ_TEXTURE_SIZE = (960, 540)      # high-definition 16:9 video feed
 VIDEO_WINDOW_SIZE = (384, 216)
@@ -683,6 +685,12 @@ class DomeCreatorApp:
 
         self._create_screen_quad()
         self._create_render_targets()
+
+        self.demo_notes: dict[str, str] = self._load_demo_notes()
+        self.hover_info: dict | None = None
+        self.hover_state: tuple | None = None
+        self.tooltip_dirty = True
+        self.note_edit: dict | None = None
 
         # PTZ camera system: one camera + feed + wall monitor per dome.
         self.ptzs: list[PTZCamera] = [PTZCamera()]
@@ -1595,6 +1603,123 @@ class DomeCreatorApp:
         return (f"Electrified: battery kit, {added.count('Wall Outlet')} "
                 f"outlets, {solar_set} solar panels")
 
+    # -- investor demo notes --------------------------------------------------
+
+    def _load_demo_notes(self) -> dict[str, str]:
+        conn = sqlite3.connect(DEMO_DB_FILE)
+        try:
+            conn.execute(
+                "CREATE TABLE IF NOT EXISTS demo_notes ("
+                "key TEXT PRIMARY KEY, note TEXT NOT NULL, "
+                "updated_at REAL NOT NULL)")
+            rows = conn.execute("SELECT key, note FROM demo_notes").fetchall()
+            return {str(key): str(note) for key, note in rows}
+        finally:
+            conn.close()
+
+    def _save_demo_note(self, key: str, note: str) -> None:
+        self.demo_notes[key] = note
+        conn = sqlite3.connect(DEMO_DB_FILE)
+        try:
+            conn.execute(
+                "INSERT INTO demo_notes(key, note, updated_at) "
+                "VALUES(?, ?, ?) "
+                "ON CONFLICT(key) DO UPDATE SET "
+                "note=excluded.note, updated_at=excluded.updated_at",
+                (key, note, time.time()))
+            conn.commit()
+        finally:
+            conn.close()
+
+    def _start_note_edit(self) -> None:
+        if not self.hover_info:
+            self._flash("Hover a dome, panel, prop, or camera first")
+            return
+        key = self.hover_info["key"]
+        self.note_edit = {
+            "key": key,
+            "title": self.hover_info["title"],
+            "text": self.demo_notes.get(key, self.hover_info["body"]),
+        }
+        pygame.key.start_text_input()
+        self.tooltip_dirty = True
+
+    def _finish_note_edit(self, save: bool) -> None:
+        if not self.note_edit:
+            return
+        if save:
+            self._save_demo_note(self.note_edit["key"],
+                                 self.note_edit["text"].strip())
+            self._flash("Investor note saved")
+        else:
+            self._flash("Investor note edit cancelled")
+        self.note_edit = None
+        pygame.key.stop_text_input()
+        self.tooltip_dirty = True
+
+    def _demo_hover_info(self) -> dict | None:
+        if self.aiming_screen:
+            dome = self.aimed_screen_dome
+            return {
+                "key": f"dome:{dome}:camera",
+                "title": f"Dome {dome + 1} PTZ camera",
+                "body": (
+                    "Live investor demo camera: steerable PTZ feed, "
+                    "vision detections, occupancy, and worker action "
+                    "recognition per dome."),
+            }
+        aimed = self._aimed_prop()
+        if aimed is not None:
+            dome, _model, entry = aimed
+            return {
+                "key": f"dome:{dome}:prop:{entry['type']}",
+                "title": f"{entry['type']} in dome {dome + 1}",
+                "body": (
+                    "Interactive fit-out object. Props affect BOM weight, "
+                    "cost, power draw, room storytelling, and camera "
+                    "detections."),
+            }
+        if self.aimed_panel is not None:
+            p = self.aimed_panel
+            dome = self.aimed_panel_dome
+            return {
+                "key": f"dome:{dome}:panel:{p.panel_type.name}",
+                "title": f"{p.panel_type.name} panel",
+                "body": (
+                    f"Panel slot area {p.area:.1f} m2. Click to cycle "
+                    "materials, or press V to apply this panel type across "
+                    "the dome."),
+            }
+        origin, direction = self._interaction_ray()
+        point = self._floor_click_point(origin, direction)
+        if point is None:
+            return None
+        dome = self._dome_at(float(point[0]), float(point[1]))
+        if dome is None:
+            return {
+                "key": "site:open-ground",
+                "title": "Open build site",
+                "body": (
+                    "Right-click open ground to place any preset dome. "
+                    "The demo supports multi-dome site planning."),
+            }
+        model = self.domes[dome]
+        s = model.stats()
+        trunk = ""
+        if s.get("trunk_stock_count"):
+            trunk = (f" Uses {s['trunk_stock_count']} stock trunks at "
+                     f"{s['trunk_stock_length'] * 3.28084:.0f} ft each.")
+        return {
+            "key": f"dome:{dome}:overview",
+            "title": f"Dome {dome + 1}: {model.config.frequency}V, "
+                     f"radius {model.config.radius:.1f} m",
+            "body": (
+                f"True-scale dome: height {s['height']:.1f} m, floor "
+                f"{s['floor_area']:.0f} m2, frame "
+                f"{s['frame_weight'] + s['hub_weight']:,.0f} kg."
+                f"{trunk} Press T to edit this investor note."),
+        }
+
     # -- overlays ----------------------------------------------------------
 
     def _update_overlay(self, name: str, surface: pygame.Surface) -> None:
@@ -1660,6 +1785,10 @@ class DomeCreatorApp:
             return width - size[0] - 16, height - size[1] - 110
         if name == "workers":
             return width - size[0] - 16, 142
+        if name == "tooltip":
+            return 18, 94
+        if name == "note_editor":
+            return (width - size[0]) / 2, (height - size[1]) / 2
         if name == "legend":
             return self._legend_origin()
         return 16, 16
@@ -1785,6 +1914,29 @@ class DomeCreatorApp:
                 self.flash_message))
             self.help_dirty = False
 
+        if self.hover_info is not None:
+            key = self.hover_info["key"]
+            state = (
+                key, self.hover_info["title"], self.hover_info["body"],
+                self.demo_notes.get(key, ""),
+            )
+            if self.tooltip_dirty or getattr(self, "_tooltip_state", None) != state:
+                self._update_overlay("tooltip", overlay_ui.render_tooltip(
+                    self.fonts, self.hover_info["title"],
+                    self.hover_info["body"], self.demo_notes.get(key, "")))
+                self._tooltip_state = state
+                self.tooltip_dirty = False
+
+        if self.note_edit is not None:
+            state = (self.note_edit["title"], self.note_edit["text"])
+            if getattr(self, "_note_edit_state", None) != state:
+                self._update_overlay("note_editor",
+                                     overlay_ui.render_note_editor(
+                                         self.fonts,
+                                         self.note_edit["title"],
+                                         self.note_edit["text"]))
+                self._note_edit_state = state
+
         if self.toolbar_dirty:
             buttons = [
                 ("build", "Build", self.menu_open and self.menu_page == 0),
@@ -1896,6 +2048,8 @@ class DomeCreatorApp:
             self._draw_widget("energy")
         if self.worker_open and "workers" in self.overlay_textures:
             self._draw_widget("workers")
+        if self.hover_info is not None and "tooltip" in self.overlay_textures:
+            self._draw_widget("tooltip")
 
         if self.show_hud:
             if self.legend_open or "legend" in self.overlay_textures:
@@ -1924,6 +2078,9 @@ class DomeCreatorApp:
         if self.context_menu is not None \
                 and "context" in self.overlay_textures:
             self._draw_overlay("context", *self.context_menu["origin"])
+        if self.note_edit is not None \
+                and "note_editor" in self.overlay_textures:
+            self._draw_widget("note_editor")
 
         self.ctx.disable(moderngl.BLEND)
         self.ctx.enable(moderngl.DEPTH_TEST)
@@ -1945,7 +2102,20 @@ class DomeCreatorApp:
                 self._recreate_window_target()
 
             elif event.type == pygame.KEYDOWN:
+                if self.note_edit is not None:
+                    if event.key == pygame.K_RETURN:
+                        self._finish_note_edit(True)
+                    elif event.key == pygame.K_ESCAPE:
+                        self._finish_note_edit(False)
+                    elif event.key == pygame.K_BACKSPACE:
+                        self.note_edit["text"] = self.note_edit["text"][:-1]
+                    continue
                 self._handle_key(event.key)
+
+            elif event.type == pygame.TEXTINPUT:
+                if self.note_edit is not None:
+                    self.note_edit["text"] = (
+                        self.note_edit["text"] + event.text)[:520]
 
             elif event.type == pygame.MOUSEMOTION:
                 if self.widget_drag is not None:
@@ -2039,6 +2209,16 @@ class DomeCreatorApp:
             if entry and pygame.Rect(*self._widget_origin("workers"),
                                      *entry["size"]).collidepoint(x, y):
                 return "workers"
+        if self.hover_info is not None:
+            entry = self.overlay_textures.get("tooltip")
+            if entry and pygame.Rect(*self._widget_origin("tooltip"),
+                                     *entry["size"]).collidepoint(x, y):
+                return "tooltip"
+        if self.note_edit is not None:
+            entry = self.overlay_textures.get("note_editor")
+            if entry and pygame.Rect(*self._widget_origin("note_editor"),
+                                     *entry["size"]).collidepoint(x, y):
+                return "note_editor"
         for name in ("stats", "help", "video_osd", "energy", "construction"):
             entry = self.overlay_textures.get(name)
             if not entry:
@@ -2056,8 +2236,9 @@ class DomeCreatorApp:
 
     def _widget_at(self, pos) -> str | None:
         names = [
-            "context", "toolbar", "inventory", "workers", "domes", "menu",
-            "energy", "construction", "stats", "legend", "video_osd", "help",
+            "note_editor", "context", "toolbar", "inventory", "workers",
+            "tooltip", "domes", "menu", "energy", "construction", "stats",
+            "legend", "video_osd", "help",
         ]
         for name in names:
             entry = self.overlay_textures.get(name)
@@ -2068,6 +2249,10 @@ class DomeCreatorApp:
             if name == "inventory" and not self.inventory_open:
                 continue
             if name == "workers" and not self.worker_open:
+                continue
+            if name == "tooltip" and self.hover_info is None:
+                continue
+            if name == "note_editor" and self.note_edit is None:
                 continue
             if name == "domes" and not self.domes_open:
                 continue
@@ -2897,6 +3082,8 @@ class DomeCreatorApp:
             self.show_grid = not self.show_grid
         elif key == pygame.K_h:
             self.show_hud = not self.show_hud
+        elif key == pygame.K_t:
+            self._start_note_edit()
         elif key == pygame.K_z:
             self.six_point_spin_speed -= 0.15
         elif key == pygame.K_x:
@@ -3256,6 +3443,14 @@ class DomeCreatorApp:
         )
         if current != previous:
             self.help_dirty = True
+
+        hover = self._demo_hover_info()
+        hover_state = None if hover is None else (
+            hover["key"], hover["title"], hover["body"])
+        if hover_state != self.hover_state:
+            self.hover_info = hover
+            self.hover_state = hover_state
+            self.tooltip_dirty = True
 
         # Placement ghost follows the crosshair's floor intersection,
         # snapping to whichever dome's floor the ray lands on.
