@@ -19,7 +19,7 @@ Run:
     py -3.12 dome_creator.py
 
 Controls:
-    M                   Toggle the build menu
+    M                   Open / close operations suite
     Arrows / Enter      Navigate menu, change values, apply
     Mouse aim + Click   Swap the aimed panel (right-click = previous type)
     V                   Apply the aimed panel's type to every panel
@@ -91,6 +91,19 @@ VIDEO_WINDOW_SIZE_HELM = (640, 360)
 HELM_RANGE = 4.0                   # max distance to click the wall screen
 HELM_LEASH = 5.5                   # walk further than this and helm releases
 RIGHT_RAIL_WIDTH = 340
+SUITE_TABS = [
+    ("SITE", "Site Command"),
+    ("DOME", "Dome Editor"),
+    ("ROOMS", "Interior Planner"),
+    ("PROPS", "Equipment"),
+    ("CREW", "Workforce"),
+    ("MATERIALS", "Materials"),
+    ("POWER", "Energy"),
+    ("LAB", "Panel Lab"),
+    ("FILES", "Administration"),
+]
+SUITE_MENU_PAGES = {"DOME": 0, "ROOMS": 1, "PROPS": 2,
+                    "LAB": 3, "FILES": 4}
 
 
 # ---------------------------------------------------------------------------
@@ -763,7 +776,7 @@ class DomeCreatorApp:
         self.sim: dict | None = None
         self.worker_buffers = self._upload_mesh(build_worker_mesh())
         self.worker_states: list[dict] = []
-        self.worker_open = True
+        self.worker_open = False
         self.worker_dirty = True
         self.worker_seq = 0
         self.energy = ElectricalSystem()
@@ -794,16 +807,22 @@ class DomeCreatorApp:
 
         # Overlays.
         self.fonts = Fonts()
-        self.menu_open = True
+        self.menu_open = False
         self.menu_page = 0
         self.menu_pages = ["DOME", "ROOMS", "PROPS", "LAB", "FILE"]
         self.menu_selected = 1
         self.menu_items = self._build_menu_items()
         self.menu_dirty = True
         self.stats_dirty = True
-        self.stats_open = True
+        self.stats_open = False
         self.help_open = True
         self.help_dirty = True
+        self.suite_open = False
+        self.suite_page = "SITE"
+        self.suite_scroll = 0
+        self.suite_dirty = True
+        self.suite_hit_map: dict = {"tabs": [], "controls": []}
+        self.suite_restore_capture = False
         self.aimed_panel = None
         self.aimed_panel_dome = 0
         self.ghost_dome = 0
@@ -855,19 +874,20 @@ class DomeCreatorApp:
             [(vbo, "3f 2f", "in_position", "in_uv")])
         return {"vbo": vbo, "vao": vao}
 
-    def _select_dome(self, idx: int) -> None:
+    def _select_dome(self, idx: int, open_editor: bool = True) -> None:
         idx = max(0, min(idx, len(self.domes) - 1))
         changed = idx != self.active_dome
         if changed and self.helm_active:
             self._set_helm(False)
         self.active_dome = idx
-        self.menu_open = True
-        self.menu_page = 0
-        self.menu_items = self._build_menu_items()
-        self.menu_selected = 1
-        self.menu_dirty = True
+        if open_editor:
+            self._open_suite("DOME")
+        elif self.suite_open and self.suite_page in SUITE_MENU_PAGES:
+            self.menu_page = SUITE_MENU_PAGES[self.suite_page]
+            self.menu_items = self._build_menu_items()
         self.stats_dirty = True
         self.help_dirty = True
+        self.suite_dirty = True
         self._osd_state = None
         self._flash(f"Dome {idx + 1} controls open")
 
@@ -878,6 +898,195 @@ class DomeCreatorApp:
             self.active_dome if dome is None else dome)
         self.menu_dirty = True
         self.stats_dirty = True
+        self.suite_dirty = True
+
+    def _open_suite(self, page: str) -> None:
+        page = page if page in {key for key, _ in SUITE_TABS} else "SITE"
+        if not self.suite_open:
+            self.suite_restore_capture = self.mouse_captured
+        if self.mouse_captured:
+            self._set_mouse_capture(False)
+        if self.helm_active:
+            self._set_helm(False)
+        self.suite_open = True
+        self.suite_page = page
+        self.suite_scroll = 0
+        if page in SUITE_MENU_PAGES:
+            self.menu_page = SUITE_MENU_PAGES[page]
+            self.menu_items = self._build_menu_items()
+            self.menu_selected = 1
+        self.context_menu = None
+        self.suite_dirty = True
+        self.escape_armed = False
+
+    def _close_suite(self) -> None:
+        self.suite_open = False
+        self.context_menu = None
+        if self.suite_restore_capture and self.control_mode == "fp":
+            self._set_mouse_capture(True)
+        self.suite_restore_capture = False
+        self.help_dirty = True
+
+    def _begin_suite_dome_placement(self, name: str, data: dict) -> None:
+        self._begin_dome_placement(name, data)
+        self._close_suite()
+
+    def _cancel_construction(self) -> None:
+        if not self.sim:
+            self._flash("No construction assignment is running")
+            return
+        self.render_limits.pop(self.sim["dome"], None)
+        self.sim = None
+        self.worker_states = []
+        self.worker_dirty = True
+        self.suite_dirty = True
+        self._flash("Construction cancelled")
+
+    def _set_crew_task(self, task: str) -> None:
+        if not self.sim:
+            self._flash("Start construction before assigning task focus")
+            return
+        self.sim["task"] = task
+        for worker in self.worker_states:
+            worker["task"] = task
+        self.worker_dirty = True
+        self.suite_dirty = True
+        self._flash(f"Crew focus: {task}")
+
+    def _minimap_click(self, pos, button: int) -> None:
+        local = self._widget_local_pos("minimap", pos)
+        world = overlay_ui.minimap_world_position(
+            self.domes, self.camera.position, local)
+        if world is None:
+            self._flash("Click inside the minimap field to navigate")
+            return
+        x, y = world
+        dome_idx = self._dome_at(x, y)
+        if button == 3 and dome_idx is not None:
+            self._open_context(self._dome_context_entries(dome_idx), pos)
+            return
+        if button != 1:
+            return
+        if dome_idx is not None:
+            self._select_dome(dome_idx, open_editor=False)
+        self.walk_target = np.array(
+            [x, y, self.ground_height(x, y)], dtype=np.float64)
+        self.pending_action = None
+        destination = (f"inside dome {dome_idx + 1}"
+                       if dome_idx is not None else "on the site")
+        self._flash(f"Walking to minimap target {destination}")
+
+    def _suite_action(self, action: str, pos) -> None:
+        if action in ("active_prev", "active_next"):
+            delta = -1 if action.endswith("prev") else 1
+            self._select_dome(
+                (self.active_dome + delta) % len(self.domes),
+                open_editor=False)
+        elif action == "summary_edit":
+            self._open_suite("DOME")
+        elif action == "summary_world":
+            model = self.model
+            x = float(model.origin[0])
+            y = float(model.origin[1]) - model.floor_radius * 0.65
+            self.walk_target = np.array(
+                [x, y, self.ground_height(x, y)], dtype=np.float64)
+            self.pending_action = None
+            self._close_suite()
+            self._flash(f"Walking toward dome {self.active_dome + 1}")
+        elif action == "site_add":
+            import presets
+            entries = [
+                (f"Place: {name}",
+                 lambda name=name, data=data:
+                     self._begin_suite_dome_placement(name, data))
+                for name, data in presets.PRESETS
+            ]
+            entries.append(("Cancel", None))
+            self._open_context(entries, pos)
+        elif action.startswith("site_") and ":" in action:
+            command, raw_idx = action.split(":", 1)
+            idx = int(raw_idx)
+            if idx >= len(self.domes):
+                return
+            if command == "site_edit":
+                self._select_dome(idx, open_editor=False)
+                self._open_suite("DOME")
+            elif command == "site_move":
+                self._select_dome(idx, open_editor=False)
+                self.moving_dome = idx
+                self._close_suite()
+                self._flash(f"Moving dome {idx + 1}: click open ground")
+            elif command == "site_grow":
+                self._set_dome_radius(idx, self.domes[idx].config.radius * 1.10)
+            elif command == "site_shrink":
+                self._set_dome_radius(idx, self.domes[idx].config.radius * 0.90)
+            elif command == "site_build":
+                self.start_construction(idx)
+            elif command == "site_delete":
+                self._flash(self._remove_dome(idx))
+        elif action == "crew_start":
+            self.start_construction(self.active_dome)
+        elif action == "crew_add":
+            self._set_worker_count((self.sim or {}).get("workers", 0) + 1)
+        elif action == "crew_remove":
+            self._set_worker_count((self.sim or {}).get("workers", 2) - 1)
+        elif action in ("crew_fast", "crew_slow"):
+            if not self.sim:
+                self._flash("No construction assignment is running")
+            elif action == "crew_fast":
+                self.sim["speed"] = min(self.sim["speed"] * 2.0, 32.0)
+            else:
+                self.sim["speed"] = max(self.sim["speed"] * 0.5, 0.1)
+        elif action == "crew_stop":
+            self._cancel_construction()
+        elif action.startswith("crew_task:"):
+            tasks = ["Frame assembly", "Panel install",
+                     "Electrical rough-in", "Interior setup",
+                     "Safety inspection"]
+            self._set_crew_task(tasks[int(action.split(":", 1)[1])])
+        elif action == "materials_export":
+            from pathlib import Path
+            Path(BOM_FILE).write_text(self.model.bom_text(), encoding="utf-8")
+            self._flash(f"Exported {BOM_FILE}")
+        elif action == "power_electrify":
+            self._flash(self._electrify_dome())
+        self.suite_dirty = True
+
+    def _suite_click(self, pos, button: int) -> None:
+        hit = self.suite_hit_map
+        close = hit.get("close")
+        if close and close.collidepoint(pos):
+            self._close_suite()
+            return
+        for page, rect in hit.get("tabs", []):
+            if rect.collidepoint(pos):
+                self._open_suite(page)
+                return
+        for action, rect in hit.get("controls", []):
+            if not rect.collidepoint(pos):
+                continue
+            if action.startswith("item"):
+                index = int(action.split(":", 1)[1])
+                if index >= len(self.menu_items):
+                    return
+                item = self.menu_items[index]
+                if action.startswith("item_prev"):
+                    if item.change:
+                        item.change(-1)
+                elif action.startswith("item_next"):
+                    if item.change:
+                        item.change(1)
+                elif item.activate is not None and button == 1:
+                    self._flash(item.activate())
+                elif item.change is not None:
+                    item.change(1 if button == 1 else -1)
+                self.menu_selected = index
+                if self.placing is not None or self.placing_dome is not None:
+                    self._close_suite()
+                self.suite_dirty = True
+                return
+            self._suite_action(action, pos)
+            return
 
     def _build_menu_items(self) -> list[MenuItem]:
         builders = [self._menu_page_dome, self._menu_page_rooms,
@@ -1503,9 +1712,12 @@ class DomeCreatorApp:
 
     def _set_worker_count(self, count: int) -> None:
         if not self.sim:
+            self._flash("No construction assignment is running")
             return
         self.sim["workers"] = int(np.clip(count, 1, 8))
         self.worker_dirty = True
+        self.suite_dirty = True
+        self._flash(f"Crew size: {self.sim['workers']}")
 
     def start_construction(self, dome_idx: int) -> None:
         events = self.dome_events_list[dome_idx]
@@ -1874,6 +2086,59 @@ class DomeCreatorApp:
         elif name == "domes":
             self.domes_origin = (ox, oy)
 
+    def _refresh_suite_overlay(self) -> None:
+        if not self.suite_open:
+            return
+        width, height = pygame.display.get_window_size()
+        items = (self.menu_items
+                 if self.suite_page in SUITE_MENU_PAGES else [])
+        item_state = tuple(
+            (item.label, item.kind,
+             str(item.value()) if item.value is not None else "")
+            for item in items)
+        dome_state = tuple(
+            (round(float(d.origin[0]), 2), round(float(d.origin[1]), 2),
+             round(d.config.radius, 2), d.config.frequency,
+             d.config.default_panel, d.config.foundation,
+             tuple(d.config.sections), len(d.config.props))
+            for d in self.domes)
+        sim_state = None if self.sim is None else (
+            self.sim.get("dome"), round(self.sim.get("elapsed", 0.0)),
+            round(self.sim.get("total", 0.0)),
+            round(self.sim.get("speed", 1.0), 1),
+            self.sim.get("workers"), self.sim.get("task"),
+            self.sim.get("step"))
+        worker_state = tuple(
+            (w.get("name"), w.get("dome"), w.get("task"),
+             w.get("action"), round(w.get("hours", 0.0), 1),
+             round(w.get("distance", 0.0), 1))
+            for w in self.worker_states)
+        energy_state = (
+            round(self.energy.charge_kwh, 1),
+            round(self.energy.capacity_kwh, 1),
+            round(self.energy.solar_watts),
+            tuple(round(v) for v in self.energy.load_by_dome),
+            tuple(self.energy.lights_by_dome), self.energy.has_system,
+            self.energy.battery_empty)
+        state = (
+            width, height, self.suite_page, self.suite_scroll,
+            self.active_dome, dome_state, item_state, sim_state,
+            worker_state, energy_state, self.flash_message)
+        if not self.suite_dirty and getattr(self, "_suite_state", None) == state:
+            return
+        stats = self.model.stats()
+        surface, hit_map = overlay_ui.render_management_suite(
+            self.fonts, (width, height), self.suite_page, SUITE_TABS,
+            items, self.suite_scroll, self.domes, self.active_dome,
+            self.worker_states, self.sim, self.trackers, stats,
+            self.energy, self.camera.position, self.flash_message)
+        self.suite_scroll = min(
+            self.suite_scroll, hit_map.get("scroll_max", 0))
+        self.suite_hit_map = hit_map
+        self._update_overlay("suite", surface)
+        self._suite_state = state
+        self.suite_dirty = False
+
     def _refresh_overlays(self) -> None:
         now = time.perf_counter()
         if self.flash_message and now > self.flash_until:
@@ -2011,18 +2276,18 @@ class DomeCreatorApp:
 
         if self.toolbar_dirty:
             buttons = [
-                ("build", "Build", self.menu_open and self.menu_page == 0),
-                ("rooms", "Rooms", self.menu_open and self.menu_page == 1),
-                ("props", "Props", self.menu_open and self.menu_page == 2),
-                ("lab", "Lab", self.menu_open and self.menu_page == 3),
-                ("domes", "Domes", self.domes_open),
+                ("build", "Build", self.suite_open and self.suite_page == "DOME"),
+                ("rooms", "Rooms", self.suite_open and self.suite_page == "ROOMS"),
+                ("props", "Props", self.suite_open and self.suite_page == "PROPS"),
+                ("lab", "Lab", self.suite_open and self.suite_page == "LAB"),
+                ("domes", "Domes", self.suite_open and self.suite_page == "SITE"),
                 ("bag", "Bag", self.inventory_open),
                 ("cam", "Cam", self.helm_active),
                 ("roof", "Roof", self.roof_hidden),
                 ("pov", "POV", self.control_mode == "fp"),
-                ("crew", "Crew", self.worker_open),
-                ("power", "Power", self.energy_open),
-                ("materials", "Materials", self.stats_open),
+                ("crew", "Crew", self.suite_open and self.suite_page == "CREW"),
+                ("power", "Power", self.suite_open and self.suite_page == "POWER"),
+                ("materials", "Materials", self.suite_open and self.suite_page == "MATERIALS"),
                 ("help", "Help", self.help_open),
                 ("keys", "Keys", self.legend_open),
                 ("save", "Save", False),
@@ -2092,6 +2357,9 @@ class DomeCreatorApp:
             self.moving_dome,
             round(float(self.camera.position[0]), 1),
             round(float(self.camera.position[1]), 1),
+            (None if self.walk_target is None else
+             (round(float(self.walk_target[0]), 1),
+              round(float(self.walk_target[1]), 1))),
             tuple((round(float(d.origin[0]), 1),
                    round(float(d.origin[1]), 1),
                    round(d.config.radius, 1)) for d in self.domes),
@@ -2101,7 +2369,8 @@ class DomeCreatorApp:
                 "minimap",
                 overlay_ui.render_minimap(
                     self.fonts, self.domes, self.active_dome,
-                    self.camera.position, self.moving_dome))
+                    self.camera.position, self.moving_dome,
+                    self.walk_target))
             self._minimap_state = minimap_state
 
         if self.sim is not None:
@@ -2138,10 +2407,21 @@ class DomeCreatorApp:
                 cam_label=f"CAM-{self.active_dome + 1:02d}"))
             self._osd_state = osd_state
 
+        self._refresh_suite_overlay()
+
     def _render_overlays(self) -> None:
         width, height = pygame.display.get_window_size()
         self.ctx.enable(moderngl.BLEND)
         self.ctx.disable(moderngl.DEPTH_TEST)
+
+        if self.suite_open and "suite" in self.overlay_textures:
+            self._draw_overlay("suite", 0, 0)
+            if self.context_menu is not None \
+                    and "context" in self.overlay_textures:
+                self._draw_overlay("context", *self.context_menu["origin"])
+            self.ctx.disable(moderngl.BLEND)
+            self.ctx.enable(moderngl.DEPTH_TEST)
+            return
 
         if "side_rail" in self.overlay_textures:
             self._draw_overlay("side_rail", width - RIGHT_RAIL_WIDTH, 0)
@@ -2293,7 +2573,12 @@ class DomeCreatorApp:
                     self.widget_drag = None
 
             elif event.type == pygame.MOUSEWHEEL:
-                if self.helm_active:
+                if self.suite_open:
+                    max_scroll = self.suite_hit_map.get("scroll_max", 0)
+                    self.suite_scroll = int(np.clip(
+                        self.suite_scroll - event.y * 3, 0, max_scroll))
+                    self.suite_dirty = True
+                elif self.helm_active:
                     self.ptz.fov = float(np.clip(
                         self.ptz.fov - event.y * 4.0, 12.0, 80.0))
                 elif self.control_mode == "orbit":
@@ -2305,6 +2590,8 @@ class DomeCreatorApp:
 
     def _ui_hit(self, pos) -> str | None:
         """Which UI region a screen point lands in, if any."""
+        if self.suite_open:
+            return "suite"
         x, y = pos
         toolbar_local = self._widget_local_pos("toolbar", pos)
         for bid, rect in self.toolbar_rects:
@@ -2582,7 +2869,8 @@ class DomeCreatorApp:
             sd = self.aimed_screen_dome
             entries.append((
                 f"Take helm (dome {sd + 1} camera)",
-                lambda: (self._select_dome(sd), self._set_helm(True))))
+                lambda: (self._select_dome(sd, open_editor=False),
+                         self._set_helm(True))))
             tracker = self.trackers[sd]
             entries.append((
                 "Examine vision system",
@@ -2938,17 +3226,13 @@ class DomeCreatorApp:
         return f"Preset: {name}"
 
     def _toolbar_click(self, bid: str) -> None:
-        if bid in ("build", "rooms", "props", "lab", "file"):
-            page = {"build": 0, "rooms": 1, "props": 2, "lab": 3,
-                    "file": 4}[bid]
-            if self.menu_open and self.menu_page == page:
-                self.menu_open = False
-            else:
-                self.menu_open = True
-                self.menu_page = page
-                self.menu_items = self._build_menu_items()
-                self.menu_selected = 1
-            self.menu_dirty = True
+        suite_pages = {
+            "build": "DOME", "rooms": "ROOMS", "props": "PROPS",
+            "lab": "LAB", "domes": "SITE", "crew": "CREW",
+            "power": "POWER", "materials": "MATERIALS",
+        }
+        if bid in suite_pages:
+            self._open_suite(suite_pages[bid])
         elif bid == "bag":
             self.inventory_open = not self.inventory_open
             self.inventory_dirty = True
@@ -2966,18 +3250,8 @@ class DomeCreatorApp:
                 self._set_helm(False)
             else:
                 self._set_helm(True, remote=True)
-        elif bid == "power":
-            self.energy_open = not self.energy_open
-        elif bid == "materials":
-            self.stats_open = not self.stats_open
         elif bid == "help":
             self.help_open = not self.help_open
-        elif bid == "crew":
-            self.worker_open = not self.worker_open
-            self.worker_dirty = True
-        elif bid == "domes":
-            self.domes_open = not self.domes_open
-            self._domes_state = None
         elif bid == "keys":
             self.legend_open = not self.legend_open
             self._update_overlay("legend", overlay_ui.render_legend(
@@ -3002,7 +3276,8 @@ class DomeCreatorApp:
         ctrl = bool(pygame.key.get_mods() & pygame.KMOD_CTRL)
         mouse_pos = pygame.mouse.get_pos()
 
-        if button == 1 and (shift or ctrl) and not self.mouse_captured:
+        if button == 1 and (shift or ctrl) and not self.mouse_captured \
+                and not self.suite_open:
             widget = self._widget_at(mouse_pos)
             if widget is not None and widget != "context":
                 ox, oy = self._widget_origin(widget)
@@ -3031,7 +3306,9 @@ class DomeCreatorApp:
         if not self.mouse_captured:
             hit = self._ui_hit(mouse_pos)
             if hit is not None:
-                if hit.startswith("toolbar:"):
+                if hit == "suite":
+                    self._suite_click(mouse_pos, button)
+                elif hit.startswith("toolbar:"):
                     self._toolbar_click(hit.split(":", 1)[1])
                 elif hit == "menu":
                     self._menu_panel_click(mouse_pos, button)
@@ -3045,13 +3322,18 @@ class DomeCreatorApp:
                 elif hit == "help" and button == 1:
                     self.help_open = False
                     self.toolbar_dirty = True
+                elif hit == "minimap":
+                    self._minimap_click(mouse_pos, button)
                 elif hit == "construction" and button == 3:
                     self._open_context(
                         self._construction_context_entries(), mouse_pos)
                 elif hit == "selected_dome":
-                    self._open_context(
-                        self._dome_context_entries(self.active_dome),
-                        mouse_pos)
+                    if button == 1:
+                        self._open_suite("DOME")
+                    else:
+                        self._open_context(
+                            self._dome_context_entries(self.active_dome),
+                            mouse_pos)
                 elif hit.startswith("slot:"):
                     slot = int(hit.split(":", 1)[1])
                     if slot < len(self.model.config.inventory):
@@ -3132,7 +3414,8 @@ class DomeCreatorApp:
             # Classic first-person interactions at the crosshair.
             aimed = self._aimed_prop()
             if self.aiming_screen and self.screen_distance < HELM_RANGE:
-                self._select_dome(self.aimed_screen_dome)
+                self._select_dome(self.aimed_screen_dome,
+                                  open_editor=False)
                 self._set_helm(True)
             elif aimed is not None and button == 1:
                 dome_idx, model, entry = aimed
@@ -3168,7 +3451,8 @@ class DomeCreatorApp:
 
         player = self.camera.position.astype(np.float64)
         if self.aiming_screen:
-            self._select_dome(self.aimed_screen_dome)
+            self._select_dome(self.aimed_screen_dome,
+                              open_editor=False)
             if self.screen_distance_from_player() < HELM_RANGE:
                 self._set_helm(True)
             else:
@@ -3205,7 +3489,7 @@ class DomeCreatorApp:
         if self.aimed_panel is not None:
             dome_idx = self.aimed_panel_dome
             if dome_idx != self.active_dome:
-                self._select_dome(dome_idx)
+                self._select_dome(dome_idx, open_editor=False)
             pmodel = self._all_models()[dome_idx]
             name = pmodel.cycle_panel(self.aimed_panel.key, 1)
             self._mark_changed(dome_idx)
@@ -3265,6 +3549,19 @@ class DomeCreatorApp:
         self.toolbar_dirty = True
 
     def _handle_key(self, key: int) -> None:
+        if self.suite_open:
+            if key in (pygame.K_ESCAPE, pygame.K_m):
+                self._close_suite()
+            elif key in (pygame.K_PAGEUP, pygame.K_UP):
+                self.suite_scroll = max(0, self.suite_scroll - 3)
+                self.suite_dirty = True
+            elif key in (pygame.K_PAGEDOWN, pygame.K_DOWN):
+                self.suite_scroll = min(
+                    self.suite_hit_map.get("scroll_max", 0),
+                    self.suite_scroll + 3)
+                self.suite_dirty = True
+            return
+
         if key == pygame.K_ESCAPE:
             if self.context_menu is not None:
                 self.context_menu = None
@@ -3291,9 +3588,7 @@ class DomeCreatorApp:
             return
 
         if key == pygame.K_m:
-            self.menu_open = not self.menu_open
-            self.menu_dirty = True
-            self.toolbar_dirty = True
+            self._open_suite("DOME")
             return
 
         if key in (pygame.K_COMMA, pygame.K_PERIOD) and self.placing:
@@ -3361,8 +3656,7 @@ class DomeCreatorApp:
             self._mark_changed(self.aimed_panel_dome)
             self._flash(f"All panels set to {name}")
         elif key == pygame.K_n:
-            self.energy_open = not self.energy_open
-            self.toolbar_dirty = True
+            self._open_suite("POWER")
         elif key == pygame.K_LEFTBRACKET and self.sim:
             self.sim["speed"] = max(self.sim["speed"] * 0.5, 0.1)
         elif key == pygame.K_RIGHTBRACKET and self.sim:
@@ -4105,7 +4399,7 @@ class DomeCreatorApp:
         movement = "FLY" if self.camera.fly_mode else "WALK"
         pygame.display.set_caption(
             f"Geodesic Dome Creator | {mode} | {movement} | "
-            f"{fps:5.1f} FPS | M menu, H help")
+            f"{fps:5.1f} FPS | M suite, H help")
 
     # -- smoke test ----------------------------------------------------------
 

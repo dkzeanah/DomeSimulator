@@ -213,7 +213,7 @@ total solar kW.
 | `Left-click` wall monitor | Walk over and take helm of the PTZ camera |
 | `C` | Remote camera control from anywhere (toolbar: Cam) |
 | `Left-click` lamp/appliance | Switch it on/off (walks over if far) |
-| `N` / toolbar **Power** | Live power-system meter |
+| `N` / toolbar **Power** | Open the full energy-control suite |
 | Toolbar **Crew** | Worker assignments, actions, and stats |
 | Toolbar **Materials** | Show or hide the live material breakdown |
 | Toolbar **Help** / click help strip | Show or collapse the contextual help strip |
@@ -222,12 +222,16 @@ total solar kW.
 | Toolbar **Preset** | Cycle the out-of-the-box dome setups |
 | Select/right-click dome row | Move, resize, simulate, or delete that dome |
 | Right command rail | Minimap and selected-dome controls |
+| `Left-click` minimap | Walk to that site coordinate, including inside a dome |
+| `Right-click` minimap dome | Open that dome's contextual actions |
 | `Left-click` panel | Select its dome and swap that panel |
 | `Right-click` panel | Open contextual panel and dome actions |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
 | `Shift+drag` overlay widget | Move that widget |
 | `Ctrl+drag` overlay widget | Resize that widget (50% to 200%) |
-| Live camera | Anchored at the top-left; the build menu starts beside it |
+| Live camera | Anchored unobstructed at the top-left of the world view |
+| Build / Domes / Rooms / Props / Crew / Materials / Power / Lab | Open the full-window operations suite |
+| `Esc` in operations suite | Return to the 3D world |
 | Hover object/dome + `T` | Edit persistent investor-demo tooltip |
 | Mouse wheel | Zoom the camera (PTZ zoom while at helm) |
 | Toolbar | Build / Rooms / Props / Bag / Roof / POV / 360 / Save / BOM |
