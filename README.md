@@ -107,7 +107,7 @@ dome; toggle individual lamps in either dome to vary the loads.
 
 ## Preset setups
 
-Four out-of-the-box designs ship in [presets.py](presets.py) — cycle
+Five out-of-the-box designs ship in [presets.py](presets.py) — cycle
 them with the toolbar **Preset** button or load one from menu page
 `4·FILE`:
 
@@ -116,7 +116,10 @@ them with the toolbar **Preset** button or load one from menu page
 2. **Glass Studio Loft** — 4V glass on a wood deck, office/lounge/bath
 3. **Split-Log Homestead** — 2V hubless quarter-wedge frame, cedar
    shakes, kitchen/bath/lounge
-4. **Grow Dome** — aluminum + polycarb greenhouse with grow racks
+4. **Whole Trunk Lodge - 20 ft** — full round tree-trunk struts made
+   from 20 ft trunks with 25 in circumference; trunk stock counts appear
+   in the live material panel and BOM
+5. **Grow Dome** — aluminum + polycarb greenhouse with grow racks
 
 Applying a preset replaces the whole design — save yours first (`F5`).
 

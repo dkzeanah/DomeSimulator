@@ -917,7 +917,23 @@ class DomeCreatorApp:
         number("Strut width",
                lambda: cfg.strut_width,
                lambda v: setattr(cfg, "strut_width", v),
-               0.005, 0.02, 0.16, lambda v: f"{v * 100:.1f} cm")
+               0.005, 0.02, 0.35, lambda v: f"{v * 100:.1f} cm")
+        number("Trunk length",
+               lambda: cfg.trunk_stock_length,
+               lambda v: setattr(cfg, "trunk_stock_length", v),
+               0.3048, 0.0, 12.192, lambda v: (
+                   "off" if v <= 0 else f"{v * 3.28084:.0f} ft"))
+
+        def set_trunk_circumference(v):
+            cfg.trunk_circumference = v
+            if v > 0:
+                cfg.strut_width = v / math.pi
+
+        number("Trunk circumference",
+               lambda: cfg.trunk_circumference,
+               set_trunk_circumference,
+               0.0254, 0.0, 1.524, lambda v: (
+                   "off" if v <= 0 else f"{v * 39.3701:.0f} in"))
         choice("Material",
                [m.name for m in FRAME_MATERIALS],
                lambda: cfg.frame_material,

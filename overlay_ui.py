@@ -133,6 +133,11 @@ def render_stats(fonts: Fonts, stats: dict) -> pygame.Surface:
         f"{stats['strut_total_len']:.1f} m")
     for label, length, count in stats["strut_classes"][:6]:
         add(f"   {label}: {count:3d} x {length:.2f} m", DIM)
+    if stats.get("trunk_stock_count"):
+        add(f" Trunks {stats['trunk_stock_count']} x "
+            f"{stats['trunk_stock_length'] * 3.28084:.1f} ft", DIM)
+        if stats.get("trunk_too_short"):
+            add(" Longest strut exceeds stock", ACCENT)
     add(f" Hubs {stats['hub_count']} pcs")
     add(f" {stats['frame_weight'] + stats['hub_weight']:,.0f} kg    "
         f"${stats['frame_cost'] + stats['hub_cost']:,.0f}", VALUE)

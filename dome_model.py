@@ -200,13 +200,15 @@ WEDGES_PER_TREE = 4        # split a log in half, then quarters
 class DomeConfig:
     frequency: int = 3
     radius: float = 5.0
-    strut_shape: int = 2          # index into STRUT_SHAPES (lumber)
+    strut_shape: int = 3          # index into STRUT_SHAPES (lumber)
     strut_width: float = 0.06     # m
     frame_style: str = "Hub & Strut"
     hub_style: str = "Node Puck"
     wedge_flip: bool = False      # quarter wedge: curve outward instead
     frame_material: int = 2       # index into FRAME_MATERIALS (timber)
     frame_color: int = 0          # index into FRAME_COLORS (material color)
+    trunk_stock_length: float = 0.0       # m; 0 = not tracked
+    trunk_circumference: float = 0.0      # m; display/BOM note
     default_panel: str = "Plywood"
     panel_color: int = 0          # index into PANEL_COLORS
     recess_pct: float = 0.50      # 0..1 of strut depth
@@ -228,6 +230,8 @@ class DomeConfig:
             "strut_width": self.strut_width,
             "frame_material": FRAME_MATERIALS[self.frame_material].name,
             "frame_color": FRAME_COLORS[self.frame_color].name,
+            "trunk_stock_length": self.trunk_stock_length,
+            "trunk_circumference": self.trunk_circumference,
             "default_panel": self.default_panel,
             "panel_color": PANEL_COLORS[self.panel_color].name,
             "recess_pct": self.recess_pct,
@@ -250,6 +254,10 @@ class DomeConfig:
         cfg.frequency = int(data.get("frequency", cfg.frequency))
         cfg.radius = float(data.get("radius", cfg.radius))
         cfg.strut_width = float(data.get("strut_width", cfg.strut_width))
+        cfg.trunk_stock_length = float(
+            data.get("trunk_stock_length", cfg.trunk_stock_length))
+        cfg.trunk_circumference = float(
+            data.get("trunk_circumference", cfg.trunk_circumference))
         cfg.recess_pct = float(data.get("recess_pct", cfg.recess_pct))
         cfg.foundation_scale = float(
             data.get("foundation_scale", cfg.foundation_scale)
@@ -595,6 +603,13 @@ class DomeModel:
         trees_required = 0
         if shape.kind == "wedge":
             trees_required = math.ceil(len(self.struts) / WEDGES_PER_TREE)
+        trunk_stock_count = 0
+        trunk_longest = max(groups.keys(), default=0.0)
+        trunk_too_short = False
+        if cfg.trunk_stock_length > 0 and shape.name == "Full Tree Trunk":
+            trunk_stock_count = math.ceil(
+                total_len * 1.10 / cfg.trunk_stock_length)
+            trunk_too_short = trunk_longest > cfg.trunk_stock_length
 
         # Panels grouped by type.
         panel_groups: dict[str, dict] = {}
@@ -739,6 +754,11 @@ class DomeModel:
             "hub_style": cfg.hub_style,
             "bolt_count": bolt_count,
             "trees_required": trees_required,
+            "trunk_stock_length": cfg.trunk_stock_length,
+            "trunk_circumference": cfg.trunk_circumference,
+            "trunk_stock_count": trunk_stock_count,
+            "trunk_too_short": trunk_too_short,
+            "trunk_longest": trunk_longest,
             "wire_runs": len(wire_runs),
             "wire_len": wire_len,
             "wire_cost": wire_cost,
@@ -776,6 +796,17 @@ class DomeModel:
         if s["trees_required"]:
             add(f"Trees to harvest: {s['trees_required']} logs "
                 f"({WEDGES_PER_TREE} quarter-wedges each)")
+        if s["trunk_stock_count"]:
+            add(f"Tree trunks:      {s['trunk_stock_count']} x "
+                f"{s['trunk_stock_length']:.2f} m stock "
+                f"({s['trunk_stock_length'] * 3.28084:.1f} ft)")
+            if s["trunk_circumference"]:
+                add(f"Trunk size:       "
+                    f"{s['trunk_circumference'] * 39.3701:.1f} in circ "
+                    f"({cfg.strut_width * 39.3701:.1f} in dia)")
+            if s["trunk_too_short"]:
+                add(f"WARNING: longest strut is {s['trunk_longest']:.2f} m, "
+                    "longer than the selected trunk stock.")
         if s["bolt_count"]:
             add(f"Edge bolts:       {s['bolt_count']} pcs (hubless joins)")
         else:

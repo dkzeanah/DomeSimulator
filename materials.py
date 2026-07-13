@@ -42,6 +42,7 @@ FRAME_MATERIALS: list[FrameMaterial] = [
     FrameMaterial("Galvanized Steel", 7850.0, 2.8, 1.30, 14.0, (0.55, 0.60, 0.64)),
     FrameMaterial("Aluminum", 2700.0, 7.5, 0.70, 24.0, (0.72, 0.75, 0.78)),
     FrameMaterial("Timber (SPF)", 480.0, 2.0, 0.45, 7.0, (0.62, 0.47, 0.30)),
+    FrameMaterial("Whole Tree Trunk", 650.0, 0.9, 1.00, 9.0, (0.44, 0.30, 0.17)),
     FrameMaterial("PVC Pipe", 1400.0, 3.4, 0.25, 5.0, (0.88, 0.88, 0.86)),
     FrameMaterial("Bamboo", 720.0, 1.6, 0.30, 4.0, (0.71, 0.60, 0.32)),
 ]
@@ -136,6 +137,7 @@ class StrutShape:
 
 STRUT_SHAPES: list[StrutShape] = [
     StrutShape("Round Tube", "circle", True, 1.0, 12),
+    StrutShape("Full Tree Trunk", "circle", False, 1.0, 16),
     StrutShape("Square Tube", "square", True, 1.0, 4),
     StrutShape("Dimensional Lumber", "rect", False, 2.2, 4),
     StrutShape("Hex Strut", "hex", False, 1.0, 6),
