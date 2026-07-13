@@ -737,6 +737,7 @@ class DomeCreatorApp:
         self.toolbar_rects: list = []
         self.toolbar_origin = (0, 0)
         self.widget_offsets: dict[str, tuple[float, float]] = {}
+        self.widget_scales: dict[str, float] = {}
         self.widget_drag: dict | None = None
         self.toolbar_dirty = True
         self.inventory_dirty = True
@@ -800,6 +801,7 @@ class DomeCreatorApp:
         self.menu_items = self._build_menu_items()
         self.menu_dirty = True
         self.stats_dirty = True
+        self.stats_open = True
         self.help_dirty = True
         self.aimed_panel = None
         self.aimed_panel_dome = 0
@@ -1257,7 +1259,7 @@ class DomeCreatorApp:
 
     def _flash(self, message: str | None) -> None:
         if message:
-            self.flash_message = message
+            self.flash_message = str(message)
             self.flash_until = time.perf_counter() + 3.0
             self.help_dirty = True
 
@@ -1784,8 +1786,7 @@ class DomeCreatorApp:
 
     def _default_widget_origin(self, name: str) -> tuple[float, float]:
         width, height = pygame.display.get_window_size()
-        entry = self.overlay_textures.get(name)
-        size = entry["size"] if entry else (0, 0)
+        size = self._widget_display_size(name)
         if name == "video_osd":
             vx, vy, _, _ = self._video_window_rect()
             return vx, vy
@@ -1794,7 +1795,7 @@ class DomeCreatorApp:
         if name == "energy":
             return (width - size[0]) / 2, 84 if self.sim is not None else 12
         if name == "domes":
-            menu_w = (self.overlay_textures["menu"]["size"][0]
+            menu_w = (self._widget_display_size("menu")[0]
                       if self.menu_open and "menu"
                       in self.overlay_textures else 0)
             return 16 + (menu_w + 12 if self.menu_open else 0), 16
@@ -1824,20 +1825,44 @@ class DomeCreatorApp:
             return self._legend_origin()
         return 16, 16
 
+    def _widget_scale(self, name: str) -> float:
+        return self.widget_scales.get(name, 1.0)
+
+    def _widget_display_size(self, name: str) -> tuple[float, float]:
+        entry = self.overlay_textures.get(name)
+        if not entry:
+            return 0.0, 0.0
+        scale = self._widget_scale(name)
+        return entry["size"][0] * scale, entry["size"][1] * scale
+
+    def _widget_rect(self, name: str) -> pygame.Rect:
+        ox, oy = self._widget_origin(name)
+        width, height = self._widget_display_size(name)
+        return pygame.Rect(round(ox), round(oy), round(width), round(height))
+
+    def _widget_local_pos(self, name: str, pos) -> tuple[float, float]:
+        ox, oy = self._widget_origin(name)
+        scale = self._widget_scale(name)
+        return (pos[0] - ox) / scale, (pos[1] - oy) / scale
+
     def _widget_origin(self, name: str) -> tuple[float, float]:
         dx, dy = self.widget_offsets.get(name, (0.0, 0.0))
         ox, oy = self._default_widget_origin(name)
         entry = self.overlay_textures.get(name)
         if entry:
             width, height = pygame.display.get_window_size()
-            ox = float(np.clip(ox + dx, 0, max(0, width - entry["size"][0])))
-            oy = float(np.clip(oy + dy, 0, max(0, height - entry["size"][1])))
+            display_w, display_h = self._widget_display_size(name)
+            ox = float(np.clip(ox + dx, 0, max(0, width - display_w)))
+            oy = float(np.clip(oy + dy, 0, max(0, height - display_h)))
             return ox, oy
         return ox + dx, oy + dy
 
     def _draw_widget(self, name: str) -> None:
         ox, oy = self._widget_origin(name)
-        self._draw_overlay(name, ox, oy)
+        entry = self.overlay_textures.get(name)
+        if entry:
+            self._draw_texture(entry["texture"], self._widget_display_size(name),
+                               ox, oy)
         if name == "toolbar":
             self.toolbar_origin = (ox, oy)
         elif name == "inventory":
@@ -1943,7 +1968,7 @@ class DomeCreatorApp:
                 aim_text = (
                     f"Aimed panel: {self.aimed_panel.panel_type.name}  "
                     f"({self.aimed_distance:.1f} m)  "
-                    "— click to swap, V to apply everywhere"
+                    "— click to swap, right-click for options"
                 )
             self._update_overlay("help", overlay_ui.render_help(
                 self.fonts, max(200, width - 32), aim_text,
@@ -1993,6 +2018,7 @@ class DomeCreatorApp:
                 ("pov", "POV", self.control_mode == "fp"),
                 ("crew", "Crew", self.worker_open),
                 ("power", "Power", self.energy_open),
+                ("materials", "Materials", self.stats_open),
                 ("keys", "Keys", self.legend_open),
                 ("save", "Save", False),
                 ("bom", "BOM", False),
@@ -2122,8 +2148,12 @@ class DomeCreatorApp:
         # The PTZ video window is always on screen, minimap-style.
         _, _, vw, vh = self._video_window_rect()
         vx, vy = self._widget_origin("video_osd")
-        self._draw_texture(self.ptz_texture, (vw, vh), vx, vy, flip=True)
-        self._draw_overlay("video_osd", vx, vy)
+        scale = self._widget_scale("video_osd")
+        display_size = (vw * scale, vh * scale)
+        self._draw_texture(self.ptz_texture, display_size, vx, vy, flip=True)
+        entry = self.overlay_textures.get("video_osd")
+        if entry:
+            self._draw_texture(entry["texture"], display_size, vx, vy)
 
         if self.sim is not None and "construction" in self.overlay_textures:
             self._draw_widget("construction")
@@ -2141,7 +2171,7 @@ class DomeCreatorApp:
                 self._draw_widget("domes")
             if self.menu_open and "menu" in self.overlay_textures:
                 self._draw_widget("menu")
-            if "stats" in self.overlay_textures:
+            if self.stats_open and "stats" in self.overlay_textures:
                 self._draw_widget("stats")
             if "help" in self.overlay_textures:
                 self._draw_widget("help")
@@ -2203,12 +2233,30 @@ class DomeCreatorApp:
             elif event.type == pygame.MOUSEMOTION:
                 if self.widget_drag is not None:
                     name = self.widget_drag["name"]
-                    base = self._default_widget_origin(name)
-                    offset = (event.pos[0] - self.widget_drag["grab"][0] -
-                              base[0],
-                              event.pos[1] - self.widget_drag["grab"][1] -
-                              base[1])
-                    self.widget_offsets[name] = offset
+                    if self.widget_drag["mode"] == "scale":
+                        dx = event.pos[0] - self.widget_drag["start"][0]
+                        dy = event.pos[1] - self.widget_drag["start"][1]
+                        entry = self.overlay_textures[name]
+                        window_w, window_h = pygame.display.get_window_size()
+                        max_scale = min(
+                            2.0,
+                            max(0.5, (window_w - 8) / entry["size"][0]),
+                            max(0.5, (window_h - 8) / entry["size"][1]),
+                        )
+                        scale = float(np.clip(
+                            self.widget_drag["scale"] + (dx + dy) * 0.003,
+                            0.5, max_scale))
+                        self.widget_scales[name] = scale
+                        base = self._default_widget_origin(name)
+                        anchor = self.widget_drag["origin"]
+                        self.widget_offsets[name] = (
+                            anchor[0] - base[0], anchor[1] - base[1])
+                    else:
+                        base = self._default_widget_origin(name)
+                        offset = (
+                            event.pos[0] - self.widget_drag["grab"][0] - base[0],
+                            event.pos[1] - self.widget_drag["grab"][1] - base[1])
+                        self.widget_offsets[name] = offset
                     continue
                 if self.control_mode == "orbit" and event.buttons[1]:
                     self.orbit_yaw += event.rel[0] * 0.008
@@ -2221,9 +2269,7 @@ class DomeCreatorApp:
                         self.context_menu["hover"] = row
                         self._render_context_overlay()
                 elif self.menu_open and not self.mouse_captured:
-                    ox, oy = self._widget_origin("menu")
-                    lx = event.pos[0] - ox
-                    ly = event.pos[1] - oy
+                    lx, ly = self._widget_local_pos("menu", event.pos)
                     hover = None
                     for index, rect in self.menu_hit_map.get("rows", []):
                         if rect.collidepoint(lx, ly):
@@ -2255,18 +2301,17 @@ class DomeCreatorApp:
     def _ui_hit(self, pos) -> str | None:
         """Which UI region a screen point lands in, if any."""
         x, y = pos
+        toolbar_local = self._widget_local_pos("toolbar", pos)
         for bid, rect in self.toolbar_rects:
-            ox, oy = self.toolbar_origin
-            if rect.move(ox, oy).collidepoint(x, y):
+            if rect.collidepoint(*toolbar_local):
                 return f"toolbar:{bid}"
         if self.inventory_open:
-            ox, oy = self.inventory_origin
+            inventory_local = self._widget_local_pos("inventory", pos)
             for i, rect in enumerate(self.inventory_rects):
-                if rect.move(ox, oy).collidepoint(x, y):
+                if rect.collidepoint(*inventory_local):
                     return f"slot:{i}"
             entry = self.overlay_textures.get("inventory")
-            if entry and pygame.Rect(
-                    ox, oy, *entry["size"]).collidepoint(x, y):
+            if entry and self._widget_rect("inventory").collidepoint(x, y):
                 return "panel"
         if self.context_menu is not None:
             entry = self.overlay_textures.get("context")
@@ -2275,40 +2320,37 @@ class DomeCreatorApp:
                 return "context"
         if self.domes_open:
             entry = self.overlay_textures.get("domes")
-            if entry and pygame.Rect(*self._widget_origin("domes"),
-                                     *entry["size"]).collidepoint(x, y):
+            if entry and self._widget_rect("domes").collidepoint(x, y):
                 return "domes"
         entry = self.overlay_textures.get("legend")
-        if entry and pygame.Rect(*self._widget_origin("legend"),
-                                 *entry["size"]).collidepoint(x, y):
+        if entry and self._widget_rect("legend").collidepoint(x, y):
             return "legend"
         if self.menu_open:
             entry = self.overlay_textures.get("menu")
-            if entry and pygame.Rect(*self._widget_origin("menu"),
-                                     *entry["size"]).collidepoint(x, y):
+            if entry and self._widget_rect("menu").collidepoint(x, y):
                 return "menu"
         if self.worker_open:
             entry = self.overlay_textures.get("workers")
-            if entry and pygame.Rect(*self._widget_origin("workers"),
-                                     *entry["size"]).collidepoint(x, y):
+            if entry and self._widget_rect("workers").collidepoint(x, y):
                 return "workers"
         if self.hover_info is not None:
             entry = self.overlay_textures.get("tooltip")
-            if entry and pygame.Rect(*self._widget_origin("tooltip"),
-                                     *entry["size"]).collidepoint(x, y):
+            if entry and self._widget_rect("tooltip").collidepoint(x, y):
                 return "tooltip"
         if self.note_edit is not None:
             entry = self.overlay_textures.get("note_editor")
-            if entry and pygame.Rect(*self._widget_origin("note_editor"),
-                                     *entry["size"]).collidepoint(x, y):
+            if entry and self._widget_rect("note_editor").collidepoint(x, y):
                 return "note_editor"
         for name in ("minimap", "selected_dome", "side_rail"):
             entry = self.overlay_textures.get(name)
             if not entry:
                 continue
-            origin = ((pygame.display.get_window_size()[0] - RIGHT_RAIL_WIDTH, 0)
-                      if name == "side_rail" else self._widget_origin(name))
-            if pygame.Rect(*origin, *entry["size"]).collidepoint(x, y):
+            if name == "side_rail":
+                origin = (pygame.display.get_window_size()[0] - RIGHT_RAIL_WIDTH, 0)
+                rect = pygame.Rect(*origin, *entry["size"])
+            else:
+                rect = self._widget_rect(name)
+            if rect.collidepoint(x, y):
                 return name
         for name in ("stats", "help", "video_osd", "energy", "construction"):
             entry = self.overlay_textures.get(name)
@@ -2317,11 +2359,13 @@ class DomeCreatorApp:
             if name == "energy":
                 if not self.energy_open:
                     continue
+            elif name == "stats":
+                if not self.stats_open:
+                    continue
             elif name == "construction":
                 if self.sim is None:
                     continue
-            origin = self._widget_origin(name)
-            if pygame.Rect(*origin, *entry["size"]).collidepoint(x, y):
+            if self._widget_rect(name).collidepoint(x, y):
                 return name
         return None
 
@@ -2351,13 +2395,15 @@ class DomeCreatorApp:
                 continue
             if name == "energy" and not self.energy_open:
                 continue
+            if name == "stats" and not self.stats_open:
+                continue
             if name == "construction" and self.sim is None:
                 continue
-            if name == "legend" and not self.legend_open:
-                continue
-            origin = (self.context_menu["origin"] if name == "context"
-                      else self._widget_origin(name))
-            if pygame.Rect(*origin, *entry["size"]).collidepoint(*pos):
+            if name == "context":
+                rect = pygame.Rect(*self.context_menu["origin"], *entry["size"])
+            else:
+                rect = self._widget_rect(name)
+            if rect.collidepoint(*pos):
                 return name
         return None
 
@@ -2451,8 +2497,7 @@ class DomeCreatorApp:
 
     def _legend_origin(self) -> tuple[float, float]:
         _, height = pygame.display.get_window_size()
-        entry = self.overlay_textures.get("legend")
-        h = entry["size"][1] if entry else 300
+        h = self._widget_display_size("legend")[1] or 300
         vx, vy, vw, _ = self._video_window_rect()
         return vx + vw + 10, height - h - 64
 
@@ -2671,9 +2716,7 @@ class DomeCreatorApp:
         return entries
 
     def _menu_panel_click(self, pos, button: int) -> None:
-        ox, oy = self._widget_origin("menu")
-        lx = pos[0] - ox
-        ly = pos[1] - oy
+        lx, ly = self._widget_local_pos("menu", pos)
         for page, rect in self.menu_hit_map.get("tabs", []):
             if rect.collidepoint(lx, ly):
                 self.menu_page = page
@@ -2694,8 +2737,7 @@ class DomeCreatorApp:
                 return
 
     def _domes_panel_click(self, pos, button: int) -> None:
-        lx = pos[0] - self.domes_origin[0]
-        ly = pos[1] - self.domes_origin[1]
+        lx, ly = self._widget_local_pos("domes", pos)
         for i, rect in enumerate(self.dome_rows_rects):
             if rect.collidepoint(lx, ly):
                 if button == 1:
@@ -2916,6 +2958,8 @@ class DomeCreatorApp:
                 self._set_helm(True, remote=True)
         elif bid == "power":
             self.energy_open = not self.energy_open
+        elif bid == "materials":
+            self.stats_open = not self.stats_open
         elif bid == "crew":
             self.worker_open = not self.worker_open
             self.worker_dirty = True
@@ -2943,16 +2987,20 @@ class DomeCreatorApp:
 
     def _on_mouse_button(self, button: int) -> None:
         shift = bool(pygame.key.get_mods() & pygame.KMOD_SHIFT)
-        alt = bool(pygame.key.get_mods() & pygame.KMOD_ALT)
+        ctrl = bool(pygame.key.get_mods() & pygame.KMOD_CTRL)
         mouse_pos = pygame.mouse.get_pos()
 
-        if button == 1 and alt and not self.mouse_captured:
+        if button == 1 and (shift or ctrl) and not self.mouse_captured:
             widget = self._widget_at(mouse_pos)
             if widget is not None and widget != "context":
                 ox, oy = self._widget_origin(widget)
                 self.widget_drag = {
                     "name": widget,
+                    "mode": "scale" if ctrl else "move",
                     "grab": (mouse_pos[0] - ox, mouse_pos[1] - oy),
+                    "start": mouse_pos,
+                    "origin": (ox, oy),
+                    "scale": self._widget_scale(widget),
                 }
                 return
 
@@ -3138,6 +3186,15 @@ class DomeCreatorApp:
                                        "dome": dome_idx}
                 verb = "switch" if is_device else "pick up"
                 self._flash(f"Walking to {verb} {entry['type']}...")
+            return
+        if self.aimed_panel is not None:
+            dome_idx = self.aimed_panel_dome
+            if dome_idx != self.active_dome:
+                self._select_dome(dome_idx)
+            pmodel = self._all_models()[dome_idx]
+            name = pmodel.cycle_panel(self.aimed_panel.key, 1)
+            self._mark_changed(dome_idx)
+            self._flash(f"Dome {dome_idx + 1} panel -> {name}")
             return
         point = self._floor_click_point(origin, direction)
         if point is not None:

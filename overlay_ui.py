@@ -208,15 +208,16 @@ def render_help(
     surf = pygame.Surface((width, height), pygame.SRCALPHA)
     surf.fill(BG_SOFT)
 
-    line1 = aim_text or "Aim at a panel and click to swap it"
+    line1 = str(aim_text or "Aim at a panel and click to swap it")
     color1 = VALUE if aim_text else DIM
     if flash:
-        line1 = flash
+        line1 = str(flash)
         color1 = GOOD
     surf.blit(fonts.body.render(line1, True, color1), (12, 4))
 
     help_line = (
-        "Click: walk / pick up / take helm | Shift+Click: swap panel | "
+        "Click: contextual action | Shift-drag: move widget | "
+        "Ctrl-drag: resize widget | "
         "C camera control | Mid-drag+arrows: view | Wheel: zoom | "
         "T edit hover note | R roof | B bag | P first-person | M menu"
     )
@@ -725,9 +726,10 @@ def render_context_menu(
 
 LEGEND_LINES = [
     ("MOUSE", HEADER),
-    ("L-click   walk / use / next", TEXT),
+    ("L-click   contextual action", TEXT),
     ("R-click   options menu", TEXT),
-    ("Alt-drag  move widgets", TEXT),
+    ("Shift-drag move widgets", TEXT),
+    ("Ctrl-drag resize widgets", TEXT),
     ("Mid-drag  rotate view", TEXT),
     ("Wheel     zoom", TEXT),
     ("KEYS", HEADER),

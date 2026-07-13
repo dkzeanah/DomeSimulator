@@ -215,14 +215,17 @@ total solar kW.
 | `Left-click` lamp/appliance | Switch it on/off (walks over if far) |
 | `N` / toolbar **Power** | Live power-system meter |
 | Toolbar **Crew** | Worker assignments, actions, and stats |
+| Toolbar **Materials** | Show or hide the live material breakdown |
 | `[` / `]` | Construction sim speed |
 | `Del` | Pack the aimed prop into the backpack |
 | Toolbar **Preset** | Cycle the out-of-the-box dome setups |
 | Select/right-click dome row | Move, resize, simulate, or delete that dome |
 | Right command rail | Minimap and selected-dome controls |
-| `Shift+Click` panel | Swap that panel (Shift+right-click = back) |
+| `Left-click` panel | Select its dome and swap that panel |
+| `Right-click` panel | Open contextual panel and dome actions |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
-| `Alt+drag` overlay widget | Move that widget |
+| `Shift+drag` overlay widget | Move that widget |
+| `Ctrl+drag` overlay widget | Resize that widget (50% to 200%) |
 | Hover object/dome + `T` | Edit persistent investor-demo tooltip |
 | Mouse wheel | Zoom the camera (PTZ zoom while at helm) |
 | Toolbar | Build / Rooms / Props / Bag / Roof / POV / 360 / Save / BOM |
