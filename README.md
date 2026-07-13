@@ -49,9 +49,11 @@ see-through so the camera never gets blocked.
 The **Domes** toolbar button opens the site manager: every dome on the
 site with its style, status, live load, and vision summary. Click a row
 to select it (menus, stats, BOM, and the video window all follow the
-selection), right-click for options (walk to, simulate construction,
-demolish), and use **+ Add dome** to pick a style and click the ground
-to have a crew build it there. Save/load round-trips the entire site.
+selection) and open dome actions: walk to, move, resize, simulate, or
+delete. Right-click a row opens the same action menu. Use **+ Add dome**
+to pick a style and click the ground to have a crew build it there.
+Placement, moving, and resizing refuse overlaps with other domes so the
+site remains physically credible. Save/load round-trips the entire site.
 
 Every dome carries the same monitoring computer: its own apex PTZ
 camera, wall monitor, and **vision system** that runs simulated object
@@ -210,6 +212,7 @@ total solar kW.
 | `[` / `]` | Construction sim speed |
 | `Del` | Pack the aimed prop into the backpack |
 | Toolbar **Preset** | Cycle the out-of-the-box dome setups |
+| Select/right-click dome row | Move, resize, simulate, or delete that dome |
 | `Shift+Click` panel | Swap that panel (Shift+right-click = back) |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
 | `Alt+drag` overlay widget | Move that widget |

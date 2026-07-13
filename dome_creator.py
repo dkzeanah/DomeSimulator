@@ -770,6 +770,7 @@ class DomeCreatorApp:
         self.dome_add_rect = None
         self.domes_origin = (0, 0)
         self.placing_dome: dict | None = None
+        self.moving_dome: int | None = None
         self.menu_hit_map: dict = {"tabs": [], "rows": []}
         self.lab_base = 1
         self.lab_qty: dict[str, int] = {}
@@ -914,7 +915,7 @@ class DomeCreatorApp:
                lambda i: setattr(cfg, "frequency", i + 1))
         number("Radius",
                lambda: cfg.radius,
-               lambda v: setattr(cfg, "radius", v),
+               lambda v: self._set_dome_radius(self.active_dome, v),
                0.5, 2.0, 15.0, lambda v: f"{v:.1f} m")
 
         header("FRAME")
@@ -928,7 +929,7 @@ class DomeCreatorApp:
                0.005, 0.02, 0.35, lambda v: f"{v * 100:.1f} cm")
         number("Trunk length",
                lambda: cfg.trunk_stock_length,
-               lambda v: setattr(cfg, "trunk_stock_length", v),
+               lambda v: self._set_trunk_stock_length(self.active_dome, v),
                0.3048, 0.0, 12.192, lambda v: (
                    "off" if v <= 0 else f"{v * 3.28084:.0f} ft"))
 
@@ -1353,6 +1354,9 @@ class DomeCreatorApp:
                  * m.config.foundation_scale for m in self.domes),
                 default=0.0)
             origin = (edge + cfg.radius * cfg.foundation_scale + 4.0, 0.0)
+        ok, reason = self._dome_fits(origin, cfg)
+        if not ok:
+            return f"Cannot place dome: {reason}"
         model = DomeModel(cfg, origin=(float(origin[0]),
                                        float(origin[1])))
         self.domes.append(model)
@@ -2300,6 +2304,64 @@ class DomeCreatorApp:
                 return i
         return None
 
+    @staticmethod
+    def _dome_clearance_radius(model_or_cfg) -> float:
+        cfg = getattr(model_or_cfg, "config", model_or_cfg)
+        return float(cfg.radius) * float(cfg.foundation_scale)
+
+    def _dome_fits(self, origin, cfg, ignore_idx: int | None = None) -> tuple[bool, str]:
+        ox, oy = float(origin[0]), float(origin[1])
+        radius = self._dome_clearance_radius(cfg)
+        for i, model in enumerate(self.domes):
+            if ignore_idx is not None and i == ignore_idx:
+                continue
+            other = self._dome_clearance_radius(model)
+            d = math.hypot(ox - float(model.origin[0]),
+                           oy - float(model.origin[1]))
+            if d < radius + other + 1.0:
+                return False, f"Overlaps dome {i + 1}"
+        return True, "OK"
+
+    def _set_dome_radius(self, idx: int, radius: float) -> bool:
+        model = self.domes[idx]
+        old = model.config.radius
+        model.config.radius = float(radius)
+        ok, reason = self._dome_fits(model.origin, model.config, ignore_idx=idx)
+        if not ok:
+            model.config.radius = old
+            self._flash(f"Resize blocked: {reason}")
+            return False
+        self._mark_changed(idx)
+        return True
+
+    def _set_trunk_stock_length(self, idx: int, length: float) -> None:
+        model = self.domes[idx]
+        cfg = model.config
+        old_length = cfg.trunk_stock_length
+        cfg.trunk_stock_length = float(length)
+        if length <= 0 or model.shape.name != "Full Tree Trunk":
+            return
+        stats = model.stats()
+        longest = float(stats.get("trunk_longest", 0.0))
+        if longest <= 1e-6:
+            return
+        target_radius = cfg.radius * (float(length) * 0.995 / longest)
+        if not self._set_dome_radius(idx, target_radius):
+            cfg.trunk_stock_length = old_length
+
+    def _move_dome_to(self, idx: int, origin) -> bool:
+        model = self.domes[idx]
+        new_origin = np.array([float(origin[0]), float(origin[1]), 0.0])
+        ok, reason = self._dome_fits(new_origin, model.config, ignore_idx=idx)
+        if not ok:
+            self._flash(f"Move blocked: {reason}")
+            return False
+        model.origin[:] = new_origin
+        self._mark_changed(idx)
+        self._refresh_lights()
+        self._flash(f"Dome {idx + 1} moved")
+        return True
+
     def _legend_origin(self) -> tuple[float, float]:
         _, height = pygame.display.get_window_size()
         entry = self.overlay_textures.get("legend")
@@ -2441,6 +2503,49 @@ class DomeCreatorApp:
         entries.append(("Cancel", None))
         return entries
 
+    def _dome_context_entries(self, idx: int, point=None) -> list:
+        model = self.domes[idx]
+
+        def walk_to():
+            self.walk_target = np.array([
+                float(model.origin[0]),
+                float(model.origin[1]) - model.floor_radius - 1.5,
+                self.ground_height(float(model.origin[0]),
+                                   float(model.origin[1])),
+            ])
+
+        def begin_move():
+            self.moving_dome = idx
+            self._flash(f"Moving dome {idx + 1} — click an open location")
+
+        entries = [
+            (f"Select dome {idx + 1}", lambda idx=idx: self._select_dome(idx)),
+            ("Walk to dome", walk_to),
+            ("Move dome", begin_move),
+            ("Resize +10%", lambda idx=idx: self._set_dome_radius(
+                idx, self.domes[idx].config.radius * 1.10)),
+            ("Resize -10%", lambda idx=idx: self._set_dome_radius(
+                idx, self.domes[idx].config.radius * 0.90)),
+            ("Simulate construction", lambda idx=idx: self.start_construction(idx)),
+        ]
+        if model.shape.name == "Full Tree Trunk":
+            entries.extend([
+                ("Trunk stock +1 ft", lambda idx=idx: self._set_trunk_stock_length(
+                    idx, self.domes[idx].config.trunk_stock_length + 0.3048)),
+                ("Trunk stock -1 ft", lambda idx=idx: self._set_trunk_stock_length(
+                    idx, max(0.3048,
+                             self.domes[idx].config.trunk_stock_length - 0.3048))),
+            ])
+        entries.extend([
+            ("Examine dome", lambda idx=idx: self._flash(
+                f"Dome {idx + 1}: {model.config.frequency}V r="
+                f"{model.config.radius:.1f} m — "
+                f"{self.trackers[idx].summary()}")),
+            ("Delete dome", lambda idx=idx: self._flash(self._remove_dome(idx))),
+            ("Cancel", None),
+        ])
+        return entries
+
     def _construction_context_entries(self) -> list:
         entries = []
         if self.sim:
@@ -2508,25 +2613,9 @@ class DomeCreatorApp:
             if rect.collidepoint(lx, ly):
                 if button == 1:
                     self._select_dome(i)
+                    self._open_context(self._dome_context_entries(i), pos)
                 else:
-                    model = self.domes[i]
-                    entries = [
-                        (f"Select dome {i + 1}",
-                         lambda i=i: self._select_dome(i)),
-                        ("Walk to dome",
-                         lambda m=model: setattr(
-                             self, "walk_target", np.array(
-                                 [float(m.origin[0]),
-                                  float(m.origin[1])
-                                  - m.floor_radius - 1.5,
-                                  0.0]))),
-                        ("Simulate construction",
-                         lambda i=i: self.start_construction(i)),
-                        ("Demolish dome",
-                         lambda i=i: self._flash(self._remove_dome(i))),
-                        ("Cancel", None),
-                    ]
-                    self._open_context(entries, pos)
+                    self._open_context(self._dome_context_entries(i), pos)
                 return
         if self.dome_add_rect is not None and \
                 self.dome_add_rect.collidepoint(lx, ly):
@@ -2831,6 +2920,21 @@ class DomeCreatorApp:
             self.escape_armed = False
             return
 
+        if self.moving_dome is not None:
+            if button != 1:
+                self._flash("Move dome cancelled")
+                self.moving_dome = None
+                return
+            origin, direction = self._interaction_ray()
+            dz = float(direction[2])
+            if dz < -1e-5:
+                t = -float(origin[2]) / dz
+                hit = origin + direction * t
+                if self._move_dome_to(
+                        self.moving_dome, (float(hit[0]), float(hit[1]))):
+                    self.moving_dome = None
+            return
+
         # Placing a whole new dome: click open ground to build it.
         if self.placing_dome is not None:
             if button != 1:
@@ -2842,16 +2946,12 @@ class DomeCreatorApp:
             if dz < -1e-5:
                 t = -float(origin[2]) / dz
                 hit = origin + direction * t
-                cfg_r = float(self.placing_dome["data"].get(
-                    "radius", 5.0))
-                pad = cfg_r * 1.2 + 2.0
-                for model in self.domes:
-                    d = math.hypot(hit[0] - float(model.origin[0]),
-                                   hit[1] - float(model.origin[1]))
-                    if d < pad + model.config.radius * 1.2:
-                        self._flash("Too close to another dome")
-                        return
                 data = self.placing_dome["data"]
+                cfg = DomeConfig.from_dict(data)
+                ok, reason = self._dome_fits((float(hit[0]), float(hit[1])), cfg)
+                if not ok:
+                    self._flash(f"Cannot place dome: {reason}")
+                    return
                 self.placing_dome = None
                 self._flash(self._add_dome(
                     data, origin=(float(hit[0]), float(hit[1])),
@@ -3008,6 +3108,9 @@ class DomeCreatorApp:
             elif self.placing_dome is not None:
                 self.placing_dome = None
                 self._flash("Dome placement cancelled")
+            elif self.moving_dome is not None:
+                self.moving_dome = None
+                self._flash("Move dome cancelled")
             elif self.placing is not None:
                 self.placing = None
                 self._flash("Placement finished")
@@ -3738,8 +3841,19 @@ class DomeCreatorApp:
                 position, position + direction, face_up)
 
     def _roof_cut_value(self) -> float:
+        def lower_ring_cut(model) -> float:
+            fh = model.foundation.height
+            zs = sorted({
+                round(float(v[2]), 4)
+                for v in getattr(model, "world_verts", [])
+                if float(v[2]) > fh + 0.05
+            })
+            if zs:
+                return zs[0] + max(0.08, model.strut_depth * 0.75)
+            return fh + 2.0
+
         if self.roof_hidden:
-            return float(self.camera.position[2]) + 1.9
+            return lower_ring_cut(self.model)
         # RuneScape-style auto-roof: when the player is inside a dome in
         # orbit view, the structure above them turns see-through so the
         # camera is never blocked.
@@ -3750,7 +3864,7 @@ class DomeCreatorApp:
                 dx = px - float(model.origin[0])
                 dy = py - float(model.origin[1])
                 if math.hypot(dx, dy) <= model.floor_radius + 0.4:
-                    return float(self.camera.position[2]) + 1.4
+                    return lower_ring_cut(model)
         return 1e9
 
     def render_six_point(self) -> None:

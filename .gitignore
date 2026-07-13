@@ -7,6 +7,7 @@ __pycache__/
 dome_flat.md
 dome_flat.txt
 dome_bom.txt
+dome_demo.sqlite3
 
 # Local editor/tool state
 .claude/
