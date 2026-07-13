@@ -74,8 +74,8 @@ from overlay_ui import Fonts, MenuItem
 from workshop import PROP_TYPES, ROOM_TYPES, ROOM_TYPE_BY_NAME
 
 
-WINDOW_WIDTH = 1400
-WINDOW_HEIGHT = 900
+WINDOW_WIDTH = 1720
+WINDOW_HEIGHT = 960
 CUBE_FACE_SIZE = 768
 PLAYER_HEIGHT = 1.83
 NEAR_PLANE = 0.06
@@ -90,6 +90,7 @@ VIDEO_WINDOW_SIZE = (384, 216)
 VIDEO_WINDOW_SIZE_HELM = (640, 360)
 HELM_RANGE = 4.0                   # max distance to click the wall screen
 HELM_LEASH = 5.5                   # walk further than this and helm releases
+RIGHT_RAIL_WIDTH = 340
 
 
 # ---------------------------------------------------------------------------
@@ -745,6 +746,11 @@ class DomeCreatorApp:
             self.highlight_program,
             [(self.marker_vbo, "3f", "in_position")],
         )
+        self.selected_ring_vbo = self.ctx.buffer(reserve=96 * 3 * 4)
+        self.selected_ring_vao = self.ctx.vertex_array(
+            self.highlight_program,
+            [(self.selected_ring_vbo, "3f", "in_position")],
+        )
 
         # Static environment mesh.
         self.env_buffers = self._upload_mesh(build_environment())
@@ -848,17 +854,19 @@ class DomeCreatorApp:
 
     def _select_dome(self, idx: int) -> None:
         idx = max(0, min(idx, len(self.domes) - 1))
-        if idx == self.active_dome:
-            return
-        if self.helm_active:
+        changed = idx != self.active_dome
+        if changed and self.helm_active:
             self._set_helm(False)
         self.active_dome = idx
+        self.menu_open = True
+        self.menu_page = 0
         self.menu_items = self._build_menu_items()
+        self.menu_selected = 1
         self.menu_dirty = True
         self.stats_dirty = True
         self.help_dirty = True
         self._osd_state = None
-        self._flash(f"Selected dome {idx + 1}")
+        self._flash(f"Dome {idx + 1} controls open")
 
     # -- menu ------------------------------------------------------------
 
@@ -917,6 +925,19 @@ class DomeCreatorApp:
                lambda: cfg.radius,
                lambda v: self._set_dome_radius(self.active_dome, v),
                0.5, 2.0, 15.0, lambda v: f"{v:.1f} m")
+        number("Dome X",
+               lambda: float(self.model.origin[0]),
+               lambda v: self._move_dome_to(
+                   self.active_dome, (v, float(self.model.origin[1]))),
+               0.5, -80.0, 80.0, lambda v: f"{v:.1f} m")
+        number("Dome Y",
+               lambda: float(self.model.origin[1]),
+               lambda v: self._move_dome_to(
+                   self.active_dome, (float(self.model.origin[0]), v)),
+               0.5, -80.0, 80.0, lambda v: f"{v:.1f} m")
+        action("Move selected dome (click map)",
+               lambda: (setattr(self, "moving_dome", self.active_dome),
+                        f"Moving dome {self.active_dome + 1}: click open ground"))
 
         header("FRAME")
         choice("Strut shape",
@@ -1780,17 +1801,23 @@ class DomeCreatorApp:
         if name == "menu":
             return 16, 16
         if name == "stats":
-            return width - size[0] - 16, 16
+            return width - RIGHT_RAIL_WIDTH + 12, 520
         if name == "help":
             return 16, height - size[1] - 12
         if name == "toolbar":
-            return (width - size[0]) / 2, height - size[1] - 62
+            return (max(1, width - RIGHT_RAIL_WIDTH) - size[0]) / 2, height - size[1] - 62
         if name == "inventory":
             return width - size[0] - 16, height - size[1] - 110
         if name == "workers":
-            return width - size[0] - 16, 142
+            return width - RIGHT_RAIL_WIDTH + 12, 560
+        if name == "minimap":
+            return width - RIGHT_RAIL_WIDTH + 12, 16
+        if name == "selected_dome":
+            return width - RIGHT_RAIL_WIDTH + 12, 342
+        if name == "stats":
+            return width - RIGHT_RAIL_WIDTH + 12, 520
         if name == "tooltip":
-            return 18, 94
+            return 18, height - size[1] - 72
         if name == "note_editor":
             return (width - size[0]) / 2, (height - size[1]) / 2
         if name == "legend":
@@ -1875,6 +1902,11 @@ class DomeCreatorApp:
                     f"Placing {self.placing.name} ({spot}) — click to "
                     "place, , . rotate, right-click/Esc finish"
                 )
+            elif self.moving_dome is not None:
+                aim_text = (
+                    f"Moving dome {self.moving_dome + 1}: click open "
+                    "ground to place it; Esc/right-click cancels"
+                )
             elif self.helm_active:
                 aim_text = (
                     "HELM ACTIVE — arrow keys pan/tilt, PgUp/PgDn or "
@@ -1917,6 +1949,13 @@ class DomeCreatorApp:
                 self.fonts, max(200, width - 32), aim_text,
                 self.flash_message))
             self.help_dirty = False
+
+        width, height = pygame.display.get_window_size()
+        rail_state = (RIGHT_RAIL_WIDTH, height)
+        if getattr(self, "_rail_state", None) != rail_state:
+            self._update_overlay("side_rail", overlay_ui.render_side_rail(
+                self.fonts, RIGHT_RAIL_WIDTH, height))
+            self._rail_state = rail_state
 
         if self.hover_info is not None:
             key = self.hover_info["key"]
@@ -2001,6 +2040,39 @@ class DomeCreatorApp:
                 self._worker_state = worker_state
                 self.worker_dirty = False
 
+        selected_state = (
+            self.active_dome,
+            round(float(self.model.origin[0]), 2),
+            round(float(self.model.origin[1]), 2),
+            round(self.model.config.radius, 2),
+            self.moving_dome,
+            len(self.domes),
+        )
+        if getattr(self, "_selected_dome_state", None) != selected_state:
+            self._update_overlay(
+                "selected_dome",
+                overlay_ui.render_selected_dome_panel(
+                    self.fonts, self.model, self.active_dome,
+                    self.moving_dome == self.active_dome))
+            self._selected_dome_state = selected_state
+
+        minimap_state = (
+            self.active_dome,
+            self.moving_dome,
+            round(float(self.camera.position[0]), 1),
+            round(float(self.camera.position[1]), 1),
+            tuple((round(float(d.origin[0]), 1),
+                   round(float(d.origin[1]), 1),
+                   round(d.config.radius, 1)) for d in self.domes),
+        )
+        if getattr(self, "_minimap_state", None) != minimap_state:
+            self._update_overlay(
+                "minimap",
+                overlay_ui.render_minimap(
+                    self.fonts, self.domes, self.active_dome,
+                    self.camera.position, self.moving_dome))
+            self._minimap_state = minimap_state
+
         if self.sim is not None:
             events = self._sim_events()
             step_idx = min(self.sim["step"], len(events) - 1)
@@ -2039,6 +2111,13 @@ class DomeCreatorApp:
         width, height = pygame.display.get_window_size()
         self.ctx.enable(moderngl.BLEND)
         self.ctx.disable(moderngl.DEPTH_TEST)
+
+        if "side_rail" in self.overlay_textures:
+            self._draw_overlay("side_rail", width - RIGHT_RAIL_WIDTH, 0)
+        if "minimap" in self.overlay_textures:
+            self._draw_widget("minimap")
+        if "selected_dome" in self.overlay_textures:
+            self._draw_widget("selected_dome")
 
         # The PTZ video window is always on screen, minimap-style.
         _, _, vw, vh = self._video_window_rect()
@@ -2223,6 +2302,14 @@ class DomeCreatorApp:
             if entry and pygame.Rect(*self._widget_origin("note_editor"),
                                      *entry["size"]).collidepoint(x, y):
                 return "note_editor"
+        for name in ("minimap", "selected_dome", "side_rail"):
+            entry = self.overlay_textures.get(name)
+            if not entry:
+                continue
+            origin = ((pygame.display.get_window_size()[0] - RIGHT_RAIL_WIDTH, 0)
+                      if name == "side_rail" else self._widget_origin(name))
+            if pygame.Rect(*origin, *entry["size"]).collidepoint(x, y):
+                return name
         for name in ("stats", "help", "video_osd", "energy", "construction"):
             entry = self.overlay_textures.get(name)
             if not entry:
@@ -2241,8 +2328,8 @@ class DomeCreatorApp:
     def _widget_at(self, pos) -> str | None:
         names = [
             "note_editor", "context", "toolbar", "inventory", "workers",
-            "tooltip", "domes", "menu", "energy", "construction", "stats",
-            "legend", "video_osd", "help",
+            "selected_dome", "minimap", "tooltip", "domes", "menu",
+            "energy", "construction", "stats", "legend", "video_osd", "help",
         ]
         for name in names:
             entry = self.overlay_textures.get(name)
@@ -2898,6 +2985,10 @@ class DomeCreatorApp:
                 elif hit == "construction" and button == 3:
                     self._open_context(
                         self._construction_context_entries(), mouse_pos)
+                elif hit == "selected_dome":
+                    self._open_context(
+                        self._dome_context_entries(self.active_dome),
+                        mouse_pos)
                 elif hit.startswith("slot:"):
                     slot = int(hit.split(":", 1)[1])
                     if slot < len(self.model.config.inventory):
@@ -3232,7 +3323,8 @@ class DomeCreatorApp:
     def _main_view_proj(self) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """View, projection, and eye of the main (non-six-point) camera."""
         width, height = pygame.display.get_window_size()
-        aspect = width / max(1, height)
+        world_width = max(1, width - RIGHT_RAIL_WIDTH)
+        aspect = world_width / max(1, height)
         if self.control_mode == "orbit":
             eye, target = self._orbit_eye_target()
             view = look_at_matrix(eye, target,
@@ -3251,7 +3343,8 @@ class DomeCreatorApp:
         """World ray under the mouse cursor (orbit mode picking)."""
         width, height = pygame.display.get_window_size()
         mx, my = pygame.mouse.get_pos()
-        ndc_x = 2.0 * mx / max(1, width) - 1.0
+        world_width = max(1, width - RIGHT_RAIL_WIDTH)
+        ndc_x = 2.0 * min(mx, world_width) / world_width - 1.0
         ndc_y = 1.0 - 2.0 * my / max(1, height)
         view, projection, eye = self._main_view_proj()
         inv = np.linalg.inv(projection @ view)
@@ -3751,6 +3844,26 @@ class DomeCreatorApp:
                 1.0, 0.85, 0.15, pulse)
             self.marker_vao.render(moderngl.TRIANGLES)
 
+        # Selected dome ground ring.
+        if self.domes:
+            model = self.domes[self.active_dome]
+            z = model.foundation.height + 0.035
+            r = model.floor_radius
+            verts = []
+            for i in range(96):
+                a = math.tau * i / 96
+                verts.append((
+                    float(model.origin[0]) + math.cos(a) * r,
+                    float(model.origin[1]) + math.sin(a) * r,
+                    z,
+                ))
+            data = np.asarray(verts, dtype=np.float32)
+            self.selected_ring_vbo.write(data.tobytes())
+            self.highlight_program["u_mvp"].write(mvp.tobytes())
+            self.highlight_program["u_color"].value = (
+                0.25, 0.85, 1.0, 0.92)
+            self.selected_ring_vao.render(moderngl.LINE_LOOP, vertices=96)
+
         # Aimed-panel highlight.
         if self.aimed_panel is not None:
             tri = self.aimed_panel.world_verts.astype(np.float32)
@@ -3905,11 +4018,14 @@ class DomeCreatorApp:
             draw_avatar=self.control_mode == "orbit")
 
         self.ctx.screen.use()
-        self.ctx.viewport = (0, 0, width, height)
         self.ctx.disable(moderngl.DEPTH_TEST)
+        self.ctx.viewport = (0, 0, width, height)
+        self.ctx.clear(0.006, 0.008, 0.010, 1.0)
+        self.ctx.viewport = (0, 0, max(1, width - RIGHT_RAIL_WIDTH), height)
         self.normal_texture.use(location=0)
         self.normal_program["u_texture"].value = 0
         self.normal_vao.render(moderngl.TRIANGLES)
+        self.ctx.viewport = (0, 0, width, height)
         self.ctx.enable(moderngl.DEPTH_TEST)
 
     def update_caption(self, fps: float) -> None:

@@ -44,6 +44,12 @@ view the arrow keys rotate the camera and clicking the ground walks.
 When you're inside a dome, the structure above you automatically turns
 see-through so the camera never gets blocked.
 
+The main 3D view is framed as its own world pane with a RuneScape-style
+command rail on the right. The rail contains the site minimap, selected
+dome summary, and contextual dome actions so investor demos stay less
+cluttered. Selecting any dome opens the Dome controls automatically,
+including manual X/Y coordinates and a click-to-move action.
+
 ## Many domes
 
 The **Domes** toolbar button opens the site manager: every dome on the
@@ -213,6 +219,7 @@ total solar kW.
 | `Del` | Pack the aimed prop into the backpack |
 | Toolbar **Preset** | Cycle the out-of-the-box dome setups |
 | Select/right-click dome row | Move, resize, simulate, or delete that dome |
+| Right command rail | Minimap and selected-dome controls |
 | `Shift+Click` panel | Swap that panel (Shift+right-click = back) |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
 | `Alt+drag` overlay widget | Move that widget |

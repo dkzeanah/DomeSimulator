@@ -610,6 +610,88 @@ def render_workers(
     return surf
 
 
+def render_selected_dome_panel(fonts: Fonts, model, idx: int, moving: bool) -> pygame.Surface:
+    stats = model.stats()
+    width = 316
+    height = 168
+    surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    surf.fill((18, 22, 26, 238))
+    pygame.draw.rect(surf, (100, 76, 42, 255), surf.get_rect(), 2)
+    pygame.draw.rect(surf, (58, 45, 28, 240), (2, 2, width - 4, 25))
+    surf.blit(fonts.body.render(f"SELECTED DOME {idx + 1}", True, VALUE),
+              (10, 6))
+    cfg = model.config
+    x, y = float(model.origin[0]), float(model.origin[1])
+    lines = [
+        f"Style: {cfg.frequency}V {model.shape.name}",
+        f"Position: X {x:6.1f} m   Y {y:6.1f} m",
+        f"Radius: {cfg.radius:.2f} m   Height: {stats['height']:.1f} m",
+        f"Floor: {stats['floor_area']:.0f} m2   Frame: {stats['frame_weight'] + stats['hub_weight']:,.0f} kg",
+    ]
+    if stats.get("trunk_stock_count"):
+        lines.append(
+            f"Trunks: {stats['trunk_stock_count']} x "
+            f"{stats['trunk_stock_length'] * 3.28084:.0f} ft")
+    yoff = 36
+    for line in lines:
+        surf.blit(fonts.small.render(line, True, TEXT), (10, yoff))
+        yoff += 17
+    if moving:
+        prompt = "MOVE MODE: click open ground, Esc cancels"
+        color = GOOD
+    else:
+        prompt = "Actions: Move | Resize +/- | Delete | Build sim"
+        color = DIM
+    surf.blit(fonts.small.render(prompt, True, color), (10, height - 24))
+    return surf
+
+
+def render_minimap(fonts: Fonts, domes: list, active_idx: int,
+                   player_pos, moving_idx: int | None = None) -> pygame.Surface:
+    size = 316
+    surf = pygame.Surface((size, size), pygame.SRCALPHA)
+    surf.fill((11, 15, 17, 245))
+    pygame.draw.rect(surf, (112, 84, 45, 255), surf.get_rect(), 2)
+    surf.blit(fonts.body.render("SITE MAP", True, VALUE), (10, 8))
+    map_rect = pygame.Rect(18, 36, size - 36, size - 54)
+    pygame.draw.rect(surf, (20, 32, 25), map_rect)
+    pygame.draw.rect(surf, (58, 78, 56), map_rect, 1)
+    pts = [(float(d.origin[0]), float(d.origin[1]),
+            float(d.config.radius) * float(d.config.foundation_scale))
+           for d in domes]
+    px, py = float(player_pos[0]), float(player_pos[1])
+    extent = max([abs(px), abs(py), 12.0] +
+                 [max(abs(x) + r, abs(y) + r) for x, y, r in pts])
+    scale = min(map_rect.width, map_rect.height) / (extent * 2.2)
+
+    def map_xy(x, y):
+        return (map_rect.centerx + int(x * scale),
+                map_rect.centery - int(y * scale))
+
+    for i, (x, y, r) in enumerate(pts):
+        mx, my = map_xy(x, y)
+        rr = max(5, int(r * scale))
+        fill = (90, 150, 95) if i != active_idx else (230, 190, 80)
+        if moving_idx == i:
+            fill = (120, 220, 255)
+        pygame.draw.circle(surf, fill, (mx, my), rr, 2)
+        surf.blit(fonts.small.render(str(i + 1), True, TEXT),
+                  (mx - 4, my - 7))
+    mx, my = map_xy(px, py)
+    pygame.draw.circle(surf, (120, 200, 255), (mx, my), 4)
+    surf.blit(fonts.small.render("You", True, HEADER), (mx + 6, my - 7))
+    return surf
+
+
+def render_side_rail(fonts: Fonts, width: int, height: int) -> pygame.Surface:
+    surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    surf.fill((8, 10, 12, 238))
+    pygame.draw.rect(surf, (86, 64, 36, 255), surf.get_rect(), 2)
+    pygame.draw.rect(surf, (38, 30, 20, 245), (0, 0, width, 34))
+    surf.blit(fonts.body.render("DOME COMMAND", True, VALUE), (12, 9))
+    return surf
+
+
 def render_context_menu(
     fonts: Fonts,
     entries: list[str],
