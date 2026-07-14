@@ -806,6 +806,7 @@ class DomeCreatorApp:
         # RuneScape-style UI state.
         self.context_menu: dict | None = None
         self.item_carousel: dict | None = None
+        self.prop_tool_active = False
         self.legend_open = False
         self.domes_open = False
         self.dome_rows_rects: list = []
@@ -854,6 +855,10 @@ class DomeCreatorApp:
         self.overlay_textures: dict[str, dict] = {}
         self._update_overlay("crosshair", overlay_ui.render_crosshair())
         self._update_overlay("mouse_cursor", overlay_ui.render_mouse_cursor())
+        self._update_overlay(
+            "prop_cursor_valid", overlay_ui.render_prop_cursor(True))
+        self._update_overlay(
+            "prop_cursor_invalid", overlay_ui.render_prop_cursor(False))
 
         # Orbit (RuneScape-style) mode starts with a free, visible cursor.
         self._set_mouse_capture(False)
@@ -2277,7 +2282,8 @@ class DomeCreatorApp:
             buttons = [
                 ("build", "Build", self.suite_open and self.suite_page == "DOME"),
                 ("rooms", "Rooms", self.suite_open and self.suite_page == "ROOMS"),
-                ("props", "Props", self.item_carousel is not None),
+                ("props", "Props", self.prop_tool_active or
+                 self.item_carousel is not None),
                 ("lab", "Lab", self.suite_open and self.suite_page == "LAB"),
                 ("domes", "Domes", self.suite_open and self.suite_page == "SITE"),
                 ("bag", "Bag", self.inventory_open),
@@ -2477,11 +2483,24 @@ class DomeCreatorApp:
         if self.context_menu is not None \
                 and "context" in self.overlay_textures:
             self._draw_overlay("context", *self.context_menu["origin"])
+        if self.item_carousel is not None \
+                and "equipment_menu" in self.overlay_textures:
+            self._draw_overlay(
+                "equipment_menu", *self.item_carousel["origin"])
         if self.note_edit is not None \
                 and "note_editor" in self.overlay_textures:
             self._draw_widget("note_editor")
         if not self.mouse_captured:
-            self._draw_overlay("mouse_cursor", *pygame.mouse.get_pos())
+            mx, my = pygame.mouse.get_pos()
+            if self.prop_tool_active and self.item_carousel is None:
+                cursor = ("prop_cursor_valid" if self._prop_tool_target()
+                          is not None else "prop_cursor_invalid")
+                entry = self.overlay_textures[cursor]
+                self._draw_overlay(
+                    cursor, mx - entry["size"][0] / 2,
+                    my - entry["size"][1] / 2)
+            else:
+                self._draw_overlay("mouse_cursor", mx, my)
 
         self.ctx.disable(moderngl.BLEND)
         self.ctx.enable(moderngl.DEPTH_TEST)
@@ -2556,7 +2575,9 @@ class DomeCreatorApp:
                     self.orbit_pitch = float(np.clip(
                         self.orbit_pitch + event.rel[1] * 0.006,
                         0.12, 1.45))
-                if self.context_menu is not None:
+                if self.item_carousel is not None:
+                    self._update_item_carousel_hover(event.pos)
+                elif self.context_menu is not None:
                     row = self._context_row_at(event.pos)
                     if row != self.context_menu["hover"]:
                         self.context_menu["hover"] = row
@@ -2997,13 +3018,50 @@ class DomeCreatorApp:
         entries.append(("Cancel", None))
         return entries
 
-    def _open_item_carousel(
-            self, dome_idx: int | None = None, point=None, pos=None) -> None:
-        """Open the equipment picker over the world at the cursor."""
+    def _start_prop_tool(self) -> None:
         if self.placing is not None:
             self._cancel_prop_placement()
+        self._close_item_carousel()
+        self.context_menu = None
         self.menu_open = False
         self.menu_dirty = True
+        self.prop_tool_active = True
+        self.toolbar_dirty = True
+        self._flash("Equipment placement active")
+
+    def _stop_prop_tool(self) -> None:
+        self.prop_tool_active = False
+        self._close_item_carousel()
+        self.toolbar_dirty = True
+
+    def _prop_tool_target(self, pos=None):
+        if self.mouse_captured or self.suite_open or self.item_carousel is not None:
+            return None
+        pos = pygame.mouse.get_pos() if pos is None else pos
+        if self._ui_hit(pos) is not None:
+            return None
+        origin, direction = self._interaction_ray()
+        point = self._floor_click_point(origin, direction)
+        if point is None:
+            return None
+        dome_idx = self._dome_at(float(point[0]), float(point[1]))
+        if dome_idx is None or not self._point_inside_dome(dome_idx, point):
+            return None
+        if self._aimed_prop() is not None or self.aiming_screen \
+                or self.aimed_panel is not None:
+            return None
+        return dome_idx, point
+
+    def _open_prop_menu_at_cursor(self, pos) -> None:
+        target = self._prop_tool_target(pos)
+        if target is None:
+            self._flash("Choose an empty floor location inside a dome")
+            return
+        dome_idx, point = target
+        self._open_item_carousel(dome_idx, point, pos)
+
+    def _open_item_carousel(self, dome_idx: int, point, pos) -> None:
+        """Open the two-pane equipment menu at a world target."""
         categories = list(dict.fromkeys(prop.category for prop in PROP_TYPES))
         if not categories:
             self._flash("No equipment is available")
@@ -3013,9 +3071,10 @@ class DomeCreatorApp:
             "category": 0,
             "item": 0,
             "dome": dome_idx,
-            "point": (None if point is None else
-                      np.asarray(point, dtype=np.float64).copy()),
-            "origin": pos if pos is not None else pygame.mouse.get_pos(),
+            "point": np.asarray(point, dtype=np.float64).copy(),
+            "origin": (float(pos[0]), float(pos[1])),
+            "hover_category": -1,
+            "hover_item": -1,
         }
         self.context_menu = None
         self.toolbar_dirty = True
@@ -3037,31 +3096,76 @@ class DomeCreatorApp:
             self._close_item_carousel()
             return
         state["item"] %= len(props)
-        current = props[state["item"]]
-        previous = props[(state["item"] - 1) % len(props)]
-        following = props[(state["item"] + 1) % len(props)]
-        categories = state["categories"]
-        category_index = state["category"]
-        previous_category = categories[(category_index - 1) % len(categories)]
-        next_category = categories[(category_index + 1) % len(categories)]
-        watts = f" | {current.watts:.0f} W" if current.watts else ""
-        entries = [
-            (f"< Category: {previous_category.title()}",
-             lambda: self._cycle_item_carousel_category(-1)),
-            (f"^ {previous.name}",
-             lambda: self._cycle_item_carousel_item(-1)),
-            (f"PLACE {current.name}", self._choose_item_carousel),
-            (f"${current.cost:,.0f} | {current.weight:.0f} kg{watts}",
-             self._render_item_carousel),
-            (f"v {following.name}",
-             lambda: self._cycle_item_carousel_item(1)),
-            (f"Category: {next_category.title()} >",
-             lambda: self._cycle_item_carousel_category(1)),
-            ("Cancel", self._close_item_carousel),
-        ]
-        category = categories[category_index].title()
-        self._open_context(
-            entries, state["origin"], f"EQUIPMENT | {category}", hover=2)
+        surface, hit_map = overlay_ui.render_equipment_menu(
+            self.fonts, state["categories"], props, state["category"],
+            state["hover_category"],
+            (state["hover_item"] if state["hover_item"] >= 0
+             else state["item"]),
+            f"DOME {state['dome'] + 1}")
+        width, height = pygame.display.get_window_size()
+        ox, oy = state["origin"]
+        ox = min(ox, width - surface.get_width() - 4)
+        oy = min(oy, height - surface.get_height() - 4)
+        state["origin"] = (max(0, ox), max(0, oy))
+        state["hit_map"] = hit_map
+        self._update_overlay("equipment_menu", surface)
+
+    def _item_carousel_hit(self, pos) -> tuple[str | None, int]:
+        state = self.item_carousel
+        if state is None:
+            return None, -1
+        ox, oy = state["origin"]
+        local = (pos[0] - ox, pos[1] - oy)
+        hit_map = state.get("hit_map", {})
+        for index, rect in enumerate(hit_map.get("categories", [])):
+            if rect.collidepoint(*local):
+                return "category", index
+        for index, rect in enumerate(hit_map.get("items", [])):
+            if rect.collidepoint(*local):
+                return "item", index
+        cancel = hit_map.get("cancel")
+        if cancel is not None and cancel.collidepoint(*local):
+            return "cancel", -1
+        return None, -1
+
+    def _update_item_carousel_hover(self, pos) -> None:
+        if self.item_carousel is None:
+            return
+        zone, index = self._item_carousel_hit(pos)
+        state = self.item_carousel
+        category_hover = index if zone == "category" else -1
+        item_hover = index if zone == "item" else -1
+        changed = (category_hover != state["hover_category"] or
+                   item_hover != state["hover_item"])
+        if zone == "category" and index != state["category"]:
+            state["category"] = index
+            state["item"] = 0
+            item_hover = -1
+            changed = True
+        state["hover_category"] = category_hover
+        state["hover_item"] = item_hover
+        if changed:
+            self._render_item_carousel()
+
+    def _item_carousel_click(self, pos, button: int) -> None:
+        if self.item_carousel is None:
+            return
+        if button != 1:
+            self._stop_prop_tool()
+            return
+        zone, index = self._item_carousel_hit(pos)
+        if zone == "category":
+            self.item_carousel["category"] = index
+            self.item_carousel["item"] = 0
+            self.item_carousel["hover_item"] = -1
+            self._render_item_carousel()
+        elif zone == "item":
+            self.item_carousel["item"] = index
+            self._choose_item_carousel()
+        elif zone == "cancel":
+            self._close_item_carousel()
+        else:
+            self._close_item_carousel()
 
     def _cycle_item_carousel_item(self, delta: int) -> None:
         if self.item_carousel is None:
@@ -3070,6 +3174,7 @@ class DomeCreatorApp:
         if props:
             self.item_carousel["item"] = (
                 self.item_carousel["item"] + delta) % len(props)
+            self.item_carousel["hover_item"] = self.item_carousel["item"]
             self._render_item_carousel()
 
     def _cycle_item_carousel_category(self, delta: int) -> None:
@@ -3079,6 +3184,8 @@ class DomeCreatorApp:
         self.item_carousel["category"] = (
             self.item_carousel["category"] + delta) % len(categories)
         self.item_carousel["item"] = 0
+        self.item_carousel["hover_category"] = self.item_carousel["category"]
+        self.item_carousel["hover_item"] = -1
         self._render_item_carousel()
 
     def _choose_item_carousel(self) -> None:
@@ -3092,37 +3199,26 @@ class DomeCreatorApp:
         prop = props[state["item"]]
         dome_idx = state["dome"]
         point = state["point"]
-        self.item_carousel = None
-        self.context_menu = None
-        self.toolbar_dirty = True
-        if dome_idx is not None and point is not None:
-            self._place_prop_at_point(dome_idx, prop, point)
-            return
-        self.placing = prop
-        self.placing_from_slot = None
-        self.inventory_selected = None
-        self.ghost_yaw = 0.0
-        self.help_dirty = True
-        self.inventory_dirty = True
-        self._flash(
-            f"Placing {prop.name} - click a dome floor, , . rotate")
+        if self._place_prop_at_point(dome_idx, prop, point):
+            self._stop_prop_tool()
+        else:
+            self._render_item_carousel()
 
     def _close_item_carousel(self) -> None:
         self.item_carousel = None
-        self.context_menu = None
         self.toolbar_dirty = True
 
-    def _place_prop_at_point(self, dome_idx: int, prop, point) -> None:
+    def _place_prop_at_point(self, dome_idx: int, prop, point) -> bool:
         if not self._point_inside_dome(dome_idx, point):
             self._flash("Item must be placed inside the dome")
-            return
+            return False
         model = self.domes[dome_idx]
         local_x = float(point[0]) - float(model.origin[0])
         local_y = float(point[1]) - float(model.origin[1])
         if math.hypot(local_x, local_y) + prop.pick_radius \
                 > model.floor_radius * 0.98:
             self._flash("Item is too close to the dome wall")
-            return
+            return False
         for existing in model.config.props:
             other = workshop.PROP_TYPE_BY_NAME.get(existing.get("type"))
             if other is None:
@@ -3132,7 +3228,7 @@ class DomeCreatorApp:
                 local_y - float(existing["y"]))
             if gap < (prop.pick_radius + other.pick_radius) * 0.8:
                 self._flash(f"Placement blocked by {existing['type']}")
-                return
+                return False
         model.config.props.append({
             "type": prop.name,
             "x": round(local_x, 3),
@@ -3143,6 +3239,7 @@ class DomeCreatorApp:
         self._mark_changed(dome_idx)
         self._refresh_lights()
         self._flash(f"Added {prop.name} inside dome {dome_idx + 1}")
+        return True
 
     def _dome_context_entries(self, idx: int, point=None) -> list:
         model = self.domes[idx]
@@ -3498,8 +3595,13 @@ class DomeCreatorApp:
             "domes": "SITE", "crew": "CREW",
             "power": "POWER", "materials": "MATERIALS",
         }
+        if bid != "props" and self.prop_tool_active:
+            self._stop_prop_tool()
         if bid == "props":
-            self._open_item_carousel()
+            if self.prop_tool_active or self.item_carousel is not None:
+                self._stop_prop_tool()
+            else:
+                self._start_prop_tool()
         elif bid in suite_pages:
             self._open_suite(suite_pages[bid])
         elif bid == "bag":
@@ -3545,6 +3647,10 @@ class DomeCreatorApp:
         ctrl = bool(pygame.key.get_mods() & pygame.KMOD_CTRL)
         mouse_pos = pygame.mouse.get_pos()
 
+        if self.item_carousel is not None:
+            self._item_carousel_click(mouse_pos, button)
+            return
+
         if button == 1 and (shift or ctrl) and not self.mouse_captured \
                 and not self.suite_open:
             widget = self._widget_at(mouse_pos)
@@ -3564,13 +3670,10 @@ class DomeCreatorApp:
         if self.context_menu is not None:
             row = self._context_row_at(mouse_pos)
             entries = self.context_menu["entries"]
-            carousel_open = self.item_carousel is not None
             self.context_menu = None
             if button == 1 and 0 <= row < len(entries) \
                     and entries[row][1] is not None:
                 entries[row][1]()
-            elif carousel_open:
-                self._close_item_carousel()
             self.menu_dirty = True
             return
 
@@ -3624,6 +3727,13 @@ class DomeCreatorApp:
                             self._flash(f"Placing {name} — click the "
                                         "floor, , . rotate")
                 return
+
+        if self.prop_tool_active:
+            if button == 1:
+                self._open_prop_menu_at_cursor(mouse_pos)
+            else:
+                self._stop_prop_tool()
+            return
 
         if self.control_mode == "fp" and not self.mouse_captured:
             self._set_mouse_capture(True)
@@ -3840,6 +3950,10 @@ class DomeCreatorApp:
                 self._cycle_item_carousel_category(1)
             elif key in (pygame.K_RETURN, pygame.K_KP_ENTER, pygame.K_SPACE):
                 self._choose_item_carousel()
+            return
+
+        if self.prop_tool_active and key == pygame.K_ESCAPE:
+            self._stop_prop_tool()
             return
 
         if self.suite_open:
@@ -4823,23 +4937,54 @@ class DomeCreatorApp:
                 self.sim["workers"] = 3
             self.domes_open = True
             self.legend_open = True
+        elif f == 208:
+            self._start_prop_tool()
+        elif f == 216:
+            if not self.prop_tool_active or self.item_carousel is not None:
+                raise RuntimeError(
+                    "Equipment targeting cursor mode did not stay active")
         elif f == 220:
-            # Exercise the in-world equipment carousel + Panel Lab.
-            self._open_item_carousel(pos=(500, 400))
+            # Exercise equipment targeting, submenu rendering, and Panel Lab.
+            model = self.model
+            target = np.array([
+                float(model.origin[0]), float(model.origin[1]),
+                float(model.foundation.height)], dtype=np.float64)
+            self._open_item_carousel(self.active_dome, target, (500, 400))
             self.lab_qty = {"V-Bracket": 3, "Foam Seal (m)": 4}
             self.menu_page = 2
             self.menu_items = self._build_menu_items()
         elif f == 222:
-            self._cycle_item_carousel_item(1)
-        elif f == 224:
-            self._cycle_item_carousel_category(1)
-        elif f == 228:
-            self._choose_item_carousel()
-            if self.placing is None:
+            state = self.item_carousel
+            rect = state["hit_map"]["categories"][1]
+            ox, oy = state["origin"]
+            self._update_item_carousel_hover(
+                (ox + rect.centerx, oy + rect.centery))
+            if state["category"] != 1:
                 raise RuntimeError(
-                    "Equipment carousel did not start placement")
+                    "Equipment category hover did not open its submenu")
+        elif f == 224:
+            self._cycle_item_carousel_item(1)
+        elif f == 228:
+            hit_map = self.item_carousel.get("hit_map", {}) \
+                if self.item_carousel is not None else {}
+            if not hit_map.get("categories") or not hit_map.get("items"):
+                raise RuntimeError(
+                    "Equipment submenu did not render choices")
+            dome_idx = self.item_carousel["dome"]
+            props = self.domes[dome_idx].config.props
+            before = len(props)
+            state = self.item_carousel
+            rect = hit_map["items"][state["item"]]
+            ox, oy = state["origin"]
+            self._item_carousel_click(
+                (ox + rect.centerx, oy + rect.centery), 1)
+            if len(props) != before + 1:
+                raise RuntimeError(
+                    "Equipment submenu did not place its selected item")
+            props.pop()
+            self._mark_changed(dome_idx)
+            self._refresh_lights()
         elif f == 230:
-            self._cancel_prop_placement()
             for item in self.menu_items:
                 if item.label == "Create custom panel":
                     self._flash(item.activate())
@@ -4867,7 +5012,7 @@ class DomeCreatorApp:
 
         shot_dir = os.environ.get("DOME_SHOT_DIR")
         if shot_dir and f in (15, 34, 55, 72, 95, 112, 117, 130, 156,
-                              178, 190, 226, 240, 330, 350):
+                              178, 190, 216, 226, 240, 330, 350):
             self._save_screenshot(
                 os.path.join(shot_dir, f"smoke_{f:03d}.png"))
 

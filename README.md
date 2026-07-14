@@ -170,11 +170,13 @@ the video OSD reports `WATCH S4 WOOD SHOP · sawing, sanding, assembly`,
 the contextual grounding for the vision system's likely-scenario
 narrowing.
 
-The **Props** toolbar button opens an equipment carousel directly over
-the 3D world. Use Up/Down or the mouse wheel to browse items, Left/Right
-to change categories, and Enter or the highlighted `PLACE` row to begin
-placement. Right-clicking an empty dome floor opens the same carousel
-for immediate placement at that location. Its 39 placeable items include
+The **Props** toolbar button activates an equipment-target cursor in the
+3D world. Click an empty dome-floor location to open a full two-pane
+context menu there: hover or click a category on the left, then click an
+item with visible price, weight, and power details on the right to place
+it at the targeted point. Arrow keys and Enter remain available for
+keyboard navigation. Right-clicking an empty dome floor opens the same
+menu directly. Its 39 placeable items include
 the original furniture and utilities plus
 generators, compressors, welding and cutoff stations, rebar/concrete
 tools, shoring, scaffold, ladders, mirror racks, water storage, climate
@@ -250,17 +252,18 @@ total solar kW.
 | `Left-click` exterior panel | Select its dome and swap that panel |
 | `Ctrl+click` exterior panel | Walk to that panel from outside |
 | `Right-click` exterior panel | Open contextual panel and dome actions |
-| `Right-click` empty dome floor | Open the item carousel at that location |
+| `Right-click` empty dome floor | Open the equipment menu at that location |
 | Interior shell panels | Transparent to picking so floor and items remain interactive |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
 | `Shift+drag` overlay widget | Move that widget |
 | `Ctrl+drag` overlay widget | Resize that widget (50% to 200%) |
 | Live camera | Anchored unobstructed at the top-left of the world view |
 | Build / Domes / Rooms / Crew / Materials / Power / Lab | Open the full-window operations suite |
-| Props button | Open the in-world equipment carousel |
-| Carousel `Up` / `Down` or wheel | Browse equipment |
-| Carousel `Left` / `Right` | Change equipment category |
-| Carousel `Enter` / `Space` | Place the selected equipment |
+| Props button | Toggle the in-world equipment targeting cursor |
+| Equipment cursor click | Open category and item submenus at that floor point |
+| Equipment menu `Up` / `Down` or wheel | Browse equipment |
+| Equipment menu `Left` / `Right` | Change equipment category |
+| Equipment menu `Enter` / `Space` | Place the selected equipment |
 | `Esc` in operations suite | Return to the 3D world |
 | Hover object/dome + `T` | Edit persistent investor-demo tooltip |
 | Mouse wheel | Zoom the camera (PTZ zoom while at helm) |

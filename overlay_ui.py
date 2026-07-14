@@ -1222,6 +1222,109 @@ def render_context_menu(
     return surf, rects
 
 
+def render_equipment_menu(
+    fonts: Fonts,
+    categories: list[str],
+    props: list,
+    selected_category: int,
+    hover_category: int = -1,
+    hover_item: int = -1,
+    dome_label: str = "",
+) -> tuple[pygame.Surface, dict]:
+    """Two-pane world menu for choosing equipment at a target point."""
+    width = 620
+    header_h = 30
+    subhead_h = 24
+    category_w = 218
+    category_row_h = 24
+    item_row_h = 49
+    body_h = max(
+        len(categories) * category_row_h,
+        max(1, len(props)) * item_row_h,
+    )
+    footer_h = 32
+    height = header_h + subhead_h + body_h + footer_h
+    surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    surf.fill((20, 18, 15, 248))
+    pygame.draw.rect(surf, (8, 7, 5), surf.get_rect(), 2)
+    pygame.draw.rect(surf, (104, 82, 44),
+                     pygame.Rect(2, 2, width - 4, header_h - 2))
+    surf.blit(fonts.body.render("PLACE EQUIPMENT", True, (20, 16, 10)),
+              (10, 7))
+    if dome_label:
+        label = fonts.small.render(dome_label, True, (36, 28, 16))
+        surf.blit(label, (width - label.get_width() - 10, 9))
+
+    body_y = header_h + subhead_h
+    item_x = category_w + 1
+    pygame.draw.rect(surf, (35, 31, 24),
+                     (2, header_h, category_w - 2, subhead_h))
+    pygame.draw.rect(surf, (35, 31, 24),
+                     (item_x, header_h, width - item_x - 2, subhead_h))
+    surf.blit(fonts.small.render("CATEGORY", True, HEADER),
+              (10, header_h + 5))
+    surf.blit(fonts.small.render("AVAILABLE ITEMS", True, HEADER),
+              (item_x + 10, header_h + 5))
+    pygame.draw.line(surf, (94, 80, 56), (category_w, header_h),
+                     (category_w, height - footer_h), 1)
+
+    category_rects = []
+    for index, category in enumerate(categories):
+        rect = pygame.Rect(3, body_y + index * category_row_h,
+                           category_w - 4, category_row_h)
+        active = index == selected_category
+        hovered = index == hover_category
+        if active:
+            pygame.draw.rect(surf, (83, 65, 37), rect)
+            pygame.draw.rect(surf, (190, 145, 66), rect, 1)
+        elif hovered:
+            pygame.draw.rect(surf, (55, 48, 36), rect)
+        color = VALUE if active else ((255, 247, 220) if hovered else TEXT)
+        suffix = "  >" if active else ""
+        surf.blit(fonts.small.render(
+            _ellipsize(fonts.small, category.title() + suffix,
+                       rect.width - 16), True, color),
+            (rect.x + 8, rect.y + 5))
+        category_rects.append(rect)
+
+    item_rects = []
+    for index, prop in enumerate(props):
+        rect = pygame.Rect(item_x + 3, body_y + index * item_row_h,
+                           width - item_x - 6, item_row_h - 3)
+        hovered = index == hover_item
+        pygame.draw.rect(surf, (61, 53, 38) if hovered else (27, 29, 28), rect)
+        pygame.draw.rect(surf, (190, 145, 66) if hovered else (58, 62, 58),
+                         rect, 1)
+        surf.blit(fonts.body.render(
+            _ellipsize(fonts.body, prop.name, rect.width - 24),
+            True, (255, 248, 225) if hovered else TEXT),
+            (rect.x + 10, rect.y + 6))
+        watts = f"  {prop.watts:.0f} W" if prop.watts else ""
+        specs = f"${prop.cost:,.0f}   {prop.weight:.0f} kg{watts}"
+        surf.blit(fonts.small.render(specs, True, VALUE),
+                  (rect.x + 10, rect.y + 26))
+        item_rects.append(rect)
+
+    footer_y = height - footer_h
+    pygame.draw.rect(surf, (30, 26, 20),
+                     (2, footer_y, width - 4, footer_h - 2))
+    cancel_rect = pygame.Rect(width - 92, footer_y + 4, 82, 23)
+    pygame.draw.rect(surf, (54, 46, 34), cancel_rect)
+    pygame.draw.rect(surf, (112, 92, 61), cancel_rect, 1)
+    cancel_label = fonts.small.render("CANCEL", True, TEXT)
+    surf.blit(cancel_label,
+              (cancel_rect.centerx - cancel_label.get_width() // 2,
+               cancel_rect.centery - cancel_label.get_height() // 2))
+    selected_name = f"{len(props)} ITEMS" if props else "NO ITEMS"
+    surf.blit(fonts.small.render(selected_name, True, DIM),
+              (10, footer_y + 8))
+    return surf, {
+        "categories": category_rects,
+        "items": item_rects,
+        "cancel": cancel_rect,
+    }
+
+
 LEGEND_LINES = [
     ("MOUSE", HEADER),
     ("L-click   contextual action", TEXT),
@@ -1328,4 +1431,28 @@ def render_mouse_cursor() -> pygame.Surface:
     pygame.draw.polygon(surf, (245, 247, 242, 255), points)
     pygame.draw.lines(surf, (20, 24, 27, 255), True, points, 2)
     pygame.draw.line(surf, (255, 184, 70, 255), (4, 4), (4, 18), 1)
+    return surf
+
+
+def render_prop_cursor(valid: bool) -> pygame.Surface:
+    """Location-target cursor used by the world equipment tool."""
+    size = 38
+    surf = pygame.Surface((size, size), pygame.SRCALPHA)
+    center = size // 2
+    ring = (86, 220, 130, 255) if valid else (255, 188, 68, 255)
+    pygame.draw.circle(surf, (0, 0, 0, 190), (center + 2, center + 2), 16)
+    pygame.draw.circle(surf, (24, 28, 27, 245), (center, center), 15)
+    pygame.draw.circle(surf, ring, (center, center), 15, 2)
+    pygame.draw.line(surf, ring, (center, 0), (center, 7), 2)
+    pygame.draw.line(surf, ring, (center, size - 8), (center, size - 1), 2)
+    pygame.draw.line(surf, ring, (0, center), (7, center), 2)
+    pygame.draw.line(surf, ring, (size - 8, center), (size - 1, center), 2)
+    box = pygame.Rect(center - 8, center - 5, 16, 12)
+    pygame.draw.rect(surf, (220, 224, 216), box)
+    pygame.draw.rect(surf, (18, 21, 20), box, 1)
+    pygame.draw.arc(surf, (220, 224, 216),
+                    pygame.Rect(center - 5, center - 10, 10, 9),
+                    math.pi, math.tau, 2)
+    pygame.draw.line(surf, (18, 21, 20),
+                     (center, box.top + 1), (center, box.bottom - 1), 1)
     return surf
