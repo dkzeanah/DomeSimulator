@@ -868,153 +868,76 @@ def render_management_suite(
     world_rect = pygame.Rect(sx, sy, summary.width - 32, 30)
     button("RETURN NEAR THIS DOME", world_rect, "summary_world")
 
-    if page in {"DOME", "ROOMS", "PROPS", "LAB", "FILES"}:
+    if page in {"DOME", "ROOMS", "LAB", "FILES"}:
         titles = {
             "DOME": ("DOME EDITOR", "Structure, dimensions, shell, and foundation"),
             "ROOMS": ("INTERIOR PLANNER", "Partitions and ten-section room assignments"),
-            "PROPS": ("EQUIPMENT CATALOG", "Choose an item, then place it back in the world"),
             "LAB": ("PANEL LAB", "Compose production-ready custom panel assemblies"),
             "FILES": ("SITE ADMINISTRATION", "Presets, construction, persistence, and exports"),
         }
         section_title(*titles[page])
-        if page == "PROPS":
-            # Equipment gets a purpose-built dense catalog instead of the
-            # generic settings rows. Each visual row is a category band or
-            # a pair of item cards.
-            catalog_rows = []
-            pending = []
-            clear_index = None
-            for index, item in enumerate(items):
-                if item.kind == "header":
-                    if pending:
-                        catalog_rows.append(("items", pending))
-                        pending = []
-                    catalog_rows.append(("header", item.label))
-                elif item.label == "Clear all props":
-                    clear_index = index
+        row_y = content.y + 54
+        row_h = 36
+        visible_rows = max(1, (content.bottom - row_y - 8) // row_h)
+        max_scroll = max(0, len(items) - visible_rows)
+        scroll = max(0, min(scroll, max_scroll))
+        hit["scroll_max"] = max_scroll
+        for index in range(scroll, min(len(items), scroll + visible_rows)):
+            item = items[index]
+            rect = pygame.Rect(content.x, row_y, content.width, row_h - 3)
+            if item.kind == "header":
+                pygame.draw.line(surf, (63, 78, 84),
+                                 (rect.x, rect.centery),
+                                 (rect.right, rect.centery), 1)
+                text = fonts.small.render(f" {item.label} ", True, HEADER)
+                pygame.draw.rect(surf, (11, 14, 17),
+                                 (rect.x + 12, rect.y, text.get_width() + 8,
+                                  rect.height))
+                surf.blit(text, (rect.x + 16, rect.y + 9))
+            else:
+                pygame.draw.rect(surf, (22, 28, 32), rect)
+                pygame.draw.rect(surf, (48, 59, 65), rect, 1)
+                value_width = min(310, content.width // 3)
+                label_max = content.width - value_width - 118
+                surf.blit(fonts.body.render(
+                    _ellipsize(fonts.body, item.label, label_max), True, TEXT),
+                    (rect.x + 12, rect.y + 8))
+                if item.kind == "choice":
+                    prev = pygame.Rect(rect.right - value_width - 76,
+                                       rect.y + 4, 30, rect.height - 8)
+                    nxt = pygame.Rect(rect.right - 36, rect.y + 4,
+                                      30, rect.height - 8)
+                    pygame.draw.rect(surf, (48, 58, 63), prev)
+                    pygame.draw.rect(surf, (48, 58, 63), nxt)
+                    surf.blit(fonts.body.render("<", True, VALUE),
+                              (prev.centerx - 4, prev.y + 4))
+                    surf.blit(fonts.body.render(">", True, VALUE),
+                              (nxt.centerx - 4, nxt.y + 4))
+                    value = item.value() if item.value else ""
+                    value_rect = pygame.Rect(prev.right + 5, rect.y + 4,
+                                             nxt.x - prev.right - 10,
+                                             rect.height - 8)
+                    txt = fonts.small.render(_ellipsize(
+                        fonts.small, value, value_rect.width), True, VALUE)
+                    surf.blit(txt, (value_rect.centerx - txt.get_width() // 2,
+                                    value_rect.centery - txt.get_height() // 2))
+                    add_control(f"item_prev:{index}", prev)
+                    add_control(f"item_next:{index}", nxt)
+                    add_control(f"item:{index}", rect)
                 else:
-                    pending.append((index, item))
-                    if len(pending) == 2:
-                        catalog_rows.append(("items", pending))
-                        pending = []
-            if pending:
-                catalog_rows.append(("items", pending))
-
-            row_y = content.y + 54
-            row_h = 58
-            visible_rows = max(1, (content.bottom - row_y - 34) // row_h)
-            max_scroll = max(0, len(catalog_rows) - visible_rows)
-            scroll = max(0, min(scroll, max_scroll))
-            hit["scroll_max"] = max_scroll
-            card_gap = 8
-            card_w = (content.width - card_gap) // 2
-            for kind, payload in catalog_rows[scroll:scroll + visible_rows]:
-                if kind == "header":
-                    rect = pygame.Rect(content.x, row_y + 6,
-                                       content.width, 28)
-                    pygame.draw.rect(surf, (25, 40, 43), rect)
-                    pygame.draw.rect(surf, (71, 104, 105), rect, 1)
-                    surf.blit(fonts.small.render(payload, True, HEADER),
-                              (rect.x + 10, rect.y + 6))
-                else:
-                    for col, (index, item) in enumerate(payload):
-                        rect = pygame.Rect(content.x + col * (card_w + card_gap),
-                                           row_y, card_w, row_h - 5)
-                        pygame.draw.rect(surf, (22, 28, 32), rect)
-                        pygame.draw.rect(surf, (51, 65, 70), rect, 1)
-                        parts = item.label.split("  (", 1)
-                        name = parts[0]
-                        specs = "(" + parts[1] if len(parts) > 1 else ""
-                        place = pygame.Rect(rect.right - 70, rect.y + 9,
-                                            60, 30)
-                        pygame.draw.rect(surf, (66, 58, 36), place,
-                                         border_radius=3)
-                        pygame.draw.rect(surf, (175, 130, 66), place, 1,
-                                         border_radius=3)
-                        surf.blit(fonts.body.render(
-                            _ellipsize(fonts.body, name, rect.width - 94),
-                            True, TEXT), (rect.x + 10, rect.y + 8))
-                        surf.blit(fonts.small.render(
-                            _ellipsize(fonts.small, specs, rect.width - 94),
-                            True, DIM), (rect.x + 10, rect.y + 29))
-                        label = fonts.small.render("PLACE", True, VALUE)
-                        surf.blit(label, (place.centerx - label.get_width() // 2,
-                                          place.centery - label.get_height() // 2))
-                        add_control(f"item:{index}", rect)
-                row_y += row_h
-            if clear_index is not None:
-                button("CLEAR PLACED EQUIPMENT",
-                       pygame.Rect(content.x, content.bottom - 30, 230, 26),
-                       f"item:{clear_index}")
-            if max_scroll:
-                status_text = (f"Catalog rows {scroll + 1}-"
-                               f"{min(len(catalog_rows), scroll + visible_rows)} "
-                               f"of {len(catalog_rows)} | wheel")
-                surf.blit(fonts.small.render(status_text, True, DIM),
-                          (content.right - 330, content.bottom - 22))
-        else:
-            row_y = content.y + 54
-            row_h = 36
-            visible_rows = max(1, (content.bottom - row_y - 8) // row_h)
-            max_scroll = max(0, len(items) - visible_rows)
-            scroll = max(0, min(scroll, max_scroll))
-            hit["scroll_max"] = max_scroll
-            for index in range(scroll, min(len(items), scroll + visible_rows)):
-                item = items[index]
-                rect = pygame.Rect(content.x, row_y, content.width, row_h - 3)
-                if item.kind == "header":
-                    pygame.draw.line(surf, (63, 78, 84),
-                                     (rect.x, rect.centery),
-                                     (rect.right, rect.centery), 1)
-                    text = fonts.small.render(f" {item.label} ", True, HEADER)
-                    pygame.draw.rect(surf, (11, 14, 17),
-                                     (rect.x + 12, rect.y, text.get_width() + 8,
-                                      rect.height))
-                    surf.blit(text, (rect.x + 16, rect.y + 9))
-                else:
-                    pygame.draw.rect(surf, (22, 28, 32), rect)
-                    pygame.draw.rect(surf, (48, 59, 65), rect, 1)
-                    value_width = min(310, content.width // 3)
-                    label_max = content.width - value_width - 118
-                    surf.blit(fonts.body.render(
-                        _ellipsize(fonts.body, item.label, label_max), True, TEXT),
-                        (rect.x + 12, rect.y + 8))
-                    if item.kind == "choice":
-                        prev = pygame.Rect(rect.right - value_width - 76,
-                                           rect.y + 4, 30, rect.height - 8)
-                        nxt = pygame.Rect(rect.right - 36, rect.y + 4,
-                                          30, rect.height - 8)
-                        pygame.draw.rect(surf, (48, 58, 63), prev)
-                        pygame.draw.rect(surf, (48, 58, 63), nxt)
-                        surf.blit(fonts.body.render("<", True, VALUE),
-                                  (prev.centerx - 4, prev.y + 4))
-                        surf.blit(fonts.body.render(">", True, VALUE),
-                                  (nxt.centerx - 4, nxt.y + 4))
-                        value = item.value() if item.value else ""
-                        value_rect = pygame.Rect(prev.right + 5, rect.y + 4,
-                                                 nxt.x - prev.right - 10,
-                                                 rect.height - 8)
-                        txt = fonts.small.render(_ellipsize(
-                            fonts.small, value, value_rect.width), True, VALUE)
-                        surf.blit(txt, (value_rect.centerx - txt.get_width() // 2,
-                                        value_rect.centery - txt.get_height() // 2))
-                        add_control(f"item_prev:{index}", prev)
-                        add_control(f"item_next:{index}", nxt)
-                        add_control(f"item:{index}", rect)
-                    else:
-                        action_rect = pygame.Rect(rect.right - 96, rect.y + 4,
-                                                  90, rect.height - 8)
-                        pygame.draw.rect(surf, (51, 70, 59), action_rect)
-                        pygame.draw.rect(surf, (92, 142, 104), action_rect, 1)
-                        txt = fonts.small.render("RUN", True, GOOD)
-                        surf.blit(txt, (action_rect.centerx - txt.get_width() // 2,
-                                        action_rect.centery - txt.get_height() // 2))
-                        add_control(f"item:{index}", rect)
-                row_y += row_h
-            if max_scroll:
-                scroll_text = f"Rows {scroll + 1}-{min(len(items), scroll + visible_rows)} of {len(items)} | mouse wheel"
-                surf.blit(fonts.small.render(scroll_text, True, DIM),
-                          (content.x, content.bottom - 18))
+                    action_rect = pygame.Rect(rect.right - 96, rect.y + 4,
+                                              90, rect.height - 8)
+                    pygame.draw.rect(surf, (51, 70, 59), action_rect)
+                    pygame.draw.rect(surf, (92, 142, 104), action_rect, 1)
+                    txt = fonts.small.render("RUN", True, GOOD)
+                    surf.blit(txt, (action_rect.centerx - txt.get_width() // 2,
+                                    action_rect.centery - txt.get_height() // 2))
+                    add_control(f"item:{index}", rect)
+            row_y += row_h
+        if max_scroll:
+            scroll_text = f"Rows {scroll + 1}-{min(len(items), scroll + visible_rows)} of {len(items)} | mouse wheel"
+            surf.blit(fonts.small.render(scroll_text, True, DIM),
+                      (content.x, content.bottom - 18))
 
     elif page == "SITE":
         section_title("SITE COMMAND", "Select, move, resize, construct, or remove any dome")
@@ -1270,19 +1193,21 @@ def render_context_menu(
     fonts: Fonts,
     entries: list[str],
     hover: int = -1,
+    title: str = "Choose Option",
 ) -> tuple[pygame.Surface, list[pygame.Rect]]:
     """RuneScape-style 'Choose Option' popup."""
     row_h = 19
     width = max(
         [fonts.small.render(e, True, TEXT).get_width()
-         for e in entries] + [110]) + 20
+         for e in entries] +
+        [fonts.small.render(title, True, TEXT).get_width(), 110]) + 20
     height = 22 + row_h * len(entries) + 6
     surf = pygame.Surface((width, height), pygame.SRCALPHA)
     surf.fill((30, 26, 20, 245))
     pygame.draw.rect(surf, (10, 8, 6), surf.get_rect(), 1)
     pygame.draw.rect(surf, (94, 80, 56),
                      pygame.Rect(1, 1, width - 2, 18))
-    surf.blit(fonts.small.render("Choose Option", True, (20, 16, 10)),
+    surf.blit(fonts.small.render(title, True, (20, 16, 10)),
               (8, 3))
     rects = []
     y = 22
