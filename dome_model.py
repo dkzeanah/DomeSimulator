@@ -188,7 +188,14 @@ def build_geodesic(frequency: int) -> GeodesicData:
 # Configuration
 # ---------------------------------------------------------------------------
 
-FRAME_STYLES = ["Hub & Strut", "Hubless Doubled"]
+FRAME_STYLES = [
+    "Hub & Strut",
+    "Hubless Doubled",
+    "Hex Cell",
+    "Continuous Steel Arcs",
+    "Rebar Lattice",
+    "Concrete Formwork",
+]
 HUB_STYLES = ["Node Puck", "Metal Brackets"]
 
 BOLT_COST = 1.6            # per through-bolt in hubless mode
@@ -200,12 +207,12 @@ WEDGES_PER_TREE = 4        # split a log in half, then quarters
 class DomeConfig:
     frequency: int = 3
     radius: float = 5.0
-    strut_shape: int = 3          # index into STRUT_SHAPES (lumber)
+    strut_shape: int = 5          # index into STRUT_SHAPES (lumber)
     strut_width: float = 0.06     # m
     frame_style: str = "Hub & Strut"
     hub_style: str = "Node Puck"
     wedge_flip: bool = False      # quarter wedge: curve outward instead
-    frame_material: int = 2       # index into FRAME_MATERIALS (timber)
+    frame_material: int = 4       # index into FRAME_MATERIALS (timber)
     frame_color: int = 0          # index into FRAME_COLORS (material color)
     trunk_stock_length: float = 0.0       # m; 0 = not tracked
     trunk_circumference: float = 0.0      # m; display/BOM note

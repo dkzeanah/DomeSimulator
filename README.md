@@ -126,7 +126,7 @@ dome; toggle individual lamps in either dome to vary the loads.
 
 ## Preset setups
 
-Five out-of-the-box designs ship in [presets.py](presets.py) — cycle
+Twelve out-of-the-box designs ship in [presets.py](presets.py) — cycle
 them with the toolbar **Preset** button or load one from menu page
 `4·FILE`:
 
@@ -140,6 +140,20 @@ them with the toolbar **Preset** button or load one from menu page
    circumference trunks; trunk stock counts appear in the live material
    panel and BOM
 5. **Grow Dome** — aluminum + polycarb greenhouse with grow racks
+6. **Hex Cell Pavilion** — structural-steel hex frame with composite
+   hexagonal tiles and a presentation-ready studio fit-out
+7. **Continuous Steel Arc Hangar** — large curved steel ribs with
+   fabrication, access, safety, and site-power equipment
+8. **Rebar Garden Dome** — dense meridian-and-ring rebar lattice with
+   water and climate-control equipment
+9. **Concrete Monocoque Form** — rebar/formwork system with a poured
+   concrete shell, shoring, scaffold, mixer, and rebar bender
+10. **Woodland Hex Mirror** — hexagonal mirror tiles that reflect the
+    procedural sky, ground, trunks, and wooded site perimeter
+11. **Woodland Square Mirror** — square mirror tile variant on a
+    structural-steel frame
+12. **Treehouse Canopy Dome** — elevated hex-tile dome on a supported
+    timber platform with braces and ladder access
 
 Applying a preset replaces the whole design — save yours first (`F5`).
 
@@ -156,10 +170,12 @@ the video OSD reports `WATCH S4 WOOD SHOP · sawing, sanding, assembly`,
 the contextual grounding for the vision system's likely-scenario
 narrowing.
 
-Menu page `3·PROPS` holds the placeable equipment library: worktables,
-pegboard benches, machine stations, tool chests, shelving, crates,
-filing cabinets, office desk/chair/whiteboard/sofa, kitchenette, toilet,
-sink, shower stall, tripod and shop lights, and more. Pick one, aim at
+Menu page `3·PROPS` is a compact two-column equipment catalog with
+category bands and visible price, weight, and power specifications. Its
+39 placeable items include the original furniture and utilities plus
+generators, compressors, welding and cutoff stations, rebar/concrete
+tools, shoring, scaffold, ladders, mirror racks, water storage, climate
+equipment, and fire/first-aid stations. Pick one, aim at
 the floor (green ghost = valid), click to place, `,` / `.` to rotate,
 right-click or Esc to finish, and `Del` removes an aimed prop. Placed
 lamps actually light the interior. Every prop carries weight, cost, and

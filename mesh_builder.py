@@ -182,6 +182,45 @@ class MeshBuilder:
             else:
                 self._indices(alpha).extend([c, first + j, first + i])
 
+    def cone(self, base, tip, radius, sides, color, alpha=1.0,
+             mat_id=MAT_PLAIN) -> None:
+        base = np.asarray(base, dtype=np.float64)
+        tip = np.asarray(tip, dtype=np.float64)
+        axis = normalize(tip - base)
+        helper = np.array([0.0, 0.0, 1.0])
+        if abs(float(np.dot(axis, helper))) > 0.92:
+            helper = np.array([0.0, 1.0, 0.0])
+        u = normalize(np.cross(axis, helper))
+        v = normalize(np.cross(axis, u))
+        ring = [base + u * (radius * math.cos(2 * math.pi * i / sides))
+                + v * (radius * math.sin(2 * math.pi * i / sides))
+                for i in range(sides)]
+        for i in range(sides):
+            j = (i + 1) % sides
+            self.triangle(ring[i], ring[j], tip, color, alpha, mat_id)
+
+    def sphere(self, center, radius, color, alpha=1.0,
+               mat_id=MAT_PLAIN, rings=6, sides=10) -> None:
+        center = np.asarray(center, dtype=np.float64)
+        for row in range(rings):
+            p0 = -math.pi * 0.5 + math.pi * row / rings
+            p1 = -math.pi * 0.5 + math.pi * (row + 1) / rings
+            for col in range(sides):
+                a0 = 2 * math.pi * col / sides
+                a1 = 2 * math.pi * (col + 1) / sides
+                def point(pitch, azimuth):
+                    return center + radius * np.array([
+                        math.cos(pitch) * math.cos(azimuth),
+                        math.cos(pitch) * math.sin(azimuth),
+                        math.sin(pitch),
+                    ])
+                q0, q1 = point(p0, a0), point(p0, a1)
+                q2, q3 = point(p1, a1), point(p1, a0)
+                self.triangle(q0, q1, q2, color, alpha, mat_id,
+                              normal=normalize((q0 + q1 + q2) / 3 - center))
+                self.triangle(q0, q2, q3, color, alpha, mat_id,
+                              normal=normalize((q0 + q2 + q3) / 3 - center))
+
     # -- output ----------------------------------------------------------
 
     def build(self) -> Mesh:
@@ -201,7 +240,7 @@ class MeshBuilder:
 # ---------------------------------------------------------------------------
 
 def build_environment() -> Mesh:
-    """Static ground plane and reference grid (built once)."""
+    """Static build field, reference grid, and wooded perimeter."""
     b = MeshBuilder()
 
     b.disc((0.0, 0.0, -0.02), 220.0, 64, (0.30, 0.36, 0.26),
@@ -219,6 +258,37 @@ def build_environment() -> Mesh:
                    radius, 5, color, cap_ends=False)
         b.cylinder((coord, -extent, 0.0), (coord, extent, 0.0),
                    radius, 5, color, cap_ends=False)
+
+    tree_sites = [
+        (-34, -26, 1.0), (-25, -34, 0.9), (-15, -39, 1.1),
+        (2, -42, 1.0), (18, -38, 0.85), (31, -31, 1.15),
+        (40, -17, 0.95), (43, 1, 1.05), (39, 19, 0.9),
+        (30, 34, 1.2), (13, 40, 0.95), (-4, 43, 1.1),
+        (-20, 39, 0.9), (-34, 31, 1.05), (-42, 17, 1.15),
+        (-44, -2, 0.9), (-41, -17, 1.0), (24, -23, 0.72),
+        (-27, 20, 0.78), (27, 19, 0.75), (-20, -24, 0.70),
+    ]
+    for index, (x, y, scale) in enumerate(tree_sites):
+        trunk_h = 5.5 * scale + (index % 3) * 0.7
+        trunk_r = 0.30 * scale
+        b.cylinder((x, y, 0.0), (x, y, trunk_h), trunk_r, 10,
+                   (0.34, 0.22, 0.12), mat_id=materials.MAT_WOOD)
+        if index % 3 == 0:
+            # Broadleaf crowns make mirror panels reflect varied silhouettes.
+            for dx, dy, dz, size in ((0, 0, 0.8, 2.5),
+                                     (1.3, 0.2, 0.3, 1.8),
+                                     (-1.0, 0.7, 0.2, 1.7)):
+                b.sphere((x + dx * scale, y + dy * scale,
+                          trunk_h + dz * scale), size * scale,
+                         (0.18, 0.36 + 0.03 * (index % 2), 0.16),
+                         mat_id=MAT_GRASS)
+        else:
+            for level in range(3):
+                z0 = trunk_h - 1.0 + level * 1.25 * scale
+                b.cone((x, y, z0), (x, y, z0 + 3.2 * scale),
+                       (2.5 - level * 0.45) * scale, 12,
+                       (0.12, 0.31 + level * 0.025, 0.15),
+                       mat_id=MAT_GRASS)
 
     return b.build()
 
@@ -329,7 +399,30 @@ def build_dome_mesh(model: DomeModel, events: list | None = None,
         h = foundation.height
         b.disc((ox, oy, h), f_radius, 48, foundation.top_color,
                mat_id=foundation.mat_id)
-        if h > 0.015:
+        if foundation.name == "Treehouse Platform":
+            # A central living trunk, perimeter posts, braces, and access ladder.
+            b.cylinder((ox, oy, 0.0), (ox, oy, h + 0.45), 0.72, 14,
+                       (0.32, 0.21, 0.12), mat_id=materials.MAT_WOOD)
+            for k in range(6):
+                a = 2 * math.pi * k / 6
+                px = ox + math.cos(a) * f_radius * 0.72
+                py = oy + math.sin(a) * f_radius * 0.72
+                b.cylinder((px, py, 0.0), (px, py, h), 0.16, 8,
+                           (0.40, 0.27, 0.15), mat_id=materials.MAT_WOOD)
+                b.cylinder((px, py, h * 0.45), (ox, oy, h - 0.15),
+                           0.10, 7, (0.38, 0.25, 0.14),
+                           mat_id=materials.MAT_WOOD)
+            ladder_y = oy - f_radius * 0.82
+            for sx in (-0.28, 0.28):
+                b.cylinder((ox + sx, ladder_y, 0.0),
+                           (ox + sx, ladder_y, h), 0.055, 7,
+                           (0.48, 0.32, 0.18), mat_id=materials.MAT_WOOD)
+            for rung in range(max(2, int(h / 0.35))):
+                rz = 0.25 + rung * 0.35
+                b.cylinder((ox - 0.28, ladder_y, rz),
+                           (ox + 0.28, ladder_y, rz), 0.035, 7,
+                           (0.52, 0.35, 0.19), mat_id=materials.MAT_WOOD)
+        elif h > 0.015:
             b.cylinder((ox, oy, 0.0), (ox, oy, h), f_radius, 48,
                        foundation.side_color, mat_id=MAT_PLAIN,
                        cap_ends=False)
@@ -347,8 +440,45 @@ def build_dome_mesh(model: DomeModel, events: list | None = None,
     strut_hours = 0.08 if hubless else 0.12
     if shape.kind == "wedge":
         strut_hours += 0.04           # sizing split logs takes longer
-    ordered_struts = sorted(
-        model.struts, key=lambda s: float((s[0][2] + s[1][2]) * 0.5))
+    arc_style = cfg.frame_style in {"Continuous Steel Arcs", "Rebar Lattice"}
+    if arc_style:
+        meridians = 12 if cfg.frame_style == "Continuous Steel Arcs" else 22
+        ring_count = 3 if cfg.frame_style == "Continuous Steel Arcs" else 7
+        segments = 18
+        base_angle = math.asin(max(-0.99, min(0.99, (fh - center[2]) / radius)))
+        rod_radius = max(width * 0.5, 0.012)
+        for k in range(meridians):
+            az = 2 * math.pi * k / meridians
+            points = []
+            for step in range(segments + 1):
+                theta = base_angle + (math.pi * 0.5 - base_angle) * step / segments
+                rr = radius * math.cos(theta)
+                points.append(np.array([
+                    ox + math.cos(az) * rr,
+                    oy + math.sin(az) * rr,
+                    center[2] + radius * math.sin(theta),
+                ]))
+            for p0, p1 in zip(points, points[1:]):
+                b.cylinder(p0, p1, rod_radius, shape.sides, frame_color,
+                           cap_ends=False)
+        for ring in range(1, ring_count + 1):
+            theta = base_angle + (math.pi * 0.5 - base_angle) * ring / (ring_count + 1)
+            rr = radius * math.cos(theta)
+            z = center[2] + radius * math.sin(theta)
+            ring_points = [np.array([
+                ox + math.cos(2 * math.pi * k / meridians) * rr,
+                oy + math.sin(2 * math.pi * k / meridians) * rr, z])
+                for k in range(meridians)]
+            for k in range(meridians):
+                b.cylinder(ring_points[k], ring_points[(k + 1) % meridians],
+                           rod_radius, shape.sides, frame_color,
+                           cap_ends=False)
+        mark(f"Raise {cfg.frame_style.lower()}",
+             meridians * 0.35 + ring_count * 1.2, (ox, oy - radius, fh))
+        ordered_struts = []
+    else:
+        ordered_struts = sorted(
+            model.struts, key=lambda s: float((s[0][2] + s[1][2]) * 0.5))
     n_struts = len(ordered_struts)
     for i, (p0, p1, _length) in enumerate(ordered_struts):
         mid = (p0 + p1) * 0.5
@@ -367,7 +497,8 @@ def build_dome_mesh(model: DomeModel, events: list | None = None,
 
     # ---- 4. joins: hubs / bracket plates / hubless edge bolts ----
     bracket_steel = (0.62, 0.65, 0.69)
-    hub_list = sorted(model.hubs, key=lambda hb: float(hb[0][2]))
+    hub_list = ([] if arc_style else
+                sorted(model.hubs, key=lambda hb: float(hb[0][2])))
     hub_hours = 0.20 if cfg.hub_style == "Metal Brackets" else 0.15
     for hi, (p, directions) in enumerate(hub_list):
         radial = normalize(p - center)
@@ -439,8 +570,39 @@ def build_dome_mesh(model: DomeModel, events: list | None = None,
                 min(1.0, ptype.color[i] * tint[i]) for i in range(3))
         else:
             color = ptype.color
-        b.triangle(pts[0], pts[1], pts[2], color, ptype.alpha,
-                   ptype.mat_id, normal=outward)
+        if ptype.shape == "triangle":
+            b.triangle(pts[0], pts[1], pts[2], color, ptype.alpha,
+                       ptype.mat_id, normal=outward)
+        else:
+            sides = 6 if ptype.shape == "hexagon" else 4
+            tangent = normalize(np.cross(
+                outward, np.array([0.0, 0.0, 1.0])))
+            if float(np.linalg.norm(tangent)) < 1e-5:
+                tangent = np.array([1.0, 0.0, 0.0])
+            bitangent = normalize(np.cross(outward, tangent))
+            visual_area = panel.area * 0.72
+            if sides == 6:
+                tile_radius = math.sqrt(visual_area / (1.5 * math.sqrt(3.0)))
+                phase = math.pi / 6
+            else:
+                tile_radius = math.sqrt(visual_area / 2.0)
+                phase = math.pi / 4
+            tile_center = np.mean(pts, axis=0)
+            polygon = [tile_center + tangent * (
+                math.cos(phase + 2 * math.pi * k / sides) * tile_radius)
+                + bitangent * (
+                math.sin(phase + 2 * math.pi * k / sides) * tile_radius)
+                for k in range(sides)]
+            for k in range(sides):
+                b.triangle(tile_center, polygon[k], polygon[(k + 1) % sides],
+                           color, ptype.alpha, ptype.mat_id, normal=outward)
+            seam = (0.16, 0.18, 0.18) if ptype.mat_id == materials.MAT_MIRROR \
+                else tuple(max(0.05, c * 0.55) for c in color)
+            for k in range(sides):
+                b.cylinder(polygon[k] + outward * 0.006,
+                           polygon[(k + 1) % sides] + outward * 0.006,
+                           max(0.008, width * 0.10), 5, seam,
+                           cap_ends=False)
 
         # Custom panels show their bracket hardware along the edges.
         hours = 0.7 if ptype.is_window else 0.4

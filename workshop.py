@@ -23,6 +23,7 @@ import numpy as np
 
 from materials import (
     MAT_EMISSIVE,
+    MAT_GLASS,
     MAT_GRASS,
     MAT_METAL,
     MAT_PLAIN,
@@ -338,6 +339,174 @@ def _power_column(b, t):
                (1.0, 0.85, 0.4), mat_id=MAT_EMISSIVE, cap_ends=True)
 
 
+def _portable_generator(b, t):
+    for sx in (-0.42, 0.42):
+        b.cylinder(t.p(sx, -0.27, 0.0), t.p(sx, -0.27, 0.18), 0.12, 10,
+                   (0.10, 0.10, 0.11))
+    _box(b, t, 0, 0, 0.16, 0.68, 0.52, 0.32, (0.78, 0.43, 0.08), MAT_METAL)
+    _box(b, t, 0, -0.325, 0.30, 0.58, 0.34, 0.01,
+         (0.16, 0.17, 0.18), MAT_METAL)
+    for sx in (-0.22, 0.0, 0.22):
+        b.cylinder(t.p(sx, -0.345, 0.38), t.p(sx, -0.345, 0.44),
+                   0.035, 8, (0.82, 0.84, 0.83))
+
+
+def _air_compressor(b, t):
+    b.cylinder(t.p(-0.42, 0, 0.0), t.p(0.42, 0, 0.0), 0.24, 12,
+               (0.72, 0.18, 0.14), mat_id=MAT_METAL)
+    for sx in (-0.35, 0.35):
+        b.cylinder(t.p(sx, 0, 0.18), t.p(sx, 0, 0.58), 0.045, 7,
+                   (0.20, 0.21, 0.23))
+    _box(b, t, 0.2, 0, 0.38, 0.72, 0.23, 0.20,
+         (0.25, 0.27, 0.30), MAT_METAL)
+
+
+def _welding_cart(b, t):
+    for sx in (-0.28, 0.28):
+        for sy in (-0.22, 0.22):
+            b.cylinder(t.p(sx, sy, 0.0), t.p(sx, sy, 0.10), 0.07, 8,
+                       (0.10, 0.10, 0.11))
+    _box(b, t, 0, 0, 0.10, 0.92, 0.36, 0.28,
+         (0.18, 0.38, 0.58), MAT_METAL)
+    _box(b, t, 0, -0.285, 0.55, 0.80, 0.25, 0.006,
+         (0.12, 0.13, 0.15), MAT_METAL)
+    b.cylinder(t.p(0.20, 0.24, 0.92), t.p(0.20, 0.24, 1.65), 0.11, 10,
+               (0.38, 0.40, 0.42), mat_id=MAT_METAL)
+
+
+def _cutoff_saw(b, t):
+    _box(b, t, 0, 0, 0.0, 0.76, 0.52, 0.38,
+         (0.34, 0.36, 0.38), MAT_METAL)
+    _box(b, t, 0, 0, 0.76, 0.82, 0.68, 0.32,
+         (0.48, 0.50, 0.52), MAT_METAL)
+    b.cylinder(t.p(0, 0, 0.86), t.p(0, 0, 1.48), 0.27, 14,
+               (0.12, 0.13, 0.14), mat_id=MAT_METAL)
+
+
+def _extension_ladder(b, t):
+    for sx in (-0.27, 0.27):
+        _box(b, t, sx, 0, 0.0, 2.85, 0.035, 0.045,
+             (0.64, 0.67, 0.69), MAT_METAL)
+    for rung in range(9):
+        z = 0.28 + rung * 0.30
+        b.cylinder(t.p(-0.27, 0, z), t.p(0.27, 0, z), 0.025, 7,
+                   (0.68, 0.70, 0.72), mat_id=MAT_METAL)
+
+
+def _rolling_scaffold(b, t):
+    steel = (0.65, 0.67, 0.68)
+    for sx in (-0.65, 0.65):
+        for sy in (-0.35, 0.35):
+            b.cylinder(t.p(sx, sy, 0.0), t.p(sx, sy, 2.45), 0.035, 7,
+                       steel, mat_id=MAT_METAL)
+            b.cylinder(t.p(sx, sy, 0.0), t.p(sx, sy, 0.10), 0.07, 8,
+                       (0.10, 0.10, 0.11))
+    _box(b, t, 0, 0, 1.88, 1.96, 0.72, 0.40,
+         (0.58, 0.42, 0.22), MAT_WOOD)
+    for z in (0.65, 1.25, 2.35):
+        b.cylinder(t.p(-0.65, -0.35, z), t.p(0.65, -0.35, z),
+                   0.028, 7, steel, mat_id=MAT_METAL)
+
+
+def _fire_station(b, t):
+    _box(b, t, 0, 0.10, 0.0, 1.65, 0.04, 0.04,
+         (0.34, 0.35, 0.36), MAT_METAL)
+    b.cylinder(t.p(0, 0, 0.20), t.p(0, 0, 0.92), 0.13, 10,
+               (0.80, 0.10, 0.08), mat_id=MAT_METAL)
+    _box(b, t, 0, 0.08, 1.15, 1.55, 0.28, 0.04,
+         (0.88, 0.86, 0.78))
+
+
+def _first_aid_station(b, t):
+    _box(b, t, 0, 0, 0.0, 1.35, 0.04, 0.04,
+         (0.35, 0.36, 0.38), MAT_METAL)
+    _box(b, t, 0, 0, 1.05, 1.52, 0.31, 0.10,
+         (0.88, 0.90, 0.88), MAT_METAL)
+    _box(b, t, 0, -0.105, 1.23, 1.34, 0.22, 0.006,
+         (0.16, 0.62, 0.32))
+
+
+def _water_tank(b, t):
+    b.cylinder(t.p(0, 0, 0.0), t.p(0, 0, 1.55), 0.62, 16,
+               (0.22, 0.38, 0.52), alpha=0.90, mat_id=MAT_METAL)
+    for z in (0.18, 0.78, 1.38):
+        b.cylinder(t.p(0, 0, z), t.p(0, 0, z + 0.04), 0.65, 16,
+                   (0.18, 0.20, 0.22), mat_id=MAT_METAL)
+
+
+def _utility_sink(b, t):
+    for sx in (-0.38, 0.38):
+        for sy in (-0.25, 0.25):
+            _box(b, t, sx, sy, 0.0, 0.78, 0.025, 0.025,
+                 (0.40, 0.42, 0.44), MAT_METAL)
+    _box(b, t, 0, 0, 0.72, 1.02, 0.46, 0.34,
+         (0.75, 0.76, 0.74), MAT_METAL)
+    b.cylinder(t.p(0, 0.25, 1.0), t.p(0, 0.25, 1.35), 0.018, 7,
+               (0.65, 0.67, 0.68), mat_id=MAT_METAL)
+
+
+def _ventilation_fan(b, t):
+    _box(b, t, 0, 0, 0.0, 1.45, 0.04, 0.04,
+         (0.35, 0.37, 0.39), MAT_METAL)
+    b.cylinder(t.p(0, 0, 1.42), t.p(0, 0, 1.48), 0.46, 18,
+               (0.22, 0.24, 0.26), mat_id=MAT_METAL)
+    for k in range(5):
+        a = 2 * math.pi * k / 5
+        b.prism(t.p(0, 0, 1.50),
+                t.p(math.sin(a) * 0.35, math.cos(a) * 0.35, 1.50),
+                [(-0.05, -0.01), (0.05, -0.01), (0.03, 0.01), (-0.03, 0.01)],
+                t.right, t.fwd, (0.45, 0.48, 0.50), cap_ends=True)
+
+
+def _dehumidifier(b, t):
+    _box(b, t, 0, 0, 0.08, 0.92, 0.34, 0.24,
+         (0.72, 0.74, 0.73), MAT_METAL)
+    for z in (0.30, 0.40, 0.50, 0.60):
+        _box(b, t, 0, -0.245, z, z + 0.025, 0.24, 0.005,
+             (0.28, 0.30, 0.32), MAT_METAL)
+
+
+def _cement_mixer(b, t):
+    for sx in (-0.42, 0.42):
+        b.cylinder(t.p(sx, 0, 0.0), t.p(sx, 0, 0.16), 0.13, 10,
+                   (0.11, 0.11, 0.12))
+    b.cylinder(t.p(0, 0, 0.72), t.p(0, 0.10, 1.42), 0.44, 14,
+               (0.82, 0.48, 0.10), mat_id=MAT_METAL)
+    for sx in (-0.42, 0.42):
+        b.cylinder(t.p(sx, 0, 0.14), t.p(0, 0.04, 0.88), 0.04, 7,
+                   (0.30, 0.31, 0.33))
+
+
+def _rebar_bender(b, t):
+    _box(b, t, 0, 0, 0.0, 0.82, 0.55, 0.42,
+         (0.16, 0.38, 0.42), MAT_METAL)
+    b.disc(t.p(0, 0, 0.84), 0.32, 16, (0.28, 0.30, 0.32), mat_id=MAT_METAL)
+    for a in (0, 2.1, 4.2):
+        b.cylinder(t.p(math.cos(a) * 0.18, math.sin(a) * 0.18, 0.84),
+                   t.p(math.cos(a) * 0.18, math.sin(a) * 0.18, 1.02),
+                   0.04, 8, (0.52, 0.54, 0.55), mat_id=MAT_METAL)
+
+
+def _mirror_rack(b, t):
+    for sx in (-0.72, 0.72):
+        b.cylinder(t.p(sx, 0, 0.0), t.p(sx, 0, 1.75), 0.035, 7,
+                   (0.34, 0.36, 0.38), mat_id=MAT_METAL)
+    for offset in (-0.16, 0.0, 0.16):
+        _box(b, t, offset, 0, 0.28, 1.56, 0.60, 0.035,
+             (0.68, 0.75, 0.78), MAT_GLASS, alpha=0.72)
+
+
+def _shoring_jack(b, t):
+    b.cylinder(t.p(0, 0, 0.0), t.p(0, 0, 2.65), 0.055, 8,
+               (0.42, 0.44, 0.45), mat_id=MAT_METAL)
+    _box(b, t, 0, 0, 0.0, 0.08, 0.28, 0.28,
+         (0.48, 0.50, 0.51), MAT_METAL)
+    _box(b, t, 0, 0, 2.60, 2.68, 0.28, 0.28,
+         (0.48, 0.50, 0.51), MAT_METAL)
+    b.cylinder(t.p(0, 0, 1.20), t.p(0, 0, 1.55), 0.11, 10,
+               (0.26, 0.28, 0.29), mat_id=MAT_METAL)
+
+
 @dataclass(frozen=True)
 class PropType:
     name: str
@@ -390,6 +559,38 @@ PROP_TYPES: list[PropType] = [
              _wall_outlet, role="outlet"),
     PropType("Power Column", "ELECTRICAL", 260, 25, 0, 0.28, 2.4,
              _power_column, role="outlet"),
+    PropType("Portable Generator", "SITE POWER", 1250, 95, 0, 0.65, 0.8,
+             _portable_generator, role="generator"),
+    PropType("Air Compressor", "FABRICATION", 780, 68, 1500, 0.62, 0.8,
+             _air_compressor),
+    PropType("Welding Cart", "FABRICATION", 2100, 115, 3200, 0.55, 1.7,
+             _welding_cart),
+    PropType("Metal Cutoff Saw", "FABRICATION", 640, 74, 1800, 0.72, 1.5,
+             _cutoff_saw),
+    PropType("Rebar Bender", "CONCRETE / REBAR", 1850, 135, 1100, 0.70, 1.1,
+             _rebar_bender),
+    PropType("Cement Mixer", "CONCRETE / REBAR", 920, 92, 750, 0.78, 1.7,
+             _cement_mixer),
+    PropType("Shoring Jack", "CONCRETE / REBAR", 145, 24, 0, 0.34, 2.7,
+             _shoring_jack),
+    PropType("Extension Ladder", "ACCESS / HANDLING", 260, 18, 0, 0.38, 2.9,
+             _extension_ladder),
+    PropType("Rolling Scaffold", "ACCESS / HANDLING", 880, 120, 0, 0.95, 2.5,
+             _rolling_scaffold),
+    PropType("Mirror Panel Rack", "ACCESS / HANDLING", 540, 82, 0, 0.86, 1.8,
+             _mirror_rack),
+    PropType("Fire Safety Station", "SAFETY", 220, 14, 0, 0.30, 1.7,
+             _fire_station),
+    PropType("First Aid Station", "SAFETY", 180, 9, 0, 0.34, 1.6,
+             _first_aid_station),
+    PropType("Water Storage Tank", "WATER / CLIMATE", 740, 75, 0, 0.72, 1.6,
+             _water_tank),
+    PropType("Utility Sink", "WATER / CLIMATE", 390, 42, 0, 0.58, 1.4,
+             _utility_sink),
+    PropType("Ventilation Fan", "WATER / CLIMATE", 460, 28, 380, 0.55, 1.6,
+             _ventilation_fan),
+    PropType("Dehumidifier", "WATER / CLIMATE", 520, 31, 620, 0.42, 1.0,
+             _dehumidifier),
 ]
 
 PROP_TYPE_BY_NAME = {p.name: p for p in PROP_TYPES}
@@ -547,7 +748,10 @@ WIRE_COST_PER_M = 1.4          # 12/2 romex in conduit
 PEX_COST_PER_M = 2.1           # per line (hot + cold both run)
 DRAIN_COST_PER_M = 5.0
 FIXTURE_ROUGH_COST = 40.0
-WATER_FIXTURES = {"Toilet", "Bathroom Sink", "Shower Stall", "Kitchenette"}
+WATER_FIXTURES = {
+    "Toilet", "Bathroom Sink", "Shower Stall", "Kitchenette",
+    "Utility Sink", "Water Storage Tank",
+}
 
 
 def _prop_entries_with_role(model, roles: set[str]) -> list[dict]:

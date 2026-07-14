@@ -68,6 +68,7 @@ from mesh_builder import (
     console_placement,
 )
 import overlay_ui
+import materials
 import workshop
 from electrical import ElectricalSystem
 from overlay_ui import Fonts, MenuItem
@@ -297,6 +298,25 @@ void main() {
     if (mat_id == 12) {
         // Emissive surfaces (lamp panels, status lights) ignore lighting.
         frag_color = vec4(v_color.rgb * 1.3, v_color.a);
+        return;
+    }
+
+    if (mat_id == 13) {
+        // Stylized environmental reflection: sky overhead, wooded horizon,
+        // and ground below. This makes mirror skins camouflage with the site.
+        vec3 reflected = reflect(-view_direction, normal);
+        float sky_mix = smoothstep(-0.05, 0.48, reflected.z);
+        float ground_mix = smoothstep(-0.65, -0.08, reflected.z);
+        vec3 forest = mix(vec3(0.08, 0.18, 0.09),
+                          vec3(0.20, 0.36, 0.16), ground_mix);
+        float trunk = smoothstep(0.82, 1.0,
+            sin((v_world_position.x + reflected.x * 11.0) * 1.7) * 0.5 + 0.5);
+        forest = mix(forest, vec3(0.25, 0.16, 0.09), trunk * 0.28);
+        vec3 reflection = mix(forest, u_sky_color * 1.12, sky_mix);
+        float fresnel = pow(1.0 - max(dot(normal, view_direction), 0.0), 3.0);
+        reflection += vec3(1.0) * specular * 1.4;
+        reflection = mix(reflection, v_color.rgb, 0.10 + fresnel * 0.08);
+        frag_color = vec4(reflection * u_exposure, v_color.a);
         return;
     }
 
@@ -1925,13 +1945,23 @@ class DomeCreatorApp:
         if self.aimed_panel is not None:
             p = self.aimed_panel
             dome = self.aimed_panel_dome
+            if p.panel_type.mat_id == materials.MAT_MIRROR:
+                body = (
+                    f"{p.panel_type.shape.title()} mirror tile, "
+                    f"{p.area:.1f} m2 structural slot. The live material "
+                    "reflects sky, ground, trunks, and forest tones to "
+                    "demonstrate environmental camouflage."
+                )
+            else:
+                body = (
+                    f"Exterior panel slot area {p.area:.1f} m2. Click to "
+                    "cycle materials, Ctrl-click to walk here, or press V "
+                    "to apply this panel type across the dome."
+                )
             return {
                 "key": f"dome:{dome}:panel:{p.panel_type.name}",
                 "title": f"{p.panel_type.name} panel",
-                "body": (
-                    f"Exterior panel slot area {p.area:.1f} m2. Click to "
-                    "cycle materials, Ctrl-click to walk here, or press V "
-                    "to apply this panel type across the dome."),
+                "body": body,
             }
         origin, direction = self._interaction_ray()
         point = self._floor_click_point(origin, direction)
@@ -4591,7 +4621,7 @@ class DomeCreatorApp:
             self._mark_changed()
         elif f == 30:
             # Quarter-wedge split logs on a hubless doubled frame.
-            cfg.strut_shape = 4
+            cfg.strut_shape = 7
             cfg.frame_style = "Hubless Doubled"
             self._mark_changed()
         elif f == 36:
