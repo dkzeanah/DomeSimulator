@@ -18,6 +18,10 @@ sessions.
 
 Includes the original 360° six-point perspective renderer (press `Tab`).
 
+The simulator starts at the desktop's native fullscreen resolution.
+Optional widgets start minimized; use the toolbar to open the backpack,
+help strip, key legend, and operations suites as needed.
+
 Every dome ships with its **workshop monitoring system**: a PTZ
 (pan-tilt-zoom) camera hangs from the top center of the dome looking down,
 and its live video feed is always on screen in a minimap-style window.

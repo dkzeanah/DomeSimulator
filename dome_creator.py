@@ -634,8 +634,8 @@ class DomeCreatorApp:
         pygame.display.gl_set_attribute(pygame.GL_DOUBLEBUFFER, 1)
 
         pygame.display.set_mode(
-            (WINDOW_WIDTH, WINDOW_HEIGHT),
-            pygame.OPENGL | pygame.DOUBLEBUF | pygame.RESIZABLE,
+            (0, 0),
+            pygame.OPENGL | pygame.DOUBLEBUF | pygame.FULLSCREEN,
         )
         pygame.display.set_caption("Geodesic Dome Creator")
 
@@ -703,6 +703,8 @@ class DomeCreatorApp:
         self.demo_notes: dict[str, str] = self._load_demo_notes()
         self.hover_info: dict | None = None
         self.hover_state: tuple | None = None
+        self.hover_ready = False
+        self.hover_unlock_at = time.perf_counter() + 0.75
         self.tooltip_dirty = True
         self.note_edit: dict | None = None
 
@@ -744,7 +746,7 @@ class DomeCreatorApp:
         self.walk_target: np.ndarray | None = None
         self.pending_action: dict | None = None
         self.roof_hidden = False
-        self.inventory_open = True
+        self.inventory_open = False
         self.inventory_selected: int | None = None
         self.inventory_rects: list = []
         self.inventory_origin = (0, 0)
@@ -785,7 +787,7 @@ class DomeCreatorApp:
 
         # RuneScape-style UI state.
         self.context_menu: dict | None = None
-        self.legend_open = True
+        self.legend_open = False
         self.domes_open = False
         self.dome_rows_rects: list = []
         self.dome_add_rect = None
@@ -816,7 +818,7 @@ class DomeCreatorApp:
         self.menu_dirty = True
         self.stats_dirty = True
         self.stats_open = False
-        self.help_open = True
+        self.help_open = False
         self.help_dirty = True
         self.suite_open = False
         self.suite_page = "SITE"
@@ -2517,6 +2519,9 @@ class DomeCreatorApp:
                         self.note_edit["text"] + event.text)[:520]
 
             elif event.type == pygame.MOUSEMOTION:
+                if time.perf_counter() >= self.hover_unlock_at \
+                        and event.rel != (0, 0):
+                    self.hover_ready = True
                 if self.widget_drag is not None:
                     name = self.widget_drag["name"]
                     if self.widget_drag["mode"] == "scale":
@@ -4175,7 +4180,7 @@ class DomeCreatorApp:
         if current != previous:
             self.help_dirty = True
 
-        hover = self._demo_hover_info()
+        hover = self._demo_hover_info() if self.hover_ready else None
         hover_state = None if hover is None else (
             hover["key"], hover["title"], hover["body"])
         if hover_state != self.hover_state:
