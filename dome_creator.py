@@ -726,6 +726,7 @@ class DomeCreatorApp:
         # Prop placement and picking.
         self.placing = None                  # PropType while in place mode
         self.placing_from_slot: int | None = None   # backpack slot source
+        self.moving_prop_source: dict | None = None
         self.ghost_yaw = 0.0
         self.ghost_pos = np.zeros(3)
         self.ghost_valid = False
@@ -1926,9 +1927,9 @@ class DomeCreatorApp:
                 "key": f"dome:{dome}:panel:{p.panel_type.name}",
                 "title": f"{p.panel_type.name} panel",
                 "body": (
-                    f"Panel slot area {p.area:.1f} m2. Click to cycle "
-                    "materials, or press V to apply this panel type across "
-                    "the dome."),
+                    f"Exterior panel slot area {p.area:.1f} m2. Click to "
+                    "cycle materials, Ctrl-click to walk here, or press V "
+                    "to apply this panel type across the dome."),
             }
         origin, direction = self._interaction_ray()
         point = self._floor_click_point(origin, direction)
@@ -2240,7 +2241,7 @@ class DomeCreatorApp:
                     "— click to swap, right-click for options"
                 )
             self._update_overlay("help", overlay_ui.render_help(
-                self.fonts, max(200, width - 32), aim_text,
+                self.fonts, max(200, width - RIGHT_RAIL_WIDTH - 32), aim_text,
                 self.flash_message))
             self.help_dirty = False
 
@@ -2734,6 +2735,44 @@ class DomeCreatorApp:
                 return i
         return None
 
+    def _inside_dome(self, dome_idx: int, position=None) -> bool:
+        """Whether the avatar occupies a dome's usable interior."""
+        if not 0 <= dome_idx < len(self.domes):
+            return False
+        model = self.domes[dome_idx]
+        position = self.camera.position if position is None else position
+        dx = float(position[0]) - float(model.origin[0])
+        dy = float(position[1]) - float(model.origin[1])
+        floor_z = float(model.foundation.height)
+        top_z = floor_z + float(model.config.radius) * 1.5 + PLAYER_HEIGHT
+        return (
+            math.hypot(dx, dy) <= model.floor_radius * 0.98
+            and floor_z + 0.25 <= float(position[2]) <= top_z
+        )
+
+    def _point_inside_dome(self, dome_idx: int, point) -> bool:
+        if not 0 <= dome_idx < len(self.domes):
+            return False
+        model = self.domes[dome_idx]
+        dx = float(point[0]) - float(model.origin[0])
+        dy = float(point[1]) - float(model.origin[1])
+        return math.hypot(dx, dy) <= model.floor_radius * 0.98
+
+    def _walk_to_panel_exterior(self, dome_idx: int, panel) -> None:
+        """Walk to open ground just outside the selected shell panel."""
+        model = self.domes[dome_idx]
+        dx = float(panel.centroid[0]) - float(model.origin[0])
+        dy = float(panel.centroid[1]) - float(model.origin[1])
+        length = math.hypot(dx, dy)
+        if length <= 1e-6:
+            dx, dy, length = 0.0, -1.0, 1.0
+        distance = model.floor_radius + 1.2
+        x = float(model.origin[0]) + dx / length * distance
+        y = float(model.origin[1]) + dy / length * distance
+        self.walk_target = np.array([x, y, self.ground_height(x, y)])
+        self.pending_action = None
+        self._flash(f"Walking outside dome {dome_idx + 1}...")
+
     @staticmethod
     def _dome_clearance_radius(model_or_cfg) -> float:
         cfg = getattr(model_or_cfg, "config", model_or_cfg)
@@ -2855,6 +2894,10 @@ class DomeCreatorApp:
                     f"Switch {state} {name}",
                     lambda: self._toggle_device(dome_idx, entry)))
             entries.append((
+                f"Move {name}",
+                lambda: self._begin_move_prop(
+                    dome_idx, model.config.props.index(entry))))
+            entries.append((
                 f"Pick up {name}",
                 lambda: self._pickup_prop(
                     dome_idx, model.config.props.index(entry))))
@@ -2905,6 +2948,15 @@ class DomeCreatorApp:
             entries.append(("Walk here", walk_here))
             if dome_idx is not None:
                 model = self.domes[dome_idx]
+                if aimed is None and self.aimed_panel is None \
+                        and not self.aiming_screen \
+                        and self._point_inside_dome(dome_idx, point):
+                    menu_pos = pygame.mouse.get_pos()
+                    entries.append((
+                        "Add item here...",
+                        lambda dome_idx=dome_idx, point=point.copy(),
+                        menu_pos=menu_pos: self._open_add_item_context(
+                            dome_idx, point, menu_pos)))
                 if dome_idx != self.active_dome:
                     entries.append((
                         f"Select dome {dome_idx + 1}",
@@ -2932,6 +2984,61 @@ class DomeCreatorApp:
                                 simulate=True))))
         entries.append(("Cancel", None))
         return entries
+
+    def _open_add_item_context(self, dome_idx: int, point, pos) -> None:
+        categories = list(dict.fromkeys(prop.category for prop in PROP_TYPES))
+        entries = [
+            (category.title(),
+             lambda category=category: self._open_prop_category_context(
+                 dome_idx, point, category, pos))
+            for category in categories
+        ]
+        entries.append(("Cancel", None))
+        self._open_context(entries, pos)
+
+    def _open_prop_category_context(
+            self, dome_idx: int, point, category: str, pos) -> None:
+        entries = [
+            (f"Add {prop.name}",
+             lambda prop=prop: self._place_prop_at_point(
+                 dome_idx, prop, point))
+            for prop in PROP_TYPES if prop.category == category
+        ]
+        entries.append(("Back", lambda: self._open_add_item_context(
+            dome_idx, point, pos)))
+        self._open_context(entries, pos)
+
+    def _place_prop_at_point(self, dome_idx: int, prop, point) -> None:
+        if not self._point_inside_dome(dome_idx, point):
+            self._flash("Item must be placed inside the dome")
+            return
+        model = self.domes[dome_idx]
+        local_x = float(point[0]) - float(model.origin[0])
+        local_y = float(point[1]) - float(model.origin[1])
+        if math.hypot(local_x, local_y) + prop.pick_radius \
+                > model.floor_radius * 0.98:
+            self._flash("Item is too close to the dome wall")
+            return
+        for existing in model.config.props:
+            other = workshop.PROP_TYPE_BY_NAME.get(existing.get("type"))
+            if other is None:
+                continue
+            gap = math.hypot(
+                local_x - float(existing["x"]),
+                local_y - float(existing["y"]))
+            if gap < (prop.pick_radius + other.pick_radius) * 0.8:
+                self._flash(f"Placement blocked by {existing['type']}")
+                return
+        model.config.props.append({
+            "type": prop.name,
+            "x": round(local_x, 3),
+            "y": round(local_y, 3),
+            "yaw": 0.0,
+            "on": True,
+        })
+        self._mark_changed(dome_idx)
+        self._refresh_lights()
+        self._flash(f"Added {prop.name} inside dome {dome_idx + 1}")
 
     def _dome_context_entries(self, idx: int, point=None) -> list:
         model = self.domes[idx]
@@ -3070,16 +3177,28 @@ class DomeCreatorApp:
         dome_idx = getattr(self, "ghost_dome", 0)
         target = self._all_models()[min(dome_idx,
                                         len(self._all_models()) - 1)]
-        target.config.props.append({
+        entry = dict(self.moving_prop_source["entry"]) \
+            if self.moving_prop_source is not None else {}
+        entry.update({
             "type": self.placing.name,
             "x": round(float(self.ghost_pos[0])
                        - float(target.origin[0]), 3),
             "y": round(float(self.ghost_pos[1])
                        - float(target.origin[1]), 3),
             "yaw": round(self.ghost_yaw, 1),
-            "on": True,
+            "on": entry.get("on", True),
         })
-        if self.placing_from_slot is not None:
+        target.config.props.append(entry)
+        moving_prop = self.moving_prop_source is not None
+        if moving_prop:
+            source_dome = self.moving_prop_source["dome"]
+            self.moving_prop_source = None
+            self.placing = None
+            self.placing_from_slot = None
+            self.inventory_selected = None
+            self._mark_changed(source_dome)
+            self._flash(f"Moved {entry['type']} to dome {dome_idx + 1}")
+        elif self.placing_from_slot is not None:
             inv = self.model.config.inventory
             if self.placing_from_slot < len(inv):
                 inv.pop(self.placing_from_slot)
@@ -3092,6 +3211,7 @@ class DomeCreatorApp:
             self._flash(f"Placed {self.placing.name} — "
                         "click for another, Esc to finish")
         self._mark_changed(dome_idx)
+        self._refresh_lights()
         self.help_dirty = True
 
     def _aimed_prop(self) -> tuple[int, "DomeModel", dict] | None:
@@ -3122,6 +3242,49 @@ class DomeCreatorApp:
         self._mark_changed(dome_idx)
         self.inventory_dirty = True
         self._flash(f"Picked up {entry['type']}")
+
+    def _begin_move_prop(self, dome_idx: int, index: int) -> None:
+        models = self._all_models()
+        if dome_idx >= len(models) or index >= len(models[dome_idx].config.props):
+            return
+        model = models[dome_idx]
+        entry = model.config.props.pop(index)
+        prop = workshop.PROP_TYPE_BY_NAME.get(entry.get("type"))
+        if prop is None:
+            model.config.props.insert(index, entry)
+            return
+        self.moving_prop_source = {
+            "dome": dome_idx,
+            "index": index,
+            "entry": entry,
+        }
+        self.placing = prop
+        self.placing_from_slot = None
+        self.inventory_selected = None
+        self.ghost_yaw = float(entry.get("yaw", 0.0))
+        self._mark_changed(dome_idx)
+        self._refresh_lights()
+        self.help_dirty = True
+        self._flash(f"Moving {prop.name} - click a dome floor to place")
+
+    def _cancel_prop_placement(self) -> None:
+        if self.moving_prop_source is not None:
+            source = self.moving_prop_source
+            model = self._all_models()[source["dome"]]
+            index = min(source["index"], len(model.config.props))
+            model.config.props.insert(index, source["entry"])
+            self._mark_changed(source["dome"])
+            self._refresh_lights()
+            message = f"Move cancelled - {source['entry']['type']} restored"
+        else:
+            message = "Placement finished"
+        self.moving_prop_source = None
+        self.placing = None
+        self.placing_from_slot = None
+        self.inventory_selected = None
+        self.inventory_dirty = True
+        self.help_dirty = True
+        self._flash(message)
 
     def _toggle_device(self, dome_idx: int, entry: dict) -> None:
         entry["on"] = not entry.get("on", True)
@@ -3340,6 +3503,8 @@ class DomeCreatorApp:
                         if button == 3:
                             self._drop_from_slot(slot)
                         else:
+                            if self.moving_prop_source is not None:
+                                self._cancel_prop_placement()
                             name = self.model.config.inventory[slot]
                             self.placing = \
                                 workshop.PROP_TYPE_BY_NAME[name]
@@ -3398,12 +3563,7 @@ class DomeCreatorApp:
             if button == 1:
                 self._place_ghost()
             else:
-                self.placing = None
-                self.placing_from_slot = None
-                self.inventory_selected = None
-                self.inventory_dirty = True
-                self._flash("Placement finished")
-                self.help_dirty = True
+                self._cancel_prop_placement()
             return
 
         if self.helm_active:
@@ -3413,7 +3573,10 @@ class DomeCreatorApp:
         if self.control_mode == "fp":
             # Classic first-person interactions at the crosshair.
             aimed = self._aimed_prop()
-            if self.aiming_screen and self.screen_distance < HELM_RANGE:
+            if ctrl and self.aimed_panel is not None and button == 1:
+                self._walk_to_panel_exterior(
+                    self.aimed_panel_dome, self.aimed_panel)
+            elif self.aiming_screen and self.screen_distance < HELM_RANGE:
                 self._select_dome(self.aimed_screen_dome,
                                   open_editor=False)
                 self._set_helm(True)
@@ -3423,8 +3586,8 @@ class DomeCreatorApp:
                 if prop is not None and prop.watts > 0:
                     self._toggle_device(dome_idx, entry)
                 else:
-                    self._pickup_prop(dome_idx,
-                                      self.aimed_prop_index[1])
+                    self._begin_move_prop(dome_idx,
+                                          self.aimed_prop_index[1])
             elif self.aimed_panel is not None:
                 pmodel = self._all_models()[self.aimed_panel_dome]
                 step = 1 if button == 1 else -1
@@ -3435,6 +3598,10 @@ class DomeCreatorApp:
 
         # Orbit mode: RuneScape-style world clicks.
         origin, direction = self._interaction_ray()
+        if ctrl and self.aimed_panel is not None:
+            self._walk_to_panel_exterior(
+                self.aimed_panel_dome, self.aimed_panel)
+            return
         if shift and self.aimed_panel is not None:
             pmodel = self._all_models()[self.aimed_panel_dome]
             step = 1 if button == 1 else -1
@@ -3475,15 +3642,15 @@ class DomeCreatorApp:
                 if is_device:
                     self._toggle_device(dome_idx, entry)
                 else:
-                    self._pickup_prop(dome_idx,
-                                      self.aimed_prop_index[1])
+                    self._begin_move_prop(dome_idx,
+                                          self.aimed_prop_index[1])
             else:
                 fh = model.foundation.height
                 self.walk_target = np.array([wx, wy, fh])
-                kind = "toggle" if is_device else "pickup"
+                kind = "toggle" if is_device else "move"
                 self.pending_action = {"kind": kind, "entry": entry,
                                        "dome": dome_idx}
-                verb = "switch" if is_device else "pick up"
+                verb = "switch" if is_device else "move"
                 self._flash(f"Walking to {verb} {entry['type']}...")
             return
         if self.aimed_panel is not None:
@@ -3519,6 +3686,8 @@ class DomeCreatorApp:
             if existing is entry:
                 if action["kind"] == "pickup":
                     self._pickup_prop(dome_idx, i)
+                elif action["kind"] == "move":
+                    self._begin_move_prop(dome_idx, i)
                 elif action["kind"] == "toggle":
                     self._toggle_device(dome_idx, entry)
                 break
@@ -3572,9 +3741,7 @@ class DomeCreatorApp:
                 self.moving_dome = None
                 self._flash("Move dome cancelled")
             elif self.placing is not None:
-                self.placing = None
-                self._flash("Placement finished")
-                self.help_dirty = True
+                self._cancel_prop_placement()
             elif self.helm_active:
                 self._set_helm(False)
             elif self.mouse_captured:
@@ -3823,9 +3990,9 @@ class DomeCreatorApp:
             # RuneScape-style camera: arrow keys orbit around the player.
             if not self.helm_active:
                 if keys[pygame.K_LEFT]:
-                    self.orbit_yaw -= 1.8 * delta_time
-                if keys[pygame.K_RIGHT]:
                     self.orbit_yaw += 1.8 * delta_time
+                if keys[pygame.K_RIGHT]:
+                    self.orbit_yaw -= 1.8 * delta_time
                 if keys[pygame.K_UP]:
                     self.orbit_pitch += 1.1 * delta_time
                 if keys[pygame.K_DOWN]:
@@ -3905,9 +4072,9 @@ class DomeCreatorApp:
         # PTZ helm steering (held keys, like a real joystick controller).
         if self.helm_active:
             if keys[pygame.K_LEFT]:
-                self.ptz.pan -= self.ptz.pan_rate * delta_time
-            if keys[pygame.K_RIGHT]:
                 self.ptz.pan += self.ptz.pan_rate * delta_time
+            if keys[pygame.K_RIGHT]:
+                self.ptz.pan -= self.ptz.pan_rate * delta_time
             if keys[pygame.K_UP]:
                 self.ptz.tilt += self.ptz.tilt_rate * delta_time
             if keys[pygame.K_DOWN]:
@@ -3967,6 +4134,8 @@ class DomeCreatorApp:
         panel, distance = None, 1e9
         self.aimed_panel_dome = 0
         for di, dmodel in enumerate(self.domes):
+            if self._inside_dome(di):
+                continue
             p, d = dmodel.pick_panel(origin, direction)
             if p is not None and d < distance:
                 panel, distance = p, d

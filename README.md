@@ -209,7 +209,7 @@ total solar kW.
 | Input | Action |
 | --- | --- |
 | `Left-click` ground | Walk there (yellow beacon marks the spot) |
-| `Left-click` prop | Walk over and pick it up into the backpack |
+| `Left-click` prop | Walk over and move it; powered devices switch on/off |
 | `Left-click` wall monitor | Walk over and take helm of the PTZ camera |
 | `C` | Remote camera control from anywhere (toolbar: Cam) |
 | `Left-click` lamp/appliance | Switch it on/off (walks over if far) |
@@ -224,8 +224,11 @@ total solar kW.
 | Right command rail | Minimap and selected-dome controls |
 | `Left-click` minimap | Walk to that site coordinate, including inside a dome |
 | `Right-click` minimap dome | Open that dome's contextual actions |
-| `Left-click` panel | Select its dome and swap that panel |
-| `Right-click` panel | Open contextual panel and dome actions |
+| `Left-click` exterior panel | Select its dome and swap that panel |
+| `Ctrl+click` exterior panel | Walk to that panel from outside |
+| `Right-click` exterior panel | Open contextual panel and dome actions |
+| `Right-click` empty dome floor | Add an item at that location |
+| Interior shell panels | Transparent to picking so floor and items remain interactive |
 | `Middle-drag` / `Arrows` | Rotate the orbit camera |
 | `Shift+drag` overlay widget | Move that widget |
 | `Ctrl+drag` overlay widget | Resize that widget (50% to 200%) |

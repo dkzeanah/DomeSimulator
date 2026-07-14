@@ -209,7 +209,7 @@ def render_help(
     surf = pygame.Surface((width, height), pygame.SRCALPHA)
     surf.fill(BG_SOFT)
 
-    line1 = str(aim_text or "Aim at a panel and click to swap it")
+    line1 = str(aim_text or "Outside: click panels | Inside: click floor or items")
     color1 = VALUE if aim_text else DIM
     if flash:
         line1 = str(flash)
@@ -217,10 +217,9 @@ def render_help(
     surf.blit(fonts.body.render(line1, True, color1), (12, 4))
 
     help_line = (
-        "Click: contextual action | Shift-drag: move widget | "
-        "Ctrl-drag: resize widget | "
-        "C camera control | Mid-drag+arrows: view | Wheel: zoom | "
-        "T edit hover note | R roof | B bag | P first-person | M suite"
+        "Ctrl+panel: walk | Right-click floor: add item | "
+        "Shift/Ctrl-drag: move/resize UI | C camera | Arrows: view | "
+        "Wheel: zoom | T note | R roof | B bag | P POV | M suite"
     )
     surf.blit(fonts.small.render(help_line, True, DIM), (12, 26))
     return surf
@@ -1226,6 +1225,8 @@ LEGEND_LINES = [
     ("MOUSE", HEADER),
     ("L-click   contextual action", TEXT),
     ("R-click   options menu", TEXT),
+    ("Ctrl+panel walk outside", TEXT),
+    ("R-click floor add item", TEXT),
     ("Shift-drag move widgets", TEXT),
     ("Ctrl-drag resize widgets", TEXT),
     ("Minimap click to walk", TEXT),
