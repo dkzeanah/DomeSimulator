@@ -1391,3 +1391,16 @@ def render_crosshair() -> pygame.Surface:
     pygame.draw.circle(surf, (255, 255, 255, 200), (c, c), 7, 1)
     pygame.draw.circle(surf, (255, 180, 60, 255), (c, c), 2)
     return surf
+
+
+def render_mouse_cursor() -> pygame.Surface:
+    """High-contrast software cursor for fullscreen OpenGL mode."""
+    surf = pygame.Surface((24, 30), pygame.SRCALPHA)
+    points = [(2, 1), (2, 23), (7, 18), (12, 28),
+              (16, 26), (11, 17), (20, 17)]
+    shadow = [(x + 2, y + 2) for x, y in points]
+    pygame.draw.polygon(surf, (0, 0, 0, 210), shadow)
+    pygame.draw.polygon(surf, (245, 247, 242, 255), points)
+    pygame.draw.lines(surf, (20, 24, 27, 255), True, points, 2)
+    pygame.draw.line(surf, (255, 184, 70, 255), (4, 4), (4, 18), 1)
+    return surf

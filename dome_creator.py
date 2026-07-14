@@ -854,6 +854,7 @@ class DomeCreatorApp:
         self.flash_until = 0.0
         self.overlay_textures: dict[str, dict] = {}
         self._update_overlay("crosshair", overlay_ui.render_crosshair())
+        self._update_overlay("mouse_cursor", overlay_ui.render_mouse_cursor())
 
         # Orbit (RuneScape-style) mode starts with a free, visible cursor.
         self._set_mouse_capture(False)
@@ -2452,6 +2453,8 @@ class DomeCreatorApp:
             if self.context_menu is not None \
                     and "context" in self.overlay_textures:
                 self._draw_overlay("context", *self.context_menu["origin"])
+            if not self.mouse_captured:
+                self._draw_overlay("mouse_cursor", *pygame.mouse.get_pos())
             self.ctx.disable(moderngl.BLEND)
             self.ctx.enable(moderngl.DEPTH_TEST)
             return
@@ -2512,6 +2515,8 @@ class DomeCreatorApp:
         if self.note_edit is not None \
                 and "note_editor" in self.overlay_textures:
             self._draw_widget("note_editor")
+        if not self.mouse_captured:
+            self._draw_overlay("mouse_cursor", *pygame.mouse.get_pos())
 
         self.ctx.disable(moderngl.BLEND)
         self.ctx.enable(moderngl.DEPTH_TEST)
@@ -2521,7 +2526,9 @@ class DomeCreatorApp:
     def _set_mouse_capture(self, enabled: bool) -> None:
         self.mouse_captured = enabled
         pygame.event.set_grab(enabled)
-        pygame.mouse.set_visible(not enabled)
+        # Fullscreen OpenGL does not reliably composite the OS cursor on
+        # Windows. A software cursor is rendered as the final UI layer.
+        pygame.mouse.set_visible(False)
         pygame.mouse.get_rel()
 
     def process_events(self) -> None:
