@@ -124,6 +124,53 @@ lamps plugged in around it, and it ties into the *same* battery bank
 and solar input as dome 1. The power panel then tracks consumption per
 dome; toggle individual lamps in either dome to vary the loads.
 
+## Dome Home Assembly Line (`assembly_line.py`)
+
+A standalone factory simulation of the manufactured-housing production
+line: a transfer carriage rolls a dome down rails through **15 numbered
+gantry stations**, each adding one build step in real trailer-plant
+order, until every component of the finished home is present:
+
+1. **Floor framing** — wood floor built into the base ring (rim,
+   joists, decking)
+2. **Dome shell framing** — geodesic timber frame raised bottom-up
+3. **Center utility column** — floor-to-apex service column carrying
+   water and power in one column, with the **crane anchor** fitting on
+   the outside of the apex
+4. **Water lines** — hot/cold PEX + drains through the floor, all
+   terminating centrally at the column
+5. **Power lines** — conduit through the floor to the column
+6. **Fixtures & outlets** — toilet, shower, sinks set; outlets on the
+   column and perimeter; breaker panel
+7. **Insulation** — batts packed into every frame bay
+8. **Sheetrock** — interior shell rocked
+9. **OSB sheathing** — panel board covering the dome exterior
+10. **Water barrier** — sill/water membrane over the OSB
+11. **Shingle scales** — plastic-scale mechanical water barrier
+12. **Fiberglass encasement** — the entire structure encased watertight
+13. **Watertight hatch door** — sealed marine-style hatch, the home's
+    only opening (**zero windows**)
+14. **Interior fit-out** — complete kitchen, bathroom, and bedroom
+    (auto interior-cutaway view while this station works)
+15. **Solar array** — solar skin on the sun-facing band + final QC
+
+At the end of the line a gantry crane hooks the apex anchor, lifts the
+home off the carriage, and sets it on a **big mechanical lazy susan**.
+The geared turntable then rotates automatically so the solar band
+tracks the sun as it arcs across the sky.
+
+```
+py -3.12 assembly_line.py            # fullscreen
+py -3.12 assembly_line.py --window   # windowed
+py -3.12 assembly_line.py --selftest # geometry/timeline check, no GL
+py -3.12 assembly_line.py --shots 10,60,200   # offscreen PNG renders
+```
+
+Controls: `Space` pause, `[` / `]` speed (x0.25–x16), mouse-drag orbit,
+wheel zoom, `F` follow/free camera (WASD pans when free), `C` interior
+cutaway, `R` restart the line, `Esc` quit. A HUD checklist tracks all
+15 stations plus the crane transfer and sun tracking.
+
 ## Preset setups
 
 Twelve out-of-the-box designs ship in [presets.py](presets.py) — cycle
