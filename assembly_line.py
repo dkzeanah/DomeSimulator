@@ -119,6 +119,18 @@ SALE_AUTO_INTERVAL = 22.0        # sim-seconds between automatic sales
 # yard.  It never enters the assembly line or the sales/production ledger.
 SHED_POS = (TURNTABLE_X - 7.0, -22.0)
 
+# --- comparison area -------------------------------------------------------
+# A separate lot to the LEFT of the site shed holding the four buildings the
+# VS panel costs, in two pairs: the bare storage tier and the finished home
+# tier. Distinct from the showcase yard (accumulating domes) and the line.
+COMPARE_Y = -24.0
+COMPARE_SLOTS = {
+    "box":       (SHED_POS[0] - 17.0, COMPARE_Y),
+    "shed_dome": (SHED_POS[0] - 33.0, COMPARE_Y),
+    "stick":     (SHED_POS[0] - 53.0, COMPARE_Y),
+    "home_dome": (SHED_POS[0] - 71.0, COMPARE_Y),
+}
+
 SKY_COLOR = (0.55, 0.70, 0.86)
 
 # Immutable reset targets for the live pricing editor. Runtime values remain
@@ -1233,6 +1245,7 @@ class AssemblyLineApp:
         self.carry_mesh = GpuMesh(ctx, self.scene_prog, build_material_box())
         self.pallet_mesh = GpuMesh(ctx, self.scene_prog, build_pallet_box())
         self.office_mesh = GpuMesh(ctx, self.scene_prog, build_sales_office())
+        self._build_comparison_area(ctx)
         self.customer_mesh = GpuMesh(ctx, self.scene_prog, build_customer())
         self.finished_meshes = {
             dt: GpuMesh(ctx, self.scene_prog, build_finished_dome_mesh(dt))
@@ -1333,6 +1346,55 @@ class AssemblyLineApp:
     @staticmethod
     def is_site_shed(yd):
         return bool(getattr(yd, "is_comparison", False))
+
+    # -- comparison area --------------------------------------------------
+
+    def _build_comparison_area(self, ctx):
+        """The four buildings the VS panel costs, as real geometry, sized to
+        exactly the dimensions the comparison model uses."""
+        import compare_buildings as CB
+        cmp_ = AL.building_comparisons()
+        w, l, h = AL.COMPARE_SHED_BOX
+        floor = AL.COMPARE_HOME_FLOOR_SF
+        hw = math.sqrt(floor / 1.3)
+
+        def dome_mesh(dtype, radius_ft, freq, layout="1-Bedroom"):
+            spec = DomeSpec(dtype=dtype, radius=radius_ft * 0.3048,
+                            frequency=freq, layout=layout)
+            cat, _info = build_dome_catalog(spec)
+            return cat.b.build()
+
+        self.compare_meshes = {
+            "box": GpuMesh(ctx, self.scene_prog, CB.build_metal_box(w, l, h)),
+            "shed_dome": GpuMesh(ctx, self.scene_prog, dome_mesh(
+                "shed", cmp_["shed"]["dome"]["r_ft"], 2)),
+            "stick": GpuMesh(ctx, self.scene_prog, CB.build_stick_house(
+                hw, floor / hw, AL.COMPARE_HOME_WALL_FT)),
+            "home_dome": GpuMesh(ctx, self.scene_prog, dome_mesh(
+                "home", cmp_["home"]["dome"]["r_ft"], 3)),
+        }
+        # ground pad so the lot reads as its own area
+        b = MeshBuilder()
+        xs = [p[0] for p in COMPARE_SLOTS.values()]
+        cx = (min(xs) + max(xs)) * 0.5
+        add_box(b, (cx, COMPARE_Y, -0.04),
+                (max(xs) - min(xs) + 26.0, 24.0, 0.10),
+                (0.44, 0.45, 0.42), mat_id=MAT_CONCRETE)
+        self.compare_pad = GpuMesh(ctx, self.scene_prog, b.build())
+
+    def compare_items(self):
+        """(key, label, position, cost-row) per comparison building, taken
+        from the same model the VS panel prints."""
+        c = self.bare_shell_comparison()
+        return [
+            ("box", "STORAGE SHED", COMPARE_SLOTS["box"], c["shed"]["box"]),
+            ("shed_dome", "STORAGE DOME", COMPARE_SLOTS["shed_dome"],
+             c["shed"]["dome"]),
+            ("stick", "HOUSE (stick)", COMPARE_SLOTS["stick"],
+             c["home"]["box"]),
+            ("home_dome", "DOME HOUSE", COMPARE_SLOTS["home_dome"],
+             c["home"]["dome"]),
+        ]
 
     def _load_yard(self):
         self.yard = []
@@ -1931,6 +1993,12 @@ class AssemblyLineApp:
         # sales office (static structure by the lot)
         self.draw_gpu(self.office_mesh, mat_translate(*OFFICE_POS, 0))
 
+        # comparison area: the four costed buildings on their own pad
+        self.draw_gpu(self.compare_pad)
+        for key, _label, pos, _row in self.compare_items():
+            self.draw_gpu(self.compare_meshes[key],
+                          mat_translate(pos[0], pos[1], 0))
+
         # Buying process: the customer arrives and leaves; inventory stays put.
         sale_pos = self.sale_positions() if self.sale else None
         if sale_pos:
@@ -2206,6 +2274,29 @@ class AssemblyLineApp:
                            (0.04, 0.06, 0.10, 0.72))
             self.draw_texture(tex, sp[0] - tw / 2, sp[1] - th, tw, th)
 
+    def draw_compare_signs(self):
+        """Name + build cost over each comparison-area building."""
+        w, h = self.size
+        # stagger the sign heights so neighbouring labels don't collide
+        heights = {"box": 5.9, "shed_dome": 4.1, "stick": 6.3,
+                   "home_dome": 4.4}
+        for key, label, pos, row in self.compare_items():
+            sp = project_point(self.mvp, (pos[0], pos[1], heights[key]), w, h)
+            if sp is None:
+                continue
+            tier = "bare shell" if key in ("box", "shed_dome") else "finished"
+            lines = [(label, (150, 220, 255), self.font_small),
+                     (f"${row['build'] / 1000:.1f}k  ·  "
+                      f"${row['per_sf']:,.0f}/sf", (150, 240, 160),
+                      self.font_tiny),
+                     (f"{row['floor_sf']:,.0f} sf · {row['vol_ft3']:,.0f} cf"
+                      f" · {tier}", (200, 206, 214), self.font_tiny)]
+            tex, tw, th = self.text_texture(("csign", key, int(row["build"])),
+                                            lines)
+            self.draw_rect(sp[0] - tw / 2 - 3, sp[1] - th - 3, tw + 6, th + 6,
+                           (0.04, 0.06, 0.10, 0.78))
+            self.draw_texture(tex, sp[0] - tw / 2, sp[1] - th, tw, th)
+
     def draw_money_popups(self):
         w, h = self.size
         for p in self.popups:
@@ -2237,6 +2328,7 @@ class AssemblyLineApp:
 
         inspecting = self.inspect is not None
         self.draw_yard_signs()
+        self.draw_compare_signs()
         if not inspecting:
             self.draw_money_popups()
 
@@ -3466,7 +3558,22 @@ class AssemblyLineApp:
                 if not self.start_sale():
                     self.log("No unsold domes in the yard to sell")
         elif key == "shed":
-            self.enter_inspect(self.comparison_shed)
+            # show the comparison AREA: park the camera on the four
+            # costed buildings and open the VS panel beside them
+            if self.inspect is not None:
+                self.exit_inspect()
+            self.panel = "benchmark"
+            self.follow = False
+            self.cinematic = False
+            xs = [p[0] for p in COMPARE_SLOTS.values()]
+            # frame the whole row in the gap between the side HUD panels
+            self.cam_target = np.array(
+                [(min(xs) + max(xs)) * 0.5 + 3.0, COMPARE_Y - 1.0, 2.6],
+                dtype=np.float32)
+            self.cam_yaw = math.radians(-90.0)
+            self.cam_pitch = math.radians(12.0)
+            self.cam_dist = 58.0
+            self.log("Comparison area: shed vs dome, house vs dome house")
         elif key == "prices":
             self.open_pricing_editor()
         elif key in ("supply", "breakdown", "absence"):
