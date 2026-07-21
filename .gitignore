@@ -9,6 +9,7 @@ dome_flat.txt
 dome_bom.txt
 dome_demo.sqlite3
 dome_yard.sqlite3
+assembly_pricing.json
 snapshots/
 shots/
 

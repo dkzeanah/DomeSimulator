@@ -163,8 +163,9 @@ tracks the sun as it arcs across the sky.
 
 The line is driven by a real cost-and-labor model in
 [al_build.py](al_build.py), so the running demo shows the numbers an
-investor actually underwrites — and every dollar and time figure lives
-in one editable `ASSUMPTIONS` block at the top of that file.
+investor actually underwrites. Dome-line assumptions live in its editable
+`ASSUMPTIONS` block; the independent site-shed benchmark lives in
+[site_shed.py](site_shed.py).
 
 - **Four product lines.** The same line builds a **Dome Home** (full
   15-station build), a **Storage Shed** (frame + corrugated sheet metal),
@@ -182,31 +183,57 @@ in one editable `ASSUMPTIONS` block at the top of that file.
 - **Random product mix, persisted.** Each run randomizes the dome (type,
   size, frequency, layout, cladding). Finished units are serialized,
   saved to SQLite (`dome_yard.sqlite3`), and **stacked in a growing yard
-  that survives across sessions** until you clear it.
+  that survives across sessions** until you clear it. Startup performs an
+  idempotent, column-by-column schema migration so older yard databases gain
+  new fields without deleting units or requiring a manual reset.
 - **Advanced finished-dome inspection.** Click any yard dome to open a
   **Photoshop-style LAYERS panel** — toggle each layer visible/hidden and
   solid/transparent to peel the shell back — plus a **buyer TOUR** camera
   (eye-level walk-through with the shell x-rayed) and live **material
   variance** swapping. The whole shell is also togglable to see-through
   mid-build with **X-RAY** (button or `X`) so the interior stays visible.
-- **Sales & shipping.** A sales office sits by the lot; each dome shows a
+- **Fixed conventional comparison shed.** A **24 × 16 × 10 ft** site-built
+  gable shed is parked beside the finished-dome yard and never enters the
+  assembly line. This is intentionally a bare-minimum **sub-$10k** shell:
+  compacted gravel strips, 15 precast deck blocks, pressure-treated skids,
+  2×6 floor framing and plywood, 2×4 walls, site-built 3:12 rafters,
+  structural T1-11 siding, economy shingles, and double plywood doors—no
+  slab, windows, utilities, or finish package. Click it—or press
+  **SHED VS**—to peel its nine build layers apart and see the itemized
+  **$8,720 build / $9,689 quote** beside the
+  selected/reference dome: floor area, enclosed volume, cost, quote,
+  $/ft², labor, modeled crew, and working days. This benchmark is excluded
+  from factory throughput, sales, and the production ledger.
+- **Sales without disappearing inventory.** A sales office sits by the lot;
+  each dome shows a
   **price + buy-here-pay-here monthly sign**. Customers walk over, buy a
-  dome (it flips to **SOLD**), and a **flatbed truck hauls it off the
-  lot** — automatically on an interval or on demand via **SELL**.
+  dome (it flips to **SOLD**), and then leave it in its assigned yard slot.
+  Sold and unsold domes both persist, accumulate, and remain clickable for
+  inspection; **SELL** only records ownership/revenue. The SOLD status is
+  displayed with—not instead of—the original price and BHPH monthly payment.
+- **Full-page live pricing editor.** Press **PRICES** or `P` to edit all 21
+  catalog element categories used across Dome Home, Storage Shed,
+  Greenhouse, and Storm Shelter builds. Material $/element, labor minutes,
+  weight, burdened wage, overhead/labor-hour, and each product's base and
+  per-m² sale price are editable. **APPLY + RESTART** reprices the current
+  run and persists the settings in `assembly_pricing.json`; **RESET
+  DEFAULTS** restores the shipped model.
 - **Live dockable panels** (tab row, top-right): **P&L** (materials +
   labor + overhead vs. sale price = gross margin, with lumber/resin/wage
   **sensitivity toggles**), **FLOW** (per-station takt time, the
   bottleneck, single-piece vs. pipelined throughput, QC first-pass yield,
-  downtime cost), **BOM**, **VS** (benchmark vs. conventional housing),
+  downtime cost), **BOM**, **VS** (dome vs. the fixed site shed),
   **VALUE** (solar kW, R-value, off-grid autonomy, embodied carbon,
   OSHA), **SCALE** (1/3/6-line scenarios + break-even), and **YARD**
-  (production & sales ledger — built, in-yard, sold/delivered, revenue).
+  (production & sales ledger — built, retained on lot, sold, revenue).
 - **Interactive.** Speed slider, pause/step, follow / cutaway / **x-ray**
   / **cinematic** (drag to change angle while it orbits) cameras, snapshot
   export, **hover any placed element** to inspect its cost/labor/weight,
   a **pre-run configurator** (pick type/layout/size/frequency/cladding or
   randomize), **crew size** control, **disruption injection** (supply
-  delay, breakdown, worker absence), **SELL**, and **clear yard**.
+  delay, breakdown, worker absence), **SELL**, **PRICES**, **SHED VS**, and
+  **clear yard**. A faint bottom legend keeps every keyboard and camera
+  control visible in normal and inspection views.
 
 ```
 py -3.12 assembly_line.py            # fullscreen
@@ -218,11 +245,16 @@ py -3.12 assembly_line.py --shots 4,60,120   # offscreen PNG renders
 Controls: `Space` pause, `[` / `]` speed (x0.25–x8), on-screen speed
 slider, mouse-drag orbit, wheel zoom, `F` follow/free camera (WASD pans
 when free), `C` interior cutaway, `X` x-ray shell, `V` cinematic orbit,
-`-` / `=` crew size, `R` start a new random dome, `Esc` quit / exit
+`-` / `=` crew size, `P` / **PRICES** open the full pricing editor,
+**SHED VS** open the site-shed comparison,
+left/right arrows orbit in their matching on-screen direction,
+`R` start a new random dome, `Esc` quit / exit
 inspection. Everything else (panel tabs, control-bar buttons,
-configurator, yard domes, layer toggles) is clickable. Every dollar and
-time figure lives in the editable `ASSUMPTIONS` block at the top of
-[al_build.py](al_build.py).
+configurator, yard domes, layer toggles) is clickable; the bottom toolbar
+remains active in both normal and inspection views. Every dollar and
+time figure is editable live through **PRICES**, or directly in
+[al_build.py](al_build.py) (dome line) and [site_shed.py](site_shed.py)
+(site-built comparison).
 
 ## Preset setups
 

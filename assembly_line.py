@@ -42,17 +42,28 @@ Run:
 from __future__ import annotations
 
 import math
+import json
 import os
 import random
 import sqlite3
 import sys
+import tempfile
 import time
 from dataclasses import dataclass, field
 
 import numpy as np
-import pygame
+try:
+    import pygame
+except ModuleNotFoundError:
+    # The documented model/DB self-test is GL-free and should not require the
+    # interactive renderer's optional packages.
+    if "--selftest" in sys.argv:
+        pygame = None
+    else:
+        raise
 
 import al_build as AL
+import site_shed as SHED
 from al_build import (
     ASSUMPTIONS,
     STAGES,
@@ -98,14 +109,30 @@ PLATTER_TOP = 0.62
 LIFT_Z = 4.6
 SUN_CYCLE_SECS = 80.0
 DB_FILE = "dome_yard.sqlite3"
+PRICING_FILE = "assembly_pricing.json"
 
 # Sales lot layout
 OFFICE_POS = (TURNTABLE_X + 30.0, -7.0)
-DEPOT_POS = (TURNTABLE_X + 30.0, -14.5)
-EXIT_POS = (TURNTABLE_X + 95.0, -26.0)
 SALE_AUTO_INTERVAL = 22.0        # sim-seconds between automatic sales
 
+# The conventional shed is a fixed, site-built benchmark beside the dome
+# yard.  It never enters the assembly line or the sales/production ledger.
+SHED_POS = (TURNTABLE_X - 7.0, -22.0)
+
 SKY_COLOR = (0.55, 0.70, 0.86)
+
+# Immutable reset targets for the live pricing editor. Runtime values remain
+# in al_build so every catalog emitter and every dome product line sees edits.
+DEFAULT_CATEGORY_ECON = {key: tuple(values)
+                         for key, values in AL.CATEGORY_ECON.items()}
+DEFAULT_GLOBAL_PRICING = {
+    "burdened_wage_per_hour": ASSUMPTIONS["burdened_wage_per_hour"],
+    "overhead_per_labor_hour": ASSUMPTIONS["overhead_per_labor_hour"],
+}
+DEFAULT_PRODUCT_PRICING = {
+    key: (dtype.price_base, dtype.price_per_m2)
+    for key, dtype in AL.DOME_TYPES.items()
+}
 
 # Animation pacing. Reported metrics (steps, distance, labor-hours, $) are
 # the model's real numbers; these constants only compress the *animation*
@@ -585,28 +612,6 @@ def build_sales_office():
     return b.build()
 
 
-def build_truck():
-    """A flatbed transport truck (origin at base center, faces +X)."""
-    b = MeshBuilder()
-    dark = (0.20, 0.22, 0.26)
-    cab = (0.80, 0.20, 0.18)
-    # chassis
-    add_box(b, (0.0, 0.0, 0.7), (9.0, 2.4, 0.4), dark, mat_id=MAT_METAL)
-    # flatbed deck
-    add_box(b, (-1.2, 0.0, 1.0), (6.0, 2.6, 0.2), (0.45, 0.40, 0.34),
-            mat_id=MAT_WOOD)
-    # cab
-    add_box(b, (3.3, 0.0, 1.4), (2.2, 2.3, 1.8), cab, mat_id=MAT_METAL)
-    add_box(b, (2.3, 0.0, 2.0), (0.3, 2.1, 0.7), (0.55, 0.75, 0.85),
-            alpha=0.6, mat_id=MAT_GLASS)
-    # wheels
-    for wx in (3.2, -1.2, -3.2):
-        for sy in (-1.25, 1.25):
-            b.cylinder((wx, sy - 0.18, 0.42), (wx, sy + 0.18, 0.42), 0.42,
-                       10, (0.10, 0.10, 0.12), mat_id=MAT_METAL)
-    return b.build()
-
-
 def build_customer():
     """A prospective buyer figure (origin at feet, faces +X)."""
     b = MeshBuilder()
@@ -621,31 +626,96 @@ def build_customer():
 # Persistence — the finished-dome yard
 # ===========================================================================
 
+# SQLite's CREATE TABLE IF NOT EXISTS never evolves an existing table.  Keep
+# the complete schema and runtime defaults together so startup can add any
+# columns introduced by a newer app without deleting or replacing yard data.
+YARD_COLUMN_SPECS = {
+    "serial": ("INTEGER PRIMARY KEY AUTOINCREMENT", None),
+    "name": ("TEXT DEFAULT 'Dome'", "Dome"),
+    "dtype": ("TEXT DEFAULT 'home'", "home"),
+    "radius": ("REAL DEFAULT 4.0", 4.0),
+    "frequency": ("INTEGER DEFAULT 3", 3),
+    "layout": ("TEXT DEFAULT 'Studio'", "Studio"),
+    "cladding": ("TEXT DEFAULT 'Slate Scale'", "Slate Scale"),
+    "floor_area": ("REAL DEFAULT 0", 0.0),
+    "material": ("REAL DEFAULT 0", 0.0),
+    "labor_cost": ("REAL DEFAULT 0", 0.0),
+    "overhead": ("REAL DEFAULT 0", 0.0),
+    "total_cost": ("REAL DEFAULT 0", 0.0),
+    "price": ("REAL DEFAULT 0", 0.0),
+    "margin": ("REAL DEFAULT 0", 0.0),
+    "monthly": ("REAL DEFAULT 0", 0.0),
+    "labor_hours": ("REAL DEFAULT 0", 0.0),
+    "steps": ("INTEGER DEFAULT 0", 0),
+    "distance_m": ("REAL DEFAULT 0", 0.0),
+    "solar_kw": ("REAL DEFAULT 0", 0.0),
+    "r_value": ("REAL DEFAULT 0", 0.0),
+    "cr": ("REAL DEFAULT 0.20", 0.20),
+    "cg": ("REAL DEFAULT 0.30", 0.30),
+    "cb": ("REAL DEFAULT 0.38", 0.38),
+    "created": ("TEXT DEFAULT ''", ""),
+    "sold": ("INTEGER DEFAULT 0", 0),
+}
+
+YARD_INSERT_COLUMNS = [name for name in YARD_COLUMN_SPECS if name != "serial"]
+
 class YardDB:
     def __init__(self, path=None):
         self.conn = sqlite3.connect(path or os.environ.get("AL_DB", DB_FILE))
-        self.conn.execute("""
-            CREATE TABLE IF NOT EXISTS domes (
-                serial INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT, dtype TEXT, radius REAL, frequency INTEGER,
-                layout TEXT, cladding TEXT, floor_area REAL,
-                material REAL, labor_cost REAL, overhead REAL,
-                total_cost REAL, price REAL, margin REAL, monthly REAL,
-                labor_hours REAL, steps INTEGER, distance_m REAL,
-                solar_kw REAL, r_value REAL,
-                cr REAL, cg REAL, cb REAL, created TEXT, sold INTEGER)
-        """)
-        self.conn.commit()
+        columns = ", ".join(
+            f'"{name}" {ddl}' for name, (ddl, _default)
+            in YARD_COLUMN_SPECS.items())
+        self.conn.execute(f"CREATE TABLE IF NOT EXISTS domes ({columns})")
+        self._migrate_schema()
+
+    def _migrate_schema(self):
+        """Idempotently upgrade legacy yard DBs in place and retain rows."""
+        info = self.conn.execute("PRAGMA table_info(domes)").fetchall()
+        present = {row[1].lower() for row in info}
+        if "serial" not in present:
+            raise sqlite3.DatabaseError(
+                "Legacy domes table has no serial key; preserve the file and "
+                "restore a compatible yard database before continuing")
+        with self.conn:
+            for name, (ddl, _default) in YARD_COLUMN_SPECS.items():
+                if name == "serial" or name in present:
+                    continue
+                self.conn.execute(f'ALTER TABLE domes ADD COLUMN "{name}" {ddl}')
+
+            # Old rows may contain NULL even when the current runtime assumes
+            # concrete values (colors, type, sold state, and numeric totals).
+            for name, (_ddl, default) in YARD_COLUMN_SPECS.items():
+                if name == "serial":
+                    continue
+                self.conn.execute(
+                    f'UPDATE domes SET "{name}"=? WHERE "{name}" IS NULL',
+                    (default,))
+            self.conn.execute(
+                "UPDATE domes SET dtype='home' WHERE TRIM(dtype)='' ")
+
+            # Legacy/corrupt rows can predate monthly financing.  Backfill
+            # from retained sale prices rather than showing $0/month forever.
+            rows = self.conn.execute(
+                "SELECT serial, price FROM domes "
+                "WHERE price > 0 AND monthly <= 0").fetchall()
+            if rows:
+                self.conn.executemany(
+                    "UPDATE domes SET monthly=? WHERE serial=?",
+                    [(AL.bhph_monthly(float(price)), serial)
+                     for serial, price in rows])
+            self.conn.execute("PRAGMA user_version=2")
 
     def add(self, rec: dict) -> int:
-        cols = ("name dtype radius frequency layout cladding floor_area "
-                "material labor_cost overhead total_cost price margin monthly "
-                "labor_hours steps distance_m solar_kw r_value cr cg cb "
-                "created sold").split()
+        cols = YARD_INSERT_COLUMNS
         placeholders = ",".join("?" for _ in cols)
+        values = []
+        for col in cols:
+            default = YARD_COLUMN_SPECS[col][1]
+            value = rec.get(col, default)
+            values.append(default if value is None else value)
         cur = self.conn.execute(
             f"INSERT INTO domes ({','.join(cols)}) VALUES ({placeholders})",
-            [rec.get(c, 0) for c in cols])
+            values)
         self.conn.commit()
         return cur.lastrowid
 
@@ -660,7 +730,11 @@ class YardDB:
 
     def clear(self):
         self.conn.execute("DELETE FROM domes")
-        self.conn.execute("DELETE FROM sqlite_sequence WHERE name='domes'")
+        has_sequence = self.conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' "
+            "AND name='sqlite_sequence'").fetchone()
+        if has_sequence:
+            self.conn.execute("DELETE FROM sqlite_sequence WHERE name='domes'")
         self.conn.commit()
 
     def summary(self) -> dict:
@@ -805,6 +879,14 @@ class InspectDome:
         # layer states: visible + solid (else transparent)
         self.layers = {s.key: {"visible": True, "solid": True}
                        for s in cat.stages}
+        # per-element records (for click-to-inspect) and per-layer cost
+        # (material + labor) so hiding a layer subtracts from the total
+        self.elements = cat.elements
+        wage = ASSUMPTIONS["burdened_wage_per_hour"]
+        self.layer_costs = {
+            s.key: sum(e.material_cost + e.labor_min / 60.0 * wage
+                       for e in cat.by_stage.get(s.key, []))
+            for s in cat.stages}
 
     def release(self):
         for ovao, tvao in self.stage_vaos.values():
@@ -818,6 +900,52 @@ class InspectDome:
             self.vbo.release()
         except Exception:
             pass
+
+
+class InspectShed:
+    """Independent GPU layers for the fixed conventional shed benchmark."""
+
+    kind = "shed"
+
+    def __init__(self, ctx, program):
+        self.ctx = ctx
+        self.spec = None
+        self.info = SHED.shed_economics()
+        self.stages = SHED.SHED_STAGES
+        self.layer_costs = {
+            item.key: item.material + item.labor_hours * SHED.BURDENED_LABOR_RATE
+            for item in SHED.COST_ITEMS
+        }
+        self.stage_vaos = {}
+        self.resources = []
+        meshes = SHED.build_shed_layers()
+        for stage in self.stages:
+            mesh = meshes[stage.key]
+            vbo = ctx.buffer(mesh.vertices.tobytes())
+            self.resources.append(vbo)
+            layout = [(vbo, "3f 3f 4f 1f",
+                       "in_position", "in_normal", "in_color", "in_mat")]
+            ovao = tvao = None
+            if len(mesh.opaque):
+                ibo = ctx.buffer(mesh.opaque.tobytes())
+                ovao = ctx.vertex_array(program, layout, ibo,
+                                        index_element_size=4)
+                self.resources.extend((ibo, ovao))
+            if len(mesh.transparent):
+                ibo = ctx.buffer(mesh.transparent.tobytes())
+                tvao = ctx.vertex_array(program, layout, ibo,
+                                        index_element_size=4)
+                self.resources.extend((ibo, tvao))
+            self.stage_vaos[stage.key] = (ovao, tvao)
+        self.layers = {stage.key: {"visible": True, "solid": True}
+                       for stage in self.stages}
+
+    def release(self):
+        for resource in reversed(self.resources):
+            try:
+                resource.release()
+            except Exception:
+                pass
 
 
 # ===========================================================================
@@ -1030,6 +1158,22 @@ class YardDome:
         self.sold = bool(rec.get("sold"))
 
 
+class YardShed:
+    """The fixed comparison structure; deliberately not a produced unit."""
+
+    def __init__(self, x, y):
+        self.rec = SHED.shed_record()
+        self.x = x
+        self.y = y
+        self.dtype = "conventional_shed"
+        self.scale = 1.0
+        self.tint = (1.0, 1.0, 1.0)
+        self.sold = False
+        self.is_comparison = True
+        self.pick_z = SHED.PEAK_HEIGHT * 0.5
+        self.sign_z = SHED.PEAK_HEIGHT + 0.65
+
+
 def yard_slot(index):
     """Grid of finished domes behind the turntable."""
     cols = 6
@@ -1089,12 +1233,15 @@ class AssemblyLineApp:
         self.carry_mesh = GpuMesh(ctx, self.scene_prog, build_material_box())
         self.pallet_mesh = GpuMesh(ctx, self.scene_prog, build_pallet_box())
         self.office_mesh = GpuMesh(ctx, self.scene_prog, build_sales_office())
-        self.truck_mesh = GpuMesh(ctx, self.scene_prog, build_truck())
         self.customer_mesh = GpuMesh(ctx, self.scene_prog, build_customer())
         self.finished_meshes = {
             dt: GpuMesh(ctx, self.scene_prog, build_finished_dome_mesh(dt))
             for dt in AL.DOME_TYPE_LIST}
         self.finished = self.finished_meshes["home"]
+        self.site_shed_meshes = {
+            key: GpuMesh(ctx, self.scene_prog, mesh)
+            for key, mesh in SHED.build_shed_layers().items()
+        }
 
         self.font_big = pygame.font.SysFont("consolas", 28, bold=True)
         self.font_med = pygame.font.SysFont("consolas", 19)
@@ -1105,6 +1252,7 @@ class AssemblyLineApp:
         # database + yard
         self.db = YardDB()
         self.yard: list[YardDome] = []
+        self.comparison_shed = YardShed(*SHED_POS)
         self._load_yard()
 
         # crew
@@ -1128,6 +1276,7 @@ class AssemblyLineApp:
         self.pipeline_view = True
         self.panel = "pnl"
         self.sensitivity = {"lumber": 1.0, "resin": 1.0, "wage": 1.0}
+        self._bare_cmp = None      # cached bare-shell shed-vs-dome comparison
         self.event_log: list[str] = []
         self.stall_timer = 0.0
         self.stall_reason = ""
@@ -1142,6 +1291,16 @@ class AssemblyLineApp:
         self.next_slot = 0
         self.configuring = False
         self.config_spec = None
+        self.pricing_editing = False
+        self.pricing_path = os.environ.get("AL_PRICING_FILE", PRICING_FILE)
+        self.pricing_draft = None
+        self.pricing_active = None
+        self.pricing_buffer = ""
+        self.pricing_replace_on_type = False
+        self.pricing_fields = []
+        self.pricing_buttons = []
+        self.pricing_was_paused = False
+        self.pricing_error = ""
         self.cinematic_angle = 0.0
         self.saved_cam = None
 
@@ -1161,18 +1320,26 @@ class AssemblyLineApp:
         self.track_t = 0.0
         self.platter_yaw = 0.0
         self.line_time = 0.0
+        self.load_pricing_file()
         self.start_new_run()
+        self.log("24x16 site-built comparison shed parked beside yard")
 
     # -- yard / runs -----------------------------------------------------
+
+    def yard_items(self):
+        """Inspectable lot inventory, including the non-sale shed benchmark."""
+        return [self.comparison_shed, *self.yard]
+
+    @staticmethod
+    def is_site_shed(yd):
+        return bool(getattr(yd, "is_comparison", False))
 
     def _load_yard(self):
         self.yard = []
         recs = self.db.all()
         for i, rec in enumerate(recs):
             x, y = yard_slot(i)
-            yd = YardDome(rec, x, y)
-            if not yd.sold:               # sold domes have been hauled away
-                self.yard.append(yd)
+            self.yard.append(YardDome(rec, x, y))
         self.next_slot = len(recs)
 
     def start_new_run(self, spec=None):
@@ -1189,6 +1356,7 @@ class AssemblyLineApp:
         self.line_time = 0.0
         self.stall_timer = 0.0
         self.downtime_cost = 0.0
+        self._bare_cmp = None       # pricing may have changed; recompute
         tag = spec.type.name if spec.dtype != "home" else spec.layout
         self.log(f"Run #{spec.serial} started: {spec.name} "
                  f"({spec.type.name} · {tag} · {spec.floor_area:.0f} m²)")
@@ -1208,14 +1376,184 @@ class AssemblyLineApp:
         self.event_log.append(msg)
         self.event_log = self.event_log[-6:]
 
+    # -- persistent element pricing -------------------------------------
+
+    def _apply_pricing_payload(self, payload):
+        categories = payload.get("categories", {})
+        for key, values in categories.items():
+            if key not in AL.CATEGORY_ECON or not isinstance(values, list) \
+                    or len(values) != 3:
+                continue
+            nums = tuple(float(v) for v in values)
+            if all(math.isfinite(v) and v >= 0 for v in nums):
+                AL.CATEGORY_ECON[key] = nums
+        for key, value in payload.get("globals", {}).items():
+            if key in DEFAULT_GLOBAL_PRICING:
+                value = float(value)
+                if math.isfinite(value) and value >= 0:
+                    ASSUMPTIONS[key] = value
+        for key, values in payload.get("products", {}).items():
+            if key not in AL.DOME_TYPES or not isinstance(values, list) \
+                    or len(values) != 2:
+                continue
+            base, per_m2 = map(float, values)
+            if all(math.isfinite(v) and v >= 0 for v in (base, per_m2)):
+                AL.DOME_TYPES[key].price_base = base
+                AL.DOME_TYPES[key].price_per_m2 = per_m2
+
+    def load_pricing_file(self):
+        if not os.path.exists(self.pricing_path):
+            return
+        try:
+            with open(self.pricing_path, "r", encoding="utf-8") as handle:
+                payload = json.load(handle)
+            if not isinstance(payload, dict):
+                raise ValueError("pricing root must be an object")
+            self._apply_pricing_payload(payload)
+            self.log(f"Element pricing loaded: {self.pricing_path}")
+        except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
+            self.log(f"Pricing file ignored: {exc}")
+
+    def _pricing_snapshot(self, defaults=False):
+        cat_source = DEFAULT_CATEGORY_ECON if defaults else AL.CATEGORY_ECON
+        global_source = DEFAULT_GLOBAL_PRICING if defaults else ASSUMPTIONS
+        product_source = DEFAULT_PRODUCT_PRICING if defaults else {
+            key: (dtype.price_base, dtype.price_per_m2)
+            for key, dtype in AL.DOME_TYPES.items()}
+        return {
+            "categories": {key: list(values)
+                           for key, values in cat_source.items()},
+            "globals": {key: float(global_source[key])
+                        for key in DEFAULT_GLOBAL_PRICING},
+            "products": {key: list(values)
+                         for key, values in product_source.items()},
+        }
+
+    def open_pricing_editor(self):
+        if self.inspect is not None:
+            self.exit_inspect()
+        self.configuring = False
+        self.pricing_was_paused = self.paused
+        self.paused = True
+        self.pricing_editing = True
+        self.pricing_draft = self._pricing_snapshot()
+        self.pricing_active = None
+        self.pricing_buffer = ""
+        self.pricing_replace_on_type = False
+        self.pricing_error = ""
+        pygame.key.start_text_input()
+
+    def cancel_pricing_editor(self):
+        self.pricing_editing = False
+        self.pricing_active = None
+        self.pricing_buffer = ""
+        self.pricing_replace_on_type = False
+        self.paused = self.pricing_was_paused
+        pygame.key.stop_text_input()
+
+    def reset_pricing_draft(self):
+        self.pricing_draft = self._pricing_snapshot(defaults=True)
+        self.pricing_active = None
+        self.pricing_buffer = ""
+        self.pricing_replace_on_type = False
+        self.pricing_error = "Defaults loaded into the editor; APPLY to save."
+
+    def _pricing_value(self, field_id):
+        section, key, index = field_id
+        if section == "categories":
+            return self.pricing_draft[section][key][index]
+        if section == "products":
+            return self.pricing_draft[section][key][index]
+        return self.pricing_draft[section][key]
+
+    def _set_pricing_value(self, field_id, value):
+        section, key, index = field_id
+        if section in ("categories", "products"):
+            self.pricing_draft[section][key][index] = value
+        else:
+            self.pricing_draft[section][key] = value
+
+    def commit_pricing_field(self):
+        if self.pricing_active is None:
+            return True
+        try:
+            # Let operators paste familiar currency-formatted values too.
+            value = float(self.pricing_buffer.replace(",", "")
+                          .replace("$", "").strip())
+        except ValueError:
+            self.pricing_error = "Enter a valid non-negative number."
+            return False
+        if not math.isfinite(value) or value < 0:
+            self.pricing_error = "Pricing values must be finite and non-negative."
+            return False
+        self._set_pricing_value(self.pricing_active, value)
+        self.pricing_active = None
+        self.pricing_buffer = ""
+        self.pricing_replace_on_type = False
+        self.pricing_error = ""
+        return True
+
+    def activate_pricing_field(self, field_id):
+        if self.pricing_active == field_id:
+            return
+        if not self.commit_pricing_field():
+            return
+        self.pricing_active = field_id
+        self._pricing_last_field = field_id
+        value = self._pricing_value(field_id)
+        self.pricing_buffer = f"{value:g}"
+        self.pricing_replace_on_type = True
+        self.pricing_error = ""
+
+    def apply_pricing_editor(self):
+        if not self.commit_pricing_field():
+            return
+        # Save first, then mutate the live model.  The temporary file lives in
+        # the destination directory so os.replace is atomic on one volume.
+        payload = {"version": 1, **self.pricing_draft}
+        temp_path = None
+        try:
+            parent = os.path.dirname(os.path.abspath(self.pricing_path))
+            os.makedirs(parent, exist_ok=True)
+            with tempfile.NamedTemporaryFile(
+                    "w", encoding="utf-8", dir=parent,
+                    prefix=".assembly-pricing-", suffix=".tmp",
+                    delete=False) as handle:
+                temp_path = handle.name
+                json.dump(payload, handle, indent=2, sort_keys=True)
+                handle.write("\n")
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temp_path, self.pricing_path)
+            temp_path = None
+        except OSError as exc:
+            if temp_path:
+                try:
+                    os.unlink(temp_path)
+                except OSError:
+                    pass
+            self.pricing_error = f"Could not save pricing: {exc}"
+            return
+        self._apply_pricing_payload(payload)
+        spec = self.run.spec
+        self.pricing_editing = False
+        self.pricing_active = None
+        pygame.key.stop_text_input()
+        self.start_new_run(spec)
+        self.paused = self.pricing_was_paused
+        self.log("Pricing saved; current run restarted with new element costs")
+
     # -- finished-dome inspection ---------------------------------------
 
     def enter_inspect(self, yd):
         self.exit_inspect()
         self.selected_yard = yd
         try:
-            self.inspect = InspectDome(self.ctx, self.scene_prog,
-                                       spec_from_rec(yd.rec))
+            if self.is_site_shed(yd):
+                self.inspect = InspectShed(self.ctx, self.scene_prog)
+            else:
+                self.inspect = InspectDome(self.ctx, self.scene_prog,
+                                           spec_from_rec(yd.rec))
         except Exception as exc:
             self.log(f"inspect failed: {exc}")
             self.inspect = None
@@ -1224,10 +1562,12 @@ class AssemblyLineApp:
                           self.cam_pitch, self.cam_dist, self.follow)
         self.follow = False
         self.tour = False
-        self.cam_target = np.array([yd.x, yd.y, 2.0], dtype=np.float32)
+        target_z = 1.5 if self.is_site_shed(yd) else 2.0
+        self.cam_target = np.array([yd.x, yd.y, target_z], dtype=np.float32)
         self.cam_yaw = math.radians(-120.0)
         self.cam_pitch = math.radians(16.0)
-        self.cam_dist = 12.0 * max(0.6, yd.scale)
+        self.cam_dist = 11.0 if self.is_site_shed(yd) \
+            else 12.0 * max(0.6, yd.scale)
 
     def exit_inspect(self):
         if self.inspect is not None:
@@ -1242,6 +1582,8 @@ class AssemblyLineApp:
 
     def rebuild_inspect(self):
         if self.inspect is None or self.selected_yard is None:
+            return
+        if self.is_site_shed(self.selected_yard):
             return
         spec = self.inspect.spec
         old_layers = self.inspect.layers
@@ -1262,14 +1604,17 @@ class AssemblyLineApp:
             self.cam_pitch = math.radians(4.0)
             self.cam_dist = 5.0 * max(0.6, yd.scale)
         else:
-            self.cam_target = np.array([yd.x, yd.y, 2.0], dtype=np.float32)
+            target_z = 1.5 if self.is_site_shed(yd) else 2.0
+            self.cam_target = np.array([yd.x, yd.y, target_z],
+                                       dtype=np.float32)
             self.cam_pitch = math.radians(16.0)
-            self.cam_dist = 12.0 * max(0.6, yd.scale)
+            self.cam_dist = 11.0 if self.is_site_shed(yd) \
+                else 12.0 * max(0.6, yd.scale)
 
     # -- sales / buying process -----------------------------------------
 
-    SALE_PHASES = [("approach", 4.0), ("consider", 2.5), ("truck_in", 4.0),
-                   ("load", 2.5), ("haul", 5.5)]
+    SALE_PHASES = [("approach", 4.0), ("consider", 2.5),
+                   ("purchased", 3.0)]
 
     def start_sale(self, yd=None):
         candidates = [y for y in self.yard if not y.sold]
@@ -1293,11 +1638,9 @@ class AssemblyLineApp:
                  f"{self.money(yd.rec['price'])} "
                  f"({self.money(yd.rec.get('monthly', 0))}/mo)")
 
-    def _sale_delivered(self, yd):
-        if yd in self.yard:
-            self.yard.remove(yd)
-        self.log(f"Delivered #{yd.rec.get('serial','?')} {yd.rec['name']} "
-                 f"— hauled off the lot")
+    def _sale_complete(self, yd):
+        self.log(f"#{yd.rec.get('serial','?')} remains in the yard "
+                 "for inspection")
         self.sale = None
         self.sale_cooldown = SALE_AUTO_INTERVAL
 
@@ -1318,10 +1661,10 @@ class AssemblyLineApp:
             if self.sale["idx"] == 2:            # decision made
                 self._sale_sold(self.sale["yd"])
             if self.sale["idx"] >= len(self.SALE_PHASES):
-                self._sale_delivered(self.sale["yd"])
+                self._sale_complete(self.sale["yd"])
 
     def sale_positions(self):
-        """Returns dict with customer/truck/dome render positions."""
+        """Return the buyer position; sold inventory never moves off-lot."""
         s = self.sale
         yd = s["yd"]
         phase, dur = self.SALE_PHASES[s["idx"]]
@@ -1329,37 +1672,16 @@ class AssemblyLineApp:
         door = np.array([OFFICE_POS[0] - 4.0, OFFICE_POS[1]])
         dome = np.array([yd.x, yd.y])
         near = dome + np.array([4.5, 1.5])          # customer stands here
-        truck_spot = dome + np.array([8.0, 0.0])    # truck parks here
-        out = {"customer": None, "truck": None, "truck_yaw": 0.0,
-               "dome_on_truck": False, "dome_pos": (yd.x, yd.y, 0.0)}
+        out = {"customer": None}
 
         def lerp(a, b, t):
             return a + (b - a) * t
-
-        def yaw_of(a, b):
-            d = b - a
-            return math.atan2(d[1], d[0])
         if phase == "approach":
             out["customer"] = lerp(door, near, f)
         elif phase == "consider":
             out["customer"] = near
-        elif phase == "truck_in":
-            out["customer"] = near
-            out["truck"] = lerp(np.array(DEPOT_POS), truck_spot, f)
-            out["truck_yaw"] = yaw_of(np.array(DEPOT_POS), truck_spot)
-        elif phase == "load":
-            out["customer"] = near
-            out["truck"] = truck_spot
-            out["truck_yaw"] = math.pi
-        elif phase == "haul":
-            pos = lerp(truck_spot, np.array(EXIT_POS), f)
-            out["truck"] = pos
-            out["truck_yaw"] = yaw_of(truck_spot, np.array(EXIT_POS))
-            out["dome_on_truck"] = True
-            yaw = out["truck_yaw"]
-            bed = np.array([pos[0] - 1.6 * math.cos(yaw),
-                            pos[1] - 1.6 * math.sin(yaw)])
-            out["dome_pos"] = (bed[0], bed[1], 1.15)
+        elif phase == "purchased":
+            out["customer"] = lerp(near, door, f)
         return out
 
     @property
@@ -1552,6 +1874,12 @@ class AssemblyLineApp:
         if vao is not None:
             vao.render(self.moderngl.TRIANGLES)
 
+    def draw_site_shed(self, transparent=False):
+        model = mat_translate(self.comparison_shed.x,
+                              self.comparison_shed.y, 0.0)
+        for gm in self.site_shed_meshes.values():
+            self.draw_gpu(gm, model, transparent=transparent)
+
     def render(self):
         ctx = self.ctx
         mgl = self.moderngl
@@ -1603,29 +1931,19 @@ class AssemblyLineApp:
         # sales office (static structure by the lot)
         self.draw_gpu(self.office_mesh, mat_translate(*OFFICE_POS, 0))
 
-        # buying process: customer, truck, and the sold dome on the bed
+        # Buying process: the customer arrives and leaves; inventory stays put.
         sale_pos = self.sale_positions() if self.sale else None
         if sale_pos:
             if sale_pos["customer"] is not None:
                 cx, cy = sale_pos["customer"]
                 self.draw_gpu(self.customer_mesh, mat_translate(cx, cy, 0))
-            if sale_pos["truck"] is not None:
-                tx, ty = sale_pos["truck"]
-                self.draw_gpu(self.truck_mesh,
-                              mat_translate(tx, ty, 0)
-                              @ mat_rot_z(sale_pos["truck_yaw"]))
 
-        # finished domes in the yard (skip inspected; move a hauled dome)
+        # Finished domes stay in their permanent yard slots, sold or unsold.
+        if not (self.inspect is not None
+                and self.is_site_shed(self.selected_yard)):
+            self.draw_site_shed()
         for yd in self.yard:
             if self.inspect is not None and yd is self.selected_yard:
-                continue
-            if sale_pos and yd is self.sale["yd"] and sale_pos["dome_on_truck"]:
-                dp = sale_pos["dome_pos"]
-                self.draw_gpu(
-                    self.finished_meshes.get(yd.dtype, self.finished),
-                    mat_translate(dp[0], dp[1], dp[2])
-                    @ mat_rot_z(sale_pos["truck_yaw"])
-                    @ mat_scale(yd.scale, yd.scale, yd.scale), tint=yd.tint)
                 continue
             self.draw_gpu(self.finished_meshes.get(yd.dtype, self.finished),
                           mat_translate(yd.x, yd.y, 0)
@@ -1671,9 +1989,10 @@ class AssemblyLineApp:
             ctx.depth_mask = True
 
         prog["u_cut_z"].value = 1e9
+        if not (self.inspect is not None
+                and self.is_site_shed(self.selected_yard)):
+            self.draw_site_shed(transparent=True)
         for yd in self.yard:
-            if sale_pos and yd is self.sale["yd"] and sale_pos["dome_on_truck"]:
-                continue
             self.draw_gpu(self.finished_meshes.get(yd.dtype, self.finished),
                           mat_translate(yd.x, yd.y, 0)
                           @ mat_scale(yd.scale, yd.scale, yd.scale),
@@ -1683,7 +2002,7 @@ class AssemblyLineApp:
 
     SHELL_KEYS = {"insulation", "sheetrock", "osb", "wrap", "shingles",
                   "fiberglass", "sheetmetal", "glazing", "steelplate",
-                  "solar"}
+                  "solar", "sheathing", "weather", "siding", "roofing"}
 
     def _draw_inspect(self):
         insp = self.inspect
@@ -1847,19 +2166,35 @@ class AssemblyLineApp:
         return [(labels.get(ph.kind, ph.kind), col, self.font_big)]
 
     def draw_yard_signs(self):
-        """A price / BHPH-monthly sign floating over each finished dome."""
+        """Price signs for finished domes plus the fixed shed benchmark."""
         w, h = self.size
-        for yd in self.yard:
+        for yd in self.yard_items():
             if self.inspect is not None and yd is self.selected_yard:
                 continue
-            top = 2.6 * yd.scale + 1.4
+            top = getattr(yd, "sign_z", 2.6 * yd.scale + 1.4)
             sp = project_point(self.mvp, (yd.x, yd.y, top), w, h)
             if sp is None:
                 continue
             rec = yd.rec
-            if yd.sold:
-                lines = [("SOLD", (255, 130, 120), self.font_small)]
-                key = ("sign", rec.get("serial"), "sold")
+            if self.is_site_shed(yd):
+                per_sf = rec["price"] / rec["floor_sqft"]
+                lines = [("SITE-BUILT SHED", (255, 210, 90), self.font_tiny),
+                         (self.money(rec["price"]), (150, 240, 160),
+                          self.font_small),
+                         (f"{rec['floor_sqft']:.0f} ft² · "
+                          f"{self.money(per_sf)}/ft²", (210, 216, 224),
+                          self.font_tiny)]
+                key = ("sign", "site-shed", int(rec["price"]))
+            elif yd.sold:
+                # Ownership status is additive: never hide the original
+                # asking price or buy-here-pay-here payment after a sale.
+                lines = [("SOLD", (255, 130, 120), self.font_small),
+                         (self.money(rec["price"]), (150, 240, 160),
+                          self.font_small),
+                         (f"{self.money(rec.get('monthly', 0))}/mo BHPH",
+                          (210, 216, 224), self.font_tiny)]
+                key = ("sign", rec.get("serial"), "sold",
+                       int(rec["price"]), int(rec.get("monthly", 0)))
             else:
                 lines = [(self.money(rec["price"]), (150, 240, 160),
                           self.font_small),
@@ -1890,6 +2225,10 @@ class AssemblyLineApp:
     def draw_hud(self):
         ctx = self.ctx
         ctx.disable(self.moderngl.DEPTH_TEST)
+        if self.pricing_editing:
+            self.draw_pricing_editor()
+            ctx.enable(self.moderngl.DEPTH_TEST)
+            return
         w, h = self.size
         amber = (255, 210, 90)
         white = (232, 236, 240)
@@ -1904,7 +2243,9 @@ class AssemblyLineApp:
         # top banner
         if inspecting:
             yd = self.selected_yard
-            tname = AL.DOME_TYPES.get(yd.dtype, AL.DOME_TYPES["home"]).name
+            tname = ("Site-Built Gable Shed" if self.is_site_shed(yd)
+                     else AL.DOME_TYPES.get(
+                         yd.dtype, AL.DOME_TYPES["home"]).name)
             banner = [(f"INSPECTING #{yd.rec.get('serial', '?')} — "
                        f"{yd.rec['name']} ({tname})", amber, self.font_big)]
             tex, tw, th = self.text_texture(
@@ -1945,9 +2286,10 @@ class AssemblyLineApp:
 
         # bottom control bar
         self.draw_controls()
+        self.draw_key_legend()
 
         # event log
-        if self.event_log:
+        if self.event_log and not inspecting:
             lines = [("EVENT LOG", amber, self.font_small)] + [
                 (m, grey, self.font_tiny) for m in self.event_log]
             tex, tw, th2 = self.text_texture(
@@ -1966,17 +2308,24 @@ class AssemblyLineApp:
                            (0.15, 0.03, 0.03, 0.7))
             self.draw_texture(tex, (w - tw) / 2, h - 146, tw, th2)
 
-        # hover tooltip
+        # hover tooltip (element price + measurements)
         if self.hover_element and self.hover_screen:
             el = self.hover_element
+            wage = ASSUMPTIONS["burdened_wage_per_hour"]
+            labor_cost = el.labor_min / 60.0 * wage
+            price = el.material_cost + labor_cost
             lines = [(el.label, amber, self.font_small),
-                     (f"material {self.money(el.material_cost)}   "
-                      f"labor {el.labor_min:.0f} min   "
-                      f"{el.weight:.0f} kg", white, self.font_tiny)]
+                     (f"price {self.money(price)}  "
+                      f"({self.money(el.material_cost)} mat + "
+                      f"{self.money(labor_cost)} labor)", green,
+                      self.font_tiny),
+                     (f"{self._element_measure(el)}   "
+                      f"{el.weight:.0f} kg   {el.labor_min:.0f} min",
+                      white, self.font_tiny)]
             tex, tw, th2 = self.text_texture(("tip", id(el)), lines)
             hx, hy = self.hover_screen
             self.draw_rect(hx + 10, hy - 4, tw + 8, th2 + 8,
-                           (0.05, 0.07, 0.10, 0.9))
+                           (0.05, 0.07, 0.10, 0.92))
             self.draw_texture(tex, hx + 14, hy, tw, th2)
 
         # yard spec plate
@@ -2098,28 +2447,24 @@ class AssemblyLineApp:
                           amber, self.font_small))
             return lines
         if self.panel == "benchmark":
-            econ = self._econ_with_sensitivity()
-            days = self.run.spec.floor_area  # placeholder replaced below
-            bd = self._build_days()
-            bm = benchmark(r.cat, r.spec, econ, bd, r.cat.labor_minutes() / 60)
-            d, c = bm["dome"], bm["conventional"]
-            return [("VS CONVENTIONAL HOUSING", white, self.font_med),
-                    (f"{'':14}{'DOME':>10}{'CONV':>10}", grey,
-                     self.font_tiny),
-                    (f"{'price':<14}{self.money(d['price']):>10}"
-                     f"{self.money(c['price']):>10}", white, self.font_tiny),
-                    (f"{'material':<14}{self.money(d['material']):>10}"
-                     f"{self.money(c['material']):>10}", grey,
-                     self.font_tiny),
-                    (f"{'labor hrs':<14}{d['labor_hours']:>10.0f}"
-                     f"{c['labor_hours']:>10.0f}", grey, self.font_tiny),
-                    (f"{'build days':<14}{d['build_days']:>10.1f}"
-                     f"{c['build_days']:>10.0f}", grey, self.font_tiny),
-                    ("", grey, self.font_small),
-                    (f"→ {c['labor_hours'] / max(1, d['labor_hours']):.1f}x "
-                     f"less labor, "
-                     f"{c['build_days'] / max(0.1, d['build_days']):.1f}x "
-                     f"faster", green, self.font_small)]
+            c = self.bare_shell_comparison()
+            shed, home = c["shed"], c["home"]
+            lines = [("BOX vs DOME — SAME MATERIALS", white, self.font_med)]
+            lines += self._tier_lines(
+                shed, "STORAGE SHED — bare, equal volume",
+                f"frame+metal+floor · dome 2V r{shed['dome']['r_ft']:.1f}ft",
+                white, amber, grey, green)
+            lines.append(("", grey, self.font_tiny))
+            lines += self._tier_lines(
+                home, "HOME — finished, equal floor",
+                f"envelope+fit-out · dome 3V r{home['dome']['r_ft']:.1f}ft",
+                white, amber, grey, green)
+            fit = home["dome"]["fitout"] / home["dome"]["build"] * 100.0
+            lines.append((f"fit-out is {fit:.0f}% of a finished home, so",
+                          grey, self.font_tiny))
+            lines.append(("the shell edge shrinks on houses.", grey,
+                          self.font_tiny))
+            return lines
         if self.panel == "value":
             pv = product_value(r.cat, r.spec)
             return [("FINISHED PRODUCT VALUE", white, self.font_med),
@@ -2163,26 +2508,27 @@ class AssemblyLineApp:
         if self.panel == "ledger":
             s = self.db.summary()
             sold = self.db.sales_summary()
-            in_yard = len([y for y in self.yard if not y.sold])
+            available = len([y for y in self.yard if not y.sold])
             return [("PRODUCTION & SALES LEDGER", white, self.font_med),
                     (f"units built      {s['count']}", green, self.font_med),
-                    (f"in yard (unsold) {in_yard}", grey, self.font_small),
-                    (f"sold & delivered {sold['sold']}", green,
+                    (f"on lot / inspect {len(self.yard)}", grey,
+                     self.font_small),
+                    (f"available        {available}", grey, self.font_small),
+                    (f"sold · retained  {sold['sold']}", green,
                      self.font_small),
                     (f"sold revenue     {self.money(sold['sold_revenue'])}",
                      white, self.font_small),
                     (f"sold gross profit {self.money(sold['sold_profit'])}",
                      green, self.font_small),
                     ("", grey, self.font_small),
-                    (f"build value in yard "
-                     f"{self.money(s['revenue'] - sold['sold_revenue'])}",
+                    (f"display value    {self.money(s['revenue'])}",
                      grey, self.font_small),
                     (f"total floor built {s['area']:,.0f} m²", grey,
                      self.font_small),
                     (f"avg margin/unit  {self.money(s['avg_margin'])}", grey,
                      self.font_small),
                     ("", grey, self.font_small),
-                    ("click a yard dome to inspect · SELL to ship one",
+                    ("sold domes stay clickable · SELL marks ownership",
                      amber, self.font_tiny)]
         return [("", white, self.font_small)]
 
@@ -2287,10 +2633,150 @@ class AssemblyLineApp:
         add_btn("wminus", "CREW -", 66)
         add_btn("wplus", f"{self.workers_per_station} +", 44)
         add_btn("sell", "SELL", 54, self.sale is not None)
+        add_btn("shed", "SHED VS", 72,
+                self.is_site_shed(self.selected_yard))
+        add_btn("prices", "PRICES", 70, self.pricing_editing)
         add_btn("supply", "SUPPLY×", 78)
         add_btn("breakdown", "BREAK×", 72)
         add_btn("absence", "ABSENT×", 78)
         add_btn("clear", "CLEAR", 66)
+
+    def _dome_compare_record(self):
+        """Use the inspected dome, then a yard home, then a 1-bed reference."""
+        yd = self.selected_yard
+        if yd is not None and not self.is_site_shed(yd):
+            return yd.rec
+        homes = [item.rec for item in self.yard
+                 if item.dtype == "home" and not item.sold]
+        if homes:
+            return homes[-1]
+        if self.run is not None and self.run.spec.dtype == "home":
+            r, sp = self.run, self.run.spec
+            return {"serial": sp.serial, "name": sp.name,
+                    "dtype": sp.dtype, "radius": sp.radius,
+                    "frequency": sp.frequency, "layout": sp.layout,
+                    "cladding": sp.cladding, "floor_area": sp.floor_area,
+                    "material": r.econ_preview["material"],
+                    "labor_cost": r.econ_preview["labor_cost"],
+                    "labor_hours": r.econ_preview["labor_hours"],
+                    "overhead": r.econ_preview["overhead"],
+                    "total_cost": r.econ_preview["total_cost"],
+                    "price": r.econ_preview["price"],
+                    "margin": r.econ_preview["margin"],
+                    "_info": r.info}
+        cached = getattr(self, "_reference_dome", None)
+        if cached is None:
+            sp = DomeSpec(serial=0, name="Reference 1-Bed Dome", dtype="home",
+                          radius=4.0, frequency=3, layout="1-Bedroom")
+            cat, info = build_dome_catalog(sp)
+            econ = unit_economics(cat, sp)
+            cached = {"serial": 0, "name": sp.name, "dtype": "home",
+                      "radius": sp.radius, "frequency": sp.frequency,
+                      "layout": sp.layout, "cladding": sp.cladding,
+                      "floor_area": sp.floor_area, "_info": info, **econ}
+            self._reference_dome = cached
+        return cached
+
+    def _dome_volume_cuft(self, rec):
+        cached = rec.get("_volume_cuft")
+        if cached is not None:
+            return cached
+        spec = spec_from_rec(rec)
+        info = rec.get("_info")
+        if info is None:
+            _cat, info = build_dome_catalog(spec)
+        h = max(0.0, info["apex_z"] - AL.FLOOR_TOP)
+        volume_m3 = math.pi * h * h * (spec.radius - h / 3.0)
+        rec["_volume_cuft"] = volume_m3 * 35.3146667
+        return rec["_volume_cuft"]
+
+    def bare_shell_comparison(self):
+        """Four buildings in two like-for-like tiers (bare storage shed and
+        finished home), box vs dome, priced with one shared rate model so
+        only the geometry differs. Cached per run / pricing change."""
+        if self._bare_cmp is None:
+            self._bare_cmp = AL.building_comparisons()
+        return self._bare_cmp
+
+    def _tier_lines(self, tier, title, note, white, amber, grey, green,
+                    show_volume=True):
+        """Two-column box-vs-dome table for one comparison tier."""
+        b, d = tier["box"], tier["dome"]
+
+        def k(v):
+            return f"${v / 1000:.1f}k"
+
+        def r(label, fmt):
+            return (f"{label:<12}{fmt(b):>10}{fmt(d):>10}", grey,
+                    self.font_tiny)
+        save = (1.0 - d["build"] / b["build"]) * 100.0
+        frame_save = (1.0 - d["framing_lf"] / b["framing_lf"]) * 100.0
+        rows = [(title, white, self.font_small),
+                (note, grey, self.font_tiny),
+                (f"{'':12}{b['name']:>10}{d['name']:>10}", amber,
+                 self.font_tiny),
+                r("floor sf", lambda x: f"{x['floor_sf']:,.0f}")]
+        if show_volume:
+            rows.append(r("volume cf", lambda x: f"{x['vol_ft3']:,.0f}"))
+        rows += [
+            r("framing ft", lambda x: f"{x['framing_lf']:,.0f}"),
+            r("skin sf", lambda x: f"{x['cladding_sf']:,.0f}"),
+            (f"{'build':<12}{k(b['build']):>10}{k(d['build']):>10}", white,
+             self.font_tiny),
+            (f"{'$/sf':<12}{b['per_sf']:>10,.0f}{d['per_sf']:>10,.0f}",
+             green, self.font_tiny),
+            (f"-> dome {save:.0f}% cheaper, {frame_save:.0f}% less framing",
+             amber, self.font_tiny)]
+        return rows
+
+    def _comparison_lines(self, dome_rec, white, amber, grey, green):
+        """Bare structural comparison: a rectangular box vs a geodesic dome
+        built from the SAME materials (frame + sheet metal + floor) enclosing
+        the SAME volume — so the number reflects geometry alone, not finish
+        level. (The finished-home tier lives on the VS panel.)"""
+        c = self.bare_shell_comparison()
+        return self._tier_lines(
+            c["shed"], "STORAGE SHED — BARE STRUCTURE",
+            f"frame + sheet metal + floor, same rates, same volume "
+            f"(dome 2V r{c['shed']['dome']['r_ft']:.1f}ft)",
+            white, amber, grey, green)
+
+    def _legacy_comparison_lines(self, dome_rec, white, amber, grey, green):
+        shed = self.comparison_shed.rec
+        dome_sf = dome_rec["floor_area"] * 10.7639104167
+        shed_sf = shed["floor_sqft"]
+        dome_days = dome_rec["labor_hours"] / max(
+            1, ASSUMPTIONS["workers_per_station"] *
+            ASSUMPTIONS["shift_hours_per_day"])
+        rows = [
+            ("PRICE / SPACE — PLANNING VIEW", amber, self.font_small),
+            (f"{'':17}{'DOME':>13}{'SITE SHED':>13}", grey,
+             self.font_tiny),
+            (f"{'floor area':<17}{dome_sf:>10,.0f} sf"
+             f"{shed_sf:>10,.0f} sf", white, self.font_tiny),
+            (f"{'enclosed volume':<17}{self._dome_volume_cuft(dome_rec):>10,.0f} cf"
+             f"{shed['volume_cuft']:>10,.0f} cf", white, self.font_tiny),
+            (f"{'build cost':<17}{self.money(dome_rec['total_cost']):>13}"
+             f"{self.money(shed['total_cost']):>13}", grey, self.font_tiny),
+            (f"{'cost / sf':<17}{self.money(dome_rec['total_cost']/dome_sf):>13}"
+             f"{self.money(shed['total_cost']/shed_sf):>13}", grey,
+             self.font_tiny),
+            (f"{'sale / quote':<17}{self.money(dome_rec['price']):>13}"
+             f"{self.money(shed['price']):>13}", green, self.font_tiny),
+            (f"{'price / sf':<17}{self.money(dome_rec['price']/dome_sf):>13}"
+             f"{self.money(shed['price']/shed_sf):>13}", green,
+             self.font_tiny),
+            (f"{'labor':<17}{dome_rec['labor_hours']:>10,.0f} hr"
+             f"{shed['labor_hours']:>10,.0f} hr", grey, self.font_tiny),
+            (f"{'working days':<17}{dome_days:>13.1f}"
+             f"{shed['build_days']:>13.1f}", grey, self.font_tiny),
+            (f"{'modeled crew':<17}"
+             f"{ASSUMPTIONS['workers_per_station']:>13.0f}"
+             f"{SHED.FIELD_CREW:>13.0f}", grey, self.font_tiny),
+            ("Shed = planning estimate; site, code and bids vary.", grey,
+             self.font_tiny),
+        ]
+        return rows
 
     def draw_spec_plate(self):
         rec = self.selected_yard.rec
@@ -2299,42 +2785,75 @@ class AssemblyLineApp:
         amber = (255, 210, 90)
         grey = (176, 182, 192)
         green = (130, 224, 150)
-        tname = AL.DOME_TYPES.get(rec.get("dtype", "home"),
-                                  AL.DOME_TYPES["home"]).name
-        sub = (rec["layout"] if rec.get("dtype", "home") == "home"
-               else tname)
-        lines = [(f"SERIAL #{rec.get('serial', '?')}  {rec['name']}", amber,
-                  self.font_med),
-                 (f"{tname}  ·  {sub}  ·  {rec['floor_area']:.0f} m²",
-                  white, self.font_small),
-                 (f"radius {rec['radius']:.1f} m  freq {rec['frequency']}V "
-                  f" ·  {rec['cladding']}", grey, self.font_small),
-                 ("", grey, self.font_tiny),
-                 (f"material   {self.money(rec['material'])}", grey,
-                  self.font_small),
-                 (f"labor      {self.money(rec['labor_cost'])} "
-                  f"({rec['labor_hours']:.0f} h)", grey, self.font_small),
-                 (f"total cost {self.money(rec['total_cost'])}", grey,
-                  self.font_small),
-                 (f"sale price {self.money(rec['price'])}   "
-                  f"({self.money(rec.get('monthly', 0))}/mo BHPH)", white,
-                  self.font_small),
-                 (f"MARGIN     {self.money(rec['margin'])}", green,
-                  self.font_med),
-                 ("", grey, self.font_tiny),
-                 (f"solar {rec['solar_kw']:.1f} kW  ·  R-{rec['r_value']:.0f}",
-                  grey, self.font_small),
-                 (f"built {rec['created']}", grey, self.font_tiny),
-                 (f"worker steps {rec['steps']:,}  ·  "
-                  f"{rec['distance_m']:,.0f} m walked", grey, self.font_tiny),
-                 (f"sold: {'YES' if self.selected_yard.sold else 'in yard'}",
-                  green if not self.selected_yard.sold else grey,
-                  self.font_tiny),
-                 ("EXIT to close" if self.inspect else "click to close",
-                  amber, self.font_tiny)]
+        dome_rec = self._dome_compare_record()
+        if self.is_site_shed(self.selected_yard):
+            lines = [
+                ("FIXED SITE COMPARISON — NOT LINE-BUILT", amber,
+                 self.font_med),
+                (f"{rec['name']}  ·  {rec['floor_sqft']:.0f} ft²",
+                 white, self.font_small),
+                (f"{rec['length_ft']:.0f}' L × {rec['width_ft']:.0f}' W × "
+                 f"{rec['height_ft']:.0f}' peak  ·  {rec['roof_pitch']} gable",
+                 white, self.font_small),
+                (rec["framing"], grey, self.font_tiny),
+                (rec["foundation"], grey, self.font_tiny),
+                ("COST SUMMARY", amber, self.font_small),
+                (f"materials / subs  {self.money(rec['material'])}", grey,
+                 self.font_small),
+                (f"field labor       {self.money(rec['labor_cost'])}  "
+                 f"({rec['labor_hours']:.0f} h)", grey, self.font_small),
+                (f"builder overhead  {self.money(rec['overhead'])}", grey,
+                 self.font_small),
+                (f"contingency       {self.money(rec['contingency'])}", grey,
+                 self.font_small),
+                (f"BUILD COST        {self.money(rec['total_cost'])}", white,
+                 self.font_med),
+                (f"CONTRACT PRICE    {self.money(rec['price'])}", green,
+                 self.font_med),
+                ("DIRECT COST BREAKDOWN", amber, self.font_small),
+            ]
+            for item in SHED.COST_ITEMS:
+                direct = item.material + item.labor_hours * SHED.BURDENED_LABOR_RATE
+                lines.append((f"{item.label[:27]:<27} {self.money(direct):>9}",
+                              grey, self.font_tiny))
+        else:
+            tname = AL.DOME_TYPES.get(rec.get("dtype", "home"),
+                                      AL.DOME_TYPES["home"]).name
+            sub = (rec["layout"] if rec.get("dtype", "home") == "home"
+                   else tname)
+            lines = [(f"SERIAL #{rec.get('serial', '?')}  {rec['name']}",
+                      amber, self.font_med),
+                     (f"{tname}  ·  {sub}  ·  {rec['floor_area']:.0f} m²",
+                      white, self.font_small),
+                     (f"radius {rec['radius']:.1f} m  freq {rec['frequency']}V "
+                      f" ·  {rec['cladding']}", grey, self.font_small),
+                     (f"material   {self.money(rec['material'])}", grey,
+                      self.font_small),
+                     (f"labor      {self.money(rec['labor_cost'])} "
+                      f"({rec['labor_hours']:.0f} h)", grey, self.font_small),
+                     (f"total cost {self.money(rec['total_cost'])}", grey,
+                      self.font_small),
+                     (f"sale price {self.money(rec['price'])}   "
+                      f"({self.money(rec.get('monthly', 0))}/mo BHPH)", white,
+                      self.font_small),
+                     (f"MARGIN     {self.money(rec['margin'])}", green,
+                      self.font_med),
+                     (f"solar {rec['solar_kw']:.1f} kW  ·  "
+                      f"R-{rec['r_value']:.0f}", grey, self.font_small),
+                     (f"built {rec['created']}", grey, self.font_tiny),
+                     (f"worker steps {rec['steps']:,}  ·  "
+                      f"{rec['distance_m']:,.0f} m walked", grey,
+                      self.font_tiny),
+                     (f"sold: {'YES' if self.selected_yard.sold else 'in yard'}",
+                      green if not self.selected_yard.sold else grey,
+                      self.font_tiny)]
+        lines.extend(self._comparison_lines(dome_rec, white, amber, grey,
+                                             green))
+        lines.append(("EXIT to close" if self.inspect else "click to close",
+                      amber, self.font_tiny))
         tex, tw, th = self.text_texture(
-            ("plate", rec.get("serial"), self.selected_yard.sold,
-             bool(self.inspect)), lines)
+            ("plate-v2", rec.get("serial"), dome_rec.get("serial"),
+             self.selected_yard.sold, bool(self.inspect)), lines)
         if self.inspect is not None:
             px = w - tw - 20
             py = 70
@@ -2358,12 +2877,15 @@ class AssemblyLineApp:
         pw = 300
         self.inspect_buttons = []
         n = len(insp.stages)
-        panel_h = 34 + n * row_h + 96
+        has_costs = hasattr(insp, "layer_costs")
+        panel_h = 34 + n * row_h + 96 + (24 if has_costs else 0)
         self.draw_rect(px - 6, py - 6, pw + 12, panel_h,
                        (0.04, 0.06, 0.10, 0.9))
+        header = ("SHED BUILD LAYERS + DIRECT COST" if
+                  getattr(insp, "kind", "dome") == "shed" else
+                  "LAYERS  (eye = show · box = solid)")
         tex, tw, th = self.text_texture(
-            ("insphdr",), [("LAYERS  (eye = show · box = solid)", white,
-                            self.font_small)])
+            ("insphdr", header), [(header, white, self.font_small)])
         self.draw_texture(tex, px, py, tw, th)
         yy = py + 26
         for s in insp.stages:
@@ -2380,12 +2902,28 @@ class AssemblyLineApp:
             self.inspect_buttons.append((f"solid:{s.key}", px + 24, yy, 18,
                                          18))
             col = white if L["visible"] else grey
+            label = s.title.title()
+            if hasattr(insp, "layer_costs"):
+                label = f"{label[:18]:<18} {self.money(insp.layer_costs[s.key])}"
             t2, w2, h2 = self.text_texture((f"lyr{s.key}", L["visible"],
                                             L["solid"]),
-                                           [(s.title.title(), col,
-                                             self.font_tiny)], pad=2)
+                                           [(label, col, self.font_tiny)],
+                                           pad=2)
             self.draw_texture(t2, px + 48, yy + 1, w2, h2)
             yy += row_h
+        # running total of the visible (included) layers
+        if has_costs:
+            included = sum(insp.layer_costs[s.key] for s in insp.stages
+                           if insp.layers[s.key]["visible"])
+            full = sum(insp.layer_costs.values())
+            tot = (f"INCLUDED TOTAL {self.money(included)}"
+                   + (f"  (of {self.money(full)})" if included < full - 1
+                      else ""))
+            t2, w2, h2 = self.text_texture(
+                ("insptot", int(included)),
+                [(tot, amber, self.font_small)], pad=2)
+            self.draw_texture(t2, px, yy + 2, w2, h2)
+            yy += 24
         # controls
         yy += 6
         ctrls = [("insp_tour", "TOUR" if not self.tour else "TOUR*"),
@@ -2404,8 +2942,11 @@ class AssemblyLineApp:
             cx += 98
         yy += 32
         cx = px
-        for key, label in [("insp_clad", "CLADDING »"),
-                           ("insp_exit", "EXIT")]:
+        bottom_controls = ([('insp_costs', 'COSTS →'), ('insp_exit', 'EXIT')]
+                           if getattr(insp, "kind", "dome") == "shed" else
+                           [("insp_clad", "CLADDING »"),
+                            ("insp_exit", "EXIT")])
+        for key, label in bottom_controls:
             wbtn = 140 if key == "insp_clad" else 90
             self.draw_rect(cx, yy, wbtn, 26,
                            (0.30, 0.16, 0.16, 1) if key == "insp_exit"
@@ -2415,6 +2956,166 @@ class AssemblyLineApp:
             self.draw_texture(t2, cx + 8, yy + 5, w2, h2)
             self.inspect_buttons.append((key, cx, yy, wbtn, 26))
             cx += wbtn + 8
+
+    def draw_pricing_editor(self):
+        """Full-page editor for every catalog unit-cost input."""
+        w, h = self.size
+        white = (230, 234, 240)
+        amber = (255, 210, 90)
+        grey = (164, 172, 184)
+        green = (130, 224, 150)
+        self.draw_rect(0, 0, w, h, (0.025, 0.035, 0.055, 0.985))
+        self.pricing_fields = []
+        self.pricing_buttons = []
+
+        title = [("ELEMENT PRICING EDITOR", amber, self.font_big),
+                 ("Every dome catalog category · saved across launches · "
+                  "APPLY restarts the current run", grey, self.font_small)]
+        tex, tw, th = self.text_texture(("pricing-title",), title)
+        self.draw_texture(tex, 24, 14, tw, th)
+
+        def field(field_id, x, y, fw=96):
+            active = self.pricing_active == field_id
+            value = (self.pricing_buffer if active else
+                     f"{self._pricing_value(field_id):,.2f}")
+            display_value = value + (" |" if active else "")
+            self.draw_rect(x, y, fw, 23,
+                           (0.18, 0.27, 0.22, 1.0) if active
+                           else (0.09, 0.12, 0.17, 1.0))
+            tx, ttw, tth = self.text_texture(
+                ("price-field", field_id, display_value, active),
+                [(display_value, amber if active else white, self.font_tiny)],
+                pad=2)
+            self.draw_texture(tx, x + 5, y + 3, min(ttw, fw - 7), tth)
+            self.pricing_fields.append((field_id, x, y, fw, 23))
+
+        # Loaded labor and overhead rates.
+        gy = 82
+        hdr, hw, hh = self.text_texture(
+            ("pricing-global-hdr",),
+            [("GLOBAL COST RATES", white, self.font_med)])
+        self.draw_texture(hdr, 24, gy, hw, hh)
+        global_rows = [
+            ("burdened_wage_per_hour", "Burdened wage / hr"),
+            ("overhead_per_labor_hour", "Overhead / labor hr"),
+        ]
+        for i, (key, label) in enumerate(global_rows):
+            yy = gy + 30 + i * 28
+            tx, ttw, tth = self.text_texture(
+                ("pricing-global-label", key),
+                [(label, grey, self.font_small)], pad=1)
+            self.draw_texture(tx, 24, yy + 3, ttw, tth)
+            field(("globals", key, None), 250, yy, 108)
+
+        # Product sale-price formulas are here too, beside element costs.
+        px = max(430, w * 0.43)
+        phdr, pw, ph = self.text_texture(
+            ("pricing-product-hdr",),
+            [("PRODUCT SALE PRICING", white, self.font_med),
+             ("base $                 $ / m²", grey, self.font_tiny)])
+        self.draw_texture(phdr, px, gy, pw, ph)
+        for i, key in enumerate(AL.DOME_TYPE_LIST):
+            yy = gy + 48 + i * 27
+            label = AL.DOME_TYPES[key].name
+            tx, ttw, tth = self.text_texture(
+                ("pricing-product-label", key),
+                [(label[:17], grey, self.font_tiny)], pad=1)
+            self.draw_texture(tx, px, yy + 3, ttw, tth)
+            field(("products", key, 0), px + 165, yy, 100)
+            field(("products", key, 1), px + 274, yy, 92)
+
+        table_y = 274
+        hdr, hw, hh = self.text_texture(
+            ("pricing-category-hdr",),
+            [("ALL ELEMENT CATEGORIES", white, self.font_med),
+             ("Material is $/base element; labor and weight scale with "
+              "physical element size.", grey, self.font_tiny)])
+        self.draw_texture(hdr, 24, table_y - 40, hw, hh)
+        keys = list(AL.CATEGORY_ECON)
+        split = (len(keys) + 1) // 2
+        groups = (keys[:split], keys[split:])
+        group_w = (w - 72) / 2.0
+        for group_index, group in enumerate(groups):
+            gx = 24 + group_index * (group_w + 24)
+            label_w = max(175, group_w - 405)
+            mat_x = gx + label_w
+            labor_x = mat_x + 101
+            weight_x = labor_x + 101
+            installed_x = weight_x + 101
+            headers = [("ELEMENT", gx), ("MAT $", mat_x),
+                       ("LAB MIN", labor_x), ("KG", weight_x),
+                       ("BASE $", installed_x)]
+            for label, hx in headers:
+                tx, ttw, tth = self.text_texture(
+                    ("pricing-col", group_index, label),
+                    [(label, amber, self.font_tiny)], pad=1)
+                self.draw_texture(tx, hx, table_y, ttw, tth)
+            for row, key in enumerate(group):
+                yy = table_y + 24 + row * 28
+                if row % 2:
+                    self.draw_rect(gx - 4, yy - 2, group_w + 8, 26,
+                                   (0.055, 0.07, 0.095, 0.72))
+                label = AL.CATEGORY_LABEL.get(key, key)
+                tx, ttw, tth = self.text_texture(
+                    ("pricing-cat-label", key),
+                    [(f"{key:<12} {label}"[:max(18, int(label_w / 8.4))],
+                      white, self.font_tiny)], pad=1)
+                self.draw_texture(tx, gx, yy + 3, ttw, tth)
+                field(("categories", key, 0), mat_x, yy, 94)
+                field(("categories", key, 1), labor_x, yy, 94)
+                field(("categories", key, 2), weight_x, yy, 94)
+                values = self.pricing_draft["categories"][key]
+                installed = values[0] + values[1] / 60.0 * \
+                    self.pricing_draft["globals"]["burdened_wage_per_hour"]
+                it, itw, ith = self.text_texture(
+                    ("pricing-installed", key, round(installed, 2)),
+                    [(f"${installed:,.0f}", green, self.font_tiny)], pad=1)
+                self.draw_texture(it, installed_x + 4, yy + 3, itw, ith)
+
+        by = h - 64
+        buttons = [("pricing_apply", "APPLY + RESTART", 190, green),
+                   ("pricing_reset", "RESET DEFAULTS", 170, amber),
+                   ("pricing_cancel", "CANCEL", 110, white)]
+        bx = 24
+        for key, label, bw, color in buttons:
+            self.draw_rect(bx, by, bw, 34,
+                           (0.12, 0.24, 0.16, 1.0) if key == "pricing_apply"
+                           else (0.12, 0.15, 0.21, 1.0))
+            tx, ttw, tth = self.text_texture(
+                ("pricing-button", key), [(label, color, self.font_small)],
+                pad=3)
+            self.draw_texture(tx, bx + (bw - ttw) / 2, by + 7, ttw, tth)
+            self.pricing_buttons.append((key, bx, by, bw, 34))
+            bx += bw + 10
+        status = self.pricing_error or f"Saving to {self.pricing_path}"
+        st, stw, sth = self.text_texture(
+            ("pricing-status", status),
+            [(status, amber if self.pricing_error else grey, self.font_tiny)],
+            pad=2)
+        self.draw_texture(st, bx + 12, by + 8, stw, sth)
+        hint = "CLICK value · type number · ENTER commit · TAB next · ESC cancel"
+        ht, htw, hth = self.text_texture(
+            ("pricing-hint",), [(hint, (112, 120, 132), self.font_tiny)],
+            pad=1)
+        self.draw_texture(ht, w - htw - 18, h - 22, htw, hth, alpha=0.72)
+
+    def draw_key_legend(self):
+        w, h = self.size
+        if self.inspect is not None:
+            text_line = ("ESC exit inspection · click layers show/solid · "
+                         "TOUR · ←/→ orbit · drag orbit · "
+                         "wheel zoom · P pricing · toolbar active")
+        else:
+            text_line = ("SPACE pause · [ ] speed · F follow · C cutaway · "
+                         "X x-ray · V cine · -/+ crew · R new · P pricing · "
+                         "←/→ orbit · WASD pan · drag orbit · "
+                         "wheel zoom · ESC back/quit")
+        tex, tw, th = self.text_texture(
+            ("key-legend", text_line),
+            [(text_line, (130, 138, 150), self.font_tiny)], pad=1)
+        self.draw_rect(8, h - 70, min(w - 16, tw + 10), th + 4,
+                       (0.025, 0.035, 0.055, 0.34))
+        self.draw_texture(tex, 13, h - 68, tw, th, alpha=0.62)
 
     def draw_configurator(self):
         w, h = self.size
@@ -2478,12 +3179,106 @@ class AssemblyLineApp:
     # Interaction
     # ===================================================================
 
+    def pricing_click(self, mx, my):
+        for key, x, y, w, h in self.pricing_buttons:
+            if not self.hit(mx, my, (x, y, w, h)):
+                continue
+            if key == "pricing_apply":
+                self.apply_pricing_editor()
+            elif key == "pricing_reset":
+                self.reset_pricing_draft()
+            elif key == "pricing_cancel":
+                self.cancel_pricing_editor()
+            return
+        for field_id, x, y, w, h in self.pricing_fields:
+            if self.hit(mx, my, (x, y, w, h)):
+                self.activate_pricing_field(field_id)
+                return
+        self.commit_pricing_field()
+
+    def pricing_key(self, event):
+        if event.key == pygame.K_ESCAPE:
+            self.cancel_pricing_editor()
+            return
+        if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
+            self.commit_pricing_field()
+            return
+        if event.key == pygame.K_TAB:
+            if not self.commit_pricing_field() or not self.pricing_fields:
+                return
+            ids = [entry[0] for entry in self.pricing_fields]
+            current = getattr(self, "_pricing_last_field", None)
+            index = ids.index(current) + 1 if current in ids else 0
+            field_id = ids[index % len(ids)]
+            self._pricing_last_field = field_id
+            self.activate_pricing_field(field_id)
+            return
+        if self.pricing_active is None:
+            return
+        self._pricing_last_field = self.pricing_active
+        if event.key == pygame.K_a and event.mod & pygame.KMOD_CTRL:
+            self.pricing_replace_on_type = True
+            return
+        if event.key == pygame.K_BACKSPACE:
+            self.pricing_buffer = ("" if self.pricing_replace_on_type
+                                   else self.pricing_buffer[:-1])
+            self.pricing_replace_on_type = False
+            return
+        if event.key == pygame.K_DELETE:
+            self.pricing_buffer = ""
+            self.pricing_replace_on_type = False
+
+    def pricing_text(self, text):
+        """Accept SDL text input for the active numeric pricing field."""
+        if self.pricing_active is None:
+            return
+        accepted = "".join(ch for ch in text if ch in "0123456789.,$")
+        if not accepted:
+            return
+        if self.pricing_replace_on_type:
+            self.pricing_buffer = ""
+            self.pricing_replace_on_type = False
+        for char in accepted:
+            if char == "." and "." in self.pricing_buffer:
+                continue
+            if char == "$" and self.pricing_buffer:
+                continue
+            self.pricing_buffer += char
+
     def hit(self, mx, my, rect):
         x, y, w, h = rect
         return x <= mx <= x + w and y <= my <= y + h
 
+    LINEAR_CATS = {"frame", "hub", "floor", "water", "power", "column"}
+    PANEL_CATS = {"insulation", "sheetrock", "osb", "wrap", "shingle",
+                  "fiberglass", "solar", "sheetmetal", "glazing",
+                  "steelplate"}
+
+    def _element_measure(self, el):
+        """Human-readable size (feet). A member's true length is its box
+        diagonal (its bbox extents don't equal its length when it runs
+        diagonally); panels report their two largest spans."""
+        ft = 3.28084
+        d = [abs(x) * ft for x in el.dims]
+        srt = sorted(d, reverse=True)
+        if srt[0] < 1e-3:
+            return "—"
+        diag = math.sqrt(sum(x * x for x in d))
+        if el.category in self.LINEAR_CATS:
+            return f"length ~{diag:.1f} ft"
+        if el.category in self.PANEL_CATS:
+            return f"~{srt[0]:.1f} x {srt[1]:.1f} ft panel"
+        return f"{srt[0]:.1f} x {srt[1]:.1f} x {srt[2]:.1f} ft"
+
     def update_hover(self):
-        if self.dragging or self.phase.kind != "work" or self.headless:
+        if self.dragging or self.headless:
+            self.hover_element = None
+            return
+        # In inspection / tour: pick any individual element of the dome
+        if self.inspect is not None:
+            self._update_inspect_hover()
+            return
+        if self.phase.kind != "work":
             self.hover_element = None
             return
         mx, my = self.mouse
@@ -2509,12 +3304,40 @@ class AssemblyLineApp:
         else:
             self.hover_element = None
 
+    def _update_inspect_hover(self):
+        insp = self.inspect
+        yd = self.selected_yard
+        if yd is None or not getattr(insp, "elements", None):
+            self.hover_element = None
+            return
+        mx, my = self.mouse
+        w, h = self.size
+        best = None
+        best_d = 24 ** 2
+        for el in insp.elements:
+            if not insp.layers.get(el.stage, {}).get("visible", True):
+                continue
+            wp = (yd.x + el.centroid[0], yd.y + el.centroid[1],
+                  el.centroid[2])
+            sp = project_point(self.mvp, wp, w, h)
+            if sp is None:
+                continue
+            d = (sp[0] - mx) ** 2 + (sp[1] - my) ** 2
+            if d < best_d:
+                best_d = d
+                best = (el, sp)
+        if best:
+            self.hover_element, self.hover_screen = best
+        else:
+            self.hover_element = None
+
     def click_yard(self, mx, my):
         w, h = self.size
         best = None
-        best_d = 60 ** 2
-        for yd in self.yard:
-            sp = project_point(self.mvp, (yd.x, yd.y, 2.0 * yd.scale), w, h)
+        best_d = 72 ** 2
+        for yd in self.yard_items():
+            pick_z = getattr(yd, "pick_z", 2.0 * yd.scale)
+            sp = project_point(self.mvp, (yd.x, yd.y, pick_z), w, h)
             if sp is None:
                 continue
             d = (sp[0] - mx) ** 2 + (sp[1] - my) ** 2
@@ -2524,42 +3347,46 @@ class AssemblyLineApp:
         return best
 
     def handle_click(self, mx, my):
+        # The toolbar is global and remains clickable in normal, inspection,
+        # and configurator views.  Check it before modal view controls.
+        for key, x, y, bw, bh in getattr(self, "buttons_bar", []):
+            if self.hit(mx, my, (x, y, bw, bh)):
+                self.control_action(key)
+                return True
         if self.configuring:
             for key, x, y, bw, bh in getattr(self, "config_buttons", []):
                 if self.hit(mx, my, (x, y, bw, bh)):
                     self.config_action(key)
-                    return
-            return
+                    return True
+            return True
         # inspection mode: layer toggles + controls
         if self.inspect is not None:
             for key, x, y, bw, bh in getattr(self, "inspect_buttons", []):
                 if self.hit(mx, my, (x, y, bw, bh)):
                     self.inspect_action(key)
-                    return
+                    return True
             # click another yard dome to inspect it instead
             yd = self.click_yard(mx, my)
             if yd is not None and yd is not self.selected_yard:
                 self.enter_inspect(yd)
-            return
-        # control bar
-        for key, x, y, bw, bh in getattr(self, "buttons_bar", []):
-            if self.hit(mx, my, (x, y, bw, bh)):
-                self.control_action(key)
-                return
+                return True
+            return False
         # panel tabs
         for key, x, y, bw, bh in getattr(self, "buttons_panel", []):
             if self.hit(mx, my, (x, y, bw, bh)):
                 self.panel = key.split(":")[1]
-                return
+                return True
         # sensitivity toggles on the P&L panel
         if self.panel == "pnl" and hasattr(self, "panel_body_rect"):
             if self.hit(mx, my, self.panel_body_rect):
                 self.cycle_sensitivity()
-                return
+                return True
         # yard dome -> open advanced inspection
         yd = self.click_yard(mx, my)
         if yd is not None:
             self.enter_inspect(yd)
+            return True
+        return False
 
     def inspect_action(self, key):
         insp = self.inspect
@@ -2638,15 +3465,23 @@ class AssemblyLineApp:
             if self.sale is None:
                 if not self.start_sale():
                     self.log("No unsold domes in the yard to sell")
+        elif key == "shed":
+            self.enter_inspect(self.comparison_shed)
+        elif key == "prices":
+            self.open_pricing_editor()
         elif key in ("supply", "breakdown", "absence"):
             self.inject(key)
         elif key == "clear":
+            if self.inspect is not None:
+                self.exit_inspect()
             self.db.clear()
             self.yard = []
             self.next_serial = 1
             self.log("Yard cleared")
 
     def open_configurator(self):
+        if self.inspect is not None:
+            self.exit_inspect()
         self.configuring = True
         self.paused = True
         self.config_spec = random_spec(self.next_serial, self.rng)
@@ -2689,13 +3524,35 @@ class AssemblyLineApp:
             self.paused = False
 
     def snapshot(self):
-        os.makedirs("snapshots", exist_ok=True)
-        data = self.fbo.read(components=3)
-        surf = pygame.image.fromstring(data, self.size, "RGB", True)
-        path = os.path.join("snapshots",
-                            f"dome_{time.strftime('%H%M%S')}.png")
-        pygame.image.save(surf, path)
+        """Save the rendered viewport without assuming window == FBO size."""
+        try:
+            surf = self.capture_surface()
+            out_dir = os.environ.get("SNAPSHOT_DIR", "snapshots")
+            os.makedirs(out_dir, exist_ok=True)
+            millis = (time.time_ns() // 1_000_000) % 1000
+            stamp = time.strftime("%Y%m%d_%H%M%S") + f"_{millis:03d}"
+            path = os.path.join(out_dir, f"dome_{stamp}.png")
+            pygame.image.save(surf, path)
+        except Exception as exc:
+            # A screenshot problem must never take down the running line.
+            self.log(f"Snapshot failed: {exc}")
+            return None
         self.log(f"Snapshot saved: {path}")
+        return path
+
+    def capture_surface(self):
+        """Read exactly the active OpenGL viewport with tight RGB rows."""
+        vx, vy, width, height = (int(v) for v in self.ctx.viewport)
+        if width <= 0 or height <= 0:
+            raise ValueError(f"invalid capture viewport {self.ctx.viewport}")
+        data = self.fbo.read(viewport=(vx, vy, width, height),
+                             components=3, alignment=1)
+        expected = width * height * 3
+        if len(data) != expected:
+            raise ValueError(
+                f"capture returned {len(data):,} bytes; expected "
+                f"{expected:,} for {width}x{height} RGB")
+        return pygame.image.fromstring(data, (width, height), "RGB", True)
 
     def set_speed_from_x(self, mx):
         x, _y, wdt, _h = self.slider_rect
@@ -2707,6 +3564,16 @@ class AssemblyLineApp:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
+            if self.pricing_editing:
+                if event.type == pygame.KEYDOWN:
+                    self.pricing_key(event)
+                elif event.type == pygame.TEXTINPUT:
+                    self.pricing_text(event.text)
+                elif event.type == pygame.MOUSEBUTTONDOWN \
+                        and event.button == 1:
+                    self.mouse = event.pos
+                    self.pricing_click(*event.pos)
+                continue
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     if self.configuring:
@@ -2735,6 +3602,8 @@ class AssemblyLineApp:
                     self.start_new_run()
                 elif event.key == pygame.K_v:
                     self.cinematic = not self.cinematic
+                elif event.key == pygame.K_p:
+                    self.open_pricing_editor()
                 elif event.key == pygame.K_MINUS:
                     self.set_crew(self.workers_per_station - 1)
                 elif event.key in (pygame.K_EQUALS, pygame.K_PLUS):
@@ -2756,14 +3625,8 @@ class AssemblyLineApp:
                         self.set_speed_from_x(event.pos[0])
                     else:
                         # UI first; if nothing hit, treat as camera drag
-                        before = (self.panel, self.paused, self.configuring,
-                                  self.selected_yard, len(self.yard),
-                                  self.cinematic, self.follow)
-                        self.handle_click(*event.pos)
-                        after = (self.panel, self.paused, self.configuring,
-                                 self.selected_yard, len(self.yard),
-                                 self.cinematic, self.follow)
-                        if before == after and not self.configuring:
+                        handled = self.handle_click(*event.pos)
+                        if not handled and not self.configuring:
                             self.dragging = True
                 elif event.button == 3:
                     self.dragging = True
@@ -2775,8 +3638,16 @@ class AssemblyLineApp:
                 if event.button in (1, 3):
                     self.dragging = False
                     self.slider_drag = False
-        if not self.follow and not self.cinematic:
-            keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()
+        if not self.pricing_editing and not self.configuring \
+                and not self.cinematic:
+            # Arrow direction follows the requested on-screen movement.
+            if keys[pygame.K_LEFT]:
+                self.cam_yaw -= 0.03
+            if keys[pygame.K_RIGHT]:
+                self.cam_yaw += 0.03
+        if not self.follow and not self.cinematic \
+                and not self.pricing_editing and not self.configuring:
             pan = 16.0 / 60.0
             fx, fy = math.cos(self.cam_yaw) * pan, math.sin(self.cam_yaw) * pan
             if keys[pygame.K_w]:
@@ -2786,11 +3657,11 @@ class AssemblyLineApp:
                 self.cam_target[0] += fx
                 self.cam_target[1] += fy
             if keys[pygame.K_a]:
-                self.cam_target[0] -= fy
-                self.cam_target[1] += fx
-            if keys[pygame.K_d]:
                 self.cam_target[0] += fy
                 self.cam_target[1] -= fx
+            if keys[pygame.K_d]:
+                self.cam_target[0] -= fy
+                self.cam_target[1] += fx
         return True
 
     def run_loop(self):
@@ -2818,8 +3689,7 @@ class AssemblyLineApp:
                 self.update(dt)
                 sim_t += dt
             self.render()
-            data = self.fbo.read(components=3)
-            surf = pygame.image.fromstring(data, self.size, "RGB", True)
+            surf = self.capture_surface()
             path = os.path.join(out_dir, f"shot_{target:07.1f}s.png")
             pygame.image.save(surf, path)
             print(f"saved {path}")
@@ -2831,6 +3701,11 @@ class AssemblyLineApp:
 
 def selftest():
     print("=== economics / model self-test ===")
+    SHED.validate_shed()
+    se = SHED.shed_economics()
+    print(f"site shed {se['floor_sqft']:.0f}ft2  cost "
+          f"{se['total_cost']:,.0f}  quote {se['price']:,.0f}  "
+          f"labor {se['labor_hours']:.0f}h")
     rng = random.Random(11)
     for i in range(3):
         spec = random_spec(i + 1, rng)
@@ -2872,6 +3747,74 @@ def selftest():
     got = db.all()
     assert len(got) == 1 and got[0]["serial"] == sid
     print(f"    stored serial {sid}, summary {db.summary()}")
+    print("=== retained sale lifecycle ===")
+    sale_app = object.__new__(AssemblyLineApp)
+    sale_app.db = db
+    sale_app.yard = [YardDome(got[0], 0.0, 0.0)]
+    sale_app.rng = random.Random(3)
+    sale_app.sale = None
+    sale_app.sale_cooldown = SALE_AUTO_INTERVAL
+    sale_app.auto_run = True
+    sale_app.inspect = None
+    sale_app.event_log = []
+    assert sale_app.start_sale(sale_app.yard[0])
+    for _ in range(12):
+        sale_app.update_sale(1.0)
+    assert sale_app.sale is None and len(sale_app.yard) == 1
+    assert sale_app.yard[0].sold and db.sales_summary()["sold"] == 1
+    print("    sold dome remains in yard and inspectable")
+    print("=== pricing payload ===")
+    pricing_app = object.__new__(AssemblyLineApp)
+    original_floor = AL.CATEGORY_ECON["floor"]
+    pricing_app._apply_pricing_payload({
+        "categories": {"floor": [123.0, 17.0, 24.0]},
+        "globals": {"burdened_wage_per_hour": 51.0},
+        "products": {"home": [54_000.0, 875.0]},
+    })
+    assert AL.CATEGORY_ECON["floor"] == (123.0, 17.0, 24.0)
+    assert ASSUMPTIONS["burdened_wage_per_hour"] == 51.0
+    assert AL.DOME_TYPES["home"].price_base == 54_000.0
+    AL.CATEGORY_ECON["floor"] = original_floor
+    ASSUMPTIONS.update(DEFAULT_GLOBAL_PRICING)
+    for key, values in DEFAULT_PRODUCT_PRICING.items():
+        AL.DOME_TYPES[key].price_base, AL.DOME_TYPES[key].price_per_m2 = values
+    print("    category, labor/overhead and product pricing apply globally")
+    print("=== legacy DB migration ===")
+    fd, legacy_path = tempfile.mkstemp(prefix="dome-yard-legacy-",
+                                       suffix=".sqlite3")
+    os.close(fd)
+    try:
+        legacy = sqlite3.connect(legacy_path)
+        legacy.execute("CREATE TABLE domes ("
+                       "serial INTEGER PRIMARY KEY AUTOINCREMENT, "
+                       "name TEXT, price REAL)")
+        legacy.execute("INSERT INTO domes (name, price) VALUES (?, ?)",
+                       ("Retained Legacy Dome", 72_000.0))
+        legacy.commit()
+        legacy.close()
+        migrated = YardDB(legacy_path)
+        columns = {row[1] for row in
+                   migrated.conn.execute("PRAGMA table_info(domes)")}
+        assert columns == set(YARD_COLUMN_SPECS)
+        old = migrated.all()[0]
+        assert old["name"] == "Retained Legacy Dome"
+        assert old["dtype"] == "home" and old["sold"] == 0
+        assert old["monthly"] > 0
+        migrated.mark_sold(old["serial"])
+        assert migrated.sales_summary()["sold"] == 1
+        migrated.conn.close()
+        reopened = YardDB(legacy_path)
+        retained = reopened.all()
+        assert len(retained) == 1 and retained[0]["sold"] == 1
+        reopened.clear()
+        assert reopened.summary()["count"] == 0
+        reopened.conn.close()
+        print("    retained row, added all columns, sell + clear OK")
+    finally:
+        try:
+            os.unlink(legacy_path)
+        except OSError:
+            pass
     print("selftest OK")
 
 

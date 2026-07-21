@@ -383,6 +383,7 @@ class Element:
     labor_min: float
     weight: float
     label: str
+    dims: tuple = (0.0, 0.0, 0.0)      # bounding-box extents, metres
 
 
 class Catalog:
@@ -409,10 +410,13 @@ class Catalog:
         if verts:
             pts = np.array([v[:3] for v in verts])
             centroid = pts.mean(axis=0)
-            diag = float(np.linalg.norm(pts.max(0) - pts.min(0)))
+            extent = pts.max(0) - pts.min(0)
+            diag = float(np.linalg.norm(extent))
+            dims = tuple(float(x) for x in extent)
         else:
             centroid = np.zeros(3)
             diag = 0.0
+            dims = (0.0, 0.0, 0.0)
         base_cost, base_labor, base_weight = CATEGORY_ECON[self._cat]
         size = max(0.5, min(2.6, diag / 1.4)) if diag else 1.0
         floor_r = self.spec.floor_radius
@@ -431,7 +435,8 @@ class Catalog:
             material_cost=(cost if cost is not None else base_cost * size),
             labor_min=(labor if labor is not None else base_labor * size),
             weight=(weight if weight is not None else base_weight * size),
-            label=self._label or CATEGORY_LABEL.get(self._cat, self._cat))
+            label=self._label or CATEGORY_LABEL.get(self._cat, self._cat),
+            dims=dims)
         self.elements.append(el)
         self.by_stage[stage].append(el)
 
@@ -1105,3 +1110,183 @@ def scale_scenarios(single_per_year, avg_margin, avg_price):
                     "gross_profit": units * avg_margin,
                     "capex": a["line_capex"] * lines})
     return out
+
+
+FT3_PER_M3 = 35.3146667
+FT2_PER_M2 = 10.7639104167
+FT_PER_M = 3.2808399
+
+# Unit rates for the pure structure comparison (box vs dome). Both are
+# priced by material QUANTITY so it is a true apples-to-apples test: the
+# same $/ft of framing, $/ft2 of sheet-metal skin, and $/ft2 of floor apply
+# to whichever geometry encloses the space. Editable planning inputs.
+COMPARISON_RATES = {
+    "frame_mat_per_ft": 2.80, "frame_min_per_ft": 2.4,
+    "sheet_mat_per_ft2": 2.60, "sheet_min_per_ft2": 1.3,
+    "floor_mat_per_ft2": 6.50, "floor_min_per_ft2": 3.0,
+    # finished-home envelope layers (per ft2 of envelope)
+    "sheathing_mat_per_ft2": 1.90, "sheathing_min_per_ft2": 1.2,
+    "cladding_mat_per_ft2": 3.20, "cladding_min_per_ft2": 2.0,
+    "insulation_mat_per_ft2": 1.60, "insulation_min_per_ft2": 0.9,
+    "drywall_mat_per_ft2": 2.10, "drywall_min_per_ft2": 2.2,
+    # turnkey fit-out (kitchen, bath, mech/elec/plumb, finishes) — an
+    # installed allowance per ft2 of FLOOR, and essentially independent of
+    # the shell geometry, which is why it dilutes the dome's shell advantage
+    "fitout_per_ft2": 85.0,
+}
+
+# Reference buildings for the comparison (editable).
+COMPARE_SHED_BOX = (24.0, 16.0, 10.0)      # w, l, h in feet
+COMPARE_HOME_FLOOR_SF = 640.0
+COMPARE_HOME_WALL_FT = 9.0
+
+
+def _cap_volume_m3(radius, base_z):
+    h = (1.0 - base_z) * radius
+    return math.pi * h * h * (radius - h / 3.0)
+
+
+def dome_shell_quantities(radius, frequency):
+    """Framing length, cladding area, floor area and volume of a bare
+    geodesic shell (frame + one skin), from the actual geometry."""
+    geo = build_geodesic(frequency)
+    framing_m = sum(
+        float(np.linalg.norm(geo.verts[i] - geo.verts[j]))
+        for i, j in geo.edges) * radius
+    clad_m2 = 0.0
+    for f in geo.faces:
+        a, b, c = geo.verts[f[0]], geo.verts[f[1]], geo.verts[f[2]]
+        clad_m2 += 0.5 * float(np.linalg.norm(np.cross(b - a, c - a)))
+    clad_m2 *= radius * radius
+    floor_r = radius * math.sqrt(max(0.0, 1.0 - geo.base_z ** 2))
+    floor_m2 = math.pi * floor_r ** 2
+    return {"framing_lf": framing_m * FT_PER_M,
+            "cladding_sf": clad_m2 * FT2_PER_M2,
+            "floor_sf": floor_m2 * FT2_PER_M2,
+            "vol_ft3": _cap_volume_m3(radius, geo.base_z) * FT3_PER_M3}
+
+
+def box_shell_quantities(w_ft, l_ft, h_ft):
+    """Same quantities for a stick/pole-framed rectangular box with a flat
+    sheet-metal roof and walls — no siding, shingles, doors or trim, so the
+    materials match the bare dome exactly."""
+    perim = 2.0 * (w_ft + l_ft)
+    studs = perim / (16.0 / 12.0)                 # 16-in o.c. wall studs
+    roof_joists = l_ft / (24.0 / 12.0)            # 24-in o.c. flat roof
+    framing_lf = (studs * h_ft                    # studs
+                  + 3.0 * perim                   # bottom + double top plate
+                  + roof_joists * w_ft)           # roof joists span the width
+    cladding_sf = perim * h_ft + w_ft * l_ft      # walls + flat roof
+    return {"framing_lf": framing_lf,
+            "cladding_sf": cladding_sf,
+            "floor_sf": w_ft * l_ft,
+            "vol_ft3": w_ft * l_ft * h_ft}
+
+
+def shell_cost(q, wage=None):
+    """Material + labor for a set of shell quantities, at the shared rates."""
+    r = COMPARISON_RATES
+    if wage is None:
+        wage = ASSUMPTIONS["burdened_wage_per_hour"]
+    material = (q["framing_lf"] * r["frame_mat_per_ft"]
+                + q["cladding_sf"] * r["sheet_mat_per_ft2"]
+                + q["floor_sf"] * r["floor_mat_per_ft2"])
+    labor_min = (q["framing_lf"] * r["frame_min_per_ft"]
+                 + q["cladding_sf"] * r["sheet_min_per_ft2"]
+                 + q["floor_sf"] * r["floor_min_per_ft2"])
+    hours = labor_min / 60.0
+    return {"material": material, "hours": hours,
+            "build": material + hours * wage, **q}
+
+
+def finished_cost(q, wage=None):
+    """Cost of a *finished* building: framing + a full envelope (sheathing,
+    cladding, insulation, drywall) over the shell area, the floor, and a
+    turnkey fit-out allowance per ft2 of floor. Same rates for any
+    geometry, so only the shell quantities differ."""
+    r = COMPARISON_RATES
+    if wage is None:
+        wage = ASSUMPTIONS["burdened_wage_per_hour"]
+    shell = q["cladding_sf"]
+    env_mat = (r["sheathing_mat_per_ft2"] + r["cladding_mat_per_ft2"]
+               + r["insulation_mat_per_ft2"] + r["drywall_mat_per_ft2"])
+    env_min = (r["sheathing_min_per_ft2"] + r["cladding_min_per_ft2"]
+               + r["insulation_min_per_ft2"] + r["drywall_min_per_ft2"])
+    fitout = q["floor_sf"] * r["fitout_per_ft2"]
+    material = (q["framing_lf"] * r["frame_mat_per_ft"] + shell * env_mat
+                + q["floor_sf"] * r["floor_mat_per_ft2"] + fitout)
+    labor_min = (q["framing_lf"] * r["frame_min_per_ft"] + shell * env_min
+                 + q["floor_sf"] * r["floor_min_per_ft2"])
+    hours = labor_min / 60.0        # fit-out allowance is installed cost
+    return {"material": material, "hours": hours, "fitout": fitout,
+            "build": material + hours * wage, **q}
+
+
+def _solve_dome_radius(target, frequency, key):
+    """Radius whose dome_shell_quantities[key] matches target."""
+    r_m = 3.0
+    for _ in range(6):
+        q = dome_shell_quantities(r_m, frequency)
+        cur = max(1e-6, q[key])
+        power = 1.0 / 3.0 if key == "vol_ft3" else 1.0 / 2.0
+        r_m *= (target / cur) ** power
+    return r_m
+
+
+def building_comparisons(wage=None):
+    """Four buildings in two like-for-like tiers.
+
+    Storage shed  — bare shell (frame + sheet metal + floor), matched on
+                    enclosed VOLUME, because a shed sells storage space.
+    Home          — finished (envelope + turnkey fit-out), matched on FLOOR
+                    area, because a house sells living space.
+
+    Both tiers price box and dome with the identical rate model, so the
+    only difference is the geometry."""
+    w, l, h = COMPARE_SHED_BOX
+    box_shed = shell_cost(box_shell_quantities(w, l, h), wage)
+    r_shed = _solve_dome_radius(box_shed["vol_ft3"], 2, "vol_ft3")
+    dome_shed = shell_cost(dome_shell_quantities(r_shed, 2), wage)
+
+    floor = COMPARE_HOME_FLOOR_SF
+    hw = math.sqrt(floor / 1.3)
+    box_home = finished_cost(
+        box_shell_quantities(hw, floor / hw, COMPARE_HOME_WALL_FT), wage)
+    r_home = _solve_dome_radius(floor, 3, "floor_sf")
+    dome_home = finished_cost(dome_shell_quantities(r_home, 3), wage)
+
+    def tag(d, name, extra=None):
+        d = dict(d)
+        d["name"] = name
+        d["per_cf"] = d["build"] / max(1.0, d["vol_ft3"])
+        d["per_sf"] = d["build"] / max(1.0, d["floor_sf"])
+        if extra:
+            d.update(extra)
+        return d
+    return {
+        "shed": {"box": tag(box_shed, "BOX"),
+                 "dome": tag(dome_shed, "DOME",
+                             {"r_ft": r_shed * FT_PER_M}),
+                 "basis": "volume"},
+        "home": {"box": tag(box_home, "STICK"),
+                 "dome": tag(dome_home, "DOME",
+                             {"r_ft": r_home * FT_PER_M}),
+                 "basis": "floor"},
+    }
+
+
+def dome_shell_estimate(radius, frequency):
+    """Bare-shell cost/size of a dome: floor + frame + one sheet-metal skin
+    only (no insulation, utilities, or fit-out), so it can be compared like
+    for like against a bare shed. Volume uses the same spherical-cap formula
+    the app uses for the shed comparison."""
+    spec = DomeSpec(dtype="shed", radius=radius, frequency=frequency)
+    cat, info = build_dome_catalog(spec)
+    keep = ("floor", "frame", "sheetmetal")
+    material = sum(e.material_cost for e in cat.elements if e.stage in keep)
+    labor_min = sum(e.labor_min for e in cat.elements if e.stage in keep)
+    floor_m2 = math.pi * info["floor_r"] ** 2
+    h = max(0.0, info["apex_z"] - FLOOR_TOP)
+    vol_m3 = math.pi * h * h * (radius - h / 3.0)
+    return {"material": material, "labor_hours": labor_min / 60.0,
+            "floor_ft2": floor_m2 * FT2_PER_M2, "vol_ft3": vol_m3 * FT3_PER_M3}
