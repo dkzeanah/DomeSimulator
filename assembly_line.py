@@ -2683,55 +2683,74 @@ class AssemblyLineApp:
         self.panel_body_rect = (px, py + 26, pw, tht + 10)
 
     def draw_controls(self):
+        """Toolbar. Every button carries a hotkey, and the whole bar scales
+        to fit the window so nothing can ever land off-screen (and become
+        unclickable) at smaller or scaled display resolutions."""
         w, h = self.size
-        bar_h = 46
+        bar_h = 54
         y = h - bar_h
-        self.draw_rect(0, y, w, bar_h, (0.04, 0.06, 0.10, 0.85))
+        self.draw_rect(0, y, w, bar_h, (0.04, 0.06, 0.10, 0.88))
         self.buttons_bar = []
-        x = 12
 
-        def add_btn(key, label, width, active=False):
-            nonlocal x
-            self.draw_rect(x, y + 8, width, 30,
-                           (0.20, 0.28, 0.20, 0.95) if active
-                           else (0.10, 0.13, 0.18, 0.95))
-            tex, tw, tht = self.text_texture((f"btn{key}", label, active),
-                                             [(label, (235, 238, 244),
-                                               self.font_small)], pad=4)
-            self.draw_texture(tex, x + (width - tw) / 2, y + 14, tw, tht)
-            self.buttons_bar.append((key, x, y + 8, width, 30))
-            x += width + 6
+        specs = [
+            ("pause", "> RUN" if self.paused else "|| PAUSE", 92,
+             self.paused),
+            ("step", "STEP", 58, False),
+            ("__slider__", None, 140, False),
+            ("follow", "FOLLOW", 74, self.follow),
+            ("cutaway", "CUTAWAY", 82, self.force_cutaway),
+            ("xray", "X-RAY", 62, self.xray),
+            ("cinematic", "CINE", 54, self.cinematic),
+            ("snapshot", "SNAP", 56, False),
+            ("config", "CONFIG", 72, self.configuring),
+            ("auto", "AUTO", 54, self.auto_run),
+            ("wminus", "CREW -", 64, False),
+            ("wplus", f"{self.workers_per_station} +", 44, False),
+            ("sell", "SELL", 54, self.sale is not None),
+            ("shed", "COMPARE", 78, self.panel == "benchmark"),
+            ("prices", "PRICES", 70, self.pricing_editing),
+            ("supply", "SUPPLY×", 78, False),
+            ("breakdown", "BREAK×", 72, False),
+            ("absence", "ABSENT×", 78, False),
+            ("clear", "CLEAR", 62, False),
+        ]
+        gap = 6.0
+        total = sum(s[2] for s in specs) + gap * (len(specs) - 1) + 24
+        scale = min(1.0, (w - 16) / max(1.0, total))
+        gap *= scale
+        x = 12 * scale
 
-        add_btn("pause", "> RUN" if self.paused else "|| PAUSE", 92)
-        add_btn("step", "STEP", 60)
-        # speed slider
-        self.draw_rect(x, y + 18, 130, 8, (0.2, 0.22, 0.26, 1))
-        frac = (math.log2(self.speed) + 2) / 5.0  # 0.25..8 -> 0..1
-        hx = x + max(0, min(1, frac)) * 130
-        self.draw_rect(hx - 5, y + 10, 10, 24, (0.9, 0.72, 0.2, 1))
-        tex, tw, tht = self.text_texture(("spd", self.speed),
-                                         [(f"x{self.speed:g}", (235, 238, 244),
-                                           self.font_small)], pad=2)
-        self.draw_texture(tex, x + 45, y + 1, tw, tht)
-        self.slider_rect = (x, y + 10, 130, 24)
-        x += 140
-        add_btn("follow", "FOLLOW", 74, self.follow)
-        add_btn("cutaway", "CUTAWAY", 82, self.force_cutaway)
-        add_btn("xray", "X-RAY", 62, self.xray)
-        add_btn("cinematic", "CINE", 54, self.cinematic)
-        add_btn("snapshot", "SNAP", 56)
-        add_btn("config", "CONFIG", 72)
-        add_btn("auto", "AUTO", 54, self.auto_run)
-        add_btn("wminus", "CREW -", 66)
-        add_btn("wplus", f"{self.workers_per_station} +", 44)
-        add_btn("sell", "SELL", 54, self.sale is not None)
-        add_btn("shed", "SHED VS", 72,
-                self.is_site_shed(self.selected_yard))
-        add_btn("prices", "PRICES", 70, self.pricing_editing)
-        add_btn("supply", "SUPPLY×", 78)
-        add_btn("breakdown", "BREAK×", 72)
-        add_btn("absence", "ABSENT×", 78)
-        add_btn("clear", "CLEAR", 66)
+        for key, label, bw, active in specs:
+            bw *= scale
+            if key == "__slider__":
+                track = bw * 0.93
+                self.draw_rect(x, y + 24, track, 8, (0.2, 0.22, 0.26, 1))
+                frac = (math.log2(self.speed) + 2) / 5.0    # 0.25..8
+                hx = x + max(0.0, min(1.0, frac)) * track
+                self.draw_rect(hx - 5, y + 16, 10, 24, (0.9, 0.72, 0.2, 1))
+                tex, tw, tht = self.text_texture(
+                    ("spd", self.speed),
+                    [(f"x{self.speed:g}  [ ]", (235, 238, 244),
+                      self.font_tiny)], pad=2)
+                self.draw_texture(tex, x + 4, y + 4, tw, tht)
+                self.slider_rect = (x, y + 16, track, 24)
+                x += bw + gap
+                continue
+            self.draw_rect(x, y + 8, bw, 38,
+                           (0.20, 0.30, 0.22, 0.98) if active
+                           else (0.10, 0.13, 0.18, 0.96))
+            tex, tw, tht = self.text_texture(
+                (f"btn{key}", label, active),
+                [(label, (235, 238, 244), self.font_small)], pad=3)
+            self.draw_texture(tex, x + (bw - tw) / 2, y + 10, tw, tht)
+            hint = self.BUTTON_HOTKEYS.get(key, ("", None))[0]
+            if hint:
+                t2, w2, h2 = self.text_texture(
+                    (f"hk{key}",), [(hint, (150, 190, 235), self.font_tiny)],
+                    pad=1)
+                self.draw_texture(t2, x + (bw - w2) / 2, y + 30, w2, h2)
+            self.buttons_bar.append((key, x, y + 8, bw, 38))
+            x += bw + gap
 
     def _dome_compare_record(self):
         """Use the inspected dome, then a yard home, then a 1-bed reference."""
@@ -3198,16 +3217,15 @@ class AssemblyLineApp:
                          "TOUR · ←/→ orbit · drag orbit · "
                          "wheel zoom · P pricing · toolbar active")
         else:
-            text_line = ("SPACE pause · [ ] speed · F follow · C cutaway · "
-                         "X x-ray · V cine · -/+ crew · R new · P pricing · "
-                         "←/→ orbit · WASD pan · drag orbit · "
-                         "wheel zoom · ESC back/quit")
+            text_line = ("every button has a hotkey (shown on it) · "
+                         "[ ] speed · R new run · ←/→ orbit · WASD pan · "
+                         "drag orbit · wheel zoom · ESC back/quit")
         tex, tw, th = self.text_texture(
             ("key-legend", text_line),
             [(text_line, (130, 138, 150), self.font_tiny)], pad=1)
-        self.draw_rect(8, h - 70, min(w - 16, tw + 10), th + 4,
+        self.draw_rect(8, h - 78, min(w - 16, tw + 10), th + 4,
                        (0.025, 0.035, 0.055, 0.34))
-        self.draw_texture(tex, 13, h - 68, tw, th, alpha=0.62)
+        self.draw_texture(tex, 13, h - 76, tw, th, alpha=0.62)
 
     def draw_configurator(self):
         w, h = self.size
@@ -3529,6 +3547,43 @@ class AssemblyLineApp:
             self._begin_station(self.phase.station)
         self.log(f"Crew set to {n} workers/station")
 
+    # Every toolbar button has a hotkey: key -> (hint shown on the button,
+    # pygame key). W/A/S/D are deliberately avoided (camera panning), and
+    # CLEAR needs Shift because it wipes the yard database.
+    BUTTON_HOTKEYS = {
+        "pause":     ("Spc", pygame.K_SPACE),
+        "step":      (".", pygame.K_PERIOD),
+        "follow":    ("F", pygame.K_f),
+        "cutaway":   ("C", pygame.K_c),
+        "xray":      ("X", pygame.K_x),
+        "cinematic": ("V", pygame.K_v),
+        "snapshot":  ("K", pygame.K_k),
+        "config":    ("G", pygame.K_g),
+        "auto":      ("U", pygame.K_u),
+        "wminus":    ("-", pygame.K_MINUS),
+        "wplus":     ("=", pygame.K_EQUALS),
+        "sell":      ("L", pygame.K_l),
+        "shed":      ("B", pygame.K_b),
+        "prices":    ("P", pygame.K_p),
+        "supply":    ("1", pygame.K_1),
+        "breakdown": ("2", pygame.K_2),
+        "absence":   ("3", pygame.K_3),
+        "clear":     ("^Del", pygame.K_DELETE),
+    }
+    SHIFT_REQUIRED = {"clear"}
+
+    def hotkey_action(self, key, mods):
+        """Map a pressed key to a toolbar action. Returns True if handled."""
+        for name, (_hint, code) in self.BUTTON_HOTKEYS.items():
+            if code != key:
+                continue
+            if name in self.SHIFT_REQUIRED and not (mods & pygame.KMOD_SHIFT):
+                self.log("Hold Shift with Del to clear the yard")
+                return True
+            self.control_action(name)
+            return True
+        return False
+
     def control_action(self, key):
         if key == "pause":
             self.paused = not self.paused
@@ -3692,29 +3747,15 @@ class AssemblyLineApp:
                         self.selected_yard = None
                     else:
                         return False
-                elif event.key == pygame.K_SPACE:
-                    self.paused = not self.paused
                 elif event.key == pygame.K_LEFTBRACKET:
                     self.speed = max(0.25, self.speed * 0.5)
                 elif event.key == pygame.K_RIGHTBRACKET:
                     self.speed = min(8.0, self.speed * 2.0)
-                elif event.key == pygame.K_f:
-                    self.follow = not self.follow
-                    self.cinematic = False
-                elif event.key == pygame.K_c:
-                    self.force_cutaway = not self.force_cutaway
-                elif event.key == pygame.K_x:
-                    self.xray = not self.xray
                 elif event.key == pygame.K_r:
                     self.start_new_run()
-                elif event.key == pygame.K_v:
-                    self.cinematic = not self.cinematic
-                elif event.key == pygame.K_p:
-                    self.open_pricing_editor()
-                elif event.key == pygame.K_MINUS:
-                    self.set_crew(self.workers_per_station - 1)
-                elif event.key in (pygame.K_EQUALS, pygame.K_PLUS):
-                    self.set_crew(self.workers_per_station + 1)
+                else:
+                    # every toolbar button also has a hotkey
+                    self.hotkey_action(event.key, pygame.key.get_mods())
             if event.type == pygame.MOUSEMOTION:
                 self.mouse = event.pos
                 if self.dragging:
