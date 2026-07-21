@@ -688,6 +688,65 @@ class DomeGpu:
             self.transparent_ibo.write(transparent.tobytes())
 
 
+def spec_from_rec(rec) -> DomeSpec:
+    return DomeSpec(
+        serial=rec.get("serial", 0), name=rec.get("name", "Dome"),
+        dtype=rec.get("dtype", "home"), radius=rec.get("radius", 4.0),
+        frequency=int(rec.get("frequency", 3)),
+        layout=rec.get("layout", "Studio"),
+        cladding=rec.get("cladding", "Slate Scale"),
+        cladding_color=(rec.get("cr", 0.2), rec.get("cg", 0.3),
+                        rec.get("cb", 0.38)))
+
+
+class InspectDome:
+    """A finished dome rebuilt with independent per-layer GPU geometry so
+    each layer can be toggled visible/hidden and solid/transparent — a
+    Photoshop-style layers view for buyer inspection."""
+
+    def __init__(self, ctx, program, spec: DomeSpec):
+        self.ctx = ctx
+        self.spec = spec
+        cat, info = build_dome_catalog(spec)
+        self.info = info
+        self.stages = cat.stages
+        mesh = cat.b.build()
+        self.vbo = ctx.buffer(mesh.vertices.tobytes())
+        layout = [(self.vbo, "3f 3f 4f 1f",
+                   "in_position", "in_normal", "in_color", "in_mat")]
+        self.stage_vaos = {}
+        for s in cat.stages:
+            els = cat.by_stage.get(s.key, [])
+            o = [mesh.opaque[e.o0:e.o1] for e in els if e.o1 > e.o0]
+            t = [mesh.transparent[e.t0:e.t1] for e in els if e.t1 > e.t0]
+            ovao = tvao = None
+            if o:
+                oi = ctx.buffer(np.concatenate(o).tobytes())
+                ovao = ctx.vertex_array(program, layout, oi,
+                                        index_element_size=4)
+            if t:
+                ti = ctx.buffer(np.concatenate(t).tobytes())
+                tvao = ctx.vertex_array(program, layout, ti,
+                                        index_element_size=4)
+            self.stage_vaos[s.key] = (ovao, tvao)
+        # layer states: visible + solid (else transparent)
+        self.layers = {s.key: {"visible": True, "solid": True}
+                       for s in cat.stages}
+
+    def release(self):
+        for ovao, tvao in self.stage_vaos.values():
+            for v in (ovao, tvao):
+                if v is not None:
+                    try:
+                        v.release()
+                    except Exception:
+                        pass
+        try:
+            self.vbo.release()
+        except Exception:
+            pass
+
+
 # ===========================================================================
 # Worker labor model
 # ===========================================================================
@@ -1000,9 +1059,12 @@ class AssemblyLineApp:
         self.hover_element = None
         self.hover_screen = None
         self.selected_yard = None
+        self.inspect = None          # InspectDome when inspecting a yard dome
+        self.tour = False
         self.configuring = False
         self.config_spec = None
         self.cinematic_angle = 0.0
+        self.saved_cam = None
 
         # camera
         self.cam_yaw = math.radians(-118.0)
@@ -1061,6 +1123,64 @@ class AssemblyLineApp:
     def log(self, msg):
         self.event_log.append(msg)
         self.event_log = self.event_log[-6:]
+
+    # -- finished-dome inspection ---------------------------------------
+
+    def enter_inspect(self, yd):
+        self.exit_inspect()
+        self.selected_yard = yd
+        try:
+            self.inspect = InspectDome(self.ctx, self.scene_prog,
+                                       spec_from_rec(yd.rec))
+        except Exception as exc:
+            self.log(f"inspect failed: {exc}")
+            self.inspect = None
+            return
+        self.saved_cam = (self.cam_target.copy(), self.cam_yaw,
+                          self.cam_pitch, self.cam_dist, self.follow)
+        self.follow = False
+        self.tour = False
+        self.cam_target = np.array([yd.x, yd.y, 2.0], dtype=np.float32)
+        self.cam_yaw = math.radians(-120.0)
+        self.cam_pitch = math.radians(16.0)
+        self.cam_dist = 12.0 * max(0.6, yd.scale)
+
+    def exit_inspect(self):
+        if self.inspect is not None:
+            self.inspect.release()
+            self.inspect = None
+        self.tour = False
+        if self.saved_cam is not None:
+            (self.cam_target, self.cam_yaw, self.cam_pitch, self.cam_dist,
+             self.follow) = (self.saved_cam[0], *self.saved_cam[1:])
+            self.saved_cam = None
+        self.selected_yard = None
+
+    def rebuild_inspect(self):
+        if self.inspect is None or self.selected_yard is None:
+            return
+        spec = self.inspect.spec
+        old_layers = self.inspect.layers
+        self.inspect.release()
+        self.inspect = InspectDome(self.ctx, self.scene_prog, spec)
+        for k, v in old_layers.items():
+            if k in self.inspect.layers:
+                self.inspect.layers[k] = v
+
+    def toggle_tour(self):
+        self.tour = not self.tour
+        yd = self.selected_yard
+        if yd is None:
+            return
+        if self.tour:
+            # buyer's-eye view: stand low and close, shell x-rayed
+            self.cam_target = np.array([yd.x, yd.y, 1.2], dtype=np.float32)
+            self.cam_pitch = math.radians(4.0)
+            self.cam_dist = 5.0 * max(0.6, yd.scale)
+        else:
+            self.cam_target = np.array([yd.x, yd.y, 2.0], dtype=np.float32)
+            self.cam_pitch = math.radians(16.0)
+            self.cam_dist = 12.0 * max(0.6, yd.scale)
 
     @property
     def phase(self):
@@ -1297,12 +1417,16 @@ class AssemblyLineApp:
         sun_pos = self.cam_target + sun_dir.astype(np.float32) * 280.0
         self.draw_gpu(self.sun, mat_translate(*sun_pos))
 
-        # finished domes in the yard
+        # finished domes in the yard (skip the one being inspected)
         for yd in self.yard:
+            if self.inspect is not None and yd is self.selected_yard:
+                continue
             self.draw_gpu(self.finished_meshes.get(yd.dtype, self.finished),
                           mat_translate(yd.x, yd.y, 0)
                           @ mat_scale(yd.scale, yd.scale, yd.scale),
                           tint=yd.tint)
+        if self.inspect is not None:
+            self._draw_inspect()
 
         # pipeline: show trailing/leading domes at other stations
         if self.pipeline_view and self.phase.kind == "work":
@@ -1348,6 +1472,42 @@ class AssemblyLineApp:
                           transparent=True, tint=yd.tint)
 
         self.draw_hud()
+
+    SHELL_KEYS = {"insulation", "sheetrock", "osb", "wrap", "shingles",
+                  "fiberglass", "sheetmetal", "glazing", "steelplate",
+                  "solar"}
+
+    def _draw_inspect(self):
+        insp = self.inspect
+        yd = self.selected_yard
+        mgl = self.moderngl
+        prog = self.scene_prog
+        prog["u_cut_z"].value = 1e9
+        prog["u_tint"].value = (1, 1, 1)
+        self.upload_model(mat_translate(yd.x, yd.y, 0))
+        for s in insp.stages:
+            L = insp.layers[s.key]
+            if not L["visible"]:
+                continue
+            ovao, tvao = insp.stage_vaos[s.key]
+            see_through = (not L["solid"]) or (self.tour and s.key in
+                                               self.SHELL_KEYS)
+            if see_through:
+                prog["u_force_alpha"].value = 0.22
+                self.ctx.depth_mask = False
+                if ovao:
+                    ovao.render(mgl.TRIANGLES)
+                if tvao:
+                    tvao.render(mgl.TRIANGLES)
+                self.ctx.depth_mask = True
+                prog["u_force_alpha"].value = 0.0
+            else:
+                if ovao:
+                    ovao.render(mgl.TRIANGLES)
+                self.ctx.depth_mask = False
+                if tvao:
+                    tvao.render(mgl.TRIANGLES)
+                self.ctx.depth_mask = True
 
     def _draw_pipeline(self, hero_x):
         """Draw a couple of finished/leading domes at neighbouring stations
@@ -1503,43 +1663,51 @@ class AssemblyLineApp:
         grey = (176, 182, 192)
         green = (130, 224, 150)
 
-        self.draw_money_popups()
+        inspecting = self.inspect is not None
+        if not inspecting:
+            self.draw_money_popups()
 
         # top banner
-        tex, tw, th = self.text_texture(("banner", self.phase_idx,
-                                         self.run.spec.serial,
-                                         self.phase.kind == "work" and
-                                         self.run.elements_done),
-                                        self.banner_lines())
+        if inspecting:
+            yd = self.selected_yard
+            tname = AL.DOME_TYPES.get(yd.dtype, AL.DOME_TYPES["home"]).name
+            banner = [(f"INSPECTING #{yd.rec.get('serial', '?')} — "
+                       f"{yd.rec['name']} ({tname})", amber, self.font_big)]
+            tex, tw, th = self.text_texture(
+                ("ibanner", yd.rec.get("serial")), banner)
+        else:
+            tex, tw, th = self.text_texture(("banner", self.phase_idx,
+                                             self.run.spec.serial,
+                                             self.phase.kind == "work" and
+                                             self.run.elements_done),
+                                            self.banner_lines())
         self.draw_rect((w - tw) / 2 - 6, 8, tw + 12, th + 10,
                        (0.03, 0.05, 0.08, 0.66))
         self.draw_texture(tex, (w - tw) / 2, 13, tw, th)
 
-        # live money strip (their money counter, grown into a P&L ticker)
-        r = self.run
-        strip = [
-            (f"COST TO DATE {self.money(r.cost_so_far())}", amber,
-             self.font_med),
-            (f"materials {self.money(r.material)}   labor "
-             f"{self.money(r.labor_cost())}   overhead "
-             f"{self.money(r.overhead)}", grey, self.font_small),
-            (f"elements placed {r.elements_done}/{len(r.cat.elements)}   "
-             f"worker steps {int(r.steps):,}   distance {r.distance_m:,.0f} m",
-             white, self.font_small),
-            (f"projected sale {self.money(r.econ_preview['price'])}   "
-             f"projected margin {self.money(r.econ_preview['margin'])} "
-             f"({r.econ_preview['margin_pct']:.0f}%)", green, self.font_small),
-        ]
-        self.draw_text_block(("moneystrip", int(r.cost_so_far()),
-                              int(r.steps), r.elements_done), strip,
-                             14, th + 30)
-
-        # checklist
-        self.draw_text_block("checklist", self.checklist_lines(),
-                             14, th + 150)
-
-        # right dock panel
-        self.draw_panel()
+        if not inspecting:
+            # live money strip (money counter grown into a P&L ticker)
+            r = self.run
+            strip = [
+                (f"COST TO DATE {self.money(r.cost_so_far())}", amber,
+                 self.font_med),
+                (f"materials {self.money(r.material)}   labor "
+                 f"{self.money(r.labor_cost())}   overhead "
+                 f"{self.money(r.overhead)}", grey, self.font_small),
+                (f"elements placed {r.elements_done}/{len(r.cat.elements)}   "
+                 f"worker steps {int(r.steps):,}   distance "
+                 f"{r.distance_m:,.0f} m", white, self.font_small),
+                (f"projected sale {self.money(r.econ_preview['price'])}   "
+                 f"projected margin {self.money(r.econ_preview['margin'])} "
+                 f"({r.econ_preview['margin_pct']:.0f}%)", green,
+                 self.font_small),
+            ]
+            self.draw_text_block(("moneystrip", int(r.cost_so_far()),
+                                  int(r.steps), r.elements_done), strip,
+                                 14, th + 30)
+            self.draw_text_block("checklist", self.checklist_lines(),
+                                 14, th + 150)
+            self.draw_panel()
 
         # bottom control bar
         self.draw_controls()
@@ -1917,14 +2085,94 @@ class AssemblyLineApp:
                  (f"built {rec['created']}", grey, self.font_tiny),
                  (f"worker steps {rec['steps']:,}  ·  "
                   f"{rec['distance_m']:,.0f} m walked", grey, self.font_tiny),
-                 ("click elsewhere to close", amber, self.font_tiny)]
+                 (f"sold: {'YES' if self.selected_yard.sold else 'in yard'}",
+                  green if not self.selected_yard.sold else grey,
+                  self.font_tiny),
+                 ("EXIT to close" if self.inspect else "click to close",
+                  amber, self.font_tiny)]
         tex, tw, th = self.text_texture(
-            ("plate", rec.get("serial")), lines)
-        px = (w - tw) / 2
-        py = (h - th) / 2
+            ("plate", rec.get("serial"), self.selected_yard.sold,
+             bool(self.inspect)), lines)
+        if self.inspect is not None:
+            px = w - tw - 20
+            py = 70
+        else:
+            px = (w - tw) / 2
+            py = (h - th) / 2
         self.draw_rect(px - 8, py - 8, tw + 16, th + 16,
                        (0.05, 0.07, 0.11, 0.95))
         self.draw_texture(tex, px, py, tw, th)
+        if self.inspect is not None:
+            self.draw_inspect_panel()
+
+    def draw_inspect_panel(self):
+        insp = self.inspect
+        white = (230, 234, 240)
+        amber = (255, 210, 90)
+        grey = (170, 176, 186)
+        green = (120, 220, 140)
+        px, py = 14, 96
+        row_h = 22
+        pw = 300
+        self.inspect_buttons = []
+        n = len(insp.stages)
+        panel_h = 34 + n * row_h + 96
+        self.draw_rect(px - 6, py - 6, pw + 12, panel_h,
+                       (0.04, 0.06, 0.10, 0.9))
+        tex, tw, th = self.text_texture(
+            ("insphdr",), [("LAYERS  (eye = show · box = solid)", white,
+                            self.font_small)])
+        self.draw_texture(tex, px, py, tw, th)
+        yy = py + 26
+        for s in insp.stages:
+            L = insp.layers[s.key]
+            # visibility toggle
+            self.draw_rect(px, yy, 18, 18,
+                           (0.2, 0.5, 0.25, 1) if L["visible"]
+                           else (0.18, 0.2, 0.24, 1))
+            self.inspect_buttons.append((f"vis:{s.key}", px, yy, 18, 18))
+            # solid/transparent toggle
+            self.draw_rect(px + 24, yy, 18, 18,
+                           (0.5, 0.45, 0.2, 1) if L["solid"]
+                           else (0.2, 0.35, 0.5, 1))
+            self.inspect_buttons.append((f"solid:{s.key}", px + 24, yy, 18,
+                                         18))
+            col = white if L["visible"] else grey
+            t2, w2, h2 = self.text_texture((f"lyr{s.key}", L["visible"],
+                                            L["solid"]),
+                                           [(s.title.title(), col,
+                                             self.font_tiny)], pad=2)
+            self.draw_texture(t2, px + 48, yy + 1, w2, h2)
+            yy += row_h
+        # controls
+        yy += 6
+        ctrls = [("insp_tour", "TOUR" if not self.tour else "TOUR*"),
+                 ("insp_allon", "ALL ON"), ("insp_alloff", "ALL OFF")]
+        cx = px
+        for key, label in ctrls:
+            self.draw_rect(cx, yy, 92, 26,
+                           (0.2, 0.3, 0.2, 1) if (key == "insp_tour" and
+                                                  self.tour)
+                           else (0.12, 0.16, 0.22, 1))
+            t2, w2, h2 = self.text_texture((f"ic{key}", label, self.tour),
+                                           [(label, amber, self.font_small)],
+                                           pad=3)
+            self.draw_texture(t2, cx + 8, yy + 5, w2, h2)
+            self.inspect_buttons.append((key, cx, yy, 92, 26))
+            cx += 98
+        yy += 32
+        cx = px
+        for key, label in [("insp_clad", "CLADDING »"),
+                           ("insp_exit", "EXIT")]:
+            wbtn = 140 if key == "insp_clad" else 90
+            self.draw_rect(cx, yy, wbtn, 26,
+                           (0.30, 0.16, 0.16, 1) if key == "insp_exit"
+                           else (0.12, 0.16, 0.22, 1))
+            t2, w2, h2 = self.text_texture(
+                (f"ic{key}",), [(label, white, self.font_small)], pad=3)
+            self.draw_texture(t2, cx + 8, yy + 5, w2, h2)
+            self.inspect_buttons.append((key, cx, yy, wbtn, 26))
+            cx += wbtn + 8
 
     def draw_configurator(self):
         w, h = self.size
@@ -2040,8 +2288,16 @@ class AssemblyLineApp:
                     self.config_action(key)
                     return
             return
-        if self.selected_yard is not None:
-            self.selected_yard = None
+        # inspection mode: layer toggles + controls
+        if self.inspect is not None:
+            for key, x, y, bw, bh in getattr(self, "inspect_buttons", []):
+                if self.hit(mx, my, (x, y, bw, bh)):
+                    self.inspect_action(key)
+                    return
+            # click another yard dome to inspect it instead
+            yd = self.click_yard(mx, my)
+            if yd is not None and yd is not self.selected_yard:
+                self.enter_inspect(yd)
             return
         # control bar
         for key, x, y, bw, bh in getattr(self, "buttons_bar", []):
@@ -2058,10 +2314,36 @@ class AssemblyLineApp:
             if self.hit(mx, my, self.panel_body_rect):
                 self.cycle_sensitivity()
                 return
-        # yard dome
+        # yard dome -> open advanced inspection
         yd = self.click_yard(mx, my)
         if yd is not None:
-            self.selected_yard = yd
+            self.enter_inspect(yd)
+
+    def inspect_action(self, key):
+        insp = self.inspect
+        if key.startswith("vis:"):
+            k = key[4:]
+            insp.layers[k]["visible"] = not insp.layers[k]["visible"]
+        elif key.startswith("solid:"):
+            k = key[6:]
+            insp.layers[k]["solid"] = not insp.layers[k]["solid"]
+        elif key == "insp_tour":
+            self.toggle_tour()
+        elif key == "insp_allon":
+            for v in insp.layers.values():
+                v["visible"] = True
+        elif key == "insp_alloff":
+            for v in insp.layers.values():
+                v["visible"] = False
+        elif key == "insp_clad":
+            names = [c[0] for c in AL.CLADDINGS]
+            i = names.index(insp.spec.cladding) \
+                if insp.spec.cladding in names else 0
+            nm, col = AL.CLADDINGS[(i + 1) % len(names)]
+            insp.spec.cladding, insp.spec.cladding_color = nm, col
+            self.rebuild_inspect()
+        elif key == "insp_exit":
+            self.exit_inspect()
 
     def cycle_sensitivity(self):
         order = [1.0, 1.2, 0.85, 1.0]
@@ -2184,6 +2466,8 @@ class AssemblyLineApp:
                     if self.configuring:
                         self.configuring = False
                         self.paused = False
+                    elif self.inspect is not None:
+                        self.exit_inspect()
                     elif self.selected_yard is not None:
                         self.selected_yard = None
                     else:
