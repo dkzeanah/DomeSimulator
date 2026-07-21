@@ -960,6 +960,94 @@ class InspectShed:
                 pass
 
 
+class InspectStruct:
+    """Generic layered inspection for a non-dome structure built from a
+    {stage -> mesh} part set (the comparison-area box and house)."""
+
+    kind = "struct"
+
+    def __init__(self, ctx, program, parts):
+        self.ctx = ctx
+        self.spec = None
+        self.info = {}
+        self.stages = parts["stages"]
+        self.layer_costs = dict(parts["costs"])
+        self.stage_vaos = {}
+        self.resources = []
+        for stage in self.stages:
+            mesh = parts["meshes"].get(stage.key)
+            ovao = tvao = None
+            if mesh is not None and len(mesh.vertices):
+                vbo = ctx.buffer(mesh.vertices.tobytes())
+                self.resources.append(vbo)
+                layout = [(vbo, "3f 3f 4f 1f",
+                           "in_position", "in_normal", "in_color", "in_mat")]
+                if len(mesh.opaque):
+                    ibo = ctx.buffer(mesh.opaque.tobytes())
+                    ovao = ctx.vertex_array(program, layout, ibo,
+                                            index_element_size=4)
+                    self.resources.extend((ibo, ovao))
+                if len(mesh.transparent):
+                    ibo = ctx.buffer(mesh.transparent.tobytes())
+                    tvao = ctx.vertex_array(program, layout, ibo,
+                                            index_element_size=4)
+                    self.resources.extend((ibo, tvao))
+            self.stage_vaos[stage.key] = (ovao, tvao)
+        self.layers = {s.key: {"visible": True, "solid": True}
+                       for s in self.stages}
+
+    def release(self):
+        for resource in reversed(self.resources):
+            try:
+                resource.release()
+            except Exception:
+                pass
+
+
+class CompareBuilding:
+    """A selectable building in the comparison area, shaped like a yard item
+    so the existing picking / inspection machinery works on it."""
+
+    is_comparison = False
+
+    TYPE_NAMES = {"box": "Bare storage box", "shed_dome": "Bare storage dome",
+                  "stick": "Stick-built house", "home_dome": "Dome house"}
+
+    def __init__(self, key, label, pos, row, dtype=None, parts=None,
+                 spec=None):
+        self.key = key
+        self.label = label
+        self.x, self.y = pos
+        self.row = row
+        self.dtype = dtype
+        self.parts = parts          # for box/house structures
+        self.spec = spec            # for domes
+        self.scale = 1.0
+        self.sold = False
+        self.pick_z = 3.0
+        # a reference building, not a sellable unit: price == build cost,
+        # so there is no margin to report
+        geom = (f"2V dome r{row['r_ft']:.1f} ft" if "r_ft" in row
+                else f"{row['floor_sf']:,.0f} ft² footprint")
+        self.rec = {
+            "serial": key.upper(), "name": label,
+            "type_name": self.TYPE_NAMES.get(key, "Reference building"),
+            "geometry": (f"{geom}  ·  {row['framing_lf']:,.0f} ft framing  ·  "
+                         f"{row['cladding_sf']:,.0f} ft² skin"),
+            "dtype": dtype or "structure",
+            "floor_area": row["floor_sf"] / 10.7639104167,
+            "price": row["build"], "total_cost": row["build"],
+            "material": row["material"], "labor_hours": row["hours"],
+            "labor_cost": row["build"] - row["material"],
+            "overhead": 0.0, "margin": 0.0, "margin_pct": 0.0,
+            "cladding": "comparison", "radius": 0.0, "frequency": 0,
+            "layout": "-", "monthly": 0.0, "created": "comparison model",
+            "solar_kw": 0.0, "r_value": 0.0, "steps": 0, "distance_m": 0.0,
+            "volume_cuft": row["vol_ft3"], "floor_sqft": row["floor_sf"],
+            "sold": 0,
+        }
+
+
 # ===========================================================================
 # Worker labor model
 # ===========================================================================
@@ -1298,6 +1386,7 @@ class AssemblyLineApp:
         self.hover_screen = None
         self.selected_yard = None
         self.inspect = None          # InspectDome when inspecting a yard dome
+        self.inspect_row = 0         # keyboard cursor in the layers menu
         self.tour = False
         self.sale = None             # active buying-process state
         self.sale_cooldown = SALE_AUTO_INTERVAL
@@ -1341,7 +1430,8 @@ class AssemblyLineApp:
 
     def yard_items(self):
         """Inspectable lot inventory, including the non-sale shed benchmark."""
-        return [self.comparison_shed, *self.yard]
+        return [self.comparison_shed, *getattr(self, "compare_buildings", []),
+                *self.yard]
 
     @staticmethod
     def is_site_shed(yd):
@@ -1351,28 +1441,55 @@ class AssemblyLineApp:
 
     def _build_comparison_area(self, ctx):
         """The four buildings the VS panel costs, as real geometry, sized to
-        exactly the dimensions the comparison model uses."""
+        exactly the dimensions the comparison model uses. Each is selectable
+        and carries its own inspectable layers."""
         import compare_buildings as CB
-        cmp_ = AL.building_comparisons()
+        c = AL.building_comparisons()
         w, l, h = AL.COMPARE_SHED_BOX
         floor = AL.COMPARE_HOME_FLOOR_SF
         hw = math.sqrt(floor / 1.3)
 
-        def dome_mesh(dtype, radius_ft, freq, layout="1-Bedroom"):
-            spec = DomeSpec(dtype=dtype, radius=radius_ft * 0.3048,
-                            frequency=freq, layout=layout)
-            cat, _info = build_dome_catalog(spec)
-            return cat.b.build()
+        box_parts = CB.metal_box(w, l, h)
+        house_parts = CB.stick_house(hw, floor / hw, AL.COMPARE_HOME_WALL_FT)
+        shed_dome_spec = DomeSpec(
+            dtype="shed", radius=c["shed"]["dome"]["r_ft"] * 0.3048,
+            frequency=2, name="Storage Dome")
+        home_dome_spec = DomeSpec(
+            dtype="home", radius=c["home"]["dome"]["r_ft"] * 0.3048,
+            frequency=3, layout="1-Bedroom", name="Dome House")
+
+        self.compare_buildings = [
+            CompareBuilding("box", "STORAGE SHED", COMPARE_SLOTS["box"],
+                            c["shed"]["box"], parts=box_parts),
+            CompareBuilding("shed_dome", "STORAGE DOME",
+                            COMPARE_SLOTS["shed_dome"], c["shed"]["dome"],
+                            dtype="shed", spec=shed_dome_spec),
+            CompareBuilding("stick", "HOUSE (stick)", COMPARE_SLOTS["stick"],
+                            c["home"]["box"], parts=house_parts),
+            CompareBuilding("home_dome", "DOME HOUSE",
+                            COMPARE_SLOTS["home_dome"], c["home"]["dome"],
+                            dtype="home", spec=home_dome_spec),
+        ]
+
+        def merged(parts):
+            b = MeshBuilder()
+            out = []
+            for m in CB.combined(parts):
+                out.append(m)
+            return out
 
         self.compare_meshes = {
-            "box": GpuMesh(ctx, self.scene_prog, CB.build_metal_box(w, l, h)),
-            "shed_dome": GpuMesh(ctx, self.scene_prog, dome_mesh(
-                "shed", cmp_["shed"]["dome"]["r_ft"], 2)),
-            "stick": GpuMesh(ctx, self.scene_prog, CB.build_stick_house(
-                hw, floor / hw, AL.COMPARE_HOME_WALL_FT)),
-            "home_dome": GpuMesh(ctx, self.scene_prog, dome_mesh(
-                "home", cmp_["home"]["dome"]["r_ft"], 3)),
+            "box": [GpuMesh(ctx, self.scene_prog, m)
+                    for m in merged(box_parts)],
+            "stick": [GpuMesh(ctx, self.scene_prog, m)
+                      for m in merged(house_parts)],
         }
+        for key, spec in (("shed_dome", shed_dome_spec),
+                          ("home_dome", home_dome_spec)):
+            cat, _info = build_dome_catalog(spec)
+            self.compare_meshes[key] = [
+                GpuMesh(ctx, self.scene_prog, cat.b.build())]
+
         # ground pad so the lot reads as its own area
         b = MeshBuilder()
         xs = [p[0] for p in COMPARE_SLOTS.values()]
@@ -1385,16 +1502,8 @@ class AssemblyLineApp:
     def compare_items(self):
         """(key, label, position, cost-row) per comparison building, taken
         from the same model the VS panel prints."""
-        c = self.bare_shell_comparison()
-        return [
-            ("box", "STORAGE SHED", COMPARE_SLOTS["box"], c["shed"]["box"]),
-            ("shed_dome", "STORAGE DOME", COMPARE_SLOTS["shed_dome"],
-             c["shed"]["dome"]),
-            ("stick", "HOUSE (stick)", COMPARE_SLOTS["stick"],
-             c["home"]["box"]),
-            ("home_dome", "DOME HOUSE", COMPARE_SLOTS["home_dome"],
-             c["home"]["dome"]),
-        ]
+        return [(cb.key, cb.label, (cb.x, cb.y), cb.row)
+                for cb in self.compare_buildings]
 
     def _load_yard(self):
         self.yard = []
@@ -1613,6 +1722,24 @@ class AssemblyLineApp:
         try:
             if self.is_site_shed(yd):
                 self.inspect = InspectShed(self.ctx, self.scene_prog)
+            elif isinstance(yd, CompareBuilding):
+                if yd.parts is not None:
+                    self.inspect = InspectStruct(self.ctx, self.scene_prog,
+                                                 yd.parts)
+                else:
+                    self.inspect = InspectDome(self.ctx, self.scene_prog,
+                                               yd.spec)
+                # The layer costs must total what the sign and the VS panel
+                # say for this building. A dome's layers come from the
+                # per-element catalog, the comparison from the shared
+                # quantity model, so rescale to the comparison figure and
+                # keep the relative layer proportions.
+                lc = getattr(self.inspect, "layer_costs", None)
+                total = sum(lc.values()) if lc else 0.0
+                if lc and total > 0:
+                    f = yd.row["build"] / total
+                    self.inspect.layer_costs = {k: v * f
+                                                for k, v in lc.items()}
             else:
                 self.inspect = InspectDome(self.ctx, self.scene_prog,
                                            spec_from_rec(yd.rec))
@@ -1645,8 +1772,8 @@ class AssemblyLineApp:
     def rebuild_inspect(self):
         if self.inspect is None or self.selected_yard is None:
             return
-        if self.is_site_shed(self.selected_yard):
-            return
+        if not isinstance(self.inspect, InspectDome):
+            return          # only domes have a swappable cladding spec
         spec = self.inspect.spec
         old_layers = self.inspect.layers
         self.inspect.release()
@@ -1995,9 +2122,13 @@ class AssemblyLineApp:
 
         # comparison area: the four costed buildings on their own pad
         self.draw_gpu(self.compare_pad)
-        for key, _label, pos, _row in self.compare_items():
-            self.draw_gpu(self.compare_meshes[key],
-                          mat_translate(pos[0], pos[1], 0))
+        for cb in self.compare_buildings:
+            if self.inspect is not None and self.selected_yard is cb:
+                continue        # drawn by the layered inspection instead
+            model = mat_translate(cb.x, cb.y, 0)
+            for gm in self.compare_meshes[cb.key]:
+                self.draw_gpu(gm, model)
+                self.draw_gpu(gm, model, transparent=True)
 
         # Buying process: the customer arrives and leaves; inventory stays put.
         sale_pos = self.sale_positions() if self.sale else None
@@ -2336,7 +2467,8 @@ class AssemblyLineApp:
         if inspecting:
             yd = self.selected_yard
             tname = ("Site-Built Gable Shed" if self.is_site_shed(yd)
-                     else AL.DOME_TYPES.get(
+                     else yd.rec.get("type_name")
+                     or AL.DOME_TYPES.get(
                          yd.dtype, AL.DOME_TYPES["home"]).name)
             banner = [(f"INSPECTING #{yd.rec.get('serial', '?')} — "
                        f"{yd.rec['name']} ({tname})", amber, self.font_big)]
@@ -2928,16 +3060,18 @@ class AssemblyLineApp:
                 lines.append((f"{item.label[:27]:<27} {self.money(direct):>9}",
                               grey, self.font_tiny))
         else:
-            tname = AL.DOME_TYPES.get(rec.get("dtype", "home"),
-                                      AL.DOME_TYPES["home"]).name
+            tname = rec.get("type_name") or AL.DOME_TYPES.get(
+                rec.get("dtype", "home"), AL.DOME_TYPES["home"]).name
             sub = (rec["layout"] if rec.get("dtype", "home") == "home"
                    else tname)
+            geom = (f"radius {rec['radius']:.1f} m  "
+                    f"freq {rec['frequency']}V  ·  {rec['cladding']}"
+                    if rec.get("radius") else rec.get("geometry", ""))
             lines = [(f"SERIAL #{rec.get('serial', '?')}  {rec['name']}",
                       amber, self.font_med),
                      (f"{tname}  ·  {sub}  ·  {rec['floor_area']:.0f} m²",
                       white, self.font_small),
-                     (f"radius {rec['radius']:.1f} m  freq {rec['frequency']}V "
-                      f" ·  {rec['cladding']}", grey, self.font_small),
+                     (geom, grey, self.font_small),
                      (f"material   {self.money(rec['material'])}", grey,
                       self.font_small),
                      (f"labor      {self.money(rec['labor_cost'])} "
@@ -2999,28 +3133,40 @@ class AssemblyLineApp:
             ("insphdr", header), [(header, white, self.font_small)])
         self.draw_texture(tex, px, py, tw, th)
         yy = py + 26
-        for s in insp.stages:
+        self.inspect_row = max(0, min(self.inspect_row, len(insp.stages) - 1))
+        for i, s in enumerate(insp.stages):
             L = insp.layers[s.key]
-            # visibility toggle
-            self.draw_rect(px, yy, 18, 18,
-                           (0.2, 0.5, 0.25, 1) if L["visible"]
+            selected = (i == self.inspect_row)
+            if selected:        # highlight the keyboard cursor row
+                self.draw_rect(px - 4, yy - 2, pw + 2, row_h - 2,
+                               (0.16, 0.24, 0.34, 0.95))
+            # visibility toggle (bigger hit area than before)
+            self.draw_rect(px, yy, 20, 20,
+                           (0.2, 0.55, 0.28, 1) if L["visible"]
                            else (0.18, 0.2, 0.24, 1))
-            self.inspect_buttons.append((f"vis:{s.key}", px, yy, 18, 18))
+            self.inspect_buttons.append((f"vis:{s.key}", px - 4, yy - 2, 26,
+                                         24))
             # solid/transparent toggle
-            self.draw_rect(px + 24, yy, 18, 18,
-                           (0.5, 0.45, 0.2, 1) if L["solid"]
+            self.draw_rect(px + 26, yy, 20, 20,
+                           (0.55, 0.48, 0.2, 1) if L["solid"]
                            else (0.2, 0.35, 0.5, 1))
-            self.inspect_buttons.append((f"solid:{s.key}", px + 24, yy, 18,
-                                         18))
+            self.inspect_buttons.append((f"solid:{s.key}", px + 22, yy - 2,
+                                         26, 24))
             col = white if L["visible"] else grey
+            if selected:
+                col = amber if L["visible"] else (200, 180, 140)
             label = s.title.title()
             if hasattr(insp, "layer_costs"):
-                label = f"{label[:18]:<18} {self.money(insp.layer_costs[s.key])}"
+                label = (f"{label[:17]:<17} "
+                         f"{self.money(insp.layer_costs[s.key])}")
             t2, w2, h2 = self.text_texture((f"lyr{s.key}", L["visible"],
-                                            L["solid"]),
+                                            L["solid"], selected),
                                            [(label, col, self.font_tiny)],
                                            pad=2)
-            self.draw_texture(t2, px + 48, yy + 1, w2, h2)
+            self.draw_texture(t2, px + 52, yy + 2, w2, h2)
+            # the rest of the row selects it (easier than hitting a box)
+            self.inspect_buttons.append((f"row:{i}", px + 50, yy - 2,
+                                         pw - 54, 24))
             yy += row_h
         # running total of the visible (included) layers
         if has_costs:
@@ -3053,10 +3199,14 @@ class AssemblyLineApp:
             cx += 98
         yy += 32
         cx = px
-        bottom_controls = ([('insp_costs', 'COSTS →'), ('insp_exit', 'EXIT')]
-                           if getattr(insp, "kind", "dome") == "shed" else
-                           [("insp_clad", "CLADDING »"),
-                            ("insp_exit", "EXIT")])
+        if getattr(insp, "kind", "dome") == "shed":
+            bottom_controls = [("insp_costs", "COSTS →"),
+                               ("insp_exit", "EXIT")]
+        elif getattr(insp, "spec", None) is not None:
+            bottom_controls = [("insp_clad", "CLADDING »"),
+                               ("insp_exit", "EXIT")]
+        else:
+            bottom_controls = [("insp_exit", "EXIT")]
         for key, label in bottom_controls:
             wbtn = 140 if key == "insp_clad" else 90
             self.draw_rect(cx, yy, wbtn, 26,
@@ -3213,9 +3363,9 @@ class AssemblyLineApp:
     def draw_key_legend(self):
         w, h = self.size
         if self.inspect is not None:
-            text_line = ("ESC exit inspection · click layers show/solid · "
-                         "TOUR · ←/→ orbit · drag orbit · "
-                         "wheel zoom · P pricing · toolbar active")
+            text_line = ("↑/↓ pick layer · Enter/Space show-hide · "
+                         "T solid/clear · click row or boxes · TOUR · "
+                         "ESC exit · drag orbit · wheel zoom")
         else:
             text_line = ("every button has a hotkey (shown on it) · "
                          "[ ] speed · R new run · ←/→ orbit · WASD pan · "
@@ -3498,14 +3648,47 @@ class AssemblyLineApp:
             return True
         return False
 
+    def inspect_key(self, key):
+        """Keyboard driving of the layers menu while inspecting.
+        Up/Down move the cursor, Enter/Space show-hide, T solid/transparent,
+        Home/End jump. Returns True if the key was consumed."""
+        insp = self.inspect
+        if insp is None or not insp.stages:
+            return False
+        n = len(insp.stages)
+        if key == pygame.K_UP:
+            self.inspect_row = (self.inspect_row - 1) % n
+        elif key == pygame.K_DOWN:
+            self.inspect_row = (self.inspect_row + 1) % n
+        elif key == pygame.K_HOME:
+            self.inspect_row = 0
+        elif key == pygame.K_END:
+            self.inspect_row = n - 1
+        elif key in (pygame.K_RETURN, pygame.K_KP_ENTER, pygame.K_SPACE):
+            k = insp.stages[self.inspect_row].key
+            insp.layers[k]["visible"] = not insp.layers[k]["visible"]
+        elif key == pygame.K_t:
+            k = insp.stages[self.inspect_row].key
+            insp.layers[k]["solid"] = not insp.layers[k]["solid"]
+        else:
+            return False
+        return True
+
     def inspect_action(self, key):
         insp = self.inspect
-        if key.startswith("vis:"):
+        keys = [s.key for s in insp.stages]
+        if key.startswith("row:"):
+            self.inspect_row = int(key[4:])
+        elif key.startswith("vis:"):
             k = key[4:]
             insp.layers[k]["visible"] = not insp.layers[k]["visible"]
+            if k in keys:
+                self.inspect_row = keys.index(k)
         elif key.startswith("solid:"):
             k = key[6:]
             insp.layers[k]["solid"] = not insp.layers[k]["solid"]
+            if k in keys:
+                self.inspect_row = keys.index(k)
         elif key == "insp_tour":
             self.toggle_tour()
         elif key == "insp_allon":
@@ -3747,6 +3930,8 @@ class AssemblyLineApp:
                         self.selected_yard = None
                     else:
                         return False
+                elif self.inspect is not None and self.inspect_key(event.key):
+                    pass        # layers menu consumed it (arrows / enter)
                 elif event.key == pygame.K_LEFTBRACKET:
                     self.speed = max(0.25, self.speed * 0.5)
                 elif event.key == pygame.K_RIGHTBRACKET:
@@ -3777,7 +3962,13 @@ class AssemblyLineApp:
                         if not handled and not self.configuring:
                             self.dragging = True
                 elif event.button == 3:
-                    self.dragging = True
+                    # right-click a structure to scope into it; otherwise
+                    # fall back to orbiting the camera
+                    yd = self.click_yard(*event.pos)
+                    if yd is not None and yd is not self.selected_yard:
+                        self.enter_inspect(yd)
+                    else:
+                        self.dragging = True
                 elif event.button == 4:
                     self.cam_dist = max(6.0, self.cam_dist * 0.88)
                 elif event.button == 5:
