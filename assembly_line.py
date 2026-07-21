@@ -538,26 +538,31 @@ class YardDB:
         self.conn.execute("""
             CREATE TABLE IF NOT EXISTS domes (
                 serial INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT, radius REAL, frequency INTEGER, layout TEXT,
-                cladding TEXT, floor_area REAL,
+                name TEXT, dtype TEXT, radius REAL, frequency INTEGER,
+                layout TEXT, cladding TEXT, floor_area REAL,
                 material REAL, labor_cost REAL, overhead REAL,
-                total_cost REAL, price REAL, margin REAL,
+                total_cost REAL, price REAL, margin REAL, monthly REAL,
                 labor_hours REAL, steps INTEGER, distance_m REAL,
                 solar_kw REAL, r_value REAL,
-                cr REAL, cg REAL, cb REAL, created TEXT)
+                cr REAL, cg REAL, cb REAL, created TEXT, sold INTEGER)
         """)
         self.conn.commit()
 
     def add(self, rec: dict) -> int:
-        cols = ("name radius frequency layout cladding floor_area material "
-                "labor_cost overhead total_cost price margin labor_hours "
-                "steps distance_m solar_kw r_value cr cg cb created").split()
+        cols = ("name dtype radius frequency layout cladding floor_area "
+                "material labor_cost overhead total_cost price margin monthly "
+                "labor_hours steps distance_m solar_kw r_value cr cg cb "
+                "created sold").split()
         placeholders = ",".join("?" for _ in cols)
         cur = self.conn.execute(
             f"INSERT INTO domes ({','.join(cols)}) VALUES ({placeholders})",
-            [rec[c] for c in cols])
+            [rec.get(c, 0) for c in cols])
         self.conn.commit()
         return cur.lastrowid
+
+    def mark_sold(self, serial):
+        self.conn.execute("UPDATE domes SET sold=1 WHERE serial=?", (serial,))
+        self.conn.commit()
 
     def all(self) -> list[dict]:
         cur = self.conn.execute("SELECT * FROM domes ORDER BY serial")
@@ -608,10 +613,11 @@ class DomeGpu:
         mesh = cat.b.build()
         self.full_opaque = mesh.opaque
         self.full_transparent = mesh.transparent
+        self.stages = cat.stages
         # element ranges per stage, in catalog order
         self.stage_ranges = {
             s.key: [(e.o0, e.o1, e.t0, e.t1) for e in cat.by_stage[s.key]]
-            for s in STAGES}
+            for s in cat.stages}
         self.vbo = ctx.buffer(mesh.vertices.tobytes())
         layout = [(self.vbo, "3f 3f 4f 1f",
                    "in_position", "in_normal", "in_color", "in_mat")]
@@ -635,12 +641,12 @@ class DomeGpu:
                 pass
 
     def update(self, placed_counts: dict[str, int]):
-        sig = tuple(placed_counts[s.key] for s in STAGES)
+        sig = tuple(placed_counts[s.key] for s in self.stages)
         if sig == self.signature:
             return
         self.signature = sig
         chunks_o, chunks_t = [], []
-        for stage in STAGES:
+        for stage in self.stages:
             k = placed_counts[stage.key]
             for (o0, o1, t0, t1) in self.stage_ranges[stage.key][:k]:
                 if o1 > o0:
@@ -746,8 +752,10 @@ class ProductionRun:
     econ_preview: dict = field(default_factory=dict)
 
     def __post_init__(self):
-        self.placed = {s.key: 0 for s in STAGES}
-        self.totals = {s.key: len(self.cat.by_stage[s.key]) for s in STAGES}
+        self.stages = self.cat.stages
+        self.placed = {s.key: 0 for s in self.stages}
+        self.totals = {s.key: len(self.cat.by_stage[s.key])
+                       for s in self.stages}
         self.overhead = unit_economics(self.cat, self.spec)["overhead"]
         self.econ_preview = unit_economics(self.cat, self.spec)
 
@@ -778,16 +786,18 @@ class ProductionRun:
         pv = product_value(self.cat, self.spec)
         c = self.spec.cladding_color
         return {
-            "name": self.spec.name, "radius": self.spec.radius,
+            "name": self.spec.name, "dtype": self.spec.dtype,
+            "radius": self.spec.radius,
             "frequency": self.spec.frequency, "layout": self.spec.layout,
             "cladding": self.spec.cladding, "floor_area": self.spec.floor_area,
             "material": econ["material"], "labor_cost": econ["labor_cost"],
             "overhead": econ["overhead"], "total_cost": econ["total_cost"],
             "price": econ["price"], "margin": econ["margin"],
+            "monthly": self.spec.monthly_payment,
             "labor_hours": self.labor_min / 60.0, "steps": int(self.steps),
             "distance_m": self.distance_m, "solar_kw": pv["solar_kw"],
             "r_value": pv["r_value"], "cr": c[0], "cg": c[1], "cb": c[2],
-            "created": time.strftime("%Y-%m-%d %H:%M"),
+            "created": time.strftime("%Y-%m-%d %H:%M"), "sold": 0,
         }
 
 
@@ -804,10 +814,10 @@ class Phase:
     dur: float = 0.0
 
 
-def build_phases():
+def build_phases(n_stations=len(STAGES)):
     phases = [Phase("intro", dur=1.2)]
     x_prev = START_X
-    for i in range(len(STAGES)):
+    for i in range(n_stations):
         phases.append(Phase("travel", i, x_prev, STATION_X[i], TRAVEL_SECS))
         phases.append(Phase("work", i))
         x_prev = STATION_X[i]
@@ -841,9 +851,13 @@ class YardDome:
         self.rec = rec
         self.x = x
         self.y = y
-        self.scale = rec["radius"] / AL.REFERENCE_RADIUS
+        self.dtype = rec.get("dtype") or "home"
+        ref = min(AL.DOME_TYPES[self.dtype].radius_range[1],
+                  AL.REFERENCE_RADIUS)
+        self.scale = rec["radius"] / ref
         self.tint = (rec["cr"] / 0.28, rec["cg"] / 0.34, rec["cb"] / 0.38)
         self.tint = tuple(max(0.4, min(1.6, t)) for t in self.tint)
+        self.sold = bool(rec.get("sold"))
 
 
 def yard_slot(index):
@@ -902,8 +916,10 @@ class AssemblyLineApp:
         self.hook = GpuMesh(ctx, self.scene_prog, build_hook())
         self.sun = GpuMesh(ctx, self.scene_prog, build_sun())
         self.worker_mesh = GpuMesh(ctx, self.scene_prog, build_worker_mesh())
-        self.finished = GpuMesh(ctx, self.scene_prog,
-                                build_finished_dome_mesh())
+        self.finished_meshes = {
+            dt: GpuMesh(ctx, self.scene_prog, build_finished_dome_mesh(dt))
+            for dt in AL.DOME_TYPE_LIST}
+        self.finished = self.finished_meshes["home"]
 
         self.font_big = pygame.font.SysFont("consolas", 28, bold=True)
         self.font_med = pygame.font.SysFont("consolas", 19)
@@ -917,8 +933,9 @@ class AssemblyLineApp:
         self._load_yard()
 
         # crew
-        crew_n = ASSUMPTIONS["install_crew_size"]
-        self.crew = [Worker((0, 0)) for _ in range(crew_n)]
+        self.workers_per_station = ASSUMPTIONS["workers_per_station"]
+        self.crew = [Worker((0, 0))
+                     for _ in range(self.workers_per_station)]
 
         # sim state
         self.phases = build_phases()
@@ -978,13 +995,15 @@ class AssemblyLineApp:
         cat, info = build_dome_catalog(spec)
         gpu = DomeGpu(self.ctx, self.scene_prog, cat)
         self.run = ProductionRun(spec=spec, cat=cat, info=info, gpu=gpu)
+        self.phases = build_phases(len(self.run.stages))
         self.phase_idx = 0
         self.phase_t = 0.0
         self.line_time = 0.0
         self.stall_timer = 0.0
         self.downtime_cost = 0.0
+        tag = spec.type.name if spec.dtype != "home" else spec.layout
         self.log(f"Run #{spec.serial} started: {spec.name} "
-                 f"({spec.layout}, {spec.floor_area:.0f} m²)")
+                 f"({spec.type.name} · {tag} · {spec.floor_area:.0f} m²)")
 
     def finish_run(self):
         rec = self.run.final_record()
@@ -1023,7 +1042,7 @@ class AssemblyLineApp:
             self._begin_station(ph.station)
 
     def _begin_station(self, station):
-        stage = STAGES[station]
+        stage = self.run.stages[station]
         els = self.run.cat.by_stage[stage.key]
         n = len(self.crew)
         for w in range(n):
@@ -1063,7 +1082,7 @@ class AssemblyLineApp:
                 moved = w.update(dt_anim, dome_x, self.run, stalled)
                 if moved:
                     self.run.add_distance(moved)
-            if self.run.station_done(STAGES[ph.station].key):
+            if self.run.station_done(self.run.stages[ph.station].key):
                 self.advance_phase()
 
         self.run.gpu.update(self.run.placed)
@@ -1194,7 +1213,7 @@ class AssemblyLineApp:
         x, y, z, yaw, on_carriage, hook_z, bridge_x = self.dome_pose()
         dome_model = mat_translate(x, y, z) @ mat_rot_z(yaw)
         interior = (self.phase.kind == "work"
-                    and STAGES[self.phase.station].key == "interior")
+                    and self.run.stages[self.phase.station].key == "interior")
         cutaway = self.force_cutaway or interior
         dome_cut = 2.95 if cutaway else 1e9
 
@@ -1216,10 +1235,10 @@ class AssemblyLineApp:
 
         # finished domes in the yard
         for yd in self.yard:
-            tint = yd.tint
-            self.draw_gpu(self.finished,
+            self.draw_gpu(self.finished_meshes.get(yd.dtype, self.finished),
                           mat_translate(yd.x, yd.y, 0)
-                          @ mat_scale(yd.scale, yd.scale, yd.scale), tint=tint)
+                          @ mat_scale(yd.scale, yd.scale, yd.scale),
+                          tint=yd.tint)
 
         # pipeline: show trailing/leading domes at other stations
         if self.pipeline_view and self.phase.kind == "work":
@@ -1244,7 +1263,7 @@ class AssemblyLineApp:
 
         prog["u_cut_z"].value = 1e9
         for yd in self.yard:
-            self.draw_gpu(self.finished,
+            self.draw_gpu(self.finished_meshes.get(yd.dtype, self.finished),
                           mat_translate(yd.x, yd.y, 0)
                           @ mat_scale(yd.scale, yd.scale, yd.scale),
                           transparent=True, tint=yd.tint)
@@ -1255,11 +1274,12 @@ class AssemblyLineApp:
         """Draw a couple of finished/leading domes at neighbouring stations
         to show the line running full (throughput visualization)."""
         station = self.phase.station
-        # a completed-looking dome one station ahead, and a bare one behind
-        if station + 1 < len(STAGES):
-            self.draw_gpu(self.finished,
+        mesh = self.finished_meshes.get(self.run.spec.dtype, self.finished)
+        sc = 0.85 * self.run.spec.radius / AL.REFERENCE_RADIUS
+        if station + 1 < len(self.run.stages):
+            self.draw_gpu(mesh,
                           mat_translate(STATION_X[station + 1], 0, CARRIAGE_TOP)
-                          @ mat_scale(0.85, 0.85, 0.85), tint=(0.8, 0.85, 0.9))
+                          @ mat_scale(sc, sc, sc), tint=(0.8, 0.85, 0.9))
             self.draw_gpu(self.carriage,
                           mat_translate(STATION_X[station + 1], 0, 0))
 
@@ -1332,31 +1352,34 @@ class AssemblyLineApp:
 
     def banner_lines(self):
         ph = self.phase
-        n = len(STAGES)
+        n = len(self.run.stages)
         amber = (255, 210, 90)
         grey = (215, 220, 226)
+        sp = self.run.spec
+        tag = sp.layout if sp.dtype == "home" else sp.type.name
         if ph.kind == "intro":
-            return [(f"RUN #{self.run.spec.serial} — {self.run.spec.name}  "
-                     f"({self.run.spec.layout}, {self.run.spec.floor_area:.0f}"
-                     f" m², {self.run.spec.cladding})", amber, self.font_big)]
+            return [(f"RUN #{sp.serial} — {sp.name}  "
+                     f"({sp.type.name} · {tag} · {sp.floor_area:.0f}"
+                     f" m² · {sp.cladding})", amber, self.font_big)]
         if ph.kind == "travel":
-            s = STAGES[ph.station]
-            return [(f"→ STATION {ph.station + 1}/{n}  {s.title}", amber,
+            s = self.run.stages[ph.station]
+            return [(f"-> STATION {ph.station + 1}/{n}  {s.title}", amber,
                      self.font_big)]
         if ph.kind == "work":
-            s = STAGES[ph.station]
+            s = self.run.stages[ph.station]
             done = self.run.placed[s.key]
             tot = self.run.totals[s.key]
             return [(f"STATION {ph.station + 1}/{n}  {s.title}   "
                      f"[{done}/{tot}]", amber, self.font_big),
                     (s.desc, grey, self.font_med)]
+        done_word = "HOME" if sp.dtype == "home" else sp.type.name.upper()
         labels = {"tocrane": "LINE COMPLETE — ROLLING TO CRANE",
                   "hook": "CRANE — HOOKING APEX ANCHOR",
                   "lift": "CRANE — LIFTING OFF CARRIAGE",
                   "carry": "CRANE — CARRYING TO TURNTABLE",
                   "lower": "CRANE — SETTING ON LAZY SUSAN",
                   "unhook": "CRANE — RELEASING HOOK",
-                  "park": "HOME COMPLETE — SUN-TRACKING TURNTABLE"}
+                  "park": f"{done_word} COMPLETE — SUN-TRACKING TURNTABLE"}
         col = (140, 235, 150) if ph.kind == "park" else amber
         return [(labels.get(ph.kind, ph.kind), col, self.font_big)]
 
@@ -1459,7 +1482,7 @@ class AssemblyLineApp:
         ph = self.phase
         active = ph.station if ph.kind in ("travel", "work") else -1
         lines = [("BUILD SEQUENCE", white, self.font_med)]
-        for i, s in enumerate(STAGES):
+        for i, s in enumerate(self.run.stages):
             done = self.run.placed[s.key] >= self.run.totals[s.key] \
                 and self.run.totals[s.key] > 0
             if self.phase_idx > 1 + i * 2 + 1:
@@ -1615,7 +1638,7 @@ class AssemblyLineApp:
                               f"{self.money(s['revenue']):>12}"
                               f"{self.money(s['gross_profit']):>12}", white,
                               self.font_tiny))
-            be = break_even(econ["margin"])
+            be = break_even(econ["margin"], econ["overhead"])
             lines += [("", grey, self.font_small),
                       (f"CapEx/line {self.money(ASSUMPTIONS['line_capex'])}",
                        grey, self.font_small),
@@ -1750,12 +1773,16 @@ class AssemblyLineApp:
         amber = (255, 210, 90)
         grey = (176, 182, 192)
         green = (130, 224, 150)
+        tname = AL.DOME_TYPES.get(rec.get("dtype", "home"),
+                                  AL.DOME_TYPES["home"]).name
+        sub = (rec["layout"] if rec.get("dtype", "home") == "home"
+               else tname)
         lines = [(f"SERIAL #{rec.get('serial', '?')}  {rec['name']}", amber,
                   self.font_med),
-                 (f"{rec['layout']}  ·  {rec['floor_area']:.0f} m²  ·  "
-                  f"{rec['cladding']}", white, self.font_small),
-                 (f"radius {rec['radius']:.1f} m  freq {rec['frequency']}V",
-                  grey, self.font_small),
+                 (f"{tname}  ·  {sub}  ·  {rec['floor_area']:.0f} m²",
+                  white, self.font_small),
+                 (f"radius {rec['radius']:.1f} m  freq {rec['frequency']}V "
+                  f" ·  {rec['cladding']}", grey, self.font_small),
                  ("", grey, self.font_tiny),
                  (f"material   {self.money(rec['material'])}", grey,
                   self.font_small),
@@ -1763,7 +1790,8 @@ class AssemblyLineApp:
                   f"({rec['labor_hours']:.0f} h)", grey, self.font_small),
                  (f"total cost {self.money(rec['total_cost'])}", grey,
                   self.font_small),
-                 (f"sale price {self.money(rec['price'])}", white,
+                 (f"sale price {self.money(rec['price'])}   "
+                  f"({self.money(rec.get('monthly', 0))}/mo BHPH)", white,
                   self.font_small),
                  (f"MARGIN     {self.money(rec['margin'])}", green,
                   self.font_med),
@@ -1788,43 +1816,43 @@ class AssemblyLineApp:
         amber = (255, 210, 90)
         grey = (176, 182, 192)
         cs = self.config_spec
+        layout_line = (f"Layout    < {cs.layout} >" if cs.dtype == "home"
+                       else "Layout    (n/a for this type)")
         lines = [("CONFIGURE NEXT DOME", amber, self.font_big),
                  ("", grey, self.font_small),
-                 (f"Layout    < {cs.layout} >", white, self.font_med),
+                 (f"Type      < {cs.type.name} >", (150, 220, 255),
+                  self.font_med),
+                 (f"  {cs.type.tagline}", grey, self.font_small),
+                 (layout_line, white, self.font_med),
                  (f"Size      < {cs.radius:.1f} m  ({cs.floor_area:.0f} m²) >",
                   white, self.font_med),
                  (f"Frequency < {cs.frequency}V >", white, self.font_med),
                  (f"Cladding  < {cs.cladding} >", white, self.font_med),
                  ("", grey, self.font_small),
-                 (f"projected sale {self.money(cs.sale_price)}", amber,
+                 (f"projected sale {self.money(cs.sale_price)}   "
+                  f"({self.money(cs.monthly_payment)}/mo)", amber,
                   self.font_med)]
-        tex, tw, th = self.text_texture(
-            ("config", cs.layout, cs.radius, cs.frequency, cs.cladding), lines)
+        ck = (cs.dtype, cs.layout, cs.radius, cs.frequency, cs.cladding)
+        tex, tw, th = self.text_texture(("config", ck), lines)
         px = (w - tw) / 2 - 20
         py = (h - th) / 2 - 40
         self.draw_rect(px - 14, py - 14, tw + 28, th + 90,
                        (0.05, 0.07, 0.11, 0.96))
         self.draw_texture(tex, px, py, tw, th)
-        # rows are clickable to cycle; buttons at bottom
-        self.config_rows = []
-        row_h = 0
-        base_y = py + self.text_texture(("config", cs.layout, cs.radius,
-                                         cs.frequency, cs.cladding),
-                                        lines)[2]
-        # simple bottom buttons
         by = py + th + 6
         self.config_buttons = []
-        for i, (key, label) in enumerate([("cfg_layout", "Layout"),
+        for i, (key, label) in enumerate([("cfg_type", "Type"),
+                                          ("cfg_layout", "Layout"),
                                           ("cfg_size", "Size"),
                                           ("cfg_freq", "Freq"),
                                           ("cfg_clad", "Cladding")]):
-            bx = px + i * 110
-            self.draw_rect(bx, by, 104, 28, (0.12, 0.16, 0.22, 0.95))
+            bx = px + i * 108
+            self.draw_rect(bx, by, 102, 28, (0.12, 0.16, 0.22, 0.95))
             t2, tw2, th2 = self.text_texture(
                 (f"cfgb{key}", label), [(f"cycle {label}", white,
                                         self.font_tiny)], pad=3)
             self.draw_texture(t2, bx + 6, by + 6, tw2, th2)
-            self.config_buttons.append((key, bx, by, 104, 28))
+            self.config_buttons.append((key, bx, by, 102, 28))
         # start / random / cancel
         by2 = by + 34
         for i, (key, label) in enumerate([("cfg_start", "START RUN"),
@@ -1858,7 +1886,7 @@ class AssemblyLineApp:
         best = None
         best_d = 26 ** 2
         # only inspect placed elements of the current dome
-        for stage in STAGES:
+        for stage in self.run.stages:
             k = self.run.placed[stage.key]
             for el in self.run.cat.by_stage[stage.key][:k]:
                 wp = (dome_x + el.centroid[0], el.centroid[1],
@@ -1966,15 +1994,26 @@ class AssemblyLineApp:
 
     def config_action(self, key):
         cs = self.config_spec
-        if key == "cfg_layout":
+        if key == "cfg_type":
+            i = AL.DOME_TYPE_LIST.index(cs.dtype)
+            nd = AL.DOME_TYPE_LIST[(i + 1) % len(AL.DOME_TYPE_LIST)]
+            # regenerate within the new type's valid ranges, keep name
+            new = random_spec(self.next_serial, self.rng, dtype=nd)
+            new.name = cs.name
+            new.cladding, new.cladding_color = cs.cladding, cs.cladding_color
+            self.config_spec = new
+        elif key == "cfg_layout" and cs.dtype == "home":
             i = AL.LAYOUTS.index(cs.layout)
             cs.layout = AL.LAYOUTS[(i + 1) % len(AL.LAYOUTS)]
         elif key == "cfg_size":
-            cs.radius = round(3.2 + ((cs.radius - 3.2 + 0.3) % 1.4), 2)
+            lo, hi = cs.type.radius_range
+            step = (hi - lo) / 4.0
+            cs.radius = round(lo + ((cs.radius - lo + step) % (hi - lo)), 2)
         elif key == "cfg_freq":
-            opts = [3, 4]
-            cur = cs.frequency if cs.frequency in opts else 3
-            cs.frequency = opts[(opts.index(cur) + 1) % len(opts)]
+            opts = cs.type.freq_choices
+            uniq = list(dict.fromkeys(opts))
+            cur = cs.frequency if cs.frequency in uniq else uniq[0]
+            cs.frequency = uniq[(uniq.index(cur) + 1) % len(uniq)]
         elif key == "cfg_clad":
             names = [c[0] for c in AL.CLADDINGS]
             i = names.index(cs.cladding)
@@ -2132,7 +2171,7 @@ def selftest():
         econ = unit_economics(cat, spec)
         tp = throughput(cat)
         pv = product_value(cat, spec)
-        be = break_even(econ["margin"])
+        be = break_even(econ["margin"], econ["overhead"])
         assert econ["margin"] > 0, "margin must be positive"
         assert 0.10 < econ["margin_pct"] / 100 < 0.6, "margin out of range"
         print(f"#{i+1} {spec.name} {spec.layout} r{spec.radius} "
