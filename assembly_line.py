@@ -1116,7 +1116,7 @@ class AssemblyLineApp:
         self.phases = build_phases()
         self.run: ProductionRun | None = None
         self.next_serial = self.db.summary()["count"] + 1
-        self.speed = 3.0
+        self.speed = 4.0
         self.paused = False
         self.follow = True
         self.force_cutaway = False

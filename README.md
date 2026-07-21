@@ -166,30 +166,47 @@ The line is driven by a real cost-and-labor model in
 investor actually underwrites — and every dollar and time figure lives
 in one editable `ASSUMPTIONS` block at the top of that file.
 
+- **Four product lines.** The same line builds a **Dome Home** (full
+  15-station build), a **Storage Shed** (frame + corrugated sheet metal),
+  a **Greenhouse** (aluminium frame + polycarbonate glazing + grow
+  benches), and a **Storm Shelter** (small welded short-strut steel-plate
+  dome). Each has its own station sequence, materials, size range, and
+  pricing; the build sequence and checklist adapt per type.
 - **Real per-element economics.** Every strut, pipe, panel, and fixture
   carries a material cost and an install-labor time. A per-station crew
-  physically walks the dome deck at a real human stride (0.76 m/step) to
-  place each element; **steps, distance walked, labor-hours, and dollars
-  accrue live** as ground-truth numbers (the money ticker top-left).
-- **Random product mix, persisted.** Each run randomizes the dome (size,
-  frequency, layout, cladding). Finished homes are serialized, saved to
-  SQLite (`dome_yard.sqlite3`), and **stacked in a growing yard that
-  survives across sessions** until you clear it.
+  (default **2 workers**, adjustable live) **fetches each element from a
+  material stockpile** and walks it to its spot at a real human stride
+  (0.76 m/step); **steps, distance, labor-hours, and dollars accrue live**
+  as ground-truth numbers, and a **fade-away `+$cost` popup** rises off
+  every element as it's placed.
+- **Random product mix, persisted.** Each run randomizes the dome (type,
+  size, frequency, layout, cladding). Finished units are serialized,
+  saved to SQLite (`dome_yard.sqlite3`), and **stacked in a growing yard
+  that survives across sessions** until you clear it.
+- **Advanced finished-dome inspection.** Click any yard dome to open a
+  **Photoshop-style LAYERS panel** — toggle each layer visible/hidden and
+  solid/transparent to peel the shell back — plus a **buyer TOUR** camera
+  (eye-level walk-through with the shell x-rayed) and live **material
+  variance** swapping. The whole shell is also togglable to see-through
+  mid-build with **X-RAY** (button or `X`) so the interior stays visible.
+- **Sales & shipping.** A sales office sits by the lot; each dome shows a
+  **price + buy-here-pay-here monthly sign**. Customers walk over, buy a
+  dome (it flips to **SOLD**), and a **flatbed truck hauls it off the
+  lot** — automatically on an interval or on demand via **SELL**.
 - **Live dockable panels** (tab row, top-right): **P&L** (materials +
   labor + overhead vs. sale price = gross margin, with lumber/resin/wage
   **sensitivity toggles**), **FLOW** (per-station takt time, the
-  bottleneck, single-piece vs. pipelined throughput, QC first-pass
-  yield, and downtime cost), **BOM**, **VS** (benchmark against a
-  conventional manufactured home), **VALUE** (solar kW, R-value, off-grid
-  autonomy, embodied carbon, OSHA target), **SCALE** (1/3/6-line
-  scenarios + break-even units), and **YARD** (cumulative production
-  ledger — homes shipped, revenue, profit, labor).
-- **Interactive.** Speed slider, pause/step, follow / cutaway / cinematic
-  cameras, snapshot export, **hover any placed element to inspect** its
-  cost/labor/weight, a **pre-run configurator** (pick layout/size/
-  frequency/cladding or randomize), **disruption injection** (supply
-  delay, machine breakdown, worker absence — watch throughput and cost
-  respond), and **clear yard**.
+  bottleneck, single-piece vs. pipelined throughput, QC first-pass yield,
+  downtime cost), **BOM**, **VS** (benchmark vs. conventional housing),
+  **VALUE** (solar kW, R-value, off-grid autonomy, embodied carbon,
+  OSHA), **SCALE** (1/3/6-line scenarios + break-even), and **YARD**
+  (production & sales ledger — built, in-yard, sold/delivered, revenue).
+- **Interactive.** Speed slider, pause/step, follow / cutaway / **x-ray**
+  / **cinematic** (drag to change angle while it orbits) cameras, snapshot
+  export, **hover any placed element** to inspect its cost/labor/weight,
+  a **pre-run configurator** (pick type/layout/size/frequency/cladding or
+  randomize), **crew size** control, **disruption injection** (supply
+  delay, breakdown, worker absence), **SELL**, and **clear yard**.
 
 ```
 py -3.12 assembly_line.py            # fullscreen
@@ -200,10 +217,12 @@ py -3.12 assembly_line.py --shots 4,60,120   # offscreen PNG renders
 
 Controls: `Space` pause, `[` / `]` speed (x0.25–x8), on-screen speed
 slider, mouse-drag orbit, wheel zoom, `F` follow/free camera (WASD pans
-when free), `C` interior cutaway, `V` cinematic orbit, `R` start a new
-random dome, `Esc` quit. Everything else (tabs, buttons, configurator,
-yard spec plates) is clickable. A HUD checklist tracks all 15 stations
-plus the crane transfer and sun tracking.
+when free), `C` interior cutaway, `X` x-ray shell, `V` cinematic orbit,
+`-` / `=` crew size, `R` start a new random dome, `Esc` quit / exit
+inspection. Everything else (panel tabs, control-bar buttons,
+configurator, yard domes, layer toggles) is clickable. Every dollar and
+time figure lives in the editable `ASSUMPTIONS` block at the top of
+[al_build.py](al_build.py).
 
 ## Preset setups
 
