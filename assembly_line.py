@@ -147,6 +147,7 @@ uniform vec3 u_light_direction;
 uniform vec3 u_sky_color;
 uniform vec3 u_tint;
 uniform float u_cut_z;
+uniform float u_force_alpha;   // >0 overrides alpha (x-ray see-through)
 out vec4 frag_color;
 
 float hash21(vec2 p) {
@@ -219,7 +220,11 @@ void main() {
     float rim = pow(1.0 - max(dot(normal, view_direction), 0.0), 3.0);
     int mat_id = int(v_mat + 0.5);
     vec3 col = v_color.rgb * u_tint;
-    if (mat_id == 12) { frag_color = vec4(col * 1.3, v_color.a); return; }
+    if (mat_id == 12) {
+        frag_color = vec4(col * 1.3,
+            u_force_alpha > 0.001 ? u_force_alpha : v_color.a);
+        return;
+    }
     float pattern = surface_pattern(mat_id, v_local, normal);
     vec3 base = col * pattern;
     vec3 lit = base * (0.40 + 0.62 * diffuse);
@@ -227,6 +232,7 @@ void main() {
     lit += u_sky_color * rim * (mat_id == 3 ? 0.45 : 0.12);
     float alpha = v_color.a;
     if (mat_id == 3) { alpha = clamp(alpha + rim * 0.5, 0.0, 1.0); }
+    if (u_force_alpha > 0.001) { alpha = u_force_alpha; }
     float dist = length(u_camera_position - v_world);
     float fog = clamp((dist - 95.0) / 280.0, 0.0, 0.9);
     frag_color = vec4(mix(lit, u_sky_color, fog), alpha);
@@ -528,6 +534,23 @@ def build_sun():
     return b.build()
 
 
+def build_material_box():
+    """A small crate of material a worker carries (origin at its center)."""
+    b = MeshBuilder()
+    add_box(b, (0, 0, 0), (0.34, 0.30, 0.26), (0.72, 0.60, 0.36),
+            mat_id=MAT_WOOD)
+    add_box(b, (0, 0, 0.14), (0.30, 0.26, 0.05), (0.85, 0.72, 0.45))
+    return b.build()
+
+
+def build_pallet_box():
+    """A stockpile crate (origin at its base center)."""
+    b = MeshBuilder()
+    add_box(b, (0, 0, 0.0), (0.9, 0.8, 0.5), (0.72, 0.62, 0.42))
+    add_box(b, (0, 0, 0.3), (0.7, 0.6, 0.2), (0.85, 0.76, 0.55))
+    return b.build()
+
+
 # ===========================================================================
 # Persistence — the finished-dome yard
 # ===========================================================================
@@ -670,66 +693,79 @@ class DomeGpu:
 # ===========================================================================
 
 class Worker:
-    def __init__(self, home_xy):
+    def __init__(self, home_xy, stockpile_xy=(0.0, -3.2)):
         self.home = np.array(home_xy, dtype=np.float64)
         self.pos = self.home.copy()
+        self.stockpile = np.array(stockpile_xy, dtype=np.float64)
         self.yaw = 0.0
         self.queue: list[AL.Element] = []
         self.qi = 0
-        self.state = "idle"      # idle | walk | place
+        self.state = "idle"      # idle | fetch | walk | place
+        self.carrying = False
         self.timer = 0.0
         self.target = self.home.copy()
 
-    def assign(self, elements, home_xy):
+    def assign(self, elements, home_xy, stockpile_xy):
         self.home = np.array(home_xy, dtype=np.float64)
         self.pos = self.home.copy()
+        self.stockpile = np.array(stockpile_xy, dtype=np.float64)
         self.queue = list(elements)
         self.qi = 0
-        self.state = "walk" if elements else "idle"
+        self.carrying = False
         self.timer = 0.0
         self._aim()
 
     def _aim(self):
+        # Each element: walk to the stockpile to pick up material, then
+        # carry it to the placement point.
         if self.qi < len(self.queue):
-            el = self.queue[self.qi]
-            self.target = np.array([el.floor_point[0], el.floor_point[1]])
+            self.state = "fetch"
+            self.carrying = False
+            self.target = self.stockpile.copy()
         else:
             self.target = self.home.copy()
             self.state = "idle"
 
+    def _walk_toward(self, dt_anim, dome_x):
+        world_target = np.array([dome_x + self.target[0], self.target[1]])
+        world_pos = np.array([dome_x + self.pos[0], self.pos[1]])
+        delta = world_target - world_pos
+        dist = float(np.linalg.norm(delta))
+        step = ANIM_WALK_SPEED * dt_anim
+        if dist <= step or dist < 1e-6:
+            self.pos = self.target.copy()
+            return dist, True
+        self.yaw = math.atan2(delta[1], delta[0])
+        self.pos = self.pos + (delta / dist) * step
+        return step, False
+
     def update(self, dt_anim, dome_x, run, stalled):
         """Returns real distance walked this frame (meters)."""
-        if self.state == "idle":
-            return 0.0
-        if stalled:
+        if self.state == "idle" or stalled:
             return 0.0
         moved = 0.0
-        if self.state == "walk":
-            world_target = np.array([dome_x + self.target[0], self.target[1]])
-            world_pos = np.array([dome_x + self.pos[0], self.pos[1]])
-            # convert desired anim movement into local-frame movement
-            delta = world_target - world_pos
-            dist = float(np.linalg.norm(delta))
-            step = ANIM_WALK_SPEED * dt_anim
-            if dist <= step or dist < 1e-6:
-                self.pos = self.target.copy()
-                moved = dist
+        if self.state == "fetch":
+            moved, arrived = self._walk_toward(dt_anim, dome_x)
+            if arrived:
+                self.carrying = True
+                el = self.queue[self.qi]
+                self.target = np.array([el.floor_point[0],
+                                        el.floor_point[1]])
+                self.state = "walk"
+        elif self.state == "walk":
+            moved, arrived = self._walk_toward(dt_anim, dome_x)
+            if arrived:
                 el = self.queue[self.qi]
                 self.state = "place"
                 self.timer = max(0.12, el.labor_min * PLACE_ANIM_PER_LABOR_MIN)
-            else:
-                self.yaw = math.atan2(delta[1], delta[0])
-                self.pos = self.pos + (delta / dist) * step
-                moved = step
         elif self.state == "place":
             self.timer -= dt_anim
             if self.timer <= 0.0:
                 el = self.queue[self.qi]
                 run.on_placed(el)
+                self.carrying = False
                 self.qi += 1
                 self._aim()
-                if self.state != "idle":
-                    self.state = "walk"
         return moved
 
 
@@ -753,6 +789,7 @@ class ProductionRun:
 
     def __post_init__(self):
         self.stages = self.cat.stages
+        self.recent_placements = []
         self.placed = {s.key: 0 for s in self.stages}
         self.totals = {s.key: len(self.cat.by_stage[s.key])
                        for s in self.stages}
@@ -764,6 +801,7 @@ class ProductionRun:
         self.material += el.material_cost
         self.labor_min += el.labor_min
         self.elements_done += 1
+        self.recent_placements.append(el)
 
     def add_distance(self, meters):
         self.distance_m += meters
@@ -916,6 +954,8 @@ class AssemblyLineApp:
         self.hook = GpuMesh(ctx, self.scene_prog, build_hook())
         self.sun = GpuMesh(ctx, self.scene_prog, build_sun())
         self.worker_mesh = GpuMesh(ctx, self.scene_prog, build_worker_mesh())
+        self.carry_mesh = GpuMesh(ctx, self.scene_prog, build_material_box())
+        self.pallet_mesh = GpuMesh(ctx, self.scene_prog, build_pallet_box())
         self.finished_meshes = {
             dt: GpuMesh(ctx, self.scene_prog, build_finished_dome_mesh(dt))
             for dt in AL.DOME_TYPE_LIST}
@@ -946,6 +986,9 @@ class AssemblyLineApp:
         self.follow = True
         self.force_cutaway = False
         self.cinematic = False
+        self.cine_speed = 0.20
+        self.xray = False
+        self.popups: list[dict] = []
         self.auto_run = True
         self.pipeline_view = True
         self.panel = "pnl"
@@ -1043,13 +1086,20 @@ class AssemblyLineApp:
 
     def _begin_station(self, station):
         stage = self.run.stages[station]
-        els = self.run.cat.by_stage[stage.key]
+        # only assign elements not yet placed, so re-assigning mid-station
+        # (crew change / worker absence) never re-places or double-counts
+        placed = self.run.placed[stage.key]
+        els = self.run.cat.by_stage[stage.key][placed:]
         n = len(self.crew)
+        floor_r = self.run.info["floor_r"]
+        # material stockpile sits at the deck edge on the -Y side
+        stock_y = -min(3.4, floor_r - 0.2)
         for w in range(n):
             subset = els[w::n]
-            hx = 0.0
-            hy = (2.4 if w % 2 else -2.4) * (0.6 + 0.2 * (w // 2))
-            self.crew[w].assign(subset, (hx, hy))
+            hx = (-1.6 if w % 2 else 1.6) * (0.5 + 0.35 * (w // 2))
+            hy = stock_y + 0.4
+            sx = (-0.9 if w % 2 else 0.9) * (0.4 + 0.3 * (w // 2))
+            self.crew[w].assign(subset, (hx, hy), (sx, stock_y))
 
     def update(self, dt):
         if self.paused:
@@ -1082,8 +1132,23 @@ class AssemblyLineApp:
                 moved = w.update(dt_anim, dome_x, self.run, stalled)
                 if moved:
                     self.run.add_distance(moved)
+            # spawn a fade-away cost popup for each newly placed element
+            for el in self.run.recent_placements:
+                wp = (dome_x + float(el.centroid[0]), float(el.centroid[1]),
+                      CARRIAGE_TOP + float(el.centroid[2]))
+                self.popups.append({"pos": wp,
+                                    "text": f"+${el.material_cost:,.0f}",
+                                    "age": 0.0})
+            self.run.recent_placements.clear()
             if self.run.station_done(self.run.stages[ph.station].key):
                 self.advance_phase()
+        else:
+            self.run.recent_placements.clear()
+
+        # age money popups (real time, so fade rate is speed-independent)
+        for p in self.popups:
+            p["age"] += dt
+        self.popups = [p for p in self.popups if p["age"] < 1.5][-60:]
 
         self.run.gpu.update(self.run.placed)
 
@@ -1094,12 +1159,10 @@ class AssemblyLineApp:
             d = target - self.platter_yaw
             self.platter_yaw += max(-0.6 * dt_anim, min(0.6 * dt_anim, d))
 
-        # cameras
+        # cameras — cinematic adds a slow orbit on top of the user's angle,
+        # so you can still drag to change the pitch/height while it sweeps.
         if self.cinematic:
-            self.cinematic_angle += dt * 0.18
-            self.cam_yaw = self.cinematic_angle
-            self.cam_pitch = math.radians(20 + 8 * math.sin(dt and
-                                          self.cinematic_angle * 0.5))
+            self.cam_yaw += self.cine_speed * dt
         x, y, z, *_ = self.dome_pose()
         goal = np.array([x, y, z + 2.4], dtype=np.float32)
         if self.follow or self.cinematic:
@@ -1209,6 +1272,7 @@ class AssemblyLineApp:
         sun_dir, _tracking, _az, _el = self.sun_state()
         prog["u_light_direction"].value = tuple(map(float, -sun_dir))
         prog["u_sky_color"].value = SKY_COLOR
+        prog["u_force_alpha"].value = 0.0
 
         x, y, z, yaw, on_carriage, hook_z, bridge_x = self.dome_pose()
         dome_model = mat_translate(x, y, z) @ mat_rot_z(yaw)
@@ -1244,22 +1308,37 @@ class AssemblyLineApp:
         if self.pipeline_view and self.phase.kind == "work":
             self._draw_pipeline(x)
 
-        # workers (active station only)
+        # workers + material stockpile (active station only)
         if self.phase.kind == "work":
+            self._draw_stockpile(x)
             self._draw_workers(x)
 
         # the dome under construction
+        xray = self.xray and not cutaway
         prog["u_cut_z"].value = dome_cut
         self.upload_model(dome_model)
         prog["u_tint"].value = (1, 1, 1)
-        if self.run.gpu.opaque_count:
-            self.run.gpu.opaque_vao.render(mgl.TRIANGLES,
-                                           vertices=self.run.gpu.opaque_count)
-        ctx.depth_mask = False
-        if self.run.gpu.transparent_count:
-            self.run.gpu.transparent_vao.render(
-                mgl.TRIANGLES, vertices=self.run.gpu.transparent_count)
-        ctx.depth_mask = True
+        if xray:
+            # whole shell rendered see-through so the interior stays visible
+            prog["u_force_alpha"].value = 0.26
+            ctx.depth_mask = False
+            if self.run.gpu.opaque_count:
+                self.run.gpu.opaque_vao.render(
+                    mgl.TRIANGLES, vertices=self.run.gpu.opaque_count)
+            if self.run.gpu.transparent_count:
+                self.run.gpu.transparent_vao.render(
+                    mgl.TRIANGLES, vertices=self.run.gpu.transparent_count)
+            ctx.depth_mask = True
+            prog["u_force_alpha"].value = 0.0
+        else:
+            if self.run.gpu.opaque_count:
+                self.run.gpu.opaque_vao.render(
+                    mgl.TRIANGLES, vertices=self.run.gpu.opaque_count)
+            ctx.depth_mask = False
+            if self.run.gpu.transparent_count:
+                self.run.gpu.transparent_vao.render(
+                    mgl.TRIANGLES, vertices=self.run.gpu.transparent_count)
+            ctx.depth_mask = True
 
         prog["u_cut_z"].value = 1e9
         for yd in self.yard:
@@ -1283,12 +1362,28 @@ class AssemblyLineApp:
             self.draw_gpu(self.carriage,
                           mat_translate(STATION_X[station + 1], 0, 0))
 
+    def _draw_stockpile(self, dome_x):
+        floor_r = self.run.info["floor_r"]
+        sy = -min(3.4, floor_r - 0.2)
+        col = self.run.stages[self.phase.station].color
+        for i, (dx, dz, s) in enumerate(((-0.55, 0.0, 0.5), (0.4, 0.0, 0.55),
+                                         (-0.1, 0.5, 0.42))):
+            add = mat_translate(dome_x + dx, sy - 0.1, DECK_Z + 0.25 + dz)
+            self.draw_gpu(self.pallet_mesh, add, tint=tuple(
+                min(1.0, c * (0.8 + 0.1 * i)) for c in col))
+
     def _draw_workers(self, dome_x):
         for wk in self.crew:
             wx = dome_x + wk.pos[0]
             wy = wk.pos[1]
             m = mat_translate(wx, wy, DECK_Z) @ mat_rot_z(wk.yaw)
             self.draw_gpu(self.worker_mesh, m)
+            if wk.carrying:
+                # a small material box carried in front of the worker
+                fx = wx + 0.28 * math.cos(wk.yaw)
+                fy = wy + 0.28 * math.sin(wk.yaw)
+                self.draw_gpu(self.carry_mesh,
+                              mat_translate(fx, fy, DECK_Z + 0.55))
 
     # ===================================================================
     # HUD
@@ -1383,6 +1478,22 @@ class AssemblyLineApp:
         col = (140, 235, 150) if ph.kind == "park" else amber
         return [(labels.get(ph.kind, ph.kind), col, self.font_big)]
 
+    def draw_money_popups(self):
+        w, h = self.size
+        for p in self.popups:
+            age = p["age"]
+            frac = age / 1.5
+            alpha = max(0.0, 1.0 - frac)
+            sp = project_point(self.mvp, (p["pos"][0], p["pos"][1],
+                                          p["pos"][2] + frac * 1.4), w, h)
+            if sp is None:
+                continue
+            tex, tw, th = self.text_texture(("pop", p["text"]),
+                                            [(p["text"], (150, 240, 160),
+                                              self.font_small)], pad=2)
+            self.draw_texture(tex, sp[0] - tw / 2, sp[1] - th, tw, th,
+                              alpha=alpha)
+
     def draw_hud(self):
         ctx = self.ctx
         ctx.disable(self.moderngl.DEPTH_TEST)
@@ -1391,6 +1502,8 @@ class AssemblyLineApp:
         white = (232, 236, 240)
         grey = (176, 182, 192)
         green = (130, 224, 150)
+
+        self.draw_money_popups()
 
         # top banner
         tex, tw, th = self.text_texture(("banner", self.phase_idx,
@@ -1536,7 +1649,7 @@ class AssemblyLineApp:
                      f"resin x{sens['resin']:.2f}   "
                      f"wage x{sens['wage']:.2f}", grey, self.font_small)]
         if self.panel == "throughput":
-            tp = throughput(r.cat)
+            tp = throughput(r.cat, self.workers_per_station)
             bn = tp["bottleneck"]
             lines = [("THROUGHPUT & BOTTLENECK", white, self.font_med)]
             for row in tp["rows"]:
@@ -1627,7 +1740,7 @@ class AssemblyLineApp:
                      self.font_small)]
         if self.panel == "scale":
             econ = self._econ_with_sensitivity()
-            tp = throughput(r.cat)
+            tp = throughput(r.cat, self.workers_per_station)
             scn = scale_scenarios(tp["single_flow_per_year"], econ["margin"],
                                   econ["price"])
             lines = [("SCALE SCENARIOS", white, self.font_med),
@@ -1755,16 +1868,19 @@ class AssemblyLineApp:
         self.draw_texture(tex, x + 45, y + 1, tw, tht)
         self.slider_rect = (x, y + 10, 130, 24)
         x += 140
-        add_btn("follow", "FOLLOW", 78, self.follow)
-        add_btn("cutaway", "CUTAWAY", 86, self.force_cutaway)
-        add_btn("cinematic", "CINE", 60, self.cinematic)
-        add_btn("snapshot", "SNAP", 60)
-        add_btn("config", "CONFIG", 78)
-        add_btn("auto", "AUTO", 60, self.auto_run)
-        add_btn("supply", "SUPPLY×", 84)
-        add_btn("breakdown", "BREAK×", 78)
-        add_btn("absence", "ABSENT×", 84)
-        add_btn("clear", "CLEAR YARD", 108)
+        add_btn("follow", "FOLLOW", 74, self.follow)
+        add_btn("cutaway", "CUTAWAY", 82, self.force_cutaway)
+        add_btn("xray", "X-RAY", 62, self.xray)
+        add_btn("cinematic", "CINE", 54, self.cinematic)
+        add_btn("snapshot", "SNAP", 56)
+        add_btn("config", "CONFIG", 72)
+        add_btn("auto", "AUTO", 54, self.auto_run)
+        add_btn("wminus", "CREW -", 66)
+        add_btn("wplus", f"{self.workers_per_station} +", 44)
+        add_btn("supply", "SUPPLY×", 78)
+        add_btn("breakdown", "BREAK×", 72)
+        add_btn("absence", "ABSENT×", 78)
+        add_btn("clear", "CLEAR", 66)
 
     def draw_spec_plate(self):
         rec = self.selected_yard.rec
@@ -1960,6 +2076,16 @@ class AssemblyLineApp:
                                   ["lumber", "resin", "wage"])
         self._sens_keys = self._sens_keys[1:] + self._sens_keys[:1]
 
+    def set_crew(self, n):
+        n = max(1, min(6, n))
+        if n == self.workers_per_station:
+            return
+        self.workers_per_station = n
+        self.crew = [Worker((0, 0)) for _ in range(n)]
+        if self.phase.kind == "work":
+            self._begin_station(self.phase.station)
+        self.log(f"Crew set to {n} workers/station")
+
     def control_action(self, key):
         if key == "pause":
             self.paused = not self.paused
@@ -1971,6 +2097,8 @@ class AssemblyLineApp:
             self.cinematic = False
         elif key == "cutaway":
             self.force_cutaway = not self.force_cutaway
+        elif key == "xray":
+            self.xray = not self.xray
         elif key == "cinematic":
             self.cinematic = not self.cinematic
         elif key == "snapshot":
@@ -1979,6 +2107,9 @@ class AssemblyLineApp:
             self.open_configurator()
         elif key == "auto":
             self.auto_run = not self.auto_run
+        elif key in ("wminus", "wplus"):
+            self.set_crew(self.workers_per_station
+                          + (1 if key == "wplus" else -1))
         elif key in ("supply", "breakdown", "absence"):
             self.inject(key)
         elif key == "clear":
@@ -2068,10 +2199,16 @@ class AssemblyLineApp:
                     self.cinematic = False
                 elif event.key == pygame.K_c:
                     self.force_cutaway = not self.force_cutaway
+                elif event.key == pygame.K_x:
+                    self.xray = not self.xray
                 elif event.key == pygame.K_r:
                     self.start_new_run()
                 elif event.key == pygame.K_v:
                     self.cinematic = not self.cinematic
+                elif event.key == pygame.K_MINUS:
+                    self.set_crew(self.workers_per_station - 1)
+                elif event.key in (pygame.K_EQUALS, pygame.K_PLUS):
+                    self.set_crew(self.workers_per_station + 1)
             if event.type == pygame.MOUSEMOTION:
                 self.mouse = event.pos
                 if self.dragging:
