@@ -1308,9 +1308,30 @@ class AssemblyLineApp:
             else:
                 pygame.display.set_mode((0, 0), flags | pygame.FULLSCREEN)
             pygame.display.set_caption("Dome Home Assembly Line")
-            self.size = pygame.display.get_window_size()
             self.ctx = moderngl.create_context()
             self.fbo = self.ctx.screen
+            # Render in the true GL drawable size. Under display scaling
+            # (or HiDPI) the drawable can differ from the reported window
+            # size; mouse events arrive in window space, so everything
+            # would be drawn at y*k while hit-tests expected y — making
+            # buttons only clickable somewhere below where they appear.
+            self.size = pygame.display.get_window_size()
+            try:
+                drawable = self.ctx.screen.size
+                if drawable and drawable[0] > 0 and drawable[1] > 0:
+                    self.size = drawable
+            except Exception:
+                pass
+            self.window_size = pygame.display.get_window_size()
+
+        if not hasattr(self, "window_size"):
+            self.window_size = self.size
+        self.mouse_scale = (
+            self.size[0] / max(1, self.window_size[0]),
+            self.size[1] / max(1, self.window_size[1]))
+        if self.mouse_scale != (1.0, 1.0):
+            print(f"[display] window {self.window_size} -> drawable "
+                  f"{self.size}; scaling mouse by {self.mouse_scale}")
 
         ctx = self.ctx
         self.scene_prog = ctx.program(vertex_shader=SCENE_VS,
@@ -1386,7 +1407,8 @@ class AssemblyLineApp:
         self.hover_screen = None
         self.selected_yard = None
         self.inspect = None          # InspectDome when inspecting a yard dome
-        self.inspect_row = 0         # keyboard cursor in the layers menu
+        self.inspect_row = 0         # keyboard cursor in the layers grid
+        self.inspect_col = 0         # 0 = show/hide, 1 = solid/transparent
         self.tour = False
         self.sale = None             # active buying-process state
         self.sale_cooldown = SALE_AUTO_INTERVAL
@@ -3111,112 +3133,156 @@ class AssemblyLineApp:
         if self.inspect is not None:
             self.draw_inspect_panel()
 
+    # columns in the layers grid: 0 = show/hide, 1 = solid/transparent
+    LAYER_COLS = ("visible", "solid")
+
     def draw_inspect_panel(self):
+        """Layers grid. Every rectangle is computed once and used for BOTH
+        drawing and hit-testing, so a click always lands where it looks."""
         insp = self.inspect
         white = (230, 234, 240)
         amber = (255, 210, 90)
         grey = (170, 176, 186)
-        green = (120, 220, 140)
+        dim = (120, 128, 140)
+        w_scr, h_scr = self.size
         px, py = 14, 96
-        row_h = 22
-        pw = 300
+        pw = 320
+        cell = 22
         self.inspect_buttons = []
-        n = len(insp.stages)
+        stages = self.inspect_stages()
+        n = max(1, len(stages))
         has_costs = hasattr(insp, "layer_costs")
-        panel_h = 34 + n * row_h + 96 + (24 if has_costs else 0)
-        self.draw_rect(px - 6, py - 6, pw + 12, panel_h,
-                       (0.04, 0.06, 0.10, 0.9))
-        header = ("SHED BUILD LAYERS + DIRECT COST" if
-                  getattr(insp, "kind", "dome") == "shed" else
-                  "LAYERS  (eye = show · box = solid)")
+
+        # fit the rows into whatever vertical room is left above the toolbar
+        chrome = 30 + (26 if has_costs else 0) + 76 + 26
+        avail = max(80, h_scr - 70 - py - chrome)
+        row_h = int(max(18, min(26, avail / n)))
+        rows_y = py + 30
+        panel_h = chrome + n * row_h
+        self.draw_rect(px - 8, py - 8, pw + 16, panel_h,
+                       (0.04, 0.06, 0.10, 0.93))
+
+        self.inspect_row = max(0, min(self.inspect_row, len(stages) - 1))
+        self.inspect_col = max(0, min(getattr(self, "inspect_col", 0), 1))
+        title = f"LAYERS · {len(stages)}"
         tex, tw, th = self.text_texture(
-            ("insphdr", header), [(header, white, self.font_small)])
+            ("insphdr2", title), [(title, white, self.font_small)])
         self.draw_texture(tex, px, py, tw, th)
-        yy = py + 26
-        self.inspect_row = max(0, min(self.inspect_row, len(insp.stages) - 1))
-        for i, s in enumerate(insp.stages):
+        hint = "↑↓ ←→ Enter"
+        t2, w2, h2 = self.text_texture(
+            ("insphint2",), [(hint, dim, self.font_tiny)], pad=1)
+        self.draw_texture(t2, max(px + tw + 10, px + pw - w2), py + 3,
+                          w2, h2)
+
+        top_cost = max([insp.layer_costs[s.key] for s in stages],
+                       default=0.0) if has_costs else 0.0
+        for i, s in enumerate(stages):
             L = insp.layers[s.key]
-            selected = (i == self.inspect_row)
-            if selected:        # highlight the keyboard cursor row
-                self.draw_rect(px - 4, yy - 2, pw + 2, row_h - 2,
-                               (0.16, 0.24, 0.34, 0.95))
-            # visibility toggle (bigger hit area than before)
-            self.draw_rect(px, yy, 20, 20,
-                           (0.2, 0.55, 0.28, 1) if L["visible"]
-                           else (0.18, 0.2, 0.24, 1))
-            self.inspect_buttons.append((f"vis:{s.key}", px - 4, yy - 2, 26,
-                                         24))
-            # solid/transparent toggle
-            self.draw_rect(px + 26, yy, 20, 20,
-                           (0.55, 0.48, 0.2, 1) if L["solid"]
-                           else (0.2, 0.35, 0.5, 1))
-            self.inspect_buttons.append((f"solid:{s.key}", px + 22, yy - 2,
-                                         26, 24))
-            col = white if L["visible"] else grey
-            if selected:
-                col = amber if L["visible"] else (200, 180, 140)
-            label = s.title.title()
-            if hasattr(insp, "layer_costs"):
-                label = (f"{label[:17]:<17} "
-                         f"{self.money(insp.layer_costs[s.key])}")
-            t2, w2, h2 = self.text_texture((f"lyr{s.key}", L["visible"],
-                                            L["solid"], selected),
-                                           [(label, col, self.font_tiny)],
-                                           pad=2)
-            self.draw_texture(t2, px + 52, yy + 2, w2, h2)
-            # the rest of the row selects it (easier than hitting a box)
-            self.inspect_buttons.append((f"row:{i}", px + 50, yy - 2,
-                                         pw - 54, 24))
-            yy += row_h
-        # running total of the visible (included) layers
+            ry = rows_y + i * row_h
+            row_sel = (i == self.inspect_row)
+            if row_sel:
+                self.draw_rect(px - 4, ry, pw + 8, row_h - 2,
+                               (0.16, 0.25, 0.36, 0.95))
+            # --- the two toggle cells (draw rect == hit rect) -------------
+            for ci, field in enumerate(self.LAYER_COLS):
+                cx = px + ci * (cell + 6)
+                rect = (cx, ry + 1, cell, row_h - 4)
+                on = L[field]
+                if field == "visible":
+                    fill = (0.22, 0.58, 0.30, 1) if on else (0.17, 0.19, 0.23, 1)
+                else:
+                    fill = (0.58, 0.50, 0.22, 1) if on else (0.20, 0.36, 0.52, 1)
+                self.draw_rect(*rect, fill)
+                if row_sel and ci == self.inspect_col:
+                    # cursor ring on the active cell
+                    self.draw_rect(rect[0] - 2, rect[1] - 2, rect[2] + 4, 2,
+                                   (1.0, 0.85, 0.35, 1))
+                    self.draw_rect(rect[0] - 2, rect[1] + rect[3],
+                                   rect[2] + 4, 2, (1.0, 0.85, 0.35, 1))
+                    self.draw_rect(rect[0] - 2, rect[1], 2, rect[3],
+                                   (1.0, 0.85, 0.35, 1))
+                    self.draw_rect(rect[0] + rect[2], rect[1], 2, rect[3],
+                                   (1.0, 0.85, 0.35, 1))
+                self.inspect_buttons.append(
+                    (f"cell:{i}:{ci}", rect[0], rect[1], rect[2], rect[3]))
+            # --- label + cost + share bar --------------------------------
+            lx = px + 2 * (cell + 6) + 6
+            col = white if L["visible"] else dim
+            if row_sel:
+                col = amber if L["visible"] else (205, 185, 150)
+            name = s.title.title()[:16]
+            txt = name
+            if has_costs:
+                txt = f"{name:<16} {self.money(insp.layer_costs[s.key]):>9}"
+            t3, w3, h3 = self.text_texture(
+                (f"lyr2{s.key}", L["visible"], row_sel),
+                [(txt, col, self.font_tiny)], pad=2)
+            self.draw_texture(t3, lx, ry + (row_h - h3) / 2, w3, h3)
+            if has_costs and top_cost > 0:
+                frac = insp.layer_costs[s.key] / top_cost
+                bw = (pw - (lx - px) - 8) * frac
+                self.draw_rect(lx, ry + row_h - 5, max(1.0, bw), 2,
+                               (0.45, 0.62, 0.85, 0.85) if L["visible"]
+                               else (0.30, 0.33, 0.38, 0.7))
+            # the whole row selects it — a large, forgiving target
+            self.inspect_buttons.append(
+                (f"row:{i}", lx, ry, pw - (lx - px), row_h - 2))
+
+        yy = rows_y + n * row_h + 4
         if has_costs:
-            included = sum(insp.layer_costs[s.key] for s in insp.stages
+            included = sum(insp.layer_costs[s.key] for s in stages
                            if insp.layers[s.key]["visible"])
-            full = sum(insp.layer_costs.values())
-            tot = (f"INCLUDED TOTAL {self.money(included)}"
-                   + (f"  (of {self.money(full)})" if included < full - 1
-                      else ""))
+            full = sum(insp.layer_costs.values()) or 1.0
+            tot = (f"INCLUDED {self.money(included)}"
+                   f"   ({included / full * 100:.0f}% of "
+                   f"{self.money(full)})")
             t2, w2, h2 = self.text_texture(
-                ("insptot", int(included)),
+                ("insptot2", int(included)),
                 [(tot, amber, self.font_small)], pad=2)
-            self.draw_texture(t2, px, yy + 2, w2, h2)
-            yy += 24
-        # controls
-        yy += 6
-        ctrls = [("insp_tour", "TOUR" if not self.tour else "TOUR*"),
-                 ("insp_allon", "ALL ON"), ("insp_alloff", "ALL OFF")]
-        cx = px
-        for key, label in ctrls:
-            self.draw_rect(cx, yy, 92, 26,
-                           (0.2, 0.3, 0.2, 1) if (key == "insp_tour" and
-                                                  self.tour)
-                           else (0.12, 0.16, 0.22, 1))
-            t2, w2, h2 = self.text_texture((f"ic{key}", label, self.tour),
-                                           [(label, amber, self.font_small)],
-                                           pad=3)
-            self.draw_texture(t2, cx + 8, yy + 5, w2, h2)
-            self.inspect_buttons.append((key, cx, yy, 92, 26))
-            cx += 98
-        yy += 32
-        cx = px
-        if getattr(insp, "kind", "dome") == "shed":
-            bottom_controls = [("insp_costs", "COSTS →"),
-                               ("insp_exit", "EXIT")]
-        elif getattr(insp, "spec", None) is not None:
-            bottom_controls = [("insp_clad", "CLADDING »"),
-                               ("insp_exit", "EXIT")]
-        else:
-            bottom_controls = [("insp_exit", "EXIT")]
-        for key, label in bottom_controls:
-            wbtn = 140 if key == "insp_clad" else 90
-            self.draw_rect(cx, yy, wbtn, 26,
-                           (0.30, 0.16, 0.16, 1) if key == "insp_exit"
-                           else (0.12, 0.16, 0.22, 1))
-            t2, w2, h2 = self.text_texture(
-                (f"ic{key}",), [(label, white, self.font_small)], pad=3)
-            self.draw_texture(t2, cx + 8, yy + 5, w2, h2)
-            self.inspect_buttons.append((key, cx, yy, wbtn, 26))
-            cx += wbtn + 8
+            self.draw_texture(t2, px, yy, w2, h2)
+            self.draw_rect(px, yy + h2 + 1, pw, 3, (0.2, 0.22, 0.26, 1))
+            self.draw_rect(px, yy + h2 + 1, pw * (included / full), 3,
+                           (0.55, 0.85, 0.6, 1))
+            yy += 26
+
+        # --- control buttons: uniform grid, draw rect == hit rect ---------
+        rows = [[("insp_tour", "TOUR" if not self.tour else "TOUR*",
+                  self.tour),
+                 ("insp_solo", "SOLO", False),
+                 ("insp_invert", "INVERT", False)],
+                [("insp_allon", "ALL ON", False),
+                 ("insp_alloff", "ALL OFF", False)]]
+        last = []
+        if has_costs:
+            last.append(("insp_sort", "SORT $" if not
+                         getattr(self, "inspect_sort", False) else "SORT #",
+                         getattr(self, "inspect_sort", False)))
+        if getattr(insp, "spec", None) is not None:
+            last.append(("insp_clad", "CLADDING", False))
+        last.append(("insp_exit", "EXIT", False))
+        rows[1].extend(last[:1])
+        rows.append(last[1:])
+
+        bh = 26
+        for row in rows:
+            if not row:
+                continue
+            bw = (pw - 6 * (len(row) - 1)) / len(row)
+            cx = px
+            for key, label, active in row:
+                fill = ((0.22, 0.34, 0.24, 1) if active else
+                        (0.34, 0.17, 0.17, 1) if key == "insp_exit" else
+                        (0.12, 0.16, 0.22, 1))
+                self.draw_rect(cx, yy, bw, bh, fill)
+                t2, w2, h2 = self.text_texture(
+                    (f"ic2{key}", label, active),
+                    [(label, amber if active else white, self.font_small)],
+                    pad=2)
+                self.draw_texture(t2, cx + (bw - w2) / 2,
+                                  yy + (bh - h2) / 2, w2, h2)
+                self.inspect_buttons.append((key, cx, yy, bw, bh))
+                cx += bw + 6
+            yy += bh + 6
 
     def draw_pricing_editor(self):
         """Full-page editor for every catalog unit-cost input."""
@@ -3363,9 +3429,9 @@ class AssemblyLineApp:
     def draw_key_legend(self):
         w, h = self.size
         if self.inspect is not None:
-            text_line = ("↑/↓ pick layer · Enter/Space show-hide · "
-                         "T solid/clear · click row or boxes · TOUR · "
-                         "ESC exit · drag orbit · wheel zoom")
+            text_line = ("↑/↓ row · ←/→ column · Enter/Space toggle · "
+                         "S solo · I invert · A all · N none · T tour · "
+                         "click any row or cell · ESC exit")
         else:
             text_line = ("every button has a hotkey (shown on it) · "
                          "[ ] speed · R new run · ←/→ orbit · WASD pan · "
@@ -3504,6 +3570,12 @@ class AssemblyLineApp:
             if char == "$" and self.pricing_buffer:
                 continue
             self.pricing_buffer += char
+
+    def map_mouse(self, pos):
+        """Window-space mouse -> render-space, so hit-tests line up with
+        what is drawn even when the drawable differs from the window."""
+        sx, sy = self.mouse_scale
+        return (pos[0] * sx, pos[1] * sy)
 
     def hit(self, mx, my, rect):
         x, y, w, h = rect
@@ -3648,47 +3720,100 @@ class AssemblyLineApp:
             return True
         return False
 
-    def inspect_key(self, key):
-        """Keyboard driving of the layers menu while inspecting.
-        Up/Down move the cursor, Enter/Space show-hide, T solid/transparent,
-        Home/End jump. Returns True if the key was consumed."""
+    def inspect_stages(self):
+        """Stages in display order — build order, or costliest first when
+        the cost sort is on. One source of truth so the panel rows and the
+        keyboard cursor can never index different lists."""
         insp = self.inspect
-        if insp is None or not insp.stages:
+        if insp is None:
+            return []
+        stages = list(insp.stages)
+        if getattr(self, "inspect_sort", False) and \
+                hasattr(insp, "layer_costs"):
+            stages.sort(key=lambda s: -insp.layer_costs.get(s.key, 0.0))
+        return stages
+
+    def toggle_layer(self, row, col):
+        """Flip one cell of the layers grid (col 0 = show, 1 = solid)."""
+        insp = self.inspect
+        stages = self.inspect_stages()
+        if insp is None or not stages:
+            return
+        row = max(0, min(row, len(stages) - 1))
+        field = self.LAYER_COLS[max(0, min(col, 1))]
+        k = stages[row].key
+        insp.layers[k][field] = not insp.layers[k][field]
+
+    def solo_layer(self, row):
+        """Isolate one layer: show it, hide everything else. Pressing it
+        again on an already-isolated layer restores all layers."""
+        insp = self.inspect
+        stages = self.inspect_stages()
+        if insp is None or not stages:
+            return
+        target = stages[max(0, min(row, len(stages) - 1))].key
+        alone = all(v["visible"] == (k == target)
+                    for k, v in insp.layers.items())
+        for k, v in insp.layers.items():
+            v["visible"] = True if alone else (k == target)
+
+    def inspect_key(self, key):
+        """Keyboard driving of the layers grid while inspecting.
+        Up/Down pick the row, Left/Right pick the column, Enter/Space flips
+        the selected cell. S solo, I invert, A all on, N none, T tour.
+        Returns True if the key was consumed."""
+        insp = self.inspect
+        stages = self.inspect_stages()
+        if insp is None or not stages:
             return False
-        n = len(insp.stages)
+        n = len(stages)
         if key == pygame.K_UP:
             self.inspect_row = (self.inspect_row - 1) % n
         elif key == pygame.K_DOWN:
             self.inspect_row = (self.inspect_row + 1) % n
+        elif key == pygame.K_LEFT:
+            self.inspect_col = (getattr(self, "inspect_col", 0) - 1) % 2
+        elif key == pygame.K_RIGHT:
+            self.inspect_col = (getattr(self, "inspect_col", 0) + 1) % 2
         elif key == pygame.K_HOME:
             self.inspect_row = 0
         elif key == pygame.K_END:
             self.inspect_row = n - 1
         elif key in (pygame.K_RETURN, pygame.K_KP_ENTER, pygame.K_SPACE):
-            k = insp.stages[self.inspect_row].key
-            insp.layers[k]["visible"] = not insp.layers[k]["visible"]
+            self.toggle_layer(self.inspect_row, getattr(self, "inspect_col", 0))
+        elif key == pygame.K_s:
+            self.solo_layer(self.inspect_row)
+        elif key == pygame.K_i:
+            for v in insp.layers.values():
+                v["visible"] = not v["visible"]
+        elif key == pygame.K_a:
+            for v in insp.layers.values():
+                v["visible"] = True
+        elif key == pygame.K_n:
+            for v in insp.layers.values():
+                v["visible"] = False
         elif key == pygame.K_t:
-            k = insp.stages[self.inspect_row].key
-            insp.layers[k]["solid"] = not insp.layers[k]["solid"]
+            self.toggle_tour()
         else:
             return False
         return True
 
     def inspect_action(self, key):
         insp = self.inspect
-        keys = [s.key for s in insp.stages]
-        if key.startswith("row:"):
+        if key.startswith("cell:"):
+            _, r, c = key.split(":")
+            self.inspect_row, self.inspect_col = int(r), int(c)
+            self.toggle_layer(int(r), int(c))
+        elif key.startswith("row:"):
             self.inspect_row = int(key[4:])
-        elif key.startswith("vis:"):
-            k = key[4:]
-            insp.layers[k]["visible"] = not insp.layers[k]["visible"]
-            if k in keys:
-                self.inspect_row = keys.index(k)
-        elif key.startswith("solid:"):
-            k = key[6:]
-            insp.layers[k]["solid"] = not insp.layers[k]["solid"]
-            if k in keys:
-                self.inspect_row = keys.index(k)
+        elif key == "insp_sort":
+            self.inspect_sort = not getattr(self, "inspect_sort", False)
+            self.inspect_row = 0
+        elif key == "insp_solo":
+            self.solo_layer(self.inspect_row)
+        elif key == "insp_invert":
+            for v in insp.layers.values():
+                v["visible"] = not v["visible"]
         elif key == "insp_tour":
             self.toggle_tour()
         elif key == "insp_allon":
@@ -3916,8 +4041,8 @@ class AssemblyLineApp:
                     self.pricing_text(event.text)
                 elif event.type == pygame.MOUSEBUTTONDOWN \
                         and event.button == 1:
-                    self.mouse = event.pos
-                    self.pricing_click(*event.pos)
+                    self.mouse = self.map_mouse(event.pos)
+                    self.pricing_click(*self.mouse)
                 continue
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -3942,29 +4067,29 @@ class AssemblyLineApp:
                     # every toolbar button also has a hotkey
                     self.hotkey_action(event.key, pygame.key.get_mods())
             if event.type == pygame.MOUSEMOTION:
-                self.mouse = event.pos
+                self.mouse = self.map_mouse(event.pos)
                 if self.dragging:
                     self.cam_yaw -= event.rel[0] * 0.008
                     self.cam_pitch = max(math.radians(4), min(
                         math.radians(82),
                         self.cam_pitch + event.rel[1] * 0.006))
                 if self.slider_drag:
-                    self.set_speed_from_x(event.pos[0])
+                    self.set_speed_from_x(self.mouse[0])
             if event.type == pygame.MOUSEBUTTONDOWN:
-                self.mouse = event.pos
+                self.mouse = self.map_mouse(event.pos)
                 if event.button == 1:
-                    if self.hit(*event.pos, self.slider_rect):
+                    if self.hit(*self.mouse, self.slider_rect):
                         self.slider_drag = True
-                        self.set_speed_from_x(event.pos[0])
+                        self.set_speed_from_x(self.mouse[0])
                     else:
                         # UI first; if nothing hit, treat as camera drag
-                        handled = self.handle_click(*event.pos)
+                        handled = self.handle_click(*self.mouse)
                         if not handled and not self.configuring:
                             self.dragging = True
                 elif event.button == 3:
                     # right-click a structure to scope into it; otherwise
                     # fall back to orbiting the camera
-                    yd = self.click_yard(*event.pos)
+                    yd = self.click_yard(*self.mouse)
                     if yd is not None and yd is not self.selected_yard:
                         self.enter_inspect(yd)
                     else:
