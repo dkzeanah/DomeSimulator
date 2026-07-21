@@ -159,17 +159,51 @@ home off the carriage, and sets it on a **big mechanical lazy susan**.
 The geared turntable then rotates automatically so the solar band
 tracks the sun as it arcs across the sky.
 
+### An investor decision tool, not just an animation
+
+The line is driven by a real cost-and-labor model in
+[al_build.py](al_build.py), so the running demo shows the numbers an
+investor actually underwrites — and every dollar and time figure lives
+in one editable `ASSUMPTIONS` block at the top of that file.
+
+- **Real per-element economics.** Every strut, pipe, panel, and fixture
+  carries a material cost and an install-labor time. A per-station crew
+  physically walks the dome deck at a real human stride (0.76 m/step) to
+  place each element; **steps, distance walked, labor-hours, and dollars
+  accrue live** as ground-truth numbers (the money ticker top-left).
+- **Random product mix, persisted.** Each run randomizes the dome (size,
+  frequency, layout, cladding). Finished homes are serialized, saved to
+  SQLite (`dome_yard.sqlite3`), and **stacked in a growing yard that
+  survives across sessions** until you clear it.
+- **Live dockable panels** (tab row, top-right): **P&L** (materials +
+  labor + overhead vs. sale price = gross margin, with lumber/resin/wage
+  **sensitivity toggles**), **FLOW** (per-station takt time, the
+  bottleneck, single-piece vs. pipelined throughput, QC first-pass
+  yield, and downtime cost), **BOM**, **VS** (benchmark against a
+  conventional manufactured home), **VALUE** (solar kW, R-value, off-grid
+  autonomy, embodied carbon, OSHA target), **SCALE** (1/3/6-line
+  scenarios + break-even units), and **YARD** (cumulative production
+  ledger — homes shipped, revenue, profit, labor).
+- **Interactive.** Speed slider, pause/step, follow / cutaway / cinematic
+  cameras, snapshot export, **hover any placed element to inspect** its
+  cost/labor/weight, a **pre-run configurator** (pick layout/size/
+  frequency/cladding or randomize), **disruption injection** (supply
+  delay, machine breakdown, worker absence — watch throughput and cost
+  respond), and **clear yard**.
+
 ```
 py -3.12 assembly_line.py            # fullscreen
 py -3.12 assembly_line.py --window   # windowed
-py -3.12 assembly_line.py --selftest # geometry/timeline check, no GL
-py -3.12 assembly_line.py --shots 10,60,200   # offscreen PNG renders
+py -3.12 assembly_line.py --selftest # model + DB check, no GL
+py -3.12 assembly_line.py --shots 4,60,120   # offscreen PNG renders
 ```
 
-Controls: `Space` pause, `[` / `]` speed (x0.25–x16), mouse-drag orbit,
-wheel zoom, `F` follow/free camera (WASD pans when free), `C` interior
-cutaway, `R` restart the line, `Esc` quit. A HUD checklist tracks all
-15 stations plus the crane transfer and sun tracking.
+Controls: `Space` pause, `[` / `]` speed (x0.25–x8), on-screen speed
+slider, mouse-drag orbit, wheel zoom, `F` follow/free camera (WASD pans
+when free), `C` interior cutaway, `V` cinematic orbit, `R` start a new
+random dome, `Esc` quit. Everything else (tabs, buttons, configurator,
+yard spec plates) is clickable. A HUD checklist tracks all 15 stations
+plus the crane transfer and sun tracking.
 
 ## Preset setups
 

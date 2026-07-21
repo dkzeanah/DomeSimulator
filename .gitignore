@@ -8,6 +8,9 @@ dome_flat.md
 dome_flat.txt
 dome_bom.txt
 dome_demo.sqlite3
+dome_yard.sqlite3
+snapshots/
+shots/
 
 # Local editor/tool state
 .claude/

@@ -1,74 +1,82 @@
 """
-Dome Home Assembly Line — factory manufacturing simulation.
+Dome Home Assembly Line — investor-demo manufacturing simulation.
 
 A manufactured-housing production line for dome homes. A transfer
-carriage rolls a dome down the line, pausing under 15 numbered gantry
-stations. Each station adds one build step, in real trailer-plant
-order, until every component of the finished home is present:
+carriage rolls a dome down the line past 15 numbered gantry stations,
+each adding one build step in real trailer-plant order, until every
+component of the finished home is present. A gantry crane then lifts
+the finished home by its apex anchor onto a big mechanical lazy susan
+that rotates to keep the solar band tracking the sun.
 
-     1  FLOOR FRAMING        wood floor framed into the base ring
-     2  DOME SHELL FRAMING   geodesic frame raised from the ring up
-     3  CENTER COLUMN        floor-to-apex utility column + crane anchor
-     4  WATER LINES          hot/cold PEX + drains through the floor,
-                             terminating centrally at the column
-     5  POWER LINES          conduit through the floor to the column
-     6  FIXTURES & OUTLETS   toilet/shower/sinks set, outlets mounted
-     7  INSULATION           batts packed into every frame bay
-     8  SHEETROCK            interior shell rocked
-     9  OSB SHEATHING        exterior panel board over the dome
-    10  WATER BARRIER        sill/water membrane over the OSB
-    11  SHINGLE SCALES       plastic-scale mechanical water barrier
-    12  FIBERGLASS           entire structure encased in fiberglass
-    13  WATERTIGHT HATCH     sealed marine hatch door — zero windows
-    14  INTERIOR FIT-OUT     complete kitchen, bathroom, bedroom
-    15  SOLAR ARRAY          solar skin on the sun-facing band + QC
+This build is designed to *persuade*: the geometry, cost, and labor
+model are all driven from ``al_build.py`` (which holds every editable
+assumption), so the running demo shows real unit economics, throughput,
+break-even, a benchmark against conventional housing, and the finished
+product's value story — not just an animation.
 
-At the end of the line a gantry crane hooks the apex anchor, lifts the
-finished dome off the carriage, and sets it on a big mechanical lazy
-susan.  The turntable then rotates automatically to keep the solar band
-tracking the sun as it arcs across the sky.
+What makes it a decision tool, not a cartoon:
+  * Every element carries a real material cost and install-labor time.
+  * A per-station crew physically walks the dome deck at a real human
+    stride to place each element; steps, distance, labor-hours, and
+    dollars accrue live as ground-truth numbers.
+  * Each production run randomizes the dome (size / frequency / layout /
+    cladding); finished homes are serialized, saved to SQLite, and
+    stacked in a growing yard that persists across sessions.
+  * Live dockable panels: P&L, throughput / bottleneck, BOM + cost
+    sensitivity, benchmark, product value, scale scenarios, and a
+    cumulative production ledger.
+  * Interactive: speed slider, pause/step, follow / cutaway / cinematic
+    cameras, snapshot export, click-to-inspect any element, a pre-run
+    configurator, disruption injection, and clear-yard.
 
 Install:
     py -3.12 -m pip install pygame moderngl numpy
 
 Run:
-    py -3.12 assembly_line.py            fullscreen
-    py -3.12 assembly_line.py --window   windowed 1600x900
-    py -3.12 assembly_line.py --selftest geometry/timeline sanity check
-    py -3.12 assembly_line.py --shots 10,60,200   offscreen PNG renders
-
-Controls:
-    SPACE        pause / resume the line
-    [  /  ]      slow down / speed up (x0.25 .. x16)
-    mouse drag   orbit the camera            wheel   zoom
-    F            toggle follow-the-dome / free camera (WASD pans)
-    C            force interior cutaway view
-    R            restart the line
-    ESC          quit
+    py -3.12 assembly_line.py               fullscreen
+    py -3.12 assembly_line.py --window      windowed 1600x900
+    py -3.12 assembly_line.py --selftest    head-less model + DB check
+    py -3.12 assembly_line.py --shots 6,40  offscreen PNG renders
 """
 
 from __future__ import annotations
 
 import math
 import os
+import random
+import sqlite3
 import sys
+import time
+from dataclasses import dataclass, field
 
 import numpy as np
 import pygame
 
-from dome_model import build_geodesic, normalize
+import al_build as AL
+from al_build import (
+    ASSUMPTIONS,
+    STAGES,
+    STAGE_INDEX,
+    DomeSpec,
+    add_box,
+    break_even,
+    benchmark,
+    build_dome_catalog,
+    build_finished_dome_mesh,
+    product_value,
+    random_spec,
+    scale_scenarios,
+    station_cycle_times,
+    throughput,
+    unit_economics,
+)
+from dome_model import normalize
 from materials import (
-    MAT_CANVAS,
     MAT_CONCRETE,
-    MAT_DECK,
     MAT_EMISSIVE,
-    MAT_GLASS,
     MAT_GRASS,
     MAT_METAL,
     MAT_PLAIN,
-    MAT_SHEETING,
-    MAT_SHINGLE,
-    MAT_SOLAR,
     MAT_WOOD,
 )
 from mesh_builder import Mesh, MeshBuilder
@@ -77,87 +85,31 @@ from mesh_builder import Mesh, MeshBuilder
 # Line layout
 # ---------------------------------------------------------------------------
 
-DOME_RADIUS = 4.0
-DOME_FREQ = 3
-FLOOR_TOP = 0.35              # dome-local z of the finished deck surface
-CARRIAGE_TOP = 0.62           # world z of the carriage deck (= platter top)
+CARRIAGE_TOP = 0.62
+DECK_Z = CARRIAGE_TOP + AL.FLOOR_TOP
 STATION_SPACING = 13.0
 START_X = -16.0
-TRAVEL_SECS = 3.5
 RAIL_GAUGE = 2.2
-
-SKY_COLOR = (0.55, 0.70, 0.86)
-
-
-class StageDef:
-    def __init__(self, key, title, desc, secs, color):
-        self.key = key
-        self.title = title
-        self.desc = desc
-        self.secs = secs
-        self.color = color
-
-
-STAGES = [
-    StageDef("floor", "FLOOR FRAMING",
-             "Wood floor built into the base ring: rim, joists, decking",
-             7.0, (0.72, 0.55, 0.30)),
-    StageDef("frame", "DOME SHELL FRAMING",
-             "Geodesic timber frame raised from the base ring to the apex",
-             11.0, (0.82, 0.62, 0.28)),
-    StageDef("column", "CENTER UTILITY COLUMN",
-             "Floor-to-apex service column + exterior crane anchor at the top",
-             6.0, (0.60, 0.63, 0.68)),
-    StageDef("water", "WATER LINES",
-             "Hot / cold PEX and drains through the floor, all terminating "
-             "centrally at the column", 7.0, (0.25, 0.50, 0.90)),
-    StageDef("power", "POWER LINES",
-             "Electrical conduit through the floor, terminating at the column",
-             6.5, (0.95, 0.80, 0.20)),
-    StageDef("fixtures", "FIXTURES & OUTLETS",
-             "Plumbing fixtures set; outlets on the column and perimeter",
-             8.0, (0.88, 0.90, 0.94)),
-    StageDef("insulation", "INSULATION",
-             "Insulation batts packed into every frame bay",
-             7.5, (0.94, 0.52, 0.62)),
-    StageDef("sheetrock", "SHEETROCK",
-             "Interior shell sheetrocked", 7.5, (0.90, 0.90, 0.85)),
-    StageDef("osb", "OSB SHEATHING",
-             "OSB panel board covering the dome exterior",
-             8.5, (0.84, 0.70, 0.44)),
-    StageDef("wrap", "WATER BARRIER",
-             "Sill / water membrane wrapped over the OSB",
-             6.0, (0.60, 0.64, 0.72)),
-    StageDef("shingles", "SHINGLE SCALES",
-             "Plastic scale shingles — the mechanical water barrier",
-             8.5, (0.20, 0.40, 0.45)),
-    StageDef("fiberglass", "FIBERGLASS ENCASEMENT",
-             "The entire structure encased in a watertight fiberglass shell",
-             7.5, (0.62, 0.85, 0.90)),
-    StageDef("hatch", "WATERTIGHT HATCH DOOR",
-             "Sealed marine-style hatch — the home's only opening, zero "
-             "windows", 6.0, (0.52, 0.56, 0.62)),
-    StageDef("interior", "KITCHEN / BATH / BEDROOM",
-             "Complete kitchen, bathroom and bedroom fit-out",
-             10.0, (0.68, 0.50, 0.80)),
-    StageDef("solar", "SOLAR ARRAY",
-             "Solar skin applied to the sun-facing band + final QC",
-             6.0, (0.15, 0.28, 0.60)),
-]
-STAGE_INDEX = {s.key: i for i, s in enumerate(STAGES)}
-
 STATION_X = [i * STATION_SPACING for i in range(len(STAGES))]
 PICKUP_X = STATION_X[-1] + 14.0
 TURNTABLE_X = PICKUP_X + 14.0
 PLATTER_TOP = 0.62
-LIFT_Z = 4.4
-SUN_CYCLE_SECS = 75.0
+LIFT_Z = 4.6
+SUN_CYCLE_SECS = 80.0
+DB_FILE = "dome_yard.sqlite3"
 
-# ---------------------------------------------------------------------------
-# Shaders (trimmed version of the dome_creator scene shader; the surface
-# pattern is evaluated in dome-local space so skins don't swim as the
-# dome travels down the line)
-# ---------------------------------------------------------------------------
+SKY_COLOR = (0.55, 0.70, 0.86)
+
+# Animation pacing. Reported metrics (steps, distance, labor-hours, $) are
+# the model's real numbers; these constants only compress the *animation*
+# so a full build is watchable. The speed slider multiplies animation dt.
+PLACE_ANIM_PER_LABOR_MIN = 0.05     # animation seconds shown per labor-minute
+ANIM_WALK_SPEED = 4.6               # m/s on screen (real pace is ~1.3)
+TRAVEL_SECS = 3.0
+
+# ===========================================================================
+# Shaders
+# ===========================================================================
 
 SCENE_VS = """
 #version 330
@@ -193,43 +145,40 @@ flat in float v_mat;
 uniform vec3 u_camera_position;
 uniform vec3 u_light_direction;
 uniform vec3 u_sky_color;
+uniform vec3 u_tint;
 uniform float u_cut_z;
 out vec4 frag_color;
 
 float hash21(vec2 p) {
     return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
 }
-
 float surface_pattern(int id, vec3 p, vec3 n) {
-    if (id == 1) {                                     // shingle scales
+    if (id == 1) {
         float az = atan(p.y, p.x);
         vec2 g = vec2(az * 14.0, p.z * 3.6);
         g.x += step(0.5, fract(g.y * 0.5)) * 0.5;
-        float fy = fract(g.y);
-        float fx = fract(g.x);
-        float row_gap = 1.0 - smoothstep(0.02, 0.12, fy);
-        float col_gap = 1.0 - smoothstep(0.01, 0.06, fx);
-        float shade = 0.95 + 0.10 * hash21(floor(g));
-        return shade * (1.0 - 0.38 * max(row_gap, col_gap * 0.8));
+        float row_gap = 1.0 - smoothstep(0.02, 0.12, fract(g.y));
+        float col_gap = 1.0 - smoothstep(0.01, 0.06, fract(g.x));
+        return (0.95 + 0.10 * hash21(floor(g)))
+             * (1.0 - 0.38 * max(row_gap, col_gap * 0.8));
     }
-    if (id == 2) {                                     // membrane sheeting
-        float w = sin(p.x * 7.0 + p.z * 5.0) * sin(p.y * 6.0 - p.z * 3.0);
-        return 1.0 + 0.14 * w;
+    if (id == 2) {
+        return 1.0 + 0.14 * sin(p.x * 7.0 + p.z * 5.0)
+                          * sin(p.y * 6.0 - p.z * 3.0);
     }
-    if (id == 4) {                                     // wood grain
+    if (id == 4) {
         return 1.0 + 0.08 * sin((p.x + p.y) * 25.0 + sin(p.z * 8.0) * 2.0);
     }
-    if (id == 5) {                                     // solar cells
+    if (id == 5) {
         vec3 t1 = normalize(abs(n.z) < 0.9
-            ? cross(n, vec3(0.0, 0.0, 1.0))
-            : cross(n, vec3(1.0, 0.0, 0.0)));
+            ? cross(n, vec3(0.0, 0.0, 1.0)) : cross(n, vec3(1.0, 0.0, 0.0)));
         vec3 t2 = cross(n, t1);
         vec2 uv = vec2(dot(p, t1), dot(p, t2)) * 3.0;
         vec2 f = abs(fract(uv) - 0.5);
-        float line = 1.0 - smoothstep(0.44, 0.5, max(f.x, f.y));
-        return 0.85 + 0.55 * (1.0 - line);
+        return 0.85 + 0.55 * (1.0 - (1.0 - smoothstep(0.44, 0.5,
+                                                       max(f.x, f.y))));
     }
-    if (id == 6) {                                     // concrete / OSB panels
+    if (id == 6) {
         float speck = 0.95 + 0.08 * hash21(floor(p.xy * 6.0));
         float jx = 1.0 - smoothstep(0.0, 0.02,
             abs(fract(p.x / 2.4) - 0.5) * 2.4 - 1.16);
@@ -237,63 +186,49 @@ float surface_pattern(int id, vec3 p, vec3 n) {
             abs(fract(p.y / 2.4) - 0.5) * 2.4 - 1.16);
         return speck * (1.0 - 0.25 * max(jx, jy));
     }
-    if (id == 7) {                                     // deck planks
-        float fy = fract(p.y / 0.145);
-        float gap = 1.0 - smoothstep(0.02, 0.06, fy);
+    if (id == 7) {
+        float gap = 1.0 - smoothstep(0.02, 0.06, fract(p.y / 0.145));
         float row = hash21(vec2(floor(p.y / 0.145), 0.0));
-        float grain = 0.96 + 0.07 * sin(p.x * 40.0 + row * 20.0);
-        return grain * (1.0 - 0.45 * gap);
+        return (0.96 + 0.07 * sin(p.x * 40.0 + row * 20.0))
+             * (1.0 - 0.45 * gap);
     }
-    if (id == 8) {                                     // grass
-        float coarse = 0.90 + 0.16 * hash21(floor(p.xy * 1.5));
-        float fine = 0.95 + 0.10 * hash21(floor(p.xy * 9.0));
-        return coarse * fine;
+    if (id == 8) {
+        return (0.90 + 0.16 * hash21(floor(p.xy * 1.5)))
+             * (0.95 + 0.10 * hash21(floor(p.xy * 9.0)));
     }
-    if (id == 9) {                                     // ribbed metal
+    if (id == 9) {
         vec3 t1 = normalize(abs(n.z) < 0.9
-            ? cross(n, vec3(0.0, 0.0, 1.0))
-            : cross(n, vec3(1.0, 0.0, 0.0)));
+            ? cross(n, vec3(0.0, 0.0, 1.0)) : cross(n, vec3(1.0, 0.0, 0.0)));
         return 1.0 + 0.10 * sin(dot(p, t1) * 30.0);
     }
-    if (id == 10) {                                    // insulation weave
+    if (id == 10) {
         return 0.95 + 0.08 * sin(p.x * 60.0) * sin(p.y * 60.0)
              + 0.05 * sin(p.z * 45.0);
     }
     return 1.0;
 }
-
 void main() {
-    if (v_local.z > u_cut_z) {
-        discard;
-    }
+    if (v_local.z > u_cut_z) { discard; }
     vec3 normal = normalize(v_normal);
-    if (!gl_FrontFacing) {
-        normal = -normal;
-    }
+    if (!gl_FrontFacing) { normal = -normal; }
     vec3 light_direction = normalize(-u_light_direction);
     vec3 view_direction = normalize(u_camera_position - v_world);
     vec3 half_direction = normalize(light_direction + view_direction);
     float diffuse = max(dot(normal, light_direction), 0.0);
     float specular = pow(max(dot(normal, half_direction), 0.0), 48.0);
     float rim = pow(1.0 - max(dot(normal, view_direction), 0.0), 3.0);
-
     int mat_id = int(v_mat + 0.5);
-    if (mat_id == 12) {
-        frag_color = vec4(v_color.rgb * 1.3, v_color.a);
-        return;
-    }
+    vec3 col = v_color.rgb * u_tint;
+    if (mat_id == 12) { frag_color = vec4(col * 1.3, v_color.a); return; }
     float pattern = surface_pattern(mat_id, v_local, normal);
-    vec3 base = v_color.rgb * pattern;
+    vec3 base = col * pattern;
     vec3 lit = base * (0.40 + 0.62 * diffuse);
     lit += vec3(1.0, 0.98, 0.92) * specular * (mat_id == 3 ? 0.9 : 0.30);
     lit += u_sky_color * rim * (mat_id == 3 ? 0.45 : 0.12);
-
     float alpha = v_color.a;
-    if (mat_id == 3) {
-        alpha = clamp(alpha + rim * 0.5, 0.0, 1.0);
-    }
+    if (mat_id == 3) { alpha = clamp(alpha + rim * 0.5, 0.0, 1.0); }
     float dist = length(u_camera_position - v_world);
-    float fog = clamp((dist - 90.0) / 260.0, 0.0, 0.9);
+    float fog = clamp((dist - 95.0) / 280.0, 0.0, 0.9);
     frag_color = vec4(mix(lit, u_sky_color, fog), alpha);
 }
 """
@@ -301,7 +236,7 @@ void main() {
 OVERLAY_VS = """
 #version 330
 in vec2 in_pos;
-uniform vec4 u_rect;      // x, y, w, h in pixels (origin bottom-left)
+uniform vec4 u_rect;
 uniform vec2 u_screen;
 out vec2 v_uv;
 void main() {
@@ -328,10 +263,9 @@ void main() {
 }
 """
 
-
-# ---------------------------------------------------------------------------
-# Matrix helpers (row-major math convention; transposed at upload)
-# ---------------------------------------------------------------------------
+# ===========================================================================
+# Matrix helpers
+# ===========================================================================
 
 def perspective(fov_y_deg, aspect, near, far):
     f = 1.0 / math.tan(math.radians(fov_y_deg) * 0.5)
@@ -366,8 +300,8 @@ def mat_translate(x, y, z):
     return m
 
 
-def mat_rot_z(angle):
-    c, s = math.cos(angle), math.sin(angle)
+def mat_rot_z(a):
+    c, s = math.cos(a), math.sin(a)
     m = np.eye(4, dtype=np.float32)
     m[0, 0], m[0, 1] = c, -s
     m[1, 0], m[1, 1] = s, c
@@ -385,77 +319,47 @@ def smoothstep(t):
     return t * t * (3.0 - 2.0 * t)
 
 
-# ---------------------------------------------------------------------------
-# Geometry helpers
-# ---------------------------------------------------------------------------
-
-def add_box(b, center, size, color, alpha=1.0, mat_id=MAT_PLAIN, yaw=0.0):
-    cx, cy, cz = center
-    hx, hy, hz = size[0] * 0.5, size[1] * 0.5, size[2] * 0.5
-    ca, sa = math.cos(yaw), math.sin(yaw)
-
-    def pt(x, y, z):
-        return (cx + x * ca - y * sa, cy + x * sa + y * ca, cz + z)
-
-    def nv(x, y, z):
-        return (x * ca - y * sa, x * sa + y * ca, z)
-
-    b.quad(pt(-hx, -hy, hz), pt(hx, -hy, hz), pt(hx, hy, hz),
-           pt(-hx, hy, hz), nv(0, 0, 1), color, alpha, mat_id)
-    b.quad(pt(-hx, hy, -hz), pt(hx, hy, -hz), pt(hx, -hy, -hz),
-           pt(-hx, -hy, -hz), nv(0, 0, -1), color, alpha, mat_id)
-    b.quad(pt(hx, -hy, -hz), pt(hx, hy, -hz), pt(hx, hy, hz),
-           pt(hx, -hy, hz), nv(1, 0, 0), color, alpha, mat_id)
-    b.quad(pt(-hx, hy, -hz), pt(-hx, -hy, -hz), pt(-hx, -hy, hz),
-           pt(-hx, hy, hz), nv(-1, 0, 0), color, alpha, mat_id)
-    b.quad(pt(hx, hy, -hz), pt(-hx, hy, -hz), pt(-hx, hy, hz),
-           pt(hx, hy, hz), nv(0, 1, 0), color, alpha, mat_id)
-    b.quad(pt(-hx, -hy, -hz), pt(hx, -hy, -hz), pt(hx, -hy, hz),
-           pt(-hx, -hy, hz), nv(0, -1, 0), color, alpha, mat_id)
+def project_point(mvp, p, w, h):
+    v = mvp @ np.array([p[0], p[1], p[2], 1.0], dtype=np.float32)
+    if v[3] <= 1e-5:
+        return None
+    ndc = v[:3] / v[3]
+    if abs(ndc[0]) > 1.2 or abs(ndc[1]) > 1.2 or ndc[2] < -1 or ndc[2] > 1:
+        return None
+    return ((ndc[0] * 0.5 + 0.5) * w, (1.0 - (ndc[1] * 0.5 + 0.5)) * h)
 
 
-def add_worker(b, x, y):
-    b.cylinder((x - 0.09, y, 0.0), (x - 0.09, y, 0.46), 0.065, 6,
-               (0.16, 0.18, 0.30))
-    b.cylinder((x + 0.09, y, 0.0), (x + 0.09, y, 0.46), 0.065, 6,
-               (0.16, 0.18, 0.30))
-    b.cylinder((x, y, 0.44), (x, y, 1.06), 0.17, 8, (1.00, 0.45, 0.05))
-    b.cylinder((x, y, 0.70), (x, y, 0.80), 0.175, 8, (0.88, 0.88, 0.25))
-    b.sphere((x, y, 1.22), 0.13, (0.87, 0.66, 0.50), rings=5, sides=8)
-    b.sphere((x, y, 1.30), 0.115, (0.95, 0.75, 0.10), rings=4, sides=8)
+# ===========================================================================
+# Static scene geometry
+# ===========================================================================
 
-
+DIGIT_SEGS = {
+    "0": "abcdef", "1": "bc", "2": "abged", "3": "abgcd", "4": "fgbc",
+    "5": "afgcd", "6": "afgcde", "7": "abc", "8": "abcdefg", "9": "abcdfg",
+}
 SEG_DEFS = {
     "a": (0.0, 1.0, True), "g": (0.0, 0.0, True), "d": (0.0, -1.0, True),
     "b": (0.5, 0.5, False), "c": (0.5, -0.5, False),
     "f": (-0.5, 0.5, False), "e": (-0.5, -0.5, False),
 }
-DIGIT_SEGS = {
-    "0": "abcdef", "1": "bc", "2": "abged", "3": "abgcd", "4": "fgbc",
-    "5": "afgcd", "6": "afgcde", "7": "abc", "8": "abcdefg", "9": "abcdfg",
-}
 SIGN_AMBER = (1.0, 0.62, 0.10)
 
 
 def add_digit(b, x, y, z, ch, scale=1.0):
-    # Sign faces -X; a viewer there sees world +y on their left, so the
-    # digit's local horizontal axis is mirrored into -y.
     half_w, half_h = 0.22 * scale, 0.45 * scale
     for seg in DIGIT_SEGS[ch]:
         oy, oz, horizontal = SEG_DEFS[seg]
-        sy = y - oy * 2.0 * half_w
-        sz = z + oz * half_h
         if horizontal:
-            add_box(b, (x, y, sz), (0.05, 2 * half_w, 0.07 * scale),
-                    SIGN_AMBER, mat_id=MAT_EMISSIVE)
+            add_box(b, (x, y, z + oz * half_h),
+                    (0.05, 2 * half_w, 0.07 * scale), SIGN_AMBER,
+                    mat_id=MAT_EMISSIVE)
         else:
-            add_box(b, (x, sy, sz), (0.05, 0.07 * scale, half_h),
-                    SIGN_AMBER, mat_id=MAT_EMISSIVE)
+            add_box(b, (x, y - oy * 2.0 * half_w, z + oz * half_h),
+                    (0.05, 0.07 * scale, half_h), SIGN_AMBER,
+                    mat_id=MAT_EMISSIVE)
 
 
 def add_station_sign(b, x, number, color):
-    # The sign sits on top of the gantry beam so the beam never occludes
-    # the digits from the approach side.
     add_box(b, (x, 0.0, 9.45), (0.14, 3.6, 1.7), (0.10, 0.12, 0.16),
             mat_id=MAT_METAL)
     add_box(b, (x - 0.09, 1.25, 9.45), (0.06, 0.7, 1.1), color,
@@ -484,464 +388,24 @@ def add_pallet(b, x, y, color):
     add_box(b, (x + 0.1, y, 0.90), (1.0, 0.8, 0.28), lighter)
 
 
-# ---------------------------------------------------------------------------
-# Dome catalog: the complete dome built once, with per-stage, per-element
-# index ranges so the visible subset is just an index-buffer prefix write.
-# ---------------------------------------------------------------------------
+def build_worker_mesh():
+    """A single hi-vis worker, feet at z=0, facing +X."""
+    b = MeshBuilder()
+    b.cylinder((-0.09, 0, 0.0), (-0.09, 0, 0.46), 0.065, 6, (0.16, 0.18, 0.30))
+    b.cylinder((0.09, 0, 0.0), (0.09, 0, 0.46), 0.065, 6, (0.16, 0.18, 0.30))
+    b.cylinder((0, 0, 0.44), (0, 0, 1.06), 0.17, 8, (1.00, 0.45, 0.05))
+    b.cylinder((0, 0, 0.70), (0, 0, 0.80), 0.175, 8, (0.88, 0.88, 0.25))
+    b.sphere((0, 0, 1.22), 0.13, (0.87, 0.66, 0.50), rings=5, sides=8)
+    b.sphere((0, 0, 1.30), 0.115, (0.95, 0.75, 0.10), rings=4, sides=8)
+    return b.build()
 
-class Catalog:
-    def __init__(self):
-        self.b = MeshBuilder()
-        self.stages: dict[str, list[tuple[int, int, int, int]]] = {
-            s.key: [] for s in STAGES
-        }
-        self._o = 0
-        self._t = 0
-
-    def begin(self):
-        self._o = len(self.b.opaque)
-        self._t = len(self.b.transparent)
-
-    def end(self, stage):
-        self.stages[stage].append(
-            (self._o, len(self.b.opaque), self._t, len(self.b.transparent)))
-
-
-def polar(az_deg, r, z=0.0):
-    a = math.radians(az_deg)
-    return (r * math.cos(a), r * math.sin(a), z)
-
-
-def build_dome_catalog():
-    """The full dome in dome-local space: origin at the carriage deck,
-    +X down the line, hatch/solar band facing -Y."""
-    geo = build_geodesic(DOME_FREQ)
-    base_z = geo.base_z
-    R = DOME_RADIUS
-    floor_r = R * math.sqrt(max(0.0, 1.0 - base_z * base_z))
-    apex_z = FLOOR_TOP + (1.0 - base_z) * R
-
-    def spt(v, d=0.0):
-        r = R + d
-        return np.array([v[0] * r, v[1] * r, (v[2] - base_z) * r + FLOOR_TOP])
-
-    cat = Catalog()
-    b = cat.b
-
-    # ---- Station 1: floor framing --------------------------------------
-    rim_segments = 24
-    for group in range(6):
-        cat.begin()
-        for i in range(group * 4, group * 4 + 4):
-            a0 = 2 * math.pi * i / rim_segments
-            a1 = 2 * math.pi * (i + 1) / rim_segments
-            mid = (a0 + a1) * 0.5
-            arc = floor_r * (a1 - a0)
-            add_box(b, (floor_r * 0.985 * math.cos(mid),
-                        floor_r * 0.985 * math.sin(mid), 0.15),
-                    (arc * 1.02, 0.10, 0.30), (0.58, 0.44, 0.26),
-                    mat_id=MAT_WOOD, yaw=mid + math.pi / 2)
-        cat.end("floor")
-    y = -floor_r + 0.45
-    while y < floor_r - 0.35:
-        half = math.sqrt(max(0.05, floor_r * floor_r - y * y))
-        cat.begin()
-        add_box(b, (0.0, y, 0.17), (2 * half - 0.28, 0.09, 0.26),
-                (0.62, 0.48, 0.28), mat_id=MAT_WOOD)
-        cat.end("floor")
-        y += 0.55
-    cat.begin()
-    b.cylinder((0, 0, 0.30), (0, 0, FLOOR_TOP), floor_r + 0.04, 40,
-               (0.72, 0.60, 0.42), mat_id=MAT_DECK)
-    cat.end("floor")
-
-    # ---- Station 2: dome shell framing ---------------------------------
-    edges = sorted(
-        geo.edges,
-        key=lambda e: (round(min(geo.verts[e[0]][2], geo.verts[e[1]][2]), 3),
-                       math.atan2(geo.verts[e[0]][1] + geo.verts[e[1]][1],
-                                  geo.verts[e[0]][0] + geo.verts[e[1]][0])))
-    wood = (0.55, 0.42, 0.26)
-    for i, j in edges:
-        cat.begin()
-        b.cylinder(spt(geo.verts[i]), spt(geo.verts[j]), 0.052, 7, wood,
-                   mat_id=MAT_WOOD)
-        cat.end("frame")
-    hub_order = sorted(range(len(geo.verts)),
-                       key=lambda k: round(geo.verts[k][2], 3))
-    for g in range(0, len(hub_order), 6):
-        cat.begin()
-        for k in hub_order[g:g + 6]:
-            p = spt(geo.verts[k])
-            n = normalize(np.array(geo.verts[k], dtype=np.float64))
-            b.cylinder(p - n * 0.05, p + n * 0.07, 0.10, 8,
-                       (0.55, 0.57, 0.62), mat_id=MAT_METAL)
-        cat.end("frame")
-
-    # ---- Station 3: center utility column + apex crane anchor ----------
-    steel = (0.58, 0.61, 0.66)
-    cat.begin()
-    b.cylinder((0, 0, FLOOR_TOP - 0.02), (0, 0, FLOOR_TOP + 0.06), 0.34, 16,
-               (0.40, 0.42, 0.46), mat_id=MAT_METAL)          # base plate
-    b.cylinder((0, 0, FLOOR_TOP), (0, 0, apex_z), 0.14, 12, steel,
-               mat_id=MAT_METAL)                              # the column
-    cat.end("column")
-    cat.begin()   # service risers strapped to the column
-    b.cylinder((0.16, 0.0, FLOOR_TOP), (0.16, 0.0, 2.3), 0.035, 6,
-               (0.20, 0.40, 0.90))
-    b.cylinder((-0.16, 0.0, FLOOR_TOP), (-0.16, 0.0, 2.3), 0.035, 6,
-               (0.85, 0.20, 0.20))
-    b.cylinder((0.0, 0.16, FLOOR_TOP), (0.0, 0.16, 2.3), 0.030, 6,
-               (0.72, 0.72, 0.75), mat_id=MAT_METAL)
-    cat.end("column")
-    cat.begin()   # apex sleeve + crane anchor with lifting eye (outside)
-    anchor_top = FLOOR_TOP + (1.0 - base_z) * (R + 0.24) + 0.14
-    b.cylinder((0, 0, apex_z - 0.1), (0, 0, anchor_top), 0.09, 10,
-               (0.45, 0.47, 0.52), mat_id=MAT_METAL)
-    b.cylinder((0, 0, anchor_top), (0, 0, anchor_top + 0.06), 0.24, 12,
-               (0.45, 0.47, 0.52), mat_id=MAT_METAL)
-    eye_c = anchor_top + 0.28
-    for i in range(12):
-        a0 = 2 * math.pi * i / 12
-        a1 = 2 * math.pi * (i + 1) / 12
-        p0 = (0.17 * math.cos(a0), 0.0, eye_c + 0.17 * math.sin(a0))
-        p1 = (0.17 * math.cos(a1), 0.0, eye_c + 0.17 * math.sin(a1))
-        b.cylinder(p0, p1, 0.035, 6, (0.70, 0.72, 0.76), mat_id=MAT_METAL)
-    cat.end("column")
-
-    # ---- Station 4: water lines ----------------------------------------
-    hot = (0.85, 0.20, 0.20)
-    cold = (0.20, 0.40, 0.90)
-    drain = (0.28, 0.28, 0.32)
-    cat.begin()
-    b.cylinder((0, 0, FLOOR_TOP), (0, 0, FLOOR_TOP + 0.12), 0.30, 14,
-               (0.30, 0.42, 0.62), mat_id=MAT_METAL)          # manifold
-    cat.end("water")
-
-    def water_run(az, r_target, color, radius, offset_deg):
-        a = az + offset_deg
-        cat.begin()
-        p0 = polar(a, 0.32, FLOOR_TOP + 0.045)
-        p1 = polar(a, r_target, FLOOR_TOP + 0.045)
-        b.cylinder(p0, p1, radius, 6, color)
-        b.cylinder(p1, (p1[0], p1[1], FLOOR_TOP + 0.32), radius, 6, color)
-        cat.end("water")
-
-    for az, r_t, kinds in (
-            (150, 2.70, "hcd"),      # kitchen sink
-            (40, 2.45, "hc"),        # bathroom sink
-            (60, 2.50, "cd"),        # toilet
-            (82, 2.35, "hcd")):      # shower
-        if "h" in kinds:
-            water_run(az, r_t, hot, 0.022, -3.5)
-        if "c" in kinds:
-            water_run(az, r_t, cold, 0.022, 3.5)
-        if "d" in kinds:
-            water_run(az, r_t, drain, 0.048, 0.0)
-
-    # ---- Station 5: power lines ----------------------------------------
-    conduit = (0.72, 0.72, 0.75)
-    cat.begin()
-    add_box(b, (0.0, -0.22, FLOOR_TOP + 0.55), (0.26, 0.12, 0.40),
-            (0.42, 0.44, 0.48), mat_id=MAT_METAL)             # junction box
-    cat.end("power")
-    for az in (0, 60, 120, 150, 180, 240, 300):
-        cat.begin()
-        p0 = polar(az + 1.5, 0.30, FLOOR_TOP + 0.030)
-        p1 = polar(az + 1.5, 3.35, FLOOR_TOP + 0.030)
-        b.cylinder(p0, p1, 0.026, 6, conduit, mat_id=MAT_METAL)
-        b.cylinder(p1, (p1[0], p1[1], FLOOR_TOP + 0.40), 0.026, 6, conduit,
-                   mat_id=MAT_METAL)
-        cat.end("power")
-
-    # ---- Station 6: fixtures & outlets ---------------------------------
-    white = (0.95, 0.96, 0.97)
-    cat.begin()   # toilet
-    tx, ty, _ = polar(60, 2.50)
-    add_box(b, (tx, ty, FLOOR_TOP + 0.21), (0.42, 0.38, 0.42), white,
-            yaw=math.radians(60))
-    add_box(b, (tx * 1.12, ty * 1.12, FLOOR_TOP + 0.55), (0.18, 0.44, 0.42),
-            white, yaw=math.radians(60))
-    b.cylinder((tx, ty, FLOOR_TOP + 0.42), (tx, ty, FLOOR_TOP + 0.46),
-               0.20, 12, white)
-    cat.end("fixtures")
-    cat.begin()   # shower
-    sx, sy, _ = polar(82, 2.35)
-    add_box(b, (sx, sy, FLOOR_TOP + 0.05), (0.95, 0.95, 0.10),
-            (0.80, 0.83, 0.86), yaw=math.radians(82))
-    b.cylinder((sx, sy, FLOOR_TOP + 0.1), (sx, sy, FLOOR_TOP + 2.05),
-               0.025, 6, (0.70, 0.72, 0.76), mat_id=MAT_METAL)
-    b.sphere((sx, sy, FLOOR_TOP + 2.02), 0.07, (0.70, 0.72, 0.76),
-             rings=4, sides=8)
-    b.cone((sx, sy, FLOOR_TOP + 1.98), (sx, sy, FLOOR_TOP + 1.86), 0.09, 10,
-           (0.70, 0.72, 0.76))
-    cat.end("fixtures")
-    cat.begin()   # bathroom pedestal sink
-    bx, by, _ = polar(40, 2.45)
-    b.cylinder((bx, by, FLOOR_TOP), (bx, by, FLOOR_TOP + 0.76), 0.07, 8,
-               white)
-    b.cylinder((bx, by, FLOOR_TOP + 0.76), (bx, by, FLOOR_TOP + 0.88),
-               0.20, 12, white)
-    cat.end("fixtures")
-    cat.begin()   # kitchen sink cabinet rough-in
-    kx, ky, _ = polar(150, 2.70)
-    add_box(b, (kx, ky, FLOOR_TOP + 0.44), (0.62, 0.55, 0.88),
-            (0.62, 0.64, 0.68), mat_id=MAT_METAL, yaw=math.radians(150))
-    b.cylinder((kx, ky, FLOOR_TOP + 0.88), (kx, ky, FLOOR_TOP + 1.12),
-               0.020, 6, (0.70, 0.72, 0.76), mat_id=MAT_METAL)
-    cat.end("fixtures")
-    for group in ((0, 60, 120), (180, 240, 300)):   # perimeter outlets
-        cat.begin()
-        for az in group:
-            px, py, _ = polar(az + 1.5, 3.35)
-            add_box(b, (px, py, FLOOR_TOP + 0.50), (0.09, 0.09, 0.30),
-                    (0.30, 0.32, 0.36), yaw=math.radians(az))
-            add_box(b, (px, py, FLOOR_TOP + 0.70), (0.10, 0.12, 0.16),
-                    white, yaw=math.radians(az))
-        cat.end("fixtures")
-    cat.begin()   # column outlets + breaker panel + water taps
-    for az in (45, 135, 225, 315):
-        px, py, _ = polar(az, 0.17)
-        add_box(b, (px, py, FLOOR_TOP + 0.55), (0.10, 0.13, 0.18), white,
-                yaw=math.radians(az))
-    bxp, byp, _ = polar(150, 0.18)
-    add_box(b, (bxp, byp, FLOOR_TOP + 1.45), (0.08, 0.34, 0.50),
-            (0.80, 0.82, 0.85), mat_id=MAT_METAL, yaw=math.radians(150))
-    for dz, col in ((1.05, hot), (1.20, cold)):
-        px, py, _ = polar(270, 0.16)
-        b.cylinder((px, py, FLOOR_TOP + dz), (px * 1.9, py * 1.9,
-                   FLOOR_TOP + dz), 0.022, 6, col)
-        b.sphere((px * 1.9, py * 1.9, FLOOR_TOP + dz), 0.045, col,
-                 rings=4, sides=8)
-    cat.end("fixtures")
-
-    # ---- Shell layers (stations 7-12, 15): per-face skins --------------
-    faces = sorted(
-        (tuple(f) for f in geo.faces),
-        key=lambda f: (round(sum(geo.verts[i][2] for i in f) / 3.0, 3),
-                       math.atan2(sum(geo.verts[i][1] for i in f),
-                                  sum(geo.verts[i][0] for i in f))))
-
-    def shell(stage, d, color, alpha=1.0, mat_id=MAT_PLAIN, shrink=1.0,
-              face_filter=None):
-        for f in faces:
-            c_unit = np.mean([geo.verts[i] for i in f], axis=0)
-            if face_filter and not face_filter(normalize(c_unit)):
-                continue
-            pts = [spt(geo.verts[i], d) for i in f]
-            centroid = np.mean(pts, axis=0)
-            pts = [centroid + (p - centroid) * shrink for p in pts]
-            for p in pts:
-                p[2] = max(p[2], FLOOR_TOP + 0.01)
-            cat.begin()
-            b.triangle(pts[0], pts[1], pts[2], color, alpha, mat_id)
-            cat.end(stage)
-
-    shell("insulation", -0.03, (0.93, 0.45, 0.55), mat_id=MAT_CANVAS,
-          shrink=0.80)
-    shell("sheetrock", -0.10, (0.92, 0.92, 0.88))
-    shell("osb", 0.07, (0.80, 0.68, 0.42), mat_id=MAT_CONCRETE, shrink=0.985)
-    shell("wrap", 0.105, (0.84, 0.85, 0.87), mat_id=MAT_SHEETING)
-    shell("shingles", 0.14, (0.16, 0.34, 0.38), mat_id=MAT_SHINGLE)
-    shell("fiberglass", 0.19, (0.72, 0.85, 0.88), alpha=0.30,
-          mat_id=MAT_GLASS)
-    cat.begin()   # fiberglass skirt sealing the floor edge
-    b.cylinder((0, 0, 0.02), (0, 0, FLOOR_TOP + 0.12), floor_r + 0.20, 40,
-               (0.72, 0.85, 0.88), alpha=0.30, mat_id=MAT_GLASS,
-               cap_ends=False)
-    cat.end("fiberglass")
-
-    # ---- Station 13: watertight hatch door (zero windows) --------------
-    rh = R + 0.19
-    u = (1.25 - FLOOR_TOP) / rh + base_z
-    horiz = math.sqrt(max(0.0, 1.0 - u * u))
-    hpos = np.array([0.0, -horiz * rh, 1.25])
-    n = normalize(np.array([0.0, -horiz, u]))
-    right = normalize(np.cross(np.array([0.0, 0.0, 1.0]), n))
-    up = normalize(np.cross(n, right))
-
-    def hpt(a, scale=1.0, out=0.0):
-        return (hpos + right * (0.56 * scale * math.cos(a))
-                + up * (0.86 * scale * math.sin(a)) + n * out)
-
-    cat.begin()   # hatch coaming ring
-    for i in range(18):
-        a0 = 2 * math.pi * i / 18
-        a1 = 2 * math.pi * (i + 1) / 18
-        b.cylinder(hpt(a0, 1.0, 0.05), hpt(a1, 1.0, 0.05), 0.05, 6,
-                   (0.36, 0.39, 0.44), mat_id=MAT_METAL)
-    cat.end("hatch")
-    cat.begin()   # door leaf + gasket
-    door = (0.62, 0.64, 0.68)
-    center = hpos + n * 0.09
-    for i in range(18):
-        a0 = 2 * math.pi * i / 18
-        a1 = 2 * math.pi * (i + 1) / 18
-        b.triangle(center, hpt(a0, 0.93, 0.09), hpt(a1, 0.93, 0.09), door,
-                   mat_id=MAT_METAL, normal=n)
-    for i in range(18):
-        a0 = 2 * math.pi * i / 18
-        a1 = 2 * math.pi * (i + 1) / 18
-        b.cylinder(hpt(a0, 0.95, 0.07), hpt(a1, 0.95, 0.07), 0.022, 5,
-                   (0.10, 0.10, 0.12))
-    cat.end("hatch")
-    for half in (0, 1):   # dog lugs
-        cat.begin()
-        for i in range(half * 3, half * 3 + 3):
-            a = 2 * math.pi * i / 6 + 0.5
-            p = hpt(a, 1.02, 0.07)
-            b.sphere(p, 0.055, (0.25, 0.27, 0.30), rings=4, sides=8)
-        cat.end("hatch")
-    cat.begin()   # locking wheel
-    wc = hpos + n * 0.20
-    for i in range(12):
-        a0 = 2 * math.pi * i / 12
-        a1 = 2 * math.pi * (i + 1) / 12
-        p0 = wc + right * (0.22 * math.cos(a0)) + up * (0.22 * math.sin(a0))
-        p1 = wc + right * (0.22 * math.cos(a1)) + up * (0.22 * math.sin(a1))
-        b.cylinder(p0, p1, 0.028, 6, (0.78, 0.80, 0.84), mat_id=MAT_METAL)
-    for i in range(3):
-        a = 2 * math.pi * i / 3
-        p1 = wc + right * (0.21 * math.cos(a)) + up * (0.21 * math.sin(a))
-        b.cylinder(wc, p1, 0.020, 5, (0.78, 0.80, 0.84), mat_id=MAT_METAL)
-    b.sphere(wc, 0.05, (0.78, 0.80, 0.84), rings=4, sides=8)
-    cat.end("hatch")
-    cat.begin()   # hinges
-    for dz in (0.30, -0.30):
-        p = hpos + right * 0.62 + up * dz + n * 0.05
-        add_box(b, tuple(p), (0.14, 0.10, 0.18), (0.30, 0.32, 0.36),
-                mat_id=MAT_METAL)
-    cat.end("hatch")
-
-    # ---- Station 14: interior fit-out ----------------------------------
-    wall = (0.90, 0.90, 0.86)
-
-    def wall_run(az, segments):
-        a = math.radians(az)
-        cat.begin()
-        for r0, r1 in segments:
-            rc = (r0 + r1) * 0.5
-            add_box(b, (rc * math.cos(a), rc * math.sin(a),
-                        FLOOR_TOP + 1.10), (r1 - r0, 0.08, 2.20), wall,
-                    yaw=a)
-        cat.end("interior")
-
-    wall_run(30, [(0.40, 0.95), (1.75, 2.90)])     # bathroom wall w/ door
-    wall_run(90, [(0.40, 2.90)])                   # bathroom wall
-    wall_run(300, [(0.40, 2.90)])                  # bedroom wall
-    wall_run(0, [(0.40, 0.95), (1.75, 2.90)])      # bedroom wall w/ door
-
-    cabinet = (0.45, 0.32, 0.20)
-    counter_top = (0.85, 0.84, 0.80)
-    for az in (140, 163):   # kitchen counters
-        cat.begin()
-        cx, cy, _ = polar(az, 3.00)
-        yaw = math.radians(az + 90)
-        add_box(b, (cx, cy, FLOOR_TOP + 0.45), (1.45, 0.62, 0.90), cabinet,
-                mat_id=MAT_WOOD, yaw=yaw)
-        add_box(b, (cx, cy, FLOOR_TOP + 0.925), (1.55, 0.68, 0.05),
-                counter_top, yaw=yaw)
-        cat.end("interior")
-    cat.begin()   # kitchen sink + faucet in the counter
-    kx, ky, _ = polar(150, 2.95)
-    add_box(b, (kx, ky, FLOOR_TOP + 0.93), (0.50, 0.40, 0.06),
-            (0.68, 0.70, 0.74), mat_id=MAT_METAL, yaw=math.radians(240))
-    b.cylinder((kx, ky, FLOOR_TOP + 0.95), (kx, ky, FLOOR_TOP + 1.22),
-               0.020, 6, (0.70, 0.72, 0.76), mat_id=MAT_METAL)
-    cat.end("interior")
-    cat.begin()   # fridge
-    fx, fy, _ = polar(126, 2.90)
-    add_box(b, (fx, fy, FLOOR_TOP + 0.925), (0.75, 0.70, 1.85),
-            (0.75, 0.78, 0.80), mat_id=MAT_METAL, yaw=math.radians(216))
-    cat.end("interior")
-    cat.begin()   # stove
-    ox, oy, _ = polar(177, 2.95)
-    add_box(b, (ox, oy, FLOOR_TOP + 0.45), (0.62, 0.62, 0.90),
-            (0.22, 0.23, 0.26), mat_id=MAT_METAL, yaw=math.radians(267))
-    for bi in range(4):
-        ba = math.radians(267)
-        dx = (-0.15 + 0.30 * (bi % 2))
-        dy = (-0.15 + 0.30 * (bi // 2))
-        wx = ox + dx * math.cos(ba) - dy * math.sin(ba)
-        wy = oy + dx * math.sin(ba) + dy * math.cos(ba)
-        b.cylinder((wx, wy, FLOOR_TOP + 0.90), (wx, wy, FLOOR_TOP + 0.915),
-                   0.09, 10, (0.10, 0.10, 0.12))
-    cat.end("interior")
-    cat.begin()   # bed
-    bx, by, _ = polar(332, 2.20)
-    yaw = math.radians(332 + 90)
-    add_box(b, (bx, by, FLOOR_TOP + 0.18), (1.45, 2.00, 0.32),
-            (0.48, 0.36, 0.22), mat_id=MAT_WOOD, yaw=yaw)
-    add_box(b, (bx, by, FLOOR_TOP + 0.45), (1.38, 1.92, 0.22),
-            (0.93, 0.93, 0.95), yaw=yaw)
-    hx = bx + 0.72 * math.cos(yaw + math.pi / 2)
-    hy = by + 0.72 * math.sin(yaw + math.pi / 2)
-    add_box(b, (hx, hy, FLOOR_TOP + 0.60), (1.20, 0.45, 0.12),
-            (0.98, 0.98, 1.00), yaw=yaw)
-    add_box(b, (bx - 0.30 * math.cos(yaw + math.pi / 2),
-                by - 0.30 * math.sin(yaw + math.pi / 2), FLOOR_TOP + 0.58),
-            (1.42, 1.15, 0.07), (0.50, 0.30, 0.55), yaw=yaw)
-    cat.end("interior")
-    cat.begin()   # wardrobe + nightstand + lamp
-    wx, wy, _ = polar(297, 2.70)
-    add_box(b, (wx, wy, FLOOR_TOP + 0.95), (1.20, 0.60, 1.90),
-            (0.50, 0.38, 0.24), mat_id=MAT_WOOD, yaw=math.radians(297 + 90))
-    nx, ny, _ = polar(352, 2.55)
-    add_box(b, (nx, ny, FLOOR_TOP + 0.25), (0.45, 0.45, 0.50),
-            (0.50, 0.38, 0.24), mat_id=MAT_WOOD)
-    b.cylinder((nx, ny, FLOOR_TOP + 0.50), (nx, ny, FLOOR_TOP + 0.72),
-               0.03, 6, (0.30, 0.32, 0.36))
-    b.sphere((nx, ny, FLOOR_TOP + 0.80), 0.11, (1.00, 0.88, 0.55),
-             mat_id=MAT_EMISSIVE, rings=4, sides=8)
-    cat.end("interior")
-    cat.begin()   # shower glass
-    gx, gy, _ = polar(82, 2.35)
-    ga = math.radians(82)
-    for side in (-1, 1):
-        px = gx + 0.48 * side * math.cos(ga + math.pi / 2)
-        py = gy + 0.48 * side * math.sin(ga + math.pi / 2)
-        add_box(b, (px, py, FLOOR_TOP + 1.05), (0.95, 0.03, 1.90),
-                (0.75, 0.88, 0.90), alpha=0.30, mat_id=MAT_GLASS, yaw=ga)
-    cat.end("interior")
-    cat.begin()   # small dining table + stools
-    dx, dy, _ = polar(218, 1.95)
-    b.cylinder((dx, dy, FLOOR_TOP), (dx, dy, FLOOR_TOP + 0.72), 0.05, 8,
-               (0.35, 0.37, 0.40), mat_id=MAT_METAL)
-    b.cylinder((dx, dy, FLOOR_TOP + 0.72), (dx, dy, FLOOR_TOP + 0.77),
-               0.50, 16, (0.60, 0.46, 0.28), mat_id=MAT_WOOD)
-    for sa in (150, 290):
-        sx2, sy2, _ = polar(sa, 0.75)
-        b.cylinder((dx + sx2, dy + sy2, FLOOR_TOP),
-                   (dx + sx2, dy + sy2, FLOOR_TOP + 0.45), 0.16, 10,
-                   (0.45, 0.34, 0.22), mat_id=MAT_WOOD)
-    cat.end("interior")
-
-    # ---- Station 15: solar array ---------------------------------------
-    shell("solar", 0.23, (0.10, 0.15, 0.32), mat_id=MAT_SOLAR, shrink=0.86,
-          face_filter=lambda c: (-c[1]) > 0.40 and 0.10 < c[2] < 0.74)
-
-    info = {
-        "floor_r": floor_r,
-        "apex_z": apex_z,
-        "anchor_top": anchor_top + 0.45,
-        "base_z": base_z,
-    }
-    return cat, info
-
-
-# ---------------------------------------------------------------------------
-# Factory environment (static) and dynamic props
-# ---------------------------------------------------------------------------
 
 def build_environment():
     b = MeshBuilder()
-    b.disc((0.0, 0.0, -0.05), 320.0, 48, (0.30, 0.36, 0.26),
-           mat_id=MAT_GRASS)
+    b.disc((0.0, 0.0, -0.05), 340.0, 48, (0.30, 0.36, 0.26), mat_id=MAT_GRASS)
     add_box(b, ((START_X + TURNTABLE_X) / 2, 0.0, -0.09),
-            (TURNTABLE_X - START_X + 40.0, 26.0, 0.18), (0.55, 0.55, 0.52),
+            (TURNTABLE_X - START_X + 44.0, 28.0, 0.18), (0.55, 0.55, 0.52),
             mat_id=MAT_CONCRETE)
-
-    # Rails + ties from the line start to the crane pickup point.
     rail_end = PICKUP_X + 3.0
     x = START_X - 2.0
     while x < rail_end:
@@ -952,16 +416,12 @@ def build_environment():
         add_box(b, ((START_X - 2 + rail_end) / 2, sy, 0.16),
                 (rail_end - START_X + 4.0, 0.16, 0.14), (0.60, 0.62, 0.66),
                 mat_id=MAT_METAL)
-
     for i, stage in enumerate(STAGES):
         x = STATION_X[i]
         add_gantry(b, x, stage.color)
         add_station_sign(b, x, i + 1, stage.color)
-        add_worker(b, x - 1.9, -3.6)
-        add_worker(b, x + 1.6, 3.4)
-        add_pallet(b, x + 4.2, -4.8, stage.color)
-
-    # Gantry crane (static portal; the bridge/trolley are dynamic).
+        add_pallet(b, x + 4.6, -5.4, stage.color)
+        add_pallet(b, x - 4.6, 5.4, stage.color)
     crane_yellow = (0.95, 0.70, 0.12)
     for cx in (PICKUP_X - 3.5, TURNTABLE_X + 5.5):
         for sy in (-7.4, 7.4):
@@ -971,25 +431,18 @@ def build_environment():
         add_box(b, ((PICKUP_X - 3.5 + TURNTABLE_X + 5.5) / 2, sy, 11.3),
                 (TURNTABLE_X - PICKUP_X + 12.0, 0.9, 0.6), crane_yellow,
                 mat_id=MAT_METAL)
-
-    # Turntable plinth + drive unit (the platter itself is dynamic).
     b.cylinder((TURNTABLE_X, 0.0, 0.0), (TURNTABLE_X, 0.0, 0.25), 7.0, 40,
                (0.48, 0.48, 0.46), mat_id=MAT_CONCRETE)
     add_box(b, (TURNTABLE_X + 7.4, 1.0, 0.65), (1.5, 1.1, 1.3),
             (0.85, 0.65, 0.10), mat_id=MAT_METAL)
-    b.cylinder((TURNTABLE_X + 6.65, 1.0, 0.28),
-               (TURNTABLE_X + 6.65, 1.0, 0.62), 0.35, 12,
-               (0.30, 0.32, 0.36), mat_id=MAT_METAL)
     add_box(b, (TURNTABLE_X + 7.4, -1.6, 0.75), (0.9, 0.7, 1.5),
             (0.65, 0.68, 0.72), mat_id=MAT_METAL)
-
-    # Perimeter trees for depth.
-    for i in range(16):
-        a = 2 * math.pi * i / 16 + 0.35
-        r = 120.0 + (i % 4) * 22.0
-        tx = (START_X + TURNTABLE_X) / 2 + r * math.cos(a) * 1.6
+    for i in range(18):
+        a = 2 * math.pi * i / 18 + 0.35
+        r = 130.0 + (i % 4) * 24.0
+        tx = (START_X + TURNTABLE_X) / 2 + r * math.cos(a) * 1.7
         ty = r * math.sin(a) * 0.55
-        if abs(ty) < 16:
+        if abs(ty) < 17:
             continue
         h = 5.0 + (i % 3) * 1.4
         b.cylinder((tx, ty, 0.0), (tx, ty, h), 0.3, 8, (0.34, 0.22, 0.12),
@@ -1009,9 +462,9 @@ def build_carriage():
     for sx in (-2.6, 0.0, 2.6):
         add_box(b, (sx, 0.0, 0.47), (0.4, 2 * RAIL_GAUGE, 0.16), dark,
                 mat_id=MAT_METAL)
-    b.cylinder((0, 0, 0.55), (0, 0, CARRIAGE_TOP), 4.25, 36,
+    b.cylinder((0, 0, 0.55), (0, 0, CARRIAGE_TOP), 4.6, 36,
                (0.42, 0.44, 0.48), mat_id=MAT_METAL)
-    b.cylinder((0, 0, CARRIAGE_TOP - 0.015), (0, 0, CARRIAGE_TOP), 4.27, 36,
+    b.cylinder((0, 0, CARRIAGE_TOP - 0.015), (0, 0, CARRIAGE_TOP), 4.62, 36,
                (0.90, 0.72, 0.10), cap_ends=False)
     for ax in (-2.4, -0.8, 0.8, 2.4):
         for sy in (-RAIL_GAUGE, RAIL_GAUGE):
@@ -1021,7 +474,6 @@ def build_carriage():
 
 
 def build_platter():
-    """Big mechanical lazy susan platter, local origin at plinth top."""
     b = MeshBuilder()
     b.cylinder((0, 0, 0.0), (0, 0, 0.37), 6.4, 48, (0.42, 0.44, 0.48),
                mat_id=MAT_METAL)
@@ -1043,16 +495,13 @@ def build_platter():
 
 def build_bridge():
     b = MeshBuilder()
-    crane_yellow = (0.95, 0.70, 0.12)
-    add_box(b, (0.0, 0.0, 10.85), (1.0, 16.2, 0.7), crane_yellow,
-            mat_id=MAT_METAL)
+    cy = (0.95, 0.70, 0.12)
+    add_box(b, (0.0, 0.0, 10.85), (1.0, 16.2, 0.7), cy, mat_id=MAT_METAL)
     for sy in (-7.4, 7.4):
         add_box(b, (0.0, sy, 11.15), (1.6, 1.2, 0.5), (0.30, 0.32, 0.36),
                 mat_id=MAT_METAL)
     add_box(b, (0.0, 0.0, 10.30), (1.4, 1.6, 0.5), (0.30, 0.32, 0.36),
             mat_id=MAT_METAL)
-    b.cylinder((0.0, -0.5, 10.10), (0.0, 0.5, 10.10), 0.18, 10,
-               (0.55, 0.57, 0.62), mat_id=MAT_METAL)
     return b.build()
 
 
@@ -1068,8 +517,7 @@ def build_hook():
     add_box(b, (0.0, 0.0, -0.25), (0.42, 0.30, 0.50), (0.85, 0.62, 0.10),
             mat_id=MAT_METAL)
     b.sphere((0.0, 0.0, -0.58), 0.11, (0.45, 0.47, 0.52), rings=4, sides=8)
-    b.cone((0.0, 0.0, -0.60), (0.12, 0.0, -0.86), 0.09, 8,
-           (0.45, 0.47, 0.52))
+    b.cone((0.0, 0.0, -0.60), (0.12, 0.0, -0.86), 0.09, 8, (0.45, 0.47, 0.52))
     return b.build()
 
 
@@ -1080,45 +528,64 @@ def build_sun():
     return b.build()
 
 
-# ---------------------------------------------------------------------------
-# Timeline
-# ---------------------------------------------------------------------------
+# ===========================================================================
+# Persistence — the finished-dome yard
+# ===========================================================================
 
-class Phase:
-    def __init__(self, kind, dur, station=-1, x0=0.0, x1=0.0):
-        self.kind = kind
-        self.dur = dur
-        self.station = station
-        self.x0 = x0
-        self.x1 = x1
+class YardDB:
+    def __init__(self, path=None):
+        self.conn = sqlite3.connect(path or os.environ.get("AL_DB", DB_FILE))
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS domes (
+                serial INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT, radius REAL, frequency INTEGER, layout TEXT,
+                cladding TEXT, floor_area REAL,
+                material REAL, labor_cost REAL, overhead REAL,
+                total_cost REAL, price REAL, margin REAL,
+                labor_hours REAL, steps INTEGER, distance_m REAL,
+                solar_kw REAL, r_value REAL,
+                cr REAL, cg REAL, cb REAL, created TEXT)
+        """)
+        self.conn.commit()
+
+    def add(self, rec: dict) -> int:
+        cols = ("name radius frequency layout cladding floor_area material "
+                "labor_cost overhead total_cost price margin labor_hours "
+                "steps distance_m solar_kw r_value cr cg cb created").split()
+        placeholders = ",".join("?" for _ in cols)
+        cur = self.conn.execute(
+            f"INSERT INTO domes ({','.join(cols)}) VALUES ({placeholders})",
+            [rec[c] for c in cols])
+        self.conn.commit()
+        return cur.lastrowid
+
+    def all(self) -> list[dict]:
+        cur = self.conn.execute("SELECT * FROM domes ORDER BY serial")
+        names = [d[0] for d in cur.description]
+        return [dict(zip(names, row)) for row in cur.fetchall()]
+
+    def clear(self):
+        self.conn.execute("DELETE FROM domes")
+        self.conn.execute("DELETE FROM sqlite_sequence WHERE name='domes'")
+        self.conn.commit()
+
+    def summary(self) -> dict:
+        cur = self.conn.execute(
+            "SELECT COUNT(*), COALESCE(SUM(price),0), "
+            "COALESCE(SUM(margin),0), COALESCE(SUM(floor_area),0), "
+            "COALESCE(SUM(labor_hours),0), COALESCE(AVG(margin),0) "
+            "FROM domes")
+        n, rev, profit, area, hrs, avg_margin = cur.fetchone()
+        return {"count": n, "revenue": rev, "profit": profit,
+                "area": area, "labor_hours": hrs, "avg_margin": avg_margin}
 
 
-def build_phases():
-    phases = []
-    x_prev = START_X
-    for i, stage in enumerate(STAGES):
-        phases.append(Phase("travel", TRAVEL_SECS, i, x_prev, STATION_X[i]))
-        phases.append(Phase("work", stage.secs, i))
-        x_prev = STATION_X[i]
-    phases.append(Phase("tocrane", 4.0, -1, x_prev, PICKUP_X))
-    phases.append(Phase("hook", 3.0))
-    phases.append(Phase("lift", 4.0))
-    phases.append(Phase("carry", 6.0, -1, PICKUP_X, TURNTABLE_X))
-    phases.append(Phase("lower", 4.0))
-    phases.append(Phase("unhook", 3.0))
-    phases.append(Phase("track", math.inf))
-    return phases
-
-
-# ---------------------------------------------------------------------------
-# GPU helpers
-# ---------------------------------------------------------------------------
+# ===========================================================================
+# GPU wrappers
+# ===========================================================================
 
 class GpuMesh:
-    """Static mesh with its own VAOs, drawn with a model matrix."""
-
     def __init__(self, ctx, program, mesh: Mesh):
-        self.ctx = ctx
         self.vbo = ctx.buffer(mesh.vertices.tobytes())
         layout = [(self.vbo, "3f 3f 4f 1f",
                    "in_position", "in_normal", "in_color", "in_mat")]
@@ -1135,13 +602,16 @@ class GpuMesh:
 
 
 class DomeGpu:
-    """The dome catalog on the GPU; visibility is an index-buffer write."""
+    """A built catalog on the GPU; visible subset is an index-buffer write."""
 
-    def __init__(self, ctx, program, cat: Catalog):
+    def __init__(self, ctx, program, cat: AL.Catalog):
         mesh = cat.b.build()
         self.full_opaque = mesh.opaque
         self.full_transparent = mesh.transparent
-        self.stages = cat.stages
+        # element ranges per stage, in catalog order
+        self.stage_ranges = {
+            s.key: [(e.o0, e.o1, e.t0, e.t1) for e in cat.by_stage[s.key]]
+            for s in STAGES}
         self.vbo = ctx.buffer(mesh.vertices.tobytes())
         layout = [(self.vbo, "3f 3f 4f 1f",
                    "in_position", "in_normal", "in_color", "in_mat")]
@@ -1156,23 +626,23 @@ class DomeGpu:
         self.transparent_count = 0
         self.signature = None
 
-    def update(self, progress: dict[str, float]):
-        sig = []
-        for stage in STAGES:
-            els = self.stages[stage.key]
-            p = progress.get(stage.key, 0.0)
-            if p <= 0.0 or not els:
-                k = 0
-            else:
-                k = min(len(els), max(1, math.ceil(p * len(els) - 1e-9)))
-            sig.append(k)
-        sig = tuple(sig)
+    def release(self):
+        for o in (self.opaque_vao, self.transparent_vao, self.opaque_ibo,
+                  self.transparent_ibo, self.vbo):
+            try:
+                o.release()
+            except Exception:
+                pass
+
+    def update(self, placed_counts: dict[str, int]):
+        sig = tuple(placed_counts[s.key] for s in STAGES)
         if sig == self.signature:
             return
         self.signature = sig
         chunks_o, chunks_t = [], []
-        for stage, k in zip(STAGES, sig):
-            for (o0, o1, t0, t1) in self.stages[stage.key][:k]:
+        for stage in STAGES:
+            k = placed_counts[stage.key]
+            for (o0, o1, t0, t1) in self.stage_ranges[stage.key][:k]:
                 if o1 > o0:
                     chunks_o.append(self.full_opaque[o0:o1])
                 if t1 > t0:
@@ -1189,23 +659,221 @@ class DomeGpu:
             self.transparent_ibo.write(transparent.tobytes())
 
 
-# ---------------------------------------------------------------------------
-# The application
-# ---------------------------------------------------------------------------
+# ===========================================================================
+# Worker labor model
+# ===========================================================================
+
+class Worker:
+    def __init__(self, home_xy):
+        self.home = np.array(home_xy, dtype=np.float64)
+        self.pos = self.home.copy()
+        self.yaw = 0.0
+        self.queue: list[AL.Element] = []
+        self.qi = 0
+        self.state = "idle"      # idle | walk | place
+        self.timer = 0.0
+        self.target = self.home.copy()
+
+    def assign(self, elements, home_xy):
+        self.home = np.array(home_xy, dtype=np.float64)
+        self.pos = self.home.copy()
+        self.queue = list(elements)
+        self.qi = 0
+        self.state = "walk" if elements else "idle"
+        self.timer = 0.0
+        self._aim()
+
+    def _aim(self):
+        if self.qi < len(self.queue):
+            el = self.queue[self.qi]
+            self.target = np.array([el.floor_point[0], el.floor_point[1]])
+        else:
+            self.target = self.home.copy()
+            self.state = "idle"
+
+    def update(self, dt_anim, dome_x, run, stalled):
+        """Returns real distance walked this frame (meters)."""
+        if self.state == "idle":
+            return 0.0
+        if stalled:
+            return 0.0
+        moved = 0.0
+        if self.state == "walk":
+            world_target = np.array([dome_x + self.target[0], self.target[1]])
+            world_pos = np.array([dome_x + self.pos[0], self.pos[1]])
+            # convert desired anim movement into local-frame movement
+            delta = world_target - world_pos
+            dist = float(np.linalg.norm(delta))
+            step = ANIM_WALK_SPEED * dt_anim
+            if dist <= step or dist < 1e-6:
+                self.pos = self.target.copy()
+                moved = dist
+                el = self.queue[self.qi]
+                self.state = "place"
+                self.timer = max(0.12, el.labor_min * PLACE_ANIM_PER_LABOR_MIN)
+            else:
+                self.yaw = math.atan2(delta[1], delta[0])
+                self.pos = self.pos + (delta / dist) * step
+                moved = step
+        elif self.state == "place":
+            self.timer -= dt_anim
+            if self.timer <= 0.0:
+                el = self.queue[self.qi]
+                run.on_placed(el)
+                self.qi += 1
+                self._aim()
+                if self.state != "idle":
+                    self.state = "walk"
+        return moved
+
+
+# ===========================================================================
+# Production run — one dome from raw floor to finished home
+# ===========================================================================
+
+@dataclass
+class ProductionRun:
+    spec: DomeSpec
+    cat: AL.Catalog
+    info: dict
+    gpu: DomeGpu
+    placed: dict = field(default_factory=dict)
+    material: float = 0.0
+    labor_min: float = 0.0
+    steps: float = 0.0
+    distance_m: float = 0.0
+    elements_done: int = 0
+    econ_preview: dict = field(default_factory=dict)
+
+    def __post_init__(self):
+        self.placed = {s.key: 0 for s in STAGES}
+        self.totals = {s.key: len(self.cat.by_stage[s.key]) for s in STAGES}
+        self.overhead = unit_economics(self.cat, self.spec)["overhead"]
+        self.econ_preview = unit_economics(self.cat, self.spec)
+
+    def on_placed(self, el: AL.Element):
+        self.placed[el.stage] += 1
+        self.material += el.material_cost
+        self.labor_min += el.labor_min
+        self.elements_done += 1
+
+    def add_distance(self, meters):
+        self.distance_m += meters
+        self.steps = self.distance_m / ASSUMPTIONS["worker_stride_m"]
+
+    def station_done(self, key):
+        return self.placed[key] >= self.totals[key]
+
+    def labor_cost(self):
+        return (self.labor_min / 60.0) * ASSUMPTIONS["burdened_wage_per_hour"]
+
+    def cost_so_far(self):
+        # material + labor accrued + full per-unit overhead once started
+        oh = self.overhead if self.elements_done else 0.0
+        return self.material + self.labor_cost() + oh
+
+    def final_record(self) -> dict:
+        econ = unit_economics(self.cat, self.spec,
+                              labor_hours=self.labor_min / 60.0)
+        pv = product_value(self.cat, self.spec)
+        c = self.spec.cladding_color
+        return {
+            "name": self.spec.name, "radius": self.spec.radius,
+            "frequency": self.spec.frequency, "layout": self.spec.layout,
+            "cladding": self.spec.cladding, "floor_area": self.spec.floor_area,
+            "material": econ["material"], "labor_cost": econ["labor_cost"],
+            "overhead": econ["overhead"], "total_cost": econ["total_cost"],
+            "price": econ["price"], "margin": econ["margin"],
+            "labor_hours": self.labor_min / 60.0, "steps": int(self.steps),
+            "distance_m": self.distance_m, "solar_kw": pv["solar_kw"],
+            "r_value": pv["r_value"], "cr": c[0], "cg": c[1], "cb": c[2],
+            "created": time.strftime("%Y-%m-%d %H:%M"),
+        }
+
+
+# ===========================================================================
+# Timeline
+# ===========================================================================
+
+@dataclass
+class Phase:
+    kind: str
+    station: int = -1
+    x0: float = 0.0
+    x1: float = 0.0
+    dur: float = 0.0
+
+
+def build_phases():
+    phases = [Phase("intro", dur=1.2)]
+    x_prev = START_X
+    for i in range(len(STAGES)):
+        phases.append(Phase("travel", i, x_prev, STATION_X[i], TRAVEL_SECS))
+        phases.append(Phase("work", i))
+        x_prev = STATION_X[i]
+    phases.append(Phase("tocrane", -1, x_prev, PICKUP_X, 4.0))
+    phases.append(Phase("hook", dur=2.6))
+    phases.append(Phase("lift", dur=3.4))
+    phases.append(Phase("carry", -1, PICKUP_X, TURNTABLE_X, 5.5))
+    phases.append(Phase("lower", dur=3.4))
+    phases.append(Phase("unhook", dur=2.6))
+    phases.append(Phase("park", dur=2.0))
+    return phases
+
+
+# ===========================================================================
+# UI toolkit
+# ===========================================================================
+
+@dataclass
+class Button:
+    key: str
+    label: str
+    x: float = 0
+    y: float = 0
+    w: float = 0
+    h: float = 0
+    toggle: bool = False
+
+
+class YardDome:
+    def __init__(self, rec, x, y):
+        self.rec = rec
+        self.x = x
+        self.y = y
+        self.scale = rec["radius"] / AL.REFERENCE_RADIUS
+        self.tint = (rec["cr"] / 0.28, rec["cg"] / 0.34, rec["cb"] / 0.38)
+        self.tint = tuple(max(0.4, min(1.6, t)) for t in self.tint)
+
+
+def yard_slot(index):
+    """Grid of finished domes behind the turntable."""
+    cols = 6
+    row, col = divmod(index, cols)
+    x = TURNTABLE_X + 4.0 + col * 11.0
+    y = -22.0 - row * 11.0
+    return x, y
+
+
+# ===========================================================================
+# Application
+# ===========================================================================
 
 class AssemblyLineApp:
-    def __init__(self, headless=False, windowed=False, size=(1600, 900)):
+    def __init__(self, headless=False, windowed=False, size=(1600, 900),
+                 seed=None):
         self.headless = headless
+        self.rng = random.Random(seed)
         pygame.init()
+        import moderngl
+        self.moderngl = moderngl
         if headless:
-            import moderngl
             self.size = size
             self.ctx = moderngl.create_standalone_context()
             self.color_tex = self.ctx.texture(size, components=3)
             self.depth_rb = self.ctx.depth_renderbuffer(size)
             self.fbo = self.ctx.framebuffer([self.color_tex], self.depth_rb)
         else:
-            import moderngl
             flags = pygame.OPENGL | pygame.DOUBLEBUF
             if windowed:
                 pygame.display.set_mode(size, flags)
@@ -1215,9 +883,8 @@ class AssemblyLineApp:
             self.size = pygame.display.get_window_size()
             self.ctx = moderngl.create_context()
             self.fbo = self.ctx.screen
-        self.moderngl = __import__("moderngl")
-        ctx = self.ctx
 
+        ctx = self.ctx
         self.scene_prog = ctx.program(vertex_shader=SCENE_VS,
                                       fragment_shader=SCENE_FS)
         self.overlay_prog = ctx.program(vertex_shader=OVERLAY_VS,
@@ -1227,8 +894,6 @@ class AssemblyLineApp:
         self.quad_vao = ctx.vertex_array(
             self.overlay_prog, [(self.quad_vbo, "2f", "in_pos")])
 
-        cat, self.dome_info = build_dome_catalog()
-        self.dome = DomeGpu(ctx, self.scene_prog, cat)
         self.env = GpuMesh(ctx, self.scene_prog, build_environment())
         self.carriage = GpuMesh(ctx, self.scene_prog, build_carriage())
         self.platter = GpuMesh(ctx, self.scene_prog, build_platter())
@@ -1236,135 +901,269 @@ class AssemblyLineApp:
         self.cable = GpuMesh(ctx, self.scene_prog, build_cable_unit())
         self.hook = GpuMesh(ctx, self.scene_prog, build_hook())
         self.sun = GpuMesh(ctx, self.scene_prog, build_sun())
+        self.worker_mesh = GpuMesh(ctx, self.scene_prog, build_worker_mesh())
+        self.finished = GpuMesh(ctx, self.scene_prog,
+                                build_finished_dome_mesh())
 
-        self.font_big = pygame.font.SysFont("consolas", 30, bold=True)
-        self.font_med = pygame.font.SysFont("consolas", 20)
-        self.font_small = pygame.font.SysFont("consolas", 17)
+        self.font_big = pygame.font.SysFont("consolas", 28, bold=True)
+        self.font_med = pygame.font.SysFont("consolas", 19)
+        self.font_small = pygame.font.SysFont("consolas", 16)
+        self.font_tiny = pygame.font.SysFont("consolas", 14)
         self.text_cache: dict = {}
 
-        self.phases = build_phases()
-        self.reset()
+        # database + yard
+        self.db = YardDB()
+        self.yard: list[YardDome] = []
+        self._load_yard()
 
-        self.speed = 1.0
+        # crew
+        crew_n = ASSUMPTIONS["install_crew_size"]
+        self.crew = [Worker((0, 0)) for _ in range(crew_n)]
+
+        # sim state
+        self.phases = build_phases()
+        self.run: ProductionRun | None = None
+        self.next_serial = self.db.summary()["count"] + 1
+        self.speed = 2.0
         self.paused = False
         self.follow = True
         self.force_cutaway = False
-        self.cam_yaw = math.radians(-115.0)
-        self.cam_pitch = math.radians(16.0)
-        self.cam_dist = 17.0
+        self.cinematic = False
+        self.auto_run = True
+        self.pipeline_view = True
+        self.panel = "pnl"
+        self.sensitivity = {"lumber": 1.0, "resin": 1.0, "wage": 1.0}
+        self.event_log: list[str] = []
+        self.stall_timer = 0.0
+        self.stall_reason = ""
+        self.downtime_cost = 0.0
+        self.hover_element = None
+        self.hover_screen = None
+        self.selected_yard = None
+        self.configuring = False
+        self.config_spec = None
+        self.cinematic_angle = 0.0
+
+        # camera
+        self.cam_yaw = math.radians(-118.0)
+        self.cam_pitch = math.radians(17.0)
+        self.cam_dist = 18.0
         self.cam_target = np.array([START_X, 0.0, 2.5], dtype=np.float32)
         self.dragging = False
+        self.mouse = (0, 0)
+        self.buttons: dict[str, Button] = {}
+        self.slider_rect = (0, 0, 0, 0)
+        self.slider_drag = False
 
-    # -- simulation state ------------------------------------------------
-
-    def reset(self):
         self.phase_idx = 0
         self.phase_t = 0.0
         self.track_t = 0.0
         self.platter_yaw = 0.0
-        self.dome.signature = None
+        self.line_time = 0.0
+        self.start_new_run()
+
+    # -- yard / runs -----------------------------------------------------
+
+    def _load_yard(self):
+        self.yard = []
+        for i, rec in enumerate(self.db.all()):
+            x, y = yard_slot(i)
+            self.yard.append(YardDome(rec, x, y))
+
+    def start_new_run(self, spec=None):
+        if self.run is not None:
+            self.run.gpu.release()
+        spec = spec or random_spec(self.next_serial, self.rng)
+        spec.serial = self.next_serial
+        cat, info = build_dome_catalog(spec)
+        gpu = DomeGpu(self.ctx, self.scene_prog, cat)
+        self.run = ProductionRun(spec=spec, cat=cat, info=info, gpu=gpu)
+        self.phase_idx = 0
+        self.phase_t = 0.0
+        self.line_time = 0.0
+        self.stall_timer = 0.0
+        self.downtime_cost = 0.0
+        self.log(f"Run #{spec.serial} started: {spec.name} "
+                 f"({spec.layout}, {spec.floor_area:.0f} m²)")
+
+    def finish_run(self):
+        rec = self.run.final_record()
+        serial = self.db.add(rec)
+        rec["serial"] = serial
+        x, y = yard_slot(len(self.yard))
+        self.yard.append(YardDome(rec, x, y))
+        self.log(f"#{serial} {rec['name']} shipped — margin "
+                 f"${rec['margin']:,.0f}")
+        self.next_serial = serial + 1
+
+    def log(self, msg):
+        self.event_log.append(msg)
+        self.event_log = self.event_log[-6:]
 
     @property
-    def phase(self) -> Phase:
+    def phase(self):
         return self.phases[self.phase_idx]
 
-    def advance(self, dt):
-        self.phase_t += dt
-        while (self.phase_idx < len(self.phases) - 1
-               and self.phase_t >= self.phase.dur):
-            self.phase_t -= self.phase.dur
-            self.phase_idx += 1
-        if self.phase.kind == "track":
-            self.track_t = self.phase_t
+    # -- simulation ------------------------------------------------------
 
-    def stage_progress(self) -> dict[str, float]:
-        progress = {}
-        for idx in range(self.phase_idx):
-            ph = self.phases[idx]
-            if ph.kind == "work":
-                progress[STAGES[ph.station].key] = 1.0
+    def advance_phase(self):
+        self.phase_idx += 1
+        self.phase_t = 0.0
+        if self.phase_idx >= len(self.phases):
+            # dome finished -> yard, then next run
+            self.finish_run()
+            if self.auto_run:
+                self.start_new_run()
+            else:
+                self.paused = True
+                self.phase_idx = len(self.phases) - 1
+            return
         ph = self.phase
         if ph.kind == "work":
-            progress[STAGES[ph.station].key] = min(
-                1.0, self.phase_t / max(ph.dur, 1e-6))
-        return progress
+            self._begin_station(ph.station)
+
+    def _begin_station(self, station):
+        stage = STAGES[station]
+        els = self.run.cat.by_stage[stage.key]
+        n = len(self.crew)
+        for w in range(n):
+            subset = els[w::n]
+            hx = 0.0
+            hy = (2.4 if w % 2 else -2.4) * (0.6 + 0.2 * (w // 2))
+            self.crew[w].assign(subset, (hx, hy))
+
+    def update(self, dt):
+        if self.paused:
+            return
+        dt_anim = dt * self.speed
+        self.line_time += dt_anim
+        ph = self.phase
+
+        # disruption stall countdown
+        stalled = False
+        if self.stall_timer > 0.0:
+            self.stall_timer -= dt_anim
+            stalled = True
+            self.downtime_cost += (dt_anim / 3600.0) \
+                * ASSUMPTIONS["burdened_wage_per_hour"] * len(self.crew)
+            if self.stall_timer <= 0.0:
+                self.log(f"{self.stall_reason} cleared — line resumes")
+
+        if ph.kind in ("travel", "tocrane", "carry"):
+            self.phase_t += dt_anim
+            if self.phase_t >= ph.dur:
+                self.advance_phase()
+        elif ph.kind in ("intro", "hook", "lift", "lower", "unhook", "park"):
+            self.phase_t += dt_anim
+            if self.phase_t >= ph.dur:
+                self.advance_phase()
+        elif ph.kind == "work":
+            dome_x = STATION_X[ph.station]
+            for w in self.crew:
+                moved = w.update(dt_anim, dome_x, self.run, stalled)
+                if moved:
+                    self.run.add_distance(moved)
+            if self.run.station_done(STAGES[ph.station].key):
+                self.advance_phase()
+
+        self.run.gpu.update(self.run.placed)
+
+        # sun / turntable
+        sun_dir, tracking, az, _el = self.sun_state()
+        if tracking:
+            target = az + math.pi / 2.0
+            d = target - self.platter_yaw
+            self.platter_yaw += max(-0.6 * dt_anim, min(0.6 * dt_anim, d))
+
+        # cameras
+        if self.cinematic:
+            self.cinematic_angle += dt * 0.18
+            self.cam_yaw = self.cinematic_angle
+            self.cam_pitch = math.radians(20 + 8 * math.sin(dt and
+                                          self.cinematic_angle * 0.5))
+        x, y, z, *_ = self.dome_pose()
+        goal = np.array([x, y, z + 2.4], dtype=np.float32)
+        if self.follow or self.cinematic:
+            self.cam_target += (goal - self.cam_target) * min(1.0, dt * 2.2)
 
     def sun_state(self):
-        """(sun_dir unit vector scene->sun, tracking bool)."""
-        if self.phase.kind == "track":
-            frac = (self.track_t % SUN_CYCLE_SECS) / SUN_CYCLE_SECS
-            az = math.radians(-170.0 + 160.0 * frac)
-            el = math.radians(14.0 + 54.0 * math.sin(math.pi * frac))
-            return np.array([math.cos(az) * math.cos(el),
-                             math.sin(az) * math.cos(el),
-                             math.sin(el)]), True, az, el
-        d = normalize(np.array([0.35, -0.45, 0.82]))
-        return d, False, math.atan2(d[1], d[0]), math.asin(d[2])
+        park = self.phase.kind == "park" or self.phase_idx >= len(self.phases)
+        if park:
+            self.track_t += 0.0
+        # track once a dome is parked in the yard scene; otherwise fixed
+        frac = (self.line_time % SUN_CYCLE_SECS) / SUN_CYCLE_SECS
+        az = math.radians(-165.0 + 150.0 * frac)
+        el = math.radians(16.0 + 52.0 * math.sin(math.pi * frac))
+        d = np.array([math.cos(az) * math.cos(el),
+                      math.sin(az) * math.cos(el), math.sin(el)])
+        return d, True, az, el
 
     def dome_pose(self):
-        """(x, y, z, yaw, on_carriage, hook_z or None, bridge_x)."""
+        """(x,y,z,yaw, on_carriage, hook_z|None, bridge_x)."""
         ph = self.phase
-        t = smoothstep(self.phase_t / ph.dur) if math.isfinite(ph.dur) \
-            else 0.0
-        anchor = self.dome_info["anchor_top"]
-        if ph.kind in ("travel", "work", "tocrane"):
-            if ph.kind == "work":
-                x = STATION_X[ph.station]
-            else:
-                x = ph.x0 + (ph.x1 - ph.x0) * t
+        anchor = self.run.info["anchor_top"]
+        dur = max(ph.dur, 1e-6)
+        t = smoothstep(self.phase_t / dur)
+        if ph.kind in ("intro", "work"):
+            station = ph.station if ph.kind == "work" else 0
+            x = STATION_X[station] if ph.kind == "work" else START_X
+            return x, 0.0, CARRIAGE_TOP, 0.0, True, None, PICKUP_X
+        if ph.kind in ("travel", "tocrane"):
+            x = ph.x0 + (ph.x1 - ph.x0) * t
             return x, 0.0, CARRIAGE_TOP, 0.0, True, None, PICKUP_X
         if ph.kind == "hook":
             hz = CARRIAGE_TOP + anchor + 0.15
-            cable_z = 9.6 - (9.6 - hz) * t
-            return PICKUP_X, 0.0, CARRIAGE_TOP, 0.0, True, cable_z, PICKUP_X
+            return PICKUP_X, 0.0, CARRIAGE_TOP, 0.0, True, \
+                9.8 - (9.8 - hz) * t, PICKUP_X
         if ph.kind == "lift":
             z = CARRIAGE_TOP + (LIFT_Z - CARRIAGE_TOP) * t
-            return (PICKUP_X, 0.0, z, 0.0, False,
-                    z + anchor + 0.15, PICKUP_X)
+            return PICKUP_X, 0.0, z, 0.0, False, z + anchor + 0.15, PICKUP_X
         if ph.kind == "carry":
             x = ph.x0 + (ph.x1 - ph.x0) * t
             return x, 0.0, LIFT_Z, 0.0, False, LIFT_Z + anchor + 0.15, x
         if ph.kind == "lower":
             z = LIFT_Z + (PLATTER_TOP - LIFT_Z) * t
-            return (TURNTABLE_X, 0.0, z, 0.0, False,
-                    z + anchor + 0.15, TURNTABLE_X)
+            return TURNTABLE_X, 0.0, z, self.platter_yaw, False, \
+                z + anchor + 0.15, TURNTABLE_X
         if ph.kind == "unhook":
             hz = PLATTER_TOP + anchor + 0.15
-            cable_z = hz + (9.6 - hz) * t
-            return (TURNTABLE_X, 0.0, PLATTER_TOP, self.platter_yaw, False,
-                    cable_z, TURNTABLE_X)
-        # track
-        return (TURNTABLE_X, 0.0, PLATTER_TOP, self.platter_yaw, False,
-                None, TURNTABLE_X)
+            return TURNTABLE_X, 0.0, PLATTER_TOP, self.platter_yaw, False, \
+                hz + (9.8 - hz) * t, TURNTABLE_X
+        # park
+        return TURNTABLE_X, 0.0, PLATTER_TOP, self.platter_yaw, False, \
+            None, TURNTABLE_X
 
-    def update(self, dt):
-        if not self.paused:
-            self.advance(dt * self.speed)
-            sun_dir, tracking, az, _el = self.sun_state()
-            if tracking:
-                target_yaw = az + math.pi / 2.0
-                delta = target_yaw - self.platter_yaw
-                max_step = 0.5 * dt * self.speed
-                self.platter_yaw += max(-max_step, min(max_step, delta))
-        self.dome.update(self.stage_progress())
+    # -- disruptions -----------------------------------------------------
 
-        x, y, z, _yaw, _oc, _hz, _bx = self.dome_pose()
-        goal = np.array([x, y, z + 2.6], dtype=np.float32)
-        if self.follow:
-            blend = min(1.0, dt * 2.5)
-            self.cam_target = self.cam_target + (goal - self.cam_target) \
-                * blend
+    def inject(self, kind):
+        if kind == "supply":
+            self.stall_timer = 6.0
+            self.stall_reason = "Supply delay"
+            self.log("! Supply delay injected — station starved 6 min-eq")
+        elif kind == "breakdown":
+            self.stall_timer = 8.0
+            self.stall_reason = "Machine breakdown"
+            self.log("! Equipment breakdown — maintenance responding")
+        elif kind == "absence":
+            if len(self.crew) > 1:
+                self.crew.pop()
+                self.log(f"! Worker absence — crew down to {len(self.crew)}")
+                if self.phase.kind == "work":
+                    self._begin_station(self.phase.station)
 
-    # -- rendering -------------------------------------------------------
+    # ===================================================================
+    # Rendering
+    # ===================================================================
 
     def upload_model(self, m):
         self.scene_prog["u_model"].write(
             np.ascontiguousarray(m.T.astype(np.float32)).tobytes())
 
-    def draw_gpu(self, gm: GpuMesh, model=None, transparent_pass=False):
+    def draw_gpu(self, gm, model=None, transparent=False, tint=(1, 1, 1)):
         self.upload_model(model if model is not None
                           else np.eye(4, dtype=np.float32))
-        vao = gm.transparent_vao if transparent_pass else gm.opaque_vao
+        self.scene_prog["u_tint"].value = tint
+        vao = gm.transparent_vao if transparent else gm.opaque_vao
         if vao is not None:
             vao.render(self.moderngl.TRIANGLES)
 
@@ -1382,22 +1181,21 @@ class AssemblyLineApp:
             self.cam_dist * math.cos(self.cam_pitch) * math.cos(self.cam_yaw),
             self.cam_dist * math.cos(self.cam_pitch) * math.sin(self.cam_yaw),
             self.cam_dist * math.sin(self.cam_pitch)], dtype=np.float32)
-        proj = perspective(58.0, w / h, 0.1, 600.0)
+        proj = perspective(56.0, w / h, 0.1, 700.0)
         view = look_at(eye, self.cam_target)
-        mvp = proj @ view
+        self.mvp = proj @ view
         prog = self.scene_prog
-        prog["u_mvp"].write(np.ascontiguousarray(mvp.T).tobytes())
+        prog["u_mvp"].write(np.ascontiguousarray(self.mvp.T).tobytes())
         prog["u_camera_position"].value = tuple(map(float, eye))
-        sun_dir, tracking, _az, _el = self.sun_state()
+        sun_dir, _tracking, _az, _el = self.sun_state()
         prog["u_light_direction"].value = tuple(map(float, -sun_dir))
         prog["u_sky_color"].value = SKY_COLOR
 
         x, y, z, yaw, on_carriage, hook_z, bridge_x = self.dome_pose()
-        dome_model = (mat_translate(x, y, z) @ mat_rot_z(yaw))
-
-        interior_station = (self.phase.kind == "work"
-                            and STAGES[self.phase.station].key == "interior")
-        cutaway = self.force_cutaway or interior_station
+        dome_model = mat_translate(x, y, z) @ mat_rot_z(yaw)
+        interior = (self.phase.kind == "work"
+                    and STAGES[self.phase.station].key == "interior")
+        cutaway = self.force_cutaway or interior
         dome_cut = 2.95 if cutaway else 1e9
 
         prog["u_cut_z"].value = 1e9
@@ -1410,47 +1208,92 @@ class AssemblyLineApp:
         self.draw_gpu(self.bridge, mat_translate(bridge_x, 0, 0))
         if hook_z is not None:
             length = max(0.05, 10.0 - hook_z)
-            self.draw_gpu(self.cable,
-                          mat_translate(bridge_x, 0, 10.0)
+            self.draw_gpu(self.cable, mat_translate(bridge_x, 0, 10.0)
                           @ mat_scale(0.04, 0.04, length))
             self.draw_gpu(self.hook, mat_translate(bridge_x, 0, hook_z))
-        sun_pos = self.cam_target + sun_dir.astype(np.float32) * 260.0
+        sun_pos = self.cam_target + sun_dir.astype(np.float32) * 280.0
         self.draw_gpu(self.sun, mat_translate(*sun_pos))
 
+        # finished domes in the yard
+        for yd in self.yard:
+            tint = yd.tint
+            self.draw_gpu(self.finished,
+                          mat_translate(yd.x, yd.y, 0)
+                          @ mat_scale(yd.scale, yd.scale, yd.scale), tint=tint)
+
+        # pipeline: show trailing/leading domes at other stations
+        if self.pipeline_view and self.phase.kind == "work":
+            self._draw_pipeline(x)
+
+        # workers (active station only)
+        if self.phase.kind == "work":
+            self._draw_workers(x)
+
+        # the dome under construction
         prog["u_cut_z"].value = dome_cut
         self.upload_model(dome_model)
-        if self.dome.opaque_count:
-            self.dome.opaque_vao.render(mgl.TRIANGLES,
-                                        vertices=self.dome.opaque_count)
+        prog["u_tint"].value = (1, 1, 1)
+        if self.run.gpu.opaque_count:
+            self.run.gpu.opaque_vao.render(mgl.TRIANGLES,
+                                           vertices=self.run.gpu.opaque_count)
         ctx.depth_mask = False
-        if self.dome.transparent_count:
-            self.dome.transparent_vao.render(
-                mgl.TRIANGLES, vertices=self.dome.transparent_count)
-        prog["u_cut_z"].value = 1e9
-        self.draw_gpu(self.env, transparent_pass=True)
+        if self.run.gpu.transparent_count:
+            self.run.gpu.transparent_vao.render(
+                mgl.TRIANGLES, vertices=self.run.gpu.transparent_count)
         ctx.depth_mask = True
+
+        prog["u_cut_z"].value = 1e9
+        for yd in self.yard:
+            self.draw_gpu(self.finished,
+                          mat_translate(yd.x, yd.y, 0)
+                          @ mat_scale(yd.scale, yd.scale, yd.scale),
+                          transparent=True, tint=yd.tint)
 
         self.draw_hud()
 
-    # -- HUD -------------------------------------------------------------
+    def _draw_pipeline(self, hero_x):
+        """Draw a couple of finished/leading domes at neighbouring stations
+        to show the line running full (throughput visualization)."""
+        station = self.phase.station
+        # a completed-looking dome one station ahead, and a bare one behind
+        if station + 1 < len(STAGES):
+            self.draw_gpu(self.finished,
+                          mat_translate(STATION_X[station + 1], 0, CARRIAGE_TOP)
+                          @ mat_scale(0.85, 0.85, 0.85), tint=(0.8, 0.85, 0.9))
+            self.draw_gpu(self.carriage,
+                          mat_translate(STATION_X[station + 1], 0, 0))
 
-    def text_texture(self, key, lines):
-        """lines: list of (text, rgb, font). Cached by key."""
+    def _draw_workers(self, dome_x):
+        for wk in self.crew:
+            wx = dome_x + wk.pos[0]
+            wy = wk.pos[1]
+            m = mat_translate(wx, wy, DECK_Z) @ mat_rot_z(wk.yaw)
+            self.draw_gpu(self.worker_mesh, m)
+
+    # ===================================================================
+    # HUD
+    # ===================================================================
+
+    def text_texture(self, key, lines, pad=8):
         cached = self.text_cache.get(key)
         if cached is not None and cached[0] == lines:
             return cached[1], cached[2], cached[3]
         if cached is not None:
-            cached[1].release()
+            try:
+                cached[1].release()
+            except Exception:
+                pass
         surfs = [font.render(text, True, color)
-                 for text, color, font in lines if text]
-        pad = 8
+                 for text, color, font in lines if text != ""]
+        if not surfs:
+            surfs = [self.font_small.render(" ", True, (0, 0, 0))]
         width = max(s.get_width() for s in surfs) + pad * 2
-        height = sum(s.get_height() + 4 for s in surfs) + pad * 2
+        height = sum(s.get_height() + 3 for s in surfs) + pad * 2
         surface = pygame.Surface((width, height), pygame.SRCALPHA)
         yy = pad
         for s in surfs:
             surface.blit(s, (pad, yy))
-            yy += s.get_height() + 4
+            yy += s.get_height() + 3
         raw = pygame.image.tostring(surface, "RGBA", True)
         tex = self.ctx.texture((width, height), 4, raw)
         tex.filter = (self.moderngl.LINEAR, self.moderngl.LINEAR)
@@ -1458,7 +1301,6 @@ class AssemblyLineApp:
         return tex, width, height
 
     def draw_rect(self, x, y_top, w, h, color):
-        """Solid rect; x/y_top in top-left origin pixels."""
         sw, sh = self.size
         self.overlay_prog["u_rect"].value = (x, sh - y_top - h, w, h)
         self.overlay_prog["u_screen"].value = (sw, sh)
@@ -1472,122 +1314,696 @@ class AssemblyLineApp:
         self.overlay_prog["u_tex"].value = 0
         self.overlay_prog["u_rect"].value = (x, sh - y_top - h, w, h)
         self.overlay_prog["u_screen"].value = (sw, sh)
-        self.overlay_prog["u_color"].value = (1.0, 1.0, 1.0, alpha)
+        self.overlay_prog["u_color"].value = (1, 1, 1, alpha)
         self.overlay_prog["u_use_tex"].value = 1.0
         self.quad_vao.render(self.moderngl.TRIANGLE_STRIP)
+
+    def draw_text_block(self, key, lines, x, y, bg=(0.03, 0.05, 0.08, 0.62)):
+        tex, w, h = self.text_texture(key, lines)
+        if bg:
+            self.draw_rect(x - 4, y - 4, w + 8, h + 8, bg)
+        self.draw_texture(tex, x, y, w, h)
+        return w, h
+
+    # -- money helpers ---------------------------------------------------
+
+    def money(self, v):
+        return f"${v:,.0f}"
 
     def banner_lines(self):
         ph = self.phase
         n = len(STAGES)
+        amber = (255, 210, 90)
+        grey = (215, 220, 226)
+        if ph.kind == "intro":
+            return [(f"RUN #{self.run.spec.serial} — {self.run.spec.name}  "
+                     f"({self.run.spec.layout}, {self.run.spec.floor_area:.0f}"
+                     f" m², {self.run.spec.cladding})", amber, self.font_big)]
         if ph.kind == "travel":
-            stage = STAGES[ph.station]
-            return [(f"MOVING TO STATION {ph.station + 1}/{n} — "
-                     f"{stage.title}", (255, 210, 90), self.font_big)]
+            s = STAGES[ph.station]
+            return [(f"→ STATION {ph.station + 1}/{n}  {s.title}", amber,
+                     self.font_big)]
         if ph.kind == "work":
-            stage = STAGES[ph.station]
-            return [(f"STATION {ph.station + 1}/{n} — {stage.title}",
-                     (255, 210, 90), self.font_big),
-                    (stage.desc, (215, 220, 226), self.font_med)]
-        if ph.kind == "tocrane":
-            return [("LINE COMPLETE — ROLLING TO CRANE PICKUP",
-                     (255, 210, 90), self.font_big)]
-        if ph.kind in ("hook", "lift", "carry", "lower", "unhook"):
-            label = {"hook": "HOOKING THE APEX ANCHOR",
-                     "lift": "LIFTING OFF THE CARRIAGE",
-                     "carry": "CARRYING TO THE TURNTABLE",
-                     "lower": "SETTING DOWN ON THE LAZY SUSAN",
-                     "unhook": "RELEASING THE HOOK"}[ph.kind]
-            return [(f"CRANE TRANSFER — {label}", (255, 210, 90),
-                     self.font_big),
-                    ("Lifting by the apex anchor fitting",
-                     (215, 220, 226), self.font_med)]
-        _d, _t, az, el = self.sun_state()
-        return [("SUN-TRACKING TURNTABLE — HOME COMPLETE",
-                 (140, 235, 150), self.font_big),
-                (f"Lazy susan az {math.degrees(self.platter_yaw):5.1f}°  ·  "
-                 f"sun az {math.degrees(az):6.1f}°  el "
-                 f"{math.degrees(el):4.1f}°  ·  solar band facing the sun",
-                 (215, 220, 226), self.font_med)]
-
-    def checklist_lines(self):
-        progress = self.stage_progress()
-        ph = self.phase
-        active_station = ph.station if ph.kind in ("travel", "work") else -1
-        lines = [("BUILD SEQUENCE", (235, 238, 242), self.font_med)]
-        for i, stage in enumerate(STAGES):
-            done = progress.get(stage.key, 0.0) >= 1.0
-            if done:
-                marker, color = "[x]", (120, 220, 140)
-            elif i == active_station:
-                marker, color = " > ", (255, 210, 90)
-            else:
-                marker, color = "[ ]", (150, 155, 165)
-            lines.append((f"{marker} {i + 1:>2}  {stage.title}", color,
-                          self.font_small))
-        crane_kinds = ("tocrane", "hook", "lift", "carry", "lower", "unhook")
-        if ph.kind == "track":
-            lines.append(("[x]     CRANE TO TURNTABLE", (120, 220, 140),
-                          self.font_small))
-            lines.append((" >      SUN TRACKING", (255, 210, 90),
-                          self.font_small))
-        elif ph.kind in crane_kinds:
-            lines.append((" >      CRANE TO TURNTABLE", (255, 210, 90),
-                          self.font_small))
-            lines.append(("[ ]     SUN TRACKING", (150, 155, 165),
-                          self.font_small))
-        else:
-            lines.append(("[ ]     CRANE TO TURNTABLE", (150, 155, 165),
-                          self.font_small))
-            lines.append(("[ ]     SUN TRACKING", (150, 155, 165),
-                          self.font_small))
-        return lines
+            s = STAGES[ph.station]
+            done = self.run.placed[s.key]
+            tot = self.run.totals[s.key]
+            return [(f"STATION {ph.station + 1}/{n}  {s.title}   "
+                     f"[{done}/{tot}]", amber, self.font_big),
+                    (s.desc, grey, self.font_med)]
+        labels = {"tocrane": "LINE COMPLETE — ROLLING TO CRANE",
+                  "hook": "CRANE — HOOKING APEX ANCHOR",
+                  "lift": "CRANE — LIFTING OFF CARRIAGE",
+                  "carry": "CRANE — CARRYING TO TURNTABLE",
+                  "lower": "CRANE — SETTING ON LAZY SUSAN",
+                  "unhook": "CRANE — RELEASING HOOK",
+                  "park": "HOME COMPLETE — SUN-TRACKING TURNTABLE"}
+        col = (140, 235, 150) if ph.kind == "park" else amber
+        return [(labels.get(ph.kind, ph.kind), col, self.font_big)]
 
     def draw_hud(self):
         ctx = self.ctx
         ctx.disable(self.moderngl.DEPTH_TEST)
-        w, _h = self.size
+        w, h = self.size
+        amber = (255, 210, 90)
+        white = (232, 236, 240)
+        grey = (176, 182, 192)
+        green = (130, 224, 150)
 
-        if self.phase.kind == "track":
-            key_tick = int(self.phase_t * 2)
-        else:
-            key_tick = 0
-        tex, tw, th = self.text_texture(("banner", self.phase_idx, key_tick),
+        # top banner
+        tex, tw, th = self.text_texture(("banner", self.phase_idx,
+                                         self.run.spec.serial,
+                                         self.phase.kind == "work" and
+                                         self.run.elements_done),
                                         self.banner_lines())
-        self.draw_rect((w - tw) / 2 - 8, 8, tw + 16, th + 12,
-                       (0.03, 0.05, 0.08, 0.62))
-        self.draw_texture(tex, (w - tw) / 2, 14, tw, th)
+        self.draw_rect((w - tw) / 2 - 6, 8, tw + 12, th + 10,
+                       (0.03, 0.05, 0.08, 0.66))
+        self.draw_texture(tex, (w - tw) / 2, 13, tw, th)
 
-        ph = self.phase
-        if math.isfinite(ph.dur):
-            frac = max(0.0, min(1.0, self.phase_t / ph.dur))
-            bar_w = 420
-            bx = (w - bar_w) / 2
-            by = th + 26
-            color = (STAGES[ph.station].color + (0.9,)) \
-                if ph.kind == "work" else (0.9, 0.9, 0.9, 0.9)
-            self.draw_rect(bx, by, bar_w, 9, (1, 1, 1, 0.18))
-            self.draw_rect(bx, by, bar_w * frac, 9, color)
+        # live money strip (their money counter, grown into a P&L ticker)
+        r = self.run
+        strip = [
+            (f"COST TO DATE {self.money(r.cost_so_far())}", amber,
+             self.font_med),
+            (f"materials {self.money(r.material)}   labor "
+             f"{self.money(r.labor_cost())}   overhead "
+             f"{self.money(r.overhead)}", grey, self.font_small),
+            (f"elements placed {r.elements_done}/{len(r.cat.elements)}   "
+             f"worker steps {int(r.steps):,}   distance {r.distance_m:,.0f} m",
+             white, self.font_small),
+            (f"projected sale {self.money(r.econ_preview['price'])}   "
+             f"projected margin {self.money(r.econ_preview['margin'])} "
+             f"({r.econ_preview['margin_pct']:.0f}%)", green, self.font_small),
+        ]
+        self.draw_text_block(("moneystrip", int(r.cost_so_far()),
+                              int(r.steps), r.elements_done), strip,
+                             14, th + 30)
 
-        tex, tw, th = self.text_texture("checklist", self.checklist_lines())
-        self.draw_rect(10, 90, tw + 12, th + 10, (0.03, 0.05, 0.08, 0.55))
-        self.draw_texture(tex, 16, 95, tw, th)
+        # checklist
+        self.draw_text_block("checklist", self.checklist_lines(),
+                             14, th + 150)
 
-        controls = ("SPACE pause · [ / ] speed · drag orbit · wheel zoom · "
-                    "F follow · C cutaway · R restart · ESC quit")
-        tex, tw, th = self.text_texture(
-            "controls", [(controls, (185, 190, 198), self.font_small)])
-        self.draw_texture(tex, (w - tw) / 2, self.size[1] - th - 8, tw, th)
+        # right dock panel
+        self.draw_panel()
 
-        status = f"speed x{self.speed:g}" + ("  ·  PAUSED" if self.paused
-                                             else "")
-        tex, tw, th = self.text_texture(
-            ("status", self.speed, self.paused),
-            [(status, (255, 210, 90) if self.paused else (185, 190, 198),
-              self.font_small)])
-        self.draw_texture(tex, w - tw - 14, 12, tw, th)
+        # bottom control bar
+        self.draw_controls()
+
+        # event log
+        if self.event_log:
+            lines = [("EVENT LOG", amber, self.font_small)] + [
+                (m, grey, self.font_tiny) for m in self.event_log]
+            tex, tw, th2 = self.text_texture(
+                ("log", tuple(self.event_log)), lines)
+            self.draw_rect(w - tw - 14, h - th2 - 92, tw + 8, th2 + 8,
+                           (0.03, 0.05, 0.08, 0.55))
+            self.draw_texture(tex, w - tw - 10, h - th2 - 88, tw, th2)
+
+        # stall banner
+        if self.stall_timer > 0.0:
+            tex, tw, th2 = self.text_texture(
+                ("stall", int(self.stall_timer * 5)),
+                [(f"! {self.stall_reason.upper()} — LINE STALLED", (255, 120,
+                  90), self.font_big)])
+            self.draw_rect((w - tw) / 2 - 6, h - 150, tw + 12, th2 + 8,
+                           (0.15, 0.03, 0.03, 0.7))
+            self.draw_texture(tex, (w - tw) / 2, h - 146, tw, th2)
+
+        # hover tooltip
+        if self.hover_element and self.hover_screen:
+            el = self.hover_element
+            lines = [(el.label, amber, self.font_small),
+                     (f"material {self.money(el.material_cost)}   "
+                      f"labor {el.labor_min:.0f} min   "
+                      f"{el.weight:.0f} kg", white, self.font_tiny)]
+            tex, tw, th2 = self.text_texture(("tip", id(el)), lines)
+            hx, hy = self.hover_screen
+            self.draw_rect(hx + 10, hy - 4, tw + 8, th2 + 8,
+                           (0.05, 0.07, 0.10, 0.9))
+            self.draw_texture(tex, hx + 14, hy, tw, th2)
+
+        # yard spec plate
+        if self.selected_yard is not None:
+            self.draw_spec_plate()
+
+        # configurator overlay
+        if self.configuring:
+            self.draw_configurator()
+
         ctx.enable(self.moderngl.DEPTH_TEST)
 
-    # -- main loop -------------------------------------------------------
+    def checklist_lines(self):
+        amber = (255, 210, 90)
+        green = (120, 220, 140)
+        grey = (150, 155, 165)
+        white = (220, 224, 230)
+        ph = self.phase
+        active = ph.station if ph.kind in ("travel", "work") else -1
+        lines = [("BUILD SEQUENCE", white, self.font_med)]
+        for i, s in enumerate(STAGES):
+            done = self.run.placed[s.key] >= self.run.totals[s.key] \
+                and self.run.totals[s.key] > 0
+            if self.phase_idx > 1 + i * 2 + 1:
+                done = True
+            if done:
+                mark, col = "[x]", green
+            elif i == active:
+                mark, col = " > ", amber
+            else:
+                mark, col = "[ ]", grey
+            lines.append((f"{mark} {i + 1:>2} {s.title}", col,
+                          self.font_small))
+        crane = ph.kind in ("tocrane", "hook", "lift", "carry", "lower",
+                            "unhook")
+        park = ph.kind == "park"
+        lines.append((("[x]" if park else " > " if crane else "[ ]")
+                      + "    CRANE TO TURNTABLE",
+                      green if park else amber if crane else grey,
+                      self.font_small))
+        lines.append(((" > " if park else "[ ]") + "    SUN TRACKING",
+                      amber if park else grey, self.font_small))
+        return lines
+
+    # -- dock panels -----------------------------------------------------
+
+    def panel_lines(self):
+        white = (230, 234, 240)
+        amber = (255, 210, 90)
+        grey = (176, 182, 192)
+        green = (130, 224, 150)
+        red = (240, 150, 130)
+        r = self.run
+        sens = self.sensitivity
+        if self.panel == "pnl":
+            econ = self._econ_with_sensitivity()
+            return [("UNIT ECONOMICS (P&L)", white, self.font_med),
+                    (f"sale price      {self.money(econ['price'])}", green,
+                     self.font_small),
+                    (f"materials      -{self.money(econ['material'])}", grey,
+                     self.font_small),
+                    (f"labor ({econ['labor_hours']:.0f} h) -"
+                     f"{self.money(econ['labor_cost'])}", grey,
+                     self.font_small),
+                    (f"overhead       -{self.money(econ['overhead'])}", grey,
+                     self.font_small),
+                    (f"GROSS MARGIN    {self.money(econ['margin'])} "
+                     f"({econ['margin_pct']:.0f}%)", amber, self.font_med),
+                    ("", grey, self.font_small),
+                    ("sensitivity toggles (click):", white, self.font_small),
+                    (f"  lumber x{sens['lumber']:.2f}   "
+                     f"resin x{sens['resin']:.2f}   "
+                     f"wage x{sens['wage']:.2f}", grey, self.font_small)]
+        if self.panel == "throughput":
+            tp = throughput(r.cat)
+            bn = tp["bottleneck"]
+            lines = [("THROUGHPUT & BOTTLENECK", white, self.font_med)]
+            for row in tp["rows"]:
+                mark = "<< BOTTLENECK" if row["key"] == bn["key"] else ""
+                col = red if row["key"] == bn["key"] else grey
+                lines.append((f"{row['title'][:16]:<16} "
+                              f"{row['cycle_min']:5.0f} min {mark}", col,
+                              self.font_tiny))
+            fpy = ASSUMPTIONS["first_pass_yield"]
+            econ = self._econ_with_sensitivity()
+            rework = ((1.0 - fpy) * ASSUMPTIONS["rework_cost_fraction"]
+                      * econ["total_cost"])
+            dt_col = red if self.downtime_cost > 0 else grey
+            lines += [
+                ("", grey, self.font_small),
+                (f"single-piece flow: {tp['single_flow_per_year']:.0f}/yr",
+                 white, self.font_small),
+                (f"pipelined (bottleneck): "
+                 f"{tp['pipelined_per_year']:.0f}/yr", green,
+                 self.font_small),
+                (f"-> pipelining unlocks "
+                 f"{tp['pipelined_per_year'] / max(1, tp['single_flow_per_year']):.1f}x",
+                 amber, self.font_small),
+                ("", grey, self.font_small),
+                (f"QC first-pass yield {fpy * 100:.0f}%", grey,
+                 self.font_small),
+                (f"rework provision {self.money(rework)}", grey,
+                 self.font_small),
+                (f"downtime this run {self.money(self.downtime_cost)}",
+                 dt_col, self.font_small)]
+            return lines
+        if self.panel == "bom":
+            lines = [("BILL OF MATERIALS", white, self.font_med)]
+            by_cat = {}
+            for e in r.cat.elements:
+                by_cat.setdefault(e.category, [0, 0.0])
+                by_cat[e.category][0] += 1
+                by_cat[e.category][1] += e.material_cost
+            for cat_key, (cnt, cost) in sorted(
+                    by_cat.items(), key=lambda kv: -kv[1][1])[:12]:
+                lines.append((f"{cat_key:<11} {cnt:>4}  "
+                              f"{self.money(cost)}", grey, self.font_tiny))
+            lines.append((f"TOTAL MATERIAL {self.money(r.cat.material_cost())}",
+                          amber, self.font_small))
+            return lines
+        if self.panel == "benchmark":
+            econ = self._econ_with_sensitivity()
+            days = self.run.spec.floor_area  # placeholder replaced below
+            bd = self._build_days()
+            bm = benchmark(r.cat, r.spec, econ, bd, r.cat.labor_minutes() / 60)
+            d, c = bm["dome"], bm["conventional"]
+            return [("VS CONVENTIONAL HOUSING", white, self.font_med),
+                    (f"{'':14}{'DOME':>10}{'CONV':>10}", grey,
+                     self.font_tiny),
+                    (f"{'price':<14}{self.money(d['price']):>10}"
+                     f"{self.money(c['price']):>10}", white, self.font_tiny),
+                    (f"{'material':<14}{self.money(d['material']):>10}"
+                     f"{self.money(c['material']):>10}", grey,
+                     self.font_tiny),
+                    (f"{'labor hrs':<14}{d['labor_hours']:>10.0f}"
+                     f"{c['labor_hours']:>10.0f}", grey, self.font_tiny),
+                    (f"{'build days':<14}{d['build_days']:>10.1f}"
+                     f"{c['build_days']:>10.0f}", grey, self.font_tiny),
+                    ("", grey, self.font_small),
+                    (f"→ {c['labor_hours'] / max(1, d['labor_hours']):.1f}x "
+                     f"less labor, "
+                     f"{c['build_days'] / max(0.1, d['build_days']):.1f}x "
+                     f"faster", green, self.font_small)]
+        if self.panel == "value":
+            pv = product_value(r.cat, r.spec)
+            return [("FINISHED PRODUCT VALUE", white, self.font_med),
+                    (f"floor area      {pv['floor_area']:.0f} m²", grey,
+                     self.font_small),
+                    (f"solar array     {pv['solar_kw']:.1f} kW "
+                     f"({pv['solar_panels']} panels)", green,
+                     self.font_small),
+                    (f"daily generation {pv['daily_generation_kwh']:.0f} kWh",
+                     grey, self.font_small),
+                    (f"battery / autonomy {pv['battery_kwh']:.0f} kWh / "
+                     f"{pv['autonomy_days']:.1f} d", grey, self.font_small),
+                    (f"insulation      R-{pv['r_value']:.0f}", grey,
+                     self.font_small),
+                    (f"embodied carbon {pv['embodied_carbon_kg']:,.0f} kg",
+                     grey, self.font_small),
+                    (f"OSHA target     {pv['osha_target']:.1f}/100", grey,
+                     self.font_small),
+                    ("zero windows · sealed envelope", amber,
+                     self.font_small)]
+        if self.panel == "scale":
+            econ = self._econ_with_sensitivity()
+            tp = throughput(r.cat)
+            scn = scale_scenarios(tp["single_flow_per_year"], econ["margin"],
+                                  econ["price"])
+            lines = [("SCALE SCENARIOS", white, self.font_med),
+                     (f"{'lines':<7}{'units/yr':>9}{'revenue':>12}"
+                      f"{'profit':>12}", grey, self.font_tiny)]
+            for s in scn:
+                lines.append((f"{s['lines']:<7}{s['units_per_year']:>9.0f}"
+                              f"{self.money(s['revenue']):>12}"
+                              f"{self.money(s['gross_profit']):>12}", white,
+                              self.font_tiny))
+            be = break_even(econ["margin"])
+            lines += [("", grey, self.font_small),
+                      (f"CapEx/line {self.money(ASSUMPTIONS['line_capex'])}",
+                       grey, self.font_small),
+                      (f"break-even: {be['units_to_recover_capex']:.0f} "
+                       f"units to recover CapEx", amber, self.font_small)]
+            return lines
+        if self.panel == "ledger":
+            s = self.db.summary()
+            return [("CUMULATIVE PRODUCTION LEDGER", white, self.font_med),
+                    (f"homes shipped    {s['count']}", green, self.font_med),
+                    (f"total revenue    {self.money(s['revenue'])}", white,
+                     self.font_small),
+                    (f"total gross profit {self.money(s['profit'])}", green,
+                     self.font_small),
+                    (f"total floor area {s['area']:,.0f} m²", grey,
+                     self.font_small),
+                    (f"total labor      {s['labor_hours']:,.0f} h", grey,
+                     self.font_small),
+                    (f"avg margin/home  {self.money(s['avg_margin'])}", grey,
+                     self.font_small),
+                    ("", grey, self.font_small),
+                    ("click a yard dome for its spec plate", amber,
+                     self.font_tiny)]
+        return [("", white, self.font_small)]
+
+    def _build_days(self):
+        # emergent build time: total labor-hours / crew / shift-hours
+        hrs = self.run.cat.labor_minutes() / 60.0
+        return hrs / max(1, len(self.crew)) / ASSUMPTIONS["shift_hours_per_day"]
+
+    def _econ_with_sensitivity(self):
+        base = unit_economics(self.run.cat, self.run.spec)
+        s = self.sensitivity
+        # lumber affects frame/floor material; resin affects fiberglass/shingle
+        mat = 0.0
+        for e in self.run.cat.elements:
+            f = 1.0
+            if e.category in ("frame", "floor", "hub"):
+                f = s["lumber"]
+            elif e.category in ("fiberglass", "shingle", "wrap"):
+                f = s["resin"]
+            mat += e.material_cost * f
+        labor = base["labor_cost"] * s["wage"]
+        overhead = base["overhead"]
+        total = mat + labor + overhead
+        price = base["price"]
+        return {"price": price, "material": mat, "labor_cost": labor,
+                "labor_hours": base["labor_hours"], "overhead": overhead,
+                "total_cost": total, "margin": price - total,
+                "margin_pct": (price - total) / price * 100 if price else 0}
+
+    def draw_panel(self):
+        w, h = self.size
+        pw = 360
+        px = w - pw - 12
+        py = 66
+        tabs = [("pnl", "P&L"), ("throughput", "FLOW"), ("bom", "BOM"),
+                ("benchmark", "VS"), ("value", "VALUE"), ("scale", "SCALE"),
+                ("ledger", "YARD")]
+        # tab row
+        tab_w = pw / len(tabs)
+        self.buttons_panel = []
+        for i, (key, label) in enumerate(tabs):
+            bx = px + i * tab_w
+            active = self.panel == key
+            self.draw_rect(bx, py, tab_w - 2, 24,
+                           (0.16, 0.20, 0.28, 0.95) if active
+                           else (0.06, 0.08, 0.12, 0.8))
+            tex, tw, tht = self.text_texture(
+                (f"tab{key}", active),
+                [(label, (255, 220, 120) if active else (170, 176, 186),
+                  self.font_tiny)], pad=2)
+            self.draw_texture(tex, bx + (tab_w - tw) / 2, py + 5, tw, tht)
+            self.buttons_panel.append(("tab:" + key, bx, py, tab_w - 2, 24))
+        # body
+        tex, tw, tht = self.text_texture(
+            ("panelbody", self.panel, self.run.spec.serial,
+             self.run.elements_done // 12, tuple(self.sensitivity.values())),
+            self.panel_lines())
+        self.draw_rect(px, py + 26, pw, tht + 10, (0.04, 0.06, 0.10, 0.82))
+        self.draw_texture(tex, px + 6, py + 30, tw, tht)
+        self.panel_body_rect = (px, py + 26, pw, tht + 10)
+
+    def draw_controls(self):
+        w, h = self.size
+        bar_h = 46
+        y = h - bar_h
+        self.draw_rect(0, y, w, bar_h, (0.04, 0.06, 0.10, 0.85))
+        self.buttons_bar = []
+        x = 12
+
+        def add_btn(key, label, width, active=False):
+            nonlocal x
+            self.draw_rect(x, y + 8, width, 30,
+                           (0.20, 0.28, 0.20, 0.95) if active
+                           else (0.10, 0.13, 0.18, 0.95))
+            tex, tw, tht = self.text_texture((f"btn{key}", label, active),
+                                             [(label, (235, 238, 244),
+                                               self.font_small)], pad=4)
+            self.draw_texture(tex, x + (width - tw) / 2, y + 14, tw, tht)
+            self.buttons_bar.append((key, x, y + 8, width, 30))
+            x += width + 6
+
+        add_btn("pause", "> RUN" if self.paused else "|| PAUSE", 92)
+        add_btn("step", "STEP", 60)
+        # speed slider
+        self.draw_rect(x, y + 18, 130, 8, (0.2, 0.22, 0.26, 1))
+        frac = (math.log2(self.speed) + 2) / 5.0  # 0.25..8 -> 0..1
+        hx = x + max(0, min(1, frac)) * 130
+        self.draw_rect(hx - 5, y + 10, 10, 24, (0.9, 0.72, 0.2, 1))
+        tex, tw, tht = self.text_texture(("spd", self.speed),
+                                         [(f"x{self.speed:g}", (235, 238, 244),
+                                           self.font_small)], pad=2)
+        self.draw_texture(tex, x + 45, y + 1, tw, tht)
+        self.slider_rect = (x, y + 10, 130, 24)
+        x += 140
+        add_btn("follow", "FOLLOW", 78, self.follow)
+        add_btn("cutaway", "CUTAWAY", 86, self.force_cutaway)
+        add_btn("cinematic", "CINE", 60, self.cinematic)
+        add_btn("snapshot", "SNAP", 60)
+        add_btn("config", "CONFIG", 78)
+        add_btn("auto", "AUTO", 60, self.auto_run)
+        add_btn("supply", "SUPPLY×", 84)
+        add_btn("breakdown", "BREAK×", 78)
+        add_btn("absence", "ABSENT×", 84)
+        add_btn("clear", "CLEAR YARD", 108)
+
+    def draw_spec_plate(self):
+        rec = self.selected_yard.rec
+        w, h = self.size
+        white = (230, 234, 240)
+        amber = (255, 210, 90)
+        grey = (176, 182, 192)
+        green = (130, 224, 150)
+        lines = [(f"SERIAL #{rec.get('serial', '?')}  {rec['name']}", amber,
+                  self.font_med),
+                 (f"{rec['layout']}  ·  {rec['floor_area']:.0f} m²  ·  "
+                  f"{rec['cladding']}", white, self.font_small),
+                 (f"radius {rec['radius']:.1f} m  freq {rec['frequency']}V",
+                  grey, self.font_small),
+                 ("", grey, self.font_tiny),
+                 (f"material   {self.money(rec['material'])}", grey,
+                  self.font_small),
+                 (f"labor      {self.money(rec['labor_cost'])} "
+                  f"({rec['labor_hours']:.0f} h)", grey, self.font_small),
+                 (f"total cost {self.money(rec['total_cost'])}", grey,
+                  self.font_small),
+                 (f"sale price {self.money(rec['price'])}", white,
+                  self.font_small),
+                 (f"MARGIN     {self.money(rec['margin'])}", green,
+                  self.font_med),
+                 ("", grey, self.font_tiny),
+                 (f"solar {rec['solar_kw']:.1f} kW  ·  R-{rec['r_value']:.0f}",
+                  grey, self.font_small),
+                 (f"built {rec['created']}", grey, self.font_tiny),
+                 (f"worker steps {rec['steps']:,}  ·  "
+                  f"{rec['distance_m']:,.0f} m walked", grey, self.font_tiny),
+                 ("click elsewhere to close", amber, self.font_tiny)]
+        tex, tw, th = self.text_texture(
+            ("plate", rec.get("serial")), lines)
+        px = (w - tw) / 2
+        py = (h - th) / 2
+        self.draw_rect(px - 8, py - 8, tw + 16, th + 16,
+                       (0.05, 0.07, 0.11, 0.95))
+        self.draw_texture(tex, px, py, tw, th)
+
+    def draw_configurator(self):
+        w, h = self.size
+        white = (230, 234, 240)
+        amber = (255, 210, 90)
+        grey = (176, 182, 192)
+        cs = self.config_spec
+        lines = [("CONFIGURE NEXT DOME", amber, self.font_big),
+                 ("", grey, self.font_small),
+                 (f"Layout    < {cs.layout} >", white, self.font_med),
+                 (f"Size      < {cs.radius:.1f} m  ({cs.floor_area:.0f} m²) >",
+                  white, self.font_med),
+                 (f"Frequency < {cs.frequency}V >", white, self.font_med),
+                 (f"Cladding  < {cs.cladding} >", white, self.font_med),
+                 ("", grey, self.font_small),
+                 (f"projected sale {self.money(cs.sale_price)}", amber,
+                  self.font_med)]
+        tex, tw, th = self.text_texture(
+            ("config", cs.layout, cs.radius, cs.frequency, cs.cladding), lines)
+        px = (w - tw) / 2 - 20
+        py = (h - th) / 2 - 40
+        self.draw_rect(px - 14, py - 14, tw + 28, th + 90,
+                       (0.05, 0.07, 0.11, 0.96))
+        self.draw_texture(tex, px, py, tw, th)
+        # rows are clickable to cycle; buttons at bottom
+        self.config_rows = []
+        row_h = 0
+        base_y = py + self.text_texture(("config", cs.layout, cs.radius,
+                                         cs.frequency, cs.cladding),
+                                        lines)[2]
+        # simple bottom buttons
+        by = py + th + 6
+        self.config_buttons = []
+        for i, (key, label) in enumerate([("cfg_layout", "Layout"),
+                                          ("cfg_size", "Size"),
+                                          ("cfg_freq", "Freq"),
+                                          ("cfg_clad", "Cladding")]):
+            bx = px + i * 110
+            self.draw_rect(bx, by, 104, 28, (0.12, 0.16, 0.22, 0.95))
+            t2, tw2, th2 = self.text_texture(
+                (f"cfgb{key}", label), [(f"cycle {label}", white,
+                                        self.font_tiny)], pad=3)
+            self.draw_texture(t2, bx + 6, by + 6, tw2, th2)
+            self.config_buttons.append((key, bx, by, 104, 28))
+        # start / random / cancel
+        by2 = by + 34
+        for i, (key, label) in enumerate([("cfg_start", "START RUN"),
+                                          ("cfg_random", "RANDOMIZE"),
+                                          ("cfg_cancel", "CANCEL")]):
+            bx = px + i * 150
+            self.draw_rect(bx, by2, 144, 30,
+                           (0.20, 0.30, 0.20, 0.95) if key == "cfg_start"
+                           else (0.12, 0.16, 0.22, 0.95))
+            t2, tw2, th2 = self.text_texture(
+                (f"cfgm{key}", label), [(label, amber if key == "cfg_start"
+                                         else white, self.font_small)], pad=4)
+            self.draw_texture(t2, bx + (144 - tw2) / 2, by2 + 7, tw2, th2)
+            self.config_buttons.append((key, bx, by2, 144, 30))
+
+    # ===================================================================
+    # Interaction
+    # ===================================================================
+
+    def hit(self, mx, my, rect):
+        x, y, w, h = rect
+        return x <= mx <= x + w and y <= my <= y + h
+
+    def update_hover(self):
+        if self.dragging or self.phase.kind != "work" or self.headless:
+            self.hover_element = None
+            return
+        mx, my = self.mouse
+        w, h = self.size
+        dome_x = STATION_X[self.phase.station]
+        best = None
+        best_d = 26 ** 2
+        # only inspect placed elements of the current dome
+        for stage in STAGES:
+            k = self.run.placed[stage.key]
+            for el in self.run.cat.by_stage[stage.key][:k]:
+                wp = (dome_x + el.centroid[0], el.centroid[1],
+                      CARRIAGE_TOP + el.centroid[2])
+                sp = project_point(self.mvp, wp, w, h)
+                if sp is None:
+                    continue
+                d = (sp[0] - mx) ** 2 + (sp[1] - my) ** 2
+                if d < best_d:
+                    best_d = d
+                    best = (el, sp)
+        if best:
+            self.hover_element, self.hover_screen = best
+        else:
+            self.hover_element = None
+
+    def click_yard(self, mx, my):
+        w, h = self.size
+        best = None
+        best_d = 60 ** 2
+        for yd in self.yard:
+            sp = project_point(self.mvp, (yd.x, yd.y, 2.0 * yd.scale), w, h)
+            if sp is None:
+                continue
+            d = (sp[0] - mx) ** 2 + (sp[1] - my) ** 2
+            if d < best_d:
+                best_d = d
+                best = yd
+        return best
+
+    def handle_click(self, mx, my):
+        if self.configuring:
+            for key, x, y, bw, bh in getattr(self, "config_buttons", []):
+                if self.hit(mx, my, (x, y, bw, bh)):
+                    self.config_action(key)
+                    return
+            return
+        if self.selected_yard is not None:
+            self.selected_yard = None
+            return
+        # control bar
+        for key, x, y, bw, bh in getattr(self, "buttons_bar", []):
+            if self.hit(mx, my, (x, y, bw, bh)):
+                self.control_action(key)
+                return
+        # panel tabs
+        for key, x, y, bw, bh in getattr(self, "buttons_panel", []):
+            if self.hit(mx, my, (x, y, bw, bh)):
+                self.panel = key.split(":")[1]
+                return
+        # sensitivity toggles on the P&L panel
+        if self.panel == "pnl" and hasattr(self, "panel_body_rect"):
+            if self.hit(mx, my, self.panel_body_rect):
+                self.cycle_sensitivity()
+                return
+        # yard dome
+        yd = self.click_yard(mx, my)
+        if yd is not None:
+            self.selected_yard = yd
+
+    def cycle_sensitivity(self):
+        order = [1.0, 1.2, 0.85, 1.0]
+        for kkey in ("lumber", "resin", "wage"):
+            cur = self.sensitivity[kkey]
+            nxt = order[(order.index(cur) + 1) % len(order)] \
+                if cur in order else 1.0
+            self.sensitivity[kkey] = nxt
+            break  # cycle one factor per click, rotate which one
+        # rotate which factor cycles next
+        self._sens_keys = getattr(self, "_sens_keys",
+                                  ["lumber", "resin", "wage"])
+        self._sens_keys = self._sens_keys[1:] + self._sens_keys[:1]
+
+    def control_action(self, key):
+        if key == "pause":
+            self.paused = not self.paused
+        elif key == "step":
+            self.paused = True
+            self.update(1.0 / 30.0 / max(0.001, self.speed) * self.speed)
+        elif key == "follow":
+            self.follow = not self.follow
+            self.cinematic = False
+        elif key == "cutaway":
+            self.force_cutaway = not self.force_cutaway
+        elif key == "cinematic":
+            self.cinematic = not self.cinematic
+        elif key == "snapshot":
+            self.snapshot()
+        elif key == "config":
+            self.open_configurator()
+        elif key == "auto":
+            self.auto_run = not self.auto_run
+        elif key in ("supply", "breakdown", "absence"):
+            self.inject(key)
+        elif key == "clear":
+            self.db.clear()
+            self.yard = []
+            self.next_serial = 1
+            self.log("Yard cleared")
+
+    def open_configurator(self):
+        self.configuring = True
+        self.paused = True
+        self.config_spec = random_spec(self.next_serial, self.rng)
+
+    def config_action(self, key):
+        cs = self.config_spec
+        if key == "cfg_layout":
+            i = AL.LAYOUTS.index(cs.layout)
+            cs.layout = AL.LAYOUTS[(i + 1) % len(AL.LAYOUTS)]
+        elif key == "cfg_size":
+            cs.radius = round(3.2 + ((cs.radius - 3.2 + 0.3) % 1.4), 2)
+        elif key == "cfg_freq":
+            opts = [3, 4]
+            cur = cs.frequency if cs.frequency in opts else 3
+            cs.frequency = opts[(opts.index(cur) + 1) % len(opts)]
+        elif key == "cfg_clad":
+            names = [c[0] for c in AL.CLADDINGS]
+            i = names.index(cs.cladding)
+            nm, col = AL.CLADDINGS[(i + 1) % len(names)]
+            cs.cladding, cs.cladding_color = nm, col
+        elif key == "cfg_random":
+            self.config_spec = random_spec(self.next_serial, self.rng)
+        elif key == "cfg_start":
+            self.configuring = False
+            self.paused = False
+            self.start_new_run(self.config_spec)
+        elif key == "cfg_cancel":
+            self.configuring = False
+            self.paused = False
+
+    def snapshot(self):
+        os.makedirs("snapshots", exist_ok=True)
+        data = self.fbo.read(components=3)
+        surf = pygame.image.fromstring(data, self.size, "RGB", True)
+        path = os.path.join("snapshots",
+                            f"dome_{time.strftime('%H%M%S')}.png")
+        pygame.image.save(surf, path)
+        self.log(f"Snapshot saved: {path}")
+
+    def set_speed_from_x(self, mx):
+        x, _y, wdt, _h = self.slider_rect
+        frac = max(0.0, min(1.0, (mx - x) / wdt))
+        self.speed = round(2 ** (frac * 5 - 2), 2)
+        self.speed = max(0.25, min(8.0, self.speed))
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -1595,39 +2011,68 @@ class AssemblyLineApp:
                 return False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return False
-                if event.key == pygame.K_SPACE:
+                    if self.configuring:
+                        self.configuring = False
+                        self.paused = False
+                    elif self.selected_yard is not None:
+                        self.selected_yard = None
+                    else:
+                        return False
+                elif event.key == pygame.K_SPACE:
                     self.paused = not self.paused
-                if event.key == pygame.K_LEFTBRACKET:
+                elif event.key == pygame.K_LEFTBRACKET:
                     self.speed = max(0.25, self.speed * 0.5)
-                if event.key == pygame.K_RIGHTBRACKET:
-                    self.speed = min(16.0, self.speed * 2.0)
-                if event.key == pygame.K_r:
-                    self.reset()
-                if event.key == pygame.K_f:
+                elif event.key == pygame.K_RIGHTBRACKET:
+                    self.speed = min(8.0, self.speed * 2.0)
+                elif event.key == pygame.K_f:
                     self.follow = not self.follow
-                if event.key == pygame.K_c:
+                    self.cinematic = False
+                elif event.key == pygame.K_c:
                     self.force_cutaway = not self.force_cutaway
+                elif event.key == pygame.K_r:
+                    self.start_new_run()
+                elif event.key == pygame.K_v:
+                    self.cinematic = not self.cinematic
+            if event.type == pygame.MOUSEMOTION:
+                self.mouse = event.pos
+                if self.dragging:
+                    self.cam_yaw -= event.rel[0] * 0.008
+                    self.cam_pitch = max(math.radians(4), min(
+                        math.radians(82),
+                        self.cam_pitch + event.rel[1] * 0.006))
+                if self.slider_drag:
+                    self.set_speed_from_x(event.pos[0])
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button in (1, 3):
+                self.mouse = event.pos
+                if event.button == 1:
+                    if self.hit(*event.pos, self.slider_rect):
+                        self.slider_drag = True
+                        self.set_speed_from_x(event.pos[0])
+                    else:
+                        # UI first; if nothing hit, treat as camera drag
+                        before = (self.panel, self.paused, self.configuring,
+                                  self.selected_yard, len(self.yard),
+                                  self.cinematic, self.follow)
+                        self.handle_click(*event.pos)
+                        after = (self.panel, self.paused, self.configuring,
+                                 self.selected_yard, len(self.yard),
+                                 self.cinematic, self.follow)
+                        if before == after and not self.configuring:
+                            self.dragging = True
+                elif event.button == 3:
                     self.dragging = True
-                if event.button == 4:
+                elif event.button == 4:
                     self.cam_dist = max(6.0, self.cam_dist * 0.88)
-                if event.button == 5:
-                    self.cam_dist = min(70.0, self.cam_dist * 1.14)
+                elif event.button == 5:
+                    self.cam_dist = min(90.0, self.cam_dist * 1.14)
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button in (1, 3):
                     self.dragging = False
-            if event.type == pygame.MOUSEMOTION and self.dragging:
-                self.cam_yaw -= event.rel[0] * 0.008
-                self.cam_pitch = max(math.radians(4), min(
-                    math.radians(80),
-                    self.cam_pitch + event.rel[1] * 0.006))
-        if not self.follow:
+                    self.slider_drag = False
+        if not self.follow and not self.cinematic:
             keys = pygame.key.get_pressed()
-            pan = 14.0 / 60.0
-            fx = math.cos(self.cam_yaw) * pan
-            fy = math.sin(self.cam_yaw) * pan
+            pan = 16.0 / 60.0
+            fx, fy = math.cos(self.cam_yaw) * pan, math.sin(self.cam_yaw) * pan
             if keys[pygame.K_w]:
                 self.cam_target[0] -= fx
                 self.cam_target[1] -= fy
@@ -1642,13 +2087,15 @@ class AssemblyLineApp:
                 self.cam_target[1] -= fx
         return True
 
-    def run(self):
+    def run_loop(self):
         clock = pygame.time.Clock()
         running = True
         while running:
-            dt = min(0.1, clock.tick(60) / 1000.0)
+            dt = min(0.05, clock.tick(60) / 1000.0)
             running = self.handle_events()
-            self.update(dt)
+            if not self.paused:
+                self.update(dt)
+            self.update_hover()
             self.render()
             pygame.display.flip()
         pygame.quit()
@@ -1659,7 +2106,6 @@ class AssemblyLineApp:
         os.makedirs(out_dir, exist_ok=True)
         sim_t = 0.0
         step = 1.0 / 30.0
-        paths = []
         for target in sorted(times):
             while sim_t < target:
                 dt = min(step, target - sim_t)
@@ -1667,43 +2113,59 @@ class AssemblyLineApp:
                 sim_t += dt
             self.render()
             data = self.fbo.read(components=3)
-            surface = pygame.image.fromstring(data, self.size, "RGB", True)
+            surf = pygame.image.fromstring(data, self.size, "RGB", True)
             path = os.path.join(out_dir, f"shot_{target:07.1f}s.png")
-            pygame.image.save(surface, path)
-            paths.append(path)
+            pygame.image.save(surf, path)
             print(f"saved {path}")
-        return paths
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # Entry points
-# ---------------------------------------------------------------------------
+# ===========================================================================
 
 def selftest():
-    cat, info = build_dome_catalog()
-    mesh = cat.b.build()
-    print(f"dome: {len(mesh.vertices)} verts, "
-          f"{len(mesh.opaque) // 3} opaque tris, "
-          f"{len(mesh.transparent) // 3} transparent tris")
-    print(f"floor radius {info['floor_r']:.2f} m, "
-          f"apex {info['apex_z']:.2f} m, anchor top {info['anchor_top']:.2f}")
-    for stage in STAGES:
-        els = cat.stages[stage.key]
-        tris = sum((o1 - o0) + (t1 - t0) for o0, o1, t0, t1 in els) // 3
-        assert els, f"stage {stage.key} has no elements"
-        print(f"  {stage.key:<11} {len(els):>3} elements  {tris:>5} tris")
-    env = build_environment()
-    print(f"environment: {len(env.vertices)} verts")
-    phases = build_phases()
-    t = 0.0
-    for ph in phases:
-        label = (STAGES[ph.station].key
-                 if ph.station >= 0 and ph.kind == "work" else ph.kind)
-        end = t + ph.dur if math.isfinite(ph.dur) else float("inf")
-        print(f"  t={t:7.1f}s -> {end:7.1f}s  {label}")
-        if math.isfinite(ph.dur):
-            t += ph.dur
-    print(f"line completes at t={t:.1f}s (x1 speed)")
+    print("=== economics / model self-test ===")
+    rng = random.Random(11)
+    for i in range(3):
+        spec = random_spec(i + 1, rng)
+        cat, info = build_dome_catalog(spec)
+        econ = unit_economics(cat, spec)
+        tp = throughput(cat)
+        pv = product_value(cat, spec)
+        be = break_even(econ["margin"])
+        assert econ["margin"] > 0, "margin must be positive"
+        assert 0.10 < econ["margin_pct"] / 100 < 0.6, "margin out of range"
+        print(f"#{i+1} {spec.name} {spec.layout} r{spec.radius} "
+              f"f{spec.frequency} area {spec.floor_area:.0f}m2 "
+              f"elems {len(cat.elements)}")
+        print(f"    cost {econ['total_cost']:,.0f}  price {econ['price']:,.0f}"
+              f"  margin {econ['margin']:,.0f} ({econ['margin_pct']:.0f}%)"
+              f"  labor {econ['labor_hours']:.0f}h")
+        print(f"    throughput single {tp['single_flow_per_year']:.0f}/yr "
+              f"pipelined {tp['pipelined_per_year']:.0f}/yr  "
+              f"break-even {be['units_to_recover_capex']:.0f} units")
+        print(f"    solar {pv['solar_kw']:.1f}kW  R{pv['r_value']:.0f}  "
+              f"autonomy {pv['autonomy_days']:.1f}d")
+    print("=== DB round-trip ===")
+    db = YardDB(":memory:")
+    spec = random_spec(1, rng)
+    cat, info = build_dome_catalog(spec)
+    econ = unit_economics(cat, spec)
+    pv = product_value(cat, spec)
+    rec = {"name": spec.name, "radius": spec.radius,
+           "frequency": spec.frequency, "layout": spec.layout,
+           "cladding": spec.cladding, "floor_area": spec.floor_area,
+           "material": econ["material"], "labor_cost": econ["labor_cost"],
+           "overhead": econ["overhead"], "total_cost": econ["total_cost"],
+           "price": econ["price"], "margin": econ["margin"],
+           "labor_hours": econ["labor_hours"], "steps": 1234,
+           "distance_m": 456.0, "solar_kw": pv["solar_kw"],
+           "r_value": pv["r_value"], "cr": 0.2, "cg": 0.3, "cb": 0.4,
+           "created": "2026-07-21 12:00"}
+    sid = db.add(rec)
+    got = db.all()
+    assert len(got) == 1 and got[0]["serial"] == sid
+    print(f"    stored serial {sid}, summary {db.summary()}")
     print("selftest OK")
 
 
@@ -1713,14 +2175,16 @@ def main():
         selftest()
         return
     if "--shots" in args:
-        times = [float(v) for v in
-                 args[args.index("--shots") + 1].split(",")]
+        times = [float(v) for v in args[args.index("--shots") + 1].split(",")]
         out = os.environ.get("SHOT_DIR", "shots")
-        app = AssemblyLineApp(headless=True)
+        app = AssemblyLineApp(headless=True, seed=42)
+        app.speed = float(os.environ.get("SHOT_SPEED", "3.0"))
+        if os.environ.get("SHOT_PANEL"):
+            app.panel = os.environ["SHOT_PANEL"]
         app.render_shots(times, out)
         return
     app = AssemblyLineApp(windowed="--window" in args)
-    app.run()
+    app.run_loop()
 
 
 if __name__ == "__main__":
