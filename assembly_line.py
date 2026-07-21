@@ -74,6 +74,7 @@ from dome_model import normalize
 from materials import (
     MAT_CONCRETE,
     MAT_EMISSIVE,
+    MAT_GLASS,
     MAT_GRASS,
     MAT_METAL,
     MAT_PLAIN,
@@ -98,14 +99,20 @@ LIFT_Z = 4.6
 SUN_CYCLE_SECS = 80.0
 DB_FILE = "dome_yard.sqlite3"
 
+# Sales lot layout
+OFFICE_POS = (TURNTABLE_X + 30.0, -7.0)
+DEPOT_POS = (TURNTABLE_X + 30.0, -14.5)
+EXIT_POS = (TURNTABLE_X + 95.0, -26.0)
+SALE_AUTO_INTERVAL = 22.0        # sim-seconds between automatic sales
+
 SKY_COLOR = (0.55, 0.70, 0.86)
 
 # Animation pacing. Reported metrics (steps, distance, labor-hours, $) are
 # the model's real numbers; these constants only compress the *animation*
 # so a full build is watchable. The speed slider multiplies animation dt.
-PLACE_ANIM_PER_LABOR_MIN = 0.05     # animation seconds shown per labor-minute
-ANIM_WALK_SPEED = 4.6               # m/s on screen (real pace is ~1.3)
-TRAVEL_SECS = 3.0
+PLACE_ANIM_PER_LABOR_MIN = 0.028    # animation seconds shown per labor-minute
+ANIM_WALK_SPEED = 8.5               # m/s on screen (real pace is ~1.3)
+TRAVEL_SECS = 2.4
 
 # ===========================================================================
 # Shaders
@@ -551,6 +558,65 @@ def build_pallet_box():
     return b.build()
 
 
+def build_sales_office():
+    """A small sales office building (origin at base center, faces -X)."""
+    b = MeshBuilder()
+    wall = (0.86, 0.82, 0.72)
+    add_box(b, (0, 0, 1.6), (7.0, 5.0, 3.2), wall, mat_id=MAT_PLAIN)
+    # gable roof
+    for sy in (-1, 1):
+        b.triangle((-3.5, sy * 2.5, 3.2), (3.5, sy * 2.5, 3.2),
+                   (0.0, 0.0, 4.4), (0.55, 0.32, 0.24), mat_id=MAT_WOOD)
+    for sx in (-3.5, 3.5):
+        b.quad((sx, -2.5, 3.2), (sx, 2.5, 3.2), (sx * 0.0, 2.5, 4.4),
+               (sx * 0.0, -2.5, 4.4), (1, 0, 0), (0.45, 0.24, 0.18),
+               mat_id=MAT_WOOD)
+    # door + windows on the -X face
+    add_box(b, (-3.52, 0.0, 1.05), (0.1, 1.1, 2.1), (0.35, 0.25, 0.18),
+            mat_id=MAT_WOOD)
+    for wy in (-1.6, 1.6):
+        add_box(b, (-3.52, wy, 2.0), (0.08, 1.0, 0.9), (0.55, 0.75, 0.85),
+                alpha=0.6, mat_id=MAT_GLASS)
+    # illuminated sign board over the door
+    add_box(b, (-3.7, 0.0, 3.9), (0.2, 3.4, 0.9), (0.15, 0.35, 0.75),
+            mat_id=MAT_EMISSIVE)
+    add_box(b, (-3.55, 0.0, 3.9), (0.1, 3.2, 0.7), (0.95, 0.97, 1.0),
+            mat_id=MAT_EMISSIVE)
+    return b.build()
+
+
+def build_truck():
+    """A flatbed transport truck (origin at base center, faces +X)."""
+    b = MeshBuilder()
+    dark = (0.20, 0.22, 0.26)
+    cab = (0.80, 0.20, 0.18)
+    # chassis
+    add_box(b, (0.0, 0.0, 0.7), (9.0, 2.4, 0.4), dark, mat_id=MAT_METAL)
+    # flatbed deck
+    add_box(b, (-1.2, 0.0, 1.0), (6.0, 2.6, 0.2), (0.45, 0.40, 0.34),
+            mat_id=MAT_WOOD)
+    # cab
+    add_box(b, (3.3, 0.0, 1.4), (2.2, 2.3, 1.8), cab, mat_id=MAT_METAL)
+    add_box(b, (2.3, 0.0, 2.0), (0.3, 2.1, 0.7), (0.55, 0.75, 0.85),
+            alpha=0.6, mat_id=MAT_GLASS)
+    # wheels
+    for wx in (3.2, -1.2, -3.2):
+        for sy in (-1.25, 1.25):
+            b.cylinder((wx, sy - 0.18, 0.42), (wx, sy + 0.18, 0.42), 0.42,
+                       10, (0.10, 0.10, 0.12), mat_id=MAT_METAL)
+    return b.build()
+
+
+def build_customer():
+    """A prospective buyer figure (origin at feet, faces +X)."""
+    b = MeshBuilder()
+    b.cylinder((-0.09, 0, 0.0), (-0.09, 0, 0.48), 0.07, 6, (0.20, 0.22, 0.30))
+    b.cylinder((0.09, 0, 0.0), (0.09, 0, 0.48), 0.07, 6, (0.20, 0.22, 0.30))
+    b.cylinder((0, 0, 0.46), (0, 0, 1.12), 0.19, 8, (0.20, 0.42, 0.68))
+    b.sphere((0, 0, 1.28), 0.14, (0.88, 0.68, 0.54), rings=5, sides=8)
+    return b.build()
+
+
 # ===========================================================================
 # Persistence — the finished-dome yard
 # ===========================================================================
@@ -606,6 +672,13 @@ class YardDB:
         n, rev, profit, area, hrs, avg_margin = cur.fetchone()
         return {"count": n, "revenue": rev, "profit": profit,
                 "area": area, "labor_hours": hrs, "avg_margin": avg_margin}
+
+    def sales_summary(self) -> dict:
+        cur = self.conn.execute(
+            "SELECT COUNT(*), COALESCE(SUM(price),0), "
+            "COALESCE(SUM(margin),0) FROM domes WHERE sold=1")
+        n, rev, profit = cur.fetchone()
+        return {"sold": n, "sold_revenue": rev, "sold_profit": profit}
 
 
 # ===========================================================================
@@ -1015,6 +1088,9 @@ class AssemblyLineApp:
         self.worker_mesh = GpuMesh(ctx, self.scene_prog, build_worker_mesh())
         self.carry_mesh = GpuMesh(ctx, self.scene_prog, build_material_box())
         self.pallet_mesh = GpuMesh(ctx, self.scene_prog, build_pallet_box())
+        self.office_mesh = GpuMesh(ctx, self.scene_prog, build_sales_office())
+        self.truck_mesh = GpuMesh(ctx, self.scene_prog, build_truck())
+        self.customer_mesh = GpuMesh(ctx, self.scene_prog, build_customer())
         self.finished_meshes = {
             dt: GpuMesh(ctx, self.scene_prog, build_finished_dome_mesh(dt))
             for dt in AL.DOME_TYPE_LIST}
@@ -1040,7 +1116,7 @@ class AssemblyLineApp:
         self.phases = build_phases()
         self.run: ProductionRun | None = None
         self.next_serial = self.db.summary()["count"] + 1
-        self.speed = 2.0
+        self.speed = 3.0
         self.paused = False
         self.follow = True
         self.force_cutaway = False
@@ -1061,6 +1137,9 @@ class AssemblyLineApp:
         self.selected_yard = None
         self.inspect = None          # InspectDome when inspecting a yard dome
         self.tour = False
+        self.sale = None             # active buying-process state
+        self.sale_cooldown = SALE_AUTO_INTERVAL
+        self.next_slot = 0
         self.configuring = False
         self.config_spec = None
         self.cinematic_angle = 0.0
@@ -1088,9 +1167,13 @@ class AssemblyLineApp:
 
     def _load_yard(self):
         self.yard = []
-        for i, rec in enumerate(self.db.all()):
+        recs = self.db.all()
+        for i, rec in enumerate(recs):
             x, y = yard_slot(i)
-            self.yard.append(YardDome(rec, x, y))
+            yd = YardDome(rec, x, y)
+            if not yd.sold:               # sold domes have been hauled away
+                self.yard.append(yd)
+        self.next_slot = len(recs)
 
     def start_new_run(self, spec=None):
         if self.run is not None:
@@ -1114,10 +1197,11 @@ class AssemblyLineApp:
         rec = self.run.final_record()
         serial = self.db.add(rec)
         rec["serial"] = serial
-        x, y = yard_slot(len(self.yard))
+        x, y = yard_slot(self.next_slot)
+        self.next_slot += 1
         self.yard.append(YardDome(rec, x, y))
-        self.log(f"#{serial} {rec['name']} shipped — margin "
-                 f"${rec['margin']:,.0f}")
+        self.log(f"#{serial} {rec['name']} built — to yard "
+                 f"({self.money(rec['price'])})")
         self.next_serial = serial + 1
 
     def log(self, msg):
@@ -1181,6 +1265,102 @@ class AssemblyLineApp:
             self.cam_target = np.array([yd.x, yd.y, 2.0], dtype=np.float32)
             self.cam_pitch = math.radians(16.0)
             self.cam_dist = 12.0 * max(0.6, yd.scale)
+
+    # -- sales / buying process -----------------------------------------
+
+    SALE_PHASES = [("approach", 4.0), ("consider", 2.5), ("truck_in", 4.0),
+                   ("load", 2.5), ("haul", 5.5)]
+
+    def start_sale(self, yd=None):
+        candidates = [y for y in self.yard if not y.sold]
+        if not candidates:
+            return False
+        yd = yd or self.rng.choice(candidates)
+        if yd.sold:
+            return False
+        self.sale = {"yd": yd, "idx": 0, "t": 0.0}
+        self.log(f"Customer arriving for #{yd.rec.get('serial','?')} "
+                 f"{yd.rec['name']}")
+        return True
+
+    def _sale_sold(self, yd):
+        yd.sold = True
+        yd.rec["sold"] = 1
+        serial = yd.rec.get("serial")
+        if serial:
+            self.db.mark_sold(serial)
+        self.log(f"SOLD #{serial} {yd.rec['name']} — "
+                 f"{self.money(yd.rec['price'])} "
+                 f"({self.money(yd.rec.get('monthly', 0))}/mo)")
+
+    def _sale_delivered(self, yd):
+        if yd in self.yard:
+            self.yard.remove(yd)
+        self.log(f"Delivered #{yd.rec.get('serial','?')} {yd.rec['name']} "
+                 f"— hauled off the lot")
+        self.sale = None
+        self.sale_cooldown = SALE_AUTO_INTERVAL
+
+    def update_sale(self, dt_anim):
+        if self.sale is None:
+            self.sale_cooldown -= dt_anim
+            if (self.auto_run and self.sale_cooldown <= 0.0
+                    and self.inspect is None
+                    and any(not y.sold for y in self.yard)):
+                if not self.start_sale():
+                    self.sale_cooldown = SALE_AUTO_INTERVAL
+            return
+        self.sale["t"] += dt_anim
+        phase, dur = self.SALE_PHASES[self.sale["idx"]]
+        if self.sale["t"] >= dur:
+            self.sale["idx"] += 1
+            self.sale["t"] = 0.0
+            if self.sale["idx"] == 2:            # decision made
+                self._sale_sold(self.sale["yd"])
+            if self.sale["idx"] >= len(self.SALE_PHASES):
+                self._sale_delivered(self.sale["yd"])
+
+    def sale_positions(self):
+        """Returns dict with customer/truck/dome render positions."""
+        s = self.sale
+        yd = s["yd"]
+        phase, dur = self.SALE_PHASES[s["idx"]]
+        f = smoothstep(s["t"] / dur)
+        door = np.array([OFFICE_POS[0] - 4.0, OFFICE_POS[1]])
+        dome = np.array([yd.x, yd.y])
+        near = dome + np.array([4.5, 1.5])          # customer stands here
+        truck_spot = dome + np.array([8.0, 0.0])    # truck parks here
+        out = {"customer": None, "truck": None, "truck_yaw": 0.0,
+               "dome_on_truck": False, "dome_pos": (yd.x, yd.y, 0.0)}
+
+        def lerp(a, b, t):
+            return a + (b - a) * t
+
+        def yaw_of(a, b):
+            d = b - a
+            return math.atan2(d[1], d[0])
+        if phase == "approach":
+            out["customer"] = lerp(door, near, f)
+        elif phase == "consider":
+            out["customer"] = near
+        elif phase == "truck_in":
+            out["customer"] = near
+            out["truck"] = lerp(np.array(DEPOT_POS), truck_spot, f)
+            out["truck_yaw"] = yaw_of(np.array(DEPOT_POS), truck_spot)
+        elif phase == "load":
+            out["customer"] = near
+            out["truck"] = truck_spot
+            out["truck_yaw"] = math.pi
+        elif phase == "haul":
+            pos = lerp(truck_spot, np.array(EXIT_POS), f)
+            out["truck"] = pos
+            out["truck_yaw"] = yaw_of(truck_spot, np.array(EXIT_POS))
+            out["dome_on_truck"] = True
+            yaw = out["truck_yaw"]
+            bed = np.array([pos[0] - 1.6 * math.cos(yaw),
+                            pos[1] - 1.6 * math.sin(yaw)])
+            out["dome_pos"] = (bed[0], bed[1], 1.15)
+        return out
 
     @property
     def phase(self):
@@ -1269,6 +1449,9 @@ class AssemblyLineApp:
         for p in self.popups:
             p["age"] += dt
         self.popups = [p for p in self.popups if p["age"] < 1.5][-60:]
+
+        # buying process
+        self.update_sale(dt_anim)
 
         self.run.gpu.update(self.run.placed)
 
@@ -1417,9 +1600,32 @@ class AssemblyLineApp:
         sun_pos = self.cam_target + sun_dir.astype(np.float32) * 280.0
         self.draw_gpu(self.sun, mat_translate(*sun_pos))
 
-        # finished domes in the yard (skip the one being inspected)
+        # sales office (static structure by the lot)
+        self.draw_gpu(self.office_mesh, mat_translate(*OFFICE_POS, 0))
+
+        # buying process: customer, truck, and the sold dome on the bed
+        sale_pos = self.sale_positions() if self.sale else None
+        if sale_pos:
+            if sale_pos["customer"] is not None:
+                cx, cy = sale_pos["customer"]
+                self.draw_gpu(self.customer_mesh, mat_translate(cx, cy, 0))
+            if sale_pos["truck"] is not None:
+                tx, ty = sale_pos["truck"]
+                self.draw_gpu(self.truck_mesh,
+                              mat_translate(tx, ty, 0)
+                              @ mat_rot_z(sale_pos["truck_yaw"]))
+
+        # finished domes in the yard (skip inspected; move a hauled dome)
         for yd in self.yard:
             if self.inspect is not None and yd is self.selected_yard:
+                continue
+            if sale_pos and yd is self.sale["yd"] and sale_pos["dome_on_truck"]:
+                dp = sale_pos["dome_pos"]
+                self.draw_gpu(
+                    self.finished_meshes.get(yd.dtype, self.finished),
+                    mat_translate(dp[0], dp[1], dp[2])
+                    @ mat_rot_z(sale_pos["truck_yaw"])
+                    @ mat_scale(yd.scale, yd.scale, yd.scale), tint=yd.tint)
                 continue
             self.draw_gpu(self.finished_meshes.get(yd.dtype, self.finished),
                           mat_translate(yd.x, yd.y, 0)
@@ -1466,6 +1672,8 @@ class AssemblyLineApp:
 
         prog["u_cut_z"].value = 1e9
         for yd in self.yard:
+            if sale_pos and yd is self.sale["yd"] and sale_pos["dome_on_truck"]:
+                continue
             self.draw_gpu(self.finished_meshes.get(yd.dtype, self.finished),
                           mat_translate(yd.x, yd.y, 0)
                           @ mat_scale(yd.scale, yd.scale, yd.scale),
@@ -1638,6 +1846,31 @@ class AssemblyLineApp:
         col = (140, 235, 150) if ph.kind == "park" else amber
         return [(labels.get(ph.kind, ph.kind), col, self.font_big)]
 
+    def draw_yard_signs(self):
+        """A price / BHPH-monthly sign floating over each finished dome."""
+        w, h = self.size
+        for yd in self.yard:
+            if self.inspect is not None and yd is self.selected_yard:
+                continue
+            top = 2.6 * yd.scale + 1.4
+            sp = project_point(self.mvp, (yd.x, yd.y, top), w, h)
+            if sp is None:
+                continue
+            rec = yd.rec
+            if yd.sold:
+                lines = [("SOLD", (255, 130, 120), self.font_small)]
+                key = ("sign", rec.get("serial"), "sold")
+            else:
+                lines = [(self.money(rec["price"]), (150, 240, 160),
+                          self.font_small),
+                         (f"{self.money(rec.get('monthly', 0))}/mo",
+                          (210, 216, 224), self.font_tiny)]
+                key = ("sign", rec.get("serial"), int(rec["price"]))
+            tex, tw, th = self.text_texture(key, lines)
+            self.draw_rect(sp[0] - tw / 2 - 3, sp[1] - th - 3, tw + 6, th + 6,
+                           (0.04, 0.06, 0.10, 0.72))
+            self.draw_texture(tex, sp[0] - tw / 2, sp[1] - th, tw, th)
+
     def draw_money_popups(self):
         w, h = self.size
         for p in self.popups:
@@ -1664,6 +1897,7 @@ class AssemblyLineApp:
         green = (130, 224, 150)
 
         inspecting = self.inspect is not None
+        self.draw_yard_signs()
         if not inspecting:
             self.draw_money_popups()
 
@@ -1928,21 +2162,28 @@ class AssemblyLineApp:
             return lines
         if self.panel == "ledger":
             s = self.db.summary()
-            return [("CUMULATIVE PRODUCTION LEDGER", white, self.font_med),
-                    (f"homes shipped    {s['count']}", green, self.font_med),
-                    (f"total revenue    {self.money(s['revenue'])}", white,
+            sold = self.db.sales_summary()
+            in_yard = len([y for y in self.yard if not y.sold])
+            return [("PRODUCTION & SALES LEDGER", white, self.font_med),
+                    (f"units built      {s['count']}", green, self.font_med),
+                    (f"in yard (unsold) {in_yard}", grey, self.font_small),
+                    (f"sold & delivered {sold['sold']}", green,
                      self.font_small),
-                    (f"total gross profit {self.money(s['profit'])}", green,
+                    (f"sold revenue     {self.money(sold['sold_revenue'])}",
+                     white, self.font_small),
+                    (f"sold gross profit {self.money(sold['sold_profit'])}",
+                     green, self.font_small),
+                    ("", grey, self.font_small),
+                    (f"build value in yard "
+                     f"{self.money(s['revenue'] - sold['sold_revenue'])}",
+                     grey, self.font_small),
+                    (f"total floor built {s['area']:,.0f} m²", grey,
                      self.font_small),
-                    (f"total floor area {s['area']:,.0f} m²", grey,
-                     self.font_small),
-                    (f"total labor      {s['labor_hours']:,.0f} h", grey,
-                     self.font_small),
-                    (f"avg margin/home  {self.money(s['avg_margin'])}", grey,
+                    (f"avg margin/unit  {self.money(s['avg_margin'])}", grey,
                      self.font_small),
                     ("", grey, self.font_small),
-                    ("click a yard dome for its spec plate", amber,
-                     self.font_tiny)]
+                    ("click a yard dome to inspect · SELL to ship one",
+                     amber, self.font_tiny)]
         return [("", white, self.font_small)]
 
     def _build_days(self):
@@ -2045,6 +2286,7 @@ class AssemblyLineApp:
         add_btn("auto", "AUTO", 54, self.auto_run)
         add_btn("wminus", "CREW -", 66)
         add_btn("wplus", f"{self.workers_per_station} +", 44)
+        add_btn("sell", "SELL", 54, self.sale is not None)
         add_btn("supply", "SUPPLY×", 78)
         add_btn("breakdown", "BREAK×", 72)
         add_btn("absence", "ABSENT×", 78)
@@ -2392,6 +2634,10 @@ class AssemblyLineApp:
         elif key in ("wminus", "wplus"):
             self.set_crew(self.workers_per_station
                           + (1 if key == "wplus" else -1))
+        elif key == "sell":
+            if self.sale is None:
+                if not self.start_sale():
+                    self.log("No unsold domes in the yard to sell")
         elif key in ("supply", "breakdown", "absence"):
             self.inject(key)
         elif key == "clear":
