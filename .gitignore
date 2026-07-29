@@ -16,6 +16,7 @@ shots/
 presenter_output/
 two_v_demo_output/
 launcher_settings.json
+.launcher_configs/
 *.m4a
 *.srt
 two_v_demo_output/

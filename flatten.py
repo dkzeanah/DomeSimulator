@@ -1,9 +1,9 @@
 """
 Flatten the entire project into a single file for uploading to LLMs.
 
-Run:
-    py -3.12 flatten.py            -> writes dome_flat.md
-    py -3.12 flatten.py out.txt    -> custom output name
+Launch and set the output filename from the consolidated launcher
+(``py -3.12 launcher.py``). Run directly with no launcher ticket
+present and it writes the default ``dome_flat.md``.
 
 The output contains every source file, each preceded by a clear
 ======== FILE: path ======== marker, plus a table of contents with line
@@ -14,16 +14,22 @@ excluded.
 
 from __future__ import annotations
 
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+import launcher_common as _lc
 
 ROOT = Path(__file__).parent
 DEFAULT_OUTPUT = "dome_flat.md"
 
 INCLUDE_SUFFIXES = {".py", ".md", ".json", ".txt", ".toml", ".cfg"}
-EXCLUDE_DIRS = {"__pycache__", ".git", ".claude", ".venv", "venv",
-                "node_modules"}
+EXCLUDE_DIRS = {"__pycache__", ".git", ".claude", "node_modules",
+                ".launcher_configs"}
+
+
+def _is_venv_dir(name: str) -> bool:
+    lowered = name.lower()
+    return lowered.startswith(".venv") or lowered.endswith("venv")
 EXCLUDE_FILES = {DEFAULT_OUTPUT, "dome_flat.txt", "dome_bom.txt",
                  "dome_design.json"}
 
@@ -43,7 +49,8 @@ def gather_files() -> list[Path]:
             continue
         if path.name in EXCLUDE_FILES:
             continue
-        if any(part in EXCLUDE_DIRS for part in path.parts):
+        if any(part in EXCLUDE_DIRS or _is_venv_dir(part)
+               for part in path.parts):
             continue
         files.append(path)
 
@@ -58,7 +65,8 @@ def gather_files() -> list[Path]:
 
 
 def main() -> None:
-    output = ROOT / (sys.argv[1] if len(sys.argv) > 1 else DEFAULT_OUTPUT)
+    cfg = _lc.consume_config("flatten")
+    output = ROOT / (cfg.get("output") or DEFAULT_OUTPUT)
     files = gather_files()
 
     sections = []

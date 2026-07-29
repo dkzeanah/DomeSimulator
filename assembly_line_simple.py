@@ -28,14 +28,10 @@ finished dome off the carriage, and sets it on a big mechanical lazy
 susan.  The turntable then rotates automatically to keep the solar band
 tracking the sun as it arcs across the sky.
 
-Install:
-    py -3.12 -m pip install pygame moderngl numpy
-
-Run:
-    py -3.12 assembly_line.py            fullscreen
-    py -3.12 assembly_line.py --window   windowed 1600x900
-    py -3.12 assembly_line.py --selftest geometry/timeline sanity check
-    py -3.12 assembly_line.py --shots 10,60,200   offscreen PNG renders
+Run this from the consolidated launcher (``py -3.12 launcher.py``), which
+exposes windowed/fullscreen, self-test, and offscreen-shot options as a
+GUI. Launched directly with no launcher ticket present, it opens the
+normal fullscreen app.
 
 Controls:
     SPACE        pause / resume the line
@@ -55,6 +51,8 @@ import sys
 
 import numpy as np
 import pygame
+
+import launcher_common as _lc
 
 from dome_model import build_geodesic, normalize
 from materials import (
@@ -1708,18 +1706,18 @@ def selftest():
 
 
 def main():
-    args = sys.argv[1:]
-    if "--selftest" in args:
+    cfg = _lc.consume_config("assembly_line_simple")
+    action = cfg.get("action", "run")
+    if action == "selftest":
         selftest()
         return
-    if "--shots" in args:
-        times = [float(v) for v in
-                 args[args.index("--shots") + 1].split(",")]
-        out = os.environ.get("SHOT_DIR", "shots")
+    if action == "shots":
+        times = [float(v) for v in str(cfg.get("shots", "")).split(",")
+                 if v.strip()]
         app = AssemblyLineApp(headless=True)
-        app.render_shots(times, out)
+        app.render_shots(times, cfg.get("shot_dir", "shots"))
         return
-    app = AssemblyLineApp(windowed="--window" in args)
+    app = AssemblyLineApp(windowed=bool(cfg.get("windowed", False)))
     app.run()
 
 

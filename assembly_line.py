@@ -32,11 +32,10 @@ What makes it a decision tool, not a cartoon:
 Install:
     py -3.12 -m pip install pygame moderngl numpy
 
-Run:
-    py -3.12 assembly_line.py               fullscreen
-    py -3.12 assembly_line.py --window      windowed 1600x900
-    py -3.12 assembly_line.py --selftest    head-less model + DB check
-    py -3.12 assembly_line.py --shots 6,40  offscreen PNG renders
+Run this from the consolidated launcher (``py -3.12 launcher.py``), which
+exposes windowed/fullscreen, self-test, and offscreen-shot options as a
+GUI. Launched directly with no launcher ticket present, it opens the
+normal fullscreen app.
 """
 
 from __future__ import annotations
@@ -52,12 +51,14 @@ import time
 from dataclasses import dataclass, field
 
 import numpy as np
+import launcher_common as _lc
+
 try:
     import pygame
 except ModuleNotFoundError:
     # The documented model/DB self-test is GL-free and should not require the
     # interactive renderer's optional packages.
-    if "--selftest" in sys.argv:
+    if _lc.peek_config("assembly_line").get("action") == "selftest":
         pygame = None
     else:
         raise
@@ -4283,20 +4284,21 @@ def selftest():
 
 
 def main():
-    args = sys.argv[1:]
-    if "--selftest" in args:
+    cfg = _lc.consume_config("assembly_line")
+    action = cfg.get("action", "run")
+    if action == "selftest":
         selftest()
         return
-    if "--shots" in args:
-        times = [float(v) for v in args[args.index("--shots") + 1].split(",")]
-        out = os.environ.get("SHOT_DIR", "shots")
-        app = AssemblyLineApp(headless=True, seed=42)
-        app.speed = float(os.environ.get("SHOT_SPEED", "3.0"))
-        if os.environ.get("SHOT_PANEL"):
-            app.panel = os.environ["SHOT_PANEL"]
-        app.render_shots(times, out)
+    if action == "shots":
+        times = [float(v) for v in str(cfg.get("shots", "")).split(",")
+                 if v.strip()]
+        app = AssemblyLineApp(headless=True, seed=cfg.get("seed", 42))
+        app.speed = float(cfg.get("shot_speed", 3.0))
+        if cfg.get("shot_panel"):
+            app.panel = cfg["shot_panel"]
+        app.render_shots(times, cfg.get("shot_dir", "shots"))
         return
-    app = AssemblyLineApp(windowed="--window" in args)
+    app = AssemblyLineApp(windowed=bool(cfg.get("windowed", False)))
     app.run_loop()
 
 

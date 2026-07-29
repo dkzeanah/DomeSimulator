@@ -33,6 +33,35 @@ with PgUp/PgDn or the wheel; the 960x540 feed has a camera-mounted
 illuminator so it clearly sees the equipment below even in a closed
 dome.
 
+## Launcher — start here
+
+This project has grown into several standalone tools (the dome creator
+below, the [assembly line](#dome-home-assembly-line-assembly_linepy),
+the [2V masterclass](#standalone-2v-geodesic-masterclass-two_v_masterclasspy),
+[Local Voice Studio](#local-voice-studio-local_voice_studiopy), and
+Presenter Studio). None of them take command-line flags anymore — every
+option that used to be a `--flag` is now a field in one consolidated
+GUI:
+
+```
+py -3.12 -m pip install pygame moderngl numpy
+py -3.12 launcher.py
+```
+
+Each tab mirrors one tool's former CLI surface (run mode, offscreen
+stills, video export + narration voice settings, build-packet export,
+project folders, and so on). Clicking a launch button writes a one-shot
+JSON "ticket" describing your choices, then starts that tool with no
+arguments; the tool reads and deletes the ticket at startup and acts on
+it. Output from self-tests, exports, and other console-only actions
+streams into the log pane at the bottom of the launcher window, so
+nothing requires an external terminal.
+
+Running any tool directly (`py -3.12 dome_creator.py`, etc.) still
+works — with no ticket present it just falls back to that tool's plain
+default (usually the fullscreen live app), since the launcher is now
+the only supported way to change what a run does.
+
 ## RuneScape-style interface
 
 Everything is mouse-first. **Left-click** walks, uses, toggles, and
@@ -236,10 +265,9 @@ investor actually underwrites. Dome-line assumptions live in its editable
   control visible in normal and inspection views.
 
 ```
-py -3.12 assembly_line.py            # fullscreen
-py -3.12 assembly_line.py --window   # windowed
-py -3.12 assembly_line.py --selftest # model + DB check, no GL
-py -3.12 assembly_line.py --shots 4,60,120   # offscreen PNG renders
+py -3.12 launcher.py                 # Assembly Line tab: windowed/fullscreen,
+                                      # self-test, offscreen-stills options
+py -3.12 assembly_line.py            # direct run, fullscreen, no options
 ```
 
 Controls: `Space` pause, `[` / `]` speed (x0.25–x8), on-screen speed
@@ -268,15 +296,16 @@ base ring to the apex.
 
 ```powershell
 py -3.12 -m pip install -r two_v_demo/requirements.txt
-py -3.12 two_v_masterclass.py                         # presenter mode
-py -3.12 two_v_masterclass.py --fullscreen            # live presentation
-py -3.12 two_v_masterclass.py --selftest              # math, no GL
-py -3.12 two_v_masterclass.py --script voiceover.md    # narration + SRT
-py -3.12 two_v_masterclass.py --build-packet build     # CSV + OBJ + guide
-py -3.12 two_v_masterclass.py --shots 0,70,130        # PNG stills
-py -3.12 two_v_masterclass.py --size 1920x1080 `
-    --export-video 2v-masterclass.mp4                  # neural voice + video
+py -3.12 launcher.py               # 2V Masterclass tab: every option below
+py -3.12 two_v_masterclass.py      # direct run, fullscreen presenter mode
 ```
+
+Self-test, calculation report, narration script/SRT, build-packet export
+(CSV cut list + OBJ + field guide), offscreen stills, video export with
+neural narration, voice preview/listing, and the ffmpeg/ffprobe paths are
+all fields on the launcher's **2V Masterclass** tab now, in place of the
+former `--selftest` / `--report` / `--script` / `--build-packet` /
+`--shots` / `--export-video` / `--voice*` / `--ffmpeg` flags.
 
 See [two_v_demo/README.md](two_v_demo/README.md) for presenter controls,
 voice audition/selection, measurement conventions, and video-export notes.
@@ -297,9 +326,17 @@ provides optional local transcription, and the F5 adapter exports an
 py -3.11 -m venv .venv-voice
 .\.venv-voice\Scripts\python.exe -m pip install `
     -r .\local_voice_studio\requirements-core.txt
-.\.venv-voice\Scripts\python.exe .\local_voice_studio.py
-.\.venv-voice\Scripts\python.exe -m local_voice_studio --selftest
+py -3.12 launcher.py   # Local Voice Studio tab: project folder, self-test,
+                       # diagnose — replaces --project / --selftest / --diagnose
 ```
+
+The launcher spawns tools with whichever Python interpreter it is itself
+running under. If you installed the optional local-AI backends
+(Chatterbox, faster-whisper) into the dedicated `.venv-voice`
+environment above, launch the launcher itself with that interpreter
+(`.\.venv-voice\Scripts\python.exe .\launcher.py`) so those backends are
+importable; otherwise Voice Studio still opens normally and reports
+them as "not ready" instead of failing.
 
 The Dome Narration tab generates chapter WAVs, a loudness-normalized local
 track, timing JSON, and SRT, then passes that existing track to the 2V exporter.
@@ -373,7 +410,8 @@ with a total equipment power budget.
 
 ```
 py -3.12 -m pip install pygame moderngl numpy
-py -3.12 dome_creator.py
+py -3.12 launcher.py           # consolidated GUI for every tool, or:
+py -3.12 dome_creator.py       # this tool directly (fullscreen, no options)
 ```
 
 (Any Python 3.10–3.13 with prebuilt wheels for `pygame`/`moderngl` works;

@@ -75,10 +75,32 @@ building dome narration.
 
 ## Run
 
+This tool no longer takes command-line flags; launch and configure it
+from the consolidated GUI (project folder, self-test, diagnose):
+
+```powershell
+py -3.12 launcher.py
+```
+
+or run it directly for the plain GUI with no project pre-selected:
+
 ```powershell
 .\.venv-voice\Scripts\python.exe .\local_voice_studio.py
-.\.venv-voice\Scripts\python.exe -m local_voice_studio --diagnose
-.\.venv-voice\Scripts\python.exe -m local_voice_studio --selftest
+```
+
+Self-test and diagnose need no Tk desktop runtime — only the launcher's
+`run()` action opens the GUI — so they still work in the Codex/CI test
+runtime described above by writing the launch ticket directly instead
+of going through the launcher window:
+
+```powershell
+.\.venv-voice\Scripts\python.exe -c `
+    "import launcher_common as lc; lc.write_config('local_voice_studio', {'action': 'diagnose'})"
+.\.venv-voice\Scripts\python.exe -m local_voice_studio
+
+.\.venv-voice\Scripts\python.exe -c `
+    "import launcher_common as lc; lc.write_config('local_voice_studio', {'action': 'selftest'})"
+.\.venv-voice\Scripts\python.exe -m local_voice_studio
 ```
 
 The GUI workflow is:

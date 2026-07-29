@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import json
 import math
 import subprocess
@@ -13,6 +12,7 @@ from typing import Iterable
 
 import numpy as np
 
+import launcher_common as _lc
 from .geometry import (
     MM_PER_INCH,
     PHI,
@@ -1689,159 +1689,103 @@ class MasterclassApp:
         print(f"saved {subtitle_path}")
 
 
-def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(
-        description="Standalone ModernGL 2V geodesic-dome masterclass"
-    )
-    result.add_argument("--fullscreen", action="store_true",
-                        help="open as a fullscreen presentation")
-    result.add_argument("--selftest", action="store_true",
-                        help="validate all math without importing graphics packages")
-    result.add_argument("--report", action="store_true",
-                        help="print a detailed calculation audit and exit")
-    result.add_argument("--shots", metavar="SECONDS",
-                        help="render comma-separated timeline seconds as PNG files")
-    result.add_argument("--export-video", metavar="MP4",
-                        help="render the complete timeline, optionally with narration")
-    result.add_argument("--no-narration", action="store_true",
-                        help="make --export-video silent (legacy behavior)")
-    result.add_argument(
-        "--local-narration-plan",
-        metavar="JSON",
-        help=(
-            "use an existing Local Voice Studio narration plan; no hosted "
-            "speech service is called"
-        ),
-    )
-    result.add_argument("--voice", default=DEFAULT_VOICE,
-                        help=f"Edge neural voice (default: {DEFAULT_VOICE})")
-    result.add_argument("--voice-rate", default=DEFAULT_RATE,
-                        help=f"voice speed adjustment (default: {DEFAULT_RATE})"
-                        .replace("%", "%%"))
-    result.add_argument("--voice-pitch", default=DEFAULT_PITCH,
-                        help=f"voice pitch adjustment (default: {DEFAULT_PITCH})")
-    result.add_argument("--voice-volume", default=DEFAULT_VOLUME,
-                        help=f"voice volume adjustment (default: {DEFAULT_VOLUME})"
-                        .replace("%", "%%"))
-    result.add_argument("--voice-preview", metavar="MP3",
-                        help="generate a short voice sample without opening GL")
-    result.add_argument("--list-voices", action="store_true",
-                        help="list available Edge neural voices and exit")
-    result.add_argument("--voice-locale", default="en-US",
-                        help="locale filter for --list-voices (default: en-US)")
-    result.add_argument("--narration-only", metavar="M4A",
-                        help="generate the synchronized voice track without video")
-    result.add_argument("--ffmpeg",
-                        help="full path to ffmpeg when it is not on PATH")
-    result.add_argument("--ffprobe",
-                        help="full path to ffprobe when it is not beside ffmpeg")
-    result.add_argument("--script", metavar="PATH",
-                        help="write the timed narration script and matching .srt")
-    result.add_argument("--build-packet", metavar="DIR",
-                        help="export cut list, panels, hubs, workbook, OBJ, and guide")
-    result.add_argument("--radius-in", type=float,
-                        help="radius in inches for --build-packet (default: measurement fit)")
-    result.add_argument("--connector-deduction-in", type=float, default=0.0,
-                        help="total two-end stock deduction for each exported member")
-    result.add_argument("--fps", type=int, default=30,
-                        help="video frames per second (default: 30)")
-    result.add_argument("--size", default="1600x900",
-                        help="window/export size, for example 1920x1080")
-    return result
-
-
 def parse_size(value: str) -> tuple[int, int]:
     try:
         width_text, height_text = value.lower().split("x", 1)
         width, height = int(width_text), int(height_text)
     except (ValueError, AttributeError) as exc:
-        raise argparse.ArgumentTypeError("size must look like 1600x900") from exc
+        raise ValueError("size must look like 1600x900") from exc
     if width < 960 or height < 540:
-        raise argparse.ArgumentTypeError("minimum supported size is 960x540")
+        raise ValueError("minimum supported size is 960x540")
     return width, height
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parser().parse_args(argv)
-    if args.local_narration_plan and not args.export_video:
-        parser().error("--local-narration-plan requires --export-video")
-    if args.local_narration_plan and args.no_narration:
-        parser().error(
-            "--local-narration-plan cannot be combined with --no-narration"
-        )
-    if args.selftest:
+def main() -> int:
+    """Dispatch on the launcher's config ticket instead of argv.
+
+    Launch and configure this from the consolidated launcher
+    (``py -3.12 launcher.py``), which exposes every option below as a
+    GUI field. Run directly with no ticket present and it opens the
+    normal live presentation, fullscreen.
+    """
+    cfg = _lc.consume_config("two_v_masterclass")
+    action = cfg.get("action", "run")
+    voice = cfg.get("voice", DEFAULT_VOICE)
+    voice_rate = cfg.get("voice_rate", DEFAULT_RATE)
+    voice_pitch = cfg.get("voice_pitch", DEFAULT_PITCH)
+    voice_volume = cfg.get("voice_volume", DEFAULT_VOLUME)
+    ffmpeg_path = cfg.get("ffmpeg") or None
+    ffprobe_path = cfg.get("ffprobe") or None
+    no_narration = bool(cfg.get("no_narration", False))
+    local_narration_plan = cfg.get("local_narration_plan") or None
+
+    if local_narration_plan and action != "export_video":
+        print("--local-narration-plan requires the export-video action")
+        return 2
+    if local_narration_plan and no_narration:
+        print("local narration plan cannot be combined with no-narration")
+        return 2
+
+    if action == "selftest":
         validate_geometry()
         print(calculation_report())
         print("\nselftest OK")
         return 0
-    if args.report:
+    if action == "report":
         print(calculation_report())
         return 0
-    if args.list_voices:
+    if action == "list_voices":
+        locale = cfg.get("voice_locale", "en-US")
         try:
-            voices = list_neural_voices(args.voice_locale)
+            voices = list_neural_voices(locale)
         except RuntimeError as exc:
-            parser().error(str(exc))
-        if not voices:
-            print(f"No voices found for locale {args.voice_locale}")
+            print(exc)
             return 1
-        for voice in voices:
+        if not voices:
+            print(f"No voices found for locale {locale}")
+            return 1
+        for entry in voices:
             personalities = ", ".join(
-                voice.get("VoiceTag", {}).get("VoicePersonalities", [])
+                entry.get("VoiceTag", {}).get("VoicePersonalities", [])
             )
             print(
-                f"{voice.get('ShortName', ''):<42} "
-                f"{voice.get('Gender', ''):<7} {personalities}"
+                f"{entry.get('ShortName', ''):<42} "
+                f"{entry.get('Gender', ''):<7} {personalities}"
             )
         return 0
-    if args.voice_preview:
+    if action == "voice_preview":
         try:
             preview_path = synthesize_preview(
-                Path(args.voice_preview),
-                voice=args.voice,
-                rate=args.voice_rate,
-                pitch=args.voice_pitch,
-                volume=args.voice_volume,
-            )
+                Path(cfg["voice_preview"]), voice=voice, rate=voice_rate,
+                pitch=voice_pitch, volume=voice_volume)
         except (RuntimeError, ValueError) as exc:
-            parser().error(str(exc))
+            print(exc)
+            return 1
         print(f"saved {preview_path}")
         return 0
-    if args.narration_only:
+    if action == "narration_only":
         try:
-            ffmpeg = resolve_executable("ffmpeg", args.ffmpeg)
-            ffprobe = companion_ffprobe(ffmpeg, args.ffprobe)
-            output_path = Path(args.narration_only)
+            ffmpeg = resolve_executable("ffmpeg", ffmpeg_path)
+            ffprobe = companion_ffprobe(ffmpeg, ffprobe_path)
+            output_path = Path(cfg["narration_only"])
             voice_slug = voice_cache_slug(
-                args.voice,
-                args.voice_rate,
-                args.voice_pitch,
-                args.voice_volume,
-            )
+                voice, voice_rate, voice_pitch, voice_volume)
             plan = synthesize_narration(
                 output_path.parent / f"{output_path.stem}-voice-{voice_slug}",
-                output_path,
-                ffmpeg,
-                ffprobe,
-                voice=args.voice,
-                rate=args.voice_rate,
-                pitch=args.voice_pitch,
-                volume=args.voice_volume,
-            )
+                output_path, ffmpeg, ffprobe, voice=voice, rate=voice_rate,
+                pitch=voice_pitch, volume=voice_volume)
         except (RuntimeError, ValueError, subprocess.CalledProcessError) as exc:
-            parser().error(str(exc))
+            print(exc)
+            return 1
         script_path, subtitle_path = write_companion_files(
-            output_path,
-            plan.chapter_durations,
-            plan.speech_durations,
-            SPEECH_DELAY,
-        )
+            output_path, plan.chapter_durations, plan.speech_durations,
+            SPEECH_DELAY)
         print(f"saved {plan.track_path}")
         print(f"saved {script_path}")
         print(f"saved {subtitle_path}")
         return 0
-    if args.script:
-        script_path = Path(args.script)
+    if action == "script":
+        script_path = Path(cfg["script"])
         script_path.parent.mkdir(parents=True, exist_ok=True)
         script_path.write_text(narration_script(), encoding="utf-8")
         subtitle_path = script_path.with_suffix(".srt")
@@ -1849,56 +1793,54 @@ def main(argv: list[str] | None = None) -> int:
         print(f"saved {script_path}")
         print(f"saved {subtitle_path}")
         return 0
-    if args.build_packet:
+    if action == "build_packet":
         try:
             paths = export_build_packet(
-                Path(args.build_packet),
-                radius=args.radius_in,
-                connector_deduction=args.connector_deduction_in,
-            )
+                Path(cfg["build_packet"]),
+                radius=cfg.get("radius_in"),
+                connector_deduction=cfg.get("connector_deduction_in", 0.0))
         except ValueError as exc:
-            parser().error(str(exc))
+            print(exc)
+            return 1
         for path in paths:
             print(f"saved {path}")
         return 0
+
     try:
-        size = parse_size(args.size)
-    except argparse.ArgumentTypeError as exc:
-        parser().error(str(exc))
+        size = parse_size(cfg.get("size", "1600x900"))
+    except ValueError as exc:
+        print(exc)
+        return 2
     app = MasterclassApp(
         size=size,
-        fullscreen=args.fullscreen,
-        hidden=bool(args.shots or args.export_video),
+        fullscreen=bool(cfg.get("fullscreen", False)),
+        hidden=action in ("shots", "export_video"),
     )
-    if args.shots:
+    if action == "shots" and cfg.get("shots"):
         try:
-            times = [float(value.strip()) for value in args.shots.split(",")]
+            times = [float(v.strip()) for v in str(cfg["shots"]).split(",")
+                     if v.strip()]
         except ValueError as exc:
-            parser().error(f"--shots values must be seconds: {exc}")
+            print(f"shots values must be seconds: {exc}")
+            return 2
         app.render_shots(times, Path("two_v_demo_output"))
         app.pygame.quit()
         return 0
-    if args.export_video:
+    if action == "export_video" and cfg.get("export_video"):
         try:
             app.export_video(
-                Path(args.export_video),
-                max(1, args.fps),
-                narration=not args.no_narration,
+                Path(cfg["export_video"]), max(1, int(cfg.get("fps", 30))),
+                narration=not no_narration,
                 local_narration_plan=(
-                    Path(args.local_narration_plan)
-                    if args.local_narration_plan
-                    else None
-                ),
-                voice=args.voice,
-                voice_rate=args.voice_rate,
-                voice_pitch=args.voice_pitch,
-                voice_volume=args.voice_volume,
-                ffmpeg_path=args.ffmpeg,
-                ffprobe_path=args.ffprobe,
-            )
+                    Path(local_narration_plan)
+                    if local_narration_plan else None),
+                voice=voice, voice_rate=voice_rate, voice_pitch=voice_pitch,
+                voice_volume=voice_volume, ffmpeg_path=ffmpeg_path,
+                ffprobe_path=ffprobe_path)
         except (RuntimeError, ValueError, subprocess.CalledProcessError) as exc:
             app.pygame.quit()
-            parser().error(str(exc))
+            print(exc)
+            return 1
         app.pygame.quit()
         return 0
     app.run()

@@ -3,24 +3,20 @@
 Run a presentation live, export it to a narrated MP4, or generate a
 skeleton presentation from a plain-English production brief.
 
-Examples:
-    py -3.12 presenter_studio.py --demo airflow
-    py -3.12 presenter_studio.py --demo airflow --export dome_airflow.mp4
-    py -3.12 presenter_studio.py --demo airflow --shots 5,40,90
-    py -3.12 presenter_studio.py --script my_presentation.json
-    py -3.12 presenter_studio.py --prompt "seven scenes each of three \
-shots, a macro, close up and ultra wide shot of elements 1, 2 and 3" \
---environment "tropical beach at dusk" --export brief.mp4
-    py -3.12 presenter_studio.py --selftest
+Launch and configure this from the consolidated launcher
+(``py -3.12 launcher.py``), which exposes every option below (demo
+choice / script path / prompt text / environment / focus list / export
+path / narration toggle / fps / size / stills times / fullscreen /
+self-test) as GUI fields. Run directly with no launcher ticket present
+and it defaults to the airflow demo, live, fullscreen.
 """
 
 from __future__ import annotations
 
-import argparse
 import importlib
-import sys
 from pathlib import Path
 
+import launcher_common as _lc
 from presenter.script import Presentation
 from presenter.prompt import parse_brief, parse_environment
 
@@ -30,12 +26,15 @@ DEMOS = {
 }
 
 
-def load_presentation(args) -> Presentation:
-    if args.demo:
-        module = importlib.import_module(DEMOS[args.demo])
+def load_presentation(cfg: dict) -> Presentation:
+    demo = cfg.get("demo")
+    script = cfg.get("script")
+    prompt = cfg.get("prompt")
+    if demo:
+        module = importlib.import_module(DEMOS[demo])
         pres = module.build()
-    elif args.script:
-        path = Path(args.script)
+    elif script:
+        path = Path(script)
         if path.suffix.lower() == ".json":
             pres = Presentation.from_json(path)
         else:
@@ -43,9 +42,9 @@ def load_presentation(args) -> Presentation:
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             pres = module.build()
-    elif args.prompt:
-        focus = tuple(args.focus.split(",")) if args.focus else ()
-        pres = parse_brief(args.prompt, args.environment or "", focus)
+    elif prompt:
+        focus = tuple(cfg["focus"].split(",")) if cfg.get("focus") else ()
+        pres = parse_brief(prompt, cfg.get("environment") or "", focus)
         # a brief needs something on stage: give it the dome world
         from dataclasses import replace
         default_world = (("dome", {"radius": 4.8}),
@@ -55,8 +54,9 @@ def load_presentation(args) -> Presentation:
         pres = replace(pres, scenes=tuple(
             replace(s, world=default_world) for s in pres.scenes))
     else:
-        raise SystemExit("choose --demo, --script, or --prompt "
-                         "(see --help)")
+        # no launcher ticket / nothing specified: default demo
+        module = importlib.import_module(DEMOS["airflow"])
+        pres = module.build()
     return pres
 
 
@@ -103,60 +103,43 @@ def selftest() -> int:
     return 0
 
 
-def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--demo", choices=sorted(DEMOS))
-    parser.add_argument("--script", help="presentation .json or .py")
-    parser.add_argument("--prompt", help="production brief text")
-    parser.add_argument("--environment", help="environment prompt for "
-                        "--prompt mode")
-    parser.add_argument("--focus", help="comma list of focusable object "
-                        "names for --prompt mode")
-    parser.add_argument("--export", metavar="MP4")
-    parser.add_argument("--no-narration", action="store_true")
-    parser.add_argument("--fps", type=int, default=None)
-    parser.add_argument("--size", default=None,
-                        help="WxH, e.g. 1280x720")
-    parser.add_argument("--shots", help="comma-separated times to render "
-                        "PNG stills instead of running")
-    parser.add_argument("--save-json", metavar="PATH",
-                        help="write the presentation as JSON and exit")
-    parser.add_argument("--fullscreen", action="store_true")
-    parser.add_argument("--selftest", action="store_true")
-    args = parser.parse_args(argv)
+def main() -> int:
+    cfg = _lc.consume_config("presenter")
 
-    if args.selftest:
+    if cfg.get("action") == "selftest":
         return selftest()
 
-    pres = load_presentation(args)
-    if args.save_json:
-        pres.to_json(Path(args.save_json))
-        print(f"saved {args.save_json}")
+    pres = load_presentation(cfg)
+    if cfg.get("save_json"):
+        pres.to_json(Path(cfg["save_json"]))
+        print(f"saved {cfg['save_json']}")
         return 0
 
     size = None
-    if args.size:
-        w, h = args.size.lower().split("x")
-        size = (int(w), int(h))
+    if cfg.get("size"):
+        size = _lc.parse_size(cfg["size"])
 
     from presenter.engine import PresenterApp
-    if args.shots:
+    if cfg.get("action") == "shots" and cfg.get("shots"):
         app = PresenterApp(pres, headless=True, size=size or (1600, 900))
         out = Path("presenter_output")
         out.mkdir(exist_ok=True)
-        for value in args.shots.split(","):
+        for value in str(cfg["shots"]).split(","):
+            if not value.strip():
+                continue
             t = float(value)
             app.render(t, present=False)
             path = out / f"shot_{t:07.1f}s.png"
             app.screenshot(path)
             print(f"saved {path}")
         return 0
-    if args.export:
+    if cfg.get("action") == "export" and cfg.get("export"):
         app = PresenterApp(pres, headless=True, size=size)
-        app.export(Path(args.export), fps=args.fps,
-                   narration=not args.no_narration)
+        app.export(Path(cfg["export"]), fps=cfg.get("fps"),
+                   narration=not cfg.get("no_narration", False))
         return 0
-    app = PresenterApp(pres, headless=False, windowed=not args.fullscreen,
+    app = PresenterApp(pres, headless=False,
+                       windowed=not cfg.get("fullscreen", False),
                        size=size or (1600, 900))
     app.run()
     return 0
