@@ -1,0 +1,3 @@
+# Optional local AI backends. Install in a dedicated Python 3.11 environment.
+chatterbox-tts
+faster-whisper

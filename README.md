@@ -256,6 +256,56 @@ time figure is editable live through **PRICES**, or directly in
 [al_build.py](al_build.py) (dome line) and [site_shed.py](site_shed.py)
 (site-built comparison).
 
+## Standalone 2V Geodesic Masterclass (`two_v_masterclass.py`)
+
+The 2V Masterclass is a separate ModernGL world for teaching and YouTube
+capture. It does not enter the Dome Creator site or the assembly-line factory.
+Its 14-chapter timeline reconstructs the geometry from phi coordinates,
+normalizes the parent icosahedron, animates midpoint projection, discovers the
+two chord classes numerically, audits the supplied 72 in / 63.5 in members,
+builds the 30-SHORT / 35-LONG hemisphere cut list, and raises the dome from the
+base ring to the apex.
+
+```powershell
+py -3.12 -m pip install -r two_v_demo/requirements.txt
+py -3.12 two_v_masterclass.py                         # presenter mode
+py -3.12 two_v_masterclass.py --fullscreen            # live presentation
+py -3.12 two_v_masterclass.py --selftest              # math, no GL
+py -3.12 two_v_masterclass.py --script voiceover.md    # narration + SRT
+py -3.12 two_v_masterclass.py --build-packet build     # CSV + OBJ + guide
+py -3.12 two_v_masterclass.py --shots 0,70,130        # PNG stills
+py -3.12 two_v_masterclass.py --size 1920x1080 `
+    --export-video 2v-masterclass.mp4                  # neural voice + video
+```
+
+See [two_v_demo/README.md](two_v_demo/README.md) for presenter controls,
+voice audition/selection, measurement conventions, and video-export notes.
+The exporter also contains a compatibility audio mixer for older FFmpeg builds
+that lack `adelay`/`loudnorm`, so generated chapter audio is still assembled
+and embedded in the final MP4.
+
+## Local Voice Studio (`local_voice_studio.py`)
+
+Local Voice Studio is a third standalone program for recording speech you own,
+curating 24 kHz voice clips, building a locked reference profile, and
+synthesizing narration locally. It uses no hosted inference API. Chatterbox
+Turbo provides optional local reference-voice generation, faster-whisper
+provides optional local transcription, and the F5 adapter exports an
+`audio_file|text` dataset for advanced fine-tuning.
+
+```powershell
+py -3.11 -m venv .venv-voice
+.\.venv-voice\Scripts\python.exe -m pip install `
+    -r .\local_voice_studio\requirements-core.txt
+.\.venv-voice\Scripts\python.exe .\local_voice_studio.py
+.\.venv-voice\Scripts\python.exe -m local_voice_studio --selftest
+```
+
+The Dome Narration tab generates chapter WAVs, a loudness-normalized local
+track, timing JSON, and SRT, then passes that existing track to the 2V exporter.
+See [local_voice_studio/README.md](local_voice_studio/README.md) for setup,
+privacy behavior, model downloads, licensing, and the complete workflow.
+
 ## Preset setups
 
 Twelve out-of-the-box designs ship in [presets.py](presets.py) — cycle

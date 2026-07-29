@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 *.pyo
+.venv-voice/
 *.mp4
 # Generated exports (recreate with flatten.py / F6 in-app)
 dome_flat.md
@@ -12,6 +13,18 @@ dome_yard.sqlite3
 assembly_pricing.json
 snapshots/
 shots/
+presenter_output/
+two_v_demo_output/
+launcher_settings.json
+*.m4a
+*.srt
+two_v_demo_output/
+.visual_qa_deps/
+.audio_qa_deps/
+2v*-narration.m4a
+2v*-narration.md
+2v*.srt
+2v*-voice-*/
 
 # Local editor/tool state
 .claude/

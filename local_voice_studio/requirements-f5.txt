@@ -1,0 +1,3 @@
+# Optional fine-tuning adapter. Prefer the official editable F5-TTS repository
+# when its current fine-tune GUI is required; see README.md.
+f5-tts
