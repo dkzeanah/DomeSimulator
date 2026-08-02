@@ -24,6 +24,16 @@ from presenter.prompt import parse_brief, parse_environment
 DEMOS = {
     "airflow": "presentations.airflow_dome",
     "housing_case": "presentations.dome_housing_case",
+    "case_manufacturing": "presentations.dome_case_manufacturing",
+    "case_bare_shell": "presentations.dome_case_bare_shell",
+    "case_more_room": "presentations.dome_case_more_room",
+    "case_triangles": "presentations.dome_case_triangles",
+    "case_benchmark": "presentations.dome_case_benchmark",
+    "case_energy": "presentations.dome_case_energy",
+    "case_resilience": "presentations.dome_case_resilience",
+    "case_financing": "presentations.dome_case_financing",
+    "case_utility_core": "presentations.dome_case_utility_core",
+    "case_market_fit": "presentations.dome_case_market_fit",
 }
 
 
@@ -123,10 +133,35 @@ def selftest() -> int:
                 if shot.focus:
                     assert shot.focus in targets, (
                         scene.slug, shot.slug, shot.focus, "no such target")
+    # Every dome_case_* demo (the ten-part convergent-argument series):
+    # build, validate, and the same target/geometry sweep as the housing
+    # case above, keyed off DEMOS itself so this can't drift out of sync
+    # with what's actually registered.
+    total_case_shots = 0
+    for key, module_name in DEMOS.items():
+        if not key.startswith("case_"):
+            continue
+        module = importlib.import_module(module_name)
+        case_pres = module.build()
+        case_pres.validate()
+        for scene in case_pres.scenes:
+            env = parse_environment(scene.environment)
+            for shot in scene.shots:
+                for progress in (0.0, 0.5, 1.0):
+                    o, tr, targets = build_frame(
+                        env, list(scene.world), 1.0, shot, progress)
+                    assert o.v or tr.v, (key, scene.slug, shot.slug,
+                                         "no geometry")
+                    if shot.focus:
+                        assert shot.focus in targets, (
+                            key, scene.slug, shot.slug, shot.focus,
+                            "no such target")
+        total_case_shots += len(case_pres.all_shots())
     print("presenter selftest OK "
           f"({len(pres.all_shots())} shots, {pres.duration:.0f}s scripted; "
           f"housing case {len(housing.all_shots())} shots, "
-          f"{housing.duration:.0f}s scripted)")
+          f"{housing.duration:.0f}s scripted; "
+          f"10-part case series {total_case_shots} shots total)")
     return 0
 
 

@@ -337,7 +337,7 @@ skeleton `Presentation` from it. Action / Export MP4 / narration toggle /
 fps / size / still-frame times / fullscreen / self-test are all launcher
 fields, in place of the former CLI flags.
 
-Two built-in demos ship in `presentations/`:
+Twelve built-in demos ship in `presentations/`:
 
 - **`airflow`** — *The Dome That Breathes*: a perimeter-plenum tube
   ringing a 2V dome's base, one leaf blower holding the whole envelope at
@@ -351,8 +351,28 @@ Two built-in demos ship in `presentations/`:
   explicit list of claims the project will not make, and the real product
   line and financing math. Every number on screen comes from the same
   modules the interactive tools use, not a hardcoded figure.
+- **The ten-part `case_*` series** — the same convergent argument as
+  `housing_case`, split into ten standalone, full-length presentations,
+  one per argument, each with its own hook, evidence, honest hedge, and
+  close: `case_manufacturing` (the standardized-product/manufacturing
+  case), `case_bare_shell` (the shed-tier cost comparison),
+  `case_more_room` (the home-tier comparison — a small honest price gap,
+  a real volume win), `case_triangles` (the structural-rigidity
+  argument, built from a first-principles degrees-of-freedom count),
+  `case_benchmark` (vs. a conventional manufactured home, plus the
+  factory throughput/break-even math), `case_energy` (the hedged
+  off-grid/solar case), `case_resilience` (the hedged wind/seismic case
+  and the resilience claims this project refuses to make),
+  `case_financing` (real BHPH financing math across every product
+  tier), `case_utility_core` (the curved-wall objection and the rest of
+  presentation.txt's "what must be solved" list), and
+  `case_market_fit` (honest market fit — where this is, and is not, the
+  right product, closing the ten-part series). All numbers in every one
+  of the ten come from `presentations/_numbers.py`, computed once from
+  the same modules the interactive tools use, shared so a figure can
+  never drift out of sync between presentations.
 
-Every shot in both demos carries on-screen text — a caption plus, where
+Every shot in every demo carries on-screen text — a caption plus, where
 there is a real claim to make, an overlay panel — so the argument reads
 complete with the sound off; narration is a second channel, not the only
 one.

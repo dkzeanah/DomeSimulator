@@ -174,7 +174,13 @@ def main() -> int:
     t = tab("Presenter Studio")
     section(t, "Source (pick one)")
     demo = LabeledCombo(t, "Built-in demo",
-                        ["", "airflow", "housing_case"], "airflow")
+                        ["", "airflow", "housing_case",
+                         "case_manufacturing", "case_bare_shell",
+                         "case_more_room", "case_triangles",
+                         "case_benchmark", "case_energy",
+                         "case_resilience", "case_financing",
+                         "case_utility_core", "case_market_fit"],
+                        "airflow")
     demo.pack(fill="x", pady=3)
     script_path = PathRow(t, "...or a presentation script", "",
                           mode="open",
