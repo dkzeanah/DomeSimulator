@@ -23,6 +23,7 @@ from presenter.prompt import parse_brief, parse_environment
 
 DEMOS = {
     "airflow": "presentations.airflow_dome",
+    "housing_case": "presentations.dome_housing_case",
 }
 
 
@@ -98,8 +99,34 @@ def selftest() -> int:
             parse_environment(scene.environment), list(scene.world), t,
             scene.shots[0], 0.4)
         assert o.v and tr.v and "dome" in targets and "grille" in targets
+
+    from presentations.dome_housing_case import build as build_housing
+    housing = build_housing()
+    housing.validate()
+    round_trip2 = Path("presenter_output/housing_case.json")
+    round_trip2.parent.mkdir(exist_ok=True)
+    housing.to_json(round_trip2)
+    again2 = Presentation.from_json(round_trip2)
+    again2.validate()
+    assert abs(again2.duration - housing.duration) < 1e-6
+    # every shot's declared focus must resolve to a real target at the
+    # start, middle, and end of the shot — a target only registered once
+    # something is "revealed" would leave the camera with nowhere to look
+    # for the first instant of that shot.
+    for scene in housing.scenes:
+        env = parse_environment(scene.environment)
+        for shot in scene.shots:
+            for progress in (0.0, 0.5, 1.0):
+                o, tr, targets = build_frame(
+                    env, list(scene.world), 1.0, shot, progress)
+                assert o.v or tr.v, (scene.slug, shot.slug, "no geometry")
+                if shot.focus:
+                    assert shot.focus in targets, (
+                        scene.slug, shot.slug, shot.focus, "no such target")
     print("presenter selftest OK "
-          f"({len(pres.all_shots())} shots, {pres.duration:.0f}s scripted)")
+          f"({len(pres.all_shots())} shots, {pres.duration:.0f}s scripted; "
+          f"housing case {len(housing.all_shots())} shots, "
+          f"{housing.duration:.0f}s scripted)")
     return 0
 
 

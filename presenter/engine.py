@@ -432,18 +432,70 @@ class PresenterApp:
             lines.append(("eq", e))
         for label, value in panel.stats:
             lines.append(("stat", (label, value)))
-        # size the card to its widest line so text never clips
+        # Size the card to its widest line, capped to a fraction of the
+        # screen. Probe each kind with the SAME font it actually renders
+        # with below — the title is larger and bold, and a stat line is a
+        # left label plus a separately right-aligned bold value, not one
+        # run of plain text.
         pw = px(470)
-        probe = self.font(px(20))
+        bullet_font = self.font(px(20))
+        title_font = self.font(px(24), bold=True)
+        stat_label_font = self.font(px(19))
+        stat_value_font = self.font(px(21), bold=True)
         for kind, payload in lines:
-            if kind == "stat":
-                text = f"{payload[0]}        {payload[1]}"
+            if kind == "title":
+                pw = max(pw, title_font.size(str(payload))[0] + px(64))
+            elif kind == "stat":
+                label_w = stat_label_font.size(str(payload[0]))[0]
+                value_w = stat_value_font.size(str(payload[1]))[0]
+                pw = max(pw, label_w + value_w + px(88))
             else:
                 text = ("· " if kind == "bullet" else "") + str(payload)
-            pw = max(pw, probe.size(text)[0] + px(64))
+                pw = max(pw, bullet_font.size(text)[0] + px(64))
         pw = min(pw, int(width * 0.46))
-        line_h = px(34)
-        ph = px(30) + line_h * len(lines) + px(16)
+
+        def wrap(font, text, max_w):
+            words = str(text).split(" ")
+            out, cur = [], ""
+            for word in words:
+                trial = (cur + " " + word).strip()
+                if not cur or font.size(trial)[0] <= max_w:
+                    cur = trial
+                else:
+                    out.append(cur)
+                    cur = word
+            out.append(cur)
+            return out
+
+        # Expand every logical line into 1+ visual rows that actually fit
+        # inside pw — capping pw to the content's widest line only avoids
+        # clipping if nothing is EVER too wide for that cap; a single long
+        # bullet or stat value still needs to wrap across rows, or it
+        # overflows the card exactly like the width alone used to.
+        rows: list[tuple] = []
+        for kind, payload in lines:
+            if kind == "title":
+                for seg in wrap(title_font, payload, pw - px(40)):
+                    rows.append(("title", seg))
+            elif kind == "bullet":
+                segs = wrap(bullet_font, "· " + str(payload), pw - px(48))
+                for i, seg in enumerate(segs):
+                    rows.append(("bullet", seg if i == 0 else "  " + seg))
+            elif kind == "eq":
+                for seg in wrap(bullet_font, payload, pw - px(60)):
+                    rows.append(("eq", seg))
+            else:
+                label, value = payload
+                label_w = stat_label_font.size(str(label))[0]
+                room = pw - px(48) - label_w
+                if stat_value_font.size(str(value))[0] <= max(room, px(80)):
+                    rows.append(("stat", (label, value)))
+                else:
+                    rows.append(("stat_label", label))
+                    for seg in wrap(stat_value_font, value, pw - px(60)):
+                        rows.append(("stat_value", seg))
+        line_h = px(30)
+        ph = px(30) + line_h * len(rows) + px(16)
         position = self.panel_position_override or panel.position
         if position == "right":
             x, y = width - pw - px(30), px(110)
@@ -458,24 +510,34 @@ class PresenterApp:
         card.fill((7, 14, 24, 216))
         pygame.draw.rect(card, (68, 205, 255), (0, 0, pw, px(5)))
         yy = px(18)
-        for kind, payload in lines:
+        for kind, payload in rows:
             if kind == "title":
-                card.blit(self.font(px(24), bold=True).render(
-                    str(payload), True, (255, 214, 130)), (px(20), yy))
+                card.blit(title_font.render(
+                    payload, True, (255, 214, 130)), (px(20), yy))
             elif kind == "bullet":
-                card.blit(self.font(px(20)).render(
-                    "· " + str(payload), True, (226, 234, 240)),
-                    (px(24), yy + px(3)))
+                card.blit(bullet_font.render(
+                    payload, True, (226, 234, 240)), (px(24), yy + px(3)))
             elif kind == "eq":
-                card.blit(self.font(px(20)).render(
-                    str(payload), True, (120, 226, 176)), (px(30), yy + px(3)))
-            else:
+                card.blit(bullet_font.render(
+                    payload, True, (120, 226, 176)), (px(30), yy + px(3)))
+            elif kind == "stat":
                 label, value = payload
-                card.blit(self.font(px(19)).render(
+                card.blit(stat_label_font.render(
                     str(label), True, (150, 166, 180)), (px(24), yy + px(4)))
-                text = self.font(px(21), bold=True).render(
+                text = stat_value_font.render(
                     str(value), True, (255, 255, 255))
                 card.blit(text, (pw - text.get_width() - px(22), yy + px(2)))
+            elif kind == "stat_label":
+                card.blit(stat_label_font.render(
+                    str(payload), True, (150, 166, 180)), (px(24), yy + px(4)))
+            elif kind == "stat_value":
+                # a wrapped continuation line, not the single-line label+
+                # value case above: left-align under the label instead of
+                # right-aligning each wrapped chunk independently, which
+                # read as a ragged block.
+                card.blit(stat_value_font.render(
+                    str(payload), True, (255, 255, 255)),
+                    (px(40), yy + px(2)))
             yy += line_h
         surface.blit(card, (x, y))
 

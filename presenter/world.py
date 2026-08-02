@@ -23,6 +23,17 @@ def rnd(i: float, salt: float = 0.0) -> float:
     return (math.sin(i * 127.1 + salt * 311.7) * 43758.5453) % 1.0
 
 
+def _rotate_about(point, pivot, axis, angle):
+    """Rotate ``point`` by ``angle`` radians around the line through
+    ``pivot`` parallel to ``axis`` (Rodrigues' rotation formula)."""
+    axis = normalize(np.asarray(axis, dtype=np.float64))
+    p = np.asarray(point, dtype=np.float64) - np.asarray(pivot, dtype=np.float64)
+    ca, sa = math.cos(angle), math.sin(angle)
+    rotated = (p * ca + np.cross(axis, p) * sa
+               + axis * np.dot(axis, p) * (1.0 - ca))
+    return np.asarray(pivot, dtype=np.float64) + rotated
+
+
 class Batch:
     __slots__ = ("v",)
 
@@ -618,11 +629,367 @@ def emit_airflow(o: Batch, tr: Batch, p: dict, t: float,
     targets.setdefault("airflow", (np.array([0.0, 0.0, z]), ring_r))
 
 
+# ---------------------------------------------------------------------------
+# Build-process, comparison, and teaching-diagram objects
+# ---------------------------------------------------------------------------
+
+def _hemi_shell(batch: Batch, center, radius, color, rings=8, sides=20) -> None:
+    """Low-poly hemisphere surface, apex at +Z, rim on the ``center`` plane."""
+    cx, cy, cz = center
+
+    def pt(ring, seg):
+        theta = (math.pi / 2.0) * (ring / rings)
+        phi = TAU * seg / sides
+        x = radius * math.sin(theta) * math.cos(phi)
+        y = radius * math.sin(theta) * math.sin(phi)
+        z = radius * math.cos(theta)
+        return (cx + x, cy + y, cz + z)
+
+    for ring in range(rings):
+        for seg in range(sides):
+            a = pt(ring, seg)
+            b = pt(ring + 1, seg)
+            c = pt(ring + 1, seg + 1)
+            d = pt(ring, seg + 1)
+            batch.quad(a, b, c, d, color)
+
+
+def emit_utility_column(o: Batch, tr: Batch, p: dict, t: float,
+                        targets: dict) -> None:
+    """Floor-to-apex utility column (water + power) with an apex
+    crane-anchor ring for the turntable transfer."""
+    R = float(p.get("radius", 4.8))
+    height = R * max(0.0, min(1.0, float(p.get("reveal", 1.0))))
+    col_r = float(p.get("col_r", 0.22))
+    cx = float(p.get("cx", 0.0))
+    cy = float(p.get("cy", 0.0))
+    if height > 0.02:
+        base = (cx, cy, 0.0)
+        top = (cx, cy, height)
+        steel = (0.58, 0.60, 0.64, 1.0)
+        o.cylinder(base, top, col_r, steel, sides=10)
+        water = (0.20, 0.45, 0.85, 1.0)
+        power = (0.95, 0.75, 0.15, 1.0)
+        off = col_r * 1.55
+        o.cylinder((cx + off, cy, 0.0), (cx + off, cy, height),
+                   col_r * 0.32, water, sides=6)
+        o.cylinder((cx - off * 0.5, cy + off * 0.87, 0.0),
+                   (cx - off * 0.5, cy + off * 0.87, height),
+                   col_r * 0.32, power, sides=6)
+    if height > 0.02 and float(p.get("anchor", 1.0)) > 0.5:
+        ring_r = float(p.get("anchor_ring_r", col_r * 2.4))
+        segs = 16
+        chrome = (0.80, 0.82, 0.86, 1.0)
+        for i in range(segs):
+            a0 = TAU * i / segs
+            a1 = TAU * (i + 1) / segs
+            p0 = (cx + ring_r * math.cos(a0), cy + ring_r * math.sin(a0),
+                  height + 0.06)
+            p1 = (cx + ring_r * math.cos(a1), cy + ring_r * math.sin(a1),
+                  height + 0.06)
+            o.cylinder(p0, p1, 0.045, chrome, sides=6, caps=False)
+        for k in range(4):
+            a = TAU * k / 4
+            hook_base = (cx + ring_r * math.cos(a), cy + ring_r * math.sin(a),
+                         height + 0.06)
+            hook_top = (cx + ring_r * math.cos(a), cy + ring_r * math.sin(a),
+                        height + 0.30)
+            o.cylinder(hook_base, hook_top, 0.03, (0.85, 0.87, 0.90, 1.0),
+                       sides=5)
+    # Floor the radius at a fraction of R, not just the column's own
+    # height, so the camera doesn't snap in closer than any co-present
+    # full-dome-scale object (e.g. a fully clad shell_layers shroud) and
+    # end up pressed up against the inside of it.
+    targets["utility_column"] = (np.array([cx, cy, height * 0.5]),
+                                  max(1.2, height * 0.6, R * 0.9))
+    targets["crane_anchor"] = (np.array([cx, cy, height + 0.15]), 1.0)
+
+
+_SHELL_LAYERS = (
+    ("insulation", (0.92, 0.85, 0.55, 0.55), 0.05),
+    ("sheetrock", (0.88, 0.86, 0.80, 0.85), 0.02),
+    ("osb", (0.72, 0.55, 0.32, 0.90), 0.03),
+    ("wrap", (0.85, 0.87, 0.90, 0.55), 0.02),
+    ("shingles", (0.25, 0.24, 0.26, 0.95), 0.04),
+    ("fiberglass", (0.95, 0.97, 0.99, 0.35), 0.02),
+)
+
+
+def clad_radius(R: float, explode: float = 0.35) -> float:
+    """Outer radius of the fully-clad shell for a bare-frame radius ``R``
+    (mirrors :func:`emit_shell_layers`'s own accumulation). Useful for
+    positioning anything that should sit on the FINISHED exterior surface
+    — a roof-mounted panel, an exterior hatch trim — rather than at the
+    bare-frame radius where the cladding would otherwise bury it."""
+    return R * 1.02 + sum(explode + thick for _n, _c, thick
+                          in _SHELL_LAYERS)
+
+
+def emit_shell_layers(o: Batch, tr: Batch, p: dict, t: float,
+                      targets: dict) -> None:
+    """Concentric insulation/sheetrock/OSB/wrap/shingle/fiberglass reveal,
+    driven by a continuous ``stage`` (0 = bare frame, len(_SHELL_LAYERS) =
+    finished). ``alpha_mult`` (default 1.0) scales every layer's alpha —
+    animate it toward 0 for a cutaway shot that needs to see past a
+    fully-clad shell to something the shell would otherwise occlude (a
+    hatch or interior fixture sitting at the bare-frame radius, well
+    inside the clad shell's outer radius)."""
+    R = float(p.get("radius", 4.8))
+    stage = float(p.get("stage", len(_SHELL_LAYERS)))
+    explode = float(p.get("explode", 0.35))
+    alpha_mult = float(p.get("alpha_mult", 1.0))
+    cx = float(p.get("cx", 0.0))
+    cy = float(p.get("cy", 0.0))
+    # Register the focus target up front, sized to the fully-clad shell, so
+    # the camera has a stable frame for the whole shot even before stage 1
+    # reveals anything (progress == 0 at the very start of a build shot).
+    r_final = clad_radius(R, explode)
+    targets["shell_layers"] = (np.array([cx, cy, r_final * 0.4]),
+                               r_final * 0.5)
+    if alpha_mult <= 0.005:
+        return
+    r = R * 1.02
+    for idx, (_name, color, thick) in enumerate(_SHELL_LAYERS):
+        reveal = max(0.0, min(1.0, stage - idx))
+        r += explode
+        if reveal > 0.001:
+            alpha = color[3] * reveal * alpha_mult
+            if alpha > 0.004:
+                c = (color[0], color[1], color[2], alpha)
+                _hemi_shell(tr, (cx, cy, 0.0), r, c, rings=7, sides=22)
+        r += thick
+
+
+def emit_hatch(o: Batch, tr: Batch, p: dict, t: float, targets: dict) -> None:
+    """Watertight deck hatch: raised coaming, hinged door, locking wheel."""
+    R = float(p.get("radius", 4.8))
+    polar = math.radians(float(p.get("polar_deg", 62.0)))
+    az = math.radians(float(p.get("az_deg", 0.0)))
+    hatch_r = float(p.get("hatch_r", 0.5))
+    openness = max(0.0, min(1.0, float(p.get("open", 0.0))))
+    center = np.array([R * math.sin(polar) * math.cos(az),
+                        R * math.sin(polar) * math.sin(az),
+                        R * math.cos(polar)])
+    outward = normalize(center)
+    helper = np.array([0.0, 0.0, 1.0])
+    if abs(float(np.dot(outward, helper))) > 0.92:
+        helper = np.array([0.0, 1.0, 0.0])
+    u = normalize(np.cross(outward, helper))
+    v = normalize(np.cross(outward, u))
+    steel = (0.42, 0.44, 0.48, 1.0)
+    coam_h = 0.12
+    rings = 14
+    for i in range(rings):
+        a0 = TAU * i / rings
+        a1 = TAU * (i + 1) / rings
+
+        def ring_pt(a, h):
+            return center + outward * h + u * hatch_r * math.cos(a) \
+                + v * hatch_r * math.sin(a)
+        o.quad(ring_pt(a0, 0.0), ring_pt(a1, 0.0), ring_pt(a1, coam_h),
+               ring_pt(a0, coam_h), steel)
+    hinge_pivot = center + outward * coam_h + u * hatch_r
+    swing = openness * math.radians(95.0)
+    door_r = hatch_r * 0.94
+    door_color = (0.58, 0.60, 0.64, 1.0)
+    segs = 16
+    door_center = _rotate_about(center + outward * coam_h, hinge_pivot, v,
+                                swing)
+    for i in range(segs):
+        a0 = TAU * i / segs
+        a1 = TAU * (i + 1) / segs
+        r0 = (center + outward * coam_h + u * door_r * math.cos(a0)
+              + v * door_r * math.sin(a0))
+        r1 = (center + outward * coam_h + u * door_r * math.cos(a1)
+              + v * door_r * math.sin(a1))
+        r0 = _rotate_about(r0, hinge_pivot, v, swing)
+        r1 = _rotate_about(r1, hinge_pivot, v, swing)
+        o.tri(door_center, r0, r1, door_color)
+    rot_outward = _rotate_about(outward, np.zeros(3), v, swing)
+    rot_u = _rotate_about(u, np.zeros(3), v, swing)
+    wheel_center = door_center + rot_outward * 0.05
+    o.cylinder(wheel_center - rot_outward * 0.02,
+               wheel_center + rot_outward * 0.02, 0.07,
+               (0.85, 0.15, 0.12, 1.0), sides=8)
+    for k in range(4):
+        a = TAU * k / 4
+        tip = (wheel_center + rot_u * math.cos(a) * 0.20
+               + v * math.sin(a) * 0.20)
+        o.cylinder(wheel_center, tip, 0.025, (0.90, 0.90, 0.92, 1.0), sides=5)
+    # As with the utility column: floor at a fraction of R so the camera
+    # doesn't end up closer than a co-present full-dome-scale object.
+    targets["hatch"] = (center, max(hatch_r * 2.2, R * 1.35))
+
+
+def emit_interior_fixtures(o: Batch, tr: Batch, p: dict, t: float,
+                           targets: dict) -> None:
+    """Kitchen / bed / bath blocks around the utility column, staged by
+    a single ``reveal`` 0..1 (kitchen, then +bed, then +bath)."""
+    R = float(p.get("radius", 4.8))
+    reveal = float(p.get("reveal", 1.0))
+    ring_r = R * 0.55
+    # Register the focus target up front so the camera has somewhere to
+    # look even before anything is revealed (progress == 0 at shot start).
+    # Floored at a fraction of R for the same reason as the utility
+    # column and hatch: don't snap in closer than a co-present
+    # full-dome-scale object (e.g. a fully clad shell_layers shroud).
+    targets["fixtures"] = (np.array([0.0, 0.0, 0.5]),
+                           max(ring_r * 1.3, R * 1.4))
+    if reveal <= 0.01:
+        return
+    cab = (0.68, 0.52, 0.34, 1.0)
+    counter = (0.82, 0.83, 0.85, 1.0)
+    frame = (0.90, 0.90, 0.92, 1.0)
+    linens = (0.85, 0.87, 0.92, 1.0)
+    tile = (0.75, 0.85, 0.86, 1.0)
+    az = math.radians(float(p.get("kitchen_az", -35.0)))
+    kx, ky = ring_r * math.cos(az), ring_r * math.sin(az)
+    o.box((kx, ky, 0.45), (2.2, 0.65, 0.9), cab, yaw=az)
+    o.box((kx, ky, 0.93), (2.2, 0.65, 0.04), counter, yaw=az)
+    if reveal > 0.33:
+        az = math.radians(float(p.get("bed_az", 130.0)))
+        bx, by = ring_r * math.cos(az), ring_r * math.sin(az)
+        o.box((bx, by, 0.24), (1.5, 2.0, 0.48), frame, yaw=az)
+        o.box((bx, by, 0.55), (1.5, 2.0, 0.16), linens, yaw=az)
+    if reveal > 0.66:
+        az = math.radians(float(p.get("bath_az", 220.0)))
+        wx, wy = ring_r * math.cos(az), ring_r * math.sin(az)
+        o.box((wx, wy, 0.22), (0.8, 0.8, 0.44), tile, yaw=az)
+        o.cylinder((wx, wy, 0.44), (wx, wy, 0.50), 0.34,
+                   (0.92, 0.94, 0.96, 1.0), sides=10)
+
+
+def emit_solar_band(o: Batch, tr: Batch, p: dict, t: float,
+                    targets: dict) -> None:
+    """PV panels on the real dome faces that face within ``tolerance_deg``
+    of ``south_az_deg``, using the actual 2V face geometry."""
+    R = float(p.get("radius", 4.8))
+    south_az = math.radians(float(p.get("south_az_deg", -90.0)))
+    south_dir = np.array([math.cos(south_az), math.sin(south_az), 0.0])
+    tolerance = math.radians(float(p.get("tolerance_deg", 55.0)))
+    min_polar = math.radians(float(p.get("min_polar_deg", 18.0)))
+    coverage = max(0.0, min(1.0, float(p.get("coverage", 1.0))))
+    geo = _geo()
+    verts = geo.vertices * R
+    panel = (0.08, 0.10, 0.16, 1.0)
+    frame_c = (0.35, 0.36, 0.40, 1.0)
+    qualifying = []
+    for face in geo.hemisphere_faces:
+        pts = [verts[k] for k in face]
+        center = sum(pts) / 3.0
+        n = normalize(center)
+        polar = math.acos(max(-1.0, min(1.0, n[2])))
+        if polar < min_polar or abs(n[0]) + abs(n[1]) <= 1e-6:
+            continue
+        horiz = normalize(np.array([n[0], n[1], 0.0]))
+        ang = math.acos(max(-1.0, min(1.0, float(np.dot(horiz, south_dir)))))
+        if ang <= tolerance:
+            qualifying.append((pts, center, n))
+    kept = qualifying[:max(1, int(round(len(qualifying) * coverage)))] \
+        if qualifying else []
+    for pts, center, n in kept:
+        shrink = 0.86
+        panel_pts = [center + (pt - center) * shrink + n * 0.015
+                     for pt in pts]
+        o.tri(panel_pts[0], panel_pts[1], panel_pts[2], panel, n)
+        for i in range(3):
+            j = (i + 1) % 3
+            o.quad(panel_pts[i], panel_pts[j], panel_pts[j] - n * 0.02,
+                   panel_pts[i] - n * 0.02, frame_c, n)
+    targets["solar"] = (np.array([0.0, -R * 0.5, R * 0.55]), R * 0.9)
+
+
+def emit_comparison_pair(o: Batch, tr: Batch, p: dict, t: float,
+                         targets: dict) -> None:
+    """Box vs dome, side by side, both scaled from real dimensions the
+    caller supplies (see al_build.building_comparisons())."""
+    box_w = float(p.get("box_w", 4.0))
+    box_l = float(p.get("box_l", 4.0))
+    box_h = float(p.get("box_h", 3.0))
+    dome_r = float(p.get("dome_r", 2.6))
+    gap = float(p.get("gap", 2.5))
+    cx = float(p.get("cx", 0.0))
+    cy = float(p.get("cy", 0.0))
+    box_color = tuple(p.get("box_color", (0.62, 0.42, 0.28, 1.0)))
+    dome_color = tuple(p.get("dome_color", (0.30, 0.62, 0.78, 1.0)))
+    roof_color = tuple(p.get("roof_color", (0.30, 0.30, 0.32, 1.0)))
+    box_x = cx - gap * 0.5 - box_w * 0.5
+    dome_x = cx + gap * 0.5 + dome_r
+    o.box((box_x, cy, box_h * 0.5), (box_w, box_l, box_h), box_color)
+    o.box((box_x, cy, box_h + 0.03), (box_w * 1.02, box_l * 1.02, 0.06),
+          roof_color)
+    _hemi_shell(o, (dome_x, cy, 0.0), dome_r, dome_color, rings=8, sides=22)
+    ground = (0.22, 0.24, 0.20, 1.0)
+    o.disc((box_x, cy, -0.01), max(box_w, box_l) * 0.72, ground, sides=28)
+    o.disc((dome_x, cy, -0.01), dome_r * 1.08, ground, sides=28)
+    targets["compare_box"] = (np.array([box_x, cy, box_h * 0.5]),
+                               max(box_w, box_l, box_h))
+    targets["compare_dome"] = (np.array([dome_x, cy, dome_r * 0.45]),
+                                dome_r * 1.3)
+    targets["compare_pair"] = (np.array([cx, cy, dome_r * 0.4]),
+                                (gap + box_w + dome_r * 2) * 0.62)
+
+
+def emit_triangle_vs_square(o: Batch, tr: Batch, p: dict, t: float,
+                            targets: dict) -> None:
+    """Rigidity diagram: an unbraced square racks under ``shear`` while a
+    triangle (or a diagonally ``braced`` square) holds its shape."""
+    size = float(p.get("size", 2.4))
+    braced = float(p.get("braced", 0.0)) > 0.5
+    shear = 0.0 if braced else max(0.0, min(1.0, float(p.get("shear", 0.0))))
+    gap = float(p.get("gap", 3.2))
+    cx = float(p.get("cx", 0.0))
+    cy = float(p.get("cy", 0.0))
+    strut_r = float(p.get("strut", 0.05))
+    base_z = float(p.get("base_z", 0.02))
+    rigid = (0.30, 0.62, 0.78, 1.0)
+    racking = (0.90, 0.30, 0.22, 1.0)
+
+    sq_x = cx - gap * 0.5
+    lean = shear * size * 0.42
+    sq = [
+        (sq_x - size * 0.5, cy, base_z),
+        (sq_x + size * 0.5, cy, base_z),
+        (sq_x + size * 0.5 + lean, cy, base_z + size),
+        (sq_x - size * 0.5 + lean, cy, base_z + size),
+    ]
+    sq_color = rigid if (braced or shear <= 0.05) else racking
+    for i in range(4):
+        j = (i + 1) % 4
+        o.cylinder(sq[i], sq[j], strut_r, sq_color, sides=6)
+    if braced:
+        o.cylinder(sq[0], sq[2], strut_r * 0.85, rigid, sides=6)
+
+    tri_x = cx + gap * 0.5
+    tri = [
+        (tri_x - size * 0.5, cy, base_z),
+        (tri_x + size * 0.5, cy, base_z),
+        (tri_x, cy, base_z + size * 0.87),
+    ]
+    for i in range(3):
+        j = (i + 1) % 3
+        o.cylinder(tri[i], tri[j], strut_r, rigid, sides=6)
+
+    targets["rigidity_square"] = (np.array([sq_x, cy, base_z + size * 0.5]),
+                                   size)
+    targets["rigidity_triangle"] = (np.array([tri_x, cy, base_z + size * 0.5]),
+                                     size)
+    targets["rigidity_pair"] = (np.array([cx, cy, base_z + size * 0.5]),
+                                 (gap + size * 2) * 0.6)
+
+
 OBJECT_EMITTERS = {
     "dome": emit_dome,
     "plenum": emit_plenum,
     "blower": emit_blower,
     "airflow": emit_airflow,
+    "utility_column": emit_utility_column,
+    "shell_layers": emit_shell_layers,
+    "hatch": emit_hatch,
+    "interior_fixtures": emit_interior_fixtures,
+    "solar_band": emit_solar_band,
+    "comparison_pair": emit_comparison_pair,
+    "triangle_vs_square": emit_triangle_vs_square,
 }
 
 

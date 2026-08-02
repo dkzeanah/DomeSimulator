@@ -173,7 +173,8 @@ def main() -> int:
 
     t = tab("Presenter Studio")
     section(t, "Source (pick one)")
-    demo = LabeledCombo(t, "Built-in demo", ["", "airflow"], "airflow")
+    demo = LabeledCombo(t, "Built-in demo",
+                        ["", "airflow", "housing_case"], "airflow")
     demo.pack(fill="x", pady=3)
     script_path = PathRow(t, "...or a presentation script", "",
                           mode="open",
@@ -236,8 +237,18 @@ def main() -> int:
     # ---- 2V Masterclass ---------------------------------------------------
 
     t = tab("2V Masterclass")
-    canvas = tk.Canvas(t, highlightthickness=0)
-    vscroll = ttk.Scrollbar(t, orient="vertical", command=canvas.yview)
+    # The launch button lives in a fixed footer, not inside the scrolling
+    # body below — this tab has more fields than any other (every former
+    # CLI flag), and a button that only appears after scrolling past all
+    # of them is effectively invisible. Pack the footer first so it keeps
+    # its space regardless of window size.
+    mc_footer = ttk.Frame(t)
+    mc_footer.pack(side="bottom", fill="x")
+    canvas_area = ttk.Frame(t)
+    canvas_area.pack(side="top", fill="both", expand=True)
+    canvas = tk.Canvas(canvas_area, highlightthickness=0)
+    vscroll = ttk.Scrollbar(canvas_area, orient="vertical",
+                            command=canvas.yview)
     body = ttk.Frame(canvas)
     body.bind("<Configure>",
              lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
@@ -245,6 +256,16 @@ def main() -> int:
     canvas.configure(yscrollcommand=vscroll.set)
     canvas.pack(side="left", fill="both", expand=True)
     vscroll.pack(side="right", fill="y")
+
+    def _mc_wheel(event) -> None:
+        canvas.yview_scroll(-1 * int(event.delta / 120), "units")
+    # Bind on the whole tab, not on canvas/body: those have gaps between
+    # packed rows where the pointer briefly crosses back onto body's own
+    # background, which would fire Leave/Enter (and toggle the binding)
+    # on every row boundary. t's area is always fully covered by a
+    # descendant, so it only sees Enter/Leave at the tab's own edge.
+    t.bind("<Enter>", lambda _e: canvas.bind_all("<MouseWheel>", _mc_wheel))
+    t.bind("<Leave>", lambda _e: canvas.unbind_all("<MouseWheel>"))
 
     section(body, "Action")
     mc_action = LabeledCombo(
@@ -346,7 +367,8 @@ def main() -> int:
             cfg["connector_deduction_in"] = float(mc_deduction.get())
         run("two_v_masterclass.py", "two_v_masterclass", cfg,
             "2V Masterclass")
-    launch_button(body, "Launch 2V Masterclass", go_masterclass)
+    ttk.Separator(mc_footer).pack(fill="x")
+    launch_button(mc_footer, "Launch 2V Masterclass", go_masterclass)
 
     # ---- Local Voice Studio ------------------------------------------------
 

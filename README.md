@@ -313,6 +313,50 @@ The exporter also contains a compatibility audio mixer for older FFmpeg builds
 that lack `adelay`/`loudnorm`, so generated chapter audio is still assembled
 and embedded in the final MP4.
 
+## Presenter Studio (`presenter_studio.py`)
+
+Presenter Studio is a fourth standalone world: a scriptable text-to-video
+engine built on the 2V Masterclass's rendering core. A `Presentation` is
+pure data — scenes with a free-text environment prompt, shots with a lens
+(macro/portrait/wide/ultrawide), a 1-6 point camera perspective (1-3
+linear, 4 cylindrical, 5 fisheye, 6 full 360), a snap-to focus target,
+animatable object parameters, narration lines, a lower-third caption, and
+a floatable overlay panel (bullets/equations/stats) — so the same
+deterministic frame renders identically live and in the exported MP4.
+
+```powershell
+py -3.12 launcher.py            # Presenter Studio tab: every option below
+py -3.12 presenter_studio.py    # direct run, live fullscreen
+```
+
+Pick a **Built-in demo**, or point at a presentation script (a `.py` with
+a `build()` function, or a saved `.json`), or type a free-text
+**production brief** ("seven scenes each of three shots, a close up,
+macro and ultra wide shot of elements 1, 2 and 3") and the engine drafts a
+skeleton `Presentation` from it. Action / Export MP4 / narration toggle /
+fps / size / still-frame times / fullscreen / self-test are all launcher
+fields, in place of the former CLI flags.
+
+Two built-in demos ship in `presentations/`:
+
+- **`airflow`** — *The Dome That Breathes*: a perimeter-plenum tube
+  ringing a 2V dome's base, one leaf blower holding the whole envelope at
+  negative pressure, and the same loop reversed into a central vacuum.
+- **`housing_case`** — *The 2V Housing Case*: the convergent
+  housing-market argument for 2V domes — fundamentals (including a live
+  debunk of the golden-ratio myth), a station-by-station build of all 15
+  stages the assembly-line simulator uses, the real shed- and home-tier
+  cost comparisons from `al_build.building_comparisons()`, a hedged
+  structural/energy case, the manufacturing and factory-economics case, an
+  explicit list of claims the project will not make, and the real product
+  line and financing math. Every number on screen comes from the same
+  modules the interactive tools use, not a hardcoded figure.
+
+Every shot in both demos carries on-screen text — a caption plus, where
+there is a real claim to make, an overlay panel — so the argument reads
+complete with the sound off; narration is a second channel, not the only
+one.
+
 ## Local Voice Studio (`local_voice_studio.py`)
 
 Local Voice Studio is a third standalone program for recording speech you own,

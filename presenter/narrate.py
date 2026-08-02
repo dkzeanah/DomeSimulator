@@ -18,6 +18,7 @@ from pathlib import Path
 import numpy as np
 
 from two_v_demo.audio import (
+    _aac_encoder,
     companion_ffprobe,
     media_duration,
     resolve_executable,
@@ -114,7 +115,8 @@ def build_track(clips: list[Path | None], starts: list[float],
         handle.writeframes(mix.tobytes())
     subprocess.run(
         [ffmpeg_exe, "-y", "-v", "error", "-i", str(wav_path),
-         "-c:a", "aac", "-b:a", "160k", str(out_path)], check=True)
+         *_aac_encoder(ffmpeg_exe), "-b:a", "160k", str(out_path)],
+        check=True)
     wav_path.unlink(missing_ok=True)
     return out_path
 
