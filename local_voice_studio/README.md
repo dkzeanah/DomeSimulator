@@ -59,6 +59,22 @@ For local neural generation and transcription:
 .\.venv-voice\Scripts\python.exe -m pip install -r .\local_voice_studio\requirements-local-ai.txt
 ```
 
+If you have an NVIDIA GPU, also re-install PyTorch from its CUDA index —
+chatterbox-tts hard-pins `torch==2.6.0`/`torchaudio==2.6.0`, but the plain
+PyPI index serves a CPU-only build of that exact pin even on a CUDA-capable
+machine ([resemble-ai/chatterbox#95](https://github.com/resemble-ai/chatterbox/issues/95)):
+
+```powershell
+.\.venv-voice\Scripts\python.exe -m pip uninstall -y torch torchaudio
+.\.venv-voice\Scripts\python.exe -m pip install torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu126
+```
+
+`setup-windows.ps1 -WithLocalAI` (above) does this step automatically,
+skipping it when no NVIDIA GPU is detected. Confirm it worked from the
+launcher's Local Voice Studio tab with Action set to `diagnose`, or from
+the Project tab's hardware panel once the app is open — either should
+show CUDA as available.
+
 Chatterbox/PyTorch installation can be large. The first synthesis also
 downloads the selected model weights from their named upstream source. That is
 a model download, not hosted TTS: after weights are cached, audio inference is

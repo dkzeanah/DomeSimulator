@@ -1,3 +1,12 @@
 # Optional local AI backends. Install in a dedicated Python 3.11 environment.
+#
+# chatterbox-tts hard-pins torch==2.6.0/torchaudio==2.6.0, and the plain
+# PyPI index serves a CPU-only build of that exact pin even on a CUDA-
+# capable machine: https://github.com/resemble-ai/chatterbox/issues/95
+# setup-windows.ps1 -WithLocalAI re-installs those two from PyTorch's own
+# CUDA index automatically when an NVIDIA GPU is present. If you install
+# this file by hand instead, do the same afterward:
+#   pip uninstall -y torch torchaudio
+#   pip install torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu126
 chatterbox-tts
 faster-whisper

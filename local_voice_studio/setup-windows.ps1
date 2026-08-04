@@ -1,5 +1,6 @@
 param(
-    [switch]$WithLocalAI
+    [switch]$WithLocalAI,
+    [string]$CudaTag = "cu126"
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,6 +19,22 @@ $EnvironmentPython = Join-Path $EnvironmentRoot "Scripts\python.exe"
 
 if ($WithLocalAI) {
     & $EnvironmentPython -m pip install -r (Join-Path $PSScriptRoot "requirements-local-ai.txt")
+
+    # chatterbox-tts hard-pins torch==2.6.0/torchaudio==2.6.0 (see its
+    # pyproject.toml), but the plain PyPI index serves a CPU-only build
+    # of that exact pin even on a CUDA-capable machine:
+    # https://github.com/resemble-ai/chatterbox/issues/95
+    # Re-install the SAME pinned versions from PyTorch's own CUDA index
+    # so GPU inference actually works -- only when an NVIDIA GPU is
+    # present, since there is no point downloading a multi-gigabyte
+    # CUDA build for a machine that cannot use one.
+    if (Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
+        Write-Host "NVIDIA GPU detected -- installing CUDA-enabled PyTorch ($CudaTag)..."
+        & $EnvironmentPython -m pip uninstall -y torch torchaudio
+        & $EnvironmentPython -m pip install torch==2.6.0 torchaudio==2.6.0 --index-url "https://download.pytorch.org/whl/$CudaTag"
+    } else {
+        Write-Host "No NVIDIA GPU detected -- keeping the CPU-only PyTorch build."
+    }
 }
 
 & $EnvironmentPython -c "import launcher_common as lc; lc.write_config('local_voice_studio', {'action': 'selftest'})"
