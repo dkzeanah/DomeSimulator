@@ -376,6 +376,13 @@ def launch_f5_finetune_gui(
     environment = os.environ.copy()
     environment["WANDB_MODE"] = "offline"
     environment["GRADIO_SERVER_NAME"] = "127.0.0.1"
+    if on_line is not None:
+        # A piped (non-tty) stdout makes CPython fully-buffer instead of
+        # line-buffer by default, so this child's own print() calls would
+        # sit unflushed -- silent for a long stretch, then dumped all at
+        # once -- unless forced unbuffered (same fix launcher_common's
+        # launch_tool() already applies for every other launched tool).
+        environment["PYTHONUNBUFFERED"] = "1"
     run_id = f"{utc_now().replace(':', '').replace('-', '')}-f5-gui"
     run_directory = project.root / "runs" / run_id
     run_directory.mkdir(parents=True, exist_ok=False)
