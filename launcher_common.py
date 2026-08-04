@@ -109,8 +109,19 @@ def launch_tool(script: str, tool: str, config: dict,
     write_config(tool, config)
     env = dict(os.environ)
     env.setdefault("PYTHONUNBUFFERED", "1")
+    interpreter = python_for(tool)
+    # Pointing at a venv's python.exe directly does NOT put that venv's
+    # Scripts/ on PATH the way activating it would -- only sys.path-based
+    # lookups (importlib, "import x") see the venv automatically. PATH-based
+    # lookups (shutil.which, console scripts like f5-tts_finetune-gradio)
+    # would silently keep missing it. Prepend it so both kinds of lookup
+    # agree on which environment is in use.
+    scripts_dir = str(Path(interpreter).parent)
+    search_path = env.get("PATH", "")
+    if scripts_dir not in search_path.split(os.pathsep):
+        env["PATH"] = scripts_dir + os.pathsep + search_path
     process = subprocess.Popen(
-        [python_for(tool), script], cwd=str(cwd or ROOT), env=env,
+        [interpreter, script], cwd=str(cwd or ROOT), env=env,
         stdout=subprocess.PIPE if on_line else None,
         stderr=subprocess.STDOUT if on_line else None,
         text=True, bufsize=1)
