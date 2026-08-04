@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import os
+import re
 import shutil
 import subprocess
 import sys
 import time
 import traceback
+import webbrowser
 from pathlib import Path
 from tkinter import (
     BOTH,
@@ -21,6 +23,7 @@ from tkinter import (
     StringVar,
     Text,
     Tk,
+    Toplevel,
     filedialog,
     messagebox,
     ttk,
@@ -57,6 +60,78 @@ except ModuleNotFoundError:  # pragma: no cover - Windows has winsound
     winsound = None
 
 
+class ConsoleWindow:
+    """A separate window (not the in-notebook Logs tab) streaming live
+    output from background jobs and launched subprocesses.
+
+    Long-running local-AI work (loading a model, generating audio, a
+    fine-tune server starting up) can go silent for a while between
+    progress messages with nothing to show it hasn't frozen. This stays
+    open and auto-raises whenever new work starts, and if a line looks
+    like a local web address (e.g. an F5 fine-tune server's own
+    "Running on http://127.0.0.1:7860" banner) it opens that address in
+    the default browser automatically -- F5's fine-tune tool is a web
+    app, not a desktop window, so nothing else would ever show you
+    where to go."""
+
+    _URL_PATTERN = re.compile(r"https?://127\.0\.0\.1:\d+\S*")
+
+    def __init__(self, root: Tk):
+        self.root = root
+        self.window: Toplevel | None = None
+        self.text: Text | None = None
+        self._opened_urls: set[str] = set()
+
+    def _ensure_window(self) -> None:
+        if self.window is not None and self.window.winfo_exists():
+            return
+        self.window = Toplevel(self.root)
+        self.window.title("Local Voice Studio - Console")
+        self.window.geometry("880x420")
+        self.window.configure(bg="#08121c")
+        ttk.Label(
+            self.window,
+            text=(
+                "Live output from background jobs and launched tools. A "
+                "local web address (like http://127.0.0.1:7860) opens in "
+                "your browser automatically once it appears here."
+            ),
+            foreground="#91aabd",
+            wraplength=860,
+            background="#08121c",
+        ).pack(anchor="w", padx=8, pady=(8, 4))
+        self.text = Text(
+            self.window,
+            bg="#08121c",
+            fg="#b9d3e5",
+            insertbackground="white",
+            relief="flat",
+            wrap="word",
+        )
+        self.text.pack(fill=BOTH, expand=True, padx=8, pady=(0, 8))
+
+    def show(self) -> None:
+        def do() -> None:
+            self._ensure_window()
+            self.window.deiconify()
+            self.window.lift()
+        self.root.after(0, do)
+
+    def write(self, line: str) -> None:
+        def do() -> None:
+            self._ensure_window()
+            self.text.insert(END, line + "\n")
+            self.text.see(END)
+            match = self._URL_PATTERN.search(line)
+            if match and match.group(0) not in self._opened_urls:
+                url = match.group(0)
+                self._opened_urls.add(url)
+                self.text.insert(END, f"Opening {url} in your browser...\n")
+                self.text.see(END)
+                webbrowser.open(url)
+        self.root.after(0, do)
+
+
 class VoiceStudioApp:
     """A dependency-light GUI whose optional ML work runs in a worker thread."""
 
@@ -73,6 +148,10 @@ class VoiceStudioApp:
         self.prompt_index = 0
         self.last_audio: Path | None = None
         self.last_dome_plan: Path | None = None
+        self.console = ConsoleWindow(self.root)
+        self.f5_process: subprocess.Popen | None = None
+        self._job_started_at: float | None = None
+        self._job_last_heartbeat: float = 0.0
 
         self._configure_style()
         self._build_header()
@@ -92,6 +171,7 @@ class VoiceStudioApp:
         self._refresh_microphones()
         self.root.after(120, self._poll_worker)
         self.root.after(120, self._meter_tick)
+        self.root.after(1000, self._heartbeat_tick)
         if project_path:
             try:
                 self.set_project(VoiceProject.open(project_path))
@@ -167,6 +247,9 @@ class VoiceStudioApp:
             text="LOCAL ONLY  •  NO HOSTED INFERENCE API",
             foreground="#f5b95d",
         ).pack(side=RIGHT, padx=24)
+        ttk.Button(
+            header, text="Console", command=self.console.show
+        ).pack(side=RIGHT)
 
     @staticmethod
     def _tab(notebook: ttk.Notebook, title: str) -> ttk.Frame:
@@ -490,10 +573,20 @@ class VoiceStudioApp:
         ttk.Label(
             tab,
             text=(
-                "The launcher binds Gradio to 127.0.0.1 and forces W&B offline. "
-                "Training flags remain owned by the official upstream tool."
+                "This starts the official F5-TTS tool as a local WEB APP, "
+                "not a desktop window -- nothing pops up here. Its address "
+                "(like http://127.0.0.1:7860) appears in the Console "
+                "window (top-right button) and opens in your browser "
+                "automatically once the server finishes starting, which "
+                "can take a minute or more the first time. The launcher "
+                "binds it to 127.0.0.1 (this computer only) and forces "
+                "W&B offline. Training flags remain owned by the official "
+                "upstream tool -- read its own on-screen instructions "
+                "once the page opens."
             ),
+            wraplength=950,
             foreground="#91aabd",
+            justify=LEFT,
         ).pack(anchor="w")
 
     def _build_synthesize_tab(self) -> None:
@@ -851,22 +944,39 @@ class VoiceStudioApp:
             messagebox.showinfo("Busy", "Wait for the current background job.")
             return
         self.on_job_result = on_result
-        self.log(f"Started: {getattr(function, '__name__', str(function))}")
+        label = getattr(function, "__name__", str(function))
+        self.log(f"Started: {label}")
+        self.console.show()
+        self.console.write(f"=== Started: {label} ===")
+        self._job_started_at = time.time()
+        self._job_last_heartbeat = 0.0
         try:
             self.worker.start(function, *args, **kwargs)
         except Exception as exc:
             self.on_job_result = None
+            self._job_started_at = None
             messagebox.showerror("Background job", str(exc))
+
+    def _heartbeat_tick(self) -> None:
+        if self.worker.busy and self._job_started_at is not None:
+            elapsed = time.time() - self._job_started_at
+            if elapsed - self._job_last_heartbeat >= 15:
+                self._job_last_heartbeat = elapsed
+                self.console.write(f"... still working ({elapsed:.0f}s elapsed) ...")
+        self.root.after(1000, self._heartbeat_tick)
 
     def _poll_worker(self) -> None:
         for event in self.worker.poll():
             if event.kind == "progress":
                 self.log(str(event.value))
+                self.console.write(str(event.value))
                 self.import_status.set(str(event.value))
             elif event.kind == "result":
                 callback = self.on_job_result
                 self.on_job_result = None
+                self._job_started_at = None
                 self.log(f"Completed: {event.value}")
+                self.console.write(f"=== Completed: {event.value} ===")
                 if callback:
                     try:
                         callback(event.value)
@@ -874,7 +984,9 @@ class VoiceStudioApp:
                         messagebox.showerror("Job result", str(exc))
             elif event.kind == "error":
                 self.on_job_result = None
+                self._job_started_at = None
                 self.log(str(event.value))
+                self.console.write(f"=== FAILED ===\n{event.value}")
                 messagebox.showerror(
                     "Background job failed",
                     str(event.value).strip().splitlines()[-1],
@@ -1133,8 +1245,27 @@ class VoiceStudioApp:
         try:
             if not self.f5_license_ok.get():
                 raise PermissionError("Review and accept the F5 license notice first")
-            process = launch_f5_finetune_gui(self.require_project())
-            self.log(f"Started official F5 fine-tune GUI (PID {process.pid})")
+            if self.f5_process is not None and self.f5_process.poll() is None:
+                self.console.show()
+                messagebox.showinfo(
+                    "F5 fine-tune",
+                    f"Already running (PID {self.f5_process.pid}). Check "
+                    "the console window -- its web address opens in your "
+                    "browser automatically once the server is ready.",
+                )
+                return
+            self.console.show()
+            self.console.write("=== Starting official F5 fine-tune GUI ===")
+            self.f5_process = launch_f5_finetune_gui(
+                self.require_project(), on_line=self.console.write
+            )
+            self.log(f"Started official F5 fine-tune GUI (PID {self.f5_process.pid})")
+            self.console.write(
+                f"PID {self.f5_process.pid}. This is a web app, not a "
+                "desktop window -- its address will appear below and open "
+                "automatically in your browser once it's ready (can take "
+                "a while on first run)."
+            )
         except Exception as exc:
             messagebox.showerror("F5 fine-tune", str(exc))
 

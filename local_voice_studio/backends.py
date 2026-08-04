@@ -14,6 +14,7 @@ import os
 import shutil
 import subprocess
 import sys
+import threading
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable
@@ -333,8 +334,16 @@ def export_f5_dataset(project: VoiceProject, output_directory: Path) -> Path:
 def launch_f5_finetune_gui(
     project: VoiceProject,
     command: str = "f5-tts_finetune-gradio",
+    *,
+    on_line: Callable[[str], None] | None = None,
 ) -> subprocess.Popen:
-    """Launch the official upstream fine-tune UI as an adapter boundary."""
+    """Launch the official upstream fine-tune UI as an adapter boundary.
+
+    This starts a Gradio *web server*, not a desktop window -- its
+    startup banner (including the http://127.0.0.1:PORT address to open
+    in a browser) is only visible if its stdout is captured, so when
+    ``on_line`` is given, stdout/stderr are streamed to it line-by-line
+    from a background thread (mirrors launcher_common.launch_tool())."""
     executable = shutil.which(command)
     if not executable:
         raise RuntimeError(
@@ -383,7 +392,16 @@ def launch_f5_finetune_gui(
         cwd=str(project.root),
         env=environment,
         shell=False,
+        stdout=subprocess.PIPE if on_line else None,
+        stderr=subprocess.STDOUT if on_line else None,
+        text=True if on_line else None,
+        bufsize=1 if on_line else -1,
     )
+    if on_line is not None:
+        def pump() -> None:
+            for line in process.stdout:
+                on_line(line.rstrip("\n"))
+        threading.Thread(target=pump, daemon=True).start()
     project.audit(
         "f5_finetune_gui_launched",
         {"command": executable, "run_id": run_id, "pid": process.pid},

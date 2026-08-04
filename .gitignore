@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 *.pyo
 .venv-voice/
+.venv-f5/
+F5-TTS/
 *.mp4
 # Generated exports (recreate with flatten.py / F6 in-app)
 dome_flat.md

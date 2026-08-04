@@ -140,6 +140,15 @@ and local backends" panel names the exact interpreter currently
 running the tool and the exact fix if Chatterbox or faster-whisper are
 not ready -- you do not need this file open to get unstuck.
 
+The "Console" button (top-right of the window) opens a separate
+window streaming live output from whatever is currently running --
+model loading, synthesis, an F5 fine-tune server starting up -- with a
+"still working (Ns elapsed)" heartbeat during long silent stretches so
+it stays clear that nothing has frozen. The F5 fine-tune GUI in
+particular is a local web app, not a desktop window: its address
+(`http://127.0.0.1:PORT`) appears in the console and opens in your
+browser automatically once the server is ready.
+
 Every synthetic WAV has a JSON sidecar marking it as synthetic and recording
 the model, profile checksum, settings, and source text. Chatterbox’s own
 watermark is preserved.
