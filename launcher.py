@@ -35,6 +35,7 @@ def main() -> int:
     tk, ttk = w["tk"], w["ttk"]
     LabeledEntry, LabeledCombo = w["LabeledEntry"], w["LabeledCombo"]
     CheckRow, PathRow = w["CheckRow"], w["PathRow"]
+    add_tooltip = w["add_tooltip"]
 
     root = tk.Tk()
     root.title("DomeSim Launcher")
@@ -46,6 +47,24 @@ def main() -> int:
         style.theme_use("clam")
     except tk.TclError:
         pass
+
+    # The clam theme's background is a light warm grey (#dcdad5); the
+    # muted blue-greys tried earlier read as washed-out against it.
+    # Named styles here use genuinely dark, high-contrast foregrounds —
+    # Intro gets a distinct tinted callout background so each tab's
+    # opening description reads as one clear block; Note stays on the
+    # normal background since it's threaded between form fields.
+    INTRO_BG, INTRO_FG = "#d7e3ea", "#12242f"
+    NOTE_FG = "#33404a"
+    LIVE_FG = "#0d2b12"
+    LIVE_BG = "#d9e8da"
+    style.configure("Intro.TLabel", background=INTRO_BG,
+                    foreground=INTRO_FG, font=("Segoe UI", 10),
+                    padding=(10, 8))
+    style.configure("Note.TLabel", foreground=NOTE_FG,
+                    font=("Segoe UI", 9))
+    style.configure("Live.TLabel", background=LIVE_BG, foreground=LIVE_FG,
+                    font=("Segoe UI", 9, "bold"), padding=(8, 6))
 
     header = ttk.Label(
         root, text="DomeSim Launcher",
@@ -60,7 +79,7 @@ def main() -> int:
                    "when launched: press Escape to release the mouse, "
                    "then Escape again to quit and return here.",
         wraplength=1000, justify="left",
-        foreground="#556").pack(anchor="w", padx=12, pady=(0, 8))
+        foreground=NOTE_FG).pack(anchor="w", padx=12, pady=(0, 8))
 
     notebook = ttk.Notebook(root)
     notebook.pack(fill="both", expand=True, padx=12, pady=(0, 6))
@@ -115,9 +134,11 @@ def main() -> int:
 
     def intro(parent, text):
         """Plain-language 'what is this and why would I use it' blurb
-        that belongs at the top of every tab, before any fields."""
-        ttk.Label(parent, text=text, wraplength=760, justify="left",
-                 foreground="#9fb0c3").pack(anchor="w", pady=(0, 8))
+        that belongs at the top of every tab, before any fields. Shown
+        as a distinct tinted callout so it reads as one clear block."""
+        ttk.Label(parent, text=text, wraplength=730, justify="left",
+                 style="Intro.TLabel").pack(anchor="w", fill="x",
+                                            pady=(0, 10))
 
     def section(parent, text):
         ttk.Label(parent, text=text, font=("Segoe UI", 10, "bold")).pack(
@@ -125,12 +146,43 @@ def main() -> int:
 
     def note(parent, text):
         """Small explanatory text under a field or group of fields —
-        format examples, what a dropdown's choices actually do, which
-        fields matter only for which Action. Never load-bearing, only
-        clarifying, so it always wraps and never fights for space."""
+        format examples, which fields matter only for which Action.
+        Never load-bearing, only clarifying, so it always wraps and
+        never fights for space."""
         ttk.Label(parent, text=text, wraplength=740, justify="left",
-                 font=("Segoe UI", 8), foreground="#7d8a99").pack(
-            anchor="w", pady=(0, 6))
+                 style="Note.TLabel").pack(anchor="w", pady=(0, 6))
+
+    def action_help(parent, combo, help_map: dict):
+        """Wire a dropdown to a live one-line explanation of whatever
+        is CURRENTLY selected, plus a hover tooltip on the dropdown
+        listing every option with its own explanation.
+
+        Fixes a real bug: a single static block of text describing
+        every option at once still reads as correct no matter what is
+        selected, which looks exactly like the explanation not
+        updating at all when you change the dropdown. This makes the
+        visible text track the actual selection, and moves the full
+        reference listing into a tooltip instead of permanently
+        occupying space for options you didn't pick.
+
+        ``help_map`` is ``{value: one-line explanation}``, in the same
+        order as the dropdown's own values (that order is what the
+        tooltip listing uses)."""
+        live = ttk.Label(parent, wraplength=730, justify="left",
+                         style="Live.TLabel")
+        live.pack(anchor="w", fill="x", pady=(2, 8))
+
+        def refresh(*_a):
+            value = combo.get()
+            text = help_map.get(value, "(no description for this value)")
+            live.configure(text=f"{value or '(blank)'} — {text}")
+        combo.var.trace_add("write", refresh)
+        refresh()
+
+        listing = "\n\n".join(
+            f"{value or '(blank)'} — {text}"
+            for value, text in help_map.items())
+        add_tooltip(combo.widget, "Every option:\n\n" + listing)
 
     def launch_button(parent, text, command):
         ttk.Button(parent, text=text, command=command).pack(
@@ -219,11 +271,14 @@ def main() -> int:
         action = LabeledCombo(body, "Action", ["run", "selftest", "shots"],
                               "run")
         action.pack(fill="x", pady=3)
-        note(body, "run = open the live simulation (the default). "
-                   "selftest = run this tool's internal checks and "
-                   "print the result — for troubleshooting, not for "
-                   "watching. shots = save still images at chosen "
-                   "moments instead of opening a window (see below).")
+        action_help(body, action, {
+            "run": "open the live simulation (the default).",
+            "selftest": "run this tool's internal checks and print "
+                        "the result — for troubleshooting, not for "
+                        "watching.",
+            "shots": "save still images at chosen moments instead of "
+                     "opening a window (see below).",
+        })
         section(body, "Offscreen stills (action = shots)")
         shots = LabeledEntry(body, "Times (seconds, comma-sep)",
                              "4,60,120", placeholder="e.g. 4,60,120")
@@ -247,19 +302,23 @@ def main() -> int:
                                              "bom", "benchmark", "value",
                                              "scale", "ledger"], "")
             panel.pack(fill="x", pady=3)
-            note(body, "Which data panel is docked on screen (blank = "
-                       "whatever the simulation last had open). pnl = "
-                       "live profit and loss for the dome on the line. "
-                       "throughput = production rate and the "
-                       "bottleneck station. bom = full bill of "
-                       "materials and cost breakdown. benchmark = box "
-                       "vs dome cost comparison, bare-shed and "
-                       "finished-home tiers. value = the finished "
-                       "dome's off-grid story — solar, battery, "
-                       "insulation, embodied carbon. scale = what 1, "
-                       "3, or 6 production lines looks like, plus "
-                       "break-even. ledger = cumulative production and "
-                       "sales history.")
+            action_help(body, panel, {
+                "": "whatever the simulation last had open — pick one "
+                    "below to choose explicitly.",
+                "pnl": "live profit and loss for the dome currently "
+                       "on the line.",
+                "throughput": "production rate and which station is "
+                              "the bottleneck.",
+                "bom": "full bill of materials and cost breakdown.",
+                "benchmark": "box vs dome cost comparison, bare-shed "
+                            "and finished-home tiers.",
+                "value": "the finished dome's off-grid story — "
+                        "solar, battery, insulation, embodied "
+                        "carbon.",
+                "scale": "what running 1, 3, or 6 production lines "
+                        "looks like, plus break-even.",
+                "ledger": "cumulative production and sales history.",
+            })
             extras = {"speed": speed, "panel": panel}
 
         def go():
@@ -306,13 +365,39 @@ def main() -> int:
                          "case_utility_core", "case_market_fit"],
                         "airflow")
     demo.pack(fill="x", pady=3)
-    note(body, "12 videos ship with this project. 'airflow' explains "
-               "a dome ventilation system. 'housing_case' is the full "
-               "argument for 2V dome housing in one video. The ten "
-               "'case_...' videos are that same argument split one "
-               "point per video — cost, structural rigidity, energy, "
-               "financing, and so on — so you can watch or share just "
-               "the one point you need.")
+    action_help(body, demo, {
+        "": "none selected — pick one below, or fill in a script/"
+            "brief instead.",
+        "airflow": "The Dome That Breathes: a perimeter-plenum "
+                  "ventilation system, one leaf blower holding a "
+                  "whole dome at negative pressure.",
+        "housing_case": "The full pro-dome argument for 2V housing, "
+                        "in one video.",
+        "case_manufacturing": "Argument 1/10: the standardized-"
+                              "product/manufacturing case.",
+        "case_bare_shell": "Argument 2/10: the bare-shell cost "
+                           "comparison (shed tier).",
+        "case_more_room": "Argument 3/10: the finished-home "
+                          "comparison — a small honest price gap, a "
+                          "real volume win.",
+        "case_triangles": "Argument 4/10: the structural-rigidity "
+                          "case, built from a first-principles "
+                          "count.",
+        "case_benchmark": "Argument 5/10: vs. a conventional "
+                          "manufactured home, plus factory "
+                          "throughput/break-even.",
+        "case_energy": "Argument 6/10: the hedged off-grid/solar "
+                       "energy case.",
+        "case_resilience": "Argument 7/10: the hedged wind/seismic "
+                           "structural case.",
+        "case_financing": "Argument 8/10: real financing math "
+                          "across every product tier.",
+        "case_utility_core": "Argument 9/10: the curved-wall "
+                             "objection and how it's solved.",
+        "case_market_fit": "Argument 10/10: honest market fit — "
+                           "where this is, and isn't, the right "
+                           "product.",
+    })
     script_path = PathRow(body, "...or a presentation script", "",
                           mode="open",
                           filetypes=(("Presentation", "*.json *.py"),
@@ -356,14 +441,18 @@ def main() -> int:
     action = LabeledCombo(body, "Action",
                           ["run", "shots", "export", "selftest"], "run")
     action.pack(fill="x", pady=3)
-    note(body, "run = play the video live in a window (the default — "
-               "use this to just watch something). shots = save still "
-               "frames at chosen moments instead of a video. export = "
-               "render the complete narrated video to the MP4 path "
-               "below (takes several minutes; the log pane at the "
-               "bottom of this window shows progress). selftest = run "
-               "this tool's internal checks and print the result — "
-               "for troubleshooting, not for watching.")
+    action_help(body, action, {
+        "run": "play the video live in a window (the default — use "
+               "this to just watch something).",
+        "shots": "save still frames at chosen moments instead of a "
+                 "video.",
+        "export": "render the complete narrated video to the MP4 "
+                  "path below (takes several minutes; the log pane "
+                  "at the bottom of this window shows progress).",
+        "selftest": "run this tool's internal checks and print the "
+                    "result — for troubleshooting, not for "
+                    "watching.",
+    })
     export_path = PathRow(body, "Export MP4 path (action = export)",
                           "presenter_output/presentation.mp4", mode="save",
                           filetypes=(("MP4 video", "*.mp4"),))
@@ -440,22 +529,29 @@ def main() -> int:
          "voice_preview", "list_voices", "narration_only", "script",
          "build_packet"], "run")
     mc_action.pack(fill="x", pady=3)
-    note(body, "run = watch the interactive lesson live (the "
-               "default). selftest = internal checks, printed to the "
-               "log below. report = print a plain-text audit of every "
-               "calculation (strut lengths, ratios) with no window. "
-               "shots = save still images at chosen moments. "
-               "export_video = render the complete narrated lesson to "
-               "an MP4 (several minutes; progress shows in the log). "
-               "voice_preview = generate a short MP3 sample of the "
-               "chosen voice, to audition it before a full export. "
-               "list_voices = print every available narration voice "
-               "to the log. narration_only = generate just the audio "
-               "track, no video. script = write the narration text "
-               "plus a subtitle file, no audio or video. "
-               "build_packet = export real-world build files for "
-               "physically constructing a dome (cut list, hub "
-               "coordinates, CAD file, field guide) — no window.")
+    action_help(body, mc_action, {
+        "run": "watch the interactive lesson live (the default).",
+        "selftest": "internal checks, printed to the log below.",
+        "report": "print a plain-text audit of every calculation "
+                  "(strut lengths, ratios) with no window.",
+        "shots": "save still images at chosen moments.",
+        "export_video": "render the complete narrated lesson to an "
+                        "MP4 (several minutes; progress shows in the "
+                        "log).",
+        "voice_preview": "generate a short MP3 sample of the chosen "
+                         "voice, to audition it before a full "
+                         "export.",
+        "list_voices": "print every available narration voice to "
+                       "the log.",
+        "narration_only": "generate just the audio track, no "
+                          "video.",
+        "script": "write the narration text plus a subtitle file, "
+                  "no audio or video.",
+        "build_packet": "export real-world build files for "
+                        "physically constructing a dome (cut list, "
+                        "hub coordinates, CAD file, field guide) — "
+                        "no window.",
+    })
     mc_fullscreen = CheckRow(body, "Fullscreen (live run)", False)
     mc_fullscreen.pack(anchor="w")
     note(body, "Only matters when Action = run.")
@@ -622,11 +718,15 @@ def main() -> int:
     lvs_action = LabeledCombo(body, "Action",
                               ["run", "selftest", "diagnose"], "run")
     lvs_action.pack(fill="x", pady=3)
-    note(body, "run = open the studio (the default). selftest = "
-               "internal checks, printed to the log below, no window. "
-               "diagnose = print what hardware/local-AI backends are "
-               "available on this computer — useful if something "
-               "seems unavailable once the studio is open.")
+    action_help(body, lvs_action, {
+        "run": "open the studio (the default).",
+        "selftest": "internal checks, printed to the log below, no "
+                    "window.",
+        "diagnose": "print what hardware/local-AI backends are "
+                    "available on this computer — useful if "
+                    "something seems unavailable once the studio is "
+                    "open.",
+    })
     lvs_project = PathRow(body, "Project folder (optional)", "",
                           mode="dir",
                           placeholder="e.g. C:\\Users\\you\\MyVoice")

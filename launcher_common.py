@@ -125,7 +125,7 @@ def build_widgets():
     import tkinter as tk
     from tkinter import filedialog, ttk
 
-    PLACEHOLDER_COLOR = "#8a8a8a"
+    PLACEHOLDER_COLOR = "#6b6b6b"
 
     class _PlaceholderMixin:
         """Grey example text shown while a field is empty. Clears on
@@ -186,9 +186,11 @@ def build_widgets():
                 side="left")
             self.var = tk.StringVar(value=default or (values[0] if values
                                                        else ""))
-            ttk.Combobox(self, textvariable=self.var, values=values,
-                        state="readonly", width=29).pack(
-                side="left", fill="x", expand=True)
+            self.values = list(values)
+            self.widget = ttk.Combobox(
+                self, textvariable=self.var, values=values,
+                state="readonly", width=29)
+            self.widget.pack(side="left", fill="x", expand=True)
 
         def get(self):
             return self.var.get()
@@ -231,8 +233,57 @@ def build_widgets():
         def get(self):
             return self._raw_get()
 
+    class Tooltip:
+        """Hover popup for a widget — appears near the cursor on Enter,
+        gone on Leave. ``text`` may be a plain string or a zero-arg
+        callable for text that depends on other state (rebuilt fresh on
+        every hover, so it can never go stale the way a fixed string
+        could once something else on the tab changes)."""
+
+        def __init__(self, widget, text):
+            self.widget = widget
+            self._text = text
+            self._win = None
+            widget.bind("<Enter>", self._show, add="+")
+            widget.bind("<Leave>", self._hide, add="+")
+            widget.bind("<ButtonPress>", self._hide, add="+")
+
+        def _resolve(self) -> str:
+            return self._text() if callable(self._text) else self._text
+
+        def _show(self, _event=None) -> None:
+            text = self._resolve()
+            if not text or self._win is not None:
+                return
+            x = self.widget.winfo_rootx() + 12
+            y = self.widget.winfo_rooty() + self.widget.winfo_height() + 6
+            win = tk.Toplevel(self.widget)
+            win.wm_overrideredirect(True)
+            win.wm_geometry(f"+{x}+{y}")
+            try:
+                win.wm_attributes("-topmost", True)
+            except tk.TclError:
+                pass
+            ttk.Label(win, text=text, justify="left", wraplength=460,
+                     background="#1c2733", foreground="#eef3f8",
+                     relief="solid", borderwidth=1,
+                     font=("Segoe UI", 9), padding=(8, 6)).pack()
+            self._win = win
+
+        def _hide(self, _event=None) -> None:
+            if self._win is not None:
+                self._win.destroy()
+                self._win = None
+
+    def add_tooltip(widget, text):
+        """Attach a hover tooltip to ``widget``. ``text`` may be a
+        string or a zero-arg callable. Returns the Tooltip (rarely
+        needed; the binding keeps it alive via the widget)."""
+        return Tooltip(widget, text)
+
     return {
         "tk": tk, "ttk": ttk, "filedialog": filedialog,
+        "add_tooltip": add_tooltip,
         "LabeledEntry": LabeledEntry, "LabeledCombo": LabeledCombo,
         "CheckRow": CheckRow, "PathRow": PathRow,
     }
