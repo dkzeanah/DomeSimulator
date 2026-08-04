@@ -82,6 +82,12 @@ from the consolidated GUI (project folder, self-test, diagnose):
 py -3.12 launcher.py
 ```
 
+The launcher always runs Local Voice Studio with `.venv-voice`'s Python
+if that folder exists, regardless of which Python started the launcher
+itself — so a plain `py -3.12 launcher.py` is enough once the setup
+above has been run; there is no need to relaunch the launcher itself
+with a different interpreter just for this one tool.
+
 or run it directly for the plain GUI with no project pre-selected:
 
 ```powershell
@@ -111,6 +117,12 @@ The GUI workflow is:
 4. Build a locked voice profile.
 5. Generate local speech or a complete dome narration plan.
 6. Render the 2V MP4 with that existing local track.
+
+The Project tab's "How this works" panel repeats this same workflow,
+plus a fastest-path recipe, inside the app itself, and its "Hardware
+and local backends" panel names the exact interpreter currently
+running the tool and the exact fix if Chatterbox or faster-whisper are
+not ready -- you do not need this file open to get unstuck.
 
 Every synthetic WAV has a JSON sidecar marking it as synthetic and recording
 the model, profile checksum, settings, and source text. Chatterbox’s own

@@ -20,7 +20,8 @@ if ($WithLocalAI) {
     & $EnvironmentPython -m pip install -r (Join-Path $PSScriptRoot "requirements-local-ai.txt")
 }
 
-& $EnvironmentPython -m local_voice_studio --selftest
+& $EnvironmentPython -c "import launcher_common as lc; lc.write_config('local_voice_studio', {'action': 'selftest'})"
+& $EnvironmentPython -m local_voice_studio
 Write-Host ""
 Write-Host "Local Voice Studio is ready."
 Write-Host "Run: $EnvironmentPython $StudioRoot\local_voice_studio.py"

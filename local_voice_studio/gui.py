@@ -35,6 +35,7 @@ from .audio_tools import (
     write_pcm16_mono,
 )
 from .backends import (
+    HardwareInfo,
     chatterbox_status,
     detect_hardware,
     export_f5_dataset,
@@ -183,10 +184,41 @@ class VoiceStudioApp:
     def _build_project_tab(self) -> None:
         tab = self._tab(self.notebook, "Project")
         tab.columnconfigure(0, weight=1)
+
+        guide = ttk.LabelFrame(tab, text="How this works", padding=14)
+        guide.grid(row=0, column=0, sticky="ew")
+        ttk.Label(
+            guide,
+            text=(
+                "Six steps, left to right across the tabs above: Project "
+                "(this tab) -> Record or Import & Segment -> Dataset -> "
+                "Voice Profile -> Synthesize -> Dome Narration. Fine-tune "
+                "and Logs are optional and advanced -- most people never "
+                "need them.\n\n"
+                "Fastest path to hearing your own voice: (1) fill in the "
+                "form below and click Create project. (2) Go to Record, "
+                "use the built-in prompts, and record 10-15 short lines "
+                "(or use Import & Segment with audio you already own). "
+                "(3) Dataset tab: select each clip, type or locally "
+                "transcribe its text, then click Accept. (4) Voice "
+                "Profile tab: once you have ~15+ seconds of accepted "
+                "clips, click Build profile. (5) Synthesize tab: pick "
+                "that profile, type a sentence, click Generate locally.\n\n"
+                "Steps 1-4 need nothing extra. Step 5, and Dome "
+                "Narration, need the optional Chatterbox Turbo backend "
+                "-- see 'Hardware and local backends' below for whether "
+                "it is ready, and the exact fix if it is not. Full "
+                "technical detail for any error is always in the Logs "
+                "tab, even when the popup message is short."
+            ),
+            wraplength=980,
+            justify=LEFT,
+        ).pack(anchor="w")
+
         self.project_name = StringVar(value="My Voice")
         self.speaker_label = StringVar()
         form = ttk.LabelFrame(tab, text="Create a local project", padding=14)
-        form.grid(row=0, column=0, sticky="ew")
+        form.grid(row=1, column=0, sticky="ew", pady=(14, 0))
         form.columnconfigure(1, weight=1)
         self._labeled_entry(form, "Project name", self.project_name, 0)
         self._labeled_entry(form, "Voice owner / speaker", self.speaker_label, 1)
@@ -221,8 +253,8 @@ class VoiceStudioApp:
         ).pack(side=LEFT, padx=8)
 
         status = ttk.LabelFrame(tab, text="Hardware and local backends", padding=14)
-        status.grid(row=1, column=0, sticky="nsew", pady=(14, 0))
-        tab.rowconfigure(1, weight=1)
+        status.grid(row=2, column=0, sticky="nsew", pady=(14, 0))
+        tab.rowconfigure(2, weight=1)
         self.hardware_text = Text(
             status,
             height=14,
@@ -425,11 +457,17 @@ class VoiceStudioApp:
         ttk.Label(
             tab,
             text=(
-                "Your 6 GB GTX 1660 Ti is suited to reference-profile inference. "
-                "F5 fine-tuning is experimental at this memory level and may run "
-                "out of memory. The official F5 code is MIT, but its official "
-                "pretrained weights are CC-BY-NC; do not assume monetized use is allowed."
+                "Most people do not need this tab -- the Synthesize tab "
+                "(Chatterbox Turbo) is the reliable first target. This is "
+                "for advanced, optional adaptation of a pretrained model."
             ),
+            wraplength=950,
+            justify=LEFT,
+        ).pack(anchor="w", pady=(4, 0))
+        self.f5_hardware_note = StringVar()
+        ttk.Label(
+            tab,
+            textvariable=self.f5_hardware_note,
             wraplength=950,
             justify=LEFT,
         ).pack(anchor="w", pady=12)
@@ -527,6 +565,11 @@ class VoiceStudioApp:
         ).pack(side=LEFT, padx=8)
         ttk.Label(
             controls,
+            text="Needs Chatterbox Turbo -- see Project tab if this fails.",
+            foreground="#91aabd",
+        ).pack(side=LEFT, padx=8)
+        ttk.Label(
+            controls,
             text="Generated files include SYNTHETIC VOICE provenance sidecars.",
             foreground="#91aabd",
         ).pack(side=RIGHT)
@@ -573,6 +616,11 @@ class VoiceStudioApp:
             buttons,
             text="2. Render narrated MP4…",
             command=self.render_dome_video,
+        ).pack(side=LEFT, padx=8)
+        ttk.Label(
+            buttons,
+            text="Step 1 needs Chatterbox Turbo -- see Project tab if it fails.",
+            foreground="#91aabd",
         ).pack(side=LEFT, padx=8)
         self.dome_status = StringVar(value="No local narration plan generated.")
         ttk.Label(
@@ -653,12 +701,44 @@ class VoiceStudioApp:
         except Exception as exc:
             messagebox.showerror("Open project", str(exc))
 
+    @staticmethod
+    def _f5_hardware_note(hardware: HardwareInfo) -> str:
+        if not hardware.gpu_name:
+            fit = (
+                "No NVIDIA GPU was detected, so F5 fine-tuning is not "
+                "practical here -- CPU-only fine-tuning is extremely slow."
+            )
+        elif hardware.vram_mib < 8_000:
+            fit = (
+                f"Your {hardware.gpu_name} ({hardware.vram_mib} MiB VRAM) "
+                "suits reference-profile inference (Synthesize tab). F5 "
+                "fine-tuning is experimental at this memory level and may "
+                "run out of memory."
+            )
+        elif hardware.vram_mib < 16_000:
+            fit = (
+                f"Your {hardware.gpu_name} ({hardware.vram_mib} MiB VRAM) "
+                "can attempt F5 fine-tuning with small batch sizes; expect "
+                "it to be slow."
+            )
+        else:
+            fit = (
+                f"Your {hardware.gpu_name} ({hardware.vram_mib} MiB VRAM) "
+                "comfortably fits both inference and fine-tuning."
+            )
+        return (
+            fit + " The official F5 code is MIT, but its official "
+            "pretrained weights are CC-BY-NC; do not assume monetized use "
+            "is allowed."
+        )
+
     def _refresh_hardware(self) -> None:
         try:
             hardware = detect_hardware()
             chatterbox = chatterbox_status()
             whisper = faster_whisper_status()
             lines = [
+                f"Python running this tool: {sys.executable}",
                 f"GPU: {hardware.gpu_name or 'No NVIDIA GPU detected'}",
                 f"VRAM: {hardware.vram_mib} MiB",
                 f"Driver: {hardware.driver or 'n/a'}",
@@ -673,6 +753,15 @@ class VoiceStudioApp:
                 "",
                 "Profile building and dataset curation do not need either ML backend.",
             ]
+            if not chatterbox.ready or not whisper.ready:
+                lines += [
+                    "",
+                    "Fix: from the project folder, run once, then reopen",
+                    "Local Voice Studio (it uses that environment from then",
+                    "on regardless of which Python started the launcher):",
+                    "  local_voice_studio/setup-windows.ps1 -WithLocalAI",
+                ]
+            self.f5_hardware_note.set(self._f5_hardware_note(hardware))
         except Exception:
             lines = [traceback.format_exc()]
         self.hardware_text.delete("1.0", END)

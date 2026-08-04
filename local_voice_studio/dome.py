@@ -56,7 +56,7 @@ def build_dome_narration(
     clip_paths: list[Path] = []
     speech_durations: list[float] = []
     for index, chapter in enumerate(CHAPTERS):
-        clip_path = output_directory / f"chapter_{chapter.number:02d}.wav"
+        clip_path = output_directory / f"chapter_{chapter.number}.wav"
         sidecar_path = clip_path.with_suffix(".wav.json")
         expected_text = spoken_chapter_text(index)
         cached = False
@@ -161,24 +161,25 @@ def export_dome_video(
     progress: Callable[[str], None] = print,
 ) -> Path:
     """Run the existing renderer with an already-generated local voice plan."""
+    import launcher_common as _lc
+
     launcher = Path(__file__).resolve().parents[1] / "two_v_masterclass.py"
     if not launcher.is_file():
         raise FileNotFoundError(f"2V masterclass launcher not found: {launcher}")
-    command = [
-        sys.executable,
-        str(launcher),
-        "--export-video",
-        str(output_path),
-        "--local-narration-plan",
-        str(plan_path),
-        "--fps",
-        str(max(1, fps)),
-        "--size",
-        size,
-    ]
+    # two_v_masterclass.py takes no CLI flags anymore -- it reads a
+    # launcher_common config ticket at startup instead (see
+    # two_v_demo/app.py's main()). Write that ticket before spawning it,
+    # the same way the launcher GUI's "2V Masterclass" tab does.
+    _lc.write_config("two_v_masterclass", {
+        "action": "export_video",
+        "export_video": str(output_path),
+        "local_narration_plan": str(plan_path),
+        "fps": max(1, fps),
+        "size": size,
+    })
     progress("Rendering the dome video with the local narration track...")
     result = subprocess.run(
-        command,
+        [sys.executable, str(launcher)],
         cwd=str(launcher.parent),
         capture_output=True,
         text=True,

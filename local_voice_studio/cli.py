@@ -10,6 +10,7 @@ no project pre-selected.
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import asdict
 from pathlib import Path
 
@@ -29,12 +30,22 @@ def main() -> int:
         run_selftest()
         return 0
     if action == "diagnose":
+        chatterbox = chatterbox_status()
+        whisper = faster_whisper_status()
         payload = {
+            "python_executable": sys.executable,
             "hardware": asdict(detect_hardware()),
-            "chatterbox": asdict(chatterbox_status()),
-            "faster_whisper": asdict(faster_whisper_status()),
+            "chatterbox": asdict(chatterbox),
+            "faster_whisper": asdict(whisper),
         }
         print(json.dumps(payload, indent=2))
+        if not chatterbox.ready or not whisper.ready:
+            print()
+            print("Not ready above? Install the missing backend(s) into a")
+            print("dedicated environment this program picks up automatically:")
+            print("  local_voice_studio/setup-windows.ps1 -WithLocalAI")
+            print("(creates .venv-voice with chatterbox-tts + faster-whisper,")
+            print("used regardless of which Python started the launcher.)")
         return 0
     from .gui import launch
 

@@ -403,13 +403,19 @@ py -3.12 launcher.py   # Local Voice Studio tab: project folder, self-test,
                        # diagnose — replaces --project / --selftest / --diagnose
 ```
 
-The launcher spawns tools with whichever Python interpreter it is itself
-running under. If you installed the optional local-AI backends
-(Chatterbox, faster-whisper) into the dedicated `.venv-voice`
-environment above, launch the launcher itself with that interpreter
-(`.\.venv-voice\Scripts\python.exe .\launcher.py`) so those backends are
-importable; otherwise Voice Studio still opens normally and reports
-them as "not ready" instead of failing.
+The launcher spawns most tools with whichever Python interpreter it is
+itself running under. Local Voice Studio is the one exception: if a
+`.venv-voice` folder exists (see setup above), the launcher always uses
+that environment for Local Voice Studio specifically, regardless of
+which Python started the launcher window — so installing the optional
+local-AI backends there is enough on its own; you do not also need to
+relaunch the whole launcher with a different interpreter. Run
+`.\local_voice_studio\setup-windows.ps1 -WithLocalAI` once to create
+`.venv-voice` with Chatterbox and faster-whisper installed. Voice
+Studio still opens normally without it and reports those backends as
+"not ready," with the exact fix, rather than failing; its own "How
+this works" panel (Project tab, inside the tool's window) and its
+"diagnose" action explain the same thing.
 
 The Dome Narration tab generates chapter WAVs, a loudness-normalized local
 track, timing JSON, and SRT, then passes that existing track to the 2V exporter.

@@ -13,6 +13,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable
@@ -150,7 +151,15 @@ def synthesize_chatterbox(
     status = chatterbox_status()
     if not status.ready:
         raise RuntimeError(
-            "Chatterbox is not ready. Install the optional inference requirements."
+            "Chatterbox Turbo is not installed in this Python environment "
+            f"({sys.executable}). Fix: from the project folder, run "
+            "'local_voice_studio/setup-windows.ps1 -WithLocalAI' (creates "
+            ".venv-voice with chatterbox-tts and faster-whisper), then use "
+            "the launcher's Local Voice Studio tab again -- it picks up "
+            "that environment automatically, no matter which Python "
+            "started the launcher window. Missing here: "
+            + ", ".join(detail.removeprefix("missing: ")
+                        for detail in status.details)
         )
     previous_hf_offline = os.environ.get("HF_HUB_OFFLINE")
     previous_transformers_offline = os.environ.get("TRANSFORMERS_OFFLINE")
@@ -329,8 +338,15 @@ def launch_f5_finetune_gui(
     executable = shutil.which(command)
     if not executable:
         raise RuntimeError(
-            "F5-TTS fine-tune command was not found. Install F5-TTS editable "
-            "from its official repository in the voice-studio environment."
+            f"'{command}' was not found on PATH in this Python environment "
+            f"({sys.executable}). Fine-tuning is optional and advanced -- "
+            "try the Synthesize tab (Chatterbox Turbo) first; most people "
+            "never need this tab. If you do want it: a plain 'pip install "
+            "f5-tts' does not reliably provide this console script -- "
+            "install the official F5-TTS repository in editable mode "
+            "instead (clone it, then run 'pip install -e .' inside it "
+            "using this same environment), then relaunch Local Voice "
+            "Studio."
         )
     environment = os.environ.copy()
     environment["WANDB_MODE"] = "offline"

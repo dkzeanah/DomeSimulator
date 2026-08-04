@@ -110,6 +110,7 @@ def main() -> int:
 
     def run(script: str, tool: str, cfg: dict, name: str) -> None:
         append_log(f"--- launching {name} " + "-" * 40)
+        append_log(f"    interpreter = {lc.python_for(tool)}")
         for key, value in cfg.items():
             append_log(f"    {key} = {value!r}")
         if smoketest:
@@ -713,7 +714,23 @@ def main() -> int:
          "Voice Profile (lock in a reusable voice from ~15+ seconds "
          "of accepted clips) -> Synthesize (generate speech to test "
          "it) -> Dome Narration (generate a full narration set for "
-         "the 2V lesson). Fine-tune and Logs are optional/advanced.")
+         "the 2V lesson). Fine-tune and Logs are optional/advanced. "
+         "The studio's own Project tab explains this same workflow "
+         "again once it is open, plus what to do if a step below "
+         "says something is not ready.")
+    note(body, "Recording, importing, dataset curation, and building a "
+               "voice profile always work with no extra install. Only "
+               "Synthesize and Dome Narration need the optional "
+               "Chatterbox Turbo backend, and only Fine-tune needs F5 "
+               "(most people never need Fine-tune). If this tool "
+               "reports either backend as not ready, run this once "
+               "from the project folder, then launch Local Voice "
+               "Studio again — it uses that environment automatically "
+               "from then on, no matter which Python started this "
+               "launcher window:\n"
+               "local_voice_studio/setup-windows.ps1 -WithLocalAI\n"
+               "The Log panel below shows exactly which Python "
+               "interpreter gets used each time you click Launch.")
     section(body, "Launch")
     lvs_action = LabeledCombo(body, "Action",
                               ["run", "selftest", "diagnose"], "run")
@@ -722,10 +739,9 @@ def main() -> int:
         "run": "open the studio (the default).",
         "selftest": "internal checks, printed to the log below, no "
                     "window.",
-        "diagnose": "print what hardware/local-AI backends are "
-                    "available on this computer — useful if "
-                    "something seems unavailable once the studio is "
-                    "open.",
+        "diagnose": "print hardware/local-AI backend status and, if "
+                    "anything is not ready, the exact command to fix "
+                    "it — to the log below, no window.",
     })
     lvs_project = PathRow(body, "Project folder (optional)", "",
                           mode="dir",

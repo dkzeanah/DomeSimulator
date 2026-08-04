@@ -74,6 +74,30 @@ def peek_config(tool: str) -> dict:
         return {}
 
 
+# Tools whose optional heavy dependencies are meant to live in a
+# dedicated virtual environment rather than whatever interpreter is
+# running the launcher itself (see local_voice_studio/README.md).
+_PREFERRED_VENVS = {
+    "local_voice_studio": ".venv-voice",
+}
+
+
+def python_for(tool: str) -> str:
+    """Pick the interpreter to launch ``tool`` with. If ``tool`` has a
+    dedicated virtual environment (see ``_PREFERRED_VENVS``) and it
+    exists on disk, use it; otherwise fall back to the launcher's own
+    interpreter, exactly as before. This means a tool with optional
+    local-AI extras installed via its own setup script gets picked up
+    automatically, even if the launcher itself was started with a
+    plain system Python that never had those extras installed."""
+    venv_name = _PREFERRED_VENVS.get(tool)
+    if venv_name:
+        candidate = ROOT / venv_name / "Scripts" / "python.exe"
+        if candidate.is_file():
+            return str(candidate)
+    return PYTHON
+
+
 def launch_tool(script: str, tool: str, config: dict,
                 on_line=None, on_exit=None, cwd: Path | None = None):
     """Write ``config`` as ``tool``'s ticket, then spawn ``script`` with
@@ -86,7 +110,7 @@ def launch_tool(script: str, tool: str, config: dict,
     env = dict(os.environ)
     env.setdefault("PYTHONUNBUFFERED", "1")
     process = subprocess.Popen(
-        [PYTHON, script], cwd=str(cwd or ROOT), env=env,
+        [python_for(tool), script], cwd=str(cwd or ROOT), env=env,
         stdout=subprocess.PIPE if on_line else None,
         stderr=subprocess.STDOUT if on_line else None,
         text=True, bufsize=1)
