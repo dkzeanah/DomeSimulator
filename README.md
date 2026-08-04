@@ -57,6 +57,15 @@ it. Output from self-tests, exports, and other console-only actions
 streams into the log pane at the bottom of the launcher window, so
 nothing requires an external terminal.
 
+The launcher is written for people who have never touched this
+codebase: every tab opens with a plain-language description of what
+that tool does and why you'd use it, every non-obvious field carries
+grey example text showing its expected format (never treated as a real
+value — it clears the moment you click in), and every dropdown/Action
+choice is explained inline. Every tab also scrolls independently with
+its launch button pinned in a fixed footer, so the button that actually
+runs the tool is never hidden below a long list of fields.
+
 Running any tool directly (`py -3.12 dome_creator.py`, etc.) still
 works — with no ticket present it just falls back to that tool's plain
 default (usually the fullscreen live app), since the launcher is now

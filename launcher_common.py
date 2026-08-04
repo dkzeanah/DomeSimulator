@@ -125,20 +125,59 @@ def build_widgets():
     import tkinter as tk
     from tkinter import filedialog, ttk
 
-    class LabeledEntry(ttk.Frame):
-        def __init__(self, parent, label, default="", width=32, **kw):
+    PLACEHOLDER_COLOR = "#8a8a8a"
+
+    class _PlaceholderMixin:
+        """Grey example text shown while a field is empty. Clears on
+        focus, comes back on blur if nothing was typed. get() always
+        returns "" while the placeholder is showing — it is a hint,
+        never a real value, so callers that do ``if field.get():`` are
+        unaffected whether or not the user ever touches the field."""
+
+        def _init_placeholder(self, entry, placeholder: str) -> None:
+            self._placeholder_text = placeholder
+            self._placeholder_entry = entry
+            if placeholder:
+                if not self.var.get():
+                    self._show_placeholder()
+                entry.bind("<FocusIn>", self._clear_placeholder)
+                entry.bind("<FocusOut>", self._restore_placeholder)
+
+        def _show_placeholder(self) -> None:
+            self.var.set(self._placeholder_text)
+            self._placeholder_entry.configure(foreground=PLACEHOLDER_COLOR)
+
+        def _clear_placeholder(self, _event=None) -> None:
+            if self.var.get() == self._placeholder_text:
+                self.var.set("")
+                self._placeholder_entry.configure(foreground="")
+
+        def _restore_placeholder(self, _event=None) -> None:
+            if not self.var.get() and self._placeholder_text:
+                self._show_placeholder()
+
+        def _raw_get(self) -> str:
+            value = self.var.get()
+            return "" if value == self._placeholder_text else value
+
+    class LabeledEntry(ttk.Frame, _PlaceholderMixin):
+        def __init__(self, parent, label, default="", width=32,
+                    placeholder="", **kw):
             super().__init__(parent)
             ttk.Label(self, text=label, width=20, anchor="w").pack(
                 side="left")
             self.var = tk.StringVar(value=default)
-            ttk.Entry(self, textvariable=self.var, width=width, **kw).pack(
-                side="left", fill="x", expand=True)
+            entry = ttk.Entry(self, textvariable=self.var, width=width,
+                              **kw)
+            entry.pack(side="left", fill="x", expand=True)
+            self._init_placeholder(entry, placeholder)
 
         def get(self):
-            return self.var.get()
+            return self._raw_get()
 
         def set(self, value):
             self.var.set(value)
+            self._placeholder_entry.configure(foreground="")
 
     class LabeledCombo(ttk.Frame):
         def __init__(self, parent, label, values, default=None):
@@ -164,15 +203,16 @@ def build_widgets():
         def get(self):
             return bool(self.var.get())
 
-    class PathRow(ttk.Frame):
+    class PathRow(ttk.Frame, _PlaceholderMixin):
         def __init__(self, parent, label, default="", mode="save",
-                    filetypes=(("All files", "*.*"),)):
+                    filetypes=(("All files", "*.*"),), placeholder=""):
             super().__init__(parent)
             ttk.Label(self, text=label, width=20, anchor="w").pack(
                 side="left")
             self.var = tk.StringVar(value=default)
-            ttk.Entry(self, textvariable=self.var, width=32).pack(
-                side="left", fill="x", expand=True)
+            entry = ttk.Entry(self, textvariable=self.var, width=32)
+            entry.pack(side="left", fill="x", expand=True)
+            self._init_placeholder(entry, placeholder)
 
             def browse():
                 if mode == "dir":
@@ -184,11 +224,12 @@ def build_widgets():
                         filetypes=filetypes)
                 if picked:
                     self.var.set(picked)
+                    entry.configure(foreground="")
             ttk.Button(self, text="Browse…", command=browse).pack(
                 side="left", padx=(6, 0))
 
         def get(self):
-            return self.var.get()
+            return self._raw_get()
 
     return {
         "tk": tk, "ttk": ttk, "filedialog": filedialog,
