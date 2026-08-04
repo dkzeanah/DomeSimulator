@@ -343,20 +343,36 @@ def launch_f5_finetune_gui(
     startup banner (including the http://127.0.0.1:PORT address to open
     in a browser) is only visible if its stdout is captured, so when
     ``on_line`` is given, stdout/stderr are streamed to it line-by-line
-    from a background thread (mirrors launcher_common.launch_tool())."""
-    executable = shutil.which(command)
+    from a background thread (mirrors launcher_common.launch_tool()).
+
+    F5-TTS's fine-tune UI does not start at all on gradio>=6.0 (its own
+    .launch() call breaks -- see github.com/SWivid/F5-TTS/issues/1239,
+    open/unfixed upstream), which directly conflicts with chatterbox-tts's
+    own exact gradio==6.8.0 pin. The two cannot both work from the same
+    environment, so this prefers a dedicated .venv-f5 (see
+    setup-f5-windows.ps1) over whatever is on PATH, if it exists."""
+    dedicated_scripts = (
+        Path(__file__).resolve().parents[1] / ".venv-f5" / "Scripts"
+    )
+    dedicated_executable = dedicated_scripts / f"{command}.exe"
+    if dedicated_executable.is_file():
+        executable = str(dedicated_executable)
+    else:
+        executable = shutil.which(command)
     if not executable:
         raise RuntimeError(
-            f"'{command}' was not found on PATH in this Python environment "
-            f"({sys.executable}). Fine-tuning is optional and advanced -- "
-            "try the Synthesize tab (Chatterbox Turbo) first; most people "
-            "never need this tab. If you do want it: a plain 'pip install "
-            "f5-tts' does not reliably provide this console script -- "
-            "install the official F5-TTS repository in editable mode "
-            "instead (clone it, then run 'pip install -e .' inside it "
-            "using this same environment), then relaunch Local Voice "
-            "Studio."
+            f"'{command}' was not found. Fine-tuning is optional and "
+            "advanced -- try the Synthesize tab (Chatterbox Turbo) "
+            "first; most people never need this tab. If you do want "
+            "it: F5-TTS needs its own dedicated environment, since its "
+            "fine-tune UI requires gradio<6.0.0 while Chatterbox needs "
+            "gradio==6.8.0 exactly -- run "
+            "'local_voice_studio/setup-f5-windows.ps1' from the "
+            "project folder, then relaunch Local Voice Studio; it is "
+            "picked up automatically from .venv-f5 from then on."
         )
+    if on_line is not None:
+        on_line(f"Using: {executable}")
     environment = os.environ.copy()
     environment["WANDB_MODE"] = "offline"
     environment["GRADIO_SERVER_NAME"] = "127.0.0.1"

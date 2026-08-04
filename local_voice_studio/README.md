@@ -162,7 +162,30 @@ audio_file|text
 ```
 
 It can launch the upstream `f5-tts_finetune-gradio` command when installed.
-The launcher binds to `127.0.0.1` and sets Weights & Biases to offline.
+The launcher binds to `127.0.0.1` and sets Weights & Biases to offline. It
+opens a **web app**, not a desktop window — its address (like
+`http://127.0.0.1:7860`) appears in the Console window and opens in your
+browser automatically once the server is ready.
+
+F5-TTS needs its own dedicated environment, separate from `.venv-voice`:
+its fine-tune UI does not start at all on `gradio>=6.0.0` (an upstream
+bug — the exact keyword argument its own code passes to `Blocks.launch()`
+was removed in Gradio 6.x; see
+[SWivid/F5-TTS#1239](https://github.com/SWivid/F5-TTS/issues/1239), open
+and unfixed as of this writing), while chatterbox-tts hard-pins
+`gradio==6.8.0` exactly for the Synthesize tab. Those two requirements
+cannot both be satisfied in one environment. Set it up once:
+
+```powershell
+.\local_voice_studio\setup-f5-windows.ps1
+```
+
+This clones the official repo into `F5-TTS\`, creates `.venv-f5`, installs
+F5-TTS editable, and forces `gradio==5.49.1` (confirmed working by that
+issue's reporters — F5-TTS's own `gradio>=6.15.0` pin is the actual cause
+of the breakage, not a safe minimum). The Fine-tune tab then uses
+`.venv-f5` automatically, regardless of which Python runs Local Voice
+Studio itself or what is installed in `.venv-voice`.
 
 License warning: F5-TTS source code is MIT, while the official pretrained
 weights are CC-BY-NC. Do not use those weights for monetized or commercial

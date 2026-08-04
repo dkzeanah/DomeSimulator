@@ -1,3 +1,5 @@
-# Optional fine-tuning adapter. Prefer the official editable F5-TTS repository
-# when its current fine-tune GUI is required; see README.md.
+# Optional fine-tuning adapter. Its fine-tune GUI needs its own dedicated
+# environment and a pre-6.0 gradio, not just this package -- run
+# setup-f5-windows.ps1 instead of installing from this file directly.
+# See README.md's "Optional F5 fine-tuning" section.
 f5-tts

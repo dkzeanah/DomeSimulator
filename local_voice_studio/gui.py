@@ -582,7 +582,17 @@ class VoiceStudioApp:
                 "binds it to 127.0.0.1 (this computer only) and forces "
                 "W&B offline. Training flags remain owned by the official "
                 "upstream tool -- read its own on-screen instructions "
-                "once the page opens."
+                "once the page opens.\n\n"
+                "F5-TTS needs a separate environment from the rest of "
+                "this app: its fine-tune tool does not start at all on "
+                "gradio 6.x (upstream bug, still open), while Chatterbox "
+                "needs gradio==6.8.0 exactly -- the two cannot share one "
+                "environment. Run 'local_voice_studio/setup-f5-windows"
+                ".ps1' once from the project folder (clones the official "
+                "repo, creates .venv-f5, installs a working gradio "
+                "version); this tab picks it up automatically after "
+                "that, no matter which Python runs Local Voice Studio "
+                "itself."
             ),
             wraplength=950,
             foreground="#91aabd",
