@@ -26,6 +26,7 @@ from tkinter import (
     Toplevel,
     filedialog,
     messagebox,
+    simpledialog,
     ttk,
 )
 
@@ -53,6 +54,7 @@ from .models import ClipRecord, ConsentRecord, VoiceProfile
 from .project import VoiceProject, safe_slug
 from .prompts import RECORDING_PROMPTS
 from .recorder import MicrophoneRecorder
+from .waveform import WaveformPanel
 
 try:
     import winsound
@@ -152,6 +154,8 @@ class VoiceStudioApp:
         self.f5_process: subprocess.Popen | None = None
         self._job_started_at: float | None = None
         self._job_last_heartbeat: float = 0.0
+        self._dataset_waveform_clip_id: str | None = None
+        self._compare_recording = False
 
         self._configure_style()
         self._build_header()
@@ -164,6 +168,7 @@ class VoiceStudioApp:
         self._build_profile_tab()
         self._build_train_tab()
         self._build_synthesize_tab()
+        self._build_compare_tab()
         self._build_dome_tab()
         self._build_logs_tab()
         self._update_prompt()
@@ -489,6 +494,23 @@ class VoiceStudioApp:
         ttk.Button(editor, text="Reject", command=self.reject_selected).grid(
             row=1, column=4, sticky="e", padx=6, pady=(9, 0)
         )
+        self.dataset_waveform = WaveformPanel(
+            editor, "Waveform -- click-drag to select a range",
+            self.root, editable=True, on_save=self._save_dataset_waveform_edit,
+        )
+        self.dataset_waveform.grid(
+            row=2, column=0, columnspan=6, sticky="ew", pady=(10, 0)
+        )
+        ttk.Label(
+            editor,
+            text=(
+                "Trim/Delete cut the selection from an in-memory copy first -- "
+                "Play to check it, Revert to undo, Save edited clip to actually "
+                "rewrite the file (re-measures quality metrics afterward)."
+            ),
+            foreground="#91aabd",
+            wraplength=950,
+        ).grid(row=3, column=0, columnspan=6, sticky="w", pady=(4, 0))
 
     def _build_profile_tab(self) -> None:
         tab = self._tab(self.notebook, "Voice Profile")
@@ -713,6 +735,167 @@ class VoiceStudioApp:
             text="Generated files include SYNTHETIC VOICE provenance sidecars.",
             foreground="#91aabd",
         ).pack(side=RIGHT)
+
+    def _build_compare_tab(self) -> None:
+        tab = self._tab(self.notebook, "Compare")
+        ttk.Label(
+            tab,
+            text=(
+                "Hear your locked reference, a fresh synthesis, and a brand "
+                "new recording side by side -- so a profile or parameter "
+                "change is something you can directly verify by ear, not "
+                "just guess at. \"Generate new take\" uses the Expression "
+                "and Guidance sliders from the Synthesize tab, so tune "
+                "those there first."
+            ),
+            wraplength=1150,
+            justify=LEFT,
+        ).pack(anchor="w", pady=(0, 10))
+
+        controls = ttk.Frame(tab)
+        controls.pack(fill="x", pady=(0, 4))
+        ttk.Label(controls, text="Voice profile").pack(side=LEFT)
+        self.compare_profile = StringVar()
+        self.compare_combo = ttk.Combobox(
+            controls, textvariable=self.compare_profile, state="readonly", width=30,
+        )
+        self.compare_combo.pack(side=LEFT, padx=8)
+        self.compare_combo.bind(
+            "<<ComboboxSelected>>", lambda _e: self._load_compare_reference()
+        )
+        ttk.Button(
+            controls, text="Load reference", command=self._load_compare_reference
+        ).pack(side=LEFT)
+
+        text_row = ttk.Frame(tab)
+        text_row.pack(fill="x", pady=(4, 12))
+        ttk.Label(text_row, text="Text to compare").pack(side=LEFT)
+        self.compare_text = StringVar(
+            value="Welcome. This is a fully local voice test for the geodesic dome lesson."
+        )
+        ttk.Entry(text_row, textvariable=self.compare_text).pack(
+            side=LEFT, padx=8, fill="x", expand=True
+        )
+
+        self.compare_reference_panel = WaveformPanel(
+            tab, "A. Reference (locked -- view and listen only)", self.root,
+        )
+        self.compare_reference_panel.pack(fill="x", pady=(0, 12))
+
+        self.compare_synthesis_panel = WaveformPanel(
+            tab, "B. Latest synthesis", self.root,
+        )
+        self.compare_synthesis_panel.pack(fill="x", pady=(0, 2))
+        ttk.Button(
+            tab, text="Generate new take", command=self._compare_generate
+        ).pack(anchor="w", pady=(0, 12))
+
+        self.compare_recording_panel = WaveformPanel(
+            tab, "C. New recording", self.root,
+            editable=True, on_save=self._compare_recording_saved,
+            save_label="Add to Dataset as a clip",
+        )
+        self.compare_recording_panel.pack(fill="x", pady=(0, 2))
+        rec_row = ttk.Frame(tab)
+        rec_row.pack(fill="x")
+        self.compare_record_button = ttk.Button(
+            rec_row, text="Record", command=self._compare_toggle_recording
+        )
+        self.compare_record_button.pack(side=LEFT)
+        ttk.Label(
+            rec_row,
+            text=(
+                "Record, optionally trim it above, then \"Add to Dataset as "
+                "a clip\" to make it a real candidate for future profiles "
+                "-- it still needs Accept on the Dataset tab first."
+            ),
+            foreground="#91aabd",
+        ).pack(side=LEFT, padx=10)
+
+    def _load_compare_reference(self) -> None:
+        try:
+            project = self.require_project()
+            profile = self.selected_profile(self.compare_profile.get())
+            self.compare_reference_panel.load_file(
+                project.resolve_relative(profile.reference_wav)
+            )
+        except Exception as exc:
+            messagebox.showerror("Load reference", str(exc))
+
+    def _compare_generate(self) -> None:
+        try:
+            project = self.require_project()
+            profile = self.selected_profile(self.compare_profile.get())
+            text = self.compare_text.get().strip()
+            if not text:
+                raise ValueError("Enter text to compare")
+            stamp = time.strftime("%Y%m%d-%H%M%S")
+            output = project.root / "outputs" / "audio" / f"compare-{stamp}.wav"
+
+            def complete(path: Path) -> None:
+                self.last_audio = Path(path)
+                self.compare_synthesis_panel.load_file(Path(path))
+
+            self._start_job(
+                synthesize_chatterbox,
+                project,
+                profile,
+                text,
+                output,
+                exaggeration=self.exaggeration.get(),
+                cfg_weight=self.cfg_weight.get(),
+                allow_model_download=self.download_ok.get(),
+                on_result=complete,
+            )
+        except Exception as exc:
+            messagebox.showerror("Generate new take", str(exc))
+
+    def _compare_toggle_recording(self) -> None:
+        try:
+            project = self.require_project()
+            if not project.consented:
+                raise PermissionError("The project needs a valid ownership record")
+            if not self._compare_recording:
+                self.recorder.start(self._microphone_index())
+                self._compare_recording = True
+                self.compare_record_button.configure(text="Stop and use")
+                return
+            stamp = time.strftime("%Y%m%d-%H%M%S")
+            raw_path = project.root / "raw" / f"compare-{stamp}.wav"
+            self.recorder.stop(raw_path)
+            self._compare_recording = False
+            self.compare_record_button.configure(text="Record")
+            self.compare_recording_panel.load_file(raw_path)
+        except Exception as exc:
+            if self._compare_recording:
+                self._compare_recording = False
+                self.compare_record_button.configure(text="Record")
+            messagebox.showerror("Recording", str(exc))
+
+    def _compare_recording_saved(self, rate: int, samples: list[int]) -> None:
+        try:
+            project = self.require_project()
+            transcript = simpledialog.askstring(
+                "Add to Dataset",
+                "Transcript for this recording (exactly what you said):",
+                parent=self.root,
+            )
+            if transcript is None:
+                return
+            stamp = time.strftime("%Y%m%d-%H%M%S")
+            clip_id = f"compare-{stamp}"
+            clip_path = project.root / "clips" / f"{clip_id}.wav"
+            write_pcm16_mono(clip_path, rate, samples)
+            clip = create_clip_record(project, clip_path, clip_id, transcript, clip_id)
+            project.upsert_clip(clip)
+            self.refresh_clips()
+            messagebox.showinfo(
+                "Added to Dataset",
+                f"Saved as dataset clip: {clip_id}\n"
+                "Go to the Dataset tab to Accept it once you're happy with it.",
+            )
+        except Exception as exc:
+            messagebox.showerror("Add to Dataset", str(exc))
 
     def _build_dome_tab(self) -> None:
         tab = self._tab(self.notebook, "Dome Narration")
@@ -1152,9 +1335,42 @@ class VoiceStudioApp:
         try:
             clip = self._selected_clip()
         except Exception:
+            self.dataset_waveform.clear()
             return
         self.transcript_editor.delete("1.0", END)
         self.transcript_editor.insert("1.0", clip.text)
+        self._dataset_waveform_clip_id = clip.clip_id
+        try:
+            self.dataset_waveform.load_file(
+                self.require_project().resolve_relative(clip.audio_file)
+            )
+        except Exception as exc:
+            self.dataset_waveform.clear()
+            self.log(f"Could not load waveform for {clip.clip_id}: {exc}")
+
+    def _save_dataset_waveform_edit(self, rate: int, samples: list[int]) -> None:
+        try:
+            project = self.require_project()
+            clip_id = self._dataset_waveform_clip_id
+            if not clip_id:
+                raise ValueError("Select a dataset clip first")
+            clip = next(
+                (c for c in project.load_clips() if c.clip_id == clip_id), None
+            )
+            if clip is None:
+                raise ValueError("Selected clip no longer exists")
+            audio_path = project.resolve_relative(clip.audio_file)
+            write_pcm16_mono(audio_path, rate, samples)
+            updated = create_clip_record(
+                project, audio_path, clip.clip_id, clip.text, clip.source_id,
+            )
+            updated.status = clip.status
+            project.upsert_clip(updated)
+            self.refresh_clips()
+            self.clip_tree.selection_set(clip.clip_id)
+            self.log(f"Saved edited clip: {clip.clip_id}")
+        except Exception as exc:
+            messagebox.showerror("Save edited clip", str(exc))
 
     def save_transcript(self) -> None:
         try:
@@ -1276,13 +1492,15 @@ class VoiceStudioApp:
                     profile.sha256,
                 ),
             )
-        for combo in (self.synthesis_combo, self.dome_combo):
+        for combo in (self.synthesis_combo, self.dome_combo, self.compare_combo):
             combo["values"] = values
         if values:
             if self.synthesis_profile.get() not in values:
                 self.synthesis_profile.set(values[-1])
             if self.dome_profile.get() not in values:
                 self.dome_profile.set(values[-1])
+            if self.compare_profile.get() not in values:
+                self.compare_profile.set(values[-1])
 
     def selected_profile(self, profile_id: str) -> VoiceProfile:
         project = self.require_project()

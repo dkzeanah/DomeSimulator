@@ -153,6 +153,29 @@ Every synthetic WAV has a JSON sidecar marking it as synthetic and recording
 the model, profile checksum, settings, and source text. Chatterbox’s own
 watermark is preserved.
 
+## Waveform review, trimming, and comparison
+
+The Dataset tab shows a waveform for whichever clip is selected. Click-drag
+to select a range, Play to hear just that range, Trim to selection or
+Delete selection to cut it down (a bad breath, a stray click) -- both work
+against an in-memory copy first, so Play/Revert let you check the result
+before Save edited clip actually rewrites the file and re-measures its
+quality metrics.
+
+The Compare tab puts three waveforms together: the selected profile's
+locked reference (view/listen only -- profiles are immutable by design, so
+this cannot be edited from here), the latest synthesis (Generate new take
+reuses the Expression/Guidance sliders from the Synthesize tab), and a
+fresh in-place recording you can trim the same way as a Dataset clip and
+then explicitly add to the dataset with its own transcript -- it still
+needs Accept on the Dataset tab afterward like any other clip. This is the
+direct way to check whether a profile or parameter change is actually
+moving the voice closer to you, rather than guessing from memory between
+tabs.
+
+This is a focused tool for curating short clips, not a general multitrack
+audio editor.
+
 ## Optional F5 fine-tuning
 
 The Fine-tune tab exports the official custom dataset header:
