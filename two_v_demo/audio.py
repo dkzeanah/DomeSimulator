@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import os
 import re
 import shutil
 import subprocess
@@ -67,6 +68,55 @@ def voice_cache_slug(
     return f"{readable}-{digest}"
 
 
+_FFMPEG_COPYRIGHT_YEAR = re.compile(r"Copyright \(c\) \d{4}-(\d{4})")
+
+
+def _all_path_matches(name: str) -> list[str]:
+    """Every match for ``name`` across PATH, not just the first one
+    (unlike shutil.which, which stops at the first hit) -- reuses
+    shutil.which's own PATHEXT-aware search, just repeated against a
+    shrinking PATH so it keeps finding the next distinct match."""
+    matches: list[str] = []
+    search_path = os.environ.get("PATH", "")
+    while True:
+        found = shutil.which(name, path=search_path)
+        if not found or found in matches:
+            break
+        matches.append(found)
+        remaining = [
+            directory for directory in search_path.split(os.pathsep)
+            if directory and Path(directory) != Path(found).parent
+        ]
+        search_path = os.pathsep.join(remaining)
+    return matches
+
+
+def _newest_by_copyright_year(candidates: list[str]) -> str | None:
+    """Among several same-named executables, prefer the one whose own
+    version banner claims the most recent copyright year. A years-old
+    ffmpeg build can silently misbehave in ways a current one does not
+    (this project has hit two: rejecting a now-standard AAC encoder
+    flag, and corrupting an intermediate render during muxing) even
+    though it still runs without erroring on simpler commands. Returns
+    None, leaving the caller's existing default in place, if no
+    candidate's year can be determined."""
+    best_path: str | None = None
+    best_year = -1
+    for candidate in candidates:
+        try:
+            result = subprocess.run(
+                [candidate, "-version"],
+                capture_output=True, text=True, timeout=10,
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            continue
+        match = _FFMPEG_COPYRIGHT_YEAR.search(result.stdout + result.stderr)
+        if match and int(match.group(1)) > best_year:
+            best_year = int(match.group(1))
+            best_path = candidate
+    return best_path
+
+
 def resolve_executable(name: str, explicit: str | None = None) -> str:
     """Resolve FFmpeg tools with a helpful error for Windows users."""
     if explicit:
@@ -77,12 +127,16 @@ def resolve_executable(name: str, explicit: str | None = None) -> str:
         if resolved:
             return resolved
         raise RuntimeError(f"{name} executable not found: {explicit}")
-    resolved = shutil.which(name)
-    if resolved:
-        return resolved
-    raise RuntimeError(
-        f"{name} was not found on PATH. Pass --{name} with its full path."
-    )
+    matches = _all_path_matches(name)
+    if not matches:
+        raise RuntimeError(
+            f"{name} was not found on PATH. Pass --{name} with its full path."
+        )
+    if len(matches) > 1:
+        newest = _newest_by_copyright_year(matches)
+        if newest:
+            return newest
+    return matches[0]
 
 
 def companion_ffprobe(ffmpeg: str, explicit: str | None = None) -> str:

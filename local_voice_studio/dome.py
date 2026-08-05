@@ -152,6 +152,37 @@ def build_dome_narration(
     return plan_path
 
 
+def _find_renderer_command(progress: Callable[[str], None]) -> list[str]:
+    """Find a command prefix for an interpreter that actually has the 2V
+    renderer's own dependencies (pygame, moderngl) importable.
+
+    This function may itself be running inside Local Voice Studio's own
+    process -- which, if launched through the consolidated launcher, is
+    .venv-voice's interpreter (see launcher_common.python_for()). That
+    environment has no reason to have graphics packages installed; they
+    are unrelated to anything Local Voice Studio itself does. Probe the
+    current interpreter first (fast path, correct if this ever runs
+    outside that indirection), then this project's own documented
+    convention for every other tool, 'py -3.12'."""
+    candidates: list[list[str]] = [[sys.executable], ["py", "-3.12"]]
+    for candidate in candidates:
+        try:
+            result = subprocess.run(
+                [*candidate, "-c", "import pygame, moderngl"],
+                capture_output=True,
+                timeout=20,
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            continue
+        if result.returncode == 0:
+            return candidate
+    progress(
+        "Warning: could not find an interpreter with pygame/moderngl "
+        "already available; trying the current one anyway."
+    )
+    return [sys.executable]
+
+
 def export_dome_video(
     plan_path: Path,
     output_path: Path,
@@ -177,9 +208,10 @@ def export_dome_video(
         "fps": max(1, fps),
         "size": size,
     })
+    command = _find_renderer_command(progress)
     progress("Rendering the dome video with the local narration track...")
     result = subprocess.run(
-        [sys.executable, str(launcher)],
+        [*command, str(launcher)],
         cwd=str(launcher.parent),
         capture_output=True,
         text=True,
