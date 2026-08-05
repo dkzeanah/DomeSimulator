@@ -423,7 +423,17 @@ class VoiceStudioApp:
     def _build_dataset_tab(self) -> None:
         tab = self._tab(self.notebook, "Dataset")
         tab.columnconfigure(0, weight=1)
-        tab.rowconfigure(0, weight=1)
+        tab.rowconfigure(1, weight=1)
+        self.eligible_pool_text = StringVar(
+            value="Open a project to see how much accepted, clean audio is available."
+        )
+        ttk.Label(
+            tab,
+            textvariable=self.eligible_pool_text,
+            foreground="#58d5ff",
+            wraplength=950,
+            justify=LEFT,
+        ).grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 8))
         columns = ("status", "seconds", "rms", "clip", "silence", "issues", "text")
         self.clip_tree = ttk.Treeview(
             tab,
@@ -443,16 +453,16 @@ class VoiceStudioApp:
         for key, label, width in headings:
             self.clip_tree.heading(key, text=label)
             self.clip_tree.column(key, width=width, minwidth=55)
-        self.clip_tree.grid(row=0, column=0, sticky="nsew")
+        self.clip_tree.grid(row=1, column=0, sticky="nsew")
         scrollbar = ttk.Scrollbar(
             tab, orient=VERTICAL, command=self.clip_tree.yview
         )
-        scrollbar.grid(row=0, column=1, sticky="ns")
+        scrollbar.grid(row=1, column=1, sticky="ns")
         self.clip_tree.configure(yscrollcommand=scrollbar.set)
         self.clip_tree.bind("<<TreeviewSelect>>", self._clip_selected)
 
         editor = ttk.LabelFrame(tab, text="Selected clip", padding=10)
-        editor.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(12, 0))
+        editor.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(12, 0))
         editor.columnconfigure(0, weight=1)
         self.transcript_editor = Text(
             editor,
@@ -511,12 +521,22 @@ class VoiceStudioApp:
             ),
             wraplength=950,
             foreground="#91aabd",
-        ).grid(row=1, column=0, sticky="w", pady=12)
+        ).grid(row=1, column=0, sticky="w", pady=(12, 0))
+        self.profile_pool_text = StringVar(
+            value="Open a project to see how much accepted, clean audio is available."
+        )
+        ttk.Label(
+            tab,
+            textvariable=self.profile_pool_text,
+            foreground="#58d5ff",
+            wraplength=950,
+            justify=LEFT,
+        ).grid(row=2, column=0, sticky="w", pady=(2, 12))
         self.profile_tree = ttk.Treeview(
             tab,
             columns=("name", "duration", "backend", "checksum"),
             show="headings",
-            height=12,
+            height=6,
         )
         for key, label, width in (
             ("name", "Profile", 250),
@@ -526,8 +546,25 @@ class VoiceStudioApp:
         ):
             self.profile_tree.heading(key, text=label)
             self.profile_tree.column(key, width=width)
-        self.profile_tree.grid(row=2, column=0, sticky="nsew")
-        tab.rowconfigure(2, weight=1)
+        self.profile_tree.grid(row=3, column=0, sticky="nsew")
+        self.profile_tree.bind("<<TreeviewSelect>>", self._profile_selected)
+        # Deliberately no row weight here (unlike most trees in this app):
+        # this tree competes with the detail panel below it for a fixed
+        # 820px window, and letting it claim all leftover space -- its
+        # default grid behavior -- silently pushed that panel off-screen
+        # even though it rendered fine, just below the visible area.
+
+        detail = ttk.LabelFrame(tab, text="What the selected profile actually used", padding=10)
+        detail.grid(row=4, column=0, sticky="ew", pady=(10, 0))
+        self.profile_detail_text = StringVar(
+            value="Select a profile above to see exactly which clips it was built from."
+        )
+        ttk.Label(
+            detail,
+            textvariable=self.profile_detail_text,
+            wraplength=950,
+            justify=LEFT,
+        ).pack(anchor="w")
 
     def _build_train_tab(self) -> None:
         tab = self._tab(self.notebook, "Fine-tune")
@@ -1065,7 +1102,8 @@ class VoiceStudioApp:
             self.clip_tree.delete(item)
         if not self.project:
             return
-        for clip in self.project.load_clips():
+        clips = self.project.load_clips()
+        for clip in clips:
             self.clip_tree.insert(
                 "",
                 END,
@@ -1080,6 +1118,24 @@ class VoiceStudioApp:
                     clip.text,
                 ),
             )
+        eligible = [c for c in clips if c.accepted and not c.quality_issues]
+        not_eligible = [c for c in clips if c.accepted and c.quality_issues]
+        total = sum(c.duration_s for c in eligible)
+        summary = (
+            f"Eligible for profile building right now: {len(eligible)} clip(s), "
+            f"{total:.1f}s total. \"Target seconds\" on the Voice Profile tab is "
+            "a ceiling, not a guarantee -- building stops as soon as enough "
+            "eligible clips are accumulated, so it can land well under target "
+            "if fewer clips qualify than you expect."
+        )
+        if not_eligible:
+            summary += (
+                f" {len(not_eligible)} accepted clip(s) are excluded for "
+                f"quality reasons and won't be used until fixed (see their "
+                f"Quality column)."
+            )
+        self.eligible_pool_text.set(summary)
+        self.profile_pool_text.set(summary)
 
     def _selected_clip(self) -> ClipRecord:
         project = self.require_project()
@@ -1234,6 +1290,30 @@ class VoiceStudioApp:
             if profile.profile_id == profile_id:
                 return profile
         raise ValueError("Select a voice profile")
+
+    def _profile_selected(self, _event=None) -> None:
+        selection = self.profile_tree.selection()
+        if not selection or not self.project:
+            return
+        try:
+            profile = self.selected_profile(selection[0])
+        except Exception:
+            return
+        clips_by_id = {c.clip_id: c for c in self.project.load_clips()}
+        lines = [
+            f"{profile.profile_id}: {profile.duration_s:.1f}s built from "
+            f"{len(profile.source_clip_ids)} clip(s), best-quality-first:"
+        ]
+        for clip_id in profile.source_clip_ids:
+            clip = clips_by_id.get(clip_id)
+            if clip is None:
+                lines.append(f"  {clip_id} -- clip no longer in this project's dataset")
+                continue
+            preview = clip.text.strip()
+            if len(preview) > 70:
+                preview = preview[:70] + "..."
+            lines.append(f"  {clip_id} ({clip.duration_s:.1f}s): {preview or '(no transcript)'}")
+        self.profile_detail_text.set("\n".join(lines))
 
     def export_f5(self) -> None:
         try:
