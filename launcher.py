@@ -246,6 +246,77 @@ def main() -> int:
                   lambda: run("dome_creator.py", "dome_creator", {},
                              "Dome Creator"))
 
+    # ---- Dome Forge -------------------------------------------------------
+
+    t, body, foot = scrollable_tab("Dome Forge")
+    intro(body,
+         "A single dome, built up out of layers — the way an image is "
+         "built up out of layers in a paint program. Every part is its "
+         "own layer you can hide, fade with a slider, reorder, "
+         "duplicate, delete, and tune with its own named controls: the "
+         "strut frame, the hubs, the panels, liners and insulation, and "
+         "the water-harvesting parts. Unlike the Dome Creator tab, "
+         "there is no site and no factory here — just one dome you can "
+         "study from every angle, like a character creator aimed at a "
+         "building.\n\n"
+         "It opens with the rain-capture idea already switched on: "
+         "panels dished inward like golf-ball dimples so rain runs to a "
+         "low point instead of sheeting off the seams, a micro-drain at "
+         "each of those low points, and a network of veins running "
+         "along the inside of every seam — held clear of the outer skin "
+         "by a deliberate gap — that carries water down to a collector "
+         "ring, through a downpipe, into a cistern under the dome. Turn "
+         "on Cutaway view (or press C) to watch the water actually move "
+         "through it.")
+    note(body, "Mouse: drag to orbit, scroll to zoom. Click any layer to "
+               "select it, click its small square to hide/show it, drag "
+               "the bar under its name to fade it. Keys: [space] "
+               "pause/play the water, [c] cutaway, [1-4] jump to preset "
+               "views (outside / inside / top-down / ground level), [s] "
+               "save your dome, [l] load it back, [Escape] quit.")
+    section(body, "Launch")
+    df_action = LabeledCombo(body, "Action",
+                             ["run", "selftest", "shots"], "run")
+    df_action.pack(fill="x", pady=3)
+    action_help(body, df_action, {
+        "run": "open the dome builder (the default).",
+        "selftest": "internal checks, printed to the log below, no "
+                    "window — confirms the dome geometry and every "
+                    "layer type still build correctly.",
+        "shots": "render four still images of the current dome "
+                 "(outside, cutaway, top-down, ground level) to a "
+                 "folder without opening a window — handy for putting "
+                 "the design in a document.",
+    })
+    df_preset = PathRow(body, "Dome preset (optional)", "", mode="open",
+                        filetypes=(("Dome Forge preset", "*.json"),
+                                   ("All files", "*.*")),
+                        placeholder="e.g. my-dome.json (saved with [s])")
+    df_preset.pack(fill="x", pady=3)
+    note(body, "Optional: reopen a dome you saved earlier. Leave it "
+               "empty to start from the built-in water-harvesting dome.")
+    df_size = LabeledEntry(body, "Window size", "1600x900",
+                           placeholder="1600x900")
+    df_size.pack(fill="x", pady=3)
+    df_shotdir = PathRow(body, "Image folder", "dome_forge_shots", mode="dir",
+                         placeholder="dome_forge_shots")
+    df_shotdir.pack(fill="x", pady=3)
+    note(body, "Only used by the 'shots' action — where to write the "
+               "four still images.")
+    df_full = CheckRow(body, "Open fullscreen", False)
+    df_full.pack(fill="x", pady=3)
+
+    def go_dome_forge():
+        cfg = {"action": df_action.get(), "size": df_size.get() or "1600x900",
+               "fullscreen": df_full.get()}
+        if df_preset.get():
+            cfg["preset"] = df_preset.get()
+        if df_shotdir.get():
+            cfg["shot_dir"] = df_shotdir.get()
+        run("dome_forge.py", "dome_forge", cfg, "Dome Forge")
+    ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Launch Dome Forge", go_dome_forge)
+
     # ---- Assembly Line ----------------------------------------------------
 
     def build_assembly_tab(title, script, tool, has_extras):
@@ -792,18 +863,19 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
+        expected = 8
         notebook_tabs = notebook.tabs()
-        assert len(notebook_tabs) == 7, notebook_tabs
-        assert len(smoke_callbacks) == 7, smoke_callbacks
+        assert len(notebook_tabs) == expected, notebook_tabs
+        assert len(smoke_callbacks) == expected, smoke_callbacks
         for label, callback in smoke_callbacks:
             callback()
-        assert len(launched) == 7, launched
+        assert len(launched) == expected, launched
         for name, script, cfg in launched:
             print(f"SMOKETEST OK: {name:26} -> {script:28} {cfg}")
         root.update()
         root.destroy()
-        print(f"SMOKETEST: {len(launched)}/7 launch buttons produced a "
-              f"config ticket")
+        print(f"SMOKETEST: {len(launched)}/{expected} launch buttons produced "
+              f"a config ticket")
         return 0
     root.mainloop()
     return 0

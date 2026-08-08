@@ -386,6 +386,65 @@ there is a real claim to make, an overlay panel — so the argument reads
 complete with the sound off; narration is a second channel, not the only
 one.
 
+## Dome Forge (`dome_forge.py`)
+
+Dome Forge is a **single-dome builder made of layers** — the way an image
+is made of layers in a paint program, or a character is made of
+adjustable parts in a game's character creator. There is no site, no
+factory, and no timeline: exactly one dome, at the origin, that you can
+orbit and take apart.
+
+Every part of the dome is its own layer that can be hidden, faded with an
+opacity slider, reordered, duplicated, deleted, and tuned through its own
+named controls. Thirteen layer types ship:
+
+| Layer | What it is |
+| --- | --- |
+| Ground pad | The slab, for scale and orientation |
+| Strut frame | The load-bearing skeleton, optionally coloured by strut length |
+| Hub connectors | The joints where struts meet |
+| Panels | The triangular skin — flat, or dished inward like a golf-ball dimple |
+| Micro-drains | An outlet at the low point of each dished panel |
+| Seam veins (gasket) | A channel along the inside of every seam, held clear of the skin |
+| Water in the veins | Animated flow, running downhill toward the base |
+| Runoff on panels | Droplets sliding to each panel's micro-drain |
+| Shell surface | A surface at any depth — liner, vapour barrier, or insulation |
+| Collector ring | The gutter every vein empties into |
+| Downpipe | The pipe down to the tank |
+| Cistern | The tank under the dome, with an adjustable fill level |
+| Rain | Falling rain, so the capture story reads at a glance |
+
+### The water-harvesting dome it opens with
+
+The default stack is built around turning the classic leaky-dome
+complaint into plumbing. Panels are dished inward so rain runs to one low
+point per panel instead of sheeting across the seams; a micro-drain sits
+at each of those low points; and a **vein network runs along the inside of
+every one of the 65 seams, standing off from the outer skin by a
+deliberate gap** — so anything that does get past a seam lands in a
+channel instead of dripping inside, and the gap stays an inspectable air
+space rather than wet material sealed against the structure. The veins
+drain downhill into a collector ring, through a downpipe, into a cistern
+under the dome. Press `C` for the cutaway and watch it move.
+
+```powershell
+py -3.12 launcher.py     # "Dome Forge" tab
+```
+
+Mouse: drag to orbit, scroll to zoom, click a layer to select it, click
+its square to hide it, drag the bar under its name to fade it. Keys:
+`space` pause/play the water, `c` cutaway, `1`–`4` preset views
+(outside / inside / top-down / ground level), `s` save, `l` load,
+`Escape` quit. The launcher's `shots` action renders four stills
+headlessly, and `selftest` checks the geometry and every layer type
+without opening a window.
+
+Every count and dimension in the readout — 65 struts (30 short, 35
+long), 40 panels, 26 hubs, both strut lengths, the floor area — is
+computed from the same `two_v_demo/geometry.py` used by the masterclass
+and the presentations, scaled by the radius slider. None of it is written
+down twice.
+
 ## Local Voice Studio (`local_voice_studio.py`)
 
 Local Voice Studio is a third standalone program for recording speech you own,
