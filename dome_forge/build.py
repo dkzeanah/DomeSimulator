@@ -257,6 +257,36 @@ def emit_triangle_frames(op: Batch, tr: Batch, layer, ctx: DomeContext,
                     )
 
 
+def emit_assemblies(op: Batch, tr: Batch, layer, ctx: DomeContext,
+                    t: float) -> None:
+    """Every triangle drawn from its own assignment: its own three struts
+    and its own fill."""
+    from .panel import build_panel
+
+    stack = _ACTIVE_STACK["stack"]
+    if stack is None:
+        return
+    assignments = stack.assignments
+    alpha = layer.opacity
+    seam = float(layer.get("seam"))
+    show_fills = bool(layer.get("show_fills"))
+    highlight_on = bool(layer.get("highlight"))
+    selected = getattr(stack, "selected_face", -1)
+
+    for index, face in enumerate(ctx.faces):
+        if ctx.hidden(ctx.points[face].mean(axis=0)):
+            continue
+        classes = [ctx.edge_name(int(face[i]), int(face[(i + 1) % 3]))
+                   for i in range(3)]
+        struts = assignments.strut_triple(index, classes)
+        fill = assignments.fill_for(index) if show_fills else "open"
+        build_panel(
+            op, tr, [ctx.points[i] for i in face], struts, fill, tint,
+            seam=seam, alpha=alpha,
+            highlight=highlight_on and index == selected,
+        )
+
+
 def emit_hubs(op: Batch, tr: Batch, layer, ctx: DomeContext, t: float) -> None:
     alpha = layer.opacity
     color = tint(layer.get("tint"), alpha)
@@ -578,6 +608,7 @@ EMITTERS = {
     "ground": emit_ground,
     "frame": emit_frame,
     "triangle_frames": emit_triangle_frames,
+    "assemblies": emit_assemblies,
     "hubs": emit_hubs,
     "panels": emit_panels,
     "micro_drains": emit_micro_drains,
@@ -631,6 +662,51 @@ def build_scene(stack, t: float) -> tuple[Batch, Batch]:
     finally:
         _ACTIVE_STACK["stack"] = None
     return opaque, translucent
+
+
+def pick_face(stack, origin, direction) -> int:
+    """Which triangle a ray hits first, or -1.
+
+    Uses the Moller-Trumbore test against the dome's own faces, so what
+    you click is exactly the face the geometry is built from -- no
+    separate pickable proxy that could drift out of step.
+    """
+    ctx = DomeContext(
+        stack.settings.radius, stack.settings.cut_enabled,
+        stack.settings.cut_start, stack.settings.cut_sweep,
+    )
+    origin = np.asarray(origin, dtype=np.float64)
+    direction = np.asarray(direction, dtype=np.float64)
+    best_index, best_t = -1, float("inf")
+    for index, face in enumerate(ctx.faces):
+        a, b, c = (ctx.points[i] for i in face)
+        if ctx.hidden((a + b + c) / 3.0):
+            continue
+        edge1, edge2 = b - a, c - a
+        pvec = np.cross(direction, edge2)
+        det = float(np.dot(edge1, pvec))
+        if abs(det) < 1e-12:
+            continue
+        inv = 1.0 / det
+        tvec = origin - a
+        u = float(np.dot(tvec, pvec)) * inv
+        if u < 0.0 or u > 1.0:
+            continue
+        qvec = np.cross(tvec, edge1)
+        v = float(np.dot(direction, qvec)) * inv
+        if v < 0.0 or u + v > 1.0:
+            continue
+        distance = float(np.dot(edge2, qvec)) * inv
+        if 1e-6 < distance < best_t:
+            best_t, best_index = distance, index
+    return best_index
+
+
+def face_edge_classes(stack, face_index: int) -> list[str]:
+    ctx = DomeContext(stack.settings.radius)
+    face = ctx.faces[face_index]
+    return [ctx.edge_name(int(face[i]), int(face[(i + 1) % 3]))
+            for i in range(3)]
 
 
 def scene_stats(stack) -> dict:

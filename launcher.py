@@ -272,6 +272,19 @@ def main() -> int:
                "triangles, each three boards mitered at the corners and "
                "bolted to its neighbours, so every seam ends up two "
                "boards thick and there are no hub connectors anywhere.")
+    note(body, "Click any triangle in the 3D view to select it, then "
+               "change what that one triangle is made of — its fill "
+               "(window, vent, solar panel, mirror, Fresnel lens, "
+               "shingles, planks, stone, fabric, an AC unit, a door, and "
+               "more) and the strut on each of its three edges "
+               "separately. The three edges do not have to match, which "
+               "is how real split-log builds actually go together.")
+    note(body, "Press [m] again for the PANEL CREATOR — design one panel "
+               "on a bench out of any three struts from the library "
+               "(split logs, 2x2/2x4/2x6, PVC, steel and aluminium tube, "
+               "square tube and angle, bamboo, plastic) plus any fill, "
+               "then push it to the selected triangle or to the whole "
+               "dome.")
     note(body, "Press [m] for the JIG SHOP — a second world that walks "
                "through building the two jigs you need to mass-produce "
                "those triangles (only two shapes exist: 10 equilateral "
@@ -303,6 +316,18 @@ def main() -> int:
                  "folder without opening a window — handy for putting "
                  "the design in a document.",
     })
+    df_start = LabeledCombo(body, "Starting dome",
+                            ["default", "splitlog"], "default")
+    df_start.pack(fill="x", pady=3)
+    action_help(body, df_start, {
+        "default": "the water-harvesting dome: dished panels, seam "
+                   "veins, cistern, framed in 2x4.",
+        "splitlog": "a split-log frame — half-round logs on the long "
+                    "seams, quarter-round on the short ones, and 2x2 "
+                    "on the ten equilateral caps. A trunk halved gives "
+                    "two half-rounds; halving those again gives four "
+                    "quarter-rounds per log.",
+    })
     df_preset = PathRow(body, "Dome preset (optional)", "", mode="open",
                         filetypes=(("Dome Forge preset", "*.json"),
                                    ("All files", "*.*")),
@@ -323,7 +348,7 @@ def main() -> int:
 
     def go_dome_forge():
         cfg = {"action": df_action.get(), "size": df_size.get() or "1600x900",
-               "fullscreen": df_full.get()}
+               "fullscreen": df_full.get(), "start": df_start.get()}
         if df_preset.get():
             cfg["preset"] = df_preset.get()
         if df_shotdir.get():

@@ -45,6 +45,43 @@ def _selftest() -> int:
     restored = LayerStack.from_json(json.loads(json.dumps(stack.to_json())))
     assert restored.to_json() == stack.to_json()
 
+    # Every strut profile must combine with every fill without blowing up,
+    # including deliberately mismatched sets where the three edges have
+    # different widths.
+    from .catalog import FILL_KEYS, PROFILE_KEYS, PROFILE_BY_KEY
+    from .panel import build_panel, inner_outline
+    from .build import tint
+    from presenter.world import Batch
+    import numpy as _np
+
+    corners = [_np.array([0.0, 0.0, 0.0]), _np.array([2.6, 0.0, 0.0]),
+               _np.array([1.3, 1.9, 0.0])]
+    for profile_key in PROFILE_KEYS:
+        for fill_key in FILL_KEYS:
+            op, tr = Batch(), Batch()
+            build_panel(op, tr, corners, [profile_key] * 3, fill_key, tint)
+            assert op.v or tr.v, (profile_key, fill_key)
+    mixed = ["log_half", "lumber_2x2", "log_quarter"]
+    op, tr = Batch(), Batch()
+    build_panel(op, tr, corners, mixed, "wood_planks", tint)
+    assert op.v or tr.v, mixed
+
+    # With mismatched widths, each inner corner must still sit exactly its
+    # own edge's width in from that edge -- the whole reason the outline is
+    # built by intersecting offset lines instead of scaling the triangle.
+    flat = _np.array([[0.0, 0.0], [2.6, 0.0], [1.3, 1.9]])
+    widths = [PROFILE_BY_KEY[k].width for k in mixed]
+    inner = inner_outline(flat, widths)
+    for i in range(3):
+        p0, p1 = flat[i], flat[(i + 1) % 3]
+        direction = (p1 - p0) / _np.linalg.norm(p1 - p0)
+        normal = _np.array([-direction[1], direction[0]])
+        if _np.dot(normal, flat.mean(axis=0) - p0) < 0:
+            normal = -normal
+        for corner in (i, (i + 1) % 3):
+            distance = float(_np.dot(inner[corner] - p0, normal))
+            assert abs(distance - widths[i]) < 1e-9, (i, corner, distance)
+
     # The jig cut list is re-measured off the assembled 3D faces, so the
     # shop drawings and the dome on screen cannot disagree.
     verify_jigs()
@@ -58,6 +95,8 @@ def _selftest() -> int:
     print(f"Dome Forge selftest OK "
           f"({len(LAYER_KINDS)} layer kinds, {stats['struts']} struts, "
           f"{stats['panels']} panels, {stats['hubs']} hubs; "
+          f"{len(PROFILE_KEYS)}x{len(FILL_KEYS)}="
+          f"{len(PROFILE_KEYS) * len(FILL_KEYS)} strut/fill combos; "
           f"jigs verified against the 3D faces, "
           f"{'+'.join(str(s.triangles_needed) for s in specs)} triangles)")
     return 0
@@ -104,6 +143,20 @@ def main() -> int:
     from .app import launch
 
     preset = cfg.get("preset")
+    if cfg.get("start") == "splitlog":
+        from .layers import split_log_stack
+        from .app import DomeForgeApp
+        size = cfg.get("size", "1600x900")
+        try:
+            width, height = _lc.parse_size(size)
+        except ValueError:
+            width, height = 1600, 900
+        app = DomeForgeApp(size=(width, height),
+                           fullscreen=bool(cfg.get("fullscreen", False)))
+        app.stack = split_log_stack()
+        app.stack.selected_face = -1
+        app.run()
+        return 0
     size = cfg.get("size", "1600x900")
     try:
         width, height = _lc.parse_size(size)

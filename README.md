@@ -428,6 +428,38 @@ space rather than wet material sealed against the structure. The veins
 drain downhill into a collector ring, through a downpipe, into a cistern
 under the dome. Press `C` for the cutaway and watch it move.
 
+### Per-triangle make-up, and the Panel Creator
+
+Click any triangle in the 3D view to select it, then change what *that
+one* is made of. Each triangle carries its own **fill** and its own
+**strut on each of its three edges** — and the three edges deliberately
+do not have to match, because real builds mix sections.
+
+Struts (18): quarter-round, half-round and full-round split logs; 2x2,
+2x4, 2x6 and wide plank lumber; bamboo; steel rod, tube, square tube and
+angle; the aluminium equivalents; PVC pipe and square tube; solid
+plastic bar. Fills (19): glass, polycarbonate, acrylic, Fresnel lens,
+mirror, solar panel, louvered vent, AC unit, fabric, screen mesh, stone,
+metal sheet, wood sheet, wood planks, shingles, plastic sheet, insulated
+panel, door, or open.
+
+Press `m` a second time for the **Panel Creator**: build one panel on a
+bench from any three struts plus a fill, look at it up close, then send
+it to the selected triangle or to the whole dome.
+
+Mixing sections is a geometry problem, not a paint job. Struts of
+different widths push their inner faces in by different amounts, so the
+opening left in the middle is *not* a scaled-down triangle. The inner
+outline is therefore built by intersecting each edge's own offset line
+with its neighbour's, and the selftest asserts that every inner corner
+sits exactly its own edge's width in from that edge — for a deliberately
+mismatched half-round / 2x2 / quarter-round set.
+
+The **splitlog** starting dome in the launcher matches a real split-log
+build: half-round logs on the long seams, quarter-round on the short
+ones, 2x2 on the ten equilateral caps. Split a trunk once for two
+half-rounds; split those again for four quarter-rounds per log.
+
 ### Hubless construction, and the Jig Shop
 
 The frame layer models the way these domes are actually built: **40

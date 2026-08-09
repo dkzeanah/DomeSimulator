@@ -20,9 +20,12 @@ import numpy as np
 
 from presenter.world import Batch
 
-from .build import build_scene, scene_stats, tint, TINTS
+from .build import (build_scene, face_edge_classes, pick_face, scene_stats,
+                    tint, TINTS)
+from .catalog import (FILL_BY_KEY, FILL_KEYS, PROFILE_BY_KEY, PROFILE_KEYS)
 from .jigs import STEPS, emit_jig, jig_specs, step_lines
 from .layers import LAYER_KINDS, KIND_BY_KEY, LayerStack, default_stack
+from .panel import build_panel
 
 
 SCENE_VERTEX_SHADER = """
@@ -219,9 +222,15 @@ class DomeForgeApp:
         self.stack = LayerStack.load(preset) if preset else default_stack()
         self.preset_path = Path(preset) if preset else Path("dome_forge_preset.json")
 
-        self.mode = "dome"            # "dome" or "jigs"
+        self.mode = "dome"            # "dome", "jigs", or "panel"
         self.jig_index = 0            # which of the two jigs
         self.step_index = 0           # which build step
+        self.stack.selected_face = -1
+        # The bench panel in the Panel Creator: three strut choices that
+        # need not match, plus one fill.
+        self.bench_struts = ["log_half", "lumber_2x2", "log_quarter"]
+        self.bench_fill = "polycarbonate"
+        self.bench_edge = 0
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
@@ -229,7 +238,8 @@ class DomeForgeApp:
         self.dragging = None          # active slider drag
         self.orbiting = False
         self.show_add = False
-        self.message = "Drag to orbit. Scroll to zoom. Click a layer to tune it."
+        self.press_at = None
+        self.message = "Drag to orbit, click a triangle to select it, scroll to zoom."
         self.message_at = time.monotonic()
         self.scroll = 0
 
@@ -268,7 +278,35 @@ class DomeForgeApp:
                        tint("charcoal", 1.0))
         return opaque, translucent
 
+    def build_panel_scene(self):
+        """One panel alone on a bench, at a size taken from the dome's own
+        isosceles face so what you design is what you get."""
+        opaque, translucent = Batch(), Batch()
+        spec = jig_specs(self.stack.settings.radius)[1]
+        pts = np.array(spec.flat, dtype=np.float64)
+        pts = pts - pts.mean(axis=0)
+        corners = [np.array([p[0], p[1], 0.0]) for p in pts]
+        build_panel(opaque, translucent, corners, self.bench_struts,
+                    self.bench_fill, tint, seam=0.004)
+        opaque.box((0.0, 0.0, -0.36), (5.0, 5.0, 0.16), tint("charcoal", 1.0))
+        return opaque, translucent
+
     def camera(self):
+        if self.mode == "panel":
+            pitch = math.radians(max(-20.0, min(88.0, self.pitch)))
+            yaw = math.radians(self.yaw)
+            target = np.array([0.0, 0.0, 0.0], dtype=np.float32)
+            eye = target + np.array([
+                self.distance * math.cos(pitch) * math.cos(yaw),
+                self.distance * math.cos(pitch) * math.sin(yaw),
+                self.distance * math.sin(pitch),
+            ], dtype=np.float32)
+            forward = target - eye
+            forward = forward / max(1e-6, float(np.linalg.norm(forward)))
+            right = np.cross(forward, np.array([0.0, 0.0, 1.0], dtype=np.float32))
+            right = right / max(1e-6, float(np.linalg.norm(right)))
+            pan = right * (self.distance * 0.17)
+            return eye - pan, target - pan
         if self.mode == "jigs":
             pitch = math.radians(max(-12.0, min(88.0, self.pitch)))
             yaw = math.radians(self.yaw)
@@ -313,14 +351,16 @@ class DomeForgeApp:
         rows.append(("title", (x, y), "DOME FORGE"))
         y += 26
         rect = (x, y, w, 20)
-        rows.append(("button", rect,
-                     "Mode: DOME  (m to switch)" if self.mode == "dome"
-                     else "Mode: JIG SHOP  (m to switch)"))
+        label = {"dome": "Mode: DOME", "jigs": "Mode: JIG SHOP",
+                 "panel": "Mode: PANEL CREATOR"}[self.mode]
+        rows.append(("button", rect, f"{label}   (m cycles)"))
         regions.append((rect, "toggle_mode", None))
         y += 26
 
         if self.mode == "jigs":
             return self._layout_jigs(rows, regions, x, y, w)
+        if self.mode == "panel":
+            return self._layout_panel(rows, regions, x, y, w)
         stats = scene_stats(self.stack)
         rows.append(("small", (x, y),
                      f"{stats['struts']} struts  {stats['panels']} panels  "
@@ -353,6 +393,58 @@ class DomeForgeApp:
                      ("Cutaway view", self.stack.settings.cut_enabled)))
         regions.append((rect, "cut_toggle", None))
         y += 26
+
+        # Whichever triangle was last clicked in the 3D view.
+        assignments = self.stack.assignments
+        face = self.stack.selected_face
+        rows.append(("head", (x, y), "SELECTED TRIANGLE"))
+        y += 20
+        if face < 0:
+            rows.append(("small", (x, y),
+                         "Click a triangle in the 3D view to select it."))
+            y += 20
+        else:
+            classes = face_edge_classes(self.stack, face)
+            shape = ("equilateral" if classes.count("LONG") == 3
+                     else "isosceles")
+            rows.append(("small", (x, y), f"Face #{face}  ({shape})"))
+            y += 18
+            rect = (x, y, w, 18)
+            current = FILL_BY_KEY[assignments.fill_for(face)].label
+            rows.append(("choice", rect, ("Fill", current)))
+            regions.append((rect, "face_fill", None))
+            y += 22
+            triple = assignments.strut_triple(face, classes)
+            for i in range(3):
+                rect = (x, y, w, 18)
+                name = PROFILE_BY_KEY[triple[i]].label
+                rows.append(("choice", rect,
+                             (f"Edge {i + 1} ({classes[i].lower()})", name)))
+                regions.append((rect, "face_strut", (i,)))
+                y += 22
+            for label_text, action in (
+                ("Apply fill to all", "apply_fill_all"),
+                (f"Apply all to every {shape}", "apply_shape"),
+                ("Reset this triangle", "reset_face"),
+            ):
+                rect = (x, y, w, 20)
+                rows.append(("button", rect, label_text))
+                regions.append((rect, action, None))
+                y += 24
+        y += 6
+        rows.append(("head", (x, y), "DEFAULTS FOR EVERY TRIANGLE"))
+        y += 20
+        for label_text, key in (("Fill", "fill"),
+                                ("Long-edge strut", "strut_long"),
+                                ("Short-edge strut", "strut_short")):
+            rect = (x, y, w, 18)
+            value = getattr(assignments, key)
+            shown = (FILL_BY_KEY[value].label if key == "fill"
+                     else PROFILE_BY_KEY[value].label)
+            rows.append(("choice", rect, (label_text, shown)))
+            regions.append((rect, "default_choice", (key,)))
+            y += 22
+        y += 6
 
         # Layer list, topmost layer shown first (paint-program order)
         rows.append(("head", (x, y), "LAYERS  (top draws last)"))
@@ -472,6 +564,67 @@ class DomeForgeApp:
         rows.append(("small", (x, y), "it in DOME mode and every number here"))
         y += 15
         rows.append(("small", (x, y), "follows."))
+        y += 20
+        return rows, regions, y + self.scroll + 20
+
+    def _layout_panel(self, rows, regions, x, y, w):
+        """The Panel Creator: build one panel out of any three struts."""
+        rows.append(("small", (x, y),
+                     "Design one panel on the bench. The three edges"))
+        y += 15
+        rows.append(("small", (x, y),
+                     "can each use a different strut -- that is the"))
+        y += 15
+        rows.append(("small", (x, y), "point. Then push it to the dome."))
+        y += 22
+
+        rows.append(("head", (x, y), "STRUTS  (one per edge)"))
+        y += 20
+        for i in range(3):
+            profile = PROFILE_BY_KEY[self.bench_struts[i]]
+            rect = (x, y, w, 18)
+            rows.append(("choice", rect, (f"Edge {i + 1}", profile.label)))
+            regions.append((rect, "bench_strut", (i,)))
+            y += 21
+            rows.append(("small", (x, y),
+                         f"   {profile.family}, {profile.summary}"))
+            y += 16
+        y += 6
+
+        profile = PROFILE_BY_KEY[self.bench_struts[self.bench_edge % 3]]
+        rows.append(("head", (x, y),
+                     f"EDGE {self.bench_edge % 3 + 1}: {profile.label.upper()}"))
+        y += 19
+        for line in self._wrap(profile.blurb, 44):
+            rows.append(("small", (x, y), line))
+            y += 15
+        y += 8
+
+        rows.append(("head", (x, y), "FILL"))
+        y += 20
+        fill = FILL_BY_KEY[self.bench_fill]
+        rect = (x, y, w, 18)
+        rows.append(("choice", rect, ("Material", fill.label)))
+        regions.append((rect, "bench_fill", None))
+        y += 22
+        for line in self._wrap(fill.blurb, 44):
+            rows.append(("small", (x, y), line))
+            y += 15
+        y += 10
+
+        for label_text, action in (
+            ("Send to selected triangle", "bench_to_face"),
+            ("Send to every triangle", "bench_to_all"),
+        ):
+            rect = (x, y, w, 22)
+            rows.append(("button", rect, label_text))
+            regions.append((rect, action, None))
+            y += 26
+        y += 6
+        rows.append(("small", (x, y),
+                     "Left-click a choice to go forward,"))
+        y += 15
+        rows.append(("small", (x, y), "right-click to go back."))
         y += 20
         return rows, regions, y + self.scroll + 20
 
@@ -604,6 +757,23 @@ class DomeForgeApp:
 
     # -- interaction -----------------------------------------------------
 
+    def pick_at(self, pos, width: int, height: int) -> int:
+        """Turn a click in the 3D area into a triangle index."""
+        eye, target = self.camera()
+        forward = target - eye
+        forward = forward / max(1e-9, float(np.linalg.norm(forward)))
+        up_hint = np.array([0.0, 0.0, 1.0], dtype=np.float32)
+        right = np.cross(forward, up_hint)
+        right = right / max(1e-9, float(np.linalg.norm(right)))
+        up = np.cross(right, forward)
+        aspect = width / max(1, height)
+        half = math.tan(math.radians(46.0) * 0.5)
+        ndc_x = (2.0 * pos[0] / max(1, width)) - 1.0
+        ndc_y = 1.0 - (2.0 * pos[1] / max(1, height))
+        direction = forward + right * (ndc_x * half * aspect) + up * (ndc_y * half)
+        direction = direction / max(1e-9, float(np.linalg.norm(direction)))
+        return pick_face(self.stack, eye, direction)
+
     def _clamp_scroll(self, content_height: int, height: int) -> None:
         self.scroll = max(0, min(self.scroll, max(0, content_height - height + 30)))
 
@@ -676,7 +846,8 @@ class DomeForgeApp:
             self.show_add = False
             self.notify(f"Added {layer.name}.")
         elif action == "toggle_mode":
-            self.set_mode("jigs" if self.mode == "dome" else "dome")
+            self.set_mode({"dome": "jigs", "jigs": "panel",
+                           "panel": "dome"}[self.mode])
         elif action == "next_jig":
             self.jig_index = (self.jig_index + 1) % 2
             self.notify(self.jig_spec().label)
@@ -684,16 +855,101 @@ class DomeForgeApp:
             self.step_index = (self.step_index + 1) % len(STEPS)
         elif action == "step_back":
             self.step_index = (self.step_index - 1) % len(STEPS)
+        elif action in ("face_fill", "face_strut", "default_choice",
+                        "bench_strut", "bench_fill"):
+            self._cycle_catalog(action, payload, button)
+        elif action == "apply_fill_all":
+            chosen = stack.assignments.fill_for(stack.selected_face)
+            stack.assignments.fill = chosen
+            stack.assignments.face_fill.clear()
+            self.notify(f"Every triangle is now {FILL_BY_KEY[chosen].label}.")
+        elif action == "apply_shape":
+            self._apply_to_shape()
+        elif action == "reset_face":
+            stack.assignments.clear_face(stack.selected_face)
+            self.notify("Triangle reset to the defaults.")
+        elif action == "bench_to_face":
+            if stack.selected_face < 0:
+                self.notify("Select a triangle in DOME mode first.")
+            else:
+                stack.assignments.face_fill[str(stack.selected_face)] = \
+                    self.bench_fill
+                stack.assignments.set_face_struts(stack.selected_face,
+                                                  self.bench_struts)
+                self.notify(f"Sent to triangle #{stack.selected_face}.")
+        elif action == "bench_to_all":
+            stack.assignments.fill = self.bench_fill
+            stack.assignments.strut_long = self.bench_struts[0]
+            stack.assignments.strut_short = self.bench_struts[1]
+            stack.assignments.face_fill.clear()
+            stack.assignments.face_struts.clear()
+            self.notify("Every triangle now uses this panel.")
+
+    def _cycle_catalog(self, action: str, payload, button: int) -> None:
+        """Step a catalog choice forward (left-click) or back (right)."""
+        step = -1 if button == 3 else 1
+        stack = self.stack
+        assignments = stack.assignments
+
+        def nudge(options, current):
+            index = options.index(current) if current in options else 0
+            return options[(index + step) % len(options)]
+
+        if action == "face_fill" and stack.selected_face >= 0:
+            face = stack.selected_face
+            assignments.face_fill[str(face)] = nudge(
+                list(FILL_KEYS), assignments.fill_for(face))
+        elif action == "face_strut" and stack.selected_face >= 0:
+            face = stack.selected_face
+            classes = face_edge_classes(stack, face)
+            triple = assignments.strut_triple(face, classes)
+            triple[payload[0]] = nudge(list(PROFILE_KEYS), triple[payload[0]])
+            assignments.set_face_struts(face, triple)
+        elif action == "default_choice":
+            key = payload[0]
+            options = list(FILL_KEYS) if key == "fill" else list(PROFILE_KEYS)
+            setattr(assignments, key, nudge(options, getattr(assignments, key)))
+        elif action == "bench_strut":
+            self.bench_edge = payload[0]
+            self.bench_struts[payload[0]] = nudge(
+                list(PROFILE_KEYS), self.bench_struts[payload[0]])
+        elif action == "bench_fill":
+            self.bench_fill = nudge(list(FILL_KEYS), self.bench_fill)
+
+    def _apply_to_shape(self) -> None:
+        """Copy the selected triangle's make-up onto every triangle of the
+        same shape -- the 10 equilaterals or the 30 isosceles."""
+        stack = self.stack
+        face = stack.selected_face
+        if face < 0:
+            return
+        classes = face_edge_classes(stack, face)
+        equilateral = classes.count("LONG") == 3
+        fill = stack.assignments.fill_for(face)
+        triple = stack.assignments.strut_triple(face, classes)
+        count = 0
+        for index in range(40):
+            other = face_edge_classes(stack, index)
+            if (other.count("LONG") == 3) != equilateral:
+                continue
+            stack.assignments.face_fill[str(index)] = fill
+            stack.assignments.set_face_struts(index, triple)
+            count += 1
+        self.notify(f"Applied to {count} "
+                    f"{'equilateral' if equilateral else 'isosceles'} triangles.")
 
     def set_mode(self, mode: str) -> None:
         self.mode = mode
         self.scroll = 0
         if mode == "jigs":
-            self.yaw, self.pitch, self.distance = 52.0, 46.0, 7.5
+            self.yaw, self.pitch, self.distance = 62.0, 50.0, 6.6
             self.notify("Jig Shop: arrows step through the build, Tab swaps jig.")
+        elif mode == "panel":
+            self.yaw, self.pitch, self.distance = 56.0, 40.0, 4.4
+            self.notify("Panel Creator: mix any three struts, pick a fill.")
         else:
             self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
-            self.notify("Dome: drag to orbit, click a layer to tune it.")
+            self.notify("Dome: click a triangle to select it.")
 
     def key(self, event) -> None:
         pg = self.pygame
@@ -701,7 +957,8 @@ class DomeForgeApp:
         if event.key == pg.K_ESCAPE:
             self.running = False
         elif event.key == pg.K_m:
-            self.set_mode("jigs" if self.mode == "dome" else "dome")
+            self.set_mode({"dome": "jigs", "jigs": "panel",
+                           "panel": "dome"}[self.mode])
         elif event.key == pg.K_TAB and self.mode == "jigs":
             self.jig_index = (self.jig_index + 1) % 2
             self.notify(self.jig_spec().label)
@@ -749,6 +1006,8 @@ class DomeForgeApp:
 
         if self.mode == "jigs":
             opaque, translucent = self.build_jig_scene()
+        elif self.mode == "panel":
+            opaque, translucent = self.build_panel_scene()
         else:
             opaque, translucent = build_scene(self.stack, self.clock_t)
         self.ctx.enable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)
@@ -805,11 +1064,26 @@ class DomeForgeApp:
                     else:
                         if event.button == 1:
                             self.orbiting = True
+                            self.press_at = event.pos
                         elif event.button == 4:
                             self.distance = max(2.0, self.distance * 0.9)
                         elif event.button == 5:
                             self.distance = min(80.0, self.distance * 1.1)
                 elif event.type == pg.MOUSEBUTTONUP:
+                    # A click that did not turn into a drag is a pick, not
+                    # an orbit -- so selecting a triangle never fights with
+                    # rotating the view.
+                    if (event.button == 1 and self.orbiting
+                            and self.mode == "dome"
+                            and self.press_at is not None
+                            and abs(event.pos[0] - self.press_at[0]) < 4
+                            and abs(event.pos[1] - self.press_at[1]) < 4):
+                        width, _ = pg.display.get_window_size()
+                        hit = self.pick_at(event.pos, width, height)
+                        self.stack.selected_face = hit
+                        self.notify(f"Selected triangle #{hit}." if hit >= 0
+                                    else "No triangle under the cursor.")
+                    self.press_at = None
                     self.dragging = None
                     self.orbiting = False
                 elif event.type == pg.MOUSEMOTION:

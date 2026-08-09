@@ -136,8 +136,30 @@ LAYER_KINDS: tuple[LayerKind, ...] = (
         ),
     ),
     LayerKind(
+        key="assemblies",
+        label="Panel assemblies",
+        blurb=(
+            "The real dome: 40 individual triangles, each with its own "
+            "three struts and its own fill. Click any triangle in the 3D "
+            "view to select it, then change what it is made of -- a "
+            "window here, a vent there, solar on the sunny side. The "
+            "three edges of one triangle do not have to use the same "
+            "strut."
+        ),
+        params=(
+            ParamSpec("seam", "Seam gap", "float", 0.004, 0.0, 0.05, 0.001,
+                      unit="m",
+                      help="A sliver left at each seam so the two struts "
+                           "meeting there stay tellable apart on screen."),
+            ParamSpec("show_fills", "Show fills", "bool", True,
+                      help="Turn off to see the bare frame."),
+            ParamSpec("highlight", "Highlight selection", "bool", True,
+                      help="Light up whichever triangle is selected."),
+        ),
+    ),
+    LayerKind(
         key="triangle_frames",
-        label="Triangle frames (hubless)",
+        label="Triangle frames (uniform)",
         blurb=(
             "How these domes are actually built: 40 separate triangular "
             "frames, each three flat-laid boards mitered at the corners, "
@@ -444,6 +466,67 @@ class Layer:
 
 
 @dataclass
+class Assignments:
+    """What each individual triangle is made of.
+
+    A dome is rarely all one thing: a few panels are windows, one is a
+    door, the south face carries solar. Rather than force every triangle
+    to match, this holds a sensible default plus per-triangle overrides,
+    keyed by face index. Struts default per edge *class*, since the two
+    strut lengths are usually different stock in a real build.
+    """
+
+    fill: str = "polycarbonate"
+    strut_long: str = "lumber_2x4"
+    strut_short: str = "lumber_2x4"
+    face_fill: dict = field(default_factory=dict)
+    face_struts: dict = field(default_factory=dict)
+
+    def fill_for(self, face_index: int) -> str:
+        return self.face_fill.get(str(face_index), self.fill)
+
+    def strut_for(self, face_index: int, edge_class: str) -> str:
+        override = self.face_struts.get(str(face_index))
+        if isinstance(override, list) and len(override) == 3:
+            return override[0]
+        return self.strut_long if edge_class == "LONG" else self.strut_short
+
+    def strut_triple(self, face_index: int, edge_classes) -> list[str]:
+        override = self.face_struts.get(str(face_index))
+        if isinstance(override, list) and len(override) == 3:
+            return list(override)
+        return [self.strut_long if name == "LONG" else self.strut_short
+                for name in edge_classes]
+
+    def set_face_struts(self, face_index: int, triple) -> None:
+        self.face_struts[str(face_index)] = list(triple)
+
+    def clear_face(self, face_index: int) -> None:
+        self.face_fill.pop(str(face_index), None)
+        self.face_struts.pop(str(face_index), None)
+
+    def to_json(self) -> dict:
+        return {
+            "fill": self.fill,
+            "strut_long": self.strut_long,
+            "strut_short": self.strut_short,
+            "face_fill": dict(self.face_fill),
+            "face_struts": {k: list(v) for k, v in self.face_struts.items()},
+        }
+
+    @staticmethod
+    def from_json(data: dict) -> "Assignments":
+        return Assignments(
+            fill=data.get("fill", "polycarbonate"),
+            strut_long=data.get("strut_long", "lumber_2x4"),
+            strut_short=data.get("strut_short", "lumber_2x4"),
+            face_fill=dict(data.get("face_fill", {})),
+            face_struts={k: list(v)
+                         for k, v in data.get("face_struts", {}).items()},
+        )
+
+
+@dataclass
 class DomeSettings:
     """Whole-dome settings that are not themselves a layer."""
 
@@ -474,9 +557,11 @@ class LayerStack:
     """An ordered list of layers, bottom-most first."""
 
     def __init__(self, layers: list[Layer] | None = None,
-                 settings: DomeSettings | None = None) -> None:
+                 settings: DomeSettings | None = None,
+                 assignments: Assignments | None = None) -> None:
         self.layers: list[Layer] = list(layers or [])
         self.settings = settings or DomeSettings()
+        self.assignments = assignments or Assignments()
         self.selected = 0 if self.layers else -1
 
     # -- editing ---------------------------------------------------------
@@ -521,8 +606,9 @@ class LayerStack:
 
     def to_json(self) -> dict:
         return {
-            "schema": 1,
+            "schema": 2,
             "settings": self.settings.to_json(),
+            "assignments": self.assignments.to_json(),
             "layers": [layer.to_json() for layer in self.layers],
         }
 
@@ -536,7 +622,11 @@ class LayerStack:
                 # An unknown layer kind (an older or newer preset) is
                 # skipped rather than taking the whole file down with it.
                 continue
-        return LayerStack(layers, DomeSettings.from_json(data.get("settings", {})))
+        return LayerStack(
+            layers,
+            DomeSettings.from_json(data.get("settings", {})),
+            Assignments.from_json(data.get("assignments", {})),
+        )
 
     def save(self, path: Path) -> Path:
         path = Path(path)
@@ -558,8 +648,8 @@ def default_stack() -> LayerStack:
     stack = LayerStack()
     for kind in (
         "ground", "cistern", "downpipe", "collector_ring",
-        "veins", "vein_water", "triangle_frames",
-        "panels", "micro_drains", "panel_runoff", "rain",
+        "veins", "vein_water", "assemblies",
+        "micro_drains", "panel_runoff", "rain",
     ):
         stack.add(kind)
     # Rain starts off: the static dome reads more clearly on first open,
@@ -571,3 +661,42 @@ def default_stack() -> LayerStack:
         (i for i, layer in enumerate(stack.layers) if layer.kind == "veins"), 0
     )
     return stack
+
+
+def split_log_stack() -> LayerStack:
+    """A dome framed the way a split-log build actually goes together:
+    half-round logs on the long seams, quarter-round on the short ones,
+    and 2x2 where a lighter stick will do. Mixing sections like this is
+    normal, and it is why the panel geometry has to cope with three
+    different strut widths meeting at one corner."""
+    stack = default_stack()
+    stack.assignments = Assignments(
+        fill="polycarbonate",
+        strut_long="log_half",
+        strut_short="log_quarter",
+    )
+    # The equilateral caps get the lighter 2x2 on every edge.
+    for index in _EQUILATERAL_FACES:
+        stack.assignments.set_face_struts(
+            index, ["lumber_2x2", "lumber_2x2", "lumber_2x2"])
+    return stack
+
+
+def _equilateral_face_indices() -> tuple[int, ...]:
+    """The 10 all-LONG faces, found from the geometry rather than typed
+    out, so this keeps working if the geometry is ever regenerated."""
+    from two_v_demo.geometry import build_demo_geometry
+    geo = build_demo_geometry()
+    class_by_edge = {tuple(sorted(edge)): name
+                     for edge, name in zip(geo.edges, geo.edge_class_by_edge)}
+    found = []
+    for index, face in enumerate(geo.hemisphere_faces):
+        names = [class_by_edge[tuple(sorted((int(face[i]),
+                                             int(face[(i + 1) % 3]))))]
+                 for i in range(3)]
+        if names.count("LONG") == 3:
+            found.append(index)
+    return tuple(found)
+
+
+_EQUILATERAL_FACES = _equilateral_face_indices()
