@@ -15,6 +15,7 @@ import launcher_common as _lc
 
 def _selftest() -> int:
     from .build import build_scene, scene_stats
+    from .jigs import STEPS, jig_specs, step_lines, verify as verify_jigs
     from .layers import LAYER_KINDS, LayerStack, default_stack
 
     stack = default_stack()
@@ -44,9 +45,21 @@ def _selftest() -> int:
     restored = LayerStack.from_json(json.loads(json.dumps(stack.to_json())))
     assert restored.to_json() == stack.to_json()
 
+    # The jig cut list is re-measured off the assembled 3D faces, so the
+    # shop drawings and the dome on screen cannot disagree.
+    verify_jigs()
+    specs = jig_specs(stack.settings.radius)
+    assert len(specs) == 2, specs
+    assert sum(spec.triangles_needed for spec in specs) == 40, specs
+    for spec in specs:
+        for step in STEPS:
+            step_lines(spec, step)
+
     print(f"Dome Forge selftest OK "
           f"({len(LAYER_KINDS)} layer kinds, {stats['struts']} struts, "
-          f"{stats['panels']} panels, {stats['hubs']} hubs)")
+          f"{stats['panels']} panels, {stats['hubs']} hubs; "
+          f"jigs verified against the 3D faces, "
+          f"{'+'.join(str(s.triangles_needed) for s in specs)} triangles)")
     return 0
 
 

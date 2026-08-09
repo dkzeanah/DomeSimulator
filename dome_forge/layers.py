@@ -136,6 +136,44 @@ LAYER_KINDS: tuple[LayerKind, ...] = (
         ),
     ),
     LayerKind(
+        key="triangle_frames",
+        label="Triangle frames (hubless)",
+        blurb=(
+            "How these domes are actually built: 40 separate triangular "
+            "frames, each three flat-laid boards mitered at the corners, "
+            "bolted to their neighbours. Every seam ends up two boards "
+            "thick because each triangle brings its own -- so there are no "
+            "hubs anywhere in the dome."
+        ),
+        params=(
+            ParamSpec("width", "Board width", "float", 0.089, 0.03, 0.30, 0.001,
+                      unit="m", help="The face width of the board, measured "
+                                     "inward from the seam. 0.089m is a "
+                                     "nominal 2x4's real 3-1/2 inch width."),
+            ParamSpec("thickness", "Board thickness", "float", 0.038, 0.01, 0.15,
+                      0.001, unit="m",
+                      help="How deep the board is, measured toward the "
+                           "centre of the dome. 0.038m is a 2x4's real "
+                           "1-1/2 inch thickness."),
+            ParamSpec("seam", "Seam gap", "float", 0.004, 0.0, 0.05, 0.001,
+                      unit="m",
+                      help="A sliver of space left at each seam so the two "
+                           "boards meeting there stay tellable apart on "
+                           "screen. Set it to 0 for the true built position."),
+            ParamSpec("bolts", "Show bolts", "bool", True,
+                      help="Draw the bolts that clamp each pair of boards "
+                           "together along a seam."),
+            ParamSpec("bolt_count", "Bolts per seam", "int", 3, 1, 8, 1),
+            ParamSpec("bolt_size", "Bolt size", "float", 0.016, 0.004, 0.05, 0.001,
+                      unit="m"),
+            ParamSpec("split_classes", "Colour by triangle type", "bool", True,
+                      help="Show the 10 equilateral triangles and the 30 "
+                           "isosceles ones in different shades -- these are "
+                           "the two shapes you build jigs for."),
+            _color("tint", "Colour", "timber", PALETTE),
+        ),
+    ),
+    LayerKind(
         key="hubs",
         label="Hub connectors",
         blurb=(
@@ -520,7 +558,7 @@ def default_stack() -> LayerStack:
     stack = LayerStack()
     for kind in (
         "ground", "cistern", "downpipe", "collector_ring",
-        "veins", "vein_water", "frame", "hubs",
+        "veins", "vein_water", "triangle_frames",
         "panels", "micro_drains", "panel_runoff", "rain",
     ):
         stack.add(kind)

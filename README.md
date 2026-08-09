@@ -401,8 +401,9 @@ named controls. Thirteen layer types ship:
 | Layer | What it is |
 | --- | --- |
 | Ground pad | The slab, for scale and orientation |
-| Strut frame | The load-bearing skeleton, optionally coloured by strut length |
-| Hub connectors | The joints where struts meet |
+| Triangle frames (hubless) | 40 separate bolted triangles — how these domes are really built |
+| Strut frame | A simpler stick diagram of the same edges, for teaching |
+| Hub connectors | The joints where struts meet (only for the stick diagram) |
 | Panels | The triangular skin — flat, or dished inward like a golf-ball dimple |
 | Micro-drains | An outlet at the low point of each dished panel |
 | Seam veins (gasket) | A channel along the inside of every seam, held clear of the skin |
@@ -427,8 +428,45 @@ space rather than wet material sealed against the structure. The veins
 drain downhill into a collector ring, through a downpipe, into a cistern
 under the dome. Press `C` for the cutaway and watch it move.
 
+### Hubless construction, and the Jig Shop
+
+The frame layer models the way these domes are actually built: **40
+separate triangles**, each three flat-laid boards mitered at the corners,
+bolted to their neighbours. Because every triangle brings its own board
+to a shared seam, each seam ends up two boards thick — and there are no
+hub connectors anywhere in the dome.
+
+Press **`m`** for the **Jig Shop**, a second world in the same tool. A
+2V hemisphere has 40 triangles but only **two shapes** (10 equilateral,
+30 isosceles), so two jigs produce the whole dome. Nine steps walk
+through building each one — base plate, scribed triangle, fences, corner
+stops, cutting, loading, fastening — with the exact cut list at every
+step, all following the radius you set:
+
+| | Equilateral (×10) | Isosceles (×30) |
+| --- | --- | --- |
+| Corner angles | 60° / 60° / 60° | 55.569° / 55.569° / 68.862° |
+| Saw miter | 60° all six cuts | 62.215° / 62.215° / 55.569° |
+| Edge bevel | 9.0146° (all LONG) | 9.0146° LONG, 11.2295° SHORT |
+
+Two things here catch people out, and the last step is about both. The
+**boards are trapezoids, not rectangles** — the outer edge runs the full
+chord while the inner edge is shorter, because both ends are mitered
+inward. And the flat interior angles meeting at a vertex do **not** sum
+to 360°: they fall short by 15.69° at a five-way vertex and 17.72° at a
+six-way one. That shortfall is exactly what curves the dome, and it means
+the mitered tips converge on a *line through the vertex* rather than
+meeting at a point on a plane — so expect a small void at each vertex,
+and blunt the tips rather than chasing a perfect point.
+
+Every one of those figures is computed from `two_v_demo/geometry.py` and
+then **re-measured straight off the assembled 3D faces** by
+`dome_forge/jigs.py`'s `verify()`, which the selftest runs. If the shop
+drawing and the dome ever disagree, it raises instead of quietly
+shipping a jig that builds the wrong triangle.
+
 ```powershell
-py -3.12 launcher.py     # "Dome Forge" tab
+py -3.12 launcher.py     # "Dome Forge" tab, then press m
 ```
 
 Mouse: drag to orbit, scroll to zoom, click a layer to select it, click

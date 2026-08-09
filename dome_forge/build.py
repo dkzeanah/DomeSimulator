@@ -158,6 +158,105 @@ def emit_frame(op: Batch, tr: Batch, layer, ctx: DomeContext, t: float) -> None:
         target.cylinder(pa, pb, thickness, color, sides=sides)
 
 
+def face_frame(ctx: DomeContext, face, width: float, seam: float):
+    """The three boards of one hubless triangle, in that triangle's own
+    plane.
+
+    Each board's outer long edge lies on the seam line between two sphere
+    vertices, and the board runs ``width`` inward from there. Cutting all
+    three that way automatically produces the mitered corners: each corner
+    lands on the bisector of that triangle's interior angle. Because the
+    neighbouring triangle does exactly the same on its side, every seam in
+    the finished dome carries two boards -- which is what makes the whole
+    thing hubless.
+
+    Returns (boards, normal), where each board is the outer quad
+    (p_a, p_b, p_b_inner, p_a_inner).
+    """
+    a, b, c = (ctx.points[i].astype(np.float64) for i in face)
+    normal = normalize(np.cross(b - a, c - a))
+    if float(np.dot(normal, (a + b + c) / 3.0)) < 0.0:
+        normal = -normal
+
+    def inset_corner(corner, first, second, offset):
+        """Slide a corner along its own angle bisector until it sits
+        ``offset`` in from both of its edges."""
+        u1 = normalize(first - corner)
+        u2 = normalize(second - corner)
+        bisector = normalize(u1 + u2)
+        half = math.acos(float(np.clip(np.dot(u1, u2), -1.0, 1.0))) * 0.5
+        return corner + bisector * (offset / max(1e-6, math.sin(half)))
+
+    # `seam` pulls the outer edge in slightly so the two boards meeting at
+    # a seam stay visually distinct; at seam=0 they touch exactly.
+    outer = [inset_corner(p, q, r, seam)
+             for p, q, r in ((a, b, c), (b, c, a), (c, a, b))]
+    inner = [inset_corner(p, q, r, seam + width)
+             for p, q, r in ((a, b, c), (b, c, a), (c, a, b))]
+    boards = []
+    for i in range(3):
+        j = (i + 1) % 3
+        boards.append((outer[i], outer[j], inner[j], inner[i]))
+    return boards, normal
+
+
+def _solid_quad(batch: Batch, quad, normal, thickness: float, color) -> None:
+    """Extrude a flat quad inward along ``normal`` into a closed board."""
+    top = [np.asarray(p, dtype=np.float64) for p in quad]
+    bottom = [p - normal * thickness for p in top]
+    batch.quad(top[0], top[1], top[2], top[3], color, normal)
+    batch.quad(bottom[3], bottom[2], bottom[1], bottom[0], color, -normal)
+    side = _shade(color, 0.82)
+    for i in range(4):
+        j = (i + 1) % 4
+        batch.quad(top[i], bottom[i], bottom[j], top[j], side)
+
+
+def emit_triangle_frames(op: Batch, tr: Batch, layer, ctx: DomeContext,
+                         t: float) -> None:
+    """40 individual bolted triangles, no hubs anywhere."""
+    alpha = layer.opacity
+    base = tint(layer.get("tint"), alpha)
+    width = float(layer.get("width"))
+    thickness = float(layer.get("thickness"))
+    seam = float(layer.get("seam"))
+    split = bool(layer.get("split_classes"))
+    show_bolts = bool(layer.get("bolts"))
+    bolt_count = max(1, int(layer.get("bolt_count")))
+    bolt_size = float(layer.get("bolt_size"))
+    target = tr if alpha < 0.999 else op
+    bolt_color = tint("steel", alpha)
+
+    for face in ctx.faces:
+        if ctx.hidden(ctx.points[face].mean(axis=0)):
+            continue
+        names = [ctx.edge_name(int(face[i]), int(face[(i + 1) % 3]))
+                 for i in range(3)]
+        color = base
+        if split:
+            # All-LONG is one of the 10 equilaterals; the rest are the 30
+            # isosceles triangles. Those are exactly the two jig shapes.
+            color = _shade(base, 1.16 if names.count("LONG") == 3 else 0.84)
+        boards, normal = face_frame(ctx, face, width, seam)
+        for board in boards:
+            _solid_quad(target, board, normal, thickness, color)
+
+        if show_bolts:
+            for i, board in enumerate(boards):
+                # Bolts run through the pair of boards that meet at this
+                # seam, so they sit on the seam line itself.
+                p0, p1 = board[0], board[1]
+                for k in range(bolt_count):
+                    f = (k + 1) / (bolt_count + 1)
+                    at = p0 + (p1 - p0) * f
+                    head = at - normal * (thickness * 0.5)
+                    target.cylinder(
+                        head + normal * bolt_size * 1.2,
+                        head - normal * bolt_size * 1.2,
+                        bolt_size * 0.5, bolt_color, sides=6,
+                    )
+
+
 def emit_hubs(op: Batch, tr: Batch, layer, ctx: DomeContext, t: float) -> None:
     alpha = layer.opacity
     color = tint(layer.get("tint"), alpha)
@@ -478,6 +577,7 @@ def emit_rain(op: Batch, tr: Batch, layer, ctx: DomeContext, t: float) -> None:
 EMITTERS = {
     "ground": emit_ground,
     "frame": emit_frame,
+    "triangle_frames": emit_triangle_frames,
     "hubs": emit_hubs,
     "panels": emit_panels,
     "micro_drains": emit_micro_drains,

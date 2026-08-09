@@ -268,12 +268,27 @@ def main() -> int:
          "ring, through a downpipe, into a cistern under the dome. Turn "
          "on Cutaway view (or press C) to watch the water actually move "
          "through it.")
+    note(body, "The frame is built the hubless way: 40 separate "
+               "triangles, each three boards mitered at the corners and "
+               "bolted to its neighbours, so every seam ends up two "
+               "boards thick and there are no hub connectors anywhere.")
+    note(body, "Press [m] for the JIG SHOP — a second world that walks "
+               "through building the two jigs you need to mass-produce "
+               "those triangles (only two shapes exist: 10 equilateral "
+               "and 30 isosceles). Nine steps, each with the exact cut "
+               "list: board lengths, the miter angle for each corner, "
+               "the bevel to rip along each edge, and why the mitered "
+               "tips do not meet flat at a vertex. Every number follows "
+               "the dome radius you set.")
     note(body, "Mouse: drag to orbit, scroll to zoom. Click any layer to "
                "select it, click its small square to hide/show it, drag "
-               "the bar under its name to fade it. Keys: [space] "
-               "pause/play the water, [c] cutaway, [1-4] jump to preset "
-               "views (outside / inside / top-down / ground level), [s] "
-               "save your dome, [l] load it back, [Escape] quit.")
+               "the bar under its name to fade it. Keys: [m] switch "
+               "between the dome and the jig shop, [space] pause/play "
+               "the water, [c] cutaway, [1-4] jump to preset views "
+               "(outside / inside / top-down / ground level), [s] save "
+               "your dome, [l] load it back, [Escape] quit. In the jig "
+               "shop: [left]/[right] step through the build, [Tab] "
+               "switch between the two jigs.")
     section(body, "Launch")
     df_action = LabeledCombo(body, "Action",
                              ["run", "selftest", "shots"], "run")

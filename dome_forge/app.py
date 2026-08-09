@@ -18,7 +18,10 @@ from pathlib import Path
 
 import numpy as np
 
-from .build import build_scene, scene_stats, TINTS
+from presenter.world import Batch
+
+from .build import build_scene, scene_stats, tint, TINTS
+from .jigs import STEPS, emit_jig, jig_specs, step_lines
 from .layers import LAYER_KINDS, KIND_BY_KEY, LayerStack, default_stack
 
 
@@ -210,10 +213,15 @@ class DomeForgeApp:
         self.font = pygame.font.SysFont("Segoe UI", 15)
         self.font_small = pygame.font.SysFont("Segoe UI", 13)
         self.font_bold = pygame.font.SysFont("Segoe UI Semibold", 16)
+        # A fixed-width face for the cut list, so columns of numbers line up.
+        self.font_mono = pygame.font.SysFont("Consolas", 13)
 
         self.stack = LayerStack.load(preset) if preset else default_stack()
         self.preset_path = Path(preset) if preset else Path("dome_forge_preset.json")
 
+        self.mode = "dome"            # "dome" or "jigs"
+        self.jig_index = 0            # which of the two jigs
+        self.step_index = 0           # which build step
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
@@ -231,7 +239,53 @@ class DomeForgeApp:
         self.message = text
         self.message_at = time.monotonic()
 
+    def jig_spec(self):
+        specs = jig_specs(
+            self.stack.settings.radius,
+            self._frame_param("width", 0.089),
+            self._frame_param("thickness", 0.038),
+        )
+        return specs[self.jig_index % len(specs)]
+
+    def _frame_param(self, key: str, fallback: float) -> float:
+        """Read board size off the triangle-frame layer, so the jig always
+        builds the boards the dome is actually made of."""
+        for layer in self.stack.layers:
+            if layer.kind == "triangle_frames":
+                return float(layer.get(key))
+        return fallback
+
+    def build_jig_scene(self):
+        opaque, translucent = Batch(), Batch()
+        step = STEPS[self.step_index % len(STEPS)]
+        emit_jig(opaque, translucent, self.jig_spec(), step.stage,
+                 self.clock_t, tint)
+        # A bench under the jig, so it reads as sitting on something
+        # rather than floating in the dark. Kept modest -- a big slab
+        # just swallows the light.
+        if step.stage != "deficit":
+            opaque.box((0.0, -0.7, -0.30), (5.2, 6.4, 0.16),
+                       tint("charcoal", 1.0))
+        return opaque, translucent
+
     def camera(self):
+        if self.mode == "jigs":
+            pitch = math.radians(max(-12.0, min(88.0, self.pitch)))
+            yaw = math.radians(self.yaw)
+            target = np.array([0.0, 0.0, 0.0], dtype=np.float32)
+            eye = target + np.array([
+                self.distance * math.cos(pitch) * math.cos(yaw),
+                self.distance * math.cos(pitch) * math.sin(yaw),
+                self.distance * math.sin(pitch),
+            ], dtype=np.float32)
+            # The layer panel covers the left of the window, so pan the
+            # camera left to sit the jig in the part actually visible.
+            forward = target - eye
+            forward = forward / max(1e-6, float(np.linalg.norm(forward)))
+            right = np.cross(forward, np.array([0.0, 0.0, 1.0], dtype=np.float32))
+            right = right / max(1e-6, float(np.linalg.norm(right)))
+            pan = right * (self.distance * 0.17)
+            return eye - pan, target - pan
         radius = self.stack.settings.radius
         pitch = math.radians(max(-12.0, min(84.0, self.pitch)))
         yaw = math.radians(self.yaw)
@@ -258,6 +312,15 @@ class DomeForgeApp:
 
         rows.append(("title", (x, y), "DOME FORGE"))
         y += 26
+        rect = (x, y, w, 20)
+        rows.append(("button", rect,
+                     "Mode: DOME  (m to switch)" if self.mode == "dome"
+                     else "Mode: JIG SHOP  (m to switch)"))
+        regions.append((rect, "toggle_mode", None))
+        y += 26
+
+        if self.mode == "jigs":
+            return self._layout_jigs(rows, regions, x, y, w)
         stats = scene_stats(self.stack)
         rows.append(("small", (x, y),
                      f"{stats['struts']} struts  {stats['panels']} panels  "
@@ -367,6 +430,51 @@ class DomeForgeApp:
 
         return rows, regions, content_height
 
+    def _layout_jigs(self, rows, regions, x, y, w):
+        """The Jig Shop panel: which jig, which step, and the exact numbers
+        for that step."""
+        spec = self.jig_spec()
+        step = STEPS[self.step_index % len(STEPS)]
+
+        rect = (x, y, w, 20)
+        rows.append(("button", rect, f"{spec.label}   (Tab)"))
+        regions.append((rect, "next_jig", None))
+        y += 26
+
+        rows.append(("head", (x, y),
+                     f"STEP {self.step_index + 1} OF {len(STEPS)}"))
+        y += 20
+        rows.append(("small", (x, y), step.title))
+        y += 18
+        for line in self._wrap(step.detail, 44):
+            rows.append(("small", (x, y), line))
+            y += 15
+        y += 8
+
+        half = (w - 6) // 2
+        back = (x, y, half, 22)
+        forward = (x + half + 6, y, half, 22)
+        rows.append(("button", back, "< Back"))
+        rows.append(("button", forward, "Next >"))
+        regions.append((back, "step_back", None))
+        regions.append((forward, "step_forward", None))
+        y += 30
+
+        rows.append(("head", (x, y), "CUT LIST FOR THIS STEP"))
+        y += 20
+        for line in step_lines(spec, step):
+            rows.append(("mono", (x, y), line))
+            y += 16
+        y += 8
+        rows.append(("small", (x, y),
+                     f"Dome radius {self.stack.settings.radius:.2f} m -- change"))
+        y += 15
+        rows.append(("small", (x, y), "it in DOME mode and every number here"))
+        y += 15
+        rows.append(("small", (x, y), "follows."))
+        y += 20
+        return rows, regions, y + self.scroll + 20
+
     @staticmethod
     def _wrap(text: str, width: int) -> list[str]:
         words, lines, line = text.split(), [], ""
@@ -403,6 +511,8 @@ class DomeForgeApp:
                 surface.blit(self.font_small.render(payload, True, WARN), rect)
             elif kind == "small":
                 surface.blit(self.font_small.render(payload, True, DIM), rect)
+            elif kind == "mono":
+                surface.blit(self.font_mono.render(payload, True, INK), rect)
             elif kind == "button":
                 pg.draw.rect(surface, ROW_BG, rect, border_radius=4)
                 pg.draw.rect(surface, (60, 92, 118), rect, 1, border_radius=4)
@@ -469,9 +579,13 @@ class DomeForgeApp:
         hint = self.font_small.render(self.message, True, DIM)
         surface.blit(hint, (PANEL_W + 16, height - 26))
         state = "playing" if self.playing else "paused"
-        info = self.font_small.render(
-            f"[space] {state}   [c] cutaway   [s] save   [l] load   "
-            f"[1-4] views   [esc] quit", True, DIM)
+        if self.mode == "jigs":
+            keys = ("[m] back to dome   [Tab] other jig   "
+                    "[<- ->] step   [esc] quit")
+        else:
+            keys = (f"[m] jig shop   [space] {state}   [c] cutaway   "
+                    f"[s] save   [l] load   [1-4] views   [esc] quit")
+        info = self.font_small.render(keys, True, DIM)
         surface.blit(info, (PANEL_W + 16, height - 46))
         return surface
 
@@ -561,12 +675,40 @@ class DomeForgeApp:
             layer = stack.add(payload)
             self.show_add = False
             self.notify(f"Added {layer.name}.")
+        elif action == "toggle_mode":
+            self.set_mode("jigs" if self.mode == "dome" else "dome")
+        elif action == "next_jig":
+            self.jig_index = (self.jig_index + 1) % 2
+            self.notify(self.jig_spec().label)
+        elif action == "step_forward":
+            self.step_index = (self.step_index + 1) % len(STEPS)
+        elif action == "step_back":
+            self.step_index = (self.step_index - 1) % len(STEPS)
+
+    def set_mode(self, mode: str) -> None:
+        self.mode = mode
+        self.scroll = 0
+        if mode == "jigs":
+            self.yaw, self.pitch, self.distance = 52.0, 46.0, 7.5
+            self.notify("Jig Shop: arrows step through the build, Tab swaps jig.")
+        else:
+            self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
+            self.notify("Dome: drag to orbit, click a layer to tune it.")
 
     def key(self, event) -> None:
         pg = self.pygame
         settings = self.stack.settings
         if event.key == pg.K_ESCAPE:
             self.running = False
+        elif event.key == pg.K_m:
+            self.set_mode("jigs" if self.mode == "dome" else "dome")
+        elif event.key == pg.K_TAB and self.mode == "jigs":
+            self.jig_index = (self.jig_index + 1) % 2
+            self.notify(self.jig_spec().label)
+        elif event.key == pg.K_RIGHT and self.mode == "jigs":
+            self.step_index = (self.step_index + 1) % len(STEPS)
+        elif event.key == pg.K_LEFT and self.mode == "jigs":
+            self.step_index = (self.step_index - 1) % len(STEPS)
         elif event.key == pg.K_SPACE:
             self.playing = not self.playing
         elif event.key == pg.K_c:
@@ -605,7 +747,10 @@ class DomeForgeApp:
         self.scene_program["u_camera"].value = tuple(float(v) for v in eye)
         self.scene_program["u_light"].value = (-0.42, -0.58, -0.70)
 
-        opaque, translucent = build_scene(self.stack, self.clock_t)
+        if self.mode == "jigs":
+            opaque, translucent = self.build_jig_scene()
+        else:
+            opaque, translucent = build_scene(self.stack, self.clock_t)
         self.ctx.enable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)
         self.ctx.depth_mask = True
         self.opaque.draw(opaque)
