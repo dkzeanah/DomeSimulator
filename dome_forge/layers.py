@@ -158,6 +158,20 @@ LAYER_KINDS: tuple[LayerKind, ...] = (
         ),
     ),
     LayerKind(
+        key="waist_joints",
+        label="Hourglass waist joints",
+        blurb=(
+            "Where two equilateral triangles meet point to point, "
+            "something has to make that into a real joint -- banding, "
+            "wooden braces, a gusset plate, or one continuous piece. "
+            "There are ten of these waists in a hemisphere."
+        ),
+        params=(
+            ParamSpec("size", "Joint size", "float", 1.0, 0.3, 2.5, 0.05,
+                      unit="x", help="Scale the hardware up or down."),
+        ),
+    ),
+    LayerKind(
         key="triangle_frames",
         label="Triangle frames (uniform)",
         blurb=(
@@ -481,6 +495,14 @@ class Assignments:
     strut_short: str = "lumber_2x4"
     face_fill: dict = field(default_factory=dict)
     face_struts: dict = field(default_factory=dict)
+    # How the two points of each hourglass are joined. Keyed by the
+    # hourglass's waist, because the joint belongs to the waist rather
+    # than to either triangle -- one triangle sits in several hourglasses.
+    joint: str = "banding"
+    waist_joint: dict = field(default_factory=dict)
+
+    def joint_for(self, hourglass_index: int) -> str:
+        return self.waist_joint.get(str(hourglass_index), self.joint)
 
     def fill_for(self, face_index: int) -> str:
         return self.face_fill.get(str(face_index), self.fill)
@@ -512,6 +534,8 @@ class Assignments:
             "strut_short": self.strut_short,
             "face_fill": dict(self.face_fill),
             "face_struts": {k: list(v) for k, v in self.face_struts.items()},
+            "joint": self.joint,
+            "waist_joint": dict(self.waist_joint),
         }
 
     @staticmethod
@@ -523,6 +547,8 @@ class Assignments:
             face_fill=dict(data.get("face_fill", {})),
             face_struts={k: list(v)
                          for k, v in data.get("face_struts", {}).items()},
+            joint=data.get("joint", "banding"),
+            waist_joint=dict(data.get("waist_joint", {})),
         )
 
 
@@ -648,7 +674,7 @@ def default_stack() -> LayerStack:
     stack = LayerStack()
     for kind in (
         "ground", "cistern", "downpipe", "collector_ring",
-        "veins", "vein_water", "assemblies",
+        "veins", "vein_water", "assemblies", "waist_joints",
         "micro_drains", "panel_runoff", "rain",
     ):
         stack.add(kind)

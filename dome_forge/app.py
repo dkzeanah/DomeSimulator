@@ -23,6 +23,8 @@ from presenter.world import Batch
 from .build import (build_scene, face_edge_classes, pick_face, scene_stats,
                     tint, TINTS)
 from .catalog import (FILL_BY_KEY, FILL_KEYS, PROFILE_BY_KEY, PROFILE_KEYS)
+from .groups import (JOINT_BY_KEY, JOINT_KEYS, group_centre, hourglasses,
+                     pentagons)
 from .jigs import STEPS, emit_jig, jig_specs, step_lines
 from .layers import LAYER_KINDS, KIND_BY_KEY, LayerStack, default_stack
 from .panel import build_panel
@@ -231,6 +233,8 @@ class DomeForgeApp:
         self.bench_struts = ["log_half", "lumber_2x2", "log_quarter"]
         self.bench_fill = "polycarbonate"
         self.bench_edge = 0
+        self.group_kind = "pentagon"   # or "hourglass"
+        self.group_index = 0
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
@@ -291,7 +295,33 @@ class DomeForgeApp:
         opaque.box((0.0, 0.0, -0.36), (5.0, 5.0, 0.16), tint("charcoal", 1.0))
         return opaque, translucent
 
+    def current_group(self):
+        items = pentagons() if self.group_kind == "pentagon" else hourglasses()
+        return items[self.group_index % len(items)], items
+
+    def group_faces(self) -> tuple[int, ...]:
+        group, _ = self.current_group()
+        return tuple(group.faces)
+
     def camera(self):
+        if self.mode == "groups":
+            # Look straight at whichever group is selected, so stepping
+            # through them never leaves you hunting for the next one.
+            from .build import DomeContext
+            ctx = DomeContext(self.stack.settings.radius)
+            centre = group_centre(ctx, self.group_faces())
+            direction = centre / max(1e-6, float(np.linalg.norm(centre)))
+            eye = centre + direction * self.distance
+            up = np.array([0.0, 0.0, 1.0], dtype=np.float32)
+            forward = centre - eye
+            forward = forward / max(1e-9, float(np.linalg.norm(forward)))
+            right = np.cross(forward, up)
+            if float(np.linalg.norm(right)) < 1e-6:
+                right = np.array([1.0, 0.0, 0.0], dtype=np.float32)
+            right = right / max(1e-9, float(np.linalg.norm(right)))
+            pan = right * (self.distance * 0.20)
+            return ((eye - pan).astype(np.float32),
+                    (centre - pan).astype(np.float32))
         if self.mode == "panel":
             pitch = math.radians(max(-20.0, min(88.0, self.pitch)))
             yaw = math.radians(self.yaw)
@@ -351,7 +381,8 @@ class DomeForgeApp:
         rows.append(("title", (x, y), "DOME FORGE"))
         y += 26
         rect = (x, y, w, 20)
-        label = {"dome": "Mode: DOME", "jigs": "Mode: JIG SHOP",
+        label = {"dome": "Mode: DOME", "groups": "Mode: GROUPS",
+                 "jigs": "Mode: JIG SHOP",
                  "panel": "Mode: PANEL CREATOR"}[self.mode]
         rows.append(("button", rect, f"{label}   (m cycles)"))
         regions.append((rect, "toggle_mode", None))
@@ -361,6 +392,8 @@ class DomeForgeApp:
             return self._layout_jigs(rows, regions, x, y, w)
         if self.mode == "panel":
             return self._layout_panel(rows, regions, x, y, w)
+        if self.mode == "groups":
+            return self._layout_groups(rows, regions, x, y, w)
         stats = scene_stats(self.stack)
         rows.append(("small", (x, y),
                      f"{stats['struts']} struts  {stats['panels']} panels  "
@@ -567,6 +600,89 @@ class DomeForgeApp:
         y += 20
         return rows, regions, y + self.scroll + 20
 
+    def _layout_groups(self, rows, regions, x, y, w):
+        """Edit a whole sub-assembly at once: a pentagon of five
+        triangles, or an hourglass of two meeting point to point."""
+        group, items = self.current_group()
+        assignments = self.stack.assignments
+        pentagon = self.group_kind == "pentagon"
+
+        rect = (x, y, w, 20)
+        rows.append(("button", rect,
+                     f"{'PENTAGONS' if pentagon else 'HOURGLASSES'}   (Tab)"))
+        regions.append((rect, "toggle_group_kind", None))
+        y += 26
+
+        half = (w - 6) // 2
+        back = (x, y, half, 22)
+        forward = (x + half + 6, y, half, 22)
+        rows.append(("button", back, "< Prev"))
+        rows.append(("button", forward, "Next >"))
+        regions.append((back, "group_back", None))
+        regions.append((forward, "group_forward", None))
+        y += 28
+
+        rows.append(("head", (x, y),
+                     f"{'PENTAGON' if pentagon else 'HOURGLASS'} "
+                     f"{self.group_index % len(items) + 1} OF {len(items)}"))
+        y += 20
+        if pentagon:
+            detail = ("Five isosceles triangles meeting at their apex -- "
+                      "the point between their two short sides. Six of "
+                      "these ring a hemisphere.")
+        else:
+            detail = ("Two equilateral triangles touching at exactly one "
+                      "vertex, point to point. They fill the gaps between "
+                      "the pentagons; ten waists per hemisphere.")
+        for line in self._wrap(detail, 44):
+            rows.append(("small", (x, y), line))
+            y += 15
+        rows.append(("mono", (x, y),
+                     f"faces {', '.join(str(f) for f in group.faces)}"))
+        y += 18
+        rows.append(("mono", (x, y),
+                     f"{'apex' if pentagon else 'waist'} vertex "
+                     f"{group.vertex if pentagon else group.waist}"))
+        y += 22
+
+        if not pentagon:
+            rows.append(("head", (x, y), "WAIST JOINT"))
+            y += 20
+            joint = JOINT_BY_KEY[assignments.joint_for(group.index)]
+            rect = (x, y, w, 18)
+            rows.append(("choice", rect, ("Joint", joint.label)))
+            regions.append((rect, "waist_joint", None))
+            y += 22
+            for line in self._wrap(joint.blurb, 44):
+                rows.append(("small", (x, y), line))
+                y += 15
+            y += 4
+            rect = (x, y, w, 20)
+            rows.append(("button", rect, "Use this joint everywhere"))
+            regions.append((rect, "joint_all", None))
+            y += 26
+
+        rows.append(("head", (x, y), "WHOLE GROUP"))
+        y += 20
+        first = group.faces[0]
+        classes = face_edge_classes(self.stack, first)
+        rect = (x, y, w, 18)
+        rows.append(("choice", rect,
+                     ("Fill", FILL_BY_KEY[assignments.fill_for(first)].label)))
+        regions.append((rect, "group_fill", None))
+        y += 22
+        triple = assignments.strut_triple(first, classes)
+        rect = (x, y, w, 18)
+        rows.append(("choice", rect,
+                     ("Strut", PROFILE_BY_KEY[triple[0]].label)))
+        regions.append((rect, "group_strut", None))
+        y += 24
+        rows.append(("small", (x, y), "Changes apply to every triangle"))
+        y += 15
+        rows.append(("small", (x, y), "in this group at once."))
+        y += 22
+        return rows, regions, y + self.scroll + 20
+
     def _layout_panel(self, rows, regions, x, y, w):
         """The Panel Creator: build one panel out of any three struts."""
         rows.append(("small", (x, y),
@@ -732,8 +848,11 @@ class DomeForgeApp:
         hint = self.font_small.render(self.message, True, DIM)
         surface.blit(hint, (PANEL_W + 16, height - 26))
         state = "playing" if self.playing else "paused"
-        if self.mode == "jigs":
-            keys = ("[m] back to dome   [Tab] other jig   "
+        if self.mode == "groups":
+            keys = ("[m] next mode   [Tab] pentagons/hourglasses   "
+                    "[<- ->] step through   [esc] quit")
+        elif self.mode == "jigs":
+            keys = ("[m] next mode   [Tab] other jig   "
                     "[<- ->] step   [esc] quit")
         else:
             keys = (f"[m] jig shop   [space] {state}   [c] cutaway   "
@@ -846,8 +965,31 @@ class DomeForgeApp:
             self.show_add = False
             self.notify(f"Added {layer.name}.")
         elif action == "toggle_mode":
-            self.set_mode({"dome": "jigs", "jigs": "panel",
-                           "panel": "dome"}[self.mode])
+            self.set_mode(self._next_mode())
+        elif action == "toggle_group_kind":
+            self.group_kind = ("hourglass" if self.group_kind == "pentagon"
+                               else "pentagon")
+            self.group_index = 0
+        elif action == "group_forward":
+            self.group_index += 1
+        elif action == "group_back":
+            self.group_index -= 1
+        elif action == "waist_joint":
+            group, _ = self.current_group()
+            options = list(JOINT_KEYS)
+            current = stack.assignments.joint_for(group.index)
+            step = -1 if button == 3 else 1
+            index = options.index(current) if current in options else 0
+            stack.assignments.waist_joint[str(group.index)] = \
+                options[(index + step) % len(options)]
+        elif action == "joint_all":
+            group, _ = self.current_group()
+            chosen = stack.assignments.joint_for(group.index)
+            stack.assignments.joint = chosen
+            stack.assignments.waist_joint.clear()
+            self.notify(f"Every waist now uses {JOINT_BY_KEY[chosen].label}.")
+        elif action in ("group_fill", "group_strut"):
+            self._cycle_group(action, button)
         elif action == "next_jig":
             self.jig_index = (self.jig_index + 1) % 2
             self.notify(self.jig_spec().label)
@@ -884,6 +1026,37 @@ class DomeForgeApp:
             stack.assignments.face_fill.clear()
             stack.assignments.face_struts.clear()
             self.notify("Every triangle now uses this panel.")
+
+    def _next_mode(self) -> str:
+        return {"dome": "groups", "groups": "panel",
+                "panel": "jigs", "jigs": "dome"}[self.mode]
+
+    def _cycle_group(self, action: str, button: int) -> None:
+        """Change the fill or strut on every triangle of the selected
+        group in one go."""
+        group, _ = self.current_group()
+        assignments = self.stack.assignments
+        step = -1 if button == 3 else 1
+        first = group.faces[0]
+        classes = face_edge_classes(self.stack, first)
+        if action == "group_fill":
+            options = list(FILL_KEYS)
+            current = assignments.fill_for(first)
+            index = options.index(current) if current in options else 0
+            chosen = options[(index + step) % len(options)]
+            for face in group.faces:
+                assignments.face_fill[str(face)] = chosen
+            self.notify(f"{len(group.faces)} triangles -> "
+                        f"{FILL_BY_KEY[chosen].label}.")
+        else:
+            options = list(PROFILE_KEYS)
+            current = assignments.strut_triple(first, classes)[0]
+            index = options.index(current) if current in options else 0
+            chosen = options[(index + step) % len(options)]
+            for face in group.faces:
+                assignments.set_face_struts(face, [chosen] * 3)
+            self.notify(f"{len(group.faces)} triangles -> "
+                        f"{PROFILE_BY_KEY[chosen].label}.")
 
     def _cycle_catalog(self, action: str, payload, button: int) -> None:
         """Step a catalog choice forward (left-click) or back (right)."""
@@ -941,7 +1114,11 @@ class DomeForgeApp:
     def set_mode(self, mode: str) -> None:
         self.mode = mode
         self.scroll = 0
-        if mode == "jigs":
+        if mode == "groups":
+            self.distance = 7.0
+            self.notify("Groups: Tab swaps pentagons/hourglasses, "
+                        "arrows step through them.")
+        elif mode == "jigs":
             self.yaw, self.pitch, self.distance = 62.0, 50.0, 6.6
             self.notify("Jig Shop: arrows step through the build, Tab swaps jig.")
         elif mode == "panel":
@@ -957,15 +1134,23 @@ class DomeForgeApp:
         if event.key == pg.K_ESCAPE:
             self.running = False
         elif event.key == pg.K_m:
-            self.set_mode({"dome": "jigs", "jigs": "panel",
-                           "panel": "dome"}[self.mode])
+            self.set_mode(self._next_mode())
         elif event.key == pg.K_TAB and self.mode == "jigs":
             self.jig_index = (self.jig_index + 1) % 2
             self.notify(self.jig_spec().label)
+        elif event.key == pg.K_TAB and self.mode == "groups":
+            self.group_kind = ("hourglass" if self.group_kind == "pentagon"
+                               else "pentagon")
+            self.group_index = 0
+            self.notify(f"Editing {self.group_kind}s.")
         elif event.key == pg.K_RIGHT and self.mode == "jigs":
             self.step_index = (self.step_index + 1) % len(STEPS)
         elif event.key == pg.K_LEFT and self.mode == "jigs":
             self.step_index = (self.step_index - 1) % len(STEPS)
+        elif event.key == pg.K_RIGHT and self.mode == "groups":
+            self.group_index += 1
+        elif event.key == pg.K_LEFT and self.mode == "groups":
+            self.group_index -= 1
         elif event.key == pg.K_SPACE:
             self.playing = not self.playing
         elif event.key == pg.K_c:
@@ -1009,6 +1194,8 @@ class DomeForgeApp:
         elif self.mode == "panel":
             opaque, translucent = self.build_panel_scene()
         else:
+            self.stack.highlight_faces = (
+                self.group_faces() if self.mode == "groups" else ())
             opaque, translucent = build_scene(self.stack, self.clock_t)
         self.ctx.enable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)
         self.ctx.depth_mask = True

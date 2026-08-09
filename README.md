@@ -460,6 +460,41 @@ build: half-round logs on the long seams, quarter-round on the short
 ones, 2x2 on the ten equilateral caps. Split a trunk once for two
 half-rounds; split those again for four quarter-rounds per log.
 
+### Pentagons and hourglasses
+
+Nobody thinks about a dome one triangle at a time, so `m` also reaches a
+**Groups** mode (Tab swaps between the two kinds, arrows step through
+them, and the selected group lights up on the dome):
+
+- A **pentagon** is the five isosceles triangles ringing a five-way
+  vertex, meeting at the apex between their two short sides. **Six** per
+  hemisphere.
+- An **hourglass** is two equilateral triangles touching at **exactly
+  one vertex** — point to point, waist in the middle. **Ten** per
+  hemisphere, filling the gaps between the pentagons.
+
+Both are found from the geometry, and the selftest asserts the counts
+and, for every hourglass, that its two triangles share exactly one
+vertex — two shared vertices would make them edge neighbours, which is a
+different thing entirely.
+
+Because an equilateral triangle has three corners, one triangle belongs
+to more than one hourglass. A joint therefore belongs to the **waist**,
+not to either triangle. Six waist joints ship:
+
+| Joint | What it is |
+| --- | --- |
+| Bare tips | The points just touch — fine for dry-fitting, carries nothing |
+| Metal banding | Steel strap wrapped round both tips and tensioned |
+| Square wooden braces | Blocks bridging the two sides that form each point, bolted through to the block opposite |
+| Monolithic waist | Both points are one continuous piece — strongest, least forgiving |
+| Steel gusset plate | A flat plate over the waist, bolted into both triangles |
+| Bolted lap | Tips halved in thickness and overlapped so they finish flush |
+
+The wooden braces are the point worth understanding: they put the load
+into the *sides* of the triangles rather than into their mitered tips,
+which are end grain and the weakest part of the whole assembly.
+
 ### Hubless construction, and the Jig Shop
 
 The frame layer models the way these domes are actually built: **40

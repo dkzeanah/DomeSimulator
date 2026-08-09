@@ -82,6 +82,31 @@ def _selftest() -> int:
             distance = float(_np.dot(inner[corner] - p0, normal))
             assert abs(distance - widths[i]) < 1e-9, (i, corner, distance)
 
+    # Pentagons and hourglasses are found from the geometry, so their
+    # counts and shapes are asserted rather than assumed.
+    from .groups import (JOINT_KEYS, emit_waist, hourglasses, pentagons)
+    from .build import DomeContext
+
+    pents, hours = pentagons(), hourglasses()
+    assert len(pents) == 6, pents
+    assert len(hours) == 10, hours
+    assert all(len(set(p.faces)) == 5 for p in pents)
+    assert all(len(set(h.faces)) == 2 for h in hours)
+    geo_faces = DomeContext(stack.settings.radius).faces
+    for hourglass in hours:
+        # An hourglass is point-to-point: its two triangles must share
+        # exactly one vertex. Sharing two would make them edge
+        # neighbours, which is a different thing entirely.
+        a = set(int(i) for i in geo_faces[hourglass.faces[0]])
+        b = set(int(i) for i in geo_faces[hourglass.faces[1]])
+        assert len(a & b) == 1, hourglass
+        assert hourglass.waist in (a & b), hourglass
+    ctx = DomeContext(stack.settings.radius)
+    for key in JOINT_KEYS:
+        probe = Batch()
+        emit_waist(probe, ctx, hours[0], key, tint)
+        assert (probe.v == []) == (key == "none"), key
+
     # The jig cut list is re-measured off the assembled 3D faces, so the
     # shop drawings and the dome on screen cannot disagree.
     verify_jigs()
@@ -97,6 +122,8 @@ def _selftest() -> int:
           f"{stats['panels']} panels, {stats['hubs']} hubs; "
           f"{len(PROFILE_KEYS)}x{len(FILL_KEYS)}="
           f"{len(PROFILE_KEYS) * len(FILL_KEYS)} strut/fill combos; "
+          f"{len(pents)} pentagons + {len(hours)} hourglasses, "
+          f"{len(JOINT_KEYS)} waist joints; "
           f"jigs verified against the 3D faces, "
           f"{'+'.join(str(s.triangles_needed) for s in specs)} triangles)")
     return 0

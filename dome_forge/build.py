@@ -272,6 +272,9 @@ def emit_assemblies(op: Batch, tr: Batch, layer, ctx: DomeContext,
     show_fills = bool(layer.get("show_fills"))
     highlight_on = bool(layer.get("highlight"))
     selected = getattr(stack, "selected_face", -1)
+    # A whole group can be lit at once (the group editors do this), which
+    # is what makes a pentagon or hourglass readable on a busy dome.
+    lit = set(getattr(stack, "highlight_faces", ()) or ())
 
     for index, face in enumerate(ctx.faces):
         if ctx.hidden(ctx.points[face].mean(axis=0)):
@@ -283,8 +286,26 @@ def emit_assemblies(op: Batch, tr: Batch, layer, ctx: DomeContext,
         build_panel(
             op, tr, [ctx.points[i] for i in face], struts, fill, tint,
             seam=seam, alpha=alpha,
-            highlight=highlight_on and index == selected,
+            highlight=highlight_on and (index == selected or index in lit),
         )
+
+
+def emit_waist_joints(op: Batch, tr: Batch, layer, ctx: DomeContext,
+                      t: float) -> None:
+    from .groups import emit_waist, hourglasses
+
+    stack = _ACTIVE_STACK["stack"]
+    if stack is None:
+        return
+    alpha = layer.opacity
+    size = float(layer.get("size"))
+    target = tr if alpha < 0.999 else op
+    for hourglass in hourglasses():
+        if ctx.hidden(ctx.points[hourglass.waist]):
+            continue
+        emit_waist(target, ctx, hourglass,
+                   stack.assignments.joint_for(hourglass.index),
+                   tint, size=size, alpha=alpha)
 
 
 def emit_hubs(op: Batch, tr: Batch, layer, ctx: DomeContext, t: float) -> None:
@@ -609,6 +630,7 @@ EMITTERS = {
     "frame": emit_frame,
     "triangle_frames": emit_triangle_frames,
     "assemblies": emit_assemblies,
+    "waist_joints": emit_waist_joints,
     "hubs": emit_hubs,
     "panels": emit_panels,
     "micro_drains": emit_micro_drains,

@@ -279,6 +279,18 @@ def main() -> int:
                "more) and the strut on each of its three edges "
                "separately. The three edges do not have to match, which "
                "is how real split-log builds actually go together.")
+    note(body, "Press [m] for GROUPS — edit whole sub-assemblies instead "
+               "of single triangles. A pentagon is the five triangles "
+               "ringing a five-way vertex (six per dome); an hourglass "
+               "is two equilateral triangles touching at exactly one "
+               "point, waist in the middle (ten per dome), filling the "
+               "gaps between the pentagons. Tab swaps between the two, "
+               "arrows step through them, and the selected group lights "
+               "up. For hourglasses you also choose how the two points "
+               "are actually joined: metal banding, square wooden "
+               "braces bridging the sides that form the points, a "
+               "monolithic single-piece waist, a steel gusset plate, or "
+               "a bolted lap.")
     note(body, "Press [m] again for the PANEL CREATOR — design one panel "
                "on a bench out of any three struts from the library "
                "(split logs, 2x2/2x4/2x6, PVC, steel and aluminium tube, "
