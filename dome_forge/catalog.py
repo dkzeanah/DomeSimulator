@@ -308,6 +308,31 @@ def orient_section(section: Section, spin: int = 0,
     return tuple((x - min_x, y - max_y) for x, y in moved)
 
 
+def strut_profile(spec: str) -> StrutProfile:
+    """The base profile behind a strut spec, rolled or not.
+
+    Every read site should come through here rather than indexing
+    PROFILE_BY_KEY directly: a stored spec may carry a roll suffix, and a
+    raw lookup on "log_quarter/1" is a KeyError.
+    """
+    return PROFILE_BY_KEY.get(parse_strut(spec)[0],
+                              PROFILE_BY_KEY["lumber_2x4"])
+
+
+def strut_label(spec: str) -> str:
+    """A readable name for a strut spec, including how it is rolled."""
+    key, spin, flip = parse_strut(spec)
+    profile = PROFILE_BY_KEY.get(key)
+    if profile is None:
+        return str(spec)
+    label = profile.label
+    if spin:
+        label = f"{label}  {SPIN_LABELS[spin]}"
+    if flip:
+        label = f"{label} mirrored"
+    return label
+
+
 def oriented_profile(spec: str) -> tuple[StrutProfile, Section, float, float]:
     """The profile a strut spec actually resolves to, already rolled.
 

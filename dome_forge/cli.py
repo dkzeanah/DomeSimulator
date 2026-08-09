@@ -89,6 +89,21 @@ def _selftest() -> int:
     on_edge = oriented_profile("log_half/1")[2]
     assert abs(upright - on_edge) > 0.01, (upright, on_edge)
 
+    # A rolled spec is what actually gets stored, so every place that
+    # turns one back into a name or a profile has to accept the suffix.
+    # Indexing PROFILE_BY_KEY directly with "log_quarter/1" is a KeyError,
+    # and that crashed the group editor once -- so it is checked here.
+    from .catalog import strut_label, strut_profile
+    for profile_key in PROFILE_KEYS:
+        for spin in range(4):
+            for flip in (False, True):
+                spec = format_strut(profile_key, spin, flip)
+                assert strut_label(spec), spec
+                assert strut_profile(spec).key == profile_key, spec
+    # An unrecognised spec must degrade rather than raise.
+    assert strut_label("nonsense/9") == "nonsense/9"
+    assert strut_profile("nonsense/9").key in PROFILE_KEYS
+
     # With mismatched widths, each inner corner must still sit exactly its
     # own edge's width in from that edge -- the whole reason the outline is
     # built by intersecting offset lines instead of scaling the triangle.

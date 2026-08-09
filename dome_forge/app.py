@@ -22,7 +22,8 @@ from presenter.world import Batch
 
 from .build import (build_scene, face_edge_classes, pick_face, scene_stats,
                     tint, TINTS)
-from .catalog import (FILL_BY_KEY, FILL_KEYS, PROFILE_BY_KEY, PROFILE_KEYS)
+from .catalog import (FILL_BY_KEY, FILL_KEYS, PROFILE_BY_KEY, PROFILE_KEYS,
+                      strut_label, strut_profile)
 from .groups import (JOINT_BY_KEY, JOINT_KEYS, group_centre, hourglasses,
                      pentagons)
 from .jigs import STEPS, emit_jig, jig_specs, step_lines
@@ -413,7 +414,7 @@ class DomeForgeApp:
                 chosen = keys[(index + step) % len(keys)]
                 self.bench_struts[edge] = format_strut(chosen, spin, flip)
             shown = parse_strut(self.bench_struts[min(self.bench_selection)])[0]
-            self.notify(f"Strut: {PROFILE_BY_KEY[shown].label}")
+            self.notify(f"Strut: {strut_label(self.bench_struts[min(self.bench_selection)])}")
             return
         keys = list(FILL_KEYS)
         assignments = self.stack.assignments
@@ -651,7 +652,7 @@ class DomeForgeApp:
             triple = assignments.strut_triple(face, classes)
             for i in range(3):
                 rect = (x, y, w, 18)
-                name = PROFILE_BY_KEY[triple[i]].label
+                name = strut_label(triple[i])
                 rows.append(("choice", rect,
                              (f"Edge {i + 1} ({classes[i].lower()})", name)))
                 regions.append((rect, "face_strut", (i,)))
@@ -674,7 +675,7 @@ class DomeForgeApp:
             rect = (x, y, w, 18)
             value = getattr(assignments, key)
             shown = (FILL_BY_KEY[value].label if key == "fill"
-                     else PROFILE_BY_KEY[value].label)
+                     else strut_label(value))
             rows.append(("choice", rect, (label_text, shown)))
             regions.append((rect, "default_choice", (key,)))
             y += 22
@@ -982,7 +983,7 @@ class DomeForgeApp:
         triple = assignments.strut_triple(first, classes)
         rect = (x, y, w, 18)
         rows.append(("choice", rect,
-                     ("Strut", PROFILE_BY_KEY[triple[0]].label)))
+                     ("Strut", strut_label(triple[0]))))
         regions.append((rect, "group_strut", None))
         y += 24
         rows.append(("small", (x, y), "Changes apply to every triangle"))
@@ -1005,9 +1006,10 @@ class DomeForgeApp:
         rows.append(("head", (x, y), "STRUTS  (one per edge)"))
         y += 20
         for i in range(3):
-            profile = PROFILE_BY_KEY[self.bench_struts[i]]
+            profile = strut_profile(self.bench_struts[i])
             rect = (x, y, w, 18)
-            rows.append(("choice", rect, (f"Edge {i + 1}", profile.label)))
+            rows.append(("choice", rect,
+                         (f"Edge {i + 1}", strut_label(self.bench_struts[i]))))
             regions.append((rect, "bench_strut", (i,)))
             y += 21
             rows.append(("small", (x, y),
@@ -1015,9 +1017,10 @@ class DomeForgeApp:
             y += 16
         y += 6
 
-        profile = PROFILE_BY_KEY[self.bench_struts[self.bench_edge % 3]]
+        spec = self.bench_struts[self.bench_edge % 3]
+        profile = strut_profile(spec)
         rows.append(("head", (x, y),
-                     f"EDGE {self.bench_edge % 3 + 1}: {profile.label.upper()}"))
+                     f"EDGE {self.bench_edge % 3 + 1}: {strut_label(spec).upper()}"))
         y += 19
         for line in self._wrap(profile.blurb, 44):
             rows.append(("small", (x, y), line))
@@ -1463,7 +1466,13 @@ class DomeForgeApp:
             triple[payload[0]] = key
             assignments.set_face_struts(face, triple)
         elif action == "default_choice":
-            setattr(assignments, payload[0], key)
+            if payload[0] == "fill":
+                assignments.fill = key
+            else:
+                from .catalog import format_strut, parse_strut
+                _k, spin, flip = parse_strut(getattr(assignments, payload[0]))
+                setattr(assignments, payload[0],
+                        format_strut(key, spin, flip))
         elif action == "bench_strut":
             self.bench_struts[payload[0]] = key
         elif action == "bench_fill":
@@ -1521,17 +1530,20 @@ class DomeForgeApp:
         elif action == "face_strut" and self.primary_face >= 0:
             face = self.primary_face
             classes = face_edge_classes(stack, face)
+            from .catalog import parse_strut
             current = assignments.strut_triple(face, classes)[payload[0]]
             self.open_picker(f"STRUT FOR EDGE {payload[0] + 1}", struts,
-                             current, action, payload)
+                             parse_strut(current)[0], action, payload)
         elif action == "default_choice":
             key = payload[0]
             if key == "fill":
                 self.open_picker("DEFAULT FILL", fills, assignments.fill,
                                  action, payload)
             else:
+                from .catalog import parse_strut
                 self.open_picker("DEFAULT STRUT", struts,
-                                 getattr(assignments, key), action, payload)
+                                 parse_strut(getattr(assignments, key))[0],
+                                 action, payload)
         elif action == "bench_strut":
             self.bench_edge = payload[0]
             self.open_picker(f"STRUT FOR EDGE {payload[0] + 1}", struts,
@@ -1549,11 +1561,12 @@ class DomeForgeApp:
             self.open_picker("FILL FOR THE WHOLE GROUP", fills,
                              assignments.fill_for(group.faces[0]), action)
         elif action == "group_strut":
+            from .catalog import parse_strut
             group, _ = self.current_group()
             classes = face_edge_classes(stack, group.faces[0])
             current = assignments.strut_triple(group.faces[0], classes)[0]
-            self.open_picker("STRUT FOR THE WHOLE GROUP", struts, current,
-                             action)
+            self.open_picker("STRUT FOR THE WHOLE GROUP", struts,
+                             parse_strut(current)[0], action)
         elif action == "param_choice":
             active = stack.active
             if active is not None:
