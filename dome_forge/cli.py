@@ -110,6 +110,48 @@ def _selftest() -> int:
     from .groups import (JOINT_KEYS, emit_waist, hourglasses, pentagons)
     from .build import DomeContext
 
+    # The design library: struts -> triangles -> pentagons/hourglasses.
+    from .designs import DesignLibrary, starter_library
+    library = stack.designs
+    assert library.triangles and library.groups, "starter library is empty"
+    for design in library.triangles.values():
+        assert len(design.struts) == 3, design
+        for spec in design.struts:
+            assert spec.split("/")[0] in PROFILE_KEYS, design
+        assert design.fill in FILL_KEYS, design
+    for design in library.groups.values():
+        assert len(design.triangles) == design.slots, design
+        for ref in design.triangles:
+            assert ref in library.triangles, (design.name, ref)
+        if design.kind == "hourglass":
+            assert design.joint in JOINT_KEYS, design
+
+    # Saving the same name twice must never overwrite the first one.
+    probe = starter_library()
+    first = probe.save_triangle("Dup", ("lumber_2x4",) * 3, "glass")
+    second = probe.save_triangle("Dup", ("lumber_2x2",) * 3, "solar")
+    assert first.name != second.name, (first, second)
+    assert probe.triangle(first.name).fill == "glass"
+    # An identical composition reuses whichever design already has it
+    # rather than adding a duplicate. (Which name it picks is not
+    # important; that it adds nothing is.)
+    before = len(probe.triangles)
+    reused = probe.ensure_triangle(("lumber_2x4",) * 3, "glass")
+    assert reused in probe.triangles, reused
+    assert probe.triangle(reused).signature == (("lumber_2x4",) * 3, "glass")
+    assert len(probe.triangles) == before, "must not duplicate an existing part"
+    # A genuinely new composition does get added.
+    fresh = probe.ensure_triangle(("bamboo",) * 3, "fabric")
+    assert len(probe.triangles) == before + 1, fresh
+    # A group referencing a deleted part must not linger as a broken group.
+    probe.save_group("G", "pentagon", (first.name,) * 5)
+    probe.delete_triangle(first.name)
+    assert probe.group("G") is None
+    restored = DesignLibrary.from_json(json.loads(json.dumps(
+        library.to_json())))
+    assert set(restored.triangles) == set(library.triangles)
+    assert set(restored.groups) == set(library.groups)
+
     from .groups import PENTAGON_PRESETS
     for preset in PENTAGON_PRESETS:
         assert len(preset.fills) == 5, preset
@@ -155,6 +197,8 @@ def _selftest() -> int:
           f"{len(PROFILE_KEYS) * len(FILL_KEYS)} strut/fill combos; "
           f"{len(pents)} pentagons ({len(PENTAGON_PRESETS)} presets) + "
           f"{len(hours)} hourglasses, {len(JOINT_KEYS)} waist joints; "
+          f"library {len(library.triangles)} triangle + "
+          f"{len(library.groups)} group designs; "
           f"jigs verified against the 3D faces, "
           f"{'+'.join(str(s.triangles_needed) for s in specs)} triangles)")
     return 0

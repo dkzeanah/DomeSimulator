@@ -584,10 +584,15 @@ class LayerStack:
 
     def __init__(self, layers: list[Layer] | None = None,
                  settings: DomeSettings | None = None,
-                 assignments: Assignments | None = None) -> None:
+                 assignments: Assignments | None = None,
+                 designs=None) -> None:
+        from .designs import DesignLibrary
         self.layers: list[Layer] = list(layers or [])
         self.settings = settings or DomeSettings()
         self.assignments = assignments or Assignments()
+        # The user's own named parts, saved alongside the dome so a preset
+        # carries what it was built from, not just the finished result.
+        self.designs = designs if designs is not None else DesignLibrary()
         self.selected = 0 if self.layers else -1
 
     # -- editing ---------------------------------------------------------
@@ -632,9 +637,10 @@ class LayerStack:
 
     def to_json(self) -> dict:
         return {
-            "schema": 2,
+            "schema": 3,
             "settings": self.settings.to_json(),
             "assignments": self.assignments.to_json(),
+            "designs": self.designs.to_json(),
             "layers": [layer.to_json() for layer in self.layers],
         }
 
@@ -648,10 +654,12 @@ class LayerStack:
                 # An unknown layer kind (an older or newer preset) is
                 # skipped rather than taking the whole file down with it.
                 continue
+        from .designs import DesignLibrary
         return LayerStack(
             layers,
             DomeSettings.from_json(data.get("settings", {})),
             Assignments.from_json(data.get("assignments", {})),
+            DesignLibrary.from_json(data.get("designs", {})),
         )
 
     def save(self, path: Path) -> Path:
@@ -686,6 +694,8 @@ def default_stack() -> LayerStack:
     stack.selected = next(
         (i for i, layer in enumerate(stack.layers) if layer.kind == "veins"), 0
     )
+    from .designs import starter_library
+    stack.designs = starter_library()
     return stack
 
 

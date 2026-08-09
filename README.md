@@ -498,6 +498,34 @@ build: half-round logs on the long seams, quarter-round on the short
 ones, 2x2 on the ten equilateral caps. Split a trunk once for two
 half-rounds; split those again for four quarter-rounds per log.
 
+### The design library
+
+The whole tool is built around one chain, and it is now explicit:
+
+```text
+strut profiles  ->  a triangle  ->  a pentagon or an hourglass  ->  a dome
+```
+
+A **triangle design** is three strut specs plus a fill — exactly what the
+Panel Creator makes. Save one with a name, load it back onto the bench,
+or apply it to whatever is selected in the dome. A **pentagon design** is
+five references to triangle designs, and an **hourglass design** is two
+plus the joint at its waist.
+
+Groups store **references, not copies**, so fixing a shared triangle
+fixes every group built from it. Saving a group captures each distinct
+face composition as a triangle design and reuses one that already
+matches — save a pentagon whose five faces are all the same part and you
+get one new part, not five. Renaming is never destructive either: saving
+over an existing name adds a suffix rather than overwriting, and deleting
+a part also removes the groups that referenced it rather than leaving
+them pointing at something gone.
+
+Designs live in the preset file next to the layers, so a saved dome
+carries the parts it was made from and not just the finished result.
+Nine starter designs ship, including the split-log mix (half-round,
+2x2, quarter-round) this project was asked about.
+
 ### Pentagons and hourglasses
 
 Nobody thinks about a dome one triangle at a time, so `m` also reaches a

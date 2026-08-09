@@ -267,6 +267,9 @@ class DomeForgeApp:
         self.group_index = 0
         self.scroll_right = 0
         self.picker = None
+        # An inline name box, so saving a design can ask what to call it
+        # without dragging in a whole dialog toolkit.
+        self.prompt = None
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
@@ -523,16 +526,19 @@ class DomeForgeApp:
             out = self._layout_jigs(rows, regions, x, y, w)
             self._layout_toolbar(rows, regions, width, height)
             self._layout_picker(rows, regions, width, height)
+            self._layout_prompt(rows, regions, width, height)
             return out
         if self.mode == "panel":
             out = self._layout_panel(rows, regions, x, y, w)
             self._layout_toolbar(rows, regions, width, height)
             self._layout_picker(rows, regions, width, height)
+            self._layout_prompt(rows, regions, width, height)
             return out
         if self.mode == "groups":
             out = self._layout_groups(rows, regions, x, y, w)
             self._layout_toolbar(rows, regions, width, height)
             self._layout_picker(rows, regions, width, height)
+            self._layout_prompt(rows, regions, width, height)
             return out
         stats = scene_stats(self.stack)
         rows.append(("small", (x, y),
@@ -621,6 +627,7 @@ class DomeForgeApp:
 
         self._layout_toolbar(rows, regions, width, height)
         self._layout_picker(rows, regions, width, height)
+        self._layout_prompt(rows, regions, width, height)
         return rows, regions, y + self.scroll + 20, right_height
 
     def _layout_right(self, rows, regions, width: int, height: int) -> int:
@@ -738,6 +745,19 @@ class DomeForgeApp:
             rows.append(("button", rect, text))
             regions.append((rect, action, None))
             x += bw + gap
+
+    def _layout_prompt(self, rows, regions, width: int, height: int) -> None:
+        """The name box shown while saving a design."""
+        if not self.prompt:
+            return
+        box_w, box_h = 460, 108
+        ox, oy = (width - box_w) // 2, (height - box_h) // 2
+        rows.append(("panel_bg", (ox, oy, box_w, box_h), None))
+        rows.append(("head", (ox + 14, oy + 12), self.prompt["title"]))
+        rows.append(("field", (ox + 14, oy + 38, box_w - 28, 26),
+                     self.prompt["value"]))
+        rows.append(("small", (ox + 14, oy + 70),
+                     "Type a name, Enter to save, Escape to cancel."))
 
     def _layout_picker(self, rows, regions, width: int, height: int) -> None:
         """A real dropdown. Cycling one click at a time through 19 fills or
@@ -874,6 +894,19 @@ class DomeForgeApp:
             regions.append((rect, "joint_all", None))
             y += 26
 
+        library = self.stack.designs
+        saved = library.groups_of("pentagon" if pentagon else "hourglass")
+        rows.append(("head", (x, y), "DESIGN LIBRARY"))
+        y += 20
+        rect = (x, y, w, 22)
+        rows.append(("button", rect,
+                     f"Save this {'pentagon' if pentagon else 'hourglass'}..."))
+        regions.append((rect, "save_group_design", None))
+        y += 26
+        rect = (x, y, w, 22)
+        rows.append(("button", rect, f"Load a saved design  ({len(saved)})"))
+        regions.append((rect, "load_group_design", None))
+        y += 26
         if pentagon:
             rect = (x, y, w, 22)
             rows.append(("button", rect, "Load a ready-made pentagon..."))
@@ -955,6 +988,18 @@ class DomeForgeApp:
             regions.append((rect, action, None))
             y += 26
         y += 6
+        library = self.stack.designs
+        rows.append(("head", (x, y), "DESIGN LIBRARY"))
+        y += 20
+        rect = (x, y, w, 22)
+        rows.append(("button", rect, "Save as a triangle design..."))
+        regions.append((rect, "save_triangle_design", None))
+        y += 26
+        rect = (x, y, w, 22)
+        rows.append(("button", rect,
+                     f"Load a triangle design  ({len(library.triangles)})"))
+        regions.append((rect, "load_triangle_design", None))
+        y += 30
         rows.append(("small", (x, y),
                      "Left-click a choice to go forward,"))
         y += 15
@@ -1002,6 +1047,11 @@ class DomeForgeApp:
                 surface.blit(self.font_small.render(payload, True, DIM), rect)
             elif kind == "mono":
                 surface.blit(self.font_mono.render(payload, True, INK), rect)
+            elif kind == "field":
+                pg.draw.rect(surface, (8, 16, 26), rect, border_radius=4)
+                pg.draw.rect(surface, ACCENT, rect, 1, border_radius=4)
+                surface.blit(self.font.render(payload + "_", True, INK),
+                             (rect[0] + 8, rect[1] + 4))
             elif kind == "option":
                 label, is_current = payload
                 pg.draw.rect(surface, ROW_SEL if is_current else ROW_BG, rect,
@@ -1195,6 +1245,32 @@ class DomeForgeApp:
                 self.bench_selection = set()
             else:
                 self.stack.selected_faces = set()
+        elif action == "save_triangle_design":
+            self.prompt = {"title": "NAME THIS TRIANGLE DESIGN",
+                           "value": "", "action": "save_triangle_design"}
+        elif action == "load_triangle_design":
+            library = stack.designs
+            if not library.triangles:
+                self.notify("No triangle designs saved yet.")
+            else:
+                self.open_picker(
+                    "TRIANGLE DESIGNS",
+                    [(n, f"{n}  ({FILL_BY_KEY[d.fill].label})")
+                     for n, d in library.triangles.items()],
+                    None, "load_triangle_design")
+        elif action == "save_group_design":
+            kind = self.group_kind
+            self.prompt = {"title": f"NAME THIS {kind.upper()} DESIGN",
+                           "value": "", "action": "save_group_design"}
+        elif action == "load_group_design":
+            saved = stack.designs.groups_of(self.group_kind)
+            if not saved:
+                self.notify(f"No {self.group_kind} designs saved yet.")
+            else:
+                self.open_picker(
+                    f"{self.group_kind.upper()} DESIGNS",
+                    [(g.name, g.name) for g in saved],
+                    None, "load_group_design")
         elif action == "open_add":
             self.open_picker("ADD A LAYER",
                              [(k.key, k.label) for k in LAYER_KINDS],
@@ -1363,6 +1439,10 @@ class DomeForgeApp:
                 assignments.set_face_struts(face, [key] * 3)
         elif action == "pentagon_preset":
             self._apply_pentagon_preset(key)
+        elif action == "load_triangle_design":
+            self._apply_triangle_design(key)
+        elif action == "load_group_design":
+            self._apply_group_design(key)
         elif action == "param_choice":
             active = stack.active
             if active is not None:
@@ -1443,6 +1523,80 @@ class DomeForgeApp:
                                      payload)
 
 
+    def _finish_prompt(self, prompt: dict) -> None:
+        name = prompt["value"].strip()
+        if not name:
+            self.notify("Not saved -- a design needs a name.")
+            return
+        if prompt["action"] == "save_triangle_design":
+            design = self.stack.designs.save_triangle(
+                name, list(self.bench_struts), self.bench_fill)
+            self.notify(f"Saved triangle design '{design.name}'.")
+        elif prompt["action"] == "save_group_design":
+            self._save_current_group_design(name)
+
+    def _apply_triangle_design(self, name: str) -> None:
+        """Load a saved part onto the bench, or onto whatever is selected."""
+        design = self.stack.designs.triangle(name)
+        if design is None:
+            return
+        if self.mode == "panel":
+            self.bench_struts = list(design.struts)
+            self.bench_fill = design.fill
+            self.notify(f"Loaded '{name}' onto the bench.")
+            return
+        if not self.selection:
+            self.notify("Select a triangle first, or load it in the "
+                        "Panel Creator.")
+            return
+        for face in self.selection:
+            self.stack.assignments.set_face_struts(face, list(design.struts))
+            self.stack.assignments.face_fill[str(face)] = design.fill
+        self.notify(f"Applied '{name}' to {len(self.selection)} triangle(s).")
+
+    def _apply_group_design(self, name: str) -> None:
+        """Rebuild the current group from a saved design.
+
+        The design stores triangle *references*, so this resolves each one
+        through the library -- meaning a later edit to a shared part shows
+        up in every group built from it.
+        """
+        library = self.stack.designs
+        design = library.group(name)
+        if design is None:
+            return
+        group, _ = self.current_group()
+        parts = library.resolve(design)
+        for face, part in zip(group.faces, parts):
+            self.stack.assignments.set_face_struts(face, list(part.struts))
+            self.stack.assignments.face_fill[str(face)] = part.fill
+        if design.kind == "hourglass":
+            self.stack.assignments.waist_joint[str(group.index)] = design.joint
+        self.notify(f"Built this {design.kind} from '{name}'.")
+
+    def _save_current_group_design(self, name: str) -> None:
+        """Capture the current group as a reusable design.
+
+        Each distinct face composition becomes a triangle design, reusing
+        an existing one where the composition already matches, so saving a
+        pentagon of five identical faces adds one part and not five.
+        """
+        library = self.stack.designs
+        group, _ = self.current_group()
+        assignments = self.stack.assignments
+        names = []
+        for slot, face in enumerate(group.faces):
+            classes = face_edge_classes(self.stack, face)
+            struts = assignments.strut_triple(face, classes)
+            fill = assignments.fill_for(face)
+            names.append(library.ensure_triangle(
+                struts, fill, f"{name or 'Part'} {'ABCDE'[slot]}"))
+        joint = (assignments.joint_for(group.index)
+                 if self.group_kind == "hourglass" else "banding")
+        design = library.save_group(name, self.group_kind, names, joint)
+        self.notify(f"Saved '{design.name}' "
+                    f"({len(set(names))} distinct triangle design(s)).")
+
     def _apply_pentagon_preset(self, key: str) -> None:
         from .groups import PRESET_BY_KEY
         preset = PRESET_BY_KEY.get(key)
@@ -1498,6 +1652,23 @@ class DomeForgeApp:
     def key(self, event) -> None:
         pg = self.pygame
         settings = self.stack.settings
+        if self.prompt is not None:
+            # While the name box is open it takes every keystroke, so a
+            # name containing "s" or "c" cannot trigger save or cutaway.
+            if event.key == pg.K_ESCAPE:
+                self.prompt = None
+            elif event.key in (pg.K_RETURN, pg.K_KP_ENTER):
+                prompt, self.prompt = self.prompt, None
+                self._finish_prompt(prompt)
+            elif event.key == pg.K_BACKSPACE:
+                self.prompt["value"] = self.prompt["value"][:-1]
+            elif event.unicode and event.unicode.isprintable():
+                self.prompt["value"] = (self.prompt["value"]
+                                        + event.unicode)[:40]
+            return
+        if self.picker is not None and event.key == pg.K_ESCAPE:
+            self.picker = None
+            return
         if event.key == pg.K_ESCAPE:
             self.running = False
         elif event.key == pg.K_m:
