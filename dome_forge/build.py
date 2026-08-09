@@ -271,10 +271,13 @@ def emit_assemblies(op: Batch, tr: Batch, layer, ctx: DomeContext,
     seam = float(layer.get("seam"))
     show_fills = bool(layer.get("show_fills"))
     highlight_on = bool(layer.get("highlight"))
-    selected = getattr(stack, "selected_face", -1)
-    # A whole group can be lit at once (the group editors do this), which
-    # is what makes a pentagon or hourglass readable on a busy dome.
-    lit = set(getattr(stack, "highlight_faces", ()) or ())
+    # Selection is a set: several triangles, or a whole pentagon, can be
+    # worked on at once.
+    lit = set(getattr(stack, "selected_faces", ()) or ())
+    lit |= set(getattr(stack, "highlight_faces", ()) or ())
+    # Selected pieces lift straight off the shell so they can be orbited
+    # and inspected whole, without hiding anything or leaving a hole.
+    explode = float(getattr(stack, "explode", 0.0) or 0.0)
 
     for index, face in enumerate(ctx.faces):
         if ctx.hidden(ctx.points[face].mean(axis=0)):
@@ -283,10 +286,15 @@ def emit_assemblies(op: Batch, tr: Batch, layer, ctx: DomeContext,
                    for i in range(3)]
         struts = assignments.strut_triple(index, classes)
         fill = assignments.fill_for(index) if show_fills else "open"
+        corners = [ctx.points[i] for i in face]
+        chosen = index in lit
+        if chosen and explode > 1e-4:
+            lift = normalize(ctx.points[face].mean(axis=0)) * explode
+            corners = [p + lift for p in corners]
         build_panel(
-            op, tr, [ctx.points[i] for i in face], struts, fill, tint,
+            op, tr, corners, struts, fill, tint,
             seam=seam, alpha=alpha,
-            highlight=highlight_on and (index == selected or index in lit),
+            highlight=highlight_on and chosen,
         )
 
 

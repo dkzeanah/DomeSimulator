@@ -231,7 +231,11 @@ class DomeForgeApp:
         self.mode = "dome"            # "dome", "jigs", or "panel"
         self.jig_index = 0            # which of the two jigs
         self.step_index = 0           # which build step
-        self.stack.selected_face = -1
+        # Selection is a set so several triangles can be worked at once;
+        # `primary_face` is whichever one the detail panel describes.
+        self.stack.selected_faces = set()
+        self.stack.explode = 0.0
+        self.explode_amount = 0.55
         # The bench panel in the Panel Creator: three strut choices that
         # need not match, plus one fill.
         self.bench_struts = ["log_half", "lumber_2x2", "log_quarter"]
@@ -299,6 +303,35 @@ class DomeForgeApp:
                     self.bench_fill, tint, seam=0.004)
         opaque.box((0.0, 0.0, -0.36), (5.0, 5.0, 0.16), tint("charcoal", 1.0))
         return opaque, translucent
+
+    @property
+    def selection(self) -> set:
+        return self.stack.selected_faces
+
+    @property
+    def primary_face(self) -> int:
+        """The one triangle the detail panel describes. With several
+        selected this is simply the lowest index, so the panel is stable
+        rather than jumping about as the set changes."""
+        return min(self.selection) if self.selection else -1
+
+    @primary_face.setter
+    def primary_face(self, value: int) -> None:
+        self.stack.selected_faces = {value} if value is not None and value >= 0 else set()
+
+    def toggle_face(self, index: int, additive: bool) -> None:
+        """Click selects; ctrl-click adds to or removes from the set."""
+        if index < 0:
+            if not additive:
+                self.stack.selected_faces = set()
+            return
+        if additive:
+            if index in self.stack.selected_faces:
+                self.stack.selected_faces.discard(index)
+            else:
+                self.stack.selected_faces.add(index)
+        else:
+            self.stack.selected_faces = {index}
 
     def current_group(self):
         items = pentagons() if self.group_kind == "pentagon" else hourglasses()
@@ -398,14 +431,17 @@ class DomeForgeApp:
 
         if self.mode == "jigs":
             out = self._layout_jigs(rows, regions, x, y, w)
+            self._layout_toolbar(rows, regions, width, height)
             self._layout_picker(rows, regions, width, height)
             return out
         if self.mode == "panel":
             out = self._layout_panel(rows, regions, x, y, w)
+            self._layout_toolbar(rows, regions, width, height)
             self._layout_picker(rows, regions, width, height)
             return out
         if self.mode == "groups":
             out = self._layout_groups(rows, regions, x, y, w)
+            self._layout_toolbar(rows, regions, width, height)
             self._layout_picker(rows, regions, width, height)
             return out
         stats = scene_stats(self.stack)
@@ -443,7 +479,7 @@ class DomeForgeApp:
 
         # Whichever triangle was last clicked in the 3D view.
         assignments = self.stack.assignments
-        face = self.stack.selected_face
+        face = self.primary_face
         rows.append(("head", (x, y), "SELECTED TRIANGLE"))
         y += 20
         if face < 0:
@@ -493,6 +529,7 @@ class DomeForgeApp:
             y += 22
         y += 6
 
+        self._layout_toolbar(rows, regions, width, height)
         self._layout_picker(rows, regions, width, height)
         return rows, regions, y + self.scroll + 20, right_height
 
@@ -559,6 +596,45 @@ class DomeForgeApp:
                                     (param.key, param.low, param.high)))
                     y += SLIDER_H + 5
         return y + self.scroll_right + 20
+
+    def _layout_toolbar(self, rows, regions, width: int, height: int) -> None:
+        """A floating bar that appears over the 3D view whenever anything
+        is selected, and acts on the whole selection.
+
+        Strut rotation lives here rather than in the strut list: rolling a
+        piece is something you do *to* the thing you already picked, not a
+        different thing to pick. Keeping it here also drops the strut list
+        back to 18 honest profiles instead of 72 near-duplicates.
+        """
+        count = len(self.selection)
+        if not count or self.mode not in ("dome", "groups"):
+            return
+        buttons = [
+            ("Fill...", "sel_fill"),
+            ("Strut...", "sel_strut"),
+            ("Roll 90", "sel_roll"),
+            ("Mirror", "sel_flip"),
+            ("Pop out +", "sel_explode_up"),
+            ("Pop out -", "sel_explode_down"),
+            ("Clear", "sel_clear"),
+        ]
+        pad, gap, h = 12, 6, 26
+        widths = [max(74, self.font_small.size(label)[0] + 22)
+                  for label, _ in buttons]
+        label = (f"{count} selected" if count > 1
+                 else f"Triangle #{self.primary_face}")
+        label_w = self.font_small.size(label)[0] + 16
+        total = pad * 2 + label_w + sum(widths) + gap * len(buttons)
+        left = max(PANEL_W + 12, (width - total) // 2)
+        top = height - 78
+        rows.append(("panel_bg", (left, top, total, h + pad * 2 - 6), None))
+        rows.append(("small", (left + pad, top + pad + 2), label))
+        x = left + pad + label_w
+        for (text, action), bw in zip(buttons, widths):
+            rect = (x, top + pad - 4, bw, h)
+            rows.append(("button", rect, text))
+            regions.append((rect, action, None))
+            x += bw + gap
 
     def _layout_picker(self, rows, regions, width: int, height: int) -> None:
         """A real dropdown. Cycling one click at a time through 19 fills or
@@ -994,6 +1070,20 @@ class DomeForgeApp:
             active = stack.active
             if active is not None:
                 active.set(payload[0], not bool(active.get(payload[0])))
+        elif action in ("sel_fill", "sel_strut"):
+            self._open_catalog_picker(action, None)
+        elif action == "sel_roll":
+            self._roll_selection(1, False)
+        elif action == "sel_flip":
+            self._roll_selection(0, True)
+        elif action == "sel_explode_up":
+            self.explode_amount = min(3.0, self.explode_amount + 0.35)
+            self.notify(f"Pop-out {self.explode_amount:.2f} m.")
+        elif action == "sel_explode_down":
+            self.explode_amount = max(0.0, self.explode_amount - 0.35)
+            self.notify(f"Pop-out {self.explode_amount:.2f} m.")
+        elif action == "sel_clear":
+            self.stack.selected_faces = set()
         elif action == "open_add":
             self.open_picker("ADD A LAYER",
                              [(k.key, k.label) for k in LAYER_KINDS],
@@ -1036,24 +1126,24 @@ class DomeForgeApp:
                 [(p.key, p.label) for p in PENTAGON_PRESETS],
                 None, "pentagon_preset")
         elif action == "apply_fill_all":
-            chosen = stack.assignments.fill_for(stack.selected_face)
+            chosen = stack.assignments.fill_for(self.primary_face)
             stack.assignments.fill = chosen
             stack.assignments.face_fill.clear()
             self.notify(f"Every triangle is now {FILL_BY_KEY[chosen].label}.")
         elif action == "apply_shape":
             self._apply_to_shape()
         elif action == "reset_face":
-            stack.assignments.clear_face(stack.selected_face)
+            stack.assignments.clear_face(self.primary_face)
             self.notify("Triangle reset to the defaults.")
         elif action == "bench_to_face":
-            if stack.selected_face < 0:
+            if self.primary_face < 0:
                 self.notify("Select a triangle in DOME mode first.")
             else:
-                stack.assignments.face_fill[str(stack.selected_face)] = \
+                stack.assignments.face_fill[str(self.primary_face)] = \
                     self.bench_fill
-                stack.assignments.set_face_struts(stack.selected_face,
+                stack.assignments.set_face_struts(self.primary_face,
                                                   self.bench_struts)
-                self.notify(f"Sent to triangle #{stack.selected_face}.")
+                self.notify(f"Sent to triangle #{self.primary_face}.")
         elif action == "bench_to_all":
             stack.assignments.fill = self.bench_fill
             stack.assignments.strut_long = self.bench_struts[0]
@@ -1067,29 +1157,33 @@ class DomeForgeApp:
                 "panel": "jigs", "jigs": "dome"}[self.mode]
 
 
-    def _strut_options(self) -> list[tuple[str, str]]:
-        """Every profile in every orientation that actually looks different.
+    def _roll_selection(self, turn: int, mirror: bool) -> None:
+        """Roll (or mirror) every strut of every selected triangle.
 
-        A rectangle rolled 180 degrees is the same rectangle, so listing
-        four turns of a 2x4 would just be noise. Orientations are kept
-        only where the rolled section really differs.
+        The roll is carried in the strut key, so this rewrites the keys
+        rather than storing orientation somewhere separate that could
+        drift out of step with the profile it belongs to.
         """
-        from .catalog import (SPIN_LABELS, STRUT_PROFILES, format_strut,
-                              orient_section)
-        options: list[tuple[str, str]] = []
-        for profile in STRUT_PROFILES:
-            seen = []
-            for spin in range(4):
-                section = orient_section(profile.section, spin, False)
-                rounded = tuple((round(x, 6), round(y, 6)) for x, y in section)
-                if any(rounded == other for other in seen):
-                    continue
-                seen.append(rounded)
-                label = profile.label
-                if spin:
-                    label = f"{profile.label}  {SPIN_LABELS[spin]}"
-                options.append((format_strut(profile.key, spin), label))
-        return options
+        from .catalog import format_strut, parse_strut
+        assignments = self.stack.assignments
+        for face in sorted(self.selection):
+            classes = face_edge_classes(self.stack, face)
+            triple = assignments.strut_triple(face, classes)
+            rolled = []
+            for spec in triple:
+                key, spin, flip = parse_strut(spec)
+                rolled.append(format_strut(key, spin + turn,
+                                           (not flip) if mirror else flip))
+            assignments.set_face_struts(face, rolled)
+        what = "Mirrored" if mirror else "Rolled 90 deg"
+        self.notify(f"{what}: {len(self.selection)} triangle(s).")
+
+    def _strut_options(self) -> list[tuple[str, str]]:
+        """The 18 real profiles. Orientation is a toolbar action, not 72
+        near-duplicate list entries."""
+        from .catalog import STRUT_PROFILES
+        return [(p.key, f"{p.label}   {p.summary}") for p in STRUT_PROFILES]
+
 
     def open_picker(self, title: str, options, current, action: str,
                     payload=None) -> None:
@@ -1104,10 +1198,24 @@ class DomeForgeApp:
         action, payload = picker["action"], picker["payload"]
         stack = self.stack
         assignments = stack.assignments
-        if action == "face_fill":
-            assignments.face_fill[str(stack.selected_face)] = key
+        if action == "sel_fill":
+            for face in self.selection:
+                assignments.face_fill[str(face)] = key
+        elif action == "sel_strut":
+            from .catalog import format_strut, parse_strut
+            for face in sorted(self.selection):
+                classes = face_edge_classes(stack, face)
+                triple = assignments.strut_triple(face, classes)
+                # Swapping the profile must not silently un-roll a strut
+                # the user already turned, so the roll is carried over.
+                assignments.set_face_struts(face, [
+                    format_strut(key, parse_strut(spec)[1],
+                                 parse_strut(spec)[2])
+                    for spec in triple])
+        elif action == "face_fill":
+            assignments.face_fill[str(self.primary_face)] = key
         elif action == "face_strut":
-            face = stack.selected_face
+            face = self.primary_face
             classes = face_edge_classes(stack, face)
             triple = assignments.strut_triple(face, classes)
             triple[payload[0]] = key
@@ -1145,12 +1253,21 @@ class DomeForgeApp:
         assignments = stack.assignments
         fills = [(k, FILL_BY_KEY[k].label) for k in FILL_KEYS]
         struts = self._strut_options()
-        if action == "face_fill" and stack.selected_face >= 0:
+        if action == "sel_fill" and self.selection:
+            self.open_picker("FILL FOR THE SELECTION", fills,
+                             assignments.fill_for(self.primary_face), action)
+        elif action == "sel_strut" and self.selection:
+            classes = face_edge_classes(stack, self.primary_face)
+            current = assignments.strut_triple(self.primary_face, classes)[0]
+            from .catalog import parse_strut
+            self.open_picker("STRUT FOR THE SELECTION", struts,
+                             parse_strut(current)[0], action)
+        elif action == "face_fill" and self.primary_face >= 0:
             self.open_picker("PANEL FILL", fills,
-                             assignments.fill_for(stack.selected_face),
+                             assignments.fill_for(self.primary_face),
                              action)
-        elif action == "face_strut" and stack.selected_face >= 0:
-            face = stack.selected_face
+        elif action == "face_strut" and self.primary_face >= 0:
+            face = self.primary_face
             classes = face_edge_classes(stack, face)
             current = assignments.strut_triple(face, classes)[payload[0]]
             self.open_picker(f"STRUT FOR EDGE {payload[0] + 1}", struts,
@@ -1213,7 +1330,7 @@ class DomeForgeApp:
         """Copy the selected triangle's make-up onto every triangle of the
         same shape -- the 10 equilaterals or the 30 isosceles."""
         stack = self.stack
-        face = stack.selected_face
+        face = self.primary_face
         if face < 0:
             return
         classes = face_edge_classes(stack, face)
@@ -1354,6 +1471,10 @@ class DomeForgeApp:
             dt = clock.tick(60) / 1000.0
             if self.playing:
                 self.clock_t += dt
+            # Ease the pop-out in and out rather than snapping, so it reads
+            # as the piece lifting off the shell.
+            target = self.explode_amount if self.selection else 0.0
+            self.stack.explode += (target - self.stack.explode) * min(1.0, dt * 7.0)
             width, height = pg.display.get_window_size()
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -1391,9 +1512,18 @@ class DomeForgeApp:
                             and abs(event.pos[0] - self.press_at[0]) < 4
                             and abs(event.pos[1] - self.press_at[1]) < 4):
                         hit = self.pick_at(event.pos, width, height)
-                        self.stack.selected_face = hit
-                        self.notify(f"Selected triangle #{hit}." if hit >= 0
-                                    else "No triangle under the cursor.")
+                        mods = pg.key.get_mods()
+                        additive = bool(mods & (pg.KMOD_CTRL | pg.KMOD_SHIFT))
+                        self.toggle_face(hit, additive)
+                        count = len(self.selection)
+                        if hit < 0:
+                            self.notify("No triangle under the cursor.")
+                        elif count > 1:
+                            self.notify(f"{count} triangles selected "
+                                        f"(ctrl-click to add or remove).")
+                        else:
+                            self.notify(f"Selected triangle #{hit}. "
+                                        f"Ctrl-click to add more.")
                     self.press_at = None
                     self.dragging = None
                     self.orbiting = False

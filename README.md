@@ -451,6 +451,15 @@ Every choice opens a **dropdown**, laid out in as many columns as the
 window can take, rather than making you click through a list one item at
 a time.
 
+**Selecting.** Click a triangle to select it; **ctrl-click** (or
+shift-click) adds and removes others. Selected pieces light up and
+**pop out** of the shell — they lift straight off along their own
+normal so you can orbit right around a piece and see it whole, without
+hiding anything or leaving a hole where it came from. A **floating
+toolbar** appears over the 3D view whenever anything is selected and
+acts on the whole selection: fill, strut, roll, mirror, pop-out
+distance, and clear.
+
 **Struts can be rolled about their own axis.** For anything that is not
 symmetrical this changes the build, not just the look: a quarter-round
 can show its curve to the inside, to the outside, or turn its right-angle
@@ -461,6 +470,12 @@ non-square section genuinely changes its footprint — a half-round is
 180 mm wide flat but 90 mm on edge — and the selftest asserts exactly
 that, along with checking that every roll of every profile still anchors
 to its seam line instead of drifting off it.
+
+Rolling is a **toolbar action on the selection**, not a set of entries
+in the strut list: rolling is something you do *to* the piece you have
+already picked. That keeps the strut list at 18 honest profiles instead
+of 72 near-duplicates. Swapping a profile keeps whatever roll the strut
+already had.
 
 Mixing sections is a geometry problem, not a paint job. Struts of
 different widths push their inner faces in by different amounts, so the
