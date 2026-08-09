@@ -370,6 +370,61 @@ class DomeForgeApp:
     def primary_face(self, value: int) -> None:
         self.stack.selected_faces = {value} if value is not None and value >= 0 else set()
 
+    @property
+    def has_selection(self) -> bool:
+        if self.mode == "panel":
+            return bool(self.bench_selection)
+        return bool(self.selection) and self.mode in ("dome", "groups")
+
+    def toolbar_action(self, action: str) -> None:
+        """One entry point for the toolbar, whether it was clicked or
+        typed -- so a button and its shortcut can never drift apart."""
+        if action in ("sel_fill", "sel_strut"):
+            self._open_catalog_picker(action, None)
+        elif action == "sel_roll":
+            self._roll_selection(1, False)
+        elif action == "sel_flip":
+            self._roll_selection(0, True)
+        elif action == "sel_explode_up":
+            self.explode_amount = min(3.0, self.explode_amount + 0.35)
+            self.notify(f"Pop-out {self.explode_amount:.2f} m.")
+        elif action == "sel_explode_down":
+            self.explode_amount = max(0.0, self.explode_amount - 0.35)
+            self.notify(f"Pop-out {self.explode_amount:.2f} m.")
+        elif action == "sel_clear":
+            if self.mode == "panel":
+                self.bench_selection = set()
+            else:
+                self.stack.selected_faces = set()
+
+    def cycle_variant(self, step: int) -> None:
+        """Step the selection through the variants of whatever it is.
+
+        A selected strut walks the profile catalogue; a selected triangle
+        walks the fills. Whichever kind of component is selected, the
+        arrows move it to the next one of its own kind.
+        """
+        from .catalog import STRUT_PROFILES, format_strut, parse_strut
+        if self.mode == "panel":
+            keys = [p.key for p in STRUT_PROFILES]
+            for edge in sorted(self.bench_selection):
+                key, spin, flip = parse_strut(self.bench_struts[edge])
+                index = keys.index(key) if key in keys else 0
+                chosen = keys[(index + step) % len(keys)]
+                self.bench_struts[edge] = format_strut(chosen, spin, flip)
+            shown = parse_strut(self.bench_struts[min(self.bench_selection)])[0]
+            self.notify(f"Strut: {PROFILE_BY_KEY[shown].label}")
+            return
+        keys = list(FILL_KEYS)
+        assignments = self.stack.assignments
+        current = assignments.fill_for(self.primary_face)
+        index = keys.index(current) if current in keys else 0
+        chosen = keys[(index + step) % len(keys)]
+        for face in self.selection:
+            assignments.face_fill[str(face)] = chosen
+        self.notify(f"Fill: {FILL_BY_KEY[chosen].label}  "
+                    f"({len(self.selection)} triangle(s))")
+
     def pick_component(self, pos, width: int, height: int,
                        additive: bool) -> None:
         """Click a component in whichever editor is open.
@@ -708,10 +763,10 @@ class DomeForgeApp:
             if not count:
                 return
             buttons = [
-                ("Strut...", "sel_strut"),
-                ("Roll 90", "sel_roll"),
-                ("Mirror", "sel_flip"),
-                ("Clear", "sel_clear"),
+                ("Strut... (T)", "sel_strut"),
+                ("Roll 90 (R)", "sel_roll"),
+                ("Mirror (X)", "sel_flip"),
+                ("Clear (Del)", "sel_clear"),
             ]
             label = (f"{count} struts selected" if count > 1
                      else f"Edge {min(self.bench_selection) + 1}")
@@ -720,13 +775,13 @@ class DomeForgeApp:
             if not count or self.mode not in ("dome", "groups"):
                 return
             buttons = [
-                ("Fill...", "sel_fill"),
-                ("Strut...", "sel_strut"),
-                ("Roll 90", "sel_roll"),
-                ("Mirror", "sel_flip"),
-                ("Pop out +", "sel_explode_up"),
-                ("Pop out -", "sel_explode_down"),
-                ("Clear", "sel_clear"),
+                ("Fill... (F)", "sel_fill"),
+                ("Strut... (T)", "sel_strut"),
+                ("Roll 90 (R)", "sel_roll"),
+                ("Mirror (X)", "sel_flip"),
+                ("Pop + (])", "sel_explode_up"),
+                ("Pop - ([)", "sel_explode_down"),
+                ("Clear (Del)", "sel_clear"),
             ]
             label = (f"{count} selected" if count > 1
                      else f"Triangle #{self.primary_face}")
@@ -737,7 +792,9 @@ class DomeForgeApp:
         total = pad * 2 + label_w + sum(widths) + gap * len(buttons)
         left = max(PANEL_W + 12, (width - total) // 2)
         top = height - 78
-        rows.append(("panel_bg", (left, top, total, h + pad * 2 - 6), None))
+        rows.append(("panel_bg", (left, top - 20, total, h + pad * 2 + 14), None))
+        rows.append(("small", (left + pad, top - 16),
+                     "<- -> steps through variants"))
         rows.append(("small", (left + pad, top + pad + 2), label))
         x = left + pad + label_w
         for (text, action), bw in zip(buttons, widths):
@@ -1228,23 +1285,8 @@ class DomeForgeApp:
             active = stack.active
             if active is not None:
                 active.set(payload[0], not bool(active.get(payload[0])))
-        elif action in ("sel_fill", "sel_strut"):
-            self._open_catalog_picker(action, None)
-        elif action == "sel_roll":
-            self._roll_selection(1, False)
-        elif action == "sel_flip":
-            self._roll_selection(0, True)
-        elif action == "sel_explode_up":
-            self.explode_amount = min(3.0, self.explode_amount + 0.35)
-            self.notify(f"Pop-out {self.explode_amount:.2f} m.")
-        elif action == "sel_explode_down":
-            self.explode_amount = max(0.0, self.explode_amount - 0.35)
-            self.notify(f"Pop-out {self.explode_amount:.2f} m.")
-        elif action == "sel_clear":
-            if self.mode == "panel":
-                self.bench_selection = set()
-            else:
-                self.stack.selected_faces = set()
+        elif action.startswith("sel_"):
+            self.toolbar_action(action)
         elif action == "save_triangle_design":
             self.prompt = {"title": "NAME THIS TRIANGLE DESIGN",
                            "value": "", "action": "save_triangle_design"}
@@ -1669,6 +1711,24 @@ class DomeForgeApp:
         if self.picker is not None and event.key == pg.K_ESCAPE:
             self.picker = None
             return
+
+        # With something selected, the keyboard drives the toolbar. These
+        # are checked before the view keys so they never collide with
+        # save/cutaway/mode.
+        if self.has_selection:
+            shortcuts = {
+                pg.K_f: "sel_fill", pg.K_t: "sel_strut",
+                pg.K_r: "sel_roll", pg.K_x: "sel_flip",
+                pg.K_RIGHTBRACKET: "sel_explode_up",
+                pg.K_LEFTBRACKET: "sel_explode_down",
+                pg.K_DELETE: "sel_clear", pg.K_BACKSPACE: "sel_clear",
+            }
+            if event.key in shortcuts:
+                self.toolbar_action(shortcuts[event.key])
+                return
+            if event.key in (pg.K_LEFT, pg.K_RIGHT):
+                self.cycle_variant(1 if event.key == pg.K_RIGHT else -1)
+                return
         if event.key == pg.K_ESCAPE:
             self.running = False
         elif event.key == pg.K_m:
@@ -1786,10 +1846,22 @@ class DomeForgeApp:
                     on_left = event.pos[0] < PANEL_W
                     on_right = (event.pos[0] > width - RIGHT_W
                                 and self.mode == "dome")
-                    if on_left or on_right or self.picker:
-                        if event.button in (1, 3):
-                            self.click(event.pos, width, height, event.button)
-                        elif event.button in (4, 5):
+                    # Ask the layout whether anything clickable is under the
+                    # cursor rather than guessing from screen bands. The
+                    # floating toolbar sits *over* the 3D view, so a band
+                    # test sent clicks on it straight through to the picker,
+                    # which then cleared the very selection the toolbar was
+                    # acting on.
+                    over_ui = (event.button in (1, 3)
+                               and self.hit(event.pos, width, height) is not None)
+                    if over_ui:
+                        self.click(event.pos, width, height, event.button)
+                    elif self.picker or self.prompt:
+                        # A modal is open: clicking off it dismisses rather
+                        # than falling through to the scene behind.
+                        self.picker = None
+                    elif on_left or on_right:
+                        if event.button in (4, 5):
                             step = -48 if event.button == 4 else 48
                             if on_right:
                                 self.scroll_right = max(0, self.scroll_right + step)

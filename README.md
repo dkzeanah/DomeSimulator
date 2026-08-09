@@ -460,7 +460,14 @@ select one, two, or all five of its triangles and change just those. The
 floating toolbar follows the selection in every case.
 
 Click a component to select it; **ctrl-click** (or
-shift-click) adds and removes others. Selected pieces light up and
+shift-click) adds and removes others.
+
+The toolbar has keyboard equivalents, live whenever something is
+selected: `F` fill, `T` strut, `R` roll 90, `X` mirror, `]` and `[`
+pop-out, `Del` clear. **Left and right arrows step the selection through
+its own variants** — a selected strut walks the profile catalogue, a
+selected triangle walks the fills. With nothing selected the arrows go
+back to stepping through groups or jig steps. Selected pieces light up and
 **pop out** of the shell — they lift straight off along their own
 normal so you can orbit right around a piece and see it whole, without
 hiding anything or leaving a hole where it came from. A **floating
