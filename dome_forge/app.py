@@ -91,7 +91,11 @@ void main() { frag_color = texture(u_texture, v_uv); }
 
 
 BG = (0.020, 0.032, 0.052, 1.0)
-PANEL_W = 340
+# Controls sit down the left, the layer stack down the right, and the dome
+# gets the whole middle. Two narrow columns fit far more than one wide one
+# without ever pushing content off the bottom of a big screen.
+PANEL_W = 330
+RIGHT_W = 340
 # Sliders carry their label above the track rather than beside it, so long
 # plain-language labels never collide with the value or the bar itself.
 SLIDER_H = 28
@@ -235,13 +239,14 @@ class DomeForgeApp:
         self.bench_edge = 0
         self.group_kind = "pentagon"   # or "hourglass"
         self.group_index = 0
+        self.scroll_right = 0
+        self.picker = None
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
         self.running = True
         self.dragging = None          # active slider drag
         self.orbiting = False
-        self.show_add = False
         self.press_at = None
         self.message = "Drag to orbit, click a triangle to select it, scroll to zoom."
         self.message_at = time.monotonic()
@@ -367,14 +372,17 @@ class DomeForgeApp:
 
     # -- layout: the single source of truth for drawing AND hit-testing ---
 
-    def layout(self, height: int):
-        """Return (rows, regions, content_height). ``rows`` are draw
-        instructions; ``regions`` are (rect, action, payload) for mouse
-        hits. Both are produced from the same running ``y``, so what you
-        see and what you can click can never disagree -- including while
-        the panel is scrolled."""
+    def layout(self, width: int, height: int):
+        """Return (rows, regions, left_height, right_height).
+
+        ``rows`` are draw instructions; ``regions`` are (rect, action,
+        payload) for mouse hits. Both come from the same running ``y`` in
+        each column, so what you see and what you can click can never
+        disagree -- including while a column is scrolled.
+        """
         rows: list[tuple] = []
         regions: list[tuple] = []
+        right_height = self._layout_right(rows, regions, width, height)
         x, w = 10, PANEL_W - 20
         y = 10 - self.scroll
 
@@ -389,11 +397,17 @@ class DomeForgeApp:
         y += 26
 
         if self.mode == "jigs":
-            return self._layout_jigs(rows, regions, x, y, w)
+            out = self._layout_jigs(rows, regions, x, y, w)
+            self._layout_picker(rows, regions, width, height)
+            return out
         if self.mode == "panel":
-            return self._layout_panel(rows, regions, x, y, w)
+            out = self._layout_panel(rows, regions, x, y, w)
+            self._layout_picker(rows, regions, width, height)
+            return out
         if self.mode == "groups":
-            return self._layout_groups(rows, regions, x, y, w)
+            out = self._layout_groups(rows, regions, x, y, w)
+            self._layout_picker(rows, regions, width, height)
+            return out
         stats = scene_stats(self.stack)
         rows.append(("small", (x, y),
                      f"{stats['struts']} struts  {stats['panels']} panels  "
@@ -479,7 +493,19 @@ class DomeForgeApp:
             y += 22
         y += 6
 
-        # Layer list, topmost layer shown first (paint-program order)
+        self._layout_picker(rows, regions, width, height)
+        return rows, regions, y + self.scroll + 20, right_height
+
+    def _layout_right(self, rows, regions, width: int, height: int) -> int:
+        """The right-hand column: the layer stack and the selected layer's
+        own controls. Only the dome has layers, so the other modes leave
+        this column empty and give the space back to the 3D view."""
+        if self.mode != "dome":
+            return 0
+        x = width - RIGHT_W + 10
+        w = RIGHT_W - 20
+        y = 10 - self.scroll_right
+
         rows.append(("head", (x, y), "LAYERS  (top draws last)"))
         y += 20
         for display_index, layer in enumerate(reversed(self.stack.layers)):
@@ -487,8 +513,7 @@ class DomeForgeApp:
             rect = (x, y, w, 20)
             rows.append(("layer", rect,
                          (layer, index == self.stack.selected)))
-            eye_rect = (x + 2, y + 2, 16, 16)
-            regions.append((eye_rect, "toggle_layer", index))
+            regions.append(((x + 2, y + 2, 16, 16), "toggle_layer", index))
             regions.append(((x + 20, y, w - 82, 20), "select_layer", index))
             regions.append(((x + w - 60, y, 18, 20), "move_up", index))
             regions.append(((x + w - 40, y, 18, 20), "move_down", index))
@@ -505,12 +530,11 @@ class DomeForgeApp:
         regions.append((rect, "open_add", None))
         y += 28
 
-        # Selected layer's own controls
         active = self.stack.active
         if active is not None:
             rows.append(("head", (x, y), active.name.upper()))
             y += 19
-            for line in self._wrap(active.spec.blurb, 44):
+            for line in self._wrap(active.spec.blurb, 45):
                 rows.append(("small", (x, y), line))
                 y += 15
             y += 4
@@ -534,26 +558,35 @@ class DomeForgeApp:
                     regions.append((rect, "param_slider",
                                     (param.key, param.low, param.high)))
                     y += SLIDER_H + 5
+        return y + self.scroll_right + 20
 
-        content_height = y + self.scroll + 20
-
-        # The add-layer picker floats over everything when open.
-        if self.show_add:
-            ax, ay = PANEL_W + 20, 40
-            aw = 320
-            rows.append(("panel_bg", (ax - 10, ay - 30, aw + 20,
-                                      len(LAYER_KINDS) * 24 + 46), None))
-            rows.append(("head", (ax, ay - 24), "ADD A LAYER"))
-            for kind in LAYER_KINDS:
-                rect = (ax, ay, aw, 21)
-                rows.append(("button", rect, kind.label))
-                regions.append((rect, "add_layer", kind.key))
-                ay += 24
-            rect = (ax, ay + 2, aw, 21)
-            rows.append(("button", rect, "Cancel"))
-            regions.append((rect, "close_add", None))
-
-        return rows, regions, content_height
+    def _layout_picker(self, rows, regions, width: int, height: int) -> None:
+        """A real dropdown. Cycling one click at a time through 19 fills or
+        18 strut profiles is unusable, so a choice opens a list instead --
+        laid out in as many columns as the window can take."""
+        picker = self.picker
+        if not picker:
+            return
+        options = picker["options"]
+        row_h, col_w = 22, 250
+        usable = max(1, (height - 150) // row_h)
+        columns = max(1, min(4, math.ceil(len(options) / usable)))
+        per_column = math.ceil(len(options) / columns)
+        box_w = columns * col_w + 20
+        box_h = min(len(options), per_column) * row_h + 62
+        ox = max(10, (width - box_w) // 2)
+        oy = max(10, (height - box_h) // 2)
+        rows.append(("panel_bg", (ox, oy, box_w, box_h), None))
+        rows.append(("head", (ox + 12, oy + 10), picker["title"]))
+        for index, (key, label) in enumerate(options):
+            column, row = divmod(index, per_column)
+            rect = (ox + 10 + column * col_w, oy + 34 + row * row_h,
+                    col_w - 8, row_h - 2)
+            rows.append(("option", rect, (label, key == picker.get("current"))))
+            regions.append((rect, "picker_choose", key))
+        rect = (ox + 10, oy + box_h - 26, 110, 20)
+        rows.append(("button", rect, "Cancel"))
+        regions.append((rect, "picker_cancel", None))
 
     def _layout_jigs(self, rows, regions, x, y, w):
         """The Jig Shop panel: which jig, which step, and the exact numbers
@@ -598,7 +631,7 @@ class DomeForgeApp:
         y += 15
         rows.append(("small", (x, y), "follows."))
         y += 20
-        return rows, regions, y + self.scroll + 20
+        return rows, regions, y + self.scroll + 20, 0
 
     def _layout_groups(self, rows, regions, x, y, w):
         """Edit a whole sub-assembly at once: a pentagon of five
@@ -662,6 +695,12 @@ class DomeForgeApp:
             regions.append((rect, "joint_all", None))
             y += 26
 
+        if pentagon:
+            rect = (x, y, w, 22)
+            rows.append(("button", rect, "Load a ready-made pentagon..."))
+            regions.append((rect, "pentagon_preset", None))
+            y += 28
+
         rows.append(("head", (x, y), "WHOLE GROUP"))
         y += 20
         first = group.faces[0]
@@ -681,7 +720,7 @@ class DomeForgeApp:
         y += 15
         rows.append(("small", (x, y), "in this group at once."))
         y += 22
-        return rows, regions, y + self.scroll + 20
+        return rows, regions, y + self.scroll + 20, 0
 
     def _layout_panel(self, rows, regions, x, y, w):
         """The Panel Creator: build one panel out of any three struts."""
@@ -742,7 +781,7 @@ class DomeForgeApp:
         y += 15
         rows.append(("small", (x, y), "right-click to go back."))
         y += 20
-        return rows, regions, y + self.scroll + 20
+        return rows, regions, y + self.scroll + 20, 0
 
     @staticmethod
     def _wrap(text: str, width: int) -> list[str]:
@@ -767,8 +806,10 @@ class DomeForgeApp:
         panel.fill(PANEL_BG)
         surface.blit(panel, (0, 0))
 
-        rows, _, content_height = self.layout(height)
-        self._clamp_scroll(content_height, height)
+        rows, _, left_h, right_h = self.layout(width, height)
+        self.scroll = max(0, min(self.scroll, max(0, left_h - height + 30)))
+        self.scroll_right = max(0, min(self.scroll_right,
+                                       max(0, right_h - height + 30)))
         for kind, rect, payload in rows:
             if kind == "panel_bg":
                 box = pg.Surface((rect[2], rect[3]), pg.SRCALPHA)
@@ -782,6 +823,14 @@ class DomeForgeApp:
                 surface.blit(self.font_small.render(payload, True, DIM), rect)
             elif kind == "mono":
                 surface.blit(self.font_mono.render(payload, True, INK), rect)
+            elif kind == "option":
+                label, is_current = payload
+                pg.draw.rect(surface, ROW_SEL if is_current else ROW_BG, rect,
+                             border_radius=4)
+                surface.blit(
+                    self.font_small.render(label, True,
+                                           ACCENT if is_current else INK),
+                    (rect[0] + 8, rect[1] + 3))
             elif kind == "button":
                 pg.draw.rect(surface, ROW_BG, rect, border_radius=4)
                 pg.draw.rect(surface, (60, 92, 118), rect, 1, border_radius=4)
@@ -893,11 +942,9 @@ class DomeForgeApp:
         direction = direction / max(1e-9, float(np.linalg.norm(direction)))
         return pick_face(self.stack, eye, direction)
 
-    def _clamp_scroll(self, content_height: int, height: int) -> None:
-        self.scroll = max(0, min(self.scroll, max(0, content_height - height + 30)))
 
-    def hit(self, pos, height):
-        _, regions, _ = self.layout(height)
+    def hit(self, pos, width, height):
+        _, regions, _, _ = self.layout(width, height)
         x, y = pos
         # Later regions are drawn on top, so test them first.
         for rect, action, payload in reversed(regions):
@@ -920,8 +967,8 @@ class DomeForgeApp:
         elif action == "layer_opacity":
             self.stack.layers[payload].opacity = frac
 
-    def click(self, pos, height, button: int) -> None:
-        found = self.hit(pos, height)
+    def click(self, pos, width, height, button: int) -> None:
+        found = self.hit(pos, width, height)
         if found is None:
             return
         rect, action, payload = found
@@ -947,23 +994,10 @@ class DomeForgeApp:
             active = stack.active
             if active is not None:
                 active.set(payload[0], not bool(active.get(payload[0])))
-        elif action == "param_choice":
-            active = stack.active
-            if active is not None:
-                spec = active.spec.spec(payload[0])
-                if spec and spec.choices:
-                    current = str(active.get(payload[0]))
-                    index = (spec.choices.index(current) + (1 if button != 3 else -1)
-                             ) % len(spec.choices) if current in spec.choices else 0
-                    active.set(payload[0], spec.choices[index])
         elif action == "open_add":
-            self.show_add = True
-        elif action == "close_add":
-            self.show_add = False
-        elif action == "add_layer":
-            layer = stack.add(payload)
-            self.show_add = False
-            self.notify(f"Added {layer.name}.")
+            self.open_picker("ADD A LAYER",
+                             [(k.key, k.label) for k in LAYER_KINDS],
+                             None, "add_layer")
         elif action == "toggle_mode":
             self.set_mode(self._next_mode())
         elif action == "toggle_group_kind":
@@ -974,22 +1008,12 @@ class DomeForgeApp:
             self.group_index += 1
         elif action == "group_back":
             self.group_index -= 1
-        elif action == "waist_joint":
-            group, _ = self.current_group()
-            options = list(JOINT_KEYS)
-            current = stack.assignments.joint_for(group.index)
-            step = -1 if button == 3 else 1
-            index = options.index(current) if current in options else 0
-            stack.assignments.waist_joint[str(group.index)] = \
-                options[(index + step) % len(options)]
         elif action == "joint_all":
             group, _ = self.current_group()
             chosen = stack.assignments.joint_for(group.index)
             stack.assignments.joint = chosen
             stack.assignments.waist_joint.clear()
             self.notify(f"Every waist now uses {JOINT_BY_KEY[chosen].label}.")
-        elif action in ("group_fill", "group_strut"):
-            self._cycle_group(action, button)
         elif action == "next_jig":
             self.jig_index = (self.jig_index + 1) % 2
             self.notify(self.jig_spec().label)
@@ -998,8 +1022,19 @@ class DomeForgeApp:
         elif action == "step_back":
             self.step_index = (self.step_index - 1) % len(STEPS)
         elif action in ("face_fill", "face_strut", "default_choice",
-                        "bench_strut", "bench_fill"):
-            self._cycle_catalog(action, payload, button)
+                        "bench_strut", "bench_fill", "waist_joint",
+                        "group_fill", "group_strut", "param_choice"):
+            self._open_catalog_picker(action, payload)
+        elif action == "picker_choose":
+            self._picker_choose(payload)
+        elif action == "picker_cancel":
+            self.picker = None
+        elif action == "pentagon_preset":
+            from .groups import PENTAGON_PRESETS
+            self.open_picker(
+                "PENTAGON PRESET",
+                [(p.key, p.label) for p in PENTAGON_PRESETS],
+                None, "pentagon_preset")
         elif action == "apply_fill_all":
             chosen = stack.assignments.fill_for(stack.selected_face)
             stack.assignments.fill = chosen
@@ -1031,63 +1066,148 @@ class DomeForgeApp:
         return {"dome": "groups", "groups": "panel",
                 "panel": "jigs", "jigs": "dome"}[self.mode]
 
-    def _cycle_group(self, action: str, button: int) -> None:
-        """Change the fill or strut on every triangle of the selected
-        group in one go."""
-        group, _ = self.current_group()
-        assignments = self.stack.assignments
-        step = -1 if button == 3 else 1
-        first = group.faces[0]
-        classes = face_edge_classes(self.stack, first)
-        if action == "group_fill":
-            options = list(FILL_KEYS)
-            current = assignments.fill_for(first)
-            index = options.index(current) if current in options else 0
-            chosen = options[(index + step) % len(options)]
-            for face in group.faces:
-                assignments.face_fill[str(face)] = chosen
-            self.notify(f"{len(group.faces)} triangles -> "
-                        f"{FILL_BY_KEY[chosen].label}.")
-        else:
-            options = list(PROFILE_KEYS)
-            current = assignments.strut_triple(first, classes)[0]
-            index = options.index(current) if current in options else 0
-            chosen = options[(index + step) % len(options)]
-            for face in group.faces:
-                assignments.set_face_struts(face, [chosen] * 3)
-            self.notify(f"{len(group.faces)} triangles -> "
-                        f"{PROFILE_BY_KEY[chosen].label}.")
 
-    def _cycle_catalog(self, action: str, payload, button: int) -> None:
-        """Step a catalog choice forward (left-click) or back (right)."""
-        step = -1 if button == 3 else 1
+    def _strut_options(self) -> list[tuple[str, str]]:
+        """Every profile in every orientation that actually looks different.
+
+        A rectangle rolled 180 degrees is the same rectangle, so listing
+        four turns of a 2x4 would just be noise. Orientations are kept
+        only where the rolled section really differs.
+        """
+        from .catalog import (SPIN_LABELS, STRUT_PROFILES, format_strut,
+                              orient_section)
+        options: list[tuple[str, str]] = []
+        for profile in STRUT_PROFILES:
+            seen = []
+            for spin in range(4):
+                section = orient_section(profile.section, spin, False)
+                rounded = tuple((round(x, 6), round(y, 6)) for x, y in section)
+                if any(rounded == other for other in seen):
+                    continue
+                seen.append(rounded)
+                label = profile.label
+                if spin:
+                    label = f"{profile.label}  {SPIN_LABELS[spin]}"
+                options.append((format_strut(profile.key, spin), label))
+        return options
+
+    def open_picker(self, title: str, options, current, action: str,
+                    payload=None) -> None:
+        self.picker = {"title": title, "options": list(options),
+                       "current": current, "action": action,
+                       "payload": payload}
+
+    def _picker_choose(self, key: str) -> None:
+        picker, self.picker = self.picker, None
+        if not picker:
+            return
+        action, payload = picker["action"], picker["payload"]
         stack = self.stack
         assignments = stack.assignments
-
-        def nudge(options, current):
-            index = options.index(current) if current in options else 0
-            return options[(index + step) % len(options)]
-
-        if action == "face_fill" and stack.selected_face >= 0:
-            face = stack.selected_face
-            assignments.face_fill[str(face)] = nudge(
-                list(FILL_KEYS), assignments.fill_for(face))
-        elif action == "face_strut" and stack.selected_face >= 0:
+        if action == "face_fill":
+            assignments.face_fill[str(stack.selected_face)] = key
+        elif action == "face_strut":
             face = stack.selected_face
             classes = face_edge_classes(stack, face)
             triple = assignments.strut_triple(face, classes)
-            triple[payload[0]] = nudge(list(PROFILE_KEYS), triple[payload[0]])
+            triple[payload[0]] = key
             assignments.set_face_struts(face, triple)
         elif action == "default_choice":
+            setattr(assignments, payload[0], key)
+        elif action == "bench_strut":
+            self.bench_struts[payload[0]] = key
+        elif action == "bench_fill":
+            self.bench_fill = key
+        elif action == "waist_joint":
+            group, _ = self.current_group()
+            assignments.waist_joint[str(group.index)] = key
+        elif action == "group_fill":
+            group, _ = self.current_group()
+            for face in group.faces:
+                assignments.face_fill[str(face)] = key
+        elif action == "group_strut":
+            group, _ = self.current_group()
+            for face in group.faces:
+                assignments.set_face_struts(face, [key] * 3)
+        elif action == "pentagon_preset":
+            self._apply_pentagon_preset(key)
+        elif action == "param_choice":
+            active = stack.active
+            if active is not None:
+                active.set(payload[0], key)
+        elif action == "add_layer":
+            layer = stack.add(key)
+            self.notify(f"Added {layer.name}.")
+
+    def _open_catalog_picker(self, action: str, payload) -> None:
+        """Turn any catalog choice into a real dropdown."""
+        stack = self.stack
+        assignments = stack.assignments
+        fills = [(k, FILL_BY_KEY[k].label) for k in FILL_KEYS]
+        struts = self._strut_options()
+        if action == "face_fill" and stack.selected_face >= 0:
+            self.open_picker("PANEL FILL", fills,
+                             assignments.fill_for(stack.selected_face),
+                             action)
+        elif action == "face_strut" and stack.selected_face >= 0:
+            face = stack.selected_face
+            classes = face_edge_classes(stack, face)
+            current = assignments.strut_triple(face, classes)[payload[0]]
+            self.open_picker(f"STRUT FOR EDGE {payload[0] + 1}", struts,
+                             current, action, payload)
+        elif action == "default_choice":
             key = payload[0]
-            options = list(FILL_KEYS) if key == "fill" else list(PROFILE_KEYS)
-            setattr(assignments, key, nudge(options, getattr(assignments, key)))
+            if key == "fill":
+                self.open_picker("DEFAULT FILL", fills, assignments.fill,
+                                 action, payload)
+            else:
+                self.open_picker("DEFAULT STRUT", struts,
+                                 getattr(assignments, key), action, payload)
         elif action == "bench_strut":
             self.bench_edge = payload[0]
-            self.bench_struts[payload[0]] = nudge(
-                list(PROFILE_KEYS), self.bench_struts[payload[0]])
+            self.open_picker(f"STRUT FOR EDGE {payload[0] + 1}", struts,
+                             self.bench_struts[payload[0]], action, payload)
         elif action == "bench_fill":
-            self.bench_fill = nudge(list(FILL_KEYS), self.bench_fill)
+            self.open_picker("PANEL FILL", fills, self.bench_fill, action)
+        elif action == "waist_joint":
+            group, _ = self.current_group()
+            self.open_picker(
+                "WAIST JOINT",
+                [(k, JOINT_BY_KEY[k].label) for k in JOINT_KEYS],
+                assignments.joint_for(group.index), action)
+        elif action == "group_fill":
+            group, _ = self.current_group()
+            self.open_picker("FILL FOR THE WHOLE GROUP", fills,
+                             assignments.fill_for(group.faces[0]), action)
+        elif action == "group_strut":
+            group, _ = self.current_group()
+            classes = face_edge_classes(stack, group.faces[0])
+            current = assignments.strut_triple(group.faces[0], classes)[0]
+            self.open_picker("STRUT FOR THE WHOLE GROUP", struts, current,
+                             action)
+        elif action == "param_choice":
+            active = stack.active
+            if active is not None:
+                spec = active.spec.spec(payload[0])
+                if spec and spec.choices:
+                    self.open_picker(spec.label.upper(),
+                                     [(c, c) for c in spec.choices],
+                                     str(active.get(payload[0])), action,
+                                     payload)
+
+
+    def _apply_pentagon_preset(self, key: str) -> None:
+        from .groups import PRESET_BY_KEY
+        preset = PRESET_BY_KEY.get(key)
+        group, _ = self.current_group()
+        if preset is None:
+            return
+        assignments = self.stack.assignments
+        for face, fill in zip(group.faces, preset.fills):
+            assignments.face_fill[str(face)] = fill
+            if preset.strut:
+                assignments.set_face_struts(face, [preset.strut] * 3)
+        self.notify(f"Pentagon set to {preset.label}.")
 
     def _apply_to_shape(self) -> None:
         """Copy the selected triangle's make-up onto every triangle of the
@@ -1234,20 +1354,25 @@ class DomeForgeApp:
             dt = clock.tick(60) / 1000.0
             if self.playing:
                 self.clock_t += dt
-            _, height = pg.display.get_window_size()
+            width, height = pg.display.get_window_size()
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.running = False
                 elif event.type == pg.KEYDOWN:
                     self.key(event)
                 elif event.type == pg.MOUSEBUTTONDOWN:
-                    if event.pos[0] < PANEL_W or self.show_add:
+                    on_left = event.pos[0] < PANEL_W
+                    on_right = (event.pos[0] > width - RIGHT_W
+                                and self.mode == "dome")
+                    if on_left or on_right or self.picker:
                         if event.button in (1, 3):
-                            self.click(event.pos, height, event.button)
-                        elif event.button == 4:
-                            self.scroll = max(0, self.scroll - 48)
-                        elif event.button == 5:
-                            self.scroll += 48
+                            self.click(event.pos, width, height, event.button)
+                        elif event.button in (4, 5):
+                            step = -48 if event.button == 4 else 48
+                            if on_right:
+                                self.scroll_right = max(0, self.scroll_right + step)
+                            else:
+                                self.scroll = max(0, self.scroll + step)
                     else:
                         if event.button == 1:
                             self.orbiting = True
@@ -1265,7 +1390,6 @@ class DomeForgeApp:
                             and self.press_at is not None
                             and abs(event.pos[0] - self.press_at[0]) < 4
                             and abs(event.pos[1] - self.press_at[1]) < 4):
-                        width, _ = pg.display.get_window_size()
                         hit = self.pick_at(event.pos, width, height)
                         self.stack.selected_face = hit
                         self.notify(f"Selected triangle #{hit}." if hit >= 0

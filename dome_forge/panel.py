@@ -22,7 +22,8 @@ import numpy as np
 
 from presenter.world import Batch
 
-from .catalog import FILL_BY_KEY, PROFILE_BY_KEY, PanelFill, StrutProfile
+from .catalog import (FILL_BY_KEY, PROFILE_BY_KEY, PanelFill, Section,
+                      StrutProfile, oriented_profile)
 
 
 # ---------------------------------------------------------------------------
@@ -161,16 +162,15 @@ def _plate(batch: Batch, polygon2d, origin, e1, e2, normal,
         batch.quad(top[i], bottom[i], bottom[j], top[j], side)
 
 
-def emit_strut(batch: Batch, profile: StrutProfile, outer_a, outer_b,
+def emit_strut(batch: Batch, section: Section, width: float, outer_a, outer_b,
                inner_a, inner_b, normal, color) -> None:
     """Sweep one cross-section along one edge.
 
     Each point of the section is carried between the two end miter lines,
     so the ends come out correctly mitered for any shape -- a rectangle, a
-    half-round belly, or a hollow tube.
+    half-round belly, or a hollow tube -- and for any roll of it.
     """
-    section = profile.section
-    width = max(1e-6, profile.width)
+    width = max(1e-6, width)
     xs = [p[0] for p in section]
     base_x = min(xs)
     starts, ends = [], []
@@ -335,20 +335,19 @@ def build_panel(op: Batch, tr: Batch, corners, strut_keys, fill_key,
     if seam > 0.0:
         points2d = inner_outline(points2d, [seam] * 3)
 
-    profiles = [PROFILE_BY_KEY.get(key, PROFILE_BY_KEY["lumber_2x4"])
-                for key in strut_keys]
-    widths = [p.width for p in profiles]
+    resolved = [oriented_profile(spec) for spec in strut_keys]
+    widths = [item[2] for item in resolved]
     inner2d = inner_outline(points2d, widths)
 
     target = tr if alpha < 0.999 else op
-    for i, profile in enumerate(profiles):
+    for i, (profile, section, width, _depth) in enumerate(resolved):
         j = (i + 1) % 3
         colour_name = strut_tint or profile.tint
         color = tint_of(colour_name, alpha)
         if highlight:
             color = tint_of("amber", alpha)
         emit_strut(
-            target, profile,
+            target, section, width,
             to_3d(points2d[i], origin, e1, e2),
             to_3d(points2d[j], origin, e1, e2),
             to_3d(inner2d[i], origin, e1, e2),

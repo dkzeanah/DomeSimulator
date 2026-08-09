@@ -139,6 +139,52 @@ JOINT_BY_KEY = {joint.key: joint for joint in WAIST_JOINTS}
 JOINT_KEYS = tuple(joint.key for joint in WAIST_JOINTS)
 
 
+@dataclass(frozen=True)
+class PentagonPreset:
+    key: str
+    label: str
+    fills: tuple[str, ...]
+    strut: str | None = None
+
+
+# Ready-made pentagons. The five fills are applied in the order the
+# triangles come back from the geometry, so a pattern like "one door, rest
+# solid" always lands the same way round.
+PENTAGON_PRESETS: tuple[PentagonPreset, ...] = (
+    PentagonPreset("glazed", "All glazed",
+                   ("polycarbonate",) * 5),
+    PentagonPreset("glass_cap", "Glass cap", ("glass",) * 5),
+    PentagonPreset("solar_cap", "Solar cap", ("solar",) * 5),
+    PentagonPreset("solid", "Solid shell", ("wood_sheet",) * 5),
+    PentagonPreset("planked", "Planked", ("wood_planks",) * 5),
+    PentagonPreset("shingled", "Shingled", ("shingles",) * 5),
+    PentagonPreset("skylight", "Skylight + solid",
+                   ("glass", "wood_sheet", "wood_sheet", "wood_sheet",
+                    "wood_sheet")),
+    PentagonPreset("vented", "Vent pair",
+                   ("vent", "polycarbonate", "vent", "polycarbonate",
+                    "polycarbonate")),
+    PentagonPreset("alternating", "Alternating glass and solid",
+                   ("glass", "wood_sheet", "glass", "wood_sheet", "glass")),
+    PentagonPreset("entry", "Entry pentagon",
+                   ("door", "wood_sheet", "wood_sheet", "polycarbonate",
+                    "polycarbonate")),
+    PentagonPreset("mirror_cluster", "Mirror cluster", ("mirror",) * 5),
+    PentagonPreset("collector", "Fresnel collector",
+                   ("fresnel", "mirror", "mirror", "mirror", "mirror")),
+    PentagonPreset("aircon", "Plant pentagon",
+                   ("ac_unit", "vent", "metal_sheet", "metal_sheet",
+                    "metal_sheet")),
+    PentagonPreset("insulated", "Insulated", ("sip",) * 5),
+    PentagonPreset("splitlog_solid", "Split-log solid",
+                   ("wood_planks",) * 5, strut="log_half"),
+    PentagonPreset("light_frame", "Light 2x2 frame",
+                   ("fabric",) * 5, strut="lumber_2x2"),
+)
+
+PRESET_BY_KEY = {preset.key: preset for preset in PENTAGON_PRESETS}
+
+
 def _waist_frame(ctx, hourglass: Hourglass):
     """A local frame at the waist: outward, along the hourglass, across it."""
     waist = ctx.points[hourglass.waist]

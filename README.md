@@ -447,6 +447,21 @@ Press `m` a second time for the **Panel Creator**: build one panel on a
 bench from any three struts plus a fill, look at it up close, then send
 it to the selected triangle or to the whole dome.
 
+Every choice opens a **dropdown**, laid out in as many columns as the
+window can take, rather than making you click through a list one item at
+a time.
+
+**Struts can be rolled about their own axis.** For anything that is not
+symmetrical this changes the build, not just the look: a quarter-round
+can show its curve to the inside, to the outside, or turn its right-angle
+corner where you want it, and a half-round can sit flat-face-out or
+flat-face-in. Rolling is stored in the strut key (`log_quarter/2`), so
+older presets that carry a bare key still mean "unrolled". Rolling a
+non-square section genuinely changes its footprint — a half-round is
+180 mm wide flat but 90 mm on edge — and the selftest asserts exactly
+that, along with checking that every roll of every profile still anchors
+to its seam line instead of drifting off it.
+
 Mixing sections is a geometry problem, not a paint job. Struts of
 different widths push their inner faces in by different amounts, so the
 opening left in the middle is *not* a scaled-down triangle. The inner
@@ -477,6 +492,13 @@ Both are found from the geometry, and the selftest asserts the counts
 and, for every hourglass, that its two triangles share exactly one
 vertex — two shared vertices would make them edge neighbours, which is a
 different thing entirely.
+
+Pentagons ship with **16 ready-made designs** — all glazed, glass cap,
+solar cap, solid, planked, shingled, skylight-plus-solid, vent pair,
+alternating glass and solid, entry pentagon with a door, mirror cluster,
+Fresnel collector, a plant pentagon with an AC unit, insulated,
+split-log solid, and a light 2x2 frame — so a whole five-triangle
+assembly drops in with one pick.
 
 Because an equilateral triangle has three corners, one triangle belongs
 to more than one hourglass. A joint therefore belongs to the **waist**,

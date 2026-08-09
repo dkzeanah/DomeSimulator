@@ -66,6 +66,29 @@ def _selftest() -> int:
     build_panel(op, tr, corners, mixed, "wood_planks", tint)
     assert op.v or tr.v, mixed
 
+    # Struts can be rolled about their own axis, which is how you choose
+    # whether a quarter-round shows its curve or its right angle to the
+    # inside. Every roll of every profile must still build, and rolling a
+    # non-square section must really change its footprint.
+    from .catalog import format_strut, oriented_profile, parse_strut
+    for profile_key in PROFILE_KEYS:
+        for spin in range(4):
+            for flip in (False, True):
+                spec = format_strut(profile_key, spin, flip)
+                assert parse_strut(spec) == (profile_key, spin, flip), spec
+                _p, section, width, depth = oriented_profile(spec)
+                assert width > 1e-4 and depth > 1e-4, spec
+                # Anchoring must survive the roll, or a rolled strut would
+                # drift off the seam line it belongs to.
+                assert min(x for x, _ in section) > -1e-9, spec
+                assert max(y for _, y in section) < 1e-9, spec
+                op, tr = Batch(), Batch()
+                build_panel(op, tr, corners, [spec] * 3, "glass", tint)
+                assert op.v or tr.v, spec
+    upright = oriented_profile("log_half/0")[2]
+    on_edge = oriented_profile("log_half/1")[2]
+    assert abs(upright - on_edge) > 0.01, (upright, on_edge)
+
     # With mismatched widths, each inner corner must still sit exactly its
     # own edge's width in from that edge -- the whole reason the outline is
     # built by intersecting offset lines instead of scaling the triangle.
@@ -86,6 +109,14 @@ def _selftest() -> int:
     # counts and shapes are asserted rather than assumed.
     from .groups import (JOINT_KEYS, emit_waist, hourglasses, pentagons)
     from .build import DomeContext
+
+    from .groups import PENTAGON_PRESETS
+    for preset in PENTAGON_PRESETS:
+        assert len(preset.fills) == 5, preset
+        for key in preset.fills:
+            assert key in FILL_KEYS, (preset.key, key)
+        if preset.strut:
+            assert preset.strut in PROFILE_KEYS, preset
 
     pents, hours = pentagons(), hourglasses()
     assert len(pents) == 6, pents
@@ -122,8 +153,8 @@ def _selftest() -> int:
           f"{stats['panels']} panels, {stats['hubs']} hubs; "
           f"{len(PROFILE_KEYS)}x{len(FILL_KEYS)}="
           f"{len(PROFILE_KEYS) * len(FILL_KEYS)} strut/fill combos; "
-          f"{len(pents)} pentagons + {len(hours)} hourglasses, "
-          f"{len(JOINT_KEYS)} waist joints; "
+          f"{len(pents)} pentagons ({len(PENTAGON_PRESETS)} presets) + "
+          f"{len(hours)} hourglasses, {len(JOINT_KEYS)} waist joints; "
           f"jigs verified against the 3D faces, "
           f"{'+'.join(str(s.triangles_needed) for s in specs)} triangles)")
     return 0

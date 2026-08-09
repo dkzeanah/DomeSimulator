@@ -248,6 +248,82 @@ FILL_BY_KEY = {f.key: f for f in PANEL_FILLS}
 FILL_KEYS = tuple(f.key for f in PANEL_FILLS)
 
 
+# ---------------------------------------------------------------------------
+# Orientation: which way round the stick is turned
+# ---------------------------------------------------------------------------
+#
+# A rectangle looks the same whichever way you roll it, but most of these
+# sections do not. A quarter-round can face its curve into the triangle,
+# out toward the seam, up to the weather, or down into the room -- and the
+# right-angle corner lands somewhere different each time. A half-round can
+# present its flat face out or in. So every strut carries a quarter-turn
+# count and an optional mirror, written into the key as "log_quarter/2" or
+# "log_quarter/2f". A bare key means turn 0, unmirrored, which is what
+# every older preset says.
+
+SPIN_LABELS = ("0 deg", "90 deg", "180 deg", "270 deg")
+
+
+def parse_strut(spec: str) -> tuple[str, int, bool]:
+    """Split ``"log_quarter/2f"`` into (key, quarter turns, mirrored)."""
+    key, _, orient = str(spec).partition("/")
+    if not orient:
+        return key, 0, False
+    flip = orient.endswith("f")
+    digits = orient[:-1] if flip else orient
+    spin = int(digits) % 4 if digits.isdigit() else 0
+    return key, spin, flip
+
+
+def format_strut(key: str, spin: int = 0, flip: bool = False) -> str:
+    spin %= 4
+    if spin == 0 and not flip:
+        return key
+    return f"{key}/{spin}{'f' if flip else ''}"
+
+
+def orient_section(section: Section, spin: int = 0,
+                   flip: bool = False) -> Section:
+    """Roll a cross-section about the strut's own long axis.
+
+    Rotation happens about the section's own centre, then the result is
+    re-anchored so it still starts at the seam line (min x = 0) and hangs
+    inward from the face (max y = 0). Without that re-anchoring a rolled
+    strut would drift off its edge.
+    """
+    xs = [p[0] for p in section]
+    ys = [p[1] for p in section]
+    cx = (min(xs) + max(xs)) * 0.5
+    cy = (min(ys) + max(ys)) * 0.5
+    moved = []
+    for x, y in section:
+        dx, dy = x - cx, y - cy
+        for _ in range(spin % 4):
+            dx, dy = -dy, dx
+        if flip:
+            dx = -dx
+        moved.append((dx, dy))
+    min_x = min(p[0] for p in moved)
+    max_y = max(p[1] for p in moved)
+    return tuple((x - min_x, y - max_y) for x, y in moved)
+
+
+def oriented_profile(spec: str) -> tuple[StrutProfile, Section, float, float]:
+    """The profile a strut spec actually resolves to, already rolled.
+
+    Returns (base profile, rolled section, width, depth) -- width and
+    depth are measured off the *rolled* section, because turning a
+    half-round on its side genuinely changes how much of the triangle it
+    eats.
+    """
+    key, spin, flip = parse_strut(spec)
+    profile = PROFILE_BY_KEY.get(key, PROFILE_BY_KEY["lumber_2x4"])
+    section = orient_section(profile.section, spin, flip)
+    xs = [p[0] for p in section]
+    ys = [p[1] for p in section]
+    return profile, section, max(xs) - min(xs), max(ys) - min(ys)
+
+
 def profiles_by_family() -> dict[str, tuple[StrutProfile, ...]]:
     families: dict[str, list[StrutProfile]] = {}
     for profile in STRUT_PROFILES:
