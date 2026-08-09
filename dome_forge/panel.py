@@ -319,6 +319,61 @@ def emit_fill(batch: Batch, fill: PanelFill, polygon2d, origin, e1, e2,
                    tint_of("charcoal", min(1.0, alpha_scale)))
 
 
+def panel_geometry(corners, strut_keys, seam: float = 0.004):
+    """Shared setup: the plane frame, the outer outline, and the inner
+    opening once each edge has taken its own strut width off."""
+    origin, e1, e2, normal = plane_basis(*corners)
+    points2d = np.array([to_2d(p, origin, e1, e2) for p in corners])
+    if seam > 0.0:
+        points2d = inner_outline(points2d, [seam] * 3)
+    resolved = [oriented_profile(spec) for spec in strut_keys]
+    inner2d = inner_outline(points2d, [item[2] for item in resolved])
+    return origin, e1, e2, normal, points2d, inner2d, resolved
+
+
+def panel_strut_quads(corners, strut_keys, seam: float = 0.004):
+    """The three struts as flat 3D quads -- what a click has to hit for a
+    single strut to be selectable the way a dome triangle is."""
+    origin, e1, e2, normal, points2d, inner2d, _ = panel_geometry(
+        corners, strut_keys, seam)
+    quads = []
+    for i in range(3):
+        j = (i + 1) % 3
+        quads.append((
+            to_3d(points2d[i], origin, e1, e2),
+            to_3d(points2d[j], origin, e1, e2),
+            to_3d(inner2d[j], origin, e1, e2),
+            to_3d(inner2d[i], origin, e1, e2),
+        ))
+    return quads
+
+
+def build_panel_selective(op: Batch, tr: Batch, corners, strut_keys, fill_key,
+                          tint_of, *, seam: float = 0.004, alpha: float = 1.0,
+                          highlight_edges=()) -> None:
+    """A panel whose individual struts can be lit, so the bench behaves
+    like the dome: click a component, see it pronounced, act on it."""
+    lit = set(highlight_edges or ())
+    origin, e1, e2, normal, points2d, inner2d, resolved = panel_geometry(
+        corners, strut_keys, seam)
+    target = tr if alpha < 0.999 else op
+    for i, (profile, section, width, _depth) in enumerate(resolved):
+        j = (i + 1) % 3
+        color = tint_of("amber" if i in lit else profile.tint, alpha)
+        emit_strut(
+            target, section, width,
+            to_3d(points2d[i], origin, e1, e2),
+            to_3d(points2d[j], origin, e1, e2),
+            to_3d(inner2d[i], origin, e1, e2),
+            to_3d(inner2d[j], origin, e1, e2),
+            normal, color,
+        )
+    fill = FILL_BY_KEY.get(fill_key, FILL_BY_KEY["open"])
+    if fill.style != "none":
+        emit_fill(tr if fill.alpha < 0.999 else op, fill, inner2d,
+                  origin, e1, e2, normal, tint_of, alpha)
+
+
 def build_panel(op: Batch, tr: Batch, corners, strut_keys, fill_key,
                 tint_of, *, seam: float = 0.004, alpha: float = 1.0,
                 strut_tint: str | None = None, highlight: bool = False):

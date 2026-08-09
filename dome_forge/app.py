@@ -136,6 +136,26 @@ def look_at(eye, target, up_hint=(0.0, 0.0, 1.0)):
     return m
 
 
+def _ray_triangle(origin, direction, a, b, c):
+    """Moller-Trumbore. Returns the distance along the ray, or None."""
+    edge1, edge2 = np.subtract(b, a), np.subtract(c, a)
+    pvec = np.cross(direction, edge2)
+    det = float(np.dot(edge1, pvec))
+    if abs(det) < 1e-12:
+        return None
+    inv = 1.0 / det
+    tvec = np.subtract(origin, a)
+    u = float(np.dot(tvec, pvec)) * inv
+    if u < 0.0 or u > 1.0:
+        return None
+    qvec = np.cross(tvec, edge1)
+    v = float(np.dot(direction, qvec)) * inv
+    if v < 0.0 or u + v > 1.0:
+        return None
+    distance = float(np.dot(edge2, qvec)) * inv
+    return distance if distance > 1e-6 else None
+
+
 class GpuMesh:
     def __init__(self, ctx, program):
         self.ctx = ctx
@@ -241,6 +261,8 @@ class DomeForgeApp:
         self.bench_struts = ["log_half", "lumber_2x2", "log_quarter"]
         self.bench_fill = "polycarbonate"
         self.bench_edge = 0
+        # Which of the bench panel's three struts are selected.
+        self.bench_selection: set[int] = set()
         self.group_kind = "pentagon"   # or "hourglass"
         self.group_index = 0
         self.scroll_right = 0
@@ -291,18 +313,44 @@ class DomeForgeApp:
                        tint("charcoal", 1.0))
         return opaque, translucent
 
-    def build_panel_scene(self):
-        """One panel alone on a bench, at a size taken from the dome's own
-        isosceles face so what you design is what you get."""
-        opaque, translucent = Batch(), Batch()
+    def bench_corners(self):
+        """The bench panel's three corners, taken from the dome's own
+        isosceles face so what you design on the bench is what you get."""
         spec = jig_specs(self.stack.settings.radius)[1]
         pts = np.array(spec.flat, dtype=np.float64)
         pts = pts - pts.mean(axis=0)
-        corners = [np.array([p[0], p[1], 0.0]) for p in pts]
-        build_panel(opaque, translucent, corners, self.bench_struts,
-                    self.bench_fill, tint, seam=0.004)
+        return [np.array([p[0], p[1], 0.0]) for p in pts]
+
+    def build_panel_scene(self):
+        """One panel alone on a bench, with its individual struts
+        selectable the same way the dome's triangles are."""
+        from .panel import build_panel_selective
+
+        opaque, translucent = Batch(), Batch()
+        corners = self.bench_corners()
+        build_panel_selective(
+            opaque, translucent, corners, self.bench_struts,
+            self.bench_fill, tint, seam=0.004,
+            highlight_edges=self.bench_selection,
+        )
         opaque.box((0.0, 0.0, -0.36), (5.0, 5.0, 0.16), tint("charcoal", 1.0))
         return opaque, translucent
+
+    def pick_bench_edge(self, pos, width: int, height: int) -> int:
+        """Which of the bench panel's three struts is under the cursor."""
+        from .panel import panel_strut_quads
+
+        origin, direction = self.ray_from(pos, width, height)
+        quads = panel_strut_quads(self.bench_corners(), self.bench_struts,
+                                  seam=0.004)
+        best, best_t = -1, float("inf")
+        for index, quad in enumerate(quads):
+            for tri in ((quad[0], quad[1], quad[2]),
+                        (quad[0], quad[2], quad[3])):
+                hit = _ray_triangle(origin, direction, *tri)
+                if hit is not None and hit < best_t:
+                    best_t, best = hit, index
+        return best
 
     @property
     def selection(self) -> set:
@@ -318,6 +366,48 @@ class DomeForgeApp:
     @primary_face.setter
     def primary_face(self, value: int) -> None:
         self.stack.selected_faces = {value} if value is not None and value >= 0 else set()
+
+    def pick_component(self, pos, width: int, height: int,
+                       additive: bool) -> None:
+        """Click a component in whichever editor is open.
+
+        Every mode that shows parts lets you select them the same way:
+        the dome picks triangles, the Panel Creator picks individual
+        struts, and the group editors pick triangles but only from the
+        group you are currently working on -- so a stray click cannot
+        drag an unrelated face into the selection.
+        """
+        if self.mode == "panel":
+            hit = self.pick_bench_edge(pos, width, height)
+            if hit < 0:
+                if not additive:
+                    self.bench_selection = set()
+                self.notify("No strut under the cursor.")
+                return
+            if additive:
+                self.bench_selection ^= {hit}
+            else:
+                self.bench_selection = {hit}
+            if self.bench_selection:
+                self.bench_edge = min(self.bench_selection)
+            self.notify(f"{len(self.bench_selection)} strut(s) selected.")
+            return
+
+        hit = self.pick_at(pos, width, height)
+        if self.mode == "groups" and hit >= 0:
+            if hit not in self.group_faces():
+                self.notify("That triangle is not in this group -- step to "
+                            "it, or work in DOME mode.")
+                return
+        self.toggle_face(hit, additive)
+        count = len(self.selection)
+        if hit < 0:
+            self.notify("No triangle under the cursor.")
+        elif count > 1:
+            self.notify(f"{count} triangles selected "
+                        f"(ctrl-click to add or remove).")
+        else:
+            self.notify(f"Selected triangle #{hit}. Ctrl-click to add more.")
 
     def toggle_face(self, index: int, additive: bool) -> None:
         """Click selects; ctrl-click adds to or removes from the set."""
@@ -606,23 +696,36 @@ class DomeForgeApp:
         different thing to pick. Keeping it here also drops the strut list
         back to 18 honest profiles instead of 72 near-duplicates.
         """
-        count = len(self.selection)
-        if not count or self.mode not in ("dome", "groups"):
-            return
-        buttons = [
-            ("Fill...", "sel_fill"),
-            ("Strut...", "sel_strut"),
-            ("Roll 90", "sel_roll"),
-            ("Mirror", "sel_flip"),
-            ("Pop out +", "sel_explode_up"),
-            ("Pop out -", "sel_explode_down"),
-            ("Clear", "sel_clear"),
-        ]
+        if self.mode == "panel":
+            count = len(self.bench_selection)
+            if not count:
+                return
+            buttons = [
+                ("Strut...", "sel_strut"),
+                ("Roll 90", "sel_roll"),
+                ("Mirror", "sel_flip"),
+                ("Clear", "sel_clear"),
+            ]
+            label = (f"{count} struts selected" if count > 1
+                     else f"Edge {min(self.bench_selection) + 1}")
+        else:
+            count = len(self.selection)
+            if not count or self.mode not in ("dome", "groups"):
+                return
+            buttons = [
+                ("Fill...", "sel_fill"),
+                ("Strut...", "sel_strut"),
+                ("Roll 90", "sel_roll"),
+                ("Mirror", "sel_flip"),
+                ("Pop out +", "sel_explode_up"),
+                ("Pop out -", "sel_explode_down"),
+                ("Clear", "sel_clear"),
+            ]
+            label = (f"{count} selected" if count > 1
+                     else f"Triangle #{self.primary_face}")
         pad, gap, h = 12, 6, 26
-        widths = [max(74, self.font_small.size(label)[0] + 22)
-                  for label, _ in buttons]
-        label = (f"{count} selected" if count > 1
-                 else f"Triangle #{self.primary_face}")
+        widths = [max(74, self.font_small.size(text)[0] + 22)
+                  for text, _ in buttons]
         label_w = self.font_small.size(label)[0] + 16
         total = pad * 2 + label_w + sum(widths) + gap * len(buttons)
         left = max(PANEL_W + 12, (width - total) // 2)
@@ -1001,8 +1104,9 @@ class DomeForgeApp:
 
     # -- interaction -----------------------------------------------------
 
-    def pick_at(self, pos, width: int, height: int) -> int:
-        """Turn a click in the 3D area into a triangle index."""
+    def ray_from(self, pos, width: int, height: int):
+        """The world-space ray under the cursor, shared by every picker so
+        they can never disagree about where the mouse is pointing."""
         eye, target = self.camera()
         forward = target - eye
         forward = forward / max(1e-9, float(np.linalg.norm(forward)))
@@ -1015,7 +1119,11 @@ class DomeForgeApp:
         ndc_x = (2.0 * pos[0] / max(1, width)) - 1.0
         ndc_y = 1.0 - (2.0 * pos[1] / max(1, height))
         direction = forward + right * (ndc_x * half * aspect) + up * (ndc_y * half)
-        direction = direction / max(1e-9, float(np.linalg.norm(direction)))
+        return eye, direction / max(1e-9, float(np.linalg.norm(direction)))
+
+    def pick_at(self, pos, width: int, height: int) -> int:
+        """Turn a click in the 3D area into a triangle index."""
+        eye, direction = self.ray_from(pos, width, height)
         return pick_face(self.stack, eye, direction)
 
 
@@ -1083,7 +1191,10 @@ class DomeForgeApp:
             self.explode_amount = max(0.0, self.explode_amount - 0.35)
             self.notify(f"Pop-out {self.explode_amount:.2f} m.")
         elif action == "sel_clear":
-            self.stack.selected_faces = set()
+            if self.mode == "panel":
+                self.bench_selection = set()
+            else:
+                self.stack.selected_faces = set()
         elif action == "open_add":
             self.open_picker("ADD A LAYER",
                              [(k.key, k.label) for k in LAYER_KINDS],
@@ -1165,6 +1276,14 @@ class DomeForgeApp:
         drift out of step with the profile it belongs to.
         """
         from .catalog import format_strut, parse_strut
+        if self.mode == "panel":
+            for edge in sorted(self.bench_selection):
+                key, spin, flip = parse_strut(self.bench_struts[edge])
+                self.bench_struts[edge] = format_strut(
+                    key, spin + turn, (not flip) if mirror else flip)
+            what = "Mirrored" if mirror else "Rolled 90 deg"
+            self.notify(f"{what}: {len(self.bench_selection)} strut(s).")
+            return
         assignments = self.stack.assignments
         for face in sorted(self.selection):
             classes = face_edge_classes(self.stack, face)
@@ -1201,6 +1320,11 @@ class DomeForgeApp:
         if action == "sel_fill":
             for face in self.selection:
                 assignments.face_fill[str(face)] = key
+        elif action == "sel_strut" and self.mode == "panel":
+            from .catalog import format_strut, parse_strut
+            for edge in sorted(self.bench_selection):
+                _k, spin, flip = parse_strut(self.bench_struts[edge])
+                self.bench_struts[edge] = format_strut(key, spin, flip)
         elif action == "sel_strut":
             from .catalog import format_strut, parse_strut
             for face in sorted(self.selection):
@@ -1253,7 +1377,13 @@ class DomeForgeApp:
         assignments = stack.assignments
         fills = [(k, FILL_BY_KEY[k].label) for k in FILL_KEYS]
         struts = self._strut_options()
-        if action == "sel_fill" and self.selection:
+        if action == "sel_strut" and self.mode == "panel":
+            from .catalog import parse_strut
+            current = self.bench_struts[min(self.bench_selection)] \
+                if self.bench_selection else self.bench_struts[0]
+            self.open_picker("STRUT FOR THE SELECTED EDGE(S)", struts,
+                             parse_strut(current)[0], action)
+        elif action == "sel_fill" and self.selection:
             self.open_picker("FILL FOR THE SELECTION", fills,
                              assignments.fill_for(self.primary_face), action)
         elif action == "sel_strut" and self.selection:
@@ -1507,23 +1637,12 @@ class DomeForgeApp:
                     # an orbit -- so selecting a triangle never fights with
                     # rotating the view.
                     if (event.button == 1 and self.orbiting
-                            and self.mode == "dome"
                             and self.press_at is not None
                             and abs(event.pos[0] - self.press_at[0]) < 4
                             and abs(event.pos[1] - self.press_at[1]) < 4):
-                        hit = self.pick_at(event.pos, width, height)
                         mods = pg.key.get_mods()
                         additive = bool(mods & (pg.KMOD_CTRL | pg.KMOD_SHIFT))
-                        self.toggle_face(hit, additive)
-                        count = len(self.selection)
-                        if hit < 0:
-                            self.notify("No triangle under the cursor.")
-                        elif count > 1:
-                            self.notify(f"{count} triangles selected "
-                                        f"(ctrl-click to add or remove).")
-                        else:
-                            self.notify(f"Selected triangle #{hit}. "
-                                        f"Ctrl-click to add more.")
+                        self.pick_component(event.pos, width, height, additive)
                     self.press_at = None
                     self.dragging = None
                     self.orbiting = False

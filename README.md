@@ -451,7 +451,15 @@ Every choice opens a **dropdown**, laid out in as many columns as the
 window can take, rather than making you click through a list one item at
 a time.
 
-**Selecting.** Click a triangle to select it; **ctrl-click** (or
+**Selecting works the same way in every editor.** In the dome you click
+triangles; in the **Panel Creator** you click individual **struts** on
+the bench; in the **group editors** you click triangles too, but only
+ones belonging to the group you are working on, so a stray click cannot
+drag an unrelated face in. That means a pentagon is not all-or-nothing —
+select one, two, or all five of its triangles and change just those. The
+floating toolbar follows the selection in every case.
+
+Click a component to select it; **ctrl-click** (or
 shift-click) adds and removes others. Selected pieces light up and
 **pop out** of the shell — they lift straight off along their own
 normal so you can orbit right around a piece and see it whole, without
