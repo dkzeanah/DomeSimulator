@@ -540,9 +540,13 @@ of fabric on purpose. A whole pentagon on a 25 x 10 ft sheet does **not**
 fit (it develops to about 10.5 x 10.6 ft), so it also ships as a
 **3-piece + 2-piece split**: two seamless strips that partition the
 pentagon exactly and nest side by side on one sheet. Hexagons split 4+2
-the same way. Select a piece to see it fully dimensioned; rotate it (R),
-remove it (Del), step sheets with the arrows, and save each sheet as an
-image to print.
+the same way. Select a piece to see it fully dimensioned, then **drag the
+gold knob** that appears beside it to rotate it to any angle so its edges
+line up with a neighbour's -- hold **Shift** to snap in 15° steps, or tap
+**R** for a quarter-turn. Both spin the piece about its own centre so it
+turns in place instead of jumping. The selected piece's live angle is
+shown in the side panel. Remove a piece with `Del`, step sheets with the
+arrows, and save each sheet as an image to print.
 
 Every length in every pattern is developed from `two_v_demo`'s own
 geometry and checked in the selftest to equal the true 3D edge to

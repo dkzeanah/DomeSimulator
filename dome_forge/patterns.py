@@ -554,38 +554,33 @@ def build_pattern(key: str, long_strut_in: float, seam_in: float) -> Pattern:
 
 @dataclass
 class Placement:
-    """One pattern piece laid on the cover material at a position and
-    rotation, on a given sheet."""
+    """One pattern piece laid on the cover material at a position and a
+    free rotation angle, on a given sheet."""
 
     key: str
     x: float = 0.0          # inches, top-left of the rotated bbox
     y: float = 0.0
-    rot: int = 0            # 0 / 90 / 180 / 270
+    rot: float = 0.0        # degrees, any angle
     sheet: int = 0
 
     def to_json(self) -> dict:
         return {"key": self.key, "x": round(self.x, 2), "y": round(self.y, 2),
-                "rot": self.rot, "sheet": self.sheet}
+                "rot": round(float(self.rot), 2), "sheet": self.sheet}
 
     @staticmethod
     def from_json(data: dict) -> "Placement":
         return Placement(data["key"], float(data.get("x", 0)),
-                         float(data.get("y", 0)), int(data.get("rot", 0)),
+                         float(data.get("y", 0)), float(data.get("rot", 0)),
                          int(data.get("sheet", 0)))
 
 
-def _rotate_loop(loop, rot: int):
-    out = []
-    for x, y in loop:
-        if rot == 90:
-            out.append((-y, x))
-        elif rot == 180:
-            out.append((-x, -y))
-        elif rot == 270:
-            out.append((y, -x))
-        else:
-            out.append((x, y))
-    return out
+def _rotate_loop(loop, deg: float):
+    """Rotate a loop about the origin by any angle in degrees."""
+    if not deg:
+        return [(x, y) for x, y in loop]
+    r = math.radians(deg)
+    c, s = math.cos(r), math.sin(r)
+    return [(x * c - y * s, x * s + y * c) for x, y in loop]
 
 
 def placed_geometry(placement: Placement, long_strut_in: float, seam_in: float):
@@ -618,11 +613,45 @@ def placed_geometry(placement: Placement, long_strut_in: float, seam_in: float):
     return pattern, outline, net, folds, dart
 
 
-def piece_size(key: str, long_strut_in: float, seam_in: float, rot: int):
+def piece_size(key: str, long_strut_in: float, seam_in: float, rot: float):
     pattern = build_pattern(key, long_strut_in, seam_in)
     r = _rotate_loop(pattern.outline, rot)
     x0, y0, x1, y1 = bounds(r)
     return x1 - x0, y1 - y0
+
+
+def placed_centroid(placement: Placement, long_strut_in: float,
+                    seam_in: float):
+    """The centroid of a placement's net edge, in sheet coordinates."""
+    _p, _outline, net, *_ = placed_geometry(placement, long_strut_in, seam_in)
+    return (sum(p[0] for p in net) / len(net),
+            sum(p[1] for p in net) / len(net))
+
+
+def set_rotation_about_centroid(placement: Placement, new_rot: float,
+                                long_strut_in: float, seam_in: float) -> None:
+    """Spin a placed piece to ``new_rot`` degrees while keeping its centroid
+    fixed on the sheet -- what a rotate handle should feel like, rather than
+    the piece jumping as its bounding box changes."""
+    target = placed_centroid(placement, long_strut_in, seam_in)
+    placement.rot = new_rot
+    now = placed_centroid(placement, long_strut_in, seam_in)
+    placement.x += target[0] - now[0]
+    placement.y += target[1] - now[1]
+
+
+def rotate_handle(placement: Placement, long_strut_in: float, seam_in: float):
+    """Where the rotate grip sits: the piece's centroid, and a knob point
+    held a fixed distance beyond the piece's farthest corner, in the
+    direction the piece currently points -- so the grip rides just outside
+    the piece at every angle. Returns (centroid, knob, radius) in inches."""
+    _p, _outline, net, *_ = placed_geometry(placement, long_strut_in, seam_in)
+    cx = sum(p[0] for p in net) / len(net)
+    cy = sum(p[1] for p in net) / len(net)
+    reach = max(math.dist((cx, cy), v) for v in net) + 9.0
+    ang = math.radians(placement.rot - 90.0)   # "up" in the piece's frame
+    knob = (cx + reach * math.cos(ang), cy + reach * math.sin(ang))
+    return (cx, cy), knob, reach
 
 
 def point_in_loop(pt, loop) -> bool:

@@ -234,6 +234,23 @@ def _selftest() -> int:
     assert _pat.point_in_loop((_cx, _cy), _outline)
     assert not _pat.point_in_loop((_cx + 1e6, _cy), _outline)
 
+    # The rotate handle: spinning a placed piece to any angle must keep its
+    # centroid pinned to the sheet (so the grip feels like a turntable, not
+    # a jump), and the knob must ride outside the piece's farthest corner
+    # at every angle so it is always grabbable.
+    import math as _math
+    _spin = _pat.Placement("triple", 40.0, 25.0, 0.0, 0)
+    _c0 = _pat.placed_centroid(_spin, 72.0, 2.0)
+    for _deg in (0.0, 15.0, 37.5, 90.0, 123.4, 260.0, -47.0):
+        _pat.set_rotation_about_centroid(_spin, _deg, 72.0, 2.0)
+        _c1 = _pat.placed_centroid(_spin, 72.0, 2.0)
+        assert _math.dist(_c0, _c1) < 1e-6, (_deg, _c0, _c1)
+        _center, _knob, _reach = _pat.rotate_handle(_spin, 72.0, 2.0)
+        _, _out, _net, *_ = _pat.placed_geometry(_spin, 72.0, 2.0)
+        _far = max(_math.dist(_center, v) for v in _net)
+        assert _reach > _far, (_deg, _reach, _far)
+        assert _math.dist(_center, _knob) > _far, (_deg, _knob)
+
     from .groups import PENTAGON_PRESETS
     for preset in PENTAGON_PRESETS:
         assert len(preset.fills) == 5, preset

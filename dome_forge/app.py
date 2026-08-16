@@ -293,6 +293,7 @@ class DomeForgeApp:
         self.sheet_view = 0
         self._canvas = None            # (ox, oy, scale) for mouse mapping
         self._drag_piece = None
+        self._drag_rotate = None       # (index, rot0_deg, grab_angle_rad)
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
@@ -903,17 +904,23 @@ class DomeForgeApp:
                 y += 15
             pw, ph = pat.piece_size(piece.key, self.long_strut_in,
                                     self.seam_in, piece.rot)
+            rows.append(("mono", (x, y), f"{pw:.1f} x {ph:.1f} in"))
+            y += 16
             rows.append(("mono", (x, y),
-                         f"{pw:.1f} x {ph:.1f} in  (rot {piece.rot})"))
+                         f"angle {piece.rot % 360:.1f} deg"))
             y += 18
             r_rect = (x, y, half, 22)
             d_rect = (x + half + 6, y, half, 22)
-            rows.append(("button", r_rect, "Rotate (R)"))
+            rows.append(("button", r_rect, "Turn 90 (R)"))
             rows.append(("button", d_rect, "Remove (Del)"))
             regions.append((r_rect, "piece_rotate", None))
             regions.append((d_rect, "piece_remove", None))
             y += 26
-            rows.append(("small", (x, y), "Drag it on the sheet to move."))
+            rows.append(("small", (x, y), "Drag the gold knob to rotate to"))
+            y += 15
+            rows.append(("small", (x, y), "any angle; hold Shift to snap 15."))
+            y += 15
+            rows.append(("small", (x, y), "Drag the piece body to move it."))
             y += 20
         else:
             rows.append(("small", (x, y),
@@ -1390,15 +1397,35 @@ class DomeForgeApp:
 
         ay += 26
         aw, ah = width - ax - 30, height - ay - 40
-        # Scale so the sheet plus any overhang fits the drawing area.
-        maxx, maxy = sheet_w, sheet_h
-        for p in on_sheet:
-            pw, ph = pat.piece_size(p.key, self.long_strut_in, self.seam_in,
-                                    p.rot)
-            maxx = max(maxx, p.x + pw)
-            maxy = max(maxy, p.y + ph)
-        scale = min(aw / (maxx + 12), ah / (maxy + 12))
-        ox, oy = ax, ay
+        # While a rotate-drag is in progress, freeze the view transform so
+        # the knob does not slide out from under the cursor as the piece --
+        # and its handle -- swing around.
+        if self._drag_rotate is not None and self._canvas is not None:
+            ox, oy, scale = self._canvas
+        else:
+            # Scale so the sheet, any overhang, and the selected piece's
+            # rotate handle all fit the drawing area. The handle can reach
+            # past the top or left edge, so negative extents are tracked and
+            # the origin is shifted to keep it on-canvas.
+            minx = miny = 0.0
+            maxx, maxy = sheet_w, sheet_h
+            for p in on_sheet:
+                pw, ph = pat.piece_size(p.key, self.long_strut_in,
+                                        self.seam_in, p.rot)
+                maxx = max(maxx, p.x + pw)
+                maxy = max(maxy, p.y + ph)
+            if 0 <= self.piece_sel < len(self.pieces) and \
+                    self.pieces[self.piece_sel].sheet == self.sheet_view:
+                _c, knob, _r = pat.rotate_handle(
+                    self.pieces[self.piece_sel], self.long_strut_in,
+                    self.seam_in)
+                minx = min(minx, knob[0] - 8)
+                miny = min(miny, knob[1] - 12)
+                maxx = max(maxx, knob[0] + 60)   # room for the angle label
+                maxy = max(maxy, knob[1] + 12)
+            scale = min(aw / (maxx - minx + 12), ah / (maxy - miny + 12))
+            ox = ax - minx * scale
+            oy = ay - miny * scale
         self._canvas = (ox, oy, scale)
 
         def to_px(pt):
@@ -1473,6 +1500,17 @@ class DomeForgeApp:
                 surface.blit(self.font_small.render(
                     f"dart {pattern.dart_angle:.1f} deg -- sew/lap closed",
                     True, (255, 150, 150)), (cpx[0] + 8, cpx[1] + 10))
+            # The rotate handle: a spoke from the centre to a grab knob
+            # riding just outside the piece, and the live angle.
+            center, knob, _reach = pat.rotate_handle(
+                placement, self.long_strut_in, self.seam_in)
+            kpx = to_px(knob)
+            pg.draw.line(surface, (245, 185, 93), cpx, kpx, 1)
+            pg.draw.circle(surface, (18, 30, 44), kpx, 9)
+            pg.draw.circle(surface, (245, 205, 120), kpx, 9, 2)
+            arc = self.font_small.render(f"{placement.rot % 360:.1f} deg",
+                                         True, (245, 205, 120))
+            surface.blit(arc, (kpx[0] + 12, kpx[1] - 7))
 
     def _dashed(self, surface, a, b, color, dash: int = 9) -> None:
         pg = self.pygame
@@ -1828,9 +1866,13 @@ class DomeForgeApp:
         self.notify("Added a piece. Drag it, or Auto-arrange.")
 
     def _rotate_piece(self) -> None:
+        # Turn a quarter-turn about the piece's own centre, so it spins in
+        # place instead of jumping the way a bbox re-anchor would -- the
+        # same feel as dragging the rotate handle.
         if 0 <= self.piece_sel < len(self.pieces):
             p = self.pieces[self.piece_sel]
-            p.rot = (p.rot + 90) % 360
+            pat.set_rotation_about_centroid(p, (p.rot + 90) % 360,
+                                            self.long_strut_in, self.seam_in)
 
     def _remove_piece(self) -> None:
         if 0 <= self.piece_sel < len(self.pieces):
@@ -1844,11 +1886,24 @@ class DomeForgeApp:
         return ((pos[0] - ox) / scale, (pos[1] - oy) / scale)
 
     def _pattern_press(self, pos) -> None:
-        """Pick the top-most piece under the cursor on the current sheet,
-        and begin dragging it."""
+        """Grab the selected piece's rotate handle if the cursor is on it;
+        otherwise pick the top-most piece under the cursor and start
+        moving it."""
         pt = self._canvas_to_in(pos)
         if pt is None:
             return
+        # The rotate handle wins over selection, so grabbing it near the
+        # piece never accidentally re-picks or moves the piece.
+        if 0 <= self.piece_sel < len(self.pieces):
+            placement = self.pieces[self.piece_sel]
+            if placement.sheet == self.sheet_view:
+                center, knob, _r = pat.rotate_handle(
+                    placement, self.long_strut_in, self.seam_in)
+                _, _, scale = self._canvas
+                if math.dist(pt, knob) * scale <= 12:
+                    a0 = math.atan2(pt[1] - center[1], pt[0] - center[0])
+                    self._drag_rotate = (self.piece_sel, placement.rot, a0)
+                    return
         for index in reversed(range(len(self.pieces))):
             placement = self.pieces[index]
             if placement.sheet != self.sheet_view:
@@ -1864,7 +1919,23 @@ class DomeForgeApp:
 
     def _pattern_drag(self, pos) -> None:
         pt = self._canvas_to_in(pos)
-        if pt is None or self._drag_piece is None:
+        if pt is None:
+            return
+        if self._drag_rotate is not None:
+            index, rot0, a0 = self._drag_rotate
+            placement = self.pieces[index]
+            center = pat.placed_centroid(placement, self.long_strut_in,
+                                         self.seam_in)
+            a1 = math.atan2(pt[1] - center[1], pt[0] - center[0])
+            new_rot = rot0 + math.degrees(a1 - a0)
+            if self.pygame.key.get_mods() & self.pygame.KMOD_SHIFT:
+                new_rot = round(new_rot / 15.0) * 15.0   # snap to 15 deg
+            pat.set_rotation_about_centroid(placement, new_rot,
+                                            self.long_strut_in, self.seam_in)
+            self.notify(f"Rotated to {placement.rot % 360:.1f} deg "
+                        f"(hold Shift to snap 15 deg).")
+            return
+        if self._drag_piece is None:
             return
         index, dx, dy = self._drag_piece
         placement = self.pieces[index]
@@ -2302,6 +2373,7 @@ class DomeForgeApp:
                 elif event.type == pg.MOUSEBUTTONUP:
                     if event.button == 1:
                         self._drag_piece = None
+                        self._drag_rotate = None
                     # A click that did not turn into a drag is a pick, not
                     # an orbit -- so selecting a triangle never fights with
                     # rotating the view.
@@ -2318,7 +2390,8 @@ class DomeForgeApp:
                 elif event.type == pg.MOUSEMOTION:
                     if self.dragging is not None:
                         self.apply_slider(*self.dragging, event.pos[0])
-                    elif self._drag_piece is not None:
+                    elif (self._drag_piece is not None
+                          or self._drag_rotate is not None):
                         self._pattern_drag(event.pos)
                     elif self.orbiting:
                         self.yaw -= event.rel[0] * 0.35
