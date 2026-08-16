@@ -969,13 +969,17 @@ class DomeForgeApp:
             return
         options = picker["options"]
         row_h, col_w = 22, 250
-        usable = max(1, (height - 150) // row_h)
+        usable = max(1, (height - 96) // row_h)
         columns = max(1, min(4, math.ceil(len(options) / usable)))
         per_column = math.ceil(len(options) / columns)
         box_w = columns * col_w + 20
         box_h = min(len(options), per_column) * row_h + 62
-        ox = max(10, (width - box_w) // 2)
-        oy = max(10, (height - box_h) // 2)
+        # Anchor to the top-left, over the control column, rather than
+        # floating centred over the 3D view or the cover sheet -- so it
+        # reads as a dropdown and never hides behind whatever is drawn in
+        # the main area.
+        ox = 10
+        oy = 44
         rows.append(("panel_bg", (ox, oy, box_w, box_h), None))
         rows.append(("head", (ox + 12, oy + 10), picker["title"]))
         for index, (key, label) in enumerate(options):
@@ -1237,6 +1241,11 @@ class DomeForgeApp:
         self.scroll = max(0, min(self.scroll, max(0, left_h - height + 30)))
         self.scroll_right = max(0, min(self.scroll_right,
                                        max(0, right_h - height + 30)))
+        # The nesting canvas is drawn BEFORE the rows so that any dropdown
+        # or name box (which live in `rows`) composite on top of it rather
+        # than being hidden behind the sheet.
+        if self.mode == "patterns":
+            self._draw_pattern_sheet(surface, width, height)
         for kind, rect, payload in rows:
             if kind == "panel_bg":
                 box = pg.Surface((rect[2], rect[3]), pg.SRCALPHA)
@@ -1325,9 +1334,6 @@ class DomeForgeApp:
                         self.font_small.render(glyph, True, DIM),
                         (rect[0] + rect[2] - offset + 4, rect[1] + 2),
                     )
-
-        if self.mode == "patterns":
-            self._draw_pattern_sheet(surface, width, height)
 
         hint = self.font_small.render(self.message, True, DIM)
         surface.blit(hint, (PANEL_W + 16, height - 26))
