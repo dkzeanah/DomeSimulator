@@ -195,6 +195,29 @@ class DynMesh:
 
 PANEL_POSITIONS = ("right", "left", "bottom", "float")
 
+# How much writing appears over the picture. The narration is always
+# spoken and always written to the .srt sidecar; these levels only decide
+# what gets burned into the frames themselves, so a video can be handed to
+# someone who wants to add their own titles -- or who simply does not want
+# the words they are hearing also printed on screen.
+OVERLAY_LEVELS = {
+    "full": {"title": True, "caption": True, "panel": True,
+             "progress": True},
+    "no_captions": {"title": True, "caption": False, "panel": True,
+                    "progress": True},
+    "titles_only": {"title": True, "caption": False, "panel": False,
+                    "progress": True},
+    "clean": {"title": False, "caption": False, "panel": False,
+              "progress": False},
+}
+
+OVERLAY_HELP = {
+    "full": "title, spoken-line captions, info panel and progress bar",
+    "no_captions": "no spoken-line captions; keeps the title and info panel",
+    "titles_only": "title and progress bar only",
+    "clean": "nothing written on the picture at all -- just the 3-D scene",
+}
+
 
 class PresenterApp:
     def __init__(self, presentation: Presentation, headless=False,
@@ -276,6 +299,12 @@ class PresenterApp:
         self.panel_position_override = None
         self.mode_override = None
         self.output_dir = Path("presenter_output")
+        # How much writing is burned into the frame (see OVERLAY_LEVELS).
+        self.overlay_level = "full"
+        # Where the 3-D scene is drawn. None fills the window; the scene
+        # composer sets a rectangle so the picture sits in a panel with
+        # the timeline and library around it.
+        self.viewport = None
 
     # ---- helpers -------------------------------------------------------
 
@@ -299,11 +328,24 @@ class PresenterApp:
 
     # ---- frame construction -------------------------------------------
 
-    def _draw_scene_pass(self, fbo, mvp, eye, sky, width, height):
+    def overlay_flags(self) -> dict:
+        return OVERLAY_LEVELS.get(self.overlay_level, OVERLAY_LEVELS["full"])
+
+    def scene_rect(self):
+        """Pixel rectangle the 3-D scene draws into: the whole window
+        unless a viewport has been set."""
+        width, height = self.size
+        if self.viewport is None:
+            return (0, 0, width, height)
+        x, y, w, h = self.viewport
+        return (int(x), int(y), max(1, int(w)), max(1, int(h)))
+
+    def _draw_scene_pass(self, fbo, mvp, eye, sky, rect):
         mgl = self.moderngl
+        x, y, width, height = rect
         fbo.use()
-        self.ctx.viewport = (0, 0, width, height)
-        fbo.clear(*sky["clear"], 1.0)
+        self.ctx.viewport = (x, y, width, height)
+        fbo.clear(*sky["clear"], 1.0, viewport=(x, y, width, height))
         self.scene_prog["u_mvp"].write(np.ascontiguousarray(mvp.T).tobytes())
         self.scene_prog["u_camera"].value = tuple(map(float, eye))
         self.scene_prog["u_light"].value = sky["light"]
@@ -323,28 +365,40 @@ class PresenterApp:
         sky = SKIES.get(env.sky, SKIES["day"])
         self._frame_opaque, self._frame_transparent, targets = build_frame(
             env, list(scene.world), t, shot, prog)
+        # What the camera could be pointed at this frame. The scene
+        # composer offers these as the focus choices, so the list is
+        # always what the scene really contains.
+        self.last_targets = targets
         cam = shot_camera(shot, targets, prog, self.yaw_off, self.pitch_off,
                           self.dist_scale, self.mode_override)
         width, height = self.size
-        aspect = width / max(1, height)
+        rect = self.scene_rect()
+        aspect = rect[2] / max(1, rect[3])
+        if self.viewport is not None:
+            # Wipe the whole window first: the scene only repaints its own
+            # rectangle, and the editor chrome around it is drawn by the
+            # overlay on top.
+            self.screen_fbo.use()
+            self.ctx.viewport = (0, 0, width, height)
+            self.screen_fbo.clear(0.04, 0.06, 0.09, 1.0)
 
         if cam.mode <= 3:
             projection = perspective_matrix(cam.fov, aspect, 0.06, 320.0)
             fwd = (cam.target - cam.eye)
             view = look_matrix(cam.eye, fwd, np.array([0.0, 0.0, 1.0]))
             self._draw_scene_pass(self.screen_fbo, projection @ view,
-                                  cam.eye, sky, width, height)
+                                  cam.eye, sky, rect)
         else:
             face_proj = perspective_matrix(90.0, 1.0, 0.06, 320.0)
             for i, (fwd, up) in enumerate(cube_faces(cam)):
                 view = look_matrix(cam.eye, np.asarray(fwd, np.float64),
                                    np.asarray(up, np.float64))
                 self._draw_scene_pass(self.face_fbo[i], face_proj @ view,
-                                      cam.eye, sky, self.face_size,
-                                      self.face_size)
+                                      cam.eye, sky,
+                                      (0, 0, self.face_size, self.face_size))
             self.screen_fbo.use()
-            self.ctx.viewport = (0, 0, width, height)
-            self.screen_fbo.clear(0.01, 0.02, 0.04, 1.0)
+            self.ctx.viewport = rect
+            self.screen_fbo.clear(0.01, 0.02, 0.04, 1.0, viewport=rect)
             self.ctx.disable(self.moderngl.DEPTH_TEST)
             for i, tex in enumerate(self.face_tex):
                 tex.use(i)
@@ -353,6 +407,7 @@ class PresenterApp:
             self.pano_prog["u_aspect"].value = aspect
             self.pano_vao.render(mode=5)
 
+        self.ctx.viewport = (0, 0, width, height)
         overlay = self.draw_overlay(scene, shot, idx, prog, t)
         raw = self.pygame.image.tostring(overlay, "RGBA", True)
         self.overlay_tex.write(raw)
@@ -380,17 +435,20 @@ class PresenterApp:
         def px(v):
             return max(1, int(v * scale))
 
+        show = self.overlay_flags()
+
         # title strip
-        title_font = self.font(px(30), bold=True)
-        surface.blit(title_font.render(self.pres.title, True, white),
-                     (px(36), px(24)))
-        sub = f"{scene.title or scene.slug}  ·  shot {idx + 1}" \
-              f"/{len(self.pres.all_shots())}"
-        surface.blit(self.font(px(19)).render(sub, True, muted),
-                     (px(36), px(62)))
+        if show["title"]:
+            title_font = self.font(px(30), bold=True)
+            surface.blit(title_font.render(self.pres.title, True, white),
+                         (px(36), px(24)))
+            sub = f"{scene.title or scene.slug}  ·  shot {idx + 1}" \
+                  f"/{len(self.pres.all_shots())}"
+            surface.blit(self.font(px(19)).render(sub, True, muted),
+                         (px(36), px(62)))
 
         # lower-third caption
-        if shot.caption:
+        if shot.caption and show["caption"]:
             cap_font = self.font(px(26), bold=True)
             text = cap_font.render(shot.caption, True, white)
             bar = pygame.Surface((text.get_width() + px(44), px(52)),
@@ -401,18 +459,21 @@ class PresenterApp:
             surface.blit(bar, (px(36), height - px(120)))
 
         # progress ribbon
-        total = max(1e-6, self.pres.duration)
-        pygame.draw.rect(surface, (30, 44, 58),
-                         (0, height - px(6), width, px(6)))
-        pygame.draw.rect(surface, cyan,
-                         (0, height - px(6),
-                          int(width * (t % total) / total), px(6)))
+        if show["progress"]:
+            total = max(1e-6, self.pres.duration)
+            pygame.draw.rect(surface, (30, 44, 58),
+                             (0, height - px(6), width, px(6)))
+            pygame.draw.rect(surface, cyan,
+                             (0, height - px(6),
+                              int(width * (t % total) / total), px(6)))
 
         # the floatable second screen
         panel = shot.panel
         visible = panel.visible if panel else False
         if self.panel_override is not None:
             visible = self.panel_override and panel is not None
+        if not show["panel"]:
+            visible = False
         if panel and visible:
             self._draw_panel(surface, panel, scale)
         return surface
@@ -573,6 +634,12 @@ class PresenterApp:
                     # cycle: script default -> hidden -> forced on
                     cycle = {None: False, False: True, True: None}
                     self.panel_override = cycle[self.panel_override]
+                elif key == pygame.K_c:
+                    # cycle how much writing is burned into the picture
+                    levels = list(OVERLAY_LEVELS)
+                    nxt = levels[(levels.index(self.overlay_level) + 1)
+                                 % len(levels)]
+                    self.overlay_level = nxt
                 elif key == pygame.K_p:
                     current = self.panel_position_override or "right"
                     nxt = PANEL_POSITIONS[
@@ -657,8 +724,22 @@ class PresenterApp:
         starts = [self.pres.shot_start(i) for i in range(len(shots))]
         return segments, clips, speech, starts
 
-    def export(self, path: Path, fps=None, narration=True, ffmpeg=None):
+    def export(self, path: Path, fps=None, narration=True, ffmpeg=None,
+               overlay=None):
+        """Render the whole presentation to an MP4.
+
+        ``overlay`` picks how much writing is burned into the picture (see
+        :data:`OVERLAY_LEVELS`). Whatever is chosen, narration is still
+        spoken and still written next to the video as a .srt subtitle
+        file, so a caption-free video can still be subtitled later by
+        anyone who wants captions."""
         from two_v_demo.audio import resolve_executable
+        if overlay:
+            if overlay not in OVERLAY_LEVELS:
+                raise ValueError(
+                    f"unknown overlay level {overlay!r}; choose one of "
+                    f"{', '.join(OVERLAY_LEVELS)}")
+            self.overlay_level = overlay
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         ffmpeg_exe = resolve_executable("ffmpeg", ffmpeg)

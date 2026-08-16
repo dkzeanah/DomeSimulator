@@ -992,6 +992,114 @@ OBJECT_EMITTERS = {
     "triangle_vs_square": emit_triangle_vs_square,
 }
 
+_ALL_EMITTERS: dict | None = None
+
+# What else is on the stage this frame. The Dome Forge layers below are
+# allowed to read their siblings (drains sit at the low point of whatever
+# the panel layer is doing), which in the builder comes from the layer
+# stack; here it comes from the scene's own object list.
+_FRAME_OBJECTS: list = []
+
+
+def _forge_stack(layers, radius: float):
+    """A Dome Forge layer stack standing in for the builder's document.
+
+    The bridged emitters expect the builder's stack: its sibling layers,
+    its per-triangle assignments and its design library. A real (default)
+    stack is used rather than a stub so anything they read is the same
+    thing the builder would have handed them."""
+    from dome_forge.layers import LayerStack
+    stack = LayerStack(layers=list(layers))
+    stack.settings.radius = float(radius)
+    return stack
+
+
+def _forge_context(radius: float):
+    from dome_forge.build import DomeContext
+    key = round(float(radius), 6)
+    ctx = _FORGE_CONTEXTS.get(key)
+    if ctx is None:
+        ctx = DomeContext(key)
+        _FORGE_CONTEXTS[key] = ctx
+    return ctx
+
+
+_FORGE_CONTEXTS: dict = {}
+
+
+def _batch_span(batch: Batch, start: int):
+    """Centre and radius of whatever was appended to ``batch`` since
+    ``start`` -- so a bridged layer's focus framing is measured off the
+    geometry it really emitted, not guessed."""
+    if len(batch.v) <= start:
+        return None
+    pts = np.asarray(batch.v[start:], dtype=np.float64).reshape(-1, 10)[:, :3]
+    return pts
+
+
+def _forge_emitter(kind: str):
+    """Wrap one Dome Forge layer emitter in the stage-object contract."""
+
+    def emit(o: Batch, tr: Batch, p: dict, t: float, targets: dict) -> None:
+        from dome_forge import build as forge_build
+        from dome_forge.layers import Layer
+        radius = float(p.get("radius", 4.8))
+        params = {k: v for k, v in p.items() if k != "radius"}
+        layer = Layer(kind=kind, params=params)
+        ctx = _forge_context(radius)
+        siblings = []
+        for name, other in _FRAME_OBJECTS:
+            if isinstance(name, str) and name.startswith("forge:"):
+                other_kind = name.split(":", 1)[1]
+                try:
+                    siblings.append(Layer(
+                        kind=other_kind,
+                        params={k: v for k, v in dict(other).items()
+                                if k != "radius"}))
+                except KeyError:
+                    continue
+        if not any(s.kind == kind for s in siblings):
+            siblings.append(layer)
+        previous = forge_build._ACTIVE_STACK["stack"]
+        forge_build._ACTIVE_STACK["stack"] = _forge_stack(siblings, radius)
+        start_o, start_tr = len(o.v), len(tr.v)
+        try:
+            forge_build.EMITTERS[kind](o, tr, layer, ctx, t)
+        finally:
+            forge_build._ACTIVE_STACK["stack"] = previous
+        chunks = [c for c in (_batch_span(o, start_o), _batch_span(tr, start_tr))
+                  if c is not None]
+        if chunks:
+            pts = np.concatenate(chunks, axis=0)
+            centre = pts.mean(axis=0)
+            reach = float(np.max(np.linalg.norm(pts - centre, axis=1)))
+        else:
+            centre, reach = np.array([0.0, 0.0, radius * 0.45]), radius
+        targets[f"forge_{kind}"] = (centre, max(0.5, reach))
+
+    return emit
+
+
+def all_emitters() -> dict:
+    """Every object that can be placed on a stage.
+
+    Three sources, resolved on first use so the modules can refer to each
+    other freely whichever one is imported first: the star objects above,
+    the accessory and appliance catalogue, and every layer the Dome Forge
+    builder draws -- bridged in under a ``forge:`` prefix so a movie can
+    use the real modelled panels, veins and cistern rather than a second
+    copy of them."""
+    global _ALL_EMITTERS
+    if _ALL_EMITTERS is None:
+        from .accessories import ACCESSORY_EMITTERS
+        from dome_forge.build import EMITTERS as FORGE_EMITTERS
+        merged = dict(OBJECT_EMITTERS)
+        merged.update(ACCESSORY_EMITTERS)
+        for kind in FORGE_EMITTERS:
+            merged[f"forge:{kind}"] = _forge_emitter(kind)
+        _ALL_EMITTERS = merged
+    return _ALL_EMITTERS
+
 
 # ---------------------------------------------------------------------------
 # Frame assembly
@@ -1004,16 +1112,19 @@ def build_frame(env: EnvironmentSpec, objects: list, t: float,
     ``objects`` is a list of (name, params) pairs; shot actions override
     parameters for the duration of the shot. Returns (opaque batch,
     transparent batch, focus-target dict)."""
+    global _FRAME_OBJECTS
     o, tr = Batch(), Batch()
     targets: dict = {}
+    _FRAME_OBJECTS = list(objects)
     _emit_terrain(o, env)
     _emit_water(o, tr, env, t)
     _emit_flora(o, env)
     _emit_tsunami(tr, env, t)
     _emit_tornado(o, tr, env, t)
     _emit_weather(tr, env, t)
+    emitters = all_emitters()
     for name, params in objects:
-        emitter = OBJECT_EMITTERS.get(name)
+        emitter = emitters.get(name)
         if emitter is None:
             continue
         p = dict(params)

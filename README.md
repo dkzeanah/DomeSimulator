@@ -335,7 +335,7 @@ deterministic frame renders identically live and in the exported MP4.
 
 ```powershell
 py -3.12 launcher.py            # Presenter Studio tab: every option below
-py -3.12 presenter_studio.py    # direct run, live fullscreen
+py -3.12 presenter_studio.py    # direct run, opens the Scene Composer
 ```
 
 Pick a **Built-in demo**, or point at a presentation script (a `.py` with
@@ -345,6 +345,89 @@ macro and ultra wide shot of elements 1, 2 and 3") and the engine drafts a
 skeleton `Presentation` from it. Action / Export MP4 / narration toggle /
 fps / size / still-frame times / fullscreen / self-test are all launcher
 fields, in place of the former CLI flags.
+
+### The Scene Composer — building a movie from scratch
+
+Set **Action** to `compose`, leave the three Source boxes empty, and the
+launcher opens a real editing suite (`presenter/studio.py`) on an empty
+movie. Nothing about it is a mock-up of the renderer: the viewport uses
+the same engine, frame function and camera rig the exporter does, so what
+you arrange is exactly what renders.
+
+Four panes, in the shape of a video editor:
+
+- **Library** — every placeable object, in six categories. Click one to
+  drop it on the current scene's stage.
+- **Viewport** — the live 3-D scene at the playhead. Drag to orbit,
+  wheel to zoom.
+- **Timeline** — scenes as bands, shots as clips, sized by duration.
+  Drag a clip to reorder it (including across a scene boundary), drag its
+  right edge to change its length, click the ruler to scrub, wheel to
+  zoom. Each clip shows its name, length, lens, what the camera is
+  pointed at, and what is said over it.
+- **Inspector** — three tabs. **Shot**: length, lens, 1-6 point
+  perspective, focus target (offered from what the scene actually
+  built), orbit, dolly, start angle, camera height, the on-screen
+  caption, and the narration. **Stage**: what is on stage, reorderable,
+  with every object's own knobs as labelled sliders. **Scene**: title,
+  the plain-English backdrop prompt, movie title, and scene ordering.
+
+Any numeric knob has a **move** button beside it, which turns that knob
+into an animation: it sweeps from its current value to the other end of
+its range across the shot. That is how a door swings open, a wall builds
+up layer by layer, a tank fills, or a square frame racks over — on
+camera, with no keyframing.
+
+Save and reopen the movie as JSON, and render it to MP4 from inside the
+window. `Ctrl+Z` undoes, `Space` plays, arrow keys step shots.
+
+**The object library** (`presenter/library.py`) holds 39 placeable
+objects, each with a plain-English description and its own tunable knobs:
+
+- **Dome** — the 2V frame, the layer-by-layer shell build-up, a solar
+  array laid on the faces that really do face the sun, a deck hatch, an
+  entry door, glazed window bands, and a skylight. Windows and skylights
+  glaze the dome's *own* triangles, so they are part of the structure
+  rather than holes pasted onto it.
+- **Air & water** — the perimeter plenum, blower, moving air, a gutter
+  ring and downspout with running water, and a cistern with a fill line.
+- **Inside** — the utility column, fixture massing blocks, a full
+  kitchen run (sink, range, refrigerator), a living set, a loft deck with
+  ladder, a wood stove with flue, a battery bank with inverter, and a
+  ductless heat pump with its outdoor condenser.
+- **Outside** — an exterior deck with rail and steps.
+- **Diagrams** — box-vs-dome comparison, and the racking test.
+- **Dome Forge layers** — all sixteen layers the dome builder draws
+  (strut frame, triangle frames, hubs, dimpled panels, micro-drains,
+  seam veins, vein water, panel runoff, shell, collector ring, downpipe,
+  cistern, rain and the rest), bridged in as-is. A movie showing the
+  water-harvesting dome is showing the real modelled dome, not a
+  stand-in built twice.
+
+### Choosing what gets written on the picture
+
+**Writing on the picture** in the launcher (or the button in the
+composer's top bar, or `C` while playing) sets how much text is burned
+into the frames:
+
+| Setting | What the video shows |
+| --- | --- |
+| `full` | title, the spoken lines as captions, info panel, progress bar |
+| `no_captions` | everything except the spoken lines across the bottom |
+| `titles_only` | title and progress bar only |
+| `clean` | nothing at all — just the 3-D scene |
+
+The voiceover is spoken either way, and a matching `.srt` subtitle file
+is always written next to the video, so a caption-free render can still
+be subtitled later — or handed to another editor for its own titles.
+
+### Rendering every demo at once
+
+**Action** `export_all` renders every built-in presentation to its own
+MP4 in one folder, one after another, with the same on-screen-text
+setting applied to all of them. The optional demo list narrows it to a
+few by name. The composer's **Export all demos** button does the same
+thing from inside the editor.
 
 Twelve built-in demos ship in `presentations/`:
 
@@ -893,6 +976,31 @@ total solar kW.
 - `dome_creator.py` — the app: renderer (normal + six-point), pattern
   shaders (shingles, solar cells, wood grain, concrete, deck planks...),
   input, and the live rebuild loop.
+
+Presenter Studio's own modules:
+
+- `presenter/script.py` — the document: `Presentation` / `Scene` / `Shot`
+  / `OverlayPanel`, all immutable, plus JSON round-tripping. The engine
+  can trust that time *t* always yields the same frame.
+- `presenter/world.py` — the stage: drawing primitives, environments, the
+  star objects, and `all_emitters()`, which merges the accessories and
+  the bridged Dome Forge layers into one registry.
+- `presenter/accessories.py` — dome accessories and appliances (door,
+  windows, skylight, wood stove, tank, batteries, heat pump, loft, deck,
+  rain catchment, kitchen, furniture), each parametric and each
+  registering a focus target.
+- `presenter/library.py` — the catalogue: what is placeable, in which
+  category, described in plain English, with a `ParamSpec` per knob so
+  the editor can show a real labelled slider instead of a raw dict.
+- `presenter/edit.py` — every editing operation as a pure function from
+  one presentation to the next (add/move/trim/delete shots and scenes,
+  place and tune objects, animate a parameter). No pygame, so all of it
+  is testable without a display.
+- `presenter/engine.py` — rendering, the overlay levels, and the
+  deterministic exporter.
+- `presenter/studio.py` — the Scene Composer: library, viewport, timeline
+  and inspector, built on the engine by giving it a sub-rect viewport and
+  its own overlay.
 
 ## Working with panels in code
 

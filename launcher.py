@@ -482,21 +482,27 @@ def main() -> int:
 
     t, body, ps_footer = scrollable_tab("Presenter Studio")
     intro(body,
-         "Presenter Studio turns a script into a narrated 3-D "
-         "explainer video: it picks camera angles, animates the "
-         "scene, writes on-screen captions and an info panel, and can "
-         "generate a spoken voiceover — no video editor needed. Every "
-         "finished argument video for 2V dome housing shipped with "
-         "this project (see 'Built-in demo' below) was built entirely "
-         "with this tool, and every number those videos show comes "
-         "from this project's own cost and geometry code, not typed "
-         "in by hand.")
+         "Presenter Studio makes narrated 3-D explainer videos. It has "
+         "a built-in movie maker — the Scene Composer — where you "
+         "build a film from nothing: a timeline you drag shots around "
+         "on, a library of domes, doors, wood stoves, tanks, batteries "
+         "and appliances you drop onto a stage, camera controls, and "
+         "boxes to type what gets said out loud. It renders the "
+         "finished video itself. Every argument video for 2V dome "
+         "housing shipped with this project (see 'Built-in demo' "
+         "below) was made this way, and every number those videos show "
+         "comes from this project's own cost and geometry code, not "
+         "typed in by hand.")
+    note(body, "To make something of your own, set Action (further "
+               "down) to 'compose', leave all three Source boxes "
+               "empty, and click Launch. That opens the Scene "
+               "Composer on an empty movie.")
 
-    section(body, "Source — fill in exactly one of these three")
-    note(body, "Easiest option: leave the other two blank below and "
-               "just pick a built-in demo — that alone is enough to "
-               "click Launch. The other two are for building "
-               "something new instead of watching a finished video.")
+    section(body, "Source — fill in at most one of these three")
+    note(body, "Leave all three empty to start a brand-new movie in the "
+               "Scene Composer. Fill in exactly one to open or watch "
+               "something that already exists: the easiest is to pick a "
+               "built-in demo, which alone is enough to click Launch.")
     demo = LabeledCombo(body, "Built-in demo",
                         ["", "airflow", "housing_case",
                          "case_manufacturing", "case_bare_shell",
@@ -504,11 +510,13 @@ def main() -> int:
                          "case_benchmark", "case_energy",
                          "case_resilience", "case_financing",
                          "case_utility_core", "case_market_fit"],
-                        "airflow")
+                        "")
     demo.pack(fill="x", pady=3)
     action_help(body, demo, {
-        "": "none selected — pick one below, or fill in a script/"
-            "brief instead.",
+        "": "nothing selected. With Action = compose that starts a "
+            "brand-new empty movie, which is what you want when "
+            "making your own. With Action = run it plays the airflow "
+            "demo.",
         "airflow": "The Dome That Breathes: a perimeter-plenum "
                   "ventilation system, one leaf blower holding a "
                   "whole dome at negative pressure.",
@@ -580,24 +588,67 @@ def main() -> int:
 
     section(body, "Output")
     action = LabeledCombo(body, "Action",
-                          ["run", "shots", "export", "selftest"], "run")
+                          ["compose", "run", "shots", "export",
+                           "export_all", "selftest"], "compose")
     action.pack(fill="x", pady=3)
     action_help(body, action, {
-        "run": "play the video live in a window (the default — use "
-               "this to just watch something).",
+        "compose": "open the Scene Composer and build a movie yourself: "
+                   "a timeline you drag clips on, a library of domes, "
+                   "doors, stoves and appliances to drop on stage, and "
+                   "boxes to type the narration into. Leave all three "
+                   "Source boxes above empty to start from nothing, or "
+                   "pick one to open it for editing.",
+        "run": "play a finished video live in a window (use this to "
+               "just watch something).",
         "shots": "save still frames at chosen moments instead of a "
                  "video.",
-        "export": "render the complete narrated video to the MP4 "
+        "export": "render one complete narrated video to the MP4 "
                   "path below (takes several minutes; the log pane "
                   "at the bottom of this window shows progress).",
+        "export_all": "render EVERY built-in demo to its own MP4 in the "
+                      "folder below, one after another. This takes a "
+                      "long time — twelve videos — so start it when you "
+                      "do not need the machine.",
         "selftest": "run this tool's internal checks and print the "
                     "result — for troubleshooting, not for "
                     "watching.",
     })
+    overlay = LabeledCombo(body, "Writing on the picture",
+                           ["full", "no_captions", "titles_only", "clean"],
+                           "full")
+    overlay.pack(fill="x", pady=3)
+    action_help(body, overlay, {
+        "full": "title, the spoken lines as captions, the info panel "
+                "and a progress bar — the finished-explainer look.",
+        "no_captions": "everything EXCEPT the spoken lines written "
+                       "across the bottom. Use this when you do not "
+                       "want the words people are hearing also printed "
+                       "on screen.",
+        "titles_only": "just the title and the progress bar. No "
+                       "captions, no info panel.",
+        "clean": "nothing written on the picture at all — only the 3-D "
+                 "scene. Best if you plan to add your own titles in "
+                 "another editor.",
+    })
+    note(body, "The voiceover is spoken either way, and a matching "
+               ".srt subtitle file is always saved next to the video, "
+               "so a caption-free video can still be subtitled later.")
     export_path = PathRow(body, "Export MP4 path (action = export)",
                           "presenter_output/presentation.mp4", mode="save",
                           filetypes=(("MP4 video", "*.mp4"),))
     export_path.pack(fill="x", pady=3)
+    export_dir = PathRow(body, "Folder for all videos "
+                               "(action = export_all)",
+                         "presenter_output/all", mode="dir")
+    export_dir.pack(fill="x", pady=3)
+    note(body, "Each built-in demo is saved in here under its own name, "
+               "e.g. case_energy.mp4.")
+    only_demos = LabeledEntry(
+        body, "...only these demos (optional, comma list)", "",
+        placeholder="e.g. airflow, case_energy")
+    only_demos.pack(fill="x", pady=3)
+    note(body, "Leave empty to render all twelve. Use the same names "
+               "listed in the 'Built-in demo' box above.")
     stills = LabeledEntry(
         body, "Still times (action = shots)", "4,40,90",
         placeholder="e.g. 4,40,90")
@@ -626,7 +677,12 @@ def main() -> int:
 
     def go_presenter():
         cfg = {"action": action.get(), "no_narration": no_narration.get(),
-              "fullscreen": fullscreen.get(), "size": size.get()}
+              "fullscreen": fullscreen.get(), "size": size.get(),
+              "overlay": overlay.get()}
+        if export_dir.get():
+            cfg["export_dir"] = export_dir.get()
+        if only_demos.get():
+            cfg["demos"] = only_demos.get()
         if demo.get():
             cfg["demo"] = demo.get()
         if script_path.get():
