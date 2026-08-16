@@ -200,6 +200,40 @@ def _selftest() -> int:
                   in _pat.build_pattern("single_equi", 72.0, 0.0).net_edges)
     assert equi == [72, 72, 72], equi
 
+    # A whole pentagon splits into a 3-piece + 2-piece that partition it
+    # exactly, and those two nest onto one 25x10 ft sheet.
+    a_whole = _pat.polygon_area(_pat.build_pattern("pentagon", 72.0, 0.0).net)
+    a3 = _pat.polygon_area(_pat.build_pattern("pentagon_3", 72.0, 0.0).net)
+    a2 = _pat.polygon_area(_pat.build_pattern("pentagon_2", 72.0, 0.0).net)
+    assert abs((a3 + a2) - a_whole) < 1.0, (a3, a2, a_whole)
+    nest = _pat.auto_nest(["pentagon_3", "pentagon_2"], 72.0, 2.0,
+                          25 * 12.0, 10 * 12.0)
+    assert all(p.sheet == 0 for p in nest), nest      # both fit one sheet
+
+    def _bbox(placement):
+        w, h = _pat.piece_size(placement.key, 72.0, 2.0, placement.rot)
+        return (placement.x, placement.y, placement.x + w, placement.y + h)
+
+    boxes = [_bbox(p) for p in nest]
+    for bx in boxes:
+        assert bx[2] <= 25 * 12.0 + 0.5 and bx[3] <= 10 * 12.0 + 0.5, bx
+    # Placed pieces on a sheet must not overlap.
+    for i in range(len(boxes)):
+        for j in range(i + 1, len(boxes)):
+            if nest[i].sheet != nest[j].sheet:
+                continue
+            a, b = boxes[i], boxes[j]
+            disjoint = (a[2] <= b[0] or b[2] <= a[0]
+                        or a[3] <= b[1] or b[3] <= a[1])
+            assert disjoint, (a, b)
+    # point_in_loop agrees with a known inside/outside pair.
+    _pat_pl = _pat.Placement("single_equi", 0.0, 0.0, 0, 0)
+    _p, _outline, *_ = _pat.placed_geometry(_pat_pl, 72.0, 0.0)
+    _cx = sum(p[0] for p in _outline) / len(_outline)
+    _cy = sum(p[1] for p in _outline) / len(_outline)
+    assert _pat.point_in_loop((_cx, _cy), _outline)
+    assert not _pat.point_in_loop((_cx + 1e6, _cy), _outline)
+
     from .groups import PENTAGON_PRESETS
     for preset in PENTAGON_PRESETS:
         assert len(preset.fills) == 5, preset

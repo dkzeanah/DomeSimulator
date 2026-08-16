@@ -300,9 +300,14 @@ def main() -> int:
                "(e.g. 25 x 10 ft), and it lays the flat pattern on the "
                "sheet to scale with real dimensions, fold lines, the "
                "wrap/seam slack, and the dart that pulls a pentagon up "
-               "into the dome's curve — then tells you whether it fits "
-               "and how many the whole dome needs. Save the image to "
-               "print or take to the shop.")
+               "into the dome's curve. It is a nesting layout, not a "
+               "single view: add several pieces onto the material, drag "
+               "them around, or Auto-arrange to pack them onto as many "
+               "sheets as needed. A whole pentagon that won't fit your "
+               "sheet ships as a 3-piece + 2-piece split that nests side "
+               "by side, so you can maximize a roll and split coverage "
+               "across two pieces on purpose. Save each sheet as an "
+               "image to print or take to the shop.")
     note(body, "Press [m] again for the PANEL CREATOR — design one panel "
                "on a bench out of any three struts from the library "
                "(split logs, 2x2/2x4/2x6, PVC, steel and aluminium tube, "

@@ -530,11 +530,19 @@ Set your dome's long strut (72 in for the reference dome, giving a
 63.67 in / 63⅝ in short strut) and your sheet size, add a seam / wrap
 allowance for the slack that folds around the frame and staples, and the
 drawing shows the cut line, the finished edge, the fold lines, and the
-dart, dimensioned in feet and inches. It reports whether the pattern
-fits the sheet and how many of each the whole dome needs -- and a
-monolithic pentagon on a 25 x 10 ft sheet does **not** fit (it develops
-to about 10.5 x 10.6 ft), which is exactly the kind of thing this view
-exists to catch before you cut. Save the image to print.
+dart, dimensioned in feet and inches.
+
+**It is a nesting layout, not a single-pattern viewer.** Add several
+pieces onto the cover material, drag them to rearrange, or **Auto-arrange**
+to shelf-pack them -- overflowing onto extra sheets when they don't all
+fit one, so you can maximise a roll and split coverage across two pieces
+of fabric on purpose. A whole pentagon on a 25 x 10 ft sheet does **not**
+fit (it develops to about 10.5 x 10.6 ft), so it also ships as a
+**3-piece + 2-piece split**: two seamless strips that partition the
+pentagon exactly and nest side by side on one sheet. Hexagons split 4+2
+the same way. Select a piece to see it fully dimensioned; rotate it (R),
+remove it (Del), step sheets with the arrows, and save each sheet as an
+image to print.
 
 Every length in every pattern is developed from `two_v_demo`'s own
 geometry and checked in the selftest to equal the true 3D edge to

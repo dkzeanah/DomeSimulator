@@ -287,6 +287,12 @@ class DomeForgeApp:
         self.sheet_w_ft = 25.0
         self.sheet_h_ft = 10.0
         self.seam_in = 2.0
+        # The nesting layout: pieces placed on the cover material.
+        self.pieces: list[pat.Placement] = []
+        self.piece_sel = -1
+        self.sheet_view = 0
+        self._canvas = None            # (ox, oy, scale) for mouse mapping
+        self._drag_piece = None
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
@@ -843,18 +849,10 @@ class DomeForgeApp:
                                  self.seam_in)
 
     def _layout_patterns(self, rows, regions, x, y, w):
-        """Controls for the flat cover pattern; the pattern itself draws on
-        the overlay across the rest of the window."""
-        pattern = self.current_pattern()
-        rows.append(("head", (x, y), "PATTERN"))
-        y += 20
-        label = dict((k, l) for k, l, _ in pat.PATTERN_SPECS)[self.pattern_key]
-        rect = (x, y, w, 18)
-        rows.append(("choice", rect, ("Shape", label)))
-        regions.append((rect, "pattern_shape", None))
-        y += 24
-
-        rows.append(("head", (x, y), "THIS DOME"))
+        """The nesting editor: lay several flat pieces on the cover
+        material, rearrange or auto-fit them, split across sheets."""
+        sheets = self._sheet_count()
+        rows.append(("head", (x, y), "COVER MATERIAL"))
         y += 20
         for key, lab, lo, hi, val, shown in (
             ("long_strut_in", "Long strut", 24.0, 180.0, self.long_strut_in,
@@ -874,44 +872,82 @@ class DomeForgeApp:
         rows.append(("small", (x, y),
                      f"short strut is then {short_in:.2f} in "
                      f"({int(short_in)} {round((short_in % 1) * 8)}/8)"))
+        y += 22
+
+        rows.append(("head", (x, y), "PIECES"))
+        y += 20
+        rect = (x, y, w, 22)
+        rows.append(("button", rect, "+ Add a piece..."))
+        regions.append((rect, "pattern_add", None))
+        y += 26
+        half = (w - 6) // 2
+        a_rect = (x, y, half, 22)
+        c_rect = (x + half + 6, y, half, 22)
+        rows.append(("button", a_rect, "Auto-arrange"))
+        rows.append(("button", c_rect, "Clear all"))
+        regions.append((a_rect, "pattern_autofit", None))
+        regions.append((c_rect, "pattern_clear", None))
+        y += 28
+        rows.append(("small", (x, y),
+                     f"{len(self.pieces)} piece(s) across {sheets} sheet(s)"))
         y += 20
 
-        rows.append(("head", (x, y), "THIS PATTERN"))
+        # The selected piece.
+        if 0 <= self.piece_sel < len(self.pieces):
+            piece = self.pieces[self.piece_sel]
+            label = dict((k, l) for k, l, _ in pat.PATTERN_SPECS)[piece.key]
+            rows.append(("head", (x, y), "SELECTED PIECE"))
+            y += 20
+            for line in self._wrap(label, 44):
+                rows.append(("small", (x, y), line))
+                y += 15
+            pw, ph = pat.piece_size(piece.key, self.long_strut_in,
+                                    self.seam_in, piece.rot)
+            rows.append(("mono", (x, y),
+                         f"{pw:.1f} x {ph:.1f} in  (rot {piece.rot})"))
+            y += 18
+            r_rect = (x, y, half, 22)
+            d_rect = (x + half + 6, y, half, 22)
+            rows.append(("button", r_rect, "Rotate (R)"))
+            rows.append(("button", d_rect, "Remove (Del)"))
+            regions.append((r_rect, "piece_rotate", None))
+            regions.append((d_rect, "piece_remove", None))
+            y += 26
+            rows.append(("small", (x, y), "Drag it on the sheet to move."))
+            y += 20
+        else:
+            rows.append(("small", (x, y),
+                         "Click a piece on the sheet to select it."))
+            y += 20
+
+        # Sheets.
+        rows.append(("head", (x, y), "SHEET"))
         y += 20
-        report = pat.fit_on_sheet(pattern.outline, self.sheet_w_ft * 12,
-                                  self.sheet_h_ft * 12)
-        cut_w, cut_h = report.pattern_w, report.pattern_h
+        prev_r = (x, y, half, 22)
+        next_r = (x + half + 6, y, half, 22)
+        rows.append(("button", prev_r, "< Prev sheet"))
+        rows.append(("button", next_r, "Next sheet >"))
+        regions.append((prev_r, "sheet_prev", None))
+        regions.append((next_r, "sheet_next", None))
+        y += 26
+        usage = pat.sheet_usage(self.pieces, self.long_strut_in, self.seam_in,
+                                self.sheet_w_ft * 12, self.sheet_h_ft * 12)
+        used = usage.get(self.sheet_view, 0.0)
         rows.append(("mono", (x, y),
-                     f"cut size {cut_w:.1f} x {cut_h:.1f} in"))
-        y += 16
-        rows.append(("mono", (x, y),
-                     f"        {cut_w / 12:.2f} x {cut_h / 12:.2f} ft"))
-        y += 16
-        fit_text = ("FITS the sheet" if report.fits
-                    else "TOO BIG for the sheet")
-        rows.append(("small", (x, y),
-                     f"{fit_text}"
-                     + (" (rotated 90)" if report.rotated else "")))
-        y += 16
-        if pattern.per_dome:
-            rows.append(("mono", (x, y),
-                         f"dome needs {pattern.per_dome} of these"))
-            y += 16
-        if pattern.dart_angle:
-            rows.append(("mono", (x, y),
-                         f"close a {pattern.dart_angle:.1f} deg dart"))
-            y += 16
-        y += 4
-        for line in self._wrap(pattern.notes, 44):
-            rows.append(("small", (x, y), line))
-            y += 15
-        y += 4
+                     f"sheet {self.sheet_view + 1} of {sheets}: "
+                     f"{used * 100:.0f}% used"))
+        y += 20
         rect = (x, y, w, 22)
-        rows.append(("button", rect, "Save pattern as an image..."))
+        rows.append(("button", rect, "Save this sheet as an image..."))
         regions.append((rect, "export_pattern", None))
         y += 28
 
-        rows.append(("head", (x, y), "WHOLE-DOME COVERAGE"))
+        rows.append(("head", (x, y), "ONE OF EACH (quick add)"))
+        y += 18
+        rows.append(("small", (x, y),
+                     "A whole pentagon too big? Add its 3-piece and"))
+        y += 14
+        rows.append(("small", (x, y), "2-piece, then Auto-arrange."))
         y += 18
         for line in pat.dome_coverage(self.long_strut_in, self.sheet_w_ft * 12,
                                       self.sheet_h_ft * 12, self.seam_in):
@@ -920,6 +956,9 @@ class DomeForgeApp:
                 y += 14
             y += 2
         return rows, regions, y + self.scroll + 20, 0
+
+    def _sheet_count(self) -> int:
+        return max(1, 1 + max((p.sheet for p in self.pieces), default=-1))
 
     def _layout_picker(self, rows, regions, width: int, height: int) -> None:
         """A real dropdown. Cycling one click at a time through 19 fills or
@@ -1313,19 +1352,14 @@ class DomeForgeApp:
         return surface
 
     def _draw_pattern_sheet(self, surface, width: int, height: int) -> None:
-        """A to-scale CAD drawing of the current cover pattern on its sheet:
-        sheet rectangle, net cut line, seam-allowance line, fold lines,
-        the dart wedge, and dimensioned edges."""
+        """The nesting canvas: the current sheet with every piece placed on
+        it. The selected piece is highlighted and fully dimensioned."""
         pg = self.pygame
-        pattern = self.current_pattern()
         sheet_w = self.sheet_w_ft * pat.IN_PER_FT
         sheet_h = self.sheet_h_ft * pat.IN_PER_FT
-        report = pat.fit_on_sheet(pattern.outline, sheet_w, sheet_h)
-
-        # Drawing area: everything right of the left panel, with margins.
         ax, ay = PANEL_W + 30, 34
-        # A header strip carries the legend and fit banner, always clear of
-        # the pattern even when an oversized one pokes past the sheet.
+
+        # Header: legend + a fit banner for the whole sheet.
         legend = [
             ((245, 185, 93), f"cut line (+{self.seam_in:.1f}in slack)"),
             ((88, 213, 255), "finished edge"),
@@ -1336,77 +1370,103 @@ class DomeForgeApp:
             pg.draw.rect(surface, color, (lx, ay + 3, 14, 8))
             surface.blit(self.font_small.render(text, True, DIM), (lx + 20, ay))
             lx += 40 + self.font_small.size(text)[0]
-        banner = ("FITS this sheet" if report.fits
-                  else "TOO BIG -- use a smaller group, or a wider sheet")
-        bcolor = (113, 227, 166) if report.fits else (255, 130, 130)
-        btext = self.font_bold.render(banner, True, bcolor)
+        on_sheet = [p for p in self.pieces if p.sheet == self.sheet_view]
+        overflow = any(
+            self._piece_overflows(p, sheet_w, sheet_h) for p in on_sheet)
+        if not on_sheet:
+            banner, bcol = "empty -- add a piece", DIM
+        elif overflow:
+            banner, bcol = "a piece hangs off the sheet", (255, 130, 130)
+        else:
+            banner, bcol = "all pieces fit this sheet", (113, 227, 166)
+        btext = self.font_bold.render(banner, True, bcol)
         surface.blit(btext, (width - 30 - btext.get_width(), ay - 2))
 
         ay += 26
         aw, ah = width - ax - 30, height - ay - 40
-        span_w = max(sheet_w, report.pattern_w) + 12
-        span_h = max(sheet_h, report.pattern_h) + 12
-        scale = min(aw / span_w, ah / span_h)
-        # Anchor sheet and pattern to the same top-left corner.
+        # Scale so the sheet plus any overhang fits the drawing area.
+        maxx, maxy = sheet_w, sheet_h
+        for p in on_sheet:
+            pw, ph = pat.piece_size(p.key, self.long_strut_in, self.seam_in,
+                                    p.rot)
+            maxx = max(maxx, p.x + pw)
+            maxy = max(maxy, p.y + ph)
+        scale = min(aw / (maxx + 12), ah / (maxy + 12))
         ox, oy = ax, ay
+        self._canvas = (ox, oy, scale)
+
+        def to_px(pt):
+            return (ox + pt[0] * scale, oy + pt[1] * scale)
 
         pg.draw.rect(surface, (18, 30, 44),
                      (ox, oy, sheet_w * scale, sheet_h * scale))
         pg.draw.rect(surface, (70, 96, 120),
                      (ox, oy, sheet_w * scale, sheet_h * scale), 2)
         surface.blit(self.font_small.render(
-            f"SHEET  {self.sheet_w_ft:.1f} x {self.sheet_h_ft:.1f} ft "
+            f"SHEET {self.sheet_view + 1}/{self._sheet_count()}   "
+            f"{self.sheet_w_ft:.1f} x {self.sheet_h_ft:.1f} ft "
             f"({sheet_w:.0f} x {sheet_h:.0f} in)", True, (110, 140, 165)),
             (ox + 6, oy + 6))
 
-        # Pattern's bounding box laid at the sheet's top-left corner.
-        nx0, ny0, _, _ = pat.bounds(pattern.outline)
-        pad = 6 * scale
-        cx = sum(p[0] for p in pattern.net) / len(pattern.net)
-        cy = sum(p[1] for p in pattern.net) / len(pattern.net)
+        for index, placement in enumerate(self.pieces):
+            if placement.sheet != self.sheet_view:
+                continue
+            self._draw_piece(surface, width, height, index, placement,
+                             to_px, selected=index == self.piece_sel)
 
-        def pat_px(pt):
-            return (ox + pad + (pt[0] - nx0) * scale,
-                    oy + pad + (pt[1] - ny0) * scale)
+    def _piece_overflows(self, placement, sheet_w, sheet_h) -> bool:
+        pw, ph = pat.piece_size(placement.key, self.long_strut_in,
+                                self.seam_in, placement.rot)
+        return placement.x + pw > sheet_w + 0.5 or placement.y + ph > sheet_h + 0.5
 
-        # Seam-allowance (cut) line -- amber, filled faintly.
-        cut = [pat_px(p) for p in pattern.outline]
+    def _draw_piece(self, surface, width, height, index, placement, to_px,
+                    selected: bool) -> None:
+        pg = self.pygame
+        pattern, outline, net, folds, dart = pat.placed_geometry(
+            placement, self.long_strut_in, self.seam_in)
+        cut = [to_px(p) for p in outline]
+        edge = [to_px(p) for p in net]
+        cut_col = (255, 205, 120) if selected else (245, 185, 93)
         shade = pg.Surface((width, height), pg.SRCALPHA)
-        pg.draw.polygon(shade, (245, 185, 93, 40), cut)
+        pg.draw.polygon(shade, (245, 185, 93, 55 if selected else 28), cut)
         surface.blit(shade, (0, 0))
-        pg.draw.polygon(surface, (245, 185, 93), cut, 2)
-        # Net (finished panel edge) -- cyan, and dimensioned.
-        net = [pat_px(p) for p in pattern.net]
-        pg.draw.polygon(surface, (88, 213, 255), net, 2)
-        for length, a, b in pattern.net_edges:
-            pa, pb = pat_px(a), pat_px(b)
-            mid = ((pa[0] + pb[0]) / 2, (pa[1] + pb[1]) / 2)
-            # Push the label to the outside of the edge (away from the
-            # pattern's centre) so radial dimensions don't sit on the
-            # fold lines.
-            cpx = pat_px((cx, cy))
-            ox2, oy2 = mid[0] - cpx[0], mid[1] - cpx[1]
-            norm = math.hypot(ox2, oy2) or 1.0
-            lx, ly = mid[0] + ox2 / norm * 16, mid[1] + oy2 / norm * 16
-            text = _feet_inches(length)
-            label = self.font_small.render(text, True, (205, 225, 240))
-            surface.blit(label, (lx - label.get_width() / 2,
-                                 ly - label.get_height() / 2))
-        # Fold lines -- dashed green.
-        for a, b in pattern.folds:
-            self._dashed(surface, pat_px(a), pat_px(b), (113, 227, 166))
-        # The dart wedge -- red, filled faintly, labelled.
-        if pattern.dart is not None:
-            d = [pat_px(p) for p in pattern.dart]
+        pg.draw.polygon(surface, cut_col, cut, 3 if selected else 2)
+        pg.draw.polygon(surface, (88, 213, 255), edge, 2)
+        for a, b in folds:
+            self._dashed(surface, to_px(a), to_px(b), (113, 227, 166))
+        if dart is not None:
+            d = [to_px(p) for p in dart]
             dshade = pg.Surface((width, height), pg.SRCALPHA)
             pg.draw.polygon(dshade, (255, 90, 90, 70), d)
             surface.blit(dshade, (0, 0))
             for i in range(len(d)):
-                pg.draw.line(surface, (255, 120, 120), d[i], d[(i + 1) % len(d)], 2)
-            surface.blit(self.font_small.render(
-                f"dart {pattern.dart_angle:.1f} deg -- sew/lap closed",
-                True, (255, 150, 150)),
-                (d[1][0] + 8, d[1][1] + 6))
+                pg.draw.line(surface, (255, 120, 120), d[i],
+                             d[(i + 1) % len(d)], 2)
+        # A short label at the centroid always; full dimensions only on the
+        # selected piece, to keep a busy sheet readable.
+        cx = sum(p[0] for p in net) / len(net)
+        cy = sum(p[1] for p in net) / len(net)
+        cpx = to_px((cx, cy))
+        name = dict((k, l) for k, l, _ in pat.PATTERN_SPECS)[placement.key]
+        short = name.split(" (")[0]
+        tag = self.font_small.render(short, True, (210, 228, 242))
+        surface.blit(tag, (cpx[0] - tag.get_width() / 2, cpx[1] - 7))
+        if selected:
+            for i in range(len(net)):
+                a = net[i]
+                b = net[(i + 1) % len(net)]
+                length = math.dist(a, b)
+                mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+                ex, ey = mid[0] - cx, mid[1] - cy
+                nrm = math.hypot(ex, ey) or 1.0
+                lp = to_px((mid[0] + ex / nrm * 8, mid[1] + ey / nrm * 8))
+                label = self.font_small.render(_feet_inches(length), True,
+                                               (205, 225, 240))
+                surface.blit(label, (lp[0] - label.get_width() / 2, lp[1] - 7))
+            if dart is not None:
+                surface.blit(self.font_small.render(
+                    f"dart {pattern.dart_angle:.1f} deg -- sew/lap closed",
+                    True, (255, 150, 150)), (cpx[0] + 8, cpx[1] + 10))
 
     def _dashed(self, surface, a, b, color, dash: int = 9) -> None:
         pg = self.pygame
@@ -1582,10 +1642,24 @@ class DomeForgeApp:
                 "PENTAGON PRESET",
                 [(p.key, p.label) for p in PENTAGON_PRESETS],
                 None, "pentagon_preset")
-        elif action == "pattern_shape":
-            self.open_picker("COVER PATTERN",
+        elif action == "pattern_add":
+            self.open_picker("ADD A COVER PIECE",
                              [(k, l) for k, l, _ in pat.PATTERN_SPECS],
-                             self.pattern_key, "pattern_shape")
+                             None, "pattern_add")
+        elif action == "pattern_autofit":
+            self._auto_arrange()
+        elif action == "pattern_clear":
+            self.pieces = []
+            self.piece_sel = -1
+            self.sheet_view = 0
+        elif action == "piece_rotate":
+            self._rotate_piece()
+        elif action == "piece_remove":
+            self._remove_piece()
+        elif action == "sheet_prev":
+            self.sheet_view = max(0, self.sheet_view - 1)
+        elif action == "sheet_next":
+            self.sheet_view = min(self._sheet_count() - 1, self.sheet_view + 1)
         elif action == "export_pattern":
             self._export_pattern()
         elif action == "apply_fill_all":
@@ -1732,13 +1806,81 @@ class DomeForgeApp:
         elif action == "add_layer":
             layer = stack.add(key)
             self.notify(f"Added {layer.name}.")
-        elif action == "pattern_shape":
-            self.pattern_key = key
+        elif action == "pattern_add":
+            self._add_piece(key)
+
+    def _add_piece(self, key: str) -> None:
+        """Drop a new piece on the current sheet at the first free row."""
+        y0 = 0.0
+        for p in self.pieces:
+            if p.sheet == self.sheet_view:
+                _, ph = pat.piece_size(p.key, self.long_strut_in,
+                                       self.seam_in, p.rot)
+                y0 = max(y0, p.y + ph + 1.0)
+        self.pieces.append(pat.Placement(key, 0.0, y0, 0, self.sheet_view))
+        self.piece_sel = len(self.pieces) - 1
+        self.notify("Added a piece. Drag it, or Auto-arrange.")
+
+    def _rotate_piece(self) -> None:
+        if 0 <= self.piece_sel < len(self.pieces):
+            p = self.pieces[self.piece_sel]
+            p.rot = (p.rot + 90) % 360
+
+    def _remove_piece(self) -> None:
+        if 0 <= self.piece_sel < len(self.pieces):
+            self.pieces.pop(self.piece_sel)
+            self.piece_sel = -1
+
+    def _canvas_to_in(self, pos):
+        if not self._canvas:
+            return None
+        ox, oy, scale = self._canvas
+        return ((pos[0] - ox) / scale, (pos[1] - oy) / scale)
+
+    def _pattern_press(self, pos) -> None:
+        """Pick the top-most piece under the cursor on the current sheet,
+        and begin dragging it."""
+        pt = self._canvas_to_in(pos)
+        if pt is None:
+            return
+        for index in reversed(range(len(self.pieces))):
+            placement = self.pieces[index]
+            if placement.sheet != self.sheet_view:
+                continue
+            _, outline, *_ = pat.placed_geometry(placement, self.long_strut_in,
+                                                 self.seam_in)
+            if pat.point_in_loop(pt, outline):
+                self.piece_sel = index
+                self._drag_piece = (index, pt[0] - placement.x,
+                                    pt[1] - placement.y)
+                return
+        self.piece_sel = -1
+
+    def _pattern_drag(self, pos) -> None:
+        pt = self._canvas_to_in(pos)
+        if pt is None or self._drag_piece is None:
+            return
+        index, dx, dy = self._drag_piece
+        placement = self.pieces[index]
+        placement.x = max(0.0, pt[0] - dx)
+        placement.y = max(0.0, pt[1] - dy)
+
+    def _auto_arrange(self) -> None:
+        if not self.pieces:
+            self.notify("Add some pieces first.")
+            return
+        keys = [p.key for p in self.pieces]
+        self.pieces = pat.auto_nest(
+            keys, self.long_strut_in, self.seam_in,
+            self.sheet_w_ft * 12, self.sheet_h_ft * 12)
+        self.piece_sel = -1
+        self.sheet_view = 0
+        self.notify(f"Arranged {len(self.pieces)} piece(s) across "
+                    f"{self._sheet_count()} sheet(s).")
 
     def _export_pattern(self) -> None:
         from pathlib import Path
-        label = self.pattern_key
-        out = Path(f"dome_forge_shots/pattern-{label}.png")
+        out = Path(f"dome_forge_shots/cover-sheet-{self.sheet_view + 1}.png")
         self.capture(out)
         self.notify(f"Saved {out}")
 
@@ -2005,11 +2147,16 @@ class DomeForgeApp:
             self.group_index += 1
         elif event.key == pg.K_LEFT and self.mode == "groups":
             self.group_index -= 1
-        elif event.key in (pg.K_RIGHT, pg.K_LEFT) and self.mode == "patterns":
-            keys = [k for k, _, _ in pat.PATTERN_SPECS]
-            step = 1 if event.key == pg.K_RIGHT else -1
-            i = keys.index(self.pattern_key) if self.pattern_key in keys else 0
-            self.pattern_key = keys[(i + step) % len(keys)]
+        elif self.mode == "patterns" and event.key in (pg.K_RIGHT, pg.K_LEFT):
+            if event.key == pg.K_RIGHT:
+                self.sheet_view = min(self._sheet_count() - 1, self.sheet_view + 1)
+            else:
+                self.sheet_view = max(0, self.sheet_view - 1)
+        elif self.mode == "patterns" and event.key == pg.K_r:
+            self._rotate_piece()
+        elif self.mode == "patterns" and event.key in (pg.K_DELETE,
+                                                       pg.K_BACKSPACE):
+            self._remove_piece()
         elif event.key == pg.K_SPACE:
             self.playing = not self.playing
         elif event.key == pg.K_c:
@@ -2133,6 +2280,11 @@ class DomeForgeApp:
                                 self.scroll_right = max(0, self.scroll_right + step)
                             else:
                                 self.scroll = max(0, self.scroll + step)
+                    elif self.mode == "patterns":
+                        # The nesting canvas: click selects a piece, drag
+                        # moves it. No 3D orbit here.
+                        if event.button == 1:
+                            self._pattern_press(event.pos)
                     else:
                         if event.button == 1:
                             self.orbiting = True
@@ -2142,6 +2294,8 @@ class DomeForgeApp:
                         elif event.button == 5:
                             self.distance = min(80.0, self.distance * 1.1)
                 elif event.type == pg.MOUSEBUTTONUP:
+                    if event.button == 1:
+                        self._drag_piece = None
                     # A click that did not turn into a drag is a pick, not
                     # an orbit -- so selecting a triangle never fights with
                     # rotating the view.
@@ -2158,6 +2312,8 @@ class DomeForgeApp:
                 elif event.type == pg.MOUSEMOTION:
                     if self.dragging is not None:
                         self.apply_slider(*self.dragging, event.pos[0])
+                    elif self._drag_piece is not None:
+                        self._pattern_drag(event.pos)
                     elif self.orbiting:
                         self.yaw -= event.rel[0] * 0.35
                         self.pitch = max(-12.0, min(84.0,

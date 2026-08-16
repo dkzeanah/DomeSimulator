@@ -461,8 +461,29 @@ PATTERN_SPECS = (
     ("double", "Double (two triangles)", 2),
     ("triple", "Triple (three triangles)", 3),
     ("pentagon", "Pentagon (five, ~15.7 deg dart)", 5),
+    ("pentagon_3", "Pentagon 3-piece (of a 3+2 split)", 3),
+    ("pentagon_2", "Pentagon 2-piece (of a 3+2 split)", 2),
     ("hexagon", "Hexagon (six, ~17.7 deg dart)", 6),
+    ("hexagon_4", "Hexagon 4-piece (of a 4+2 split)", 4),
+    ("hexagon_2", "Hexagon 2-piece (of a 4+2 split)", 2),
 )
+
+
+def _partial_group_faces(long_strut_in: float, degree: int, take: int,
+                         skip: int = 0):
+    """A contiguous run of ``take`` faces from the ring around a degree-N
+    vertex, skipping the first ``skip``.
+
+    A pentagon or hexagon that will not fit the sheet whole is split into
+    contiguous runs (a 3+2 for a pentagon). Adjacent triangles in the ring
+    share a radial edge, so each run develops as an exact seamless strip.
+    """
+    _, faces, _, at_vertex, _ = _scaled(long_strut_in)
+    apex = next(v for v, fs in at_vertex.items() if len(fs) == degree)
+    ring = _ordered_ring(faces, at_vertex[apex], apex)
+    face_index = {tuple(sorted(f)): i for i, f in enumerate(faces)}
+    chosen = ring[skip:skip + take]
+    return [face_index[tuple(sorted(f))] for f in chosen]
 
 
 def build_pattern(key: str, long_strut_in: float, seam_in: float) -> Pattern:
@@ -496,6 +517,20 @@ def build_pattern(key: str, long_strut_in: float, seam_in: float) -> Pattern:
                  "between them is a fold line, not a seam.") if count == 2 else (
                  "Three-triangle strip -- one continuous cover across a "
                  "run of the frame.")
+    elif key in ("pentagon_3", "pentagon_2", "hexagon_4", "hexagon_2"):
+        degree = 5 if key.startswith("pentagon") else 6
+        take = int(key.split("_")[1])
+        skip = 0 if take in (3, 4) else (3 if degree == 5 else 4)
+        placed, net, folds = unfold_strip(
+            long_strut_in, _partial_group_faces(long_strut_in, degree, take, skip))
+        triangles = take
+        per_dome = sum(1 for v, fs in at_vertex.items() if len(fs) == degree)
+        whole = "pentagon" if degree == 5 else "hexagon"
+        other = {3: 2, 2: 3, 4: 2}[take]
+        notes = (f"{take} of a {whole}'s triangles as one seamless strip. "
+                 f"The matching {other}-piece covers the rest; they overlap "
+                 f"along the shared radial. Use when a whole {whole} is too "
+                 f"big for the sheet.")
     elif key in ("pentagon", "hexagon"):
         degree = 5 if key == "pentagon" else 6
         apex = next(v for v, fs in at_vertex.items() if len(fs) == degree)
@@ -511,6 +546,155 @@ def build_pattern(key: str, long_strut_in: float, seam_in: float) -> Pattern:
     label = dict((k, l) for k, l, _ in PATTERN_SPECS)[key]
     return Pattern(key, label, outline, net, folds, dart, dart_angle,
                    seam_in, triangles, per_dome, notes)
+
+
+# ---------------------------------------------------------------------------
+# Nesting: many pieces on one or more sheets
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Placement:
+    """One pattern piece laid on the cover material at a position and
+    rotation, on a given sheet."""
+
+    key: str
+    x: float = 0.0          # inches, top-left of the rotated bbox
+    y: float = 0.0
+    rot: int = 0            # 0 / 90 / 180 / 270
+    sheet: int = 0
+
+    def to_json(self) -> dict:
+        return {"key": self.key, "x": round(self.x, 2), "y": round(self.y, 2),
+                "rot": self.rot, "sheet": self.sheet}
+
+    @staticmethod
+    def from_json(data: dict) -> "Placement":
+        return Placement(data["key"], float(data.get("x", 0)),
+                         float(data.get("y", 0)), int(data.get("rot", 0)),
+                         int(data.get("sheet", 0)))
+
+
+def _rotate_loop(loop, rot: int):
+    out = []
+    for x, y in loop:
+        if rot == 90:
+            out.append((-y, x))
+        elif rot == 180:
+            out.append((-x, -y))
+        elif rot == 270:
+            out.append((y, -x))
+        else:
+            out.append((x, y))
+    return out
+
+
+def placed_geometry(placement: Placement, long_strut_in: float, seam_in: float):
+    """A placement's outline, net, folds and dart in sheet coordinates."""
+    pattern = build_pattern(placement.key, long_strut_in, seam_in)
+    rot = placement.rot
+
+    def xform_loop(loop):
+        r = _rotate_loop(loop, rot)
+        minx = min(p[0] for p in r)
+        miny = min(p[1] for p in r)
+        return [(p[0] - minx + placement.x, p[1] - miny + placement.y)
+                for p in r]
+
+    # net/folds/dart share the outline's rotate+shift, so compute the
+    # shift once from the outline (the largest loop) and reuse it.
+    r_out = _rotate_loop(pattern.outline, rot)
+    minx = min(p[0] for p in r_out)
+    miny = min(p[1] for p in r_out)
+
+    def shift(loop):
+        r = _rotate_loop(loop, rot)
+        return [(p[0] - minx + placement.x, p[1] - miny + placement.y)
+                for p in r]
+
+    outline = shift(pattern.outline)
+    net = shift(pattern.net)
+    folds = [(shift([a])[0], shift([b])[0]) for a, b in pattern.folds]
+    dart = shift(pattern.dart) if pattern.dart else None
+    return pattern, outline, net, folds, dart
+
+
+def piece_size(key: str, long_strut_in: float, seam_in: float, rot: int):
+    pattern = build_pattern(key, long_strut_in, seam_in)
+    r = _rotate_loop(pattern.outline, rot)
+    x0, y0, x1, y1 = bounds(r)
+    return x1 - x0, y1 - y0
+
+
+def point_in_loop(pt, loop) -> bool:
+    x, y = pt
+    inside = False
+    n = len(loop)
+    j = n - 1
+    for i in range(n):
+        xi, yi = loop[i]
+        xj, yj = loop[j]
+        if ((yi > y) != (yj > y)) and (
+                x < (xj - xi) * (y - yi) / (yj - yi + 1e-12) + xi):
+            inside = not inside
+        j = i
+    return inside
+
+
+def auto_nest(keys, long_strut_in: float, seam_in: float,
+              sheet_w_in: float, sheet_h_in: float, gap_in: float = 1.0):
+    """Shelf-pack the pieces onto as many sheets as needed.
+
+    Each piece takes its better of two rotations (whichever is shorter),
+    biggest first; pieces flow left to right along a shelf, wrap to a new
+    shelf when the row is full, and start a fresh sheet when the column
+    is full. Returns a list of Placement.
+    """
+    sized = []
+    for key in keys:
+        w0, h0 = piece_size(key, long_strut_in, seam_in, 0)
+        w9, h9 = piece_size(key, long_strut_in, seam_in, 90)
+        # prefer the orientation that is shorter (packs into fewer shelves)
+        if h9 < h0 and w9 <= sheet_w_in:
+            sized.append((key, 90, w9, h9))
+        else:
+            sized.append((key, 0, w0, h0))
+    sized.sort(key=lambda s: -s[3])   # tallest first
+
+    placements = []
+    sheet = 0
+    cursor_x = 0.0
+    cursor_y = 0.0
+    shelf_h = 0.0
+    for key, rot, w, h in sized:
+        if w > sheet_w_in or h > sheet_h_in:
+            # Too big for a sheet at all -- park it on its own sheet so the
+            # user sees it flagged rather than silently dropped.
+            sheet_used = max((p.sheet for p in placements), default=-1) + 1
+            placements.append(Placement(key, 0.0, 0.0, rot, sheet_used + 1))
+            continue
+        if cursor_x + w > sheet_w_in:
+            cursor_x = 0.0
+            cursor_y += shelf_h + gap_in
+            shelf_h = 0.0
+        if cursor_y + h > sheet_h_in:
+            sheet += 1
+            cursor_x = cursor_y = shelf_h = 0.0
+        placements.append(Placement(key, cursor_x, cursor_y, rot, sheet))
+        cursor_x += w + gap_in
+        shelf_h = max(shelf_h, h)
+    return placements
+
+
+def sheet_usage(placements, long_strut_in: float, seam_in: float,
+                sheet_w_in: float, sheet_h_in: float):
+    """Per-sheet used-area fraction and a total sheet count."""
+    sheets = {}
+    for placement in placements:
+        _, outline, *_ = placed_geometry(placement, long_strut_in, seam_in)
+        sheets.setdefault(placement.sheet, 0.0)
+        sheets[placement.sheet] += polygon_area(outline)
+    area = sheet_w_in * sheet_h_in
+    return {s: min(1.0, used / area) for s, used in sheets.items()}
 
 
 def dome_coverage(long_strut_in: float, sheet_w_in: float,
