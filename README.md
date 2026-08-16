@@ -429,11 +429,23 @@ setting applied to all of them. The optional demo list narrows it to a
 few by name. The composer's **Export all demos** button does the same
 thing from inside the editor.
 
-Twelve built-in demos ship in `presentations/`:
+Thirteen built-in demos ship in `presentations/`:
 
 - **`airflow`** — *The Dome That Breathes*: a perimeter-plenum tube
   ringing a 2V dome's base, one leaf blower holding the whole envelope at
   negative pressure, and the same loop reversed into a central vacuum.
+- **`accessibility`** — *A Home That Meets You Halfway*: the case that a
+  single-level dome suits wheelchair users and anyone with limited
+  mobility, carried by a wheelchair that actually rolls up the ramp, in
+  through the door, turns a full circle in place, and tours the open
+  floor while the narration builds the argument. Every dome figure (floor
+  diameter, area, clear height, door width) is computed from the
+  geometry; the ADA standards it compares against are cited as external
+  references, kept visibly separate from the model's own measurements.
+  The method behind it is written up in
+  [`docs/programmatic-video-guide.md`](docs/programmatic-video-guide.md)
+  as a reusable, LLM-agnostic recipe for generating explanatory and
+  persuasive video.
 - **`housing_case`** — *The 2V Housing Case*: the convergent
   housing-market argument for 2V domes — fundamentals (including a live
   debunk of the golden-ratio myth), a station-by-station build of all 15

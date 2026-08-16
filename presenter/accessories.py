@@ -635,6 +635,273 @@ def emit_furniture(o: Batch, tr: Batch, p: dict, t: float,
                             max(table_r * 3.0, R * 0.55))
 
 
+# ---------------------------------------------------------------------------
+# Accessibility: a moving wheelchair, a code-slope ramp, a ceiling hoist,
+# grab bars. These carry the argument that a dome is a barrier-free home.
+# ---------------------------------------------------------------------------
+
+# Fabric / metal colours reused across the accessibility props.
+CHAIR_FRAME = (0.20, 0.23, 0.28, 1.0)
+TIRE = (0.12, 0.13, 0.15, 1.0)
+SEAT = (0.16, 0.34, 0.52, 1.0)
+SKIN = (0.80, 0.62, 0.48, 1.0)
+SHIRT = (0.30, 0.52, 0.72, 1.0)
+PANTS = (0.24, 0.27, 0.32, 1.0)
+
+
+def _arc(points, f: float):
+    """Position and heading a fraction ``f`` of the way along a polyline,
+    spaced by true distance so the traveller moves at a steady pace no
+    matter how the points are bunched. Heading is read from a short step
+    ahead (or behind, at the very end)."""
+    pts = np.asarray(points, dtype=np.float64)
+    seg = np.linalg.norm(np.diff(pts, axis=0), axis=1)
+    cum = np.concatenate([[0.0], np.cumsum(seg)])
+    total = float(cum[-1]) or 1.0
+    d = max(0.0, min(1.0, f)) * total
+    pos = np.array([np.interp(d, cum, pts[:, i]) for i in range(3)])
+    da, db = max(0.0, d - 0.05), min(total, d + 0.05)
+    a = np.array([np.interp(da, cum, pts[:, i]) for i in range(3)])
+    b = np.array([np.interp(db, cum, pts[:, i]) for i in range(3)])
+    head = math.atan2(b[1] - a[1], b[0] - a[0]) if np.linalg.norm(b - a) \
+        > 1e-6 else 0.0
+    return pos, head, d
+
+
+def wheelchair_route(u: float, R: float, rise: float, slope_denom: float):
+    """Where the wheelchair is, and which way it faces, at route fraction
+    ``u`` in 0..1. One continuous journey, so a shot animates a slice of it:
+
+    * 0.00-0.40  approach the door, climb the ramp, roll well inside,
+    * 0.40-0.55  pivot a full turn in place at one spot,
+    * 0.55-1.00  circulate the open floor and settle.
+
+    Returns (position xyz, heading radians, wheel-spin radians). A pure
+    function of ``u``, so the same frame renders identically every time."""
+    run = rise * slope_denom
+    grade = -rise
+    pivot = np.array([R * 0.55, 0.0, 0.0])
+    # far approach -> ramp base -> threshold -> the pivot spot inside
+    enter = [np.array([R + 5.0, 0.0, grade]),
+             np.array([R + run, 0.0, grade]),
+             np.array([R * 0.98, 0.0, 0.0]),
+             pivot]
+    # a smooth loop around the open floor at about half the radius
+    ring = R * 0.5
+    tour = [pivot]
+    for deg in range(0, 340, 20):
+        a = math.radians(deg)
+        tour.append(np.array([ring * math.cos(a), ring * math.sin(a), 0.0]))
+
+    if u < 0.40:
+        pos, head, dist = _arc(enter, u / 0.40)
+        spin = dist / 0.30
+    elif u < 0.55:
+        k = (u - 0.40) / 0.15
+        pos = pivot
+        head = math.pi + k * TAU            # a full turn where it stands
+        spin = 6.0 + k * 8.0
+    else:
+        pos, head, dist = _arc(tour, (u - 0.55) / 0.45)
+        spin = 15.0 + dist / 0.30
+    return pos, head, spin
+
+
+def emit_wheelchair(o: Batch, tr: Batch, p: dict, t: float,
+                    targets: dict) -> None:
+    """A person in a manual wheelchair, placed along the route by
+    ``progress`` 0..1. Animate ``progress`` across a shot and they roll in
+    up the ramp, pivot in place, and tour the open floor while the camera
+    (focused on ``wheelchair``) follows."""
+    R = float(p.get("radius", 4.8))
+    rise = float(p.get("ramp_rise", 0.30))
+    slope_denom = float(p.get("ramp_slope", 12.0))
+    u = max(0.0, min(1.0, float(p.get("progress", 0.0))))
+    occupant = float(p.get("occupant", 1.0)) > 0.5
+    pos, head, spin = wheelchair_route(u, R, rise, slope_denom)
+    ch, sh = math.cos(head), math.sin(head)
+
+    def place(lx, ly, lz):
+        """Local (forward, left, up) -> world, rotated by heading."""
+        return np.array([pos[0] + lx * ch - ly * sh,
+                         pos[1] + lx * sh + ly * ch, pos[2] + lz])
+
+    def wheel(cx, cy, cz, rr, spokes=True):
+        hub = place(cx, cy, cz)
+        axle0 = place(cx, cy - 0.035, cz)
+        axle1 = place(cx, cy + 0.035, cz)
+        o.cylinder(axle0, axle1, rr, TIRE, sides=14)
+        o.cylinder(axle0, axle1, rr * 0.35, (0.55, 0.57, 0.6, 1.0), sides=8)
+        if spokes:
+            for k in range(4):
+                ang = spin + k * math.pi / 2
+                rim = place(cx + rr * 0.86 * math.cos(ang), cy,
+                            cz + rr * 0.86 * math.sin(ang))
+                o.cylinder(hub, rim, 0.016, (0.7, 0.72, 0.76, 1.0), sides=4,
+                           caps=False)
+
+    yaw = head
+    # Large driving wheels, small front casters.
+    wheel(-0.04, 0.30, 0.30, 0.30)
+    wheel(-0.04, -0.30, 0.30, 0.30)
+    wheel(0.34, 0.24, 0.10, 0.10, spokes=False)
+    wheel(0.34, -0.24, 0.10, 0.10, spokes=False)
+    seat = place(0.02, 0.0, 0.50)
+    o.box((seat[0], seat[1], seat[2]), (0.46, 0.46, 0.07), SEAT, yaw=yaw)
+    back = place(-0.22, 0.0, 0.74)
+    o.box((back[0], back[1], back[2]), (0.06, 0.46, 0.52), SEAT, yaw=yaw)
+    for side in (0.26, -0.26):
+        arm = place(0.05, side, 0.66)
+        o.box((arm[0], arm[1], arm[2]), (0.40, 0.07, 0.07), CHAIR_FRAME,
+              yaw=yaw)
+        post = place(-0.02, side, 0.58)
+        o.cylinder(place(-0.02, side, 0.52), place(-0.02, side, 0.63), 0.02,
+                   CHAIR_FRAME, sides=6)
+    foot = place(0.40, 0.0, 0.16)
+    o.box((foot[0], foot[1], foot[2]), (0.20, 0.44, 0.04), CHAIR_FRAME,
+          yaw=yaw)
+    for side in (0.30, -0.30):                 # push handles
+        h0 = place(-0.24, side, 0.78)
+        h1 = place(-0.24, side, 0.98)
+        o.cylinder(h0, h1, 0.02, CHAIR_FRAME, sides=6)
+
+    if occupant:
+        hips = place(0.03, 0.0, 0.60)
+        o.box((hips[0], hips[1], hips[2]), (0.34, 0.44, 0.20), PANTS, yaw=yaw)
+        torso = place(-0.05, 0.0, 0.88)
+        o.box((torso[0], torso[1], torso[2]), (0.30, 0.42, 0.44), SHIRT,
+              yaw=yaw)
+        head_c = place(-0.02, 0.0, 1.18)
+        o.box((head_c[0], head_c[1], head_c[2]), (0.19, 0.19, 0.22), SKIN,
+              yaw=yaw)
+        for side in (0.22, -0.22):             # thighs and lower legs
+            thigh = place(0.24, side * 0.6, 0.53)
+            o.box((thigh[0], thigh[1], thigh[2]), (0.36, 0.15, 0.13), PANTS,
+                  yaw=yaw)
+            shin = place(0.40, side * 0.6, 0.34)
+            o.box((shin[0], shin[1], shin[2]), (0.12, 0.14, 0.34), PANTS,
+                  yaw=yaw)
+            upper_arm = place(0.04, side, 0.80)
+            o.box((upper_arm[0], upper_arm[1], upper_arm[2]),
+                  (0.14, 0.13, 0.32), SHIRT, yaw=yaw)
+            hand = place(0.02, side * 1.35, 0.42)
+            o.box((hand[0], hand[1], hand[2]), (0.10, 0.10, 0.10), SKIN,
+                  yaw=yaw)
+
+    targets["wheelchair"] = (place(-0.02, 0.0, 0.7), 1.9)
+    targets["wheelchair_wide"] = (place(-0.02, 0.0, 0.6), max(3.0, R * 0.7))
+
+
+def emit_ramp(o: Batch, tr: Batch, p: dict, t: float, targets: dict) -> None:
+    """A zero-threshold entry ramp at the door: a landing level with the
+    floor, then a slope at ``1 : slope`` down to grade, with handrails.
+
+    Default ``slope`` 12 is the ADA maximum (one unit of rise for twelve
+    of run); the run is derived from the rise, so the geometry always
+    matches whatever slope is asked for rather than being drawn by eye."""
+    R = float(p.get("radius", 4.8))
+    az = float(p.get("az_deg", 0.0))
+    width = float(p.get("width", 1.5))
+    rise = float(p.get("rise", 0.30))
+    slope = max(8.0, float(p.get("slope", 12.0)))
+    run = rise * slope
+    outward, along, up = _tangent_basis(az)
+    top = R * 0.98                              # threshold, at floor level
+    landing = 0.7
+
+    def deck_pt(radial, lateral, z):
+        return outward * radial + along * lateral + np.array([0.0, 0.0, z])
+
+    deck = (0.42, 0.44, 0.48, 1.0)
+    curb = (0.30, 0.33, 0.38, 1.0)
+    # Level landing at the door.
+    o.quad(deck_pt(top - landing, -width / 2, 0.0),
+           deck_pt(top, -width / 2, 0.0),
+           deck_pt(top, width / 2, 0.0),
+           deck_pt(top - landing, width / 2, 0.0), deck, (0, 0, 1))
+    # The sloping run, as a strip of quads so the light reads the grade.
+    steps = 10
+    for i in range(steps):
+        r0 = top + run * i / steps
+        r1 = top + run * (i + 1) / steps
+        z0 = -rise * i / steps
+        z1 = -rise * (i + 1) / steps
+        o.quad(deck_pt(r0, -width / 2, z0), deck_pt(r1, -width / 2, z1),
+               deck_pt(r1, width / 2, z1), deck_pt(r0, width / 2, z0), deck)
+        for side in (-1.0, 1.0):                # low curbs stop a wheel run-off
+            e = side * width / 2
+            o.quad(deck_pt(r0, e, z0), deck_pt(r1, e, z1),
+                   deck_pt(r1, e, z1 + 0.06), deck_pt(r0, e, z0 + 0.06), curb)
+    # Handrails both sides, following the slope at grab height.
+    posts = 5
+    for side in (-1.0, 1.0):
+        e = side * (width / 2 + 0.04)
+        for k in range(posts + 1):
+            r = top + run * k / posts
+            z = -rise * k / posts
+            base = deck_pt(r, e, z)
+            o.cylinder(base, base + up * 0.9, 0.025, STEEL, sides=6)
+        a = deck_pt(top, e, 0.0) + up * 0.9
+        b = deck_pt(top + run, e, -rise) + up * 0.9
+        o.cylinder(a, b, 0.03, CHROME, sides=6)
+    targets["ramp"] = (deck_pt(top + run * 0.5, 0.0, -rise * 0.5),
+                       max(run * 0.7, width))
+
+
+def emit_ceiling_lift(o: Batch, tr: Batch, p: dict, t: float,
+                      targets: dict) -> None:
+    """A ceiling track hoist slung between two points on the frame, with a
+    carriage and a strap that lowers a sling. Because the geodesic shell is
+    a rigid space frame, a lift can be anchored to it anywhere -- the
+    argument this prop is here to make. Animate ``lower`` for a transfer."""
+    R = float(p.get("radius", 4.8))
+    az = float(p.get("az_deg", 90.0))
+    polar = float(p.get("polar_deg", 42.0))
+    carriage = max(0.0, min(1.0, float(p.get("carriage", 0.5))))
+    lower = max(0.0, min(1.0, float(p.get("lower", 0.4))))
+    a, _oa, _ua, _va = _shell_frame(R, az, polar)
+    b, _ob, _ub, _vb = _shell_frame(R, az + 180.0, polar)
+    rail = (0.55, 0.58, 0.63, 1.0)
+    o.cylinder(a, b, 0.05, rail, sides=8)
+    # End brackets down to the frame line.
+    for anchor in (a, b):
+        o.cylinder(anchor, anchor + np.array([0.0, 0.0, 0.18]), 0.03, STEEL,
+                   sides=6)
+    car = a + (b - a) * carriage
+    o.box((car[0], car[1], car[2]), (0.26, 0.22, 0.16), (0.30, 0.33, 0.38,
+                                                         1.0))
+    strap_len = (car[2] - 0.75) * lower
+    hook = car - np.array([0.0, 0.0, strap_len])
+    o.cylinder(car, hook, 0.012, (0.85, 0.72, 0.30, 1.0), sides=4,
+               caps=False)
+    o.box((hook[0], hook[1], hook[2]), (0.06, 0.5, 0.05), STEEL)
+    for side in (-0.22, 0.22):                  # sling straps
+        s = hook + np.array([0.0, side, 0.0])
+        o.cylinder(s, s - np.array([0.0, 0.0, 0.28]), 0.01,
+                   (0.75, 0.5, 0.55, 1.0), sides=4, caps=False)
+    targets["ceiling_lift"] = (hook, 1.7)
+
+
+def emit_grab_bar(o: Batch, tr: Batch, p: dict, t: float,
+                  targets: dict) -> None:
+    """A wall grab bar mounted on the shell. It anchors straight to a
+    frame member, which a stud-framed wall can rarely promise at the exact
+    spot a transfer needs one."""
+    R = float(p.get("radius", 4.8))
+    az = float(p.get("az_deg", 210.0))
+    polar = float(p.get("polar_deg", 74.0))
+    length = float(p.get("length", 0.9))
+    point, outward, u, v = _shell_frame(R, az, polar)
+    inward = -outward
+    centre = point + inward * 0.12
+    a = centre - u * length / 2
+    b = centre + u * length / 2
+    o.cylinder(a, b, 0.028, CHROME, sides=8)
+    for end in (a, b):                          # mounting flanges to the shell
+        o.cylinder(end, end + outward * 0.12, 0.03, STEEL, sides=6)
+    targets["grab_bar"] = (centre, max(length, 0.9))
+
+
 ACCESSORY_EMITTERS = {
     "door": emit_door,
     "window_band": emit_window_band,
@@ -648,4 +915,8 @@ ACCESSORY_EMITTERS = {
     "rain_catch": emit_rain_catch,
     "kitchen_run": emit_kitchen_run,
     "furniture": emit_furniture,
+    "wheelchair": emit_wheelchair,
+    "ramp": emit_ramp,
+    "ceiling_lift": emit_ceiling_lift,
+    "grab_bar": emit_grab_bar,
 }

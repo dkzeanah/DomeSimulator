@@ -405,6 +405,71 @@ _ACCESSORY_SPECS: tuple[ObjectSpec, ...] = (
                    unit="m", help="Radius of the table top."),
          ParamSpec("chairs", "Chairs", "int", 4, 0, 10, 1,
                    help="How many chairs are set around the table."))),
+    ObjectSpec(
+        "wheelchair", "Wheelchair + rider", "Accessibility",
+        "A person in a manual wheelchair that follows one continuous route: "
+        "up the entry ramp, in through the door, a full turn in place, and "
+        "a tour of the open floor. Animate 'Along the route' across a shot "
+        "and, with the camera looking at it, they roll through the home.",
+        (_radius(),
+         ParamSpec("progress", "Along the route", "float", 0.0, 0.0, 1.0,
+                   0.01,
+                   help="0 is out on the approach; ~0.4 is inside after the "
+                        "ramp; ~0.5 is mid-pivot; 1 is settled by the "
+                        "living set. Animate it to make them move."),
+         ParamSpec("occupant", "Show the rider", "float", 1.0, 0.0, 1.0, 1.0,
+                   help="Turn off for an empty chair."),
+         ParamSpec("ramp_rise", "Match the ramp rise", "float", 0.30, 0.05,
+                   0.9, 0.01, unit="m",
+                   help="Keep this equal to the ramp's rise so the chair "
+                        "meets the ramp cleanly."),
+         ParamSpec("ramp_slope", "Match the ramp slope", "float", 12.0, 8.0,
+                   20.0, 0.5,
+                   help="Keep this equal to the ramp's slope number."))),
+    ObjectSpec(
+        "ramp", "Entry ramp", "Accessibility",
+        "A zero-threshold ramp at the door: a level landing, then a slope "
+        "down to the ground, with handrails. The run is derived from the "
+        "rise and the slope, so it is always drawn to the slope you ask "
+        "for -- 1:12 is the ADA maximum.",
+        (_radius(), _az(),
+         ParamSpec("width", "Ramp width", "float", 1.5, 0.9, 3.0, 0.05,
+                   unit="m", help="How wide the ramp and landing are."),
+         ParamSpec("rise", "Height climbed", "float", 0.30, 0.05, 0.9, 0.01,
+                   unit="m", help="How far up from the ground to the floor."),
+         ParamSpec("slope", "Slope (1 : this)", "float", 12.0, 8.0, 20.0,
+                   0.5,
+                   help="One unit up for this many along. 12 is the ADA "
+                        "maximum; bigger numbers are gentler."))),
+    ObjectSpec(
+        "ceiling_lift", "Ceiling hoist", "Accessibility",
+        "A ceiling-track patient lift slung between two points on the "
+        "frame, with a carriage and a strap that lowers a sling. Because "
+        "the shell is a rigid space frame, a hoist can anchor to it "
+        "anywhere. Animate 'Lower the sling' for a transfer.",
+        (_radius(),
+         _az("az_deg", "Track bearing", 90.0),
+         ParamSpec("polar_deg", "Track height", "float", 42.0, 20.0, 70.0,
+                   1.0, unit="deg",
+                   help="How high the track sits, measured down from the "
+                        "crown. Smaller is higher."),
+         ParamSpec("carriage", "Along the track", "float", 0.5, 0.0, 1.0,
+                   0.01, help="Where the hoist sits along its rail."),
+         ParamSpec("lower", "Lower the sling", "float", 0.4, 0.0, 1.0, 0.01,
+                   help="0 is stowed up at the track; 1 is lowered for a "
+                        "transfer."))),
+    ObjectSpec(
+        "grab_bar", "Grab bar", "Accessibility",
+        "A wall grab bar mounted on the shell. It anchors straight to a "
+        "frame member, which a stud wall can rarely promise at the exact "
+        "spot a transfer needs one.",
+        (_radius(), _az("az_deg", "Bearing", 210.0),
+         ParamSpec("polar_deg", "Height on the wall", "float", 74.0, 40.0,
+                   88.0, 1.0, unit="deg",
+                   help="Measured down from the crown; bigger is lower on "
+                        "the wall."),
+         ParamSpec("length", "Bar length", "float", 0.9, 0.3, 1.6, 0.05,
+                   unit="m", help="How long the grab bar is."))),
 )
 
 

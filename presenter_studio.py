@@ -39,6 +39,7 @@ DEMOS = {
     "case_financing": "presentations.dome_case_financing",
     "case_utility_core": "presentations.dome_case_utility_core",
     "case_market_fit": "presentations.dome_case_market_fit",
+    "accessibility": "presentations.dome_accessibility",
 }
 
 
@@ -197,6 +198,24 @@ def selftest() -> int:
                 params[param.key] = param.clamp(value)
                 o2, tr2, _t = build_frame(plain, [(spec.key, params)], 0.9)
                 assert o2.v or tr2.v, (spec.key, param.key, value)
+
+    # ---- the accessibility presentation ------------------------------
+    # It leans on the moving wheelchair and the ramp/hoist props, so it
+    # gets the same start/middle/end target sweep the housing case gets:
+    # every declared focus must resolve to a real target, and every frame
+    # must draw something.
+    access = importlib.import_module(DEMOS["accessibility"]).build()
+    access.validate()
+    for scene in access.scenes:
+        env = parse_environment(scene.environment)
+        for shot in scene.shots:
+            for progress in (0.0, 0.5, 1.0):
+                o, tr, targets = build_frame(env, list(scene.world), 1.0,
+                                             shot, progress)
+                assert o.v or tr.v, (scene.slug, shot.slug, "no geometry")
+                if shot.focus:
+                    assert shot.focus in targets, (
+                        scene.slug, shot.slug, shot.focus, "no such target")
 
     # ---- editing the document ----------------------------------------
     from presenter import edit as ED

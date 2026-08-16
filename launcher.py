@@ -504,7 +504,7 @@ def main() -> int:
                "something that already exists: the easiest is to pick a "
                "built-in demo, which alone is enough to click Launch.")
     demo = LabeledCombo(body, "Built-in demo",
-                        ["", "airflow", "housing_case",
+                        ["", "airflow", "housing_case", "accessibility",
                          "case_manufacturing", "case_bare_shell",
                          "case_more_room", "case_triangles",
                          "case_benchmark", "case_energy",
@@ -522,6 +522,11 @@ def main() -> int:
                   "whole dome at negative pressure.",
         "housing_case": "The full pro-dome argument for 2V housing, "
                         "in one video.",
+        "accessibility": "A Home That Meets You Halfway: why a single-"
+                         "level dome suits wheelchair users and anyone "
+                         "with limited mobility — a wheelchair rolls up "
+                         "the ramp, turns in place, and tours the open "
+                         "floor.",
         "case_manufacturing": "Argument 1/10: the standardized-"
                               "product/manufacturing case.",
         "case_bare_shell": "Argument 2/10: the bare-shell cost "
@@ -607,8 +612,8 @@ def main() -> int:
                   "at the bottom of this window shows progress).",
         "export_all": "render EVERY built-in demo to its own MP4 in the "
                       "folder below, one after another. This takes a "
-                      "long time — twelve videos — so start it when you "
-                      "do not need the machine.",
+                      "long time — thirteen videos — so start it when "
+                      "you do not need the machine.",
         "selftest": "run this tool's internal checks and print the "
                     "result — for troubleshooting, not for "
                     "watching.",
@@ -647,7 +652,7 @@ def main() -> int:
         body, "...only these demos (optional, comma list)", "",
         placeholder="e.g. airflow, case_energy")
     only_demos.pack(fill="x", pady=3)
-    note(body, "Leave empty to render all twelve. Use the same names "
+    note(body, "Leave empty to render all thirteen. Use the same names "
                "listed in the 'Built-in demo' box above.")
     stills = LabeledEntry(
         body, "Still times (action = shots)", "4,40,90",
