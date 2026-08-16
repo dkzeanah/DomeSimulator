@@ -670,9 +670,12 @@ def main() -> int:
                "reload it later with the script field above.")
     no_narration = CheckRow(body, "No narration (silent export)", False)
     no_narration.pack(anchor="w", pady=3)
-    fullscreen = CheckRow(body, "Fullscreen (live run)", False)
+    fullscreen = CheckRow(body, "Start full screen (compose & run)", True)
     fullscreen.pack(anchor="w")
-    note(body, "Fullscreen only matters when Action = run.")
+    note(body, "On for Action = compose (the Scene Composer opens full "
+               "screen; press F11 inside it, or its top-bar button, to "
+               "drop to a resizable window) and Action = run. Ignored by "
+               "the headless actions (shots / export / export_all).")
     fps = LabeledEntry(body, "FPS (export)", "30")
     fps.pack(fill="x", pady=3)
     size = LabeledEntry(body, "Size WxH", "1600x900")

@@ -57,8 +57,11 @@ class StudioApp(PresenterApp):
     def __init__(self, presentation: Presentation, size=(1600, 900),
                  windowed: bool = True, doc_path: Path | None = None,
                  headless: bool = False):
+        # The composer is resizable so its four panels always reflow to
+        # fit, and it can flip to full screen and back without losing any
+        # of them (F11).
         super().__init__(presentation, headless=headless, windowed=windowed,
-                         size=size)
+                         size=size, resizable=True)
         if not headless:
             self.pygame.display.set_caption(
                 f"Scene Composer -- {presentation.title}")
@@ -85,15 +88,27 @@ class StudioApp(PresenterApp):
 
     def _metrics(self) -> None:
         width, height = self.size
+        # The side panels and the timeline keep their designed size on a
+        # roomy window, but shrink rather than overrun a small one, so all
+        # four regions are always fully on screen whatever the size.
+        lib_w = int(min(LIB_W, max(150, width * 0.30)))
+        insp_w = int(min(INSP_W, max(200, width * 0.34)))
+        if width - lib_w - insp_w < 240:              # keep a usable viewport
+            spare = max(240, int(width * 0.34))
+            lib_w = insp_w = max(120, (width - spare) // 2)
+        time_h = int(min(TIMELINE_H, max(120, height * 0.32)))
         self.r_bar = (0, 0, width, BAR_H)
-        body_h = height - BAR_H - TIMELINE_H
-        self.r_lib = (0, BAR_H, LIB_W, body_h)
-        self.r_view = (LIB_W, BAR_H, width - LIB_W - INSP_W, body_h)
-        self.r_insp = (width - INSP_W, BAR_H, INSP_W, body_h)
-        self.r_time = (0, height - TIMELINE_H, width, TIMELINE_H)
+        body_h = max(80, height - BAR_H - time_h)
+        self.r_lib = (0, BAR_H, lib_w, body_h)
+        self.r_view = (lib_w, BAR_H, max(1, width - lib_w - insp_w), body_h)
+        self.r_insp = (width - insp_w, BAR_H, insp_w, body_h)
+        self.r_time = (0, BAR_H + body_h, width, height - BAR_H - body_h)
         # moderngl counts rows from the bottom; pygame from the top.
         self.viewport = (self.r_view[0], height - self.r_view[1]
                          - self.r_view[3], self.r_view[2], self.r_view[3])
+
+    def on_resize(self) -> None:
+        self._metrics()
 
     # -- document helpers -------------------------------------------------
 
@@ -261,6 +276,10 @@ class StudioApp(PresenterApp):
         w = self.font(13).size(level)[0] + 20
         self._button(surf, (x, 5, w, BAR_H - 11), level, "cycle_overlay",
                      None, tone=GREEN)
+        x += w + 5
+        fs = "Windowed (F11)" if self.is_fullscreen else "Full screen (F11)"
+        w = self.font(13).size(fs)[0] + 20
+        self._button(surf, (x, 5, w, BAR_H - 11), fs, "fullscreen", None)
         x += w + 5
         name = self.doc_path.name if self.doc_path else "unsaved"
         self._text(surf, (x + 6, 10),
@@ -772,6 +791,8 @@ class StudioApp(PresenterApp):
             target = min(scene_i + 1, len(pres.scenes) - 1)
             self._apply(ED.copy_stage(pres, scene_i, target),
                         "Stage copied into the next scene.")
+        elif action == "fullscreen":
+            self.toggle_fullscreen()
         elif action == "sel_scene":
             self.select_shot(payload)
         elif action == "clip":
@@ -1047,6 +1068,9 @@ class StudioApp(PresenterApp):
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return False
+            if event.type in (pg.VIDEORESIZE, pg.WINDOWRESIZED):
+                self.resize(pg.display.get_window_size())
+                continue
             if self.text_edit is not None:
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
@@ -1080,7 +1104,9 @@ class StudioApp(PresenterApp):
         mods = pg.key.get_mods()
         if key == pg.K_ESCAPE:
             return False
-        if key == pg.K_SPACE:
+        if key == pg.K_F11:
+            self.toggle_fullscreen()
+        elif key == pg.K_SPACE:
             self.playing = not self.playing
         elif key == pg.K_RIGHT:
             self.select_shot(self.sel_shot + 1)
@@ -1204,6 +1230,9 @@ def _tick_step(pps: float) -> float:
 
 
 def launch(presentation: Presentation, size=(1600, 900),
-           fullscreen: bool = False, doc_path=None) -> None:
+           fullscreen: bool = True, doc_path=None) -> None:
+    # The composer opens full screen so the whole desktop is usable from
+    # the start; F11 (or the top-bar button) drops it to a resizable
+    # window, and either way every panel reflows to fit.
     StudioApp(presentation, size=size, windowed=not fullscreen,
               doc_path=doc_path).run()

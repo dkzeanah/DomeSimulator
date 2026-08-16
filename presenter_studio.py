@@ -357,8 +357,12 @@ def main() -> int:
 
     if cfg.get("action") == "compose":
         from presenter.studio import launch as launch_studio
+        # The composer opens full screen by default so it is usable
+        # immediately on any monitor; F11 (or its top-bar button) drops it
+        # to a resizable window. Unchecking the launcher's Fullscreen box
+        # opts out of the full-screen start.
         launch_studio(pres, size=size or (1600, 900),
-                      fullscreen=bool(cfg.get("fullscreen", False)),
+                      fullscreen=cfg.get("fullscreen", True),
                       doc_path=cfg.get("script"))
         return 0
 
@@ -419,8 +423,8 @@ def main() -> int:
                    overlay=overlay)
         return 0
     app = PresenterApp(pres, headless=False,
-                       windowed=not cfg.get("fullscreen", False),
-                       size=size or (1600, 900))
+                       windowed=not cfg.get("fullscreen", True),
+                       size=size or (1600, 900), resizable=True)
     app.overlay_level = overlay
     app.run()
     return 0

@@ -221,7 +221,7 @@ OVERLAY_HELP = {
 
 class PresenterApp:
     def __init__(self, presentation: Presentation, headless=False,
-                 windowed=True, size=None):
+                 windowed=True, size=None, resizable=False):
         import pygame
         import moderngl
         self.pygame = pygame
@@ -229,6 +229,7 @@ class PresenterApp:
         self.pres = presentation
         self.pres.validate()
         self.size = tuple(size or presentation.size)
+        self.is_fullscreen = (not headless) and (not windowed)
         pygame.init()
         if headless:
             self.ctx = moderngl.create_standalone_context()
@@ -237,13 +238,20 @@ class PresenterApp:
                 [self.screen_tex], self.ctx.depth_renderbuffer(self.size))
         else:
             flags = pygame.OPENGL | pygame.DOUBLEBUF
-            if not windowed:
-                flags |= pygame.FULLSCREEN
-                pygame.display.set_mode((0, 0), flags)
+            if resizable:
+                flags |= pygame.RESIZABLE
+            if self.is_fullscreen:
+                pygame.display.set_mode((0, 0), flags | pygame.FULLSCREEN)
             else:
+                # Never open a window bigger than the screen, or the edges
+                # (and their controls) fall off before it can be resized.
+                info = pygame.display.Info()
+                self.size = (min(self.size[0], info.current_w),
+                             min(self.size[1], info.current_h - 64))
                 pygame.display.set_mode(self.size, flags)
             pygame.display.set_caption(f"Presenter — {presentation.title}")
             self.size = pygame.display.get_window_size()
+            self._win_flags = flags
             self.ctx = moderngl.create_context()
             self.screen_fbo = self.ctx.screen
         self.headless = headless
@@ -380,7 +388,8 @@ class PresenterApp:
             # overlay on top.
             self.screen_fbo.use()
             self.ctx.viewport = (0, 0, width, height)
-            self.screen_fbo.clear(0.04, 0.06, 0.09, 1.0)
+            self.screen_fbo.clear(0.04, 0.06, 0.09, 1.0,
+                                  viewport=(0, 0, width, height))
 
         if cam.mode <= 3:
             projection = perspective_matrix(cam.fov, aspect, 0.06, 320.0)
@@ -602,6 +611,40 @@ class PresenterApp:
             yy += line_h
         surface.blit(card, (x, y))
 
+    # ---- window sizing -------------------------------------------------
+
+    def resize(self, size) -> None:
+        """React to the window changing size: re-point the render at the
+        new drawable and let the layout reflow, so no control is ever left
+        off the edge. No new display mode is created, so the GL context --
+        and every texture and program on it -- survives the resize."""
+        if self.headless:
+            return
+        width = max(640, int(size[0]))
+        height = max(480, int(size[1]))
+        self.size = (width, height)
+        self.overlay_tex.release()
+        self.overlay_tex = self.ctx.texture(self.size, 4)
+        self.overlay_tex.filter = (self.moderngl.LINEAR, self.moderngl.LINEAR)
+        try:
+            self.screen_fbo = self.ctx.detect_framebuffer()
+        except Exception:                                # noqa: BLE001
+            self.screen_fbo = self.ctx.screen
+        self.on_resize()
+
+    def on_resize(self) -> None:
+        """Hook for subclasses to recompute their own layout on resize."""
+
+    def toggle_fullscreen(self) -> None:
+        """Flip between full screen and a resizable window, keeping every
+        panel in view either way. ``toggle_fullscreen`` swaps the flag on
+        the existing window without rebuilding the GL context."""
+        if self.headless:
+            return
+        self.pygame.display.toggle_fullscreen()
+        self.is_fullscreen = not self.is_fullscreen
+        self.resize(self.pygame.display.get_window_size())
+
     # ---- live app ------------------------------------------------------
 
     def handle_events(self):
@@ -609,11 +652,16 @@ class PresenterApp:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
+            if event.type in (pygame.VIDEORESIZE, pygame.WINDOWRESIZED):
+                self.resize(pygame.display.get_window_size())
+                continue
             if event.type == pygame.KEYDOWN:
                 key = event.key
                 if key == pygame.K_ESCAPE:
                     return False
-                if key == pygame.K_SPACE:
+                if key == pygame.K_F11:
+                    self.toggle_fullscreen()
+                elif key == pygame.K_SPACE:
                     self.playing = not self.playing
                 elif key == pygame.K_RIGHT:
                     idx, _ = self.pres.shot_at(self.timeline)

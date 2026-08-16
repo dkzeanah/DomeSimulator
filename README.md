@@ -350,9 +350,12 @@ fields, in place of the former CLI flags.
 
 Set **Action** to `compose`, leave the three Source boxes empty, and the
 launcher opens a real editing suite (`presenter/studio.py`) on an empty
-movie. Nothing about it is a mock-up of the renderer: the viewport uses
-the same engine, frame function and camera rig the exporter does, so what
-you arrange is exactly what renders.
+movie. It opens **full screen** so the whole desktop is usable from the
+start; **F11** (or the top-bar button) drops it to a **resizable window**,
+and either way all four panels reflow to fit whatever size the window is,
+from a small laptop screen up to 4K. Nothing about it is a mock-up of the
+renderer: the viewport uses the same engine, frame function and camera rig
+the exporter does, so what you arrange is exactly what renders.
 
 Four panes, in the shape of a video editor:
 
