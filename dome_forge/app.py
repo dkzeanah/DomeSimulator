@@ -27,6 +27,7 @@ from .catalog import (FILL_BY_KEY, FILL_KEYS, PROFILE_BY_KEY, PROFILE_KEYS,
 from .groups import (JOINT_BY_KEY, JOINT_KEYS, group_centre, hourglasses,
                      pentagons)
 from .jigs import STEPS, emit_jig, jig_specs, step_lines
+from . import patterns as pat
 from .layers import LAYER_KINDS, KIND_BY_KEY, LayerStack, default_stack
 from .panel import build_panel
 
@@ -135,6 +136,15 @@ def look_at(eye, target, up_hint=(0.0, 0.0, 1.0)):
     m[1, 3] = -float(np.dot(up, eye))
     m[2, 3] = float(np.dot(forward, eye))
     return m
+
+
+def _feet_inches(length_in: float) -> str:
+    """Format inches as feet+inches, carrying so 71.999 reads 6ft 0.0in
+    rather than 5ft 12.0in."""
+    tenths = round(length_in * 10)
+    feet, rem = divmod(tenths, 120)
+    inches = rem / 10.0
+    return f"{feet}ft {inches:.1f}in" if feet else f"{inches:.1f}in"
 
 
 def _ray_triangle(origin, direction, a, b, c):
@@ -271,6 +281,12 @@ class DomeForgeApp:
         # An inline name box, so saving a design can ask what to call it
         # without dragging in a whole dialog toolkit.
         self.prompt = None
+        # Cover-pattern settings, in the units a builder actually works in.
+        self.pattern_key = "pentagon"
+        self.long_strut_in = 72.0      # this dome's long strut
+        self.sheet_w_ft = 25.0
+        self.sheet_h_ft = 10.0
+        self.seam_in = 2.0
         self.yaw, self.pitch, self.distance = 38.0, 22.0, 15.0
         self.playing = True
         self.clock_t = 0.0
@@ -572,12 +588,17 @@ class DomeForgeApp:
         y += 26
         rect = (x, y, w, 20)
         label = {"dome": "Mode: DOME", "groups": "Mode: GROUPS",
-                 "jigs": "Mode: JIG SHOP",
+                 "jigs": "Mode: JIG SHOP", "patterns": "Mode: COVER PATTERNS",
                  "panel": "Mode: PANEL CREATOR"}[self.mode]
         rows.append(("button", rect, f"{label}   (m cycles)"))
         regions.append((rect, "toggle_mode", None))
         y += 26
 
+        if self.mode == "patterns":
+            out = self._layout_patterns(rows, regions, x, y, w)
+            self._layout_picker(rows, regions, width, height)
+            self._layout_prompt(rows, regions, width, height)
+            return out
         if self.mode == "jigs":
             out = self._layout_jigs(rows, regions, x, y, w)
             self._layout_toolbar(rows, regions, width, height)
@@ -816,6 +837,89 @@ class DomeForgeApp:
                      self.prompt["value"]))
         rows.append(("small", (ox + 14, oy + 70),
                      "Type a name, Enter to save, Escape to cancel."))
+
+    def current_pattern(self):
+        return pat.build_pattern(self.pattern_key, self.long_strut_in,
+                                 self.seam_in)
+
+    def _layout_patterns(self, rows, regions, x, y, w):
+        """Controls for the flat cover pattern; the pattern itself draws on
+        the overlay across the rest of the window."""
+        pattern = self.current_pattern()
+        rows.append(("head", (x, y), "PATTERN"))
+        y += 20
+        label = dict((k, l) for k, l, _ in pat.PATTERN_SPECS)[self.pattern_key]
+        rect = (x, y, w, 18)
+        rows.append(("choice", rect, ("Shape", label)))
+        regions.append((rect, "pattern_shape", None))
+        y += 24
+
+        rows.append(("head", (x, y), "THIS DOME"))
+        y += 20
+        for key, lab, lo, hi, val, shown in (
+            ("long_strut_in", "Long strut", 24.0, 180.0, self.long_strut_in,
+             f"{self.long_strut_in:.1f} in"),
+            ("seam_in", "Seam / wrap slack", 0.0, 8.0, self.seam_in,
+             f"{self.seam_in:.2f} in"),
+            ("sheet_w_ft", "Sheet length", 2.0, 60.0, self.sheet_w_ft,
+             f"{self.sheet_w_ft:.1f} ft"),
+            ("sheet_h_ft", "Sheet width", 2.0, 20.0, self.sheet_h_ft,
+             f"{self.sheet_h_ft:.1f} ft"),
+        ):
+            rect = (x, y, w, SLIDER_H)
+            rows.append(("slider", rect, (lab, val, lo, hi, shown)))
+            regions.append((rect, "pattern_slider", (key, lo, hi)))
+            y += SLIDER_H + 5
+        short_in = self.long_strut_in / pat._RATIO
+        rows.append(("small", (x, y),
+                     f"short strut is then {short_in:.2f} in "
+                     f"({int(short_in)} {round((short_in % 1) * 8)}/8)"))
+        y += 20
+
+        rows.append(("head", (x, y), "THIS PATTERN"))
+        y += 20
+        report = pat.fit_on_sheet(pattern.outline, self.sheet_w_ft * 12,
+                                  self.sheet_h_ft * 12)
+        cut_w, cut_h = report.pattern_w, report.pattern_h
+        rows.append(("mono", (x, y),
+                     f"cut size {cut_w:.1f} x {cut_h:.1f} in"))
+        y += 16
+        rows.append(("mono", (x, y),
+                     f"        {cut_w / 12:.2f} x {cut_h / 12:.2f} ft"))
+        y += 16
+        fit_text = ("FITS the sheet" if report.fits
+                    else "TOO BIG for the sheet")
+        rows.append(("small", (x, y),
+                     f"{fit_text}"
+                     + (" (rotated 90)" if report.rotated else "")))
+        y += 16
+        if pattern.per_dome:
+            rows.append(("mono", (x, y),
+                         f"dome needs {pattern.per_dome} of these"))
+            y += 16
+        if pattern.dart_angle:
+            rows.append(("mono", (x, y),
+                         f"close a {pattern.dart_angle:.1f} deg dart"))
+            y += 16
+        y += 4
+        for line in self._wrap(pattern.notes, 44):
+            rows.append(("small", (x, y), line))
+            y += 15
+        y += 4
+        rect = (x, y, w, 22)
+        rows.append(("button", rect, "Save pattern as an image..."))
+        regions.append((rect, "export_pattern", None))
+        y += 28
+
+        rows.append(("head", (x, y), "WHOLE-DOME COVERAGE"))
+        y += 18
+        for line in pat.dome_coverage(self.long_strut_in, self.sheet_w_ft * 12,
+                                      self.sheet_h_ft * 12, self.seam_in):
+            for wrapped in self._wrap(line, 46):
+                rows.append(("small", (x, y), wrapped))
+                y += 14
+            y += 2
+        return rows, regions, y + self.scroll + 20, 0
 
     def _layout_picker(self, rows, regions, width: int, height: int) -> None:
         """A real dropdown. Cycling one click at a time through 19 fills or
@@ -1183,9 +1287,18 @@ class DomeForgeApp:
                         (rect[0] + rect[2] - offset + 4, rect[1] + 2),
                     )
 
+        if self.mode == "patterns":
+            self._draw_pattern_sheet(surface, width, height)
+
         hint = self.font_small.render(self.message, True, DIM)
         surface.blit(hint, (PANEL_W + 16, height - 26))
         state = "playing" if self.playing else "paused"
+        if self.mode == "patterns":
+            keys = ("[m] jig shop   drag sliders to set dome/sheet   "
+                    "save the image to print   [esc] quit")
+            info = self.font_small.render(keys, True, DIM)
+            surface.blit(info, (PANEL_W + 16, height - 46))
+            return surface
         if self.mode == "groups":
             keys = ("[m] next mode   [Tab] pentagons/hourglasses   "
                     "[<- ->] step through   [esc] quit")
@@ -1198,6 +1311,115 @@ class DomeForgeApp:
         info = self.font_small.render(keys, True, DIM)
         surface.blit(info, (PANEL_W + 16, height - 46))
         return surface
+
+    def _draw_pattern_sheet(self, surface, width: int, height: int) -> None:
+        """A to-scale CAD drawing of the current cover pattern on its sheet:
+        sheet rectangle, net cut line, seam-allowance line, fold lines,
+        the dart wedge, and dimensioned edges."""
+        pg = self.pygame
+        pattern = self.current_pattern()
+        sheet_w = self.sheet_w_ft * pat.IN_PER_FT
+        sheet_h = self.sheet_h_ft * pat.IN_PER_FT
+        report = pat.fit_on_sheet(pattern.outline, sheet_w, sheet_h)
+
+        # Drawing area: everything right of the left panel, with margins.
+        ax, ay = PANEL_W + 30, 34
+        # A header strip carries the legend and fit banner, always clear of
+        # the pattern even when an oversized one pokes past the sheet.
+        legend = [
+            ((245, 185, 93), f"cut line (+{self.seam_in:.1f}in slack)"),
+            ((88, 213, 255), "finished edge"),
+            ((113, 227, 166), "fold (score, don't cut)"),
+        ]
+        lx = ax
+        for color, text in legend:
+            pg.draw.rect(surface, color, (lx, ay + 3, 14, 8))
+            surface.blit(self.font_small.render(text, True, DIM), (lx + 20, ay))
+            lx += 40 + self.font_small.size(text)[0]
+        banner = ("FITS this sheet" if report.fits
+                  else "TOO BIG -- use a smaller group, or a wider sheet")
+        bcolor = (113, 227, 166) if report.fits else (255, 130, 130)
+        btext = self.font_bold.render(banner, True, bcolor)
+        surface.blit(btext, (width - 30 - btext.get_width(), ay - 2))
+
+        ay += 26
+        aw, ah = width - ax - 30, height - ay - 40
+        span_w = max(sheet_w, report.pattern_w) + 12
+        span_h = max(sheet_h, report.pattern_h) + 12
+        scale = min(aw / span_w, ah / span_h)
+        # Anchor sheet and pattern to the same top-left corner.
+        ox, oy = ax, ay
+
+        pg.draw.rect(surface, (18, 30, 44),
+                     (ox, oy, sheet_w * scale, sheet_h * scale))
+        pg.draw.rect(surface, (70, 96, 120),
+                     (ox, oy, sheet_w * scale, sheet_h * scale), 2)
+        surface.blit(self.font_small.render(
+            f"SHEET  {self.sheet_w_ft:.1f} x {self.sheet_h_ft:.1f} ft "
+            f"({sheet_w:.0f} x {sheet_h:.0f} in)", True, (110, 140, 165)),
+            (ox + 6, oy + 6))
+
+        # Pattern's bounding box laid at the sheet's top-left corner.
+        nx0, ny0, _, _ = pat.bounds(pattern.outline)
+        pad = 6 * scale
+        cx = sum(p[0] for p in pattern.net) / len(pattern.net)
+        cy = sum(p[1] for p in pattern.net) / len(pattern.net)
+
+        def pat_px(pt):
+            return (ox + pad + (pt[0] - nx0) * scale,
+                    oy + pad + (pt[1] - ny0) * scale)
+
+        # Seam-allowance (cut) line -- amber, filled faintly.
+        cut = [pat_px(p) for p in pattern.outline]
+        shade = pg.Surface((width, height), pg.SRCALPHA)
+        pg.draw.polygon(shade, (245, 185, 93, 40), cut)
+        surface.blit(shade, (0, 0))
+        pg.draw.polygon(surface, (245, 185, 93), cut, 2)
+        # Net (finished panel edge) -- cyan, and dimensioned.
+        net = [pat_px(p) for p in pattern.net]
+        pg.draw.polygon(surface, (88, 213, 255), net, 2)
+        for length, a, b in pattern.net_edges:
+            pa, pb = pat_px(a), pat_px(b)
+            mid = ((pa[0] + pb[0]) / 2, (pa[1] + pb[1]) / 2)
+            # Push the label to the outside of the edge (away from the
+            # pattern's centre) so radial dimensions don't sit on the
+            # fold lines.
+            cpx = pat_px((cx, cy))
+            ox2, oy2 = mid[0] - cpx[0], mid[1] - cpx[1]
+            norm = math.hypot(ox2, oy2) or 1.0
+            lx, ly = mid[0] + ox2 / norm * 16, mid[1] + oy2 / norm * 16
+            text = _feet_inches(length)
+            label = self.font_small.render(text, True, (205, 225, 240))
+            surface.blit(label, (lx - label.get_width() / 2,
+                                 ly - label.get_height() / 2))
+        # Fold lines -- dashed green.
+        for a, b in pattern.folds:
+            self._dashed(surface, pat_px(a), pat_px(b), (113, 227, 166))
+        # The dart wedge -- red, filled faintly, labelled.
+        if pattern.dart is not None:
+            d = [pat_px(p) for p in pattern.dart]
+            dshade = pg.Surface((width, height), pg.SRCALPHA)
+            pg.draw.polygon(dshade, (255, 90, 90, 70), d)
+            surface.blit(dshade, (0, 0))
+            for i in range(len(d)):
+                pg.draw.line(surface, (255, 120, 120), d[i], d[(i + 1) % len(d)], 2)
+            surface.blit(self.font_small.render(
+                f"dart {pattern.dart_angle:.1f} deg -- sew/lap closed",
+                True, (255, 150, 150)),
+                (d[1][0] + 8, d[1][1] + 6))
+
+    def _dashed(self, surface, a, b, color, dash: int = 9) -> None:
+        pg = self.pygame
+        length = math.dist(a, b)
+        if length < 1e-6:
+            return
+        steps = max(1, int(length / dash))
+        for i in range(0, steps, 2):
+            t0 = i / steps
+            t1 = min(1.0, (i + 1) / steps)
+            p0 = (a[0] + (b[0] - a[0]) * t0, a[1] + (b[1] - a[1]) * t0)
+            p1 = (a[0] + (b[0] - a[0]) * t1, a[1] + (b[1] - a[1]) * t1)
+            pg.draw.line(surface, color, p0, p1, 2)
 
     def upload_overlay(self, surface) -> None:
         size = surface.get_size()
@@ -1260,6 +1482,9 @@ class DomeForgeApp:
                 active.set(key, low + (high - low) * frac)
         elif action == "layer_opacity":
             self.stack.layers[payload].opacity = frac
+        elif action == "pattern_slider":
+            key, low, high = payload
+            setattr(self, key, low + (high - low) * frac)
 
     def click(self, pos, width, height, button: int) -> None:
         found = self.hit(pos, width, height)
@@ -1357,6 +1582,12 @@ class DomeForgeApp:
                 "PENTAGON PRESET",
                 [(p.key, p.label) for p in PENTAGON_PRESETS],
                 None, "pentagon_preset")
+        elif action == "pattern_shape":
+            self.open_picker("COVER PATTERN",
+                             [(k, l) for k, l, _ in pat.PATTERN_SPECS],
+                             self.pattern_key, "pattern_shape")
+        elif action == "export_pattern":
+            self._export_pattern()
         elif action == "apply_fill_all":
             chosen = stack.assignments.fill_for(self.primary_face)
             stack.assignments.fill = chosen
@@ -1386,7 +1617,7 @@ class DomeForgeApp:
 
     def _next_mode(self) -> str:
         return {"dome": "groups", "groups": "panel",
-                "panel": "jigs", "jigs": "dome"}[self.mode]
+                "panel": "patterns", "patterns": "jigs", "jigs": "dome"}[self.mode]
 
 
     def _roll_selection(self, turn: int, mirror: bool) -> None:
@@ -1501,6 +1732,15 @@ class DomeForgeApp:
         elif action == "add_layer":
             layer = stack.add(key)
             self.notify(f"Added {layer.name}.")
+        elif action == "pattern_shape":
+            self.pattern_key = key
+
+    def _export_pattern(self) -> None:
+        from pathlib import Path
+        label = self.pattern_key
+        out = Path(f"dome_forge_shots/pattern-{label}.png")
+        self.capture(out)
+        self.notify(f"Saved {out}")
 
     def _open_catalog_picker(self, action: str, payload) -> None:
         """Turn any catalog choice into a real dropdown."""
@@ -1690,7 +1930,10 @@ class DomeForgeApp:
     def set_mode(self, mode: str) -> None:
         self.mode = mode
         self.scroll = 0
-        if mode == "groups":
+        if mode == "patterns":
+            self.notify("Cover Patterns: pick a shape, set your dome and "
+                        "sheet, arrows change shape. Save the image to print.")
+        elif mode == "groups":
             self.distance = 7.0
             self.notify("Groups: Tab swaps pentagons/hourglasses, "
                         "arrows step through them.")
@@ -1762,6 +2005,11 @@ class DomeForgeApp:
             self.group_index += 1
         elif event.key == pg.K_LEFT and self.mode == "groups":
             self.group_index -= 1
+        elif event.key in (pg.K_RIGHT, pg.K_LEFT) and self.mode == "patterns":
+            keys = [k for k, _, _ in pat.PATTERN_SPECS]
+            step = 1 if event.key == pg.K_RIGHT else -1
+            i = keys.index(self.pattern_key) if self.pattern_key in keys else 0
+            self.pattern_key = keys[(i + step) % len(keys)]
         elif event.key == pg.K_SPACE:
             self.playing = not self.playing
         elif event.key == pg.K_c:
@@ -1800,7 +2048,12 @@ class DomeForgeApp:
         self.scene_program["u_camera"].value = tuple(float(v) for v in eye)
         self.scene_program["u_light"].value = (-0.42, -0.58, -0.70)
 
-        if self.mode == "jigs":
+        if self.mode == "patterns":
+            # A flat cutting pattern is a 2D drawing, not a 3D scene, so
+            # the scene stays empty and the whole picture is drawn on the
+            # overlay in draw_ui().
+            opaque, translucent = Batch(), Batch()
+        elif self.mode == "jigs":
             opaque, translucent = self.build_jig_scene()
         elif self.mode == "panel":
             opaque, translucent = self.build_panel_scene()

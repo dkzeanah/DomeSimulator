@@ -505,6 +505,42 @@ build: half-round logs on the long seams, quarter-round on the short
 ones, 2x2 on the ten equilateral caps. Split a trunk once for two
 half-rounds; split those again for four quarter-rounds per log.
 
+### Cover patterns (flat developments)
+
+A dome is doubly curved, but it is made of flat triangles, so any
+connected patch develops into a flat cutting pattern exactly -- the way
+a sailmaker or a stitch-and-glue boatbuilder flattens a curved surface
+into panels cut from flat stock. `m` reaches a **Cover Patterns** mode
+(arrows change the shape) that does this and lays the result on your
+sheet, to scale, with real dimensions:
+
+- **Single / double / triple** triangles develop as *strips* -- a chain
+  of triangles has no loop around a vertex, so it flattens with no gap:
+  an exact, seamless pattern. The ridge between triangles is a fold line
+  (score it, don't cut).
+- **Pentagon** (five triangles) and **hexagon** (six) develop as *fans*
+  around their centre vertex. Going all the way around meets the
+  **angular deficit** -- the flat angles don't add to 360 degrees -- so
+  the fan leaves an open wedge: a **~15.7 deg dart** for a pentagon,
+  **~17.7 deg** for a hexagon. Lay the sheet flat, close the dart (sew,
+  or lap and staple), and the centre lifts into the dome's curve. That
+  dart *is* the "upward centre".
+
+Set your dome's long strut (72 in for the reference dome, giving a
+63.67 in / 63⅝ in short strut) and your sheet size, add a seam / wrap
+allowance for the slack that folds around the frame and staples, and the
+drawing shows the cut line, the finished edge, the fold lines, and the
+dart, dimensioned in feet and inches. It reports whether the pattern
+fits the sheet and how many of each the whole dome needs -- and a
+monolithic pentagon on a 25 x 10 ft sheet does **not** fit (it develops
+to about 10.5 x 10.6 ft), which is exactly the kind of thing this view
+exists to catch before you cut. Save the image to print.
+
+Every length in every pattern is developed from `two_v_demo`'s own
+geometry and checked in the selftest to equal the true 3D edge to
+within 1e-6 in, so a printed pattern is cut to the same numbers the
+frame was built to.
+
 ### The design library
 
 The whole tool is built around one chain, and it is now explicit:

@@ -167,6 +167,39 @@ def _selftest() -> int:
     assert set(restored.triangles) == set(library.triangles)
     assert set(restored.groups) == set(library.groups)
 
+    # Cover patterns: every development must preserve the true 3D edge
+    # lengths exactly, or a cut piece would not fit the frame.
+    from . import patterns as _pat
+    import numpy as _np
+    verts, faces, _cbe, at_vertex, _R = _pat._scaled(72.0)
+
+    def _dev_error(placed):
+        worst = 0.0
+        for tri in placed:
+            vs = list(tri.keys())
+            for i in range(3):
+                a, b = vs[i], vs[(i + 1) % 3]
+                flat = ((tri[a][0] - tri[b][0]) ** 2
+                        + (tri[a][1] - tri[b][1]) ** 2) ** 0.5
+                true = float(_np.linalg.norm(verts[a] - verts[b]))
+                worst = max(worst, abs(flat - true))
+        return worst
+
+    for degree, want in ((5, 15.690), (6, 17.724)):
+        apex = next(v for v, fs in at_vertex.items() if len(fs) == degree)
+        placed, _b, _f, _d, deficit = _pat.unfold_fan(72.0, apex)
+        assert _dev_error(placed) < 1e-6, (degree, _dev_error(placed))
+        assert abs(deficit - want) < 0.01, (degree, deficit)
+    for key, _label, _n in _pat.PATTERN_SPECS:
+        pattern = _pat.build_pattern(key, 72.0, 2.0)
+        assert pattern.outline and pattern.net, key
+        # Seam allowance must add area, never remove it.
+        assert _pat.polygon_area(pattern.outline) > _pat.polygon_area(pattern.net), key
+    # The equilateral face is three 72s; the isosceles is 72 + two shorts.
+    equi = sorted(round(e) for e, _a, _b
+                  in _pat.build_pattern("single_equi", 72.0, 0.0).net_edges)
+    assert equi == [72, 72, 72], equi
+
     from .groups import PENTAGON_PRESETS
     for preset in PENTAGON_PRESETS:
         assert len(preset.fills) == 5, preset
@@ -214,6 +247,7 @@ def _selftest() -> int:
           f"{len(hours)} hourglasses, {len(JOINT_KEYS)} waist joints; "
           f"library {len(library.triangles)} triangle + "
           f"{len(library.groups)} group designs; "
+          f"{len(_pat.PATTERN_SPECS)} cover patterns (edges exact); "
           f"jigs verified against the 3D faces, "
           f"{'+'.join(str(s.triangles_needed) for s in specs)} triangles)")
     return 0

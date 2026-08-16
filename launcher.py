@@ -291,6 +291,18 @@ def main() -> int:
                "braces bridging the sides that form the points, a "
                "monolithic single-piece waist, a steel gusset plate, or "
                "a bolted lap.")
+    note(body, "Press [m] again for COVER PATTERNS — flatten the curved "
+               "dome into cuttable shapes for a fabric, poly, or "
+               "fiberglass cover, the way a sailmaker or stitch-and-glue "
+               "boatbuilder develops a curved surface. Pick a shape "
+               "(single/double/triple triangle, a whole pentagon, a "
+               "hexagon), set your dome's long strut and your sheet size "
+               "(e.g. 25 x 10 ft), and it lays the flat pattern on the "
+               "sheet to scale with real dimensions, fold lines, the "
+               "wrap/seam slack, and the dart that pulls a pentagon up "
+               "into the dome's curve — then tells you whether it fits "
+               "and how many the whole dome needs. Save the image to "
+               "print or take to the shop.")
     note(body, "Press [m] again for the PANEL CREATOR — design one panel "
                "on a bench out of any three struts from the library "
                "(split logs, 2x2/2x4/2x6, PVC, steel and aluminium tube, "
