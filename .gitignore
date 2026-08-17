@@ -37,3 +37,6 @@ two_v_demo_output/
 
 # Node dependencies (third-party libraries, never commit)
 node_modules/
+
+# Generated trailer render outputs (recreate with build_launcher_trailer.py)
+deliverables/launcher_trailer/render_*/
