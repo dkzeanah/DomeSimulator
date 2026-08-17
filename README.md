@@ -1,5 +1,7 @@
 # Geodesic Dome Creator
 
+📺 **[Watch the full demo playlist on YouTube](https://youtube.com/playlist?list=PLWuR_A0_g37I&si=3n6spA8d0Q8Zc48V)** — every tool in this repo demonstrated on video.
+
 A walkable, build-a-home style **parametric dome customizer** with
 RuneScape-style controls: an orbit camera, click-to-move avatar, a
 clickable toolbar, a transparent-roof aerial view, and a 28-slot
