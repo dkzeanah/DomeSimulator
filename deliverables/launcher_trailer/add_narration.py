@@ -1,24 +1,30 @@
 #!/usr/bin/env python3
-"""Add an offline narration track to the generated launcher trailer.
+"""Add a neural narration track to the generated launcher trailer.
 
-Uses Windows' built-in SAPI voices (System.Speech) via PowerShell -- fully
-offline, nothing to install, and it does NOT touch any personal voice profile.
-Each scene's caption line is synthesized, padded to that scene's exact duration
-so it stays in sync, concatenated into one track, and muxed onto the silent
-trailer. Non-overwriting: writes a *_narrated.mp4 beside the original.
+Uses the SAME engine and voice as the project's presentation/2V video exports:
+edge-tts with `en-US-AndrewMultilingualNeural` (see two_v_demo/audio.py's
+DEFAULT_VOICE and presenter/narrate.py). Each scene's caption line is
+synthesized, padded to that scene's exact duration so it stays in sync,
+concatenated into one track, and muxed onto the silent trailer.
+
+Non-overwriting for the mp4 output name pattern; writes *_narrated.mp4 beside
+the original. Requires network access (edge-tts streams from Microsoft's
+neural endpoint), exactly like the real exporters.
 
 Usage:
-    py -3.12 add_narration.py <render_dir> [--voice "Microsoft David Desktop"]
+    py -3.12 add_narration.py <render_dir>
+        [--voice en-US-AndrewMultilingualNeural] [--rate +0%] [--pitch +0Hz]
 """
 from __future__ import annotations
 
 import argparse
+import asyncio
 import json
 import shutil
 import subprocess
-import sys
-import tempfile
 from pathlib import Path
+
+DEFAULT_VOICE = "en-US-AndrewMultilingualNeural"  # matches two_v_demo/audio.py
 
 
 def run(cmd: list[str]) -> None:
@@ -27,46 +33,23 @@ def run(cmd: list[str]) -> None:
         raise SystemExit(f"command failed ({p.returncode}): {cmd[0]}")
 
 
-def ascii_speak(text: str) -> str:
-    """Normalize unicode punctuation so PowerShell 5.1 parses the string."""
-    repl = {"—": " - ", "–": "-", "‘": "'", "’": "'",
-            "“": "'", "”": "'", "·": ",", "…": "...",
-            "&": "and", '"': "'"}
-    for k, v in repl.items():
-        text = text.replace(k, v)
-    return text.encode("ascii", "ignore").decode("ascii")
-
-
-def synth_all(scenes, out_dir: Path, voice: str, rate: int) -> None:
-    """Drive SAPI once via a generated PowerShell script."""
+async def synth_all(scenes, out_dir: Path, voice: str, rate: str,
+                    pitch: str) -> None:
+    import edge_tts
     out_dir.mkdir(parents=True, exist_ok=True)
-    lines = [
-        "Add-Type -AssemblyName System.Speech",
-        "$s = New-Object System.Speech.Synthesis.SpeechSynthesizer",
-        f'$s.SelectVoice("{voice}")',
-        f"$s.Rate = {rate}",
-        "$s.Volume = 100",
-    ]
     for i, sc in enumerate(scenes, 1):
-        wav = (out_dir / f"line-{i:02d}.wav").as_posix().replace("/", "\\")
-        text = ascii_speak(sc["narration"])
-        lines.append(f'$s.SetOutputToWaveFile("{wav}")')
-        lines.append(f'$s.Speak("{text}")')
-    lines.append("$s.Dispose()")
-    with tempfile.NamedTemporaryFile("w", suffix=".ps1", delete=False,
-                                     encoding="utf-8-sig") as fh:
-        fh.write("\n".join(lines))
-        ps1 = fh.name
-    run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ps1])
-    Path(ps1).unlink(missing_ok=True)
+        dst = out_dir / f"line-{i:02d}.mp3"
+        communicate = edge_tts.Communicate(sc["narration"], voice,
+                                            rate=rate, pitch=pitch)
+        await communicate.save(str(dst))
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("render_dir", type=Path)
-    ap.add_argument("--voice", default="Microsoft David Desktop")
-    ap.add_argument("--rate", type=int, default=-1,
-                    help="SAPI rate -10..10 (slightly slow reads best)")
+    ap.add_argument("--voice", default=DEFAULT_VOICE)
+    ap.add_argument("--rate", default="+0%", help="edge-tts rate, e.g. -5%%")
+    ap.add_argument("--pitch", default="+0Hz")
     args = ap.parse_args()
 
     ffmpeg = shutil.which("ffmpeg")
@@ -81,15 +64,15 @@ def main() -> int:
         raise SystemExit(f"trailer video not found: {video}")
 
     voice_dir = run_dir / "narration"
-    synth_all(scenes, voice_dir, args.voice, args.rate)
+    asyncio.run(synth_all(scenes, voice_dir, args.voice, args.rate, args.pitch))
 
     # Pad each spoken line to its scene's exact duration, uniform PCM format.
     seg_paths = []
     for i, sc in enumerate(scenes, 1):
-        src = voice_dir / f"line-{i:02d}.wav"
+        src = voice_dir / f"line-{i:02d}.mp3"
         seg = voice_dir / f"seg-{i:02d}.wav"
         dur = float(sc["duration_seconds"])
-        run([ffmpeg, "-y", "-i", str(src), "-af", "aresample=24000,apad",
+        run([ffmpeg, "-y", "-i", str(src), "-af", "aresample=48000,apad",
              "-ac", "1", "-t", f"{dur:.3f}", "-c:a", "pcm_s16le", str(seg)])
         seg_paths.append(seg)
 
@@ -109,7 +92,8 @@ def main() -> int:
          "+faststart", str(out)])
 
     print(json.dumps({"narrated_video": str(out), "audio_track": str(full),
-                      "voice": args.voice, "scenes": len(scenes)}, indent=2))
+                      "voice": args.voice, "rate": args.rate,
+                      "scenes": len(scenes)}, indent=2))
     return 0
 
 
