@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "name": "My Voice",
+  "speaker_label": "Don",
+  "created_at": "2026-08-04T17:13:26+00:00",
+  "updated_at": "2026-08-04T17:13:26+00:00",
+  "offline_only": true,
+  "canonical_sample_rate": 24000,
+  "canonical_channels": 1,
+  "canonical_sample_width": 2
+}

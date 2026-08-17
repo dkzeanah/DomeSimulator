@@ -34,3 +34,6 @@ two_v_demo_output/
 # Local editor/tool state
 .claude/
 .vscode/
+
+# Node dependencies (third-party libraries, never commit)
+node_modules/

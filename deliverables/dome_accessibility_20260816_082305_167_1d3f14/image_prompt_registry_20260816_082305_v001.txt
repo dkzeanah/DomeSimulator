@@ -1,0 +1,24 @@
+WHEELCHAIR-FIRST DOME LIVING — IMAGE PROMPT REGISTRY V001
+Run ID: dome_accessibility_20260816_082305_167_1d3f14
+Generation mode used for this presentation: OpenAI ImageGen, built-in model defaults.
+
+GLOBAL CONTINUITY
+Use the same dignified older adult wheelchair user across related images: active posture, contemporary manual wheelchair with plausible wheel and footrest geometry, neutral practical clothing, calm confidence. Warm modern dome with pale wood, matte continuous floors, straight service partitions, soft daylight, residential rather than clinical. 16:9 landscape. No text, labels, logos, watermarks, ramps with impossible geometry, duplicate people, warped wheels, blocked routes, loose rugs, or steps on the primary path.
+
+P01_HERO_ENTRY
+Use case: photorealistic-natural. Asset type: persuasive presentation hero image for a wheelchair-accessible dome home. Show a dignified older adult wheelchair user independently approaching and entering a purpose-built, single-level geodesic dome through a flush, wide doorway from a broad straight gently sloped route with a level landing. Premium architectural editorial photography; warm natural materials; no text or watermark.
+
+P02_OPEN_CIRCULATION
+Use case: photorealistic-natural. Show an older adult wheelchair user moving independently from the entrance into a broad open-plan living and dining area inside a single-level geodesic dome. Continuous matte floor, wide route, straight radial partitions, uncluttered furniture, realistic architectural photography, no text.
+
+P03_ACCESSIBLE_KITCHEN
+Use case: photorealistic-natural. Show an elderly wheelchair user preparing tea independently at a lowered pull-under work surface in an open kitchen inside a geodesic dome. Reachable storage and controls, broad turning area, residential rather than institutional, no text.
+
+P04_BED_BATH_SUITE
+Use case: photorealistic-natural. Show an older wheelchair user moving through a wide sliding doorway from a bedroom into an accessible bathroom in a geodesic dome. Flush floor, roll-in shower, fold-down seat, grab bars, wall-mounted sink, broad turning space, no text.
+
+P05_DOME_CUTAWAY
+Use case: stylized-concept. Create a polished isometric architectural cutaway of a single-level accessible geodesic dome home with a wheelchair user entering and a subtle blue floor path connecting the living area, kitchen, bedroom, and bathroom around an open central turning zone. No text.
+
+VIDEO EXTENSION RULE
+For text-to-video, use one prompt above as a locked reference frame and append only one short action and one camera move, for example: “The wheelchair user rolls smoothly across the flush threshold while the camera makes a slow two-meter dolly forward. Preserve all architecture, proportions, wardrobe, chair geometry, light direction, and materials. No new people or objects.” Generate 4–8 second clips and assemble them in a deterministic timeline.

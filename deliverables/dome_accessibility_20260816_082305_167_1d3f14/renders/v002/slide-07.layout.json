@@ -1,0 +1,784 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/l51lgy",
+    "id": "l51lgy",
+    "slide": 7,
+    "layoutId": "eb223f3f-2196-40fa-bbd7-86d49bfc57f4",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "e9ef6849-e915-43ca-b020-3ddef5b53bda",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "eb223f3f-2196-40fa-bbd7-86d49bfc57f4",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "e9ef6849-e915-43ca-b020-3ddef5b53bda",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "e9ef6849-e915-43ca-b020-3ddef5b53bda",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wrq5w76d",
+      "id": "1",
+      "bbox": [
+        42,
+        30,
+        460,
+        24
+      ],
+      "geometry": "rect",
+      "text": "WHEELCHAIR-FIRST DOME LIVING",
+      "textPreview": "WHEELCHAIR-FIRST DOME LIVING",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHEELCHAIR-FIRST DOME LIVING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHEELCHAIR-FIRST DOME LIVING",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHEELCHAIR-FIRST DOME LIVING",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vqho3m5s",
+      "id": "2",
+      "bbox": [
+        42,
+        70,
+        1160,
+        74
+      ],
+      "geometry": "rect",
+      "text": "The kitchen stays part of life",
+      "textPreview": "The kitchen stays part of life",
+      "resolvedFontSize": 47,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 47,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The kitchen stays part of life"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The kitchen stays part of life",
+          "resolvedTextStyle": {
+            "fontSize": 47,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "The kitchen stays part of life",
+              "fontSize": 47,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ap8nuho7",
+      "id": "3",
+      "name": "top-rule-7",
+      "bbox": [
+        42,
+        158,
+        1196,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#B8BCC4",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wj69wnu",
+      "id": "4",
+      "bbox": [
+        1187,
+        672,
+        52,
+        20
+      ],
+      "geometry": "rect",
+      "text": "07",
+      "textPreview": "07",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#5B6470",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "07",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#5B6470",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "07",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#5B6470",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/xsjy9s3u",
+      "id": "5",
+      "bbox": [
+        42,
+        190,
+        730,
+        438
+      ],
+      "geometry": "roundRect",
+      "alt": "Older wheelchair user preparing tea at a pull-under counter in an open kitchen inside a dome home",
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0.03,
+        "top": 0,
+        "right": 0.02,
+        "bottom": 0
+      },
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 3196"
+          }
+        ]
+      },
+      "prompt": "Use case: photorealistic-natural. Show an elderly wheelchair user preparing tea independently at a lowered pull-under work surface in an open kitchen inside a geodesic dome. Reachable storage and controls, broad turning area, residential rather than institutional, no text.",
+      "asset": {
+        "assetId": "6d535e4c-5406-4e3d-a74b-e61cf13f8d13",
+        "contentType": "image/png",
+        "prompt": "Use case: photorealistic-natural. Show an elderly wheelchair user preparing tea independently at a lowered pull-under work surface in an open kitchen inside a geodesic dome. Reachable storage and controls, broad turning area, residential rather than institutional, no text.",
+        "byteLength": 2386967
+      }
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ju1o7m5o",
+      "id": "6",
+      "bbox": [
+        820,
+        202,
+        390,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Design for reach, not adaptation",
+      "textPreview": "Design for reach, not adaptation",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 32,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Design for reach, not"
+          },
+          {
+            "index": 2,
+            "text": "adaptation"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Design for reach, not adaptation",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Design for reach, not adaptation",
+              "fontSize": 32,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/itsnyh43",
+      "id": "7",
+      "bbox": [
+        820,
+        300,
+        390,
+        300
+      ],
+      "geometry": "rect",
+      "text": "Pull under. Provide knee and toe clearance at a true work surface.\nBring storage down. Use drawers, pull-outs, and reachable pantry zones.\nOpen the turning area. Keep the chair clear of appliance doors and traffic.\nShare the room. An open kitchen keeps cooking social, visible, and connected.",
+      "textPreview": "Pull under. Provide knee and toe clearance at a true work surface. | Bring storage down. Use drawers, pull-outs, and reachable pantry zon...",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 10,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Pull under. Provide knee and toe"
+          },
+          {
+            "index": 2,
+            "text": "clearance at a true work surface."
+          },
+          {
+            "index": 3,
+            "text": "• Bring storage down. Use drawers,"
+          },
+          {
+            "index": 4,
+            "text": "pull-outs, and reachable pantry zones."
+          },
+          {
+            "index": 5,
+            "text": "• Open the turning area. Keep the"
+          },
+          {
+            "index": 6,
+            "text": "chair clear of appliance doors and"
+          },
+          {
+            "index": 7,
+            "text": "traffic."
+          },
+          {
+            "index": 8,
+            "text": "• Share the room. An open kitchen"
+          },
+          {
+            "index": 9,
+            "text": "keeps cooking social, visible, and"
+          },
+          {
+            "index": 10,
+            "text": "connected."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pull under. Provide knee and toe clearance at a true work surface.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pull under. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Provide knee and toe clearance at a true work surface.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Bring storage down. Use drawers, pull-outs, and reachable pantry zones.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Bring storage down. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Use drawers, pull-outs, and reachable pantry zones.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "Open the turning area. Keep the chair clear of appliance doors and traffic.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Open the turning area. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Keep the chair clear of appliance doors and traffic.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "text": "Share the room. An open kitchen keeps cooking social, visible, and connected.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Share the room. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "An open kitchen keeps cooking social, visible, and connected.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0zmxsnq",
+      "id": "8",
+      "bbox": [
+        0,
+        0,
+        1280,
+        174
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0z65on65",
+      "id": "9",
+      "bbox": [
+        42,
+        30,
+        460,
+        24
+      ],
+      "geometry": "rect",
+      "text": "WHEELCHAIR-FIRST DOME LIVING",
+      "textPreview": "WHEELCHAIR-FIRST DOME LIVING",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHEELCHAIR-FIRST DOME LIVING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHEELCHAIR-FIRST DOME LIVING",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHEELCHAIR-FIRST DOME LIVING",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25ovyp47",
+      "id": "10",
+      "bbox": [
+        42,
+        70,
+        1160,
+        74
+      ],
+      "geometry": "rect",
+      "text": "The kitchen stays part of life",
+      "textPreview": "The kitchen stays part of life",
+      "resolvedFontSize": 47,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 47,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The kitchen stays part of life"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The kitchen stays part of life",
+          "resolvedTextStyle": {
+            "fontSize": 47,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "The kitchen stays part of life",
+              "fontSize": 47,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36xcruls",
+      "id": "11",
+      "name": "repainted-top-rule-7",
+      "bbox": [
+        42,
+        158,
+        1196,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#B8BCC4",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

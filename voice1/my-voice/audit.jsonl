@@ -1,0 +1,77 @@
+{"at": "2026-08-04T17:13:26+00:00", "details": {"clip_count": 0}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:13:26+00:00", "details": {"name": "My Voice", "speaker": "Don"}, "event": "project_created"}
+{"at": "2026-08-04T17:13:26+00:00", "details": {"speaker_name": "Don", "statement_version": 1}, "event": "consent_asserted"}
+{"at": "2026-08-04T17:13:49+00:00", "details": {"clip_count": 1}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:13:59+00:00", "details": {"clip_count": 2}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:14:09+00:00", "details": {"clip_count": 3}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:14:17+00:00", "details": {"clip_count": 4}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:14:28+00:00", "details": {"clip_count": 5}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:14:34+00:00", "details": {"clip_count": 6}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:14:40+00:00", "details": {"clip_count": 7}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:14:46+00:00", "details": {"clip_count": 8}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:14:58+00:00", "details": {"clip_count": 9}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:15:04+00:00", "details": {"clip_count": 10}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:15:26+00:00", "details": {"clip_count": 11}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:15:34+00:00", "details": {"clip_count": 12}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:15:41+00:00", "details": {"clip_count": 13}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:15:47+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:17:55+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:17:58+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:01+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:02+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:04+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:07+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:08+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:10+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:12+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:14+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:15+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:21+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:23+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:25+00:00", "details": {"clip_count": 14}, "event": "metadata_saved"}
+{"at": "2026-08-04T17:18:30+00:00", "details": {"profile_id": "teacher-v001", "sha256": "e6baee25e7fb3d147f1e4a59954c879175f47aba8d216208b96a7c2c1ff46f35"}, "event": "profile_locked"}
+{"at": "2026-08-04T17:18:55+00:00", "details": {"clips": 13, "path": "C:\\Users\\Don\\Desktop\\DomeSim\\voice1\\export\\metadata.csv"}, "event": "f5_dataset_exported"}
+{"at": "2026-08-04T19:56:35+00:00", "details": {"command": "C:\\Users\\Don\\Desktop\\DomeSim\\.venv-voice\\Scripts\\f5-tts_finetune-gradio.EXE", "pid": 6556, "run_id": "20260804T195635+0000-f5-gui"}, "event": "f5_finetune_gui_launched"}
+{"at": "2026-08-04T19:58:37+00:00", "details": {"command": "C:\\Users\\Don\\Desktop\\DomeSim\\.venv-voice\\Scripts\\f5-tts_finetune-gradio.EXE", "pid": 23588, "run_id": "20260804T195837+0000-f5-gui"}, "event": "f5_finetune_gui_launched"}
+{"at": "2026-08-04T19:58:39+00:00", "details": {"command": "C:\\Users\\Don\\Desktop\\DomeSim\\.venv-voice\\Scripts\\f5-tts_finetune-gradio.EXE", "pid": 20948, "run_id": "20260804T195839+0000-f5-gui"}, "event": "f5_finetune_gui_launched"}
+{"at": "2026-08-04T20:21:57+00:00", "details": {"command": "C:\\Users\\Don\\Desktop\\DomeSim\\.venv-voice\\Scripts\\f5-tts_finetune-gradio.EXE", "pid": 30112, "run_id": "20260804T202157+0000-f5-gui"}, "event": "f5_finetune_gui_launched"}
+{"at": "2026-08-04T22:39:55+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/audio/speech-20260804-173752.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:42:53+00:00", "details": {"command": "C:\\Users\\Don\\Desktop\\DomeSim\\.venv-f5\\Scripts\\f5-tts_finetune-gradio.exe", "pid": 47156, "run_id": "20260804T224252+0000-f5-gui"}, "event": "f5_finetune_gui_launched"}
+{"at": "2026-08-04T22:47:07+00:00", "details": {"profile_id": "teacher-v002", "sha256": "e6baee25e7fb3d147f1e4a59954c879175f47aba8d216208b96a7c2c1ff46f35"}, "event": "profile_locked"}
+{"at": "2026-08-04T22:47:33+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/audio/speech-20260804-174726.wav", "profile_id": "teacher-v002"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:48:38+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_01.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:48:58+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_02.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:49:19+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_03.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:49:50+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_04.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:50:08+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_05.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:50:27+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_06.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:50:44+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_07.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:51:02+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_08.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:51:27+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_09.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:51:47+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_10.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:52:10+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_11.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:52:31+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_12.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:52:51+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_13.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:53:08+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-teacher-v001/chapter_14.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-04T22:53:17+00:00", "details": {"duration_s": 280.96000000000004, "plan": "outputs/dome/2v-teacher-v001/narration-plan.json", "profile_id": "teacher-v001"}, "event": "dome_narration_generated"}
+{"at": "2026-08-05T05:17:15+00:00", "details": {"profile_id": "don-v003", "sha256": "e6baee25e7fb3d147f1e4a59954c879175f47aba8d216208b96a7c2c1ff46f35"}, "event": "profile_locked"}
+{"at": "2026-08-05T05:19:51+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/audio/speech-20260805-001752.wav", "profile_id": "teacher-v002"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:21:06+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/audio/speech-20260805-002101.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:21:31+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_01.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:21:47+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_02.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:22:07+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_03.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:22:38+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_04.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:23:04+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_05.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:23:26+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_06.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:23:49+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_07.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:24:09+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_08.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:24:33+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_09.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:24:52+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_10.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:25:12+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_11.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:25:35+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_12.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:25:57+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_13.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:26:15+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/dome/2v-don-v003/chapter_14.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:26:45+00:00", "details": {"duration_s": 276.96000000000004, "plan": "outputs/dome/2v-don-v003/narration-plan.json", "profile_id": "don-v003"}, "event": "dome_narration_generated"}
+{"at": "2026-08-05T05:41:45+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/audio/speech-20260805-004140.wav", "profile_id": "teacher-v001"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:41:56+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/audio/speech-20260805-004151.wav", "profile_id": "teacher-v002"}, "event": "synthetic_audio_generated"}
+{"at": "2026-08-05T05:42:07+00:00", "details": {"backend": "chatterbox-turbo", "output": "outputs/audio/speech-20260805-004202.wav", "profile_id": "don-v003"}, "event": "synthetic_audio_generated"}

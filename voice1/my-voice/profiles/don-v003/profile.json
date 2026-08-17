@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "profile_id": "don-v003",
+  "name": "Don",
+  "created_at": "2026-08-05T05:17:15+00:00",
+  "reference_wav": "profiles/don-v003/reference.wav",
+  "reference_text": "Short members are sixty-three point five inches from center to center. What changes when the midpoint is projected back onto the sphere? First verify the radius; then check the diameter, height, and base level.",
+  "source_clip_ids": [
+    "mic-20260804-121417-p04",
+    "mic-20260804-121427-p05",
+    "mic-20260804-121446-p08"
+  ],
+  "sha256": "e6baee25e7fb3d147f1e4a59954c879175f47aba8d216208b96a7c2c1ff46f35",
+  "duration_s": 18.05375,
+  "locked": true,
+  "backend_hint": "chatterbox-turbo"
+}

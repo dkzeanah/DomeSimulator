@@ -1,0 +1,785 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/0bqlua",
+    "id": "0bqlua",
+    "slide": 8,
+    "layoutId": "29af3d98-e5c8-49f5-a347-9cbf49274182",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "563327dd-3431-4fec-a246-701f3e6151a2",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "29af3d98-e5c8-49f5-a347-9cbf49274182",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "563327dd-3431-4fec-a246-701f3e6151a2",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "563327dd-3431-4fec-a246-701f3e6151a2",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1wje94ra",
+      "id": "1",
+      "bbox": [
+        42,
+        30,
+        460,
+        24
+      ],
+      "geometry": "rect",
+      "text": "WHEELCHAIR-FIRST DOME LIVING",
+      "textPreview": "WHEELCHAIR-FIRST DOME LIVING",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHEELCHAIR-FIRST DOME LIVING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHEELCHAIR-FIRST DOME LIVING",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHEELCHAIR-FIRST DOME LIVING",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/etsfepsz",
+      "id": "2",
+      "bbox": [
+        42,
+        70,
+        1160,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Privacy depends on space to move",
+      "textPreview": "Privacy depends on space to move",
+      "resolvedFontSize": 47,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 47,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Privacy depends on space to move"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Privacy depends on space to move",
+          "resolvedTextStyle": {
+            "fontSize": 47,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Privacy depends on space to move",
+              "fontSize": 47,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fu1w7u94",
+      "id": "3",
+      "name": "top-rule-8",
+      "bbox": [
+        42,
+        158,
+        1196,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#B8BCC4",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/srqxcfat",
+      "id": "4",
+      "bbox": [
+        1187,
+        672,
+        52,
+        20
+      ],
+      "geometry": "rect",
+      "text": "08",
+      "textPreview": "08",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#5B6470",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "08"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "08",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#5B6470",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "08",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#5B6470",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsje5kre",
+      "id": "5",
+      "bbox": [
+        42,
+        196,
+        420,
+        86
+      ],
+      "geometry": "rect",
+      "text": "The bedroom and bathroom should reduce transfers, not create new ones.",
+      "textPreview": "The bedroom and bathroom should reduce transfers, not create new ones.",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#5B6470",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The bedroom and bathroom"
+          },
+          {
+            "index": 2,
+            "text": "should reduce transfers, not"
+          },
+          {
+            "index": 3,
+            "text": "create new ones."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The bedroom and bathroom should reduce transfers, not create new ones.",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#5B6470",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "The bedroom and bathroom should reduce transfers, not create new ones.",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#5B6470",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6p8fapsn",
+      "id": "6",
+      "bbox": [
+        42,
+        324,
+        428,
+        294
+      ],
+      "geometry": "rect",
+      "text": "Wide sliding opening. Avoid a door swing that steals maneuvering room.\nRoll-in shower. Use a flush floor, seat, controls within reach, and correctly placed grab bars.\nClear side approach. Leave transfer space beside the bed and fixtures.\nReinforced straight walls. Give rails and cabinetry solid mounting surfaces inside the curved shell.",
+      "textPreview": "Wide sliding opening. Avoid a door swing that steals maneuvering room. | Roll-in shower. Use a flush floor, seat, controls within reach, ...",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 10,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Wide sliding opening. Avoid a door"
+          },
+          {
+            "index": 2,
+            "text": "swing that steals maneuvering room."
+          },
+          {
+            "index": 3,
+            "text": "• Roll-in shower. Use a flush floor, seat,"
+          },
+          {
+            "index": 4,
+            "text": "controls within reach, and correctly placed"
+          },
+          {
+            "index": 5,
+            "text": "grab bars."
+          },
+          {
+            "index": 6,
+            "text": "• Clear side approach. Leave transfer"
+          },
+          {
+            "index": 7,
+            "text": "space beside the bed and fixtures."
+          },
+          {
+            "index": 8,
+            "text": "• Reinforced straight walls. Give rails and"
+          },
+          {
+            "index": 9,
+            "text": "cabinetry solid mounting surfaces inside the"
+          },
+          {
+            "index": 10,
+            "text": "curved shell."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Wide sliding opening. Avoid a door swing that steals maneuvering room.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Wide sliding opening. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Avoid a door swing that steals maneuvering room.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Roll-in shower. Use a flush floor, seat, controls within reach, and correctly placed grab bars.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Roll-in shower. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Use a flush floor, seat, controls within reach, and correctly placed grab bars.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "Clear side approach. Leave transfer space beside the bed and fixtures.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clear side approach. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Leave transfer space beside the bed and fixtures.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "text": "Reinforced straight walls. Give rails and cabinetry solid mounting surfaces inside the curved shell.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Reinforced straight walls. ",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Give rails and cabinetry solid mounting surfaces inside the curved shell.",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/etc3ulkv",
+      "id": "7",
+      "bbox": [
+        520,
+        190,
+        718,
+        438
+      ],
+      "geometry": "roundRect",
+      "alt": "Older wheelchair user moving from a bedroom through a wide sliding doorway into a roll-in shower bathroom inside a dome home",
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0.01,
+        "top": 0,
+        "right": 0.02,
+        "bottom": 0
+      },
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 3196"
+          }
+        ]
+      },
+      "prompt": "Use case: photorealistic-natural. Show an older wheelchair user moving through a wide sliding doorway from a bedroom into an accessible bathroom in a geodesic dome. Flush floor, roll-in shower, fold-down seat, grab bars, wall-mounted sink, broad turning space, no text.",
+      "asset": {
+        "assetId": "c5a32888-209c-44b7-9e78-879bf019916d",
+        "contentType": "image/png",
+        "prompt": "Use case: photorealistic-natural. Show an older wheelchair user moving through a wide sliding doorway from a bedroom into an accessible bathroom in a geodesic dome. Flush floor, roll-in shower, fold-down seat, grab bars, wall-mounted sink, broad turning space, no text.",
+        "byteLength": 2513588
+      }
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cnuxojqx",
+      "id": "8",
+      "bbox": [
+        0,
+        0,
+        1280,
+        174
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/do3yhori",
+      "id": "9",
+      "bbox": [
+        42,
+        70,
+        1160,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Privacy depends on space to move",
+      "textPreview": "Privacy depends on space to move",
+      "resolvedFontSize": 47,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 47,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Privacy depends on space to move"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Privacy depends on space to move",
+          "resolvedTextStyle": {
+            "fontSize": 47,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Privacy depends on space to move",
+              "fontSize": 47,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gvy18za",
+      "id": "10",
+      "name": "repainted-top-rule-8",
+      "bbox": [
+        42,
+        158,
+        1196,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#B8BCC4",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8f2xs3i5",
+      "id": "11",
+      "bbox": [
+        42,
+        30,
+        460,
+        24
+      ],
+      "geometry": "rect",
+      "text": "WHEELCHAIR-FIRST DOME LIVING",
+      "textPreview": "WHEELCHAIR-FIRST DOME LIVING",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHEELCHAIR-FIRST DOME LIVING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHEELCHAIR-FIRST DOME LIVING",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHEELCHAIR-FIRST DOME LIVING",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

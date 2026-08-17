@@ -1,0 +1,1 @@
+F5-TTS code is MIT licensed. Official pretrained F5-TTS weights are CC-BY-NC. Review the exact selected checkpoint license before training or publishing generated audio.

@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "run_id": "dome_accessibility_20260816_082305_167_1d3f14",
+  "title": "A Home That Moves With You",
+  "subtitle": "Why a purpose-built, wheelchair-first dome can turn accessibility into the organizing idea",
+  "aspect_ratio": "16:9",
+  "frame_rate": 30,
+  "resolution": [1920, 1080],
+  "language": "en-US",
+  "tone": ["dignified", "optimistic", "evidence-based", "architectural"],
+  "terminology": {
+    "preferred": ["wheelchair user", "older adult", "person with limited mobility"],
+    "avoid": ["wheelchair-ridden", "confined to a wheelchair", "the disabled"]
+  },
+  "disclaimer": "Conceptual accessibility presentation; not a construction drawing or substitute for local code, an architect, an occupational therapist, or the resident's own mobility assessment.",
+  "scenes": [
+    {
+      "id": "S01",
+      "slide_number": 1,
+      "title": "A home that moves with you",
+      "duration_seconds": 18,
+      "narration": "The strongest accessible home is not a conventional plan with a ramp added later. It begins with the person, the chair, and the path. A single-level dome can make that path the center of the architecture—if every threshold, turn, and reach is designed honestly.",
+      "visual": "Older wheelchair user independently approaching the flush entrance of a warm modern geodesic dome.",
+      "motion": "Slow push toward the entrance; subtle movement from exterior daylight into the doorway.",
+      "transition": "fade",
+      "prompt_id": "P01_HERO_ENTRY",
+      "sources": []
+    },
+    {
+      "id": "S02",
+      "slide_number": 2,
+      "title": "One level changes the whole day",
+      "duration_seconds": 20,
+      "narration": "One continuous floor removes stairs and lift dependency. A broad central space replaces the corridor maze, so the living room, kitchen, bedroom, and bathroom sit on short, legible routes. Most importantly, the accessible route is the welcoming route everyone uses.",
+      "visual": "Wheelchair user moves from the entrance into an open-plan living and dining area.",
+      "motion": "Gentle left-to-right tracking move that follows the chair into the central room.",
+      "transition": "cross_dissolve",
+      "prompt_id": "P02_OPEN_CIRCULATION",
+      "sources": ["https://www.nia.nih.gov/health/aging-place-growing-older-home"]
+    },
+    {
+      "id": "S03",
+      "slide_number": 3,
+      "title": "Start with the turning circle",
+      "duration_seconds": 21,
+      "narration": "A good accessible plan is a movement map. Enter without a level change. Turn without reversing through a narrow hall. Reach the kitchen, bedroom, and bathroom along short, obvious paths. The dome earns its value when its open central volume is reserved for that movement.",
+      "visual": "Isometric cutaway with a blue path connecting entry, living, kitchen, bedroom, and bathroom around a central turning zone.",
+      "motion": "Animate the path in sequence; briefly pulse the central turning zone.",
+      "transition": "path_wipe",
+      "prompt_id": "P05_DOME_CUTAWAY",
+      "sources": ["https://www.ada.gov/law-and-regs/design-standards/2010-stds/"]
+    },
+    {
+      "id": "S04",
+      "slide_number": 4,
+      "title": "Every extra barrier becomes a daily tax",
+      "duration_seconds": 18,
+      "narration": "A plan can look generous on paper and still demand dozens of avoidable maneuvers every day: a threshold to bump, a door to back away from, a corridor to three-point-turn through, or a switch placed beyond reach. Small frictions compound into dependence.",
+      "visual": "Four deterministic motion-graphic cards: threshold, tight turn, door conflict, unreachable control.",
+      "motion": "Reveal one barrier at a time, then connect them with a cumulative counter.",
+      "transition": "hard_cut",
+      "prompt_id": null,
+      "sources": ["https://www.huduser.gov/portal/publications/pdf/fairhousing/fairch1.pdf"]
+    },
+    {
+      "id": "S05",
+      "slide_number": 5,
+      "title": "The shell can organize space around movement",
+      "duration_seconds": 20,
+      "narration": "The dome's structural shell can leave the center visually open and flexible. Straight radial partitions can hold kitchens, bathrooms, storage, and grab-bar reinforcement while the middle stays generous. The result can be fewer turns, clearer sight lines, and less wasted corridor area.",
+      "visual": "Simple plan diagram contrasting an open central route with narrow perimeter service zones.",
+      "motion": "Draw the structural shell, then add straight service walls and highlight the open center.",
+      "transition": "diagram_build",
+      "prompt_id": null,
+      "sources": []
+    },
+    {
+      "id": "S06",
+      "slide_number": 6,
+      "title": "The entrance is the first independence test",
+      "duration_seconds": 20,
+      "narration": "A beautiful interior does not matter if the resident cannot enter independently. Begin with a broad, straight approach, a level landing, a flush threshold, an easy-to-operate door, and weather protection. Curving the ramp for style can make slope and cross-slope harder to control.",
+      "visual": "Annotated entrance diagram with a straight route, level landing, flush threshold, and wide clear opening.",
+      "motion": "Camera follows the route; labels appear only after the full path is visible.",
+      "transition": "match_cut",
+      "prompt_id": "P01_HERO_ENTRY",
+      "sources": ["https://www.ada.gov/law-and-regs/design-standards/2010-stds/"]
+    },
+    {
+      "id": "S07",
+      "slide_number": 7,
+      "title": "The kitchen stays part of life",
+      "duration_seconds": 22,
+      "narration": "The kitchen is where accessible design becomes quality of life. Knee clearance, reachable storage, side-opening appliances, and room to turn keep a wheelchair user participating instead of watching. The dome's open center can give the kitchen generous circulation without isolating it.",
+      "visual": "Wheelchair user prepares tea at a lowered pull-under work surface in an open dome kitchen.",
+      "motion": "Slow parallax move; subtle action at the kettle and reachable drawer.",
+      "transition": "cross_dissolve",
+      "prompt_id": "P03_ACCESSIBLE_KITCHEN",
+      "sources": ["https://www.huduser.gov/portal/publications/pdf/fairhousing/fairch1.pdf"]
+    },
+    {
+      "id": "S08",
+      "slide_number": 8,
+      "title": "Privacy depends on space to move",
+      "duration_seconds": 22,
+      "narration": "Bathroom space protects more than safety; it protects privacy. A wide sliding opening, zero-threshold shower, reachable seat and controls, and clear transfer zones let more routines remain independent. Straight reinforced service walls solve the practical mounting problem inside a curved shell.",
+      "visual": "Wheelchair user moves through a wide sliding doorway from bedroom to roll-in shower bathroom.",
+      "motion": "Track through the doorway; hold on the flush floor and transfer area.",
+      "transition": "doorway_match_cut",
+      "prompt_id": "P04_BED_BATH_SUITE",
+      "sources": ["https://www.ada.gov/law-and-regs/design-standards/2010-stds/"]
+    },
+    {
+      "id": "S09",
+      "slide_number": 9,
+      "title": "Small dimensions produce enormous freedom",
+      "duration_seconds": 23,
+      "narration": "Three early checks change the plan: a sixty-inch turning space, a thirty-two-inch clear door opening, and a ramp no steeper than one vertical to twelve horizontal when that benchmark applies. These are starting references, not a substitute for local residential code or the user's actual chair and reach.",
+      "visual": "Three large dimension cards with a turning circle, clear door opening, and ramp ratio diagram.",
+      "motion": "Count the measurements on; use consistent scale and a single accent color.",
+      "transition": "metric_snap",
+      "prompt_id": null,
+      "sources": ["https://www.ada.gov/law-and-regs/design-standards/2010-stds/"]
+    },
+    {
+      "id": "S10",
+      "slide_number": 10,
+      "title": "Aging changes the cost of every obstacle",
+      "duration_seconds": 22,
+      "narration": "More than one in four older adults report a fall each year, and many falls bring injury or restricted activity. A single-level plan cannot eliminate risk, but it can remove repeated stair exposure, reduce rushed transfers, improve sight lines, and make support easier to add later.",
+      "visual": "Evidence-led graphic: one-in-four figure, injury consequence, and one-floor risk-reduction opportunities.",
+      "motion": "Reveal the evidence first, then transition to the design responses.",
+      "transition": "data_morph",
+      "prompt_id": null,
+      "sources": ["https://www.cdc.gov/falls/data-research/index.html", "https://www.nia.nih.gov/health/aging-place-growing-older-home"]
+    },
+    {
+      "id": "S11",
+      "slide_number": 11,
+      "title": "Purpose-built beats retrofit",
+      "duration_seconds": 24,
+      "narration": "A conventional retrofit often spends money fighting the original plan: adding ramps, widening doors, sacrificing rooms, or installing a lift. A purpose-built accessible dome can place the route, turning space, kitchen, bathroom, and future support needs into the first sketch—not the final compromise.",
+      "visual": "Side-by-side comparison of conventional retrofit and purpose-built accessible dome.",
+      "motion": "Wipe from the retrofit constraints to the purpose-built benefits; keep comparison labels deterministic.",
+      "transition": "split_wipe",
+      "prompt_id": null,
+      "sources": ["https://www.huduser.gov/portal/publications/pdf/fairhousing/fairch1.pdf"]
+    },
+    {
+      "id": "S12",
+      "slide_number": 12,
+      "title": "Design the next home around the next move",
+      "duration_seconds": 23,
+      "narration": "The dome is not magic. Curved walls, drainage, acoustics, structure, and local code all need expert resolution. But if the project starts with the resident's real movement, reach, transfer, and daily routines, the result can be a home that preserves agency instead of merely accommodating decline.",
+      "visual": "Closing statement over a calm dome interior, followed by a three-step action: measure the user, map daily routes, design with qualified professionals.",
+      "motion": "Slow pull back; final three-step call to action appears in sequence.",
+      "transition": "fade_to_brand",
+      "prompt_id": "P02_OPEN_CIRCULATION",
+      "sources": ["https://www.nia.nih.gov/health/aging-place-growing-older-home"]
+    }
+  ]
+}

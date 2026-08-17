@@ -1,0 +1,798 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/2b2350",
+    "id": "2b2350",
+    "slide": 12,
+    "layoutId": "efc32ec3-74aa-4462-abcc-8fd9b0c60c2c",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "f4f14b88-aa90-4933-9642-6baa3cc58f87",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "efc32ec3-74aa-4462-abcc-8fd9b0c60c2c",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "f4f14b88-aa90-4933-9642-6baa3cc58f87",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "f4f14b88-aa90-4933-9642-6baa3cc58f87",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0rex8na1",
+      "id": "1",
+      "bbox": [
+        42,
+        36,
+        390,
+        28
+      ],
+      "geometry": "rect",
+      "text": "THE HONEST STANDARD",
+      "textPreview": "THE HONEST STANDARD",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "THE HONEST STANDARD"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "THE HONEST STANDARD",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "THE HONEST STANDARD",
+              "fontSize": 15,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zq5gfitg",
+      "id": "2",
+      "bbox": [
+        42,
+        108,
+        1120,
+        70
+      ],
+      "geometry": "rect",
+      "text": "A dome is perfect only when the details are",
+      "textPreview": "A dome is perfect only when the details are",
+      "resolvedFontSize": 50,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 50,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "A dome is perfect only when the details are"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "A dome is perfect only when the details are",
+          "resolvedTextStyle": {
+            "fontSize": 50,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "A dome is perfect only when the details are",
+              "fontSize": 50,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ypwf6xsv",
+      "id": "3",
+      "bbox": [
+        42,
+        184,
+        900,
+        92
+      ],
+      "geometry": "rect",
+      "text": "built around a real body.",
+      "textPreview": "built around a real body.",
+      "resolvedFontSize": 67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 67,
+        "typeface": "Arial",
+        "color": "#3D8DFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "built around a real body."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "built around a real body.",
+          "resolvedTextStyle": {
+            "fontSize": 67,
+            "typeface": "Arial",
+            "color": "#3D8DFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "built around a real body.",
+              "fontSize": 67,
+              "typeface": "Arial",
+              "color": "#3D8DFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9w7ylcbi",
+      "id": "4",
+      "bbox": [
+        42,
+        300,
+        1196,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#B8BCC4",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8vyxc7ad",
+      "id": "5",
+      "bbox": [
+        42,
+        348,
+        760,
+        264
+      ],
+      "geometry": "rect",
+      "text": "Curve the shell—not the wheelchair path. Routes remain level, straight, and predictable.\nUse straight interior service walls. They simplify cabinetry, plumbing, reinforcement, and grab bars.\nKeep every essential room on the main floor. Lofts may exist, but daily life cannot depend on them.\nTest the plan with the actual user. Chair size, reach, transfer method, fatigue, vision, and caregiver needs vary.",
+      "textPreview": "Curve the shell—not the wheelchair path. Routes remain level, straight, and predictable. | Use straight interior service walls. They simp...",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 23,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 8,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Curve the shell—not the wheelchair path. Routes remain level,"
+          },
+          {
+            "index": 2,
+            "text": "straight, and predictable."
+          },
+          {
+            "index": 3,
+            "text": "• Use straight interior service walls. They simplify cabinetry, plumbing,"
+          },
+          {
+            "index": 4,
+            "text": "reinforcement, and grab bars."
+          },
+          {
+            "index": 5,
+            "text": "• Keep every essential room on the main floor. Lofts may exist, but"
+          },
+          {
+            "index": 6,
+            "text": "daily life cannot depend on them."
+          },
+          {
+            "index": 7,
+            "text": "• Test the plan with the actual user. Chair size, reach, transfer method,"
+          },
+          {
+            "index": 8,
+            "text": "fatigue, vision, and caregiver needs vary."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Curve the shell—not the wheelchair path. Routes remain level, straight, and predictable.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Curve the shell—not the wheelchair path. ",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Routes remain level, straight, and predictable.",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Use straight interior service walls. They simplify cabinetry, plumbing, reinforcement, and grab bars.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Use straight interior service walls. ",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "They simplify cabinetry, plumbing, reinforcement, and grab bars.",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "Keep every essential room on the main floor. Lofts may exist, but daily life cannot depend on them.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Keep every essential room on the main floor. ",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Lofts may exist, but daily life cannot depend on them.",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "text": "Test the plan with the actual user. Chair size, reach, transfer method, fatigue, vision, and caregiver needs vary.",
+          "bulletCharacter": "•",
+          "marginLeft": 26,
+          "indent": -14,
+          "spaceAfter": 900,
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Test the plan with the actual user. ",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            },
+            {
+              "index": 2,
+              "text": "Chair size, reach, transfer method, fatigue, vision, and caregiver needs vary.",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "alignment": "left"
+            }
+          ]
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nupgj2ts",
+      "id": "6",
+      "bbox": [
+        850,
+        350,
+        345,
+        278
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D0EDFA",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtgfaxs7",
+      "id": "7",
+      "bbox": [
+        884,
+        382,
+        280,
+        32
+      ],
+      "geometry": "rect",
+      "text": "NEXT STEP",
+      "textPreview": "NEXT STEP",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "NEXT STEP"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "NEXT STEP",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "NEXT STEP",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p03y98be",
+      "id": "8",
+      "bbox": [
+        884,
+        430,
+        268,
+        174
+      ],
+      "geometry": "rect",
+      "text": "Map one real user’s day—entry, turn, reach, transfer—before pricing the shell.",
+      "textPreview": "Map one real user’s day—entry, turn, reach, transfer—before pricing the shell.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 24,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Map one real user’s"
+          },
+          {
+            "index": 2,
+            "text": "day—entry, turn, reach,"
+          },
+          {
+            "index": 3,
+            "text": "transfer—before"
+          },
+          {
+            "index": 4,
+            "text": "pricing the shell."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Map one real user’s day—entry, turn, reach, transfer—before pricing the shell.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Map one real user’s day—entry, turn, reach, transfer—before pricing the shell.",
+              "fontSize": 24,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ozux03at",
+      "id": "9",
+      "bbox": [
+        42,
+        642,
+        1030,
+        38
+      ],
+      "geometry": "rect",
+      "text": "Build a home that preserves choice, privacy, and belonging as movement changes.",
+      "textPreview": "Build a home that preserves choice, privacy, and belonging as movement changes.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 27,
+        "typeface": "Arial",
+        "color": "#1F7A7A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Build a home that preserves choice, privacy, and belonging as movement"
+          },
+          {
+            "index": 2,
+            "text": "changes."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Build a home that preserves choice, privacy, and belonging as movement changes.",
+          "resolvedTextStyle": {
+            "fontSize": 27,
+            "typeface": "Arial",
+            "color": "#1F7A7A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Build a home that preserves choice, privacy, and belonging as movement changes.",
+              "fontSize": 27,
+              "typeface": "Arial",
+              "color": "#1F7A7A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/alwba10v",
+      "id": "10",
+      "bbox": [
+        1187,
+        672,
+        52,
+        20
+      ],
+      "geometry": "rect",
+      "text": "12",
+      "textPreview": "12",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#5B6470",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "12"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "12",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#5B6470",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "12",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#5B6470",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

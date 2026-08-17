@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-08-05T05:22:07+00:00",
+  "backend": "chatterbox-turbo",
+  "model": {
+    "name": "Chatterbox Turbo",
+    "source": "resemble-ai/chatterbox",
+    "package_version": "0.1.7",
+    "license": "MIT"
+  },
+  "profile_id": "don-v003",
+  "profile_sha256": "e6baee25e7fb3d147f1e4a59954c879175f47aba8d216208b96a7c2c1ff46f35",
+  "reference_wav": "profiles/don-v003/reference.wav",
+  "device": "cuda",
+  "exaggeration": 0.45,
+  "cfg_weight": 0.5,
+  "model_download_allowed": true,
+  "watermark": "preserved model-provided watermark",
+  "text": "The icosahedron wins because twenty small faces begin closest to a sphere.\n\nEach Platonic solid has one regular face type and one vertex arrangement. More evenly distributed vertices mean a smaller correction when we project the surface outward. The icosahedron gives twenty equilateral launch pads."
+}

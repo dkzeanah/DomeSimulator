@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-08-04T22:50:08+00:00",
+  "backend": "chatterbox-turbo",
+  "model": {
+    "name": "Chatterbox Turbo",
+    "source": "resemble-ai/chatterbox",
+    "package_version": "0.1.7",
+    "license": "MIT"
+  },
+  "profile_id": "teacher-v001",
+  "profile_sha256": "e6baee25e7fb3d147f1e4a59954c879175f47aba8d216208b96a7c2c1ff46f35",
+  "reference_wav": "profiles/teacher-v001/reference.wav",
+  "device": "cuda",
+  "exaggeration": 0.45,
+  "cfg_weight": 0.5,
+  "model_download_allowed": true,
+  "watermark": "preserved model-provided watermark",
+  "text": "One division turns raw coordinates into reusable chord factors.\n\nNormalize each vertex by its distance from the origin. Now the sphere radius is exactly one. Every measured edge is a multiplier that can later be scaled to inches, feet, meters, or any other unit."
+}

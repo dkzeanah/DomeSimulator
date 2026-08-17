@@ -1,0 +1,1 @@
+C:\Users\Don\Desktop\DomeSim\.venv-voice\Scripts\f5-tts_finetune-gradio.EXE

@@ -1,0 +1,515 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/80jvvg",
+    "id": "80jvvg",
+    "slide": 1,
+    "layoutId": "efc32ec3-74aa-4462-abcc-8fd9b0c60c2c",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "f4f14b88-aa90-4933-9642-6baa3cc58f87",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "efc32ec3-74aa-4462-abcc-8fd9b0c60c2c",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "f4f14b88-aa90-4933-9642-6baa3cc58f87",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "f4f14b88-aa90-4933-9642-6baa3cc58f87",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/v6tcj69g",
+      "id": "1",
+      "bbox": [
+        42,
+        36,
+        470,
+        28
+      ],
+      "geometry": "rect",
+      "text": "WHEELCHAIR-FIRST DOME LIVING",
+      "textPreview": "WHEELCHAIR-FIRST DOME LIVING",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHEELCHAIR-FIRST DOME LIVING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHEELCHAIR-FIRST DOME LIVING",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHEELCHAIR-FIRST DOME LIVING",
+              "fontSize": 15,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w72dsba1",
+      "id": "2",
+      "bbox": [
+        42,
+        118,
+        544,
+        190
+      ],
+      "geometry": "rect",
+      "text": "A home that\nmoves with you",
+      "textPreview": "A home that | moves with you",
+      "resolvedFontSize": 72,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 72,
+        "typeface": "Arial",
+        "color": "#0A0A0A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "A home that"
+          },
+          {
+            "index": 2,
+            "text": "moves with you"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "A home that",
+          "resolvedTextStyle": {
+            "fontSize": 72,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "A home that",
+              "fontSize": 72,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "moves with you",
+          "resolvedTextStyle": {
+            "fontSize": 72,
+            "typeface": "Arial",
+            "color": "#0A0A0A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "moves with you",
+              "fontSize": 72,
+              "typeface": "Arial",
+              "color": "#0A0A0A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h8bulwrm",
+      "id": "3",
+      "bbox": [
+        42,
+        346,
+        500,
+        132
+      ],
+      "geometry": "rect",
+      "text": "Why a purpose-built, single-level dome can turn accessibility from an add-on into the organizing idea.",
+      "textPreview": "Why a purpose-built, single-level dome can turn accessibility from an add-on into the organizing idea.",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#5B6470",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Why a purpose-built, single-level dome"
+          },
+          {
+            "index": 2,
+            "text": "can turn accessibility from an add-on"
+          },
+          {
+            "index": 3,
+            "text": "into the organizing idea."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Why a purpose-built, single-level dome can turn accessibility from an add-on into the organizing idea.",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#5B6470",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Why a purpose-built, single-level dome can turn accessibility from an add-on into the organizing idea.",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#5B6470",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i9kvu1s7",
+      "id": "4",
+      "bbox": [
+        42,
+        520,
+        150,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#3D8DFF",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jatcn69s",
+      "id": "5",
+      "bbox": [
+        42,
+        548,
+        530,
+        66
+      ],
+      "geometry": "rect",
+      "text": "For wheelchair users, older adults, and anyone whose movement changes over time",
+      "textPreview": "For wheelchair users, older adults, and anyone whose movement changes over time",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Arial",
+        "color": "#145D8A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "For wheelchair users, older adults, and anyone"
+          },
+          {
+            "index": 2,
+            "text": "whose movement changes over time"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "For wheelchair users, older adults, and anyone whose movement changes over time",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#145D8A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "For wheelchair users, older adults, and anyone whose movement changes over time",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#145D8A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4b2dwbax",
+      "id": "6",
+      "bbox": [
+        625,
+        32,
+        623,
+        608
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D0EDFA",
+      "lineColor": "#B8BCC4",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/0bq507yh",
+      "id": "7",
+      "bbox": [
+        635,
+        42,
+        603,
+        588
+      ],
+      "geometry": "roundRect",
+      "alt": "Older wheelchair user independently approaching a flush, wide entrance to a modern geodesic dome home",
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0.08,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 2381"
+          }
+        ]
+      },
+      "prompt": "Use case: photorealistic-natural. Asset type: persuasive presentation hero image for a wheelchair-accessible dome home. Show a dignified older adult wheelchair user independently approaching and entering a purpose-built, single-level geodesic dome through a flush, wide doorway from a broad straight gently sloped route with a level landing. Premium architectural editorial photography; warm natural materials; no text or watermark.",
+      "asset": {
+        "assetId": "e008663b-e394-430d-8867-dce27a3d61d8",
+        "contentType": "image/png",
+        "prompt": "Use case: photorealistic-natural. Asset type: persuasive presentation hero image for a wheelchair-accessible dome home. Show a dignified older adult wheelchair user independently approaching and entering a purpose-built, single-level geodesic dome through a flush, wide doorway from a broad straight gently sloped route with a level landing. Premium architectural editorial photography; warm natural materials; no text or watermark.",
+        "byteLength": 2415584
+      }
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ydgvihsn",
+      "id": "8",
+      "bbox": [
+        42,
+        668,
+        450,
+        18
+      ],
+      "geometry": "rect",
+      "text": "ACCESSIBLE HOUSING CONCEPT • 2026",
+      "textPreview": "ACCESSIBLE HOUSING CONCEPT • 2026",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#5B6470",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ACCESSIBLE HOUSING CONCEPT • 2026"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ACCESSIBLE HOUSING CONCEPT • 2026",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#5B6470",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "ACCESSIBLE HOUSING CONCEPT • 2026",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#5B6470",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
