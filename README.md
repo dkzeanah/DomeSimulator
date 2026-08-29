@@ -434,6 +434,14 @@ One renderer plays **five** lessons and one montage, chosen from a Lesson dropdo
   across the catalogue, envelope per square foot of floor, and the
   flat parts list at three sizes. To check any figure, open the tool,
   load that preset, and read the BOM.
+* **`world_chatgpt` - 10 Dome Builds, The Accountable Master Cut, 30
+  chapters.** A second pass over the same catalogue with a different
+  emphasis: ten real Dome Creator presets shown with Dome Forge and
+  Assembly Line context, and for each build a material breakdown, a
+  construction-event labor breakdown, and a modeled direct-sale price.
+  Its figures are stated as what they are — code-model outputs, not
+  bids — with site, permits, freight, tax and local engineering
+  explicitly outside the model.
 * **`hype` - Frankendome, 36 beats.** Not a lesson, and it does not
   pretend to be one. The montage runs full-frame with a single line of
   type over it, at a quicker speech rate than the masterclasses, and it

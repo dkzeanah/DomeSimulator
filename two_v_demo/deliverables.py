@@ -126,6 +126,13 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "ladder, hub versus hubless, price per square foot, "
                 "envelope efficiency and scale.",
                 compose=False),
+    Deliverable("world_chatgpt",
+                "ten-dome-builds-master-20260829-135242-chatgpt.mp4",
+                "A unique ChatGPT master cut: ten real Dome Creator "
+                "presets, Dome Forge and Assembly Line context, plus a "
+                "per-build material breakdown, construction-event labor "
+                "breakdown and modeled direct-sale price.",
+                compose=False),
 )
 
 

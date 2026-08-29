@@ -737,7 +737,7 @@ def main() -> int:
         body, "Lesson",
         ["2v", "build", "hex", "zome", "line", "cuts", "franken",
          "hype", "hype2", "hype3", "hype4", "hype5", "hype6",
-         "kick", "kick2", "master", "world"],
+         "kick", "kick2", "master", "world", "world_chatgpt"],
         "2v")
     mc_lesson.pack(fill="x", pady=3)
     action_help(body, mc_lesson, {
@@ -800,6 +800,14 @@ def main() -> int:
                  "scale, with math screens for the frequency ladder, hub "
                  "versus hubless framing, price per square foot and "
                  "envelope efficiency.",
+        "world_chatgpt": "the accountable master cut: ten real Dome "
+                         "Creator presets with Dome Forge and Assembly "
+                         "Line context, a per-build material breakdown, a "
+                         "construction-event labor breakdown and a "
+                         "modeled direct-sale price for each. The figures "
+                         "are code-model outputs, not bids — site, "
+                         "permits, freight, tax and local engineering sit "
+                         "outside the model.",
         "line": "24 chapters on the assembly line itself: an animated "
                 "two-person crew walking, lifting, carrying and "
                 "fastening every part of one dome, with the energy "

@@ -1560,6 +1560,9 @@ class MasterclassApp:
         path: Path,
         fps: int = 30,
         *,
+        render_fps: int | None = None,
+        video_encoder: str = "libx264",
+        video_preset: str = "medium",
         narration: bool = True,
         local_narration_plan: Path | None = None,
         voice: str = DEFAULT_VOICE,
@@ -1569,6 +1572,29 @@ class MasterclassApp:
         ffmpeg_path: str | None = None,
         ffprobe_path: str | None = None,
     ) -> None:
+        capture_fps = fps if render_fps is None else int(render_fps)
+        if capture_fps < 1 or capture_fps > fps:
+            raise ValueError("render_fps must be between 1 and the output fps")
+        x264_presets = {
+            "ultrafast", "superfast", "veryfast", "faster", "fast",
+            "medium", "slow", "slower", "veryslow",
+        }
+        nvenc_presets = {f"p{index}" for index in range(1, 8)}
+        if video_encoder == "libx264" and video_preset not in x264_presets:
+            raise ValueError(
+                f"unsupported x264 preset {video_preset!r}; expected one of "
+                f"{', '.join(sorted(x264_presets))}"
+            )
+        if video_encoder == "h264_nvenc" and video_preset not in nvenc_presets:
+            raise ValueError(
+                f"unsupported NVENC preset {video_preset!r}; expected one of "
+                f"{', '.join(sorted(nvenc_presets))}"
+            )
+        if video_encoder not in {"libx264", "h264_nvenc"}:
+            raise ValueError(
+                f"unsupported video encoder {video_encoder!r}; expected "
+                "'libx264' or 'h264_nvenc'"
+            )
         ffmpeg = resolve_executable("ffmpeg", ffmpeg_path)
         plan: NarrationPlan | None = None
         speech_delay = SPEECH_DELAY
@@ -1680,23 +1706,30 @@ class MasterclassApp:
             path.parent / f".{path.stem}-silent-render-{os.getpid()}.mp4"
             if plan is not None else path
         )
+        encoder_args = (
+            ["-c:v", "h264_nvenc", "-preset", video_preset,
+             "-tune", "hq", "-rc", "vbr", "-cq", "18", "-b:v", "0"]
+            if video_encoder == "h264_nvenc"
+            else ["-c:v", "libx264", "-preset", video_preset, "-crf", "18"]
+        )
         command = [
             ffmpeg, "-y",
             "-f", "rawvideo", "-pixel_format", "rgb24",
             "-video_size", f"{width}x{height}",
-            "-framerate", str(fps), "-i", "-",
+            "-framerate", str(capture_fps), "-i", "-",
             "-vf", "vflip",
-            "-c:v", "libx264", "-preset", "medium", "-crf", "18",
+            *encoder_args,
+            "-r", str(fps),
             "-pix_fmt", "yuv420p", "-movflags", "+faststart",
             str(render_path),
         ]
         process = subprocess.Popen(command, stdin=subprocess.PIPE)
-        total_frames = int(math.ceil(self.total_duration * fps))
+        total_frames = int(math.ceil(self.total_duration * capture_fps))
         self.playing = False
         rendered_chapter = -1
         try:
             for frame in range(total_frames):
-                self.timeline = frame / fps
+                self.timeline = frame / capture_fps
                 self.chapter_index, self.chapter_progress = chapter_at_time(
                     self.timeline, self.chapter_durations, self.chapters
                 )
@@ -1706,9 +1739,9 @@ class MasterclassApp:
                 self.render(present=False)
                 assert process.stdin is not None
                 process.stdin.write(self.capture_rgb())
-                if frame % fps == 0:
+                if frame % capture_fps == 0:
                     print(
-                        f"\rRendering {frame / fps:6.1f}s / "
+                        f"\rRendering {frame / capture_fps:6.1f}s / "
                         f"{self.total_duration:6.1f}s", end="", flush=True
                     )
             assert process.stdin is not None
@@ -1986,6 +2019,11 @@ def main(default_lesson: str = "2v") -> int:
         try:
             app.export_video(
                 Path(cfg["export_video"]), max(1, int(cfg.get("fps", 30))),
+                render_fps=(
+                    int(cfg["render_fps"]) if cfg.get("render_fps") else None
+                ),
+                video_encoder=str(cfg.get("video_encoder", "libx264")),
+                video_preset=str(cfg.get("video_preset", "medium")),
                 narration=not no_narration,
                 local_narration_plan=(
                     Path(local_narration_plan)

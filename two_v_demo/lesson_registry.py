@@ -24,6 +24,7 @@ from .lesson_hype import (
 from .lesson_line import LINE_LESSON
 from .lesson_master import MASTER_LESSON
 from .lesson_world import WORLD_LESSON
+from .lesson_world_chatgpt import WORLD_CHATGPT_LESSON
 from .lesson_zome import ZOME_LESSON
 from .lessons import TWO_V_LESSON, Lesson
 
@@ -35,7 +36,7 @@ LESSONS: dict[str, Lesson] = {
                    HYPE_LESSON, HYPE_V2_LESSON, HYPE_V3_LESSON,
                    HYPE_V4_LESSON, HYPE_V5_LESSON, HYPE_V6_LESSON,
                    KICKSTARTER_LESSON, KICKSTARTER_V2_LESSON,
-                   MASTER_LESSON, WORLD_LESSON)
+                   MASTER_LESSON, WORLD_LESSON, WORLD_CHATGPT_LESSON)
 }
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key

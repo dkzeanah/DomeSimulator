@@ -108,6 +108,12 @@ PRESETS: tuple[RenderPreset, ...] = (
            "simulator's own modules and shown at true relative scale, "
            "with math screens for frequency, framing, price and "
            "efficiency."),
+    _video("world_chatgpt", "world_chatgpt",
+           "ten-dome-builds-master-20260829-135242-chatgpt.mp4",
+           "The accountable master cut: ten real Dome Creator presets "
+           "with Dome Forge and Assembly Line context, a per-build "
+           "material breakdown, a construction-event labor breakdown, "
+           "and a modeled direct-sale price for each."),
 
     # -- the teaching lessons -----------------------------------------
     _video("build", "build", "dome-construction-masterclass.mp4",

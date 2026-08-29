@@ -1,0 +1,107 @@
+10 DOME BUILDS -- CREATOR / FORGE / ASSEMBLY LINE MASTER CUT
+
+The material column is the Dome Creator BOM. Labor is the sum of
+the Creator's own construction events. Direct-sale price adds the
+Assembly Line wage and overhead, then preserves the modeled gross
+margin of the closest existing Assembly Line product family.
+It is a planning model, not a contractor quote.
+
+EXTERNAL INPUTS
+  burdened_wage_per_hour: 46 USD per labor-hour -- al_build.ASSUMPTIONS; the Assembly Line's declared loaded wage.
+  overhead_per_labor_hour: 16 USD per labor-hour -- al_build.ASSUMPTIONS; activity-based factory overhead.
+
+== Timber Workshop ==
+  geometry       3V, 819 sq ft, 165 struts, 105 panels
+  assembly map   shed family, 20.5% modeled margin
+  materials      frame $3,466; shell $3,224; foundation $8,829; fit-out $3,995; total $19,514
+  labor          site 14.0 h; frame 34.0 h; enclosure 42.0 h; systems/finish 5.6 h; total 95.6 h
+  conversion     labor $4,396; overhead $1,529; factory cost $25,439
+  consumer model $31,991
+
+== Glass Studio Loft ==
+  geometry       4V, 845 sq ft, 250 struts, 160 panels
+  assembly map   home family, 31.6% modeled margin
+  materials      frame $929; shell $14,641; foundation $6,232; fit-out $2,869; total $24,670
+  labor          site 14.0 h; frame 45.6 h; enclosure 112.0 h; systems/finish 21.6 h; total 193.2 h
+  conversion     labor $8,889; overhead $3,092; factory cost $36,652
+  consumer model $53,584
+
+== Split-Log Homestead ==
+  geometry       2V, 1,217 sq ft, 120 struts, 40 panels
+  assembly map   home family, 31.6% modeled margin
+  materials      frame $1,958; shell $10,499; foundation $1,466; fit-out $4,144; total $18,067
+  labor          site 21.0 h; frame 20.3 h; enclosure 26.5 h; systems/finish 28.3 h; total 96.2 h
+  conversion     labor $4,424; overhead $1,539; factory cost $24,029
+  consumer model $35,130
+
+== Whole Trunk Lodge - 20 ft ==
+  geometry       2V, 3,281 sq ft, 65 struts, 40 panels
+  assembly map   home family, 31.6% modeled margin
+  materials      frame $10,104; shell $4,527; foundation $3,820; fit-out $4,296; total $22,747
+  labor          site 52.4 h; frame 15.0 h; enclosure 16.0 h; systems/finish 20.3 h; total 103.8 h
+  conversion     labor $4,774; overhead $1,660; factory cost $29,181
+  consumer model $42,663
+
+== Grow Dome ==
+  geometry       3V, 819 sq ft, 165 struts, 105 panels
+  assembly map   greenhouse family, 18.9% modeled margin
+  materials      frame $4,505; shell $5,015; foundation $226; fit-out $1,743; total $11,489
+  labor          site 15.1 h; frame 30.9 h; enclosure 42.0 h; systems/finish 7.6 h; total 95.6 h
+  conversion     labor $4,399; overhead $1,530; factory cost $17,418
+  consumer model $21,466
+
+== Hex Cell Pavilion ==
+  geometry       3V, 1,179 sq ft, 165 struts, 105 panels
+  assembly map   shed family, 20.5% modeled margin
+  materials      frame $33,529; shell $13,410; foundation $12,936; fit-out $1,480; total $61,355
+  labor          site 19.8 h; frame 34.0 h; enclosure 42.0 h; systems/finish 3.5 h; total 99.3 h
+  conversion     labor $4,566; overhead $1,588; factory cost $67,509
+  consumer model $84,898
+
+== Continuous Steel Arc Hangar ==
+  geometry       2V, 2,164 sq ft, 65 struts, 40 panels
+  assembly map   shed family, 20.5% modeled margin
+  materials      frame $70,788; shell $0; foundation $23,796; fit-out $5,870; total $100,454
+  labor          site 35.1 h; frame 9.8 h; enclosure 0.0 h; systems/finish 3.8 h; total 48.7 h
+  conversion     labor $2,240; overhead $779; factory cost $103,473
+  consumer model $130,125
+
+== Rebar Garden Dome ==
+  geometry       3V, 991 sq ft, 165 struts, 105 panels
+  assembly map   greenhouse family, 18.9% modeled margin
+  materials      frame $2,903; shell $0; foundation $238; fit-out $3,860; total $7,002
+  labor          site 15.8 h; frame 18.1 h; enclosure 0.0 h; systems/finish 9.2 h; total 43.1 h
+  conversion     labor $1,985; overhead $690; factory cost $9,677
+  consumer model $11,926
+
+== Concrete Monocoque Form ==
+  geometry       3V, 1,179 sq ft, 165 struts, 105 panels
+  assembly map   shelter family, 39.8% modeled margin
+  materials      frame $4,296; shell $36,363; foundation $13,843; fit-out $4,160; total $58,661
+  labor          site 21.0 h; frame 34.0 h; enclosure 54.9 h; systems/finish 3.8 h; total 113.7 h
+  conversion     labor $5,232; overhead $1,820; factory cost $65,713
+  consumer model $109,164
+
+== Treehouse Canopy Dome ==
+  geometry       2V, 597 sq ft, 65 struts, 40 panels
+  assembly map   home family, 31.6% modeled margin
+  materials      frame $2,221; shell $5,350; foundation $17,251; fit-out $2,420; total $27,243
+  labor          site 12.4 h; frame 15.0 h; enclosure 16.0 h; systems/finish 16.7 h; total 60.1 h
+  conversion     labor $2,762; overhead $961; factory cost $30,966
+  consumer model $45,272
+
+PRODUCTION SCREEN
+  Creator BOM  +  Creator build events  +  Assembly Line economics:
+  Timber Workshop            BOM $  19,514     96 h  direct-sale $   31,991
+  Glass Studio Loft          BOM $  24,670    193 h  direct-sale $   53,584
+  Split-Log Homestead        BOM $  18,067     96 h  direct-sale $   35,130
+  Whole Trunk Lodge - 20 ft  BOM $  22,747    104 h  direct-sale $   42,663
+  Grow Dome                  BOM $  11,489     96 h  direct-sale $   21,466
+  Hex Cell Pavilion          BOM $  61,355     99 h  direct-sale $   84,898
+  Continuous Steel Arc Hang  BOM $ 100,454     49 h  direct-sale $  130,125
+  Rebar Garden Dome          BOM $   7,002     43 h  direct-sale $   11,926
+  Concrete Monocoque Form    BOM $  58,661    114 h  direct-sale $  109,164
+  Treehouse Canopy Dome      BOM $  27,243     60 h  direct-sale $   45,272
+  lowest modeled direct-sale price: Rebar Garden Dome at $11,926
+  least labor: Rebar Garden Dome at 43 hours
+  these are code-model outputs, not bids: site, permits, freight, tax and local engineering are outside the model
