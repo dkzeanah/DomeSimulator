@@ -1,8 +1,15 @@
-"""Narrative timeline and on-screen copy for the 2V masterclass."""
+"""Chapter model, lesson model, and the 2V masterclass timeline.
+
+A *lesson* is a title, a tuple of chapters, and a table of scene painters.
+The renderer in ``app.py`` knows how to play any of them; it has no
+knowledge of which one it is playing.  New lessons live in their own
+``lesson_*.py`` modules and are collected in ``lesson_registry.py``.
+"""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Callable, Mapping
 
 
 @dataclass(frozen=True)
@@ -16,6 +23,81 @@ class Chapter:
     duration: float
     camera: tuple[float, float, float]
     stage: str
+    overlay: str | None = None
+    """Override the lesson's style for this chapter alone.
+
+    A sting dropped into a teaching lesson should not wear the
+    teaching cards; set this to 'hype' and it goes full-frame for
+    those few seconds and then hands the cards back.  'math' turns the
+    chapter into a math screen: the picture stays live on the left and
+    the chapter's equations are revealed step by step on a worksheet
+    panel, with the last line presented as the conclusion."""
+
+
+# A scene painter receives the live app, the two geometry batches it should
+# fill, and the chapter's 0..1 progress.
+ScenePainter = Callable[[object, object, object, float], None]
+
+
+@dataclass(frozen=True)
+class Lesson:
+    """One complete teaching video: copy, timeline, and how to draw it."""
+
+    key: str
+    brand: str
+    title: str
+    chapters: tuple["Chapter", ...]
+    scenes: Mapping[str, ScenePainter] = field(default_factory=dict)
+    equations: Callable[[object, str], list[str]] | None = None
+    selftest: Callable[[], None] | None = None
+    report: Callable[[], str] | None = None
+    snapshot_prefix: str = "lesson"
+    style: str = "teaching"
+    """``teaching`` draws the cards; ``hype`` goes full-frame with one
+    line of type and no chrome."""
+    voice_rate: str | None = None
+    """Speech rate for this lesson, when it wants its own pacing."""
+    audio_bed: str | None = None
+    """Soundboard key for a bed mixed under the whole narration,
+    ducked beneath speech. Missing sounds leave the track dry."""
+    audio_bed_gain: float = 0.16
+    label_layout: str = "raw"
+    """``raw`` places world labels exactly where they project, letting
+    them overlap. ``declutter`` keeps the overlap but nudges labels far
+    enough apart that text never lands on text. ``raw`` is the default
+    so that re-rendering an already published video reproduces it."""
+
+    def validate(self) -> None:
+        """Fail loudly at load time rather than mid-render."""
+        if not self.chapters:
+            raise ValueError(f"lesson {self.key!r} has no chapters")
+        if self.label_layout not in ("raw", "declutter"):
+            raise ValueError(
+                f"lesson {self.key!r} has unknown label layout "
+                f"{self.label_layout!r}"
+            )
+        for chapter in self.chapters:
+            if chapter.overlay not in (None, "teaching", "hype", "math"):
+                raise ValueError(
+                    f"lesson {self.key!r} chapter {chapter.number} has "
+                    f"unknown overlay {chapter.overlay!r}"
+                )
+        if self.style not in ("teaching", "hype"):
+            raise ValueError(
+                f"lesson {self.key!r} has unknown style {self.style!r}"
+            )
+        numbers = [chapter.number for chapter in self.chapters]
+        if len(set(numbers)) != len(numbers):
+            raise ValueError(f"lesson {self.key!r} repeats a chapter number")
+        for chapter in self.chapters:
+            if chapter.duration <= 0.5:
+                raise ValueError(
+                    f"lesson {self.key!r} chapter {chapter.number} is too short"
+                )
+            if not chapter.narration:
+                raise ValueError(
+                    f"lesson {self.key!r} chapter {chapter.number} has no narration"
+                )
 
 
 CHAPTERS: tuple[Chapter, ...] = (
@@ -179,9 +261,12 @@ CHAPTERS: tuple[Chapter, ...] = (
 TOTAL_DURATION = sum(chapter.duration for chapter in CHAPTERS)
 
 
-def timeline_duration(durations: tuple[float, ...] | None = None) -> float:
-    values = durations or tuple(chapter.duration for chapter in CHAPTERS)
-    if len(values) != len(CHAPTERS):
+def timeline_duration(
+    durations: tuple[float, ...] | None = None,
+    chapters: tuple[Chapter, ...] = CHAPTERS,
+) -> float:
+    values = durations or tuple(chapter.duration for chapter in chapters)
+    if len(values) != len(chapters):
         raise ValueError("chapter duration count does not match chapter count")
     return sum(values)
 
@@ -189,24 +274,49 @@ def timeline_duration(durations: tuple[float, ...] | None = None) -> float:
 def chapter_at_time(
     timeline_seconds: float,
     durations: tuple[float, ...] | None = None,
+    chapters: tuple[Chapter, ...] = CHAPTERS,
 ) -> tuple[int, float]:
     """Return (chapter index, 0..1 local progress) for a looped timeline."""
-    if not CHAPTERS:
+    if not chapters:
         return 0, 0.0
-    values = durations or tuple(chapter.duration for chapter in CHAPTERS)
-    total = timeline_duration(values)
+    values = durations or tuple(chapter.duration for chapter in chapters)
+    total = timeline_duration(values, chapters)
     timeline_seconds %= total
     cursor = 0.0
     for index, duration in enumerate(values):
         if timeline_seconds < cursor + duration:
             return index, (timeline_seconds - cursor) / duration
         cursor += duration
-    return len(CHAPTERS) - 1, 1.0
+    return len(chapters) - 1, 1.0
 
 
 def chapter_start(
     index: int,
     durations: tuple[float, ...] | None = None,
+    chapters: tuple[Chapter, ...] = CHAPTERS,
 ) -> float:
-    values = durations or tuple(chapter.duration for chapter in CHAPTERS)
+    values = durations or tuple(chapter.duration for chapter in chapters)
     return sum(values[:index])
+
+
+def _two_v_selftest() -> None:
+    from .geometry import validate_geometry
+
+    validate_geometry()
+
+
+def _two_v_report() -> str:
+    from .geometry import calculation_report
+
+    return calculation_report()
+
+
+TWO_V_LESSON = Lesson(
+    key="2v",
+    brand="2V / GEODESIC MASTERCLASS",
+    title="2V Geodesic Masterclass",
+    chapters=CHAPTERS,
+    selftest=_two_v_selftest,
+    report=_two_v_report,
+    snapshot_prefix="2v",
+)

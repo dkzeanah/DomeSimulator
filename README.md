@@ -84,7 +84,7 @@ dome.
 
 This project has grown into several standalone tools (the dome creator
 below, the [assembly line](#dome-home-assembly-line-assembly_linepy),
-the [2V masterclass](#standalone-2v-geodesic-masterclass-two_v_masterclasspy),
+the [masterclass lessons](#standalone-masterclass-lessons-two_v_masterclasspy-and-friends),
 [Local Voice Studio](#local-voice-studio-local_voice_studiopy), and
 Presenter Studio). None of them take command-line flags anymore — every
 option that used to be a `--flag` is now a field in one consolidated
@@ -340,26 +340,156 @@ time figure is editable live through **PRICES**, or directly in
 [al_build.py](al_build.py) (dome line) and [site_shed.py](site_shed.py)
 (site-built comparison).
 
-## Standalone 2V Geodesic Masterclass (`two_v_masterclass.py`)
+## The teaching-video engine
 
-The 2V Masterclass is a separate ModernGL world for teaching and YouTube
+The Masterclass started as one lesson about domes and is now a general
+engine for programmatic teaching video: you write a Python module that
+computes its own facts and paints its own pictures, and it produces a
+narrated, subtitled, deterministic MP4. Nothing in the engine knows what
+a dome is.
+
+`docs/video-engine.md` is the architecture, with Mermaid diagrams of the
+render loop, the Lesson model, and how measured speech sets the timeline.
+
+```powershell
+py -3.12 scaffold_lesson.py mysubject "My Subject Masterclass"
+npm install                        # once: diagram tooling
+npm run diagrams                   # docs/*.md -> docs/diagrams/*.svg
+```
+
+`scaffold_lesson.py` writes a facts module and a lesson module that
+already render and already prove themselves, so the first thing you do on
+a new subject is replace placeholder facts rather than write boilerplate.
+
+Every video the repository produces is listed in
+`two_v_demo/deliverables.py`. The Masterclass tab's `render_all` action
+rebuilds all of them in order, one at a time.
+
+## Standalone Masterclass lessons (`two_v_masterclass.py` and friends)
+
+The Masterclass is a separate ModernGL world for teaching and YouTube
 capture. It does not enter the Dome Creator site or the assembly-line factory.
-Its 14-chapter timeline reconstructs the geometry from phi coordinates,
-normalizes the parent icosahedron, animates midpoint projection, discovers the
-two chord classes numerically, audits the supplied 72 in / 63.5 in members,
-builds the 30-SHORT / 35-LONG hemisphere cut list, and raises the dome from the
-base ring to the apex.
+One renderer plays **five** lessons and one montage, chosen from a Lesson dropdown:
+
+* **`2v` - 2V Geodesic Masterclass, 14 chapters.** Reconstructs the geometry
+  from phi coordinates, normalizes the parent icosahedron, animates midpoint
+  projection, discovers the two chord classes numerically, audits the supplied
+  72 in / 63.5 in members, builds the 30-SHORT / 35-LONG hemisphere cut list,
+  and raises the dome from the base ring to the apex.
+* **`build` - 2V Dome Construction, 46 chapters.** The same derivation, then
+  everything that comes after it: choosing a radius, choosing a hub system,
+  centre length versus cut length, end-cut angles, panel bevels, hub types,
+  stock lengths and offcut, saw jigs, setting out the base decagon,
+  foundations, riser walls, raising ring by ring, closing the crown, the
+  measurement loop, skinning, openings, and the four mistakes that actually
+  stop domes going up. It shows that a ten-sided base ring amplifies a strut
+  error by exactly phi.
+* **`hex` - Hexagonal Dome Masterclass, 20 chapters.** Why a sheet of
+  hexagons will never curve, why every hexagon cage needs exactly twelve
+  pentagons, the single-hexagon frame dome you can cut from one strut length
+  (twenty regular hexagons, ninety identical struts), and what raising the
+  frequency costs: more strut lengths, more hexagon shapes, and panels that
+  stop lying flat.
+* **`zome` - Zome Construction Masterclass, 19 chapters.** Rooms swept from a
+  star of directions: every face a parallelogram and therefore flat by
+  construction, one strut length, hubs on perfectly level rings, a true point
+  at the top, and the rhombic triacontahedron whose thirty identical panels
+  have diagonals in the golden ratio.
+* **`line` - Assembly Line Energy Masterclass, 24 chapters.** What building
+  one dome actually costs the two people who build it. An articulated
+  two-person crew is animated through all six motions of every part
+  placement - walk, lift, carry, position, fasten, recover - with the
+  mechanical work computed limb by limb from Winter's anthropometric tables
+  and the food energy totalled per motion, per station and per shift. It
+  keeps two numbers strictly apart: the mechanical work is computed and
+  exact, the metabolic cost is modelled from published task intensities and
+  the Pandolf load-carriage equation, and every borrowed constant is named
+  on screen and in the report. The finding it exists to deliver: across a
+  whole dome, lifting is a fraction of one per cent of the fuel, while
+  fastening - which raises nothing at all - is ninety per cent of it.
+* **`master` - The Dome Simulator Master Presentation, 108 chapters.**
+  The one film that walks the whole project end to end: a tour of every
+  tool's 3D world (Dome Creator, Dome Forge and its Jig Shop, the
+  Assembly Line, the video engine itself), the case against the square
+  house, the complete 2V construction masterclass, the hubless method
+  and the compound cut, raising the frame — cables in the trees
+  included — the frankendome and why it exists, the starter home priced
+  four ways, and the factory case. It introduces the **math screen**:
+  chapters that keep the picture live on the left while a worksheet
+  panel derives every figure step by step and lands on a conclusion
+  band — thirteen of them, one per major claim, every line formatted
+  from the same modules the interactive tools run on
+  (`two_v_demo/master_facts.py`), so full transparency is a property of
+  the film rather than a promise in it.
+* **`world` - Every Dome In The World, 27 chapters.** All twelve Dome
+  Creator presets, one chapter each. Every dome in it is rebuilt live
+  with `dome_model.DomeModel` from the same configuration the Preset
+  button loads, and its struts, panels and hubs are painted from that
+  model — so the Whole Trunk Lodge on screen *is* the Whole Trunk
+  Lodge, and every count and dollar beside it is read off the same
+  bill of materials the tool shows you. Twelve designs stand together
+  at true relative size, then math screens derive the frequency ladder
+  (including why odd frequencies give a dome taller than a
+  hemisphere), hub versus hubless framing, price per square foot
+  across the catalogue, envelope per square foot of floor, and the
+  flat parts list at three sizes. To check any figure, open the tool,
+  load that preset, and read the BOM.
+* **`hype` - Frankendome, 36 beats.** Not a lesson, and it does not
+  pretend to be one. The montage runs full-frame with a single line of
+  type over it, at a quicker speech rate than the masterclasses, and it
+  argues the case: build the geodesic skeleton once, keep the bones, and
+  replace, repair, upgrade and Frankenstein everything else for the next
+  fifty years. Its pictures are drawn from the same 2V hemisphere the
+  lessons use, because the claim is precisely that this one skeleton can
+  carry fifty years of different panels.
+
+Nothing in the five lessons is a typed-in number. Each has a geometry module
+that computes and then proves its own claims, and `Action = selftest` runs
+those proofs before any of the figures reach a frame.
 
 ```powershell
 py -3.12 -m pip install -r two_v_demo/requirements.txt
-py -3.12 launcher.py               # 2V Masterclass tab: every option below
-py -3.12 two_v_masterclass.py      # direct run, fullscreen presenter mode
+py -3.12 launcher.py               # Masterclass tab: every option below
+py -3.12 two_v_masterclass.py      # direct run: 2V geometry lesson
+py -3.12 dome_build_masterclass.py # direct run: construction lesson
+py -3.12 hex_masterclass.py        # direct run: hexagonal dome lesson
+py -3.12 zome_masterclass.py       # direct run: zome lesson
+py -3.12 line_masterclass.py       # direct run: assembly-line energy lesson
+py -3.12 frankendome_hype.py       # direct run: the Frankendome montage
 ```
+
+### Video presets — reproduce any published render with no setup
+
+Every video here was produced by a specific combination of lesson,
+action, resolution, frame rate, narration voice, speech rate and
+segment choices. Remembering which combination made which file is
+exactly the knowledge that makes a repository impossible for anyone
+else to rebuild, so it lives in [render_presets.py](render_presets.py)
+as data instead.
+
+The Masterclass tab opens with a **Video preset** dropdown. Pick one
+and every field below it fills in with the exact setup that produced
+that file; press **Launch Masterclass** and you get the same video.
+Nothing to configure, nothing to remember. The fields are only filled
+in, never locked, so you can still change anything afterwards.
+
+The voice settings are part of the render rather than decoration:
+chapter lengths are measured from the synthesized speech, so changing
+a voice or a rate moves every chapter boundary after it. That is why
+each preset states voice, rate, pitch and volume explicitly.
+
+Fifteen presets ship — the master presentation, every dome in the
+world, each teaching lesson, the montage and campaign films, plus
+three quick jobs (contact-sheet stills for either big film, a voice
+audition, and `render_all` to rebuild the entire published set from a
+fresh clone). The launcher's smoke test drives every one of them,
+asserting that each fills the fields and produces the right ticket, so
+the "no setup" promise is checked rather than claimed.
 
 Self-test, calculation report, narration script/SRT, build-packet export
 (CSV cut list + OBJ + field guide), offscreen stills, video export with
 neural narration, voice preview/listing, and the ffmpeg/ffprobe paths are
-all fields on the launcher's **2V Masterclass** tab now, in place of the
+all fields on the launcher's **Masterclass** tab now, in place of the
 former `--selftest` / `--report` / `--script` / `--build-packet` /
 `--shots` / `--export-video` / `--voice*` / `--ffmpeg` flags.
 
@@ -372,7 +502,7 @@ and embedded in the final MP4.
 ## Presenter Studio (`presenter_studio.py`)
 
 Presenter Studio is a fourth standalone world: a scriptable text-to-video
-engine built on the 2V Masterclass's rendering core. A `Presentation` is
+engine built on the Masterclass's rendering core. A `Presentation` is
 pure data — scenes with a free-text environment prompt, shots with a lens
 (macro/portrait/wide/ultrawide), a 1-6 point camera perspective (1-3
 linear, 4 cylindrical, 5 fisheye, 6 full 360), a snap-to focus target,

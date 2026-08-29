@@ -49,6 +49,14 @@ from .backends import (
     transcribe_local,
 )
 from .dome import build_dome_narration, export_dome_video
+from two_v_demo.lesson_registry import LESSONS as DOME_LESSONS
+
+DOME_LESSON_KEYS = tuple(DOME_LESSONS)
+DOME_LESSON_LABELS = tuple(
+    f"{lesson.title} ({len(lesson.chapters)} chapters)"
+    for lesson in DOME_LESSONS.values()
+)
+DOME_LABEL_TO_KEY = dict(zip(DOME_LESSON_LABELS, DOME_LESSON_KEYS))
 from .jobs import Worker
 from .models import ClipRecord, ConsentRecord, VoiceProfile
 from .project import VoiceProject, safe_slug
@@ -170,6 +178,7 @@ class VoiceStudioApp:
         self._build_synthesize_tab()
         self._build_compare_tab()
         self._build_dome_tab()
+        self._build_rap_tab()
         self._build_logs_tab()
         self._update_prompt()
         self._refresh_hardware()
@@ -210,6 +219,14 @@ class VoiceStudioApp:
             padding=(10, 6),
         )
         style.map("TButton", background=[("active", "#2b5875")])
+        # Group boxes default to the platform's light grey, which reads as a
+        # bright band across a dark window. Both the frame and its caption
+        # need setting -- styling only the frame leaves the caption light.
+        style.configure("TLabelframe", background="#101923",
+                        bordercolor="#25384a", relief="solid", borderwidth=1)
+        style.configure("TLabelframe.Label", background="#101923",
+                        foreground="#8fb4cf",
+                        font=("Segoe UI Semibold", 10))
         style.configure("TNotebook", background="#101923", borderwidth=0)
         style.configure(
             "TNotebook.Tab",
@@ -901,7 +918,7 @@ class VoiceStudioApp:
         tab = self._tab(self.notebook, "Dome Narration")
         ttk.Label(
             tab,
-            text="Generate the complete 2V lesson with your selected local profile.",
+            text="Narrate a complete masterclass lesson in your own local voice.",
             font=("Segoe UI Semibold", 14),
             foreground="#58d5ff",
         ).pack(anchor="w")
@@ -910,11 +927,37 @@ class VoiceStudioApp:
             text=(
                 "Each chapter is synthesized locally, timed from its actual WAV, "
                 "mixed to a -16 LUFS AAC track, and exported with JSON and SRT. "
-                "The renderer then muxes that track into the MP4."
+                "The renderer then muxes that track into the MP4. Nothing is "
+                "sent to any online speech service on this route."
             ),
             wraplength=950,
             justify=LEFT,
         ).pack(anchor="w", pady=10)
+        lesson_line = ttk.Frame(tab)
+        lesson_line.pack(anchor="w", pady=(0, 4))
+        ttk.Label(lesson_line, text="Lesson").pack(side=LEFT)
+        self.dome_lesson = StringVar(value=DOME_LESSON_KEYS[0])
+        self.dome_lesson_combo = ttk.Combobox(
+            lesson_line,
+            textvariable=self.dome_lesson,
+            state="readonly",
+            width=35,
+            values=DOME_LESSON_LABELS,
+        )
+        self.dome_lesson_combo.set(DOME_LESSON_LABELS[0])
+        self.dome_lesson_combo.pack(side=LEFT, padx=8)
+        self.dome_lesson_note = StringVar(value="")
+        ttk.Label(
+            tab,
+            textvariable=self.dome_lesson_note,
+            foreground="#91aabd",
+            wraplength=950,
+            justify=LEFT,
+        ).pack(anchor="w", pady=(0, 8))
+        self.dome_lesson_combo.bind(
+            "<<ComboboxSelected>>", lambda _event: self._refresh_dome_lesson()
+        )
+        self._refresh_dome_lesson()
         line = ttk.Frame(tab)
         line.pack(anchor="w", pady=8)
         ttk.Label(line, text="Voice profile").pack(side=LEFT)
@@ -929,7 +972,7 @@ class VoiceStudioApp:
             line, from_=1, to=60, textvariable=self.dome_fps, width=5
         ).pack(side=LEFT)
         buttons = ttk.Frame(tab)
-        buttons.pack(anchor="w", pady=12)
+        buttons.pack(anchor="w", pady=10)
         ttk.Button(
             buttons,
             text="1. Generate local narration plan",
@@ -952,6 +995,300 @@ class VoiceStudioApp:
             foreground="#91aabd",
             wraplength=950,
         ).pack(anchor="w", pady=8)
+
+    def _refresh_dome_lesson(self) -> None:
+        """Keep the chapter-count note honest about the current selection."""
+        key = self.dome_lesson_key()
+        lesson = DOME_LESSONS[key]
+        self.dome_lesson_note.set(
+            f"{lesson.title}: {len(lesson.chapters)} chapters to synthesize. "
+            "Longer lessons take proportionally longer on the first run; "
+            "chapters are cached per profile afterwards."
+        )
+
+    def dome_lesson_key(self) -> str:
+        label = self.dome_lesson_combo.get()
+        if label in DOME_LABEL_TO_KEY:
+            return DOME_LABEL_TO_KEY[label]
+        return DOME_LESSON_KEYS[0]
+
+    # ---- Rap production ------------------------------------------------
+
+    def _build_rap_tab(self) -> None:
+        tab = self._tab(self.notebook, "Rap Studio")
+        ttk.Label(
+            tab,
+            text="Put a vocal on a beat, in time and in tune.",
+            font=("Segoe UI Semibold", 14),
+            foreground="#58d5ff",
+        ).pack(anchor="w")
+        ttk.Label(
+            tab,
+            text=(
+                "The studio works out the tempo, bar lines and key of the "
+                "beat on its own, nudges your syllables onto it, tunes the "
+                "vocal to that key, and mixes the two. Nothing is "
+                "overwritten -- every render gets its own folder and a "
+                "receipt of every setting used."
+            ),
+            wraplength=1150,
+            justify=LEFT,
+        ).pack(anchor="w", pady=(4, 8))
+
+        files = ttk.LabelFrame(tab, text="Files", padding=8)
+        files.pack(fill="x", pady=4)
+        files.columnconfigure(1, weight=1)
+        self.rap_beat = StringVar()
+        self.rap_vocal = StringVar()
+        for row, (label, var) in enumerate((
+            ("Instrumental (the beat)", self.rap_beat),
+            ("Vocal (your dry take)", self.rap_vocal),
+        )):
+            ttk.Label(files, text=label).grid(row=row, column=0, sticky="w",
+                                              pady=3)
+            ttk.Entry(files, textvariable=var).grid(
+                row=row, column=1, sticky="ew", padx=8, pady=3)
+            ttk.Button(
+                files, text="Browse...",
+                command=lambda v=var: self._pick_audio(v),
+            ).grid(row=row, column=2, pady=3)
+
+        ttk.Button(files, text="Read the beat",
+                   command=self.rap_analyze_beat).grid(
+            row=2, column=0, pady=(6, 0), sticky="w")
+        self.rap_beat_info = StringVar(
+            value="No instrumental read yet.")
+        ttk.Label(files, textvariable=self.rap_beat_info,
+                  foreground="#7ee08a", wraplength=900).grid(
+            row=2, column=1, columnspan=2, sticky="w", padx=8, pady=(6, 0))
+
+        timing = ttk.LabelFrame(tab, text="Timing", padding=8)
+        timing.pack(fill="x", pady=4)
+        row = ttk.Frame(timing)
+        row.pack(anchor="w")
+        ttk.Label(row, text="Snap syllables to").pack(side=LEFT)
+        self.rap_subdivision = StringVar(value="1/8")
+        ttk.Combobox(row, textvariable=self.rap_subdivision, width=7,
+                     state="readonly",
+                     values=("1/4", "1/8", "1/8t", "1/16", "1/16t")).pack(
+            side=LEFT, padx=6)
+        ttk.Label(row, text="How hard to snap").pack(side=LEFT, padx=(18, 4))
+        self.rap_align = DoubleVar(value=0.85)
+        ttk.Scale(row, from_=0.0, to=1.0, variable=self.rap_align,
+                  length=150).pack(side=LEFT)
+        ttk.Label(row, text="Swing").pack(side=LEFT, padx=(18, 4))
+        self.rap_swing = DoubleVar(value=0.0)
+        ttk.Scale(row, from_=0.0, to=0.66, variable=self.rap_swing,
+                  length=110).pack(side=LEFT)
+        ttk.Label(
+            timing,
+            text=("0 leaves your timing alone; 1 puts every syllable exactly on "
+                  "the grid. Around 0.85 fixes what is late without sounding "
+                  "like a machine. Swing delays every second off-beat."),
+            wraplength=1150, foreground="#91aabd", justify=LEFT,
+        ).pack(anchor="w", pady=(6, 0))
+
+        pitch = ttk.LabelFrame(tab, text="Tuning", padding=8)
+        pitch.pack(fill="x", pady=4)
+        prow = ttk.Frame(pitch)
+        prow.pack(anchor="w")
+        ttk.Label(prow, text="Style").pack(side=LEFT)
+        self.rap_preset = StringVar(value="tight")
+        ttk.Combobox(prow, textvariable=self.rap_preset, width=10,
+                     state="readonly",
+                     values=("off", "natural", "tight", "hard", "robot")).pack(
+            side=LEFT, padx=6)
+        ttk.Label(prow, text="Key").pack(side=LEFT, padx=(18, 4))
+        self.rap_key = StringVar(value="")
+        ttk.Entry(prow, textvariable=self.rap_key, width=14).pack(side=LEFT)
+        ttk.Label(prow, text="(blank = use the beat's own key)",
+                  foreground="#91aabd").pack(side=LEFT, padx=6)
+        ttk.Label(prow, text="Transpose").pack(side=LEFT, padx=(18, 4))
+        self.rap_transpose = DoubleVar(value=0.0)
+        ttk.Spinbox(prow, from_=-12, to=12, increment=1,
+                    textvariable=self.rap_transpose, width=5).pack(side=LEFT)
+        ttk.Label(
+            pitch,
+            text=("'natural' cleans up notes you missed; 'hard' is the obvious "
+                  "stepped tuned-vocal sound; 'off' leaves your pitch alone. "
+                  "Transpose moves the vocal in semitones without squeaking."),
+            wraplength=1150, foreground="#91aabd", justify=LEFT,
+        ).pack(anchor="w", pady=(6, 0))
+
+        desk = ttk.LabelFrame(tab, text="Mix", padding=8)
+        desk.pack(fill="x", pady=4)
+        drow = ttk.Frame(desk)
+        drow.pack(anchor="w")
+        ttk.Label(drow, text="Vocal level").pack(side=LEFT)
+        self.rap_vocal_db = DoubleVar(value=-12.0)
+        ttk.Spinbox(drow, from_=-30, to=-3, increment=0.5,
+                    textvariable=self.rap_vocal_db, width=6).pack(side=LEFT,
+                                                                  padx=4)
+        ttk.Label(drow, text="Beat level").pack(side=LEFT, padx=(14, 0))
+        self.rap_beat_db = DoubleVar(value=-16.0)
+        ttk.Spinbox(drow, from_=-30, to=-3, increment=0.5,
+                    textvariable=self.rap_beat_db, width=6).pack(side=LEFT,
+                                                                 padx=4)
+        ttk.Label(drow, text="Duck beat under vocal").pack(side=LEFT,
+                                                           padx=(14, 0))
+        self.rap_duck = DoubleVar(value=3.0)
+        ttk.Spinbox(drow, from_=0, to=12, increment=0.5,
+                    textvariable=self.rap_duck, width=5).pack(side=LEFT, padx=4)
+        ttk.Label(drow, text="Start at bar").pack(side=LEFT, padx=(14, 0))
+        self.rap_offset_bars = DoubleVar(value=0.0)
+        ttk.Spinbox(drow, from_=0, to=64, increment=1,
+                    textvariable=self.rap_offset_bars, width=5).pack(side=LEFT,
+                                                                     padx=4)
+        drow2 = ttk.Frame(desk)
+        drow2.pack(anchor="w", pady=(6, 0))
+        self.rap_double = BooleanVar(value=True)
+        ttk.Checkbutton(drow2, text="Double-track the vocal (thicker, wider)",
+                        variable=self.rap_double).pack(side=LEFT)
+        self.rap_stereo = BooleanVar(value=True)
+        ttk.Checkbutton(drow2, text="Stereo", variable=self.rap_stereo).pack(
+            side=LEFT, padx=14)
+        ttk.Label(drow2, text="Save as").pack(side=LEFT, padx=(14, 4))
+        self.rap_format = StringVar(value="wav")
+        ttk.Combobox(drow2, textvariable=self.rap_format, width=6,
+                     state="readonly", values=("wav", "mp3")).pack(side=LEFT)
+
+        buttons = ttk.Frame(tab)
+        buttons.pack(anchor="w", pady=10)
+        ttk.Button(buttons, text="Check my timing",
+                   command=self.rap_preview).pack(side=LEFT)
+        ttk.Button(buttons, text="Make the track",
+                   command=self.rap_produce).pack(side=LEFT, padx=8)
+        ttk.Button(buttons, text="Open output folder",
+                   command=self.rap_open_output).pack(side=LEFT)
+        self.rap_status = StringVar(value="Nothing rendered yet.")
+        ttk.Label(tab, textvariable=self.rap_status, foreground="#91aabd",
+                  wraplength=950, justify=LEFT).pack(anchor="w", pady=6)
+
+    def _pick_audio(self, variable: StringVar) -> None:
+        path = filedialog.askopenfilename(
+            title="Choose an audio file",
+            filetypes=(("Audio", "*.wav *.mp3 *.flac *.m4a *.ogg *.aac"),
+                       ("All files", "*.*")))
+        if path:
+            variable.set(path)
+
+    def _rap_ready(self, need_vocal: bool = True) -> bool:
+        from .dsp import dependency_status
+        status = dependency_status()
+        if not status.ready:
+            messagebox.showerror("Audio tools unavailable", status.detail)
+            return False
+        if not self.rap_beat.get():
+            messagebox.showinfo("Pick an instrumental",
+                                "Choose the backing track first.")
+            return False
+        if need_vocal and not self.rap_vocal.get():
+            messagebox.showinfo("Pick a vocal",
+                                "Choose your recorded take first.")
+            return False
+        return True
+
+    def rap_analyze_beat(self) -> None:
+        if not self._rap_ready(need_vocal=False):
+            return
+        from . import rapkit
+
+        def job(progress=None):
+            return rapkit.analyze_beat(Path(self.rap_beat.get()))
+
+        def done(grid):
+            self.rap_beat_info.set(
+                f"{grid.describe()}  |  one bar lasts "
+                f"{grid.bar_seconds:.2f} seconds")
+            if grid.key and not self.rap_key.get():
+                self.rap_status.set(
+                    f"Beat read. The vocal will be tuned to {grid.key} "
+                    f"unless you type a different key.")
+
+        self._start_job(job, on_result=done)
+
+    def rap_preview(self) -> None:
+        if not self._rap_ready():
+            return
+        from . import rapkit
+
+        def job(progress=None):
+            return rapkit.preview_flow(
+                Path(self.rap_vocal.get()), Path(self.rap_beat.get()),
+                subdivision=self.rap_subdivision.get(),
+                swing=float(self.rap_swing.get()))
+
+        def done(report):
+            pitch = report["pitch"]
+            self.rap_status.set(
+                f"Beat: {report['beat']}\n"
+                f"Timing: {report['flow']}\n"
+                f"Pitch: sung around {pitch['median_note']} "
+                f"({pitch['median_hz']:.0f} Hz), range "
+                f"{pitch['low_note']}-{pitch['high_note']}, average "
+                f"{pitch['mean_cents_off']:.0f} cents off the nearest note.")
+
+        self._start_job(job, on_result=done)
+
+    def rap_produce(self) -> None:
+        if not self._rap_ready():
+            return
+        from . import rapkit
+
+        plan = rapkit.TrackPlan(
+            beat=self.rap_beat.get(), vocal=self.rap_vocal.get(),
+            subdivision=self.rap_subdivision.get(),
+            align_strength=float(self.rap_align.get()),
+            swing=float(self.rap_swing.get()),
+            tune_preset=self.rap_preset.get(),
+            key=self.rap_key.get().strip(),
+            transpose=float(self.rap_transpose.get()),
+            vocal_db=float(self.rap_vocal_db.get()),
+            beat_db=float(self.rap_beat_db.get()),
+            offset_bars=float(self.rap_offset_bars.get()),
+            duck_db=float(self.rap_duck.get()),
+            double_track=bool(self.rap_double.get()),
+            stereo=bool(self.rap_stereo.get()),
+            out_format=self.rap_format.get())
+        out_root = (self.project.root / "outputs" / "rap"
+                    if self.project else Path("rap_output"))
+
+        def job(progress=print):
+            return rapkit.produce(plan, out_root, progress=progress)
+
+        def done(receipt):
+            self._last_rap_dir = Path(receipt["run_directory"])
+            flow_note = ""
+            if "flow" in receipt:
+                flow_note = (
+                    f" Timing tightened from "
+                    f"{receipt['flow']['tightness_before'] * 100:.0f}% to "
+                    f"{receipt['flow']['tightness_after'] * 100:.0f}%.")
+            tune_note = ""
+            if "tune" in receipt:
+                tune_note = (
+                    f" Pitch went from "
+                    f"{receipt['tune']['before']['mean_cents_off']:.0f} to "
+                    f"{receipt['tune']['after']['mean_cents_off']:.0f} cents "
+                    f"off the note.")
+            self.rap_status.set(
+                f"Saved {receipt['output']}.{flow_note}{tune_note} "
+                f"Stems and a receipt of every setting are in the same "
+                f"folder.")
+
+        self._start_job(job, on_result=done)
+
+    def rap_open_output(self) -> None:
+        folder = getattr(self, "_last_rap_dir", None)
+        if not folder or not Path(folder).is_dir():
+            messagebox.showinfo("Nothing yet",
+                                "Render a track first, then this opens the "
+                                "folder it was written to.")
+            return
+        try:
+            os.startfile(str(folder))                      # noqa: S606
+        except AttributeError:
+            subprocess.run(["xdg-open", str(folder)], check=False)
 
     def _build_logs_tab(self) -> None:
         tab = self._tab(self.notebook, "Logs")
@@ -1627,6 +1964,7 @@ class VoiceStudioApp:
                 build_dome_narration,
                 project,
                 profile,
+                lesson=self.dome_lesson_key(),
                 allow_model_download=allow_download,
                 on_result=complete,
             )

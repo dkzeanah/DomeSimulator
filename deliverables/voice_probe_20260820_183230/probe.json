@@ -1,0 +1,172 @@
+[
+  {
+    "lang": "en",
+    "chars": 57,
+    "text": "This home is a geodesic dome. The floor is one open room.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 4.3,
+      "bytes": 25776,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 4.3,
+      "bytes": 25776,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "ja",
+    "chars": 29,
+    "text": "この住宅はジオデシックドームです。床は一つの広い空間です。",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 5.59,
+      "bytes": 33552,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "ja-JP-KeitaNeural",
+      "seconds": 6.1,
+      "bytes": 36576,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "ko",
+    "chars": 34,
+    "text": "이 주택은 지오데식 돔입니다. 바닥은 하나의 열린 공간입니다.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 5.76,
+      "bytes": 34560,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "ko-KR-HyunsuMultilingualNeural",
+      "seconds": 6.55,
+      "bytes": 39312,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "zh",
+    "chars": 23,
+    "text": "这座住宅是一个网格穹顶。地面是一个开放的空间。",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 6.77,
+      "bytes": 40608,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "zh-CN-YunxiNeural",
+      "seconds": 5.81,
+      "bytes": 34848,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "vi",
+    "chars": 67,
+    "text": "Ngôi nhà này là một mái vòm trắc địa. Sàn nhà là một không gian mở.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 5.5,
+      "bytes": 32976,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "vi-VN-NamMinhNeural",
+      "seconds": 6.0,
+      "bytes": 36000,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "fil",
+    "chars": 77,
+    "text": "Ang bahay na ito ay isang geodesic dome. Ang sahig ay isang bukas na espasyo.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 7.03,
+      "bytes": 42192,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "fil-PH-AngeloNeural",
+      "seconds": 5.98,
+      "bytes": 35856,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "fr",
+    "chars": 70,
+    "text": "Cette maison est un dôme géodésique. Le sol est un seul espace ouvert.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 5.33,
+      "bytes": 31968,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "fr-FR-RemyMultilingualNeural",
+      "seconds": 5.16,
+      "bytes": 30960,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "de",
+    "chars": 81,
+    "text": "Dieses Haus ist eine geodätische Kuppel. Der Boden ist ein einziger offener Raum.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 5.47,
+      "bytes": 32832,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "de-DE-FlorianMultilingualNeural",
+      "seconds": 5.54,
+      "bytes": 33264,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "ru",
+    "chars": 65,
+    "text": "Этот дом — геодезический купол. Пол — одно открытое пространство.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 6.05,
+      "bytes": 36288,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "ru-RU-DmitryNeural",
+      "seconds": 6.55,
+      "bytes": 39312,
+      "word_events": 0
+    }
+  },
+  {
+    "lang": "es",
+    "chars": 71,
+    "text": "Esta casa es una cúpula geodésica. El suelo es un solo espacio abierto.",
+    "house": {
+      "voice": "en-US-AndrewMultilingualNeural",
+      "seconds": 5.09,
+      "bytes": 30528,
+      "word_events": 0
+    },
+    "native": {
+      "voice": "es-MX-JorgeNeural",
+      "seconds": 6.1,
+      "bytes": 36576,
+      "word_events": 0
+    }
+  }
+]

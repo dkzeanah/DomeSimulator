@@ -83,10 +83,25 @@ def raw_icosahedron() -> tuple[np.ndarray, np.ndarray]:
         [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
         [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
     ], dtype=np.int32)
-    north_index = 4
-    rotation = rotation_from_to(vertices[north_index], np.array([0.0, 0.0, 1.0]))
-    vertices = vertices @ rotation.T
+    vertices = vertices @ icosahedron_north_rotation().T
     return vertices, faces
+
+
+# The canonical phi-coordinate icosahedron has no vertex on +Z.  Vertex 4,
+# (0, -1, phi), is rotated there so the family of models built on these
+# coordinates all share one five-fold-up frame and one z = 0 equator.
+CANONICAL_NORTH_VERTEX = np.array([0.0, -1.0, PHI])
+
+
+@lru_cache(maxsize=1)
+def icosahedron_north_rotation() -> np.ndarray:
+    """The 3x3 rotation every model in this package is expressed in.
+
+    Any set of coordinates written in the textbook phi frame -- the
+    truncated icosahedron's, for instance -- must be turned by this to line
+    up with :func:`raw_icosahedron` output.
+    """
+    return rotation_from_to(CANONICAL_NORTH_VERTEX, np.array([0.0, 0.0, 1.0]))
 
 
 def unique_edges(faces: np.ndarray) -> tuple[tuple[int, int], ...]:

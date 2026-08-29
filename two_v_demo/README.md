@@ -1,22 +1,42 @@
-# 2V Geodesic Masterclass
+# Masterclass lessons
 
-This is a standalone ModernGL teaching world. It does not import or launch the
-assembly-line simulation or the main Dome Creator world.
+One standalone ModernGL teaching world: seven lessons and one montage. It does not import
+or launch the assembly-line simulation or the main Dome Creator world;
+the `line` lesson reads `al_build`'s element catalogue as data, but
+starts nothing.
+
+| Lesson key | Title | Chapters | What it teaches |
+| --- | --- | --- | --- |
+| `2v` | 2V Geodesic Masterclass | 14 | Why a 2V dome has exactly two strut lengths, and why their ratio is not the golden ratio. |
+| `build` | 2V Dome Construction Masterclass | 46 | The same geometry, then everything after it: sizing, hub systems, end cuts, bevels, stock and offcut, jigs, setting out, foundations, riser walls, raising, checking, skinning, openings, and the four mistakes that actually stop domes going up. |
+| `hex` | Hexagonal Dome Masterclass | 20 | The single-hexagon frame dome you can cut from one strut length, why every hexagon cage needs exactly twelve pentagons, and what raising the frequency costs in extra sizes and warped panels. |
+| `zome` | Zome Construction Masterclass | 19 | Rooms swept from a star of directions: parallelogram panels that are flat by construction, one strut length, level hub rings, and a point at the top. |
+| `line` | Assembly Line Energy Masterclass | 24 | What building one dome costs the two people who build it: an articulated crew animated through all six motions of every placement, with the mechanical work computed limb by limb and the food energy totalled per motion, per station and per shift. |
+| `cuts` | The Compound Cut, Both Machines | 18 | The hardest operation in a hubless dome, in full: the rip bevel on the table saw, the end mitre on a sled because no mitre saw reaches the angle, the relief lap, the stop block, and turning rather than flipping between ends. |
+| `franken` | The Franken-Dome | 13 | Struts of any section held by V brackets folded from scrap sheet: four screws into each strut, the slack that leaves no joint on the sphere, the settling, and the sheathing that spans the rest. |
+| `hype` | Frankendome | 36 | Not a lesson. The montage: full-frame pictures, one line of type, a quicker voice, and the argument for treating a dome as a platform you keep upgrading rather than a house you finish once. |
 
 ## Run
 
 ```powershell
 py -3.12 -m pip install -r two_v_demo/requirements.txt
-py -3.12 launcher.py           # 2V Masterclass tab — see below
-py -3.12 two_v_masterclass.py  # direct run, fullscreen presenter mode
+py -3.12 launcher.py               # Masterclass tab — see below
+py -3.12 two_v_masterclass.py      # direct run: 2V geometry lesson
+py -3.12 dome_build_masterclass.py # direct run: construction lesson
+py -3.12 hex_masterclass.py        # direct run: hexagonal dome lesson
+py -3.12 zome_masterclass.py       # direct run: zome lesson
+py -3.12 line_masterclass.py       # direct run: assembly-line energy lesson
+py -3.12 hubless_cut_masterclass.py # direct run: the compound cut
+py -3.12 frankendome_masterclass.py # direct run: the franken-dome
+py -3.12 frankendome_hype.py       # direct run: the Frankendome montage
 ```
 
 This tool no longer takes command-line flags. Every mode that used to be
-a `--flag` is a field on the launcher's **2V Masterclass** tab: pick an
-**Action** (run / selftest / report / shots / export_video /
-voice_preview / list_voices / narration_only / script / build_packet),
-fill in the fields relevant to it, and click **Launch**. Former flags
-map onto that tab like this:
+a `--flag` is a field on the launcher's **Masterclass** tab: pick a
+**Lesson**, pick an **Action** (run / selftest / report / shots /
+export_video / voice_preview / list_voices / narration_only / script /
+build_packet / list_lessons), fill in the fields relevant to it, and
+click **Launch**. Former flags map onto that tab like this:
 
 | Former flag | Launcher field |
 | --- | --- |
@@ -33,6 +53,7 @@ map onto that tab like this:
 | `--ffmpeg` / `--ffprobe` | their path fields |
 | `--script PATH` | Action = script + its path |
 | `--build-packet DIR` (+ `--radius-in`, `--connector-deduction-in`) | Action = build_packet + Output directory / Radius / Connector deduction |
+| *(new)* | Lesson dropdown — which of the four lessons to play or export |
 | `--fps` / `--size` | FPS / Size WxH |
 
 The video exporter requires `ffmpeg` on `PATH` (or the ffmpeg path field
@@ -58,6 +79,32 @@ Narration tab: it writes an AAC track and `narration-plan.json`, and the
 2V Masterclass tab's "Local Voice Studio narration plan" field points
 the exporter at that existing track instead of calling the Edge speech
 service.
+
+## How a lesson is put together
+
+A lesson is a `Lesson` (in `lessons.py`): a title, a tuple of `Chapter`s,
+and a table of scene painters. The renderer in `app.py` walks the
+chapters, asks the lesson to paint each stage, and asks it for any live
+figures to print under the chapter's fixed equations. It has no knowledge
+of which lesson it is playing, so adding a fifth is a new module plus one
+line in `lesson_registry.py`.
+
+Nothing on screen is a typed-in number. Each lesson has a geometry module
+that computes and then *proves* its own claims, and `Action = selftest`
+runs those proofs:
+
+| Lesson | Geometry module | Proves, among other things |
+| --- | --- | --- |
+| `2v` | `geometry.py` | 42/120/80 sphere, two chord classes, Euler characteristic 2 |
+| `build` | `build_geometry.py` | end cut is exactly half the central angle; a ten-sided base ring amplifies a strut error by exactly phi |
+| `hex` | `hex_geometry.py` | the truncated icosahedron really has one strut length and one regular hexagon; every cage has exactly twelve pentagons; the measured angle deficit is 720 degrees when the panels are flat |
+| `zome` | `zome_geometry.py` | F = n(n-1), V = n(n-1)+2, E = 2n(n-1); every face a rhombus; a polar zome's level cut is one repeated setting at every height, and the golden zome's is not |
+
+A scene painter is a plain function `(app, opaque, transparent, progress)`.
+It fills two `TriangleBatch`es from `render_kit.py` and appends
+`WorldLabel`s; it never touches OpenGL. A lesson that omits a stage falls
+back to the renderer's own `scene_*` method of that name, which is how the
+construction lesson reuses the original 2V derivation scenes.
 
 The build-packet action runs without graphics. It exports CSV cut lists,
 triangle details, hub coordinates, edge connectivity, a calculation workbook,

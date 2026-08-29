@@ -1,0 +1,25 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.10)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+voice 01/19: A zome is not a piece of a sphere
+voice 02/19: The sweep, in four steps
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+voice 03/19: Every panel is flat, guaranteed
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+voice 04/19: Make the directions equal and you get one strut
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+voice 05/19: The star of directions
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+voice 06/19: Counting the parts before you buy anything
+voice 07/19: The top comes to a point
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+voice 08/19: The hubs land on level rings
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+voice 09/19: How many panel templates
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+    speech attempt 2 failed (ConnectionTimeoutError); retrying
+    speech attempt 3 failed (ConnectionTimeoutError); retrying
+speech synthesis failed after 4 attempts: Cannot connect to host speech.platform.bing.com:443 ssl:<ssl.SSLContext object at 0x000000001E60B950> [getaddrinfo failed]
+
+[exited with code 0]

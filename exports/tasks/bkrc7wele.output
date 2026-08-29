@@ -1,0 +1,22 @@
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.19.100
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, q=2-31, 2234 kb/s, 30 fps, 30 tbr, 15360 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc62.35.100 libx264
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 96000 Hz, stereo, fltp, 166 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Press [q] to stop, [?] for help
+frame=14292 fps=0.0 q=-1.0 size=  141568KiB time=00:07:56.63 bitrate=2433.2kbits/s speed= 937x elapsed=0:00:00.50    [mp4 @ 0000000002be2b40] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 00000000007a4040] video:172744KiB audio:12854KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.355469%
+frame=18996 fps=0.0 q=-1.0 Lsize=  186258KiB time=00:10:33.20 bitrate=2409.7kbits/s speed= 773x elapsed=0:00:00.81    
+
+saved deliverables\masterclass\frankendome-montage-v2-narration.m4a
+saved deliverables\masterclass\frankendome-montage-v2.mp4
+saved deliverables\masterclass\frankendome-montage-v2-narration.md
+saved deliverables\masterclass\frankendome-montage-v2.srt
+
+[exited with code 0]

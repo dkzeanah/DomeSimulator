@@ -1,0 +1,60 @@
+./dome_forge/build.py:20:from two_v_demo.geometry import build_demo_geometry, normalize
+./dome_forge/groups.py:32:from two_v_demo.geometry import build_demo_geometry, normalize
+./dome_forge/jigs.py:32:from two_v_demo.geometry import build_demo_geometry, normalize
+./dome_forge/layers.py:724:    from two_v_demo.geometry import build_demo_geometry
+./dome_forge/patterns.py:24:Everything is in inches, computed from two_v_demo's own geometry scaled
+./dome_forge/patterns.py:38:from two_v_demo.geometry import build_demo_geometry
+./local_voice_studio/dome.py:11:from two_v_demo.audio import (
+./local_voice_studio/dome.py:20:from two_v_demo.lessons import CHAPTERS
+./local_voice_studio/dome.py:21:from two_v_demo.narration import narration_script, subtitle_file
+./local_voice_studio/dome.py:58:    for index, chapter in enumerate(CHAPTERS):
+./local_voice_studio/dome.py:74:                f"Chapter {chapter.number}/{len(CHAPTERS)}: using local cache"
+./local_voice_studio/dome.py:78:                f"Chapter {chapter.number}/{len(CHAPTERS)}: {chapter.title}"
+./local_voice_studio/dome.py:96:        for chapter, speech_duration in zip(CHAPTERS, speech_durations)
+./local_voice_studio/dsp.py:68:        from two_v_demo.audio import resolve_executable
+./presentations/dome_accessibility.py:25:from two_v_demo.geometry import build_demo_geometry
+./presentations/_numbers.py:16:from two_v_demo.geometry import build_demo_geometry
+./presenter/accessories.py:20:from two_v_demo.geometry import normalize
+./presenter/engine.py:784:        from two_v_demo.audio import resolve_executable
+./presenter/narrate.py:20:from two_v_demo.audio import (
+./presenter/world.py:15:from two_v_demo.geometry import build_demo_geometry, normalize
+./two_v_demo/app.py:42:from .lessons import (
+./two_v_demo/app.py:43:    CHAPTERS,
+./two_v_demo/app.py:147:        self.chapter_durations = tuple(chapter.duration for chapter in CHAPTERS)
+./two_v_demo/app.py:155:        self.camera_yaw = CHAPTERS[0].camera[0]
+./two_v_demo/app.py:156:        self.camera_pitch = CHAPTERS[0].camera[1]
+./two_v_demo/app.py:157:        self.camera_distance = CHAPTERS[0].camera[2]
+./two_v_demo/app.py:781:        chapter = CHAPTERS[self.chapter_index]
+./two_v_demo/app.py:899:        cell_width = (timeline_width - gap * (len(CHAPTERS) - 1)) / len(CHAPTERS)
+./two_v_demo/app.py:900:        for index, item in enumerate(CHAPTERS):
+./two_v_demo/app.py:959:        self.chapter_index = index % len(CHAPTERS)
+./two_v_demo/app.py:965:        chapter = CHAPTERS[self.chapter_index]
+./two_v_demo/app.py:982:        chapter = CHAPTERS[self.chapter_index]
+./two_v_demo/app.py:1010:        chapter = CHAPTERS[self.chapter_index]
+./two_v_demo/app.py:1204:            expected = len(CHAPTERS)
+./two_v_demo/app.py:1249:                f"across {len(CHAPTERS)} chapters"
+./two_v_demo/app.py:1272:                f"across {len(CHAPTERS)} chapters"
+./two_v_demo/audio.py:22:from .lessons import CHAPTERS
+./two_v_demo/audio.py:49:    chapter = CHAPTERS[index]
+./two_v_demo/audio.py:62:        + [spoken_chapter_text(index) for index in range(len(CHAPTERS))]
+./two_v_demo/audio.py:471:    for index, chapter in enumerate(CHAPTERS):
+./two_v_demo/audio.py:475:            progress(f"voice {chapter.number}/{len(CHAPTERS):02d}: cached")
+./two_v_demo/audio.py:478:                f"voice {chapter.number}/{len(CHAPTERS):02d}: "
+./two_v_demo/audio.py:496:        for chapter, speech_duration in zip(CHAPTERS, speech_durations)
+./two_v_demo/lessons.py:21:CHAPTERS: tuple[Chapter, ...] = (
+./two_v_demo/lessons.py:179:TOTAL_DURATION = sum(chapter.duration for chapter in CHAPTERS)
+./two_v_demo/lessons.py:183:    values = durations or tuple(chapter.duration for chapter in CHAPTERS)
+./two_v_demo/lessons.py:184:    if len(values) != len(CHAPTERS):
+./two_v_demo/lessons.py:194:    if not CHAPTERS:
+./two_v_demo/lessons.py:196:    values = durations or tuple(chapter.duration for chapter in CHAPTERS)
+./two_v_demo/lessons.py:204:    return len(CHAPTERS) - 1, 1.0
+./two_v_demo/lessons.py:211:    values = durations or tuple(chapter.duration for chapter in CHAPTERS)
+./two_v_demo/narration.py:7:from .lessons import CHAPTERS
+./two_v_demo/narration.py:19:    values = chapter_durations or tuple(chapter.duration for chapter in CHAPTERS)
+./two_v_demo/narration.py:20:    if len(values) != len(CHAPTERS):
+./two_v_demo/narration.py:38:    for chapter, duration in zip(CHAPTERS, durations):
+./two_v_demo/narration.py:69:    if speech_durations is not None and len(speech_durations) != len(CHAPTERS):
+./two_v_demo/narration.py:71:    for chapter_index, (chapter, duration) in enumerate(zip(CHAPTERS, durations)):
+./two_v_masterclass.py:12:from two_v_demo.app import main
+
+[exited with code 0]

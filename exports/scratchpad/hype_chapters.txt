@@ -1,0 +1,364 @@
+
+
+CHAPTERS: tuple[Chapter, ...] = (
+    Chapter(
+        "platform", "01", "The question",
+        "What if a house was not a finished product?",
+        (
+            "What if a house was not really a finished product? What if it was a",
+            "platform?",
+        ),
+        (), 8.0, (30.0, 22.0, 15.0), "hype_bones",
+    ),
+    Chapter(
+        "bones", "02", "Build once",
+        "Build the skeleton once. Keep the bones.",
+        (
+            "Build the geodesic skeleton once. Keep the bones.",
+        ),
+        (), 6.0, (52.0, 30.0, 13.5), "hype_bones",
+    ),
+    Chapter(
+        "mutate", "03", "Then everything else",
+        "Then replace, repair, upgrade, mutate, Frankenstein.",
+        (
+            "Then replace, repair, upgrade, mutate, Frankenstein, and occasionally bolt",
+            "questionable things onto everything else for the next fifty years.",
+        ),
+        (), 9.0, (74.0, 20.0, 15.5), "hype_platform",
+    ),
+    Chapter(
+        "swap", "04", "Every answer is yes",
+        "New insulation? Swap it. Solar panels? Add them.",
+        (
+            "New insulation? Swap it. Solar panels? Add them. Greenhouse wall? Sure.",
+            "Workshop extension? Absolutely.",
+        ),
+        (), 9.0, (18.0, 26.0, 17.0), "hype_swap",
+    ),
+    Chapter(
+        "absurd", "05", "And whatever comes next",
+        "There should be a panel for that.",
+        (
+            "Technology invented in twenty forty-seven by a child with six robotic arms?",
+            "There should be a panel for that.",
+        ),
+        (), 9.0, (44.0, 18.0, 16.0), "hype_absurd",
+    ),
+    Chapter(
+        "archetypes", "06", "Not just for them",
+        "Not just a weird round house for hippies and Bond villains.",
+        (
+            "That is what fascinates me about geodesic construction. The dome is not just",
+            "a weird round house for hippies, Bond villains, mathematicians, and people",
+            "who own suspicious amounts of polycarbonate.",
+        ),
+        (), 11.0, (90.0, 14.0, 16.5), "hype_archetypes",
+    ),
+    Chapter(
+        "chassis", "07", "A different paradigm",
+        "Keep the chassis. Upgrade the components.",
+        (
+            "It could be an entirely different building paradigm. Think PC building.",
+            "Keep the chassis. Upgrade the components. And apparently I have decided",
+            "this is now my problem to investigate.",
+        ),
+        (), 11.0, (88.0, 12.0, 16.0), "hype_chassis",
+    ),
+    Chapter(
+        "whoami", "08", "Who is behind this",
+        "For anyone wondering who is behind all these triangles.",
+        (
+            "For anyone wondering who is behind this increasingly unreasonable quantity",
+            "of triangles: I am a Navy veteran, programmer, agentic engineer, and a",
+            "trade-school and F.A.A. accredited avionics bench technician. I am now using",
+            "my G.I. Bill to pursue aerospace engineering.",
+        ),
+        (), 14.0, (90.0, 16.0, 15.0), "hype_badges",
+    ),
+    Chapter(
+        "combination", "09", "A stable combination",
+        "A perfectly stable combination.",
+        (
+            "Programmer, plus electronics technician, plus fabricator, plus engineering",
+            "student, plus scavenger, plus Alabama hobo-redneck, plus aspiring science",
+            "madman. A perfectly stable combination.",
+        ),
+        (), 11.0, (90.0, 20.0, 14.0), "hype_badges",
+    ),
+    Chapter(
+        "teardown", "10", "The list of likes",
+        "I like taking things apart.",
+        (
+            "I like programming things. I like wiring things. I like woodworking and",
+            "metalworking. I like taking things apart.",
+        ),
+        (), 9.0, (36.0, 24.0, 19.0), "hype_teardown",
+    ),
+    Chapter(
+        "organs", "11", "The organs are still good",
+        "Excellent. The organs are still good.",
+        (
+            "I like finding machinery somebody threw away and immediately thinking:",
+            "excellent, the organs are still good.",
+        ),
+        (), 9.0, (86.0, 18.0, 15.0), "hype_organs",
+    ),
+    Chapter(
+        "supervillain", "12", "Give me the scrap",
+        "I become the world's poorest supervillain.",
+        (
+            "Give me discarded motors, bearings, sheet metal, wiring harnesses, switches,",
+            "sensors, lumber, gears and random military surplus hardware, and I become",
+            "the world's poorest supervillain.",
+        ),
+        (), 11.0, (100.0, 22.0, 16.0), "hype_organs",
+    ),
+    Chapter(
+        "affordable", "13", "Why salvage",
+        "When the material is already garbage, failure becomes affordable.",
+        (
+            "That mentality is a huge part of Frankendome. When the material is cheap,",
+            "salvaged, or already considered garbage, failure becomes affordable.",
+        ),
+        (), 10.0, (90.0, 14.0, 17.0), "hype_failure",
+    ),
+    Chapter(
+        "mistakes", "14", "The catalogue of errors",
+        "Drill the wrong hole? I do it often.",
+        (
+            "Drill the wrong hole? I do it often. Cut something too short? Again?",
+            "Excellent. Wire it incorrectly? Educational.",
+        ),
+        (), 10.0, (90.0, 14.0, 17.0), "hype_failure",
+    ),
+    Chapter(
+        "science", "15", "Congratulations",
+        "Congratulations. You have conducted science.",
+        (
+            "Discover your revolutionary invention is actually a terrible idea?",
+            "Congratulations. You have conducted science. Nobody has to hold a funeral",
+            "for the four hundred dollar precision component you just murdered.",
+        ),
+        (), 12.0, (90.0, 14.0, 17.0), "hype_failure",
+    ),
+    Chapter(
+        "trapped", "16", "You stop seeing junk",
+        "Components temporarily trapped inside the wrong machine.",
+        (
+            "This is why I love prototyping from reclaimed materials. Eventually you stop",
+            "seeing junk. You see components temporarily trapped inside the wrong",
+            "machine. As a kid I loved Operation Junkyard. In hindsight, I was clearly",
+            "receiving vocational training.",
+        ),
+        (), 14.0, (70.0, 20.0, 16.0), "hype_organs",
+    ),
+    Chapter(
+        "empire", "17", "The business plan",
+        "THE EVIL DOME EMPIRE",
+        (
+            "Which naturally brings us to my completely reasonable long-term business",
+            "plan. The Evil Dome Empire.",
+        ),
+        (), 9.0, (26.0, 24.0, 18.0), "hype_title",
+    ),
+    Chapter(
+        "phases", "18", "Three phases",
+        "Spread them across civilization like structurally efficient triangles.",
+        (
+            "Phase one: build geodesic frames. Phase two: spread them across",
+            "civilization like a plague of structurally efficient triangles. Phase three:",
+            "become filthy rich selling upgrades.",
+        ),
+        (), 12.0, (90.0, 16.0, 16.0), "hype_phases",
+    ),
+    Chapter(
+        "tribute", "19", "The tribute schedule",
+        "Your tribute has been accepted.",
+        (
+            "Need the Imperial Arctic Insulation Package? That will cost you. Fancy",
+            "greenhouse panels? Money, please. Solar integrated exterior shell? Straight",
+            "into the treasury. Luxury window module? Your tribute has been accepted.",
+        ),
+        (), 14.0, (90.0, 15.0, 16.5), "hype_catalog",
+    ),
+    Chapter(
+        "printer", "20", "The model",
+        "Printers and ink cartridges, except the printer is your house.",
+        (
+            "My business model will basically be printers and ink cartridges, except the",
+            "printer is your house.",
+        ),
+        (), 8.0, (88.0, 12.0, 16.0), "hype_chassis",
+    ),
+    Chapter(
+        "fortress", "21", "The fortress",
+        "Rule benevolently, but firmly, over the Hoboclass.",
+        (
+            "Eventually I shall sit inside an enormous spherical fortress overlooking",
+            "thousands of domes, and rule benevolently, but firmly, over the Hoboclass.",
+        ),
+        (), 11.0, (40.0, 26.0, 26.0), "hype_fortress",
+    ),
+    Chapter(
+        "weakness", "22", "One catastrophic weakness",
+        "The Hoboclass owns power tools.",
+        (
+            "Unfortunately, my flawless evil genius strategy has one catastrophic",
+            "weakness. The Hoboclass owns power tools.",
+        ),
+        (), 9.0, (86.0, 14.0, 17.0), "hype_powertools",
+    ),
+    Chapter(
+        "module", "23", "Twelve seconds",
+        "Brother, that is plywood, insulation and sheet metal.",
+        (
+            "I will unveil a magnificent four thousand dollar Imperial Replacement Wall",
+            "Module, and somebody will stare at it for twelve seconds and say: brother,",
+            "that is plywood, insulation and sheet metal.",
+        ),
+        (), 13.0, (90.0, 15.0, 16.5), "hype_catalog",
+    ),
+    Chapter(
+        "threehours", "24", "Three hours later",
+        "A chicken coop door and something they found beside the highway.",
+        (
+            "Three hours later their dome has a salvaged R.V. window, half a solar panel,",
+            "two Harbor Freight brackets, a door from a chicken coop, and something they",
+            "found beside the highway attached to it.",
+        ),
+        (), 13.0, (58.0, 20.0, 18.0), "hype_bolted",
+    ),
+    Chapter(
+        "destroyed", "25", "The result",
+        "My monopoly: destroyed. My customer: self-sufficient.",
+        (
+            "My monopoly: destroyed. My empire: humiliated. My customer: now completely",
+            "self-sufficient. And standing proudly before me will be the natural predator",
+            "of proprietary modular architecture.",
+        ),
+        (), 12.0, (110.0, 22.0, 18.0), "hype_bolted",
+    ),
+    Chapter(
+        "frankendome", "26", "The predator",
+        "FRANKENDOME",
+        (
+            "Frankendome.",
+        ),
+        (), 6.0, (14.0, 26.0, 18.0), "hype_title",
+    ),
+    Chapter(
+        "thepoint", "27", "And honestly",
+        "That is the point.",
+        (
+            "And honestly? That is the point. I do not just want to build domes. I want",
+            "to document the geometry, fabrication, structural concepts, energy systems,",
+            "modular panels, failures, experiments, software, electronics and weird",
+            "prototypes well enough that somebody else can take the idea and run",
+            "somewhere I never would have thought to go.",
+        ),
+        (), 17.0, (66.0, 22.0, 16.0), "hype_platform",
+    ),
+    Chapter(
+        "becomes", "28", "What it could become",
+        "A house. A workshop. A greenhouse. A shelter.",
+        (
+            "A dome could become a house. A workshop. A greenhouse. A cabin. A disaster",
+            "shelter. An off-grid power station. A tiny home. A modular research lab. A",
+            "timber frame monster made from trees you milled yourself, because apparently",
+            "buying lumber normally was not entertaining enough.",
+        ),
+        (), 16.0, (34.0, 24.0, 16.0), "hype_becomes",
+    ),
+    Chapter(
+        "shop", "29", "What you actually need",
+        "You should not need a hundred thousand dollar shop.",
+        (
+            "And you should not need a hundred thousand dollar shop to experiment. Maybe",
+            "you have a circular saw. A drill. Some reclaimed lumber. YouTube.",
+            "Questionable confidence.",
+        ),
+        (), 12.0, (90.0, 14.0, 16.5), "hype_tools",
+    ),
+    Chapter(
+        "instrument", "30", "The most important instrument",
+        "I wonder if this will work.",
+        (
+            "And the most important engineering instrument ever created: I wonder if this",
+            "will work.",
+        ),
+        (), 8.0, (90.0, 16.0, 15.0), "hype_tools",
+    ),
+    Chapter(
+        "forwho", "31", "Who it is for",
+        "People whose workshop looks like a tornado hit Lowe's.",
+        (
+            "That is who I want this project to be for. Normal people. D.I.Y. builders.",
+            "Homesteaders. Programmers. Fabricators. Tinkerers. People learning as they",
+            "go. People whose workshop looks like a tornado hit Lowe's. People who look",
+            "at a pile of scrap and accidentally start designing infrastructure.",
+        ),
+        (), 16.0, (90.0, 16.0, 17.5), "hype_forwho",
+    ),
+    Chapter(
+        "howcheap", "32", "The question to answer",
+        "How cheap, modular, repairable and adaptable can this get?",
+        (
+            "I want to find out how cheap, modular, repairable, scalable and adaptable",
+            "geodesic construction can actually become.",
+        ),
+        (), 9.0, (50.0, 22.0, 16.0), "hype_becomes",
+    ),
+    Chapter(
+        "woods", "33", "If nobody is interested",
+        "We will build weird triangular houses in the woods until somebody notices.",
+        (
+            "If conventional construction has no interest in any of this, that is okay.",
+            "We will build weird triangular houses in the woods until somebody notices.",
+        ),
+        (), 10.0, (30.0, 24.0, 26.0), "hype_fortress",
+    ),
+    Chapter(
+        "mission", "34", "The mission",
+        "Accidentally teach the Hoboclass to manufacture everything themselves.",
+        (
+            "The mission remains simple. Spread geodesic domes throughout civilization",
+            "like a highly efficient modular plague. Establish the Evil Dome Empire. Rule",
+            "the Hoboclass. Accidentally teach the Hoboclass how to manufacture all my",
+            "products themselves. Destroy my own recurring revenue model. Continue",
+            "anyway.",
+        ),
+        (), 17.0, (90.0, 16.0, 16.0), "hype_phases",
+    ),
+    Chapter(
+        "wins", "35", "Because in the end",
+        "FRANKENDOME ALWAYS WINS.",
+        (
+            "Because in the end: Frankendome always wins.",
+        ),
+        (), 7.0, (8.0, 28.0, 18.0), "hype_title",
+    ),
+    Chapter(
+        "follow", "36", "Follow the experiments",
+        "Follow the experiments.",
+        (
+            "Follow the experiments. Instagram, Donovan Zeanah. Facebook dot com slash",
+            "zeanah. TikTok, short circuiter. And zeanah lab dot com.",
+        ),
+        (), 12.0, (90.0, 18.0, 16.0), "hype_socials",
+    ),
+)
+
+
+HYPE_LESSON = Lesson(
+    key="hype",
+    brand="FRANKENDOME",
+    title="Frankendome",
+    chapters=CHAPTERS,
+    scenes=SCENES,
+    snapshot_prefix="hype",
+    style="hype",
+    # A montage wants to move: a little quicker than the masterclasses,
+    # which sit at -3% so the geometry has room to land.
+    voice_rate="+7%",
+)

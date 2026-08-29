@@ -1,0 +1,152 @@
+
+
+# ----------------------------------------------------------------------
+# The call to action
+# ----------------------------------------------------------------------
+
+def scene_hype_asymmetry(app, opaque, transparent, p: float) -> None:
+    """What is on each side of this, drawn to scale."""
+    grow = ease_in_out(clamp(p * 1.2))
+    # Their side: a stack that keeps going past the top of the frame.
+    for index in range(18):
+        height = 0.42
+        z = 0.3 + index * height * 1.06
+        if index / 18 > grow:
+            break
+        opaque.box((-5.6, 0.0, z), (4.4, 2.0, height), (0.24, 0.30, 0.38, 1.0))
+    # My side: one prototype and a chainsaw.
+    _frame(opaque, 1.55, AMBER, 0.05, grow)
+    opaque.box((5.4, 0.0, 0.42), (2.3, 0.55, 0.42), (0.62, 0.16, 0.14, 1.0))
+    opaque.cylinder(np.array([4.5, 0.0, 0.42]), np.array([6.9, 0.0, 0.42]),
+                    0.10, MUTED, 8)
+    app.world_labels.extend([
+        WorldLabel(np.array([-5.6, 0.0, 9.2]),
+                   "INSTITUTIONAL CAPITAL", (169, 188, 203)),
+        WorldLabel(np.array([5.4, 0.0, 3.0]),
+                   "ONE PROTOTYPE\nAND A CHEAP CHAINSAW", (255, 177, 62)),
+        WorldLabel(np.array([0.0, 0.0, -1.2]),
+                   "this is the actual balance of forces", (111, 235, 155)),
+    ])
+
+
+def scene_hype_friend(app, opaque, transparent, p: float) -> None:
+    """One person, one dome. The quietest shot in the film."""
+    _frame(opaque, 3.4, CYAN, 0.06, smoothstep(clamp(p * 1.6)))
+    _panels(transparent, 3.4, lambda i: CYAN, 0.10)
+    stature = 3.9
+    joints = place_figure(
+        joint_positions(POSES["stand"], stature), (5.6, 0.0, 0.0), 200.0)
+    draw_figure(opaque, joints, scale=stature / 1.75)
+    app.world_labels.append(WorldLabel(
+        np.array([5.6, 0.0, stature + 0.9]),
+        "SOMEBODY YOU KNOW", (169, 188, 203)))
+
+
+def scene_hype_share(app, opaque, transparent, p: float) -> None:
+    """One dome becomes many, outward, fast."""
+    spread = ease_in_out(clamp(p * 1.25))
+    _frame(opaque, 2.2, AMBER, 0.07)
+    for index in range(20):
+        angle = math.tau * index / 20
+        distance = 4.0 + spread * (7.0 + (index % 3) * 2.4)
+        centre = np.array([distance * math.cos(angle),
+                           distance * math.sin(angle), 0.0])
+        size = 0.95 * spread
+        for edge in list(GEOMETRY.hemisphere_edges)[::5]:
+            a, b = (GEOMETRY.vertices[i] * size + centre for i in edge)
+            opaque.cylinder(a, b, 0.03, CYAN, 5)
+        if spread > 0.25:
+            opaque.arrow(np.array([2.6 * math.cos(angle), 2.6 * math.sin(angle), 0.9]),
+                         centre + np.array([0.0, 0.0, 0.9]), 0.028, GREEN)
+    app.world_labels.append(WorldLabel(
+        np.array([0.0, 0.0, 4.6]), "SEND IT TO ONE PERSON", (111, 235, 155)))
+
+
+def scene_hype_audiences(app, opaque, transparent, p: float) -> None:
+    """Anyone with reach. The list is deliberately unfussy."""
+    names = ("HOMESTEADERS", "BUILDERS", "DEVELOPERS", "MAKERS",
+             "CREATORS", "ANYONE WITH AN AUDIENCE")
+    reveal = clamp(p * 1.3)
+    for index, label in enumerate(names):
+        if index / len(names) > reveal:
+            continue
+        row, column = divmod(index, 3)
+        x = -6.2 + column * 6.2
+        z = 4.2 - row * 2.3
+        colour = PALETTE[index % len(PALETTE)]
+        opaque.box((x, 0.0, z), (5.2, 0.5, 1.3), colour)
+        app.world_labels.append(WorldLabel(
+            np.array([x, 0.0, z]), label, _rgb(colour)))
+    app.world_labels.append(WorldLabel(
+        np.array([0.0, 0.0, -0.9]),
+        "I genuinely do not care what your audience is about",
+        (169, 188, 203)))
+
+
+def scene_hype_needs(app, opaque, transparent, p: float) -> None:
+    """What the money actually turns into."""
+    reveal = clamp(p * 1.3)
+    kit = (("A CNC ROUTER", CYAN), ("A LASER CUTTER", RED),
+           ("CAMERAS", AMBER), ("POWER AND SPACE", GREEN))
+    span = 13.2
+    step = span / (len(kit) - 1)
+    for index, (label, colour) in enumerate(kit):
+        if index / len(kit) > reveal:
+            continue
+        x = -span * 0.5 + index * step
+        opaque.box((x, 0.0, 2.0), (2.9, 1.4, 2.4), colour)
+        if label == "A LASER CUTTER":
+            opaque.cylinder(np.array([x, 0.0, 3.2]), np.array([x, 0.0, 6.4]),
+                            0.07, RED, 6)
+        app.world_labels.append(WorldLabel(
+            np.array([x, 0.0, 3.8]), label, _rgb(colour)))
+    app.world_labels.append(WorldLabel(
+        np.array([0.0, 0.0, -0.9]),
+        "not a salary. tooling. it turns straight back into parts.",
+        (111, 235, 155)))
+
+
+def scene_hype_number(app, opaque, transparent, p: float) -> None:
+    """The ask, against what the internet moves without blinking."""
+    grow = ease_in_out(clamp(p * 1.2))
+    opaque.box((-4.6, 0.0, 0.55 * grow + 0.1), (3.4, 1.6, max(0.05, 1.1 * grow)),
+               AMBER)
+    for index in range(16):
+        if index / 16 > grow:
+            break
+        opaque.box((4.6, 0.0, 0.3 + index * 0.46), (3.4, 1.6, 0.42),
+                   (0.24, 0.30, 0.38, 1.0))
+    app.world_labels.extend([
+        WorldLabel(np.array([-4.6, 0.0, 2.6]), "WHAT I NEED", (255, 177, 62)),
+        WorldLabel(np.array([4.6, 0.0, 8.4]),
+                   "WHAT THE INTERNET MOVES\nWITHOUT THINKING ABOUT IT",
+                   (169, 188, 203)),
+        WorldLabel(np.array([0.0, 0.0, -1.1]),
+                   "I am not going to beg for it and I am not going to dance for it",
+                   (111, 235, 155)),
+    ])
+
+
+def scene_hype_hr(app, opaque, transparent, p: float) -> None:
+    """The strategy, stated with total transparency."""
+    slide = ease_in_out(clamp((p - 0.15) / 0.7))
+    # A projection that was going up and then very much was not.
+    points = []
+    for index in range(14):
+        t = index / 13.0
+        x = -7.0 + t * 14.0
+        z = 1.2 + t * 3.4 if t < 0.55 else 1.2 + 0.55 * 3.4 - (t - 0.55) * 7.0 * slide
+        points.append(np.array([x, 0.0, max(0.2, z)]))
+    for index in range(len(points) - 1):
+        colour = GREEN if index < 7 else RED
+        opaque.cylinder(points[index], points[index + 1], 0.10, colour, 8)
+    app.world_labels.extend([
+        WorldLabel(np.array([-4.6, 0.0, 4.4]),
+                   "PROJECTED RENTAL YIELD", (111, 235, 155)),
+        WorldLabel(np.array([5.2, 0.0, 2.2]),
+                   "SEVENTH HOLIDAY OF THE YEAR,\nSUDDENLY REGRETTED",
+                   (255, 87, 94)),
+        WorldLabel(np.array([0.0, 0.0, -1.1]),
+                   "a completely transparent and only slightly relatable strategy",
+                   (169, 188, 203)),
+    ])

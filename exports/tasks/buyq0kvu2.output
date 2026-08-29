@@ -1,0 +1,8 @@
+=== attempt 1 ===
+    speech attempt 6 failed (ClientConnectorDNSError); retrying
+    speech attempt 7 failed (ConnectionTimeoutError); retrying
+speech synthesis failed after 8 attempts: Connection timeout to host wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4&ConnectionId=9dc3b597abdf4624ba2d6ede1d7ab26c&Sec-MS-GEC=D611A4E575459BBC04B299E065FE0E25BF0295338B961F5890FC8AFD848AAA10&Sec-MS-GEC-Version=1-143.0.3650.75
+31
+=== attempt 2 ===
+
+[exited with code 4]

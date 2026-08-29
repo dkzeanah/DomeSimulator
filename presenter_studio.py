@@ -106,7 +106,7 @@ def selftest() -> int:
     from presentations.airflow_dome import build
     pres = build()
     pres.validate()
-    round_trip = Path("presenter_output/airflow.json")
+    round_trip = Path("deliverables/presenter/airflow.json")
     round_trip.parent.mkdir(exist_ok=True)
     pres.to_json(round_trip)
     again = Presentation.from_json(round_trip)
@@ -124,7 +124,7 @@ def selftest() -> int:
     from presentations.dome_housing_case import build as build_housing
     housing = build_housing()
     housing.validate()
-    round_trip2 = Path("presenter_output/housing_case.json")
+    round_trip2 = Path("deliverables/presenter/housing_case.json")
     round_trip2.parent.mkdir(exist_ok=True)
     housing.to_json(round_trip2)
     again2 = Presentation.from_json(round_trip2)
@@ -368,7 +368,7 @@ def main() -> int:
 
     if cfg.get("action") == "export_all":
         # Every built-in presentation, one file each, in one folder.
-        out = Path(cfg.get("export_dir") or "presenter_output/all")
+        out = Path(cfg.get("export_dir") or "deliverables/presenter/all")
         out.mkdir(parents=True, exist_ok=True)
         wanted = cfg.get("demos")
         keys = ([k.strip() for k in str(wanted).split(",") if k.strip()]
@@ -404,7 +404,7 @@ def main() -> int:
     if cfg.get("action") == "shots" and cfg.get("shots"):
         app = PresenterApp(pres, headless=True, size=size or (1600, 900))
         app.overlay_level = overlay
-        out = Path("presenter_output")
+        out = Path("deliverables/presenter")
         out.mkdir(exist_ok=True)
         for value in str(cfg["shots"]).split(","):
             if not value.strip():

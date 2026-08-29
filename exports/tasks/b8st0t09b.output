@@ -1,0 +1,62 @@
+voice 03/32: cached
+voice 04/32: cached
+voice 05/32: cached
+voice 06/32: cached
+voice 07/32: cached
+voice 08/32: cached
+voice 09/32: cached
+voice 10/32: cached
+voice 11/32: cached
+voice 12/32: cached
+voice 13/32: Choose the hub system before anything else
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+    speech attempt 4 failed (ClientConnectorDNSError); retrying
+voice 14/32: Centre length is not cut length
+voice 15/32: The end-cut angle is half the central angle
+voice 16/32: The panel bevels
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+voice 17/32: How many kinds of joint
+voice 18/32: Buying the stock
+voice 19/32: Cutting: a stop block and a master
+voice 20/32: The finished cut list
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+    speech attempt 4 failed (ClientConnectorDNSError); retrying
+    speech attempt 5 failed (ClientConnectorDNSError); retrying
+voice 21/32: Build the triangles flat, first
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+    speech attempt 4 failed (ConnectionTimeoutError); retrying
+    speech attempt 5 failed (ClientConnectorDNSError); retrying
+    speech attempt 6 failed (ClientConnectorDNSError); retrying
+    speech attempt 7 failed (ClientConnectorDNSError); retrying
+voice 22/32: Setting out the base
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+    speech attempt 2 failed (ConnectionTimeoutError); retrying
+voice 23/32: Meeting the ground
+voice 24/32: The riser wall
+voice 25/32: Raising it, one complete ring at a time
+voice 26/32: Closing the crown
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+    speech attempt 4 failed (ClientConnectorDNSError); retrying
+    speech attempt 5 failed (ClientConnectorDNSError); retrying
+    speech attempt 6 failed (ClientConnectorDNSError); retrying
+voice 27/32: What an eighth of an inch actually does
+voice 28/32: The measurement loop
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+    speech attempt 4 failed (ClientConnectorDNSError); retrying
+    speech attempt 5 failed (ClientConnectorDNSError); retrying
+    speech attempt 6 failed (ClientConnectorDNSError); retrying
+    speech attempt 7 failed (ClientConnectorDNSError); retrying
+speech synthesis failed after 8 attempts: Connection timeout to host wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4&ConnectionId=91259dd4dc2a458a869000c745456b3c&Sec-MS-GEC=8EFDA86935128D40A20E25446AB050ACE4800A77D624051B6BFC1B9EA323F155&Sec-MS-GEC-Version=1-143.0.3650.75
+build exit: 1
+
+[exited with code 0]

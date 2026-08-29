@@ -1,4 +1,10 @@
-"""Local voice narration bridge for the standalone 2V masterclass."""
+"""Local voice narration bridge for the standalone masterclass lessons.
+
+The renderer plays four lessons of different lengths, so everything here
+is keyed on a lesson rather than on the 2V chapter list.  The lesson key
+is written into the narration plan and read back out at render time, so a
+plan can never be pointed at the wrong lesson by accident.
+"""
 
 from __future__ import annotations
 
@@ -17,7 +23,7 @@ from two_v_demo.audio import (
     resolve_executable,
     spoken_chapter_text,
 )
-from two_v_demo.lessons import CHAPTERS
+from two_v_demo.lesson_registry import get_lesson
 from two_v_demo.narration import narration_script, subtitle_file
 
 from .backends import synthesize_chatterbox
@@ -38,27 +44,36 @@ def build_dome_narration(
     project: VoiceProject,
     profile: VoiceProfile,
     *,
+    lesson: str = "2v",
     ffmpeg_path: str | None = None,
     ffprobe_path: str | None = None,
     allow_model_download: bool = False,
     progress: Callable[[str], None] = print,
 ) -> Path:
-    """Generate chapter WAVs, a mixed track, timing JSON, script, and captions."""
+    """Generate chapter WAVs, a mixed track, timing JSON, script, and captions.
+
+    ``lesson`` is a masterclass lesson key (``2v``, ``build``, ``hex``,
+    ``zome``).  Each lesson gets its own output folder, so profiles and
+    lessons can be mixed freely without one overwriting another's clips.
+    """
     if not project.consented:
         raise PermissionError("Project ownership statement is required")
+    chosen = get_lesson(lesson)
+    chapters = chosen.chapters
     ffmpeg = resolve_executable("ffmpeg", ffmpeg_path)
     ffprobe = companion_ffprobe(ffmpeg, ffprobe_path)
     output_directory = (
-        project.root / "outputs" / "dome" / f"2v-{profile.profile_id}"
+        project.root / "outputs" / "dome" / f"{chosen.key}-{profile.profile_id}"
     )
     output_directory.mkdir(parents=True, exist_ok=True)
+    progress(f"Lesson: {chosen.title} ({len(chapters)} chapters)")
 
     clip_paths: list[Path] = []
     speech_durations: list[float] = []
-    for index, chapter in enumerate(CHAPTERS):
+    for index, chapter in enumerate(chapters):
         clip_path = output_directory / f"chapter_{chapter.number}.wav"
         sidecar_path = clip_path.with_suffix(".wav.json")
-        expected_text = spoken_chapter_text(index)
+        expected_text = spoken_chapter_text(index, chapters)
         cached = False
         if clip_path.is_file() and sidecar_path.is_file():
             try:
@@ -71,11 +86,11 @@ def build_dome_narration(
                 cached = False
         if cached:
             progress(
-                f"Chapter {chapter.number}/{len(CHAPTERS)}: using local cache"
+                f"Chapter {chapter.number}/{len(chapters)}: using local cache"
             )
         else:
             progress(
-                f"Chapter {chapter.number}/{len(CHAPTERS)}: {chapter.title}"
+                f"Chapter {chapter.number}/{len(chapters)}: {chapter.title}"
             )
             synthesize_chatterbox(
                 project,
@@ -93,7 +108,7 @@ def build_dome_narration(
             chapter.duration,
             SPEECH_DELAY + speech_duration + TAIL_PADDING,
         )
-        for chapter, speech_duration in zip(CHAPTERS, speech_durations)
+        for chapter, speech_duration in zip(chapters, speech_durations)
     ]
     starts = _chapter_starts(chapter_durations)
     total_duration = sum(chapter_durations)
@@ -113,6 +128,9 @@ def build_dome_narration(
         "schema": 1,
         "synthetic_voice": True,
         "generated_at": utc_now(),
+        "lesson": chosen.key,
+        "lesson_title": chosen.title,
+        "chapter_count": len(chapters),
         "voice_profile": profile.profile_id,
         "profile_sha256": profile.sha256,
         "model": "chatterbox-turbo",
@@ -133,17 +151,19 @@ def build_dome_narration(
             tuple(chapter_durations),
             tuple(speech_durations),
             SPEECH_DELAY,
+            chapters,
         ),
         encoding="utf-8",
     )
     (output_directory / "narration-script.md").write_text(
-        narration_script(tuple(chapter_durations)),
+        narration_script(tuple(chapter_durations), chapters, chosen.title),
         encoding="utf-8",
     )
     project.audit(
         "dome_narration_generated",
         {
             "profile_id": profile.profile_id,
+            "lesson": chosen.key,
             "plan": project.relative(plan_path),
             "duration_s": total_duration,
         },
@@ -196,13 +216,23 @@ def export_dome_video(
 
     launcher = Path(__file__).resolve().parents[1] / "two_v_masterclass.py"
     if not launcher.is_file():
-        raise FileNotFoundError(f"2V masterclass launcher not found: {launcher}")
+        raise FileNotFoundError(f"masterclass launcher not found: {launcher}")
+    # The plan records which lesson it was spoken for; take the key from
+    # there rather than from a second argument, so a plan can never be
+    # rendered against a lesson with a different chapter count.
+    try:
+        plan = json.loads(Path(plan_path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"could not read narration plan: {plan_path}") from exc
+    lesson_key = str(plan.get("lesson", "2v"))
+    progress(f"Narration plan lesson: {lesson_key}")
     # two_v_masterclass.py takes no CLI flags anymore -- it reads a
     # launcher_common config ticket at startup instead (see
     # two_v_demo/app.py's main()). Write that ticket before spawning it,
-    # the same way the launcher GUI's "2V Masterclass" tab does.
+    # the same way the launcher GUI's "Masterclass" tab does.
     _lc.write_config("two_v_masterclass", {
         "action": "export_video",
+        "lesson": lesson_key,
         "export_video": str(output_path),
         "local_narration_plan": str(plan_path),
         "fps": max(1, fps),

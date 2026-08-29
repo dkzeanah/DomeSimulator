@@ -1,0 +1,4 @@
+./docs/video-pipeline-reference.md:60:`lesson` key on the launch ticket (`2v`, `build`, `hex`, `zome`, `line`).
+./launcher.py:730:        body, "Lesson", ["2v", "build", "hex", "zome", "line"], "2v")
+
+[exited with code 0]

@@ -1,0 +1,22 @@
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.19.100
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, q=2-31, 1980 kb/s, 30 fps, 30 tbr, 15360 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc62.35.100 libx264
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 96000 Hz, stereo, fltp, 179 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Press [q] to stop, [?] for help
+frame=11893 fps=0.0 q=-1.0 size=  103936KiB time=00:06:36.46 bitrate=2147.6kbits/s speed= 765x elapsed=0:00:00.51    frame=21958 fps=21234 q=-1.0 size=  189440KiB time=00:12:12.13 bitrate=2119.7kbits/s speed= 708x elapsed=0:00:01.03    [mp4 @ 0000000000896a80] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 00000000007d6500] video:222395KiB audio:20200KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.394857%
+frame=27601 fps=17210 q=-1.0 Lsize=  243553KiB time=00:15:20.10 bitrate=2168.4kbits/s speed= 574x elapsed=0:00:01.60    
+
+saved deliverables\masterclass\dome-construction-masterclass-narration.m4a
+saved deliverables\masterclass\dome-construction-masterclass.mp4
+saved deliverables\masterclass\dome-construction-masterclass-narration.md
+saved deliverables\masterclass\dome-construction-masterclass.srt
+
+[exited with code 0]

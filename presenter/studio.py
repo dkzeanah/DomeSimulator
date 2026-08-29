@@ -838,22 +838,22 @@ class StudioApp(PresenterApp):
                 self._save(self.doc_path)
             else:
                 self._begin_text("save_as", None, "Save this movie as:",
-                                 "presenter_output/my_movie.json")
+                                 "deliverables/presenter/my_movie.json")
         elif action == "save_as":
             self._begin_text("save_as", None, "Save this movie as:",
                              str(self.doc_path
-                                 or "presenter_output/my_movie.json"))
+                                 or "deliverables/presenter/my_movie.json"))
         elif action == "open":
             self._begin_text("open", None, "Open which movie file?",
-                             "presenter_output/my_movie.json")
+                             "deliverables/presenter/my_movie.json")
         elif action == "export":
             self._begin_text("export", None,
                              "Render to which video file?",
-                             "presenter_output/my_movie.mp4")
+                             "deliverables/presenter/my_movie.mp4")
         elif action == "export_all":
             self._begin_text("export_all", None,
                              "Render every built-in demo into which folder?",
-                             "presenter_output/all")
+                             "deliverables/presenter/all")
         elif action.startswith("edit_"):
             self._start_field_edit(action, payload)
 

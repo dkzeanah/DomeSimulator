@@ -1,0 +1,5 @@
+./local_voice_studio/gui.py:51:from .dome import build_dome_narration, export_dome_video
+./local_voice_studio/gui.py:1964:                build_dome_narration,
+./local_voice_studio/gui.py:1986:                export_dome_video,
+
+[exited with code 0]

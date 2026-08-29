@@ -1,0 +1,24 @@
+v4 added to the deliverable manifest
+manifest validates
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.19.100
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, q=2-31, 2283 kb/s, 30 fps, 30 tbr, 15360 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc62.35.100 libx264
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 96000 Hz, stereo, fltp, 166 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Press [q] to stop, [?] for help
+frame=12702 fps=0.0 q=-1.0 size=  133120KiB time=00:07:03.52 bitrate=2574.9kbits/s speed= 812x elapsed=0:00:00.52    [mp4 @ 000000000072eb00] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0000000000664bc0] video:206437KiB audio:15020KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.348337%
+frame=22219 fps=19569 q=-1.0 Lsize=  222228KiB time=00:12:20.70 bitrate=2457.8kbits/s speed= 652x elapsed=0:00:01.13    
+
+saved deliverables\masterclass\frankendome-montage-v4-narration.m4a
+saved deliverables\masterclass\frankendome-montage-v4.mp4
+saved deliverables\masterclass\frankendome-montage-v4-narration.md
+saved deliverables\masterclass\frankendome-montage-v4.srt
+
+[exited with code 0]

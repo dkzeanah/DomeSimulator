@@ -1,0 +1,32 @@
+  File "C:\Users\Don\Desktop\DomeSim\two_v_demo\audio.py", line 214, in _synthesize_one
+    await communicator.save(str(path))
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\edge_tts\communicate.py", line 613, in save
+    async for message in self.stream():
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\edge_tts\communicate.py", line 588, in stream
+    async for message in self.__stream():
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\edge_tts\communicate.py", line 465, in __stream
+    ) as session, session.ws_connect(
+                  ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\aiohttp\client.py", line 1693, in __aenter__
+    self._resp: _RetType_co = await self._coro
+                              ^^^^^^^^^^^^^^^^
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\aiohttp\client.py", line 1249, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\aiohttp\client.py", line 858, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\aiohttp\client.py", line 812, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\aiohttp\connector.py", line 657, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\aiohttp\connector.py", line 1242, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Don\AppData\Local\Python\pythoncore-3.12-64\Lib\site-packages\aiohttp\connector.py", line 1577, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host speech.platform.bing.com:443 ssl:<ssl.SSLContext object at 0x0000000028F0B9D0> [getaddrinfo failed]
+
+[exited with code 0]

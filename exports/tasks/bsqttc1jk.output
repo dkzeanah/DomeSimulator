@@ -1,0 +1,42 @@
+  Metadata:
+    major_brand     : M4A 
+    minor_version   : 512
+    compatible_brands: M4A isomiso2
+    encoder         : Lavf62.19.100
+  Duration: 00:10:53.30, start: 0.000000, bitrate: 184 kb/s
+  Stream #1:0[0x1](und): Audio: aac (LC) (mp4a / 0x6134706D), 96000 Hz, stereo, fltp, 181 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #1:0 -> #0:1 (copy)
+Output #0, mp4, to 'deliverables\masterclass\hex-dome-masterclass.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.19.100
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, q=2-31, 1861 kb/s, 30 fps, 30 tbr, 15360 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc62.35.100 libx264
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 96000 Hz, stereo, fltp, 181 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Press [q] to stop, [?] for help
+frame=11022 fps=0.0 q=-1.0 size=   93184KiB time=00:06:07.52 bitrate=2077.1kbits/s speed= 719x elapsed=0:00:00.51    [mp4 @ 0000000003135040] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0000000000790c00] video:148424KiB audio:14440KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.417873%
+frame=19599 fps=18647 q=-1.0 Lsize=  163545KiB time=00:10:53.30 bitrate=2050.8kbits/s speed= 622x elapsed=0:00:01.05    
+
+Traceback (most recent call last):
+  File "C:\Users\Don\AppData\Local\Temp\claude\C--Users-Don-Desktop-DomeSim\bb2f0342-d0bb-4db9-b958-9985ff7ceb8f\scratchpad\export_lesson.py", line 17, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\Don\Desktop\DomeSim\two_v_demo\app.py", line 1578, in main
+    app.export_video(
+  File "C:\Users\Don\Desktop\DomeSim\two_v_demo\app.py", line 1394, in export_video
+    script_path, subtitle_path = write_companion_files(
+                                 ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'write_companion_files' is not defined
+
+[exited with code 0]

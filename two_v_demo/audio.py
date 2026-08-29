@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Sequence
 
-from .lessons import CHAPTERS
+from .lessons import CHAPTERS, Chapter
 
 
 DEFAULT_VOICE = "en-US-AndrewMultilingualNeural"
@@ -44,10 +44,24 @@ class NarrationPlan:
     track_path: Path
 
 
-def spoken_chapter_text(index: int) -> str:
-    """Return fluent prose for one chapter, without reading equations aloud."""
-    chapter = CHAPTERS[index]
-    return f"{chapter.promise}\n\n{' '.join(chapter.narration)}"
+def spoken_chapter_text(
+    index: int,
+    chapters: tuple[Chapter, ...] = CHAPTERS,
+    speak_promise: bool = True,
+) -> str:
+    """Return fluent prose for one chapter, without reading equations aloud.
+
+    A teaching chapter's promise is a separate one-line summary and is
+    read out before the body.  A montage headline is a condensed form
+    of the line that follows it, so reading both says everything twice;
+    those lessons pass ``speak_promise=False`` and keep the headline as
+    on-screen type only.
+    """
+    chapter = chapters[index]
+    body = ' '.join(chapter.narration)
+    if not speak_promise:
+        return body
+    return f"{chapter.promise}\n\n{body}"
 
 
 def voice_cache_slug(
@@ -55,11 +69,16 @@ def voice_cache_slug(
     rate: str,
     pitch: str,
     volume: str,
+    chapters: tuple[Chapter, ...] = CHAPTERS,
+    speak_promise: bool = True,
 ) -> str:
     """Key cached stems by voice settings and the complete spoken script."""
     payload = "\n".join(
         [voice, rate, pitch, volume]
-        + [spoken_chapter_text(index) for index in range(len(CHAPTERS))]
+        + [
+            spoken_chapter_text(index, chapters, speak_promise)
+            for index in range(len(chapters))
+        ]
     )
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:10]
     readable = re.sub(
@@ -187,6 +206,19 @@ def _edge_tts_module():
     return edge_tts
 
 
+# A thirty-chapter lesson makes thirty separate calls to a public speech
+# endpoint.  One transient DNS or socket failure part-way through used to
+# throw away the whole export, so each clip gets several patient retries.
+#
+# Observed 2026-08-23: running three exports at once made the endpoint
+# refuse connections and its name stop resolving within seconds, so the
+# backoff has to outlast a throttling window, not just a dropped packet.
+# Export lessons one at a time.
+SYNTHESIS_ATTEMPTS = 8
+SYNTHESIS_BACKOFF = 3.0
+SYNTHESIS_BACKOFF_CAP = 45.0
+
+
 async def _synthesize_one(
     text: str,
     path: Path,
@@ -194,17 +226,43 @@ async def _synthesize_one(
     rate: str,
     pitch: str,
     volume: str,
+    progress: Callable[[str], None] | None = None,
 ) -> None:
     edge_tts = _edge_tts_module()
-    communicator = edge_tts.Communicate(
-        text,
-        voice=voice,
-        rate=rate,
-        pitch=pitch,
-        volume=volume,
-        boundary="SentenceBoundary",
-    )
-    await communicator.save(str(path))
+    last: Exception | None = None
+    for attempt in range(1, SYNTHESIS_ATTEMPTS + 1):
+        communicator = edge_tts.Communicate(
+            text,
+            voice=voice,
+            rate=rate,
+            pitch=pitch,
+            volume=volume,
+            boundary="SentenceBoundary",
+        )
+        try:
+            await communicator.save(str(path))
+        except Exception as exc:  # network, DNS, or endpoint hiccup
+            last = exc
+            # A partial file would look like a valid cached clip next time.
+            try:
+                path.unlink()
+            except OSError:
+                pass
+            if attempt == SYNTHESIS_ATTEMPTS:
+                break
+            if progress is not None:
+                progress(
+                    f"    speech attempt {attempt} failed "
+                    f"({type(exc).__name__}); retrying"
+                )
+            await asyncio.sleep(
+                min(SYNTHESIS_BACKOFF * 2 ** (attempt - 1), SYNTHESIS_BACKOFF_CAP)
+            )
+        else:
+            return
+    raise RuntimeError(
+        f"speech synthesis failed after {SYNTHESIS_ATTEMPTS} attempts: {last}"
+    ) from last
 
 
 def synthesize_preview(
@@ -457,6 +515,8 @@ def synthesize_narration(
     pitch: str = DEFAULT_PITCH,
     volume: str = DEFAULT_VOLUME,
     progress: Callable[[str], None] = print,
+    chapters: tuple[Chapter, ...] = CHAPTERS,
+    speak_promise: bool = True,
 ) -> NarrationPlan:
     """Generate cached chapter clips and a chapter-synchronized AAC track.
 
@@ -468,23 +528,24 @@ def synthesize_narration(
     output_directory.mkdir(parents=True, exist_ok=True)
     clip_paths: list[Path] = []
     speech_durations: list[float] = []
-    for index, chapter in enumerate(CHAPTERS):
+    for index, chapter in enumerate(chapters):
         clip_path = output_directory / f"chapter_{chapter.number}.mp3"
         clip_paths.append(clip_path)
         if clip_path.exists() and clip_path.stat().st_size > 1024:
-            progress(f"voice {chapter.number}/{len(CHAPTERS):02d}: cached")
+            progress(f"voice {chapter.number}/{len(chapters):02d}: cached")
         else:
             progress(
-                f"voice {chapter.number}/{len(CHAPTERS):02d}: "
+                f"voice {chapter.number}/{len(chapters):02d}: "
                 f"{chapter.title}"
             )
             asyncio.run(_synthesize_one(
-                spoken_chapter_text(index),
+                spoken_chapter_text(index, chapters, speak_promise),
                 clip_path,
                 voice,
                 rate,
                 pitch,
                 volume,
+                progress,
             ))
         speech_durations.append(media_duration(clip_path, ffprobe))
 
@@ -493,7 +554,7 @@ def synthesize_narration(
             chapter.duration,
             SPEECH_DELAY + speech_duration + TAIL_PADDING,
         )
-        for chapter, speech_duration in zip(CHAPTERS, speech_durations)
+        for chapter, speech_duration in zip(chapters, speech_durations)
     )
     starts = _chapter_starts(chapter_durations)
     total_duration = sum(chapter_durations)

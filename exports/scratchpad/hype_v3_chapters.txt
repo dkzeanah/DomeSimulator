@@ -1,0 +1,168 @@
+
+
+# ----------------------------------------------------------------------
+# Version three: v2, plus the reason, and with the labels decluttered
+# ----------------------------------------------------------------------
+
+def scene_hype_mother(app, opaque, transparent, p: float) -> None:
+    """One parent, one child, one shelter. Nothing else in frame."""
+    _frame(opaque, 3.2, CYAN, 0.065, smoothstep(clamp(p * 1.5)))
+    _panels(transparent, 3.2, lambda i: CYAN, 0.12)
+    adult = 3.8
+    child = 2.3
+    for stature, offset, yaw in ((adult, -5.6, 205.0), (child, -3.9, 205.0)):
+        joints = place_figure(
+            joint_positions(POSES["stand"], stature), (offset, 0.6, 0.0), yaw)
+        draw_figure(opaque, joints, scale=stature / 1.75)
+    app.world_labels.append(WorldLabel(
+        np.array([-4.7, 0.6, adult + 1.2]),
+        "THE POINT OF ALL OF IT", (111, 235, 155)))
+
+
+def scene_hype_igloo(app, opaque, transparent, p: float) -> None:
+    """The proof that shipped several thousand years ago."""
+    build = ease_in_out(clamp(p * 1.2))
+    scale = 4.2
+    # A compression dome laid up in courses, the way one actually goes up.
+    courses = 9
+    for course in range(courses):
+        if course / courses > build:
+            break
+        height = math.sin(math.pi * 0.5 * course / courses)
+        radius = scale * math.cos(math.pi * 0.5 * course / courses)
+        z = scale * height
+        blocks = max(6, int(26 * radius / scale))
+        for index in range(blocks):
+            angle = math.tau * index / blocks + course * 0.24
+            centre = np.array([radius * math.cos(angle),
+                               radius * math.sin(angle), z])
+            opaque.box(tuple(centre),
+                       (max(0.45, 6.4 * radius / scale / blocks * 2.6), 0.9, 0.52),
+                       (0.80, 0.86, 0.93, 1.0))
+    app.world_labels.extend([
+        WorldLabel(np.array([0.0, 0.0, scale + 1.5]),
+                   "A COMPRESSION DOME", (61, 211, 255)),
+        WorldLabel(np.array([0.0, 0.0, -1.1]),
+                   "built in the harshest terrain on earth, "
+                   "out of the only material there was", (169, 188, 203)),
+    ])
+
+
+SCENES_V3 = dict(SCENES)
+SCENES_V3["hype_mother"] = scene_hype_mother
+SCENES_V3["hype_igloo"] = scene_hype_igloo
+
+
+# The audiences beat, opened out. Everything from "and most importantly,
+# women" onward is the reason the project exists, so it gets the room.
+AUDIENCE_RUN: tuple[Chapter, ...] = (
+    Chapter(
+        "audiences", "00", "I do not care what your audience is",
+        "Homesteaders, builders, developers, makers. Anyone with reach.",
+        (
+            "Homesteading channels. Construction channels. Developers. Makers.",
+            "Preppers. Crowdfunding people. Anyone with reach. And most importantly,",
+            "women.",
+        ),
+        (), 4.0, (90.0, 16.0, 20.0), "hype_audiences",
+    ),
+    Chapter(
+        "whichones", "00", "Which women",
+        "I don't care which ones.",
+        (
+            "I don't care which ones. Sinners, saints, OnlyFans models. Hey, this",
+            "structure would make a great livestreaming studio for cheap. Just saying.",
+        ),
+        (), 4.0, (60.0, 20.0, 18.0), "hype_audiences",
+    ),
+    Chapter(
+        "whywomen", "00", "Why women specifically",
+        "Why do I say women specifically?",
+        (
+            "Why do I say women specifically? Look. My mother is an angel and a saint.",
+            "But growing up with a single parent was hard. We had a trailer that needed",
+            "to be repossessed. She had to file bankruptcy.",
+        ),
+        (), 4.0, (44.0, 18.0, 18.0), "hype_mother",
+    ),
+    Chapter(
+        "howihandled", "00", "How I handled it",
+        "I avoided talking to girls, because I could not afford to.",
+        (
+            "How did I handle that? As a teenager, I avoided talking to girls, because",
+            "I knew I could not in good conscience afford to wine and dine a date.",
+        ),
+        (), 4.0, (52.0, 16.0, 17.0), "hype_mother",
+    ),
+    Chapter(
+        "lunches", "00", "The part nobody says out loud",
+        "I did not take the reduced school lunches.",
+        (
+            "We were so poor that I did not take the reduced school lunches, on account",
+            "of how absolutely death-blowingly embarrassing that would have been.",
+            "Getting it is not embarrassing. Getting it and needing it, is. And a lot of",
+            "people need it.",
+        ),
+        (), 4.0, (90.0, 14.0, 18.0), "hype_friend",
+    ),
+    Chapter(
+        "fuller", "00", "And then I heard Fuller",
+        "He wanted housing cheap enough that a mother could raise her child.",
+        (
+            "Buckminster Fuller, who gave us the geodesic dome and a great deal else,",
+            "said once that his goal was housing affordable enough that a mother was not",
+            "so daily and endlessly burdened by it that she could not focus on the thing",
+            "that actually matters, which is raising her child. That is not a direct",
+            "quote. It is what I took from him.",
+        ),
+        (), 4.0, (34.0, 24.0, 17.0), "hype_platform",
+    ),
+    Chapter(
+        "hooked", "00", "That was it",
+        "I was hooked, determined, and completely sold.",
+        (
+            "And when I heard that, I knew immediately this was the exact thing I had",
+            "been preparing to make my lifelong mission. Hooked, determined, confident,",
+            "sold, without needing any further proof. This is it. That is what I thought",
+            "then and it is what I think now. It is enormously larger than me, for all",
+            "of the right reasons, and it makes profound sense, on mathematics.",
+        ),
+        (), 4.0, (58.0, 22.0, 18.0), "hype_bones",
+    ),
+    Chapter(
+        "igloo", "00", "The proof already exists",
+        "The Inuit had it right the whole time.",
+        (
+            "And if you want proof that the shape works, it already shipped. The Inuit",
+            "built compression domes out of the only material available to them, and",
+            "lived in the harshest terrain on the planet. What further proof do you",
+            "need? Ask me, because I will try to give it to you.",
+        ),
+        (), 4.0, (40.0, 22.0, 19.0), "hype_igloo",
+    ),
+)
+
+
+CHAPTERS_V3 = _splice(CHAPTERS_V2, "audiences", AUDIENCE_RUN)
+# "Psyche" is read by the speech engine as "psych-ee". Spelled the way it
+# sounds, it lands the way it is meant to.
+CHAPTERS_V3 = tuple(
+    replace(chapter, narration=tuple(
+        line.replace("Psyche.", "Sike.") for line in chapter.narration))
+    if chapter.slug == "psyche" else chapter
+    for chapter in CHAPTERS_V3
+)
+
+
+HYPE_V3_LESSON = Lesson(
+    key="hype3",
+    brand="FRANKENDOME",
+    title="Frankendome, Version Three",
+    chapters=CHAPTERS_V3,
+    scenes=SCENES_V3,
+    snapshot_prefix="hype3",
+    style="hype",
+    voice_rate="+7%",
+    # v1 and v2 keep the raw label placement they were rendered with.
+    label_layout="declutter",
+)

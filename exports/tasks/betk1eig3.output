@@ -1,0 +1,14 @@
+=== waiting for franken-v2 ===
+franken-v2 settled at 150690317 bytes
+=== KICKSTARTER ===
+[mp4 @ 00000000006c8940] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0000000000675f00] video:81381KiB audio:7692KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.422062%
+frame=10808 fps=0.0 q=-1.0 Lsize=   89449KiB time=00:06:00.30 bitrate=2033.8kbits/s speed=1.15e+03x elapsed=0:00:00.31    
+
+saved deliverables\masterclass\dome-kickstarter-narration.m4a
+saved deliverables\masterclass\dome-kickstarter.mp4
+saved deliverables\masterclass\dome-kickstarter-narration.md
+saved deliverables\masterclass\dome-kickstarter.srt
+=== done ===
+
+[exited with code 0]

@@ -1,10 +1,20 @@
-"""ModernGL renderer for the standalone 2V geodesic masterclass."""
+"""ModernGL renderer for the standalone masterclass lessons.
+
+One renderer, several lessons.  ``MasterclassApp`` knows how to play a
+:class:`~two_v_demo.lessons.Lesson`: it walks the lesson's chapters, asks
+the lesson to paint each stage, and asks it for any live figures the
+chapter wants under its fixed equations.  The 2V geodesic lesson is the
+default and is still drawn by the ``scene_*`` methods below; the hex,
+zome and construction lessons supply their own painters.
+"""
 
 from __future__ import annotations
 
 import json
 import math
+import os
 import subprocess
+import tempfile
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -40,382 +50,43 @@ from .audio import (
     voice_cache_slug,
 )
 from .lessons import (
-    CHAPTERS,
+    TWO_V_LESSON,
+    Lesson,
     chapter_at_time,
     chapter_start,
     timeline_duration,
 )
+from .deliverables import deliverables_menu, render_all, validate_deliverables
+from .segments import compose, segment_menu, validate_segments
 from .narration import narration_script, subtitle_file, write_companion_files
-
-
-SCENE_VERTEX_SHADER = """
-#version 330
-in vec3 in_position;
-in vec3 in_normal;
-in vec4 in_color;
-uniform mat4 u_mvp;
-uniform vec3 u_camera;
-out vec3 v_world;
-out vec3 v_normal;
-out vec4 v_color;
-void main() {
-    v_world = in_position;
-    v_normal = in_normal;
-    v_color = in_color;
-    gl_Position = u_mvp * vec4(in_position, 1.0);
-}
-"""
-
-
-SCENE_FRAGMENT_SHADER = """
-#version 330
-in vec3 v_world;
-in vec3 v_normal;
-in vec4 v_color;
-uniform vec3 u_camera;
-uniform vec3 u_light;
-out vec4 frag_color;
-void main() {
-    vec3 n = normalize(v_normal);
-    if (!gl_FrontFacing) n = -n;
-    vec3 l = normalize(-u_light);
-    vec3 v = normalize(u_camera - v_world);
-    vec3 h = normalize(l + v);
-    float diffuse = max(dot(n, l), 0.0);
-    float specular = pow(max(dot(n, h), 0.0), 42.0);
-    float rim = pow(1.0 - max(dot(n, v), 0.0), 2.5);
-    vec3 lit = v_color.rgb * (0.30 + 0.74 * diffuse);
-    lit += vec3(0.78, 0.91, 1.0) * rim * 0.18;
-    lit += vec3(1.0, 0.87, 0.64) * specular * 0.22;
-    frag_color = vec4(lit, v_color.a);
-}
-"""
-
-
-OVERLAY_VERTEX_SHADER = """
-#version 330
-in vec2 in_position;
-out vec2 v_uv;
-void main() {
-    v_uv = in_position * 0.5 + 0.5;
-    gl_Position = vec4(in_position, 0.0, 1.0);
-}
-"""
-
-
-OVERLAY_FRAGMENT_SHADER = """
-#version 330
-in vec2 v_uv;
-uniform sampler2D u_texture;
-out vec4 frag_color;
-void main() {
-    frag_color = texture(u_texture, v_uv);
-}
-"""
-
-
-BG = (0.018, 0.029, 0.050, 1.0)
-NAVY = (0.035, 0.069, 0.115, 1.0)
-CYAN = (0.15, 0.82, 1.00, 1.0)
-CYAN_SOFT = (0.15, 0.82, 1.00, 0.30)
-AMBER = (1.00, 0.67, 0.20, 1.0)
-AMBER_SOFT = (1.00, 0.67, 0.20, 0.28)
-WHITE = (0.91, 0.95, 0.98, 1.0)
-MUTED = (0.47, 0.59, 0.70, 1.0)
-GREEN = (0.32, 0.91, 0.58, 1.0)
-RED = (1.00, 0.34, 0.37, 1.0)
-PURPLE = (0.66, 0.48, 1.00, 1.0)
-SURFACE = (0.12, 0.28, 0.43, 0.14)
-GROUND = (0.025, 0.052, 0.077, 1.0)
-
-
-def clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
-    return max(low, min(high, value))
-
-
-def smoothstep(value: float) -> float:
-    value = clamp(value)
-    return value * value * (3.0 - 2.0 * value)
-
-
-def ease_in_out(value: float) -> float:
-    return 0.5 - 0.5 * math.cos(clamp(value) * math.pi)
-
-
-def perspective(fov_degrees: float, aspect: float, near: float, far: float) -> np.ndarray:
-    f = 1.0 / math.tan(math.radians(fov_degrees) * 0.5)
-    matrix = np.zeros((4, 4), dtype=np.float32)
-    matrix[0, 0] = f / aspect
-    matrix[1, 1] = f
-    matrix[2, 2] = (far + near) / (near - far)
-    matrix[2, 3] = (2.0 * far * near) / (near - far)
-    matrix[3, 2] = -1.0
-    return matrix
-
-
-def look_at(
-    eye: np.ndarray,
-    target: np.ndarray,
-    up_hint: tuple[float, float, float] = (0.0, 0.0, 1.0),
-) -> np.ndarray:
-    forward = normalize(target - eye).astype(np.float32)
-    right = normalize(np.cross(forward, np.asarray(up_hint, dtype=np.float32)))
-    up = normalize(np.cross(right, forward))
-    matrix = np.eye(4, dtype=np.float32)
-    matrix[0, :3] = right
-    matrix[1, :3] = up
-    matrix[2, :3] = -forward
-    matrix[0, 3] = -float(np.dot(right, eye))
-    matrix[1, 3] = -float(np.dot(up, eye))
-    matrix[2, 3] = float(np.dot(forward, eye))
-    return matrix
-
-
-def project_point(
-    mvp: np.ndarray,
-    point: np.ndarray | tuple[float, float, float],
-    width: int,
-    height: int,
-) -> tuple[float, float] | None:
-    clip = mvp @ np.array([point[0], point[1], point[2], 1.0], dtype=np.float32)
-    if clip[3] <= 0.001:
-        return None
-    ndc = clip[:3] / clip[3]
-    if abs(float(ndc[0])) > 1.3 or abs(float(ndc[1])) > 1.3:
-        return None
-    return (
-        (float(ndc[0]) * 0.5 + 0.5) * width,
-        (1.0 - (float(ndc[1]) * 0.5 + 0.5)) * height,
-    )
-
-
-@dataclass
-class TriangleBatch:
-    """CPU-side non-indexed triangle batch."""
-
-    vertices: list[float] = field(default_factory=list)
-
-    def vertex(
-        self,
-        position: np.ndarray | tuple[float, float, float],
-        normal: np.ndarray | tuple[float, float, float],
-        color: tuple[float, float, float, float],
-    ) -> None:
-        self.vertices.extend((
-            float(position[0]), float(position[1]), float(position[2]),
-            float(normal[0]), float(normal[1]), float(normal[2]),
-            *color,
-        ))
-
-    def triangle(
-        self,
-        a: np.ndarray,
-        b: np.ndarray,
-        c: np.ndarray,
-        color: tuple[float, float, float, float],
-        normal: np.ndarray | None = None,
-    ) -> None:
-        if normal is None:
-            normal = normalize(np.cross(b - a, c - a))
-        self.vertex(a, normal, color)
-        self.vertex(b, normal, color)
-        self.vertex(c, normal, color)
-
-    def quad(
-        self,
-        a: np.ndarray,
-        b: np.ndarray,
-        c: np.ndarray,
-        d: np.ndarray,
-        color: tuple[float, float, float, float],
-        normal: np.ndarray | None = None,
-    ) -> None:
-        self.triangle(a, b, c, color, normal)
-        self.triangle(a, c, d, color, normal)
-
-    def cylinder(
-        self,
-        start: np.ndarray,
-        end: np.ndarray,
-        radius: float,
-        color: tuple[float, float, float, float],
-        sides: int = 8,
-    ) -> None:
-        axis = np.asarray(end, dtype=np.float64) - np.asarray(start, dtype=np.float64)
-        length = float(np.linalg.norm(axis))
-        if length <= 1e-8:
-            return
-        direction = axis / length
-        trial = np.array([0.0, 0.0, 1.0])
-        if abs(float(np.dot(direction, trial))) > 0.88:
-            trial = np.array([0.0, 1.0, 0.0])
-        tangent = normalize(np.cross(direction, trial))
-        bitangent = normalize(np.cross(direction, tangent))
-        start = np.asarray(start, dtype=np.float64)
-        end = np.asarray(end, dtype=np.float64)
-        ring_a: list[np.ndarray] = []
-        ring_b: list[np.ndarray] = []
-        normals: list[np.ndarray] = []
-        for index in range(sides):
-            angle = math.tau * index / sides
-            normal = tangent * math.cos(angle) + bitangent * math.sin(angle)
-            normals.append(normal)
-            ring_a.append(start + normal * radius)
-            ring_b.append(end + normal * radius)
-        for index in range(sides):
-            nxt = (index + 1) % sides
-            self.triangle(ring_a[index], ring_b[index], ring_b[nxt], color, normals[index])
-            self.triangle(ring_a[index], ring_b[nxt], ring_a[nxt], color, normals[nxt])
-        for index in range(1, sides - 1):
-            self.triangle(start, ring_a[index + 1], ring_a[index], color, -direction)
-            self.triangle(end, ring_b[index], ring_b[index + 1], color, direction)
-
-    def cone(
-        self,
-        base: np.ndarray,
-        tip: np.ndarray,
-        radius: float,
-        color: tuple[float, float, float, float],
-        sides: int = 10,
-    ) -> None:
-        axis = np.asarray(tip) - np.asarray(base)
-        if float(np.linalg.norm(axis)) <= 1e-8:
-            return
-        direction = normalize(axis)
-        trial = np.array([0.0, 0.0, 1.0])
-        if abs(float(np.dot(direction, trial))) > 0.88:
-            trial = np.array([0.0, 1.0, 0.0])
-        tangent = normalize(np.cross(direction, trial))
-        bitangent = normalize(np.cross(direction, tangent))
-        ring = []
-        for index in range(sides):
-            angle = math.tau * index / sides
-            ring.append(base + radius * (
-                tangent * math.cos(angle) + bitangent * math.sin(angle)
-            ))
-        for index in range(sides):
-            nxt = (index + 1) % sides
-            self.triangle(ring[index], tip, ring[nxt], color)
-        for index in range(1, sides - 1):
-            self.triangle(base, ring[index], ring[index + 1], color, -direction)
-
-    def arrow(
-        self,
-        start: np.ndarray,
-        end: np.ndarray,
-        radius: float,
-        color: tuple[float, float, float, float],
-    ) -> None:
-        direction = normalize(np.asarray(end) - np.asarray(start))
-        length = float(np.linalg.norm(np.asarray(end) - np.asarray(start)))
-        head_length = min(length * 0.34, radius * 6.0)
-        shoulder = np.asarray(end) - direction * head_length
-        self.cylinder(np.asarray(start), shoulder, radius, color, 8)
-        self.cone(shoulder, np.asarray(end), radius * 2.4, color, 10)
-
-    def sphere(
-        self,
-        center: np.ndarray,
-        radius: float,
-        color: tuple[float, float, float, float],
-        rings: int = 5,
-        segments: int = 8,
-    ) -> None:
-        center = np.asarray(center, dtype=np.float64)
-        for ring in range(rings):
-            latitude_a = -math.pi * 0.5 + math.pi * ring / rings
-            latitude_b = -math.pi * 0.5 + math.pi * (ring + 1) / rings
-            for segment in range(segments):
-                longitude_a = math.tau * segment / segments
-                longitude_b = math.tau * (segment + 1) / segments
-
-                def point(latitude: float, longitude: float) -> np.ndarray:
-                    return np.array([
-                        math.cos(latitude) * math.cos(longitude),
-                        math.cos(latitude) * math.sin(longitude),
-                        math.sin(latitude),
-                    ])
-
-                na = point(latitude_a, longitude_a)
-                nb = point(latitude_a, longitude_b)
-                nc = point(latitude_b, longitude_b)
-                nd = point(latitude_b, longitude_a)
-                self.triangle(center + na * radius, center + nb * radius,
-                              center + nc * radius, color, normalize(na + nb + nc))
-                self.triangle(center + na * radius, center + nc * radius,
-                              center + nd * radius, color, normalize(na + nc + nd))
-
-    def box(
-        self,
-        center: np.ndarray | tuple[float, float, float],
-        size: np.ndarray | tuple[float, float, float],
-        color: tuple[float, float, float, float],
-    ) -> None:
-        center = np.asarray(center, dtype=np.float64)
-        half = np.asarray(size, dtype=np.float64) * 0.5
-        corners = np.array([
-            center + [x * half[0], y * half[1], z * half[2]]
-            for x, y, z in (
-                (-1, -1, -1), (1, -1, -1), (1, 1, -1), (-1, 1, -1),
-                (-1, -1, 1), (1, -1, 1), (1, 1, 1), (-1, 1, 1),
-            )
-        ])
-        for indices in (
-            (0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4),
-            (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7),
-        ):
-            self.quad(*(corners[index] for index in indices), color)
-
-    def disc(
-        self,
-        center: np.ndarray,
-        radius: float,
-        color: tuple[float, float, float, float],
-        segments: int = 48,
-    ) -> None:
-        center = np.asarray(center, dtype=np.float64)
-        for index in range(segments):
-            a = math.tau * index / segments
-            b = math.tau * (index + 1) / segments
-            pa = center + np.array([radius * math.cos(a), radius * math.sin(a), 0.0])
-            pb = center + np.array([radius * math.cos(b), radius * math.sin(b), 0.0])
-            self.triangle(center, pa, pb, color, np.array([0.0, 0.0, 1.0]))
-
-
-class DynamicGpuMesh:
-    def __init__(self, ctx, program):
-        self.ctx = ctx
-        self.program = program
-        self.buffer = ctx.buffer(reserve=4 * 1024 * 1024, dynamic=True)
-        self.vao = ctx.vertex_array(
-            program,
-            [(self.buffer, "3f 3f 4f", "in_position", "in_normal", "in_color")],
-        )
-
-    def draw(self, batch: TriangleBatch) -> None:
-        if not batch.vertices:
-            return
-        data = np.asarray(batch.vertices, dtype="f4")
-        required = data.nbytes
-        if required > self.buffer.size:
-            self.vao.release()
-            self.buffer.release()
-            capacity = max(required, int(required * 1.35))
-            self.buffer = self.ctx.buffer(reserve=capacity, dynamic=True)
-            self.vao = self.ctx.vertex_array(
-                self.program,
-                [(self.buffer, "3f 3f 4f", "in_position", "in_normal", "in_color")],
-            )
-        self.buffer.write(data.tobytes())
-        self.vao.render(vertices=len(batch.vertices) // 10)
-
-
-@dataclass
-class WorldLabel:
-    point: np.ndarray
-    text: str
-    color: tuple[int, int, int]
-
+from .render_kit import (
+    AMBER,
+    AMBER_SOFT,
+    BG,
+    CYAN,
+    CYAN_SOFT,
+    GREEN,
+    GROUND,
+    MUTED,
+    NAVY,
+    OVERLAY_FRAGMENT_SHADER,
+    OVERLAY_VERTEX_SHADER,
+    PURPLE,
+    RED,
+    SCENE_FRAGMENT_SHADER,
+    SCENE_VERTEX_SHADER,
+    SURFACE,
+    WHITE,
+    DynamicGpuMesh,
+    TriangleBatch,
+    WorldLabel,
+    clamp,
+    ease_in_out,
+    look_at,
+    perspective,
+    project_point,
+    smoothstep,
+)
 
 class MasterclassApp:
     """Interactive presenter and deterministic video renderer."""
@@ -425,6 +96,7 @@ class MasterclassApp:
         size: tuple[int, int] = (1600, 900),
         fullscreen: bool = False,
         hidden: bool = False,
+        lesson: Lesson | None = None,
     ) -> None:
         try:
             import pygame
@@ -453,7 +125,10 @@ class MasterclassApp:
         pygame.display.gl_set_attribute(
             pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE
         )
-        pygame.display.set_caption("2V Geodesic Masterclass")
+        self.lesson = lesson or TWO_V_LESSON
+        self.lesson.validate()
+        self.chapters = self.lesson.chapters
+        pygame.display.set_caption(self.lesson.title)
         pygame.display.set_mode(display_size, flags)
         self.ctx = moderngl.create_context()
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE | moderngl.BLEND)
@@ -487,17 +162,21 @@ class MasterclassApp:
             )
         }
         self.timeline = 0.0
-        self.chapter_durations = tuple(chapter.duration for chapter in CHAPTERS)
-        self.total_duration = timeline_duration(self.chapter_durations)
+        self.chapter_durations = tuple(
+            chapter.duration for chapter in self.chapters
+        )
+        self.total_duration = timeline_duration(
+            self.chapter_durations, self.chapters
+        )
         self.playing = True
         self.playback_speed = 1.0
         self.exporting = False
         self.narration_active = False
         self.chapter_index = 0
         self.chapter_progress = 0.0
-        self.camera_yaw = CHAPTERS[0].camera[0]
-        self.camera_pitch = CHAPTERS[0].camera[1]
-        self.camera_distance = CHAPTERS[0].camera[2]
+        self.camera_yaw = self.chapters[0].camera[0]
+        self.camera_pitch = self.chapters[0].camera[1]
+        self.camera_distance = self.chapters[0].camera[2]
         self.camera_override = False
         self.xray = True
         self.metric = False
@@ -509,6 +188,7 @@ class MasterclassApp:
         self.mvp = np.eye(4, dtype=np.float32)
         self.last_frame_time = time.perf_counter()
         self.output_dir = Path("two_v_demo_output")
+        self.stage_state: dict[str, object] = {}
 
     # ------------------------------------------------------------------
     # Geometry drawing helpers
@@ -657,8 +337,11 @@ class MasterclassApp:
         transparent = TriangleBatch()
         self.world_labels = []
         self.add_ground(opaque)
-        dispatch = getattr(self, f"scene_{stage}")
-        dispatch(opaque, transparent, progress)
+        painter = self.lesson.scenes.get(stage)
+        if painter is not None:
+            painter(self, opaque, transparent, progress)
+        else:
+            getattr(self, f"scene_{stage}")(opaque, transparent, progress)
         return opaque, transparent
 
     def scene_hero(self, opaque: TriangleBatch, transparent: TriangleBatch, p: float) -> None:
@@ -1082,6 +765,9 @@ class MasterclassApp:
             self.pygame.draw.rect(surface, border, rect, width=1, border_radius=radius)
 
     def dynamic_equations(self, stage: str) -> list[str]:
+        # The built-in figures below belong to the 2V stages.  A lesson that
+        # reuses one of those stages gets them for free; anything else gets
+        # only what its own table returns.
         equations: list[str] = []
         if stage == "audit":
             equations.extend([
@@ -1114,20 +800,340 @@ class MasterclassApp:
                 "struts: 30 SHORT + 35 LONG = 65 unique edges",
                 "hubs: 10 base + 15 upper + 1 apex = 26",
             ])
+        if self.lesson.equations is not None:
+            equations.extend(self.lesson.equations(self, stage))
+        return equations
+
+    @staticmethod
+    def _equation_key(text: str) -> str:
+        """Reduce an equation to its content, ignoring spacing and symbols."""
+        return "".join(character for character in text.lower()
+                       if character.isalnum())
+
+    def merge_equations(self, chapter) -> list[str]:
+        """The chapter's fixed equations, plus any live ones that add something.
+
+        A lesson often states a figure in the chapter and then computes the
+        same figure live.  Printing both wastes half the card, so a live
+        line is dropped when a chapter line already says it -- including
+        when one is simply a longer phrasing of the other.
+        """
+        equations = list(chapter.equations)
+        keys = [self._equation_key(item) for item in equations]
+        for extra in self.dynamic_equations(chapter.stage):
+            key = self._equation_key(extra)
+            if not key:
+                continue
+            if any(key == existing
+                   or (len(existing) > 6 and existing in key)
+                   or (len(key) > 6 and key in existing)
+                   for existing in keys):
+                continue
+            equations.append(extra)
+            keys.append(key)
         return equations
 
     def draw_ui(self, width: int, height: int) -> object:
+        # A chapter may override the lesson's style, which is how a
+        # four-second sting goes full-frame inside a teaching lesson.
+        chapter = self.chapters[self.chapter_index]
+        style = chapter.overlay or self.lesson.style
+        if style == "hype":
+            return self.draw_ui_hype(width, height)
+        if style == "math":
+            return self.draw_ui_math(width, height)
+        return self.draw_ui_teaching(width, height)
+
+    # Two labels may overlap by this much of the smaller one before the
+    # layout pass intervenes. Generous on purpose: the overlapping look
+    # is wanted, only the unreadable part is not.
+    LABEL_OVERLAP_TOLERANCE = 0.28
+
+    def layout_labels(self, rects: list) -> list:
+        """Nudge labels apart only where they would bury each other.
+
+        Returns the rects in the same order, moved vertically by the
+        smallest amount that brings every pairwise overlap under the
+        tolerance. Panels still overlap; glyphs no longer share pixels.
+        """
+        if self.lesson.label_layout != "declutter":
+            return rects
+        placed: list = []
+        for rect in rects:
+            moved = rect.copy()
+            for _ in range(24):
+                clash = None
+                for other in placed:
+                    overlap = moved.clip(other)
+                    if not overlap.width or not overlap.height:
+                        continue
+                    smaller = min(moved.width * moved.height,
+                                  other.width * other.height) or 1
+                    share = (overlap.width * overlap.height) / smaller
+                    if share > self.LABEL_OVERLAP_TOLERANCE:
+                        clash = other
+                        break
+                if clash is None:
+                    break
+                # Move whichever way is shorter, and only far enough
+                # to bring the pair back under the tolerance.
+                if moved.centery >= clash.centery:
+                    moved.y = clash.bottom - int(moved.height * 0.22)
+                else:
+                    moved.y = clash.top - moved.height + int(
+                        moved.height * 0.22)
+            placed.append(moved)
+        return placed
+
+    def draw_ui_hype(self, width: int, height: int) -> object:
+        """Full-frame picture, one line of type, no chrome.
+
+        Everything the teaching overlay puts in cards is dropped: a
+        montage is carried by the pictures and the voice, and a
+        sidebar of prose competes with both.
+        """
+        pg = self.pygame
+        surface = pg.Surface((width, height), pg.SRCALPHA)
+        scale = min(width / 1600.0, height / 900.0)
+        chapter = self.chapters[self.chapter_index]
+        self.ui_buttons.clear()
+
+        # Labels stay: they are part of the picture, not the chrome.
+        label_font = self.font(max(13, int(17 * scale)), True)
+        drawn = []
+        for world_label in self.world_labels:
+            screen = project_point(self.mvp, world_label.point, width, height)
+            if screen is None:
+                continue
+            lines = world_label.text.splitlines()
+            if not lines:
+                continue
+            widest = max(label_font.size(line)[0] for line in lines)
+            label_height = len(lines) * int(22 * scale) + int(14 * scale)
+            drawn.append((pg.Rect(
+                int(screen[0] - widest * 0.5 - 10 * scale),
+                int(screen[1] - label_height * 0.5),
+                int(widest + 20 * scale), label_height), lines,
+                world_label.color))
+        laid_out = self.layout_labels([item[0] for item in drawn])
+        # A touch more backing when decluttering, so whatever overlap
+        # survives still reads as layered rather than smeared.
+        backing = 232 if self.lesson.label_layout == "declutter" else 210
+        for rect, (_, lines, colour) in zip(laid_out, drawn):
+            self.rounded_panel(surface, rect, (3, 10, 18, backing),
+                               (*colour, 190), int(7 * scale))
+            line_y = rect.y + int(7 * scale)
+            for line in lines:
+                rendered = label_font.render(line, True, colour)
+                surface.blit(rendered, (
+                    rect.centerx - rendered.get_width() // 2, line_y))
+                line_y += int(22 * scale)
+
+        # A scrim only under the type, so the picture stays clean.
+        headline_font = self.font(max(30, int(54 * scale)), True)
+        kicker_font = self.font(max(13, int(19 * scale)), True)
+        margin = int(70 * scale)
+        lines = self.wrap_text(chapter.promise, headline_font,
+                               width - 2 * margin)
+        block_height = len(lines) * int(64 * scale) + int(46 * scale)
+        block_top = height - int(96 * scale) - block_height
+        scrim = pg.Surface((width, block_height + int(120 * scale)),
+                           pg.SRCALPHA)
+        for row in range(scrim.get_height()):
+            alpha = int(196 * min(1.0, row / (scrim.get_height() * 0.55)))
+            pg.draw.line(scrim, (3, 8, 16, alpha), (0, row), (width, row))
+        surface.blit(scrim, (0, block_top - int(52 * scale)))
+
+        kicker = kicker_font.render(chapter.title.upper(), True, (61, 211, 255))
+        surface.blit(kicker, (margin, block_top - int(6 * scale)))
+        text_y = block_top + int(30 * scale)
+        for line in lines:
+            shadow = headline_font.render(line, True, (2, 6, 12))
+            surface.blit(shadow, (margin + int(3 * scale),
+                                  text_y + int(3 * scale)))
+            surface.blit(headline_font.render(line, True, (240, 247, 252)),
+                         (margin, text_y))
+            text_y += int(64 * scale)
+
+        # One hairline of progress, and nothing else.
+        played = (self.timeline % self.total_duration) / self.total_duration
+        bar = int(5 * scale)
+        pg.draw.rect(surface, (22, 44, 60, 220),
+                     pg.Rect(0, height - bar, width, bar))
+        pg.draw.rect(surface, (255, 177, 62, 255),
+                     pg.Rect(0, height - bar, int(width * played), bar))
+        return surface
+
+    def draw_ui_math(self, width: int, height: int) -> object:
+        """The math screen: the picture stays live, the numbers get made.
+
+        The chapter's equations are treated as an ordered derivation and
+        revealed one line at a time as the chapter plays -- the line being
+        written is amber, settled lines are white, and the final line is
+        held back and then presented as the conclusion in its own band.
+        The point of the mode is transparency: the viewer watches the
+        figure being computed instead of being told it.
+        """
+        pg = self.pygame
+        surface = pg.Surface((width, height), pg.SRCALPHA)
+        scale = min(width / 1600.0, height / 900.0)
+        chapter = self.chapters[self.chapter_index]
+        self.ui_buttons.clear()
+
+        # World labels first: they belong to the picture, not the panel.
+        label_font = self.font(max(12, int(15 * scale)), True)
+        for world_label in self.world_labels:
+            screen = project_point(self.mvp, world_label.point, width, height)
+            if screen is None:
+                continue
+            lines = world_label.text.splitlines()
+            if not lines:
+                continue
+            widest = max(label_font.size(line)[0] for line in lines)
+            label_height = len(lines) * int(20 * scale) + int(12 * scale)
+            rect = pg.Rect(
+                int(screen[0] - widest * 0.5 - 9 * scale),
+                int(screen[1] - label_height * 0.5),
+                int(widest + 18 * scale), label_height)
+            self.rounded_panel(surface, rect, (3, 10, 18, 215),
+                               (*world_label.color, 170), int(6 * scale))
+            line_y = rect.y + int(6 * scale)
+            for line in lines:
+                rendered = label_font.render(line, True, world_label.color)
+                surface.blit(rendered, (
+                    rect.centerx - rendered.get_width() // 2, line_y))
+                line_y += int(20 * scale)
+
+        # The worksheet panel, right side, floor to ceiling.
+        margin = int(26 * scale)
+        panel_width = int(width * 0.42)
+        panel_x = width - margin - panel_width
+        panel_height = height - 2 * margin - int(16 * scale)
+        panel_rect = pg.Rect(panel_x, margin, panel_width, panel_height)
+        self.rounded_panel(surface, panel_rect, (4, 11, 21, 236),
+                           (57, 95, 114, 255), int(14 * scale))
+
+        inner_x = panel_x + int(24 * scale)
+        text_width = panel_width - int(48 * scale)
+        y = margin + int(20 * scale)
+        kicker_font = self.font(max(12, int(14 * scale)), True)
+        surface.blit(kicker_font.render(
+            f"THE MATH  --  CHAPTER {chapter.number}", True,
+            (255, 177, 62)), (inner_x, y))
+        y += int(26 * scale)
+        title_font = self.font(max(17, int(23 * scale)), True)
+        for line in self.wrap_text(chapter.title, title_font, text_width):
+            surface.blit(title_font.render(line, True, (238, 246, 252)),
+                         (inner_x, y))
+            y += int(29 * scale)
+        y += int(6 * scale)
+
+        # The chapter's own equations only, in their authored order: a
+        # math screen is a complete derivation whose last line is the
+        # conclusion, and letting the live-equation merge append lines
+        # would put a stray figure in the conclusion band.
+        equations = list(chapter.equations)
+        steps = equations[:-1] if len(equations) > 1 else list(equations)
+        conclusion = equations[-1] if len(equations) > 1 else ""
+
+        # Reserve the conclusion band before laying out steps, so a long
+        # derivation shrinks rather than colliding with its own verdict.
+        conclusion_font = self.font(max(14, int(19 * scale)), True)
+        conclusion_lines = (self.wrap_text(conclusion, conclusion_font,
+                                           text_width - int(20 * scale))
+                            if conclusion else [])
+        band_height = (len(conclusion_lines) * int(25 * scale)
+                       + int(52 * scale)) if conclusion_lines else 0
+        band_top = panel_rect.bottom - band_height - int(18 * scale)
+
+        # Steps appear one at a time across the first four fifths of the
+        # chapter, so the conclusion still gets a beat of its own.
+        progress = clamp(self.chapter_progress)
+        visible = len(steps) if progress >= 0.80 else max(
+            1, int(progress / 0.80 * len(steps)) + 1)
+        visible = min(visible, len(steps))
+
+        step_size = max(12, int(16 * scale))
+        step_font = self.font(step_size)
+
+        def step_rows(point_size: int):
+            font = self.font(point_size)
+            rows = []
+            for index, step in enumerate(steps):
+                wrapped = self.wrap_text(step, font, text_width - int(18 * scale))
+                rows.append((index, wrapped))
+            line_height = int(point_size * 1.38)
+            total = sum(len(wrapped) for _, wrapped in rows) * line_height \
+                + len(rows) * int(6 * scale)
+            return rows, line_height, total
+
+        rows, line_height, total = step_rows(step_size)
+        while total > band_top - y - int(12 * scale) and step_size > 10:
+            step_size -= 1
+            rows, line_height, total = step_rows(step_size)
+        step_font = self.font(step_size)
+
+        for index, wrapped in rows:
+            if index >= visible:
+                break
+            settled = index < visible - 1 or progress >= 0.80
+            colour = (206, 221, 233) if settled else (255, 197, 92)
+            marker = "=" if settled else ">"
+            surface.blit(self.font(step_size, True).render(
+                marker, True, (61, 211, 255)),
+                (inner_x, y))
+            for line in wrapped:
+                surface.blit(step_font.render(line, True, colour),
+                             (inner_x + int(20 * scale), y))
+                y += line_height
+            y += int(6 * scale)
+
+        # The conclusion band: held until the derivation has landed.
+        if conclusion_lines and progress >= 0.80:
+            band_rect = pg.Rect(panel_x + int(12 * scale), band_top,
+                                panel_width - int(24 * scale), band_height)
+            self.rounded_panel(surface, band_rect, (8, 34, 22, 240),
+                               (83, 233, 152, 255), int(10 * scale))
+            surface.blit(kicker_font.render("CONCLUSION", True,
+                                            (83, 233, 152)),
+                         (band_rect.x + int(14 * scale),
+                          band_rect.y + int(11 * scale)))
+            text_y = band_rect.y + int(34 * scale)
+            for line in conclusion_lines:
+                surface.blit(conclusion_font.render(line, True,
+                                                    (233, 249, 239)),
+                             (band_rect.x + int(14 * scale), text_y))
+                text_y += int(25 * scale)
+
+        # The transparency footnote, under the panel.
+        foot_font = self.font(max(10, int(12 * scale)))
+        foot = foot_font.render(
+            "computed live by the code drawing this frame -- "
+            "the audit report ships with this film", True, (91, 119, 137))
+        surface.blit(foot, (panel_x + panel_width - foot.get_width(),
+                            panel_rect.bottom + int(4 * scale)))
+
+        # Same hairline of progress the montage carries.
+        played = (self.timeline % self.total_duration) / self.total_duration
+        bar = int(5 * scale)
+        pg.draw.rect(surface, (22, 44, 60, 220),
+                     pg.Rect(0, height - bar, width, bar))
+        pg.draw.rect(surface, (255, 177, 62, 255),
+                     pg.Rect(0, height - bar, int(width * played), bar))
+        return surface
+
+    def draw_ui_teaching(self, width: int, height: int) -> object:
         pg = self.pygame
         surface = pg.Surface((width, height), pg.SRCALPHA)
         scale = min(width / 1600.0, height / 900.0)
         margin = int(24 * scale)
-        chapter = CHAPTERS[self.chapter_index]
+        chapter = self.chapters[self.chapter_index]
         self.ui_buttons.clear()
 
         # Header
         self.rounded_panel(surface, (margin, margin, width - 2 * margin, int(78 * scale)),
                            (5, 13, 25, 222), (30, 74, 100, 255), int(12 * scale))
-        self.draw_text(surface, "2V / GEODESIC MASTERCLASS",
+        self.draw_text(surface, self.lesson.brand,
                        (margin + int(20 * scale), margin + int(13 * scale)),
                        max(14, int(16 * scale)), (55, 210, 255), True)
         self.draw_text(surface, chapter.title,
@@ -1145,10 +1151,38 @@ class MasterclassApp:
                        (width - margin - int(170 * scale), margin + int(25 * scale)),
                        max(14, int(17 * scale)), status_color, True)
 
-        # Teaching card
+        # Teaching card.  A verbose chapter has far more narration than the
+        # original fourteen-chapter lesson, so the card is laid out twice:
+        # once to measure at the preferred size, then again a size smaller
+        # if that did not fit the space between the header and the bar.
         card_width = int(424 * scale)
         card_top = margin + int(94 * scale)
-        card_height = int(430 * scale)
+        card_room = height - margin - int(105 * scale) - card_top - int(16 * scale)
+        text_width = card_width - int(40 * scale)
+        title_size = max(18, int(24 * scale))
+        body_size = max(13, int(16 * scale))
+
+        def lay_out(title_pt: int, body_pt: int):
+            title_font = self.font(title_pt, True)
+            body_font = self.font(body_pt)
+            title_step = int(title_pt * 1.26)
+            body_step = int(body_pt * 1.44)
+            rows: list[tuple[object, str, tuple[int, int, int], int]] = []
+            for line in self.wrap_text(chapter.promise, title_font, text_width):
+                rows.append((title_font, line, (239, 245, 249), title_step))
+            rows.append((body_font, "", (0, 0, 0), int(body_pt * 0.75)))
+            for paragraph in chapter.narration:
+                for line in self.wrap_text(paragraph, body_font, text_width):
+                    rows.append((body_font, line, (169, 188, 203), body_step))
+                rows.append((body_font, "", (0, 0, 0), int(body_pt * 0.45)))
+            return rows, sum(row[3] for row in rows)
+
+        rows, text_height = lay_out(title_size, body_size)
+        while text_height > card_room - int(60 * scale) and body_size > 10:
+            title_size = max(15, title_size - 1)
+            body_size -= 1
+            rows, text_height = lay_out(title_size, body_size)
+        card_height = min(card_room, text_height + int(58 * scale))
         self.rounded_panel(surface, (margin, card_top, card_width, card_height),
                            (5, 15, 28, 224), (34, 76, 101, 255), int(14 * scale))
         x = margin + int(20 * scale)
@@ -1156,17 +1190,13 @@ class MasterclassApp:
         self.draw_text(surface, f"CHAPTER {chapter.number}",
                        (x, y), max(13, int(15 * scale)), (65, 210, 255), True)
         y += int(27 * scale)
-        title_font = self.font(max(18, int(24 * scale)), True)
-        for line in self.wrap_text(chapter.promise, title_font, card_width - int(40 * scale)):
-            surface.blit(title_font.render(line, True, (239, 245, 249)), (x, y))
-            y += int(30 * scale)
-        y += int(12 * scale)
-        body_font = self.font(max(13, int(16 * scale)))
-        for paragraph in chapter.narration:
-            for line in self.wrap_text(paragraph, body_font, card_width - int(40 * scale)):
-                surface.blit(body_font.render(line, True, (169, 188, 203)), (x, y))
-                y += int(23 * scale)
-            y += int(7 * scale)
+        limit = card_top + card_height - int(8 * scale)
+        for row_font, line, colour, step in rows:
+            if y + step > limit:
+                break
+            if line:
+                surface.blit(row_font.render(line, True, colour), (x, y))
+            y += step
 
         # Equation card
         equation_width = int(455 * scale)
@@ -1180,7 +1210,7 @@ class MasterclassApp:
                        max(13, int(14 * scale)), (255, 177, 62), True)
         eq_y = equation_y + int(44 * scale)
         equation_font = self.font(max(12, int(15 * scale)), False)
-        equations = list(chapter.equations) + self.dynamic_equations(chapter.stage)
+        equations = self.merge_equations(chapter)
         for equation in equations[:7]:
             for line in self.wrap_text(equation, equation_font, equation_width - int(36 * scale)):
                 surface.blit(equation_font.render(line, True, (216, 229, 237)),
@@ -1239,8 +1269,11 @@ class MasterclassApp:
         timeline_y = bar_y + int(24 * scale)
         timeline_width = timeline_right - timeline_x
         gap = max(2, int(3 * scale))
-        cell_width = (timeline_width - gap * (len(CHAPTERS) - 1)) / len(CHAPTERS)
-        for index, item in enumerate(CHAPTERS):
+        count = len(self.chapters)
+        cell_width = (timeline_width - gap * (count - 1)) / count
+        # A long lesson cannot label every cell; label about eight of them.
+        label_step = max(1, round(count / 8))
+        for index, item in enumerate(self.chapters):
             rect = pg.Rect(
                 int(timeline_x + index * (cell_width + gap)),
                 timeline_y,
@@ -1256,7 +1289,7 @@ class MasterclassApp:
                 fill.width = max(2, int(rect.width * self.chapter_progress))
                 pg.draw.rect(surface, (255, 177, 62, 255), fill,
                              border_radius=max(2, int(4 * scale)))
-            if width >= 1300 and index in (0, 2, 4, 6, 8, 10, 12, 13):
+            if width >= 1300 and (index % label_step == 0 or index == count - 1):
                 self.draw_text(surface, item.number,
                                (rect.x, rect.bottom + int(6 * scale)),
                                max(9, int(10 * scale)), (113, 139, 156), True)
@@ -1299,13 +1332,15 @@ class MasterclassApp:
     # ------------------------------------------------------------------
 
     def set_chapter(self, index: int) -> None:
-        self.chapter_index = index % len(CHAPTERS)
-        self.timeline = chapter_start(self.chapter_index, self.chapter_durations)
+        self.chapter_index = index % len(self.chapters)
+        self.timeline = chapter_start(
+            self.chapter_index, self.chapter_durations, self.chapters
+        )
         self.chapter_progress = 0.0
         self.reset_camera()
 
     def reset_camera(self) -> None:
-        chapter = CHAPTERS[self.chapter_index]
+        chapter = self.chapters[self.chapter_index]
         self.camera_yaw, self.camera_pitch, self.camera_distance = chapter.camera
         self.camera_override = False
 
@@ -1316,13 +1351,13 @@ class MasterclassApp:
                 self.timeline %= self.total_duration
         previous_chapter = self.chapter_index
         self.chapter_index, self.chapter_progress = chapter_at_time(
-            self.timeline, self.chapter_durations
+            self.timeline, self.chapter_durations, self.chapters
         )
         if previous_chapter != self.chapter_index and not self.camera_override:
             self.reset_camera()
 
     def camera(self) -> tuple[np.ndarray, np.ndarray]:
-        chapter = CHAPTERS[self.chapter_index]
+        chapter = self.chapters[self.chapter_index]
         yaw = self.camera_yaw
         if not self.camera_override and (self.playing or self.exporting):
             yaw += math.sin(self.chapter_progress * math.pi) * 7.0
@@ -1350,7 +1385,7 @@ class MasterclassApp:
         )
         self.scene_program["u_camera"].value = tuple(float(value) for value in eye)
         self.scene_program["u_light"].value = (-0.45, -0.55, -0.72)
-        chapter = CHAPTERS[self.chapter_index]
+        chapter = self.chapters[self.chapter_index]
         opaque, transparent = self.build_scene(chapter.stage, self.chapter_progress)
 
         self.ctx.enable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)
@@ -1381,7 +1416,9 @@ class MasterclassApp:
     def save_screenshot(self, path: Path | None = None) -> Path:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         if path is None:
-            path = self.output_dir / f"2v_{int(time.time() * 1000)}.png"
+            path = self.output_dir / (
+                f"{self.lesson.snapshot_prefix}_{int(time.time() * 1000)}.png"
+            )
         width, height = self.pygame.display.get_window_size()
         raw = self.capture_rgb()
         image = self.pygame.image.fromstring(raw, (width, height), "RGB")
@@ -1495,16 +1532,28 @@ class MasterclassApp:
         for target in times:
             self.timeline = target % self.total_duration
             self.chapter_index, self.chapter_progress = chapter_at_time(
-                self.timeline, self.chapter_durations
+                self.timeline, self.chapter_durations, self.chapters
             )
             self.reset_camera()
             # Read the populated back buffer before a swap makes it the front
             # buffer; this is deterministic on Windows OpenGL drivers.
             self.render(present=False)
-            path = output_dir / f"2v_{target:07.2f}s.png"
+            path = output_dir / (
+                f"{self.lesson.snapshot_prefix}_{target:07.2f}s.png"
+            )
             paths.append(self.save_screenshot(path))
             print(f"saved {path}")
         return paths
+
+    @property
+    def speak_promise(self) -> bool:
+        """Whether the voice reads the on-screen headline as well.
+
+        Teaching lessons do: the promise is a separate summary line.
+        A montage does not: its headline is a condensed form of the
+        narration underneath it, so reading both says it twice.
+        """
+        return self.lesson.style != "hype"
 
     def export_video(
         self,
@@ -1544,7 +1593,7 @@ class MasterclassApp:
             chapter_starts = tuple(
                 float(value) for value in payload.get("chapter_starts", [])
             )
-            expected = len(CHAPTERS)
+            expected = len(self.chapters)
             if (
                 len(chapter_durations) != expected
                 or len(speech_durations) != expected
@@ -1589,12 +1638,13 @@ class MasterclassApp:
             self.total_duration = plan.total_duration
             print(
                 f"Local narration: {plan.voice}, {self.total_duration:.1f}s "
-                f"across {len(CHAPTERS)} chapters"
+                f"across {len(self.chapters)} chapters"
             )
         elif narration:
             ffprobe = companion_ffprobe(ffmpeg, ffprobe_path)
             voice_slug = voice_cache_slug(
-                voice, voice_rate, voice_pitch, voice_volume
+                voice, voice_rate, voice_pitch, voice_volume, self.chapters,
+                self.speak_promise
             )
             stem_directory = path.parent / f"{path.stem}-voice-{voice_slug}"
             track_path = path.parent / f"{path.stem}-narration.m4a"
@@ -1607,16 +1657,27 @@ class MasterclassApp:
                 rate=voice_rate,
                 pitch=voice_pitch,
                 volume=voice_volume,
+                chapters=self.chapters,
+                speak_promise=self.speak_promise,
             )
             self.chapter_durations = plan.chapter_durations
             self.total_duration = plan.total_duration
             print(
                 f"Natural narration: {voice}, {self.total_duration:.1f}s "
-                f"across {len(CHAPTERS)} chapters"
+                f"across {len(self.chapters)} chapters"
             )
+            if self.lesson.audio_bed:
+                from .soundboard import mix_bed_into_track
+                mix_bed_into_track(plan.track_path, self.lesson.audio_bed,
+                                   ffmpeg, self.lesson.audio_bed_gain)
         width, height = self.pygame.display.get_window_size()
+        # Tag the temp with this process, because two exports of the same
+        # lesson to the same output otherwise share one hidden file: the
+        # first to finish deletes it out from under the second, which then
+        # muxes a truncated picture against a full narration track and
+        # leaves a plausible-looking MP4 with seconds of video in it.
         render_path = (
-            path.parent / f".{path.stem}-silent-render.mp4"
+            path.parent / f".{path.stem}-silent-render-{os.getpid()}.mp4"
             if plan is not None else path
         )
         command = [
@@ -1637,7 +1698,7 @@ class MasterclassApp:
             for frame in range(total_frames):
                 self.timeline = frame / fps
                 self.chapter_index, self.chapter_progress = chapter_at_time(
-                    self.timeline, self.chapter_durations
+                    self.timeline, self.chapter_durations, self.chapters
                 )
                 if self.chapter_index != rendered_chapter:
                     self.reset_camera()
@@ -1679,10 +1740,18 @@ class MasterclassApp:
                 plan.chapter_durations,
                 plan.speech_durations,
                 speech_delay,
+                self.chapters,
+                self.lesson.title,
+                self.speak_promise,
             )
             print(f"saved {plan.track_path}")
         else:
-            script_path, subtitle_path = write_companion_files(path)
+            script_path, subtitle_path = write_companion_files(
+                path,
+                chapters=self.chapters,
+                title=self.lesson.title,
+                speak_promise=self.speak_promise,
+            )
         self.exporting = False
         print(f"saved {path}")
         print(f"saved {script_path}")
@@ -1700,7 +1769,7 @@ def parse_size(value: str) -> tuple[int, int]:
     return width, height
 
 
-def main() -> int:
+def main(default_lesson: str = "2v") -> int:
     """Dispatch on the launcher's config ticket instead of argv.
 
     Launch and configure this from the consolidated launcher
@@ -1710,8 +1779,30 @@ def main() -> int:
     """
     cfg = _lc.consume_config("two_v_masterclass")
     action = cfg.get("action", "run")
+    # Imported here, not at module scope: the lesson modules import this
+    # module's render kit, so the registry can only be built once this
+    # module has finished loading.
+    from .lesson_registry import get_lesson, lesson_menu
+
+    try:
+        lesson = get_lesson(cfg.get("lesson") or default_lesson)
+        # Segments are opt-in per render: everything that shipped before
+        # they existed stays uncomposed and keeps reproducing exactly.
+        if cfg.get("compose_segments"):
+            extra = cfg.get("segments_include") or ""
+            lesson = compose(
+                lesson,
+                include=tuple(k for k in str(extra).split(",") if k),
+                exclude=tuple(
+                    k for k in str(cfg.get("segments_exclude") or "").split(",")
+                    if k),
+            )
+    except ValueError as exc:
+        print(exc)
+        print(lesson_menu())
+        return 2
     voice = cfg.get("voice", DEFAULT_VOICE)
-    voice_rate = cfg.get("voice_rate", DEFAULT_RATE)
+    voice_rate = cfg.get("voice_rate") or DEFAULT_RATE
     voice_pitch = cfg.get("voice_pitch", DEFAULT_PITCH)
     voice_volume = cfg.get("voice_volume", DEFAULT_VOLUME)
     ffmpeg_path = cfg.get("ffmpeg") or None
@@ -1726,13 +1817,67 @@ def main() -> int:
         print("local narration plan cannot be combined with no-narration")
         return 2
 
+    if action == "soundboard":
+        from .soundboard import board_menu, ensure_layout
+        made = ensure_layout()
+        if made:
+            print(f"created {len(made)} category folder(s)")
+        print(board_menu())
+        return 0
+    if action == "list_segments":
+        print(segment_menu())
+        return 0
+    if action == "list_deliverables":
+        print(deliverables_menu())
+        return 0
+    if action == "render_all":
+        # One at a time, in the order they were made. See deliverables.py
+        # for why this is sequential and what "exactly" costs.
+        only = cfg.get("render_only") or None
+        return render_all(
+            only=tuple(str(only).split(",")) if only else None,
+            force=bool(cfg.get("force_rerender", False)),
+            fps=max(1, int(cfg.get("fps", 30))),
+            size=cfg.get("size", "1920x1080"),
+        )
+    if action == "list_lessons":
+        print(lesson_menu())
+        return 0
     if action == "selftest":
         validate_geometry()
-        print(calculation_report())
-        print("\nselftest OK")
+        lesson.validate()
+        if lesson.selftest is not None:
+            lesson.selftest()
+        print((lesson.report or calculation_report)())
+        # Write the companion files to a scratch directory and throw
+        # them away.  They are the last thing an export does, long
+        # after the expensive part, so a fault here is the costliest
+        # kind to discover late and the cheapest to catch here.
+        validate_deliverables()
+        validate_segments()
+        from .soundboard import validate_soundboard
+        from .timber import validate_timber
+        validate_timber()
+        validate_soundboard()
+        with tempfile.TemporaryDirectory() as scratch:
+            script_path, subtitle_path = write_companion_files(
+                Path(scratch) / f"{lesson.key}.mp4",
+                chapters=lesson.chapters,
+                title=lesson.title,
+                speak_promise=lesson.style != "hype",
+            )
+            for written in (script_path, subtitle_path):
+                if written.stat().st_size <= 0:
+                    print(f"selftest FAILED: {written.name} is empty")
+                    return 1
+            print(
+                f"companion files OK: {script_path.name}, "
+                f"{subtitle_path.name}"
+            )
+        print(f"\nselftest OK: {lesson.title}, {len(lesson.chapters)} chapters")
         return 0
     if action == "report":
-        print(calculation_report())
+        print((lesson.report or calculation_report)())
         return 0
     if action == "list_voices":
         locale = cfg.get("voice_locale", "en-US")
@@ -1769,17 +1914,18 @@ def main() -> int:
             ffprobe = companion_ffprobe(ffmpeg, ffprobe_path)
             output_path = Path(cfg["narration_only"])
             voice_slug = voice_cache_slug(
-                voice, voice_rate, voice_pitch, voice_volume)
+                voice, voice_rate, voice_pitch, voice_volume, lesson.chapters)
             plan = synthesize_narration(
                 output_path.parent / f"{output_path.stem}-voice-{voice_slug}",
                 output_path, ffmpeg, ffprobe, voice=voice, rate=voice_rate,
-                pitch=voice_pitch, volume=voice_volume)
+                pitch=voice_pitch, volume=voice_volume,
+                chapters=lesson.chapters)
         except (RuntimeError, ValueError, subprocess.CalledProcessError) as exc:
             print(exc)
             return 1
         script_path, subtitle_path = write_companion_files(
             output_path, plan.chapter_durations, plan.speech_durations,
-            SPEECH_DELAY)
+            SPEECH_DELAY, lesson.chapters, lesson.title)
         print(f"saved {plan.track_path}")
         print(f"saved {script_path}")
         print(f"saved {subtitle_path}")
@@ -1787,9 +1933,14 @@ def main() -> int:
     if action == "script":
         script_path = Path(cfg["script"])
         script_path.parent.mkdir(parents=True, exist_ok=True)
-        script_path.write_text(narration_script(), encoding="utf-8")
+        script_path.write_text(
+            narration_script(None, lesson.chapters, lesson.title),
+            encoding="utf-8",
+        )
         subtitle_path = script_path.with_suffix(".srt")
-        subtitle_path.write_text(subtitle_file(), encoding="utf-8")
+        subtitle_path.write_text(
+            subtitle_file(None, None, 0.0, lesson.chapters), encoding="utf-8"
+        )
         print(f"saved {script_path}")
         print(f"saved {subtitle_path}")
         return 0
@@ -1806,6 +1957,10 @@ def main() -> int:
             print(f"saved {path}")
         return 0
 
+    # A montage lesson carries its own pacing, which the launcher can
+    # still override by filling the Rate field in.
+    if not cfg.get("voice_rate") and lesson.voice_rate:
+        voice_rate = lesson.voice_rate
     try:
         size = parse_size(cfg.get("size", "1600x900"))
     except ValueError as exc:
@@ -1815,6 +1970,7 @@ def main() -> int:
         size=size,
         fullscreen=bool(cfg.get("fullscreen", False)),
         hidden=action in ("shots", "export_video"),
+        lesson=lesson,
     )
     if action == "shots" and cfg.get("shots"):
         try:
@@ -1823,7 +1979,7 @@ def main() -> int:
         except ValueError as exc:
             print(f"shots values must be seconds: {exc}")
             return 2
-        app.render_shots(times, Path("two_v_demo_output"))
+        app.render_shots(times, Path("two_v_demo_output") / lesson.key)
         app.pygame.quit()
         return 0
     if action == "export_video" and cfg.get("export_video"):

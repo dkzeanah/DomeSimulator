@@ -1,0 +1,97 @@
+
+
+# ----------------------------------------------------------------------
+# Version two: the same film with the asides spliced in
+# ----------------------------------------------------------------------
+
+# The "list of likes" beat, opened out into five. The asides are verbatim
+# and are meant to be delivered flat, which is why they get their own
+# beats rather than being crammed into one breath.
+LIKES_RUN: tuple[Chapter, ...] = (
+    Chapter(
+        "likes", "00", "The list of likes",
+        "I like programming things. I like wiring things.",
+        (
+            "Like I said. A definitive and unquestionable stable combination of",
+            "qualities. I like programming things. I like wiring things.",
+        ),
+        (), 4.0, (36.0, 24.0, 19.0), "hype_teardown",
+    ),
+    Chapter(
+        "teslabot", "00", "Correction",
+        "No I don't. I lied.",
+        (
+            "No I don't, I lied. But alas, there I am, doing it. That's why you all",
+            "should share this video, so Elon Musk sees it. Tell him the homie needs a",
+            "Teslabot, ASAP Rocky. For humanity and shit. No lie, no cap.",
+        ),
+        (), 4.0, (48.0, 18.0, 20.0), "hype_teslabot",
+    ),
+    Chapter(
+        "whippersnapper", "00", "And then, crucially",
+        "Then aggressively accuse him of being a whippersnapper.",
+        (
+            "Then aggressively accuse him of being a whippersnapper, followed",
+            "immediately by asking him not to be one. For comedic effect, and for true",
+            "cementation. Hypnotisation.",
+        ),
+        (), 4.0, (62.0, 20.0, 18.0), "hype_teslabot",
+    ),
+    Chapter(
+        "wood", "00", "Back to the list",
+        "I like woodworking and metalworking.",
+        (
+            "I like woodworking and metalworking.",
+        ),
+        (), 4.0, (30.0, 22.0, 18.0), "hype_teardown",
+    ),
+    Chapter(
+        "psyche", "00", "Psyche",
+        "Cash money. Resources, power, and influence.",
+        (
+            "Psyche. Cash money. Resources, power, and influence. That is what I like.",
+            "How will I get it? Forcibly ruling hobos. Sue me. Tricking them into having",
+            "a good time. Jesus Christ, the darkness here. You cannot fathom it. I",
+            "promise, don't try.",
+        ),
+        (), 4.0, (90.0, 16.0, 20.0), "hype_psyche",
+    ),
+    Chapter(
+        "apart", "00", "And the real one",
+        "I like taking things apart.",
+        (
+            "I like taking things apart.",
+        ),
+        (), 4.0, (40.0, 26.0, 20.0), "hype_teardown",
+    ),
+)
+
+
+def _splice(chapters: tuple[Chapter, ...], slug: str,
+            replacement: tuple[Chapter, ...]) -> tuple[Chapter, ...]:
+    """Swap one beat for a run of beats, then renumber the whole film."""
+    out: list[Chapter] = []
+    for chapter in chapters:
+        if chapter.slug == slug:
+            out.extend(replacement)
+        else:
+            out.append(chapter)
+    return tuple(
+        replace(chapter, number=f"{index + 1:02d}")
+        for index, chapter in enumerate(out)
+    )
+
+
+CHAPTERS_V2 = _splice(CHAPTERS, "teardown", LIKES_RUN)
+
+
+HYPE_V2_LESSON = Lesson(
+    key="hype2",
+    brand="FRANKENDOME",
+    title="Frankendome, Version Two",
+    chapters=CHAPTERS_V2,
+    scenes=SCENES,
+    snapshot_prefix="hype2",
+    style="hype",
+    voice_rate="+7%",
+)

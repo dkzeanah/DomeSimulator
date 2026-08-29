@@ -1,7 +1,7 @@
 """DomeSim Launcher — one GUI for every standalone tool in this project.
 
 Dome Creator, Assembly Line (and its earlier Simple variant), Presenter
-Studio, the 2V Masterclass, Local Voice Studio, and the project
+Studio, the Masterclass lessons, Local Voice Studio, and the project
 Flatten utility all used to be configured with command-line flags.
 That CLI surface has been removed from every tool; this launcher is now
 the only supported way to set them.
@@ -26,6 +26,7 @@ import os
 from pathlib import Path
 
 import launcher_common as lc
+import render_presets
 
 ROOT = Path(__file__).resolve().parent
 
@@ -556,7 +557,7 @@ def main() -> int:
                           mode="open",
                           filetypes=(("Presentation", "*.json *.py"),
                                      ("All files", "*.*")),
-                          placeholder="e.g. presenter_output/my_script.json")
+                          placeholder="e.g. deliverables/presenter/my_script.json")
     script_path.pack(fill="x", pady=3)
     note(body, "Advanced: a Python file that defines a build() "
                "function, or a .json file previously saved with the "
@@ -639,12 +640,12 @@ def main() -> int:
                ".srt subtitle file is always saved next to the video, "
                "so a caption-free video can still be subtitled later.")
     export_path = PathRow(body, "Export MP4 path (action = export)",
-                          "presenter_output/presentation.mp4", mode="save",
+                          "deliverables/presenter/presentation.mp4", mode="save",
                           filetypes=(("MP4 video", "*.mp4"),))
     export_path.pack(fill="x", pady=3)
     export_dir = PathRow(body, "Folder for all videos "
                                "(action = export_all)",
-                         "presenter_output/all", mode="dir")
+                         "deliverables/presenter/all", mode="dir")
     export_dir.pack(fill="x", pady=3)
     note(body, "Each built-in demo is saved in here under its own name, "
                "e.g. case_energy.mp4.")
@@ -663,7 +664,7 @@ def main() -> int:
                "seconds in, one at 40, one at 90.")
     save_json = PathRow(body, "Save as JSON and exit (optional)", "",
                         mode="save", filetypes=(("JSON", "*.json"),),
-                        placeholder="e.g. presenter_output/my_script.json")
+                        placeholder="e.g. deliverables/presenter/my_script.json")
     save_json.pack(fill="x", pady=3)
     note(body, "Optional, any Action: also write the built scene/shot "
                "structure to this file so you can hand-edit it or "
@@ -713,26 +714,106 @@ def main() -> int:
     ttk.Separator(ps_footer).pack(fill="x")
     launch_button(ps_footer, "Launch Presenter Studio", go_presenter)
 
-    # ---- 2V Masterclass ---------------------------------------------------
+    # ---- Masterclass lessons ----------------------------------------------
 
-    t, body, mc_footer = scrollable_tab("2V Masterclass")
+    t, body, mc_footer = scrollable_tab("Masterclass")
     intro(body,
-         "A self-contained, 14-chapter geometry lesson that builds a "
-         "2V geodesic dome on screen from first principles — why two "
-         "strut lengths, why triangles, and why the golden ratio is a "
-         "myth, with the actual math shown at every step. Use this "
-         "tab to watch the lesson, export it as a narrated video, or "
+         "Five self-contained teaching lessons that build a dome on "
+         "screen from first principles, with the actual math shown at "
+         "every step. Pick a Lesson, then an Action. Use this tab to "
+         "watch a lesson live, export it as a narrated video, or "
          "export real cut-list/CAD files for physically building a "
-         "dome. Everything below used to be a command-line flag; pick "
-         "an Action first, since it decides which other fields "
-         "actually matter.")
+         "dome. Everything below used to be a command-line flag; the "
+         "Action decides which other fields actually matter.")
+
+    # The preset row is built last, once every field it fills in
+    # exists, but it belongs at the very top of the tab -- so its place
+    # in the layout is reserved here.
+    mc_preset_holder = ttk.Frame(body)
+    mc_preset_holder.pack(fill="x")
+
+    section(body, "Lesson")
+    mc_lesson = LabeledCombo(
+        body, "Lesson",
+        ["2v", "build", "hex", "zome", "line", "cuts", "franken",
+         "hype", "hype2", "hype3", "hype4", "hype5", "hype6",
+         "kick", "kick2", "master", "world"],
+        "2v")
+    mc_lesson.pack(fill="x", pady=3)
+    action_help(body, mc_lesson, {
+        "2v": "the original 14-chapter geometry lesson: why a 2V "
+              "geodesic dome has exactly two strut lengths, and why "
+              "their ratio is not the golden ratio.",
+        "build": "46 chapters, start to finish: the same geometry, "
+                 "then sizing, hub systems, end cuts, bevels, stock "
+                 "and offcut, jigs, setting out, foundations, "
+                 "raising, checking, skinning and openings, then "
+                 "hubless framing and its compound cuts, the shell "
+                 "used as a filter, the one-sheet micro shelter and "
+                 "the mixed-stock franken-dome.",
+        "hex": "20 chapters on hexagonal domes: the one-hexagon "
+               "frame dome you can cut from a single strut length, "
+               "why every hexagon cage needs exactly twelve "
+               "pentagons, and what raising the frequency costs in "
+               "extra sizes and warped panels.",
+        "zome": "19 chapters on zomes: rooms swept from a star of "
+                "directions, built from parallelograms, framed from "
+                "one strut length, and closing on a point at the top.",
+        "cuts": "18 chapters on the single hardest operation in a "
+                "hubless dome: the compound cut. Both machines, the "
+                "jig between them, every saw setting measured off the "
+                "model, and the five ways it goes wrong.",
+        "franken": "13 chapters on the mixed-stock dome: struts of "
+                   "any section, V brackets folded from washing "
+                   "machine casing, the slack that leaves no joint on "
+                   "the sphere, and the settling that makes it stand.",
+        "hype2": "the montage again, with the Teslabot and Psyche "
+                 "asides spliced into the list of likes. Raw label "
+                 "placement, exactly as it shipped.",
+        "hype3": "the montage with the reason: why women specifically, "
+                 "the single-parent years, Fuller's actual goal, and the "
+                 "Inuit proof. Labels decluttered so overlapping text "
+                 "stays readable.",
+        "hype": "the Frankendome montage: not a lesson. Full-frame "
+                "pictures, one line of type, a quicker voice, and the "
+                "argument for treating a dome as a platform you keep "
+                "upgrading rather than a house you finish once.",
+        "hype4": "the montage with the brand segments, the party sting "
+                 "and the shared contact outro spliced in.",
+        "hype5": "the montage with the plain frankendome in place of the "
+                 "party sting.",
+        "hype6": "the montage, current version: themed shells, the four "
+                 "product lines, a faster cadence and a beat under it.",
+        "kick": "the campaign film: why a dome, what one costs to the "
+                "dollar, and what a hundred thousand dollars buys.",
+        "kick2": "the campaign film, current version: the overhanging "
+                 "brim and its catchment, the pony wall, running cost, "
+                 "radiative cooling paint and the ten points.",
+        "master": "THE BIG ONE, 108 chapters and about 45 minutes: every "
+                  "tool's 3D world, the whole construction masterclass, "
+                  "the frankendome, the priced starter home and the "
+                  "factory case — with 13 math screens that derive every "
+                  "figure on camera and show the conclusion in plain "
+                  "language.",
+        "world": "all twelve Dome Creator presets, each rebuilt live from "
+                 "the simulator's own modules and drawn at true relative "
+                 "scale, with math screens for the frequency ladder, hub "
+                 "versus hubless framing, price per square foot and "
+                 "envelope efficiency.",
+        "line": "24 chapters on the assembly line itself: an animated "
+                "two-person crew walking, lifting, carrying and "
+                "fastening every part of one dome, with the energy "
+                "each motion costs them totalled per limb, per "
+                "station and per shift.",
+    })
 
     section(body, "Action")
     mc_action = LabeledCombo(
         body, "Action",
         ["run", "selftest", "report", "shots", "export_video",
          "voice_preview", "list_voices", "narration_only", "script",
-         "build_packet"], "run")
+         "build_packet", "list_lessons", "list_deliverables",
+         "list_segments", "soundboard", "render_all"], "run")
     mc_action.pack(fill="x", pady=3)
     action_help(body, mc_action, {
         "run": "watch the interactive lesson live (the default).",
@@ -755,7 +836,27 @@ def main() -> int:
         "build_packet": "export real-world build files for "
                         "physically constructing a dome (cut list, "
                         "hub coordinates, CAD file, field guide) — "
-                        "no window.",
+                        "no window. Always the 2V dome, whichever "
+                        "lesson is selected.",
+        "list_segments": "print the reusable brand segments: what each "
+                         "one is, where it inserts itself, whether it "
+                         "is automatic, and what it plays.",
+        "soundboard": "print the audio soundboard inventory by "
+                      "category, and create the asset folders if they "
+                      "do not exist yet. This repository ships no audio; "
+                      "drop your own files into assets/audio/<category>/ "
+                      "and they become available to segments as "
+                      "category/name.",
+        "list_deliverables": "print every video this repository "
+                             "produces, which lesson makes it, and "
+                             "whether its cached narration is present.",
+        "render_all": "rebuild every deliverable in order, one at a "
+                      "time. Skips anything already on disk unless "
+                      "Force re-render is ticked. Sequential on "
+                      "purpose: parallel exports make the speech "
+                      "endpoint throttle and refuse connections.",
+        "list_lessons": "print the available lessons and their "
+                        "chapter counts to the log.",
     })
     mc_fullscreen = CheckRow(body, "Fullscreen (live run)", False)
     mc_fullscreen.pack(anchor="w")
@@ -777,6 +878,41 @@ def main() -> int:
                         mode="save", filetypes=(("MP4 video", "*.mp4"),),
                         placeholder="e.g. two_v_demo_output/lesson.mp4")
     mc_export.pack(fill="x", pady=3)
+    section(body, "Auto-scene manager")
+    mc_compose = CheckRow(
+        body, "Auto-insert brand segments (outro, call to action)", False)
+    mc_compose.pack(fill="x", pady=3)
+    mc_seg_include = LabeledEntry(
+        body, "Also insert (segment keys, comma-sep)", "")
+    mc_seg_include.pack(fill="x", pady=3)
+    mc_seg_exclude = LabeledEntry(
+        body, "Never insert (segment keys, comma-sep)", "")
+    mc_seg_exclude.pack(fill="x", pady=3)
+    note(body, "Templated pieces that repeat across videos and do not "
+               "change: the contact outro, the call to action, the "
+               "who-am-I stack, and the Frankendome party sting. Ticking "
+               "the box splices in everything marked auto; the two "
+               "fields add or suppress individual ones. Run Action = "
+               "list_segments to see the keys, what each does, and which "
+               "soundboard cues it fires. Deliberately OFF by default: "
+               "the nine videos already rendered were made before "
+               "segments existed, and leaving it off is what lets them "
+               "re-render byte-identical.")
+
+    section(body, "Rebuild the whole set")
+    mc_render_only = LabeledEntry(body, "Render only (lesson keys, comma-sep)", "")
+    mc_render_only.pack(fill="x", pady=3)
+    mc_force = CheckRow(body, "Force re-render (overwrite existing files)", False)
+    mc_force.pack(fill="x", pady=3)
+    note(body, "These two are for Action = render_all. Leave the filter "
+               "empty to rebuild every deliverable in order. Files already "
+               "on disk are skipped unless Force is ticked. Exact "
+               "reproduction needs the *-voice-* cache directories: "
+               "without them the narration is re-synthesized and chapter "
+               "boundaries can shift by fractions of a second, which moves "
+               "every frame after them. Run list_deliverables to see which "
+               "caches you have.")
+
     mc_no_narration = CheckRow(body, "No narration (silent export)", False)
     mc_no_narration.pack(anchor="w")
     mc_local_plan = PathRow(
@@ -864,9 +1000,75 @@ def main() -> int:
                "actual hardware. 0.0 means hub-center-to-hub-center "
                "lengths with no adjustment.")
 
+    # ---- Video presets: one click reproduces a published render -------
+    #
+    # Every published video is a specific combination of lesson, action,
+    # resolution, voice and segments. Selecting a preset fills all of
+    # them in, so reproducing a render needs no prior knowledge of which
+    # combination made which file.
+    mc_preset_fields = {
+        "lesson": mc_lesson, "action": mc_action, "size": mc_size,
+        "fps": mc_fps, "shots": mc_shots, "export_video": mc_export,
+        "compose_segments": mc_compose,
+        "segments_include": mc_seg_include,
+        "segments_exclude": mc_seg_exclude,
+        "voice": mc_voice, "voice_rate": mc_rate, "voice_pitch": mc_pitch,
+        "voice_volume": mc_volume, "no_narration": mc_no_narration,
+        "fullscreen": mc_fullscreen, "voice_preview": mc_voice_preview,
+    }
+
+    def set_field(widget, value):
+        """Write a value into whichever kind of row this is."""
+        if isinstance(value, bool):
+            widget.var.set(value)
+            return
+        text = "" if value is None else str(value)
+        if hasattr(widget, "set"):
+            widget.set(text)
+            return
+        widget.var.set(text)
+        # PathRow shows grey placeholder text until something is typed;
+        # writing the variable directly would leave a real path looking
+        # like an example.
+        entry = getattr(widget, "_placeholder_entry", None)
+        if entry is not None and text:
+            entry.configure(foreground="")
+
+    def apply_preset(*_args):
+        preset = render_presets.PRESET_BY_LABEL.get(mc_preset.get())
+        if preset is None or preset.key == "custom":
+            return
+        for name, value in preset.applied().items():
+            widget = mc_preset_fields.get(name)
+            if widget is not None:
+                set_field(widget, value)
+
+    ttk.Separator(mc_preset_holder).pack(fill="x", pady=(0, 6))
+    section(mc_preset_holder, "Video preset — reproduce a published render")
+    mc_preset = LabeledCombo(
+        mc_preset_holder, "Video preset",
+        render_presets.PRESET_LABELS, render_presets.PRESET_LABELS[0])
+    mc_preset.pack(fill="x", pady=3)
+    action_help(mc_preset_holder, mc_preset, {
+        preset.label: preset.summary for preset in render_presets.PRESETS
+    })
+    note(mc_preset_holder,
+         "Pick one and every field below fills in with the exact setup "
+         "that produced that video — lesson, action, size, frame rate, "
+         "narration voice, rate and segments. Then press Launch "
+         "Masterclass and you get the same file. The voice settings are "
+         "part of the render, not decoration: chapter lengths are "
+         "measured off the synthesized speech, so changing a voice or a "
+         "rate moves every chapter boundary after it. You can still edit "
+         "anything after applying a preset — the fields are only filled "
+         "in, never locked.")
+    mc_preset.var.trace_add("write", apply_preset)
+    ttk.Separator(mc_preset_holder).pack(fill="x", pady=(6, 2))
+
     def go_masterclass():
         cfg = {
-            "action": mc_action.get(), "fullscreen": mc_fullscreen.get(),
+            "action": mc_action.get(), "lesson": mc_lesson.get(),
+            "fullscreen": mc_fullscreen.get(),
             "size": mc_size.get(), "no_narration": mc_no_narration.get(),
             "voice": mc_voice.get(), "voice_rate": mc_rate.get(),
             "voice_pitch": mc_pitch.get(), "voice_volume": mc_volume.get(),
@@ -896,10 +1098,18 @@ def main() -> int:
             cfg["radius_in"] = float(mc_radius.get())
         if mc_deduction.get():
             cfg["connector_deduction_in"] = float(mc_deduction.get())
+        cfg["compose_segments"] = mc_compose.get()
+        if mc_seg_include.get():
+            cfg["segments_include"] = mc_seg_include.get()
+        if mc_seg_exclude.get():
+            cfg["segments_exclude"] = mc_seg_exclude.get()
+        if mc_render_only.get():
+            cfg["render_only"] = mc_render_only.get()
+        cfg["force_rerender"] = mc_force.get()
         run("two_v_masterclass.py", "two_v_masterclass", cfg,
-            "2V Masterclass")
+            f"Masterclass ({mc_lesson.get()})")
     ttk.Separator(mc_footer).pack(fill="x")
-    launch_button(mc_footer, "Launch 2V Masterclass", go_masterclass)
+    launch_button(mc_footer, "Launch Masterclass", go_masterclass)
 
     # ---- Local Voice Studio ------------------------------------------------
 
@@ -909,7 +1119,7 @@ def main() -> int:
          "turn it into a private, locked voice profile, and generate "
          "narration locally — nothing is sent to a cloud text-to-"
          "speech service, and no login is required. This is what the "
-         "2V Masterclass and Presenter Studio tabs use for narration "
+         "Masterclass and Presenter Studio tabs use for narration "
          "when you want your own voice instead of the built-in cloud "
          "one. It has its own full window once launched, with a "
          "left-to-right workflow across its tabs: Project (create one "
@@ -937,16 +1147,62 @@ def main() -> int:
                "interpreter gets used each time you click Launch.")
     section(body, "Launch")
     lvs_action = LabeledCombo(body, "Action",
-                              ["run", "selftest", "diagnose"], "run")
+                              ["run", "selftest", "diagnose", "rap_analyze",
+                               "rap_preview", "rap_produce", "rap_selftest"],
+                              "run")
     lvs_action.pack(fill="x", pady=3)
     action_help(body, lvs_action, {
-        "run": "open the studio (the default).",
+        "run": "open the studio (the default). Its Rap Studio tab does "
+               "everything the rap_* actions below do, with sliders.",
         "selftest": "internal checks, printed to the log below, no "
                     "window.",
         "diagnose": "print hardware/local-AI backend status and, if "
                     "anything is not ready, the exact command to fix "
                     "it — to the log below, no window.",
+        "rap_analyze": "measure the instrumental below: tempo, bar "
+                       "lines, how steady it is, and what key it is "
+                       "in. Needs only the Instrumental field.",
+        "rap_preview": "measure how far off the beat and off the note "
+                       "your vocal already is, without rendering "
+                       "anything. Needs both audio fields.",
+        "rap_produce": "the whole chain — snap the timing, tune the "
+                       "vocal to the beat's key, mix, and write a "
+                       "finished track into a new folder.",
+        "rap_selftest": "check the beat/pitch/timing engines against "
+                        "audio built to a known tempo and key.",
     })
+    section(body, "Rap production (used by the rap_* actions only)")
+    lvs_beat = PathRow(body, "Instrumental", "", mode="open",
+                       filetypes=(("Audio", "*.wav *.mp3 *.flac *.m4a"),))
+    lvs_beat.pack(fill="x", pady=3)
+    lvs_vocal = PathRow(body, "Vocal take", "", mode="open",
+                        filetypes=(("Audio", "*.wav *.mp3 *.flac *.m4a"),))
+    lvs_vocal.pack(fill="x", pady=3)
+    note(body, "The vocal should be dry — no reverb or tuning already "
+               "printed onto it, or this will be correcting a "
+               "correction.")
+    lvs_sub = LabeledCombo(body, "Snap syllables to",
+                           ["1/4", "1/8", "1/8t", "1/16", "1/16t"], "1/8")
+    lvs_sub.pack(fill="x", pady=3)
+    lvs_align = LabeledEntry(body, "How hard to snap (0 = leave timing "
+                                   "alone, 1 = dead on the grid)", "0.85")
+    lvs_align.pack(fill="x", pady=3)
+    lvs_tune = LabeledCombo(body, "Tuning style",
+                            ["off", "natural", "tight", "hard", "robot"],
+                            "tight")
+    lvs_tune.pack(fill="x", pady=3)
+    note(body, "'natural' quietly fixes missed notes; 'hard' is the "
+               "obvious stepped tuned-vocal sound; 'off' leaves your "
+               "pitch exactly as sung. The key is taken from the "
+               "instrumental automatically.")
+    lvs_out = PathRow(body, "Folder for finished tracks", "rap_output",
+                      mode="dir")
+    lvs_out.pack(fill="x", pady=3)
+    note(body, "Every render creates a new, uniquely named subfolder in "
+               "here holding the track, the separate stems, a click "
+               "track for checking the grid by ear, and a receipt "
+               "listing every setting used. Nothing is ever "
+               "overwritten.")
     lvs_project = PathRow(body, "Project folder (optional)", "",
                           mode="dir",
                           placeholder="e.g. C:\\Users\\you\\MyVoice")
@@ -959,6 +1215,22 @@ def main() -> int:
         cfg = {"action": lvs_action.get()}
         if lvs_project.get():
             cfg["project"] = lvs_project.get()
+        if cfg["action"].startswith("rap_"):
+            if lvs_beat.get():
+                cfg["beat"] = lvs_beat.get()
+            if lvs_vocal.get():
+                cfg["vocal"] = lvs_vocal.get()
+            cfg["subdivision"] = lvs_sub.get()
+            cfg["tune_preset"] = lvs_tune.get()
+            cfg["out_dir"] = lvs_out.get() or "rap_output"
+            try:
+                cfg["align_strength"] = float(lvs_align.get())
+            except ValueError:
+                # A typo in a free-text number should say so, not end the
+                # run with a stack trace two windows away.
+                print(f"'How hard to snap' needs a number between 0 and 1, "
+                      f"not {lvs_align.get()!r}. Using 0.85.")
+                cfg["align_strength"] = 0.85
         run("local_voice_studio.py", "local_voice_studio", cfg,
             "Local Voice Studio")
     ttk.Separator(foot).pack(fill="x")
@@ -1000,6 +1272,42 @@ def main() -> int:
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected, smoke_callbacks
+
+        # Every video preset must actually reach the fields and produce
+        # the ticket it promises. This is the whole "no setup" claim, so
+        # it is checked rather than asserted in a docstring.
+        render_presets.validate_render_presets()
+        for preset in render_presets.PRESETS:
+            if preset.key == "custom":
+                continue
+            mc_preset.var.set(preset.label)
+            root.update()
+            wanted = preset.applied()
+            assert mc_lesson.get() == wanted["lesson"], preset.key
+            assert mc_action.get() == wanted["action"], preset.key
+            assert mc_voice.get() == wanted["voice"], preset.key
+            assert mc_rate.get() == wanted["voice_rate"], preset.key
+            if wanted["action"] == "export_video":
+                assert mc_export.get() == wanted["export_video"], preset.key
+            if wanted["action"] == "shots":
+                assert mc_shots.get() == wanted["shots"], preset.key
+            # Switching presets must not leave the previous one's
+            # output paths behind, or a still job quietly carries an
+            # MP4 path that belongs to a different film.
+            assert mc_voice_preview.get() == wanted["voice_preview"], \
+                preset.key
+            before = len(launched)
+            go_masterclass()
+            assert len(launched) == before + 1, preset.key
+            ticket = launched[-1][2]
+            assert ticket["lesson"] == wanted["lesson"], preset.key
+            assert ticket["action"] == wanted["action"], preset.key
+        print(f"SMOKETEST OK: {len(render_presets.PRESETS) - 1} video "
+              "presets each filled the fields and produced a ticket")
+        launched.clear()
+        mc_preset.var.set(render_presets.PRESET_LABELS[0])
+        root.update()
+
         for label, callback in smoke_callbacks:
             callback()
         assert len(launched) == expected, launched

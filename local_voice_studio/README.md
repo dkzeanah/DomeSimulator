@@ -5,9 +5,9 @@ recordings you own, curating a clean speech dataset, creating a locked local
 voice profile, and generating speech on your computer. It does not use a hosted
 inference API, login, telemetry, cloud database, or share server.
 
-It is separate from Dome Creator, the assembly line, and the standalone 2V
-masterclass. Its only integration is an explicit narration-plan file that the
-2V video exporter can consume.
+It is separate from Dome Creator, the assembly line, and the standalone
+masterclass lessons. Its only integration is an explicit narration-plan file
+that the masterclass video exporter can consume.
 
 ## What “building my voice” means
 
@@ -89,6 +89,34 @@ $env:TRANSFORMERS_OFFLINE="1"
 FFmpeg and ffprobe must be on `PATH` for importing compressed audio and
 building dome narration.
 
+## Dome Narration: which lesson
+
+The **Dome Narration** tab has a **Lesson** picker covering all eight
+masterclass lessons, because they are different lengths and each needs its
+own set of chapter clips:
+
+| Lesson | Chapters to synthesize |
+| --- | --- |
+| 2V Geodesic Masterclass | 14 |
+| 2V Dome Construction Masterclass | 46 |
+| Hexagonal Dome Masterclass | 20 |
+| Zome Construction Masterclass | 19 |
+| Assembly Line Energy Masterclass | 24 |
+| The Compound Cut, Both Machines | 18 |
+| The Franken-Dome | 13 |
+| Frankendome | 36 |
+
+Clips are cached per lesson *and* per voice profile, under
+`outputs/dome/<lesson>-<profile>/`, so switching between lessons or
+profiles never overwrites work you have already generated. The lesson key
+is written into `narration-plan.json`, and the renderer reads it back from
+there, so a plan can never be rendered against a lesson with a different
+chapter count.
+
+This route contacts no online speech service at any point. It is also the
+route to use when the cloud narration endpoint is unreachable, which does
+happen -- see `docs/video-pipeline-reference.md` section 8.
+
 ## Run
 
 This tool no longer takes command-line flags; launch and configure it
@@ -132,7 +160,7 @@ The GUI workflow is:
 3. Edit or locally transcribe each clip, then accept clean clips.
 4. Build a locked voice profile.
 5. Generate local speech or a complete dome narration plan.
-6. Render the 2V MP4 with that existing local track.
+6. Render the masterclass MP4 with that existing local track.
 
 The Project tab's "How this works" panel repeats this same workflow,
 plus a fastest-path recipe, inside the app itself, and its "Hardware
@@ -260,3 +288,119 @@ It does not reimplement F5's neural-network trainer. The Fine-tune tab launches
 the official upstream process and records a local run manifest. This avoids
 fabricating version-sensitive training flags. A future polished release can
 wrap those controls after pinning and testing one exact upstream revision.
+
+## Rap Studio — beats, autotune, and flow
+
+The **Rap Studio** tab turns the program into a small vocal production
+desk: it reads a beat, puts your take in time with it, tunes it, and
+mixes the two. It is the same local-only promise as the rest of the
+program — no hosted service, no account, no upload.
+
+Open it with `py -3.12 launcher.py` → **Local Voice Studio** → Launch,
+then the **Rap Studio** tab.
+
+### What it does, in order
+
+1. **Reads the beat** (`beatgrid.py`). Tempo, where every beat and bar
+   line falls, which beat is the "one", how steady the track is, and
+   what key it is in. Nothing is typed in by hand.
+2. **Puts the vocal in the pocket** (`flow.py`). Finds your syllables
+   and time-warps them onto the grid — without moving the pitch.
+3. **Tunes it** (`autotune.py`) to the key the beat is already in.
+4. **Mixes** (`mixdown.py`) — levels, ducking, double-tracking, limiting.
+
+Every render writes a **new folder** containing the finished track, the
+separate stems, a click track for checking the grid by ear, and a
+`receipt.json` listing every setting and every measured number. Nothing
+is ever overwritten.
+
+### The controls that matter
+
+**How hard to snap** (0–1). 0 leaves your timing exactly as performed;
+1 puts every syllable dead on the grid. Around **0.85** fixes what was
+genuinely late without flattening the human push-and-pull. Note that
+fully quantized rap often sounds *worse* — the pocket is partly made of
+being slightly behind the beat.
+
+**Swing** delays every second off-beat. 0 is straight; about 1/3 is a
+relaxed shuffle.
+
+**Tuning style**:
+
+| style | what it sounds like |
+|---|---|
+| `off` | pitch left exactly as sung (still measured and reported) |
+| `natural` | quietly fixes missed notes; still sounds like a person |
+| `tight` | clearly tuned, still glides between notes |
+| `hard` | the stepped, obviously-tuned rap and R&B sound |
+| `robot` | snaps instantly, no glide at all |
+
+Leave **Key** blank and it uses the key detected in the beat.
+
+### Why it does not sound like a chipmunk
+
+Pitch is moved with **TD-PSOLA**: the waveform is cut into individual
+pitch periods and those periods are laid back down at new spacing. Each
+period is *moved*, never resampled, so the vocal-tract resonances inside
+it stay where they were. Those resonances (formants) are what make a
+voice sound like a person of a particular size — naive resampling drags
+them along with the pitch, which is exactly the chipmunk artifact.
+
+Measured on a synthetic vowel built with formants at 700 and 1220 Hz:
+transposing **+12 semitones** doubles the pitch and moves the first
+formant by **1.8 cents**. Resampling the same signal moves it by nearly
+an octave.
+
+The same grain engine does the time-warping, run the other way round:
+keep each grain's period and move through the input faster or slower,
+and the syllables move while the pitch stays put.
+
+### Command line
+
+Every control is also a launcher action, so this can be scripted:
+
+```bash
+py -3.12 launcher.py
+```
+
+Choose **Local Voice Studio**, then an action:
+
+- `rap_analyze` — measure an instrumental (tempo, bars, key, steadiness)
+- `rap_preview` — measure how far off the beat and off the note a take
+  already is, without rendering anything
+- `rap_produce` — the whole chain, to a finished track
+- `rap_selftest` — check the engines against audio built to a known
+  tempo and key
+
+### Writing to the grid
+
+`flow.layout_bars()` estimates the syllables in each written line and
+compares that to how many slots a bar actually has at this tempo, so you
+can tell a bar is overfull **before** recording it. The syllable count
+is a vowel-group estimate with corrections for silent *e* and syllabic
+consonants ("rhythm", "prism"), not a dictionary — good enough to warn
+you, not something to quote as fact.
+
+### What it needs
+
+numpy, scipy, librosa and soundfile — all already in
+`requirements-core.txt`. FFmpeg is needed only to read or write
+compressed audio (mp3, m4a). Nothing else, and nothing downloaded at
+run time. Check with the `rap_selftest` action; if the libraries are
+missing it says so and the rest of the program carries on working.
+
+### Honest limits
+
+- **Autotune helps sung delivery far more than spoken delivery.** On
+  flat spoken narration expect a modest change (a real measured example:
+  26 → 18 cents off the note); on sung or melodic delivery the effect is
+  much larger.
+- **Very fast delivery is harder to align.** Syllables closer together
+  than about 55 ms are treated as one.
+- **Tempo detection can land on half or double time** on tracks with
+  busy hi-hats and a sparse kick. Tempo is read from a low-band onset
+  envelope specifically to avoid this, but if it still happens, set the
+  BPM hint.
+- **Re-detecting syllables after warping finds slightly fewer of them**,
+  because warping softens some onsets. The "after" syllable count in a
+  receipt is therefore not directly comparable to the "before" one.

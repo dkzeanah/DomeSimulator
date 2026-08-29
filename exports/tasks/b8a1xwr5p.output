@@ -1,0 +1,26 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.12.10)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+voice 01/32: What we are actually building
+voice 02/32: The five words we will keep using
+voice 03/32: Why the whole thing is triangles
+voice 04/32: Where the shape starts: the icosahedron
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+voice 05/32: Phi builds the twelve corners
+voice 06/32: Put it on a sphere of radius one
+voice 07/32: Halve every edge
+voice 08/32: Push the midpoints out to the sphere
+voice 09/32: Two lengths, and nothing else
+voice 10/32: Choosing your radius
+voice 11/32: The dome is four rings and a crown
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+voice 12/32: Auditing the boards you already have
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+voice 13/32: Choose the hub system before anything else
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+    speech attempt 2 failed (ConnectionTimeoutError); retrying
+    speech attempt 3 failed (ConnectionTimeoutError); retrying
+speech synthesis failed after 4 attempts: Cannot connect to host speech.platform.bing.com:443 ssl:<ssl.SSLContext object at 0x000000001FEBB950> [getaddrinfo failed]
+
+[exited with code 0]

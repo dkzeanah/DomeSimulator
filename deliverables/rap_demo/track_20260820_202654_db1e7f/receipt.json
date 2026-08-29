@@ -1,0 +1,76 @@
+{
+  "run_directory": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\rap_demo\\track_20260820_202654_db1e7f",
+  "plan": {
+    "beat": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\rap_demo\\beat.wav",
+    "vocal": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\rap_demo\\vocal_dry.wav",
+    "subdivision": "1/8",
+    "align_strength": 0.9,
+    "swing": 0.0,
+    "max_shift_ms": 140.0,
+    "fit_bars": 0.0,
+    "tune_preset": "hard",
+    "key": "",
+    "transpose": 0.0,
+    "pitch_method": "yin",
+    "vocal_db": -12.0,
+    "beat_db": -16.0,
+    "offset_bars": 0.0,
+    "duck_db": 3.5,
+    "double_track": true,
+    "stereo": true,
+    "out_format": "wav",
+    "keep_stems": true
+  },
+  "created_at": "2026-08-20T20:26:54",
+  "beat": {
+    "bpm": 87.987,
+    "beats_per_bar": 4,
+    "bars": 9,
+    "key": "F minor",
+    "key_confidence": 1.0,
+    "steadiness": 0.97,
+    "summary": "88.0 BPM, 4/4, 9 bars, key F minor (100% sure), steadiness 97%"
+  },
+  "vocal_in": {
+    "seconds": 13.638
+  },
+  "flow": {
+    "before": "45 syllables, 9.0 per bar, 3.3/sec | average 84 ms off the 1/8 grid (+19 ms, behind the beat) | tightness 50%",
+    "after": "36 syllables, 7.2 per bar, 2.6/sec | average 38 ms off the 1/8 grid (+8 ms, on the beat) | tightness 78%",
+    "tightness_before": 0.5045,
+    "tightness_after": 0.7768,
+    "syllables": 45
+  },
+  "tune": {
+    "key": "F minor",
+    "preset": "hard",
+    "before": {
+      "voiced_pct": 73.1,
+      "median_hz": 114.37,
+      "median_note": "A#2",
+      "low_note": "D#2",
+      "high_note": "D5",
+      "mean_cents_off": 25.9
+    },
+    "after": {
+      "voiced_pct": 72.4,
+      "median_hz": 116.2,
+      "median_note": "A#2",
+      "low_note": "D#2",
+      "high_note": "C#5",
+      "mean_cents_off": 18.5
+    },
+    "summary": "key F minor | voiced 73% | off-note 26 cents -> 18 cents | range D#2-D5"
+  },
+  "mix": {
+    "settings": "vocal -12.0 dB, beat -16.0 dB, duck 3.5 dB, doubled (9 cents), stereo",
+    "duration_s": 28.273,
+    "vocal_rms_db": -12.0,
+    "beat_rms_db": -16.0,
+    "ducked_db": 3.5,
+    "doubled": true,
+    "peak_before_limit_db": 7.89,
+    "peak_db": -1.07
+  },
+  "output": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\rap_demo\\track_20260820_202654_db1e7f\\track.wav"
+}

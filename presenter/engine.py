@@ -306,7 +306,7 @@ class PresenterApp:
         self.panel_override = None       # None | True | False
         self.panel_position_override = None
         self.mode_override = None
-        self.output_dir = Path("presenter_output")
+        self.output_dir = Path("deliverables/presenter")
         # How much writing is burned into the frame (see OVERLAY_LEVELS).
         self.overlay_level = "full"
         # Where the 3-D scene is drawn. None fills the window; the scene

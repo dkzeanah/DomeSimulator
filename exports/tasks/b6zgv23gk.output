@@ -1,0 +1,22 @@
+voice 28/32: The measurement loop
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+voice 29/32: Skinning it, rim upward
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+voice 30/32: Doors, windows, and what not to cut
+    speech attempt 1 failed (ClientConnectorDNSError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ClientConnectorDNSError); retrying
+    speech attempt 4 failed (ClientConnectorDNSError); retrying
+    speech attempt 5 failed (ClientConnectorDNSError); retrying
+voice 31/32: The four things that actually go wrong
+voice 32/32: The whole thing, once more, quickly
+    speech attempt 1 failed (ConnectionTimeoutError); retrying
+    speech attempt 2 failed (ClientConnectorDNSError); retrying
+    speech attempt 3 failed (ConnectionTimeoutError); retrying
+    speech attempt 4 failed (ClientConnectorDNSError); retrying
+    speech attempt 5 failed (ClientConnectorDNSError); retrying
+    speech attempt 6 failed (ClientConnectorDNSError); retrying
+    speech attempt 7 failed (ClientConnectorDNSError); retrying
+speech synthesis failed after 8 attempts: Cannot connect to host speech.platform.bing.com:443 ssl:<ssl.SSLContext object at 0x0000000028F6BB50> [getaddrinfo failed]
+
+[exited with code 0]

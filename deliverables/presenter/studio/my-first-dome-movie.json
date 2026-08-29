@@ -1,0 +1,213 @@
+{
+  "title": "My First Dome Movie",
+  "author": "",
+  "scenes": [
+    {
+      "slug": "scene1",
+      "title": "The shell",
+      "environment": "on a beach at dusk",
+      "shots": [
+        {
+          "slug": "establish",
+          "duration": 7.0,
+          "lens": "wide",
+          "perspective": 3,
+          "focus": "dome",
+          "orbit": 12.0,
+          "dolly": 0.0,
+          "yaw": -55.0,
+          "pitch": 18.0,
+          "height_bias": 0.0,
+          "narration": [
+            "This is a two-frequency geodesic dome."
+          ],
+          "caption": "One dome, built from two strut lengths",
+          "panel": null,
+          "actions": [],
+          "xray": false
+        },
+        {
+          "slug": "walk-in",
+          "duration": 5.0,
+          "lens": "portrait",
+          "perspective": 3,
+          "focus": "door",
+          "orbit": 12.0,
+          "dolly": 0.0,
+          "yaw": -55.0,
+          "pitch": 18.0,
+          "height_bias": 0.0,
+          "narration": [
+            "The door opens as we arrive."
+          ],
+          "caption": "A real door, in the lower band",
+          "panel": null,
+          "actions": [
+            [
+              "door",
+              "open",
+              0.0,
+              1.0
+            ]
+          ],
+          "xray": false
+        }
+      ],
+      "world": [
+        [
+          "dome",
+          {
+            "radius": 4.8,
+            "strut": 0.055,
+            "skin_alpha": 0.16
+          }
+        ],
+        [
+          "door",
+          {
+            "radius": 4.8,
+            "az_deg": 0.0,
+            "width": 0.92,
+            "height": 2.05,
+            "open": 0.0
+          }
+        ],
+        [
+          "window_band",
+          {
+            "radius": 4.8,
+            "polar_deg": 58.0,
+            "spread_deg": 16.0,
+            "az_deg": 0.0,
+            "arc_deg": 360.0,
+            "tint": 0.3
+          }
+        ],
+        [
+          "wood_stove",
+          {
+            "radius": 4.8,
+            "az_deg": 150.0,
+            "ring_frac": 0.45,
+            "fire": 0.6,
+            "flue_h": 3.2
+          }
+        ],
+        [
+          "furniture",
+          {
+            "radius": 4.8,
+            "az_deg": 60.0,
+            "ring_frac": 0.42,
+            "table_r": 0.62,
+            "chairs": 4
+          }
+        ],
+        [
+          "water_tank",
+          {
+            "radius": 4.8,
+            "az_deg": 210.0,
+            "ring_frac": 1.35,
+            "tank_r": 0.62,
+            "tank_h": 1.9,
+            "level": 0.62
+          }
+        ]
+      ]
+    },
+    {
+      "slug": "scene2",
+      "title": "Inside",
+      "environment": "snow",
+      "shots": [
+        {
+          "slug": "hearth",
+          "duration": 6.0,
+          "lens": "macro",
+          "perspective": 3,
+          "focus": "wood_stove",
+          "orbit": 12.0,
+          "dolly": 0.0,
+          "yaw": -55.0,
+          "pitch": 18.0,
+          "height_bias": 0.0,
+          "narration": [],
+          "caption": "Heat, from the middle of the floor",
+          "panel": null,
+          "actions": [],
+          "xray": false
+        }
+      ],
+      "world": [
+        [
+          "dome",
+          {
+            "radius": 4.8,
+            "strut": 0.055,
+            "skin_alpha": 0.16
+          }
+        ],
+        [
+          "door",
+          {
+            "radius": 4.8,
+            "az_deg": 0.0,
+            "width": 0.92,
+            "height": 2.05,
+            "open": 0.0
+          }
+        ],
+        [
+          "window_band",
+          {
+            "radius": 4.8,
+            "polar_deg": 58.0,
+            "spread_deg": 16.0,
+            "az_deg": 0.0,
+            "arc_deg": 360.0,
+            "tint": 0.3
+          }
+        ],
+        [
+          "wood_stove",
+          {
+            "radius": 4.8,
+            "az_deg": 150.0,
+            "ring_frac": 0.45,
+            "fire": 0.6,
+            "flue_h": 3.2
+          }
+        ],
+        [
+          "furniture",
+          {
+            "radius": 4.8,
+            "az_deg": 60.0,
+            "ring_frac": 0.42,
+            "table_r": 0.62,
+            "chairs": 4
+          }
+        ],
+        [
+          "water_tank",
+          {
+            "radius": 4.8,
+            "az_deg": 210.0,
+            "ring_frac": 1.35,
+            "tank_r": 0.62,
+            "tank_h": 1.9,
+            "level": 0.62
+          }
+        ]
+      ]
+    }
+  ],
+  "fps": 30,
+  "size": [
+    1920,
+    1080
+  ],
+  "voice": "en-US-AndrewMultilingualNeural",
+  "voice_rate": "-3%"
+}
