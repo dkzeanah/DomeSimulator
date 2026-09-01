@@ -38,7 +38,7 @@ from dataclasses import replace
 import numpy as np
 
 from .geometry import build_demo_geometry, normalize
-from .lessons import Chapter, Lesson
+from .lessons import Chapter, Lesson, math_shift, prose
 from .render_kit import (
     AMBER,
     CYAN,
@@ -102,58 +102,12 @@ CULL_CAMERA = (34.0, 22.0, 17.0)
 DEPTH_CAMERA = (34.0, 34.0, 22.0)
 
 
-def _prose(lines: tuple[str, ...], per_paragraph: int = 2) -> tuple[str, ...]:
-    """Reflow authored source lines into whole-sentence paragraphs.
-
-    The teaching card prints one narration item per paragraph, so source
-    hard-wrapped to fit an editor would appear on screen as a ragged
-    column of fragments.  Joining the lines and re-splitting them at
-    sentence ends lets the source stay readable at 79 columns and the
-    card stay readable at 1080p.  The speech and the subtitles are built
-    from the same text either way.
-    """
-    text = " ".join(line.strip() for line in lines if line.strip())
-    sentences: list[str] = []
-    current = ""
-    for word in text.split():
-        current = f"{current} {word}".strip()
-        if word.endswith((".", "?", "!")):
-            sentences.append(current)
-            current = ""
-    if current:
-        sentences.append(current)
-    return tuple(
-        " ".join(sentences[index:index + per_paragraph])
-        for index in range(0, len(sentences), per_paragraph)
-    )
-
-
 def _rgb(colour) -> tuple[int, int, int]:
     return tuple(int(round(channel * 255)) for channel in colour[:3])
 
 
 def _fade(colour, alpha: float):
     return (colour[0], colour[1], colour[2], clamp(alpha) * colour[3])
-
-
-def _math_shift(app, amount: float = 4.6) -> float:
-    """How far to slide a wide picture toward screen left, or zero.
-
-    The math overlay takes the right 42% of the frame, so a scene laid
-    out as a row -- the vertex buffer, the frame, the filmstrip -- would
-    run underneath it on its own math chapter.  Those painters ask this,
-    and with the camera on +Y (screen left is +X) they move that way.
-    The selftest's stand-in app has no chapters, so it gets zero.
-    """
-    chapters = getattr(app, "chapters", None)
-    index = getattr(app, "chapter_index", None)
-    if not chapters or index is None:
-        return 0.0
-    try:
-        chapter = chapters[index]
-    except (IndexError, TypeError, KeyError):
-        return 0.0
-    return amount if getattr(chapter, "overlay", None) == "math" else 0.0
 
 
 def _label(app, point, text: str, colour) -> None:
@@ -535,7 +489,7 @@ _FIELDS = (
 
 def scene_sc_buffer(app, opaque, transparent, p: float) -> None:
     """One vertex as ten numbers, and the whole dome as a wall of them."""
-    shift = _math_shift(app)
+    shift = math_shift(app)
     dome_batch(clamp(0.12 + p * 1.8),
                origin=np.array([5.6 + shift, 0.0, 0.0]),
                scale=2.6, into=opaque)
@@ -794,7 +748,7 @@ def scene_sc_clip(app, opaque, transparent, p: float) -> None:
 def scene_sc_screen(app, opaque, transparent, p: float) -> None:
     """The frame itself, with one vertex landing on its real pixel."""
     width, height = 11.0, 6.19
-    centre = np.array([_math_shift(app), 0.0, 4.0])
+    centre = np.array([math_shift(app), 0.0, 4.0])
     grow = max(0.18, ease_in_out(clamp(p * 1.8)))
     half_w, half_h = width * 0.5 * grow, height * 0.5 * grow
     corners = [centre + np.array([sx * half_w, 0.0, sy * half_h])
@@ -1022,7 +976,7 @@ def scene_sc_frame(app, opaque, transparent, p: float) -> None:
     """The loop: the whole calculation, thirty times a second."""
     count = 9
     spacing = 2.35
-    shift = _math_shift(app)
+    shift = math_shift(app)
     active = int(clamp(p) * (count - 1))
     for index in range(count):
         x = (count / 2.0 - index - 0.5) * spacing - 1.4 + shift
@@ -2047,7 +2001,7 @@ _AUTHORED: tuple[Chapter, ...] = (
 
 CHAPTERS: tuple[Chapter, ...] = tuple(
     replace(chapter, number=f"{index + 1:02d}",
-            narration=_prose(chapter.narration))
+            narration=prose(chapter.narration))
     for index, chapter in enumerate(_AUTHORED)
 )
 

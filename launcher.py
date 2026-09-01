@@ -738,7 +738,7 @@ def main() -> int:
         ["2v", "build", "hex", "zome", "line", "cuts", "franken",
          "hype", "hype2", "hype3", "hype4", "hype5", "hype6",
          "kick", "kick2", "master", "world", "world_chatgpt",
-         "scratch"],
+         "scratch", "wedge", "drama"],
         "2v")
     mc_lesson.pack(fill="x", pady=3)
     action_help(body, mc_lesson, {
@@ -809,6 +809,22 @@ def main() -> int:
                          "are code-model outputs, not bids — site, "
                          "permits, freight, tax and local engineering sit "
                          "outside the model.",
+        "drama": "EP_DOME_001, a 60-second vertical micro-drama shot "
+                 "in the dome: four beats (cold hook, escalation, "
+                 "reveal, cliffhanger), five archetype characters, and "
+                 "a camera the script directs shot by shot. Render it "
+                 "at 1080x1920 — the framing is computed for 9:16 and "
+                 "a landscape frame throws it away.",
+        "wedge": "29 chapters on building the dome straight from the "
+                 "tree: raw 45-degree log sectors as structural members, "
+                 "bark face outward and pith inward, forty independent "
+                 "triangular frames whose three members pinwheel "
+                 "end-to-side so every cut is a square crosscut, and "
+                 "neighbouring panels that duplicate their edge member "
+                 "and meet through a gasket rather than sharing or "
+                 "shaving wood. Ten math screens derive the tree's "
+                 "board feet, the packing, the kerf, the joint and the "
+                 "dome the two trees size.",
         "scratch": "46 chapters answering one question end to end for "
                    "somebody who has never written code: what does a "
                    "computer actually calculate, from nothing, to put a "

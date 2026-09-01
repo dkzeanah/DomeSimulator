@@ -61,6 +61,13 @@ class Lesson:
     """Soundboard key for a bed mixed under the whole narration,
     ducked beneath speech. Missing sounds leave the track dry."""
     audio_bed_gain: float = 0.16
+    camera_fn: Callable[..., tuple] | None = None
+    """Full camera control, for lessons the orbit rig cannot express.
+
+    Called as ``camera_fn(app, chapter, progress, width, height)`` and
+    returns ``(eye, target, fov_degrees)``.  A lesson that leaves this
+    ``None`` keeps the orbit camera and the renderer's own field of
+    view, so every previously published film renders unchanged."""
     label_layout: str = "raw"
     """``raw`` places world labels exactly where they project, letting
     them overlap. ``declutter`` keeps the overlap but nudges labels far
@@ -259,6 +266,52 @@ CHAPTERS: tuple[Chapter, ...] = (
 
 
 TOTAL_DURATION = sum(chapter.duration for chapter in CHAPTERS)
+
+
+def prose(lines: tuple[str, ...], per_paragraph: int = 2) -> tuple[str, ...]:
+    """Reflow authored source lines into whole-sentence paragraphs.
+
+    The teaching card prints one narration item per paragraph, so source
+    hard-wrapped to fit an editor appears on screen as a ragged column
+    of fragments.  Joining the lines and re-splitting them at sentence
+    ends lets the source stay readable at 79 columns and the card stay
+    readable at 1080p.  Speech and subtitles are built from the same
+    text either way.
+    """
+    text = " ".join(line.strip() for line in lines if line.strip())
+    sentences: list[str] = []
+    current = ""
+    for word in text.split():
+        current = f"{current} {word}".strip()
+        if word.endswith((".", "?", "!")):
+            sentences.append(current)
+            current = ""
+    if current:
+        sentences.append(current)
+    return tuple(
+        " ".join(sentences[index:index + per_paragraph])
+        for index in range(0, len(sentences), per_paragraph)
+    )
+
+
+def math_shift(app, amount: float = 4.6) -> float:
+    """How far to slide a wide picture toward screen left, or zero.
+
+    The math overlay takes the right 42% of the frame, so a scene laid
+    out as a row would run underneath it on its own math chapter.  Those
+    painters ask this, and with the camera on +Y (screen left is +X)
+    they move that way.  A selftest stand-in has no chapters and gets
+    zero.
+    """
+    chapters = getattr(app, "chapters", None)
+    index = getattr(app, "chapter_index", None)
+    if not chapters or index is None:
+        return 0.0
+    try:
+        chapter = chapters[index]
+    except (IndexError, TypeError, KeyError):
+        return 0.0
+    return amount if getattr(chapter, "overlay", None) == "math" else 0.0
 
 
 def timeline_duration(

@@ -115,6 +115,21 @@ PRESETS: tuple[RenderPreset, ...] = (
            "material breakdown, a construction-event labor breakdown, "
            "and a modeled direct-sale price for each."),
 
+    _video("drama", "drama", "ep-dome-001-high-council.mp4",
+           "EP_DOME_001: a 60-second vertical micro-drama in the dome. "
+           "Four beats, five archetypes, and a camera the script "
+           "directs. Rendered 1080x1920, because the framing is "
+           "computed for 9:16.",
+           size="1080x1920"),
+
+    _video("wedge", "wedge", "eight-cuts-to-a-house.mp4",
+           "Building the dome straight from the tree: raw 45-degree log "
+           "sectors as members, bark out and pith in, forty pinwheel "
+           "frames with every end square, and gasketed seams instead of "
+           "shared struts. Ten math screens derive the tree's board "
+           "feet, the honest 2x4 packing, the kerf, the joint and the "
+           "22-foot dome two trees size."),
+
     # -- the explainer -------------------------------------------------
     _video("scratch", "scratch", "dome-from-scratch-geometry-to-pixels.mp4",
            "From nothing to a lit pixel: the twelve points phi places, "

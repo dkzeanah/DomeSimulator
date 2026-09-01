@@ -473,6 +473,47 @@ One renderer plays **five** lessons and one montage, chosen from a Lesson dropdo
   chapter really counts which faces point away from the real eye, and
   the lighting chapter draws the same four vectors its math screen
   prints.
+* **`wedge` - Eight Cuts To A House, 29 chapters.** The same 2V
+  hemisphere, built straight from the tree. Each member is a raw
+  45-degree log sector -- split half, quarter, eighth, crosscut once --
+  used with the curved bark face outward and the pith line inward, so
+  the tree's densest wood ends up on the weather side and nothing is
+  squared, edged or trimmed off first. The shell is forty independent
+  triangular frames: inside each one the three members run as a
+  same-handed pinwheel, every head cut square against the side of the
+  next member and every tail running on through the previous member's
+  band, which makes the mathematical corners *reference points that no
+  stick reaches* and removes every mitre and bevel from the job.
+  Neighbouring panels never share a stick -- each brings its own member
+  to a shared edge and the pair meets through a spline, key or hose
+  gasket, which is what absorbs the four and a half degrees of dihedral
+  variation that would otherwise have to be cut into the timber seam by
+  seam. Ten math screens compute the trunk's board feet from its taper,
+  pack true 2x4s into the same sections row by row, cost the ripping
+  kerf, measure the joint's bearing and vertex gap, and solve the
+  pinwheel backwards for the dome two six-foot members size. It also
+  disagrees with its own source: the brief estimates 32 true 2x4s per
+  tree and an honest packing gives 25, so the comparison is made twice
+  and the film says so on camera (`two_v_demo/wedge_geometry.py`).
+* **`drama` - EP_DOME_001, four beats, 60 seconds, shot vertical.**
+  Not a lesson at all: the first episode out of the **narrative
+  module**, a character-and-drama engine layered on the same renderer.
+  A script is JSON -- beats, camera cues, rig actions, dialogue -- and
+  the director turns it into blocking, proximity, eye contact, timed
+  character kinematics and a camera that moves shot by shot. Seven rig
+  actions (slap, gasp, invasive step, disdainful turn, clenched fist,
+  lapel grab, point-command) run on the same posable figure the
+  assembly-line lesson walks around; the dome supplies the staging
+  (apex power position, curved-wall pinning, LED rim light on real
+  struts); and every shot is framed 9:16 with the subject's eye-line
+  computed onto the upper third and *measured* on a 1080x1920 frame
+  rather than eyeballed. It is written to disagree with its own
+  specification where the specification does not survive contact with a
+  tall frame: a 35-to-85 mm "push-in" would dolly backwards, a 0.4 m
+  over-the-shoulder fills the frame with the back of a head, and 25
+  degrees of up-tilt sinks the subject out of the picture. Each is
+  changed, checked, and the reason written down where the number is
+  (`two_v_demo/drama_camera.py`).
 * **`hype` - Frankendome, 36 beats.** Not a lesson, and it does not
   pretend to be one. The montage runs full-frame with a single line of
   type over it, at a quicker speech rate than the masterclasses, and it
@@ -517,8 +558,8 @@ chapter lengths are measured from the synthesized speech, so changing
 a voice or a rate moves every chapter boundary after it. That is why
 each preset states voice, rate, pitch and volume explicitly.
 
-Seventeen presets ship — the master presentation, every dome in the
-world, the from-scratch explainer, each teaching lesson, the montage
+Nineteen presets ship — the master presentation, every dome in the
+world, the from-scratch explainer, the radial-wedge build, each teaching lesson, the montage
 and campaign films, plus four quick jobs (contact-sheet stills for any
 of the three big films, a voice audition, and `render_all` to rebuild
 the entire published set from a fresh clone). The launcher's smoke test drives every one of them,

@@ -1378,6 +1378,17 @@ class MasterclassApp:
         self.ctx.clear(*BG)
         eye, target = self.camera()
         projection = perspective(48.0, width / max(1, height), 0.08, 120.0)
+        chapter = self.chapters[self.chapter_index]
+        if self.lesson.camera_fn is not None:
+            # A lesson directing its own camera replaces both the orbit
+            # and the lens; everything downstream is unchanged, which is
+            # what lets a drama and a masterclass share one renderer.
+            eye, target, fov = self.lesson.camera_fn(
+                self, chapter, self.chapter_progress, width, height)
+            eye = np.asarray(eye, dtype=np.float32)
+            target = np.asarray(target, dtype=np.float32)
+            projection = perspective(float(fov), width / max(1, height),
+                                     0.08, 120.0)
         view = look_at(eye, target)
         self.mvp = projection @ view
         self.scene_program["u_mvp"].write(
@@ -1385,7 +1396,6 @@ class MasterclassApp:
         )
         self.scene_program["u_camera"].value = tuple(float(value) for value in eye)
         self.scene_program["u_light"].value = (-0.45, -0.55, -0.72)
-        chapter = self.chapters[self.chapter_index]
         opaque, transparent = self.build_scene(chapter.stage, self.chapter_progress)
 
         self.ctx.enable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)

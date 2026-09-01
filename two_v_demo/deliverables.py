@@ -111,6 +111,22 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "kilowatt hour, radiative cooling paint, and the ten "
                 "points.",
                 compose=True, segments=("whoami",)),
+    Deliverable("drama", "ep-dome-001-high-council.mp4",
+                "The first micro-drama out of the narrative module: a "
+                "60-second vertical episode staged inside the dome, "
+                "with the blocking, the proximity rings, the rig "
+                "actions and every camera move computed by the drama "
+                "director from a script JSON. Rendered 1080x1920 -- the "
+                "9:16 framing is the point, and a landscape render "
+                "would discard it."),
+    Deliverable("wedge", "eight-cuts-to-a-house.mp4",
+                "The dome built straight from the tree: raw log sectors "
+                "as structural members, forty independent pinwheel "
+                "frames with no mitres anywhere, and gasketed seams "
+                "instead of shared struts. Its math screens compute the "
+                "trunk's board feet, pack 2x4s into the same sections "
+                "honestly, cost the kerf, measure the joint and size "
+                "the dome from the strut length the tree gives."),
     Deliverable("scratch", "dome-from-scratch-geometry-to-pixels.mp4",
                 "From scratch, for somebody who has never written code: "
                 "every calculation between one irrational number and a "
