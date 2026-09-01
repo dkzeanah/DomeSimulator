@@ -31,8 +31,18 @@ import numpy as np
 
 from .drama_camera import EYE_LINE_FROM_TOP, eyeline_fraction
 from .drama_director import Director, director_report
+from .drama_face import draw_face, validate_drama_face
 from .drama_rig import ACTIONS, attachment_point, validate_drama_rig
-from .drama_script import CAST, check_episode, example_episode
+from .drama_script import (
+    CAST,
+    SERIES_LOGLINE,
+    SERIES_TITLE,
+    check_episode,
+    check_series,
+    example_episode,
+    series,
+    series_bible,
+)
 from .drama_stage import DOME_PRESETS, validate_drama_stage
 from .figure import draw_figure
 from .geometry import build_demo_geometry, normalize
@@ -55,6 +65,18 @@ from .render_kit import (
 GEOMETRY = build_demo_geometry()
 DIRECTOR = Director(example_episode())
 PRESET = DOME_PRESETS[DIRECTOR.episode.dome_preset]
+
+# One director per episode, and a flat running order over all of them.
+# A chapter number indexes straight into this, which is what lets one
+# painter serve a single episode and the whole season.
+DIRECTORS = tuple(Director(episode) for episode in series())
+EPISODE_TIMELINE = tuple((DIRECTOR, index)
+                         for index in range(len(DIRECTOR.episode.beats)))
+SERIES_TIMELINE = tuple(
+    (director, index)
+    for director in DIRECTORS
+    for index in range(len(director.episode.beats))
+)
 
 # The set is drawn in metres, one world unit to the metre, because the
 # director works in metres and a scale factor between the two is exactly
@@ -136,6 +158,9 @@ def _draw_character(opaque, state) -> None:
     """One figure, in its costume colours, posed by the director."""
     colours = CHARACTER_COLOURS.get(state.character_id, {})
     draw_figure(opaque, state.joints, **colours)
+    # The face last, so it sits on the front of the head sphere rather
+    # than inside it.
+    draw_face(opaque, state.joints, state.face)
 
 
 def _draw_attachment(opaque, state, others) -> None:
@@ -152,18 +177,23 @@ def _draw_attachment(opaque, state, others) -> None:
                         0.02, _fade(RED, 0.8), 5)
 
 
-def scene_drama(app, opaque, transparent, p: float) -> None:
-    """Draw the episode at whatever instant the timeline is at."""
-    chapter = None
-    chapters = getattr(app, "chapters", None)
-    index = getattr(app, "chapter_index", 0)
-    if chapters:
-        chapter = chapters[index]
-    beat_index = int(chapter.number) - 1 if chapter is not None else 0
-    beat_index = max(0, min(len(DIRECTOR.episode.beats) - 1, beat_index))
-    beat = DIRECTOR.episode.beats[beat_index]
-    time_s = beat.start_s + beat.duration_s * clamp(p)
-    state = DIRECTOR.state_at(time_s)
+def _resolve(timeline, app, chapter=None, progress: float = 0.0):
+    """Which director, which beat, and what time inside it."""
+    if chapter is None:
+        chapters = getattr(app, "chapters", None)
+        index = getattr(app, "chapter_index", 0)
+        chapter = chapters[index] if chapters else None
+    number = int(chapter.number) - 1 if chapter is not None else 0
+    number = max(0, min(len(timeline) - 1, number))
+    director, beat_index = timeline[number]
+    beat = director.episode.beats[beat_index]
+    return director, beat, beat.start_s + beat.duration_s * clamp(progress)
+
+
+def _paint(timeline, app, opaque, transparent, p: float) -> None:
+    """Draw whichever episode and beat this chapter belongs to."""
+    director, beat, time_s = _resolve(timeline, app, None, p)
+    state = director.state_at(time_s)
 
     _draw_floor(opaque, state.dome_radius_m)
     _draw_shell(opaque, state.dome_radius_m, state.rim_light_intensity)
@@ -186,49 +216,96 @@ def scene_drama(app, opaque, transparent, p: float) -> None:
                 _rgb(BEAT_TINT.get(beat.dramatic_beat, WHITE))))
 
 
-SCENES = {"drama": scene_drama}
+def scene_drama(app, opaque, transparent, p: float) -> None:
+    """The single episode the specification ships."""
+    _paint(EPISODE_TIMELINE, app, opaque, transparent, p)
+
+
+def scene_series(app, opaque, transparent, p: float) -> None:
+    """The whole mini-series, back to back."""
+    _paint(SERIES_TIMELINE, app, opaque, transparent, p)
+
+
+SCENES = {"drama": scene_drama, "series": scene_series}
+
+
+def _camera(timeline, app, chapter, progress, width, height):
+    director, _beat, time_s = _resolve(timeline, app, chapter, progress)
+    state = director.state_at(time_s)
+    return state.camera.eye, state.camera.target, state.camera.fov_deg
 
 
 def drama_camera_fn(app, chapter, progress, width, height):
     """Hand the renderer the director's camera for this instant."""
-    beat_index = max(0, min(len(DIRECTOR.episode.beats) - 1,
-                            int(chapter.number) - 1))
-    beat = DIRECTOR.episode.beats[beat_index]
-    state = DIRECTOR.state_at(beat.start_s + beat.duration_s * clamp(progress))
-    return state.camera.eye, state.camera.target, state.camera.fov_deg
+    return _camera(EPISODE_TIMELINE, app, chapter, progress, width, height)
 
 
-def _beat_chapters() -> tuple[Chapter, ...]:
+def series_camera_fn(app, chapter, progress, width, height):
+    return _camera(SERIES_TIMELINE, app, chapter, progress, width, height)
+
+
+def _chapters_for(timeline, with_episode_title: bool) -> tuple:
     """One chapter per beat, carrying the dialogue as its narration."""
     chapters = []
-    for index, beat in enumerate(DIRECTOR.episode.beats):
-        speaker = CAST[beat.camera.target_character]
+    for index, (director, beat_index) in enumerate(timeline):
+        beat = director.episode.beats[beat_index]
+        title = beat.dramatic_beat.replace("_", " ").title()
+        if with_episode_title:
+            title = f"{director.episode.title}: {title}"
         chapters.append(Chapter(
-            slug=f"beat_{index + 1}",
+            slug=f"{director.episode.episode_id.lower()}_b{beat_index + 1}",
             number=f"{index + 1:02d}",
-            title=beat.dramatic_beat.replace("_", " ").title(),
+            title=title,
             promise=beat.dialogue,
             narration=prose((beat.dialogue,)),
             equations=(),
             duration=beat.duration_s,
             camera=(0.0, 20.0, 8.0),
-            stage="drama",
+            stage="series" if with_episode_title else "drama",
             overlay="hype",
         ))
-        del speaker
     return tuple(chapters)
 
 
-CHAPTERS = _beat_chapters()
+CHAPTERS = _chapters_for(EPISODE_TIMELINE, False)
+SERIES_CHAPTERS = _chapters_for(SERIES_TIMELINE, True)
 
 
 def validate_drama_lesson() -> None:
     """Prove the episode can be shot before anything is rendered."""
     validate_drama_rig()
     validate_drama_stage()
+    validate_drama_face()
 
     problems = check_episode(DIRECTOR.episode)
     assert not problems, problems
+    assert not check_series(), check_series()
+
+    for lesson in (DRAMA_LESSON, SERIES_LESSON):
+        lesson.validate()
+        assert lesson.camera_fn is not None
+    assert len(SERIES_LESSON.chapters) == sum(
+        len(director.episode.beats) for director in DIRECTORS)
+
+    # Every beat of every episode has to resolve, draw and frame -- the
+    # season is six times as many ways to be wrong as one episode.
+    class _SeriesApp:
+        def __init__(self, chapters, index):
+            self.chapters = chapters
+            self.chapter_index = index
+            self.world_labels = []
+
+    for index, chapter in enumerate(SERIES_LESSON.chapters):
+        for progress in (0.0, 0.5, 1.0):
+            probe = _SeriesApp(SERIES_LESSON.chapters, index)
+            opaque, transparent = TriangleBatch(), TriangleBatch()
+            scene_series(probe, opaque, transparent, progress)
+            assert len(opaque.vertices) > 30 * 500, (chapter.slug, progress)
+            eye, target, fov = series_camera_fn(probe, chapter, progress,
+                                                1080, 1920)
+            assert 5.0 < float(fov) < 90.0, chapter.slug
+            assert float(np.linalg.norm(np.asarray(eye)
+                                        - np.asarray(target))) > 0.2
 
     lesson = DRAMA_LESSON
     lesson.validate()
@@ -316,6 +393,21 @@ def validate_drama_lesson() -> None:
                 attachment_point(other.joints, character.attached_to[1])
                 - np.asarray(character.joints["r_grip"], dtype=float)))
             assert reach < 1.0, reach
+
+
+SERIES_LESSON = Lesson(
+    key="series",
+    brand=f"{SERIES_TITLE} / SIX EPISODES",
+    title=f"{SERIES_TITLE}: the complete mini-series",
+    chapters=SERIES_CHAPTERS,
+    scenes=SCENES,
+    selftest=validate_drama_lesson,
+    report=series_bible,
+    snapshot_prefix="series",
+    style="hype",
+    camera_fn=series_camera_fn,
+    label_layout="declutter",
+)
 
 
 DRAMA_LESSON = Lesson(

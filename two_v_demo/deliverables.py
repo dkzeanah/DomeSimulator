@@ -111,6 +111,12 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "kilowatt hour, radiative cooling paint, and the ten "
                 "points.",
                 compose=True, segments=("whoami",)),
+    Deliverable("series", "the-vance-network-mini-series.mp4",
+                "The whole mini-series in one file: six vertical "
+                "episodes, an arc where every cliffhanger is answered "
+                "by the next episode's hook, and a finale that leaves "
+                "one thread open. Same engine as the single episode, "
+                "playing six directors back to back."),
     Deliverable("drama", "ep-dome-001-high-council.mp4",
                 "The first micro-drama out of the narrative module: a "
                 "60-second vertical episode staged inside the dome, "

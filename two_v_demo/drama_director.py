@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from .drama_face import FaceState, face_for
 from .drama_camera import (
     CameraState,
     cam_dolly_push_fast,
@@ -80,6 +81,7 @@ class CharacterState:
     facing_deg: float
     rig: RigState
     joints: dict
+    face: FaceState
     ring: str
     """Which proximity ring this character is in with the beat's other."""
     attached_to: tuple[str, str] | None = None
@@ -239,6 +241,7 @@ class Director:
                 facing_deg=facing,
                 rig=rig,
                 joints=joints,
+                face=self._face(character_id, beat, rig, time_s),
                 ring="distant",
             )
 
@@ -267,6 +270,7 @@ class Director:
                     joints=posed_joints(state.rig, state.spot,
                                         state.facing_deg + turn * 0.5,
                                         CAST[one].stature_m),
+                    face=state.face,
                     ring=ring,
                     attached_to=self._attachment(one, beat),
                 )
@@ -316,6 +320,42 @@ class Director:
                 clearest, best = clearance, candidate
         return best
 
+    def _face(self, character_id: str, beat: Beat, rig: RigState,
+              time_s: float) -> FaceState:
+        """The character's face: their action, and their own line.
+
+        Only the beat's speaker gets a moving mouth, and it moves to the
+        vowel groups of the line they are actually saying, spread across
+        the speaking window rather than the whole beat.
+        """
+        speaking_text = ""
+        elapsed = -1.0
+        window = 0.0
+        if character_id == beat.camera.target_character:
+            speaking_text = beat.dialogue
+            window = max(1.0, beat.duration_s - CUE_LEAD_S - 0.6)
+            elapsed = time_s - (beat.start_s + CUE_LEAD_S)
+        return face_for(character_id, rig.action_id, rig.amount, time_s,
+                        speaking_text=speaking_text,
+                        speaking_elapsed=elapsed,
+                        speaking_duration=window)
+
+    def _addressed(self, subject, beat: Beat, characters: dict, others):
+        """Who the subject is talking to, for an over-the-shoulder.
+
+        The script's own target wins; failing that, the nearest other
+        character, because that is who a viewer reads them as facing.
+        """
+        if not others:
+            return subject
+        for cue in beat.actions:
+            if cue.character_id == subject.character_id and cue.target_id:
+                target = characters.get(cue.target_id)
+                if target is not None and target is not subject:
+                    return target
+        return min(others, key=lambda other: float(np.linalg.norm(
+            (other.spot - subject.spot)[:2])))
+
     def _attachment(self, character_id: str,
                     beat: Beat) -> tuple[str, str] | None:
         for cue in beat.actions:
@@ -346,7 +386,11 @@ class Director:
             return cam_dolly_push_fast(subject_eye, approach, elapsed,
                                        focal_start_mm=beat.camera.focal_mm)
         if preset == "CAM_OTS_VERTICAL":
-            near = others[0] if others else subject
+            # Over the shoulder of the person being addressed, not of
+            # whoever happens to be first in the cast: with three people
+            # on the floor an arbitrary choice puts a bystander's back
+            # across the middle of the frame.
+            near = self._addressed(subject, beat, characters, others)
             return cam_ots_vertical(near.joints, subject_eye,
                                     focal_mm=beat.camera.focal_mm)
         if preset == "CAM_LOW_ANGLE_TILT":
@@ -474,6 +518,18 @@ def validate_drama_director() -> None:
     # The cliffhanger puts Jax up in the struts, off the floor.
     cliff = director.state_at(50.0)
     assert cliff.characters["CHAR_JAX"].spot[2] > 2.5
+
+    # Faces move: the speaker's mouth opens and closes through the
+    # line, and a gasping character's eyes are wider than their resting
+    # face.  Without this the expression layer could quietly do nothing.
+    hook = director.episode.beats[0]
+    jaws = [director.state_at(hook.start_s + step * 0.1)
+            .characters[hook.camera.target_character].face.jaw_open
+            for step in range(1, 70)]
+    assert max(jaws) > 0.4, max(jaws)
+    assert min(jaws) < 0.1, min(jaws)
+    gasping = director.state_at(gasp_start + 0.10).characters["CHAR_LEO"]
+    assert gasping.face.eye_open > 1.1, gasping.face.eye_open
 
     # A grab attaches; nothing else does.
     for state in (during, escalation, reveal):

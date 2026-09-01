@@ -879,7 +879,7 @@ def _math(slug: str, title: str, promise: str, narration: tuple[str, ...],
 _AUTHORED: tuple[Chapter, ...] = (
     Chapter(
         "open", "00", "Eight cuts to a house",
-        "Two trees, split eight ways, become the frame of a building.",
+        "What if the tree got a vote in the design?",
         (
             "Modern lumber starts with a strange compromise. Trees grow round,",
             "tapered and irregular. We spend enormous effort turning them into",
@@ -900,7 +900,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "square", "00", "Squaring the circle",
-        "Conventional milling removes the tree's shape before using it.",
+        "Watch what hits the floor before anything gets used.",
         (
             "Here is what conventional milling does to a log.",
             "First it squares it: four slabs come off the outside to make a",
@@ -918,7 +918,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "trunk", "00", "What is standing there",
-        "One pine, measured before anything is cut.",
+        "How much wood is actually standing out there?",
         (
             "Start with the tree we are actually working with. Sixty feet of",
             "usable trunk, fifteen inches across at the bottom, five and a half",
@@ -936,7 +936,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_trunk", "The tree, in board feet",
-        "A tapered trunk, measured section by section.",
+        "The fixed budget every method starts from.",
         (
             "The frustum formula, run on our pine. R one and r two are the",
             "radii at the two ends, L is the length between them.",
@@ -953,7 +953,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "pack", "00", "How many rectangles fit in a circle?",
-        "The honest answer is fewer than you would like.",
+        "Rectangles, and the circle they have to fit inside.",
         (
             "So how many true two-by-fours does that tree actually contain?",
             "A mill saws parallel rows across the log. A row can only be as wide",
@@ -969,7 +969,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_rectangles", "Packing the circle, honestly",
-        "Row by row, and where this lesson disagrees with its own brief.",
+        "Where this film disagrees with its own brief.",
         (
             "Here is the packing, section by section, with the rows written out.",
             "Twenty-five true two-by-fours per tree, which is two hundred board",
@@ -986,7 +986,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "split", "00", "Stop squaring. Start splitting.",
-        "A circle divides into eight without losing its shape.",
+        "The same log, opened a different way.",
         (
             "Now the other approach.",
             "A round tree divides naturally. Split it through the centre and both",
@@ -1004,7 +1004,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_radial", "What the saw costs",
-        "Three passes, four diameters of kerf, and what is left.",
+        "Where the sawdust actually goes.",
         (
             "The kerf is worth doing properly, because it is the only loss in",
             "this method.",
@@ -1022,7 +1022,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_compare", "The same two trees, both ways",
-        "The comparison, made twice so it cannot be accused of cherry-picking.",
+        "Both estimates, both ratios, nothing cherry-picked.",
         (
             "Two trees, converted both ways.",
             "Against the honest packing, the radial method keeps very nearly",
@@ -1039,7 +1039,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "member", "00", "The wedge is the member",
-        "Bark outward, pith inward, and nothing milled off either.",
+        "Not a stick with a defect. A different section.",
         (
             "Here is one member, as it comes off the saw.",
             "Two flat faces where the splits went through. One curved face that",
@@ -1058,7 +1058,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_sector", "One eighth of a log, measured",
-        "Area, width, depth, and the diameter where it beats a two-by-four.",
+        "The diameter where an eighth of a log wins.",
         (
             "The arithmetic of a sector is simple. Its area is pi r squared over",
             "eight. Its width across the bark face is two r sine of twenty-two",
@@ -1075,7 +1075,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "orient", "00", "All one hundred and twenty, the same way round",
-        "Orientation is the only rule the raw member has to obey.",
+        "The stack has no left-handed piece in it.",
         (
             "Across the whole shell there is exactly one orientation rule: bark",
             "outward, pith inward.",
@@ -1090,7 +1090,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "short", "00", "Short members are the point",
-        "Six feet is easy to get out of a tree. Twenty is not.",
+        "Short sticks, on purpose.",
         (
             "There is a reason the members are six feet long.",
             "Getting one perfectly straight twenty-foot beam out of a real tree",
@@ -1109,7 +1109,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "triangles", "00", "Why the network carries the load",
-        "A triangle cannot change shape without changing a side length.",
+        "Where the strength actually lives.",
         (
             "This only works because of what a dome is.",
             "Push the top of a square frame and it leans: the corners turn and",
@@ -1128,7 +1128,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "panels", "00", "Forty independent frames",
-        "The shell is not a web of shared sticks. It is forty finished triangles.",
+        "What actually gets lifted into place.",
         (
             "Now the part that makes this buildable.",
             "The shell is not assembled stick by stick in the air. It is forty",
@@ -1143,7 +1143,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "pinwheel", "00", "The pinwheel joint",
-        "Every end is a square crosscut. There is no mitre anywhere.",
+        "The hardest operation in dome building, deleted.",
         (
             "Inside one triangle, the three members are arranged as a pinwheel,",
             "and all three the same way round.",
@@ -1162,7 +1162,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_pinwheel", "The pinwheel, measured",
-        "Where each end lands, how much bearing it gets, and what it costs.",
+        "What the joint costs, and what it buys.",
         (
             "Here is the same joint in numbers.",
             "Each member's centre sits half its own width inside its edge line,",
@@ -1181,7 +1181,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "corner", "00", "The corner nothing touches",
-        "The mathematical vertex is a reference, not a piece of wood.",
+        "The one place the wood and the drawing part company.",
         (
             "Look closely at a corner.",
             "The two members meeting there do not meet at all. One passes",
@@ -1200,7 +1200,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_lengths", "Two edges, four sticks",
-        "The whole cut list for the building.",
+        "Four saw-stop settings for a whole house.",
         (
             "A 2V hemisphere has two edge lengths, the short and the long.",
             "The pinwheel turns those two into four stick lengths, because where",
@@ -1214,7 +1214,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "duplicate", "00", "Neighbours do not share",
-        "Two panels meeting an edge bring two members to it.",
+        "What the extra fifty-five sticks buy.",
         (
             "Between two panels, something deliberately wasteful happens.",
             "Each panel carries its own member along the shared edge. The two",
@@ -1233,7 +1233,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "gasket", "00", "The gasket does the shaving",
-        "A compressible seam absorbs what would otherwise be cut into the wood.",
+        "The part of the joint that is not made of wood.",
         (
             "So what closes the seam?",
             "Not the wood. A separate spline, key or rubber hose sits between the",
@@ -1253,7 +1253,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_seams", "Every seam in the shell",
-        "How many, how long, and how much angle the gasket has to swallow.",
+        "Fifty-five joints, and how much they disagree.",
         (
             "The seams, counted off the same model.",
             "Fifty-five interior seams with two members each, ten rim seams with",
@@ -1268,7 +1268,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "sizing", "00", "The tree sizes the building",
-        "Strut length is an input here, not a decision.",
+        "Which comes first, the building or the timber?",
         (
             "In a normal design you choose the dome, then order the timber.",
             "Here it runs the other way. The tree is bucked into twelve-foot",
@@ -1283,7 +1283,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_dome", "The dome two trees make",
-        "Span, height, floor and what is left over.",
+        "A size nobody chose.",
         (
             "Solve the pinwheel backwards for the radius that makes the longest",
             "member exactly six feet, and the building falls out.",
@@ -1297,7 +1297,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "assemble", "00", "Forty frames, lifted whole",
-        "Every panel is finished on the ground before it goes up.",
+        "Where the precise work gets done.",
         (
             "Assembly follows from the panels.",
             "Each triangle is built flat on the ground, where a square end and a",
@@ -1312,7 +1312,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "actions", "00", "Least actions, maximum building",
-        "Count operations, not dollars.",
+        "Every operation somebody has to pay for.",
         (
             "The real measure of a system like this is not money. It is actions",
             "per unit of finished building.",
@@ -1329,7 +1329,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     _math(
         "m_actions", "Counting the cuts",
-        "One tree, to strut, both ways.",
+        "One tree to a finished member, counted both ways.",
         (
             "Count the cuts. Splitting: two rip cuts to quarter each section,",
             "four more to make the eighths, then one crosscut per wedge.",
@@ -1345,7 +1345,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "honest", "00", "What this does not claim",
-        "An eighth of any tree is not automatically a graded stick.",
+        "The part of this that is not proven.",
         (
             "One honest paragraph, because the argument does not need overstating.",
             "This is not the claim that any eighth of any tree equals a graded",
@@ -1366,7 +1366,7 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
     Chapter(
         "close", "00", "The round tree is not defective lumber",
-        "Design the structure so the conventional material is never needed.",
+        "Two trees, and a different question.",
         (
             "That is the whole idea.",
             "Two trees. Split eight ways. Crosscut once. Forty pinwheel frames",
@@ -1428,6 +1428,34 @@ def validate_wedge_lesson() -> None:
     assert order["corner"] < order["duplicate"] < order["gasket"]
     assert order["gasket"] < order["sizing"] < order["close"]
     assert order["honest"] < order["close"]
+
+    # The voice reads a chapter's headline, pauses, then reads the body.
+    # A headline that summarises its own opening lines is therefore
+    # heard twice in a row, which is what a doubled voice sounds like
+    # even when the audio is clean.  Measured rather than eyeballed,
+    # because it went unnoticed through a whole render once.
+    common = {
+        "this", "that", "with", "from", "they", "them", "then", "than",
+        "what", "when", "which", "there", "their", "have", "been", "into",
+        "over", "only", "just", "some", "more", "most", "will", "would",
+        "could", "should", "about", "because", "does", "here", "does",
+        "every", "much", "many", "make", "makes", "your", "yours",
+    }
+
+    def _content_words(text: str) -> set:
+        words = {word.strip(".,:;!?-—\"'").lower() for word in text.split()}
+        return {word for word in words if len(word) > 3 and word not in common}
+
+    for chapter in lesson.chapters:
+        opening = " ".join(" ".join(chapter.narration).split(". ")[:2])
+        headline = _content_words(chapter.promise)
+        if not headline:
+            continue
+        shared = headline & _content_words(opening)
+        overlap = len(shared) / len(headline)
+        assert overlap < 0.5, (
+            f"chapter {chapter.number} headline repeats its own opening: "
+            f"{sorted(shared)}")
 
     class _App:
         def __init__(self):

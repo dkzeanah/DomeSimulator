@@ -738,7 +738,7 @@ def main() -> int:
         ["2v", "build", "hex", "zome", "line", "cuts", "franken",
          "hype", "hype2", "hype3", "hype4", "hype5", "hype6",
          "kick", "kick2", "master", "world", "world_chatgpt",
-         "scratch", "wedge", "drama"],
+         "scratch", "wedge", "drama", "series"],
         "2v")
     mc_lesson.pack(fill="x", pady=3)
     action_help(body, mc_lesson, {
@@ -809,6 +809,12 @@ def main() -> int:
                          "are code-model outputs, not bids — site, "
                          "permits, freight, tax and local engineering sit "
                          "outside the model.",
+        "series": "THE VANCE NETWORK: all six episodes of the "
+                  "micro-drama back to back, 6.3 minutes. Each one is a "
+                  "60-second vertical episode with a cold hook, an "
+                  "escalation, a reveal and a cliffhanger the next "
+                  "episode answers; the finale leaves one thread open. "
+                  "Render at 1080x1920.",
         "drama": "EP_DOME_001, a 60-second vertical micro-drama shot "
                  "in the dome: four beats (cold hook, escalation, "
                  "reveal, cliffhanger), five archetype characters, and "

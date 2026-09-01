@@ -115,6 +115,12 @@ PRESETS: tuple[RenderPreset, ...] = (
            "material breakdown, a construction-event labor breakdown, "
            "and a modeled direct-sale price for each."),
 
+    _video("series", "series", "the-vance-network-mini-series.mp4",
+           "All six episodes of the dome micro-drama, back to back: six "
+           "cold hooks, six cliffhangers, one arc, and a finale that "
+           "leaves a thread open. Rendered 1080x1920.",
+           size="1080x1920"),
+
     _video("drama", "drama", "ep-dome-001-high-council.mp4",
            "EP_DOME_001: a 60-second vertical micro-drama in the dome. "
            "Four beats, five archetypes, and a camera the script "

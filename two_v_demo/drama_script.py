@@ -191,6 +191,11 @@ class Episode:
     lighting_theme: str
     structural_lights_intensity: float
     beats: tuple[Beat, ...]
+    title: str = ""
+    question: str = ""
+    """What this episode makes the viewer need to know."""
+    answers: str = ""
+    """The episode_id whose question this one settles, if any."""
 
     @property
     def duration_s(self) -> float:
@@ -254,6 +259,9 @@ def parse_episode(payload: dict) -> Episode:
             raise ValueError(f"beat {index} of {payload.get('episode_id')} "
                              "has no dialogue")
     return Episode(
+        title=payload.get("title", ""),
+        question=payload.get("question", ""),
+        answers=payload.get("answers", ""),
         episode_id=payload["episode_id"],
         dome_preset=environment.get("dome_preset",
                                     "GEODESIC_GARAGE_WORKSHOP"),
@@ -353,6 +361,342 @@ EXAMPLE_EPISODE_JSON: dict = {
 
 def example_episode() -> Episode:
     return parse_episode(EXAMPLE_EPISODE_JSON)
+
+
+# ----------------------------------------------------------------------
+# The mini-series
+# ----------------------------------------------------------------------
+
+SERIES_TITLE = "THE VANCE NETWORK"
+SERIES_LOGLINE = (
+    "A disgraced dome mechanic is the rightful heir to the network of "
+    "shells he maintains, and the only person who can keep the one over "
+    "everybody's head from coming down."
+)
+
+
+def _beat(start, end, name, preset, target, focal, actions, line, voice):
+    return {
+        "timestamp_start": start, "timestamp_end": end,
+        "dramatic_beat": name,
+        "camera": {"preset": preset, "target_character": target,
+                   "fov": focal},
+        "character_actions": actions,
+        "audio": {"dialogue_text": line, "voice_id": voice},
+    }
+
+
+def _act(character, action, target=None, anchor=None, distance=None):
+    cue = {"character_id": character, "rig_action": action}
+    if target:
+        cue["target_id"] = target
+    if anchor:
+        cue["spatial_anchor"] = anchor
+    if distance is not None:
+        cue["distance_meters"] = distance
+    return cue
+
+
+EPISODE_002 = {
+    "episode_id": "EP_DOME_002",
+    "title": "The Charges",
+    "answers": "EP_DOME_001",
+    "question": "Will the shell hold once Leo re-routes the load?",
+    "environment": {"dome_preset": "GEODESIC_GARAGE_WORKSHOP",
+                    "lighting_theme": "NIGHT_RAIN_CYAN_AMBER",
+                    "structural_lights_intensity": 0.55},
+    "sequence": [
+        _beat("0:00", "0:08", "COLD_HOOK", "CAM_DOLLY_PUSH_FAST",
+              "CHAR_JAX", 35,
+              [_act("CHAR_LEO", "RIG_GRAB_LAPEL", "CHAR_JAX"),
+               _act("CHAR_JAX", "RIG_INVASIVE_STEP", "CHAR_LEO")],
+              "Cut the power and they blow. Cut me and they blow. Choose.",
+              "VO_JAX_UNHINGED"),
+        _beat("0:08", "0:26", "ESCALATION", "CAM_OTS_VERTICAL",
+              "CHAR_LEO", 50,
+              [_act("CHAR_LEO", "RIG_CLENCH_FIST_RAISE", "CHAR_JAX"),
+               _act("CHAR_LEO", "RIG_INVASIVE_STEP", "CHAR_JAX",
+                    distance=0.5)],
+              "Then I do neither. I re-route the whole load through the "
+              "base ring.",
+              "VO_LEO_DEFIANT"),
+        _beat("0:26", "0:46", "REVEAL", "CAM_LOW_ANGLE_TILT",
+              "CHAR_SILAS", 28,
+              [_act("CHAR_SILAS", "RIG_POINT_COMMAND", "CHAR_LEO",
+                    anchor="DOME_APEX_CENTER")],
+              "The base ring was never rated for that. He is gambling "
+              "with the whole shell.",
+              "VO_SILAS_GRAVE"),
+        _beat("0:46", "1:02", "CLIFFHANGER", "CAM_WHIP_PAN",
+              "CHAR_AURELIA", 40,
+              [_act("CHAR_AURELIA", "RIG_DISDAINFUL_TURN", "CHAR_LEO")],
+              "My father is watching. If it cracks, the Network takes "
+              "this dome back tonight.",
+              "VO_AURELIA_ANGRY"),
+    ],
+}
+
+EPISODE_003 = {
+    "episode_id": "EP_DOME_003",
+    "title": "The Base Ring",
+    "answers": "EP_DOME_002",
+    "question": "Do the original blueprints survive the night?",
+    "environment": {"dome_preset": "GEODESIC_GARAGE_WORKSHOP",
+                    "lighting_theme": "NIGHT_RAIN_CYAN_AMBER",
+                    "structural_lights_intensity": 0.9},
+    "sequence": [
+        _beat("0:00", "0:08", "COLD_HOOK", "CAM_DOLLY_PUSH_FAST",
+              "CHAR_AURELIA", 35,
+              [_act("CHAR_AURELIA", "RIG_GASP_REACTION", "CHAR_LEO")],
+              "It held. Every strut he touched is standing, and the "
+              "Council saw it hold.",
+              "VO_AURELIA_ANGRY"),
+        _beat("0:08", "0:28", "ESCALATION", "CAM_OTS_VERTICAL",
+              "CHAR_BARON", 50,
+              [_act("CHAR_BARON", "RIG_INVASIVE_STEP", "CHAR_LEO",
+                    distance=0.45),
+               _act("CHAR_BARON", "RIG_POINT_COMMAND", "CHAR_LEO")],
+              "A mechanic who saves a dome is still a mechanic. Sign "
+              "the release.",
+              "VO_BARON_COLD"),
+        _beat("0:28", "0:48", "REVEAL", "CAM_LOW_ANGLE_TILT",
+              "CHAR_SILAS", 28,
+              [_act("CHAR_SILAS", "RIG_POINT_COMMAND", "CHAR_BARON",
+                    anchor="DOME_APEX_CENTER")],
+              "He signs nothing. The original blueprints name him, and "
+              "I kept them.",
+              "VO_SILAS_GRAVE"),
+        _beat("0:48", "1:04", "CLIFFHANGER", "CAM_WHIP_PAN",
+              "CHAR_JAX", 40,
+              [_act("CHAR_JAX", "RIG_INVASIVE_STEP", "CHAR_SILAS",
+                    anchor="DOME_STRUT_TOP")],
+              "Paper burns, old man. Ask me how I know that.",
+              "VO_JAX_UNHINGED"),
+    ],
+}
+
+EPISODE_004 = {
+    "episode_id": "EP_DOME_004",
+    "title": "The Originals",
+    "answers": "EP_DOME_003",
+    "question": "Which way does the Council vote?",
+    "environment": {"dome_preset": "GEODESIC_COUNCIL_HALL",
+                    "lighting_theme": "COLD_WHITE_APEX_SHAFT",
+                    "structural_lights_intensity": 0.35},
+    "sequence": [
+        _beat("0:00", "0:08", "COLD_HOOK", "CAM_DOLLY_PUSH_FAST",
+              "CHAR_JAX", 35,
+              [_act("CHAR_JAX", "RIG_INVASIVE_STEP", "CHAR_AURELIA",
+                    distance=0.5)],
+              "Twelve rolls of vellum. One match. Say the word, heiress.",
+              "VO_JAX_UNHINGED"),
+        _beat("0:08", "0:26", "ESCALATION", "CAM_OTS_VERTICAL",
+              "CHAR_AURELIA", 50,
+              [_act("CHAR_AURELIA", "RIG_SLAP_EXECUTE", "CHAR_JAX"),
+               _act("CHAR_JAX", "RIG_GASP_REACTION", "CHAR_AURELIA")],
+              "The word is no. And you were never the one holding the "
+              "match.",
+              "VO_AURELIA_ANGRY"),
+        _beat("0:26", "0:46", "REVEAL", "CAM_LOW_ANGLE_TILT",
+              "CHAR_SILAS", 28,
+              [_act("CHAR_SILAS", "RIG_POINT_COMMAND", "CHAR_AURELIA",
+                    anchor="DOME_APEX_CENTER")],
+              "She copied every sheet the night the Council sealed the "
+              "vault.",
+              "VO_SILAS_GRAVE"),
+        _beat("0:46", "1:02", "CLIFFHANGER", "CAM_WHIP_PAN",
+              "CHAR_BARON", 40,
+              [_act("CHAR_BARON", "RIG_DISDAINFUL_TURN", "CHAR_AURELIA")],
+              "Then we do this the old way. Convene the vote. Tonight.",
+              "VO_BARON_COLD"),
+    ],
+}
+
+EPISODE_005 = {
+    "episode_id": "EP_DOME_005",
+    "title": "The Vote",
+    "answers": "EP_DOME_004",
+    "question": "What does putting her name behind him cost Aurelia?",
+    "environment": {"dome_preset": "GEODESIC_COUNCIL_HALL",
+                    "lighting_theme": "COLD_WHITE_APEX_SHAFT",
+                    "structural_lights_intensity": 0.5},
+    "sequence": [
+        _beat("0:00", "0:08", "COLD_HOOK", "CAM_DOLLY_PUSH_FAST",
+              "CHAR_BARON", 35,
+              [_act("CHAR_BARON", "RIG_POINT_COMMAND", "CHAR_SILAS",
+                    anchor="DOME_APEX_CENTER")],
+              "Ninety per cent of this Network answers to me. Count it "
+              "and be done.",
+              "VO_BARON_COLD"),
+        _beat("0:08", "0:28", "ESCALATION", "CAM_OTS_VERTICAL",
+              "CHAR_LEO", 50,
+              [_act("CHAR_LEO", "RIG_INVASIVE_STEP", "CHAR_BARON",
+                    distance=0.5),
+               _act("CHAR_LEO", "RIG_CLENCH_FIST_RAISE", "CHAR_BARON")],
+              "Count the domes instead. Forty of them went up under my "
+              "hands.",
+              "VO_LEO_DEFIANT"),
+        _beat("0:28", "0:48", "REVEAL", "CAM_LOW_ANGLE_TILT",
+              "CHAR_SILAS", 28,
+              [_act("CHAR_SILAS", "RIG_POINT_COMMAND", "CHAR_BARON",
+                    anchor="DOME_APEX_CENTER")],
+              "The charter counts builders, Vance. It always did. Read "
+              "clause nine.",
+              "VO_SILAS_GRAVE"),
+        _beat("0:48", "1:04", "CLIFFHANGER", "CAM_WHIP_PAN",
+              "CHAR_AURELIA", 40,
+              [_act("CHAR_AURELIA", "RIG_GASP_REACTION", "CHAR_BARON")],
+              "Then he does not need your name. He already has mine.",
+              "VO_AURELIA_ANGRY"),
+    ],
+}
+
+EPISODE_006 = {
+    "episode_id": "EP_DOME_006",
+    "title": "The Name",
+    "answers": "EP_DOME_005",
+    "question": "Where is the second set of charges?",
+    "environment": {"dome_preset": "GEODESIC_COUNCIL_HALL",
+                    "lighting_theme": "COLD_WHITE_APEX_SHAFT",
+                    "structural_lights_intensity": 0.75},
+    "sequence": [
+        _beat("0:00", "0:08", "COLD_HOOK", "CAM_DOLLY_PUSH_FAST",
+              "CHAR_BARON", 35,
+              [_act("CHAR_BARON", "RIG_DISDAINFUL_TURN", "CHAR_AURELIA")],
+              "You gave a mechanic your name. You gave away the whole "
+              "Network.",
+              "VO_BARON_COLD"),
+        _beat("0:08", "0:26", "ESCALATION", "CAM_OTS_VERTICAL",
+              "CHAR_AURELIA", 50,
+              [_act("CHAR_AURELIA", "RIG_INVASIVE_STEP", "CHAR_BARON",
+                    distance=0.45)],
+              "I gave it to the only person here who ever fixed "
+              "anything.",
+              "VO_AURELIA_ANGRY"),
+        _beat("0:26", "0:48", "REVEAL", "CAM_LOW_ANGLE_TILT",
+              "CHAR_LEO", 28,
+              [_act("CHAR_LEO", "RIG_POINT_COMMAND", "CHAR_BARON",
+                    anchor="DOME_APEX_CENTER")],
+              "The Network is not a name. It is sixty-five struts and "
+              "everyone who cut them.",
+              "VO_LEO_DEFIANT"),
+        _beat("0:48", "1:04", "CLIFFHANGER", "CAM_WHIP_PAN",
+              "CHAR_JAX", 40,
+              [_act("CHAR_JAX", "RIG_INVASIVE_STEP", "CHAR_LEO",
+                    anchor="DOME_STRUT_TOP")],
+              "Beautiful speech. Shame about the second set of charges.",
+              "VO_JAX_UNHINGED"),
+    ],
+}
+
+EPISODE_001 = dict(
+    EXAMPLE_EPISODE_JSON,
+    title="The High Council Dome",
+    question="Who armed the charges across the outer facets?",
+)
+
+SERIES_JSON: tuple[dict, ...] = (
+    EPISODE_001, EPISODE_002, EPISODE_003, EPISODE_004, EPISODE_005,
+    EPISODE_006,
+)
+
+
+def series() -> tuple[Episode, ...]:
+    """Every episode of the mini-series, parsed and in order."""
+    return tuple(parse_episode(payload) for payload in SERIES_JSON)
+
+
+def check_series(episodes: tuple[Episode, ...] | None = None
+                 ) -> tuple[str, ...]:
+    """Everything wrong with the series as a series, not episode by episode.
+
+    A mini-series fails in ways a single episode cannot: an unanswered
+    question, a cliffhanger nobody picks up, a character who vanishes, a
+    finale that resolves everything and leaves nothing to come back for.
+    """
+    episodes = series() if episodes is None else episodes
+    problems: list[str] = []
+    if not episodes:
+        return ("the series has no episodes",)
+
+    identifiers = [episode.episode_id for episode in episodes]
+    if len(set(identifiers)) != len(identifiers):
+        problems.append("two episodes share an id")
+
+    for episode in episodes:
+        problems.extend(f"{episode.episode_id}: {problem}"
+                        for problem in check_episode(episode))
+        if not episode.title:
+            problems.append(f"{episode.episode_id} has no title")
+        if not episode.question:
+            problems.append(f"{episode.episode_id} asks nothing")
+
+    answered = {episode.answers for episode in episodes if episode.answers}
+    for index, episode in enumerate(episodes[:-1]):
+        if episode.episode_id not in answered:
+            problems.append(
+                f"{episode.episode_id} asks a question no later episode "
+                "answers")
+        following = episodes[index + 1]
+        if following.answers and following.answers != episode.episode_id:
+            problems.append(
+                f"{following.episode_id} answers "
+                f"{following.answers}, not the episode before it")
+        # The cliffhanger has to be picked up: somebody in it must be in
+        # the next episode's hook, or the cut between them is a reset.
+        cliff = episode.beats[-1].cast
+        hook = following.beats[0].cast
+        if not set(cliff) & set(hook):
+            problems.append(
+                f"nobody from {episode.episode_id}'s cliffhanger appears "
+                f"in {following.episode_id}'s hook")
+
+    if episodes[-1].episode_id in answered:
+        problems.append("the finale is answered inside its own series")
+    if not episodes[-1].question:
+        problems.append("the finale leaves nothing open")
+
+    # A series that drops a character has wasted an archetype.
+    seen: set[str] = set()
+    for episode in episodes:
+        seen.update(episode.cast)
+    missing = set(CAST) - seen
+    if missing:
+        problems.append(
+            f"never cast: {', '.join(sorted(missing))}")
+    return tuple(problems)
+
+
+def series_bible() -> str:
+    """The series as a writer would read it: arc first, then the beats."""
+    episodes = series()
+    lines = [
+        SERIES_TITLE,
+        "",
+        SERIES_LOGLINE,
+        "",
+        f"{len(episodes)} episodes, "
+        f"{sum(episode.duration_s for episode in episodes) / 60.0:.1f} "
+        f"minutes, {sum(episode.words for episode in episodes)} spoken "
+        "words.",
+        "",
+        "THE ARC",
+        "",
+    ]
+    for episode in episodes:
+        answers = (f" (answers {episode.answers})" if episode.answers
+                   else "")
+        lines.append(f"  {episode.episode_id}  {episode.title}{answers}")
+        lines.append(f"      asks: {episode.question}")
+        lines.append(f"      {episode.duration_s:.0f}s, "
+                     f"{episode.words} words, cast "
+                     f"{', '.join(CAST[name].name for name in episode.cast)}")
+        lines.append("")
+    lines.append("=" * 68)
+    lines.append("")
+    for episode in episodes:
+        lines.append(beat_sheet(episode))
+    return "\n".join(lines)
 
 
 def check_episode(episode: Episode) -> tuple[str, ...]:
@@ -536,3 +880,41 @@ def validate_drama_script() -> None:
 
     sheet = beat_sheet(episode)
     assert "EP_DOME_001" in sheet and "COLD_HOOK" in sheet
+
+    # The mini-series, as a series.
+    episodes = series()
+    assert len(episodes) == 6, len(episodes)
+    problems = check_series(episodes)
+    assert not problems, problems
+
+    # Every archetype earns its place, including the one the first
+    # episode never uses.
+    cast_seen = set()
+    for item in episodes:
+        cast_seen.update(item.cast)
+    assert cast_seen == set(CAST), sorted(set(CAST) - cast_seen)
+
+    # The chain of questions really is a chain: each episode answers the
+    # one before it and the finale leaves exactly one thread hanging.
+    for earlier, later in zip(episodes, episodes[1:]):
+        assert later.answers == earlier.episode_id, (earlier.episode_id,
+                                                     later.answers)
+    open_threads = [item for item in episodes
+                    if item.episode_id not in {other.answers
+                                               for other in episodes}]
+    assert [item.episode_id for item in open_threads] == \
+        [episodes[-1].episode_id]
+
+    # The series checks have to bite, or they are decoration.
+    from dataclasses import replace as _swap
+    broken = list(episodes)
+    broken[2] = _swap(broken[2], answers="EP_DOME_001")
+    assert any("not the episode before it" in problem
+               for problem in check_series(tuple(broken)))
+    resolved = list(episodes)
+    resolved[-1] = _swap(resolved[-1], question="")
+    assert any("leaves nothing open" in problem
+               for problem in check_series(tuple(resolved)))
+
+    bible = series_bible()
+    assert SERIES_TITLE in bible and "EP_DOME_006" in bible

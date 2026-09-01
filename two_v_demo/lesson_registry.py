@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from .lesson_build import BUILD_LESSON
 from .lesson_cuts import CUTS_LESSON
-from .lesson_drama import DRAMA_LESSON
+from .lesson_drama import DRAMA_LESSON, SERIES_LESSON
 from .lesson_franken import FRANKEN_LESSON
 from .lesson_hex import HEX_LESSON
 from .lesson_kickstarter import KICKSTARTER_LESSON
@@ -40,7 +40,8 @@ LESSONS: dict[str, Lesson] = {
                    HYPE_V4_LESSON, HYPE_V5_LESSON, HYPE_V6_LESSON,
                    KICKSTARTER_LESSON, KICKSTARTER_V2_LESSON,
                    MASTER_LESSON, WORLD_LESSON, WORLD_CHATGPT_LESSON,
-                   SCRATCH_LESSON, WEDGE_LESSON, DRAMA_LESSON)
+                   SCRATCH_LESSON, WEDGE_LESSON, DRAMA_LESSON,
+                   SERIES_LESSON)
 }
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key

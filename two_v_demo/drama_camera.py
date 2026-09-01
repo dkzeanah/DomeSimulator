@@ -222,14 +222,27 @@ def cam_ots_vertical(near_joints, far_eye, focal_mm: float = 50.0,
     far_eye = np.asarray(far_eye, dtype=float)
     forward = normalize(far_eye - neck)
     side = normalize(np.cross(np.array([0.0, 0.0, 1.0]), forward))
+    half_width = math.radians(horizontal_fov_for_focal(focal_mm)) * 0.5
     if shoulder_offset_m is None:
-        half_width = math.radians(horizontal_fov_for_focal(focal_mm)) * 0.5
-        shoulder_offset_m = behind_m * math.tan(half_width) * 0.80
+        # Far enough sideways that the near character's body clears the
+        # middle of the frame: at four fifths of the half-width their
+        # head is at the edge but their torso still fills the centre,
+        # which is a shot of somebody's back rather than an
+        # over-the-shoulder.
+        shoulder_offset_m = behind_m * math.tan(half_width) * 1.25
     eye = (neck + np.array([0.0, 0.0, (head[2] - neck[2]) * 0.6])
            - forward * behind_m + side * shoulder_offset_m)
     fov = fov_for_focal(focal_mm)
-    return CameraState(eye, aim_with_eyeline(eye, far_eye, fov), fov,
-                       focal_mm, "CAM_OTS_VERTICAL")
+    aim = aim_with_eyeline(eye, far_eye, fov)
+    # And the subject sits on the far third rather than dead centre, so
+    # the foreground shoulder has somewhere to be.
+    reach = float(np.linalg.norm(far_eye - eye))
+    across = normalize(np.cross(normalize(far_eye - eye),
+                                np.array([0.0, 0.0, 1.0])))
+    if float(np.dot(across, side)) > 0.0:
+        across = -across
+    aim = aim + across * (reach * math.tan(half_width) * 0.30)
+    return CameraState(eye, aim, fov, focal_mm, "CAM_OTS_VERTICAL")
 
 
 def cam_low_angle_tilt(subject_eye, from_direction, focal_mm: float = 28.0,
