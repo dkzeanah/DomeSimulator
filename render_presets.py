@@ -115,6 +115,15 @@ PRESETS: tuple[RenderPreset, ...] = (
            "material breakdown, a construction-event labor breakdown, "
            "and a modeled direct-sale price for each."),
 
+    # -- the explainer -------------------------------------------------
+    _video("scratch", "scratch", "dome-from-scratch-geometry-to-pixels.mp4",
+           "From nothing to a lit pixel: the twelve points phi places, "
+           "the divide that makes the shape geodesic, the two strut "
+           "lengths that fall out, and then the whole rendering chain -- "
+           "tubes, normals, the vertex buffer, the camera matrices, the "
+           "divide by w, the depth buffer, culling and the lighting sum. "
+           "18 math screens derive every figure on camera."),
+
     # -- the teaching lessons -----------------------------------------
     _video("build", "build", "dome-construction-masterclass.mp4",
            "The 46-chapter construction lesson: geometry, cut lists, "
@@ -162,6 +171,20 @@ PRESETS: tuple[RenderPreset, ...] = (
             "action": "shots",
             "shots": ",".join(str(second) for second in
                               range(60, 2640, 120)),
+        },
+    ),
+    RenderPreset(
+        key="scratch_stills",
+        label="from scratch -- one still per chapter",
+        summary="A still from roughly each chapter of the from-scratch "
+                "explainer, with no narration and no video encode. The "
+                "quick way to check every diagram in the film without "
+                "waiting for a full render.",
+        fields={
+            "lesson": "scratch",
+            "action": "shots",
+            "shots": ",".join(str(second) for second in
+                              range(12, 1740, 38)),
         },
     ),
     RenderPreset(

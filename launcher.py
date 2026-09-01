@@ -737,7 +737,8 @@ def main() -> int:
         body, "Lesson",
         ["2v", "build", "hex", "zome", "line", "cuts", "franken",
          "hype", "hype2", "hype3", "hype4", "hype5", "hype6",
-         "kick", "kick2", "master", "world", "world_chatgpt"],
+         "kick", "kick2", "master", "world", "world_chatgpt",
+         "scratch"],
         "2v")
     mc_lesson.pack(fill="x", pady=3)
     action_help(body, mc_lesson, {
@@ -808,6 +809,17 @@ def main() -> int:
                          "are code-model outputs, not bids — site, "
                          "permits, freight, tax and local engineering sit "
                          "outside the model.",
+        "scratch": "46 chapters answering one question end to end for "
+                   "somebody who has never written code: what does a "
+                   "computer actually calculate, from nothing, to put a "
+                   "geodesic dome on a screen? The first half derives "
+                   "the shape (one number, twelve points, subdivision, "
+                   "projection, two strut lengths, a cut list). The "
+                   "second half derives the picture (tubes, normals, "
+                   "the vertex buffer, the camera, the view and "
+                   "projection matrices, the divide by w, the viewport, "
+                   "the depth buffer, culling, and the lighting sum). "
+                   "18 math screens, every figure computed on camera.",
         "line": "24 chapters on the assembly line itself: an animated "
                 "two-person crew walking, lifting, carrying and "
                 "fastening every part of one dome, with the energy "

@@ -1,6 +1,6 @@
 # Masterclass lessons
 
-One standalone ModernGL teaching world: seven lessons and one montage. It does not import
+One standalone ModernGL teaching world: eight lessons and one montage. It does not import
 or launch the assembly-line simulation or the main Dome Creator world;
 the `line` lesson reads `al_build`'s element catalogue as data, but
 starts nothing.
@@ -14,6 +14,7 @@ starts nothing.
 | `line` | Assembly Line Energy Masterclass | 24 | What building one dome costs the two people who build it: an articulated crew animated through all six motions of every placement, with the mechanical work computed limb by limb and the food energy totalled per motion, per station and per shift. |
 | `cuts` | The Compound Cut, Both Machines | 18 | The hardest operation in a hubless dome, in full: the rip bevel on the table saw, the end mitre on a sled because no mitre saw reaches the angle, the relief lap, the stop block, and turning rather than flipping between ends. |
 | `franken` | The Franken-Dome | 13 | Struts of any section held by V brackets folded from scrap sheet: four screws into each strut, the slack that leaves no joint on the sphere, the settling, and the sheathing that spans the rest. |
+| `scratch` | From Scratch: Every Calculation Behind a Dome on Screen | 46 | For someone who has never written code: every calculation between one irrational number and a lit pixel. Half one derives the shape (phi, normalizing, Euler's check, midpoints, projection, two chord factors, a cut list); half two derives the picture (tubes from cross products, normals, the vertex buffer, the orbit camera, the view and projection matrices, the divide by w, the viewport, the depth buffer, backface culling and the lighting sum). 18 math screens, with the render-side figures computed by calling `render_kit`'s own functions and the renderer's settings parsed back out of `app.py` and the shader rather than retyped. |
 | `hype` | Frankendome | 36 | Not a lesson. The montage: full-frame pictures, one line of type, a quicker voice, and the argument for treating a dome as a platform you keep upgrading rather than a house you finish once. |
 
 ## Run

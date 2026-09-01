@@ -442,6 +442,37 @@ One renderer plays **five** lessons and one montage, chosen from a Lesson dropdo
   Its figures are stated as what they are — code-model outputs, not
   bids — with site, permits, freight, tax and local engineering
   explicitly outside the model.
+* **`scratch` - From Scratch: Every Calculation Behind A Dome On
+  Screen, 46 chapters.** The one lesson aimed squarely at somebody who
+  has never written a line of code, and the only one that follows the
+  job past the geometry and all the way to the pixel. The first half
+  derives the **shape**: phi placing twelve points, the divide that
+  makes them a unit-free recipe, Euler's V - E + F = 2 proving the
+  surface closed, the midpoints that land fifteen per cent too deep,
+  the single division that makes the shape geodesic, the two chord
+  factors that fall out of it four different ways, and the one
+  multiplication that turns all of it into a cut list. The second half
+  derives the **picture**: why a strut has to become an eight-sided
+  tube of twenty-eight triangles, what a cross product tells you about
+  a face, what the graphics card actually receives (10 floats a vertex,
+  3,900 triangles, 457 KB), how two angles and a distance place a
+  camera, why the world is moved instead of the camera, what the
+  projection matrix does and does not do, the divide by w that *is*
+  perspective, the stretch onto a pixel, the depth buffer and where its
+  precision goes, backface culling, and the three dot products that
+  decide how bright a surface is. Eighteen math screens, and the second
+  half is unusual even by this repository's standards: the camera,
+  projection and pixel figures are produced by calling the renderer's
+  own functions, and the field of view, near/far planes, light
+  direction and lighting weights are *parsed back out of* `app.py` and
+  the fragment shader rather than retyped, so changing the renderer and
+  forgetting the lesson raises an error instead of quietly putting a
+  lie on screen (`two_v_demo/scratch_facts.py`). The pictures obey the
+  same rule: the clip-space chapter really multiplies this dome by the
+  real matrix and divides by w — that is why it leans — the culling
+  chapter really counts which faces point away from the real eye, and
+  the lighting chapter draws the same four vectors its math screen
+  prints.
 * **`hype` - Frankendome, 36 beats.** Not a lesson, and it does not
   pretend to be one. The montage runs full-frame with a single line of
   type over it, at a quicker speech rate than the masterclasses, and it
@@ -486,11 +517,11 @@ chapter lengths are measured from the synthesized speech, so changing
 a voice or a rate moves every chapter boundary after it. That is why
 each preset states voice, rate, pitch and volume explicitly.
 
-Fifteen presets ship — the master presentation, every dome in the
-world, each teaching lesson, the montage and campaign films, plus
-three quick jobs (contact-sheet stills for either big film, a voice
-audition, and `render_all` to rebuild the entire published set from a
-fresh clone). The launcher's smoke test drives every one of them,
+Seventeen presets ship — the master presentation, every dome in the
+world, the from-scratch explainer, each teaching lesson, the montage
+and campaign films, plus four quick jobs (contact-sheet stills for any
+of the three big films, a voice audition, and `render_all` to rebuild
+the entire published set from a fresh clone). The launcher's smoke test drives every one of them,
 asserting that each fills the fields and produces the right ticket, so
 the "no setup" promise is checked rather than claimed.
 

@@ -111,6 +111,15 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "kilowatt hour, radiative cooling paint, and the ten "
                 "points.",
                 compose=True, segments=("whoami",)),
+    Deliverable("scratch", "dome-from-scratch-geometry-to-pixels.mp4",
+                "From scratch, for somebody who has never written code: "
+                "every calculation between one irrational number and a "
+                "lit pixel. The shape (phi, subdivision, projection, two "
+                "chord factors, a cut list) and then the picture (tubes, "
+                "normals, the vertex buffer, the camera, the view and "
+                "projection matrices, the divide by w, the viewport, the "
+                "depth buffer, culling and the lighting sum), with 18 "
+                "math screens deriving every figure on camera."),
     Deliverable("master", "domesim-master-presentation.mp4",
                 "The master presentation: the toolchain tour, the whole "
                 "construction masterclass, the frankendome, the priced "
