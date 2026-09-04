@@ -23,9 +23,11 @@ from .lesson_hype import (
     HYPE_V6_LESSON,
 )
 from .lesson_line import LINE_LESSON
+from .lesson_lookbook import LOOKBOOK_LESSON
 from .lesson_master import MASTER_LESSON
 from .lesson_scratch import SCRATCH_LESSON
 from .lesson_wedge import WEDGE_LESSON
+from .lesson_wedge_why import WEDGE_WHY_LESSON
 from .lesson_world import WORLD_LESSON
 from .lesson_world_chatgpt import WORLD_CHATGPT_LESSON
 from .lesson_zome import ZOME_LESSON
@@ -41,7 +43,8 @@ LESSONS: dict[str, Lesson] = {
                    KICKSTARTER_LESSON, KICKSTARTER_V2_LESSON,
                    MASTER_LESSON, WORLD_LESSON, WORLD_CHATGPT_LESSON,
                    SCRATCH_LESSON, WEDGE_LESSON, DRAMA_LESSON,
-                   SERIES_LESSON)
+                   SERIES_LESSON, LOOKBOOK_LESSON,
+                   WEDGE_WHY_LESSON)
 }
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key

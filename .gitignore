@@ -53,3 +53,8 @@ docs/diagrams/
 exports/scratchpad/*.raw
 exports/scratchpad/*.wav
 exports/scratchpad/*.pcm
+
+# Raw-wedge simulator output: regenerate with --fabrication, or by running the
+# tool (which saves its own config on exit).
+fabrication_package/
+dome_config.json

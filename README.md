@@ -369,7 +369,7 @@ rebuilds all of them in order, one at a time.
 
 The Masterclass is a separate ModernGL world for teaching and YouTube
 capture. It does not enter the Dome Creator site or the assembly-line factory.
-One renderer plays **five** lessons and one montage, chosen from a Lesson dropdown:
+One renderer plays every lesson below, chosen from a Lesson dropdown (24 of them at the time of writing, including six montage cuts and the micro-drama):
 
 * **`2v` - 2V Geodesic Masterclass, 14 chapters.** Reconstructs the geometry
   from phi coordinates, normalizes the parent icosahedron, animates midpoint
@@ -495,6 +495,69 @@ One renderer plays **five** lessons and one montage, chosen from a Lesson dropdo
   disagrees with its own source: the brief estimates 32 true 2x4s per
   tree and an honest packing gives 25, so the comparison is made twice
   and the film says so on camera (`two_v_demo/wedge_geometry.py`).
+* **`why` - Why Wedges: A Dome That Does Not Need A Sawmill, 39
+  chapters, about 21 minutes.** The combined cut: it borrows the
+  mechanism chapters and three math screens outright from `wedge`
+  (the member, the pinwheel joint, the shell the trees size) so the
+  two films cannot drift apart, and spends its own chapters on where
+  the method came from and what it is worth.
+
+  It opens with the **frankendome** -- forty triangles joined edge to
+  edge, deliberately strut-agnostic, with a ten-piece crown pentagon
+  instead of the usual fifteen -- and the **V bracket** that made
+  edge-to-edge joining of odd-shaped members possible. Once the
+  connector stopped caring about section, the section became a choice,
+  and the cheapest possible member turned out to be a log with three
+  saw cuts in it.
+
+  The economics are **measured, not estimated**. Two timed cutting
+  sessions: twelve wedges in two hours on ten dollars of fuel and bar
+  oil, and separately forty-two feet of rip at six inches of depth in
+  one hour. Those measured different things, so dividing one by the
+  other gives feet of cut per wedge -- **7.00 ft** -- and the geometry
+  predicts the same figure independently at **6.12 ft**, because eight
+  sectors take seven passes down a section. They agree to 12%, and the
+  gap is rolling the log, setting up and sharpening. That agreement is
+  the only reason any rate in the film is worth quoting.
+
+  One wedge from a twelve-inch trunk carries **2.69 dressed studs'
+  worth of section**; the estimate on site was 2.5 and planning uses
+  2.0. At $8.88 a stud plus tax, the rule of thumb ($10.00/wedge) and
+  the strict calculation ($10.10/wedge) land **1% apart**, because a
+  conservative multiplier and a generous length cancel. Five wedges an
+  hour is **$50/hour gross, $45 net of fuel**.
+
+  Against buying: enough studs to match the section the wedges provide,
+  **plus** the 10% you buy and reject, the 3% lost in transit, the
+  truck loads and the hours they take. **$1,476 in cash to buy this
+  dome's frame against $120 of fuel to cut it.** Fifteen sets of hands
+  are enumerated between a standing tree and a rack, and every margin
+  is inside that shelf price.
+
+  The structural chapter carries a **condition rather than a boast**.
+  Section grows with the square of the radius and bending with the
+  cube, so whether a raw sector beats a two-by-four is a question about
+  diameter. The film solves for the crossover: above **7.31 in** of
+  trunk a sector has more section than a dressed 2x4, above **9.14 in**
+  it is stiffer, above **11.00 in** it beats a full-dimension one. At
+  the twelve-inch trunks actually being cut it is at 269% of a stud's
+  area and 226% of its bending, and every interior edge carries two of
+  them. Below nine inches the argument fails, and the film says so.
+
+  Also: 88% of the tree kept split against 45% packed with rectangles;
+  three named machines leaving the chain; why a bend costs a six-foot
+  piece **2.7 times less** than a sixteen-foot stick; what turning the
+  wedge about its own axis is worth (same area to a thousandth of an
+  inch, 1.25x the section modulus); the 4.43 deg of dihedral variation
+  that lives in a key instead of in 55 bevels; and the twelve-step jig
+  whose head-end cut is never measured.
+
+  Sixteen math screens. Every geometric figure is pulled out of the
+  raw-wedge simulator at render time through
+  `two_v_demo/raw_wedge_bridge.py`; the measured figures and the
+  remaining estimates are kept in two separate declared tables and put
+  on screen before any money is discussed
+  (`two_v_demo/wedge_why_facts.py`).
 * **`drama` - EP_DOME_001, four beats, 60 seconds, shot vertical.**
   Not a lesson at all: the first episode out of the **narrative
   module**, a character-and-drama engine layered on the same renderer.
@@ -558,10 +621,11 @@ chapter lengths are measured from the synthesized speech, so changing
 a voice or a rate moves every chapter boundary after it. That is why
 each preset states voice, rate, pitch and volume explicitly.
 
-Nineteen presets ship — the master presentation, every dome in the
+Twenty-two presets ship — the master presentation, every dome in the
 world, the from-scratch explainer, the radial-wedge build, each teaching lesson, the montage
-and campaign films, plus four quick jobs (contact-sheet stills for any
-of the three big films, a voice audition, and `render_all` to rebuild
+and campaign films, the dome-house lookbook, plus five quick jobs
+(contact-sheet stills for any of the three big films or the lookbook, a
+voice audition, and `render_all` to rebuild
 the entire published set from a fresh clone). The launcher's smoke test drives every one of them,
 asserting that each fills the fields and produces the right ticket, so
 the "no setup" promise is checked rather than claimed.
@@ -578,6 +642,53 @@ voice audition/selection, measurement conventions, and video-export notes.
 The exporter also contains a compatibility audio mixer for older FFmpeg builds
 that lack `adelay`/`loudnorm`, so generated chapter audio is still assembled
 and embedded in the final MP4.
+
+## Raw Wedge Dome (`geodesic_raw_wedge_dome_dihedral.py`)
+
+A self-contained ModernGL world for the dome built out of raw log
+wedges, and for the jig that makes its joints repeatable. It is one
+file on purpose -- it is the thing you hand somebody who wants this
+dome and nothing else -- and the launcher's **Raw Wedge Dome** tab
+configures it.
+
+**The four orientations.** A 45-degree sector is not symmetric, so
+which way it faces about its own long axis is a decision, and there
+are exactly four. The panel in the bottom-right corner draws all four
+as a cross-section through **one seam**, with each stick in its own
+panel's frame, because panel-inward points in opposite directions on
+the two sides of a seam. Read as a pair, the four states are the four
+things two wedge points can do: both in toward the centre of the dome,
+both out at the sky, apart into their own triangles, or toward each
+other across the seam. Press `U` to cycle.
+
+**Two ends, two different operations.** The butt end is cut *before*
+assembly, off the jig, to the compound angle its receiving neighbour
+presents -- the same cut for every member of a family, so it batches.
+The head end is not cut at all. It arrives long, hangs off the board,
+and stays long while all three butts are pulled up tight and the
+pinwheel closes; only then does a saw run flat along a fence and take
+it off at the plane the neighbouring member has already established.
+Nothing is measured. Press `4` to switch between the long head and the
+flush-cut one, `7`/`8` to change the allowance.
+
+**The jig, one step at a time.** The fixture used to appear all at
+once, fully built and fully loaded, which made it impossible to see
+what any part of it was for. `9` and `0` now walk twelve steps: bare
+bench, triangle struck, axis rails, red/green orientation fences, the
+two cut planes, the butt cut made off the jig, the three members
+arriving one at a time (the last one backed off along its own axis,
+because a closed pinwheel captures it at both ends), the loop pulled
+up tight, the three heads flush-cut, and the finished panel leaving.
+A panel at the top right names the step, says what you are looking at,
+says what that part of the fixture physically enforces, and carries a
+legend for every colour on the bench. `L` flies the camera to the jig
+and then to each corner joint in turn.
+
+Headless modes write the whole fabrication package -- cut schedule
+(now stating for each end whether it is cut before or after assembly,
+and where), seam join schedule, a two-phase jig cut sequence, the jig
+walk-through as plain language, per-panel jig SVGs and reusable
+fixture OBJs.
 
 ## Presenter Studio (`presenter_studio.py`)
 
@@ -1033,6 +1144,103 @@ computed from the same `two_v_demo/geometry.py` used by the masterclass
 and the presentations, scaled by the radius slider. None of it is written
 down twice.
 
+## Dome interiors, the cast, and the Dome Composer (`dome_composer.py`)
+
+The rest of this project proves domes. This part furnishes one, puts
+people in it, and gives you an editor to move everything around by hand.
+(Not to be confused with Presenter Studio's Scene Composer above, which
+edits the shots of a film. This one edits the room.)
+
+**The Dome Composer** is a build-a-park editor pointed at a geodesic
+room. You hold one piece at a time — a sofa, a clothes rail, a fitting
+pod, a planter, or one of the eight characters. Two keys walk the
+categories, two more walk the pieces inside them, `R` turns the piece
+fifteen degrees, `Enter` drops it. `G` picks a placed piece back up, and
+`Z` undoes. The piece you are holding is drawn as a see-through ghost —
+green where it fits, red where it does not — with the reason written
+underneath in plain words. Press `F1` in the editor for the whole list.
+
+**The refusals are the point.** A dome has no straight walls, so how
+tall a thing can be depends on how far out it stands. Every candidate is
+measured against the *faceted* shell the renderer actually draws — a ray
+cast straight up against the hemisphere's own triangles, at the four
+corners of the piece's rotated footprint, with the tightest corner
+deciding. That is a lower ceiling than the sphere those triangles are
+inscribed in, and it is the honest one: a flat panel is a chord, so it
+hangs below the sphere it approximates. A two-metre wardrobe goes in the
+middle of a small dome and nowhere near its wall. Turn a long piece
+ninety degrees near the edge and the answer changes, because the corners
+moved. Nothing in the catalogue carries a list of legal spots; the
+geometry decides, every time, and says which rule stopped you:
+
+```
+the shell is 1.82 m here and this is 2.20 m tall
+that reaches outside the dome -- the base ring is a 10-sided polygon,
+    so between struts the building stops 0.39 m inside the circle
+hung here it would leave 1.60 m to walk under, and 2.05 m is the minimum
+she is sitting down and there is nothing under her
+```
+
+**Two sets, one catalogue.** `DOME_STORE` is sixteen metres across, lit
+flat and pale, with rails, plinths, fitting pods, a cash desk, a runway
+strip and a triple mirror. `DOME_HOME` is thirteen metres, warm and low,
+with a platform bed, a kitchen run that follows the curve, a soaking tub
+and a stove whose flue wants the crown. Forty-odd pieces in all, each one
+a footprint, a height and a builder function. Seat height, table height
+and counter height are **derived from the seated pose** — sit a figure
+down, ask where her hips landed, and that is the seat — so furniture and
+people cannot disagree about how high a chair is.
+
+**The cast** is eight women, cast deliberately wide: Ghanaian, Afro-
+Dominican, Chinese, Tamil, Turkish, Māori, Polish and Zapotec, each with
+her own skin tone, hair style, signature colour, stature, heel, resting
+expression and way of standing. No two share a tone, a hair style or a
+colour, and the module refuses to load a cast where two of them do,
+because a fast cut has to identify them.
+
+- **Hair is geometry, not a texture.** Twelve styles — an afro halo, deep
+  curls, box braids, locs, a blunt bob, a crown braid, a sleek bun with
+  laid edges, a wet-look slick-back and more — built strand by strand off
+  the scalp. Each strand leaves along the direction it grew, hands over to
+  gravity a head radius later, drapes around the skull rather than through
+  it, and carries a wave or a helix depending on the style. Hair rooted on
+  the forehead is *combed* off the face at the root, which is why nobody
+  renders with a fringe over her eyes. Length is a body landmark, so one
+  style fits every height in the cast.
+- **Clothes are lofted from the body's own cross-section.** An outfit is a
+  list of pieces — a bodice from this height to that one, a skirt to the
+  knee with this much flare, a sleeve, a heel — and every shell is built
+  from the same rings the body is, inflated. A garment therefore cannot
+  come out the wrong size for the woman wearing it. Twenty-three looks
+  across four dressed modes (poolside, going out, editorial, shop floor),
+  each pulling the wearer's own colour, so one dress on two women is still
+  recognisably two women.
+- **Every hem is a landmark**, not a number: mid-thigh, the knee, the
+  waist, the floor, resolved against the posed skeleton when the frame is
+  drawn. The same gown fits a 1.62 m woman and a 1.80 m one, and the code
+  proves it rather than claiming it.
+- **The fifth mode is the studio form** — no garment pieces at all, the
+  silhouette in her own skin tone, which is what a shop's dress form looks
+  like and what the composer shows when you cycle the clothes off a
+  figure. It carries no anatomy, because a lofted ellipse has none to
+  carry. The self-test checks that every one of the four dressed modes
+  actually covers the chest and hip bands, read off the piece list rather
+  than taken on trust, and that the form mode is the only one that does
+  not.
+
+The body itself is the same skeleton `two_v_demo/figure.py` uses to
+measure the work in lifting a panel — Drillis and Contini segment lengths,
+Winter's segment masses — with two stature fractions moved for a female
+silhouette and a surface lofted over it. Those two moved values are art
+direction and say so; everything else is the sourced table.
+
+**Where it lives:** the **Dome Composer** tab on the launcher, or
+`py -3.12 dome_composer.py`. The `look` lesson (`The Dome House Lookbook`,
+eleven chapters) plays the whole thing through the ordinary Masterclass
+renderer, exporter and narration, and its self-test runs the entire
+stack: cast, body, hair, wardrobe, figure, interiors, composer and the
+editor's pure parts, in one call.
+
 ## Local Voice Studio (`local_voice_studio.py`)
 
 Local Voice Studio is a third standalone program for recording speech you own,
@@ -1248,6 +1456,30 @@ total solar kW.
 - `dome_creator.py` — the app: renderer (normal + six-point), pattern
   shaders (shingles, solar cells, wood grain, concrete, deck planks...),
   input, and the live rebuild loop.
+
+Dome interiors and the cast (all under `two_v_demo/`):
+
+- `glam_cast.py` — the eight characters as data: skin tone, hair, colour,
+  stature, heel, resting expression, wardrobe per mode. No geometry.
+- `glam_body.py` — the female frame, the torso silhouette as a stack of
+  elliptical rings, and the landmark table (`waist`, `knee`, `floor`…)
+  that both hems and hair lengths resolve against. `torso_ring` is the
+  one description of the silhouette; the body and every garment read it.
+- `glam_hair.py` — twelve hair styles built as strands off the scalp,
+  with the combing rule that keeps hair off the face.
+- `glam_wardrobe.py` — garments as `Piece` records and one drawing
+  routine that renders any list of them, plus the coverage proof.
+- `glam_figure.py` — poses with attitude, and the one call that draws a
+  woman: body, clothes, hair, face, in that order.
+- `dome_interiors.py` — the two sets, the prop catalogue, and
+  `shell_clearance`, which is the faceted ceiling every placement is
+  measured against.
+- `scene_composer.py` — the editor's rules and state: the palette, the
+  cursor, placement checks with reasons, undo, and the JSON scene format.
+  Draws nothing.
+- `composer_app.py` — the window: orbit camera, ghost piece, the heads-up
+  display, the key map, and a headless turntable renderer.
+- `lesson_lookbook.py` — the `look` lesson that presents all of it.
 
 Presenter Studio's own modules:
 

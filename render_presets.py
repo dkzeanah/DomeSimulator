@@ -167,6 +167,11 @@ PRESETS: tuple[RenderPreset, ...] = (
            "what it actually cost.",
            compose_segments=True),
 
+    _video("look", "look", "dome-house-lookbook.mp4",
+           "Two furnished domes, a cast of eight, hair built as strands, "
+           "a wardrobe lofted from the body, and the composer refusing "
+           "a fitting pod the shell has come down on."),
+
     # -- the montages and campaign films -------------------------------
     _video("hype6", "hype6", "frankendome-montage-v6.mp4",
            "The Frankendome montage, version six: themed shells, the "
@@ -180,6 +185,21 @@ PRESETS: tuple[RenderPreset, ...] = (
            segments_include="whoami"),
 
     # -- quick jobs that are not full exports --------------------------
+    RenderPreset(
+        key="look_stills",
+        label="dome house lookbook -- contact-sheet stills",
+        summary="One still from each of the lookbook's eleven chapters, "
+                "with no narration and no video encode. The fast way to "
+                "check the cast, the wardrobe and the composer shots "
+                "before rendering the film.",
+        fields={
+            "lesson": "look",
+            "action": "shots",
+            "shots": "8,24,40,57,74,92,106,122,139,156,172",
+            "no_narration": True,
+        },
+    ),
+
     RenderPreset(
         key="master_stills",
         label="master presentation -- contact-sheet stills",
@@ -221,6 +241,16 @@ PRESETS: tuple[RenderPreset, ...] = (
                               range(20, 620, 20)),
         },
     ),
+    _video("why", "why", "why-wedges-no-sawmill.mp4",
+           "The combined wedge film: the frankendome and V brackets it "
+           "grew out of, the mechanism chapters borrowed whole from "
+           "`wedge`, and then the case -- two timed cutting sessions "
+           "cross-checked against a geometric prediction, a wedge "
+           "valued two independent ways, the store-bought overheads "
+           "nobody counts, and a structural claim given as a crossover "
+           "diameter rather than a verdict. 39 chapters, 16 math "
+           "screens, about 21 minutes."),
+
     RenderPreset(
         key="voice_audition",
         label="audition the house narration voice",

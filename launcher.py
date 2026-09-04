@@ -738,7 +738,7 @@ def main() -> int:
         ["2v", "build", "hex", "zome", "line", "cuts", "franken",
          "hype", "hype2", "hype3", "hype4", "hype5", "hype6",
          "kick", "kick2", "master", "world", "world_chatgpt",
-         "scratch", "wedge", "drama", "series"],
+         "scratch", "wedge", "why", "drama", "series"],
         "2v")
     mc_lesson.pack(fill="x", pady=3)
     action_help(body, mc_lesson, {
@@ -821,6 +821,23 @@ def main() -> int:
                  "a camera the script directs shot by shot. Render it "
                  "at 1080x1920 — the framing is computed for 9:16 and "
                  "a landscape frame throws it away.",
+        "why": "THE COMBINED WEDGE FILM, 39 chapters, about 21 "
+               "minutes. Where the method came from (the frankendome, "
+               "strut-agnostic and joined edge to edge, and the V "
+               "brackets that made it work), what it is (the mechanism "
+               "chapters and three math screens borrowed whole from "
+               "'wedge', so the two films cannot drift apart), and what "
+               "it is worth. The economics are measured rather than "
+               "estimated: two timed cutting sessions that agree with a "
+               "geometric prediction to 12 percent, a wedge priced two "
+               "independent ways that land 1 percent apart, and the "
+               "store-bought overheads nobody counts -- culls, transit "
+               "losses, truck runs and the hours they take. The "
+               "structural claim is a crossover diameter, not a "
+               "verdict: below about nine inches of trunk a wedge is "
+               "the weaker stick and the film says so. 16 math screens, "
+               "every geometric figure pulled from the raw-wedge "
+               "simulator at render time.",
         "wedge": "29 chapters on building the dome straight from the "
                  "tree: raw 45-degree log sectors as structural members, "
                  "bark face outward and pith inward, forty independent "
@@ -1278,6 +1295,305 @@ def main() -> int:
     ttk.Separator(foot).pack(fill="x")
     launch_button(foot, "Launch Local Voice Studio", go_voice_studio)
 
+    # ---- Dome Composer -------------------------------------------------
+
+    t, body, foot = scrollable_tab("Dome Composer")
+    intro(body,
+         "Furnish a dome by hand. You hold one piece at a time — a "
+         "sofa, a clothes rail, a fitting pod, or one of the eight "
+         "characters — and two keys walk the categories, two more walk "
+         "the pieces inside them, one turns it, and one drops it. The "
+         "piece you are holding is drawn as a see-through ghost: green "
+         "where it fits, red where it does not, with the reason "
+         "written underneath. The reason is always about the building: "
+         "a dome has no straight walls, so how tall a thing can be "
+         "depends on how far out it stands, and the editor measures "
+         "every piece against the real shell before it lets you put it "
+         "down. Nothing here needs typing or code — press F1 once it "
+         "opens for the full list of keys.")
+
+    section(body, "The room")
+    sc_set = LabeledCombo(body, "Which dome",
+                          ["DOME_STORE", "DOME_HOME"], "DOME_STORE")
+    sc_set.pack(fill="x", pady=3)
+    action_help(body, sc_set, {
+        "DOME_STORE": "sixteen metres across: rails, plinths, fitting "
+                      "pods, a cash desk, and room to walk a runway "
+                      "through the middle.",
+        "DOME_HOME": "thirteen metres across: a bed, a kitchen along "
+                     "the curve, a sofa, a stove whose flue wants the "
+                     "crown of the dome.",
+    })
+
+    sc_start = LabeledCombo(body, "Start from",
+                            ["furnished", "empty"], "furnished")
+    sc_start.pack(fill="x", pady=3)
+    action_help(body, sc_start, {
+        "furnished": "opens with a full room already laid out, which "
+                     "you can move, turn or delete piece by piece.",
+        "empty": "opens on a bare floor, for building one from nothing.",
+    })
+
+    sc_file = PathRow(body, "Or open a saved scene", "", mode="open",
+                      filetypes=(("Scene", "*.json"),),
+                      placeholder="e.g. two_v_demo_output/scenes/mine.json")
+    sc_file.pack(fill="x", pady=3)
+    note(body, "Leave blank to use the choices above. Scenes you save "
+               "with the S key land in two_v_demo_output/scenes.")
+
+    section(body, "What to do")
+    sc_action = LabeledCombo(body, "Action",
+                             ["run", "shots", "report", "selftest"], "run")
+    sc_action.pack(fill="x", pady=3)
+    action_help(body, sc_action, {
+        "run": "open the editor window and build. This is the normal "
+               "choice.",
+        "shots": "no window: render the room from four angles to PNG "
+                 "files and quit, for checking a layout or putting it "
+                 "in a document.",
+        "report": "no window: print the room as a list of what is in "
+                  "it, where, facing which way, and how much dome is "
+                  "over each piece.",
+        "selftest": "check the editor's rules without opening anything.",
+    })
+
+    sc_shots = PathRow(body, "Stills folder", "", mode="dir",
+                       placeholder="e.g. two_v_demo_output/scenes")
+    sc_shots.pack(fill="x", pady=3)
+    note(body, "Only used by the 'shots' action.")
+
+    sc_size = LabeledEntry(body, "Window size", "1600x950",
+                           placeholder="e.g. 1600x950")
+    sc_size.pack(fill="x", pady=3)
+    note(body, "Width by height in pixels. The window can be resized "
+               "afterwards; this is only what it opens at.")
+
+    def go_composer():
+        cfg = {"action": sc_action.get(), "set_id": sc_set.get(),
+               "start": sc_start.get()}
+        if sc_file.get():
+            cfg["load"] = sc_file.get()
+        if sc_shots.get():
+            cfg["shots_dir"] = sc_shots.get()
+        if sc_size.get():
+            cfg["size"] = sc_size.get()
+        run("dome_composer.py", "dome_composer", cfg,
+            f"Dome Composer ({sc_set.get()})")
+    ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Launch Dome Composer", go_composer)
+
+    # ---- Raw Wedge Dome ---------------------------------------------------
+
+    t, body, foot = scrollable_tab("Raw Wedge Dome")
+    intro(body,
+         "The dome built out of raw log wedges, and the jig that makes "
+         "the joints repeatable. A trunk is split like a cake into "
+         "eight 45-degree sectors and each sector is used as a "
+         "structural stick exactly as it comes off the saw — no "
+         "squaring, no edging, no planing. This tool is where you look "
+         "at what that actually means: how the wedge can be turned "
+         "four different ways in the wall, how three sticks pinwheel "
+         "into a triangle so no end is ever mitred, what happens along "
+         "a seam where two panels meet at an angle, and how one flat "
+         "jig turns all of it into forty identical panels. Walk around "
+         "the dome in first person, or step through building and using "
+         "the jig one part at a time. Nothing here needs typing or "
+         "code: press F1 once it opens for the full list of keys.")
+
+    section(body, "Action")
+    rw_action = LabeledCombo(
+        body, "Action",
+        ["run", "validate", "fabrication", "extract_resources"], "run")
+    rw_action.pack(fill="x", pady=3)
+    action_help(body, rw_action, {
+        "run": "open the 3-D world. This is the normal choice. Walk "
+               "the dome, cycle the four wedge orientations with U, "
+               "and step through the jig with 9 and 0.",
+        "validate": "no window: check the geometry in all four wedge "
+                    "orientations, print the strut lengths, the seam "
+                    "fold angles, the head-end offcut per dome and "
+                    "every step of the jig walk-through, then quit.",
+        "fabrication": "no window: write the full cut list, seam "
+                       "schedule, jig cut sequence and per-panel jig "
+                       "drawings into a fabrication_package folder, "
+                       "then quit. This is the folder you take to the "
+                       "saw.",
+        "extract_resources": "no window: write the master build "
+                             "specification and its reference images "
+                             "out beside the tool as ordinary files, "
+                             "then quit.",
+    })
+
+    section(body, "The wedge")
+    rw_orientation = LabeledCombo(
+        body, "Wedge orientation",
+        ["point_dome_in", "point_panel_in", "point_dome_out",
+         "point_panel_out"], "point_dome_in")
+    rw_orientation.pack(fill="x", pady=3)
+    action_help(body, rw_orientation, {
+        "point_dome_in": "both points aimed at the centre of the "
+                         "dome, curved bark face out at the weather. "
+                         "The default, and the one that puts the flat "
+                         "sawn faces where the seam key wants them.",
+        "point_panel_in": "the two sticks either side of a seam point "
+                          "APART, each into the middle of its own "
+                          "triangle.",
+        "point_dome_out": "both points aimed at the sky, bark face "
+                          "inward. Turns the shell into a ridged "
+                          "outside surface and swaps which sawn face "
+                          "receives the next stick's end.",
+        "point_panel_out": "the two sticks either side of a seam point "
+                           "TOWARD each other across the seam. The "
+                           "curved bark then faces the middle of the "
+                           "panel, so the end-to-side joint bears on a "
+                           "round surface rather than a flat one.",
+    })
+    note(body, "This is the rotation of the wedge about its own long "
+               "axis. Same stick, four ways up. In the world you can "
+               "cycle it live with U; the corner diagram shows what "
+               "each one does to a PAIR of sticks meeting at a seam.")
+
+    rw_trunk = LabeledEntry(body, "Trunk diameter (inches)", "8.0",
+                            placeholder="e.g. 8.0")
+    rw_trunk.pack(fill="x", pady=3)
+    note(body, "Diameter of the log the sectors are split from. This "
+               "sets how deep and how wide each stick is.")
+
+    rw_splits = LabeledEntry(body, "Splits per log", "8",
+                             placeholder="e.g. 8")
+    rw_splits.pack(fill="x", pady=3)
+    note(body, "How many sectors the round trunk is split into. Eight "
+               "gives the 45-degree wedge: halve, halve, halve again.")
+
+    rw_edge = LabeledEntry(body, "Long strut length (inches)", "72.0",
+                           placeholder="e.g. 72.0")
+    rw_edge.pack(fill="x", pady=3)
+    note(body, "Nominal length of the longer of the two geodesic "
+               "struts. Everything else in the dome scales from it.")
+
+    section(body, "The seam between two panels")
+    rw_join = LabeledCombo(body, "Seam construction",
+                           ["raw_trapezoid", "shaved_flat"],
+                           "raw_trapezoid")
+    rw_join.pack(fill="x", pady=3)
+    action_help(body, rw_join, {
+        "raw_trapezoid": "leave both sawn seam faces exactly as split "
+                         "and fill the leftover angle with a tapered "
+                         "key. No wood is machined; the key absorbs "
+                         "the difference, and the difference is not "
+                         "the same at every seam.",
+        "shaved_flat": "plane both seam faces parallel to each other "
+                       "and drop a plain rectangular key between "
+                       "them. One key section fits everywhere, at the "
+                       "cost of a machining pass on each stick.",
+    })
+
+    rw_spacer = LabeledCombo(body, "Between panels",
+                             ["rigid", "hose", "none"], "rigid")
+    rw_spacer.pack(fill="x", pady=3)
+    action_help(body, rw_spacer, {
+        "rigid": "a solid timber key in the seam. Shown in gold.",
+        "hose": "a compressible tube instead of a solid key, sized to "
+                "the largest circle that fits in the gap.",
+        "none": "nothing in the seam, so the raw gap angle at every "
+                "seam can be seen directly.",
+    })
+
+    section(body, "The jig")
+    rw_jig = CheckRow(body, "Show the fabrication jig", True)
+    rw_jig.pack(fill="x", pady=3)
+    note(body, "The flat fixture that every panel is built on, "
+               "standing beside the dome.")
+
+    rw_stage = LabeledCombo(
+        body, "Start at jig step",
+        ["1 bare bench", "2 triangle drawn", "3 axis rails",
+         "4 red/green fences", "5 the two cut planes",
+         "6 butt cut, off the jig", "7 first stick on",
+         "8 second stick", "9 last stick slides in",
+         "10 pulled up tight", "11 flush-cut the heads",
+         "12 panel off the jig"],
+        "12 panel off the jig")
+    rw_stage.pack(fill="x", pady=3)
+    note(body, "The jig can be looked at one component at a time "
+               "instead of all at once. Pick where to start; 9 and 0 "
+               "step backward and forward once the world is open, and "
+               "L flies the camera to the jig and then to each corner "
+               "joint in turn.")
+
+    rw_head = LabeledEntry(body, "Head-end overfit (inches)", "6.0",
+                           placeholder="e.g. 6.0")
+    rw_head.pack(fill="x", pady=3)
+    note(body, "The two ends of a stick are made in different ways. "
+               "The BUTT end is cut before assembly, to the angle its "
+               "neighbour presents. The HEAD end is deliberately left "
+               "this much too long, so that once all three butts are "
+               "pulled up tight it overshoots the triangle and can be "
+               "sawn off in place against the jig's fence. Any error "
+               "in stock length or butt angle leaves as offcut instead "
+               "of building up around the triangle. Press 4 in the "
+               "world to switch between the long head and the "
+               "flush-cut one.")
+
+    rw_tail = LabeledEntry(body, "Butt-end allowance (inches)", "8.0",
+                           placeholder="e.g. 8.0")
+    rw_tail.pack(fill="x", pady=3)
+    note(body, "Spare stock left past the butt cut while that cut is "
+               "being made. Shown in amber at jig step 6 only, because "
+               "that cut happens away from the assembly bench.")
+
+    section(body, "View")
+    rw_explode = LabeledEntry(body, "Panel explosion (inches)", "0",
+                              placeholder="e.g. 0")
+    rw_explode.pack(fill="x", pady=3)
+    note(body, "Pushes every triangle out along its own face so the "
+               "seams open and the keys can be seen. Zero is the real "
+               "assembled dome. This never changes anything exported.")
+
+    rw_skin = CheckRow(body, "Show panel skins", False)
+    rw_skin.pack(fill="x", pady=3)
+
+    rw_size = LabeledEntry(body, "Window size", "1600x900",
+                           placeholder="e.g. 1600x900")
+    rw_size.pack(fill="x", pady=3)
+    note(body, "Width by height in pixels. Only used by the 'run' "
+               "action; the window can be resized afterwards.")
+
+    def go_raw_wedge():
+        cfg = {"action": rw_action.get()}
+        if rw_orientation.get():
+            cfg["wedge_orientation"] = rw_orientation.get()
+        if rw_trunk.get():
+            cfg["trunk_diameter_in"] = rw_trunk.get()
+        if rw_splits.get():
+            cfg["radial_splits"] = rw_splits.get()
+        if rw_edge.get():
+            cfg["long_edge_in"] = rw_edge.get()
+        if rw_join.get():
+            cfg["seam_join_mode"] = rw_join.get()
+        if rw_spacer.get():
+            cfg["spacer_mode"] = rw_spacer.get()
+        cfg["jig_enabled"] = bool(rw_jig.get())
+        # The dropdown reads "7 first stick on"; the tool wants the index.
+        stage_label = rw_stage.get().strip()
+        if stage_label:
+            cfg["jig_stage"] = str(int(stage_label.split()[0]) - 1)
+        if rw_head.get():
+            cfg["head_overfit_in"] = rw_head.get()
+        if rw_tail.get():
+            cfg["jig_butt_hangoff_in"] = rw_tail.get()
+        if rw_explode.get():
+            cfg["panel_explode_in"] = rw_explode.get()
+        cfg["skin_enabled"] = bool(rw_skin.get())
+        if rw_size.get():
+            width, height = lc.parse_size(rw_size.get())
+            cfg["window_width"] = str(width)
+            cfg["window_height"] = str(height)
+        run("geodesic_raw_wedge_dome_dihedral.py", "raw_wedge_dome", cfg,
+            f"Raw Wedge Dome ({rw_action.get()})")
+    ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Launch Raw Wedge Dome", go_raw_wedge)
+
     # ---- Flatten utility ----------------------------------------------
 
     t, body, foot = scrollable_tab("Flatten Utility")
@@ -1310,7 +1626,7 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 8
+        expected = 10
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected, smoke_callbacks

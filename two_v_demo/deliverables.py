@@ -125,6 +125,13 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "director from a script JSON. Rendered 1080x1920 -- the "
                 "9:16 framing is the point, and a landscape render "
                 "would discard it."),
+    Deliverable("look", "dome-house-lookbook.mp4",
+                "The interiors film: two furnished domes, a cast of "
+                "eight built out of the same skeleton the lifting "
+                "lesson uses, hair modelled as strands, a wardrobe "
+                "lofted from the body's own cross-section, and the "
+                "composer refusing a fitting pod because the shell has "
+                "come down to meet it."),
     Deliverable("wedge", "eight-cuts-to-a-house.mp4",
                 "The dome built straight from the tree: raw log sectors "
                 "as structural members, forty independent pinwheel "
@@ -163,6 +170,17 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "presets, Dome Forge and Assembly Line context, plus a "
                 "per-build material breakdown, construction-event labor "
                 "breakdown and modeled direct-sale price.",
+                compose=False),
+    Deliverable("why", "why-wedges-no-sawmill.mp4",
+                "The combined cut. Where the method came from (the "
+                "frankendome and its V brackets), what it is (borrowing "
+                "the mechanism chapters and three math screens from "
+                "`wedge` so the two films cannot disagree), and what it "
+                "is worth -- from two timed cutting sessions that agree "
+                "with a geometric prediction to 12%, a wedge valued two "
+                "independent ways that land 1% apart, the store-bought "
+                "overheads nobody counts, and a structural claim stated "
+                "as a crossover diameter rather than a verdict.",
                 compose=False),
 )
 
