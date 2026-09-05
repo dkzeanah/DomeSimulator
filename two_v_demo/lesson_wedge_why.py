@@ -46,6 +46,7 @@ from .lesson_wedge import (
     SCENE_RADIUS,
 )
 from .lessons import Chapter, Lesson, math_shift, prose
+from .segments import scene_seg_franken_plain
 from .render_kit import (
     AMBER,
     CYAN,
@@ -846,61 +847,6 @@ def scene_ww_bend(app, opaque, transparent, p: float) -> None:
                f"tree, or {d['long_loss_share'] * 100:.0f}%", WHITE)
 
 
-def scene_ww_bolt(app, opaque, transparent, p: float) -> None:
-    """Two frankendome triangles bolted edge to edge, and the hardware doing it.
-
-    Drawn here rather than borrowed. The franken lesson's bracket painters were built
-    for a different camera and a different scale, and at this film's framing they read
-    as grey confetti; the point of the chapter is that you can SEE the bolt go through.
-    """
-    shift = math_shift(app)
-    open_deg = 34.0 * (1.0 - ease_in_out(clamp(p * 1.5)))
-    half = math.radians(open_deg) * 0.5
-    hinge = np.array([shift, 0.0, 2.6])
-    reach = 5.4
-    width = 3.6
-
-    # Two panel frames, hinged along the shared edge, closing as the chapter runs.
-    for sign in (-1.0, 1.0):
-        out = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
-        # An actual triangle: the shared edge along the hinge, and an apex out on the
-        # panel. Drawn as a four-bar frame it read as a rectangle, which is the one
-        # shape this whole method does not use.
-        near = hinge + np.array([0.0, -width, 0.0])
-        far = hinge + np.array([0.0, width, 0.0])
-        apex = hinge + out * reach
-        opaque.cylinder(near, far, 0.30, _fade(WOOD_DARK, 1.0), 8)
-        opaque.cylinder(near, apex, 0.30, WOOD, 8)
-        opaque.cylinder(far, apex, 0.30, WOOD, 8)
-
-    # The V bracket: one folded plate straddling the seam, and the bolts through it.
-    fold = np.array([0.0, 0.0, 0.0])
-    for offset in (-2.1, 2.1):
-        seat = hinge + np.array([0.0, offset, 0.0]) + fold
-        for sign in (-1.0, 1.0):
-            out = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
-            leaf = seat + out * 1.15 + np.array([0.0, 0.0, 0.34])
-            opaque.box(leaf, np.array([2.4, 1.1, 0.12]), STEEL)
-        # Two bolts per leaf, drawn as shanks with heads, so the fixing is legible.
-        for sign in (-1.0, 1.0):
-            out = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
-            for along in (0.65, 1.65):
-                head = seat + out * along + np.array([0.0, 0.0, 0.55])
-                tail = seat + out * along + np.array([0.0, 0.0, -0.55])
-                opaque.cylinder(head, tail, 0.075, (0.30, 0.32, 0.36, 1.0), 6)
-                opaque.cylinder(head, head + np.array([0.0, 0.0, 0.12]), 0.16,
-                                (0.72, 0.74, 0.78, 1.0), 6)
-    _label(app, hinge + np.array([0.0, 0.0, 1.5]),
-           "ONE FOLDED PLATE, FOUR BOLTS", CYAN)
-    if p > 0.45:
-        _label(app, hinge + np.array([0.0, 0.0, -4.6]),
-               "the bracket does not know or care what section it is gripping", WHITE)
-    if p > 0.7:
-        _label(app, hinge + np.array([0.0, 0.0, -5.8]),
-               "and it comes off again: hardware is a flat cost you carry\n"
-               "forward into the next, bigger dome", GREEN)
-
-
 def scene_ww_buttcut(app, opaque, transparent, p: float) -> None:
     """The compound butt cut, and the cradle that makes it repeatable."""
     shift = math_shift(app)
@@ -1059,6 +1005,198 @@ def scene_ww_mixed(app, opaque, transparent, p: float) -> None:
                f"and the key takes up the rest", WHITE)
 
 
+def scene_ww_vbracket(app, opaque, transparent, p: float) -> None:
+    """The frankendome's V bracket, seated the way it is actually used.
+
+    An earlier cut drew these as plates lying flat across the top of the seam, which is
+    not how they work at all. The V sits INSIDE the corner, in the vee between two
+    struts, with long legs running down each one and the screws spread wide along that
+    length -- the spread is what stops the joint rotating. And because the bracket only
+    ever touches the inside faces, it does not care what section it is gripping, which
+    is the whole reason the frankendome could be built out of whatever the woodlot gave.
+    """
+    shift = math_shift(app)
+    corner = np.array([shift + 4.6, 0.0, 3.0])
+    ang = math.radians(36.0)
+    dir_a = np.array([-math.cos(ang), 0.0, math.sin(ang)])
+    dir_b = np.array([-math.cos(ang), 0.0, -math.sin(ang)])
+    reach = 7.4
+
+    # Two deliberately different sections meeting at one corner: a split wedge and a
+    # sawn square. The bracket is indifferent to both.
+    _wedge_prism(opaque, corner, corner + dir_a * reach,
+                 np.array([0.0, 1.0, 0.0]), 0.52)
+    for offset in (-0.34, 0.34):
+        mid = corner + dir_b * (reach * 0.5) + np.array([0.0, offset, 0.0])
+        opaque.cylinder(corner + np.array([0.0, offset, 0.0]),
+                        corner + dir_b * reach + np.array([0.0, offset, 0.0]),
+                        0.36, WOOD, 4)
+
+    grow = ease_in_out(clamp(0.15 + p * 1.5))
+    # First bracket: long legs INSIDE the vee, screws spread along the length.
+    def leg(direction, length, lift, colour):
+        start = corner + direction * 0.55
+        end = corner + direction * length
+        opaque.cylinder(start + np.array([0.0, 0.0, lift]),
+                        end + np.array([0.0, 0.0, lift]), 0.17, colour, 4)
+        for fraction in (0.22, 0.52, 0.86):
+            at = start + (end - start) * fraction + np.array([0.0, 0.0, lift])
+            opaque.cylinder(at, at + np.array([0.0, 0.0, -0.55]), 0.055,
+                            (0.30, 0.32, 0.36, 1.0), 6)
+            opaque.cylinder(at, at + np.array([0.0, 0.0, 0.10]), 0.13,
+                            (0.74, 0.76, 0.80, 1.0), 6)
+
+    first = 3.9 * grow
+    leg(dir_a, first, 0.62, STEEL)
+    leg(dir_b, first, 0.62, STEEL)
+    _label(app, corner + np.array([-4.0, 0.0, 3.4]),
+           "THE V SITS INSIDE THE CORNER", CYAN)
+    if p > 0.35:
+        _label(app, corner + np.array([-4.4, 0.0, -3.6]),
+               "long legs, screws spread wide along the strut", WHITE)
+
+    if p > 0.55:
+        # Recursion: a longer bracket over the first one. More dome, more bracket.
+        second = 6.4 * ease_in_out(clamp((p - 0.55) * 2.4))
+        leg(dir_a, second, 1.05, (0.55, 0.58, 0.64, 1.0))
+        leg(dir_b, second, 1.05, (0.55, 0.58, 0.64, 1.0))
+        _label(app, corner + np.array([-5.0, 0.0, 4.6]),
+               "and you can keep stacking them: bigger dome, longer bracket", AMBER)
+    if p > 0.78:
+        _label(app, corner + np.array([-4.4, 0.0, -4.9]),
+               "it never touches the outside, so it does not care\n"
+               "what section it is gripping", GREEN)
+
+
+def scene_ww_joinery(app, opaque, transparent, p: float) -> None:
+    """How the WEDGE panels actually go together, which is not with V brackets.
+
+    The frankendome bracket exists to join unlike things. These panels are all alike, so
+    the joint gets simpler: glue on the mating faces, screws driven in from the far side
+    of the neighbouring member, and a bolt edge to edge through one of the seam keys.
+    """
+    shift = math_shift(app)
+    seam = _representative_seam()
+    fold = math.radians(seam.fold_angle_deg)
+    half = fold * 0.5
+    ridge = np.array([shift, 0.0, 3.4])
+    reach = 6.2
+    UNIT = 0.40
+    grow = ease_in_out(clamp(0.12 + p * 1.5))
+
+    tips = {}
+    for sign in (-1.0, 1.0):
+        inward = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
+        normal = np.array([sign * math.sin(half), 0.0, math.cos(half)])
+        far = ridge + inward * reach * grow
+        # One solid plate per panel. Three thin ribs read as loose sticks lying
+        # across the frame rather than as a surface.
+        _both_sides(opaque,
+                    ridge + np.array([0.0, -2.8, 0.0]),
+                    far + np.array([0.0, -2.8, 0.0]),
+                    far + np.array([0.0, 2.8, 0.0]),
+                    ridge + np.array([0.0, 2.8, 0.0]),
+                    _fade(MUTED, 0.55))
+        tip = ridge + inward * (seam.member_point_offset_in * UNIT)
+        tips[sign] = tip
+        outline = [
+            tip + inward * (y * UNIT) + normal * (z * UNIT)
+            for y, z in sector_section("point_dome_in").points
+        ]
+        _extrude_outline(opaque, outline, 5.4, WOOD, BARK)
+
+    # The key between the two panels, and the bolt driven through it edge to edge.
+    a, b = tips[-1.0], tips[1.0]
+    for offset in (-1.4, 1.4):
+        slice_ = np.array([0.0, offset, 0.0])
+        opaque.triangle(a + slice_, b + slice_, ridge + slice_, AMBER)
+    if p > 0.35:
+        bolt = (a + b) * 0.5 + np.array([0.0, 0.0, 0.10])
+        opaque.cylinder(bolt + np.array([0.0, -3.1, 0.0]),
+                        bolt + np.array([0.0, 3.1, 0.0]), 0.11,
+                        (0.32, 0.34, 0.38, 1.0), 6)
+        for end in (-3.1, 3.1):
+            opaque.cylinder(bolt + np.array([0.0, end, 0.0]),
+                            bolt + np.array([0.0, end * 1.06, 0.0]), 0.22,
+                            (0.76, 0.78, 0.82, 1.0), 6)
+        _label(app, bolt + np.array([0.0, 0.0, -1.4]),
+               "BOLT EDGE TO EDGE, THROUGH THE KEY", CYAN)
+
+    if p > 0.55:
+        # Glue on the mating faces, and screws from the far side of the neighbour.
+        for sign in (-1.0, 1.0):
+            inward = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
+            for fraction in (0.30, 0.62):
+                at = tips[sign] + inward * (reach * fraction * 0.42)
+                opaque.cylinder(at + np.array([0.0, -1.9, 0.35]),
+                                at + np.array([0.0, 1.9, 0.35]), 0.07,
+                                _fade(GREEN, 0.85), 5)
+                for y in (-1.2, 0.4):
+                    head = at + np.array([0.0, y, 0.95])
+                    opaque.cylinder(head, at + np.array([0.0, y + 0.5, -0.35]),
+                                    0.05, (0.30, 0.32, 0.36, 1.0), 5)
+        _label(app, ridge + np.array([0.0, 0.0, 1.6]),
+               "GLUE ON THE FACES, SCREWS IN FROM THE NEIGHBOUR'S SIDE", GREEN)
+    if p > 0.75:
+        _label(app, ridge + np.array([0.0, 0.0, -4.4]),
+               "no bracket here: these members are all alike,\n"
+               "so the joint gets to be simpler than the frankendome's", WHITE)
+
+
+def scene_ww_channel(app, opaque, transparent, p: float) -> None:
+    """The duct along every seam, shown on the simulator's own solved dome.
+
+    This chapter used to draw two hand-made sections and ask you to imagine the network.
+    The solver already builds the whole shell in this rotation, so the shell is what gets
+    drawn: 120 real members with their real seams, and the V running between every pair.
+    """
+    shift = math_shift(app)
+    row = next(r for r in ORIENTATION_FEATURES if r["orientation"] == "point_dome_out")
+    reveal = clamp(0.25 + p * 1.5)
+
+    bridge.world_batches(opaque, "point_dome_out", scene_radius=SCENE_RADIUS,
+                         parts=("wood",), origin=(shift, 0.0, 0.0))
+
+    # Trace the network itself: something moving along every seam of the real shell.
+    model = bridge.model("point_dome_out")
+    scale = SCENE_RADIUS / model.topology.sphere_radius_in
+    flow = clamp(p * 1.4)
+    seams = list(model.seams)
+    for index, seam in enumerate(seams):
+        if (index + 1) / len(seams) > reveal:
+            continue
+        start = np.asarray(seam.start, dtype=float) * scale + np.array([shift, 0.0, 0.0])
+        end = np.asarray(seam.end, dtype=float) * scale + np.array([shift, 0.0, 0.0])
+        t = ((index * 0.11) + flow) % 1.0
+        opaque.sphere(start + (end - start) * t, 0.085, _fade(CYAN, 0.95), 3, 6)
+
+    _label(app, np.array([shift, 0.0, SCENE_RADIUS + 1.9]),
+           f"EVERY SEAM IS A DUCT — {len(seams)} OF THEM, ALL CONNECTED", CYAN)
+    if p > 0.45:
+        _label(app, np.array([shift, 0.0, -1.4]),
+               f"{row['channel_in2']:.1f} in2 along "
+               f"{row['seam_length_ft']:.0f} ft of seam = "
+               f"{row['channel_ft3']:.0f} cu ft", AMBER)
+    if p > 0.68:
+        _label(app, np.array([shift, 0.0, -2.7]),
+               "air, water, wire, pipe — anywhere on the building,\n"
+               "without cutting into anything structural", WHITE)
+
+
+def scene_ww_realdome(app, opaque, transparent, p: float) -> None:
+    """The solved dome itself, wood and keys, straight out of the simulator."""
+    shift = math_shift(app)
+    reveal = clamp(0.2 + p * 1.6)
+    parts = ("wood", "rigid") if reveal > 0.55 else ("wood",)
+    bridge.world_batches(opaque, "point_dome_in", scene_radius=SCENE_RADIUS,
+                         parts=parts, origin=(shift, 0.0, 0.0))
+    _label(app, np.array([shift, 0.0, SCENE_RADIUS + 1.9]),
+           f"{FACTS['members']:.0f} MEMBERS, {FACTS['seams']:.0f} SEAMS, SOLVED", GREEN)
+    if p > 0.5:
+        _label(app, np.array([shift, 0.0, -1.5]),
+               "this is the simulator's own output, not a drawing of it", WHITE)
+
+
 SCENES = {
     "ww_open": scene_ww_open,
     "ww_round": scene_ww_round,
@@ -1074,11 +1212,16 @@ SCENES = {
     "ww_worth": scene_ww_worth,
     "ww_bend": scene_ww_bend,
     "ww_store": scene_ww_store,
-    "ww_bolt": scene_ww_bolt,
     "ww_buttcut": scene_ww_buttcut,
     "ww_keystone": scene_ww_keystone,
     "ww_channel": scene_ww_channel,
     "ww_mixed": scene_ww_mixed,
+    "ww_vbracket": scene_ww_vbracket,
+    "ww_joinery": scene_ww_joinery,
+    "ww_realdome": scene_ww_realdome,
+    # The frankendome as it actually looked, borrowed from the segment that
+    # already draws it rather than sketched again here.
+    "seg_franken_plain": scene_seg_franken_plain,
 }
 
 # Chapters borrowed whole from the two earlier films. Reusing the painters rather than
@@ -1151,30 +1294,55 @@ _AUTHORED: tuple[Chapter, ...] = (
         ),
         ("40 triangles, joined edge to edge",
          "10-piece crown pentagon, not 15"),
-        30.0, (46.0, 22.0, 20.0), "ww_bolt",
+        30.0, (36.0, 24.0, 20.0), "seg_franken_plain",
     ),
     Chapter(
         "bracket", "00", "The V bracket that made it possible",
         "One connector that does not care what it is holding.",
         (
             "Edge-to-edge joining between odd-shaped members is a bracket",
-            "problem, and most bracket types need to know what they are",
-            "gripping before you can make them.",
-            "A V bracket does not. It is one plate folded to an angle, it takes",
-            "a corner from any of the agnostic member types, and it is bolted",
-            "rather than glued or welded.",
-            "Bolted matters more than it sounds. The hardware is a flat cost you",
-            "pay once and then carry: when you outgrow the dome and build a",
-            "bigger one, the brackets and the bolts come off and go straight",
-            "into it. Only the wood is consumed, and the wood is the part that",
-            "grows back.",
+            "problem, and most bracket types need to know what they are gripping",
+            "before you can make them.",
+            "A V bracket does not. It folds to the corner angle and seats inside",
+            "the vee between two struts, with long legs running down each one and",
+            "the screws spread wide along that length. The spread is what stops",
+            "the joint rotating, and because the bracket only ever touches the",
+            "inside faces it does not care what section it has hold of.",
+            "That is exactly why the frankendome used it. I wanted to study how",
+            "different trunk-harvested strut types behaved against each other, and",
+            "this connector let me mix them freely.",
+            "It also scales by repetition. Need more corner? Add another, longer",
+            "bracket over the first. I built it that way knowing I could keep",
+            "stacking them as the domes got bigger.",
         ),
         ("folded from flat stock",
          "any member type, same corner"),
-        30.0, (40.0, 18.0, 17.0), "ww_bolt",
+        32.0, (90.0, 15.0, 21.0), "ww_vbracket",
     ),
 
     # ---------------------------------------------- the tree and the stick
+    Chapter(
+        "joinery", "00", "What holds the wedge dome together",
+        "Not brackets. These members are all alike, so the joint gets simpler.",
+        (
+            "The V bracket solves a problem the wedge build does not have. It",
+            "exists to join unlike things, and every member here is the same",
+            "shape as every other one.",
+            "So the joint gets to be simpler. Inside a triangle the members are",
+            "glued on their mating faces and screwed in from the far side of the",
+            "neighbour, so the fastening pulls the joint together rather than",
+            "hanging off it.",
+            "Between triangles, the panels bolt to each other edge to edge, and",
+            "the bolt can pass straight through one of the seam keys that was",
+            "going in anyway.",
+            "If I do end up wanting brackets on a wedge dome, they will have to",
+            "change shape to suit it. The frankendome's are the wrong tool for a",
+            "frame this uniform.",
+        ),
+        ("glued faces, screws from the neighbour's side",
+         "panels bolted edge to edge through a key"),
+        31.0, (90.0, 11.0, 19.0), "ww_joinery",
+    ),
     Chapter(
         "square", "00", "What a mill is actually for",
         "Four machines whose entire job is making a circle into a box.",
@@ -1313,6 +1481,23 @@ _AUTHORED: tuple[Chapter, ...] = (
     ),
 
     # ---------------------------------------------- the frame
+    Chapter(
+        "realdome", "00", "This is the actual solved shell",
+        "Not a drawing of the dome. The dome.",
+        (
+            "Everything you are about to see about frames, joints and seams comes",
+            "out of one solver, and this is its output rather than an artist's",
+            "impression of it.",
+            "A hundred and twenty members, each with its own compound butt cut,",
+            "its own clean vertex trim and its own place in a pinwheel. Fifty-five",
+            "interior seams, each with the key that closes it.",
+            "When a number appears on screen later in this film, it was measured",
+            "off this, not typed in beside it.",
+        ),
+        (f"{FACTS['members']:.0f} members, {FACTS['seams']:.0f} seams",
+         "rendered from the solver itself"),
+        27.0, (40.0, 24.0, 21.0), "ww_realdome",
+    ),
     Chapter(
         "panels", "00", "Forty frames, not one lattice",
         "Each triangle is finished before it meets its neighbours.",
@@ -1979,10 +2164,12 @@ def validate_wedge_why_lesson() -> None:
     for money in ("value", "overhead", "middlemen_math"):
         assert order["assumptions"] < order[money], f"{money} before its assumptions"
     # The backstory earns the method; the method earns the argument.
-    assert order["open"] < order["franken"] < order["bracket"] < order["square"]
+    assert order["open"] < order["franken"] < order["bracket"] < order["joinery"]
+    assert order["joinery"] < order["square"]
+    assert order["defects"] < order["realdome"] < order["panels"]
     assert order["square"] < order["round"] < order["yield"] < order["split"]
     assert order["split"] < order["member"] < order["sector"] < order["short"]
-    assert order["short"] < order["defects"] < order["panels"]
+    assert order["short"] < order["defects"]
     assert order["panels"] < order["pinwheel"] < order["joint"] < order["duplicate"]
     assert order["duplicate"] < order["assumptions"] < order["chain"]
     assert order["chain"] < order["mills"] < order["middlemen"]

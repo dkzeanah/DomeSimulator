@@ -483,9 +483,35 @@ FRANKEN_PLAIN = Segment(
 )
 
 
+FRANKEN_PARTY = Segment(
+    key="franken_party",
+    title="Frankendome party, after the frankendome chapter",
+    kind="sting",
+    placement="after:franken",
+    note="The same sting as 'party', anchored to a chapter slugged 'franken' rather "
+         "than dropped at the end. 'party' stays manual because lesson_hype depends "
+         "on it landing before its outro, and re-anchoring that one would quietly "
+         "remove it from two published films.",
+    scenes={"seg_party": scene_seg_party},
+    audio=(
+        AudioCue("oneshots/cheer", "franken_party", offset=0.0, gain=0.45),
+        AudioCue("stingers/airhorn", "franken_party", offset=0.05, gain=0.35),
+    ),
+    chapters=(
+        Chapter(
+            "franken_party", "00", "Frankendome",
+            "FRANKENDOME!",
+            ("Frankendome!",),
+            (), 4.0, (28.0, 24.0, 18.0), "seg_party", "hype",
+        ),
+    ),
+)
+
+
 SEGMENTS: dict[str, Segment] = {
     item.key: item
-    for item in (OUTRO, WHOAMI, CTA_SHARE, CTA_BUILD, PARTY, FRANKEN_PLAIN)
+    for item in (OUTRO, WHOAMI, CTA_SHARE, CTA_BUILD, PARTY, FRANKEN_PLAIN,
+                 FRANKEN_PARTY)
 }
 
 

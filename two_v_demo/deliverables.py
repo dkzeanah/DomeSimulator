@@ -30,6 +30,7 @@ from __future__ import annotations
 import subprocess
 import sys
 from dataclasses import dataclass
+import re
 from pathlib import Path
 
 
@@ -283,6 +284,32 @@ def deliverables_menu() -> str:
         f"{len(DELIVERABLES)}; the rest would re-synthesize"
     )
     return "\n".join(lines)
+
+
+def next_version_path(path: Path) -> Path:
+    """A free filename beside ``path``, never ``path`` itself if it exists.
+
+    Rendered output is append-only in this repository. ``foo.mp4`` becomes
+    ``foo-v2.mp4``, then ``foo-v3.mp4``; an existing ``foo-v7.mp4`` is respected, so
+    versions keep climbing rather than filling gaps and colliding with a file somebody
+    already shared.
+
+    The companion files a render writes -- narration, subtitles, the voice cache -- are
+    derived from the returned stem, so a versioned render keeps its own set and does not
+    tread on the previous one's.
+    """
+    if not path.exists():
+        return path
+    stem = path.stem
+    # Strip a version suffix already on the name so -v2 does not become -v2-v2.
+    match = re.match(r"^(.*)-v(\d+)$", stem)
+    base = match.group(1) if match else stem
+    version = 2
+    while True:
+        candidate = path.with_name(f"{base}-v{version}{path.suffix}")
+        if not candidate.exists():
+            return candidate
+        version += 1
 
 
 def validate_deliverables() -> None:

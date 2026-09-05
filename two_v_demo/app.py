@@ -1582,6 +1582,14 @@ class MasterclassApp:
         ffmpeg_path: str | None = None,
         ffprobe_path: str | None = None,
     ) -> None:
+        # Rendered output is append-only: a re-render lands beside the previous cut
+        # rather than destroying it. See CLAUDE.md and next_version_path.
+        from .deliverables import next_version_path
+        versioned = next_version_path(path)
+        if versioned != path:
+            print(f"{path.name} already exists; rendering to {versioned.name}")
+        path = versioned
+
         capture_fps = fps if render_fps is None else int(render_fps)
         if capture_fps < 1 or capture_fps > fps:
             raise ValueError("render_fps must be between 1 and the output fps")

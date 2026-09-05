@@ -69,3 +69,73 @@ def jig_stages() -> tuple[tuple[str, str, str, str], ...]:
 def seam_pair_reading(orientation: str) -> str:
     """Plain-language description of what a PAIR of points at one seam does."""
     return simulator().SEAM_PAIR_READING[orientation]
+
+
+@lru_cache(maxsize=8)
+def _world_vertex_floats(orientation: str, parts: tuple[str, ...],
+                         scene_radius: float, origin: tuple[float, float, float],
+                         alpha: float | None) -> tuple[float, ...]:
+    """The simulator's solved dome, flattened once into lesson vertex floats.
+
+    Converting eleven thousand triangles is far too slow to do inside a painter that
+    runs thirty times a second, so the conversion happens once per configuration and the
+    result is spliced straight into the batch afterwards.
+    """
+    import numpy as np
+
+    sim = simulator()
+    model_ = model(orientation)
+    meshes = sim.build_world_meshes(model_)
+    scale = scene_radius / model_.topology.sphere_radius_in
+    shift = np.asarray(origin, dtype=np.float64)
+
+    out: list[float] = []
+    for name in parts:
+        data = meshes.get(name)
+        if data is None or not hasattr(data, "indices") or len(data.indices) == 0:
+            continue
+        vertices = np.asarray(data.vertices, dtype=np.float64)
+        indices = np.asarray(data.indices, dtype=np.int64)
+        positions = vertices[:, 0:3] * scale + shift
+        normals = vertices[:, 3:6]
+        colours = vertices[:, 6:10].copy()
+        if alpha is not None:
+            colours[:, 3] = alpha
+        for index in indices:
+            i = int(index)
+            out.extend(positions[i])
+            out.extend(normals[i])
+            out.extend(colours[i])
+    return tuple(out)
+
+
+def world_batches(
+    batch,
+    orientation: str = "point_dome_in",
+    *,
+    scene_radius: float = 5.0,
+    parts: tuple[str, ...] = ("wood",),
+    origin=None,
+    alpha: float | None = None,
+) -> int:
+    """Draw the simulator's OWN solved dome into a lesson triangle batch.
+
+    The films kept re-drawing the wedge dome as a sketch while the real solved article
+    sat one import away, which is how two things that are supposed to be the same
+    building end up disagreeing about what a seam looks like.  This puts the simulator's
+    finished meshes on screen -- the actual 120 members with their compound butt cuts,
+    their seam keys and their clean vertex trims -- in the lesson renderer's own format.
+
+    ``parts`` names batches from :func:`build_world_meshes`: ``wood`` is the frame,
+    ``rigid`` the seam keys, ``head_overfit`` the stock that is flush-cut away, ``nodes``
+    the vertex markers.
+
+    Returns the triangle count, so a caller can assert it drew something rather than
+    silently rendering an empty frame.
+    """
+    key_origin = (0.0, 0.0, 0.0) if origin is None else (
+        float(origin[0]), float(origin[1]), float(origin[2]))
+    floats = _world_vertex_floats(orientation, tuple(parts), float(scene_radius),
+                                  key_origin, alpha)
+    batch.vertices.extend(floats)
+    return len(floats) // 30
