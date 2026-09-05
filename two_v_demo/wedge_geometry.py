@@ -302,6 +302,17 @@ class PinwheelMember:
     ``tail`` is the end that runs past the mathematical vertex and
     receives the previous member; ``head`` is the end cut square against
     the side of the next member.  Both are square crosscuts.
+
+    .. warning::
+
+       That square-crosscut result belongs to THIS model and not to the raw-wedge
+       build.  Here a member is a rectangular band lying with its bark face on the
+       edge line, and the ends come out square.  Solve the same pinwheel with a real
+       45-degree log sector -- see ``geodesic_raw_wedge_dome_dihedral.py`` and
+       :func:`two_v_demo.wedge_why_facts.butt_cut_model` -- and the butt is a
+       *compound* cut: a mitre of 21 to 34 degrees plus a bevel of exactly half the
+       sector angle.  ``eight-cuts-to-a-house`` narrates the square-crosscut version.
+       If that film is ever re-cut, this is the line to revisit.
     """
 
     face: tuple[int, int, int]

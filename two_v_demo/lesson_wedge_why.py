@@ -30,7 +30,6 @@ import numpy as np
 
 from . import raw_wedge_bridge as bridge
 from .geometry import normalize
-from .lesson_franken import SCENES as FRANKEN_SCENES
 from .lesson_wedge import (
     SCENES as WEDGE_SCENES,
     BARK,
@@ -90,9 +89,15 @@ from .wedge_why_facts import (
     sector_at_diameter,
     wedge_value_model,
     sector_section,
+    butt_cut_model,
+    mixed_diameter_model,
+    orientation_features,
     steps_assumptions,
+    steps_buttcut,
     steps_close,
     steps_defects,
+    steps_features,
+    steps_mixed,
     steps_dihedral,
     steps_jig,
     steps_middlemen,
@@ -117,6 +122,9 @@ PLAN = build_plan()
 MEASURED = {name: value for name, value, _u, _w in MEASURED_CONSTANTS}
 ASSUMED = {name: value for name, value, _u, _w in ASSUMED_CONSTANTS}
 RATE_MEASURED = MEASURED
+BUTT_CUT = butt_cut_model()
+ORIENTATION_FEATURES = orientation_features()
+MIXED = mixed_diameter_model()
 
 # One scene inch per real inch would put a 72-inch member off the end of the world, so
 # the drawings share the earlier film's scale: the shell is five units across.
@@ -142,10 +150,18 @@ def _sector_outline(orientation: str, scale: float) -> list[np.ndarray]:
     return [np.array([y * scale, 0.0, z * scale]) for y, z in section.points]
 
 
-def _sector_outline_at(diameter_in: float, scale: float) -> list[np.ndarray]:
-    """The raw sector at any trunk diameter, in scene units, in the XZ plane."""
+def _sector_outline_at(diameter_in: float, scale: float,
+                       point_out: bool = False) -> list[np.ndarray]:
+    """The raw sector at any trunk diameter, in scene units, in the XZ plane.
+
+    ``sector_at_diameter`` always returns the point-at-origin, arc-toward-+Z form,
+    which is the DOME-IN rotation. ``point_out`` flips it for the chapters that argue
+    about pointing the wedge at the sky, so the picture cannot illustrate the opposite
+    of what the narration claims.
+    """
     section = sector_at_diameter(diameter_in)
-    return [np.array([y * scale, 0.0, z * scale]) for y, z in section.points]
+    flip = -1.0 if point_out else 1.0
+    return [np.array([y * scale, 0.0, z * scale * flip]) for y, z in section.points]
 
 
 def _extrude_outline(batch, outline, depth: float, colour, edge_colour=None) -> None:
@@ -830,6 +846,219 @@ def scene_ww_bend(app, opaque, transparent, p: float) -> None:
                f"tree, or {d['long_loss_share'] * 100:.0f}%", WHITE)
 
 
+def scene_ww_bolt(app, opaque, transparent, p: float) -> None:
+    """Two frankendome triangles bolted edge to edge, and the hardware doing it.
+
+    Drawn here rather than borrowed. The franken lesson's bracket painters were built
+    for a different camera and a different scale, and at this film's framing they read
+    as grey confetti; the point of the chapter is that you can SEE the bolt go through.
+    """
+    shift = math_shift(app)
+    open_deg = 34.0 * (1.0 - ease_in_out(clamp(p * 1.5)))
+    half = math.radians(open_deg) * 0.5
+    hinge = np.array([shift, 0.0, 2.6])
+    reach = 5.4
+    width = 3.6
+
+    # Two panel frames, hinged along the shared edge, closing as the chapter runs.
+    for sign in (-1.0, 1.0):
+        out = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
+        # An actual triangle: the shared edge along the hinge, and an apex out on the
+        # panel. Drawn as a four-bar frame it read as a rectangle, which is the one
+        # shape this whole method does not use.
+        near = hinge + np.array([0.0, -width, 0.0])
+        far = hinge + np.array([0.0, width, 0.0])
+        apex = hinge + out * reach
+        opaque.cylinder(near, far, 0.30, _fade(WOOD_DARK, 1.0), 8)
+        opaque.cylinder(near, apex, 0.30, WOOD, 8)
+        opaque.cylinder(far, apex, 0.30, WOOD, 8)
+
+    # The V bracket: one folded plate straddling the seam, and the bolts through it.
+    fold = np.array([0.0, 0.0, 0.0])
+    for offset in (-2.1, 2.1):
+        seat = hinge + np.array([0.0, offset, 0.0]) + fold
+        for sign in (-1.0, 1.0):
+            out = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
+            leaf = seat + out * 1.15 + np.array([0.0, 0.0, 0.34])
+            opaque.box(leaf, np.array([2.4, 1.1, 0.12]), STEEL)
+        # Two bolts per leaf, drawn as shanks with heads, so the fixing is legible.
+        for sign in (-1.0, 1.0):
+            out = np.array([sign * math.cos(half), 0.0, -math.sin(half)])
+            for along in (0.65, 1.65):
+                head = seat + out * along + np.array([0.0, 0.0, 0.55])
+                tail = seat + out * along + np.array([0.0, 0.0, -0.55])
+                opaque.cylinder(head, tail, 0.075, (0.30, 0.32, 0.36, 1.0), 6)
+                opaque.cylinder(head, head + np.array([0.0, 0.0, 0.12]), 0.16,
+                                (0.72, 0.74, 0.78, 1.0), 6)
+    _label(app, hinge + np.array([0.0, 0.0, 1.5]),
+           "ONE FOLDED PLATE, FOUR BOLTS", CYAN)
+    if p > 0.45:
+        _label(app, hinge + np.array([0.0, 0.0, -4.6]),
+               "the bracket does not know or care what section it is gripping", WHITE)
+    if p > 0.7:
+        _label(app, hinge + np.array([0.0, 0.0, -5.8]),
+               "and it comes off again: hardware is a flat cost you carry\n"
+               "forward into the next, bigger dome", GREEN)
+
+
+def scene_ww_buttcut(app, opaque, transparent, p: float) -> None:
+    """The compound butt cut, and the cradle that makes it repeatable."""
+    shift = math_shift(app)
+    c = BUTT_CUT
+    reveal = ease_in_out(clamp(0.1 + p * 1.6))
+
+    # The receiving member, lying across, presenting the sloped face the butt lands on.
+    across = np.array([shift - 1.0, 0.0, 5.0])
+    _wedge_prism(opaque, across + np.array([0.0, -4.2, 0.0]),
+                 across + np.array([0.0, 4.2, 0.0]),
+                 np.array([0.0, 0.0, 1.0]), 0.62)
+
+    # The terminating member running into it, with the point reaching further than the
+    # bark corner by the solved axial run.
+    run = c["axial_run_max_in"] * 0.42
+    start = across + np.array([5.8, 0.0, 0.0])
+    _wedge_prism(opaque, start, across + np.array([0.9, 0.0, 0.0]),
+                 np.array([0.0, 0.0, 1.0]), 0.62)
+    if reveal > 0.35:
+        # The offcut the compound removes: the wedge of stock between the square end
+        # and the finished plane.
+        _wedge_prism(opaque, across + np.array([0.9, 0.0, 0.0]),
+                     across + np.array([0.9 - run, 0.0, 0.0]),
+                     np.array([0.0, 0.0, 1.0]), 0.625,
+                     wood=_fade(OFFCUT, 0.85), bark=_fade(OFFCUT, 0.7))
+        _label(app, across + np.array([2.4, 0.0, 1.6]),
+               f"the point reaches {c['axial_run_min_in']:.2f}-"
+               f"{c['axial_run_max_in']:.2f} in further than the bark corner",
+               OFFCUT)
+
+    _label(app, across + np.array([3.2, 0.0, 2.6]),
+           f"MITRE {c['max_mitre_deg']:.2f} deg   BEVEL {c['bevel_deg']:.2f} deg",
+           AMBER)
+
+    if p > 0.5:
+        # The cradle: a V that holds the wedge on one sawn face at a known roll.
+        cradle = np.array([shift - 1.0, 0.0, 0.7])
+        opaque.box(cradle, np.array([9.0, 5.0, 0.5]), (0.26, 0.29, 0.33, 1.0))
+        for sign in (-1.0, 1.0):
+            plate = cradle + np.array([0.0, sign * 1.15, 0.95])
+            opaque.box(plate, np.array([8.4, 0.22, 1.5]),
+                       RED if sign < 0 else GREEN)
+        _label(app, cradle + np.array([0.0, 0.0, 2.4]),
+               "THE CRADLE: ONE SAWN FACE DOWN, POINT AGAINST THE FENCE", STEEL)
+        _label(app, cradle + np.array([0.0, 0.0, -1.6]),
+               f"bevel locked at {c['bevel_deg']:.1f} deg for all "
+               f"{c['members']:.0f} members  ·  "
+               f"{len(c['mitres'])} mitre stops", WHITE)
+
+
+def scene_ww_keystone(app, opaque, transparent, p: float) -> None:
+    """Point outward: the panel opening tapers, and a panel drops in and stops."""
+    shift = math_shift(app)
+    row = next(r for r in ORIENTATION_FEATURES if r["orientation"] == "point_dome_out")
+    scale = SECTION_SCALE * 1.35
+    drop = ease_in_out(clamp(p * 1.5))
+
+    # Two members either side of an opening, points to the sky, so the gap between
+    # them narrows going down: the opening is wider outside than inside.
+    for sign in (-1.0, 1.0):
+        outline = [
+            np.array([point[0] * sign, point[1], point[2]])
+            + np.array([shift + sign * 2.5, 0.0, 3.2])
+            for point in _sector_outline_at(FACTS["trunk_diameter_in"], scale,
+                                            point_out=True)
+        ]
+        _extrude_outline(opaque, outline, 6.0, WOOD, BARK)
+
+    # The panel, falling in from above and stopping on the lip.
+    rest_z = 2.5
+    start_z = 7.4
+    z = start_z + (rest_z - start_z) * drop
+    opaque.box(np.array([shift, 0.0, z]), np.array([3.4, 5.4, 0.5]),
+               _fade(CYAN, 0.85))
+    _label(app, np.array([shift, 0.0, z + 0.9]), "PANEL", CYAN)
+
+    _label(app, np.array([shift, 0.0, 4.9]),
+           f"OPENING IS {row['lip_in']:.2f} IN WIDER OUTSIDE THAN IN", AMBER)
+    if drop > 0.85:
+        _label(app, np.array([shift, 0.0, -1.3]),
+               "it seats on the lip and cannot fall through -- a keystone", GREEN)
+    if p > 0.7:
+        _label(app, np.array([shift, 0.0, -2.6]),
+               "so a panel is a swappable part: glazing, a vent, an air\n"
+               "conditioner, shelving, a whole fitted appliance", WHITE)
+
+
+def scene_ww_channel(app, opaque, transparent, p: float) -> None:
+    """The V left along every seam, and what it is good for."""
+    shift = math_shift(app)
+    row = next(r for r in ORIENTATION_FEATURES if r["orientation"] == "point_dome_out")
+    gap = math.radians((row["gap_min_deg"] + row["gap_max_deg"]) * 0.5)
+    half = gap * 0.5
+    scale = SECTION_SCALE * 1.5
+    ridge = np.array([shift, 0.0, 3.2])
+    flow = clamp(p * 1.6)
+
+    for sign in (-1.0, 1.0):
+        outline = [
+            np.array([point[0] * sign, point[1], point[2]])
+            + ridge + np.array([sign * math.sin(half) * 3.4, 0.0, -2.4])
+            for point in _sector_outline_at(FACTS["trunk_diameter_in"], scale,
+                                            point_out=True)
+        ]
+        _extrude_outline(opaque, outline, 8.0, WOOD, BARK)
+
+    # Something moving along it, because a duct nobody uses is just a gap.
+    for index in range(7):
+        t = ((index / 7.0) + flow) % 1.0
+        y = -4.0 + t * 8.0
+        opaque.sphere(ridge + np.array([0.0, y, -0.5]), 0.26, _fade(CYAN, 0.9), 4, 8)
+    _label(app, ridge + np.array([0.0, 0.0, 1.3]),
+           f"SEAM V {row['gap_min_deg']:.0f}-{row['gap_max_deg']:.0f} DEG", CYAN)
+    _label(app, ridge + np.array([0.0, 0.0, -4.6]),
+           f"{row['channel_in2']:.1f} in2 along {row['seam_length_ft']:.0f} ft "
+           f"of seam = {row['channel_ft3']:.0f} cu ft", AMBER)
+    if p > 0.55:
+        _label(app, ridge + np.array([0.0, 0.0, -5.9]),
+               "every seam meets every other at a vertex, so it is one\n"
+               "connected network: air, water, wire, pipe", WHITE)
+
+
+def scene_ww_mixed(app, opaque, transparent, p: float) -> None:
+    """One panel built from three different trees."""
+    shift = math_shift(app)
+    m = MIXED
+    scale = SECTION_SCALE * 0.62
+    reveal = clamp(0.4 + p * 1.4)
+
+    diameters = (m["low_in"], (m["low_in"] + m["high_in"]) * 0.5, m["high_in"])
+    corners = [
+        np.array([shift - 4.4, -3.2, 0.9]),
+        np.array([shift + 4.4, -2.4, 0.9]),
+        np.array([shift - 0.3, 4.0, 0.9]),
+    ]
+    for index, diameter in enumerate(diameters):
+        if (index + 1) / 3.0 > reveal:
+            continue
+        a, b = corners[index], corners[(index + 1) % 3]
+        direction = normalize(b - a)
+        _wedge_prism(opaque, a - direction * 0.3, b + direction * 0.3,
+                     np.array([0.0, 0.0, 1.0]), diameter * 0.5 * scale)
+        mid = (a + b) * 0.5
+        _label(app, mid + np.array([0.0, 0.0, diameter * 0.5 * scale + 0.7]),
+               f'{diameter:.1f} in', AMBER if index == 2 else MUTED)
+
+    _label(app, np.array([shift, 0.0, 5.6]),
+           "ONE PANEL, THREE DIFFERENT TREES", GREEN)
+    if p > 0.4:
+        _label(app, np.array([shift, 0.0, -1.6]),
+               f"not one angle changes -- fold stays "
+               f"{m['fold_min']:.2f}-{m['fold_max']:.2f} deg", CYAN)
+    if p > 0.65:
+        _label(app, np.array([shift, 0.0, -2.9]),
+               f"the surface steps by up to {m['surface_step_in']:.2f} in,\n"
+               f"and the key takes up the rest", WHITE)
+
+
 SCENES = {
     "ww_open": scene_ww_open,
     "ww_round": scene_ww_round,
@@ -845,6 +1074,11 @@ SCENES = {
     "ww_worth": scene_ww_worth,
     "ww_bend": scene_ww_bend,
     "ww_store": scene_ww_store,
+    "ww_bolt": scene_ww_bolt,
+    "ww_buttcut": scene_ww_buttcut,
+    "ww_keystone": scene_ww_keystone,
+    "ww_channel": scene_ww_channel,
+    "ww_mixed": scene_ww_mixed,
 }
 
 # Chapters borrowed whole from the two earlier films. Reusing the painters rather than
@@ -855,10 +1089,6 @@ BORROWED_SCENES = {
     for name in ("wg_mill", "wg_split", "wg_section", "wg_short", "wg_explode",
                  "wg_pinwheel", "wg_corner", "wg_pair", "wg_scale")
 }
-BORROWED_SCENES.update({
-    name: FRANKEN_SCENES[name]
-    for name in ("fk_triangle", "fk_bracket_fitted")
-})
 SCENES.update(BORROWED_SCENES)
 
 # Math screens borrowed from `eight-cuts-to-a-house`. They measure the member, the
@@ -921,7 +1151,7 @@ _AUTHORED: tuple[Chapter, ...] = (
         ),
         ("40 triangles, joined edge to edge",
          "10-piece crown pentagon, not 15"),
-        30.0, (32.0, 24.0, 20.0), "fk_triangle",
+        30.0, (46.0, 22.0, 20.0), "ww_bolt",
     ),
     Chapter(
         "bracket", "00", "The V bracket that made it possible",
@@ -930,16 +1160,18 @@ _AUTHORED: tuple[Chapter, ...] = (
             "Edge-to-edge joining between odd-shaped members is a bracket",
             "problem, and most bracket types need to know what they are",
             "gripping before you can make them.",
-            "A V bracket does not. Folded from flat stock, it takes a corner",
-            "from any of the agnostic member types, which is hard to achieve",
-            "with anything else at the moment.",
-            "Once the connector stopped caring about section, the obvious next",
-            "question was what the cheapest possible member is. The answer was",
-            "a log with three saw cuts in it.",
+            "A V bracket does not. It is one plate folded to an angle, it takes",
+            "a corner from any of the agnostic member types, and it is bolted",
+            "rather than glued or welded.",
+            "Bolted matters more than it sounds. The hardware is a flat cost you",
+            "pay once and then carry: when you outgrow the dome and build a",
+            "bigger one, the brackets and the bolts come off and go straight",
+            "into it. Only the wood is consumed, and the wood is the part that",
+            "grows back.",
         ),
         ("folded from flat stock",
          "any member type, same corner"),
-        28.0, (26.0, 20.0, 16.0), "fk_bracket_fitted",
+        30.0, (40.0, 18.0, 17.0), "ww_bolt",
     ),
 
     # ---------------------------------------------- the tree and the stick
@@ -1105,15 +1337,17 @@ _AUTHORED: tuple[Chapter, ...] = (
             "Inside each triangle the three members run as a same-handed",
             "pinwheel. Every member's end lands on the flat side of the next",
             "one, the same way round for all three.",
-            "Nothing is mitred, coped or shaved to a point. The mathematical",
-            "corner of the triangle becomes a reference point that no stick",
-            "actually reaches.",
-            "That is the move that makes raw split wood viable. A wedge already",
-            "has flat sawn faces; the pinwheel is the joint that only ever asks",
-            "for the faces it already has.",
+            "What that removes is the shared vertex. No two ends ever meet",
+            "each other, nothing is coped, and no stick is shaved to a point.",
+            "The mathematical corner becomes a reference that no member reaches.",
+            "What it does not remove is the cut. Every butt still has to be",
+            "shaped to land flat on the side of the next member, and that side",
+            "is tilted two ways at once. I have said elsewhere that this frame",
+            "has no mitres in it. That was wrong, and the next chapter is the",
+            "correction.",
         ),
         ("end to side, three times round",
-         "the corner is a reference, not a meeting"),
+         "no shared vertex -- but the butt is still a compound cut"),
         29.0, (22.0, 18.0, 14.0), "wg_pinwheel",
     ),
     _borrowed(
@@ -1129,6 +1363,43 @@ _AUTHORED: tuple[Chapter, ...] = (
             "panels do not fight each other at a node.",
         ),
         wf_steps_pinwheel(), 34.0, (22.0, 18.0, 14.0), "wg_corner",
+    ),
+    Chapter(
+        "buttcut", "00", "The cut I said did not exist",
+        "The trickiest operation in the build, and I skipped past it.",
+        (
+            "In an earlier version of this film I said nothing in this frame is",
+            "mitred. That is not true, and it is the sort of error that makes",
+            "somebody trust a method and then be ambushed by it at the bench.",
+            "Every butt end has to be shaped to sit flat on the sloped side of",
+            "the member it lands on. That means an angle across the stick and an",
+            "angle through it, at once. It is a compound cut, it is the hardest",
+            "thing in the build, and without a fixture it is gauged by eye.",
+            "The cut also runs a long way down the member, because the face it",
+            "lands on is itself leaning away. The sector's point has to reach",
+            "further than its bark corner, so the blank is long on the point",
+            "side and the saw is walked up from the short one.",
+        ),
+        (f"bevel {BUTT_CUT['bevel_deg']:.2f} deg on every member",
+         f"{len(BUTT_CUT['mitres'])} mitre settings in the whole shell"),
+        33.0, (58.0, 20.0, 23.0), "ww_buttcut",
+    ),
+    _math(
+        "buttcut_math", "How many settings it really takes",
+        "The correction, and then the number that rescues it.",
+        (
+            "Here is the compound cut, solved rather than described. Two things",
+            "fall out of it that turn gauging by hand into a fixture.",
+            "The bevel is identical on every member in the dome, and it is",
+            "exactly half the sector angle. It is set by how the log was split,",
+            "not by where the member sits in the shell, so you set it once and",
+            "never touch it again.",
+            "And the mitre takes only three values across all hundred and twenty",
+            "members, all of them inside the swing of a common saw. So the",
+            "cradle holds one sawn face down with the point against a fence, the",
+            "bevel stays locked, and there are three stops.",
+        ),
+        steps_buttcut(), 40.0, (58.0, 20.0, 24.0), "ww_buttcut",
     ),
     Chapter(
         "duplicate", "00", "Neighbours never share a stick",
@@ -1390,6 +1661,63 @@ _AUTHORED: tuple[Chapter, ...] = (
          "same wood, different depth under load"),
         30.0, (88.0, 11.0, 24.0), "ww_turn",
     ),
+    Chapter(
+        "keystone", "00", "A panel that cannot fall through",
+        "Point the wedge outward and the opening tapers.",
+        (
+            "Here is the part that made me stop thinking of these as struts and",
+            "start thinking of them as a chassis.",
+            "Turn every member so its pith faces out and its fat bark faces in.",
+            "The opening in the middle of each triangle is now wider at the",
+            "outside than the inside, because each member gets wider as it goes",
+            "inward. A panel dropped in from outside seats on that taper and is",
+            "physically stopped. It is a keystone.",
+            "Which means a panel is not cladding. It is a swappable module. You",
+            "want an air conditioner: you attach one to a panel and swap the",
+            "panel. Shelving, glazing, a vent, a whole fitted appliance -- all of",
+            "it becomes something you pop in and out.",
+        ),
+        (f"opening {ORIENTATION_FEATURES[2]['lip_in']:.2f} in wider outside",
+         "panels become swappable modules"),
+        32.0, (72.0, 18.0, 20.0), "ww_keystone",
+    ),
+    Chapter(
+        "channel", "00", "A vein through the whole shell",
+        "The same rotation leaves a duct along every seam.",
+        (
+            "That rotation does something else for free. With the points facing",
+            "out, the two sawn faces either side of a seam open away from each",
+            "other, and they leave a continuous V running the length of every",
+            "seam in the dome.",
+            "Every seam meets every other one at a vertex, so it is not a set of",
+            "grooves. It is one connected network through the entire shell.",
+            "Fill it with key and it is a joint. Leave some of it and it is a",
+            "duct: air moved between outside and inside, water, wire, pipe, run",
+            "anywhere on the building without cutting into anything structural.",
+        ),
+        (f"{ORIENTATION_FEATURES[2]['channel_in2']:.1f} in2 along "
+         f"{ORIENTATION_FEATURES[2]['seam_length_ft']:.0f} ft of seam",
+         f"{ORIENTATION_FEATURES[2]['channel_ft3']:.0f} cu ft, all connected"),
+        31.0, (86.0, 12.0, 18.0), "ww_channel",
+    ),
+    _math(
+        "features", "Four rotations, four buildings",
+        "Where the panel is caught, where the services run, what the saw does.",
+        (
+            "Stiffness was one axis of this choice and it is already covered.",
+            "Here are the others, measured off the same cross-section.",
+            "Point out and a panel is caught from outside with the conduit in",
+            "the weather. Point in and it is caught from inside with the",
+            "services in the warm. Turn it sideways and the opening goes",
+            "parallel: no lip, panels held by fixings, but the sawn faces come",
+            "much closer to flat, which is what sheathing wants to land on.",
+            "And one of the four does something I did not expect until the solve",
+            "printed it. Turned sideways with the points facing each other across",
+            "the seam, the butt cut's bevel goes to zero. The hardest cut in the",
+            "build becomes a plain mitre.",
+        ),
+        steps_features(), 42.0, (84.0, 14.0, 22.0), "ww_turn",
+    ),
     _math(
         "orientation", "What the rotation is worth",
         "The same area, turned four ways, measured each time.",
@@ -1405,6 +1733,46 @@ _AUTHORED: tuple[Chapter, ...] = (
             "both flat sawn faces where the seam key wants them.",
         ),
         steps_orientation(), 36.0, (86.0, 12.0, 26.0), "ww_turn",
+    ),
+    Chapter(
+        "mixed", "00", "A dome from whatever the woodlot gives",
+        "I need a house, not a reference standard for symmetry.",
+        (
+            "Everything so far assumed one trunk diameter. Trees do not sort",
+            "themselves, and mine run ten to fifteen inches.",
+            "So solve the same dome at both ends of that range. What moves is",
+            "much less than you would think, and what does move lands somewhere",
+            "harmless.",
+            "Not one angle changes. The fold between panels is a property of the",
+            "subdivision and has never heard of the log. What changes is how far",
+            "each member sits back from its ideal edge, and therefore how wide",
+            "the key between two panels has to be -- which is the one part that",
+            "was already variable.",
+            "The surface ends up slightly restless where a thin member meets a",
+            "fat one. I am building somewhere to live, not something a friend",
+            "can hold a straightedge against.",
+        ),
+        (f"{MIXED['low_in']:.0f}-{MIXED['high_in']:.0f} in logs, "
+         "not one angle changes",
+         f"surface steps up to {MIXED['surface_step_in']:.2f} in"),
+        33.0, (48.0, 26.0, 20.0), "ww_mixed",
+    ),
+    _math(
+        "mixed_math", "What actually moves",
+        "The same shell solved at both ends of the range.",
+        (
+            "The fold angles come out identical to six decimal places at both",
+            "ends, which is the whole argument in one line: the geodesic solution",
+            "does not know what a log is.",
+            "The blank length barely shifts. The offset and the key take up the",
+            "rest, and the key was already absorbing the dihedral spread, so it",
+            "is doing one more job it was already shaped for.",
+            "And the strength question is settled by the thinnest member on the",
+            "building, not the average. At ten inches a sector still clears the",
+            "crossover, so every log in the range is stiffer than the stud it",
+            "replaces.",
+        ),
+        steps_mixed(), 40.0, (48.0, 26.0, 20.0), "ww_mixed",
     ),
     Chapter(
         "fold", "00", "Why there is a key in every seam",

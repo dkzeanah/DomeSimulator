@@ -39,8 +39,12 @@ import math
 import re
 from functools import lru_cache
 
+import numpy as np
+
 from . import raw_wedge_bridge as bridge
-from .hubless_geometry import hubless_summary
+# TYPICAL_MITRE_SAW_MAX_DEG is shared with the hubless lesson so the two films agree
+# about what a shop can actually set on a saw.
+from .hubless_geometry import TYPICAL_MITRE_SAW_MAX_DEG, hubless_summary
 from .wedge_geometry import (
     DEFAULT_LOG,
     SECTOR_ANGLE_DEG,
@@ -661,6 +665,207 @@ def structure_model() -> dict[str, float]:
     }
 
 
+
+
+# ======================================================================
+# The butt cut: the hardest operation in the build, and the one the
+# earlier cut of this film wrongly said did not exist
+# ======================================================================
+
+@lru_cache(maxsize=8)
+def butt_cut_model(orientation: str = "point_dome_in") -> dict:
+    """The compound cut that lands one member's end on the next member's side.
+
+    THIS IS A MITRE, and an earlier cut of this film said it was not. The pinwheel
+    removes the *shared vertex* -- no stick is coped or shaved to a point, and no two
+    ends meet each other -- but the butt end is still a compound cut, and it is the
+    trickiest operation in the whole build.
+
+    Two things come out of the solve that make it jiggable rather than hand-fitted:
+
+    * the BEVEL is the same on every member in the dome, and equals half the sector
+      angle. It is set by how the log was split, not by where the member sits in the
+      shell, so it is set once and never touched again;
+    * the MITRE takes only a handful of values across all 120 members.
+
+    The cut also runs a long way along the axis, because it lands on a face that is
+    itself tilted: the sector's point reaches further than its bark corner by
+    ``axial_run_in``. That is why the blank has to be long on that side, and it is the
+    part that gets gauged by eye when there is no fixture.
+    """
+    sim = bridge.simulator()
+    model = bridge.model(orientation)
+    local = sim._geometry_sector_local_points(model.config)
+
+    settings: dict[tuple[float, float], int] = {}
+    runs: list[float] = []
+    leads: set[int] = set()
+    trails: set[int] = set()
+    for member in model.members:
+        _, _, _, mitre, bevel = sim._cut_plane_components(member, member.butt_plane_normal)
+        key = (round(mitre, 3), round(bevel, 3))
+        settings[key] = settings.get(key, 0) + 1
+
+        origin = member.nominal_start + member.point_offset_in * member.inward
+        along: list[float] = []
+        for (y, z), point in zip(local, member.butt_contact_points):
+            generator = origin + y * member.inward + z * member.face_normal
+            along.append(float(np.dot(point - generator, member.tangent)))
+        runs.append(max(along) - min(along))
+        leads.add(int(max(range(len(along)), key=along.__getitem__)))
+        trails.add(int(min(range(len(along)), key=along.__getitem__)))
+
+    bevels = {bevel for _mitre, bevel in settings}
+    mitres = sorted({abs(mitre) for mitre, _bevel in settings})
+    recipes = {sim._member_recipe_signature(member) for member in model.members}
+    return {
+        "orientation": orientation,
+        "members": float(len(model.members)),
+        "settings": tuple(sorted(
+            ((mitre, bevel, count) for (mitre, bevel), count in settings.items()),
+            key=lambda row: -row[2])),
+        "setting_count": float(len(settings)),
+        "mitres": tuple(mitres),
+        "bevel_deg": float(next(iter(bevels))) if len(bevels) == 1 else float("nan"),
+        "bevel_is_constant": len(bevels) == 1,
+        "half_sector_deg": 180.0 / model.config.radial_splits,
+        "max_mitre_deg": max(mitres),
+        "within_common_saw": max(mitres) <= TYPICAL_MITRE_SAW_MAX_DEG,
+        "saw_limit_deg": TYPICAL_MITRE_SAW_MAX_DEG,
+        "axial_run_min_in": min(runs),
+        "axial_run_max_in": max(runs),
+        "lead_is_point": leads == {0},
+        "trail_is_bark": trails == {len(local) - 1},
+        "recipes": float(len(recipes)),
+    }
+
+
+@lru_cache(maxsize=1)
+def orientation_features() -> tuple[dict, ...]:
+    """What each of the four rotations gives the *building*, not just the stick.
+
+    Stiffness is only one axis of the choice and it is the one already covered. These
+    are the others, and each is measured off the same cross-section:
+
+    ``lip_in``      how much further the member intrudes into the panel opening at the
+                    inner surface than at the outer one. Positive means the opening
+                    narrows going inward, so a panel dropped in from OUTSIDE is caught
+                    like a keystone and cannot fall through. Negative means it installs
+                    from inside. Zero means the opening is parallel-sided and the panel
+                    is held by fasteners alone.
+    ``channel_in2`` cross-section of the V that the two seam faces leave open along
+                    every seam. Fill it with key and it is a joint; leave it and it is
+                    a continuous conduit through the whole shell.
+    ``face_tilt``   angle between a sawn radial face and the dome surface. The smaller
+                    it is, the closer the frame comes to presenting flat wood for
+                    sheathing on both sides.
+    ``bevel_deg``   the butt cut's bevel in that rotation. One of the four turns the
+                    hardest cut in the build into a plain mitre with no bevel at all.
+    """
+    sim = bridge.simulator()
+    rows: list[dict] = []
+    for orientation in bridge.orientations():
+        config = sim.DomeConfig(wedge_orientation=orientation)
+        points = sim._geometry_sector_local_points(config)
+        zs = [z for _y, z in points]
+        band = (max(zs) - min(zs)) * 0.09 + 1.0e-6
+        outer = max(y for y, z in points if z >= max(zs) - band)
+        inner = max(y for y, z in points if z <= min(zs) + band)
+
+        tip = np.array(points[0], dtype=np.float64)
+        first = np.array(points[1], dtype=np.float64)
+        edge = first - tip
+        edge = edge / np.linalg.norm(edge)
+        face_tilt = math.degrees(math.acos(min(1.0, abs(float(edge[0])))))
+
+        model = bridge.model(orientation)
+        gaps = [seam.raw_gap_angle_deg for seam in model.seams]
+        radius = config.trunk_diameter_in * 0.5
+        # The open region between the two seam faces is a triangle: two sides of one
+        # sector radius each, meeting at the included gap angle. An earlier version
+        # used r^2*tan(gap/2), which is only the V's area while the gap stays acute --
+        # past ninety degrees it runs away and claimed 159 cubic feet of conduit for a
+        # seam that has actually splayed flat and has no channel in it at all.
+        channel = [0.5 * radius * radius * math.sin(math.radians(gap)) for gap in gaps]
+        seam_length_in = sum(
+            float(np.linalg.norm(seam.end - seam.start)) for seam in model.seams)
+
+        cut = butt_cut_model(orientation)
+        mean_gap = sum(gaps) / len(gaps)
+        rows.append({
+            "is_duct": mean_gap < 90.0,
+            "orientation": orientation,
+            "reading": bridge.seam_pair_reading(orientation),
+            "depth_in": max(zs) - min(zs),
+            "lip_in": inner - outer,
+            "modulus_in3": sector_section(orientation).section_modulus_in3,
+            "gap_min_deg": min(gaps),
+            "gap_max_deg": max(gaps),
+            "channel_in2": sum(channel) / len(channel),
+            "channel_ft3": sum(channel) / len(channel) * seam_length_in / 1728.0,
+            "seam_length_ft": seam_length_in / 12.0,
+            "face_tilt_deg": face_tilt,
+            "bevel_deg": cut["bevel_deg"],
+        })
+    return tuple(rows)
+
+
+@lru_cache(maxsize=1)
+def mixed_diameter_model() -> dict:
+    """A dome built from whatever the woodlot gives, not from graded matched stock.
+
+    The film's other numbers assume one trunk diameter throughout. Real trees do not
+    cooperate, so this solves the same dome at both ends of a 10 to 15 inch range and
+    reports what actually moves.
+
+    Almost nothing does. Not one angle in the shell changes -- the dihedral is a
+    property of the geodesic subdivision and has never heard of the log. What changes
+    is how far each member sits back from its ideal edge, and therefore how wide the
+    key between two panels has to be. Both land in the one part that is already
+    variable and already replaceable.
+    """
+    sim = bridge.simulator()
+    low, high = 10.0, 15.0
+    out: dict[str, float] = {"low_in": low, "high_in": high}
+    per_end = {}
+    for label, diameter in (("low", low), ("high", high)):
+        config = sim.DomeConfig(trunk_diameter_in=diameter)
+        model = sim.build_physical_model(config)
+        offsets = [member.point_offset_in for member in model.members]
+        stock = [member.physical_stock_length_in for member in model.members]
+        keys = [seam.spacer_base_width_in for seam in model.seams]
+        folds = [seam.fold_angle_deg for seam in model.seams]
+        section = sector_at_diameter(diameter)
+        per_end[label] = {
+            "offset_min": min(offsets), "offset_max": max(offsets),
+            "stock_min": min(stock), "stock_max": max(stock),
+            "key_min": min(keys), "key_max": max(keys),
+            "fold_min": min(folds), "fold_max": max(folds),
+            "area": section.area_in2, "modulus": section.section_modulus_in3,
+        }
+    dressed = dressed_stud()
+    cross = crossover_diameters()
+    out.update({
+        "fold_identical": abs(per_end["low"]["fold_min"] - per_end["high"]["fold_min"]) < 1.0e-6
+        and abs(per_end["low"]["fold_max"] - per_end["high"]["fold_max"]) < 1.0e-6,
+        "fold_min": per_end["low"]["fold_min"],
+        "fold_max": per_end["low"]["fold_max"],
+        "offset_step_in": per_end["high"]["offset_max"] - per_end["low"]["offset_max"],
+        "stock_shift_in": abs(per_end["high"]["stock_max"] - per_end["low"]["stock_max"]),
+        "key_low_min": per_end["low"]["key_min"], "key_low_max": per_end["low"]["key_max"],
+        "key_high_min": per_end["high"]["key_min"], "key_high_max": per_end["high"]["key_max"],
+        "key_span_in": per_end["high"]["key_max"] - per_end["low"]["key_min"],
+        "area_low": per_end["low"]["area"], "area_high": per_end["high"]["area"],
+        "modulus_low": per_end["low"]["modulus"], "modulus_high": per_end["high"]["modulus"],
+        "weakest_vs_dressed_area": per_end["low"]["area"] / dressed.area_in2,
+        "weakest_vs_dressed_modulus": per_end["low"]["modulus"] / dressed.section_modulus_in3,
+        "crossover_in": cross["modulus_vs_dressed_in"],
+        "whole_range_clears": low > cross["modulus_vs_dressed_in"],
+        "surface_step_in": (high - low) * 0.5,
+    })
+    return out
+
+
 # ======================================================================
 # The screens, one step per line
 # ======================================================================
@@ -1104,6 +1309,154 @@ def steps_close() -> tuple[str, ...]:
         "can be made to meet, and a split log is already that stick.")
 
 
+
+@lru_cache(maxsize=1)
+def steps_buttcut() -> tuple[str, ...]:
+    """The compound cut, and how many settings it really takes."""
+    c = butt_cut_model()
+    steps = [
+        "correction first. An earlier cut of this film said nothing in this",
+        "  frame is mitred. That is wrong, and it is the most important",
+        "  thing on this screen.",
+        "the PINWHEEL removes the shared vertex: no two ends ever meet each",
+        "  other, nothing is coped, nothing is shaved to a point.",
+        "but every butt end still lands on the SIDE of the next member, and",
+        "  that side is tilted two ways at once -- by the sector angle, and",
+        "  by the turn the member makes to close the triangle.",
+        "so the butt is a compound cut, and it is the hardest operation in",
+        "  the build. Here is what the solve says it costs:",
+        f"  BEVEL {c['bevel_deg']:.3f} deg on every one of "
+        f"{c['members']:.0f} members",
+        f"  and {c['bevel_deg']:.3f} = half the sector angle "
+        f"({c['half_sector_deg']:.3f}), set by the SPLIT, not by the dome",
+        f"  MITRE takes {len(c['mitres'])} values in the whole shell:",
+    ]
+    for mitre, bevel, count in c["settings"]:
+        steps.append(f"    {abs(mitre):7.3f} deg   x{count:3.0f} members")
+    steps.append(
+        f"  largest is {c['max_mitre_deg']:.3f} deg, inside a common saw's "
+        f"{c['saw_limit_deg']:.0f} deg swing")
+    steps.append(
+        f"the cut runs {c['axial_run_min_in']:.2f} to "
+        f"{c['axial_run_max_in']:.2f} in along the member, because it lands "
+        "on a slope:")
+    steps.append(
+        "  the sector's POINT reaches furthest and the bark corner least, so"
+        if c["lead_is_point"] else
+        "  one corner reaches further than the other, so")
+    steps.append(
+        "  the blank has to be long on the point side and the cut is walked "
+        "from the short corner up")
+    return _conclude(
+        steps,
+        f"One bevel, locked at {c['bevel_deg']:.1f} degrees and never touched, "
+        f"and {len(c['mitres'])} mitre stops. That is what turns the hardest "
+        "cut in the build from gauging by hand into a fixture.")
+
+
+@lru_cache(maxsize=1)
+def steps_features() -> tuple[str, ...]:
+    """The four rotations as four different buildings."""
+    rows = orientation_features()
+    steps = [
+        "stiffness is one axis of the choice and it is already covered.",
+        "here is what each rotation does to the BUILDING:",
+    ]
+    for row in rows:
+        name = row["orientation"].replace("point_", "").replace("_", "-").upper()
+        steps.append(f"  {name}")
+        steps.append(
+            f"    S {row['modulus_in3']:5.2f} in3   depth {row['depth_in']:4.2f} in   "
+            f"butt bevel {row['bevel_deg']:+6.2f} deg")
+        if abs(row["lip_in"]) < 1.0e-6:
+            lip = "no lip: opening is parallel-sided, panels held by fixings"
+        elif row["lip_in"] > 0.0:
+            lip = (f"lip {row['lip_in']:+.2f} in -- panel drops in from OUTSIDE "
+                   "and cannot fall through")
+        else:
+            lip = (f"lip {row['lip_in']:+.2f} in -- panel goes in from INSIDE "
+                   "and cannot fall out")
+        steps.append(f"    {lip}")
+        if row["is_duct"]:
+            steps.append(
+                f"    seam V {row['gap_min_deg']:.1f}-{row['gap_max_deg']:.1f} deg, "
+                f"{row['channel_in2']:.1f} in2 -> {row['channel_ft3']:.1f} cu ft of "
+                "continuous conduit")
+        else:
+            steps.append(
+                f"    seam opens to {row['gap_min_deg']:.0f}-"
+                f"{row['gap_max_deg']:.0f} deg: a shallow dish, not a duct")
+        steps.append(
+            f"    sawn faces sit {row['face_tilt_deg']:.1f} deg off the dome "
+            "surface")
+    def _name(row) -> str:
+        return row["orientation"].replace("point_", "").replace("_", "-").upper()
+
+    best_cut = min(rows, key=lambda row: abs(row["bevel_deg"]))
+    flattest_tilt = min(row["face_tilt_deg"] for row in rows)
+    # Two rotations tie on this, so name both rather than let min() pick one silently.
+    flattest = [_name(row) for row in rows
+                if abs(row["face_tilt_deg"] - flattest_tilt) < 1.0e-6]
+    keystone = max(rows, key=lambda row: row["lip_in"])
+    inside = min(rows, key=lambda row: row["lip_in"])
+    steps.append(
+        f"so: {_name(keystone)} catches a panel from OUTSIDE like a keystone, "
+        f"and puts {keystone['channel_ft3']:.0f} cu ft of conduit out there too")
+    steps.append(
+        f"    {_name(inside)} catches it from INSIDE and runs the services in "
+        "the warm")
+    steps.append(
+        f"    {' and '.join(flattest)} present the flattest wood to sheathing, "
+        f"{flattest_tilt:.1f} deg off the surface")
+    steps.append(
+        f"    {_name(best_cut)} makes the hardest cut in the build a plain "
+        f"mitre, bevel {best_cut['bevel_deg']:.1f} deg")
+    return _conclude(
+        steps,
+        "Four rotations, four different buildings out of one stick: where "
+        "the panel is caught, which side the services run, what sheathing "
+        "lands on, and how hard the one difficult cut is.")
+
+
+@lru_cache(maxsize=1)
+def steps_mixed() -> tuple[str, ...]:
+    """A dome from whatever the woodlot gives."""
+    m = mixed_diameter_model()
+    steps = [
+        f"the rest of this film assumes one trunk diameter. Real trees run "
+        f"{m['low_in']:.0f} to {m['high_in']:.0f} in and do not sort themselves.",
+        "solve the same dome at both ends of that range and see what moves:",
+        f"  fold angles: {m['fold_min']:.3f} to {m['fold_max']:.3f} deg at "
+        f"{m['low_in']:.0f} in",
+        f"  fold angles: {m['fold_min']:.3f} to {m['fold_max']:.3f} deg at "
+        f"{m['high_in']:.0f} in",
+        "  IDENTICAL. not one angle in the shell depends on the log size,",
+        "    because the dihedral is a property of the subdivision",
+        "what does move:",
+        f"  member sits back from its ideal edge, further by "
+        f"{m['offset_step_in']:.2f} in on the fat logs",
+        f"  key base {m['key_low_min']:.2f}-{m['key_low_max']:.2f} in thin, "
+        f"{m['key_high_min']:.2f}-{m['key_high_max']:.2f} in fat",
+        f"  blank length shifts by {m['stock_shift_in']:.2f} in across the "
+        "whole range",
+        f"  outer surface steps by up to {m['surface_step_in']:.2f} in where a "
+        "thin member meets a fat one",
+        "and the strength question is settled by the THINNEST member present:",
+        f"  {m['low_in']:.0f} in sector = {m['area_low']:.2f} in2, "
+        f"S {m['modulus_low']:.2f} in3",
+        f"  = {m['weakest_vs_dressed_area'] * 100:.0f} % of a dressed 2x4's "
+        f"area and {m['weakest_vs_dressed_modulus'] * 100:.0f} % of its bending",
+        f"  and {m['low_in']:.0f} in clears the "
+        f"{m['crossover_in']:.2f} in crossover, so the whole range does",
+    ]
+    return _conclude(
+        steps,
+        f"Mixing {m['low_in']:.0f} to {m['high_in']:.0f} inch logs changes no "
+        f"angle, moves the blank by {m['stock_shift_in']:.2f} in, and lands the "
+        "rest in the key. You get a shell with a slightly restless surface and "
+        "a house that is entirely sound.")
+
+
 ALL_SCREENS: tuple[tuple[str, object], ...] = (
     ("assumptions", steps_assumptions),
     ("yield", steps_yield),
@@ -1113,8 +1466,11 @@ ALL_SCREENS: tuple[tuple[str, object], ...] = (
     ("value", steps_value),
     ("overhead", steps_overhead),
     ("defects", steps_defects),
+    ("buttcut", steps_buttcut),
     ("structure", steps_structure),
     ("orientation", steps_orientation),
+    ("features", steps_features),
+    ("mixed", steps_mixed),
     ("dihedral", steps_dihedral),
     ("jig", steps_jig),
     ("close", steps_close),
