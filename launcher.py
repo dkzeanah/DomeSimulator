@@ -870,6 +870,7 @@ def main() -> int:
     mc_action = LabeledCombo(
         body, "Action",
         ["run", "selftest", "report", "shots", "export_video",
+         "render_beats",
          "voice_preview", "list_voices", "narration_only", "script",
          "build_packet", "list_lessons", "list_deliverables",
          "list_segments", "soundboard", "render_all"], "run")
@@ -880,6 +881,13 @@ def main() -> int:
         "report": "print a plain-text audit of every calculation "
                   "(strut lengths, ratios) with no window.",
         "shots": "save still images at chosen moments.",
+        "render_beats": "render the film as SEPARATE short videos, one per "
+                        "beat, into beats/ — then join them into sections and "
+                        "a whole film without re-encoding. This is the one to "
+                        "use while a film is still changing: fixing a chapter "
+                        "re-renders thirty seconds instead of half a day, and "
+                        "nothing already on disk is overwritten. Arrange the "
+                        "results in the Beat Studio tab.",
         "export_video": "render the complete narrated lesson to an "
                         "MP4 (several minutes; progress shows in the "
                         "log).",
@@ -1594,6 +1602,46 @@ def main() -> int:
     ttk.Separator(foot).pack(fill="x")
     launch_button(foot, "Launch Raw Wedge Dome", go_raw_wedge)
 
+    # ---- Beat Studio ------------------------------------------------------
+
+    t, body, foot = scrollable_tab("Beat Studio")
+    intro(body,
+         "A film in this project is not one big video any more: it is a "
+         "stack of short ones called beats, each covering a single idea "
+         "and carrying its own narration. This is the bench where you "
+         "put them back together. The library fills itself from the "
+         "beats folder the moment the window opens, so there is nothing "
+         "to import — pick beats on the left, send them to the sequence "
+         "on the right, drag the order around, and press Build. Joining "
+         "copies the video streams rather than re-encoding them, so a "
+         "twenty-minute cut takes a few seconds and looks exactly like "
+         "what came out of the renderer. If you want to change one "
+         "chapter, you re-render that one beat and rebuild; you never "
+         "wait an hour and a half for the whole film again.")
+
+    section(body, "Which library")
+    bs_lesson = LabeledCombo(body, "Film", ["why", "wedge", "master"], "why")
+    bs_lesson.pack(fill="x", pady=3)
+    note(body, "Beats live in beats/<film>/. Only 'why' has a beat plan "
+               "today; the others open an empty library until one is "
+               "written for them.")
+
+    bs_dir = PathRow(body, "Beats folder", "", mode="dir",
+                     placeholder="leave blank for beats/")
+    bs_dir.pack(fill="x", pady=3)
+    note(body, "Blank uses the project's own beats/ folder. Point this "
+               "somewhere else to work on a copy without touching the "
+               "originals.")
+
+    def go_beat_studio():
+        cfg = {"lesson": bs_lesson.get()}
+        if bs_dir.get():
+            cfg["beats_dir"] = bs_dir.get()
+        run("beat_studio.py", "beat_studio", cfg,
+            f"Beat Studio ({bs_lesson.get()})")
+    ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Launch Beat Studio", go_beat_studio)
+
     # ---- Flatten utility ----------------------------------------------
 
     t, body, foot = scrollable_tab("Flatten Utility")
@@ -1626,7 +1674,7 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 10
+        expected = 11
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected, smoke_callbacks

@@ -1565,6 +1565,28 @@ class MasterclassApp:
         """
         return self.lesson.style != "hype"
 
+    def retarget(self, lesson) -> None:
+        """Point this app at a different lesson without rebuilding the GL context.
+
+        Beat rendering makes forty small films in a row. Constructing a window, a
+        context and the whole geometry cache for each one costs more than the renders
+        do, so the app is built once and re-aimed. Everything reset here is everything
+        __init__ derives from the chapter list.
+        """
+        lesson.validate()
+        self.lesson = lesson
+        self.chapters = lesson.chapters
+        self.timeline = 0.0
+        self.chapter_durations = tuple(c.duration for c in self.chapters)
+        self.total_duration = timeline_duration(self.chapter_durations, self.chapters)
+        self.chapter_index = 0
+        self.chapter_progress = 0.0
+        self.camera_yaw = self.chapters[0].camera[0]
+        self.camera_pitch = self.chapters[0].camera[1]
+        self.camera_distance = self.chapters[0].camera[2]
+        self.camera_override = False
+        self.playing = True
+
     def export_video(
         self,
         path: Path,
@@ -1926,6 +1948,65 @@ def main(default_lesson: str = "2v") -> int:
                 f"{subtitle_path.name}"
             )
         print(f"\nselftest OK: {lesson.title}, {len(lesson.chapters)} chapters")
+        return 0
+    if action == "render_beats":
+        from .beats import (BEATS_DIR, beat_plan, concat, sub_lesson,
+                            write_manifest, WHY_SECTIONS)
+        lesson_key = str(cfg.get("lesson") or "why")
+        root = Path(cfg.get("beats_dir") or BEATS_DIR)
+        plan = beat_plan(lesson)
+        write_manifest(lesson, root, lesson_key)
+        rebuild = bool(cfg.get("force_rerender"))
+        only = {k for k in str(cfg.get("beats_only") or "").split(",") if k}
+
+        todo = [b for b in plan
+                if (not only or b.key in only)
+                and (rebuild or not b.path(root, lesson_key).is_file())]
+        print(f"{len(plan)} beats, {len(todo)} to render "
+              f"({len(plan) - len(todo)} already on disk)")
+
+        # `size` is parsed further down for the interactive paths; beats need it here.
+        beat_size = parse_size(cfg.get("size", "1920x1080"))
+        app = MasterclassApp(size=beat_size, fullscreen=False, hidden=True,
+                             lesson=lesson)
+        try:
+            for index, beat in enumerate(todo, start=1):
+                target = beat.path(root, lesson_key)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                print(f"[{index}/{len(todo)}] {beat.section}/{beat.key} "
+                      f"-> {target.name}")
+                app.retarget(sub_lesson(lesson, beat.slugs))
+                app.export_video(
+                    target, max(1, int(cfg.get("fps", 30))),
+                    video_encoder=str(cfg.get("video_encoder", "libx264")),
+                    video_preset=str(cfg.get("video_preset", "medium")),
+                    narration=not no_narration,
+                    voice=voice, voice_rate=voice_rate, voice_pitch=voice_pitch,
+                    voice_volume=voice_volume, ffmpeg_path=ffmpeg_path,
+                    ffprobe_path=ffprobe_path)
+        finally:
+            app.pygame.quit()
+
+        # Sections and the whole film are joins of the beats, not new renders, so a
+        # single re-rendered beat costs seconds to fold back in at every level.
+        if not cfg.get("no_join"):
+            base = root / lesson_key
+            section_files = []
+            for section in WHY_SECTIONS:
+                parts = [b.path(root, lesson_key) for b in plan
+                         if b.section == section.key]
+                parts = [p for p in parts if p.is_file()]
+                if not parts:
+                    continue
+                out = base / "sections" / f"{section.key}.mp4"
+                concat(parts, out, ffmpeg_path or "ffmpeg")
+                section_files.append(out)
+                print(f"joined {section.key}: {len(parts)} beats -> {out.name}")
+            if section_files:
+                whole = base / f"{lesson_key}-full-from-beats.mp4"
+                concat(section_files, whole, ffmpeg_path or "ffmpeg")
+                print(f"joined whole film -> {whole}")
+        print(f"beat library: {root / lesson_key}")
         return 0
     if action == "report":
         print((lesson.report or calculation_report)())
