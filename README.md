@@ -1340,6 +1340,61 @@ lamps actually light the interior. Every prop carries weight, cost, and
 power draw — the stats panel and exported BOM include the full fit-out
 with a total equipment power budget.
 
+## Beats and Beat Studio (`beat_studio.py`)
+
+A film in this project used to be one indivisible render. The wedge film is
+twenty-nine minutes, which is about ninety minutes of machine time, so changing
+one camera angle cost ninety minutes and there was no way to reorder or replace
+a section by hand. The unit of work was wrong.
+
+A **beat** is one chapter, or a small group of chapters that only make sense
+together, rendered to its own MP4 with its own narration, subtitles and voice
+cache. `two_v_demo/beats.py` divides the wedge film into **40 beats across 10
+sections**, grouped by idea rather than by running order — a claim and the math
+screen that proves it are one beat, because showing either alone misrepresents
+the argument.
+
+Render them from the Masterclass tab with the **`render_beats`** action. It
+skips anything already on disk, so it resumes after an interruption, and it
+re-aims a single GL context at each sub-lesson rather than building a window per
+beat.
+
+Then the important part: **sections and the whole film are concatenations of the
+beats, not separate renders.** Joining is a stream copy, so it costs seconds and
+the picture is bit-for-bit what the renderer produced. Fixing one chapter means
+re-rendering thirty seconds and rebuilding — every level stays consistent by
+construction.
+
+```
+beats/why/
+  manifest.json            what each beat is, for the studio's labels
+  01-origin/01-open.mp4    beat + its own narration, .srt and voice cache
+  ...
+  sections/01-origin.mp4   join of that section's beats
+  why-full-from-beats.mp4  join of the sections
+  cuts/                    whatever you build by hand
+```
+
+**Beat Studio** is the bench where they go back together. Its library populates
+itself from `beats/` the moment the window opens — there is no import step, and
+anything you drop into that folder from a phone, a screen capture or another
+editor appears on the next start. Pick beats on the left, send them to the
+sequence on the right, reorder, slice any clip at a timestamp, and Build. Cuts
+save as plain JSON, so a composition is a file you can keep, diff and send.
+
+Beat output lives in `beats/` and never in `deliverables/`, and is gitignored:
+it is working material, regenerated on demand. The plan that defines it is
+tracked.
+
+### Rendered output is append-only
+
+Nothing in this repository overwrites a finished render. `next_version_path`
+picks the first free `-v2` / `-v3` name and `export_video` calls it, so a
+re-render after a fix lands beside the previous cut instead of destroying it —
+which matters when the old one may already have been published. `CLAUDE.md`
+states the rule for anyone (or anything) working in this directory; the code
+enforces it regardless.
+
 ## Install & run
 
 ```
