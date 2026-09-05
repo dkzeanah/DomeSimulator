@@ -1795,6 +1795,77 @@ def export_jig_cut_sequence(model: DomePhysicalModel, path: str | Path) -> None:
                 ])
 
 
+def butt_cut_setups(model: DomePhysicalModel) -> list[dict[str, object]]:
+    """Collapse 120 butt cuts into the distinct saw setups they actually need.
+
+    Two facts fall out of the solve and they are the whole reason this joint is
+    jiggable rather than hand-fitted.
+
+    The BEVEL is the same on every member in the dome and equals half the sector angle:
+    it is a property of how the log was split, not of where the member sits in the
+    shell, so it is set once and never touched again.
+
+    The MITRE takes only a few values.  Each one is a stop on the fence, not a
+    measurement to take.
+
+    The cut also runs a long way along the member, because the face it lands on is
+    itself leaning away: ``axial_run_in`` is how much further the sector's point reaches
+    than its bark corner, and it is why the blank must be long on the point side.
+    """
+    local = _geometry_sector_local_points(model.config)
+    groups: dict[tuple[float, float], dict[str, object]] = {}
+    for member in model.members:
+        _, _, _, mitre, bevel = _cut_plane_components(member, member.butt_plane_normal)
+        key = (round(mitre, 3), round(bevel, 3))
+        origin = member.nominal_start + member.point_offset_in * member.inward
+        along = []
+        for (y, z), point in zip(local, member.butt_contact_points):
+            generator = origin + y * member.inward + z * member.face_normal
+            along.append(float(np.dot(point - generator, member.tangent)))
+        run = max(along) - min(along)
+        entry = groups.setdefault(key, {
+            "mitre_deg": key[0], "bevel_deg": key[1], "count": 0,
+            "edge_types": set(), "run_min": run, "run_max": run,
+        })
+        entry["count"] = int(entry["count"]) + 1
+        entry["edge_types"].add(member.edge_type)  # type: ignore[union-attr]
+        entry["run_min"] = min(float(entry["run_min"]), run)
+        entry["run_max"] = max(float(entry["run_max"]), run)
+    rows = sorted(groups.values(), key=lambda row: -int(row["count"]))
+    for row in rows:
+        row["edge_types"] = " ".join(sorted(row["edge_types"]))  # type: ignore[arg-type]
+    return rows
+
+
+def export_butt_cut_setups(model: DomePhysicalModel, path: str | Path) -> None:
+    """Write the saw setups, one row per setup rather than one per member."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    rows = butt_cut_setups(model)
+    half_sector = 180.0 / model.config.radial_splits
+    bevels = {round(float(row["bevel_deg"]), 6) for row in rows}
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "setup", "mitre_deg", "bevel_deg", "members", "edge_families",
+            "axial_run_min_in", "axial_run_max_in", "wedge_orientation",
+            "bevel_equals_half_sector", "half_sector_deg", "note",
+        ])
+        for index, row in enumerate(rows, start=1):
+            writer.writerow([
+                f"BUTT_SETUP_{index:02d}",
+                f"{float(row['mitre_deg']):.6f}",
+                f"{float(row['bevel_deg']):.6f}",
+                row["count"], row["edge_types"],
+                f"{float(row['run_min']):.6f}", f"{float(row['run_max']):.6f}",
+                model.config.wedge_orientation,
+                len(bevels) == 1 and abs(float(row["bevel_deg"])) == half_sector,
+                f"{half_sector:.6f}",
+                "cradle holds ONE sawn face down with the point against the fence; "
+                "bevel is set once for the whole dome; blank runs long on the point side",
+            ])
+
+
 def export_jig_walkthrough(model: DomePhysicalModel, path: str | Path) -> None:
     """Write the jig procedure out as plain language, one step per row.
 
@@ -1820,6 +1891,7 @@ def export_fabrication_package(model: DomePhysicalModel, directory: str | Path) 
     export_seam_join_schedule(model, directory / "SEAM_JOIN_SCHEDULE.csv")
     export_jig_cut_sequence(model, directory / "JIG_CUT_SEQUENCE.csv")
     export_jig_walkthrough(model, directory / "JIG_WALKTHROUGH.csv")
+    export_butt_cut_setups(model, directory / "BUTT_CUT_SETUPS.csv")
 
     svg_dir = directory / "panel_jig_svgs"
     svg_dir.mkdir(exist_ok=True)
@@ -4764,6 +4836,29 @@ def run_geometry_validation() -> None:
             f"head offcut {offcut / 12.0:6.2f} ft   "
             f"= {100.0 * offcut / (finished + offcut):5.2f}% of raw length"
         )
+    print()
+
+    print("BUTT CUT — THE COMPOUND, AND HOW MANY SETUPS IT TAKES")
+    print("-" * 72)
+    print("Every butt lands on the SIDE of the next member, and that side leans two")
+    print("ways at once. This is a compound cut. It is the hardest thing in the build.")
+    for orientation in WEDGE_ORIENTATION_ORDER:
+        oc = DomeConfig(wedge_orientation=orientation)
+        om = build_physical_model(oc)
+        setups = butt_cut_setups(om)
+        bevels = {round(float(row["bevel_deg"]), 6) for row in setups}
+        half = 180.0 / oc.radial_splits
+        mitres = ", ".join(f"{abs(float(row['mitre_deg'])):.3f}" for row in setups)
+        assert len(bevels) == 1, (orientation, bevels)
+        bevel = next(iter(bevels))
+        print(f"  {orientation.upper():16s} setups {len(setups)}  "
+              f"bevel {bevel:+8.3f} (half-sector {half:.3f})  mitres {mitres}")
+    # The constant bevel is the whole jig argument; if it ever stops being constant,
+    # or stops equalling half the sector angle, the fixture design is invalid.
+    base = build_physical_model(DomeConfig())
+    base_setups = butt_cut_setups(base)
+    assert len({round(float(r["bevel_deg"]), 6) for r in base_setups}) == 1
+    assert abs(abs(float(base_setups[0]["bevel_deg"])) - 180.0 / DomeConfig().radial_splits) < 1e-6
     print()
 
     print("JIG WALK-THROUGH — EVERY STEP BUILDS")
