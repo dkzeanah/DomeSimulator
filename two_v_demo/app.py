@@ -1843,6 +1843,67 @@ def parse_size(value: str) -> tuple[int, int]:
     return width, height
 
 
+def _render_beats_many(cfg: dict, requested: str) -> int:
+    """Beat-render several films in one run, one child process each.
+
+    Each film gets its own process so a crash in one cannot take the rest with it, and
+    so its GL context is torn down cleanly before the next begins. Failures are
+    collected and reported at the end rather than stopping the run.
+    """
+    from .lesson_registry import LESSONS
+
+    if requested == "all":
+        keys = list(LESSONS)
+    else:
+        keys = [k.strip() for k in requested.split(",") if k.strip()]
+        unknown = [k for k in keys if k not in LESSONS]
+        if unknown:
+            print(f"unknown films: {', '.join(unknown)}")
+            print(f"choose from: {', '.join(LESSONS)}")
+            return 2
+
+    script = Path(__file__).resolve().parent.parent / "two_v_masterclass.py"
+    print(f"rendering beats for {len(keys)} films: {', '.join(keys)}")
+    failures: list[str] = []
+    for index, key in enumerate(keys, start=1):
+        print(f"\n=== [{index}/{len(keys)}] {key} " + "=" * 40)
+        child = dict(cfg)
+        child["lesson"] = key
+        # Framing is per film; a vertical drama in a landscape frame is not the film
+        # that was written, so a bulk size is never inherited.
+        child.pop("size", None)
+        # Some films compose their own segments at import, so composing again appends a
+        # second outro and share card.
+        if child.get("compose_segments") and _already_composed(LESSONS[key]):
+            print(f"    {key} composes its own segments; not composing again")
+            child["compose_segments"] = False
+        _lc.write_config("two_v_masterclass", child)
+        code = subprocess.call([sys.executable, str(script)])
+        if code != 0:
+            failures.append(key)
+            print(f"!!! {key} exited {code}; continuing with the rest")
+    if failures:
+        print(f"\nfinished with failures: {', '.join(failures)}")
+        return 1
+    print("\nall films rendered as beats")
+    return 0
+
+
+def _already_composed(lesson) -> bool:
+    """True when a lesson module already spliced its segments in.
+
+    Segments are appended, so composing a second time duplicates them. The tell is a
+    lesson whose chapters already include segment slugs.
+    """
+    from .segments import SEGMENTS
+    segment_slugs = {
+        chapter.slug
+        for segment in SEGMENTS.values()
+        for chapter in segment.chapters
+    }
+    return any(chapter.slug in segment_slugs for chapter in lesson.chapters)
+
+
 def main(default_lesson: str = "2v") -> int:
     """Dispatch on the launcher's config ticket instead of argv.
 
@@ -1857,6 +1918,12 @@ def main(default_lesson: str = "2v") -> int:
     # module's render kit, so the registry can only be built once this
     # module has finished loading.
     from .lesson_registry import get_lesson, lesson_menu
+
+    # A multi-film beat render names several lessons at once, which get_lesson cannot
+    # resolve. Dispatch it before the single-lesson lookup rather than after it.
+    _requested = str(cfg.get("lesson") or "").strip().lower()
+    if action == "render_beats" and (_requested == "all" or "," in _requested):
+        return _render_beats_many(cfg, _requested)
 
     try:
         lesson = get_lesson(cfg.get("lesson") or default_lesson)
@@ -1956,28 +2023,6 @@ def main(default_lesson: str = "2v") -> int:
         # lesson=all walks every film in the registry. Each is rendered in its own
         # framing and composed with its own segments, because a vertical drama in a
         # landscape frame is not the film that was written.
-        if str(cfg.get("lesson")).strip().lower() == "all":
-            from .lesson_registry import LESSONS
-            keys = list(LESSONS)
-            print(f"rendering beats for {len(keys)} films: {', '.join(keys)}")
-            failures = []
-            for key in keys:
-                print(f"\n=== {key} " + "=" * 50)
-                child = dict(cfg)
-                child["lesson"] = key
-                child.pop("size", None)
-                _lc.write_config("two_v_masterclass", child)
-                code = subprocess.call([sys.executable, str(
-                    Path(__file__).resolve().parent.parent / "two_v_masterclass.py")])
-                if code != 0:
-                    failures.append(key)
-                    print(f"!!! {key} exited {code}; continuing with the rest")
-            if failures:
-                print(f"\nfinished with failures: {', '.join(failures)}")
-                return 1
-            print("\nall films rendered as beats")
-            return 0
-
         lesson_key = str(cfg.get("lesson") or "why")
         root = Path(cfg.get("beats_dir") or BEATS_DIR)
         plan = beat_plan(lesson)
