@@ -14,6 +14,7 @@ import json
 import math
 import os
 import subprocess
+import sys
 import tempfile
 import time
 from dataclasses import dataclass, field
@@ -1950,8 +1951,33 @@ def main(default_lesson: str = "2v") -> int:
         print(f"\nselftest OK: {lesson.title}, {len(lesson.chapters)} chapters")
         return 0
     if action == "render_beats":
-        from .beats import (BEATS_DIR, beat_plan, concat, sub_lesson,
-                            write_manifest, WHY_SECTIONS)
+        from .beats import (BEATS_DIR, beat_plan, concat, plan_for, size_for,
+                            sub_lesson, write_manifest)
+        # lesson=all walks every film in the registry. Each is rendered in its own
+        # framing and composed with its own segments, because a vertical drama in a
+        # landscape frame is not the film that was written.
+        if str(cfg.get("lesson")).strip().lower() == "all":
+            from .lesson_registry import LESSONS
+            keys = list(LESSONS)
+            print(f"rendering beats for {len(keys)} films: {', '.join(keys)}")
+            failures = []
+            for key in keys:
+                print(f"\n=== {key} " + "=" * 50)
+                child = dict(cfg)
+                child["lesson"] = key
+                child.pop("size", None)
+                _lc.write_config("two_v_masterclass", child)
+                code = subprocess.call([sys.executable, str(
+                    Path(__file__).resolve().parent.parent / "two_v_masterclass.py")])
+                if code != 0:
+                    failures.append(key)
+                    print(f"!!! {key} exited {code}; continuing with the rest")
+            if failures:
+                print(f"\nfinished with failures: {', '.join(failures)}")
+                return 1
+            print("\nall films rendered as beats")
+            return 0
+
         lesson_key = str(cfg.get("lesson") or "why")
         root = Path(cfg.get("beats_dir") or BEATS_DIR)
         plan = beat_plan(lesson)
@@ -1966,7 +1992,9 @@ def main(default_lesson: str = "2v") -> int:
               f"({len(plan) - len(todo)} already on disk)")
 
         # `size` is parsed further down for the interactive paths; beats need it here.
-        beat_size = parse_size(cfg.get("size", "1920x1080"))
+        # Vertical films must not be rendered in a landscape frame; the size in the
+        # ticket only wins if it was set deliberately.
+        beat_size = parse_size(cfg.get("size") or size_for(lesson_key))
         app = MasterclassApp(size=beat_size, fullscreen=False, hidden=True,
                              lesson=lesson)
         try:
@@ -1992,7 +2020,7 @@ def main(default_lesson: str = "2v") -> int:
         if not cfg.get("no_join"):
             base = root / lesson_key
             section_files = []
-            for section in WHY_SECTIONS:
+            for section in plan_for(lesson):
                 parts = [b.path(root, lesson_key) for b in plan
                          if b.section == section.key]
                 parts = [p for p in parts if p.is_file()]

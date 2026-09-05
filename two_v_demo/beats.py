@@ -120,6 +120,41 @@ PAIRED: tuple[tuple[str, ...], ...] = (
 )
 
 
+# Films with a hand-written plan. Everything else gets a mechanical one, which is
+# worse but honest: see auto_sections.
+PLANS: dict[str, tuple[Section, ...]] = {"why": WHY_SECTIONS}
+
+AUTO_SECTION_SIZE = 6
+
+
+def auto_sections(lesson: Lesson, size: int = AUTO_SECTION_SIZE) -> tuple[Section, ...]:
+    """A mechanical plan for a film nobody has sectioned by hand.
+
+    Consecutive chapters are chunked into groups, and each chunk is named after the
+    chapter that opens it. This is not as good as grouping by idea -- it will
+    occasionally split a claim from the screen that proves it -- but it means any film
+    can be rendered as beats today, and a hand-written plan can replace it later
+    without changing anything else.
+    """
+    chapters = list(lesson.chapters)
+    sections: list[Section] = []
+    for index in range(0, len(chapters), size):
+        chunk = chapters[index:index + size]
+        number = index // size + 1
+        sections.append(Section(
+            key=f"{number:02d}-{chunk[0].slug}",
+            title=chunk[0].title,
+            slugs=tuple(c.slug for c in chunk),
+            note="Auto-grouped: no hand-written plan for this film yet.",
+        ))
+    return tuple(sections)
+
+
+def plan_for(lesson: Lesson) -> tuple[Section, ...]:
+    """The hand-written plan for this film, or a mechanical one."""
+    return PLANS.get(lesson.key) or auto_sections(lesson)
+
+
 def _pair_for(slug: str) -> tuple[str, ...] | None:
     for group in PAIRED:
         if slug in group:
@@ -128,12 +163,13 @@ def _pair_for(slug: str) -> tuple[str, ...] | None:
 
 
 def beat_plan(lesson: Lesson,
-              sections: tuple[Section, ...] = WHY_SECTIONS) -> tuple[Beat, ...]:
+              sections: tuple[Section, ...] | None = None) -> tuple[Beat, ...]:
     """Split a lesson into beats, in running order.
 
     Only chapters the lesson actually has are included, so a plan built against an
     uncomposed lesson simply omits the segment beats rather than failing.
     """
+    sections = sections or plan_for(lesson)
     present = {chapter.slug for chapter in lesson.chapters}
     order_of = {chapter.slug: index
                 for index, chapter in enumerate(lesson.chapters)}
@@ -247,13 +283,13 @@ def write_manifest(lesson: Lesson, root: Path = BEATS_DIR,
                    lesson_key: str = "why") -> Path:
     """Record what the beats are, so the studio can label them properly."""
     plan = beat_plan(lesson)
-    sections = {s.key: s for s in WHY_SECTIONS}
+    sections = {s.key: s for s in plan_for(lesson)}
     data = {
         "lesson": lesson_key,
         "title": lesson.title,
         "sections": [
             {"key": s.key, "title": s.title, "note": s.note}
-            for s in WHY_SECTIONS
+            for s in plan_for(lesson)
         ],
         "beats": [
             {
@@ -270,6 +306,17 @@ def write_manifest(lesson: Lesson, root: Path = BEATS_DIR,
     path = base / "manifest.json"
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")
     return path
+
+
+# Films whose framing is vertical: rendering these at 1920x1080 throws away the
+# composition they were written for.
+VERTICAL: frozenset[str] = frozenset({"drama", "series"})
+VERTICAL_SIZE = "1080x1920"
+LANDSCAPE_SIZE = "1920x1080"
+
+
+def size_for(lesson_key: str) -> str:
+    return VERTICAL_SIZE if lesson_key in VERTICAL else LANDSCAPE_SIZE
 
 
 def validate_beats() -> None:
