@@ -224,6 +224,10 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_demo()
     if mode in ("selftest", "check"):
         return cmd_selftest()
+    if mode == "authoring":
+        # The paste-ready prompt that teaches a model to write a film.
+        from .authoring import main as authoring_main
+        return authoring_main(args[1:])
     if mode == "produce":
         recipe = args[1] if len(args) > 1 else ""
         params = loop.parse_produce_args(args[2:])
