@@ -1671,6 +1671,86 @@ def main() -> int:
 
     # ---- The book -------------------------------------------------------
 
+    # ---- Dome Park --------------------------------------------------------
+
+    t, body, foot = scrollable_tab("Dome Park")
+    intro(body,
+         "An RV park for domes. A landowner builds serviced pads — a deck, a "
+         "power pedestal, a water and drain stub — and a dome owner brings "
+         "the house and plugs in. Nobody rents a building from anybody: the "
+         "host owns the ground and the hookups, the tenant owns the home "
+         "standing on them.\n\n"
+         "This tab shows a whole site: pads at every standard size, the "
+         "domes parked on them, the trunk services running out to each one, "
+         "and a shared bathhouse. Every price in the corner is computed — "
+         "what the pad cost to build, what it leases for, what it nets after "
+         "management and tax, and how long it takes to pay back. Select a "
+         "pad and change its deck, its rotating base or its utility column, "
+         "and watch those figures move.\n\n"
+         "Pad sizes are not invented: each one is the next four-foot step up "
+         "from a dome that has to fit on it, so the catalogue of pads always "
+         "serves the catalogue of domes.")
+
+    section(body, "What to open")
+    park_action = LabeledCombo(body, "Action", ["run", "shots", "selftest"],
+                               "run")
+    park_action.pack(fill="x", pady=3)
+    action_help(body, park_action, {
+        "run": "open the site and look around it. Drag to orbit, wheel to "
+               "zoom, square brackets to step between pads, and the keys "
+               "listed on screen to change the selected pad.",
+        "shots": "no window: save four still images of the site — the whole "
+                 "park, the row, one pad close up, and an overhead — into "
+                 "the folder below.",
+        "selftest": "no window: check the arithmetic and the layout, print "
+                    "what the park costs and returns, and quit. Run this if "
+                    "a number looks wrong.",
+    })
+
+    section(body, "The site")
+    park_pads = LabeledEntry(body, "How many pads", "6", placeholder="e.g. 6")
+    park_pads.pack(fill="x", pady=3)
+    note(body, "Pads are laid in a row, smallest first, each sized to the "
+               "largest dome that fits it. Every third one is left vacant, "
+               "because a park with no vacancy has nothing to lease.")
+    park_deck = LabeledCombo(body, "Deck", ["gravel", "concrete", "wood"],
+                             "gravel")
+    park_deck.pack(fill="x", pady=3)
+    action_help(body, park_deck, {
+        "gravel": "compacted gravel — what an RV park actually builds, and "
+                  "the cheapest way to make a pad exist.",
+        "concrete": "a poured slab: more than twice the price of gravel, and "
+                    "the deck is already most of what a pad costs.",
+        "wood": "a timber deck. It looks the best and costs the most — on a "
+                "48 ft pad it is roughly three times the gravel build.",
+    })
+    park_rotating = CheckRow(body, "Rotating bases (solar tracking)", True)
+    park_rotating.pack(anchor="w", pady=3)
+    note(body, "A turning pad lets a dome carrying exterior panels follow "
+               "the sun. It adds real cost — priced per foot of diameter — "
+               "and the tracking gain comes off the tenant's utility bill.")
+
+    section(body, "Stills (Action = shots)")
+    park_size = LabeledEntry(body, "Image size", "1600x900",
+                             placeholder="e.g. 1920x1080")
+    park_size.pack(fill="x", pady=3)
+    park_shotdir = PathRow(body, "Save stills to", "", mode="dir",
+                           placeholder="leave blank for shots/dome_park/")
+    park_shotdir.pack(fill="x", pady=3)
+
+    def go_dome_park() -> None:
+        cfg = {"action": park_action.get(),
+               "pads": park_pads.get() or "6",
+               "deck": park_deck.get(),
+               "rotating": park_rotating.get(),
+               "size": park_size.get() or "1600x900"}
+        if park_shotdir.get():
+            cfg["shot_dir"] = park_shotdir.get()
+        run("dome_park.py", "dome_park", cfg, "Dome Park")
+
+    ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Launch Dome Park", go_dome_park)
+
     # ---- Project Agent ----------------------------------------------------
 
     t, body, foot = scrollable_tab("Project Agent")
@@ -1944,7 +2024,7 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 13
+        expected = 14
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected, smoke_callbacks
