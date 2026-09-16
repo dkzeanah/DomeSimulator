@@ -446,7 +446,8 @@ def recipe_film(params: dict) -> dict:
                 # the one the launcher preset produces.
                 "compose_segments": bool(params.get("compose_segments", False)),
             }
-            for passthrough in ("voice", "voice_rate", "orientation"):
+            for passthrough in ("voice", "voice_rate", "voice_pitch",
+                                "voice_volume", "orientation"):
                 if params.get(passthrough):
                     export_args[passthrough] = params[passthrough]
             export = ctx.step("export video", "export_video", export_args,

@@ -65,7 +65,8 @@ def _params_from(cfg: dict) -> dict:
     params = dict(cfg.get("params") or {})
     for key in ("key", "title", "source", "export", "size", "fps", "times",
                 "demo", "prompt", "environment", "backend", "lesson",
-                "voice", "voice_rate", "orientation", "overlay", "script"):
+                "voice", "voice_rate", "voice_pitch", "voice_volume",
+                "orientation", "overlay", "script"):
         value = cfg.get(key)
         if value not in (None, "", []):
             params[key] = value

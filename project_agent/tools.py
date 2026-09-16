@@ -413,10 +413,9 @@ def _t_export_video(args: dict) -> dict:
         # override the lesson's own declared pacing, and chapter durations are
         # measured off the speech — so a stray rate moves every boundary in
         # the film and the result no longer matches the published cut.
-        if args.get("voice"):
-            cfg["voice"] = str(args["voice"])
-        if args.get("voice_rate"):
-            cfg["voice_rate"] = str(args["voice_rate"])
+        for setting in ("voice", "voice_rate", "voice_pitch", "voice_volume"):
+            if args.get(setting):
+                cfg[setting] = str(args[setting])
         orientation = str(args.get("orientation") or "").lower()
         if orientation in ("landscape", "portrait", "both"):
             cfg["orientation"] = orientation
@@ -751,7 +750,14 @@ TOOLS: dict[str, dict] = {
                            "size": _prop("string", "Size WxH."),
                            "no_narration": _prop("boolean", "Silent export."),
                            "voice": _prop("string", "edge-tts voice."),
-                           "voice_rate": _prop("string", "e.g. '-3%'."),
+                           "voice_rate": _prop("string", "e.g. '+0%'. Left "
+                                               "out, the lesson's own pacing "
+                                               "applies. Chapter durations are "
+                                               "measured off the speech, so "
+                                               "changing any voice setting "
+                                               "moves every chapter boundary."),
+                           "voice_pitch": _prop("string", "e.g. '+0Hz'."),
+                           "voice_volume": _prop("string", "e.g. '+0%'."),
                            "overlay": _prop("string", "Presenter overlay level.",
                                             enum=["full", "no_captions",
                                                   "titles_only", "clean"]),
