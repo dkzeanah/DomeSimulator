@@ -118,21 +118,61 @@ party lives in.
 
 ---
 
-## What this brief still owes
+## What this brief owed, and where each debt was paid
 
-Claims above that need computed or sourced numbers before they reach the
-screen. Nothing goes in the film until it is in this table with a source.
+Nothing went in the film until it was computed or declared. Every row below
+now resolves to a function; the "kind" column says whether it is **measured**
+off the project's own geometry or **declared** in
+`park_model.EXTERNAL_CONSTANTS`, where it is printed with a unit and a reason
+and can be replaced without touching a script.
 
-| claim | what is needed |
-|---|---|
-| what a pad costs to build | deck, electrical, water, rotation, per pad size |
-| what a host earns | lease plus metered margin, against that build cost |
-| how long a pad takes to pay back | the two above |
-| the cost of a short stay today | hotel, Airbnb and short-lease comparison |
-| what a host loses to damage and turnover | declared industry figures, sourced |
-| solar yield on a tracking dome | panel area, tracking gain, local sun |
-| what the layered shell does to R-value | per-layer R, honestly stated |
-| how many domes fit a pad size | computed from the dome catalogue |
+| claim | kind | where |
+|---|---|---|
+| how many domes fit a pad size | measured | `pad_sizes`, `domes_that_fit` |
+| what a pad costs to build | both | `Pad.cost_rows` |
+| what a host earns | both | `Pad.year` |
+| how long a pad takes to pay back | derived | `Pad.year()["payback_years"]` |
+| what a host loses to damage and turnover | declared | `host_comparison` |
+| solar yield on a tracking dome | both | `Pad.solar_kwh_per_month` |
+| what the layered shell does to R-value | both | `shell_ladder` |
+| the cost of a short stay today | **declared** | `housing_options` |
+| what the ground under a dome costs | measured | `foundation_share` |
+| one hardware set across sizes | measured | `hardware_invariance` |
+| how long a stay has to be | derived | `crossover_months` |
 
-The last one is already computable: the Dome Creator ships twelve designs with
-known diameters, so "which domes fit this pad" is arithmetic, not opinion.
+The film's worksheets are `two_v_demo/park_facts.py`, its pictures are
+`two_v_demo/lesson_dome_park.py`, and `park_report()` prints the whole audit
+without rendering anything.
+
+### The one that is still only an assumption
+
+**The cost of a short stay today** is the comparison the pitch leans hardest
+on, and it is the one row above that is declared rather than sourced. The
+hotel rate, the short-let rate and the apartment rent in
+`EXTERNAL_CONSTANTS` are working figures for a middling US market, not
+research, and they move the crossover month directly. Anyone taking this to a
+campaign should replace those three with local, cited numbers first. The film
+says on camera that they were typed in by a person.
+
+### Three things the film says against itself
+
+Kept because a pitch that only shows its good numbers is not a pitch.
+
+* **On up-front cost, the short let wins.** A loaded pad costs more to build
+  than a bare pad plus furnishing a rental on it. The pad host's case is the
+  yearly bill, not the first cheque.
+* **Below the crossover, this idea is the wrong answer.** For a stay of a
+  month or two, a hotel or a short let is cheaper and the film says so.
+* **Most of a dome's solar is surplus.** A shell carries several times the
+  panel its household uses, and the model values the surplus at export rather
+  than retail. Correcting that took the loaded pad's solar income down by more
+  than half and its payback from 4.3 years to 5.2.
+
+### Also true, and worth keeping in view
+
+The flagship design used for every tenant figure — the Split-Log Homestead —
+sits on a gravel pad, so it has the *smallest* foundation saving of any design
+that has a foundation at all: $1,466 of $18,067. It was chosen for that
+reason. The chapter that photographs the foundation argument uses the Timber
+Workshop, whose concrete slab is 45% of its build cost, and the worksheet
+names both.

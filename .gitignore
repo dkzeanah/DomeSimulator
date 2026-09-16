@@ -63,3 +63,9 @@ dome_config.json
 # Masterclass tab's render_beats action. The plan that defines them is in
 # two_v_demo/beats.py and IS tracked.
 beats/
+
+# Custom narration takes and saved workbench drafts.
+voice_clips/
+
+# Local video review history and handoff snapshots (keep/back up on disk).
+video_reviews/

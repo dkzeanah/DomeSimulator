@@ -115,14 +115,41 @@ class Placed:
         raise KeyError(f"no Dome Creator preset named {self.dome!r}")
 
 
-def build_pad(b: MeshBuilder, placed: Placed) -> None:
-    """The deck, the ring, and every service that comes up through it."""
+PAD_STAGES: tuple[str, ...] = (
+    "graded ground",
+    "deck poured",
+    "acceptor rim fitted",
+    "rotating base set",
+    "power, water and drain up the middle",
+    "utility column plumbed",
+    "meter pedestal live",
+    "aimed at the sun",
+)
+"""The order a pad gets built in, so a film can build one on camera.
+
+The tool does not need this and neither does the arithmetic; it exists because
+"a pad is just a deck and two hookups" is a claim best made by showing the deck
+and the two hookups arriving one at a time."""
+
+
+def build_pad(b: MeshBuilder, placed: Placed, stage: int | None = None) -> None:
+    """The deck, the ring, and every service that comes up through it.
+
+    ``stage`` draws only the steps up to and including that index of
+    :data:`PAD_STAGES`; ``None`` draws the finished pad, which is what every
+    existing caller gets.
+    """
+    def upto(step: int) -> bool:
+        return stage is None or stage >= step
+
     pad = placed.pad
     ox, oy = placed.origin
     radius = placed.radius_m
     top_colour, side_colour, mat, height = DECK_LOOK[pad.deck]
 
     # -- the deck itself ------------------------------------------------
+    if not upto(1):
+        return
     b.disc((ox, oy, height), radius, 64, top_colour, mat_id=mat)
     b.cylinder((ox, oy, 0.0), (ox, oy, height), radius, 64, side_colour,
                mat_id=MAT_PLAIN, cap_ends=False)
@@ -132,6 +159,8 @@ def build_pad(b: MeshBuilder, placed: Placed) -> None:
     # annulus, never as a disc under the deck surface: two discs five
     # millimetres apart z-fight at forty metres and the deck comes out
     # mottled brown.
+    if not upto(2):
+        return
     lip = 0.12
     inner = radius - 0.30
     b.cylinder((ox, oy, height), (ox, oy, height + lip), radius, 64,
@@ -151,6 +180,8 @@ def build_pad(b: MeshBuilder, placed: Placed) -> None:
     b.disc((ox, oy, height + lip * 0.55), inner, 64, top_colour, mat_id=mat)
 
     # -- the rotating base ----------------------------------------------
+    if not upto(3):
+        return
     if pad.rotating:
         ring_r = radius - 0.55
         b.cylinder((ox, oy, height + lip), (ox, oy, height + lip + 0.14),
@@ -170,18 +201,22 @@ def build_pad(b: MeshBuilder, placed: Placed) -> None:
              MAT_METAL)
 
     # -- the hookups come up through the middle --------------------------
+    if not upto(4):
+        return
     _service_core(b, ox, oy, height + lip)
 
-    if pad.utility_column:
+    if pad.utility_column and upto(5):
         _utility_column(b, ox + radius * 0.42, oy - radius * 0.42,
                         height + lip)
 
     # -- the pedestal at the edge, where a tenant plugs in ---------------
+    if not upto(6):
+        return
     px = ox - radius * 0.78
     py = oy + radius * 0.34
     _pedestal(b, px, py, height + lip, occupied=placed.occupied)
 
-    if pad.solar_watts > 0.0:
+    if pad.solar_watts > 0.0 and upto(7):
         _sun_marker(b, ox, oy, height + lip + 0.2, placed.heading_deg, radius)
 
 
@@ -348,6 +383,12 @@ class Park:
     placements: list[Placed] = field(default_factory=list)
     bathhouse: tuple[float, float] | None = None
     service_point: tuple[float, float] = (0.0, 0.0)
+    ground_radius: float | None = None
+    """How far the graded ground runs, when the caller wants to say.
+
+    The tool lets the layout decide. A film cannot: the renderer's far plane
+    sits at 120 metres, so a site disc sized for a walkthrough disappears into
+    clipping the moment a camera pulls back far enough to see the whole row."""
 
     @property
     def spine_metres(self) -> float:
@@ -363,6 +404,8 @@ class Park:
 
     @property
     def site_radius(self) -> float:
+        if self.ground_radius is not None:
+            return float(self.ground_radius)
         reach = max((math.hypot(*p.origin) + p.radius_m
                      for p in self.placements), default=12.0)
         return reach * 1.45 + 6.0

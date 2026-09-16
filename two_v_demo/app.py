@@ -127,6 +127,13 @@ class MasterclassApp:
         pygame.display.gl_set_attribute(
             pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE
         )
+        # Ask for a 24-bit depth buffer. Left unasked, this renderer was given
+        # 16 bits, and 16 bits over a near plane of 0.08 and a far plane of
+        # 120 resolves to the better part of a metre at sixty metres out --
+        # which is why a park of decks sitting 12 cm above their ground filmed
+        # as a field of horizontal stripes. Nothing composes differently with
+        # more precision; things that were fighting for the depth buffer stop.
+        pygame.display.gl_set_attribute(pygame.GL_DEPTH_SIZE, 24)
         self.lesson = lesson or TWO_V_LESSON
         self.lesson.validate()
         self.chapters = self.lesson.chapters
@@ -882,6 +889,8 @@ class MasterclassApp:
             surface = self.draw_ui_hype(width, height)
         elif style == "plate":
             surface = self.draw_ui_plate(width, height)
+        elif style == "title":
+            surface = self.draw_ui_title(width, height)
         elif style == "math":
             surface = self.draw_ui_math(width, height)
         else:
@@ -983,6 +992,29 @@ class MasterclassApp:
         self.ui_buttons.clear()
         scale = min(width / 1600.0, height / 900.0) * self.PLATE_LABEL_SCALE
         self.draw_world_labels(surface, width, height, scale)
+        return surface
+
+    def draw_ui_title(self, width: int, height: int) -> object:
+        """A centered opening title over the live scene, with no competing labels."""
+        pg = self.pygame
+        surface = pg.Surface((width, height), pg.SRCALPHA)
+        surface.fill((3, 9, 17, 168))
+        self.ui_buttons.clear()
+        chapter = self.chapters[self.chapter_index]
+        scale = min(width / 1600., height / 900.)
+        font = self.font(max(24, int(115 * scale)), True)
+        lines = self.wrap_text(chapter.promise, font, int(width * .84))
+        line_height = font.get_linesize()
+        top = (height - len(lines) * line_height) // 2
+        for index, line in enumerate(lines):
+            text = font.render(line, True, (241, 249, 255))
+            surface.blit(text, ((width - text.get_width()) // 2, top + index * line_height))
+        small = self.font(max(14, int(24 * scale)), True)
+        kicker = small.render(chapter.title.upper(), True, (255, 177, 62))
+        surface.blit(kicker, ((width - kicker.get_width()) // 2, top - int(56 * scale)))
+        pg.draw.rect(surface, (61, 211, 255),
+                     (int(width * .36), top + len(lines) * line_height + int(32 * scale),
+                      int(width * .28), max(2, int(4 * scale))))
         return surface
 
     def draw_ui_hype(self, width: int, height: int) -> object:
@@ -1483,6 +1515,17 @@ class MasterclassApp:
             return entry
         program = self.creator_program_ready()
         mesh = build.mesh
+        if not len(mesh.vertices):
+            # A build with nothing in it is a legitimate thing for a painter
+            # to hand over -- the first step of a pad's construction is graded
+            # ground, which draws no geometry at all. moderngl refuses an
+            # empty buffer, and an exception here kills a render that is
+            # already an hour in, so an empty build becomes an empty entry
+            # and the draw loop skips it.
+            entry = {"vbo": None, "opaque": None, "transparent": None,
+                     "opaque_count": 0, "transparent_count": 0}
+            self.creator_cache[build.key] = entry
+            return entry
         vbo = self.ctx.buffer(
             np.ascontiguousarray(mesh.vertices, dtype="f4").tobytes())
         entry = {"vbo": vbo, "opaque": None, "transparent": None,
@@ -1847,6 +1890,7 @@ class MasterclassApp:
         voice_volume: str = DEFAULT_VOLUME,
         ffmpeg_path: str | None = None,
         ffprobe_path: str | None = None,
+        mux_audio: bool = True,
     ) -> None:
         # Rendered output is append-only: a re-render lands beside the previous cut
         # rather than destroying it. See CLAUDE.md and next_version_path.
@@ -1991,7 +2035,7 @@ class MasterclassApp:
             # Kept beside the video, so a cut in another shape can say the same
             # words at the same moments without synthesizing them again.
             write_narration_plan(path.parent / f"{path.stem}-narration-plan.json",
-                                 plan, speech_delay)
+                                 plan, speech_delay, self.chapters)
         width, height = self.pygame.display.get_window_size()
         # Tag the temp with this process, because two exports of the same
         # lesson to the same output otherwise share one hidden file: the
@@ -2000,7 +2044,7 @@ class MasterclassApp:
         # leaves a plausible-looking MP4 with seconds of video in it.
         render_path = (
             path.parent / f".{path.stem}-silent-render-{os.getpid()}.mp4"
-            if plan is not None else path
+            if plan is not None and mux_audio else path
         )
         encoder_args = (
             ["-c:v", "h264_nvenc", "-preset", video_preset,
@@ -2049,7 +2093,7 @@ class MasterclassApp:
         print()
         if return_code != 0:
             raise RuntimeError(f"ffmpeg exited with status {return_code}")
-        if plan is not None:
+        if plan is not None and mux_audio:
             mux_command = [
                 ffmpeg, "-y",
                 "-i", str(render_path),
@@ -2064,6 +2108,7 @@ class MasterclassApp:
                 render_path.unlink()
             except OSError:
                 pass
+        if plan is not None:
             script_path, subtitle_path = write_companion_files(
                 path,
                 plan.chapter_durations,
@@ -2081,13 +2126,21 @@ class MasterclassApp:
                 title=self.lesson.title,
                 speak_promise=self.speak_promise,
             )
+        from video_review.render_bridge import write_render_receipt
+        write_render_receipt(path, self.lesson, self.chapter_durations, {
+            **getattr(self, "review_render_config", {}),
+            "size": f"{width}x{height}", "fps": fps, "voice": voice,
+            "voice_rate": voice_rate, "voice_pitch": voice_pitch,
+            "voice_volume": voice_volume, "video_encoder": video_encoder,
+            "video_preset": video_preset, "no_narration": plan is None,
+        })
         self.exporting = False
         print(f"saved {path}")
         print(f"saved {script_path}")
         print(f"saved {subtitle_path}")
 
 
-def write_narration_plan(target: Path, plan: NarrationPlan, speech_delay: float) -> Path:
+def write_narration_plan(target: Path, plan: NarrationPlan, speech_delay: float, chapters=None) -> Path:
     """The narration an export used, as a plan another export can replay.
 
     The vertical cut of a film has to say the same words at the same moments as
@@ -2104,6 +2157,10 @@ def write_narration_plan(target: Path, plan: NarrationPlan, speech_delay: float)
         "chapter_starts": list(plan.chapter_starts),
         "speech_delay": speech_delay,
     }
+    if chapters is not None:
+        from video_review.model import text_hash
+        words = json.dumps([(c.promise, c.narration) for c in chapters], ensure_ascii=False)
+        payload["review_words_sha256"] = text_hash(words)
     target.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     return target
 
@@ -2120,7 +2177,10 @@ def _export_both(cfg: dict) -> int:
     target = Path(cfg["export_video"])
     folder = target.parent
     before = set(folder.glob(f"{target.stem}*.mp4")) if folder.is_dir() else set()
-    _lc.write_config("two_v_masterclass", dict(cfg, orientation="landscape"))
+    # The children render; this parent builds the one release folder once
+    # both cuts exist, so neither child is allowed to build its own.
+    _lc.write_config("two_v_masterclass",
+                     dict(cfg, orientation="landscape", release=False))
     code = subprocess.call([sys.executable, str(script)])
     if code != 0:
         return code
@@ -2128,13 +2188,44 @@ def _export_both(cfg: dict) -> int:
                      key=lambda item: item.stat().st_mtime)
     landscape = written[-1] if written else target
     vertical = target.with_name(f"{target.stem}-vertical{target.suffix}")
-    second = dict(cfg, orientation="portrait", export_video=str(vertical))
+    second = dict(cfg, orientation="portrait", export_video=str(vertical),
+                  release=False)
     plan_path = landscape.parent / f"{landscape.stem}-narration-plan.json"
     if plan_path.is_file() and not cfg.get("no_narration"):
         second["local_narration_plan"] = str(plan_path)
     print(f"landscape cut: {landscape.name}; now the vertical cut")
+    before_vertical = set(folder.glob(f"{vertical.stem}*.mp4"))
     _lc.write_config("two_v_masterclass", second)
-    return subprocess.call([sys.executable, str(script)])
+    code = subprocess.call([sys.executable, str(script)])
+    if code != 0:
+        return code
+    phone = sorted(set(folder.glob(f"{vertical.stem}*.mp4")) - before_vertical,
+                   key=lambda item: item.stat().st_mtime)
+    if cfg.get("release", True):
+        _build_release(str(cfg.get("lesson") or ""), landscape,
+                       phone[-1] if phone else None)
+    return 0
+
+
+def _build_release(lesson_key: str, cut: Path,
+                   portrait: Path | None = None) -> None:
+    """Thumbnails, platform copy and captions for a cut that just finished.
+
+    Never allowed to fail the render that came before it: by the time this
+    runs, an hour of frames is already safely on disk, and a missing thumbnail
+    is not a reason to report that hour as a failure.
+    """
+    if not lesson_key:
+        return
+    try:
+        from .release import build_release, newest_version
+        release = build_release(lesson_key, video=newest_version(cut),
+                                portrait=portrait)
+    except (OSError, ValueError, KeyError, RuntimeError,
+            subprocess.CalledProcessError) as exc:
+        print(f"release folder not built: {exc}")
+        return
+    print(release.summary())
 
 
 def parse_size(value: str) -> tuple[int, int]:
@@ -2209,7 +2300,7 @@ def _already_composed(lesson) -> bool:
     return any(chapter.slug in segment_slugs for chapter in lesson.chapters)
 
 
-def main(default_lesson: str = "2v") -> int:
+def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
     """Dispatch on the launcher's config ticket instead of argv.
 
     Launch and configure this from the consolidated launcher
@@ -2217,7 +2308,7 @@ def main(default_lesson: str = "2v") -> int:
     GUI field. Run directly with no ticket present and it opens the
     normal live presentation, fullscreen.
     """
-    cfg = _lc.consume_config("two_v_masterclass")
+    cfg = dict(config) if config is not None else _lc.consume_config("two_v_masterclass")
     action = cfg.get("action", "run")
     # Imported here, not at module scope: the lesson modules import this
     # module's render kit, so the registry can only be built once this
@@ -2247,6 +2338,27 @@ def main(default_lesson: str = "2v") -> int:
         print(exc)
         print(lesson_menu())
         return 2
+    if cfg.get("review_packet"):
+        try:
+            from video_review.render_bridge import apply_packet, load_packet
+            packet = load_packet(cfg["review_packet"])
+            lesson = apply_packet(lesson, cfg["review_packet"])
+            if action in ("render_all", "render_beats"):
+                raise ValueError("Review packets apply to one complete lesson; choose export_video, script, shots or run")
+            target = cfg.get("export_video")
+            if action == "export_video" and target and Path(target).exists():
+                raise ValueError("Video Review preserves earlier renders. Choose a fresh Export MP4 filename.")
+            if packet.get("narration_overrides") and cfg.get("local_narration_plan"):
+                from video_review.model import read_json, text_hash
+                plan = read_json(cfg["local_narration_plan"])
+                words = json.dumps([(c.promise, c.narration) for c in lesson.chapters], ensure_ascii=False)
+                if plan.get("review_words_sha256") != text_hash(words):
+                    raise ValueError("The review changes narration. Generate fresh audio instead of reusing this narration plan.")
+            remaining = sum(n.get("application") == "task" for n in packet.get("notes", []))
+            print(f"Video Review: narration overlay loaded; {remaining} production tasks remain in the handoff prompt.")
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            print(f"Video Review: {exc}")
+            return 2
     voice = cfg.get("voice", DEFAULT_VOICE)
     voice_rate = cfg.get("voice_rate") or DEFAULT_RATE
     voice_pitch = cfg.get("voice_pitch", DEFAULT_PITCH)
@@ -2481,6 +2593,14 @@ def main(default_lesson: str = "2v") -> int:
     if not cfg.get("voice_rate") and lesson.voice_rate:
         voice_rate = lesson.voice_rate
     orientation = str(cfg.get("orientation") or "").lower()
+    if action == "export_video" and cfg.get("export_video") and not orientation:
+        # Every film is published as a set: the landscape cut, a phone cut and
+        # a release folder. Asking for one shape is still possible by naming
+        # it. A film composed for a single frame ("frame_fit off") keeps that
+        # frame, because re-fitting it for a phone is exactly what it opted
+        # out of.
+        orientation = "both" if lesson.frame_fit != "off" else "landscape"
+        cfg = dict(cfg, orientation=orientation)
     if action == "export_video" and cfg.get("export_video") and orientation == "both":
         return _export_both(cfg)
     try:
@@ -2508,6 +2628,9 @@ def main(default_lesson: str = "2v") -> int:
         app.pygame.quit()
         return 0
     if action == "export_video" and cfg.get("export_video"):
+        app.review_render_config = {key: cfg[key] for key in (
+            "local_narration_plan", "render_fps", "orientation", "compose_segments",
+            "segments_include", "segments_exclude", "ffmpeg", "ffprobe") if cfg.get(key)}
         try:
             app.export_video(
                 Path(cfg["export_video"]), max(1, int(cfg.get("fps", 30))),
@@ -2528,6 +2651,8 @@ def main(default_lesson: str = "2v") -> int:
             print(exc)
             return 1
         app.pygame.quit()
+        if cfg.get("release", True):
+            _build_release(lesson.key, Path(cfg["export_video"]))
         return 0
     app.run()
     return 0

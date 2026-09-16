@@ -109,7 +109,7 @@ class Lesson:
                 f"lesson {self.key!r} has unknown ground {self.ground!r}"
             )
         for chapter in self.chapters:
-            if chapter.overlay not in (None, "teaching", "hype", "math", "plate"):
+            if chapter.overlay not in (None, "teaching", "hype", "math", "plate", "title"):
                 raise ValueError(
                     f"lesson {self.key!r} chapter {chapter.number} has "
                     f"unknown overlay {chapter.overlay!r}"

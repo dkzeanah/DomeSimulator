@@ -71,7 +71,7 @@ def main() -> int:
         root, text="DomeSim Launcher",
         font=("Segoe UI", 15, "bold"))
     header.pack(anchor="w", padx=12, pady=(10, 0))
-    ttk.Label(
+    header_help = ttk.Label(
         root, text="Every tool below used to take command-line flags; "
                    "they are now set here and launched with one click. "
                    "Each tab explains what its tool does and what its "
@@ -80,13 +80,17 @@ def main() -> int:
                    "when launched: press Escape to release the mouse, "
                    "then Escape again to quit and return here.",
         wraplength=1000, justify="left",
-        foreground=NOTE_FG).pack(anchor="w", padx=12, pady=(0, 8))
+        foreground=NOTE_FG)
+    header_help.pack(anchor="w", padx=12, pady=(0, 8))
 
     notebook = ttk.Notebook(root)
     notebook.pack(fill="both", expand=True, padx=12, pady=(0, 6))
+    manual_reference_panels = []
 
     log_frame = ttk.LabelFrame(root, text="Log")
     log_frame.pack(fill="both", expand=False, padx=12, pady=(0, 12))
+    # Reserve the log's space before allocating the expandable tab content.
+    log_frame.pack_configure(side="bottom", before=notebook)
     log = tk.Text(log_frame, height=11, bg="#12141a", fg="#d8dee9",
                   insertbackground="#d8dee9", font=("Consolas", 9),
                   wrap="word")
@@ -191,14 +195,18 @@ def main() -> int:
             anchor="w", pady=(12, 4))
         smoke_callbacks.append((text, command))
 
-    def scrollable_tab(title: str):
+    def scrollable_tab(title: str, parent_notebook=None):
         """A tab whose launch button lives in a fixed footer instead of
         at the bottom of its (scrollable) field list. Some tabs carry
         every option a tool used to accept as CLI flags, plus the
         explanatory text a non-coder needs to use them; without this,
         the button that actually launches the tool can end up scrolled
         out of view below all of it."""
-        t = tab(title)
+        if parent_notebook is None:
+            t = tab(title)
+        else:
+            t = ttk.Frame(parent_notebook, padding=8)
+            parent_notebook.add(t, text=title)
         footer = ttk.Frame(t)
         footer.pack(side="bottom", fill="x")
         canvas_area = ttk.Frame(t)
@@ -945,6 +953,13 @@ def main() -> int:
                         mode="save", filetypes=(("MP4 video", "*.mp4"),),
                         placeholder="e.g. two_v_demo_output/lesson.mp4")
     mc_export.pack(fill="x", pady=3)
+    mc_review = PathRow(body, "Review packet (optional)", "", mode="open",
+                        filetypes=(("Review JSON", "*.json"),),
+                        placeholder="video_reviews/.../packet-0001/revision.json")
+    mc_review.pack(fill="x", pady=3)
+    note(body, "Video Review generates this handoff. It applies exact narration "
+               "changes in memory; use a fresh output filename. Other edits "
+               "are listed in the packet's next-build prompt.")
     section(body, "Auto-scene manager")
     mc_compose = CheckRow(
         body, "Auto-insert brand segments (outro, call to action)", False)
@@ -1147,6 +1162,8 @@ def main() -> int:
             cfg["shots"] = mc_shots.get()
         if mc_export.get():
             cfg["export_video"] = mc_export.get()
+        if mc_review.get():
+            cfg["review_packet"] = mc_review.get()
         if mc_local_plan.get():
             cfg["local_narration_plan"] = mc_local_plan.get()
         if mc_voice_preview.get():
@@ -1178,14 +1195,58 @@ def main() -> int:
     ttk.Separator(mc_footer).pack(fill="x")
     launch_button(mc_footer, "Launch Masterclass", go_masterclass)
 
+    # ---- Video Review ------------------------------------------------------
+
+    review_tab = tab("Video Review")
+    intro(review_tab, "Watch your generated videos, leave timestamped notes, "
+          "and prepare the next build. Every review round preserves its "
+          "script, prompt, notes and handoff history.")
+    note(review_tab, "The workbench opens in your browser and saves locally "
+         "under video_reviews/. Pick any video in this project, press N while "
+         "watching to capture a note, then Generate handoff when ready.")
+    note(review_tab, "Exact narration replacements produce a revised script "
+         "and a render packet for the Masterclass tab. Visual, pacing, audio "
+         "and cut requests become the next build's action list and prompt. "
+         "Attach the next render to continue the same review across rounds.")
+    def go_video_review():
+        run("video_review.py", "video_review", {}, "Video Review")
+    launch_button(review_tab, "Open Video Review", go_video_review)
+
     # ---- Local Voice Studio ------------------------------------------------
 
-    t, body, foot = scrollable_tab("Local Voice Studio")
+    voice_tab = tab("Local Voice Studio")
+    voice_tabs = ttk.Notebook(voice_tab)
+    voice_tabs.pack(fill="both", expand=True)
+    from local_voice_studio.presentation_voice_gui import PresentationVoicePanel
+    presentation_voice = PresentationVoicePanel(voice_tabs, persist=not smoketest)
+    voice_tabs.add(presentation_voice, text="Presentation Voice — text to audio")
+    t, body, foot = scrollable_tab("Local voice tools & recording", voice_tabs)
+
+    def voice_tab_layout(_event=None):
+        # The workbench has its own progress and errors. Give it the space
+        # otherwise used by generic launch help and subprocess logs.
+        is_voice = notebook.select() == str(voice_tab)
+        is_workbench = is_voice and voice_tabs.select() == str(presentation_voice)
+        if is_workbench or any(visible() for visible in manual_reference_panels):
+            header_help.pack_forget()
+            log_frame.pack_forget()
+        else:
+            header_help.pack(anchor="w", padx=12, pady=(0, 8), after=header)
+            log_frame.pack(side="bottom", fill="both", expand=False,
+                           padx=12, pady=(0, 12), before=notebook)
+        log.configure(height=3 if is_voice else 11)
+    notebook.bind("<<NotebookTabChanged>>", voice_tab_layout, add="+")
+    voice_tabs.bind("<<NotebookTabChanged>>", voice_tab_layout, add="+")
+
+    def close_launcher():
+        presentation_voice.close()
+        root.destroy()
+    root.protocol("WM_DELETE_WINDOW", close_launcher)
     intro(body,
-         "Record your own voice (or import audio you already own), "
+         "These optional local tools record your own voice (or import audio you already own), "
          "turn it into a private, locked voice profile, and generate "
-         "narration locally — nothing is sent to a cloud text-to-"
-         "speech service, and no login is required. This is what the "
+         "narration locally. For the videos' online neural narrator, "
+         "use the Presentation Voice section above. These local tools are what the "
          "Masterclass and Presenter Studio tabs use for narration "
          "when you want your own voice instead of the built-in cloud "
          "one. It has its own full window once launched, with a "
@@ -1738,6 +1799,18 @@ def main() -> int:
                            placeholder="leave blank for shots/dome_park/")
     park_shotdir.pack(fill="x", pady=3)
 
+    section(body, "The film")
+    note(body, "There is also a narrated film of this idea — the pitch cut, "
+               "made for a crowdfunding page. It argues both sides: what a "
+               "host risks against what an Airbnb host risks, and what a "
+               "place to live costs four ways, including the stay lengths "
+               "where this idea is the wrong answer. It is drawn from this "
+               "same site and these same numbers.\n\n"
+               "Open the Render tab and choose \"dome park -- bring your own "
+               "home\" to export it, or \"dome park -- one still per "
+               "chapter\" to look at every shot first without waiting on a "
+               "render.")
+
     def go_dome_park() -> None:
         cfg = {"action": park_action.get(),
                "pads": park_pads.get() or "6",
@@ -1753,7 +1826,16 @@ def main() -> int:
 
     # ---- Project Agent ----------------------------------------------------
 
-    t, body, foot = scrollable_tab("Project Agent")
+    agent_tab = tab("Project Agent")
+    agent_tabs = ttk.Notebook(agent_tab)
+    agent_tabs.pack(fill="both", expand=True)
+    from project_agent.authoring.gui import ManualAuthoringPanel
+    manual_authoring = ManualAuthoringPanel(agent_tabs)
+    agent_tabs.add(manual_authoring, text="Manual video authoring")
+    t, body, foot = scrollable_tab("Agent tools", agent_tabs)
+    manual_reference_panels.append(lambda: notebook.select() == str(agent_tab)
+                                   and agent_tabs.select() == str(manual_authoring))
+    agent_tabs.bind("<<NotebookTabChanged>>", voice_tab_layout, add="+")
     intro(body,
          "Tell the project what you want in plain words and let it operate "
          "the other tools for you. This is a small assistant that knows only "
@@ -1882,6 +1964,33 @@ def main() -> int:
     note(body, "Passed straight through to the recipe as name=value pairs. "
                "Only needed for the less common options.")
 
+    section(body, "Teach an Ollama model to author video")
+    note(body,
+         "Open the Manual video authoring tab above for the complete guide, "
+         "Compact / Full copyable prompts, a runnable starter, and commands "
+         "for saving and exporting just your new element. The controls below "
+         "retain the original catalogue-prompt file writer. Inspect stills "
+         "before a full export; render time depends on the scene and settings.")
+    agent_prompt_out = LabeledEntry(
+        body, "Write the prompt to", "project_agent/authoring/PROMPT.md",
+        placeholder="a .md file you will open and copy from")
+    agent_prompt_out.pack(fill="x", pady=3)
+    agent_prompt_brief = LabeledEntry(
+        body, "Your request (optional)", "",
+        placeholder="e.g. a chapter showing a pad turning to face the sun")
+    agent_prompt_brief.pack(fill="x", pady=3)
+    note(body, "Left blank, the prompt ends with a placeholder you fill in "
+               "yourself after pasting.")
+
+    def go_authoring_prompt() -> None:
+        cfg = {"action": "authoring_prompt",
+               "out": agent_prompt_out.get()
+                      or "project_agent/authoring/PROMPT.md"}
+        if agent_prompt_brief.get():
+            cfg["brief"] = agent_prompt_brief.get()
+        run("project_agent_cli.py", "project_agent", cfg,
+            "Project Agent: authoring prompt")
+
     def go_agent() -> None:
         cfg = {"action": agent_action.get()}
         for name, field in (("recipe", agent_recipe), ("key", agent_key),
@@ -1897,6 +2006,8 @@ def main() -> int:
         run("project_agent_cli.py", "project_agent", cfg, "Project Agent")
 
     ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Write the Ollama authoring prompt",
+                  go_authoring_prompt)
     launch_button(foot, "Run Project Agent", go_agent)
 
     # ---- Book: 2 Trees ----------------------------------------------------
@@ -2024,10 +2135,31 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 14
+        expected = 15
+        # One tab per tool, but not one button per tab: the Project Agent tab
+        # has a second button that writes the Ollama authoring prompt.
+        expected_buttons = 16
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
-        assert len(smoke_callbacks) == expected, smoke_callbacks
+        assert len(smoke_callbacks) == expected_buttons, smoke_callbacks
+
+        notebook.select(voice_tab)
+        root.update()
+        assert presentation_voice.tree.winfo_ismapped(), "Saved takes list is hidden"
+        for control in (presentation_voice.generate_button, presentation_voice.folder_button,
+                        presentation_voice.record_button, presentation_voice.play_button):
+            assert control.winfo_ismapped(), control
+            assert control.winfo_rooty() + control.winfo_height() <= (
+                presentation_voice.winfo_rooty() + presentation_voice.winfo_height()), control
+        assert presentation_voice.text.winfo_height() >= 40, "Transcript editor is too short"
+        print("SMOKETEST OK: presentation voice list, editor, and controls fit the tab")
+
+        notebook.select(agent_tab)
+        root.update()
+        assert manual_authoring.brief.winfo_ismapped()
+        assert manual_authoring.pages.winfo_height() >= 120, "Authoring guide is too short"
+        assert "lesson_my_element.py" in manual_authoring.location.get()
+        print("SMOKETEST OK: manual authoring guide, file path, and copy controls fit the tab")
 
         # Every video preset must actually reach the fields and produce
         # the ticket it promises. This is the whole "no setup" claim, so
@@ -2066,12 +2198,12 @@ def main() -> int:
 
         for label, callback in smoke_callbacks:
             callback()
-        assert len(launched) == expected, launched
+        assert len(launched) == expected_buttons, launched
         for name, script, cfg in launched:
             print(f"SMOKETEST OK: {name:26} -> {script:28} {cfg}")
         root.update()
-        root.destroy()
-        print(f"SMOKETEST: {len(launched)}/{expected} launch buttons produced "
+        close_launcher()
+        print(f"SMOKETEST: {len(launched)}/{expected_buttons} launch buttons produced "
               f"a config ticket")
         return 0
     root.mainloop()

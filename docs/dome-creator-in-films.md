@@ -90,6 +90,20 @@ creator.draw(app, build, limits=phase["limits"])
   stage composed for the whole frame comes back sliced. `lesson_all_domes.py`
   moves its stage left by a share of the camera distance and thins a sweep down
   to three domes; copy that if you build another one.
+* **The depth buffer is 24 bits now, and was 16.** This renderer never asked
+  for a depth size, so it took whatever the driver handed it, which here was
+  16 bits. Over a near plane of 0.08 and a far plane of 120 that resolves to
+  the better part of a metre at sixty metres out — fine for a dome standing
+  alone on a dark plate, and not fine at all for two flat surfaces a hand's
+  width apart. The dome park films decks sitting 12 cm above their ground, and
+  at a wide camera the whole site came out in horizontal stripes. `app.py` now
+  asks for `GL_DEPTH_SIZE = 24` before `set_mode`. If you are drawing anything
+  flat-on-flat and it shimmers, check that first; the fix is precision, not
+  geometry.
+* **Two grounds is one ground too many.** A film that stands the Creator's
+  environment under a scene built by another module has to stop that module
+  drawing its own ground disc, or the two fight for the depth buffer at every
+  distance. `park_bridge.site(park, ground=False)` exists for exactly this.
 
 ## The film this was built for
 

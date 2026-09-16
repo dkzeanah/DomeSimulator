@@ -19,11 +19,13 @@ your file supplies the chapters, the copy, and the painting code.
    progress value must always draw the same frame, or the render is not
    reproducible.
 4. **The lesson proves itself.** Write a validate function that asserts what
-   the film claims, and pass it as `selftest=`. The renderer runs it before
-   drawing anything.
+   the film claims, and pass it as `selftest=`. The standalone lesson runner
+   runs it before drawing anything; Lesson.validate alone checks structure.
 5. **Import only** from: `two_v_demo.lessons`, `two_v_demo.render_kit`,
-   `two_v_demo.visual_objects`, the facts modules listed below, plus `math`
-   and `numpy`. No file reading, no network, no subprocess.
+   `two_v_demo.visual_objects`, `two_v_demo.creator_bridge`, the facts modules
+   listed below, plus `math`, `numpy`, `types.SimpleNamespace`, `dataclasses`,
+   and `functools`. No direct file reading, network, or subprocess calls in
+   your content module. Use the Creator bridge for finished Creator buildings.
 6. **Nothing straddles z=0.** The ground is at z=0; build upward.
 
 
@@ -132,8 +134,11 @@ orbits a fixed target at (0, 0, 2.25).
 * `distance` about twice the widest thing on screen. A 5-unit dome frames
   well at 15-18.
 
-World units are metres-ish: a person is 1.8 tall, a dome 5 across. Keep the
-subject in the upper two-thirds of the frame -- the overlay uses the bottom.
+World units are the units you choose for the illustration. The ready-made
+person defaults to human-scale dimensions; keep its scale consistent with
+the building. A dome with radius 5 is 10 across. Keep the subject clear of
+the overlay areas. The default export camera adds a small yaw drift;
+use Lesson.camera_fn only when a strictly locked camera is needed.
 
 
 ## Chapter and Lesson

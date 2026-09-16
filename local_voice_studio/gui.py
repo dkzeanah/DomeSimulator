@@ -1,4 +1,4 @@
-"""Native desktop GUI for a local, consented voice-model workflow."""
+"""Native voice studio with local voice models and online presentation narration."""
 
 from __future__ import annotations
 
@@ -169,6 +169,9 @@ class VoiceStudioApp:
         self._build_header()
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill=BOTH, expand=True, padx=12, pady=(0, 12))
+        from .presentation_voice_gui import PresentationVoicePanel
+        self.presentation_voice = PresentationVoicePanel(self.notebook)
+        self.notebook.add(self.presentation_voice, text="Presentation Voice")
         self._build_project_tab()
         self._build_record_tab()
         self._build_import_tab()
@@ -186,6 +189,7 @@ class VoiceStudioApp:
         self.root.after(120, self._poll_worker)
         self.root.after(120, self._meter_tick)
         self.root.after(1000, self._heartbeat_tick)
+        self.root.protocol("WM_DELETE_WINDOW", self._close)
         if project_path:
             try:
                 self.set_project(VoiceProject.open(project_path))
@@ -266,7 +270,7 @@ class VoiceStudioApp:
         ).pack(side=RIGHT)
         ttk.Label(
             header,
-            text="LOCAL ONLY  •  NO HOSTED INFERENCE API",
+            text="LOCAL VOICE TOOLS  •  ONLINE PRESENTATION VOICE",
             foreground="#f5b95d",
         ).pack(side=RIGHT, padx=24)
         ttk.Button(
@@ -278,6 +282,11 @@ class VoiceStudioApp:
         frame = ttk.Frame(notebook, padding=16)
         notebook.add(frame, text=title)
         return frame
+
+    def _close(self) -> None:
+        self.presentation_voice.close()
+        self.recorder.abort()
+        self.root.destroy()
 
     @staticmethod
     def _labeled_entry(parent, label: str, variable: StringVar, row: int) -> None:

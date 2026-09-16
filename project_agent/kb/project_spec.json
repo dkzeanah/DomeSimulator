@@ -1,8 +1,19 @@
 {
   "schema": "project-agent-spec/1",
-  "generated_at": "2026-09-12T14:07:21-0500",
+  "generated_at": "2026-09-16T05:08:19-0500",
   "repo_root": "C:\\Users\\Don\\Desktop\\DomeSim",
   "sections": {
+    "repo": {
+      "section": "repo",
+      "ok": true,
+      "data": {
+        "root": "C:\\Users\\Don\\Desktop\\DomeSim",
+        "commit": "6321513734e9c2c6d1a24f9a28c2998a4c0b52f3",
+        "branch": "wedge-method-film",
+        "dirty_files": 21
+      },
+      "error": ""
+    },
     "tools": {
       "section": "tools",
       "ok": true,
@@ -26,7 +37,8 @@
             "list_segments",
             "soundboard",
             "render_all"
-          ]
+          ],
+          "present": true
         },
         "presenter": {
           "script": "presenter_studio.py",
@@ -38,7 +50,8 @@
             "export_all",
             "selftest",
             "save_json"
-          ]
+          ],
+          "present": true
         },
         "dome_forge": {
           "script": "dome_forge.py",
@@ -46,7 +59,8 @@
             "run",
             "selftest",
             "shots"
-          ]
+          ],
+          "present": true
         },
         "assembly_line": {
           "script": "assembly_line.py",
@@ -54,7 +68,8 @@
             "run",
             "selftest",
             "shots"
-          ]
+          ],
+          "present": true
         },
         "dome_composer": {
           "script": "dome_composer.py",
@@ -63,7 +78,8 @@
             "shots",
             "report",
             "selftest"
-          ]
+          ],
+          "present": true
         },
         "raw_wedge_dome": {
           "script": "geodesic_raw_wedge_dome_dihedral.py",
@@ -72,7 +88,8 @@
             "validate",
             "fabrication",
             "extract_resources"
-          ]
+          ],
+          "present": true
         },
         "book_studio": {
           "script": "book_studio.py",
@@ -87,7 +104,8 @@
             "render_figures",
             "export",
             "selftest"
-          ]
+          ],
+          "present": true
         }
       },
       "error": ""
@@ -320,7 +338,23 @@
           "voice_rate": null,
           "brand": "THE TWENTY DOLLAR PINE, PART TWO"
         },
-        "_menu": "  2v     2V Geodesic Masterclass (14 chapters)\n  build  2V Dome Construction Masterclass (46 chapters)\n  hex    Hexagonal Dome Masterclass (20 chapters)\n  zome   Zome Construction Masterclass (19 chapters)\n  line   Assembly Line Energy Masterclass (24 chapters)\n  cuts   The Compound Cut, Both Machines (18 chapters)\n  franken The Franken-Dome (21 chapters)\n  hype   Frankendome (44 chapters)\n  hype2  Frankendome, Version Two (49 chapters)\n  hype3  Frankendome, Version Three (56 chapters)\n  hype4  Frankendome, Version Four (57 chapters)\n  hype5  Frankendome, Version Five (57 chapters)\n  hype6  Frankendome, Version Six (61 chapters)\n  kick   Build A Dome: The Campaign (17 chapters)\n  kick2  Build A Dome: The Campaign, Version Two (21 chapters)\n  master The Dome Simulator Master Presentation (108 chapters)\n  world  Every Dome In The World (27 chapters)\n  world_chatgpt 10 Dome Builds \u2014 The Accountable Master Cut (30 chapters)\n  scratch From Scratch: Every Calculation Behind a Dome on Screen (46 chapters)\n  wedge  Eight Cuts to a House: A Dome Straight From the Tree (29 chapters)\n  drama  EP_DOME_001: The High Council Dome (4 chapters)\n  series THE VANCE NETWORK: the complete mini-series (24 chapters)\n  look   The Dome House Lookbook (11 chapters)\n  why    Why Wedges: A Dome That Does Not Need a Sawmill (48 chapters)\n  harvest Two Trees, All at Once (15 chapters)\n  why_build Why Build This Way (16 chapters)\n  pine_value The $20 Pine (16 chapters)\n  pvtwo  The Twenty Dollar Pine, Part Two (3 chapters)"
+        "all_domes": {
+          "title": "All Domes",
+          "chapters": 34,
+          "snapshot_prefix": "alldomes",
+          "style": "hype",
+          "voice_rate": "+4%",
+          "brand": "DOME CREATOR / EVERY PERMUTATION"
+        },
+        "dome_park": {
+          "title": "Dome Park",
+          "chapters": 25,
+          "snapshot_prefix": "domepark",
+          "style": "hype",
+          "voice_rate": "+2%",
+          "brand": "DOME PARK / BRING YOUR OWN HOME"
+        },
+        "_menu": "  2v     2V Geodesic Masterclass (14 chapters)\n  build  2V Dome Construction Masterclass (46 chapters)\n  hex    Hexagonal Dome Masterclass (20 chapters)\n  zome   Zome Construction Masterclass (19 chapters)\n  line   Assembly Line Energy Masterclass (24 chapters)\n  cuts   The Compound Cut, Both Machines (18 chapters)\n  franken The Franken-Dome (21 chapters)\n  hype   Frankendome (44 chapters)\n  hype2  Frankendome, Version Two (49 chapters)\n  hype3  Frankendome, Version Three (56 chapters)\n  hype4  Frankendome, Version Four (57 chapters)\n  hype5  Frankendome, Version Five (57 chapters)\n  hype6  Frankendome, Version Six (61 chapters)\n  kick   Build A Dome: The Campaign (17 chapters)\n  kick2  Build A Dome: The Campaign, Version Two (21 chapters)\n  master The Dome Simulator Master Presentation (108 chapters)\n  world  Every Dome In The World (27 chapters)\n  world_chatgpt 10 Dome Builds \u2014 The Accountable Master Cut (30 chapters)\n  scratch From Scratch: Every Calculation Behind a Dome on Screen (46 chapters)\n  wedge  Eight Cuts to a House: A Dome Straight From the Tree (29 chapters)\n  drama  EP_DOME_001: The High Council Dome (4 chapters)\n  series THE VANCE NETWORK: the complete mini-series (24 chapters)\n  look   The Dome House Lookbook (11 chapters)\n  why    Why Wedges: A Dome That Does Not Need a Sawmill (48 chapters)\n  harvest Two Trees, All at Once (15 chapters)\n  why_build Why Build This Way (16 chapters)\n  pine_value The $20 Pine (16 chapters)\n  pvtwo  The Twenty Dollar Pine, Part Two (3 chapters)\n  all_domes All Domes (34 chapters)\n  dome_park Dome Park (25 chapters)"
       },
       "error": ""
     },
@@ -943,6 +977,94 @@
             "shots": "",
             "voice_preview": ""
           }
+        },
+        "all_domes": {
+          "label": "all-domes-every-permutation.mp4",
+          "summary": "ALL DOMES. Every Dome Creator preset drawn by the Creator's own renderer -- wood grain, glass, mirror tiles, real foundations and the equipment inside -- one dome assembled step by step in the tool's own construction order, then a sweep of every menu the customizer has, eight domes drawn at random, and the arithmetic of how many buildings that adds up to.",
+          "fields": {
+            "action": "export_video",
+            "lesson": "all_domes",
+            "size": "1920x1080",
+            "fps": "30",
+            "voice": "en-US-AndrewMultilingualNeural",
+            "voice_rate": "+0%",
+            "voice_pitch": "+0Hz",
+            "voice_volume": "+0%",
+            "no_narration": false,
+            "fullscreen": false,
+            "compose_segments": true,
+            "segments_include": "",
+            "segments_exclude": "",
+            "export_video": "deliverables/masterclass/all-domes-every-permutation.mp4",
+            "shots": "",
+            "voice_preview": ""
+          }
+        },
+        "all_domes_stills": {
+          "label": "all domes -- one still per chapter",
+          "summary": "A still from each chapter of the Dome Creator showcase, with no narration and no video encode. The quick way to check every dome, sweep and cut-away before committing to the full render.",
+          "fields": {
+            "action": "shots",
+            "lesson": "all_domes",
+            "size": "1920x1080",
+            "fps": "30",
+            "voice": "en-US-AndrewMultilingualNeural",
+            "voice_rate": "+0%",
+            "voice_pitch": "+0Hz",
+            "voice_volume": "+0%",
+            "no_narration": false,
+            "fullscreen": false,
+            "compose_segments": false,
+            "segments_include": "",
+            "segments_exclude": "",
+            "export_video": "",
+            "shots": "8,22,36,50,64,78,92,106,120,134,148,162,176,190,204,218,232,246,260,274,288,302,316,330,344,358,372,386,400,414,428,442,456,470,484,498,512,526,540,554,568,582,596",
+            "voice_preview": ""
+          }
+        },
+        "dome_park": {
+          "label": "dome-park-bring-your-own-home.mp4",
+          "summary": "DOME PARK. The Kickstarter cut: an RV park for houses. A host builds a serviced pad, a dome owner brings the home and plugs in. Every pad and dome is drawn by the Dome Creator's own renderer, every figure comes from the park model -- including the ones that argue against the idea, which are on camera with the rest.",
+          "fields": {
+            "action": "export_video",
+            "lesson": "dome_park",
+            "size": "1920x1080",
+            "fps": "30",
+            "voice": "en-US-AndrewMultilingualNeural",
+            "voice_rate": "+0%",
+            "voice_pitch": "+0Hz",
+            "voice_volume": "+0%",
+            "no_narration": false,
+            "fullscreen": false,
+            "compose_segments": true,
+            "segments_include": "",
+            "segments_exclude": "",
+            "export_video": "deliverables/masterclass/dome-park-bring-your-own-home.mp4",
+            "shots": "",
+            "voice_preview": ""
+          }
+        },
+        "dome_park_stills": {
+          "label": "dome park -- one still per chapter",
+          "summary": "A still from each chapter of the dome park pitch, with no narration and no video encode. The quick way to check every pad, landing, sweep and worksheet before committing to the full render.",
+          "fields": {
+            "action": "shots",
+            "lesson": "dome_park",
+            "size": "1920x1080",
+            "fps": "30",
+            "voice": "en-US-AndrewMultilingualNeural",
+            "voice_rate": "+0%",
+            "voice_pitch": "+0Hz",
+            "voice_volume": "+0%",
+            "no_narration": false,
+            "fullscreen": false,
+            "compose_segments": false,
+            "segments_include": "",
+            "segments_exclude": "",
+            "export_video": "",
+            "shots": "8,30,52,74,96,118,140,162,184,206,228,250,272,294,316,338,360,382,404,426,448,470,492,514,536,558",
+            "voice_preview": ""
+          }
         }
       },
       "error": ""
@@ -1081,12 +1203,22 @@
           "note": "Registered by the project agent repair step: the why_build lesson was in the registry without a deliverable entry.",
           "built": false
         },
+        "all-domes-every-permutation.mp4": {
+          "lesson": "all_domes",
+          "note": "The Dome Creator's whole catalogue drawn by the Creator's own renderer -- grain, glass, mirrors, foundations and the fit-out inside -- one dome built step by step in the tool's own construction order, then every menu swept one setting at a time, eight random draws, and the permutation count.",
+          "built": true
+        },
         "pvtwo-masterclass.mp4": {
           "lesson": "pvtwo",
           "note": "Generated by the project agent film recipe: The Twenty Dollar Pine, Part Two.",
           "built": false
         },
-        "_menu": "27 deliverables:\n  built  hex      hex-dome-masterclass.mp4\n          Hexagonal domes: one strut length, twelve pentagons, and what frequency costs.\n  built  zome     zome-construction-masterclass.mp4\n          Zomes: flat parallelogram panels, one strut length, a point on top.\n  built  build    dome-construction-masterclass.mp4\n          The 46-chapter construction lesson, geometry through to the franken-dome.\n  built  line     assembly-line-energy-masterclass.mp4\n          What building one dome costs the two people who build it.\n  built  cuts     hubless-compound-cut.mp4\n          The compound cut on both machines, with the jig between.\n  built  franken  frankendome-build-v2.mp4\n          Mixed stock, folded brackets, slack and settling, plus hubless strut coding, the floor deck and the commercial case. The 13-chapter frankendome-build.mp4 beside it is archival: the lesson has since grown to 21 chapters and that file can no longer be reproduced from this code.\n  built  hype     frankendome-montage.mp4\n          The montage, version one. Raw label placement, as shipped.\n  built  hype2    frankendome-montage-v2.mp4\n          Version two: the asides. Raw label placement, as shipped.\n  built  hype3    frankendome-montage-v3.mp4\n          Version three: the reason, and legible labels.\n  built  hype4    frankendome-montage-v4.mp4\n          Version four: the brand segments, the party sting and the shared contact outro.\n  built  hype5    frankendome-montage-v5.mp4\n          Version five: no girlfriend remark, and the plain frankendome in place of the party sting.\n  built  hype6    frankendome-montage-v6.mp4\n          Version six: themed shells, the four product lines, a faster cadence and a synthesised beat under it.\n  built  kick     dome-kickstarter.mp4\n          The campaign film: why a dome, what one costs to the dollar, and what a hundred thousand dollars buys.\n  built  kick2    dome-kickstarter-v2.mp4\n          The campaign film with the pony wall, the overhanging brim and its catchment, running cost at 17 cents a kilowatt hour, radiative cooling paint, and the ten points.\n  built  series   the-vance-network-mini-series.mp4\n          The whole mini-series in one file: six vertical episodes, an arc where every cliffhanger is answered by the next episode's hook, and a finale that leaves one thread open. Same engine as the single episode, playing six directors back to back.\n  built  drama    ep-dome-001-high-council.mp4\n          The first micro-drama out of the narrative module: a 60-second vertical episode staged inside the dome, with the blocking, the proximity rings, the rig actions and every camera move computed by the drama director from a script JSON. Rendered 1080x1920 -- the 9:16 framing is the point, and a landscape render would discard it.\n         look     dome-house-lookbook.mp4\n          The interiors film: two furnished domes, a cast of eight built out of the same skeleton the lifting lesson uses, hair modelled as strands, a wardrobe lofted from the body's own cross-section, and the composer refusing a fitting pod because the shell has come down to meet it.\n  built  wedge    eight-cuts-to-a-house.mp4\n          The dome built straight from the tree: raw log sectors as structural members, forty independent pinwheel frames with no mitres anywhere, and gasketed seams instead of shared struts. Its math screens compute the trunk's board feet, pack 2x4s into the same sections honestly, cost the kerf, measure the joint and size the dome from the strut length the tree gives.\n  built  scratch  dome-from-scratch-geometry-to-pixels.mp4\n          From scratch, for somebody who has never written code: every calculation between one irrational number and a lit pixel. The shape (phi, subdivision, projection, two chord factors, a cut list) and then the picture (tubes, normals, the vertex buffer, the camera, the view and projection matrices, the divide by w, the viewport, the depth buffer, culling and the lighting sum), with 18 math screens deriving every figure on camera.\n  built  master   domesim-master-presentation.mp4\n          The master presentation: the toolchain tour, the whole construction masterclass, the frankendome, the priced starter home and the factory case -- with math screens that derive every figure on camera. Its segments (whoami, the party sting) are composed inside the lesson module, so this render must not compose them again.\n  built  world    every-dome-in-the-world.mp4\n          All twelve Dome Creator presets, each rebuilt live from the simulator's own modules and rendered at true relative scale, with math screens for the frequency ladder, hub versus hubless, price per square foot, envelope efficiency and scale.\n  built  world_chatgpt ten-dome-builds-master-20260829-135242-chatgpt.mp4\n          A unique ChatGPT master cut: ten real Dome Creator presets, Dome Forge and Assembly Line context, plus a per-build material breakdown, construction-event labor breakdown and modeled direct-sale price.\n  built  why      why-wedges-no-sawmill.mp4\n          The combined cut. Where the method came from (the frankendome and its V brackets), what it is (borrowing the mechanism chapters and three math screens from `wedge` so the two films cannot disagree), and what it is worth -- from two timed cutting sessions that agree with a geometric prediction to 12%, a wedge valued two independent ways that land 1% apart, the store-bought overheads nobody counts, and a structural claim stated as a crossover diameter rather than a verdict.\n         harvest  two-trees-all-at-once.mp4\n          Registered by the project agent repair step: the harvest lesson was in the registry without a deliverable entry.\n         pine_value the-20-dollar-pine.mp4\n          Registered by the project agent repair step: the pine_value lesson was in the registry without a deliverable entry.\n         why_build why-build-this-way.mp4\n          Registered by the project agent repair step: the why_build lesson was in the registry without a deliverable entry.\n         pvtwo    pvtwo-masterclass.mp4\n          Generated by the project agent film recipe: The Twenty Dollar Pine, Part Two.\n\nvoice caches present for 22 of 27; the rest would re-synthesize"
+        "dome-park-bring-your-own-home.mp4": {
+          "lesson": "dome_park",
+          "note": "The Kickstarter cut. An RV park for domes: what a pad is, built one step at a time; what it costs a host and what it returns; the measured hinge -- a dome's foundation is 8% to 63% of its build cost and on a pad the tenant never buys it; four ways to have a roof priced on one basis, and the month at which bringing your own home starts winning; one hardware set across three sizes; and a shell that comes off so the R-value can keep going up for as long as you own the house.",
+          "built": false
+        },
+        "_menu": "29 deliverables:\n  built  hex      hex-dome-masterclass.mp4\n          Hexagonal domes: one strut length, twelve pentagons, and what frequency costs.\n  built  zome     zome-construction-masterclass.mp4\n          Zomes: flat parallelogram panels, one strut length, a point on top.\n  built  build    dome-construction-masterclass.mp4\n          The 46-chapter construction lesson, geometry through to the franken-dome.\n  built  line     assembly-line-energy-masterclass.mp4\n          What building one dome costs the two people who build it.\n  built  cuts     hubless-compound-cut.mp4\n          The compound cut on both machines, with the jig between.\n  built  franken  frankendome-build-v2.mp4\n          Mixed stock, folded brackets, slack and settling, plus hubless strut coding, the floor deck and the commercial case. The 13-chapter frankendome-build.mp4 beside it is archival: the lesson has since grown to 21 chapters and that file can no longer be reproduced from this code.\n  built  hype     frankendome-montage.mp4\n          The montage, version one. Raw label placement, as shipped.\n  built  hype2    frankendome-montage-v2.mp4\n          Version two: the asides. Raw label placement, as shipped.\n  built  hype3    frankendome-montage-v3.mp4\n          Version three: the reason, and legible labels.\n  built  hype4    frankendome-montage-v4.mp4\n          Version four: the brand segments, the party sting and the shared contact outro.\n  built  hype5    frankendome-montage-v5.mp4\n          Version five: no girlfriend remark, and the plain frankendome in place of the party sting.\n  built  hype6    frankendome-montage-v6.mp4\n          Version six: themed shells, the four product lines, a faster cadence and a synthesised beat under it.\n  built  kick     dome-kickstarter.mp4\n          The campaign film: why a dome, what one costs to the dollar, and what a hundred thousand dollars buys.\n  built  kick2    dome-kickstarter-v2.mp4\n          The campaign film with the pony wall, the overhanging brim and its catchment, running cost at 17 cents a kilowatt hour, radiative cooling paint, and the ten points.\n  built  series   the-vance-network-mini-series.mp4\n          The whole mini-series in one file: six vertical episodes, an arc where every cliffhanger is answered by the next episode's hook, and a finale that leaves one thread open. Same engine as the single episode, playing six directors back to back.\n  built  drama    ep-dome-001-high-council.mp4\n          The first micro-drama out of the narrative module: a 60-second vertical episode staged inside the dome, with the blocking, the proximity rings, the rig actions and every camera move computed by the drama director from a script JSON. Rendered 1080x1920 -- the 9:16 framing is the point, and a landscape render would discard it.\n         look     dome-house-lookbook.mp4\n          The interiors film: two furnished domes, a cast of eight built out of the same skeleton the lifting lesson uses, hair modelled as strands, a wardrobe lofted from the body's own cross-section, and the composer refusing a fitting pod because the shell has come down to meet it.\n  built  wedge    eight-cuts-to-a-house.mp4\n          The dome built straight from the tree: raw log sectors as structural members, forty independent pinwheel frames with no mitres anywhere, and gasketed seams instead of shared struts. Its math screens compute the trunk's board feet, pack 2x4s into the same sections honestly, cost the kerf, measure the joint and size the dome from the strut length the tree gives.\n  built  scratch  dome-from-scratch-geometry-to-pixels.mp4\n          From scratch, for somebody who has never written code: every calculation between one irrational number and a lit pixel. The shape (phi, subdivision, projection, two chord factors, a cut list) and then the picture (tubes, normals, the vertex buffer, the camera, the view and projection matrices, the divide by w, the viewport, the depth buffer, culling and the lighting sum), with 18 math screens deriving every figure on camera.\n  built  master   domesim-master-presentation.mp4\n          The master presentation: the toolchain tour, the whole construction masterclass, the frankendome, the priced starter home and the factory case -- with math screens that derive every figure on camera. Its segments (whoami, the party sting) are composed inside the lesson module, so this render must not compose them again.\n  built  world    every-dome-in-the-world.mp4\n          All twelve Dome Creator presets, each rebuilt live from the simulator's own modules and rendered at true relative scale, with math screens for the frequency ladder, hub versus hubless, price per square foot, envelope efficiency and scale.\n  built  world_chatgpt ten-dome-builds-master-20260829-135242-chatgpt.mp4\n          A unique ChatGPT master cut: ten real Dome Creator presets, Dome Forge and Assembly Line context, plus a per-build material breakdown, construction-event labor breakdown and modeled direct-sale price.\n  built  why      why-wedges-no-sawmill.mp4\n          The combined cut. Where the method came from (the frankendome and its V brackets), what it is (borrowing the mechanism chapters and three math screens from `wedge` so the two films cannot disagree), and what it is worth -- from two timed cutting sessions that agree with a geometric prediction to 12%, a wedge valued two independent ways that land 1% apart, the store-bought overheads nobody counts, and a structural claim stated as a crossover diameter rather than a verdict.\n         harvest  two-trees-all-at-once.mp4\n          Registered by the project agent repair step: the harvest lesson was in the registry without a deliverable entry.\n         pine_value the-20-dollar-pine.mp4\n          Registered by the project agent repair step: the pine_value lesson was in the registry without a deliverable entry.\n         why_build why-build-this-way.mp4\n          Registered by the project agent repair step: the why_build lesson was in the registry without a deliverable entry.\n  built  all_domes all-domes-every-permutation.mp4\n          The Dome Creator's whole catalogue drawn by the Creator's own renderer -- grain, glass, mirrors, foundations and the fit-out inside -- one dome built step by step in the tool's own construction order, then every menu swept one setting at a time, eight random draws, and the permutation count.\n         pvtwo    pvtwo-masterclass.mp4\n          Generated by the project agent film recipe: The Twenty Dollar Pine, Part Two.\n         dome_park dome-park-bring-your-own-home.mp4\n          The Kickstarter cut. An RV park for domes: what a pad is, built one step at a time; what it costs a host and what it returns; the measured hinge -- a dome's foundation is 8% to 63% of its build cost and on a pad the tenant never buys it; four ways to have a roof priced on one basis, and the month at which bringing your own home starts winning; one hardware set across three sizes; and a shell that comes off so the R-value can keep going up for as long as you own the house.\n\nvoice caches present for 24 of 29; the rest would re-synthesize"
       },
       "error": ""
     },
@@ -5523,7 +5655,7 @@
         },
         "hist.commits": {
           "describe": "commits in the project's history",
-          "value": "81"
+          "value": "86"
         },
         "hist.creed": {
           "describe": "the day the history records: creed",
@@ -5531,7 +5663,7 @@
         },
         "hist.days": {
           "describe": "days from the first commit to the latest",
-          "value": "57"
+          "value": "67"
         },
         "hist.days_to_forge": {
           "describe": "days from the first commit to Dome Forge",
@@ -5559,7 +5691,7 @@
         },
         "hist.last": {
           "describe": "the latest commit",
-          "value": "September 5, 2026"
+          "value": "September 15, 2026"
         },
         "hist.launcher": {
           "describe": "the day the history records: launcher",

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Video Review · DomeSim</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header><a class="brand" href="/">◈ <span>DomeSim <strong>Video Review</strong></span></a><span class="local">● Local workspace</span><button id="new-review">+ New review</button></header>
+<div id="notice" role="status" aria-live="polite" hidden></div>
+<div class="shell">
+  <aside class="library"><div class="eyebrow">YOUR FILMS <button id="refresh" class="quiet" aria-label="Refresh library">↻</button></div><div id="review-list"></div><p class="library-help">Watch → annotate → build → review.<br>Every round stays in your history.</p></aside>
+  <main>
+    <section id="welcome" class="welcome"><div class="eyebrow">THE NEXT CUT STARTS HERE</div><h1>Watch it.<br>Make it better.</h1><p>Capture the moment, say what should change, and turn your review into the next build. Keep the whole journey from the first render to the final cut.</p><button id="welcome-new" class="primary">Start a video review <span>↗</span></button><div class="welcome-steps"><span><b>01</b> Timestamped notes</span><span><b>02</b> A ready-to-use handoff</span><span><b>03</b> Every version preserved</span></div></section>
+    <section id="workspace" hidden>
+      <div class="project-bar"><div><div class="eyebrow" id="project-subtitle">REVIEW WORKSPACE</div><h1 id="project-title"></h1></div><label class="round-label">Review round<select id="round-picker"></select></label></div>
+      <div id="history-banner" class="banner" hidden>This is a preserved earlier round. Select the latest round to continue reviewing.</div>
+      <div class="review-grid">
+        <section class="view-panel">
+          <div class="video-wrap"><video id="player" controls preload="metadata" playsinline></video></div>
+          <div class="transport"><span id="clock">00:00.000</span><button id="back" class="quiet" title="Back 5 seconds">−5s</button><button id="toggle-play" class="quiet">Play / pause</button><button id="forward" class="quiet" title="Forward 5 seconds">+5s</button><label>Speed <select id="speed"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label></div>
+          <div class="video-caption"><span id="video-name"></span><span id="chapter-now"></span></div>
+          <div id="markers" class="markers" aria-label="Annotation timeline"></div>
+          <div class="tabs" role="tablist" aria-label="Review information"><button role="tab" aria-selected="true" data-tab="notes">Review notes <span id="note-count">0</span></button><button role="tab" aria-selected="false" data-tab="script">Current script</button><button role="tab" aria-selected="false" data-tab="handoff">Build handoffs <span id="packet-count">0</span></button></div>
+          <section id="notes-panel" class="tab-panel"><div class="notes-heading"><p id="note-summary">Your notes become the next build’s action list.</p><select id="note-filter" aria-label="Filter notes"><option value="active">Open + verify</option><option value="all">All notes</option><option value="resolved">Resolved</option><option value="dismissed">Dismissed</option></select></div><div id="notes"></div></section>
+          <section id="script-panel" class="tab-panel" hidden><p class="muted">This round’s starting script. Exact replacements are applied when you generate a handoff. Other edits stay in the action list.</p><pre id="script-text"></pre></section>
+          <section id="handoff-panel" class="tab-panel" hidden><div id="packets"></div></section>
+        </section>
+        <aside class="annotation-panel">
+          <div class="eyebrow">CAPTURE A CHANGE</div><h2>Leave a note</h2>
+          <button id="capture" class="capture">＋ Note at playhead <kbd>N</kbd></button>
+          <label class="check"><input id="pause-on-note" type="checkbox" checked> Pause when starting a note</label>
+          <form id="note-form">
+            <div class="field-row"><label>From · seconds<input id="note-start" type="number" min="0" step="0.001" value="0" required></label><label>To · optional<input id="note-end" type="number" min="0" step="0.001" placeholder="End of range"></label><button type="button" id="range-end" class="quiet end-button" title="Set range end to playhead">Set end</button></div>
+            <div class="field-row"><label>Type<select id="note-kind"><option value="visual">Visual change</option><option value="narration">Narration / script</option><option value="pacing">Pacing / timing</option><option value="audio">Audio / music</option><option value="cut">Cut / remove</option><option value="keep">Keep this</option><option value="other">Other</option></select></label><label>Priority<select id="note-priority"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></label></div>
+            <label>Chapter<select id="note-chapter"><option value="">General note</option></select></label>
+            <label>What should change?<textarea id="note-text" rows="4" placeholder="e.g. Hold this view longer so the roof detail is clear." required maxlength="20000"></textarea></label>
+            <div id="replacement-fields" hidden><p class="muted">Optional: apply an exact text change to the next script.</p><button type="button" id="load-narration" class="quiet">Use chapter narration</button><label>Original text<textarea id="note-original" rows="3" placeholder="Exact text from the current script"></textarea></label><label>Replacement text<textarea id="note-replacement" rows="3" placeholder="The words you want in the next version"></textarea></label></div>
+            <button id="save-note" class="primary" type="submit">Save note <span>Ctrl ↵</span></button><button type="button" id="cancel-edit" class="quiet" hidden>Cancel edit</button><span id="draft-state" class="muted small">Saved notes stay on disk.</span>
+          </form>
+          <div class="build-box"><div class="eyebrow">READY FOR ANOTHER PASS?</div><h2>Prepare the next build</h2><p>Generate the action list, revised script, and prompt from this round’s notes.</p><button id="generate">Generate handoff ↗</button><p class="small muted">Exact narration changes update the script. Visual, pacing, audio and cut notes become tasks for the next build.</p><button id="attach-next" class="quiet">Attach next render →</button></div>
+          <p class="shortcuts"><kbd>N</kbd> capture · <kbd>Space</kbd> play / pause<br><kbd>←</kbd> <kbd>→</kbd> seek · <kbd>Ctrl ↵</kbd> save</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+</div>
+<dialog id="create-dialog"><form id="create-form"><div class="dialog-title"><div><div class="eyebrow">START A REVIEW</div><h2>Bring in a render</h2></div><button type="button" class="quiet close-dialog" aria-label="Close">✕</button></div><p>Choose a video in your DomeSim folder. Chapter timing and narration load automatically when companion files are available.</p><label>Project videos<select id="video-picker"><option value="">Choose a video…</option></select></label><label>Video path<input id="create-video" required placeholder="deliverables/film.mp4"></label><label>Review name<input id="create-title" placeholder="Defaults to the video’s name"></label><details><summary>Script, original prompt & renderer connection</summary><label>Lesson key · optional<input id="create-lesson" placeholder="e.g. 2v, byod, wedge"></label><p class="muted small">New renders include this automatically. Linking an older video to a lesson enables narration overrides in the renderer.</p><label>Original script · optional<textarea id="create-script" rows="5" placeholder="Paste the script if the video has no companion script"></textarea></label><label>Original generation prompt · optional<textarea id="create-prompt" rows="4" placeholder="Preserved with every next-build handoff"></textarea></label></details><p id="create-error" class="error" role="alert"></p><button class="primary" type="submit">Open review →</button></form></dialog>
+<dialog id="attach-dialog"><form id="attach-form"><div class="dialog-title"><h2>Start the next round</h2><button type="button" class="quiet close-dialog" aria-label="Close">✕</button></div><p>The current round stays in your history. Unresolved notes carry forward for verification. Timestamps from earlier renders stay labeled with their source round.</p><label>Next video<select id="next-picker"><option value="">Choose a new render…</option></select></label><label>Video path<input id="next-video" required placeholder="Path to the newly generated video"></label><label>Built from handoff<select id="next-packet" required></select></label><p id="attach-error" class="error" role="alert"></p><button class="primary" type="submit">Attach & start next review →</button></form></dialog>
+</body></html>

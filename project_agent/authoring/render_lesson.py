@@ -25,9 +25,9 @@ A file that is not importable as a module works too:
 
 Notes
 -----
-* Stills are minutes, an export is hours. Look at the stills first. That is
-  not a style preference: a wrong camera found after the export costs the
-  whole render.
+* Inspect stills before a full export. Cost depends on duration, geometry,
+  resolution, frame rate, and whether narration must be synthesized.
+* Each still run gets a new folder, so earlier review images are preserved.
 * Exports are append-only. Pointing --export at a file that exists writes
   the next version beside it (-v2, -v3) rather than overwriting the old cut.
 * --silent skips narration entirely, which is the fast way to check motion
@@ -39,8 +39,11 @@ from __future__ import annotations
 import argparse
 import importlib
 import importlib.util
+import math
 import sys
+from datetime import datetime
 from pathlib import Path
+import uuid
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
@@ -71,8 +74,9 @@ def find_lesson(module):
     """
     from two_v_demo.lessons import Lesson
 
-    found = [value for name, value in vars(module).items()
-             if isinstance(value, Lesson) and not name.startswith("_")]
+    # Aliases of one instance are harmless; distinct films are ambiguous.
+    found = list({id(value): value for name, value in vars(module).items()
+                  if isinstance(value, Lesson) and not name.startswith("_")}.values())
     if not found:
         raise SystemExit(
             f"{module.__name__} defines no Lesson. A lesson module must end "
@@ -80,8 +84,8 @@ def find_lesson(module):
             "scenes=...)")
     if len(found) > 1:
         names = ", ".join(sorted(lesson.key for lesson in found))
-        print(f"note: {len(found)} lessons in this module ({names}); "
-              f"playing {found[0].key}")
+        raise SystemExit(f"Multiple public Lessons in {module.__name__}: {names}. "
+                         "Keep exactly one public LESSON so an isolated export cannot select the wrong film.")
     return found[0]
 
 
@@ -100,7 +104,31 @@ def parse_size(value: str) -> tuple[int, int]:
         width, height = (int(part) for part in value.lower().split("x", 1))
     except ValueError:
         raise SystemExit(f"--size wants WIDTHxHEIGHT, not {value!r}") from None
+    if width < 64 or height < 64 or width % 2 or height % 2:
+        raise SystemExit("--size needs even dimensions of at least 64 pixels for H.264 export")
     return width, height
+
+
+def validate_timeline(lesson, times: list[str]) -> list[float]:
+    """Reject broken content or wrapped screenshot times before creating GL."""
+    for chapter in lesson.chapters:
+        if not math.isfinite(chapter.duration) or chapter.duration <= 0.5:
+            raise SystemExit("Chapter durations must be finite and exceed 0.5 seconds")
+        if len(chapter.camera) != 3 or not all(math.isfinite(x) for x in chapter.camera) or chapter.camera[2] <= 0:
+            raise SystemExit("Each camera needs finite yaw, pitch, and positive distance")
+        if lesson.scenes and chapter.stage not in lesson.scenes:
+            raise SystemExit(f"Chapter stage {chapter.stage!r} is missing from SCENES")
+    total = sum(chapter.duration for chapter in lesson.chapters)
+    seconds = []
+    for value in times:
+        try:
+            second = float(value)
+        except ValueError:
+            raise SystemExit(f"still times are seconds: {value!r}") from None
+        if not math.isfinite(second) or not 0 <= second < total:
+            raise SystemExit(f"Still time {value} must be at least zero and below the silent duration {total:g}s")
+        seconds.append(second)
+    return seconds
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -128,6 +156,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--no-selftest", action="store_true",
                         help="skip the lesson proof before rendering")
     args = parser.parse_args(argv)
+    if not 1 <= args.fps <= 120:
+        parser.error("--fps must be between 1 and 120")
+    width, height = parse_size(args.size)
 
     module = load_module(args.module, args.file)
     lesson = find_lesson(module)
@@ -135,6 +166,7 @@ def main(argv: list[str] | None = None) -> int:
           f"({len(lesson.chapters)} chapters, style {lesson.style})")
 
     lesson.validate()
+    validate_timeline(lesson, [])
     print("  lesson.validate() ok")
     if lesson.selftest is not None and not args.no_selftest:
         lesson.selftest()
@@ -152,18 +184,13 @@ def main(argv: list[str] | None = None) -> int:
     # Imported here so --selftest costs no window and no GL context.
     from two_v_demo.app import MasterclassApp
 
-    width, height = parse_size(args.size)
+    seconds = validate_timeline(lesson, times)
     app = MasterclassApp(size=(width, height), hidden=True, lesson=lesson)
     try:
         if times:
             out_dir = Path(args.out_dir) if args.out_dir else (
                 REPO_ROOT / "two_v_demo_output" / lesson.key)
-            seconds = []
-            for value in times:
-                try:
-                    seconds.append(float(value))
-                except ValueError:
-                    raise SystemExit(f"still times are seconds: {value!r}") from None
+            out_dir = out_dir / (datetime.now().strftime("review-%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:8])
             paths = app.render_shots(seconds, out_dir)
             print(f"{len(paths)} still(s) in {out_dir}")
         if args.export:

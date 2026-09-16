@@ -1,8 +1,50 @@
 # Local Voice Studio
 
-Local Voice Studio is a standalone Windows-first program for collecting voice
+## Presentation Voice: paste text and make a narration clip
+
+Open **DomeSim Launcher → Local Voice Studio → Presentation Voice — text to audio**.
+The same workbench is the first tab in the standalone Voice Studio window.
+No project, recorded voice profile, or local AI model is needed for this section.
+
+It uses the presentation films' Microsoft Edge neural narrator:
+`en-US-AndrewMultilingualNeural`, rate `-3%`, pitch `-2Hz`, volume `+0%`.
+Generation sends the entered text to the online speech service and needs internet;
+saved audio plays offline. **Film defaults** restores these settings.
+
+1. Name the clip and paste a transcript, type your own narration, or **Open text**
+   from TXT, Markdown, SRT, or VTT. **Clean timestamps** removes caption timing
+   lines; review the result before generating. Ctrl+Z undoes text changes.
+2. Click **Generate & save**, or highlight a passage and choose **Test selection**.
+   **Listen while generating** begins playback after the first short section is
+   ready and queues later sections. It does not wait for the full transcript.
+3. Use **Pause / resume**, **Stop audio**, and the listening-volume slider while
+   auditioning. Stopping playback lets the render continue; **Cancel** stops the
+   render. Play a completed take to seek with the position slider.
+4. Completed takes appear in **Saved takes**. Double-click to play; **Load script
+   + settings** restores a take for another version. **Save WAV as…** and
+   **Save MP3 as…** copy audio out for your video editor. Existing files are never
+   replaced—choose a fresh export filename.
+5. **Record mic** captures a separate microphone take. **Inputs** lists devices;
+   the level meter and timer run while recording. **Stop & save mic** saves WAV.
+   Microphone takes are labeled separately and do not use the neural narrator.
+
+The default library is `voice_clips/` in the project folder; **Choose…** changes
+it. Each uniquely named take folder contains its script, settings/status receipt,
+and audio. Neural takes contain a 48 kHz mono PCM WAV and a 192 kb/s MP3, plus
+the rendered sections. Failed/cancelled takes retain their script and completed
+sections and are labeled accordingly. The editor draft and settings persist
+between launches. **Open folder** reveals the files.
+
+Dependencies are included in `requirements-core.txt` (`edge-tts`,
+`imageio-ffmpeg`, `sounddevice`, and `numpy`). Install these in whichever Python
+runs the window; the standalone studio normally uses `.venv-voice`.
+Focused offline checks: `python -m unittest local_voice_studio.test_presentation_voice -v`.
+
+## Local voice tools
+
+The local voice tools are a standalone Windows-first workflow for collecting voice
 recordings you own, curating a clean speech dataset, creating a locked local
-voice profile, and generating speech on your computer. It does not use a hosted
+voice profile, and generating speech on your computer. That workflow does not use a hosted
 inference API, login, telemetry, cloud database, or share server.
 
 It is separate from Dome Creator, the assembly line, and the standalone

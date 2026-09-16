@@ -10,6 +10,8 @@ from __future__ import annotations
 from .lesson_all_domes import ALL_DOMES_LESSON
 from .lesson_build import BUILD_LESSON
 from .lesson_cuts import CUTS_LESSON
+from .lesson_dome_park import DOME_PARK_LESSON
+from .lesson_bring_your_own_dome import BYOD_LESSON
 from .lesson_drama import DRAMA_LESSON, SERIES_LESSON
 from .lesson_franken import FRANKEN_LESSON
 from .lesson_harvest import HARVEST_LESSON
@@ -51,7 +53,7 @@ LESSONS: dict[str, Lesson] = {
                    SERIES_LESSON, LOOKBOOK_LESSON,
                    WEDGE_WHY_LESSON, HARVEST_LESSON, WHY_BUILD_LESSON,
                    PINE_VALUE_LESSON,
-                   PVTWO_LESSON, ALL_DOMES_LESSON)
+                   PVTWO_LESSON, ALL_DOMES_LESSON, DOME_PARK_LESSON, BYOD_LESSON)
 }
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key

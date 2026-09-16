@@ -2,6 +2,12 @@
 
 ---
 
+## Review generated videos
+
+Open **Launcher > Video Review** or double-click `Start-Video-Review.cmd` to
+annotate videos, generate revised scripts and build prompts, and keep each
+review round. [Video Review guide](docs/video-review.md).
+
 ## The Round House Creed
 
 **Every house is an argument about what a person is worth.**

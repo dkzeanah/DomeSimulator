@@ -62,7 +62,23 @@ class MicrophoneRecorder:
             device=device,
             callback=callback,
         )
-        self._stream.start()
+        try:
+            self._stream.start()
+        except Exception:
+            self.abort()
+            raise
+
+    def abort(self) -> None:
+        """Release the input device without keeping an unfinished recording."""
+        if self._stream is not None:
+            try:
+                self._stream.abort()
+            finally:
+                self._stream.close()
+                self._stream = None
+        with self._lock:
+            self._chunks = []
+            self.peak = 0.0
 
     def stop(self, output_path: Path) -> Path:
         if self._stream is None:

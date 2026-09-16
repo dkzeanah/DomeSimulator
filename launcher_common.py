@@ -9,8 +9,16 @@ launcher GUI as a one-shot JSON "launch ticket":
    the user set in the GUI.
 2. The launcher spawns the tool with **no command-line arguments**.
 3. The tool calls :func:`consume_config` at startup, which reads that
-   file and immediately deletes it, then dispatches on an ``action``
-   key instead of ``sys.argv``.
+   file and immediately takes it out of the way, then dispatches on an
+   ``action`` key instead of ``sys.argv``.
+
+A consumed ticket is not thrown away: it is moved to
+``.launcher_configs/used/<tool>-<timestamp>.json``. The point of a ticket is
+that it is the exact, complete input a tool ran on, and the archive is the
+only place you can read one -- a live ticket exists for about a second. Go
+there when you want to hand-write a ticket and need to know what fields a
+real one carries, or when you want to know what a finished render was
+actually asked to do. :func:`used_tickets` lists them newest first.
 
 Running a tool directly (``py -3.12 assembly_line.py``) without going
 through the launcher finds no ticket, gets ``{}`` back, and falls
@@ -26,6 +34,7 @@ import os
 import subprocess
 import sys
 import threading
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -33,9 +42,72 @@ CONFIG_DIR = ROOT / ".launcher_configs"
 PYTHON = sys.executable or "py"
 
 
+USED_DIR = CONFIG_DIR / "used"
+KEEP_USED_TICKETS = 60
+"""How many consumed tickets to keep per tool before the oldest are dropped.
+
+Tickets are a few hundred bytes each, so this is generous on purpose: the
+history is worth more than the disk."""
+
+
+def _safe_name(tool: str) -> str:
+    return "".join(c if c.isalnum() or c in "-_" else "_" for c in tool)
+
+
 def _ticket_path(tool: str) -> Path:
-    safe = "".join(c if c.isalnum() or c in "-_" else "_" for c in tool)
-    return CONFIG_DIR / f"{safe}.json"
+    return CONFIG_DIR / f"{_safe_name(tool)}.json"
+
+
+def _archive_ticket(tool: str, path: Path) -> Path | None:
+    """Move a consumed ticket into the archive. Never fails a launch.
+
+    Renaming rather than copy-then-delete, so the live ticket stops existing
+    in one step: a tool that crashed between the two would otherwise find its
+    own ticket still there on the next run and silently repeat the last job.
+    """
+    safe = _safe_name(tool)
+    try:
+        USED_DIR.mkdir(parents=True, exist_ok=True)
+        stamp = time.strftime("%Y%m%d-%H%M%S")
+        target = USED_DIR / f"{safe}-{stamp}.json"
+        suffix = 1
+        while target.exists():
+            target = USED_DIR / f"{safe}-{stamp}-{suffix}.json"
+            suffix += 1
+        path.replace(target)
+    except OSError:
+        # Archiving is a convenience. If it cannot happen -- read-only disk,
+        # a permissions problem -- the ticket still has to go, or the next
+        # launch of this tool repeats this one.
+        try:
+            path.unlink()
+        except OSError:
+            pass
+        return None
+    _prune_used(safe)
+    return target
+
+
+def _prune_used(safe: str) -> None:
+    try:
+        kept = sorted(USED_DIR.glob(f"{safe}-*.json"))
+    except OSError:
+        return
+    for stale in kept[:-KEEP_USED_TICKETS]:
+        try:
+            stale.unlink()
+        except OSError:
+            pass
+
+
+def used_tickets(tool: str = "", limit: int = 20) -> list[Path]:
+    """Consumed tickets, newest first, for one tool or for everything."""
+    pattern = f"{_safe_name(tool)}-*.json" if tool else "*.json"
+    try:
+        found = sorted(USED_DIR.glob(pattern), reverse=True)
+    except OSError:
+        return []
+    return found[:limit]
 
 
 def write_config(tool: str, data: dict) -> Path:
@@ -47,8 +119,13 @@ def write_config(tool: str, data: dict) -> Path:
 
 
 def consume_config(tool: str) -> dict:
-    """Read and delete ``tool``'s launch ticket. Called by the tool at
-    startup. Returns ``{}`` if the tool was launched directly."""
+    """Take ``tool``'s launch ticket and archive it. Called by the tool at
+    startup. Returns ``{}`` if the tool was launched directly.
+
+    One-shot as it always was -- the ticket is gone from where a tool looks
+    for it before this returns -- but it lands in ``.launcher_configs/used/``
+    rather than being deleted, so the exact input a run used stays readable
+    afterwards. See :func:`used_tickets`."""
     path = _ticket_path(tool)
     if not path.is_file():
         return {}
@@ -56,10 +133,7 @@ def consume_config(tool: str) -> dict:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         data = {}
-    try:
-        path.unlink()
-    except OSError:
-        pass
+    _archive_ticket(tool, path)
     return data if isinstance(data, dict) else {}
 
 

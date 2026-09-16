@@ -29,6 +29,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
@@ -92,6 +93,23 @@ def _params_from(cfg: dict) -> dict:
 def main() -> int:
     cfg = lc.consume_config("project_agent")
     action = str(cfg.get("action") or "chat").lower()
+
+    if action == "authoring_prompt":
+        # Write the paste-into-a-model prompt and stop. No agent, no LLM, no
+        # render: this action exists so the knowledge can leave the project as
+        # text and come back as a file you save yourself.
+        from project_agent.authoring import build_prompt
+        out = Path(str(cfg.get("out")
+                       or "project_agent/authoring/PROMPT.md"))
+        out.parent.mkdir(parents=True, exist_ok=True)
+        text = build_prompt(str(cfg.get("brief") or ""))
+        out.write_text(text, encoding="utf-8")
+        words = len(text.split())
+        print(f"wrote {out}")
+        print(f"{words:,} words, about {int(words * 1.33):,} tokens")
+        print("open it, paste the whole file into your model, and add one "
+              "line saying what you want drawn.")
+        return 0
 
     from project_agent import config as agent_config
     from project_agent import ledger, loop, tools

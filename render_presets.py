@@ -301,6 +301,54 @@ PRESETS: tuple[RenderPreset, ...] = (
             "shots": ",".join(str(second) for second in range(8, 600, 14)),
         },
     ),
+    _video("dome_park", "dome_park", "dome-park-bring-your-own-home.mp4",
+           "DOME PARK. The Kickstarter cut: an RV park for houses. A host "
+           "builds a serviced pad, a dome owner brings the home and plugs in. "
+           "Every pad and dome is drawn by the Dome Creator's own renderer, "
+           "every figure comes from the park model -- including the ones that "
+           "argue against the idea, which are on camera with the rest.",
+           compose_segments=True),
+
+    RenderPreset(
+        key="dome_park_stills",
+        label="dome park -- one still per chapter",
+        summary="A still from each chapter of the dome park pitch, with no "
+                "narration and no video encode. The quick way to check every "
+                "pad, landing, sweep and worksheet before committing to the "
+                "full render.",
+        fields={
+            "lesson": "dome_park",
+            "action": "shots",
+            "shots": ",".join(str(second) for second in range(8, 580, 22)),
+        },
+    ),
+
+    # Bring Your Own Dome has its own staged renderer as well
+    # (render_bring_your_own_dome.py: audio, render and mux as separate,
+    # resumable steps, with recorded takes allowed). This preset is the
+    # one-click path through the launcher. Segments stay off: the lesson
+    # carries its own contact outro, and splicing the shared one as well
+    # would end the film twice.
+    _video("byod", "byod", "bring-your-own-dome.mp4",
+           "BRING YOUR OWN DOME. The revised pitch: the animated iris pad, "
+           "central services, movable partitions, wedge channels, staged "
+           "growth and a starter-first budget, with the personal story and "
+           "the proposed rewards. Ends on its own contact outro.",
+           compose_segments=False),
+
+    RenderPreset(
+        key="byod_stills",
+        label="bring your own dome -- one still per chapter",
+        summary="A still from each chapter of Bring Your Own Dome, with no "
+                "narration and no video encode. The quick way to look at "
+                "every iris, room layout and title card before committing to "
+                "the full render.",
+        fields={
+            "lesson": "byod",
+            "action": "shots",
+            "shots": ",".join(str(second) for second in range(8, 587, 15)),
+        },
+    ),
 )
 
 

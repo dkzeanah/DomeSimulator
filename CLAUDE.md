@@ -58,3 +58,29 @@ claim; follow that pattern.
 
 Run the lesson's selftest and look at a still from each new or changed chapter. A render
 is roughly ninety minutes; a wrong camera angle found afterwards costs all of it.
+
+## Every render is a release
+
+One render produces a set, not a file. Any film exported by an LLM — new or re-cut —
+must end with all of these, and the standard exporter now does it by default:
+
+* the **landscape cut**, and a **phone cut** beside it (`orientation=both`, which is
+  the default for `export_video` tickets; a lesson with `frame_fit="off"` stays
+  landscape-only, because it opted out of re-framing);
+* a **release folder** in `deliverables/releases/<cut-name>/` holding one thumbnail
+  per chapter cut out of the finished video, the captions, and `description.md` with
+  YouTube, Facebook and Instagram copy and hashtags.
+
+`two_v_demo.release.build_release` builds the folder from the film's own script and the
+exporter's narration plan, so the copy and the chapter timestamps match the cut. The
+exporter calls it automatically when a render finishes. A film rendered some other way
+— its own script, a staged pipeline — must call it by hand before the work is reported
+done:
+
+    py -3.12 -m two_v_demo.release --lesson <key> --video <path-to-cut.mp4>
+
+Hashtags live in `release.HASHTAG_BANK`. A new film gets its own entry there.
+
+The plug-in segments (call to action, outro, frankendome party) are spliced during the
+export when a preset sets `compose_segments`; new films turn that on unless the lesson
+already carries its own outro.
