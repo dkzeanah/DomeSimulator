@@ -1,0 +1,377 @@
+{
+  "added": [
+    "codex-582cde255f2c4e9e",
+    "codex-1f4b61da5db24cf0",
+    "codex-c780bed41e4b4e9b",
+    "codex-3eccd8b8f6854cb8",
+    "codex-2ab76cbb6fd644d4",
+    "codex-f9f8741608034fa8",
+    "codex-4c4ea377927e482e",
+    "codex-b61584c6b604400a",
+    "codex-62aef9f9ee8648c8",
+    "codex-9aa3f13614234bea",
+    "codex-7a8cbce4531047c1",
+    "codex-81a7ae39b2524d9d",
+    "codex-ababcfe33466456b",
+    "codex-5d9f8205c1674f1d",
+    "codex-338073d0315a4a5f",
+    "codex-b6b5b69ffdc24516",
+    "codex-b2b4a2f34fc54fa5",
+    "codex-8481788de23a4db8",
+    "codex-90a41e9a772e4c63",
+    "codex-411a4a984d3340ec",
+    "codex-daa53e7ef662428f",
+    "codex-64017efcdd824fe7",
+    "codex-474ef581bf194626",
+    "codex-c015b65f4be04e7a",
+    "codex-83e5ab1e3bdd4e3f",
+    "codex-08dde560cc4e488a",
+    "codex-66e0ce38d26049d1",
+    "codex-25a852e46c264f63",
+    "codex-0ff5d0ec27754bbc",
+    "codex-6003883bc2724465",
+    "codex-7dbe7beb4c0940a2",
+    "codex-7a5f6179f2f841e5",
+    "codex-8c16ef1c4ebc403d",
+    "codex-8393185045d8405a",
+    "codex-78bc0a6064f24c77",
+    "codex-aad7a02956f64d96",
+    "codex-dfeeb41353734486",
+    "codex-d0849601886c4145",
+    "codex-ae50ca2aa4c545b4",
+    "codex-3770ff691dbd4f51",
+    "codex-cde06c007fef49fe",
+    "codex-2ac18a40917842fb",
+    "codex-f76ec3d756ca45d6",
+    "codex-788f8298c0e64bfd",
+    "codex-9c24a6ea0a2c41cf",
+    "codex-c14e9ba58bbe4044",
+    "codex-29a9fb92a6664008",
+    "codex-9c6bd0284d954790",
+    "codex-10d509e89b054487",
+    "codex-c6030c395f6946b1",
+    "codex-c48b86f2c50c4d65",
+    "codex-69e7dc8b83814ae5"
+  ],
+  "sections": 61,
+  "placed_figures": 66,
+  "illustrated_chapters": 27,
+  "numbered_chapters": 27,
+  "unillustrated_chapters": [],
+  "source_families": {
+    "Earlier book artwork": 14,
+    "Dome World presentation": 4,
+    "Video engine presentations": 29,
+    "Dome Forge": 8,
+    "Assembly Line presentation": 5,
+    "Assembly Line (Simple)": 6
+  },
+  "pages": [
+    {
+      "id": "codex-title",
+      "title": "2 trees: Build your (D)Home",
+      "figures": 1
+    },
+    {
+      "id": "codex-how-to-read",
+      "title": "Before the first chapter",
+      "figures": 0
+    },
+    {
+      "id": "codex-part-origin",
+      "title": "Part I — The idea in the wood",
+      "figures": 0
+    },
+    {
+      "id": "codex-first-question",
+      "title": "1. Start with what is here",
+      "figures": 1
+    },
+    {
+      "id": "codex-frankendome",
+      "title": "2. What the Frankendome taught me",
+      "figures": 2
+    },
+    {
+      "id": "codex-discovery",
+      "title": "3. Finding the wedge",
+      "figures": 1
+    },
+    {
+      "id": "codex-scope",
+      "title": "4. Define the experiment before starting the clock",
+      "figures": 2
+    },
+    {
+      "id": "codex-part-geometry",
+      "title": "Part II — The dome before the saw",
+      "figures": 0
+    },
+    {
+      "id": "codex-mesh",
+      "title": "5. A sphere made from straight lines",
+      "figures": 3
+    },
+    {
+      "id": "codex-counts",
+      "title": "6. Why 65 edges need 120 pieces of wood",
+      "figures": 3
+    },
+    {
+      "id": "codex-radius-method",
+      "title": "7. Method one: start with the radius you want",
+      "figures": 1
+    },
+    {
+      "id": "codex-radius-example",
+      "title": "8. Worked example: a ten-foot radius",
+      "figures": 2
+    },
+    {
+      "id": "codex-tree-method",
+      "title": "9. Method two: let the tree set the size",
+      "figures": 1
+    },
+    {
+      "id": "codex-tree-ledger",
+      "title": "10. Eight sections, sixty-four blanks, sixty accepted members",
+      "figures": 3
+    },
+    {
+      "id": "codex-part-material",
+      "title": "Part III — The tree becomes inventory",
+      "figures": 0
+    },
+    {
+      "id": "codex-radial-wood",
+      "title": "11. The shape of one eighth",
+      "figures": 2
+    },
+    {
+      "id": "codex-read-tree",
+      "title": "12. Read the trunk in sections",
+      "figures": 2
+    },
+    {
+      "id": "codex-recovery",
+      "title": "13. Measure recovery instead of defending a percentage",
+      "figures": 1
+    },
+    {
+      "id": "codex-green-wood",
+      "title": "14. Wood keeps changing after the cut",
+      "figures": 1
+    },
+    {
+      "id": "codex-part-fabrication",
+      "title": "Part IV — One hundred and twenty useful pieces",
+      "figures": 0
+    },
+    {
+      "id": "codex-work-sequence",
+      "title": "15. Organize the work around the small saw",
+      "figures": 3
+    },
+    {
+      "id": "codex-wedge-orientations",
+      "title": "16. Four ways to place the same wedge",
+      "figures": 4
+    },
+    {
+      "id": "codex-joint-geometry",
+      "title": "17. The triangle corner is a physical object",
+      "figures": 2
+    },
+    {
+      "id": "codex-pinwheel-illustrated",
+      "title": "Plate — Two triangles, two members at the seam",
+      "figures": 1
+    },
+    {
+      "id": "codex-jig",
+      "title": "18. Build the reference into the fixture",
+      "figures": 1
+    },
+    {
+      "id": "codex-fixture-sequence",
+      "title": "Plate sequence — From layout to loaded fixture",
+      "figures": 4
+    },
+    {
+      "id": "codex-panel-production",
+      "title": "19. Make forty triangles, one checked batch at a time",
+      "figures": 2
+    },
+    {
+      "id": "codex-part-assembly",
+      "title": "Part V — The seams make the dome",
+      "figures": 0
+    },
+    {
+      "id": "codex-seams",
+      "title": "20. What happens between two panels",
+      "figures": 1
+    },
+    {
+      "id": "codex-base",
+      "title": "21. Give the frame a place to stand",
+      "figures": 2
+    },
+    {
+      "id": "codex-raising",
+      "title": "22. Follow an assembly plan that can stay stable",
+      "figures": 2
+    },
+    {
+      "id": "codex-from-frame-home",
+      "title": "23. The frame and the home it might become",
+      "figures": 3
+    },
+    {
+      "id": "codex-enclosure-sequence",
+      "title": "Plate sequence — The work beyond the frame",
+      "figures": 3
+    },
+    {
+      "id": "codex-part-fortnight",
+      "title": "Part VI — Fourteen days, as they happen",
+      "figures": 0
+    },
+    {
+      "id": "codex-fortnight-plan",
+      "title": "24. Plan the fortnight, then record the difference",
+      "figures": 1
+    },
+    {
+      "id": "codex-day-01",
+      "title": "Day 01 — The starting inventory",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-02",
+      "title": "Day 02 — The first configuration",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-03",
+      "title": "Day 03 — The first useful blank",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-04",
+      "title": "Day 04 — The first corner",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-05",
+      "title": "Day 05 — A repeatable process",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-06",
+      "title": "Day 06 — The tree has a say",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-07",
+      "title": "Day 07 — Halfway through the clock",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-08",
+      "title": "Day 08 — The first panel family",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-09",
+      "title": "Day 09 — The second panel family",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-10",
+      "title": "Day 10 — Forty triangles, if ready",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-11",
+      "title": "Day 11 — Ready to assemble",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-12",
+      "title": "Day 12 — The frame begins to rise",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-13",
+      "title": "Day 13 — Approaching closure",
+      "figures": 0
+    },
+    {
+      "id": "codex-day-14",
+      "title": "Day 14 — The honest finish line",
+      "figures": 0
+    },
+    {
+      "id": "codex-economics",
+      "title": "25. Count the work the wood actually replaced",
+      "figures": 2
+    },
+    {
+      "id": "codex-scene-math-example",
+      "title": "Scene study - Reading the math labels",
+      "figures": 1
+    },
+    {
+      "id": "codex-ending",
+      "title": "26. What two trees will have taught me",
+      "figures": 1
+    },
+    {
+      "id": "codex-part-atlas",
+      "title": "Part VII — The wider project and the bench reference",
+      "figures": 0
+    },
+    {
+      "id": "codex-project-atlas",
+      "title": "27. The tools that made the questions visible",
+      "figures": 4
+    },
+    {
+      "id": "codex-dome-world-gallery",
+      "title": "Gallery — Other destinations in Dome World",
+      "figures": 3
+    },
+    {
+      "id": "codex-figure-plan",
+      "title": "Illustration plan — give each image a job",
+      "figures": 0
+    },
+    {
+      "id": "codex-worksheet-tree",
+      "title": "Worksheet A — Source tree and section register",
+      "figures": 0
+    },
+    {
+      "id": "codex-worksheet-member",
+      "title": "Worksheet B — Member and panel traceability",
+      "figures": 0
+    },
+    {
+      "id": "codex-worksheet-cost",
+      "title": "Worksheet C — Time, purchases, and what remains",
+      "figures": 0
+    },
+    {
+      "id": "codex-glossary",
+      "title": "Glossary — the words beside the cuts",
+      "figures": 0
+    },
+    {
+      "id": "codex-sources",
+      "title": "Sources, assumptions, and corrections to resolve",
+      "figures": 0
+    }
+  ],
+  "plan": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\book-illustration-plan-20260912T105153069930Z.json"
+}

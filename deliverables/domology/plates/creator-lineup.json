@@ -1,0 +1,18 @@
+{
+  "plate": "creator-lineup",
+  "title": "Twelve domes, one geometry engine",
+  "tool": "film",
+  "concept": "One geometry makes buildings from a garden shed to a hangar.",
+  "change": "The lineup is frozen after the last design has risen, with its names kept.",
+  "recipe": {
+    "lesson": "world",
+    "chapter": "world_open",
+    "progress": 0.9
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:45",
+  "engine": "two_v_demo.app shots"
+}

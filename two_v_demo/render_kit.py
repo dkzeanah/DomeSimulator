@@ -385,3 +385,24 @@ class WorldLabel:
     text: str
     color: tuple[int, int, int]
 
+
+@dataclass
+class WorldIcon:
+    """A flat pictogram pinned to a point in the world, like a label with no words.
+
+    The overlay projects ``point`` and draws :mod:`two_v_demo.icons` ``key`` there,
+    ``size`` pixels across at 1080 lines (scaled with the frame like everything
+    else on the overlay). Painters append these to ``app.world_icons``; a lesson
+    that never does renders exactly as it did before they existed.
+    """
+
+    point: np.ndarray
+    key: str
+    size: float = 64.0
+    color: tuple[int, int, int] | None = None
+    alpha: float = 1.0
+    angle: float = 0.0
+    toward: np.ndarray | None = None
+    """A point the icon should face on screen -- a saw faces the trunk it is
+    cutting, whichever side of it the camera is on."""
+

@@ -1,0 +1,18 @@
+{
+  "plate": "franken-slack",
+  "title": "Slack and settling",
+  "tool": "film",
+  "concept": "Irregular parts spread error through every joint.",
+  "change": "The Frankendome film's slack scene.",
+  "recipe": {
+    "lesson": "franken",
+    "chapter": "slack",
+    "progress": 0.6
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

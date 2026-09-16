@@ -194,6 +194,80 @@ a duration floor of 20 seconds or more so the reveal can breathe.
 )
 ```
 
+### 3d. Numbers on screen: callouts and tallies
+
+A chapter's `callouts` put computed figures on screen in time with the
+voice: one big number with its unit, or a tally that builds a sum row by
+row. `callouts.py` is the engine; `lesson_harvest.py` is the worked
+example.
+
+```python
+from .callouts import Callout, Tally
+
+Chapter(..., callouts=(
+    Tally((
+        Callout("{{tree.sections}}", unit="sections",
+                cue="cut into {{tree.sections}} sections"),
+        Callout("{{tree.section_length_ft}} ft", unit="each", op="·",
+                tone="note", cue="{{tree.section_length_ft}} feet each"),
+        Callout("{{tree.sectors}}", unit="wedges a section", op="×",
+                cue="splits into {{tree.sectors}} wedges"),
+        Callout("{{tree.struts_per_tree}}", unit="struts a tree", op="=",
+                cue="{{tree.struts_per_tree}} struts from one tree"),
+    ), title="one tree, then two", slot="right", icon="split"),
+))
+```
+
+* **Every figure is a `{{token}}`** from `book_tokens`, resolved when the
+  film renders. `Lesson.validate()` refuses a callout that shows a figure
+  with no token behind it.
+* **`cue` is a phrase from the narration**, tokens allowed. The row
+  arrives when the voice says it. `at=0.4` pins it to 40% of the chapter
+  instead.
+* **`op` turns a tally into checked arithmetic.** A blank op starts the
+  chain; `×` `÷` `+` `−` continue it; `=` asserts the running value
+  (exactly for whole numbers, to the shown decimals otherwise), so
+  `8 × 8 = 65` fails validation. `·` and `≈` are asides the check skips:
+  a unit (`6 ft each`), a comparison (`120 the frame needs`), a rounded
+  conversion.
+* **`hold`** is seconds on screen after arriving (for a tally, after its
+  last row). `None` keeps it up to the end of the chapter, which is a
+  tally's default.
+* `slot` is `centre`, `upper`, `lower`, `left` or `right`; `tone` picks
+  the colours (see `TONES`); `icon` is a pictogram key (3e). Cards are
+  kept inside a free region for each overlay style, clear of the headline
+  and the teaching card.
+
+### 3e. Visual objects and pictograms
+
+Drawings with knobs, registered once and reused by films and
+presentations. Each wraps a function the films already use (the wedge
+prism, `draw_timber`, the simulator's dome through `raw_wedge_bridge`), so
+placing one is drawing the real thing, not a sketch of it.
+
+```python
+from .visual_objects import draw, stage_for
+
+def scene_hv_harvest(app, opaque, transparent, p):
+    stage = stage_for(app, opaque, transparent, origin=ORIGIN)
+    anchors = draw(stage, "harvest", units_per_ft=UPF,
+                   fell=1.0, limb=1.0, buck=1.0, explode=p)
+```
+
+* `visual_objects.registry()` lists every object. A knob clamps to its
+  range, and a knob the object does not have raises.
+* `draw` returns **anchors**: named world points such as `section_3` or
+  `log_end`, for labels, icons and cameras to aim at.
+* `stage.icon(point, "chainsaw", 104.0, toward=trunk)` pins a pictogram in
+  the world. With `toward` it mirrors to face that point, which is how
+  the saw points at the fell line. `icons.icon_keys()` lists them all.
+* The presentation engine lists the same objects under "Visual lexicon"
+  as `vo:<key>`, with a position, a turn and a scale added.
+* Before drawing a thing, ask the lexicon whether it already exists:
+  `lexicon.term_map()` gives every term by key, `lexicon.rendering(term)`
+  says what draws it, and `lexicon.catalog_markdown()` prints the whole
+  catalogue.
+
 ---
 
 ## 4. Camera, and the traps that cost the most time
@@ -229,6 +303,14 @@ The audio is made first and the video is cut to fit it.
   everything twice.
 * Captions are re-split on sentence boundaries and timed by length.
   Short punchy sentences get their own cue, which is good for jokes.
+* Callouts (3d) are timed by the voice itself. The voice service reports
+  where each sentence starts, saved as `chapter_NN.boundaries.jsonl`
+  beside each clip, and a cue inside a sentence is placed by its share of
+  that sentence's characters. Without those files, as in stills or clips
+  cached before they existed, a cue falls back to a measured speaking
+  rate. That estimate runs early on lines full of numbers, because digits
+  are spoken as words, so a still can show a row a few seconds before the
+  export does.
 
 ---
 

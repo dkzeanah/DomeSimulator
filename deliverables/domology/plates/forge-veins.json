@@ -1,0 +1,28 @@
+{
+  "plate": "forge-veins",
+  "title": "The seam veins alone",
+  "tool": "forge",
+  "concept": "The drainage network follows the seams.",
+  "change": "Only the veins, the water in them, the collector, downpipe and cistern.",
+  "recipe": {
+    "mode": "dome",
+    "only": [
+      "ground",
+      "veins",
+      "vein_water",
+      "collector_ring",
+      "downpipe",
+      "cistern"
+    ],
+    "clock": 1.6,
+    "yaw": 35.0,
+    "pitch": 30.0,
+    "distance": 11.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

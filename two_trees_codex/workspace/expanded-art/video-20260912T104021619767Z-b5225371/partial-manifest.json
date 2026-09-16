@@ -1,0 +1,179 @@
+{
+  "results": [
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T104021619767Z-b5225371\\01-why-wedges-no-sawmill-v2-000425.000s.png",
+      "caption": "A defect costs the length of the piece around it",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 425.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 425.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Compare rejecting one short member with losing a long length of stock"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 415.01,
+            "end": 417.337,
+            "text": "On six foot pieces it costs one piece."
+          },
+          {
+            "start": 417.41700000000003,
+            "end": 420.125,
+            "text": "It also means a crooked farm tree is usable."
+          },
+          {
+            "start": 420.205,
+            "end": 424.053,
+            "text": "Cut the bend out at its middle, go six feet clear either side,"
+          },
+          {
+            "start": 424.133,
+            "end": 427.918,
+            "text": "and the sections above and below it are both still structure."
+          },
+          {
+            "start": 429.398,
+            "end": 432.861,
+            "text": "The same flaw, priced against two different piece lengths."
+          },
+          {
+            "start": 432.941,
+            "end": 434.999,
+            "text": "Here is the arithmetic behind that."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "91382454148d7ec0a48683f95f2c8dcb983d515949d1f98c82d3e69b680da829",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        12,
+        13
+      ],
+      "purpose": "Compare rejecting one short member with losing a long length of stock"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T104021619767Z-b5225371\\02-why-wedges-no-sawmill-v2-000762.000s.png",
+      "caption": "Separate measured observations from estimates",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 762.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 762.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show an explicit example of the source presentation's evidence ledger, with its own figures"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 749.226,
+            "end": 754.131,
+            "text": "The first pile is measured: two timed cutting sessions, the fuel they burned,"
+          },
+          {
+            "start": 754.211,
+            "end": 758.21,
+            "text": "a price read off a rack, and the diameter of the log being cut."
+          },
+          {
+            "start": 758.29,
+            "end": 760.087,
+            "text": "The second pile is estimated,"
+          },
+          {
+            "start": 760.167,
+            "end": 764.554,
+            "text": "and every item in it sits on the store-bought side of the comparison."
+          },
+          {
+            "start": 764.634,
+            "end": 768.374,
+            "text": "That is the side it flatters me least to be guessing about."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "7096aaaaa658b40657136394a04a987122900dc60b9c105097f4110ce94cc12a",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        4,
+        25
+      ],
+      "purpose": "Show an explicit example of the source presentation's evidence ledger, with its own figures"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T104021619767Z-b5225371\\03-why-wedges-no-sawmill-v2-000936.000s.png",
+      "caption": "Two cutting sessions, recorded in different units",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 936.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 936.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Illustrate a timed cutting and fuel record without importing its totals as the book's two-week results"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 927.539,
+            "end": 932.574,
+            "text": "A separate sitting cut forty-two feet of rip at six inches of depth in one hour,"
+          },
+          {
+            "start": 932.654,
+            "end": 937.05,
+            "text": "on two tanks of fuel and two of bar oil, including a chain sharpening."
+          },
+          {
+            "start": 937.13,
+            "end": 942.357,
+            "text": "Those two sessions counted different things, which is what makes them worth having."
+          },
+          {
+            "start": 942.437,
+            "end": 946.641,
+            "text": "Divide one by the other and you get feet of cut per finished wedge,"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "904ca032899ff17edce33528a5d0d70d4e14f61e4d03b77a2afa6bc0a76c37ef",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        4,
+        24,
+        25
+      ],
+      "purpose": "Illustrate a timed cutting and fuel record without importing its totals as the book's two-week results"
+    }
+  ]
+}

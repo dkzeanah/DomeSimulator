@@ -1,0 +1,27 @@
+{
+  "rendered": {
+    "chart-skin": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\chart-skin.png",
+    "chart-comparison": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\chart-comparison.png",
+    "chart-frequency": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\chart-frequency.png",
+    "forge-pattern": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-pattern.png",
+    "chart-house": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\chart-house.png",
+    "forge-nesting": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-nesting.png",
+    "panel-drawing": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\panel-drawing.png",
+    "forge-deficit": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-deficit.png",
+    "forge-hubless": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-hubless.png",
+    "forge-waist": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-waist.png",
+    "forge-water": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-water.png",
+    "forge-rain": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-rain.png",
+    "forge-layers": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-layers.png",
+    "forge-panel": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-panel.png",
+    "forge-pentagon": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-pentagon.png",
+    "forge-veins": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-veins.png",
+    "line-frame": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-frame.png",
+    "line-services": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-services.png",
+    "line-interior": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-interior.png",
+    "line-interior-room": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-interior-room.png",
+    "forge-jig-shop": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-jig-shop.png"
+  },
+  "failed": {},
+  "log": "pygame 2.6.1 (SDL 2.28.4, Python 3.12.10)\nHello from the pygame community. https://www.pygame.org/contribute.html\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-deficit.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-hubless.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-waist.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-water.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-rain.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-layers.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-panel.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-pentagon.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-veins.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-jig-shop__0.png\nforge: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\forge-jig-shop__1.png\n\npygame 2.6.1 (SDL 2.28.4, Python 3.12.10)\nHello from the pygame community. https://www.pygame.org/contribute.html\nline: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-frame.png\nline: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-services.png\nline: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-interior.png\nline: C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-134624-30388\\line-interior-room.png\n"
+}

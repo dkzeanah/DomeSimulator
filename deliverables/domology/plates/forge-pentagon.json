@@ -1,0 +1,23 @@
+{
+  "plate": "forge-pentagon",
+  "title": "A pentagon group",
+  "tool": "forge",
+  "concept": "People design domes in pentagons and hourglasses, not triangles.",
+  "change": "The group editor with the first pentagon selected.",
+  "recipe": {
+    "mode": "groups",
+    "group": [
+      "pentagon",
+      0
+    ],
+    "yaw": 30.0,
+    "pitch": 34.0,
+    "distance": 7.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

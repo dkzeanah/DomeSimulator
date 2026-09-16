@@ -1,0 +1,934 @@
+{
+  "schema": "two-trees-book/v1",
+  "title": "2 trees: Build your (D)Home",
+  "author": "",
+  "edition": "Codex parallel draft",
+  "pages": [
+    {
+      "id": "codex-title",
+      "title": "2 trees: Build your (D)Home",
+      "kind": "front",
+      "strand": "story",
+      "status": "draft",
+      "body": "One small chainsaw. One hundred and twenty wedge members. Forty triangles. Two weeks to attempt a frame.\n\nA practical explanation and a builder's field story, beginning with two trees and following the decisions that turn them into a geodesic dome.\n\nThis is the working manuscript. The construction described here is a planned build; its outcome will be recorded as it happens. The author describes the intended saw as a Husqvarna 120 Mark III purchased from Lowe's. The exact product label, receipt, and supplied bar-and-chain combination belong in the equipment record before publication.\n",
+      "notes": "",
+      "figures": [
+        "codex-ff6be7c31bb549fa"
+      ]
+    },
+    {
+      "id": "codex-how-to-read",
+      "title": "Before the first chapter",
+      "kind": "front",
+      "strand": "reference",
+      "status": "draft",
+      "body": "There are three ways to read this book. Follow the story to understand how the idea arrived. Follow the explanation to understand why the geometry works. Follow the how-to pages to organize measurements, prototypes, material, and assembly. Each chapter has a strand so that a reader can change pace without losing their place.\n\nThe title sets the scale of the experiment. Two trees are the intended source of the frame's wedge members. They do not include the ground connection, fasteners, seam components, skin, services, or everything required for a dwelling. The fortnight is a target for making and framing the dome, with its preparation stated openly. Occupancy is a later milestone with its own requirements.\n\nThe book uses **A for the long chord** and **B for the short chord**. Other references may reverse these letters. Compare lengths and factors before comparing names. Dimensions are inches unless marked feet; trunk diameter always means a measurement across the trunk, not the radius.\n\nThe number printed beside an ideal triangle is not automatically a saw cut. We will follow that distinction from the first sketch to the last stock check. A **blank** is the piece available to fabricate a member. A **member** is the finished wooden part. An **edge** is a line in the mathematical mesh. A **seam** is the interface between neighboring panels. Confusing these words is an easy way to build the right arithmetic into the wrong object.\n\nThe geometry in this draft traces to the project files listed in the source appendix. Practical prescriptions for structural connections must be supported by an appropriate design for the actual site and timber. The simulator establishes shape and fit; it does not establish allowable loads. This boundary is part of describing the project accurately.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-part-origin",
+      "title": "Part I — The idea in the wood",
+      "kind": "part",
+      "strand": "story",
+      "status": "draft",
+      "body": "Before a cut list, there was a question: what if the useful shape was already inside the tree?\n\nWe begin with the earlier experiments, then arrive at the wedge. This part explains the discovery without pretending that every later detail was obvious at the beginning.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-first-question",
+      "title": "1. Start with what is here",
+      "kind": "chapter",
+      "strand": "story",
+      "status": "draft",
+      "body": "I want to find out how directly I can get from a tree to a frame. Not from a stack of uniform lumber, not from a kit delivered with every decision already made, but from the wood itself. The shape of that wood has to enter the design early enough to matter.\n\nThe proposal is small enough to count. Forty triangular frames need three members each: one hundred and twenty members. Two suitable trunks, each divided into eight useful sections, could yield eight wedge blanks per section. That is sixty-four blanks from each tree, sixty intended members and four potential spares. Those are the starting numbers, before I know which pieces the wood will actually permit.\n\nThe time limit gives the question an edge. I intend to design, produce the members, and frame the dome within two weeks, using the small Husqvarna saw described in my equipment notes. A limited tool makes the length and repeatability of the parts important. The saw's role belongs in the story because it affects the process; its model name is not a performance guarantee.\n\nThere is a temptation to tell the ending first. A photograph of a finished dome would make the early uncertainty disappear. I want to keep that uncertainty visible. Where does a nominal six-foot dimension become a real part? How much straight trunk is there after defects and cut losses? Which joint detail survives a full-size trial? Those questions are what the build is for.\n\nThe first record will be the starting inventory. Photograph both source trunks or the available sections. Include a tape in the frame. Record the actual usable lengths, the smallest diameters, and every assumption used to choose the initial dome. If the available wood changes the plan, the change becomes a chapter in the experiment.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-frankendome",
+      "title": "2. What the Frankendome taught me",
+      "kind": "chapter",
+      "strand": "story",
+      "status": "draft",
+      "body": "The earlier project notes describe the Frankendome as an experiment in joining unlike triangular frames. Its members were deliberately varied. The problem was not only how to make a triangle, but how one completed triangle could meet another when their edges did not offer identical profiles.\n\nThat experiment made the interface important. The notes describe testing V brackets at edge-to-edge and corner relationships. A connector that can accommodate an awkward member is useful because it lets the designer ask what the material can do before demanding that every piece become conventional rectangular lumber.\n\nThe notes also describe a modified upper pentagon: ten pieces in that earlier configuration where another arrangement would use fifteen. That number belongs to the earlier experiment. It must not quietly replace the forty-face, one-hundred-and-twenty-member count used for the book's standard panelized 2V hemisphere. A prototype can teach the next design without being the same design.\n\nThe useful inheritance is a way of thinking. Build manageable units. Give each unit a defined boundary. Study what happens at that boundary. If the connector and the member profile are designed together, the member has more possible shapes than the lumber aisle suggests.\n\nFor the final story, place the earliest dated Frankendome photograph beside a later wedge prototype. Describe one specific connection that was troublesome, what was tried, and what it revealed. The present draft has the sequence from the project notes; it still needs the author's remembered scene and the evidence that anchors it.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-discovery",
+      "title": "3. Finding the wedge",
+      "kind": "chapter",
+      "strand": "story",
+      "status": "draft",
+      "body": "A round trunk contains eight equal radial sectors if its cross-section is divided at forty-five-degree intervals. Extend one sector along a straight section of trunk and it becomes a long member with two sawn radial faces and the original curved outside. The curve that rectangular milling would remove becomes part of the proposed frame.\n\nThe discovery in the project notes is the relationship between this profile and a panelized dome. A small triangular frame provides a repeatable use for the wedge. A separate seam detail can accommodate how neighboring triangles turn relative to one another. The member no longer has to do every geometric job by itself.\n\nThis is also where the attractive claims need to become questions. Preserving the curved portion can preserve material, but an area calculation alone does not say how much usable framing emerges from a real tree. The bark, defects, taper, irregular saw path, and the ends of the member still matter. The useful discovery is a method worth measuring, not a percentage protected from measurement.\n\nIn the design software, the wedge can face in four cardinal directions. Its point can face into the dome, out toward the sky, into its own triangular panel, or across the panel boundary. Each orientation changes the relationships at the seams and corners. The original outward-curve description is one configuration of the larger investigation.\n\nThe book's most useful discovery scene will show a change in understanding. Preserve a sketch or photograph of the first wedge beside the first assembled corner. Record what the wood suggested, what the model corrected, and what the full-size piece later changed again. Those three moments give the explanation a human sequence.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-scope",
+      "title": "4. Define the experiment before starting the clock",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Write the finish line in a sentence that someone else could check: produce and assemble the selected dome frame from documented source timber. Define which preparatory work happens before day one. Existing software development, drawings, fixtures, equipment purchases, site preparation, and professional design work may all be real contributions even when the cutting-and-framing clock has not started.\n\nUse four milestone records: material available; accepted members produced; triangular panels checked; frame assembled and inspected against its design. A pile of ripped wedges reaches the first fabrication milestone. A standing frame reaches another. Neither should be counted as a finished home.\n\nKeep an equipment ledger. The planned saw is identified by the author as a Husqvarna 120 Mark III from Lowe's. Record the nameplate and actual configuration rather than copying specifications from another generation of the 120. The manufacturer uses product-number information to distinguish variants; the purchase record resolves the particular machine in this story. [Husqvarna product identification](https://us-support.husqvarna.com/en/petrol-chainsaw/KA-70145).\n\nAlso record the other work required to make the saw useful: measuring, securing and supporting work, moving timber, maintaining the tool, marking members, making fixtures, and managing the site. A small saw does not make those operations disappear. It makes the organization around them especially visible.\n\nBefore field work, use training appropriate to the operations and the manufacturer's instructions for the exact equipment. Protective equipment, secure work support, separation from helpers, and emergency arrangements belong in the work plan. Felling and handling timber under load require skills that a chapter about dome geometry cannot supply. The Forest Service training material treats saw use as both classroom and field instruction. [USFS saw training guide](https://www.fs.usda.gov/t-d/pubs/htmlpubs/htm06672805/page01.htm).\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-part-geometry",
+      "title": "Part II — The dome before the saw",
+      "kind": "part",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "A sphere can be imagined continuously. Wood must arrive as countable pieces.\n\nThis part takes the project from a radius to a mesh, then from a mesh to independent wooden panels. Keep the reference geometry visible while the physical object becomes more complicated.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-mesh",
+      "title": "5. A sphere made from straight lines",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "A geodesic construction begins with a regular organization of directions on a sphere. In this project's 2V model, the triangular faces of an icosahedron are subdivided once and the resulting points are projected to the sphere. The chords between those projected points become the straight edges of the triangulation.\n\nThe frequency describes subdivision. It does not say how many feet across the dome is. A 2V dome can be enlarged or reduced while retaining its geometric relationships. Every nominal edge scales with the sphere radius, which is why a dimensionless chord factor can connect a desired dome size to a length on the bench.\n\nThe hemisphere used here contains forty triangular faces, twenty-six vertices, and sixty-five unique edges. Its open rim is a ten-sided polygon. The vertices on that rim lie on a circle; the floor boundary between them is made from straight lines. This difference matters when quoting floor area.\n\nThe model separates two edge classes. With the book's lettering, A is the longer chord and B is the shorter. Ten panels have three A sides. Thirty panels have one A side and two B sides. The corresponding triangle shapes repeat, but the real wooden members also depend on how their corners and seams are made.\n\nLook at the topology plate before the timber plate. In the topology, a line has no thickness, no end cut, and no fastener. Its value is precision: it establishes exactly what the assembly is meant to follow. The wooden model adds the decisions necessary to occupy space around those lines.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-counts",
+      "title": "6. Why 65 edges need 120 pieces of wood",
+      "kind": "worked",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The dome's shared-edge mesh and its independent-panel frame count different things. If each mathematical edge owned one stick, the hemisphere would use sixty-five sticks. In this project, each of forty triangles owns all three of its wooden members. The frame therefore contains 40 × 3 = 120 members.\n\n| Panel family | Panels | A members per panel | B members per panel | A total | B total |\n| --- | --- | --- | --- | --- | --- |\n| A-A-A | 10 | 3 | 0 | 30 | 0 |\n| B-A-B | 30 | 1 | 2 | 30 | 60 |\n| Total | 40 | — | — | 60 | 60 |\n\nTwo neighboring triangles bring two pieces of wood to their common boundary. The duplication is intentional. Each triangular unit can be made and checked before it joins the dome. The space between its member and the neighboring panel's member becomes the seam detail.\n\nOf the sixty-five unique mesh edges, ten are at the exposed base rim and fifty-five lie between two panels. Count forty panels × three edges to get one hundred and twenty panel-edge incidences. Count the same incidences another way: fifty-five interior edges appear twice and ten boundary edges appear once. Thus 55 × 2 + 10 = 120.\n\nThere are thirty-five long edges and thirty short edges in the unique-edge mesh. Ten of the long edges are on the base. The shared seams are therefore twenty-five long and thirty short. Use the member count to plan wedge stock; use the seam count to plan panel interfaces. Hardware quantities require the selected detail at each interface and cannot be inferred by calling all edges “struts.”\n\nThis page should remain beside the cut schedule. When another calculator returns thirty-five long and thirty short, it may be correctly counting the conventional shared-edge dome. The disagreement can be a difference in construction system rather than an arithmetic mistake.\n",
+      "notes": "",
+      "figures": [
+        "codex-4f271693c2164f22"
+      ]
+    },
+    {
+      "id": "codex-radius-method",
+      "title": "7. Method one: start with the radius you want",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Choose a sphere radius R, then keep one unit throughout the calculation. If the radius is in feet and the working dimensions will be inches, multiply it by twelve before finding the chords.\n\nThe nominal relationships are A = R × fA and B = R × fB. For this project's exact generated 2V mesh, fA is approximately 0.618033989 and fB is approximately 0.546533058. The Sizing lab obtains these factors from the existing geometry module rather than keeping the rounded printed values as its authority.\n\nThe procedure is sequential. Record the desired radius. Generate both chord lengths. Confirm the forty-panel inventory. Select the member cross-section, orientation, and seam construction. Generate the physical model and inspect its actual stock lengths. Only then select raw blank lengths and allocate trees.\n\nIf a radius gives nominal edges that are inconvenient for the timber, the design still has options. A slightly smaller radius can reduce length demand. A different seam or corner setting can change the stock envelope. More usable source length may be available in a longer section. Each option must be checked through the same solver; none should be hidden inside an unexplained rounding choice.\n\nRecord three lengths for each member: the ideal chord, the finished physical stock envelope, and the blank required to fabricate it. The last includes whatever additional holding, trimming, and overfit stock the actual process needs. Zero extra allowance in the lab explicitly means that only the finished envelope is being checked.\n\nWhen the stock plan is complete, export the actual simulator's bill of materials and cut schedule for the chosen configuration. The book can explain the reasoning, while that schedule preserves the geometry used for the build. Write the configuration and date beside any printed schedule so an older paper does not silently govern a newer design.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-radius-example",
+      "title": "8. Worked example: a ten-foot radius",
+      "kind": "worked",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "Use a sphere radius of 10 feet, or 120 inches. The nominal diameter is 20 feet. Multiply the exact mesh factors by 120 to obtain a long chord of approximately 74.164 inches and a short chord of approximately 65.584 inches.\n\nThe panelized frame requires sixty members associated with A edges and sixty associated with B edges. These labels identify edge families, not necessarily just two physical cut lengths. A member's surrounding triangle and joint relationships can split a nominal family into multiple fabrication cases.\n\nThe enclosing base circle has area π × 10², approximately 314.159 square feet. The straight-sided decagonal base has area 5 × 10² × sin(36°), approximately 293.893 square feet. Neither quantity is the finished usable floor area after wall build-up, foundations, doors, and fittings. The circle is a useful reference; the polygon describes this mesh's base.\n\nFor a concrete physical comparison, the current raw-wedge solver with an eight-inch trunk diameter, point facing into the dome, raw-trapezoid seams, and no additional fabrication allowance produces a longest finished stock envelope of approximately 72.952 inches at this radius. That is different from the 74.164-inch nominal A chord because the member's actual ends and offsets are solved separately.\n\nThis example reveals why a six-foot blank cannot simply be assigned to a “six-foot dome edge,” and why the error does not always have the same sign. Some physical parts are shorter than the nominal edge; different settings and additional holding stock can change what the blank must provide. Inspect the physical schedule instead of assuming a fixed deduction.\n\nThe Sizing lab reproduces this example from the repository's solver. If the solver is revised, insert a fresh result page and retain the former page as a dated record. The published example should match the configuration and code version used to fabricate the actual frame.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-tree-method",
+      "title": "9. Method two: let the tree set the size",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Begin with a measured inventory rather than a desired radius. Identify usable straight sections in the available trunks. Record their lengths, their smaller-end diameters, and the defects that affect where a member can be obtained. A tall tree and a long run of usable stock are different measurements.\n\nThe book's starting proposal is eight sections of approximately six feet from each tree. Eight radial blanks per section produce 8 × 8 = 64 potential blanks from one tree. Reserving four for rejection or spares leaves sixty intended members. Two trees produce 128 potential blanks and a target allocation of 120 members.\n\nThis is a count-based first pass. A blank earns its place in the frame only after it meets the length, cross-section, straightness, and material requirements for its assigned part. Eight adequate pieces at the butt of the tree do not prove that eight adequate pieces also exist in every upper section.\n\nLet S be the usable blank length after planned end trimming. A nominal-only starting estimate is R = S / fA. If S is 72 inches, that gives a radius of approximately 116.498 inches, or 9.708 feet, and a diameter of approximately 19.416 feet. The corresponding nominal short chord is about 63.670 inches.\n\nThat estimate intentionally ignores physical corner and seam geometry. To size the real frame, hold the selected cross-section and joint settings fixed and solve for the largest radius whose every required blank fits the available length. The Sizing lab's “Fit physical stock” action uses the raw-wedge solver for this check. Enter any additional fabrication stock rather than treating the final installed piece as the whole blank requirement.\n\nThe two methods meet here. Design-first asks how much wood a chosen radius requires. Tree-first asks what radius the available wood permits. With identical joint settings and allowances, going forward and then backward should return the same design. That round trip is an unusually useful check on a cut list.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-tree-ledger",
+      "title": "10. Eight sections, sixty-four blanks, sixty accepted members",
+      "kind": "worked",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "| Quantity | One tree | Two trees |\n| --- | --- | --- |\n| Planned six-foot sections | 8 | 16 |\n| Potential blanks at eight per section | 64 | 128 |\n| Target allocation | 60 | 120 |\n| Potential spare or rejected blanks | 4 | 8 |\n\nThe eight potential spares represent 6.25 percent of the gross 128-piece inventory. If eight blanks are rejected, the remaining 120 exactly meet the count and leave no accepted replacements. At a ten-percent rejection rate, the arithmetic no longer supports a complete 120-member frame from this inventory. Report that shortage while there is still time to change the plan.\n\nEight six-foot sections contain forty-eight feet of net section length. They cannot all be cut from exactly forty-eight feet while also losing material to separating cuts. If seven interior bucking cuts remove a quarter inch each, the minimum span before outer-end trimming is 48 feet plus 1.75 inches, or about 48.146 feet. Additional cuts at the ends and defect removals require more length. This example declares its kerf assumption; it is not a measurement of the author's saw.\n\nSeparate bucking kerf from ripping kerf. The first reduces the longitudinal inventory as sections are separated. The second removes wood from their cross-sections as wedges are produced. Both matter, but subtracting one from the other would mix different dimensions.\n\nOne organizational option is to reserve one tree's qualified blanks for A members and the other tree's for B members. That makes the title easy to explain, but assignment should follow the actual inventory. A short or defective A candidate may be perfectly useful in a B position if its material properties and finished dimensions meet the design. Keep its original tree and section ID when reassigning it.\n\nThe project's earlier timber demonstration also explores twelve-foot sections split and then divided into shorter members. That is a different cut plan. Its yield cannot be copied onto this eight-by-six-foot plan without accounting for usable trunk length and every additional crosscut.\n",
+      "notes": "",
+      "figures": [
+        "codex-e291d7df04ea495c"
+      ]
+    },
+    {
+      "id": "codex-part-material",
+      "title": "Part III — The tree becomes inventory",
+      "kind": "part",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The model contains ideal circles. The source timber contains taper, history, and surprises.\n\nThis part turns the attractive gross count into a traceable inventory of usable pieces. The small section is valuable because each decision can be local, visible, and recorded.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-radial-wood",
+      "title": "11. The shape of one eighth",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "For a circular trunk of radius r, one ideal eighth-sector has an angle of 45 degrees and area πr²/8. Its two radial sides each have length r. The outside is an arc, not a straight third side. Its arc length is πr/4; the straight chord joining the arc's endpoints is 2r sin(22.5°).\n\nFor an eight-inch diameter trunk, r is four inches. The ideal sector area is approximately 6.283 square inches. The curved arc is approximately 3.142 inches long, while its straight chord is approximately 3.061 inches. These describe a raw circular sector before kerf, bark removal, or other changes. Drawing a triangle in its place removes some of the wood the idea is trying to preserve.\n\nFor a twelve-inch diameter trunk, the ideal sector area grows to approximately 14.137 square inches. A six-foot length of that ideal sector contains about 1,017.9 cubic inches, or 7.07 solid-volume board feet. Board feet here are only a volume unit: 144 cubic inches per board foot. This calculation is not a lumber grade or a market valuation.\n\nA wedge can have substantial area while still presenting difficult bearing surfaces and connections. Its orientation changes how it occupies the panel boundary. Its taper changes the section along its length. Its grain and defects change the material that carries load. The book therefore uses the cross-section to explain the shape and the inventory, while keeping strength evaluation attached to the actual member and design.\n\nThe illustration on this page should show a whole log cross-section beside one true sector, then the same sector oriented in the four ways explored by the simulator. Use end-grain views. A long perspective drawing can hide the very profile the reader needs to understand.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-read-tree",
+      "title": "12. Read the trunk in sections",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Give each source tree an ID before allocating members. Give each candidate section a second ID and mark its original orientation. Then record usable length, large-end diameter, small-end diameter, visible sweep, knots, checks, damage, and any reason a region must be excluded. Photograph the section beside its label.\n\nA short-section method can respond to local curvature. If a bend interrupts a long run, the useful material on either side may still supply shorter members. This is a possibility to inspect, not a guarantee that any crooked trunk can be converted into the planned stock count. Every new boundary also consumes length through a cut and may create an end that needs trimming.\n\nUse the smallest relevant cross-section when checking whether a blank provides the material the design requires throughout its length. An impressive butt diameter is not the diameter of an upper six-foot section. A circular model also needs to be reconciled with an oval or irregular real section before its area becomes an inventory claim.\n\nMake assignments provisionally. A long, sound blank can remain uncommitted until the most demanding members are covered. Shorter acceptable blanks can be considered for the B family. Pieces awaiting judgment should stay in a separate recorded category so that uncertain stock does not appear in the accepted count.\n\nThe field ledger is more useful than a single yield percentage. Its rows can answer where a missing member went. Was it lost to end damage, excessive taper, a defect exposed during cutting, or a fabrication error? Those explanations turn an experiment into a process another person can evaluate.\n",
+      "notes": "",
+      "figures": [
+        "codex-cd750f1e939449fd"
+      ]
+    },
+    {
+      "id": "codex-recovery",
+      "title": "13. Measure recovery instead of defending a percentage",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The discovery notes propose a high wood recovery and compare it with conventional milling. That is a useful hypothesis. To test it, define the numerator and denominator before looking at the result. Gross solid trunk volume, sawn sector volume, accepted member volume, and installed member volume are different quantities.\n\nFor a simplified circular section, the total kerf area of four diametral cut planes can be estimated by 4Dk, where D is diameter and k is kerf width. Compared with the round area πD²/4, the simple retained fraction is approximately 1 − 16k/(πD). The approximation ignores overlaps between cut bands near the center and assumes the intended cut geometry. Actual kerf paths, bark, irregular shape, end losses, and rejected wood change the result.\n\nAt D = 12 inches and k = 0.25 inch, this simple estimate retains approximately 89.39 percent before those other losses. At D = 8 inches with the same kerf assumption, it retains approximately 84.08 percent. The change with diameter is enough to show why one attractive percentage should not stand in for an entire tapered tree.\n\nThe earlier project timber model computes a tapered trunk by sections and compares its wedge output with its own rectangular packing model. Record that comparison's assumptions: section length, kerf, taper, nominal or actual rectangular dimensions, and acceptance criteria. A result for true two-by-fours is not automatically a result for dressed nominal two-by-fours.\n\nThe book's final comparison should use the same starting inventory on both sides. Include labor, equipment, defects, and the material that genuinely replaces a required product. A wedge with more volume than a rectangular stick is not automatically worth that volume multiplied by a store price. It must perform the intended job through an appropriate design.\n\nThe author can make the strongest account by keeping the unfriendly rows: pieces rejected, setup that took longer, and usable stock left over. Those rows show where the method can improve and prevent a gross-material argument from pretending to be a finished-building argument.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-green-wood",
+      "title": "14. Wood keeps changing after the cut",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The model's geometry stays still after a calculation. Freshly cut timber continues to exchange moisture with its surroundings. Changes in dimensions, shape, and checking can affect joints that fitted at the first assembly. The field record therefore needs dates and moisture observations, not just a photograph of a tight new corner.\n\nRecord the timber species when it is reliably identified, the condition of the stock, how it was stored, and any moisture readings with the method used. Preserve examples of the cross-section at fabrication and at later inspection. When a seam changes, this record helps distinguish an initial cutting error from movement after assembly.\n\nThe USDA Wood Handbook organizes moisture relations, mechanical properties, fastenings, grading, and drying as separate but related subjects. Those are the subjects the prototype's material record needs to connect. [USDA Wood Handbook](https://research.fs.usda.gov/fpl/wood-handbook).\n\nAvoid turning an attractive green-wood fit into a prediction of long-term performance. The final fastening and seam design needs to account for the actual timber, exposure, and changes over time. The two-week schedule does not erase those later observations; it gives them a clear initial condition.\n\nReserve a few documented samples for follow-up. Mark them with the same tree and section IDs used in the member ledger. If a sample changes while the frame is in service, it becomes a small, accessible witness to the larger material process. Its behavior is evidence to interpret, not a substitute for inspecting the actual frame.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-part-fabrication",
+      "title": "Part IV — One hundred and twenty useful pieces",
+      "kind": "part",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Repeatability is the bridge between a promising shape and a buildable set of panels.\n\nThis part moves from a representative blank to a checked corner, then to a complete triangle and a controlled batch. Each stage earns the right to repeat the previous one.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-work-sequence",
+      "title": "15. Organize the work around the small saw",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "The intended tool is part of the constraint that makes the experiment interesting. It is also a machine with a defined operating envelope. Record its actual model, approved equipment combination, condition, and maintenance. Use its manual and appropriate instruction to determine operations and setup; do not infer capability from an illustration or from bar length alone.\n\nThe planning sequence begins with stock that has been safely obtained, supported, and made accessible. Divide the work into measurement and marking, material processing, inspection, and storage. Give each activity enough room that an interruption does not put an unmarked or uninspected member into the accepted stack.\n\nBefore committing the inventory, document one representative sample through the proposed process. Measure the resulting kerf and the usable piece. Record the time spent securing and repositioning work, maintaining the chain, and clearing material. Cutting time alone describes only one part of the operation.\n\nKeep the production log short enough to use. A row needs the source section, resulting blank IDs, accepted count, rejected count, elapsed labor, and reason for losses. A photograph of the labeled group supports the row. If a process change improves the result, label when it started so the book can compare like with like.\n\nThe goal is a controlled batch, not a dramatic image of hurried cutting. The story can include fatigue, a dull chain, weather, or a setup that had to be changed if those events occur. They belong in the account because they explain the labor needed to transform a counted tree into counted parts.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-wedge-orientations",
+      "title": "16. Four ways to place the same wedge",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The raw-wedge simulator names each orientation by the direction of the sector point. **Point dome in** directs the point toward the sphere center. **Point dome out** turns it toward the exterior. **Point panel in** turns it toward the center of its own triangular panel. **Point panel out** directs it across the panel boundary.\n\nThese labels describe cross-section orientation around the member's long axis. They do not rename the geodesic edge. An A edge remains an A edge while the wood surrounding it changes position. The change can alter which face is available for a seam or a neighboring member's end.\n\nCompare all four with identical nominal dome size, trunk diameter, and seam settings. Use a wide view to see the overall frame and a close end-grain view to understand the interface. Record the configuration on the figure rather than relying on a nickname such as “inside-out.”\n\nThe project's original specification uses the curved surface toward the sky and the point inward. Later tools explore the other orientations. The narrative should make this progression visible: the first idea established a starting configuration; inspection then opened a larger design space.\n\nSelecting an orientation is a fabrication decision. Once a representative full-size panel has been checked, mark that orientation on each blank and in the fixture documentation. A correct length installed with an unintended quarter-turn is a different physical assembly.\n",
+      "notes": "",
+      "figures": [
+        "codex-c2675317ef204a76",
+        "codex-529133c9b3824528",
+        "codex-7d4e997f4ebf4c9b"
+      ]
+    },
+    {
+      "id": "codex-joint-geometry",
+      "title": "17. The triangle corner is a physical object",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The ideal triangle has vertices where lines meet. Real members have width, depth, and ends that must occupy different space. The project's pinwheel arrangement gives each member a receiving role at one end and a terminating role at the other. One member ends against the side of its neighbor while receiving another member in turn.\n\nEarlier explanatory code describes simplified square-ended pinwheel members. The current raw-wedge simulator carries more detailed corner geometry: the terminating end is solved against its receiving surface, and the other end is clipped to the triangle's envelope. The corresponding cut planes and stock extents should govern the fabrication discussion for this configuration.\n\nThis correction matters to the story. Preserving the longitudinal forty-five-degree sector does not imply that every end is a square crosscut. The long radial faces, the panel-to-panel fold, and the member's end cuts are separate geometric questions. A process can preserve the raw sector while still requiring an oblique end cut.\n\nStart with a full-size representative corner using the intended cross-section and orientation. Mark the mathematical reference points and the actual cut surfaces separately. Check the receiving relationship, the available bearing region, the fastening space, and whether either member extends beyond the intended panel envelope.\n\nMove from that corner to one A-A-A panel and one B-A-B panel. Check their reference dimensions and their physical boundaries. A fixture that reproduces one family does not automatically reproduce the other. Before cutting the batch, retain a labeled master example and the configuration that produced it.\n",
+      "notes": "",
+      "figures": [
+        "codex-47e9910aba8b4b12"
+      ]
+    },
+    {
+      "id": "codex-pinwheel-illustrated",
+      "title": "Plate — Two triangles, two members at the seam",
+      "kind": "plate",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "Follow the three differently colored members around either triangle. Each member receives its neighbor near one end and terminates against the side of the next. The two central members are separate pieces, one owned by each panel. This is the cyclic pinwheel arrangement clarified by the author.\n",
+      "notes": "",
+      "figures": [
+        "codex-aa360ac040d74c0c"
+      ]
+    },
+    {
+      "id": "codex-jig",
+      "title": "18. Build the reference into the fixture",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "A fixture is a way to make the important measurements repeatable. Begin with the selected triangle's reference geometry, then establish stops, registration surfaces, and cut references from the actual physical model. The fixture should make it clear which part of the irregular wedge is being located and which remains free to vary.\n\nThe simulator's jig stages are useful illustrations because they separate setup, placement, and trimming. Review them with the chosen model. Do not transfer a picture's apparent dimension onto wood: use the current cut schedule and a verified full-size layout.\n\nWrite down the allowance used at each end. The model includes concepts such as head overfit and butt hangoff. Those are deliberately sacrificial pieces of stock, and their values can make a blank longer than the final member. A six-foot finished part with additional holding stock requires more than six feet of raw material.\n\nAfter the representative panels are assembled, compare them with the reference layout. Check edge references, corner positions, plane of the frame, and the surfaces that will meet adjacent panels. Record the acceptance criteria from the actual design. “Looks triangular” is not a measurement a second builder can reproduce.\n\nThe fixture record should contain an overhead photograph, the version of the layout, the panel family, the wedge orientation, the stock cross-section used for the trial, and any adjustments made after the first piece. If a stop moves during the batch, identify which parts were made before and after that change.\n\nThe fixture is also a storytelling object. It shows the moment the project becomes a repeatable process. A reader can see how the useful idea was transferred from screen to bench, and which details had to change when the material became real.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-panel-production",
+      "title": "19. Make forty triangles, one checked batch at a time",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Build the inventory around two panel families: ten A-A-A frames and thirty B-A-B frames. Preserve the member IDs through assembly so each completed panel can be traced to its source sections. A panel label should identify its family, handedness, orientation, and position in the assembly plan.\n\nTreat the first checked panel of each family as a reference, not as permission to stop measuring. Recheck the fixture after adjustments and at sensible batch intervals. When a piece is rejected, keep the reason in the log. Reworking it, replacing it, and accepting it unchanged are different outcomes.\n\nThe short family is not simply whatever remains after making long members. Each B member still needs the right usable section and joint geometry. Allocate the demanding pieces first, then review how the remaining inventory can satisfy the rest of the schedule. The source tree assignment can change while the member's required geometry stays fixed.\n\nAt the end of each batch, update three counts: blanks remaining; finished accepted members; completed accepted panels. This avoids the common error of counting the same wood once as a member and again as part of a panel. Keep rejected and experimental material outside those totals.\n\nPhotograph completed panels flat from overhead and with a low angle that reveals their profile. Include a scale reference and a readable label. Those images serve the book's explanatory pages, but their first job is to document what was actually built.\n\nBefore transport or raising, check the completed inventory against the assembly map and the design's handling plan. Panels have mass and can be awkward to control even when each member was manageable alone. The modular method changes the unit being handled; the handling arrangements must change with it.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-part-assembly",
+      "title": "Part V — The seams make the dome",
+      "kind": "part",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Forty correct triangles are an inventory. Their connected relationships make the frame.\n\nThe next chapters follow those relationships from the shared seam to the ground and then to the larger question implied by the word home.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-seams",
+      "title": "20. What happens between two panels",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "At an interior edge, two outward panel normals point in slightly different directions. The small angle between them is the fold: F = acos(N1 · N2) for normalized normals, with the numerical dot product clamped to the valid range. The internal supplementary angle is 180 degrees minus F. Print the definition beside the number because “dihedral” is used in different ways.\n\nThe raw sector contributes its own fixed face relationships. In the original point-inward comparison, the ideal residual gap angle is related to 45 degrees minus the panel fold. The actual contact surfaces, offsets, and selected seam mode must still be solved in their physical positions. An attractive sketch does not define a fabrication polygon.\n\nThe project's seam studies include rigid keys, hose or gasket concepts, and a shaved-flat alternative. The current raw-trapezoid mode preserves the longitudinal sector faces and uses a truncated key profile. The shaved-flat configuration changes those seam faces and uses a different key. These are distinct construction choices and should have separate captions and schedules.\n\nA rigid shape can help establish a geometric relationship when the surfaces meet as intended. A round hose or gasket mainly fills space and can permit relative rotation unless the connection independently constrains it. Filling a gap, setting an angle, transferring structural forces, and managing water are different jobs. A single interface may need several components to do them.\n\nMake a representative two-panel seam before the larger assembly. Use the actual timber profiles and the proposed connection detail. Record the fit, the available fastening geometry, and the relationship to the reference fold. This trial helps locate a problem while it can still be handled on the bench.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-base",
+      "title": "21. Give the frame a place to stand",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "The base ring is a ten-sided boundary in the selected hemisphere. It must be laid out from a consistent center and reference dimensions. A radius drawn on the ground locates the circumcircle; the segments joining the base vertices locate the polygon. Record which reference was used at every check.\n\nThe structural path continues from the panels through their connections and into the support and anchorage system. The base is therefore part of the design, even though the two trees are supplying the wedge members above it. Record the actual foundation or support approach, site information, and the design responsible for uplift, sliding, settlement, and the applicable loads.\n\nCheck the base layout before accepting panel fit as evidence about the dome. A misplaced support can make correct panels appear wrong. An improvised adjustment in one seam can then distribute that error through several others. Keep the layout measurements separate from the panel acceptance measurements so the source of a mismatch can be found.\n\nThe book should include a plan-view plate with base vertex IDs and reference dimensions from the chosen model. Pair it with an actual site photograph showing the same labels. This pair is more useful than a generic rendering because it connects the drawing to the place where the assembly must close.\n\nAny doorway that interrupts the frame or base changes the local arrangement. Describe the intended opening as an explicit design variant. Do not silently remove members from the forty-triangle scheme while continuing to quote its original topology and stock count.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-raising",
+      "title": "22. Follow an assembly plan that can stay stable",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "The assembly order must come from a plan for the actual panels, connections, equipment, and site. A complete dome's behavior does not describe an incomplete ring of panels. Temporary support, controlled handling, and the limits of each intermediate stage need their own attention.\n\nBefore raising begins, lay out the panel map and verify every label against it. Identify each planned seam, the connection components it requires, and the stage at which it can be checked. Record where temporary support is required and what inspection permits a stage to proceed. These details should be supplied by the build's actual assembly and structural plan.\n\nThe earlier Frankendome notes discuss a top-down experiment. That history belongs in the narrative, but it does not choose the safe order for this different frame. The present book should show the sequence actually adopted, with its equipment and supports visible in the photographs.\n\nAs the frame grows, compare reference nodes and the base with the model. A forced seam is useful information. Pause to identify whether the cause is the base layout, a panel dimension, an orientation error, or a connection mismatch. Record the diagnosis and correction so the story preserves the discovery rather than editing out the difficulty.\n\nThe closure is an important scene only if its conditions are visible. Photograph the final relationship before and after connection, record any adjustment, and retain the final dimensional checks. The reader should be able to understand what “it fit” meant beyond the relief of seeing the last piece in place.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-from-frame-home",
+      "title": "23. The frame and the home it might become",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The parenthesis in (D)Home keeps two scales in view. This project is making a dome frame. The larger ambition is useful shelter shaped by that frame. The next decisions include the envelope, openings, drainage, insulation, ventilation, services, interior space, and maintenance access.\n\nThe project already explores many of these subjects. Dome Creator can show frames, panels, interiors, and site arrangements. Other lessons examine energy, material quantities, assembly flow, and alternative shapes. Use those tools to illustrate questions the frame creates, while labeling conceptual configurations so a reader does not mistake an image for a completed building detail.\n\nThe seam has to be considered again when a skin is introduced. Water follows exterior geometry and discontinuities, not the simplicity of a frame diagram. An opening introduces edges where layers end or turn. A service penetration has to be coordinated with the envelope and with the structure. Those are design topics to develop explicitly in a later phase.\n\nSpace also deserves a measured description. The base polygon, the curved wall profile, and the location of the useful head-height zone influence furniture and circulation. A floor area quoted from an enclosing circle tells only part of that story. Include a plan and a section when describing a proposed interior.\n\nAt the fortnight's end, name the achieved milestone precisely. If the frame is standing, describe that accomplishment and its remaining work. If a problem has delayed the frame, describe the problem and what the experiment established. The title can hold ambition without requiring the field record to invent completion.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-part-fortnight",
+      "title": "Part VI — Fourteen days, as they happen",
+      "kind": "part",
+      "strand": "story",
+      "status": "draft",
+      "body": "The calendar is a promise to keep a record.\n\nThe following pages begin as a proposed schedule. Replace the placeholders with actual dates and observations. Move work when the project requires it and preserve the reason for the move.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-fortnight-plan",
+      "title": "24. Plan the fortnight, then record the difference",
+      "kind": "chapter",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "The schedule is a working hypothesis. It assumes the source timber, site arrangements, appropriate design decisions, equipment, and relevant preparation are available. List preparation honestly beside day one. Work that took place before the clock still belongs to the cost and history of the project.\n\n| Days | Proposed focus | Evidence that closes the stage |\n| --- | --- | --- |\n| 1–2 | Verify source inventory and freeze the first physical configuration | Measured section ledger and saved model |\n| 3–4 | Trial stock processing and representative corners | Accepted samples, measured losses, revised allowance |\n| 5–7 | Produce, inspect, and assign the remaining wedge blanks | Actual accepted member inventory |\n| 8–10 | Build and check both triangle families | Panel register and inspection record |\n| 11 | Verify the base, equipment, connections, and assembly readiness | Stage review against the actual assembly plan |\n| 12–13 | Assemble through planned supported stages | Stage photographs, corrections, dimensional checks |\n| 14 | Record the achieved condition and the remaining work | Final inventory, photographs, and truthful outcome |\n\nThese are allocations, not daily quotas that override conditions. An unresolved trial corner is a reason to move the batch, because repeating an uncertain detail produces more uncertainty. An interruption should appear in the schedule rather than be hidden by counting only the hours when the saw was running.\n\nEach field page asks for the same small set of facts and one different story question. The facts make the process comparable. The question keeps the narrative from becoming only a spreadsheet. Include a photograph that proves a change, even when the change is a correction or a rejected piece.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-01",
+      "title": "Day 01 — The starting inventory",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nMeasure and label the available sections; save the first configuration.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat did the actual trees change about the initial plan?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-02",
+      "title": "Day 02 — The first configuration",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nCompare desired-radius and available-stock routes; record allowances.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhich dimension became the controlling constraint?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-03",
+      "title": "Day 03 — The first useful blank",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nRecord the representative stock trial, actual losses, and setup time.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat was different between the imagined wedge and the real one?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-04",
+      "title": "Day 04 — The first corner",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nDocument end-to-side contact and the cyclic pinwheel with close photographs.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat did the contact between two members teach you?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-05",
+      "title": "Day 05 — A repeatable process",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nRecord fixture changes and separate accepted, uncertain, and rejected pieces.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhich adjustment made the next piece easier to repeat?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-06",
+      "title": "Day 06 — The tree has a say",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nUpdate member assignments and the remaining usable stock count.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhere did taper or a defect force a decision?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-07",
+      "title": "Day 07 — Halfway through the clock",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nReconcile accepted members, time spent, and the work still ahead.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat remains uncertain at the halfway point?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-08",
+      "title": "Day 08 — The first panel family",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nCheck the first accepted A-A-A batch against its reference geometry.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhen did loose members begin to feel like a building?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-09",
+      "title": "Day 09 — The second panel family",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nCheck B-A-B panels and compare their fixture and joint requirements.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat changed when the short members entered the pattern?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-10",
+      "title": "Day 10 — Forty triangles, if ready",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nReconcile the actual panel count and photograph labels and spares.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat almost escaped the final panel check?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-11",
+      "title": "Day 11 — Ready to assemble",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nReview the base and readiness against the actual supported assembly plan.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhich preparation mattered more than you expected?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-12",
+      "title": "Day 12 — The frame begins to rise",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nRecord the stage, supports, personnel, weather, and measured reference checks.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat did the first assembled stage reveal?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-13",
+      "title": "Day 13 — Approaching closure",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nDocument fit and corrections; proceed only through the actual assembly plan.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhere did the last relationships agree or disagree?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-day-14",
+      "title": "Day 14 — The honest finish line",
+      "kind": "journal",
+      "strand": "story",
+      "status": "field record needed",
+      "body": "## Planned focus\n\nRecord the achieved condition, actual totals, remaining work, and final photographs.\n\nThis is a proposed focus, not a claim that the work occurred on this day. Record the actual sequence below.\n\n## Field facts\n\nDate: [record]\n\nStart / finish / breaks: [record]\n\nPeople and labor hours: [record]\n\nWeather and site conditions: [record]\n\nStarting inventory → accepted output → rejected / reworked → remaining: [record]\n\nMeasurements and configuration used: [record]\n\n## The scene\n\nWhat can you now claim, and what remains to be done?\n\n[Write the actual scene in your own words: what you saw, tried, changed, and understood.]\n\n## Evidence and next step\n\nPhoto or video IDs, captions, receipts, and notes: [record]\n\nWhat changed in the plan and why: [record]\n\nNext step: [record]\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-economics",
+      "title": "25. Count the work the wood actually replaced",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "The discovery notes use an illustrative store price and a proposed production rate to ask whether wedge-making can have meaningful value. Preserve those figures as the origin of the question, with their original date and uncertainty. Replace them with receipts and measured labor when making a claim about this build.\n\nSeparate cash spent, reusable equipment acquired, consumables used, and labor hours. A saw bought for this project still has value afterward, while fuel and oil used during the project do not. A comparison can show either initial cash requirement or allocated project cost, but it should say which one it shows.\n\nCount labor from setup through completed accepted parts. Record maintenance, movement, fixture work, inspection, failed attempts, and cleanup where they belong. A rate measured during one productive afternoon does not establish the average rate for the whole frame. The book can show both the good run and the full ledger.\n\nTo compare with purchased lumber, define the product the purchased material would have supplied. Volume equality alone does not establish equal structural function, connection cost, dimensional stability, or finish quality. The strongest comparison is between complete, specified alternatives that serve the same purpose.\n\nUse the same discipline for the “two trees” claim. It describes the proposed source of wedge members. List added seam material, fasteners, supports, and anything bought for the base separately. The extra rows do not weaken the experiment; they show its actual boundary.\n\nThe economic ending can remain useful even if it is mixed. The method may save a machine while requiring more handling. It may preserve wood while demanding a more involved connection. Those tradeoffs tell a future builder where the method fits and where a conventional alternative may fit better.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-ending",
+      "title": "26. What two trees will have taught me",
+      "kind": "chapter",
+      "strand": "story",
+      "status": "draft",
+      "body": "At the beginning, the idea fits in one sentence: use the wedge that a tree already contains to make the repeated parts of a dome. By the end, that sentence should have acquired measurements, joints, mistakes, photographs, and a result.\n\nI want the last chapter to return to the first inventory. How many sections did the actual trees supply? How many blanks became accepted members? Which allowance changed after the first physical trial? How much of the fortnight went into sawing, how much into making the geometry repeatable, and how much into joining the panels?\n\nThose answers cannot be written in advance. What can be written is the standard they must meet. The count should reconcile. The final model should match the built configuration. The photographs should show the important details. The story should preserve the moments where the wood or the assembly contradicted the expectation.\n\nIf the frame comes together within the target, the account should explain what preparation and conditions made that possible. If it takes longer, the account should explain the difference. The discovery has value when another person can understand and evaluate it; a protected deadline would make the explanation less useful.\n\nThe closing scene belongs to the author after the work. Return to one object from the opening: a source stump, an unused wedge, the saw, or the first sketch. Describe it as it is now, after the experiment. Let the measured result and the lived scene occupy the same page.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-part-atlas",
+      "title": "Part VII — The wider project and the bench reference",
+      "kind": "part",
+      "strand": "reference",
+      "status": "draft",
+      "body": "The dome in this book sits within a larger set of experiments.\n\nThe atlas shows how the tools connect. The reference pages keep the method usable when the narrative has been read and the next decision is on the bench.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-project-atlas",
+      "title": "27. The tools that made the questions visible",
+      "kind": "chapter",
+      "strand": "explanation",
+      "status": "draft",
+      "body": "DomeSim is a workshop of related tools. Their value to the book is that they make different parts of the same question visible. A film can introduce an idea; a physical solver can inspect a joint; a site designer can show how a frame might become a place to live.\n\n| Project tool or study | Role in the book | Suggested image |\n| --- | --- | --- |\n| Raw Wedge Dome | Physical members, orientations, cut planes, seams, and jig | Four orientations and a close seam |\n| 2V geometry / Masterclass | Sphere subdivision, factors, panel families | Topology beside panel ownership |\n| Frankendome | Earlier experiments with varied triangular members | Dated prototype photograph and explanatory frame |\n| Hex masterclass | Hexagon/pentagon cages and changes in panel shape | A labeled model plate |\n| Zome masterclass | A related form built from rhombi and generating directions | Polar zome plate |\n| Dome Creator | Panels, interior concepts, services, and site arrangement | Selected saved scene with configuration |\n| Dome Forge | Configurable build variants, groups, layers, and jigs | A chosen design and layer comparison |\n| Assembly Line | Material flow and the work of making repeated units | A scene tied to measured production stages |\n| Presenter / video lessons | Explanatory sequence and narrative evidence | A still that communicates one claim |\n| Beat and voice tools | Narration experiments and reusable short sequences | Script excerpt with the finished page it informed |\n\nThe atlas is not a claim that every depicted structure can use the same 120-piece inventory. The 2V panelized hemisphere owns that count. A hex cage and a zome have their own topology and material requirements. Keep their configuration labels visible when they appear in the same spread.\n\nFor each selected project still, retain the source tool, configuration, camera, date, and a caption saying what the image demonstrates. Rendered imagery can explain geometry very well. Actual build photographs establish what the author made. Use each where it carries the evidence the page needs.\n",
+      "notes": "",
+      "figures": [
+        "codex-68b877496ba4491e",
+        "codex-087974d0992a4bb5"
+      ]
+    },
+    {
+      "id": "codex-figure-plan",
+      "title": "Illustration plan — give each image a job",
+      "kind": "appendix",
+      "strand": "reference",
+      "status": "draft",
+      "body": "| Placement | Figure | Evidence or purpose |\n| --- | --- | --- |\n| Title / Part I | Woodland dome artwork | Conceptual mood, clearly labeled as artwork |\n| Chapter 2 | Frankendome before-and-after | Author photographs needed to establish chronology |\n| Chapter 3 | First wedge and first corner | Actual discovery record needed |\n| Chapters 5–6 | Ideal mesh and independent timber panels | Explain 65 edges versus 120 members |\n| Chapters 7–10 | Dimension and inventory plates | Show the two sizing directions and kerf allowance |\n| Chapter 11 | True circular sector | Preserve the arc, distinguish diameter from radius |\n| Chapters 12–14 | Trunk labels, defects, moisture record | Actual field evidence needed |\n| Chapter 16 | Four raw-wedge orientations | Generated from the existing physical solver |\n| Chapters 17–18 | Corner, cut planes, fixture stages | Simulator plates plus full-size prototype photographs |\n| Chapters 19–22 | Two panel families, base map, supported stages | Model reference beside the actual sequence |\n| Chapter 23 | Plan and section of a proposed interior | Concept study with the chosen configuration |\n| Fourteen-day journal | One revealing image per day | What changed, including errors and corrections |\n| Chapter 27 | Geodesic, wedge, hex cage, polar zome | Comparison of project models, not interchangeable cut lists |\n\nEvery image needs a caption, provenance, and a reason to occupy the page. For artwork, say that it is conceptual. For a simulator plate, name its configuration. For a photograph, record date and subject. For an explanatory diagram, show units and the definitions used.\n\nChoose full-page plates for geometry that needs space and part openers that need a pause. Use smaller images beside a calculation when the reader must compare numbers and shapes at the same time. A photograph of an unmarked pile should not substitute for a measured inventory diagram.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-worksheet-tree",
+      "title": "Worksheet A — Source tree and section register",
+      "kind": "worksheet",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Date: [record]  Tree ID: [record]  Species and identification basis: [record]\n\n| Section ID | Usable length | Large / small diameter | Defects / sweep | Potential blanks | Accepted blanks | Photo ID |\n| --- | --- | --- | --- | --- | --- | --- |\n| T1-S01 | | | | | | |\n| T1-S02 | | | | | | |\n| T1-S03 | | | | | | |\n| T1-S04 | | | | | | |\n| T1-S05 | | | | | | |\n| T1-S06 | | | | | | |\n| T1-S07 | | | | | | |\n| T1-S08 | | | | | | |\n\nDuplicate this page for the second tree. Record end trims and removed defect lengths separately from the retained sections. Photograph every rejected region whose removal materially changes the yield.\n\nReconciliation: retained section length + separating kerfs + removed material = measured original usable span, within the documented measurement uncertainty.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-worksheet-member",
+      "title": "Worksheet B — Member and panel traceability",
+      "kind": "worksheet",
+      "strand": "how-to",
+      "status": "draft",
+      "body": "Configuration file and date: [record]\n\n| Member ID | Source section / sector | Edge family | Required blank length | Measured available length | Orientation | Acceptance / reason |\n| --- | --- | --- | --- | --- | --- | --- |\n| | | | | | | |\n\n| Panel ID | Family | Three member IDs | Fixture version | Reference checks | Acceptance | Intended position |\n| --- | --- | --- | --- | --- | --- | --- |\n| | | | | | | |\n\nUse the actual solver's member IDs in the cut schedule. Do not relabel pieces solely to make a picture easier to read; create a legend that relates the readable label to the stored ID.\n\nBefore assembly, total the accepted panels by family and reconcile their members with the material ledger. Keep the accepted spare inventory visible after the forty panels are complete.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-worksheet-cost",
+      "title": "Worksheet C — Time, purchases, and what remains",
+      "kind": "worksheet",
+      "strand": "reference",
+      "status": "draft",
+      "body": "| Date | Work category | People / labor hours | Accepted output | Consumables | Rework / delay | Record or receipt |\n| --- | --- | --- | --- | --- | --- | --- |\n| | | | | | | |\n\n| Purchase | Cash paid | Used this build | Reusable afterward | Allocation method | Receipt date |\n| --- | --- | --- | --- | --- | --- |\n| | | | | | |\n\nRecord pre-clock work on the same basis as work during the fortnight. Report calendar elapsed time and labor hours separately. Two people working six hours contribute twelve labor hours during six elapsed hours.\n\nAt the final inventory, record installed material, accepted unused stock, unprocessed sections, test pieces, and rejected material. The remaining wood is part of the experiment's result.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-glossary",
+      "title": "Glossary — the words beside the cuts",
+      "kind": "appendix",
+      "strand": "reference",
+      "status": "draft",
+      "body": "**A / B:** This book's long / short nominal geodesic edge families.\n\n**Blank:** The stock available before a member's final cuts, including necessary process allowance.\n\n**Chord factor:** The ratio of an ideal edge length to sphere radius.\n\n**Decagon:** The ten-sided base polygon of this hemisphere.\n\n**Edge:** A unique line segment in the geometric mesh; not necessarily one wooden member.\n\n**Fold:** The smaller angle between outward normals of adjacent panels.\n\n**Kerf:** Material removed across the width of a saw cut. Bucking kerf affects section-length inventory; ripping kerf affects sector recovery.\n\n**Member:** One finished structural wooden part, with its physical geometry and identity.\n\n**Panel:** One independently assembled triangular frame, owning three members.\n\n**Pinwheel:** A cyclic end-to-side relationship within a panel, with each member receiving one neighbor and terminating against another.\n\n**Radial sector:** A region bounded by two radii and their circular arc; one eighth has a forty-five-degree included angle.\n\n**Seam:** A shared interface between two panels. This hemisphere has fifty-five interior seams and ten exposed base edges.\n\n**Stock envelope:** The longitudinal extent needed to contain the physical member before any extra process allowance.\n\n**Zome:** A related form based on a zonohedral construction; it has its own geometry and is not this spherical 2V frame.\n",
+      "notes": "",
+      "figures": []
+    },
+    {
+      "id": "codex-sources",
+      "title": "Sources, assumptions, and corrections to resolve",
+      "kind": "appendix",
+      "strand": "reference",
+      "status": "draft",
+      "body": "The project files provide the design history and computations for this draft. The author's brief provides the intended two-tree inventory, the two-week target, and the saw identification. These are plans and author statements until field records establish measured results.\n\n| Source | What it supports | Publication check |\n| --- | --- | --- |\n| discovering-the-wedge.txt | Frankendome history, discovery narrative, original value and yield hypotheses | Confirm dates, original photos, and which observations were measured |\n| dome-spec-wedges.txt | 2V topology, independent panels, sector and seam concepts | Reconcile earlier spec with current physical solver |\n| two_v_demo/geometry.py | Exact chord factors and generated hemisphere | Retain the actual code revision used |\n| geodesic_raw_wedge_dome_dihedral.py | Physical members, cuts, seams, orientations, and fixture settings | Retain the configuration used for fabrication |\n| two_v_demo/raw_wedge_bridge.py | Shared access to the physical simulator and meshes | Used by the book's render and calculation adapters |\n| two_v_demo/wedge_geometry.py | Earlier sector, tree-yield and simplified pinwheel studies | Identify differences from this book's six-foot section plan |\n| two_v_demo/hex_geometry.py and zome_geometry.py | Alternative project forms | Label each form with its own topology |\n\nExternal reference links:\n\n- [Husqvarna 120 product page](https://www.husqvarna.com/us/products-category/chainsaws/120/) — manufacturer reference; check the purchased model and its own manual.\n- [Husqvarna product-number identification](https://us-support.husqvarna.com/en/petrol-chainsaw/KA-70145) — how to identify the specific variant.\n- [USDA Wood Handbook](https://research.fs.usda.gov/fpl/wood-handbook) — material properties, moisture, grading, fastening, and design background.\n- [USFS saw training guide](https://www.fs.usda.gov/t-d/pubs/htmlpubs/htm06672805/page01.htm) — training context for field saw operations.\n\nThe printed factors and worked results are rounded for reading. Live calculations use generated geometry. The nominal six-foot edge example is not a final cut prescription. The eighty-strut-per-tree example in an earlier timber demonstration uses a different source length and sectioning method from the sixty-four-blank plan here.\n\nThe source notes' trunk diameter text includes an apparent feet/inches typo. This draft uses the explicitly named eight-inch and twelve-inch diameter examples as declared mathematical examples, not as measured dimensions of the author's trees. No unverified claim of invention priority, universal recovery percentage, saw capability, or structural rating is established by this manuscript.\n\nBefore publication, replace open field prompts, verify the saw identification from the machine, date all prices, reconcile the final counts, update the physical configuration, and have the construction details reviewed for their intended use. Preserve the corrections in the explanation where they changed the method.\n",
+      "notes": "",
+      "figures": []
+    }
+  ],
+  "assets": {
+    "codex-ff6be7c31bb549fa": {
+      "path": "assets/codex-ff6be7c31bb549fa.png",
+      "caption": "Raw-wedge dome: point toward dome interior; 120 independent panel members.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-point_dome_in"
+    },
+    "codex-c2675317ef204a76": {
+      "path": "assets/codex-c2675317ef204a76.png",
+      "caption": "Raw-wedge dome: point toward exterior.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-point_dome_out"
+    },
+    "codex-529133c9b3824528": {
+      "path": "assets/codex-529133c9b3824528.png",
+      "caption": "Raw-wedge dome: point toward the triangular panel interior.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-point_panel_in"
+    },
+    "codex-7d4e997f4ebf4c9b": {
+      "path": "assets/codex-7d4e997f4ebf4c9b.png",
+      "caption": "Raw-wedge dome: point across the panel boundary.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-point_panel_out"
+    },
+    "codex-47e9910aba8b4b12": {
+      "path": "assets/codex-47e9910aba8b4b12.png",
+      "caption": "Two separate cyclic pinwheel triangles, each with three members. Two members remain at their shared axis. Colors identify member ownership.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-pinwheel-pair"
+    },
+    "codex-4f271693c2164f22": {
+      "path": "assets/codex-4f271693c2164f22.png",
+      "caption": "2V reference topology: 40 faces, 26 vertices, 65 unique edges.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-geodesic"
+    },
+    "codex-68b877496ba4491e": {
+      "path": "assets/codex-68b877496ba4491e.png",
+      "caption": "The hex tool's truncated-icosahedron dome selection; a distinct construction study.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-hex-dome"
+    },
+    "codex-087974d0992a4bb5": {
+      "path": "assets/codex-087974d0992a4bb5.png",
+      "caption": "The zome tool's default polar zome; a distinct rhombic-panel geometry.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-zome"
+    },
+    "codex-e291d7df04ea495c": {
+      "path": "assets/codex-e291d7df04ea495c.png",
+      "caption": "Eight sections per tree, eight potential blanks per section: 128 gross blanks and a target of 120 members.",
+      "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+      "source_key": "initial-plate-inventory"
+    },
+    "codex-f8e89a7a81e54179": {
+      "path": "assets/codex-f8e89a7a81e54179.png",
+      "caption": "Concept artwork — cover-concept-v1. Geometry review required before technical use.",
+      "provenance": "AI-generated editorial artwork; not a build photograph or cut diagram.",
+      "source_key": "art-cover-concept-v1"
+    },
+    "codex-880e2786ebf245ed": {
+      "path": "assets/codex-880e2786ebf245ed.png",
+      "caption": "Concept artwork — workbench-v1. Geometry review required before technical use.",
+      "provenance": "AI-generated editorial artwork; not a build photograph or cut diagram.",
+      "source_key": "art-workbench-v1"
+    },
+    "codex-3c429a9f84ae4ebd": {
+      "path": "assets/codex-3c429a9f84ae4ebd.png",
+      "caption": "Concept artwork — workbench-v2. Geometry review required before technical use.",
+      "provenance": "AI-generated editorial artwork; not a build photograph or cut diagram.",
+      "source_key": "art-workbench-v2"
+    },
+    "codex-99d0f0808306400c": {
+      "path": "assets/codex-99d0f0808306400c.png",
+      "caption": "Concept artwork — workbench-v3. Geometry review required before technical use.",
+      "provenance": "AI-generated editorial artwork; not a build photograph or cut diagram.",
+      "source_key": "art-workbench-v3"
+    },
+    "codex-aa360ac040d74c0c": {
+      "path": "assets/codex-aa360ac040d74c0c.png",
+      "caption": "Each central member belongs to a different triangle. Around each triangle, the butt of one member meets the side near the front of the next.",
+      "provenance": "AI-finished illustration using the actual simulator pinwheel-pair render as the geometry reference; original model plate retained in Chapter 17.",
+      "source_key": "art-pinwheel-illustrated-v1"
+    },
+    "codex-cd750f1e939449fd": {
+      "path": "assets/codex-cd750f1e939449fd.png",
+      "caption": "The starting inventory is a standing pine. A still from the existing harvest lesson, captured at 30 percent of its opening tree scene; the on-screen number illustrates the source lesson, not a measured harvest result.",
+      "provenance": "Rendered from Two Trees, All at Once using the existing scene painter and authored camera. Source-model example.",
+      "scene_recipe": {
+        "lesson_key": "harvest",
+        "chapter_slug": "tree",
+        "stage": "hv_harvest",
+        "progress": 0.3,
+        "camera": [
+          0.0,
+          20.0,
+          20.0
+        ],
+        "width": 1600,
+        "height": 1000,
+        "overlay": "original"
+      },
+      "source_scene": {
+        "scene_id": "harvest:tree",
+        "recipe": {
+          "lesson_key": "harvest",
+          "chapter_slug": "tree",
+          "stage": "hv_harvest",
+          "progress": 0.3,
+          "camera": [
+            0.0,
+            20.0,
+            20.0
+          ],
+          "width": 1600,
+          "height": 1000,
+          "overlay": "original"
+        },
+        "provenance_path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\scene_test\\scene-harvest-tree-20260912T053556191685Z-bd932c04\\provenance.json",
+        "stdout_path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\scene_test\\scene-harvest-tree-20260912T053556191685Z-bd932c04\\stdout.log",
+        "stderr_path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\scene_test\\scene-harvest-tree-20260912T053556191685Z-bd932c04\\stderr.log",
+        "render_metadata": {
+          "schema": "two-trees-scene-still/v1",
+          "created_utc": "2026-09-12T05:36:46.107211+00:00",
+          "engine": "two_v_demo.app.MasterclassApp",
+          "engine_mode": "hidden OpenGL; same scene painters, camera and overlays as video export",
+          "recipe": {
+            "lesson_key": "harvest",
+            "chapter_slug": "tree",
+            "stage": "hv_harvest",
+            "progress": 0.3,
+            "camera": [
+              0.0,
+              20.0,
+              20.0
+            ],
+            "width": 1600,
+            "height": 1000,
+            "overlay": "original"
+          },
+          "source_lesson_title": "Two Trees, All at Once",
+          "source_chapter": {
+            "slug": "tree",
+            "number": "01",
+            "title": "Two trees",
+            "promise": "The whole woodpile is standing up.",
+            "narration": [
+              "It will take me 2 whole pine trees to harvest all of the wood a 300 square foot house needs. No lumber yard and no delivery truck, just the trees already standing on the property, and one small chainsaw."
+            ],
+            "equations": [],
+            "duration": 14.4,
+            "camera": [
+              0.0,
+              20.0,
+              20.0
+            ],
+            "stage": "hv_harvest",
+            "overlay": null,
+            "callouts": [
+              {
+                "text": "{{method_a.whole_trees}}",
+                "unit": "trees",
+                "note": "",
+                "icon": "pine",
+                "cue": "{{method_a.whole_trees}} whole pine trees",
+                "at": null,
+                "hold": 3.6,
+                "slot": "left",
+                "tone": "value",
+                "op": "",
+                "size": 1.0
+              },
+              {
+                "text": "{{method_a.floor_sqft}}",
+                "unit": "sq ft",
+                "note": "the house those trees frame",
+                "icon": "house",
+                "cue": "{{method_a.floor_sqft}} square foot",
+                "at": null,
+                "hold": 4.0,
+                "slot": "right",
+                "tone": "value",
+                "op": "",
+                "size": 1.0
+              }
+            ]
+          },
+          "source_assumptions": "Source lesson model defaults. These figures are not verified field results and may differ from the manuscript's scenario.",
+          "timing_basis": "Authored lesson durations; no audio synthesized or cached speech retiming loaded.",
+          "chapter_duration_seconds": 14.4,
+          "chapter_time_seconds": 4.32,
+          "lesson_time_seconds": 4.32,
+          "effective_overlay": "hype",
+          "world_labels_included": true,
+          "world_labels": [],
+          "world_icon_count": 0,
+          "callouts": [
+            {
+              "text": "2",
+              "unit": "trees",
+              "note": "",
+              "start_seconds": 1.5719138387876714,
+              "end_seconds": 5.171913838787671,
+              "active": true
+            },
+            {
+              "text": "300",
+              "unit": "sq ft",
+              "note": "the house those trees frame",
+              "start_seconds": 4.637655355150685,
+              "end_seconds": 8.637655355150684,
+              "active": false
+            }
+          ],
+          "resolved_camera": {
+            "eye": [
+              -10.722187748663007,
+              -32.861299834169735,
+              12.574778673869357
+            ],
+            "target": [
+              -9.0,
+              0.0,
+              9.0
+            ],
+            "fov": 44.0,
+            "function": "two_v_demo.lesson_harvest.harvest_camera"
+          },
+          "source_files_sha256": {
+            "al_build.py": "531f34a2c244be61c4b9fda44e244bd0795454da68e20f4bd5f9fcaeebfd5f17",
+            "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+            "geodesic_raw_wedge_dome_dihedral.py": "3ca7a9dfa2de50d14e84e51de23652e703e2788e0a61513dedace7ea77ec06be",
+            "launcher_common.py": "abf42ea1c2faa5f2b46f692ed9eeb0011a1acf0357b472589bdf70ce52188a06",
+            "materials.py": "635f5c6aaf194753e19a0679a02ffd48d98e244ec37524871e5ddd89353e9958",
+            "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63",
+            "presets.py": "3e8818e02eb15ee085c67e266da2a21211643a48ee6fb530c9e6d4f70ad1c7d8",
+            "two_trees_codex/__init__.py": "d0fd23b5747eea7bd72052fc4b76ffe1831dbb3ad710c38197be439bc4c04ee6",
+            "two_trees_codex/scene_stills.py": "5b00e62eccc07b73416a4b82a6cfcf4cd7b9c48d209442c50b81cc75d0f9be4a",
+            "two_v_demo/__init__.py": "6bdafc788a9d566d35ac546f59eea7a0aec486e85e071d83ac4d895e32d020c9",
+            "two_v_demo/app.py": "b5d99978c5c6b3a72370cf0599b9ff90acd28f2f2ec2316f6f442b14f6f6d58c",
+            "two_v_demo/audio.py": "1dfc505ab3ca78adf5a4c19b746468eac27eefb1610d5c67235d328b7ec44698",
+            "two_v_demo/book.py": "23e7afcea23f22ce13c28f37cc8f0f5d241dab2ff8bc6c5502e5c17124c90b16",
+            "two_v_demo/book_math.py": "1647361e0dd7d7cd5c6834d01ff21f65b5b5304881461cd116d60ab79238ced6",
+            "two_v_demo/book_tokens.py": "fd3535d47ee6af2fd7d36531fce0fec1a3d5e70a51704b44af64ac50216028f1",
+            "two_v_demo/build_geometry.py": "2dbf7e69b3f6c9aaa14a2278f0fcb34f825fb85e724b9395bd79e92495b5477f",
+            "two_v_demo/callouts.py": "7bdb2e74b3864fad047384665c70454b31c70d678b987196a53af6415ff369e4",
+            "two_v_demo/deliverables.py": "f3e69555041e46f0b8ef81de86b94462fd90dc17debf02c5c78104a871ae3dd4",
+            "two_v_demo/dome_advantage.py": "5d34036fbca63ccf9a8ca7ba7fb7be061178158963e6daaadb2c703973942058",
+            "two_v_demo/dome_costing.py": "8ab553c2d47c95f22c0090296d6c41eb79e19b2a1366f8781f3ff8bea83e248d",
+            "two_v_demo/dome_interiors.py": "77852bc59fb70239a8355dba6c33827c4cc515a87183b3a4a4bcc134fa1e6261",
+            "two_v_demo/dome_performance.py": "d81146a217a8747acf1ddeb7277df10761ece42136cb6e10753974b66021efca",
+            "two_v_demo/drama_camera.py": "a96b287ab757d2d16e6fcf1b06775bbe37218df10387656d60ebc5541b9b6de1",
+            "two_v_demo/drama_director.py": "50311391022c28df0c40389069c247a8bafef72f1306c6561955a7e298abbb5d",
+            "two_v_demo/drama_face.py": "908aeb47568c51d66865d3840d2d4312114fee775bc0df003e5f75a2db44f187",
+            "two_v_demo/drama_rig.py": "a12691c865580cd67df4b3880ca9a00f620d16ae398c662e9aaed47bba75cad8",
+            "two_v_demo/drama_script.py": "a70c964a8cb5fa60e3b369ea1286a0580b65ebdb5955e468caac28b2ef5ea564",
+            "two_v_demo/drama_stage.py": "7ea0b3984f136fc94816b4ac834cc58414a8c746028669a75286fdd981a6260b",
+            "two_v_demo/energetics.py": "fc43f3bc63344662f02dd2a9c584c195bcf2dc1f660df77991d7fb6fc74dc774",
+            "two_v_demo/export.py": "5c99d7c20c414642849d29e5671a6c1d15ef0c6ad6740dc0c1b9fac4dff9a2c9",
+            "two_v_demo/figure.py": "8279ef6fa3226af56765e7c7f03fa9b7c0f31791305063b18656ce194b33586f",
+            "two_v_demo/franken_economics.py": "bbf029cfaf33fd890ff25f1786ced15b51b793fd8a5d3153e23d04870214db02",
+            "two_v_demo/geometry.py": "7886135488a820f8019365b0d7ec195e169c8a041d4c580ccbf859b55d9204a7",
+            "two_v_demo/glam_body.py": "a3085865680c56633fa45432ae244660522aec46e51040c4606aa36aafba524f",
+            "two_v_demo/glam_cast.py": "f2e0de01c044a74d59342a873b2efa8cb7d2da3b6a06c83e97ce256c713bb60a",
+            "two_v_demo/glam_figure.py": "9c449b051c72bcfe9b0b2e2767ae654b59edd22ce39f4882a26154cd3a22f844",
+            "two_v_demo/glam_hair.py": "b4be41f28762c734d1123c03d004588670a554198902799e2d01bf947088f7dd",
+            "two_v_demo/glam_wardrobe.py": "e96b69634c91b04324178dcdc96df2069d2f0e6ebd79bf3f16f9119ac623e0b3",
+            "two_v_demo/hex_geometry.py": "723c0de01c6c9057af0b4e18feeb4f368c8bc18cfd8cd1211564b689ccf1a914",
+            "two_v_demo/hubless_geometry.py": "01ba749aee5631ef754842c8907d8c59b4cec31138cc517bb8a9a42227138197",
+            "two_v_demo/icons.py": "648f2be44b29303e1cd4b91f7581867b73e111710d5b257c20ea32759647c340",
+            "two_v_demo/lesson_build.py": "d4771ee94983cec78bb2efe31d7e4c1261d61d4fc38d57cd1674178ca066eb6f",
+            "two_v_demo/lesson_build_extra.py": "378d2ffdeb2cc3c4d39cab2d188c1dd367e81e9a227a09e92b004c4e0c7c2dc0",
+            "two_v_demo/lesson_cuts.py": "201d589f72db8eaa1155ff25054d03f4c98e458a5b6423ecc01a6e9ce315ee85",
+            "two_v_demo/lesson_drama.py": "17b6451bcd63a2ce1d22375188977544ddcd12aeab1af7de9608b9d1f5b33683",
+            "two_v_demo/lesson_franken.py": "18905ffd516a8cd300202a78165f30af6d1d5a8a404ffaa5b43fc37cd48baa20",
+            "two_v_demo/lesson_franken_extra.py": "6bf23d65a06f5b703ecb37a69ec2fc0be6672e2e6dd4ba78b572dedabe0ee05d",
+            "two_v_demo/lesson_harvest.py": "4cf6e8ef8fc5345d4780cdf3e35527e8f68e7cf8e1c64346ad19e897ed6a556f",
+            "two_v_demo/lesson_hex.py": "11cdf88eb635826c788418cdd0b60cd02295e38d39be1cf53b88a23eb57fb13f",
+            "two_v_demo/lesson_hype.py": "9b596c94e48ff506ab0c0ec59522bca2730813e03aade20da4f0f9efd51e3190",
+            "two_v_demo/lesson_kickstarter.py": "602776cec599d3d30470e08575e19ddc8c13f3576eb621a76c85edf7aef0b174",
+            "two_v_demo/lesson_kickstarter_v2.py": "916cf2e2935a59ef2927c763c698f51504de14180c452b1910f7cd68b6f6f854",
+            "two_v_demo/lesson_line.py": "421f69051ab5a83402416ff92ed60be872d0665353fe0f00d56e07f046fe0b35",
+            "two_v_demo/lesson_lookbook.py": "4fb1c64425137d7f6fc30d875ab1f2c4d453c2c3e69c5eded8215ec91e89f35b",
+            "two_v_demo/lesson_master.py": "c7d3cba131ca8e414841214806b0f16630faa5b03bbdce35b0d9b994563b18cd",
+            "two_v_demo/lesson_registry.py": "82b7654818fb37adc00df6c206e1ba22f4b761ee414ecaa45503a1f54d99bd83",
+            "two_v_demo/lesson_scratch.py": "d79437cd0ecfea5b4b4adbca90ce15b16a7f5fef28f14789366b2f7375684031",
+            "two_v_demo/lesson_wedge.py": "1f036cbdba50834c9f48718e5289c8ba8bc888da9abf6b7985f9804d5d0a423d",
+            "two_v_demo/lesson_wedge_why.py": "2e9ada64743bda38e9b07abbbd3f030366117489d3dacf2a1baabe2a86a7f82e",
+            "two_v_demo/lesson_world.py": "c9ba42b8c102a46b3e5dde4e9c147fafea9441f90387945557a4b7a2db6854a9",
+            "two_v_demo/lesson_world_chatgpt.py": "dfdf3bfcd9592ab9f02647b4e9bed3260d5497f561b6f2f9da03f19f71b7865c",
+            "two_v_demo/lesson_zome.py": "e810c492fc4d10a089cd344a7f6679b48a97b44fa7b6be8bd7509d28a016ec54",
+            "two_v_demo/lessons.py": "f3cdad16db8afea202392ff3e2e326f3ae88527501e90058ba0a908126b2fb63",
+            "two_v_demo/master_facts.py": "eca81fea4af6aa3fa19e073e0b70ef7818428b57d713fb55b6f9b3f7377e6462",
+            "two_v_demo/narration.py": "814956b2219125f4a9946d59c8e6cbabb20d3c232a9c33e95a0855bed3120550",
+            "two_v_demo/raw_wedge_bridge.py": "01426a239d9beacd7fd4502534a57e28e04865bdaf698b1038e34690b83a24ff",
+            "two_v_demo/render_kit.py": "b21d2c418e134722dafcfa6547c682cad3f24e7714651ed65d2c09f6da43be6b",
+            "two_v_demo/sawing.py": "0e1c1a81b5c034ab3c09e957e30778ef8a7a66e7f5247ed3f3fb85c31e486c5f",
+            "two_v_demo/scene_composer.py": "bc87d763dcfb7f23669143fe0d9291b8ac0d9d567e27b6f917f31f6e9c3327b3",
+            "two_v_demo/scratch_facts.py": "53aec873f2e4f49506a581ef0eb8e8f4a074a145690bd8c01dd191272c877c5a",
+            "two_v_demo/segments.py": "d44cd1ea2898d9c5a866dbfd41c832c0ac4c5a031ccfe8f2e1c190b8863d14d0",
+            "two_v_demo/strut_stock.py": "67a7c711f6ed5cf36acb6705a8a957babb75b1ded71c8fc4529256e68a583c69",
+            "two_v_demo/timber.py": "132a90d7c9d2574e683400c0c6d5920b2fef48060763e7197a9c4794d1c97859",
+            "two_v_demo/visual_objects.py": "c2bc50b9003a8e9c779026954622d6498c57302bbdc7ee105d3ed222ae62ab00",
+            "two_v_demo/visuals_forest.py": "6f49fd0a0f4cf7cbb2a85b27a3fe9968308aedeee7aebcd916d40ca99b6704d0",
+            "two_v_demo/wedge_facts.py": "38f239812d9acf7752e303625f7e7e437d89132c2ae098f14e973920f160f3db",
+            "two_v_demo/wedge_geometry.py": "aa9be7fce6fb725c4b130dffd439fe623889c0720cd45d0c83a37cc86a43f32f",
+            "two_v_demo/wedge_why_facts.py": "3926cbd738100ff35c6da03bb81b1da76e77ae524fa08414e369255900826ba2",
+            "two_v_demo/world_chatgpt_facts.py": "74a0857de0a068d02cb14311fe4201367b6a9a6b5a068657a1e76e4e50f45a88",
+            "two_v_demo/world_facts.py": "e29985d38ea4bd25711a85f8faa243c6851ab3e400f1f25a98dfe80f8351f058",
+            "two_v_demo/zome_geometry.py": "e883190ebb44a120b502509a49799e6abf6ae7e7d766409a2debf25d21e80f0c",
+            "workshop.py": "d369c5da8affa314c8ab4d449a19b6727c5d711d42dcd786b37d36b83b07d72c"
+          },
+          "source_digest": "4e5c934e4ff40cf3ce847e17dd675037c4c936c7e077a560f185b064f5b8dd51",
+          "recipe_digest": "04d4bab17b6efb12e58574aa96fb1482508e163a7ff5b2be36d6df6452a35cce",
+          "image_sha256": "22903ec93ba82a5e41f944918984264107ea85613d48e98a0dd1afd9c65c3f7e",
+          "runtime": {
+            "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+            "executable": "C:\\Users\\Don\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe",
+            "pygame": "2.6.1",
+            "moderngl": "5.12.0",
+            "opengl_vendor": "Intel",
+            "opengl_renderer": "Intel(R) UHD Graphics",
+            "opengl_version": "3.3.0 - Build 26.20.100.7985"
+          }
+        }
+      },
+      "source_page_id": "codex-read-tree",
+      "source_text_sha256": "2b7fa318a9135acb03953d7d5de95437b7d4c7b4b9dcf6f65eda15db504daef9",
+      "claim_context": "Source video example. Its model values must be reconciled with the book configuration before being described as build measurements.",
+      "source_key": "scene-harvest-tree-first-v1",
+      "attachment_text_sha256": "2b7fa318a9135acb03953d7d5de95437b7d4c7b4b9dcf6f65eda15db504daef9",
+      "source_text_changed": false
+    }
+  },
+  "created": "20260909T031217639107Z",
+  "updated": "20260912T060531950081Z"
+}

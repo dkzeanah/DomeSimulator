@@ -1,0 +1,650 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 5,
+    "text": "Under"
+  },
+  {
+    "start": 0.315,
+    "position": 6,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 0.405,
+    "position": 10,
+    "length": 8,
+    "text": "two-tree"
+  },
+  {
+    "start": 0.855,
+    "position": 19,
+    "length": 10,
+    "text": "assumption"
+  },
+  {
+    "start": 1.87,
+    "position": 31,
+    "length": 6,
+    "text": "divide"
+  },
+  {
+    "start": 2.24,
+    "position": 38,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 2.32,
+    "position": 42,
+    "length": 26,
+    "text": "forty-eight-hundred-dollar"
+  },
+  {
+    "start": 3.535,
+    "position": 69,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 3.99,
+    "position": 77,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 4.395,
+    "position": 83,
+    "length": 2,
+    "text": "by"
+  },
+  {
+    "start": 4.59,
+    "position": 86,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 5.785,
+    "position": 91,
+    "length": 4,
+    "text": "Each"
+  },
+  {
+    "start": 6.015,
+    "position": 96,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 6.255,
+    "position": 101,
+    "length": 11,
+    "text": "contributes"
+  },
+  {
+    "start": 6.915,
+    "position": 113,
+    "length": 11,
+    "text": "twenty-four"
+  },
+  {
+    "start": 7.505,
+    "position": 125,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 7.915,
+    "position": 133,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 8.325,
+    "position": 141,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 8.445,
+    "position": 144,
+    "length": 5,
+    "text": "gross"
+  },
+  {
+    "start": 8.755,
+    "position": 150,
+    "length": 10,
+    "text": "structural"
+  },
+  {
+    "start": 9.315,
+    "position": 161,
+    "length": 12,
+    "text": "substitution"
+  },
+  {
+    "start": 11.09,
+    "position": 175,
+    "length": 6,
+    "text": "Divide"
+  },
+  {
+    "start": 11.455,
+    "position": 182,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 11.55,
+    "position": 186,
+    "length": 8,
+    "text": "lifetime"
+  },
+  {
+    "start": 12.115,
+    "position": 195,
+    "length": 7,
+    "text": "payment"
+  },
+  {
+    "start": 12.495,
+    "position": 203,
+    "length": 6,
+    "text": "stream"
+  },
+  {
+    "start": 12.845,
+    "position": 210,
+    "length": 2,
+    "text": "by"
+  },
+  {
+    "start": 13.01,
+    "position": 213,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 13.27,
+    "position": 217,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 13.39,
+    "position": 221,
+    "length": 4,
+    "text": "each"
+  },
+  {
+    "start": 13.63,
+    "position": 226,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 13.87,
+    "position": 231,
+    "length": 8,
+    "text": "accounts"
+  },
+  {
+    "start": 14.295,
+    "position": 240,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 14.48,
+    "position": 244,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 14.75,
+    "position": 250,
+    "length": 10,
+    "text": "fifty-four"
+  },
+  {
+    "start": 15.315,
+    "position": 261,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 15.71,
+    "position": 269,
+    "length": 9,
+    "text": "sixty-one"
+  },
+  {
+    "start": 16.36,
+    "position": 279,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 16.75,
+    "position": 287,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 16.86,
+    "position": 290,
+    "length": 7,
+    "text": "nominal"
+  },
+  {
+    "start": 17.24,
+    "position": 298,
+    "length": 8,
+    "text": "payments"
+  },
+  {
+    "start": 18.68,
+    "position": 308,
+    "length": 3,
+    "text": "You"
+  },
+  {
+    "start": 18.815,
+    "position": 312,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 18.98,
+    "position": 316,
+    "length": 9,
+    "text": "therefore"
+  },
+  {
+    "start": 19.41,
+    "position": 326,
+    "length": 8,
+    "text": "describe"
+  },
+  {
+    "start": 19.9,
+    "position": 335,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 19.98,
+    "position": 339,
+    "length": 4,
+    "text": "same"
+  },
+  {
+    "start": 20.305,
+    "position": 344,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 20.565,
+    "position": 349,
+    "length": 2,
+    "text": "as"
+  },
+  {
+    "start": 20.71,
+    "position": 352,
+    "length": 13,
+    "text": "twenty-dollar"
+  },
+  {
+    "start": 21.39,
+    "position": 366,
+    "length": 8,
+    "text": "standing"
+  },
+  {
+    "start": 21.865,
+    "position": 375,
+    "length": 6,
+    "text": "timber"
+  },
+  {
+    "start": 22.68,
+    "position": 383,
+    "length": 7,
+    "text": "roughly"
+  },
+  {
+    "start": 23.06,
+    "position": 391,
+    "length": 18,
+    "text": "one-hundred-dollar"
+  },
+  {
+    "start": 23.97,
+    "position": 410,
+    "length": 8,
+    "text": "firewood"
+  },
+  {
+    "start": 25.025,
+    "position": 420,
+    "length": 7,
+    "text": "roughly"
+  },
+  {
+    "start": 25.4,
+    "position": 428,
+    "length": 26,
+    "text": "three-hundred-fifty-dollar"
+  },
+  {
+    "start": 26.71,
+    "position": 455,
+    "length": 6,
+    "text": "lumber"
+  },
+  {
+    "start": 27.55,
+    "position": 463,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 27.625,
+    "position": 465,
+    "length": 26,
+    "text": "twenty-four-hundred-dollar"
+  },
+  {
+    "start": 28.925,
+    "position": 492,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 29.37,
+    "position": 500,
+    "length": 12,
+    "text": "contribution"
+  },
+  {
+    "start": 30.615,
+    "position": 514,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 30.76,
+    "position": 517,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 30.81,
+    "position": 519,
+    "length": 35,
+    "text": "fifty-four-hundred-sixty-one-dollar"
+  },
+  {
+    "start": 32.695,
+    "position": 555,
+    "length": 5,
+    "text": "share"
+  },
+  {
+    "start": 33.045,
+    "position": 561,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 33.155,
+    "position": 564,
+    "length": 8,
+    "text": "financed"
+  },
+  {
+    "start": 33.67,
+    "position": 573,
+    "length": 8,
+    "text": "payments"
+  },
+  {
+    "start": 35.095,
+    "position": 583,
+    "length": 5,
+    "text": "There"
+  },
+  {
+    "start": 35.28,
+    "position": 589,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 35.43,
+    "position": 592,
+    "length": 2,
+    "text": "no"
+  },
+  {
+    "start": 35.645,
+    "position": 595,
+    "length": 13,
+    "text": "contradiction"
+  },
+  {
+    "start": 36.38,
+    "position": 609,
+    "length": 4,
+    "text": "once"
+  },
+  {
+    "start": 36.72,
+    "position": 614,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 36.835,
+    "position": 618,
+    "length": 4,
+    "text": "name"
+  },
+  {
+    "start": 37.08,
+    "position": 623,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 37.155,
+    "position": 627,
+    "length": 11,
+    "text": "measurement"
+  },
+  {
+    "start": 38.6,
+    "position": 640,
+    "length": 5,
+    "text": "There"
+  },
+  {
+    "start": 38.785,
+    "position": 646,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 38.945,
+    "position": 649,
+    "length": 4,
+    "text": "also"
+  },
+  {
+    "start": 39.3,
+    "position": 654,
+    "length": 2,
+    "text": "no"
+  },
+  {
+    "start": 39.53,
+    "position": 657,
+    "length": 3,
+    "text": "new"
+  },
+  {
+    "start": 39.725,
+    "position": 661,
+    "length": 6,
+    "text": "market"
+  },
+  {
+    "start": 40.125,
+    "position": 668,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 40.26,
+    "position": 671,
+    "length": 5,
+    "text": "which"
+  },
+  {
+    "start": 40.475,
+    "position": 677,
+    "length": 7,
+    "text": "someone"
+  },
+  {
+    "start": 40.915,
+    "position": 685,
+    "length": 13,
+    "text": "automatically"
+  },
+  {
+    "start": 41.62,
+    "position": 699,
+    "length": 4,
+    "text": "pays"
+  },
+  {
+    "start": 41.955,
+    "position": 704,
+    "length": 5,
+    "text": "those"
+  },
+  {
+    "start": 42.23,
+    "position": 710,
+    "length": 6,
+    "text": "larger"
+  },
+  {
+    "start": 42.67,
+    "position": 717,
+    "length": 7,
+    "text": "amounts"
+  },
+  {
+    "start": 43.06,
+    "position": 725,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 43.245,
+    "position": 729,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 43.34,
+    "position": 731,
+    "length": 3,
+    "text": "raw"
+  },
+  {
+    "start": 43.55,
+    "position": 735,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 44.795,
+    "position": 741,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 44.905,
+    "position": 745,
+    "length": 6,
+    "text": "larger"
+  },
+  {
+    "start": 45.31,
+    "position": 752,
+    "length": 6,
+    "text": "values"
+  },
+  {
+    "start": 45.785,
+    "position": 759,
+    "length": 6,
+    "text": "belong"
+  },
+  {
+    "start": 46.17,
+    "position": 766,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 46.285,
+    "position": 769,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 46.35,
+    "position": 771,
+    "length": 10,
+    "text": "successful"
+  },
+  {
+    "start": 47.015,
+    "position": 782,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 47.28,
+    "position": 786,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 47.38,
+    "position": 789,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 47.475,
+    "position": 793,
+    "length": 8,
+    "text": "complete"
+  },
+  {
+    "start": 47.945,
+    "position": 802,
+    "length": 6,
+    "text": "system"
+  }
+]

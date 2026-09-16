@@ -1,0 +1,16 @@
+{
+  "plate": "panel-drawing",
+  "title": "The two panels, drawn to build",
+  "tool": "chart",
+  "concept": "Two drawings are the whole shop-drawing set for a pinwheel dome.",
+  "change": "From two_v_demo.wedge_geometry.pinwheel_panels at the build plan's radius.",
+  "recipe": {
+    "chart": "panel_drawing"
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:17:26",
+  "source": "domology.charts"
+}

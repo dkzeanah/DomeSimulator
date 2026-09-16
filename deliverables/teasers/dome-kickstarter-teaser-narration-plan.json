@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5d5cf66fa5\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5d5cf66fa5\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5d5cf66fa5\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5d5cf66fa5\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5d5cf66fa5\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5d5cf66fa5\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-kickstarter-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5d5cf66fa5\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    3.9920000000000004,
+    5.024,
+    4.544,
+    6.031999999999999,
+    5.768,
+    4.0,
+    5.191999999999999
+  ],
+  "speech_durations": [
+    2.592,
+    3.624,
+    3.144,
+    4.632,
+    4.368,
+    1.632,
+    3.792
+  ],
+  "chapter_starts": [
+    0.0,
+    3.9920000000000004,
+    9.016,
+    13.559999999999999,
+    19.592,
+    25.36,
+    29.36
+  ],
+  "speech_delay": 0.55
+}

@@ -1,0 +1,18 @@
+{
+  "plate": "zome-star",
+  "title": "A zome",
+  "tool": "film",
+  "concept": "Zomes use flat rhombi and spiral symmetry.",
+  "change": "The zome masterclass's opening zome, fully drawn.",
+  "recipe": {
+    "lesson": "zome",
+    "chapter": "what",
+    "progress": 0.85
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

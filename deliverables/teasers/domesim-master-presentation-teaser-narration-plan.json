@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-f67b55a6f2\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-f67b55a6f2\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-f67b55a6f2\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-f67b55a6f2\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-f67b55a6f2\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-f67b55a6f2\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\domesim-master-presentation-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-f67b55a6f2\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    3.4,
+    6.4399999999999995,
+    5.935999999999999,
+    4.04,
+    4.88,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    1.776,
+    5.04,
+    4.536,
+    2.64,
+    3.48,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    3.4,
+    9.84,
+    15.776,
+    19.816,
+    24.695999999999998,
+    29.695999999999998
+  ],
+  "speech_delay": 0.55
+}

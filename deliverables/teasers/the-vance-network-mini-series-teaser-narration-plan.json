@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff39668ddb\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff39668ddb\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff39668ddb\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff39668ddb\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff39668ddb\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff39668ddb\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-vance-network-mini-series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff39668ddb\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    5.191999999999999,
+    7.303999999999999,
+    5.552,
+    4.688,
+    4.736,
+    4.0,
+    5.0
+  ],
+  "speech_durations": [
+    3.792,
+    5.904,
+    4.152,
+    3.288,
+    3.336,
+    1.92,
+    2.808
+  ],
+  "chapter_starts": [
+    0.0,
+    5.191999999999999,
+    12.495999999999999,
+    18.048,
+    22.735999999999997,
+    27.471999999999998,
+    31.471999999999998
+  ],
+  "speech_delay": 0.55
+}

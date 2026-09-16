@@ -1,0 +1,24 @@
+{
+  "plate": "harvest-buck",
+  "title": "Bucking to length",
+  "tool": "film",
+  "concept": "Bucking to finished length removes a crosscut.",
+  "change": "The harvest film as the bucking cuts are made, re-aimed along the stem.",
+  "recipe": {
+    "lesson": "harvest",
+    "chapter": "explode",
+    "progress": 0.26,
+    "camera": {
+      "fn": "hv_pile",
+      "yaw": -160.0,
+      "pitch": 22.0,
+      "distance": 13.0
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

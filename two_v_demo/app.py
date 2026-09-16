@@ -88,6 +88,7 @@ from .render_kit import (
     project_point,
     smoothstep,
 )
+from .frame import Frame, FitSmoother, apply_fit, design_aspect, fit_camera, subject_points
 
 class MasterclassApp:
     """Interactive presenter and deterministic video renderer."""
@@ -131,6 +132,15 @@ class MasterclassApp:
         self.chapters = self.lesson.chapters
         pygame.display.set_caption(self.lesson.title)
         pygame.display.set_mode(display_size, flags)
+        window_w, window_h = pygame.display.get_window_size()
+        # The shape of this screen, and the shape the film was composed for.
+        # A film shown in its own shape takes the original path untouched.
+        self.frame = Frame(window_w, window_h, design_aspect(self.lesson.key))
+        self.fit_smoother = FitSmoother()
+        self.scene_vertex_start = 0
+        self.portrait_plan = None
+        self.overlay_free = None
+        self.export_fps = 30
         self.ctx = moderngl.create_context()
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE | moderngl.BLEND)
         self.ctx.blend_func = moderngl.SRC_ALPHA, moderngl.ONE_MINUS_SRC_ALPHA
@@ -144,6 +154,19 @@ class MasterclassApp:
         )
         self.opaque_mesh = DynamicGpuMesh(self.ctx, self.scene_program)
         self.transparent_mesh = DynamicGpuMesh(self.ctx, self.scene_program)
+        # Buildings handed over by the Dome Creator, drawn by the Creator's own
+        # shader so a film shows the product the tool renders rather than a
+        # sketch of it (see two_v_demo/creator_bridge.py). Nothing is compiled
+        # or uploaded until a painter asks for one, so every other film pays
+        # nothing at all for this.
+        self.creator_draws: list = []
+        self.creator_program = None
+        self.creator_cache: dict = {}
+        self.creator_sky = (0.16, 0.26, 0.38)
+        """Sky the Creator's shader lights glass, mirrors and haze against.
+
+        Dimmed from the tool's daylight blue because a film is graded dark; the
+        mirror panels still reflect a sky and a tree line, at film brightness."""
         quad = np.array([-1, -1, 1, -1, -1, 1, 1, 1], dtype="f4")
         self.overlay_buffer = self.ctx.buffer(quad.tobytes())
         self.overlay_vao = self.ctx.vertex_array(
@@ -184,6 +207,12 @@ class MasterclassApp:
         self.dragging = False
         self.last_mouse = (0, 0)
         self.world_labels: list[WorldLabel] = []
+        self.world_icons: list = []
+        # Measured speech per chapter, known once narration has been synthesized.
+        # Callouts use it to land a figure on the words that say it; None means
+        # the chapter's timing is estimated from the narrator's measured pace.
+        self.speech_durations: tuple[float, ...] | None = None
+        self.speech_clips: tuple[Path, ...] | None = None
         self.font_cache: dict[tuple[int, bool], object] = {}
         self.ui_buttons: dict[str, object] = {}
         self.mvp = np.eye(4, dtype=np.float32)
@@ -337,7 +366,13 @@ class MasterclassApp:
         opaque = TriangleBatch()
         transparent = TriangleBatch()
         self.world_labels = []
-        self.add_ground(opaque)
+        self.world_icons = []
+        self.creator_draws = []
+        if getattr(self.lesson, "ground", "grid") != "off":
+            self.add_ground(opaque)
+        # Everything after this index is the subject, which is what a screen
+        # of another shape fits the camera to.
+        self.scene_vertex_start = len(opaque.vertices)
         painter = self.lesson.scenes.get(stage)
         if painter is not None:
             painter(self, opaque, transparent, progress)
@@ -839,11 +874,23 @@ class MasterclassApp:
         # four-second sting goes full-frame inside a teaching lesson.
         chapter = self.chapters[self.chapter_index]
         style = chapter.overlay or self.lesson.style
-        if style == "hype":
-            return self.draw_ui_hype(width, height)
-        if style == "math":
-            return self.draw_ui_math(width, height)
-        return self.draw_ui_teaching(width, height)
+        if self.portrait_plan is not None and self.adapting:
+            # A phone frame: the stacked layout planned before the scene was drawn.
+            from . import portrait_ui
+            surface = portrait_ui.draw(self, self.portrait_plan, width, height)
+        elif style == "hype":
+            surface = self.draw_ui_hype(width, height)
+        elif style == "plate":
+            surface = self.draw_ui_plate(width, height)
+        elif style == "math":
+            surface = self.draw_ui_math(width, height)
+        else:
+            surface = self.draw_ui_teaching(width, height)
+        # Pinned icons and number callouts go over whichever chrome was drawn.
+        # A chapter with neither is left exactly as it was.
+        from .callouts import draw_extras
+        draw_extras(self, surface, width, height, style)
+        return surface
 
     # Two labels may overlap by this much of the smaller one before the
     # layout pass intervenes. Generous on purpose: the overlapping look
@@ -886,20 +933,14 @@ class MasterclassApp:
             placed.append(moved)
         return placed
 
-    def draw_ui_hype(self, width: int, height: int) -> object:
-        """Full-frame picture, one line of type, no chrome.
+    # World labels on a book plate are set this much larger than in a film,
+    # because a plate is printed a few inches wide and read at arm's length.
+    PLATE_LABEL_SCALE = 1.45
 
-        Everything the teaching overlay puts in cards is dropped: a
-        montage is carried by the pictures and the voice, and a
-        sidebar of prose competes with both.
-        """
+    def draw_world_labels(self, surface, width: int, height: int,
+                          scale: float) -> None:
+        """The in-scene labels, on a backing panel, decluttered if asked."""
         pg = self.pygame
-        surface = pg.Surface((width, height), pg.SRCALPHA)
-        scale = min(width / 1600.0, height / 900.0)
-        chapter = self.chapters[self.chapter_index]
-        self.ui_buttons.clear()
-
-        # Labels stay: they are part of the picture, not the chrome.
         label_font = self.font(max(13, int(17 * scale)), True)
         drawn = []
         for world_label in self.world_labels:
@@ -929,6 +970,36 @@ class MasterclassApp:
                 surface.blit(rendered, (
                     rect.centerx - rendered.get_width() // 2, line_y))
                 line_y += int(22 * scale)
+
+    def draw_ui_plate(self, width: int, height: int) -> object:
+        """A clean picture for a printed plate: the scene and its labels.
+
+        No headline, cards or worksheet -- the book sets its own caption
+        under the picture. Pinned icons and any callouts still follow, from
+        ``draw_extras``.
+        """
+        pg = self.pygame
+        surface = pg.Surface((width, height), pg.SRCALPHA)
+        self.ui_buttons.clear()
+        scale = min(width / 1600.0, height / 900.0) * self.PLATE_LABEL_SCALE
+        self.draw_world_labels(surface, width, height, scale)
+        return surface
+
+    def draw_ui_hype(self, width: int, height: int) -> object:
+        """Full-frame picture, one line of type, no chrome.
+
+        Everything the teaching overlay puts in cards is dropped: a
+        montage is carried by the pictures and the voice, and a
+        sidebar of prose competes with both.
+        """
+        pg = self.pygame
+        surface = pg.Surface((width, height), pg.SRCALPHA)
+        scale = min(width / 1600.0, height / 900.0)
+        chapter = self.chapters[self.chapter_index]
+        self.ui_buttons.clear()
+
+        # Labels stay: they are part of the picture, not the chrome.
+        self.draw_world_labels(surface, width, height, scale)
 
         # A scrim only under the type, so the picture stays clean.
         headline_font = self.font(max(30, int(54 * scale)), True)
@@ -1373,6 +1444,113 @@ class MasterclassApp:
         ], dtype=np.float32)
         return eye, target
 
+    # ------------------------------------------------------------------
+    # Buildings borrowed from the Dome Creator
+    # ------------------------------------------------------------------
+
+    def creator_program_ready(self):
+        """The Dome Creator's own scene program, compiled on first use.
+
+        Its vertex format carries a material id and its fragment shader is what
+        knows shingles from glass from mirror tiles, so a film that wants the
+        tool's real product uses the tool's real program rather than a second
+        one that would slowly drift away from it.
+        """
+        if self.creator_program is None:
+            from .creator_bridge import shaders
+            vertex, fragment = shaders()
+            self.creator_program = self.ctx.program(vertex_shader=vertex,
+                                                    fragment_shader=fragment)
+        return self.creator_program
+
+    def creator_uniform(self, name: str, value) -> None:
+        program = self.creator_program_ready()
+        try:
+            program[name].value = value
+        except KeyError:
+            pass
+
+    def creator_gpu(self, build) -> dict:
+        """Upload one Creator building once and keep it for the whole render.
+
+        A film asks for the same dome on every frame of a chapter; uploading
+        forty thousand vertices thirty times a second would cost more than
+        drawing them. Keyed by the configuration, so two chapters showing the
+        same design share one upload.
+        """
+        entry = self.creator_cache.get(build.key)
+        if entry is not None:
+            return entry
+        program = self.creator_program_ready()
+        mesh = build.mesh
+        vbo = self.ctx.buffer(
+            np.ascontiguousarray(mesh.vertices, dtype="f4").tobytes())
+        entry = {"vbo": vbo, "opaque": None, "transparent": None,
+                 "opaque_count": 0, "transparent_count": 0}
+        layout = [(vbo, "3f 3f 4f 1f", "in_position", "in_normal",
+                   "in_color", "in_mat")]
+        for kind in ("opaque", "transparent"):
+            indices = np.ascontiguousarray(getattr(mesh, kind), dtype="u4")
+            if not len(indices):
+                continue
+            ibo = self.ctx.buffer(indices.tobytes())
+            entry[kind] = self.ctx.vertex_array(program, layout, ibo,
+                                                index_element_size=4)
+            entry[f"{kind}_count"] = len(indices)
+            entry[f"{kind}_ibo"] = ibo
+        self.creator_cache[build.key] = entry
+        return entry
+
+    def draw_creator(self, kind: str, eye) -> None:
+        """Draw the buildings painters handed over, in the Creator's shader."""
+        program = self.creator_program_ready()
+        program["u_mvp"].write(np.ascontiguousarray(self.mvp.T).tobytes())
+        self.creator_uniform("u_camera_position",
+                             tuple(float(value) for value in eye))
+        self.creator_uniform("u_light_direction", (-0.40, -0.25, -0.90))
+        self.creator_uniform("u_sky_color",
+                             tuple(float(value) for value in self.creator_sky))
+        self.creator_uniform("u_ghost", 0.0)
+        self.creator_uniform("u_headlamp", 0.0)
+        lights = np.zeros((16, 3), dtype="f4")
+        # The Creator draws without face culling: its shader flips the normal on
+        # a back face, which is what lets a cut-away roof show a real interior
+        # instead of a hole. Culling is restored before the overlay.
+        self.ctx.disable(self.moderngl.CULL_FACE)
+        if kind == "transparent":
+            self.ctx.depth_mask = False
+        for request in self.creator_draws:
+            entry = self.creator_gpu(request.build)
+            vao = entry.get(kind)
+            if vao is None:
+                continue
+            count = entry[f"{kind}_count"]
+            if request.limits is not None:
+                # A prefix of the mesh is the tool's own half-built dome.
+                count = min(count, int(
+                    request.limits[0 if kind == "opaque" else 1]))
+            if count <= 0:
+                continue
+            program["u_model"].write(
+                np.ascontiguousarray(request.matrix().T).tobytes())
+            self.creator_uniform("u_exposure", float(request.exposure))
+            self.creator_uniform(
+                "u_cut_z",
+                1.0e9 if request.cut_z is None else float(request.cut_z))
+            placed = request.world_lights()[:16]
+            lights[:] = 0.0
+            if placed:
+                lights[:len(placed)] = np.asarray(placed, dtype="f4")
+            self.creator_uniform("u_light_count", len(placed))
+            try:
+                program["u_light_positions"].write(lights.tobytes())
+            except KeyError:
+                pass
+            vao.render(self.moderngl.TRIANGLES, vertices=count)
+        if kind == "transparent":
+            self.ctx.depth_mask = True
+        self.ctx.enable(self.moderngl.CULL_FACE)
+
     def render(self, present: bool = True) -> None:
         width, height = self.pygame.display.get_window_size()
         self.ctx.viewport = (0, 0, width, height)
@@ -1390,6 +1568,37 @@ class MasterclassApp:
             target = np.asarray(target, dtype=np.float32)
             projection = perspective(float(fov), width / max(1, height),
                                      0.08, 120.0)
+        adapting = self.adapting
+        if adapting:
+            # A screen of another shape: plan the overlay, paint the scene, then
+            # give the film's own camera room for what was painted. Painters
+            # never read the camera, so painting first changes nothing they do.
+            self.portrait_plan = None
+            # The lens the film chose, read back from its own projection, so
+            # the renderer still states its field of view in one place.
+            fov = math.degrees(2.0 * math.atan(1.0 / float(projection[1, 1])))
+            region = self.plan_frame(width, height)
+            opaque, transparent = self.build_scene(chapter.stage, self.chapter_progress)
+            extra = [label.point for label in self.world_labels]
+            if self.creator_draws:
+                # Dome Creator buildings never pass through the film's batches,
+                # so the fit is given their points directly; without this a
+                # phone cut would frame an empty stage.
+                from . import creator_bridge
+                for placed in creator_bridge.draw_points(self):
+                    extra.extend(placed)
+            points = subject_points(opaque, transparent, self.scene_vertex_start,
+                                    extra=extra)
+            fit = fit_camera(eye, target, fov, width, height, region, points,
+                             design_aspect=self.frame.design)
+            if self.exporting:
+                dolly, zoom, shift = self.fit_smoother(
+                    self.chapter_index, fit.dolly, fit.zoom, fit.shift,
+                    1.0 / max(1, self.export_fps))
+                eye, projection = apply_fit(eye, target, fov, width, height,
+                                            dolly, zoom, shift)
+            else:
+                eye, projection = fit.eye, fit.projection
         view = look_at(eye, target)
         self.mvp = projection @ view
         self.scene_program["u_mvp"].write(
@@ -1397,17 +1606,23 @@ class MasterclassApp:
         )
         self.scene_program["u_camera"].value = tuple(float(value) for value in eye)
         self.scene_program["u_light"].value = (-0.45, -0.55, -0.72)
-        opaque, transparent = self.build_scene(chapter.stage, self.chapter_progress)
+        if not adapting:
+            opaque, transparent = self.build_scene(chapter.stage, self.chapter_progress)
 
         self.ctx.enable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)
         self.ctx.depth_mask = True
         self.opaque_mesh.draw(opaque)
+        if self.creator_draws:
+            self.draw_creator("opaque", eye)
         if transparent.vertices:
             self.ctx.disable(self.moderngl.CULL_FACE)
             self.ctx.depth_mask = False
             self.transparent_mesh.draw(transparent)
             self.ctx.depth_mask = True
             self.ctx.enable(self.moderngl.CULL_FACE)
+        if self.creator_draws:
+            # Glass, films and sheeting last, over everything already solid.
+            self.draw_creator("transparent", eye)
 
         overlay = self.draw_ui(width, height)
         self.upload_overlay(overlay)
@@ -1557,6 +1772,27 @@ class MasterclassApp:
         return paths
 
     @property
+    def adapting(self) -> bool:
+        """Whether this screen needs the film re-fitted to its shape (see frame.py)."""
+        return self.frame.narrower and getattr(self.lesson, "frame_fit", "auto") != "off"
+
+    def plan_frame(self, width: int, height: int):
+        """The part of this screen the picture may use, decided before it is drawn."""
+        from .frame import Rect
+        chapter = self.chapters[self.chapter_index]
+        style = chapter.overlay or self.lesson.style
+        if self.frame.portrait:
+            from . import portrait_ui
+            self.portrait_plan = portrait_ui.plan(self, self.frame, style)
+            self.overlay_free = self.portrait_plan.callout or self.portrait_plan.free
+            return self.portrait_plan.free
+        # A vertical film on a wide screen keeps the landscape overlays; the
+        # picture goes where they leave room, as the callouts already assume.
+        from .callouts import free_region
+        self.overlay_free = None
+        return Rect(*free_region(style, width, height))
+
+    @property
     def speak_promise(self) -> bool:
         """Whether the voice reads the on-screen headline as well.
 
@@ -1576,10 +1812,17 @@ class MasterclassApp:
         """
         lesson.validate()
         self.lesson = lesson
+        self.frame = Frame(self.frame.width, self.frame.height, design_aspect(lesson.key))
+        self.fit_smoother.reset()
+        self.portrait_plan = None
+        self.overlay_free = None
         self.chapters = lesson.chapters
         self.timeline = 0.0
         self.chapter_durations = tuple(c.duration for c in self.chapters)
         self.total_duration = timeline_duration(self.chapter_durations, self.chapters)
+        # The previous lesson's voice must not time this lesson's callouts.
+        self.speech_durations = None
+        self.speech_clips = None
         self.chapter_index = 0
         self.chapter_progress = 0.0
         self.camera_yaw = self.chapters[0].camera[0]
@@ -1616,6 +1859,8 @@ class MasterclassApp:
         capture_fps = fps if render_fps is None else int(render_fps)
         if capture_fps < 1 or capture_fps > fps:
             raise ValueError("render_fps must be between 1 and the output fps")
+        self.export_fps = capture_fps
+        self.fit_smoother.reset()
         x264_presets = {
             "ultrafast", "superfast", "veryfast", "faster", "fast",
             "medium", "slow", "slower", "veryslow",
@@ -1703,6 +1948,9 @@ class MasterclassApp:
             )
             self.chapter_durations = plan.chapter_durations
             self.total_duration = plan.total_duration
+            # Callouts cue on the measured voice, not an estimate of it.
+            self.speech_durations = plan.speech_durations
+            self.speech_clips = plan.clip_paths
             print(
                 f"Local narration: {plan.voice}, {self.total_duration:.1f}s "
                 f"across {len(self.chapters)} chapters"
@@ -1729,6 +1977,9 @@ class MasterclassApp:
             )
             self.chapter_durations = plan.chapter_durations
             self.total_duration = plan.total_duration
+            # Callouts cue on the measured voice, not an estimate of it.
+            self.speech_durations = plan.speech_durations
+            self.speech_clips = plan.clip_paths
             print(
                 f"Natural narration: {voice}, {self.total_duration:.1f}s "
                 f"across {len(self.chapters)} chapters"
@@ -1737,6 +1988,10 @@ class MasterclassApp:
                 from .soundboard import mix_bed_into_track
                 mix_bed_into_track(plan.track_path, self.lesson.audio_bed,
                                    ffmpeg, self.lesson.audio_bed_gain)
+            # Kept beside the video, so a cut in another shape can say the same
+            # words at the same moments without synthesizing them again.
+            write_narration_plan(path.parent / f"{path.stem}-narration-plan.json",
+                                 plan, speech_delay)
         width, height = self.pygame.display.get_window_size()
         # Tag the temp with this process, because two exports of the same
         # lesson to the same output otherwise share one hidden file: the
@@ -1830,6 +2085,56 @@ class MasterclassApp:
         print(f"saved {path}")
         print(f"saved {script_path}")
         print(f"saved {subtitle_path}")
+
+
+def write_narration_plan(target: Path, plan: NarrationPlan, speech_delay: float) -> Path:
+    """The narration an export used, as a plan another export can replay.
+
+    The vertical cut of a film has to say the same words at the same moments as
+    the horizontal one. Replaying this through ``local_narration_plan`` gives it
+    the same clips, track and chapter timing without synthesizing anything.
+    """
+    payload = {
+        "schema": 1,
+        "voice_profile": plan.voice,
+        "track": str(Path(plan.track_path).resolve()),
+        "clips": [str(Path(clip).resolve()) for clip in plan.clip_paths],
+        "chapter_durations": list(plan.chapter_durations),
+        "speech_durations": list(plan.speech_durations),
+        "chapter_starts": list(plan.chapter_starts),
+        "speech_delay": speech_delay,
+    }
+    target.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return target
+
+
+def _export_both(cfg: dict) -> int:
+    """Export a film twice -- horizontal, then vertical -- with one narration.
+
+    Each cut runs in its own process, because a window cannot change shape
+    under a live GL context. The vertical cut replays the horizontal cut's
+    narration plan, so both say the same words at the same moments and the
+    speech service is asked once.
+    """
+    script = Path(__file__).resolve().parent.parent / "two_v_masterclass.py"
+    target = Path(cfg["export_video"])
+    folder = target.parent
+    before = set(folder.glob(f"{target.stem}*.mp4")) if folder.is_dir() else set()
+    _lc.write_config("two_v_masterclass", dict(cfg, orientation="landscape"))
+    code = subprocess.call([sys.executable, str(script)])
+    if code != 0:
+        return code
+    written = sorted(set(folder.glob(f"{target.stem}*.mp4")) - before,
+                     key=lambda item: item.stat().st_mtime)
+    landscape = written[-1] if written else target
+    vertical = target.with_name(f"{target.stem}-vertical{target.suffix}")
+    second = dict(cfg, orientation="portrait", export_video=str(vertical))
+    plan_path = landscape.parent / f"{landscape.stem}-narration-plan.json"
+    if plan_path.is_file() and not cfg.get("no_narration"):
+        second["local_narration_plan"] = str(plan_path)
+    print(f"landscape cut: {landscape.name}; now the vertical cut")
+    _lc.write_config("two_v_masterclass", second)
+    return subprocess.call([sys.executable, str(script)])
 
 
 def parse_size(value: str) -> tuple[int, int]:
@@ -1996,6 +2301,8 @@ def main(default_lesson: str = "2v") -> int:
         # kind to discover late and the cheapest to catch here.
         validate_deliverables()
         validate_segments()
+        from .frame import validate_frame
+        validate_frame()
         from .soundboard import validate_soundboard
         from .timber import validate_timber
         validate_timber()
@@ -2025,6 +2332,17 @@ def main(default_lesson: str = "2v") -> int:
         # landscape frame is not the film that was written.
         lesson_key = str(cfg.get("lesson") or "why")
         root = Path(cfg.get("beats_dir") or BEATS_DIR)
+        # Vertical films must not be rendered in a landscape frame; the size in the
+        # ticket only wins if it was set deliberately.
+        beat_size = parse_size(cfg.get("size") or size_for(lesson_key))
+        orientation = str(cfg.get("orientation") or "").lower()
+        if orientation in ("landscape", "portrait"):
+            from .frame import size_for as frame_size
+            beat_size = frame_size(orientation)
+            # A cut in another shape is its own library, never mixed into the
+            # composed film's sections.
+            if Frame(*beat_size, design_aspect(lesson_key)).adapted:
+                lesson_key = f"{lesson_key}-{orientation}"
         plan = beat_plan(lesson)
         write_manifest(lesson, root, lesson_key)
         rebuild = bool(cfg.get("force_rerender"))
@@ -2036,10 +2354,6 @@ def main(default_lesson: str = "2v") -> int:
         print(f"{len(plan)} beats, {len(todo)} to render "
               f"({len(plan) - len(todo)} already on disk)")
 
-        # `size` is parsed further down for the interactive paths; beats need it here.
-        # Vertical films must not be rendered in a landscape frame; the size in the
-        # ticket only wins if it was set deliberately.
-        beat_size = parse_size(cfg.get("size") or size_for(lesson_key))
         app = MasterclassApp(size=beat_size, fullscreen=False, hidden=True,
                              lesson=lesson)
         try:
@@ -2166,11 +2480,17 @@ def main(default_lesson: str = "2v") -> int:
     # still override by filling the Rate field in.
     if not cfg.get("voice_rate") and lesson.voice_rate:
         voice_rate = lesson.voice_rate
+    orientation = str(cfg.get("orientation") or "").lower()
+    if action == "export_video" and cfg.get("export_video") and orientation == "both":
+        return _export_both(cfg)
     try:
         size = parse_size(cfg.get("size", "1600x900"))
     except ValueError as exc:
         print(exc)
         return 2
+    if orientation in ("landscape", "portrait"):
+        from .frame import size_for as frame_size
+        size = frame_size(orientation)
     app = MasterclassApp(
         size=size,
         fullscreen=bool(cfg.get("fullscreen", False)),

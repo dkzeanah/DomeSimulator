@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-aa09821f70\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-aa09821f70\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-aa09821f70\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-aa09821f70\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-aa09821f70\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-aa09821f70\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-house-lookbook-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-aa09821f70\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    4.832,
+    5.024,
+    6.271999999999999,
+    3.512,
+    5.624,
+    4.0,
+    5.263999999999999
+  ],
+  "speech_durations": [
+    3.432,
+    3.624,
+    4.872,
+    2.112,
+    4.224,
+    1.968,
+    3.864
+  ],
+  "chapter_starts": [
+    0.0,
+    4.832,
+    9.856,
+    16.128,
+    19.64,
+    25.264,
+    29.264
+  ],
+  "speech_delay": 0.55
+}

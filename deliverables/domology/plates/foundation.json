@@ -1,0 +1,18 @@
+{
+  "plate": "foundation",
+  "title": "A level ring",
+  "tool": "film",
+  "concept": "A dome needs a level ring, not a slab.",
+  "change": "The construction masterclass's foundation scene.",
+  "recipe": {
+    "lesson": "build",
+    "chapter": "foundation",
+    "progress": 0.85
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

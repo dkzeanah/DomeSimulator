@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-53c7d27f49\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-53c7d27f49\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-53c7d27f49\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-53c7d27f49\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-53c7d27f49\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-53c7d27f49\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\assembly-line-energy-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-53c7d27f49\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    8.72,
+    5.287999999999999,
+    5.359999999999999,
+    5.096,
+    6.608,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    7.32,
+    3.888,
+    3.96,
+    3.696,
+    5.208,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    8.72,
+    14.008,
+    19.368,
+    24.464,
+    31.072,
+    36.072
+  ],
+  "speech_delay": 0.55
+}

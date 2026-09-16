@@ -1,0 +1,18 @@
+{
+  "plate": "gasket",
+  "title": "The seam and its gasket",
+  "tool": "film",
+  "concept": "Each panel keeps its own edge.",
+  "change": "The wedge film's gasket scene.",
+  "recipe": {
+    "lesson": "wedge",
+    "chapter": "gasket",
+    "progress": 0.85
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

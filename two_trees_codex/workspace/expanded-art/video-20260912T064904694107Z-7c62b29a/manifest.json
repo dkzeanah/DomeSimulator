@@ -1,0 +1,1744 @@
+{
+  "schema": "two-trees-existing-video-illustrations/v1",
+  "created": "20260912T065035654821Z",
+  "source_root": "C:\\Users\\Don\\Desktop\\DomeSim",
+  "source_read_only": true,
+  "results": [
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\01-why-wedges-no-sawmill-v2-000232.000s.png",
+      "caption": "Rectangles inside a round trunk",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 232.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 232.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Compare rectangular milling with the round source material"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 222.821,
+            "end": 227.292,
+            "text": "Put a rectangle inside a circle and you leave four crescents outside it."
+          },
+          {
+            "start": 227.372,
+            "end": 230.895,
+            "text": "Put a second rectangle beside the first and the crescents"
+          },
+          {
+            "start": 230.975,
+            "end": 233.803,
+            "text": "get bigger, because the circle is pinching in."
+          },
+          {
+            "start": 233.883,
+            "end": 236.395,
+            "text": "None of that discarded wood is defective."
+          },
+          {
+            "start": 236.475,
+            "end": 239.808,
+            "text": "It is slabs and edgings and planer shavings because it"
+          },
+          {
+            "start": 239.888,
+            "end": 242.59,
+            "text": "failed a geometry test, not a strength test."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "dc1bf6b85dc481b1b0e67c488d7c127b4b99490c41b102344c19f6a30b3bd7aa",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        3,
+        13
+      ],
+      "purpose": "Compare rectangular milling with the round source material"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\02-why-wedges-no-sawmill-v2-000313.000s.png",
+      "caption": "An eighth of the trunk",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 313.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 313.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show radial wedge recovery"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 302.507,
+            "end": 305.094,
+            "text": "Eight sectors, forty-five degrees each,"
+          },
+          {
+            "start": 305.174,
+            "end": 309.675,
+            "text": "and every one of them already has two flat faces and a curved back."
+          },
+          {
+            "start": 309.755,
+            "end": 315.623,
+            "text": "Nothing is squared, nothing is edged, nothing is dried to a spec and nothing is planed."
+          },
+          {
+            "start": 315.703,
+            "end": 319.794,
+            "text": "The sawn faces come off the split flat enough to bear on each"
+          },
+          {
+            "start": 319.874,
+            "end": 323.486,
+            "text": "other, which is the only flatness this building needs."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "8147e5a8d8d42d4ec222cce6c72d4b0f12741fdcfb949d1eb805cbb4c9cd2b95",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        3,
+        11
+      ],
+      "purpose": "Show radial wedge recovery"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\03-why-wedges-no-sawmill-v2-000495.000s.png",
+      "caption": "A triangle brings its own three members",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 495.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 495.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Explain the independent panel assembly"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 486.562,
+            "end": 489.674,
+            "text": "When a number appears on screen later in this film,"
+          },
+          {
+            "start": 489.754,
+            "end": 492.742,
+            "text": "it was measured off this, not typed in beside it."
+          },
+          {
+            "start": 494.222,
+            "end": 497.933,
+            "text": "Each triangle is finished before it meets its neighbours."
+          },
+          {
+            "start": 498.013,
+            "end": 501.45799999999997,
+            "text": "The shell is not assembled stick by stick in the air."
+          },
+          {
+            "start": 501.538,
+            "end": 504.252,
+            "text": "It is forty independent triangular frames,"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "2ff8cff08c04f7185c6cc40c83b483d42811eaed70475447ba85ada47ce63fab",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        6,
+        19
+      ],
+      "purpose": "Explain the independent panel assembly"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\04-why-wedges-no-sawmill-v2-000581.000s.png",
+      "caption": "The physical corner and its offset",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 581.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 581.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show the pinwheel butt-to-side joint and corner offset"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 573.078,
+            "end": 576.404,
+            "text": "Offsets, bearing and the gap at the mathematical vertex."
+          },
+          {
+            "start": 576.484,
+            "end": 577.925,
+            "text": "The pinwheel is not free."
+          },
+          {
+            "start": 578.005,
+            "end": 581.575,
+            "text": "Every member sits a small distance back from the ideal edge,"
+          },
+          {
+            "start": 581.655,
+            "end": 586.076,
+            "text": "and that offset is what opens the gap at the vertex that no stick reaches."
+          },
+          {
+            "start": 586.156,
+            "end": 591.247,
+            "text": "Both figures come out of the same solve, and they are what the jig later has to hold."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "7ede592d9742c824aaac53f904bf79b10e29c324170d19d9d63a5164f41af8c0",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        17
+      ],
+      "purpose": "Show the pinwheel butt-to-side joint and corner offset"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\05-why-wedges-no-sawmill-v2-001244.000s.png",
+      "caption": "Turning the wedge changes the seam",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 1244.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 1244.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Compare wedge orientation and structural depth"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 1234.624,
+            "end": 1236.3029999999999,
+            "text": "It costs nothing to choose."
+          },
+          {
+            "start": 1236.383,
+            "end": 1239.56,
+            "text": "Same stick, same wood, turned before it goes down."
+          },
+          {
+            "start": 1239.64,
+            "end": 1245.358,
+            "text": "But the choice changes how deep the section is in the direction the shell actually bends."
+          },
+          {
+            "start": 1246.838,
+            "end": 1249.752,
+            "text": "Point the wedge outward and the opening tapers."
+          },
+          {
+            "start": 1249.832,
+            "end": 1253.255,
+            "text": "Here is the part that made me stop thinking of these as"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "843442c385997925bdf4b9ea4a8c378a806d730897a1bb5843f06fef69b7f660",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        16
+      ],
+      "purpose": "Compare wedge orientation and structural depth"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\06-why-wedges-no-sawmill-v2-001312.000s.png",
+      "caption": "The space between two panel members",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 1312.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 1312.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show the seam duct and panel seating concept"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 1303.88,
+            "end": 1308.695,
+            "text": "and they leave a continuous V running the length of every seam in the dome."
+          },
+          {
+            "start": 1308.775,
+            "end": 1313.654,
+            "text": "Every seam meets every other one at a vertex, so it is not a set of grooves."
+          },
+          {
+            "start": 1313.734,
+            "end": 1317.112,
+            "text": "It is one connected network through the entire shell."
+          },
+          {
+            "start": 1317.192,
+            "end": 1319.396,
+            "text": "Fill it with key and it is a joint."
+          },
+          {
+            "start": 1319.476,
+            "end": 1325.334,
+            "text": "Leave some of it and it is a duct: air moved between outside and inside, water, wire, pipe,"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "5f22b668f395108a7cbb195a9e9bee074a328f969c7e287aaf347189fe728fb5",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        20,
+        23
+      ],
+      "purpose": "Show the seam duct and panel seating concept"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\07-why-wedges-no-sawmill-v2-001603.000s.png",
+      "caption": "The contact check in the solver",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 1603.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 1603.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Connect fitted joint geometry with a physical reference"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 1592.229,
+            "end": 1596.285,
+            "text": "because the bark is the part of a log that is different every time."
+          },
+          {
+            "start": 1596.365,
+            "end": 1599.68,
+            "text": "The red and green plates do something a drawing cannot."
+          },
+          {
+            "start": 1599.76,
+            "end": 1603.693,
+            "text": "A sector dropped in rotated ninety degrees still looks plausible;"
+          },
+          {
+            "start": 1603.773,
+            "end": 1606.718,
+            "text": "against these plates it physically will not seat."
+          },
+          {
+            "start": 1606.798,
+            "end": 1611.286,
+            "text": "The fixture refuses the mistake instead of relying on someone noticing it."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "874fd7a8f97817d5fecf0ddaafae7eb139362d382258edddc930c510d80c0114",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        17,
+        18
+      ],
+      "purpose": "Connect fitted joint geometry with a physical reference"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\08-why-wedges-no-sawmill-v2-001654.000s.png",
+      "caption": "A stop and a reference replace repeated measuring",
+      "provenance": "Existing video-engine presentation: why wedges no sawmill v2 at 1654.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "timestamp_seconds": 1654.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Illustrate fixture-based repeatability"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
+        "source_sha256": "a394a521c19603f766f3f23bf56d7072112b041cc7348522026adb37676f3f79",
+        "nearby_subtitles": [
+          {
+            "start": 1643.5,
+            "end": 1647.065,
+            "text": "the plane the neighbouring member has already established."
+          },
+          {
+            "start": 1647.145,
+            "end": 1651.905,
+            "text": "Nothing is measured, and every error in stock length or butt angle walks away"
+          },
+          {
+            "start": 1651.985,
+            "end": 1655.55,
+            "text": "in the offcut instead of accumulating around the triangle."
+          },
+          {
+            "start": 1657.03,
+            "end": 1661.15,
+            "text": "Twelve steps, three constraints, and the offcut that buys accuracy."
+          },
+          {
+            "start": 1661.23,
+            "end": 1666.667,
+            "text": "The fixture holds three things and nothing else: where the member sits across the panel,"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/why-wedges-no-sawmill-v2.srt",
+        "subtitle_sha256": "bc7acd5a36dcaa2869ffbff6b1577bd1a1f16e0e70812f01b9d5f20931315b1f",
+        "image_sha256": "23f2491a5641ea300c4e5b376f3311161972120cc5dc6c23ceb7f98f2779651e",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        18,
+        19
+      ],
+      "purpose": "Illustrate fixture-based repeatability"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\09-eight-cuts-to-a-house-000255.000s.png",
+      "caption": "Halves, quarters, and eighths",
+      "provenance": "Existing video-engine presentation: eight cuts to a house at 255.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/eight-cuts-to-a-house.mp4",
+        "source_sha256": "90486654507d44b9063ecd2fb039691aff91d4529305f5af3115f4c165a6b6e3",
+        "timestamp_seconds": 255.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show the radial partition of a tree section"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/eight-cuts-to-a-house.mp4",
+        "source_sha256": "90486654507d44b9063ecd2fb039691aff91d4529305f5af3115f4c165a6b6e3",
+        "nearby_subtitles": [
+          {
+            "start": 248.678,
+            "end": 251.073,
+            "text": "The same log, opened a different way."
+          },
+          {
+            "start": 251.153,
+            "end": 252.611,
+            "text": "Now the other approach."
+          },
+          {
+            "start": 252.691,
+            "end": 254.685,
+            "text": "A round tree divides naturally."
+          },
+          {
+            "start": 254.765,
+            "end": 258.698,
+            "text": "Split it through the centre and both halves are still whole."
+          },
+          {
+            "start": 258.778,
+            "end": 261.039,
+            "text": "Split each half again for quarters."
+          },
+          {
+            "start": 261.119,
+            "end": 263.514,
+            "text": "Split each quarter again for eighths."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/eight-cuts-to-a-house.srt",
+        "subtitle_sha256": "676a33149ba2ded7e36190f1d8ce36960be5bcf6f13112d47c9ef3492e0bb8c7",
+        "image_sha256": "3d125b2f1da255967e73ea90a9c481a4322c4595a88442c8f7038cd5d9011e7e",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        10,
+        11
+      ],
+      "purpose": "Show the radial partition of a tree section"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\10-eight-cuts-to-a-house-000599.000s.png",
+      "caption": "Forty triangles from a counted member inventory",
+      "provenance": "Existing video-engine presentation: eight cuts to a house at 599.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/eight-cuts-to-a-house.mp4",
+        "source_sha256": "90486654507d44b9063ecd2fb039691aff91d4529305f5af3115f4c165a6b6e3",
+        "timestamp_seconds": 599.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Connect recovered stock with the shell panel count"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/eight-cuts-to-a-house.mp4",
+        "source_sha256": "90486654507d44b9063ecd2fb039691aff91d4529305f5af3115f4c165a6b6e3",
+        "nearby_subtitles": [
+          {
+            "start": 589.387,
+            "end": 592.613,
+            "text": "The shell is not assembled stick by stick in the air."
+          },
+          {
+            "start": 592.693,
+            "end": 595.045,
+            "text": "It is forty separate triangular frames,"
+          },
+          {
+            "start": 595.125,
+            "end": 598.788,
+            "text": "each one finished on the ground and lifted into place whole."
+          },
+          {
+            "start": 598.868,
+            "end": 602.593,
+            "text": "Three members each, and none of them shared with a neighbour."
+          },
+          {
+            "start": 602.673,
+            "end": 605.712,
+            "text": "Forty times three is a hundred and twenty members,"
+          },
+          {
+            "start": 605.792,
+            "end": 609.766,
+            "text": "which is exactly what the two trees gave us with sticks to spare."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/eight-cuts-to-a-house.srt",
+        "subtitle_sha256": "676a33149ba2ded7e36190f1d8ce36960be5bcf6f13112d47c9ef3492e0bb8c7",
+        "image_sha256": "13018f8a7591e5f44ba6a9122ffcab22c57621f2f1dfd2fbe01a553ca32e4655",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        6,
+        10,
+        19
+      ],
+      "purpose": "Connect recovered stock with the shell panel count"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\11-eight-cuts-to-a-house-000944.000s.png",
+      "caption": "Let the available member length set the radius",
+      "provenance": "Existing video-engine presentation: eight cuts to a house at 944.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/eight-cuts-to-a-house.mp4",
+        "source_sha256": "90486654507d44b9063ecd2fb039691aff91d4529305f5af3115f4c165a6b6e3",
+        "timestamp_seconds": 944.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Illustrate the inverse stock-first design method"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/eight-cuts-to-a-house.mp4",
+        "source_sha256": "90486654507d44b9063ecd2fb039691aff91d4529305f5af3115f4c165a6b6e3",
+        "nearby_subtitles": [
+          {
+            "start": 930.868,
+            "end": 936.016,
+            "text": "The tree is bucked into twelve-foot sections because that is what handles well,"
+          },
+          {
+            "start": 936.096,
+            "end": 940.582,
+            "text": "each section is crosscut once, and that fixes the member at six feet."
+          },
+          {
+            "start": 940.662,
+            "end": 945.479,
+            "text": "Six feet of member, arranged as a pinwheel, gives exactly one dome radius."
+          },
+          {
+            "start": 945.559,
+            "end": 951.038,
+            "text": "So the building's size is a result of the tree rather than a choice made in advance."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/eight-cuts-to-a-house.srt",
+        "subtitle_sha256": "676a33149ba2ded7e36190f1d8ce36960be5bcf6f13112d47c9ef3492e0bb8c7",
+        "image_sha256": "f4b0a8cfe1e25c21dbfab9e588338718bc905f9bef87fcdf0cbe1cfe0d1ad55e",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        9
+      ],
+      "purpose": "Illustrate the inverse stock-first design method"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\12-every-dome-in-the-world-000033.000s.png",
+      "caption": "Dome World: a family of model configurations",
+      "provenance": "Existing video-engine presentation: every dome in the world at 33.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "timestamp_seconds": 33.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show the scope of the project and diversity of designs"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "nearby_subtitles": [
+          {
+            "start": 22.542,
+            "end": 27.053,
+            "text": "Start with the whole catalogue on one screen, because the spread is the point."
+          },
+          {
+            "start": 27.133,
+            "end": 31.231,
+            "text": "The same engine produces a six hundred square foot treehouse dome and a"
+          },
+          {
+            "start": 31.311,
+            "end": 33.173,
+            "text": "three thousand square foot lodge,"
+          },
+          {
+            "start": 33.253,
+            "end": 38.47,
+            "text": "and the only thing that changed between them is a frequency, a radius and a material list."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/every-dome-in-the-world.srt",
+        "subtitle_sha256": "e1feaa50cf7d07eedd8899b020b91ecf242b61764bca79dbe4e148dbea34875b",
+        "image_sha256": "bca592bc6951b88872bd334d7ab7833f7d61a66380a54d9c1f82cf8b09d07541",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        23,
+        27
+      ],
+      "purpose": "Show the scope of the project and diversity of designs"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\13-every-dome-in-the-world-000065.000s.png",
+      "caption": "A workshop inside the dome",
+      "provenance": "Existing video-engine presentation: every dome in the world at 65.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "timestamp_seconds": 65.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Connect the shell geometry to an occupied plan"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "nearby_subtitles": [
+          {
+            "start": 54.618,
+            "end": 58.799,
+            "text": "It is a workshop: assembly bay, two wood shop wedges, a metal shop,"
+          },
+          {
+            "start": 58.879,
+            "end": 63.123,
+            "text": "storage and an office, with the benches and machines already placed."
+          },
+          {
+            "start": 63.203,
+            "end": 66.811,
+            "text": "If you want to know what a dome costs as a building rather"
+          },
+          {
+            "start": 66.891,
+            "end": 70.054,
+            "text": "than as an idea, this is the honest starting point."
+          },
+          {
+            "start": 71.534,
+            "end": 77.096,
+            "text": "Raise the frequency to four and the shell gets smoother, rounder and far more complicated."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/every-dome-in-the-world.srt",
+        "subtitle_sha256": "e1feaa50cf7d07eedd8899b020b91ecf242b61764bca79dbe4e148dbea34875b",
+        "image_sha256": "92c5ffc8447e14c74249f81ba91d355b7d80c8b6625b9b85c5c6ef248d315eb1",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        23,
+        27
+      ],
+      "purpose": "Connect the shell geometry to an occupied plan"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\14-every-dome-in-the-world-000124.000s.png",
+      "caption": "A dome model using round timber",
+      "provenance": "Existing video-engine presentation: every dome in the world at 124.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "timestamp_seconds": 124.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Compare stock choices beyond dimensional lumber"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "nearby_subtitles": [
+          {
+            "start": 112.76400000000001,
+            "end": 118.76599999999999,
+            "text": "and the model reports the trees to harvest because four quarter wedges come out of one log."
+          },
+          {
+            "start": 120.246,
+            "end": 122.93299999999999,
+            "text": "Now go the other way and use the tree whole."
+          },
+          {
+            "start": 123.013,
+            "end": 127.209,
+            "text": "The radius here is set so the longest member lands just under twenty"
+          },
+          {
+            "start": 127.289,
+            "end": 130.416,
+            "text": "feet, which is what you can actually move and lift."
+          },
+          {
+            "start": 130.496,
+            "end": 134.126,
+            "text": "Sixty-five struts of full round trunk, canvas over the top."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/every-dome-in-the-world.srt",
+        "subtitle_sha256": "e1feaa50cf7d07eedd8899b020b91ecf242b61764bca79dbe4e148dbea34875b",
+        "image_sha256": "c8da2afb97b945d237c29868cc8b6e16e39f1dbafd6e808a3150d5ed89d8e651",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        2,
+        23
+      ],
+      "purpose": "Compare stock choices beyond dimensional lumber"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\15-every-dome-in-the-world-000148.000s.png",
+      "caption": "A greenhouse configuration",
+      "provenance": "Existing video-engine presentation: every dome in the world at 148.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "timestamp_seconds": 148.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show a different enclosure program from the same design tools"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "nearby_subtitles": [
+          {
+            "start": 137.85399999999998,
+            "end": 141.358,
+            "text": "and it is framed from the fewest pieces of anything here."
+          },
+          {
+            "start": 142.838,
+            "end": 145.878,
+            "text": "Same three frequency skeleton as the workshop,"
+          },
+          {
+            "start": 145.958,
+            "end": 152.051,
+            "text": "but aluminium framed and glazed in polycarbonate, with grow racks and water storage inside."
+          },
+          {
+            "start": 152.131,
+            "end": 154.493,
+            "text": "The geometry does not change at all."
+          },
+          {
+            "start": 154.573,
+            "end": 160.326,
+            "text": "Only the material list does, which is exactly the argument: one frame, many buildings."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/every-dome-in-the-world.srt",
+        "subtitle_sha256": "e1feaa50cf7d07eedd8899b020b91ecf242b61764bca79dbe4e148dbea34875b",
+        "image_sha256": "5f1b58c0a4d5d081d05deb9b64899d0fa8dacdb585904f04a1f79f5b0674ead0",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        23
+      ],
+      "purpose": "Show a different enclosure program from the same design tools"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\16-every-dome-in-the-world-000298.000s.png",
+      "caption": "A treehouse dome in the model catalog",
+      "provenance": "Existing video-engine presentation: every dome in the world at 298.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "timestamp_seconds": 298.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Illustrate another building program and site relationship"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/every-dome-in-the-world.mp4",
+        "source_sha256": "451a31f7e27afd36ad31229eb31a57c1e435cff03dd37d7b8508c51be7cd4ae8",
+        "nearby_subtitles": [
+          {
+            "start": 288.96500000000003,
+            "end": 292.006,
+            "text": "timber platform with braces and ladder access."
+          },
+          {
+            "start": 292.086,
+            "end": 295.466,
+            "text": "Six hundred square feet of floor, up in the canopy."
+          },
+          {
+            "start": 295.546,
+            "end": 299.129,
+            "text": "It is proof that the same sixty-five stick frame works"
+          },
+          {
+            "start": 299.209,
+            "end": 302.318,
+            "text": "when the ground it stands on is not the ground."
+          },
+          {
+            "start": 303.798,
+            "end": 307.506,
+            "text": "You have now seen one, two, three and four frequency domes."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/every-dome-in-the-world.srt",
+        "subtitle_sha256": "e1feaa50cf7d07eedd8899b020b91ecf242b61764bca79dbe4e148dbea34875b",
+        "image_sha256": "7d1c1d578a09804190008742de47b2cb575cf65e61f328f505d95132d4a0826f",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        23,
+        27
+      ],
+      "purpose": "Illustrate another building program and site relationship"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\17-assembly-line-energy-masterclass-000077.000s.png",
+      "caption": "Material, work, and the path between them",
+      "provenance": "Existing video-engine presentation: assembly line energy masterclass at 77.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "timestamp_seconds": 77.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Illustrate stockpile placement and station organization"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "nearby_subtitles": [
+          {
+            "start": 68.499,
+            "end": 73.726,
+            "text": "Every station holds the same three things: the material waiting in a stockpile,"
+          },
+          {
+            "start": 73.806,
+            "end": 77.757,
+            "text": "the dome that arrived from the station before, and the crew."
+          },
+          {
+            "start": 77.837,
+            "end": 80.981,
+            "text": "The crew does not follow the dome down the line."
+          },
+          {
+            "start": 81.061,
+            "end": 86.893,
+            "text": "They stay, they learn one job completely, and a different dome arrives in front of them."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/assembly-line-energy-masterclass.srt",
+        "subtitle_sha256": "871972b4fbebc2090b0f4d6322f5031f8eff5e64d396aabe53425670d848e69e",
+        "image_sha256": "e5e57314c698c20cd916636d87373b46fd3b22a7b5e41521f81041b58cca7c12",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        15,
+        24
+      ],
+      "purpose": "Illustrate stockpile placement and station organization"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\18-assembly-line-energy-masterclass-000137.000s.png",
+      "caption": "The repeated motion behind a placed part",
+      "provenance": "Existing video-engine presentation: assembly line energy masterclass at 137.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "timestamp_seconds": 137.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Break fabrication work into repeatable steps"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "nearby_subtitles": [
+          {
+            "start": 126.276,
+            "end": 130.844,
+            "text": "Whatever the part, the body does the same six things with it."
+          },
+          {
+            "start": 130.924,
+            "end": 133.282,
+            "text": "It walks to the stockpile empty."
+          },
+          {
+            "start": 133.362,
+            "end": 136.406,
+            "text": "It squats, grips, and stands the load up."
+          },
+          {
+            "start": 136.486,
+            "end": 139.682,
+            "text": "It carries the load to where the part goes."
+          },
+          {
+            "start": 139.762,
+            "end": 145.244,
+            "text": "It lifts the part into position, fixes it there, and straightens back up."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/assembly-line-energy-masterclass.srt",
+        "subtitle_sha256": "871972b4fbebc2090b0f4d6322f5031f8eff5e64d396aabe53425670d848e69e",
+        "image_sha256": "e6cea81182435dee4e56e551df53308fa641d193f3a1edfe21e3d466175c10b4",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        15,
+        25
+      ],
+      "purpose": "Break fabrication work into repeatable steps"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\19-assembly-line-energy-masterclass-000190.000s.png",
+      "caption": "Lifting and positioning are separate tasks",
+      "provenance": "Existing video-engine presentation: assembly line energy masterclass at 190.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "timestamp_seconds": 190.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Visualize labor motions and the importance of working height"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "nearby_subtitles": [
+          {
+            "start": 183.022,
+            "end": 185.406,
+            "text": "Most of what you raise is yourself."
+          },
+          {
+            "start": 185.486,
+            "end": 191.389,
+            "text": "Here is the squat and the stand, slowed down, with a 15.2 kilogram part in the hands."
+          },
+          {
+            "start": 191.469,
+            "end": 197.723,
+            "text": "Watch what the colours say: the legs straighten, the trunk comes up, the arms barely move."
+          },
+          {
+            "start": 197.803,
+            "end": 200.961,
+            "text": "The trunk alone is about half the body's mass,"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/assembly-line-energy-masterclass.srt",
+        "subtitle_sha256": "871972b4fbebc2090b0f4d6322f5031f8eff5e64d396aabe53425670d848e69e",
+        "image_sha256": "752fffd8d42b56848b8a4c6635b7fb885d0b52d16fd33409716d292a181fc495",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        22,
+        25
+      ],
+      "purpose": "Visualize labor motions and the importance of working height"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\20-assembly-line-energy-masterclass-000608.000s.png",
+      "caption": "Time at each station changes the work total",
+      "provenance": "Existing video-engine presentation: assembly line energy masterclass at 608.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "timestamp_seconds": 608.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Support recording actual duration and bottlenecks"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
+        "source_sha256": "714bf1bc8ebb0255dca7487143ef858ff1ec12e6c72b33a6f58e81f2cb3451fa",
+        "nearby_subtitles": [
+          {
+            "start": 597.914,
+            "end": 602.839,
+            "text": "Walking, lifting, carrying and positioning together are a small fraction,"
+          },
+          {
+            "start": 602.919,
+            "end": 606.54,
+            "text": "even though they are the parts that look like work and"
+          },
+          {
+            "start": 606.62,
+            "end": 609.556,
+            "text": "the parts a manager would think to optimise."
+          },
+          {
+            "start": 609.636,
+            "end": 613.121,
+            "text": "If you want to reduce what this line costs its crew,"
+          },
+          {
+            "start": 613.201,
+            "end": 618.742,
+            "text": "the target is the posture people hold while fastening, not the distance they walk."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/assembly-line-energy-masterclass.srt",
+        "subtitle_sha256": "871972b4fbebc2090b0f4d6322f5031f8eff5e64d396aabe53425670d848e69e",
+        "image_sha256": "247d5234ff96a5327bbaf2e6828834065f9b54bfc69b3dcbc8fee016477cfa1b",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        24,
+        25
+      ],
+      "purpose": "Support recording actual duration and bottlenecks"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\21-domesim-master-presentation-000452.000s.png",
+      "caption": "The icosahedron before subdivision",
+      "provenance": "Existing video-engine presentation: domesim master presentation at 452.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "timestamp_seconds": 452.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Introduce the parent geometry of the geodesic shell"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "nearby_subtitles": [
+          {
+            "start": 440.809,
+            "end": 444.365,
+            "text": "It gives twenty equilateral launch pads and twelve corners,"
+          },
+          {
+            "start": 444.445,
+            "end": 447.446,
+            "text": "and every geodesic dome in common use starts here."
+          },
+          {
+            "start": 448.926,
+            "end": 452.104,
+            "text": "The twelve corners of an icosahedron are three golden"
+          },
+          {
+            "start": 452.18399999999997,
+            "end": 455.177,
+            "text": "rectangles standing at right angles to each other."
+          },
+          {
+            "start": 455.257,
+            "end": 458.926,
+            "text": "That is where the golden ratio genuinely lives in this shape."
+          },
+          {
+            "start": 459.006,
+            "end": 464.519,
+            "text": "It is worth being precise about, because the ratio of the two finished strut lengths is not"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/domesim-master-presentation.srt",
+        "subtitle_sha256": "86cbf6cec1529530a5f5b1f6a2f7fd2ce7454a0e73c90eba81c422b93e45c1c7",
+        "image_sha256": "e24034275b6087816bf555f735d61db48a198eed9645e383257710626db10537",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        5
+      ],
+      "purpose": "Introduce the parent geometry of the geodesic shell"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\22-domesim-master-presentation-000513.000s.png",
+      "caption": "Projecting subdivision points back to the sphere",
+      "provenance": "Existing video-engine presentation: domesim master presentation at 513.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "timestamp_seconds": 513.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Explain why chord lengths arise from a projected mesh"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "nearby_subtitles": [
+          {
+            "start": 501.126,
+            "end": 506.627,
+            "text": "because a straight line between two points on a curved surface always cuts the corner."
+          },
+          {
+            "start": 506.707,
+            "end": 510.326,
+            "text": "Leave them there and you have a faceted lump, not a dome."
+          },
+          {
+            "start": 511.806,
+            "end": 516.326,
+            "text": "Slide each midpoint straight out from the centre until it reaches the sphere."
+          },
+          {
+            "start": 516.406,
+            "end": 517.58,
+            "text": "Nothing else changes."
+          },
+          {
+            "start": 517.66,
+            "end": 522.598,
+            "text": "But by moving those thirty points outward, every triangle around them changes shape,"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/domesim-master-presentation.srt",
+        "subtitle_sha256": "86cbf6cec1529530a5f5b1f6a2f7fd2ce7454a0e73c90eba81c422b93e45c1c7",
+        "image_sha256": "6ba0401de255daa7d23c3e88481b91bd923acfecfe2c196af315a4a5bdbe5c6e",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        5,
+        7
+      ],
+      "purpose": "Explain why chord lengths arise from a projected mesh"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\23-domesim-master-presentation-000554.000s.png",
+      "caption": "Two chord families in the reference shell",
+      "provenance": "Existing video-engine presentation: domesim master presentation at 554.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "timestamp_seconds": 554.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Connect unit-radius geometry to member lengths"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "nearby_subtitles": [
+          {
+            "start": 545.041,
+            "end": 547.481,
+            "text": "and it comes out to exactly one over phi,"
+          },
+          {
+            "start": 547.561,
+            "end": 551.598,
+            "text": "which is the one place the golden ratio does show up in the answer."
+          },
+          {
+            "start": 553.078,
+            "end": 556.197,
+            "text": "Now watch the whole derivation land in eight lines."
+          },
+          {
+            "start": 556.277,
+            "end": 557.828,
+            "text": "Phi places twelve corners."
+          },
+          {
+            "start": 557.908,
+            "end": 560.337,
+            "text": "One division puts them on a unit sphere."
+          },
+          {
+            "start": 560.417,
+            "end": 565.23,
+            "text": "Halving every edge and pushing the midpoints back out changes the distances --"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/domesim-master-presentation.srt",
+        "subtitle_sha256": "86cbf6cec1529530a5f5b1f6a2f7fd2ce7454a0e73c90eba81c422b93e45c1c7",
+        "image_sha256": "70a0c16b4be71bfcb93a9dc30a1a52dc08cff17440cf59f88be3c768dc8ab298",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        7,
+        8
+      ],
+      "purpose": "Connect unit-radius geometry to member lengths"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\24-domesim-master-presentation-000585.000s.png",
+      "caption": "Radius, floor area, and usable headroom",
+      "provenance": "Existing video-engine presentation: domesim master presentation at 585.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "timestamp_seconds": 585.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show that floor area and standing headroom are different measures"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "nearby_subtitles": [
+          {
+            "start": 573.779,
+            "end": 579.47,
+            "text": "The pair this project was originally asked about fits a ten-foot-radius dome almost exactly."
+          },
+          {
+            "start": 580.95,
+            "end": 583.271,
+            "text": "Now pick a size, and pick it for a reason."
+          },
+          {
+            "start": 583.351,
+            "end": 587.33,
+            "text": "Doubling the radius gives four times the floor, eight times the volume,"
+          },
+          {
+            "start": 587.41,
+            "end": 590.475,
+            "text": "and four times the skin you have to buy and waterproof."
+          },
+          {
+            "start": 590.555,
+            "end": 595.849,
+            "text": "Headroom at the wall is the thing people underestimate: at the very edge of a hemisphere there"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/domesim-master-presentation.srt",
+        "subtitle_sha256": "86cbf6cec1529530a5f5b1f6a2f7fd2ce7454a0e73c90eba81c422b93e45c1c7",
+        "image_sha256": "647be61c1ef1d8253d1ffca1cb9246f9cf6af2eb422df84226eb262c5b064ef6",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        7,
+        8,
+        23
+      ],
+      "purpose": "Show that floor area and standing headroom are different measures"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\25-domesim-master-presentation-001461.000s.png",
+      "caption": "Raising the shell course by course",
+      "provenance": "Existing video-engine presentation: domesim master presentation at 1461.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "timestamp_seconds": 1461.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Illustrate an assembly sequence with temporary support"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "nearby_subtitles": [
+          {
+            "start": 1451.171,
+            "end": 1454.605,
+            "text": "closed ring is a rigid hoop that holds its own shape."
+          },
+          {
+            "start": 1454.685,
+            "end": 1457.722,
+            "text": "Prop each course until the one above it closes."
+          },
+          {
+            "start": 1457.802,
+            "end": 1462.563,
+            "text": "Measure the diameter across each finished ring in three directions before"
+          },
+          {
+            "start": 1462.643,
+            "end": 1466.542,
+            "text": "you begin the next, and correct there rather than higher up."
+          },
+          {
+            "start": 1468.022,
+            "end": 1471.51,
+            "text": "The top hub is where every accumulated millimetre finally"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/domesim-master-presentation.srt",
+        "subtitle_sha256": "86cbf6cec1529530a5f5b1f6a2f7fd2ce7454a0e73c90eba81c422b93e45c1c7",
+        "image_sha256": "09942d1d0a5cec4413386c341b944cae20dfd39bffb1522e674d5e2489952fc4",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        21,
+        22
+      ],
+      "purpose": "Illustrate an assembly sequence with temporary support"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\26-domesim-master-presentation-001689.000s.png",
+      "caption": "Mixed stock in the Frankendome presentation",
+      "provenance": "Existing video-engine presentation: domesim master presentation at 1689.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "timestamp_seconds": 1689.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Document the earlier strut-agnostic construction experiment"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "nearby_subtitles": [
+          {
+            "start": 1680.664,
+            "end": 1685.03,
+            "text": "If it works for salvage and a folded bracket, it is a housing method."
+          },
+          {
+            "start": 1686.51,
+            "end": 1688.193,
+            "text": "Round logs still in the bark."
+          },
+          {
+            "start": 1688.273,
+            "end": 1690.504,
+            "text": "Quarter-sawn pieces off a milling jig."
+          },
+          {
+            "start": 1690.584,
+            "end": 1693.119,
+            "text": "Wedges that were offcuts of something else."
+          },
+          {
+            "start": 1693.199,
+            "end": 1697.315,
+            "text": "Square stock, rectangular stock, whatever came off the pile that day."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/domesim-master-presentation.srt",
+        "subtitle_sha256": "86cbf6cec1529530a5f5b1f6a2f7fd2ce7454a0e73c90eba81c422b93e45c1c7",
+        "image_sha256": "83b588c6615627123199d465d5f8e3216befbe9afb1610c34ce16c6fca9e2156",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        2
+      ],
+      "purpose": "Document the earlier strut-agnostic construction experiment"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\27-domesim-master-presentation-002194.000s.png",
+      "caption": "The shell as an enclosure and water path",
+      "provenance": "Existing video-engine presentation: domesim master presentation at 2194.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "timestamp_seconds": 2194.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Show the boundary between a bare frame and a working home"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/domesim-master-presentation.mp4",
+        "source_sha256": "fc86b5c91e58dc88054395e3b0de04e782d8e00f7c731ed5dfeb820b238f9c43",
+        "nearby_subtitles": [
+          {
+            "start": 2184.667,
+            "end": 2188.246,
+            "text": "and it throws the rain clear of the bottom ring entirely."
+          },
+          {
+            "start": 2189.726,
+            "end": 2192.294,
+            "text": "And once it overhangs, it is a gutter."
+          },
+          {
+            "start": 2192.374,
+            "end": 2196.404,
+            "text": "You have built the catchment whether you wanted one or not."
+          },
+          {
+            "start": 2196.484,
+            "end": 2200.376,
+            "text": "An eighteen inch brim gives 343 square feet of catchment."
+          },
+          {
+            "start": 2200.456,
+            "end": 2203.79,
+            "text": "On average rainfall that is 7,259 gallons a year,"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/domesim-master-presentation.srt",
+        "subtitle_sha256": "86cbf6cec1529530a5f5b1f6a2f7fd2ce7454a0e73c90eba81c422b93e45c1c7",
+        "image_sha256": "5ad254bc796abc367822345f3b025fa6c0a9b10090d693af12eafd8d7998a012",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        23
+      ],
+      "purpose": "Show the boundary between a bare frame and a working home"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\28-hubless-compound-cut-000350.000s.png",
+      "caption": "A reference stop makes a repeated cut reviewable",
+      "provenance": "Existing video-engine presentation: hubless compound cut at 350.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/hubless-compound-cut.mp4",
+        "source_sha256": "f718011ea7b5c9fa01f3f8cbdb476329d67892eefed951ffae7af5085794209a",
+        "timestamp_seconds": 350.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Compare fixture principles from the compound-cut presentation"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/hubless-compound-cut.mp4",
+        "source_sha256": "f718011ea7b5c9fa01f3f8cbdb476329d67892eefed951ffae7af5085794209a",
+        "nearby_subtitles": [
+          {
+            "start": 337.056,
+            "end": 342.862,
+            "text": "and the blade has to finish that cut flush, so the fence is cut away at the blade path."
+          },
+          {
+            "start": 342.942,
+            "end": 348.342,
+            "text": "Cut that lap once, with the sled in the exact position it will always be used in."
+          },
+          {
+            "start": 348.422,
+            "end": 354.093,
+            "text": "Second, length comes from a stop block clamped to the sled, never from a pencil line."
+          },
+          {
+            "start": 354.173,
+            "end": 358.153,
+            "text": "Two hundred and forty ends measured individually will drift."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/hubless-compound-cut.srt",
+        "subtitle_sha256": "e36805e78c5090845ebdbc0aeba98ad29ae2024c22788395df281d70550c2618",
+        "image_sha256": "1e203214b5399877043fc6c9852080a01832a5569d36f68bf398f0a9062c9199",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        18,
+        27
+      ],
+      "purpose": "Compare fixture principles from the compound-cut presentation"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\29-hex-dome-masterclass-000120.000s.png",
+      "caption": "Hex dome: another mesh family in the project",
+      "provenance": "Existing video-engine presentation: hex dome masterclass at 120.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/hex-dome-masterclass.mp4",
+        "source_sha256": "f91f4b365b891fcce29e494655e76f94227b72ade387c6c693c2c73096b2c6c9",
+        "timestamp_seconds": 120.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Compare geometry across the wider simulation tools"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/hex-dome-masterclass.mp4",
+        "source_sha256": "f91f4b365b891fcce29e494655e76f94227b72ade387c6c693c2c73096b2c6c9",
+        "nearby_subtitles": [
+          {
+            "start": 111.27799999999999,
+            "end": 115.093,
+            "text": "Every hexagon dome you have ever seen is doing this: hexagons"
+          },
+          {
+            "start": 115.173,
+            "end": 118.47800000000001,
+            "text": "carry the field, and pentagons do all of the curving."
+          },
+          {
+            "start": 119.958,
+            "end": 123.347,
+            "text": "The hexagon count cancels out of the arithmetic."
+          },
+          {
+            "start": 123.427,
+            "end": 125.226,
+            "text": "The pentagon count cannot."
+          },
+          {
+            "start": 125.306,
+            "end": 130.213,
+            "text": "Descartes proved that any closed convex cage is missing exactly seven"
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/hex-dome-masterclass.srt",
+        "subtitle_sha256": "ac49620640e04bc84e1ada5c4bd04a4dd278163283154cca769e3ba30c4b26c1",
+        "image_sha256": "5999c4871ec1f236f0670f532dae497f2ccf4295dc61f0ab0d04575260406f07",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        27
+      ],
+      "purpose": "Compare geometry across the wider simulation tools"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\30-zome-construction-masterclass-000130.000s.png",
+      "caption": "Zome: another route from straight members to an enclosure",
+      "provenance": "Existing video-engine presentation: zome construction masterclass at 130.0 s. Source-model example.",
+      "recipe": {
+        "schema": "two-trees-existing-video-frame/v1",
+        "source_video": "deliverables/masterclass/zome-construction-masterclass.mp4",
+        "source_sha256": "85b0831fa8de2d3db53753449ee50d6adb8de3e60eace1e096e80198a03d6086",
+        "timestamp_seconds": 130.0,
+        "frame_selection": "FFmpeg input seek with accurate decoding; first decoded frame at requested time",
+        "framing": "Entire original frame; original presentation overlays retained",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "purpose": "Compare the zome with the geodesic dome family"
+      },
+      "render_metadata": {
+        "source_video": "deliverables/masterclass/zome-construction-masterclass.mp4",
+        "source_sha256": "85b0831fa8de2d3db53753449ee50d6adb8de3e60eace1e096e80198a03d6086",
+        "nearby_subtitles": [
+          {
+            "start": 120.428,
+            "end": 124.022,
+            "text": "and it pays for itself all the way through the build."
+          },
+          {
+            "start": 125.502,
+            "end": 130.906,
+            "text": "Space them evenly around a cone and the whole building falls out of two numbers."
+          },
+          {
+            "start": 130.986,
+            "end": 135.431,
+            "text": "For the classic pointed zome, arrange the directions evenly around"
+          },
+          {
+            "start": 135.511,
+            "end": 138.859,
+            "text": "a vertical axis, all leaning in at the same angle."
+          }
+        ],
+        "subtitle_path": "deliverables/masterclass/zome-construction-masterclass.srt",
+        "subtitle_sha256": "2f82e431e43215cfb46e9de62604a3c6c5fdee4911f231ed511263368a706cd2",
+        "image_sha256": "1225c61f17cf94e68765be583863fa0850e263d261d78d20223a6b0560fb9752",
+        "source_values": "Numbers and claims belong to the original presentation configuration; they are not new field measurements."
+      },
+      "suggested_chapters": [
+        27
+      ],
+      "purpose": "Compare the zome with the geodesic dome family"
+    }
+  ],
+  "contact_sheets": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\contact-sheet-01.jpg",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\contact-sheet-02.jpg",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\contact-sheet-03.jpg",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\contact-sheet-04.jpg"
+  ],
+  "count": 30,
+  "manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\video-20260912T064904694107Z-7c62b29a\\manifest.json"
+}

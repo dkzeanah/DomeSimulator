@@ -1,0 +1,18 @@
+{
+  "plate": "buttcut",
+  "title": "The one compound cut",
+  "tool": "film",
+  "concept": "The wedge method still needs one compound cut.",
+  "change": "The wedge argument's butt-cut scene.",
+  "recipe": {
+    "lesson": "why",
+    "chapter": "buttcut",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

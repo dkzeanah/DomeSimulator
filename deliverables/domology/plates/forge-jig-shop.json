@@ -1,0 +1,42 @@
+{
+  "plate": "forge-jig-shop",
+  "title": "Two jigs make every triangle",
+  "tool": "composite",
+  "concept": "Two shapes means two jigs, and a repeatable shop.",
+  "change": "Dome Forge's jig shop, both jigs loaded and seen from directly above so their true shapes compare, each named.",
+  "recipe": {
+    "parts": [
+      {
+        "tool": "forge",
+        "mode": "jigs",
+        "jig": 0,
+        "stage": "loaded",
+        "yaw": -90.0,
+        "pitch": 86.0,
+        "distance": 6.8
+      },
+      {
+        "tool": "forge",
+        "mode": "jigs",
+        "jig": 1,
+        "stage": "loaded",
+        "yaw": -90.0,
+        "pitch": 86.0,
+        "distance": 6.8
+      }
+    ],
+    "labels": [
+      "JIG A \u00b7 EQUILATERAL \u00b7 {{dm.equi_count}} PANELS",
+      "JIG B \u00b7 ISOSCELES \u00b7 {{dm.iso_count}} PANELS"
+    ]
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:38",
+  "parts": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-140352-27804\\forge-jig-shop__0.png",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-140352-27804\\forge-jig-shop__1.png"
+  ]
+}

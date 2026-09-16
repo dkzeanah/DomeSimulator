@@ -1,0 +1,18 @@
+{
+  "plate": "creator-economics",
+  "title": "The same shape, clad twelve ways",
+  "tool": "film",
+  "concept": "Materials, not geometry, set a dome's cost per foot.",
+  "change": "The world film's cladding scene.",
+  "recipe": {
+    "lesson": "world",
+    "chapter": "cladding",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

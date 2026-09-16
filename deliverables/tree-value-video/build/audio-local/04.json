@@ -1,0 +1,770 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 4,
+    "text": "Here"
+  },
+  {
+    "start": 0.35,
+    "position": 5,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 0.5,
+    "position": 8,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 0.595,
+    "position": 12,
+    "length": 8,
+    "text": "complete"
+  },
+  {
+    "start": 1.095,
+    "position": 21,
+    "length": 6,
+    "text": "ladder"
+  },
+  {
+    "start": 1.41,
+    "position": 28,
+    "length": 4,
+    "text": "from"
+  },
+  {
+    "start": 1.61,
+    "position": 33,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 1.69,
+    "position": 37,
+    "length": 6,
+    "text": "source"
+  },
+  {
+    "start": 3.085,
+    "position": 45,
+    "length": 8,
+    "text": "Standing"
+  },
+  {
+    "start": 3.59,
+    "position": 54,
+    "length": 6,
+    "text": "timber"
+  },
+  {
+    "start": 3.91,
+    "position": 61,
+    "length": 5,
+    "text": "might"
+  },
+  {
+    "start": 4.16,
+    "position": 67,
+    "length": 5,
+    "text": "bring"
+  },
+  {
+    "start": 4.435,
+    "position": 73,
+    "length": 3,
+    "text": "ten"
+  },
+  {
+    "start": 4.665,
+    "position": 77,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 4.77,
+    "position": 80,
+    "length": 11,
+    "text": "thirty-five"
+  },
+  {
+    "start": 5.34,
+    "position": 92,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 6.745,
+    "position": 101,
+    "length": 17,
+    "text": "Retail-equivalent"
+  },
+  {
+    "start": 7.69,
+    "position": 119,
+    "length": 8,
+    "text": "firewood"
+  },
+  {
+    "start": 8.265,
+    "position": 128,
+    "length": 5,
+    "text": "might"
+  },
+  {
+    "start": 8.5,
+    "position": 134,
+    "length": 9,
+    "text": "represent"
+  },
+  {
+    "start": 9.015,
+    "position": 144,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 9.29,
+    "position": 150,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 9.49,
+    "position": 154,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 9.89,
+    "position": 162,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 10.015,
+    "position": 165,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 10.21,
+    "position": 169,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 10.615,
+    "position": 177,
+    "length": 11,
+    "text": "thirty-five"
+  },
+  {
+    "start": 11.175,
+    "position": 189,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 12.58,
+    "position": 198,
+    "length": 5,
+    "text": "Rough"
+  },
+  {
+    "start": 12.8,
+    "position": 204,
+    "length": 4,
+    "text": "pine"
+  },
+  {
+    "start": 13.135,
+    "position": 209,
+    "length": 6,
+    "text": "boards"
+  },
+  {
+    "start": 13.46,
+    "position": 216,
+    "length": 5,
+    "text": "could"
+  },
+  {
+    "start": 13.66,
+    "position": 222,
+    "length": 9,
+    "text": "represent"
+  },
+  {
+    "start": 14.2,
+    "position": 232,
+    "length": 5,
+    "text": "three"
+  },
+  {
+    "start": 14.425,
+    "position": 238,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 14.835,
+    "position": 246,
+    "length": 6,
+    "text": "thirty"
+  },
+  {
+    "start": 15.145,
+    "position": 253,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 15.285,
+    "position": 256,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 15.57,
+    "position": 261,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 15.965,
+    "position": 269,
+    "length": 7,
+    "text": "fifteen"
+  },
+  {
+    "start": 16.46,
+    "position": 277,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 17.845,
+    "position": 286,
+    "length": 5,
+    "text": "About"
+  },
+  {
+    "start": 18.145,
+    "position": 292,
+    "length": 6,
+    "text": "eighty"
+  },
+  {
+    "start": 18.36,
+    "position": 299,
+    "length": 5,
+    "text": "wedge"
+  },
+  {
+    "start": 18.595,
+    "position": 305,
+    "length": 6,
+    "text": "blanks"
+  },
+  {
+    "start": 19.03,
+    "position": 312,
+    "length": 5,
+    "text": "carry"
+  },
+  {
+    "start": 19.345,
+    "position": 318,
+    "length": 2,
+    "text": "an"
+  },
+  {
+    "start": 19.47,
+    "position": 321,
+    "length": 9,
+    "text": "estimated"
+  },
+  {
+    "start": 20.025,
+    "position": 331,
+    "length": 40,
+    "text": "two-hundred-fifty-to-four-hundred-dollar"
+  },
+  {
+    "start": 22.02,
+    "position": 372,
+    "length": 6,
+    "text": "lumber"
+  },
+  {
+    "start": 22.375,
+    "position": 379,
+    "length": 11,
+    "text": "replacement"
+  },
+  {
+    "start": 23.055,
+    "position": 391,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 24.41,
+    "position": 398,
+    "length": 2,
+    "text": "In"
+  },
+  {
+    "start": 24.515,
+    "position": 401,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 24.595,
+    "position": 403,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 25.025,
+    "position": 410,
+    "length": 4,
+    "text": "dome"
+  },
+  {
+    "start": 25.285,
+    "position": 415,
+    "length": 8,
+    "text": "assembly"
+  },
+  {
+    "start": 26.255,
+    "position": 425,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 26.34,
+    "position": 429,
+    "length": 8,
+    "text": "proposed"
+  },
+  {
+    "start": 26.855,
+    "position": 438,
+    "length": 12,
+    "text": "contribution"
+  },
+  {
+    "start": 27.635,
+    "position": 451,
+    "length": 5,
+    "text": "rises"
+  },
+  {
+    "start": 28.06,
+    "position": 457,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 28.19,
+    "position": 460,
+    "length": 11,
+    "text": "twenty-four"
+  },
+  {
+    "start": 28.775,
+    "position": 472,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 29.17,
+    "position": 480,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 29.27,
+    "position": 483,
+    "length": 10,
+    "text": "thirty-two"
+  },
+  {
+    "start": 29.795,
+    "position": 494,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 30.215,
+    "position": 502,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 30.595,
+    "position": 510,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 30.785,
+    "position": 514,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 32.045,
+    "position": 520,
+    "length": 9,
+    "text": "Including"
+  },
+  {
+    "start": 32.575,
+    "position": 530,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 32.695,
+    "position": 534,
+    "length": 7,
+    "text": "assumed"
+  },
+  {
+    "start": 33.18,
+    "position": 542,
+    "length": 9,
+    "text": "financing"
+  },
+  {
+    "start": 34.23,
+    "position": 553,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 34.31,
+    "position": 557,
+    "length": 6,
+    "text": "source"
+  },
+  {
+    "start": 34.715,
+    "position": 564,
+    "length": 6,
+    "text": "rounds"
+  },
+  {
+    "start": 35.075,
+    "position": 571,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 35.17,
+    "position": 575,
+    "length": 13,
+    "text": "corresponding"
+  },
+  {
+    "start": 35.985,
+    "position": 589,
+    "length": 8,
+    "text": "lifetime"
+  },
+  {
+    "start": 36.55,
+    "position": 598,
+    "length": 8,
+    "text": "payments"
+  },
+  {
+    "start": 36.99,
+    "position": 607,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 37.1,
+    "position": 610,
+    "length": 10,
+    "text": "fifty-five"
+  },
+  {
+    "start": 37.715,
+    "position": 621,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 38.105,
+    "position": 629,
+    "length": 7,
+    "text": "through"
+  },
+  {
+    "start": 38.32,
+    "position": 637,
+    "length": 13,
+    "text": "seventy-three"
+  },
+  {
+    "start": 39.06,
+    "position": 651,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 39.48,
+    "position": 659,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 40.885,
+    "position": 668,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 41.02,
+    "position": 672,
+    "length": 5,
+    "text": "upper"
+  },
+  {
+    "start": 41.27,
+    "position": 678,
+    "length": 7,
+    "text": "figures"
+  },
+  {
+    "start": 41.72,
+    "position": 686,
+    "length": 6,
+    "text": "depend"
+  },
+  {
+    "start": 42.09,
+    "position": 693,
+    "length": 2,
+    "text": "on"
+  },
+  {
+    "start": 42.255,
+    "position": 696,
+    "length": 4,
+    "text": "more"
+  },
+  {
+    "start": 42.47,
+    "position": 701,
+    "length": 9,
+    "text": "favorable"
+  },
+  {
+    "start": 43.025,
+    "position": 711,
+    "length": 6,
+    "text": "system"
+  },
+  {
+    "start": 43.425,
+    "position": 718,
+    "length": 11,
+    "text": "assumptions"
+  },
+  {
+    "start": 45.025,
+    "position": 731,
+    "length": 2,
+    "text": "We"
+  },
+  {
+    "start": 45.145,
+    "position": 734,
+    "length": 4,
+    "text": "will"
+  },
+  {
+    "start": 45.285,
+    "position": 739,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 45.53,
+    "position": 743,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 45.625,
+    "position": 747,
+    "length": 12,
+    "text": "conservative"
+  },
+  {
+    "start": 46.235,
+    "position": 760,
+    "length": 8,
+    "text": "two-tree"
+  },
+  {
+    "start": 46.715,
+    "position": 769,
+    "length": 10,
+    "text": "allocation"
+  },
+  {
+    "start": 47.375,
+    "position": 780,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 47.495,
+    "position": 783,
+    "length": 11,
+    "text": "twenty-four"
+  },
+  {
+    "start": 48.08,
+    "position": 795,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 48.495,
+    "position": 803,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 48.885,
+    "position": 811,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 49.025,
+    "position": 815,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 49.15,
+    "position": 819,
+    "length": 4,
+    "text": "rest"
+  },
+  {
+    "start": 49.44,
+    "position": 824,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 49.54,
+    "position": 827,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 49.695,
+    "position": 831,
+    "length": 11,
+    "text": "explanation"
+  },
+  {
+    "start": 51.355,
+    "position": 844,
+    "length": 5,
+    "text": "These"
+  },
+  {
+    "start": 51.585,
+    "position": 850,
+    "length": 3,
+    "text": "are"
+  },
+  {
+    "start": 51.75,
+    "position": 854,
+    "length": 11,
+    "text": "alternative"
+  },
+  {
+    "start": 52.36,
+    "position": 866,
+    "length": 10,
+    "text": "valuations"
+  },
+  {
+    "start": 54.135,
+    "position": 878,
+    "length": 6,
+    "text": "Adding"
+  },
+  {
+    "start": 54.41,
+    "position": 885,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 54.535,
+    "position": 889,
+    "length": 4,
+    "text": "rows"
+  },
+  {
+    "start": 54.835,
+    "position": 894,
+    "length": 8,
+    "text": "together"
+  },
+  {
+    "start": 55.245,
+    "position": 903,
+    "length": 5,
+    "text": "would"
+  },
+  {
+    "start": 55.41,
+    "position": 909,
+    "length": 5,
+    "text": "count"
+  },
+  {
+    "start": 55.725,
+    "position": 915,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 55.82,
+    "position": 919,
+    "length": 4,
+    "text": "same"
+  },
+  {
+    "start": 56.135,
+    "position": 924,
+    "length": 8,
+    "text": "material"
+  },
+  {
+    "start": 56.67,
+    "position": 933,
+    "length": 10,
+    "text": "repeatedly"
+  }
+]

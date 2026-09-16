@@ -1,0 +1,32 @@
+{
+  "created": "20260912T062048268504Z",
+  "scope": "Codex parallel book only",
+  "editable_sections": 58,
+  "chapters": 27,
+  "parts": 7,
+  "body_words": 11033,
+  "pdf": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\exports\\publication-20260912T060922981728Z-3ac4b67e\\2-trees-reading-edition.pdf",
+  "physical_pages": 88,
+  "video": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\exports\\publication-20260912T060922981728Z-3ac4b67e\\silent-readthrough-20260912T061409128982Z-b079059c\\2-trees-silent-readthrough.mp4",
+  "duration_seconds": 5918.0,
+  "video_format": "H.264, 1920x1080, silent, 1 fps static pages",
+  "video_chapters": 60,
+  "scene_examples": [
+    "harvest:tree",
+    "harvest:fell",
+    "harvest:explode",
+    "harvest:assume"
+  ],
+  "tests": {
+    "passed": 31,
+    "optional_gpu_repeatability_skipped": 1,
+    "actual_gpu_stills_verified": 4,
+    "media_gui": "passed",
+    "full_launcher": "13 tabs, Codex book last; PDF and video restored",
+    "pdf_visual_review": "all88pages contact sheets and representative full-size pages; zero text bounds violations",
+    "mp4_probe": "5918frames,5918seconds,60chapters,noaudio; decoded first/middle/last frames"
+  },
+  "merge_bundle": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\exports\\book-bundle-20260912T060921886466Z-cf944d.json",
+  "scene_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\scene-plans\\scene-plan-20260912T060921401075Z.json",
+  "catalog": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\catalogs\\scene_catalog_v1_20260912T060213755241Z_11d90165.json"
+}

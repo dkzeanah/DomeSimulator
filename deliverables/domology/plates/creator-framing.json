@@ -1,0 +1,18 @@
+{
+  "plate": "creator-framing",
+  "title": "Three ways to frame",
+  "tool": "film",
+  "concept": "Framing systems trade hardware for wood and skill.",
+  "change": "The world film's framing scene.",
+  "recipe": {
+    "lesson": "world",
+    "chapter": "framing",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

@@ -1,0 +1,29 @@
+{
+  "plate": "force-panel",
+  "title": "Compression and tension in one triangle",
+  "tool": "scene",
+  "concept": "Members carry load along their axes, not across them.",
+  "change": "Built for the book: three members, their forces, and the supports.",
+  "recipe": {
+    "scene": "force_panel",
+    "camera": {
+      "eye": [
+        0.0,
+        -15.5,
+        3.9
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.2
+      ],
+      "fov": 40.0
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:45",
+  "engine": "two_v_demo.app shots"
+}

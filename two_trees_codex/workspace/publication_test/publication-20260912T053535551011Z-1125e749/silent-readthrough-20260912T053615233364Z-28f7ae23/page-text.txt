@@ -1,0 +1,9 @@
+Silent still-page readthrough. No narration is included.
+
+PAGE 7 | 0.000-2.000 s | 17. The triangle corner is a physical object
+
+Figure 1
+Two separate cyclic pinwheel triangles, each with three members. Two members remain at their
+shared axis. Colors identify member ownership.
+Source: Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print
+colors are illustrative.

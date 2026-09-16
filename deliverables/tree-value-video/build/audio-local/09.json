@@ -1,0 +1,656 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 0.21,
+    "position": 4,
+    "length": 5,
+    "text": "wedge"
+  },
+  {
+    "start": 0.445,
+    "position": 10,
+    "length": 8,
+    "text": "proposal"
+  },
+  {
+    "start": 1.01,
+    "position": 19,
+    "length": 7,
+    "text": "changes"
+  },
+  {
+    "start": 1.51,
+    "position": 27,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 1.595,
+    "position": 31,
+    "length": 5,
+    "text": "shape"
+  },
+  {
+    "start": 1.94,
+    "position": 37,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 2.04,
+    "position": 40,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 2.14,
+    "position": 44,
+    "length": 7,
+    "text": "desired"
+  },
+  {
+    "start": 2.64,
+    "position": 52,
+    "length": 7,
+    "text": "product"
+  },
+  {
+    "start": 4.035,
+    "position": 61,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 4.11,
+    "position": 63,
+    "length": 12,
+    "text": "conventional"
+  },
+  {
+    "start": 4.715,
+    "position": 76,
+    "length": 7,
+    "text": "sawmill"
+  },
+  {
+    "start": 5.175,
+    "position": 84,
+    "length": 4,
+    "text": "aims"
+  },
+  {
+    "start": 5.485,
+    "position": 89,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 5.61,
+    "position": 92,
+    "length": 7,
+    "text": "recover"
+  },
+  {
+    "start": 6.015,
+    "position": 100,
+    "length": 8,
+    "text": "standard"
+  },
+  {
+    "start": 6.52,
+    "position": 109,
+    "length": 11,
+    "text": "rectangular"
+  },
+  {
+    "start": 7.225,
+    "position": 121,
+    "length": 6,
+    "text": "boards"
+  },
+  {
+    "start": 8.59,
+    "position": 129,
+    "length": 4,
+    "text": "This"
+  },
+  {
+    "start": 8.8,
+    "position": 134,
+    "length": 6,
+    "text": "method"
+  },
+  {
+    "start": 9.155,
+    "position": 141,
+    "length": 7,
+    "text": "divides"
+  },
+  {
+    "start": 9.615,
+    "position": 149,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 9.72,
+    "position": 153,
+    "length": 3,
+    "text": "log"
+  },
+  {
+    "start": 9.99,
+    "position": 157,
+    "length": 10,
+    "text": "lengthwise"
+  },
+  {
+    "start": 10.605,
+    "position": 168,
+    "length": 4,
+    "text": "into"
+  },
+  {
+    "start": 10.85,
+    "position": 173,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 11.105,
+    "position": 177,
+    "length": 6,
+    "text": "halves"
+  },
+  {
+    "start": 12.01,
+    "position": 185,
+    "length": 4,
+    "text": "then"
+  },
+  {
+    "start": 12.21,
+    "position": 190,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 12.465,
+    "position": 195,
+    "length": 8,
+    "text": "quarters"
+  },
+  {
+    "start": 13.465,
+    "position": 205,
+    "length": 4,
+    "text": "then"
+  },
+  {
+    "start": 13.655,
+    "position": 210,
+    "length": 5,
+    "text": "eight"
+  },
+  {
+    "start": 13.84,
+    "position": 216,
+    "length": 7,
+    "text": "sectors"
+  },
+  {
+    "start": 15.305,
+    "position": 225,
+    "length": 4,
+    "text": "Each"
+  },
+  {
+    "start": 15.535,
+    "position": 230,
+    "length": 6,
+    "text": "sector"
+  },
+  {
+    "start": 15.95,
+    "position": 237,
+    "length": 3,
+    "text": "has"
+  },
+  {
+    "start": 16.16,
+    "position": 241,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 16.23,
+    "position": 243,
+    "length": 12,
+    "text": "wedge-shaped"
+  },
+  {
+    "start": 16.835,
+    "position": 256,
+    "length": 13,
+    "text": "cross-section"
+  },
+  {
+    "start": 18.505,
+    "position": 271,
+    "length": 7,
+    "text": "Because"
+  },
+  {
+    "start": 18.955,
+    "position": 279,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 19.04,
+    "position": 283,
+    "length": 10,
+    "text": "structural"
+  },
+  {
+    "start": 19.66,
+    "position": 294,
+    "length": 6,
+    "text": "design"
+  },
+  {
+    "start": 20.065,
+    "position": 301,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 20.27,
+    "position": 305,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 20.49,
+    "position": 309,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 20.665,
+    "position": 314,
+    "length": 5,
+    "text": "shape"
+  },
+  {
+    "start": 21.49,
+    "position": 321,
+    "length": 4,
+    "text": "less"
+  },
+  {
+    "start": 21.75,
+    "position": 326,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 21.975,
+    "position": 331,
+    "length": 3,
+    "text": "may"
+  },
+  {
+    "start": 22.14,
+    "position": 335,
+    "length": 4,
+    "text": "need"
+  },
+  {
+    "start": 22.34,
+    "position": 340,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 22.43,
+    "position": 343,
+    "length": 2,
+    "text": "be"
+  },
+  {
+    "start": 22.565,
+    "position": 346,
+    "length": 7,
+    "text": "removed"
+  },
+  {
+    "start": 22.99,
+    "position": 354,
+    "length": 6,
+    "text": "simply"
+  },
+  {
+    "start": 23.385,
+    "position": 361,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 23.5,
+    "position": 364,
+    "length": 4,
+    "text": "make"
+  },
+  {
+    "start": 23.765,
+    "position": 369,
+    "length": 11,
+    "text": "rectangular"
+  },
+  {
+    "start": 24.455,
+    "position": 381,
+    "length": 5,
+    "text": "stock"
+  },
+  {
+    "start": 25.785,
+    "position": 388,
+    "length": 4,
+    "text": "That"
+  },
+  {
+    "start": 25.96,
+    "position": 393,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 26.1,
+    "position": 396,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 26.19,
+    "position": 400,
+    "length": 8,
+    "text": "proposed"
+  },
+  {
+    "start": 26.71,
+    "position": 409,
+    "length": 8,
+    "text": "material"
+  },
+  {
+    "start": 27.26,
+    "position": 418,
+    "length": 9,
+    "text": "advantage"
+  },
+  {
+    "start": 28.81,
+    "position": 429,
+    "length": 2,
+    "text": "It"
+  },
+  {
+    "start": 28.925,
+    "position": 432,
+    "length": 4,
+    "text": "does"
+  },
+  {
+    "start": 29.165,
+    "position": 437,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 29.415,
+    "position": 441,
+    "length": 9,
+    "text": "eliminate"
+  },
+  {
+    "start": 29.935,
+    "position": 451,
+    "length": 6,
+    "text": "losses"
+  },
+  {
+    "start": 30.345,
+    "position": 458,
+    "length": 4,
+    "text": "from"
+  },
+  {
+    "start": 30.575,
+    "position": 463,
+    "length": 7,
+    "text": "cutting"
+  },
+  {
+    "start": 31.4,
+    "position": 472,
+    "length": 7,
+    "text": "defects"
+  },
+  {
+    "start": 32.39,
+    "position": 481,
+    "length": 5,
+    "text": "taper"
+  },
+  {
+    "start": 33.215,
+    "position": 488,
+    "length": 8,
+    "text": "trimming"
+  },
+  {
+    "start": 34.065,
+    "position": 498,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 34.205,
+    "position": 501,
+    "length": 6,
+    "text": "drying"
+  },
+  {
+    "start": 35.535,
+    "position": 509,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 35.615,
+    "position": 513,
+    "length": 10,
+    "text": "meaningful"
+  },
+  {
+    "start": 36.085,
+    "position": 524,
+    "length": 8,
+    "text": "question"
+  },
+  {
+    "start": 36.565,
+    "position": 533,
+    "length": 7,
+    "text": "becomes"
+  },
+  {
+    "start": 36.99,
+    "position": 541,
+    "length": 3,
+    "text": "how"
+  },
+  {
+    "start": 37.14,
+    "position": 545,
+    "length": 4,
+    "text": "much"
+  },
+  {
+    "start": 37.44,
+    "position": 550,
+    "length": 6,
+    "text": "usable"
+  },
+  {
+    "start": 37.805,
+    "position": 557,
+    "length": 8,
+    "text": "building"
+  },
+  {
+    "start": 38.195,
+    "position": 566,
+    "length": 9,
+    "text": "structure"
+  },
+  {
+    "start": 38.72,
+    "position": 576,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 38.86,
+    "position": 580,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 39.025,
+    "position": 584,
+    "length": 7,
+    "text": "recover"
+  },
+  {
+    "start": 39.42,
+    "position": 592,
+    "length": 4,
+    "text": "from"
+  },
+  {
+    "start": 39.62,
+    "position": 597,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 39.705,
+    "position": 601,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 40.965,
+    "position": 607,
+    "length": 2,
+    "text": "To"
+  },
+  {
+    "start": 41.11,
+    "position": 610,
+    "length": 6,
+    "text": "answer"
+  },
+  {
+    "start": 41.485,
+    "position": 617,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 42.08,
+    "position": 621,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 42.185,
+    "position": 625,
+    "length": 9,
+    "text": "resulting"
+  },
+  {
+    "start": 42.7,
+    "position": 635,
+    "length": 6,
+    "text": "pieces"
+  },
+  {
+    "start": 43.11,
+    "position": 642,
+    "length": 4,
+    "text": "must"
+  },
+  {
+    "start": 43.39,
+    "position": 647,
+    "length": 4,
+    "text": "meet"
+  },
+  {
+    "start": 43.595,
+    "position": 652,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 43.7,
+    "position": 656,
+    "length": 8,
+    "text": "design's"
+  },
+  {
+    "start": 44.18,
+    "position": 665,
+    "length": 6,
+    "text": "length"
+  },
+  {
+    "start": 44.965,
+    "position": 673,
+    "length": 13,
+    "text": "cross-section"
+  },
+  {
+    "start": 46.17,
+    "position": 688,
+    "length": 10,
+    "text": "connection"
+  },
+  {
+    "start": 47.125,
+    "position": 700,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 47.235,
+    "position": 704,
+    "length": 8,
+    "text": "material"
+  },
+  {
+    "start": 47.775,
+    "position": 713,
+    "length": 12,
+    "text": "requirements"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "plate": "check",
+  "title": "Checking the shell",
+  "tool": "film",
+  "concept": "Measure the built dome, not just the parts.",
+  "change": "The construction masterclass's check scene.",
+  "recipe": {
+    "lesson": "build",
+    "chapter": "check",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

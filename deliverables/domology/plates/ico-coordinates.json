@@ -1,0 +1,18 @@
+{
+  "plate": "ico-coordinates",
+  "title": "Twelve corners from one number",
+  "tool": "film",
+  "concept": "Phi places the icosahedron's twelve vertices exactly.",
+  "change": "The coordinates scene with its axes and one vertex labelled.",
+  "recipe": {
+    "lesson": "2v",
+    "chapter": "phi",
+    "progress": 0.92
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

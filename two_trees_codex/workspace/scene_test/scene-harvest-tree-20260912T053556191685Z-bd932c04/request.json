@@ -1,0 +1,11 @@
+{
+  "schema": "two-trees-scene-still/v1",
+  "scene": {
+    "lesson_key": "harvest",
+    "chapter_slug": "tree"
+  },
+  "progress": 0.3,
+  "width": 1600,
+  "height": 1000,
+  "overlay": "original"
+}

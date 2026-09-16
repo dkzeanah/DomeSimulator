@@ -1,0 +1,27 @@
+
+
+I've invented a whole new building and construction paradigm. So I'm building a tiny house.
+
+Previously, I built the frankendome. strut agnostic and asymmetrical joining of 40 triangles along their edge from top-down with the top level being a complete 'heavier duty' pentagon utilizing 1 strut instead of two from corners going to the apex. so a 10 peice pentagon, vice typical 15 peice.
+
+I was testing 'v' brackets for holding the triangles together, edge-to-edge relationships between the various odd-shaped members, etc. 'v' brackets allow for corner connecting to any of the agnostic types, something hard to achieve with other bracket types at the moment.
+
+from this, I've derived the wedge-build which utilized 45-degree-cut wedge struts that can be oriented in 4 different ways achieiving distinct effects or features within the structures frame.
+
+building witth these wedges is advantageous on multiple levels that all work together to really compound the benefits of constructing in this paradigm.
+
+from a full 60-80 foot pine, about 12-15' diameter at the bottom, if i cut wedges, i retain 88% of the total board feet as usable wood. this compares to 50-65% of typic al traditional square milling methods, which loses wood to more factors than just the kerf cut width.
+
+So not only is the job or process easier and less work, but it requires one less machine altogether, and it reaps MORE usable wood. We can only utilize this method because of the domes inherent structure and nature of the geometry to build it. strength depends on laterial and compression axis of each strut member, or how much force inward - compression - or outward - stretching, it would take to compromise the strut member. this is basically equal to 1/8 of a tree, literally, which is significant strength as you can imagine.
+
+because my dome and most at that can be build modular using small 'longest' peice of strut member needed, waste is minimized for odd shaped wood. if a tree bends incredibly, I can cut it in the middle of the bend, go 6 feet out from there, and continue. meaning I may only need to cut or slicce out a small section to gain back multiple 6 feet sections, unliike traditional milling where a tree bend or knot can render an entire tree part useless. smaller units - more room for error and minimum impact when errors occur.
+
+I cut tree, rip trunk, its usable wood. I've cut out like 15 middle men from the store bought processes of obtaining square lumber.
+
+8.88 for 2x4x16 pine untreated at lowes. Ill round up to $10 for taxes. about $5 per 8 foot section.
+a 1/8 wedge of 12" diameter trunk at 6 feet is about 2.5x more volume of wood than the above 2x4.
+I'll use 2 as the multiplier for error, and say that each wedge strut is worth essentially $10 of wood per section.
+If I can cut 30 in one afternoon, lets say 6 hours - that is making $50 per hour, conservatively measuring for error at all stages, AND I need not waste more time on load and unloading, gas there and back, etc. -- which ill substitue as chainsaw gas and bar oil, so about even out there. $50 per hour - not possible without a methodology for utilizes these wedge shapes - but domes provide that - so I have access to these perks.
+
+
+

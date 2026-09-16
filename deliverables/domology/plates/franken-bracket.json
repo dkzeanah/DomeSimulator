@@ -1,0 +1,18 @@
+{
+  "plate": "franken-bracket",
+  "title": "A V-bracket between unlike members",
+  "tool": "film",
+  "concept": "A strut-agnostic frame needs an agnostic connector.",
+  "change": "The Frankendome film's fitted bracket.",
+  "recipe": {
+    "lesson": "franken",
+    "chapter": "bracket_fitted",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

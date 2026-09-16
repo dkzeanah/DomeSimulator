@@ -1,0 +1,16 @@
+{
+  "plate": "chart-house",
+  "title": "Where a new house's price goes",
+  "tool": "chart",
+  "concept": "Most of a house's price is not its frame.",
+  "change": "From house_economics, NAHB's 2024 cost survey.",
+  "recipe": {
+    "chart": "house"
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:03:55",
+  "source": "domology.charts"
+}

@@ -1,0 +1,758 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 0.18,
+    "position": 4,
+    "length": 5,
+    "text": "model"
+  },
+  {
+    "start": 0.58,
+    "position": 10,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 0.74,
+    "position": 13,
+    "length": 4,
+    "text": "most"
+  },
+  {
+    "start": 1.055,
+    "position": 18,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 1.475,
+    "position": 25,
+    "length": 4,
+    "text": "when"
+  },
+  {
+    "start": 1.65,
+    "position": 30,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 1.775,
+    "position": 34,
+    "length": 4,
+    "text": "know"
+  },
+  {
+    "start": 2.005,
+    "position": 39,
+    "length": 5,
+    "text": "which"
+  },
+  {
+    "start": 2.23,
+    "position": 45,
+    "length": 6,
+    "text": "inputs"
+  },
+  {
+    "start": 2.66,
+    "position": 52,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 2.865,
+    "position": 56,
+    "length": 6,
+    "text": "change"
+  },
+  {
+    "start": 3.26,
+    "position": 63,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 3.41,
+    "position": 67,
+    "length": 6,
+    "text": "answer"
+  },
+  {
+    "start": 4.71,
+    "position": 75,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 4.84,
+    "position": 77,
+    "length": 5,
+    "text": "lower"
+  },
+  {
+    "start": 5.175,
+    "position": 83,
+    "length": 8,
+    "text": "accepted"
+  },
+  {
+    "start": 5.72,
+    "position": 92,
+    "length": 5,
+    "text": "yield"
+  },
+  {
+    "start": 6.01,
+    "position": 98,
+    "length": 3,
+    "text": "may"
+  },
+  {
+    "start": 6.175,
+    "position": 102,
+    "length": 7,
+    "text": "require"
+  },
+  {
+    "start": 6.68,
+    "position": 110,
+    "length": 4,
+    "text": "more"
+  },
+  {
+    "start": 6.92,
+    "position": 115,
+    "length": 5,
+    "text": "trees"
+  },
+  {
+    "start": 8.27,
+    "position": 122,
+    "length": 6,
+    "text": "Higher"
+  },
+  {
+    "start": 8.59,
+    "position": 129,
+    "length": 4,
+    "text": "tool"
+  },
+  {
+    "start": 8.915,
+    "position": 134,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 9.075,
+    "position": 137,
+    "length": 6,
+    "text": "drying"
+  },
+  {
+    "start": 9.455,
+    "position": 144,
+    "length": 5,
+    "text": "costs"
+  },
+  {
+    "start": 9.935,
+    "position": 150,
+    "length": 6,
+    "text": "reduce"
+  },
+  {
+    "start": 10.33,
+    "position": 157,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 10.46,
+    "position": 161,
+    "length": 9,
+    "text": "advantage"
+  },
+  {
+    "start": 12.0,
+    "position": 172,
+    "length": 4,
+    "text": "More"
+  },
+  {
+    "start": 12.265,
+    "position": 177,
+    "length": 5,
+    "text": "hours"
+  },
+  {
+    "start": 13.085,
+    "position": 184,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 13.23,
+    "position": 187,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 13.275,
+    "position": 189,
+    "length": 4,
+    "text": "more"
+  },
+  {
+    "start": 13.525,
+    "position": 194,
+    "length": 8,
+    "text": "valuable"
+  },
+  {
+    "start": 14.01,
+    "position": 203,
+    "length": 11,
+    "text": "alternative"
+  },
+  {
+    "start": 14.635,
+    "position": 215,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 14.9,
+    "position": 219,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 15.005,
+    "position": 222,
+    "length": 4,
+    "text": "your"
+  },
+  {
+    "start": 15.185,
+    "position": 227,
+    "length": 4,
+    "text": "time"
+  },
+  {
+    "start": 16.005,
+    "position": 233,
+    "length": 4,
+    "text": "also"
+  },
+  {
+    "start": 16.34,
+    "position": 238,
+    "length": 6,
+    "text": "reduce"
+  },
+  {
+    "start": 16.73,
+    "position": 245,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 17.76,
+    "position": 249,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 17.835,
+    "position": 251,
+    "length": 5,
+    "text": "lower"
+  },
+  {
+    "start": 18.15,
+    "position": 257,
+    "length": 10,
+    "text": "commercial"
+  },
+  {
+    "start": 18.655,
+    "position": 268,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 19.095,
+    "position": 276,
+    "length": 5,
+    "text": "price"
+  },
+  {
+    "start": 19.48,
+    "position": 282,
+    "length": 7,
+    "text": "reduces"
+  },
+  {
+    "start": 19.98,
+    "position": 290,
+    "length": 4,
+    "text": "what"
+  },
+  {
+    "start": 20.145,
+    "position": 295,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 20.3,
+    "position": 299,
+    "length": 5,
+    "text": "avoid"
+  },
+  {
+    "start": 20.665,
+    "position": 305,
+    "length": 6,
+    "text": "buying"
+  },
+  {
+    "start": 21.93,
+    "position": 313,
+    "length": 2,
+    "text": "In"
+  },
+  {
+    "start": 22.04,
+    "position": 316,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 22.13,
+    "position": 320,
+    "length": 6,
+    "text": "worked"
+  },
+  {
+    "start": 22.445,
+    "position": 327,
+    "length": 7,
+    "text": "example"
+  },
+  {
+    "start": 23.44,
+    "position": 336,
+    "length": 11,
+    "text": "twenty-four"
+  },
+  {
+    "start": 24.01,
+    "position": 348,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 24.405,
+    "position": 356,
+    "length": 5,
+    "text": "minus"
+  },
+  {
+    "start": 24.8,
+    "position": 362,
+    "length": 5,
+    "text": "three"
+  },
+  {
+    "start": 25.025,
+    "position": 368,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 25.445,
+    "position": 376,
+    "length": 6,
+    "text": "leaves"
+  },
+  {
+    "start": 25.76,
+    "position": 383,
+    "length": 10,
+    "text": "twenty-one"
+  },
+  {
+    "start": 26.34,
+    "position": 394,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 26.755,
+    "position": 402,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 27.145,
+    "position": 410,
+    "length": 9,
+    "text": "available"
+  },
+  {
+    "start": 27.6,
+    "position": 420,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 27.72,
+    "position": 423,
+    "length": 10,
+    "text": "compensate"
+  },
+  {
+    "start": 28.39,
+    "position": 434,
+    "length": 5,
+    "text": "forty"
+  },
+  {
+    "start": 28.765,
+    "position": 440,
+    "length": 5,
+    "text": "hours"
+  },
+  {
+    "start": 29.115,
+    "position": 446,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 29.22,
+    "position": 449,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 30.47,
+    "position": 455,
+    "length": 4,
+    "text": "That"
+  },
+  {
+    "start": 30.64,
+    "position": 460,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 30.775,
+    "position": 463,
+    "length": 9,
+    "text": "fifty-two"
+  },
+  {
+    "start": 31.355,
+    "position": 473,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 31.765,
+    "position": 481,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 31.91,
+    "position": 485,
+    "length": 5,
+    "text": "fifty"
+  },
+  {
+    "start": 32.255,
+    "position": 491,
+    "length": 5,
+    "text": "cents"
+  },
+  {
+    "start": 32.6,
+    "position": 497,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 32.815,
+    "position": 501,
+    "length": 4,
+    "text": "hour"
+  },
+  {
+    "start": 33.065,
+    "position": 506,
+    "length": 6,
+    "text": "before"
+  },
+  {
+    "start": 33.41,
+    "position": 513,
+    "length": 8,
+    "text": "counting"
+  },
+  {
+    "start": 33.865,
+    "position": 522,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 33.94,
+    "position": 526,
+    "length": 7,
+    "text": "forgone"
+  },
+  {
+    "start": 34.435,
+    "position": 534,
+    "length": 4,
+    "text": "sale"
+  },
+  {
+    "start": 35.715,
+    "position": 540,
+    "length": 5,
+    "text": "Above"
+  },
+  {
+    "start": 36.005,
+    "position": 546,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 36.245,
+    "position": 551,
+    "length": 11,
+    "text": "opportunity"
+  },
+  {
+    "start": 36.905,
+    "position": 563,
+    "length": 4,
+    "text": "cost"
+  },
+  {
+    "start": 37.785,
+    "position": 569,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 37.865,
+    "position": 573,
+    "length": 6,
+    "text": "stated"
+  },
+  {
+    "start": 38.285,
+    "position": 580,
+    "length": 3,
+    "text": "net"
+  },
+  {
+    "start": 38.51,
+    "position": 584,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 38.75,
+    "position": 588,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 39.16,
+    "position": 594,
+    "length": 7,
+    "text": "becomes"
+  },
+  {
+    "start": 39.605,
+    "position": 602,
+    "length": 8,
+    "text": "negative"
+  },
+  {
+    "start": 40.965,
+    "position": 612,
+    "length": 9,
+    "text": "Financing"
+  },
+  {
+    "start": 41.5,
+    "position": 622,
+    "length": 8,
+    "text": "benefits"
+  },
+  {
+    "start": 42.045,
+    "position": 631,
+    "length": 4,
+    "text": "also"
+  },
+  {
+    "start": 42.4,
+    "position": 636,
+    "length": 4,
+    "text": "fall"
+  },
+  {
+    "start": 42.735,
+    "position": 641,
+    "length": 2,
+    "text": "if"
+  },
+  {
+    "start": 42.865,
+    "position": 644,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 43.0,
+    "position": 648,
+    "length": 6,
+    "text": "borrow"
+  },
+  {
+    "start": 43.32,
+    "position": 655,
+    "length": 4,
+    "text": "less"
+  },
+  {
+    "start": 43.865,
+    "position": 661,
+    "length": 5,
+    "text": "repay"
+  },
+  {
+    "start": 44.24,
+    "position": 667,
+    "length": 5,
+    "text": "early"
+  },
+  {
+    "start": 44.735,
+    "position": 674,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 44.89,
+    "position": 677,
+    "length": 5,
+    "text": "would"
+  },
+  {
+    "start": 45.075,
+    "position": 683,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 45.295,
+    "position": 687,
+    "length": 4,
+    "text": "have"
+  },
+  {
+    "start": 45.45,
+    "position": 692,
+    "length": 8,
+    "text": "borrowed"
+  },
+  {
+    "start": 45.855,
+    "position": 701,
+    "length": 2,
+    "text": "at"
+  },
+  {
+    "start": 45.97,
+    "position": 704,
+    "length": 3,
+    "text": "all"
+  },
+  {
+    "start": 47.12,
+    "position": 709,
+    "length": 9,
+    "text": "Measuring"
+  },
+  {
+    "start": 47.58,
+    "position": 719,
+    "length": 5,
+    "text": "these"
+  },
+  {
+    "start": 47.795,
+    "position": 725,
+    "length": 6,
+    "text": "inputs"
+  },
+  {
+    "start": 48.265,
+    "position": 732,
+    "length": 5,
+    "text": "turns"
+  },
+  {
+    "start": 48.645,
+    "position": 738,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 48.78,
+    "position": 742,
+    "length": 4,
+    "text": "idea"
+  },
+  {
+    "start": 49.22,
+    "position": 747,
+    "length": 4,
+    "text": "into"
+  },
+  {
+    "start": 49.455,
+    "position": 752,
+    "length": 2,
+    "text": "an"
+  },
+  {
+    "start": 49.585,
+    "position": 755,
+    "length": 8,
+    "text": "economic"
+  },
+  {
+    "start": 50.14,
+    "position": 764,
+    "length": 8,
+    "text": "decision"
+  }
+]

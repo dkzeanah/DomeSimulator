@@ -1,0 +1,722 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 7,
+    "text": "Imagine"
+  },
+  {
+    "start": 0.555,
+    "position": 8,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 0.64,
+    "position": 12,
+    "length": 12,
+    "text": "conventional"
+  },
+  {
+    "start": 1.265,
+    "position": 25,
+    "length": 5,
+    "text": "route"
+  },
+  {
+    "start": 1.945,
+    "position": 32,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 2.435,
+    "position": 38,
+    "length": 6,
+    "text": "logger"
+  },
+  {
+    "start": 2.985,
+    "position": 46,
+    "length": 5,
+    "text": "truck"
+  },
+  {
+    "start": 3.51,
+    "position": 53,
+    "length": 7,
+    "text": "sawmill"
+  },
+  {
+    "start": 4.24,
+    "position": 62,
+    "length": 4,
+    "text": "kiln"
+  },
+  {
+    "start": 4.695,
+    "position": 68,
+    "length": 10,
+    "text": "wholesaler"
+  },
+  {
+    "start": 5.51,
+    "position": 80,
+    "length": 8,
+    "text": "retailer"
+  },
+  {
+    "start": 6.22,
+    "position": 90,
+    "length": 6,
+    "text": "framer"
+  },
+  {
+    "start": 6.825,
+    "position": 98,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 6.955,
+    "position": 102,
+    "length": 7,
+    "text": "finally"
+  },
+  {
+    "start": 7.4,
+    "position": 110,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 7.47,
+    "position": 112,
+    "length": 5,
+    "text": "house"
+  },
+  {
+    "start": 8.795,
+    "position": 119,
+    "length": 3,
+    "text": "Now"
+  },
+  {
+    "start": 9.03,
+    "position": 123,
+    "length": 7,
+    "text": "imagine"
+  },
+  {
+    "start": 9.475,
+    "position": 131,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 9.55,
+    "position": 135,
+    "length": 8,
+    "text": "proposed"
+  },
+  {
+    "start": 10.08,
+    "position": 144,
+    "length": 5,
+    "text": "local"
+  },
+  {
+    "start": 10.41,
+    "position": 150,
+    "length": 5,
+    "text": "route"
+  },
+  {
+    "start": 11.095,
+    "position": 157,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 11.865,
+    "position": 163,
+    "length": 6,
+    "text": "radial"
+  },
+  {
+    "start": 12.205,
+    "position": 170,
+    "length": 10,
+    "text": "processing"
+  },
+  {
+    "start": 13.365,
+    "position": 182,
+    "length": 6,
+    "text": "drying"
+  },
+  {
+    "start": 14.22,
+    "position": 190,
+    "length": 3,
+    "text": "jig"
+  },
+  {
+    "start": 15.01,
+    "position": 195,
+    "length": 10,
+    "text": "triangular"
+  },
+  {
+    "start": 15.7,
+    "position": 206,
+    "length": 8,
+    "text": "assembly"
+  },
+  {
+    "start": 16.665,
+    "position": 216,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 16.805,
+    "position": 220,
+    "length": 4,
+    "text": "dome"
+  },
+  {
+    "start": 18.025,
+    "position": 226,
+    "length": 4,
+    "text": "Each"
+  },
+  {
+    "start": 18.245,
+    "position": 231,
+    "length": 10,
+    "text": "commercial"
+  },
+  {
+    "start": 18.75,
+    "position": 242,
+    "length": 4,
+    "text": "step"
+  },
+  {
+    "start": 19.1,
+    "position": 247,
+    "length": 8,
+    "text": "normally"
+  },
+  {
+    "start": 19.515,
+    "position": 256,
+    "length": 7,
+    "text": "carries"
+  },
+  {
+    "start": 19.905,
+    "position": 264,
+    "length": 9,
+    "text": "someone's"
+  },
+  {
+    "start": 20.425,
+    "position": 274,
+    "length": 5,
+    "text": "labor"
+  },
+  {
+    "start": 20.955,
+    "position": 281,
+    "length": 9,
+    "text": "equipment"
+  },
+  {
+    "start": 21.62,
+    "position": 292,
+    "length": 8,
+    "text": "overhead"
+  },
+  {
+    "start": 22.325,
+    "position": 302,
+    "length": 14,
+    "text": "transportation"
+  },
+  {
+    "start": 23.405,
+    "position": 318,
+    "length": 9,
+    "text": "inventory"
+  },
+  {
+    "start": 24.23,
+    "position": 329,
+    "length": 6,
+    "text": "profit"
+  },
+  {
+    "start": 24.82,
+    "position": 337,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 24.945,
+    "position": 341,
+    "length": 9,
+    "text": "financing"
+  },
+  {
+    "start": 26.435,
+    "position": 352,
+    "length": 10,
+    "text": "Performing"
+  },
+  {
+    "start": 26.965,
+    "position": 363,
+    "length": 4,
+    "text": "more"
+  },
+  {
+    "start": 27.215,
+    "position": 368,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 27.315,
+    "position": 371,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 27.43,
+    "position": 375,
+    "length": 5,
+    "text": "chain"
+  },
+  {
+    "start": 27.76,
+    "position": 381,
+    "length": 8,
+    "text": "yourself"
+  },
+  {
+    "start": 28.325,
+    "position": 390,
+    "length": 3,
+    "text": "may"
+  },
+  {
+    "start": 28.495,
+    "position": 394,
+    "length": 6,
+    "text": "reduce"
+  },
+  {
+    "start": 28.875,
+    "position": 401,
+    "length": 4,
+    "text": "some"
+  },
+  {
+    "start": 29.095,
+    "position": 406,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 29.195,
+    "position": 409,
+    "length": 5,
+    "text": "those"
+  },
+  {
+    "start": 29.445,
+    "position": 415,
+    "length": 9,
+    "text": "purchased"
+  },
+  {
+    "start": 29.925,
+    "position": 425,
+    "length": 8,
+    "text": "services"
+  },
+  {
+    "start": 30.49,
+    "position": 434,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 30.625,
+    "position": 438,
+    "length": 7,
+    "text": "margins"
+  },
+  {
+    "start": 32.09,
+    "position": 447,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 32.17,
+    "position": 451,
+    "length": 8,
+    "text": "physical"
+  },
+  {
+    "start": 32.665,
+    "position": 460,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 32.965,
+    "position": 465,
+    "length": 7,
+    "text": "remains"
+  },
+  {
+    "start": 34.45,
+    "position": 474,
+    "length": 3,
+    "text": "You"
+  },
+  {
+    "start": 34.585,
+    "position": 478,
+    "length": 4,
+    "text": "take"
+  },
+  {
+    "start": 34.88,
+    "position": 483,
+    "length": 14,
+    "text": "responsibility"
+  },
+  {
+    "start": 35.76,
+    "position": 498,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 35.92,
+    "position": 502,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 35.995,
+    "position": 506,
+    "length": 5,
+    "text": "parts"
+  },
+  {
+    "start": 36.365,
+    "position": 512,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 36.465,
+    "position": 515,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 36.55,
+    "position": 519,
+    "length": 7,
+    "text": "process"
+  },
+  {
+    "start": 37.11,
+    "position": 527,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 37.21,
+    "position": 531,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 37.37,
+    "position": 535,
+    "length": 7,
+    "text": "perform"
+  },
+  {
+    "start": 37.8,
+    "position": 543,
+    "length": 11,
+    "text": "effectively"
+  },
+  {
+    "start": 39.325,
+    "position": 556,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 39.405,
+    "position": 560,
+    "length": 7,
+    "text": "savings"
+  },
+  {
+    "start": 39.91,
+    "position": 568,
+    "length": 4,
+    "text": "come"
+  },
+  {
+    "start": 40.155,
+    "position": 573,
+    "length": 4,
+    "text": "from"
+  },
+  {
+    "start": 40.39,
+    "position": 578,
+    "length": 10,
+    "text": "organizing"
+  },
+  {
+    "start": 41.015,
+    "position": 589,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 41.19,
+    "position": 594,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 41.495,
+    "position": 599,
+    "length": 4,
+    "text": "well"
+  },
+  {
+    "start": 42.27,
+    "position": 605,
+    "length": 5,
+    "text": "using"
+  },
+  {
+    "start": 42.61,
+    "position": 611,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 42.735,
+    "position": 615,
+    "length": 9,
+    "text": "available"
+  },
+  {
+    "start": 43.205,
+    "position": 625,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 43.42,
+    "position": 630,
+    "length": 11,
+    "text": "efficiently"
+  },
+  {
+    "start": 44.475,
+    "position": 643,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 44.575,
+    "position": 647,
+    "length": 8,
+    "text": "avoiding"
+  },
+  {
+    "start": 44.99,
+    "position": 656,
+    "length": 5,
+    "text": "costs"
+  },
+  {
+    "start": 45.47,
+    "position": 662,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 45.645,
+    "position": 667,
+    "length": 4,
+    "text": "your"
+  },
+  {
+    "start": 45.82,
+    "position": 672,
+    "length": 10,
+    "text": "particular"
+  },
+  {
+    "start": 46.485,
+    "position": 683,
+    "length": 9,
+    "text": "situation"
+  },
+  {
+    "start": 47.165,
+    "position": 693,
+    "length": 4,
+    "text": "does"
+  },
+  {
+    "start": 47.4,
+    "position": 698,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 47.655,
+    "position": 702,
+    "length": 7,
+    "text": "require"
+  },
+  {
+    "start": 49.075,
+    "position": 711,
+    "length": 10,
+    "text": "Commercial"
+  },
+  {
+    "start": 49.585,
+    "position": 722,
+    "length": 10,
+    "text": "operations"
+  },
+  {
+    "start": 50.275,
+    "position": 733,
+    "length": 4,
+    "text": "also"
+  },
+  {
+    "start": 50.64,
+    "position": 738,
+    "length": 4,
+    "text": "have"
+  },
+  {
+    "start": 50.845,
+    "position": 743,
+    "length": 12,
+    "text": "efficiencies"
+  },
+  {
+    "start": 52.035,
+    "position": 757,
+    "length": 2,
+    "text": "so"
+  },
+  {
+    "start": 52.28,
+    "position": 760,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 52.345,
+    "position": 762,
+    "length": 7,
+    "text": "shorter"
+  },
+  {
+    "start": 52.755,
+    "position": 770,
+    "length": 5,
+    "text": "route"
+  },
+  {
+    "start": 52.975,
+    "position": 776,
+    "length": 5,
+    "text": "alone"
+  },
+  {
+    "start": 53.31,
+    "position": 782,
+    "length": 4,
+    "text": "does"
+  },
+  {
+    "start": 53.55,
+    "position": 787,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 53.795,
+    "position": 791,
+    "length": 5,
+    "text": "prove"
+  },
+  {
+    "start": 54.075,
+    "position": 797,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 54.25,
+    "position": 802,
+    "length": 4,
+    "text": "your"
+  },
+  {
+    "start": 54.43,
+    "position": 807,
+    "length": 5,
+    "text": "total"
+  },
+  {
+    "start": 54.775,
+    "position": 813,
+    "length": 4,
+    "text": "cost"
+  },
+  {
+    "start": 55.155,
+    "position": 818,
+    "length": 4,
+    "text": "will"
+  },
+  {
+    "start": 55.275,
+    "position": 823,
+    "length": 2,
+    "text": "be"
+  },
+  {
+    "start": 55.42,
+    "position": 826,
+    "length": 5,
+    "text": "lower"
+  }
+]

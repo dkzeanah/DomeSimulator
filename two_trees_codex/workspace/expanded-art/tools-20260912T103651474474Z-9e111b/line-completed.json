@@ -1,0 +1,33 @@
+{
+  "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\line-completed.png",
+  "title": "The enclosed shell at the end of the line",
+  "purpose": "Compare the finished enclosure with the earlier structural frame.",
+  "caption": "The enclosed shell at the end of the line. Native Assembly Line (Simple) scene at the solar station. This factory concept uses its own 3V dome and layered enclosure, and illustrates sequence rather than the two-tree project's measured schedule or final specification.",
+  "provenance": "Native Assembly Line (Simple) render; clean scene; source files unchanged.",
+  "recipe": {
+    "schema": "two-trees-native-tool-still/v1",
+    "tool": "Assembly Line (Simple)",
+    "size": [
+      2000,
+      1400
+    ],
+    "overlay": "none",
+    "source_hashes": {
+      "assembly_line_simple.py": "7a9ee092e699d655c399b2615f331d79010565fe12c5746a98f26b160dda752d",
+      "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+      "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63"
+    },
+    "phase_index": 29,
+    "stage": "solar",
+    "stage_progress": 0.99,
+    "cutaway": false,
+    "cam_target": [
+      182.0,
+      0.0,
+      2.4200000762939453
+    ],
+    "yaw_degrees": -70,
+    "pitch_degrees": 28,
+    "distance": 13.8
+  }
+}

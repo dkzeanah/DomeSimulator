@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-c2ba502282\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-c2ba502282\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-c2ba502282\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-c2ba502282\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-c2ba502282\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-c2ba502282\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-build-this-way-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-c2ba502282\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    8.192,
+    7.111999999999999,
+    5.0,
+    5.263999999999999,
+    4.544,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    6.792,
+    5.712,
+    3.6,
+    3.864,
+    3.144,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    8.192,
+    15.303999999999998,
+    20.304,
+    25.567999999999998,
+    30.112,
+    35.111999999999995
+  ],
+  "speech_delay": 0.55
+}

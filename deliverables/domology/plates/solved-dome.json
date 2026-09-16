@@ -1,0 +1,18 @@
+{
+  "plate": "solved-dome",
+  "title": "The shell those wedges make",
+  "tool": "film",
+  "concept": "The design is solved before a tree is cut.",
+  "change": "The harvest film's dome scene.",
+  "recipe": {
+    "lesson": "harvest",
+    "chapter": "worth",
+    "progress": 0.5
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

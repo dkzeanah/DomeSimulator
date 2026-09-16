@@ -1,0 +1,16 @@
+{
+  "plate": "chart-frequency",
+  "title": "What frequency costs",
+  "tool": "chart",
+  "concept": "Higher frequency buys smoothness and costs part variety.",
+  "change": "From world_facts.frequency_ladder, which builds each dome with the simulator.",
+  "recipe": {
+    "chart": "frequency"
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:03:54",
+  "source": "domology.charts"
+}

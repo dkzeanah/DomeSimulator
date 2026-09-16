@@ -1,0 +1,24 @@
+{
+  "plate": "forge-water",
+  "title": "The water dome in section",
+  "tool": "forge",
+  "concept": "A dome's seams can be plumbing instead of leaks.",
+  "change": "The default water stack with the cutaway open and the flow mid-run.",
+  "recipe": {
+    "mode": "dome",
+    "cut": [
+      150.0,
+      140.0
+    ],
+    "clock": 1.4,
+    "yaw": 205.0,
+    "pitch": 22.0,
+    "distance": 10.5
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

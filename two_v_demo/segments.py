@@ -142,14 +142,17 @@ def scene_seg_outro(app, opaque, transparent, p: float) -> None:
     for index, edge in enumerate(GEOMETRY.hemisphere_edges):
         a, b = (GEOMETRY.vertices[i] * 3.0 for i in edge)
         draw_timber(opaque, a, b, 0.055, index, CHAINSAW, sides=6)
-    columns = 3
+    # On a phone the card stacks two across instead of three, so every handle
+    # stays inside the frame; a wide screen keeps the card it always had.
+    narrow = bool(getattr(app, "adapting", False))
+    columns = 2 if narrow else 3
     for index, (handle, label, colour) in enumerate(CONTACTS):
         if index / len(CONTACTS) > reveal:
             continue
         row, column = divmod(index, columns)
-        x = -7.4 + column * 7.4
+        x = (-3.0 + column * 6.0) if narrow else (-7.4 + column * 7.4)
         z = 7.4 - row * 1.9
-        opaque.box((x, 0.0, z), (6.2, 0.42, 1.05), colour)
+        opaque.box((x, 0.0, z), (5.2 if narrow else 6.2, 0.42, 1.05), colour)
         app.world_labels.append(WorldLabel(
             np.array([x, 0.0, z]),
             handle if label in ("Instagram", "Facebook", "TikTok", "GitHub")

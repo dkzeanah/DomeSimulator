@@ -1,0 +1,45 @@
+{
+  "schema": "two-trees-readthrough/v1",
+  "created": "20260912T053617678501Z",
+  "video": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\silent-readthrough-20260912T053615233364Z-28f7ae23\\2-trees-silent-readthrough.mp4",
+  "manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\silent-readthrough-20260912T053615233364Z-28f7ae23\\readthrough.json",
+  "output_dir": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\silent-readthrough-20260912T053615233364Z-28f7ae23",
+  "publication_manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\publication.json",
+  "source_pdf": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\2-trees-reading-edition.pdf",
+  "silent": true,
+  "narration": null,
+  "timing_basis": "Physical-page word counts and configurable reading pace; no speech synchronization",
+  "words_per_minute": 12000.0,
+  "minimum_seconds": 2.0,
+  "fps": 24,
+  "size": [
+    1920,
+    1080
+  ],
+  "duration_seconds": 2.0,
+  "frames": 48,
+  "pages": [
+    {
+      "page_number": 7,
+      "source_page_id": "codex-joint-geometry",
+      "title": "17. The triangle corner is a physical object",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0007.png",
+      "word_count": 37,
+      "start_seconds": 0.0,
+      "duration_seconds": 2.0,
+      "end_seconds": 2.0,
+      "frames": 48,
+      "text": "Figure 1\nTwo separate cyclic pinwheel triangles, each with three members. Two members remain at their\nshared axis. Colors identify member ownership.\nSource: Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print\ncolors are illustrative."
+    }
+  ],
+  "chapters": [
+    {
+      "source_page_id": "codex-joint-geometry",
+      "title": "17. The triangle corner is a physical object",
+      "start_seconds": 0.0,
+      "end_seconds": 2.0
+    }
+  ],
+  "text": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\silent-readthrough-20260912T053615233364Z-28f7ae23\\page-text.txt",
+  "chapter_metadata": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\silent-readthrough-20260912T053615233364Z-28f7ae23\\chapters.ffmetadata"
+}

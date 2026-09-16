@@ -1,0 +1,18 @@
+{
+  "plate": "panel-corner",
+  "title": "One corner, close up",
+  "tool": "film",
+  "concept": "The corner is a physical object, not a point.",
+  "change": "The wedge film's corner scene.",
+  "recipe": {
+    "lesson": "wedge",
+    "chapter": "corner",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

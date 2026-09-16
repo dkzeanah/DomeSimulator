@@ -1,0 +1,18 @@
+{
+  "plate": "wedge-split",
+  "title": "Split, not sawn",
+  "tool": "film",
+  "concept": "A radial split uses the log's round shape instead of fighting it.",
+  "change": "The wedge film's split scene.",
+  "recipe": {
+    "lesson": "wedge",
+    "chapter": "split",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

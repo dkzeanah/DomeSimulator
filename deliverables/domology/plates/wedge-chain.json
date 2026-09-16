@@ -1,0 +1,21 @@
+{
+  "plate": "wedge-chain",
+  "title": "The machines that drop out",
+  "tool": "film",
+  "concept": "One chainsaw replaces a sawmill's chain.",
+  "change": "The wedge argument's processing-chain scene, moved in.",
+  "recipe": {
+    "lesson": "why",
+    "chapter": "chain",
+    "progress": 0.9,
+    "camera": {
+      "zoom": 0.7
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

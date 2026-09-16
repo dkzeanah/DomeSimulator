@@ -7,10 +7,12 @@ registry is the only place that imports all of them.
 
 from __future__ import annotations
 
+from .lesson_all_domes import ALL_DOMES_LESSON
 from .lesson_build import BUILD_LESSON
 from .lesson_cuts import CUTS_LESSON
 from .lesson_drama import DRAMA_LESSON, SERIES_LESSON
 from .lesson_franken import FRANKEN_LESSON
+from .lesson_harvest import HARVEST_LESSON
 from .lesson_hex import HEX_LESSON
 from .lesson_kickstarter import KICKSTARTER_LESSON
 from .lesson_kickstarter_v2 import KICKSTARTER_V2_LESSON
@@ -25,12 +27,15 @@ from .lesson_hype import (
 from .lesson_line import LINE_LESSON
 from .lesson_lookbook import LOOKBOOK_LESSON
 from .lesson_master import MASTER_LESSON
+from .lesson_pine_value import PINE_VALUE_LESSON
 from .lesson_scratch import SCRATCH_LESSON
 from .lesson_wedge import WEDGE_LESSON
 from .lesson_wedge_why import WEDGE_WHY_LESSON
+from .lesson_why_build import WHY_BUILD_LESSON
 from .lesson_world import WORLD_LESSON
 from .lesson_world_chatgpt import WORLD_CHATGPT_LESSON
 from .lesson_zome import ZOME_LESSON
+from .lesson_pvtwo import PVTWO_LESSON
 from .lessons import TWO_V_LESSON, Lesson
 
 
@@ -44,7 +49,9 @@ LESSONS: dict[str, Lesson] = {
                    MASTER_LESSON, WORLD_LESSON, WORLD_CHATGPT_LESSON,
                    SCRATCH_LESSON, WEDGE_LESSON, DRAMA_LESSON,
                    SERIES_LESSON, LOOKBOOK_LESSON,
-                   WEDGE_WHY_LESSON)
+                   WEDGE_WHY_LESSON, HARVEST_LESSON, WHY_BUILD_LESSON,
+                   PINE_VALUE_LESSON,
+                   PVTWO_LESSON, ALL_DOMES_LESSON)
 }
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key
@@ -54,6 +61,10 @@ def get_lesson(key: str | None) -> Lesson:
     """Look a lesson up by key, with a clear error rather than a KeyError."""
     if not key:
         return LESSONS[DEFAULT_LESSON_KEY]
+    if key.startswith("teaser_") and key not in LESSONS:
+        # Every film's teaser is built on request from the film itself.
+        from .teasers import teaser_lesson
+        return teaser_lesson(key[len("teaser_"):])
     try:
         return LESSONS[key]
     except KeyError:

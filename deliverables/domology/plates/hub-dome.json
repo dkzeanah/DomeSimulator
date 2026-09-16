@@ -1,0 +1,18 @@
+{
+  "plate": "hub-dome",
+  "title": "A dome on hubs",
+  "tool": "film",
+  "concept": "Hub-and-strut puts all the geometry into the connectors.",
+  "change": "The construction masterclass's hub scene near its end.",
+  "recipe": {
+    "lesson": "build",
+    "chapter": "hubs",
+    "progress": 0.85
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

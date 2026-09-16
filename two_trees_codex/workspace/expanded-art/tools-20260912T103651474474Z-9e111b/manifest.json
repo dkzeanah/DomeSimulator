@@ -1,0 +1,205 @@
+{
+  "schema": "two-trees-native-tool-illustrations/v1",
+  "assets": [
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\line-floor.png",
+      "title": "Begin with the floor",
+      "purpose": "Show the base platform and floor before the shell hides access.",
+      "caption": "Begin with the floor. Native Assembly Line (Simple) scene at the floor station. This factory concept uses its own 3V dome and layered enclosure, and illustrates sequence rather than the two-tree project's measured schedule or final specification.",
+      "provenance": "Native Assembly Line (Simple) render; clean scene; source files unchanged.",
+      "recipe": {
+        "schema": "two-trees-native-tool-still/v1",
+        "tool": "Assembly Line (Simple)",
+        "size": [
+          2000,
+          1400
+        ],
+        "overlay": "none",
+        "source_hashes": {
+          "assembly_line_simple.py": "7a9ee092e699d655c399b2615f331d79010565fe12c5746a98f26b160dda752d",
+          "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+          "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63"
+        },
+        "phase_index": 1,
+        "stage": "floor",
+        "stage_progress": 0.98,
+        "cutaway": false,
+        "cam_target": [
+          0.0,
+          0.0,
+          2.4200000762939453
+        ],
+        "yaw_degrees": -70,
+        "pitch_degrees": 52,
+        "distance": 13.8
+      }
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\line-frame.png",
+      "title": "Raise the structural shell",
+      "purpose": "Show the geodesic frame on the transfer carriage before enclosure.",
+      "caption": "Raise the structural shell. Native Assembly Line (Simple) scene at the frame station. This factory concept uses its own 3V dome and layered enclosure, and illustrates sequence rather than the two-tree project's measured schedule or final specification.",
+      "provenance": "Native Assembly Line (Simple) render; clean scene; source files unchanged.",
+      "recipe": {
+        "schema": "two-trees-native-tool-still/v1",
+        "tool": "Assembly Line (Simple)",
+        "size": [
+          2000,
+          1400
+        ],
+        "overlay": "none",
+        "source_hashes": {
+          "assembly_line_simple.py": "7a9ee092e699d655c399b2615f331d79010565fe12c5746a98f26b160dda752d",
+          "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+          "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63"
+        },
+        "phase_index": 3,
+        "stage": "frame",
+        "stage_progress": 0.97,
+        "cutaway": false,
+        "cam_target": [
+          13.0,
+          0.0,
+          2.4200000762939453
+        ],
+        "yaw_degrees": -70,
+        "pitch_degrees": 32,
+        "distance": 13.8
+      }
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\line-services.png",
+      "title": "Route services while access is open",
+      "purpose": "Show floor and central service routing before insulation and finishes.",
+      "caption": "Route services while access is open. Native Assembly Line (Simple) scene at the power station. This factory concept uses its own 3V dome and layered enclosure, and illustrates sequence rather than the two-tree project's measured schedule or final specification.",
+      "provenance": "Native Assembly Line (Simple) render; clean scene; source files unchanged.",
+      "recipe": {
+        "schema": "two-trees-native-tool-still/v1",
+        "tool": "Assembly Line (Simple)",
+        "size": [
+          2000,
+          1400
+        ],
+        "overlay": "none",
+        "source_hashes": {
+          "assembly_line_simple.py": "7a9ee092e699d655c399b2615f331d79010565fe12c5746a98f26b160dda752d",
+          "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+          "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63"
+        },
+        "phase_index": 9,
+        "stage": "power",
+        "stage_progress": 0.99,
+        "cutaway": false,
+        "cam_target": [
+          52.0,
+          0.0,
+          2.4200000762939453
+        ],
+        "yaw_degrees": -70,
+        "pitch_degrees": 60,
+        "distance": 13.8
+      }
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\line-insulation.png",
+      "title": "Insulate after the concealed work",
+      "purpose": "Locate insulation in the build sequence with the shell cut away.",
+      "caption": "Insulate after the concealed work. Native Assembly Line (Simple) scene at the insulation station. This factory concept uses its own 3V dome and layered enclosure, and illustrates sequence rather than the two-tree project's measured schedule or final specification.",
+      "provenance": "Native Assembly Line (Simple) render; clean scene; source files unchanged.",
+      "recipe": {
+        "schema": "two-trees-native-tool-still/v1",
+        "tool": "Assembly Line (Simple)",
+        "size": [
+          2000,
+          1400
+        ],
+        "overlay": "none",
+        "source_hashes": {
+          "assembly_line_simple.py": "7a9ee092e699d655c399b2615f331d79010565fe12c5746a98f26b160dda752d",
+          "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+          "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63"
+        },
+        "phase_index": 13,
+        "stage": "insulation",
+        "stage_progress": 0.8,
+        "cutaway": true,
+        "cam_target": [
+          78.0,
+          0.0,
+          2.4200000762939453
+        ],
+        "yaw_degrees": -70,
+        "pitch_degrees": 55,
+        "distance": 13.8
+      }
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\line-interior.png",
+      "title": "Fit daily life inside the dome",
+      "purpose": "Reveal kitchen, bathroom, and sleeping areas through a roof cutaway.",
+      "caption": "Fit daily life inside the dome. Native Assembly Line (Simple) scene at the interior station. This factory concept uses its own 3V dome and layered enclosure, and illustrates sequence rather than the two-tree project's measured schedule or final specification.",
+      "provenance": "Native Assembly Line (Simple) render; clean scene; source files unchanged.",
+      "recipe": {
+        "schema": "two-trees-native-tool-still/v1",
+        "tool": "Assembly Line (Simple)",
+        "size": [
+          2000,
+          1400
+        ],
+        "overlay": "none",
+        "source_hashes": {
+          "assembly_line_simple.py": "7a9ee092e699d655c399b2615f331d79010565fe12c5746a98f26b160dda752d",
+          "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+          "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63"
+        },
+        "phase_index": 27,
+        "stage": "interior",
+        "stage_progress": 0.98,
+        "cutaway": true,
+        "cam_target": [
+          169.0,
+          0.0,
+          2.4200000762939453
+        ],
+        "yaw_degrees": -70,
+        "pitch_degrees": 62,
+        "distance": 13.8
+      }
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\line-completed.png",
+      "title": "The enclosed shell at the end of the line",
+      "purpose": "Compare the finished enclosure with the earlier structural frame.",
+      "caption": "The enclosed shell at the end of the line. Native Assembly Line (Simple) scene at the solar station. This factory concept uses its own 3V dome and layered enclosure, and illustrates sequence rather than the two-tree project's measured schedule or final specification.",
+      "provenance": "Native Assembly Line (Simple) render; clean scene; source files unchanged.",
+      "recipe": {
+        "schema": "two-trees-native-tool-still/v1",
+        "tool": "Assembly Line (Simple)",
+        "size": [
+          2000,
+          1400
+        ],
+        "overlay": "none",
+        "source_hashes": {
+          "assembly_line_simple.py": "7a9ee092e699d655c399b2615f331d79010565fe12c5746a98f26b160dda752d",
+          "dome_model.py": "fa7412cf17553a4501c5cdbf9962d8ee57608ac6a11a650b90068398fefe7977",
+          "mesh_builder.py": "bbd7ed8b70c211d981aef7c9c0788e84cf9aa6659e88dec5d69e320ea5197c63"
+        },
+        "phase_index": 29,
+        "stage": "solar",
+        "stage_progress": 0.99,
+        "cutaway": false,
+        "cam_target": [
+          182.0,
+          0.0,
+          2.4200000762939453
+        ],
+        "yaw_degrees": -70,
+        "pitch_degrees": 28,
+        "distance": 13.8
+      }
+    }
+  ],
+  "manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T103651474474Z-9e111b\\manifest.json",
+  "count": 6
+}

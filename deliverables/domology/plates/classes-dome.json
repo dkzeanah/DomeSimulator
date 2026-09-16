@@ -1,0 +1,18 @@
+{
+  "plate": "classes-dome",
+  "title": "Two lengths of board",
+  "tool": "film",
+  "concept": "A whole dome is two cut lengths.",
+  "change": "The masterclass opening, once the dome has drawn, beside its two boards.",
+  "recipe": {
+    "lesson": "2v",
+    "chapter": "welcome",
+    "progress": 0.92
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

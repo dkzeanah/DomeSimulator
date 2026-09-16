@@ -1,0 +1,18 @@
+{
+  "plate": "error",
+  "title": "Where error goes",
+  "tool": "film",
+  "concept": "Error accumulates around closed loops.",
+  "change": "The construction masterclass's error scene.",
+  "recipe": {
+    "lesson": "build",
+    "chapter": "error",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

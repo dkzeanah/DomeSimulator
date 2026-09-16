@@ -1,0 +1,21 @@
+{
+  "plate": "compound-cut",
+  "title": "Two angles at once",
+  "tool": "film",
+  "concept": "The compound cut is the hardest operation in a hubless dome.",
+  "change": "The compound-cut film's opening scene, moved in so its labels separate.",
+  "recipe": {
+    "lesson": "cuts",
+    "chapter": "two_angles",
+    "progress": 0.7,
+    "camera": {
+      "zoom": 0.75
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

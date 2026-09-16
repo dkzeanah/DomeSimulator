@@ -495,8 +495,18 @@ def _forge_specs() -> tuple[ObjectSpec, ...]:
     return tuple(out)
 
 
+def _lexicon_specs() -> tuple[ObjectSpec, ...]:
+    """The films' visual lexicon, placeable under a ``vo:`` prefix.
+
+    The pine that fells, the log that bucks and explodes into wedges, the
+    wedge member, the solved raw-wedge dome: the same drawings the masterclass
+    films use, each with its own knobs plus a position, turn and scale."""
+    from two_v_demo.visual_objects import presenter_object_specs
+    return presenter_object_specs()
+
+
 OBJECT_SPECS: tuple[ObjectSpec, ...] = (
-    _STAGE_SPECS + _ACCESSORY_SPECS + _forge_specs())
+    _STAGE_SPECS + _ACCESSORY_SPECS + _forge_specs() + _lexicon_specs())
 
 SPEC_BY_KEY: dict[str, ObjectSpec] = {s.key: s for s in OBJECT_SPECS}
 

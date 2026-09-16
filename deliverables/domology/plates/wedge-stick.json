@@ -1,0 +1,18 @@
+{
+  "plate": "wedge-stick",
+  "title": "A wedge against a board, in bending",
+  "tool": "film",
+  "concept": "A single wedge is a weaker beam; a triangulated frame does not ask it to be one.",
+  "change": "The wedge argument's stick scene.",
+  "recipe": {
+    "lesson": "why",
+    "chapter": "stick",
+    "progress": 0.85
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

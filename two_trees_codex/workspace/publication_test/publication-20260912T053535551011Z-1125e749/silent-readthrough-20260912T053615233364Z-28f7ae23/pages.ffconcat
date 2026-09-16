@@ -1,0 +1,6 @@
+ffconcat version 1.0
+file 'stills/page-0001.png'
+option framerate 24
+duration 2.000000000
+file 'stills/page-0001.png'
+option framerate 24

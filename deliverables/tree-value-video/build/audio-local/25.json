@@ -1,0 +1,608 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 0.175,
+    "position": 2,
+    "length": 5,
+    "text": "clear"
+  },
+  {
+    "start": 0.49,
+    "position": 8,
+    "length": 6,
+    "text": "public"
+  },
+  {
+    "start": 0.895,
+    "position": 15,
+    "length": 11,
+    "text": "explanation"
+  },
+  {
+    "start": 1.625,
+    "position": 27,
+    "length": 5,
+    "text": "names"
+  },
+  {
+    "start": 1.935,
+    "position": 33,
+    "length": 4,
+    "text": "both"
+  },
+  {
+    "start": 2.225,
+    "position": 38,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 2.355,
+    "position": 42,
+    "length": 3,
+    "text": "raw"
+  },
+  {
+    "start": 2.59,
+    "position": 46,
+    "length": 5,
+    "text": "input"
+  },
+  {
+    "start": 2.99,
+    "position": 52,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 3.11,
+    "position": 56,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 3.18,
+    "position": 60,
+    "length": 8,
+    "text": "function"
+  },
+  {
+    "start": 4.585,
+    "position": 70,
+    "length": 3,
+    "text": "You"
+  },
+  {
+    "start": 4.72,
+    "position": 74,
+    "length": 5,
+    "text": "could"
+  },
+  {
+    "start": 4.9,
+    "position": 80,
+    "length": 3,
+    "text": "say"
+  },
+  {
+    "start": 5.615,
+    "position": 85,
+    "length": 2,
+    "text": "In"
+  },
+  {
+    "start": 5.74,
+    "position": 88,
+    "length": 4,
+    "text": "this"
+  },
+  {
+    "start": 5.955,
+    "position": 93,
+    "length": 5,
+    "text": "model"
+  },
+  {
+    "start": 6.77,
+    "position": 100,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 6.85,
+    "position": 102,
+    "length": 13,
+    "text": "twenty-dollar"
+  },
+  {
+    "start": 7.53,
+    "position": 116,
+    "length": 8,
+    "text": "standing"
+  },
+  {
+    "start": 8.005,
+    "position": 125,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 8.235,
+    "position": 130,
+    "length": 5,
+    "text": "could"
+  },
+  {
+    "start": 8.42,
+    "position": 136,
+    "length": 10,
+    "text": "contribute"
+  },
+  {
+    "start": 8.99,
+    "position": 147,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 9.26,
+    "position": 153,
+    "length": 11,
+    "text": "twenty-four"
+  },
+  {
+    "start": 9.85,
+    "position": 165,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 10.26,
+    "position": 173,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 10.67,
+    "position": 181,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 10.765,
+    "position": 184,
+    "length": 7,
+    "text": "avoided"
+  },
+  {
+    "start": 11.16,
+    "position": 192,
+    "length": 10,
+    "text": "commercial"
+  },
+  {
+    "start": 11.665,
+    "position": 203,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 12.11,
+    "position": 211,
+    "length": 4,
+    "text": "cost"
+  },
+  {
+    "start": 12.99,
+    "position": 217,
+    "length": 6,
+    "text": "before"
+  },
+  {
+    "start": 13.32,
+    "position": 224,
+    "length": 10,
+    "text": "processing"
+  },
+  {
+    "start": 13.97,
+    "position": 235,
+    "length": 8,
+    "text": "expenses"
+  },
+  {
+    "start": 14.58,
+    "position": 244,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 14.7,
+    "position": 248,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 14.775,
+    "position": 252,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 15.185,
+    "position": 258,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 15.29,
+    "position": 261,
+    "length": 2,
+    "text": "my"
+  },
+  {
+    "start": 15.46,
+    "position": 264,
+    "length": 5,
+    "text": "labor"
+  },
+  {
+    "start": 16.725,
+    "position": 271,
+    "length": 4,
+    "text": "That"
+  },
+  {
+    "start": 16.925,
+    "position": 276,
+    "length": 7,
+    "text": "wording"
+  },
+  {
+    "start": 17.28,
+    "position": 284,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 17.43,
+    "position": 287,
+    "length": 8,
+    "text": "stronger"
+  },
+  {
+    "start": 17.87,
+    "position": 296,
+    "length": 4,
+    "text": "than"
+  },
+  {
+    "start": 18.04,
+    "position": 301,
+    "length": 7,
+    "text": "calling"
+  },
+  {
+    "start": 18.45,
+    "position": 309,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 18.57,
+    "position": 312,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 18.625,
+    "position": 314,
+    "length": 20,
+    "text": "five-thousand-dollar"
+  },
+  {
+    "start": 19.68,
+    "position": 335,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 20.49,
+    "position": 341,
+    "length": 7,
+    "text": "because"
+  },
+  {
+    "start": 20.93,
+    "position": 349,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 21.04,
+    "position": 352,
+    "length": 5,
+    "text": "tells"
+  },
+  {
+    "start": 21.365,
+    "position": 358,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 21.515,
+    "position": 362,
+    "length": 8,
+    "text": "audience"
+  },
+  {
+    "start": 21.935,
+    "position": 371,
+    "length": 5,
+    "text": "where"
+  },
+  {
+    "start": 22.1,
+    "position": 377,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 22.195,
+    "position": 381,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 22.63,
+    "position": 387,
+    "length": 8,
+    "text": "actually"
+  },
+  {
+    "start": 23.11,
+    "position": 396,
+    "length": 5,
+    "text": "comes"
+  },
+  {
+    "start": 23.45,
+    "position": 402,
+    "length": 4,
+    "text": "from"
+  },
+  {
+    "start": 24.71,
+    "position": 408,
+    "length": 8,
+    "text": "Geometry"
+  },
+  {
+    "start": 25.38,
+    "position": 417,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 25.495,
+    "position": 421,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 25.59,
+    "position": 423,
+    "length": 10,
+    "text": "repeatable"
+  },
+  {
+    "start": 26.115,
+    "position": 434,
+    "length": 6,
+    "text": "method"
+  },
+  {
+    "start": 26.495,
+    "position": 441,
+    "length": 3,
+    "text": "let"
+  },
+  {
+    "start": 26.69,
+    "position": 445,
+    "length": 8,
+    "text": "ordinary"
+  },
+  {
+    "start": 27.16,
+    "position": 454,
+    "length": 8,
+    "text": "material"
+  },
+  {
+    "start": 27.69,
+    "position": 463,
+    "length": 7,
+    "text": "perform"
+  },
+  {
+    "start": 28.125,
+    "position": 471,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 28.175,
+    "position": 473,
+    "length": 8,
+    "text": "valuable"
+  },
+  {
+    "start": 28.665,
+    "position": 482,
+    "length": 3,
+    "text": "job"
+  },
+  {
+    "start": 29.88,
+    "position": 487,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 29.995,
+    "position": 491,
+    "length": 5,
+    "text": "labor"
+  },
+  {
+    "start": 30.53,
+    "position": 498,
+    "length": 5,
+    "text": "tools"
+  },
+  {
+    "start": 31.13,
+    "position": 505,
+    "length": 9,
+    "text": "knowledge"
+  },
+  {
+    "start": 31.78,
+    "position": 516,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 31.895,
+    "position": 520,
+    "length": 6,
+    "text": "design"
+  },
+  {
+    "start": 32.265,
+    "position": 527,
+    "length": 7,
+    "text": "deserve"
+  },
+  {
+    "start": 32.61,
+    "position": 535,
+    "length": 5,
+    "text": "their"
+  },
+  {
+    "start": 32.77,
+    "position": 541,
+    "length": 5,
+    "text": "share"
+  },
+  {
+    "start": 33.12,
+    "position": 547,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 33.225,
+    "position": 550,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 33.38,
+    "position": 554,
+    "length": 11,
+    "text": "explanation"
+  },
+  {
+    "start": 35.04,
+    "position": 567,
+    "length": 3,
+    "text": "Any"
+  },
+  {
+    "start": 35.24,
+    "position": 571,
+    "length": 16,
+    "text": "financed-payment"
+  },
+  {
+    "start": 36.09,
+    "position": 588,
+    "length": 10,
+    "text": "comparison"
+  },
+  {
+    "start": 36.73,
+    "position": 599,
+    "length": 6,
+    "text": "should"
+  },
+  {
+    "start": 36.945,
+    "position": 606,
+    "length": 6,
+    "text": "appear"
+  },
+  {
+    "start": 37.26,
+    "position": 613,
+    "length": 10,
+    "text": "separately"
+  },
+  {
+    "start": 38.27,
+    "position": 625,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 38.425,
+    "position": 630,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 38.58,
+    "position": 634,
+    "length": 8,
+    "text": "interest"
+  },
+  {
+    "start": 39.055,
+    "position": 643,
+    "length": 4,
+    "text": "rate"
+  },
+  {
+    "start": 39.275,
+    "position": 648,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 39.42,
+    "position": 652,
+    "length": 4,
+    "text": "time"
+  },
+  {
+    "start": 39.735,
+    "position": 657,
+    "length": 6,
+    "text": "period"
+  },
+  {
+    "start": 40.14,
+    "position": 664,
+    "length": 8,
+    "text": "attached"
+  }
+]

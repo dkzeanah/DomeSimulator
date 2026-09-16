@@ -1,0 +1,18 @@
+{
+  "plate": "cutlist",
+  "title": "The whole cut list",
+  "tool": "film",
+  "concept": "The cut list of a 2V dome is two lines long.",
+  "change": "The masterclass cut-list scene at full reveal.",
+  "recipe": {
+    "lesson": "2v",
+    "chapter": "cut_list",
+    "progress": 0.92
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

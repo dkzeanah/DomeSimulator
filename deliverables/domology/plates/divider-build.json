@@ -1,0 +1,18 @@
+{
+  "plate": "divider-build",
+  "title": "Book Three",
+  "tool": "film",
+  "concept": "The work of Book Three.",
+  "change": "The wedge film's assembly, rendered as a full page.",
+  "recipe": {
+    "lesson": "wedge",
+    "chapter": "assemble",
+    "progress": 0.7
+  },
+  "size": [
+    2440,
+    3080
+  ],
+  "rendered": "2026-09-12T14:05:17",
+  "engine": "two_v_demo.app shots"
+}

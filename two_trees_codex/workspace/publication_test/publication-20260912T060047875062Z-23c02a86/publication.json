@@ -1,0 +1,50 @@
+{
+  "schema": "two-trees-publication/v1",
+  "created": "20260912T060048195845Z",
+  "title": "2 trees: Build your (D)Home",
+  "edition": "Publication test",
+  "pdf": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060047875062Z-23c02a86\\2-trees-reading-edition.pdf",
+  "pages": [
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060047875062Z-23c02a86\\pages\\page-0001.png",
+      "page_number": 1,
+      "source_page_id": "publication-cover",
+      "title": "2 trees: Build your (D)Home",
+      "kind": "cover",
+      "word_count": 29,
+      "text": "2 TREES / THE BOOK\n2 trees: Build your\n(D)Home\nWorking manuscript\nPublication test\nA reading edition of the current editable manuscript. Illustrations retain\ntheir captions and source notes.\n"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060047875062Z-23c02a86\\pages\\page-0002.png",
+      "page_number": 2,
+      "source_page_id": "publication-contents",
+      "title": "Contents",
+      "kind": "contents",
+      "word_count": 5,
+      "text": "Contents\n .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3\nA counted inventory"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060047875062Z-23c02a86\\pages\\page-0003.png",
+      "page_number": 3,
+      "source_page_id": "sample-inventory",
+      "title": "A counted inventory",
+      "kind": "chapter",
+      "word_count": 18,
+      "text": "CHAPTER / how-to / draft\nA counted inventory\nA tree becomes eight sections, and each section offers eight possible\nwedges."
+    }
+  ],
+  "manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060047875062Z-23c02a86\\publication.json",
+  "output_dir": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060047875062Z-23c02a86",
+  "page_size_points": [
+    432,
+    648
+  ],
+  "raster_dpi": 200,
+  "figures": [],
+  "source_updated": null,
+  "book_sha256": "62684b85994bb369f40bdde3a3cd933a21ea6b85c74bfe480a2a9663334bcd2c",
+  "book_source_ids": [
+    "sample-inventory"
+  ],
+  "layout_authority": "PDF; reader and video use its rendered physical pages"
+}

@@ -1,0 +1,16 @@
+{
+  "plate": "chart-comparison",
+  "title": "Where the saving stops",
+  "tool": "chart",
+  "concept": "The shape saves on the shell, not on what goes inside it.",
+  "change": "From al_build.building_comparisons, with the fit-out drawn as its own band.",
+  "recipe": {
+    "chart": "comparison"
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:03:53",
+  "source": "domology.charts"
+}

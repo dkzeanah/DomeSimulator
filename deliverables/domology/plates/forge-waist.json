@@ -1,0 +1,22 @@
+{
+  "plate": "forge-waist",
+  "title": "An hourglass and its waist",
+  "tool": "forge",
+  "concept": "Where triangles meet point to point, the joint belongs to the waist.",
+  "change": "The group editor on the first hourglass, moved in close on its braced waist.",
+  "recipe": {
+    "mode": "groups",
+    "group": [
+      "hourglass",
+      0
+    ],
+    "joint": "wood_brace",
+    "distance": 3.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

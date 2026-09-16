@@ -1,0 +1,18 @@
+{
+  "plate": "pine-ladder",
+  "title": "One pine, every rung",
+  "tool": "film",
+  "concept": "What a tree is worth depends on what you do with it.",
+  "change": "The $20 Pine's closing ladder.",
+  "recipe": {
+    "lesson": "pine_value",
+    "chapter": "closing",
+    "progress": 0.9
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

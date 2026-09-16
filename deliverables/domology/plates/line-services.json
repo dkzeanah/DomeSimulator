@@ -1,0 +1,21 @@
+{
+  "plate": "line-services",
+  "title": "Services before skin",
+  "tool": "line",
+  "concept": "Services go in while the frame is still open.",
+  "change": "The line at the power station, seen from above.",
+  "recipe": {
+    "stage": "power",
+    "fraction": 0.99,
+    "cutaway": false,
+    "yaw": -30.0,
+    "pitch": 50.0,
+    "distance": 12.5
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:35",
+  "tool_process": "line"
+}

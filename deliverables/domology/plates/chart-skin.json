@@ -1,0 +1,16 @@
+{
+  "plate": "chart-skin",
+  "title": "Less skin for the same floor",
+  "tool": "chart",
+  "concept": "Envelope per unit of floor is where a dome's efficiency lives.",
+  "change": "From domology.science, using al_build's comparison house.",
+  "recipe": {
+    "chart": "skin"
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:03:53",
+  "source": "domology.charts"
+}

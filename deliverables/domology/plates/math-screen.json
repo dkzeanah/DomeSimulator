@@ -1,0 +1,19 @@
+{
+  "plate": "math-screen",
+  "title": "A worksheet on screen",
+  "tool": "film",
+  "concept": "Every number on screen is computed, and shown being computed.",
+  "change": "Why Build This Way's sources chapter with its worksheet kept.",
+  "recipe": {
+    "lesson": "why_build",
+    "chapter": "sources",
+    "progress": 0.97,
+    "keep_overlay": true
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

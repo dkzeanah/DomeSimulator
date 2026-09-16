@@ -1,0 +1,18 @@
+{
+  "plate": "openings",
+  "title": "An opening in a triangulated shell",
+  "tool": "film",
+  "concept": "Openings are framed around triangles, not cut through them.",
+  "change": "The construction masterclass's openings scene.",
+  "recipe": {
+    "lesson": "build",
+    "chapter": "openings",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

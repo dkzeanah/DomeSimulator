@@ -32,6 +32,11 @@ class Chapter:
     chapter into a math screen: the picture stays live on the left and
     the chapter's equations are revealed step by step on a worksheet
     panel, with the last line presented as the conclusion."""
+    callouts: tuple = ()
+    """Figures that arrive with the words that say them: a tuple of
+    :class:`two_v_demo.callouts.Callout` and :class:`~two_v_demo.callouts.Tally`.
+    Empty for every film made before they existed, which is what keeps those
+    films re-rendering exactly as they shipped."""
 
 
 # A scene painter receives the live app, the two geometry batches it should
@@ -73,6 +78,18 @@ class Lesson:
     them overlap. ``declutter`` keeps the overlap but nudges labels far
     enough apart that text never lands on text. ``raw`` is the default
     so that re-rendering an already published video reproduces it."""
+    frame_fit: str = "auto"
+    """``auto`` re-fits the film to a screen of another shape -- a phone
+    frame for a landscape film, or the reverse -- by giving the camera room
+    and stacking the overlays (see :mod:`two_v_demo.frame`). ``off`` keeps
+    the authored framing exactly, for a lesson that composes its own shots
+    for each frame size, like the book's plates."""
+    ground: str = "grid"
+    """``grid`` lays the renderer's dark plate and grid under every scene.
+    ``off`` leaves the stage bare, for a lesson whose subjects bring their
+    own ground -- a Dome Creator building arrives standing on its own
+    foundation, and the plate only cuts across it. ``grid`` is the default so
+    every film made before this existed renders exactly as it shipped."""
 
     def validate(self) -> None:
         """Fail loudly at load time rather than mid-render."""
@@ -83,13 +100,21 @@ class Lesson:
                 f"lesson {self.key!r} has unknown label layout "
                 f"{self.label_layout!r}"
             )
+        if self.frame_fit not in ("auto", "off"):
+            raise ValueError(
+                f"lesson {self.key!r} has unknown frame fit {self.frame_fit!r}"
+            )
+        if self.ground not in ("grid", "off"):
+            raise ValueError(
+                f"lesson {self.key!r} has unknown ground {self.ground!r}"
+            )
         for chapter in self.chapters:
-            if chapter.overlay not in (None, "teaching", "hype", "math"):
+            if chapter.overlay not in (None, "teaching", "hype", "math", "plate"):
                 raise ValueError(
                     f"lesson {self.key!r} chapter {chapter.number} has "
                     f"unknown overlay {chapter.overlay!r}"
                 )
-        if self.style not in ("teaching", "hype"):
+        if self.style not in ("teaching", "hype", "plate"):
             raise ValueError(
                 f"lesson {self.key!r} has unknown style {self.style!r}"
             )
@@ -105,6 +130,14 @@ class Lesson:
                 raise ValueError(
                     f"lesson {self.key!r} chapter {chapter.number} has no narration"
                 )
+        # Callouts are checked here, at load, because a figure cued to words the
+        # voice never says, or a tally that does not add up, is exactly the kind of
+        # fault that otherwise surfaces ninety minutes into a render.
+        if any(chapter.callouts for chapter in self.chapters):
+            from .callouts import validate_chapter
+            for chapter in self.chapters:
+                if chapter.callouts:
+                    validate_chapter(chapter, self.style != "hype")
 
 
 CHAPTERS: tuple[Chapter, ...] = (

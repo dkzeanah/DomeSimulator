@@ -1,0 +1,241 @@
+{
+  "ok": true,
+  "final": false,
+  "problems": [],
+  "blocking": [
+    "placeholders remain: [AUTHOR NAME], [DEDICATION: a line of your own], [ISBN]",
+    "34 chapters are not written yet: how-to-read, enclose, triangle, icosahedron, subdivide, two-lengths, deficit, joints, weather, family, cost, simulator, factory, teaching, forge, frankendome, wedge, two-trees, corrections, plan, tools, harvest, jig, panels, seams, foundation, raise, close, inside, check, worksheets, sources, about, next"
+  ],
+  "warnings": [
+    "the page count is odd; KDP will add a blank page at the end"
+  ],
+  "requests": {},
+  "placeholders": [
+    "[AUTHOR NAME]",
+    "[DEDICATION: a line of your own]",
+    "[ISBN]"
+  ],
+  "statuses": {
+    "how-to-read": "missing",
+    "creed": "final",
+    "enclose": "missing",
+    "triangle": "missing",
+    "icosahedron": "missing",
+    "subdivide": "missing",
+    "two-lengths": "missing",
+    "deficit": "missing",
+    "joints": "missing",
+    "weather": "missing",
+    "family": "missing",
+    "cost": "missing",
+    "simulator": "missing",
+    "factory": "missing",
+    "teaching": "missing",
+    "forge": "missing",
+    "frankendome": "missing",
+    "wedge": "missing",
+    "two-trees": "missing",
+    "corrections": "missing",
+    "plan": "missing",
+    "tools": "missing",
+    "harvest": "missing",
+    "jig": "missing",
+    "panels": "missing",
+    "seams": "missing",
+    "foundation": "missing",
+    "raise": "missing",
+    "close": "missing",
+    "inside": "missing",
+    "check": "missing",
+    "worksheets": "missing",
+    "glossary": "generated",
+    "numbers": "generated",
+    "plates-index": "generated",
+    "sources": "missing",
+    "about": "missing",
+    "next": "missing"
+  },
+  "words": {
+    "how-to-read": [
+      0,
+      900
+    ],
+    "creed": [
+      342,
+      450
+    ],
+    "enclose": [
+      0,
+      2400
+    ],
+    "triangle": [
+      0,
+      1900
+    ],
+    "icosahedron": [
+      0,
+      2000
+    ],
+    "subdivide": [
+      0,
+      2100
+    ],
+    "two-lengths": [
+      0,
+      2200
+    ],
+    "deficit": [
+      0,
+      2000
+    ],
+    "joints": [
+      0,
+      2200
+    ],
+    "weather": [
+      0,
+      2000
+    ],
+    "family": [
+      0,
+      1900
+    ],
+    "cost": [
+      0,
+      2200
+    ],
+    "simulator": [
+      0,
+      1900
+    ],
+    "factory": [
+      0,
+      1900
+    ],
+    "teaching": [
+      0,
+      1800
+    ],
+    "forge": [
+      0,
+      2000
+    ],
+    "frankendome": [
+      0,
+      2000
+    ],
+    "wedge": [
+      0,
+      2300
+    ],
+    "two-trees": [
+      0,
+      2300
+    ],
+    "corrections": [
+      0,
+      1800
+    ],
+    "plan": [
+      0,
+      2200
+    ],
+    "tools": [
+      0,
+      900
+    ],
+    "harvest": [
+      0,
+      2200
+    ],
+    "jig": [
+      0,
+      1800
+    ],
+    "panels": [
+      0,
+      2100
+    ],
+    "seams": [
+      0,
+      1800
+    ],
+    "foundation": [
+      0,
+      1700
+    ],
+    "raise": [
+      0,
+      2000
+    ],
+    "close": [
+      0,
+      2000
+    ],
+    "inside": [
+      0,
+      1700
+    ],
+    "check": [
+      0,
+      1700
+    ],
+    "worksheets": [
+      0,
+      300
+    ],
+    "glossary": [
+      361,
+      0
+    ],
+    "numbers": [
+      642,
+      0
+    ],
+    "plates-index": [
+      1432,
+      0
+    ],
+    "sources": [
+      0,
+      800
+    ],
+    "about": [
+      0,
+      250
+    ],
+    "next": [
+      0,
+      450
+    ]
+  },
+  "total_words": 2777,
+  "kdp": {
+    "pages": 145,
+    "even": false,
+    "in_range": true,
+    "gutter_in": 0.75,
+    "gutter_needed_in": 0.375,
+    "outside_in": 0.55,
+    "outside_needed_in": 0.375,
+    "spine_in": 0.3403,
+    "spine_text": true,
+    "trim_in": [
+      8.0,
+      10.0
+    ],
+    "bleed_in": 0.125
+  },
+  "seconds_layout": 17.2,
+  "reader": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\build\\reader.html",
+  "pdf": {
+    "pages": 145,
+    "size_pt": [
+      585.12,
+      738.0
+    ],
+    "bytes": 20497591,
+    "path": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\build\\interior.pdf"
+  },
+  "seconds": 32.7
+}

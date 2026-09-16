@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-fe96f10220\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-fe96f10220\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-fe96f10220\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-fe96f10220\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-fe96f10220\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-fe96f10220\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\hubless-compound-cut-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-fe96f10220\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    5.935999999999999,
+    5.959999999999999,
+    3.9200000000000004,
+    5.239999999999999,
+    4.303999999999999,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    4.536,
+    4.56,
+    2.52,
+    3.84,
+    2.904,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    5.935999999999999,
+    11.895999999999997,
+    15.815999999999997,
+    21.055999999999997,
+    25.359999999999996,
+    30.359999999999996
+  ],
+  "speech_delay": 0.55
+}

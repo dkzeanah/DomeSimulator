@@ -1,0 +1,50 @@
+{
+  "schema": "two-trees-publication/v1",
+  "created": "20260912T060023716991Z",
+  "title": "2 trees: Build your (D)Home",
+  "edition": "Codex parallel draft",
+  "pdf": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060023091488Z-ad1ea5b0\\2-trees-reading-edition.pdf",
+  "pages": [
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060023091488Z-ad1ea5b0\\pages\\page-0001.png",
+      "page_number": 1,
+      "source_page_id": "publication-cover",
+      "title": "2 trees: Build your (D)Home",
+      "kind": "cover",
+      "word_count": 30,
+      "text": "2 TREES / THE BOOK\n2 trees: Build your\n(D)Home\nWorking manuscript\nCodex parallel draft\nA reading edition of the current editable manuscript. Illustrations retain\ntheir captions and source notes.\n"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060023091488Z-ad1ea5b0\\pages\\page-0002.png",
+      "page_number": 2,
+      "source_page_id": "publication-contents",
+      "title": "Contents",
+      "kind": "contents",
+      "word_count": 8,
+      "text": "Contents\n .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3\nDay 14 — The honest finish line"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060023091488Z-ad1ea5b0\\pages\\page-0003.png",
+      "page_number": 3,
+      "source_page_id": "codex-day-14",
+      "title": "Day 14 — The honest finish line",
+      "kind": "journal",
+      "word_count": 127,
+      "text": "JOURNAL / story / field record needed\nDay 14 — The honest finish\nline\nPlanned focus\nRecord the achieved condition, actual totals, remaining work, and final\nphotographs.\nThis is a proposed focus, not a claim that the work occurred on this day.\nRecord the actual sequence below.\nField facts\nDate: [record]\nStart / finish / breaks: [record]\nPeople and labor hours: [record]\nWeather and site conditions: [record]\nStarting inventory -> accepted output -> rejected / reworked -> remaining:\n[record]\nMeasurements and configuration used: [record]\nThe scene\nWhat can you now claim, and what remains to be done?\n[Write the actual scene in your own words: what you saw, tried, changed, and\nunderstood.]\nEvidence and next step\nPhoto or video IDs, captions, receipts, and notes: [record]\nWhat changed in the plan and why: [record]\nNext step: [record]"
+    }
+  ],
+  "manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060023091488Z-ad1ea5b0\\publication.json",
+  "output_dir": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T060023091488Z-ad1ea5b0",
+  "page_size_points": [
+    432,
+    648
+  ],
+  "raster_dpi": 200,
+  "figures": [],
+  "source_updated": "20260912T055703394277Z",
+  "book_sha256": "3e77930e50b61cc1070ba731844264f1eba03c46bbf3514b8596ea46c8a0701b",
+  "book_source_ids": [
+    "codex-day-14"
+  ],
+  "layout_authority": "PDF; reader and video use its rendered physical pages"
+}

@@ -1,0 +1,7 @@
+# Transient run state: one folder per session of logs and manifests, copies of
+# files that are themselves in version control, and lock files. All of it is
+# regenerated on the next run, so none of it belongs in a commit.
+runs/
+backups/
+locks/
+__pycache__/

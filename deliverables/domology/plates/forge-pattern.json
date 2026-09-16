@@ -1,0 +1,16 @@
+{
+  "plate": "forge-pattern",
+  "title": "A pentagon, laid flat",
+  "tool": "chart",
+  "concept": "A doubly curved cover is cut from flat stock by closing darts.",
+  "change": "From Dome Forge's cover-pattern geometry, dome_forge.patterns.",
+  "recipe": {
+    "chart": "pattern"
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:03:54",
+  "source": "domology.charts"
+}

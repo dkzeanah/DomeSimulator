@@ -1669,12 +1669,282 @@ def main() -> int:
     ttk.Separator(foot).pack(fill="x")
     launch_button(foot, "Run Flatten", go_flatten)
 
+    # ---- The book -------------------------------------------------------
+
+    # ---- Project Agent ----------------------------------------------------
+
+    t, body, foot = scrollable_tab("Project Agent")
+    intro(body,
+         "Tell the project what you want in plain words and let it operate "
+         "the other tools for you. This is a small assistant that knows only "
+         "this project: it holds a map of every lesson, preset, figure and "
+         "number the repository can produce, it runs the real tools to make "
+         "stills, films and books, and — the important part — it never "
+         "invents a number. Anything it cannot compute becomes a written "
+         "question in a ledger you answer once, and the answer is then "
+         "carried through with its source attached.\n\n"
+         "It works with no account and no internet: the built-in command "
+         "parser handles everything below. Setting PROJECT_AGENT_API_KEY "
+         "additionally lets you type free-form requests and have a language "
+         "model choose the steps, including a local one (Ollama, LM Studio) "
+         "via PROJECT_AGENT_API_BASE.\n\n"
+         "Start with Self-test: it proves the agent can still reach every "
+         "tool it depends on and takes a few seconds.")
+
+    section(body, "What to do")
+    agent_action = LabeledCombo(
+        body, "Action",
+        ["chat", "selftest", "sync", "produce", "facts", "ledger", "ask",
+         "demo"],
+        "chat")
+    agent_action.pack(fill="x", pady=3)
+    action_help(body, agent_action, {
+        "chat": "open the agent's chat window and talk to it. Opens a "
+                "separate console window, because this log pane has "
+                "nowhere to type. Say 'help' in there for the commands.",
+        "selftest": "no window: check that the agent's own machinery is "
+                    "sound — the tool list, the number map, the ledger, "
+                    "and the three engine files it registers new films "
+                    "into. Run this first if anything behaves oddly.",
+        "sync": "no window: rebuild the agent's map of the project by "
+                "reading the repository itself. Do this after adding a "
+                "lesson, preset or deliverable so the agent knows about it.",
+        "produce": "no window: run one complete production recipe end to "
+                   "end, with its safety gates. Pick the recipe and fill "
+                   "in the fields below.",
+        "facts": "no window: compute one figure from the project's own "
+                 "validated code and print it, e.g. what one tree yields. "
+                 "Put the figure's name in 'Figure id' below.",
+        "ledger": "no window: print the resolution ledger — every unknown "
+                  "the agent has filed, what is still open, and what was "
+                  "answered with which source.",
+        "ask": "no window: run a single instruction and stop, instead of "
+               "opening the chat window. Put the instruction in 'One "
+               "instruction' below.",
+        "demo": "no window: the guided end-to-end demonstration — map the "
+                "project, derive two figures, render stills, find gaps in "
+                "a sample script, close one, and write a constants file. "
+                "Takes a few minutes and needs working 3-D drivers.",
+    })
+
+    section(body, "Recipe (Action = produce)")
+    agent_recipe = LabeledCombo(
+        body, "Recipe", ["", "claims", "stills", "book", "presenter", "film"],
+        "")
+    agent_recipe.pack(fill="x", pady=3)
+    action_help(body, agent_recipe, {
+        "": "pick one — only used when the Action above is 'produce'.",
+        "claims": "read a piece of writing and file every number in it as "
+                  "a question to answer: computed, sourced, estimated, or "
+                  "to be cut. The honesty pass.",
+        "stills": "render still pictures from any of the 3-D worlds and "
+                  "open the folder so you can look at them.",
+        "book": "take the book through its gates: check everything, draw "
+                "the figures, and build it as a readable page or PDF.",
+        "presenter": "turn a written brief into a staged explainer with "
+                     "moving objects, render stills, optionally export it.",
+        "film": "the full teaching-film loop: find the gaps in your "
+                "script, create the lesson files, fill in the narration, "
+                "register the film, prove it, render one still per "
+                "chapter, and only then export.",
+    })
+
+    section(body, "Film / presenter details")
+    agent_key = LabeledEntry(body, "Film key", "",
+                             placeholder="e.g. pine_value")
+    agent_key.pack(fill="x", pady=3)
+    note(body, "Short lowercase name for the film, used for its files. "
+               "Letters, digits and underscores only.")
+    agent_title = LabeledEntry(body, "Title", "",
+                               placeholder="e.g. The Twenty Dollar Pine")
+    agent_title.pack(fill="x", pady=3)
+    agent_source = PathRow(body, "Script / text file", "", mode="open",
+                           filetypes=(("Text", "*.txt *.md"),
+                                      ("All files", "*.*")),
+                           placeholder="the writing to work from")
+    agent_source.pack(fill="x", pady=3)
+    note(body, "Plain text. Its sentences fill the chapters, and every "
+               "number in it is filed as a question before anything is "
+               "rendered.")
+    agent_prompt = LabeledEntry(body, "Brief (presenter)", "",
+                                placeholder="three scenes about airflow…")
+    agent_prompt.pack(fill="x", pady=3)
+    agent_export = PathRow(body, "Export video to", "", mode="save",
+                           filetypes=(("MP4 video", "*.mp4"),),
+                           placeholder="leave blank to stop before export")
+    agent_export.pack(fill="x", pady=3)
+    note(body, "Leave this blank the first time. The agent renders stills "
+               "and opens them for you to check; fill it in and run again "
+               "when the film is worth the hours an export costs.")
+
+    section(body, "Stills and figures")
+    agent_backend = LabeledCombo(
+        body, "World (stills recipe)",
+        ["", "masterclass", "presenter", "dome_forge", "assembly_line"], "")
+    agent_backend.pack(fill="x", pady=3)
+    agent_times = LabeledEntry(body, "Times (seconds)", "",
+                               placeholder="e.g. 30,90")
+    agent_times.pack(fill="x", pady=3)
+    agent_lesson = LabeledEntry(body, "Lesson key", "",
+                                placeholder="e.g. 2v")
+    agent_lesson.pack(fill="x", pady=3)
+    agent_fact = LabeledEntry(body, "Figure id (facts)", "",
+                              placeholder="e.g. wedge.tree_yield")
+    agent_fact.pack(fill="x", pady=3)
+    agent_text = LabeledEntry(body, "One instruction (ask)", "",
+                              placeholder="e.g. list lessons")
+    agent_text.pack(fill="x", pady=3)
+
+    section(body, "Anything else")
+    agent_extra = LabeledEntry(body, "Extra settings", "",
+                               placeholder='e.g. size=1920x1080 pdf')
+    agent_extra.pack(fill="x", pady=3)
+    note(body, "Passed straight through to the recipe as name=value pairs. "
+               "Only needed for the less common options.")
+
+    def go_agent() -> None:
+        cfg = {"action": agent_action.get()}
+        for name, field in (("recipe", agent_recipe), ("key", agent_key),
+                            ("title", agent_title), ("source", agent_source),
+                            ("prompt", agent_prompt), ("export", agent_export),
+                            ("backend", agent_backend), ("times", agent_times),
+                            ("lesson", agent_lesson), ("fact", agent_fact),
+                            ("text", agent_text),
+                            ("extra_params", agent_extra)):
+            value = field.get()
+            if value:
+                cfg[name] = value
+        run("project_agent_cli.py", "project_agent", cfg, "Project Agent")
+
+    ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Run Project Agent", go_agent)
+
+    # ---- Book: 2 Trees ----------------------------------------------------
+
+    t, body, foot = scrollable_tab("Book: 2 Trees")
+    intro(body,
+         "The whole project, written down as a book — \"2 Trees: Build "
+         "Your (D)Home\". One small chainsaw, two pines, a hundred and "
+         "twenty wedge struts and a geodesic dome in a fortnight, told "
+         "three ways at once: the story of how the method was found, the "
+         "manual for doing it yourself, and the explanation of why it "
+         "works at all. This tab opens Book Studio, which is the desk the "
+         "book is written at: the outline of every part and chapter, an "
+         "editor with each chapter's page plan beside it, the list of "
+         "every figure and a button to draw them, and the export that "
+         "turns the manuscript into one document.\n\n"
+         "The important idea: you never type a number into the book. The "
+         "Numbers tab lists every figure the project can compute — the "
+         "dome's diameter, the recovery percentage, the struts one tree "
+         "gives — and you drop one into a sentence as a token. Every time "
+         "the book is exported it fills those in from the same code the "
+         "3-D tools use, so the book and the tools can never end up "
+         "disagreeing with each other.")
+
+    section(body, "What to open")
+    book_action = LabeledCombo(
+        body, "Action",
+        ["studio", "read_html", "read_pdf", "outline", "audit", "progress",
+         "scaffold", "render_figures", "export", "selftest"],
+        "studio")
+    book_action.pack(fill="x", pady=3)
+    action_help(body, book_action, {
+        "studio": "open Book Studio. This is the normal choice: the "
+                  "outline, the editor, the live numbers, the figures, a "
+                  "Read tab that shows the book the way a reader sees it, "
+                  "and the buttons that build it, all in one window.",
+        "read_html": "no window: build the whole book as one self-contained "
+                     "web page with every picture inside it, and open it. "
+                     "This is the easiest way to read it — and in the "
+                     "browser, Ctrl+P then 'Save as PDF' gives you the "
+                     "best-looking printed version there is.",
+        "read_pdf": "no window: build the whole book as a PDF directly and "
+                    "open it. Uses Chrome if this machine has one (which "
+                    "looks best) and falls back to a built-in typesetter if "
+                    "not; the log says which it used.",
+        "outline": "no window: print the whole outline — every part, "
+                   "chapter and page with its word target — into the log "
+                   "below, then quit.",
+        "audit": "no window: print every number the book states and the "
+                 "calculation behind it, including the ones that do not "
+                 "flatter the argument. This is the page-proof for the "
+                 "arithmetic.",
+        "progress": "no window: print how many words of each chapter are "
+                    "written against how many were planned, and list any "
+                    "broken number tokens.",
+        "scaffold": "no window: create a starting file for every chapter "
+                    "that does not have one yet, each carrying its own "
+                    "page plan. Never touches a chapter you have already "
+                    "written in.",
+        "render_figures": "no window: draw every illustration in the book "
+                          "from the project's own geometry and write them "
+                          "into deliverables/book/figures. Takes a few "
+                          "minutes; the 3-D ones are the slow part.",
+        "export": "no window: write the book out as Markdown source, for "
+                  "editing somewhere else. For reading, use read_html or "
+                  "read_pdf instead. Never overwrites an earlier export.",
+        "selftest": "no window: check everything — the arithmetic, the "
+                    "outline, every number token, every figure and the "
+                    "manuscript machinery — and say what passed. Run this "
+                    "before you send the book anywhere.",
+    })
+
+    section(body, "Where the writing lives")
+    book_manuscript_dir = PathRow(
+        body, "Manuscript folder", "", mode="dir",
+        placeholder="leave blank for book/manuscript/")
+    book_manuscript_dir.pack(fill="x", pady=3)
+    note(body, "One plain Markdown file per chapter. Blank uses the "
+               "project's own book/manuscript/ folder. Point this "
+               "somewhere else to work on a copy without touching the "
+               "real manuscript. These are ordinary files: you can open "
+               "them in any editor, and they outlive this program.")
+
+    book_export_dir = PathRow(
+        body, "Export folder", "", mode="dir",
+        placeholder="leave blank for deliverables/book/")
+    book_export_dir.pack(fill="x", pady=3)
+    note(body, "Where finished exports and rendered figures are written. "
+               "Nothing here is ever overwritten: exporting twice gives "
+               "you a second file, not a replaced one.")
+
+    section(body, "Starting point")
+    book_chapter = LabeledEntry(body, "Open at chapter", "1",
+                                placeholder="e.g. 18")
+    book_chapter.pack(fill="x", pady=3)
+    note(body, "Which chapter Book Studio opens on. Only used by the "
+               "'studio' action; you can change chapters freely once it "
+               "is open.")
+
+    book_strict = CheckRow(
+        body, "Refuse to export if a number token is misspelt", True)
+    book_strict.pack(fill="x", pady=3)
+    note(body, "On, an export stops and tells you which token is wrong. "
+               "Off, it exports anyway and prints [?name] where the "
+               "number should have been, which is useful for reading a "
+               "rough draft and wrong for anything you send anybody.")
+
+    def go_book():
+        action = book_action.get()
+        cfg = {"action": action}
+        if book_manuscript_dir.get():
+            cfg["manuscript_dir"] = book_manuscript_dir.get()
+        if book_export_dir.get():
+            cfg["export_dir"] = book_export_dir.get()
+        if book_chapter.get():
+            cfg["chapter"] = book_chapter.get()
+        cfg["strict"] = bool(book_strict.get())
+        run("book_studio.py", "book_studio", cfg,
+            f"Book: 2 Trees ({action})")
+    ttk.Separator(foot).pack(fill="x")
+    launch_button(foot, "Open the book", go_book)
+
     if smoketest:
         # Build everything, click every launch button (with real process
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 11
+        expected = 13
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected, smoke_callbacks

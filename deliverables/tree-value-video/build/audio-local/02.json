@@ -1,0 +1,656 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 3,
+    "text": "Our"
+  },
+  {
+    "start": 0.25,
+    "position": 4,
+    "length": 7,
+    "text": "example"
+  },
+  {
+    "start": 0.74,
+    "position": 12,
+    "length": 6,
+    "text": "starts"
+  },
+  {
+    "start": 1.17,
+    "position": 19,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 1.32,
+    "position": 24,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 1.375,
+    "position": 26,
+    "length": 4,
+    "text": "pine"
+  },
+  {
+    "start": 1.68,
+    "position": 31,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 1.975,
+    "position": 37,
+    "length": 7,
+    "text": "fifteen"
+  },
+  {
+    "start": 2.47,
+    "position": 45,
+    "length": 6,
+    "text": "inches"
+  },
+  {
+    "start": 2.835,
+    "position": 52,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 2.955,
+    "position": 55,
+    "length": 8,
+    "text": "diameter"
+  },
+  {
+    "start": 3.545,
+    "position": 64,
+    "length": 2,
+    "text": "at"
+  },
+  {
+    "start": 3.67,
+    "position": 67,
+    "length": 6,
+    "text": "breast"
+  },
+  {
+    "start": 4.01,
+    "position": 74,
+    "length": 6,
+    "text": "height"
+  },
+  {
+    "start": 4.755,
+    "position": 82,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 4.835,
+    "position": 86,
+    "length": 8,
+    "text": "standard"
+  },
+  {
+    "start": 5.345,
+    "position": 95,
+    "length": 9,
+    "text": "reference"
+  },
+  {
+    "start": 5.785,
+    "position": 105,
+    "length": 6,
+    "text": "height"
+  },
+  {
+    "start": 6.055,
+    "position": 112,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 6.19,
+    "position": 116,
+    "length": 9,
+    "text": "measuring"
+  },
+  {
+    "start": 6.64,
+    "position": 126,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 6.695,
+    "position": 128,
+    "length": 5,
+    "text": "trunk"
+  },
+  {
+    "start": 8.04,
+    "position": 135,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 8.12,
+    "position": 139,
+    "length": 6,
+    "text": "source"
+  },
+  {
+    "start": 8.485,
+    "position": 146,
+    "length": 7,
+    "text": "assumes"
+  },
+  {
+    "start": 8.955,
+    "position": 154,
+    "length": 7,
+    "text": "roughly"
+  },
+  {
+    "start": 9.33,
+    "position": 162,
+    "length": 5,
+    "text": "sixty"
+  },
+  {
+    "start": 9.775,
+    "position": 168,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 10.065,
+    "position": 173,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 10.17,
+    "position": 176,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 10.57,
+    "position": 183,
+    "length": 4,
+    "text": "stem"
+  },
+  {
+    "start": 10.92,
+    "position": 188,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 11.035,
+    "position": 192,
+    "length": 6,
+    "text": "around"
+  },
+  {
+    "start": 11.42,
+    "position": 199,
+    "length": 12,
+    "text": "thirty-seven"
+  },
+  {
+    "start": 12.075,
+    "position": 212,
+    "length": 5,
+    "text": "cubic"
+  },
+  {
+    "start": 12.47,
+    "position": 218,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 12.76,
+    "position": 223,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 12.86,
+    "position": 226,
+    "length": 5,
+    "text": "solid"
+  },
+  {
+    "start": 13.25,
+    "position": 232,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 14.455,
+    "position": 238,
+    "length": 5,
+    "text": "Trees"
+  },
+  {
+    "start": 14.77,
+    "position": 244,
+    "length": 5,
+    "text": "taper"
+  },
+  {
+    "start": 15.625,
+    "position": 251,
+    "length": 2,
+    "text": "so"
+  },
+  {
+    "start": 15.835,
+    "position": 254,
+    "length": 4,
+    "text": "this"
+  },
+  {
+    "start": 16.05,
+    "position": 259,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 16.175,
+    "position": 262,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 16.25,
+    "position": 264,
+    "length": 5,
+    "text": "yield"
+  },
+  {
+    "start": 16.54,
+    "position": 270,
+    "length": 10,
+    "text": "assumption"
+  },
+  {
+    "start": 17.555,
+    "position": 282,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 17.795,
+    "position": 286,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 17.89,
+    "position": 290,
+    "length": 6,
+    "text": "volume"
+  },
+  {
+    "start": 18.35,
+    "position": 297,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 18.445,
+    "position": 300,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 18.5,
+    "position": 302,
+    "length": 7,
+    "text": "perfect"
+  },
+  {
+    "start": 19.0,
+    "position": 310,
+    "length": 8,
+    "text": "cylinder"
+  },
+  {
+    "start": 20.415,
+    "position": 320,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 20.515,
+    "position": 324,
+    "length": 4,
+    "text": "dome"
+  },
+  {
+    "start": 20.79,
+    "position": 329,
+    "length": 8,
+    "text": "scenario"
+  },
+  {
+    "start": 21.35,
+    "position": 338,
+    "length": 4,
+    "text": "uses"
+  },
+  {
+    "start": 21.735,
+    "position": 343,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 21.955,
+    "position": 347,
+    "length": 8,
+    "text": "suitable"
+  },
+  {
+    "start": 22.41,
+    "position": 356,
+    "length": 5,
+    "text": "trees"
+  },
+  {
+    "start": 23.265,
+    "position": 363,
+    "length": 13,
+    "text": "approximately"
+  },
+  {
+    "start": 24.03,
+    "position": 377,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 24.245,
+    "position": 381,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 24.645,
+    "position": 389,
+    "length": 6,
+    "text": "twenty"
+  },
+  {
+    "start": 25.015,
+    "position": 396,
+    "length": 5,
+    "text": "frame"
+  },
+  {
+    "start": 25.355,
+    "position": 402,
+    "length": 7,
+    "text": "members"
+  },
+  {
+    "start": 26.24,
+    "position": 411,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 26.345,
+    "position": 415,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 26.395,
+    "position": 417,
+    "length": 25,
+    "text": "three-hundred-square-foot"
+  },
+  {
+    "start": 27.595,
+    "position": 443,
+    "length": 10,
+    "text": "structural"
+  },
+  {
+    "start": 28.175,
+    "position": 454,
+    "length": 5,
+    "text": "shell"
+  },
+  {
+    "start": 29.475,
+    "position": 461,
+    "length": 2,
+    "text": "It"
+  },
+  {
+    "start": 29.58,
+    "position": 464,
+    "length": 7,
+    "text": "assigns"
+  },
+  {
+    "start": 30.02,
+    "position": 472,
+    "length": 11,
+    "text": "forty-eight"
+  },
+  {
+    "start": 30.57,
+    "position": 484,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 30.975,
+    "position": 492,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 31.385,
+    "position": 500,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 31.5,
+    "position": 503,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 31.595,
+    "position": 507,
+    "length": 10,
+    "text": "commercial"
+  },
+  {
+    "start": 32.1,
+    "position": 518,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 32.545,
+    "position": 526,
+    "length": 8,
+    "text": "function"
+  },
+  {
+    "start": 32.98,
+    "position": 535,
+    "length": 5,
+    "text": "those"
+  },
+  {
+    "start": 33.22,
+    "position": 541,
+    "length": 7,
+    "text": "members"
+  },
+  {
+    "start": 33.64,
+    "position": 549,
+    "length": 5,
+    "text": "could"
+  },
+  {
+    "start": 33.84,
+    "position": 555,
+    "length": 7,
+    "text": "replace"
+  },
+  {
+    "start": 35.315,
+    "position": 564,
+    "length": 4,
+    "text": "That"
+  },
+  {
+    "start": 35.515,
+    "position": 569,
+    "length": 6,
+    "text": "figure"
+  },
+  {
+    "start": 35.925,
+    "position": 576,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 36.075,
+    "position": 579,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 36.14,
+    "position": 581,
+    "length": 7,
+    "text": "working"
+  },
+  {
+    "start": 36.51,
+    "position": 589,
+    "length": 10,
+    "text": "comparison"
+  },
+  {
+    "start": 37.15,
+    "position": 600,
+    "length": 8,
+    "text": "supplied"
+  },
+  {
+    "start": 37.605,
+    "position": 609,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 37.74,
+    "position": 614,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 37.82,
+    "position": 618,
+    "length": 7,
+    "text": "project"
+  },
+  {
+    "start": 39.295,
+    "position": 627,
+    "length": 2,
+    "text": "It"
+  },
+  {
+    "start": 39.41,
+    "position": 630,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 39.545,
+    "position": 633,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 39.77,
+    "position": 637,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 39.83,
+    "position": 639,
+    "length": 10,
+    "text": "contractor"
+  },
+  {
+    "start": 40.5,
+    "position": 650,
+    "length": 5,
+    "text": "quote"
+  },
+  {
+    "start": 40.84,
+    "position": 656,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 40.985,
+    "position": 659,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 41.085,
+    "position": 663,
+    "length": 4,
+    "text": "cost"
+  },
+  {
+    "start": 41.465,
+    "position": 668,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 41.56,
+    "position": 671,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 41.62,
+    "position": 673,
+    "length": 9,
+    "text": "completed"
+  },
+  {
+    "start": 42.15,
+    "position": 683,
+    "length": 4,
+    "text": "home"
+  }
+]

@@ -1,0 +1,776 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 8,
+    "text": "Stumpage"
+  },
+  {
+    "start": 0.625,
+    "position": 9,
+    "length": 5,
+    "text": "means"
+  },
+  {
+    "start": 0.935,
+    "position": 15,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 1.025,
+    "position": 19,
+    "length": 5,
+    "text": "price"
+  },
+  {
+    "start": 1.395,
+    "position": 25,
+    "length": 4,
+    "text": "paid"
+  },
+  {
+    "start": 1.675,
+    "position": 30,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 1.81,
+    "position": 34,
+    "length": 8,
+    "text": "standing"
+  },
+  {
+    "start": 2.285,
+    "position": 43,
+    "length": 6,
+    "text": "timber"
+  },
+  {
+    "start": 2.61,
+    "position": 50,
+    "length": 6,
+    "text": "before"
+  },
+  {
+    "start": 2.96,
+    "position": 57,
+    "length": 10,
+    "text": "harvesting"
+  },
+  {
+    "start": 3.545,
+    "position": 68,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 3.69,
+    "position": 72,
+    "length": 9,
+    "text": "transport"
+  },
+  {
+    "start": 5.225,
+    "position": 83,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 5.355,
+    "position": 85,
+    "length": 5,
+    "text": "buyer"
+  },
+  {
+    "start": 5.695,
+    "position": 91,
+    "length": 5,
+    "text": "still"
+  },
+  {
+    "start": 5.995,
+    "position": 97,
+    "length": 3,
+    "text": "has"
+  },
+  {
+    "start": 6.24,
+    "position": 101,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 6.34,
+    "position": 104,
+    "length": 4,
+    "text": "fell"
+  },
+  {
+    "start": 6.61,
+    "position": 109,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 6.71,
+    "position": 113,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 7.52,
+    "position": 119,
+    "length": 4,
+    "text": "pull"
+  },
+  {
+    "start": 7.75,
+    "position": 124,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 7.87,
+    "position": 127,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 8.005,
+    "position": 130,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 8.1,
+    "position": 132,
+    "length": 7,
+    "text": "loading"
+  },
+  {
+    "start": 8.48,
+    "position": 140,
+    "length": 4,
+    "text": "area"
+  },
+  {
+    "start": 9.295,
+    "position": 146,
+    "length": 4,
+    "text": "haul"
+  },
+  {
+    "start": 9.575,
+    "position": 151,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 10.165,
+    "position": 155,
+    "length": 4,
+    "text": "mill"
+  },
+  {
+    "start": 10.42,
+    "position": 160,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 11.01,
+    "position": 164,
+    "length": 3,
+    "text": "dry"
+  },
+  {
+    "start": 11.27,
+    "position": 168,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 11.365,
+    "position": 172,
+    "length": 6,
+    "text": "boards"
+  },
+  {
+    "start": 11.945,
+    "position": 180,
+    "length": 4,
+    "text": "hold"
+  },
+  {
+    "start": 12.235,
+    "position": 185,
+    "length": 9,
+    "text": "inventory"
+  },
+  {
+    "start": 13.075,
+    "position": 196,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 13.205,
+    "position": 200,
+    "length": 4,
+    "text": "find"
+  },
+  {
+    "start": 13.55,
+    "position": 205,
+    "length": 9,
+    "text": "customers"
+  },
+  {
+    "start": 15.125,
+    "position": 216,
+    "length": 8,
+    "text": "Builders"
+  },
+  {
+    "start": 15.52,
+    "position": 225,
+    "length": 4,
+    "text": "must"
+  },
+  {
+    "start": 15.785,
+    "position": 230,
+    "length": 4,
+    "text": "then"
+  },
+  {
+    "start": 16.005,
+    "position": 235,
+    "length": 4,
+    "text": "turn"
+  },
+  {
+    "start": 16.29,
+    "position": 240,
+    "length": 5,
+    "text": "those"
+  },
+  {
+    "start": 16.525,
+    "position": 246,
+    "length": 6,
+    "text": "boards"
+  },
+  {
+    "start": 16.88,
+    "position": 253,
+    "length": 4,
+    "text": "into"
+  },
+  {
+    "start": 17.1,
+    "position": 258,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 17.165,
+    "position": 260,
+    "length": 9,
+    "text": "structure"
+  },
+  {
+    "start": 18.615,
+    "position": 271,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 18.695,
+    "position": 275,
+    "length": 6,
+    "text": "source"
+  },
+  {
+    "start": 19.045,
+    "position": 282,
+    "length": 5,
+    "text": "cites"
+  },
+  {
+    "start": 19.385,
+    "position": 288,
+    "length": 7,
+    "text": "Alabama"
+  },
+  {
+    "start": 19.935,
+    "position": 296,
+    "length": 4,
+    "text": "pine"
+  },
+  {
+    "start": 20.28,
+    "position": 301,
+    "length": 9,
+    "text": "sawtimber"
+  },
+  {
+    "start": 20.875,
+    "position": 311,
+    "length": 2,
+    "text": "at"
+  },
+  {
+    "start": 20.99,
+    "position": 314,
+    "length": 7,
+    "text": "roughly"
+  },
+  {
+    "start": 21.365,
+    "position": 322,
+    "length": 9,
+    "text": "seventeen"
+  },
+  {
+    "start": 21.985,
+    "position": 332,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 22.105,
+    "position": 335,
+    "length": 10,
+    "text": "twenty-one"
+  },
+  {
+    "start": 22.69,
+    "position": 346,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 23.055,
+    "position": 354,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 23.24,
+    "position": 358,
+    "length": 3,
+    "text": "ton"
+  },
+  {
+    "start": 23.51,
+    "position": 362,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 23.625,
+    "position": 365,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 23.7,
+    "position": 369,
+    "length": 6,
+    "text": "fourth"
+  },
+  {
+    "start": 24.06,
+    "position": 376,
+    "length": 7,
+    "text": "quarter"
+  },
+  {
+    "start": 24.525,
+    "position": 384,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 24.645,
+    "position": 387,
+    "length": 6,
+    "text": "twenty"
+  },
+  {
+    "start": 25.01,
+    "position": 394,
+    "length": 11,
+    "text": "twenty-five"
+  },
+  {
+    "start": 26.685,
+    "position": 407,
+    "length": 16,
+    "text": "TimberMart-South"
+  },
+  {
+    "start": 27.565,
+    "position": 424,
+    "length": 8,
+    "text": "confirms"
+  },
+  {
+    "start": 28.085,
+    "position": 433,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 28.135,
+    "position": 435,
+    "length": 10,
+    "text": "South-wide"
+  },
+  {
+    "start": 28.755,
+    "position": 446,
+    "length": 7,
+    "text": "average"
+  },
+  {
+    "start": 29.165,
+    "position": 454,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 29.285,
+    "position": 457,
+    "length": 12,
+    "text": "twenty-three"
+  },
+  {
+    "start": 29.91,
+    "position": 470,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 30.325,
+    "position": 478,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 30.465,
+    "position": 482,
+    "length": 11,
+    "text": "thirty-four"
+  },
+  {
+    "start": 30.98,
+    "position": 494,
+    "length": 5,
+    "text": "cents"
+  },
+  {
+    "start": 31.315,
+    "position": 500,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 31.5,
+    "position": 504,
+    "length": 3,
+    "text": "ton"
+  },
+  {
+    "start": 31.785,
+    "position": 508,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 31.92,
+    "position": 512,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 32.0,
+    "position": 516,
+    "length": 6,
+    "text": "second"
+  },
+  {
+    "start": 32.41,
+    "position": 523,
+    "length": 7,
+    "text": "quarter"
+  },
+  {
+    "start": 32.86,
+    "position": 531,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 32.98,
+    "position": 534,
+    "length": 6,
+    "text": "twenty"
+  },
+  {
+    "start": 33.345,
+    "position": 541,
+    "length": 10,
+    "text": "twenty-six"
+  },
+  {
+    "start": 35.06,
+    "position": 553,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 35.14,
+    "position": 557,
+    "length": 8,
+    "text": "source's"
+  },
+  {
+    "start": 35.635,
+    "position": 566,
+    "length": 7,
+    "text": "roughly"
+  },
+  {
+    "start": 36.01,
+    "position": 574,
+    "length": 10,
+    "text": "six-dollar"
+  },
+  {
+    "start": 36.665,
+    "position": 585,
+    "length": 8,
+    "text": "pulpwood"
+  },
+  {
+    "start": 37.185,
+    "position": 594,
+    "length": 10,
+    "text": "comparison"
+  },
+  {
+    "start": 37.815,
+    "position": 605,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 37.975,
+    "position": 608,
+    "length": 5,
+    "text": "close"
+  },
+  {
+    "start": 38.29,
+    "position": 614,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 38.405,
+    "position": 617,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 38.615,
+    "position": 622,
+    "length": 9,
+    "text": "quarter's"
+  },
+  {
+    "start": 39.1,
+    "position": 632,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 39.43,
+    "position": 637,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 39.84,
+    "position": 645,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 39.985,
+    "position": 649,
+    "length": 5,
+    "text": "forty"
+  },
+  {
+    "start": 40.31,
+    "position": 655,
+    "length": 5,
+    "text": "cents"
+  },
+  {
+    "start": 41.7,
+    "position": 662,
+    "length": 5,
+    "text": "These"
+  },
+  {
+    "start": 41.94,
+    "position": 668,
+    "length": 3,
+    "text": "are"
+  },
+  {
+    "start": 42.045,
+    "position": 672,
+    "length": 6,
+    "text": "prices"
+  },
+  {
+    "start": 42.535,
+    "position": 679,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 42.72,
+    "position": 683,
+    "length": 3,
+    "text": "ton"
+  },
+  {
+    "start": 43.48,
+    "position": 688,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 43.73,
+    "position": 692,
+    "length": 6,
+    "text": "prices"
+  },
+  {
+    "start": 44.2,
+    "position": 699,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 44.385,
+    "position": 703,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 45.645,
+    "position": 709,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 45.76,
+    "position": 713,
+    "length": 9,
+    "text": "example's"
+  },
+  {
+    "start": 46.35,
+    "position": 723,
+    "length": 25,
+    "text": "ten-to-thirty-five-dollar"
+  },
+  {
+    "start": 47.525,
+    "position": 749,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 47.765,
+    "position": 754,
+    "length": 5,
+    "text": "range"
+  },
+  {
+    "start": 48.105,
+    "position": 760,
+    "length": 4,
+    "text": "also"
+  },
+  {
+    "start": 48.455,
+    "position": 765,
+    "length": 7,
+    "text": "depends"
+  },
+  {
+    "start": 48.87,
+    "position": 773,
+    "length": 2,
+    "text": "on"
+  },
+  {
+    "start": 49.015,
+    "position": 776,
+    "length": 3,
+    "text": "its"
+  },
+  {
+    "start": 49.2,
+    "position": 780,
+    "length": 12,
+    "text": "merchantable"
+  },
+  {
+    "start": 49.785,
+    "position": 793,
+    "length": 6,
+    "text": "weight"
+  },
+  {
+    "start": 50.245,
+    "position": 801,
+    "length": 7,
+    "text": "quality"
+  },
+  {
+    "start": 50.915,
+    "position": 810,
+    "length": 6,
+    "text": "access"
+  },
+  {
+    "start": 51.645,
+    "position": 818,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 51.8,
+    "position": 822,
+    "length": 5,
+    "text": "local"
+  },
+  {
+    "start": 52.125,
+    "position": 828,
+    "length": 6,
+    "text": "buyers"
+  }
+]

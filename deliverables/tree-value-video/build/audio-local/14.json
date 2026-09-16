@@ -1,0 +1,650 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 0.21,
+    "position": 4,
+    "length": 9,
+    "text": "landowner"
+  },
+  {
+    "start": 0.74,
+    "position": 14,
+    "length": 5,
+    "text": "might"
+  },
+  {
+    "start": 0.99,
+    "position": 20,
+    "length": 8,
+    "text": "describe"
+  },
+  {
+    "start": 1.46,
+    "position": 29,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 1.515,
+    "position": 31,
+    "length": 13,
+    "text": "twenty-dollar"
+  },
+  {
+    "start": 2.195,
+    "position": 45,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 3.455,
+    "position": 51,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 3.535,
+    "position": 55,
+    "length": 8,
+    "text": "firewood"
+  },
+  {
+    "start": 4.105,
+    "position": 64,
+    "length": 6,
+    "text": "seller"
+  },
+  {
+    "start": 4.475,
+    "position": 71,
+    "length": 4,
+    "text": "sees"
+  },
+  {
+    "start": 4.805,
+    "position": 76,
+    "length": 7,
+    "text": "roughly"
+  },
+  {
+    "start": 5.18,
+    "position": 84,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 5.395,
+    "position": 88,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 5.815,
+    "position": 96,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 6.22,
+    "position": 104,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 6.33,
+    "position": 107,
+    "length": 8,
+    "text": "prepared"
+  },
+  {
+    "start": 6.795,
+    "position": 116,
+    "length": 4,
+    "text": "fuel"
+  },
+  {
+    "start": 8.095,
+    "position": 122,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 8.175,
+    "position": 126,
+    "length": 7,
+    "text": "sawmill"
+  },
+  {
+    "start": 8.63,
+    "position": 134,
+    "length": 4,
+    "text": "sees"
+  },
+  {
+    "start": 8.935,
+    "position": 139,
+    "length": 7,
+    "text": "several"
+  },
+  {
+    "start": 9.31,
+    "position": 147,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 9.715,
+    "position": 155,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 10.125,
+    "position": 163,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 10.235,
+    "position": 166,
+    "length": 6,
+    "text": "boards"
+  },
+  {
+    "start": 11.6,
+    "position": 174,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 11.715,
+    "position": 178,
+    "length": 10,
+    "text": "lumberyard"
+  },
+  {
+    "start": 12.31,
+    "position": 189,
+    "length": 4,
+    "text": "adds"
+  },
+  {
+    "start": 12.59,
+    "position": 194,
+    "length": 6,
+    "text": "drying"
+  },
+  {
+    "start": 13.48,
+    "position": 202,
+    "length": 7,
+    "text": "grading"
+  },
+  {
+    "start": 14.335,
+    "position": 211,
+    "length": 8,
+    "text": "stocking"
+  },
+  {
+    "start": 15.315,
+    "position": 221,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 15.47,
+    "position": 225,
+    "length": 6,
+    "text": "retail"
+  },
+  {
+    "start": 15.87,
+    "position": 232,
+    "length": 7,
+    "text": "service"
+  },
+  {
+    "start": 17.31,
+    "position": 241,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 17.39,
+    "position": 245,
+    "length": 6,
+    "text": "framer"
+  },
+  {
+    "start": 17.78,
+    "position": 252,
+    "length": 5,
+    "text": "turns"
+  },
+  {
+    "start": 18.18,
+    "position": 258,
+    "length": 5,
+    "text": "those"
+  },
+  {
+    "start": 18.425,
+    "position": 264,
+    "length": 6,
+    "text": "boards"
+  },
+  {
+    "start": 18.785,
+    "position": 271,
+    "length": 4,
+    "text": "into"
+  },
+  {
+    "start": 19.0,
+    "position": 276,
+    "length": 2,
+    "text": "an"
+  },
+  {
+    "start": 19.13,
+    "position": 279,
+    "length": 9,
+    "text": "installed"
+  },
+  {
+    "start": 19.62,
+    "position": 289,
+    "length": 9,
+    "text": "structure"
+  },
+  {
+    "start": 20.125,
+    "position": 299,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 20.3,
+    "position": 304,
+    "length": 10,
+    "text": "represents"
+  },
+  {
+    "start": 20.88,
+    "position": 315,
+    "length": 9,
+    "text": "thousands"
+  },
+  {
+    "start": 21.43,
+    "position": 325,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 21.55,
+    "position": 328,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 21.96,
+    "position": 336,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 22.08,
+    "position": 339,
+    "length": 9,
+    "text": "completed"
+  },
+  {
+    "start": 22.615,
+    "position": 349,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 23.865,
+    "position": 355,
+    "length": 2,
+    "text": "If"
+  },
+  {
+    "start": 24.01,
+    "position": 358,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 24.065,
+    "position": 360,
+    "length": 8,
+    "text": "customer"
+  },
+  {
+    "start": 24.58,
+    "position": 369,
+    "length": 7,
+    "text": "borrows"
+  },
+  {
+    "start": 25.02,
+    "position": 377,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 25.16,
+    "position": 381,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 25.38,
+    "position": 386,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 26.14,
+    "position": 392,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 26.24,
+    "position": 396,
+    "length": 6,
+    "text": "lender"
+  },
+  {
+    "start": 26.605,
+    "position": 403,
+    "length": 8,
+    "text": "receives"
+  },
+  {
+    "start": 27.05,
+    "position": 412,
+    "length": 8,
+    "text": "payments"
+  },
+  {
+    "start": 27.52,
+    "position": 421,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 27.695,
+    "position": 426,
+    "length": 7,
+    "text": "include"
+  },
+  {
+    "start": 28.13,
+    "position": 434,
+    "length": 8,
+    "text": "interest"
+  },
+  {
+    "start": 28.605,
+    "position": 443,
+    "length": 4,
+    "text": "over"
+  },
+  {
+    "start": 28.84,
+    "position": 448,
+    "length": 4,
+    "text": "time"
+  },
+  {
+    "start": 30.105,
+    "position": 454,
+    "length": 3,
+    "text": "All"
+  },
+  {
+    "start": 30.295,
+    "position": 458,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 30.395,
+    "position": 461,
+    "length": 5,
+    "text": "these"
+  },
+  {
+    "start": 30.61,
+    "position": 467,
+    "length": 12,
+    "text": "descriptions"
+  },
+  {
+    "start": 31.26,
+    "position": 480,
+    "length": 5,
+    "text": "begin"
+  },
+  {
+    "start": 31.59,
+    "position": 486,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 31.735,
+    "position": 491,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 31.82,
+    "position": 495,
+    "length": 4,
+    "text": "same"
+  },
+  {
+    "start": 32.145,
+    "position": 500,
+    "length": 9,
+    "text": "cellulose"
+  },
+  {
+    "start": 33.81,
+    "position": 511,
+    "length": 10,
+    "text": "Processing"
+  },
+  {
+    "start": 34.895,
+    "position": 523,
+    "length": 9,
+    "text": "knowledge"
+  },
+  {
+    "start": 35.83,
+    "position": 534,
+    "length": 12,
+    "text": "organization"
+  },
+  {
+    "start": 37.07,
+    "position": 548,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 37.2,
+    "position": 552,
+    "length": 10,
+    "text": "usefulness"
+  },
+  {
+    "start": 37.785,
+    "position": 563,
+    "length": 6,
+    "text": "change"
+  },
+  {
+    "start": 38.145,
+    "position": 570,
+    "length": 4,
+    "text": "what"
+  },
+  {
+    "start": 38.315,
+    "position": 575,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 38.41,
+    "position": 579,
+    "length": 4,
+    "text": "next"
+  },
+  {
+    "start": 38.735,
+    "position": 584,
+    "length": 6,
+    "text": "person"
+  },
+  {
+    "start": 39.155,
+    "position": 591,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 39.375,
+    "position": 595,
+    "length": 5,
+    "text": "offer"
+  },
+  {
+    "start": 40.65,
+    "position": 602,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 40.73,
+    "position": 606,
+    "length": 7,
+    "text": "numbers"
+  },
+  {
+    "start": 41.125,
+    "position": 614,
+    "length": 6,
+    "text": "become"
+  },
+  {
+    "start": 41.5,
+    "position": 621,
+    "length": 14,
+    "text": "understandable"
+  },
+  {
+    "start": 42.29,
+    "position": 636,
+    "length": 4,
+    "text": "once"
+  },
+  {
+    "start": 42.63,
+    "position": 641,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 42.75,
+    "position": 645,
+    "length": 8,
+    "text": "identify"
+  },
+  {
+    "start": 43.365,
+    "position": 654,
+    "length": 3,
+    "text": "who"
+  },
+  {
+    "start": 43.54,
+    "position": 658,
+    "length": 4,
+    "text": "owns"
+  },
+  {
+    "start": 43.825,
+    "position": 663,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 43.91,
+    "position": 667,
+    "length": 4,
+    "text": "next"
+  },
+  {
+    "start": 44.24,
+    "position": 672,
+    "length": 7,
+    "text": "process"
+  },
+  {
+    "start": 44.785,
+    "position": 680,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 44.925,
+    "position": 684,
+    "length": 4,
+    "text": "what"
+  },
+  {
+    "start": 45.105,
+    "position": 689,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 45.28,
+    "position": 694,
+    "length": 8,
+    "text": "person's"
+  },
+  {
+    "start": 45.765,
+    "position": 703,
+    "length": 5,
+    "text": "price"
+  },
+  {
+    "start": 46.135,
+    "position": 709,
+    "length": 8,
+    "text": "actually"
+  },
+  {
+    "start": 46.63,
+    "position": 718,
+    "length": 8,
+    "text": "includes"
+  }
+]

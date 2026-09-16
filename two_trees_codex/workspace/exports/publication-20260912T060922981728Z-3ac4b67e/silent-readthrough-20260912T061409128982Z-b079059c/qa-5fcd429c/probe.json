@@ -1,0 +1,790 @@
+{
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "High",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "mime_codec_string": "avc1.640028",
+      "width": 1920,
+      "height": 1080,
+      "coded_width": 1920,
+      "coded_height": 1080,
+      "has_b_frames": 2,
+      "pix_fmt": "yuv420p",
+      "level": 40,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "1/1",
+      "avg_frame_rate": "1/1",
+      "time_base": "1/16384",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 96960512,
+      "duration": "5918.000000",
+      "bit_rate": "11899",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "5918",
+      "extradata_size": 46,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "encoder": "Lavc62.35.100 libx264"
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "bin_data",
+      "codec_long_name": "binary data",
+      "codec_type": "data",
+      "codec_tag_string": "text",
+      "codec_tag": "0x74786574",
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/1000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 5918000,
+      "duration": "5918.000000",
+      "bit_rate": "4",
+      "nb_frames": "60",
+      "extradata_size": 63,
+      "disposition": {
+        "default": 0,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "eng",
+        "handler_name": "SubtitleHandler"
+      }
+    }
+  ],
+  "chapters": [
+    {
+      "id": 0,
+      "time_base": "1/1000",
+      "start": 0,
+      "start_time": "0.000000",
+      "end": 14000,
+      "end_time": "14.000000",
+      "tags": {
+        "title": "2 trees: Build your (D)Home"
+      }
+    },
+    {
+      "id": 1,
+      "time_base": "1/1000",
+      "start": 14000,
+      "start_time": "14.000000",
+      "end": 227000,
+      "end_time": "227.000000",
+      "tags": {
+        "title": "Contents"
+      }
+    },
+    {
+      "id": 2,
+      "time_base": "1/1000",
+      "start": 227000,
+      "start_time": "227.000000",
+      "end": 287000,
+      "end_time": "287.000000",
+      "tags": {
+        "title": "2 trees: Build your (D)Home"
+      }
+    },
+    {
+      "id": 3,
+      "time_base": "1/1000",
+      "start": 287000,
+      "start_time": "287.000000",
+      "end": 425000,
+      "end_time": "425.000000",
+      "tags": {
+        "title": "Before the first chapter"
+      }
+    },
+    {
+      "id": 4,
+      "time_base": "1/1000",
+      "start": 425000,
+      "start_time": "425.000000",
+      "end": 451000,
+      "end_time": "451.000000",
+      "tags": {
+        "title": "Part I \u2014 The idea in the wood"
+      }
+    },
+    {
+      "id": 5,
+      "time_base": "1/1000",
+      "start": 451000,
+      "start_time": "451.000000",
+      "end": 593000,
+      "end_time": "593.000000",
+      "tags": {
+        "title": "1. Start with what is here"
+      }
+    },
+    {
+      "id": 6,
+      "time_base": "1/1000",
+      "start": 593000,
+      "start_time": "593.000000",
+      "end": 711000,
+      "end_time": "711.000000",
+      "tags": {
+        "title": "2. What the Frankendome taught me"
+      }
+    },
+    {
+      "id": 7,
+      "time_base": "1/1000",
+      "start": 711000,
+      "start_time": "711.000000",
+      "end": 843000,
+      "end_time": "843.000000",
+      "tags": {
+        "title": "3. Finding the wedge"
+      }
+    },
+    {
+      "id": 8,
+      "time_base": "1/1000",
+      "start": 843000,
+      "start_time": "843.000000",
+      "end": 981000,
+      "end_time": "981.000000",
+      "tags": {
+        "title": "4. Define the experiment before starting the clock"
+      }
+    },
+    {
+      "id": 9,
+      "time_base": "1/1000",
+      "start": 981000,
+      "start_time": "981.000000",
+      "end": 1006000,
+      "end_time": "1006.000000",
+      "tags": {
+        "title": "Part II \u2014 The dome before the saw"
+      }
+    },
+    {
+      "id": 10,
+      "time_base": "1/1000",
+      "start": 1006000,
+      "start_time": "1006.000000",
+      "end": 1130000,
+      "end_time": "1130.000000",
+      "tags": {
+        "title": "5. A sphere made from straight lines"
+      }
+    },
+    {
+      "id": 11,
+      "time_base": "1/1000",
+      "start": 1130000,
+      "start_time": "1130.000000",
+      "end": 1278000,
+      "end_time": "1278.000000",
+      "tags": {
+        "title": "6. Why 65 edges need 120 pieces of wood"
+      }
+    },
+    {
+      "id": 12,
+      "time_base": "1/1000",
+      "start": 1278000,
+      "start_time": "1278.000000",
+      "end": 1422000,
+      "end_time": "1422.000000",
+      "tags": {
+        "title": "7. Method one: start with the radius you want"
+      }
+    },
+    {
+      "id": 13,
+      "time_base": "1/1000",
+      "start": 1422000,
+      "start_time": "1422.000000",
+      "end": 1568000,
+      "end_time": "1568.000000",
+      "tags": {
+        "title": "8. Worked example: a ten-foot radius"
+      }
+    },
+    {
+      "id": 14,
+      "time_base": "1/1000",
+      "start": 1568000,
+      "start_time": "1568.000000",
+      "end": 1723000,
+      "end_time": "1723.000000",
+      "tags": {
+        "title": "9. Method two: let the tree set the size"
+      }
+    },
+    {
+      "id": 15,
+      "time_base": "1/1000",
+      "start": 1723000,
+      "start_time": "1723.000000",
+      "end": 1928000,
+      "end_time": "1928.000000",
+      "tags": {
+        "title": "10. Eight sections, sixty-four blanks, sixty accepted members"
+      }
+    },
+    {
+      "id": 16,
+      "time_base": "1/1000",
+      "start": 1928000,
+      "start_time": "1928.000000",
+      "end": 1952000,
+      "end_time": "1952.000000",
+      "tags": {
+        "title": "Part III \u2014 The tree becomes inventory"
+      }
+    },
+    {
+      "id": 17,
+      "time_base": "1/1000",
+      "start": 1952000,
+      "start_time": "1952.000000",
+      "end": 2092000,
+      "end_time": "2092.000000",
+      "tags": {
+        "title": "11. The shape of one eighth"
+      }
+    },
+    {
+      "id": 18,
+      "time_base": "1/1000",
+      "start": 2092000,
+      "start_time": "2092.000000",
+      "end": 2244000,
+      "end_time": "2244.000000",
+      "tags": {
+        "title": "12. Read the trunk in sections"
+      }
+    },
+    {
+      "id": 19,
+      "time_base": "1/1000",
+      "start": 2244000,
+      "start_time": "2244.000000",
+      "end": 2403000,
+      "end_time": "2403.000000",
+      "tags": {
+        "title": "13. Measure recovery instead of defending a percentage"
+      }
+    },
+    {
+      "id": 20,
+      "time_base": "1/1000",
+      "start": 2403000,
+      "start_time": "2403.000000",
+      "end": 2521000,
+      "end_time": "2521.000000",
+      "tags": {
+        "title": "14. Wood keeps changing after the cut"
+      }
+    },
+    {
+      "id": 21,
+      "time_base": "1/1000",
+      "start": 2521000,
+      "start_time": "2521.000000",
+      "end": 2547000,
+      "end_time": "2547.000000",
+      "tags": {
+        "title": "Part IV \u2014 One hundred and twenty useful pieces"
+      }
+    },
+    {
+      "id": 22,
+      "time_base": "1/1000",
+      "start": 2547000,
+      "start_time": "2547.000000",
+      "end": 2704000,
+      "end_time": "2704.000000",
+      "tags": {
+        "title": "15. Organize the work around the small saw"
+      }
+    },
+    {
+      "id": 23,
+      "time_base": "1/1000",
+      "start": 2704000,
+      "start_time": "2704.000000",
+      "end": 2849000,
+      "end_time": "2849.000000",
+      "tags": {
+        "title": "16. Four ways to place the same wedge"
+      }
+    },
+    {
+      "id": 24,
+      "time_base": "1/1000",
+      "start": 2849000,
+      "start_time": "2849.000000",
+      "end": 2987000,
+      "end_time": "2987.000000",
+      "tags": {
+        "title": "17. The triangle corner is a physical object"
+      }
+    },
+    {
+      "id": 25,
+      "time_base": "1/1000",
+      "start": 2987000,
+      "start_time": "2987.000000",
+      "end": 3036000,
+      "end_time": "3036.000000",
+      "tags": {
+        "title": "Plate \u2014 Two triangles, two members at the seam"
+      }
+    },
+    {
+      "id": 26,
+      "time_base": "1/1000",
+      "start": 3036000,
+      "start_time": "3036.000000",
+      "end": 3174000,
+      "end_time": "3174.000000",
+      "tags": {
+        "title": "18. Build the reference into the fixture"
+      }
+    },
+    {
+      "id": 27,
+      "time_base": "1/1000",
+      "start": 3174000,
+      "start_time": "3174.000000",
+      "end": 3313000,
+      "end_time": "3313.000000",
+      "tags": {
+        "title": "19. Make forty triangles, one checked batch at a time"
+      }
+    },
+    {
+      "id": 28,
+      "time_base": "1/1000",
+      "start": 3313000,
+      "start_time": "3313.000000",
+      "end": 3335000,
+      "end_time": "3335.000000",
+      "tags": {
+        "title": "Part V \u2014 The seams make the dome"
+      }
+    },
+    {
+      "id": 29,
+      "time_base": "1/1000",
+      "start": 3335000,
+      "start_time": "3335.000000",
+      "end": 3467000,
+      "end_time": "3467.000000",
+      "tags": {
+        "title": "20. What happens between two panels"
+      }
+    },
+    {
+      "id": 30,
+      "time_base": "1/1000",
+      "start": 3467000,
+      "start_time": "3467.000000",
+      "end": 3589000,
+      "end_time": "3589.000000",
+      "tags": {
+        "title": "21. Give the frame a place to stand"
+      }
+    },
+    {
+      "id": 31,
+      "time_base": "1/1000",
+      "start": 3589000,
+      "start_time": "3589.000000",
+      "end": 3711000,
+      "end_time": "3711.000000",
+      "tags": {
+        "title": "22. Follow an assembly plan that can stay stable"
+      }
+    },
+    {
+      "id": 32,
+      "time_base": "1/1000",
+      "start": 3711000,
+      "start_time": "3711.000000",
+      "end": 3835000,
+      "end_time": "3835.000000",
+      "tags": {
+        "title": "23. The frame and the home it might become"
+      }
+    },
+    {
+      "id": 33,
+      "time_base": "1/1000",
+      "start": 3835000,
+      "start_time": "3835.000000",
+      "end": 3858000,
+      "end_time": "3858.000000",
+      "tags": {
+        "title": "Part VI \u2014 Fourteen days, as they happen"
+      }
+    },
+    {
+      "id": 34,
+      "time_base": "1/1000",
+      "start": 3858000,
+      "start_time": "3858.000000",
+      "end": 3981000,
+      "end_time": "3981.000000",
+      "tags": {
+        "title": "24. Plan the fortnight, then record the difference"
+      }
+    },
+    {
+      "id": 35,
+      "time_base": "1/1000",
+      "start": 3981000,
+      "start_time": "3981.000000",
+      "end": 4039000,
+      "end_time": "4039.000000",
+      "tags": {
+        "title": "Day 01 \u2014 The starting inventory"
+      }
+    },
+    {
+      "id": 36,
+      "time_base": "1/1000",
+      "start": 4039000,
+      "start_time": "4039.000000",
+      "end": 4093000,
+      "end_time": "4093.000000",
+      "tags": {
+        "title": "Day 02 \u2014 The first configuration"
+      }
+    },
+    {
+      "id": 37,
+      "time_base": "1/1000",
+      "start": 4093000,
+      "start_time": "4093.000000",
+      "end": 4152000,
+      "end_time": "4152.000000",
+      "tags": {
+        "title": "Day 03 \u2014 The first useful blank"
+      }
+    },
+    {
+      "id": 38,
+      "time_base": "1/1000",
+      "start": 4152000,
+      "start_time": "4152.000000",
+      "end": 4209000,
+      "end_time": "4209.000000",
+      "tags": {
+        "title": "Day 04 \u2014 The first corner"
+      }
+    },
+    {
+      "id": 39,
+      "time_base": "1/1000",
+      "start": 4209000,
+      "start_time": "4209.000000",
+      "end": 4266000,
+      "end_time": "4266.000000",
+      "tags": {
+        "title": "Day 05 \u2014 A repeatable process"
+      }
+    },
+    {
+      "id": 40,
+      "time_base": "1/1000",
+      "start": 4266000,
+      "start_time": "4266.000000",
+      "end": 4324000,
+      "end_time": "4324.000000",
+      "tags": {
+        "title": "Day 06 \u2014 The tree has a say"
+      }
+    },
+    {
+      "id": 41,
+      "time_base": "1/1000",
+      "start": 4324000,
+      "start_time": "4324.000000",
+      "end": 4381000,
+      "end_time": "4381.000000",
+      "tags": {
+        "title": "Day 07 \u2014 Halfway through the clock"
+      }
+    },
+    {
+      "id": 42,
+      "time_base": "1/1000",
+      "start": 4381000,
+      "start_time": "4381.000000",
+      "end": 4439000,
+      "end_time": "4439.000000",
+      "tags": {
+        "title": "Day 08 \u2014 The first panel family"
+      }
+    },
+    {
+      "id": 43,
+      "time_base": "1/1000",
+      "start": 4439000,
+      "start_time": "4439.000000",
+      "end": 4497000,
+      "end_time": "4497.000000",
+      "tags": {
+        "title": "Day 09 \u2014 The second panel family"
+      }
+    },
+    {
+      "id": 44,
+      "time_base": "1/1000",
+      "start": 4497000,
+      "start_time": "4497.000000",
+      "end": 4554000,
+      "end_time": "4554.000000",
+      "tags": {
+        "title": "Day 10 \u2014 Forty triangles, if ready"
+      }
+    },
+    {
+      "id": 45,
+      "time_base": "1/1000",
+      "start": 4554000,
+      "start_time": "4554.000000",
+      "end": 4611000,
+      "end_time": "4611.000000",
+      "tags": {
+        "title": "Day 11 \u2014 Ready to assemble"
+      }
+    },
+    {
+      "id": 46,
+      "time_base": "1/1000",
+      "start": 4611000,
+      "start_time": "4611.000000",
+      "end": 4668000,
+      "end_time": "4668.000000",
+      "tags": {
+        "title": "Day 12 \u2014 The frame begins to rise"
+      }
+    },
+    {
+      "id": 47,
+      "time_base": "1/1000",
+      "start": 4668000,
+      "start_time": "4668.000000",
+      "end": 4725000,
+      "end_time": "4725.000000",
+      "tags": {
+        "title": "Day 13 \u2014 Approaching closure"
+      }
+    },
+    {
+      "id": 48,
+      "time_base": "1/1000",
+      "start": 4725000,
+      "start_time": "4725.000000",
+      "end": 4784000,
+      "end_time": "4784.000000",
+      "tags": {
+        "title": "Day 14 \u2014 The honest finish line"
+      }
+    },
+    {
+      "id": 49,
+      "time_base": "1/1000",
+      "start": 4784000,
+      "start_time": "4784.000000",
+      "end": 4922000,
+      "end_time": "4922.000000",
+      "tags": {
+        "title": "25. Count the work the wood actually replaced"
+      }
+    },
+    {
+      "id": 50,
+      "time_base": "1/1000",
+      "start": 4922000,
+      "start_time": "4922.000000",
+      "end": 5045000,
+      "end_time": "5045.000000",
+      "tags": {
+        "title": "Scene study - Reading the math labels"
+      }
+    },
+    {
+      "id": 51,
+      "time_base": "1/1000",
+      "start": 5045000,
+      "start_time": "5045.000000",
+      "end": 5164000,
+      "end_time": "5164.000000",
+      "tags": {
+        "title": "26. What two trees will have taught me"
+      }
+    },
+    {
+      "id": 52,
+      "time_base": "1/1000",
+      "start": 5164000,
+      "start_time": "5164.000000",
+      "end": 5188000,
+      "end_time": "5188.000000",
+      "tags": {
+        "title": "Part VII \u2014 The wider project and the bench reference"
+      }
+    },
+    {
+      "id": 53,
+      "time_base": "1/1000",
+      "start": 5188000,
+      "start_time": "5188.000000",
+      "end": 5364000,
+      "end_time": "5364.000000",
+      "tags": {
+        "title": "27. The tools that made the questions visible"
+      }
+    },
+    {
+      "id": 54,
+      "time_base": "1/1000",
+      "start": 5364000,
+      "start_time": "5364.000000",
+      "end": 5495000,
+      "end_time": "5495.000000",
+      "tags": {
+        "title": "Illustration plan \u2014 give each image a job"
+      }
+    },
+    {
+      "id": 55,
+      "time_base": "1/1000",
+      "start": 5495000,
+      "start_time": "5495.000000",
+      "end": 5537000,
+      "end_time": "5537.000000",
+      "tags": {
+        "title": "Worksheet A \u2014 Source tree and section register"
+      }
+    },
+    {
+      "id": 56,
+      "time_base": "1/1000",
+      "start": 5537000,
+      "start_time": "5537.000000",
+      "end": 5587000,
+      "end_time": "5587.000000",
+      "tags": {
+        "title": "Worksheet B \u2014 Member and panel traceability"
+      }
+    },
+    {
+      "id": 57,
+      "time_base": "1/1000",
+      "start": 5587000,
+      "start_time": "5587.000000",
+      "end": 5632000,
+      "end_time": "5632.000000",
+      "tags": {
+        "title": "Worksheet C \u2014 Time, purchases, and what remains"
+      }
+    },
+    {
+      "id": 58,
+      "time_base": "1/1000",
+      "start": 5632000,
+      "start_time": "5632.000000",
+      "end": 5730000,
+      "end_time": "5730.000000",
+      "tags": {
+        "title": "Glossary \u2014 the words beside the cuts"
+      }
+    },
+    {
+      "id": 59,
+      "time_base": "1/1000",
+      "start": 5730000,
+      "start_time": "5730.000000",
+      "end": 5918000,
+      "end_time": "5918.000000",
+      "tags": {
+        "title": "Sources, assumptions, and corrections to resolve"
+      }
+    }
+  ],
+  "format": {
+    "filename": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\exports\\publication-20260912T060922981728Z-3ac4b67e\\silent-readthrough-20260912T061409128982Z-b079059c\\2-trees-silent-readthrough.mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": "0.000000",
+    "duration": "5918.000000",
+    "size": "8881581",
+    "bit_rate": "12006",
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2avc1mp41",
+      "title": "2 trees: Build your (D)Home",
+      "encoder": "Lavf62.19.100",
+      "comment": "Silent still-page readthrough; timing estimates reading pace; no narration"
+    }
+  }
+}

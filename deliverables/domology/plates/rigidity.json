@@ -1,0 +1,18 @@
+{
+  "plate": "rigidity",
+  "title": "A triangle does not lean",
+  "tool": "film",
+  "concept": "Triangulation makes a frame rigid without heavy joints.",
+  "change": "Stopped at the instant the square leans furthest.",
+  "recipe": {
+    "lesson": "2v",
+    "chapter": "triangles",
+    "progress": 0.25
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:45",
+  "engine": "two_v_demo.app shots"
+}

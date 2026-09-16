@@ -1083,20 +1083,23 @@ def _forge_emitter(kind: str):
 def all_emitters() -> dict:
     """Every object that can be placed on a stage.
 
-    Three sources, resolved on first use so the modules can refer to each
+    Four sources, resolved on first use so the modules can refer to each
     other freely whichever one is imported first: the star objects above,
-    the accessory and appliance catalogue, and every layer the Dome Forge
+    the accessory and appliance catalogue, every layer the Dome Forge
     builder draws -- bridged in under a ``forge:`` prefix so a movie can
     use the real modelled panels, veins and cistern rather than a second
-    copy of them."""
+    copy of them -- and the films' visual lexicon under ``vo:``, so the
+    pine, the log and the wedge are the same drawings the films show."""
     global _ALL_EMITTERS
     if _ALL_EMITTERS is None:
         from .accessories import ACCESSORY_EMITTERS
         from dome_forge.build import EMITTERS as FORGE_EMITTERS
+        from two_v_demo.visual_objects import presenter_emitters
         merged = dict(OBJECT_EMITTERS)
         merged.update(ACCESSORY_EMITTERS)
         for kind in FORGE_EMITTERS:
             merged[f"forge:{kind}"] = _forge_emitter(kind)
+        merged.update(presenter_emitters())
         _ALL_EMITTERS = merged
     return _ALL_EMITTERS
 

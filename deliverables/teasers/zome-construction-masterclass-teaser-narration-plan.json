@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-4842b6b2a0\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-4842b6b2a0\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-4842b6b2a0\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-4842b6b2a0\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-4842b6b2a0\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-4842b6b2a0\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\zome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-4842b6b2a0\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    5.504,
+    7.039999999999999,
+    5.768,
+    5.624,
+    4.255999999999999,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    4.104,
+    5.64,
+    4.368,
+    4.224,
+    2.856,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    5.504,
+    12.543999999999999,
+    18.311999999999998,
+    23.935999999999996,
+    28.191999999999997,
+    33.19199999999999
+  ],
+  "speech_delay": 0.55
+}

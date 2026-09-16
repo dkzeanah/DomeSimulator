@@ -1,0 +1,788 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 4,
+    "text": "Here"
+  },
+  {
+    "start": 0.355,
+    "position": 5,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 0.495,
+    "position": 8,
+    "length": 4,
+    "text": "what"
+  },
+  {
+    "start": 0.69,
+    "position": 13,
+    "length": 9,
+    "text": "financing"
+  },
+  {
+    "start": 1.22,
+    "position": 23,
+    "length": 4,
+    "text": "adds"
+  },
+  {
+    "start": 1.44,
+    "position": 28,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 1.545,
+    "position": 31,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 1.64,
+    "position": 35,
+    "length": 10,
+    "text": "comparison"
+  },
+  {
+    "start": 3.22,
+    "position": 47,
+    "length": 6,
+    "text": "Assume"
+  },
+  {
+    "start": 3.61,
+    "position": 54,
+    "length": 11,
+    "text": "forty-eight"
+  },
+  {
+    "start": 4.15,
+    "position": 66,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 4.555,
+    "position": 74,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 4.95,
+    "position": 82,
+    "length": 5,
+    "text": "would"
+  },
+  {
+    "start": 5.095,
+    "position": 88,
+    "length": 4,
+    "text": "have"
+  },
+  {
+    "start": 5.22,
+    "position": 93,
+    "length": 4,
+    "text": "been"
+  },
+  {
+    "start": 5.425,
+    "position": 98,
+    "length": 8,
+    "text": "borrowed"
+  },
+  {
+    "start": 5.8,
+    "position": 107,
+    "length": 2,
+    "text": "at"
+  },
+  {
+    "start": 5.9,
+    "position": 110,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 5.955,
+    "position": 112,
+    "length": 5,
+    "text": "fixed"
+  },
+  {
+    "start": 6.325,
+    "position": 118,
+    "length": 6,
+    "text": "annual"
+  },
+  {
+    "start": 6.73,
+    "position": 125,
+    "length": 4,
+    "text": "rate"
+  },
+  {
+    "start": 6.95,
+    "position": 130,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 7.055,
+    "position": 133,
+    "length": 3,
+    "text": "six"
+  },
+  {
+    "start": 7.365,
+    "position": 137,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 7.715,
+    "position": 143,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 8.04,
+    "position": 148,
+    "length": 7,
+    "text": "percent"
+  },
+  {
+    "start": 8.48,
+    "position": 156,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 8.615,
+    "position": 160,
+    "length": 6,
+    "text": "thirty"
+  },
+  {
+    "start": 8.92,
+    "position": 167,
+    "length": 5,
+    "text": "years"
+  },
+  {
+    "start": 9.77,
+    "position": 174,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 9.92,
+    "position": 179,
+    "length": 7,
+    "text": "monthly"
+  },
+  {
+    "start": 10.33,
+    "position": 187,
+    "length": 8,
+    "text": "payments"
+  },
+  {
+    "start": 11.77,
+    "position": 197,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 11.85,
+    "position": 201,
+    "length": 8,
+    "text": "standard"
+  },
+  {
+    "start": 12.345,
+    "position": 210,
+    "length": 12,
+    "text": "amortization"
+  },
+  {
+    "start": 13.105,
+    "position": 223,
+    "length": 11,
+    "text": "calculation"
+  },
+  {
+    "start": 13.885,
+    "position": 235,
+    "length": 5,
+    "text": "gives"
+  },
+  {
+    "start": 14.145,
+    "position": 241,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 14.44,
+    "position": 247,
+    "length": 6,
+    "text": "thirty"
+  },
+  {
+    "start": 14.755,
+    "position": 254,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 15.165,
+    "position": 262,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 15.31,
+    "position": 266,
+    "length": 11,
+    "text": "thirty-four"
+  },
+  {
+    "start": 15.82,
+    "position": 278,
+    "length": 5,
+    "text": "cents"
+  },
+  {
+    "start": 16.155,
+    "position": 284,
+    "length": 4,
+    "text": "each"
+  },
+  {
+    "start": 16.4,
+    "position": 289,
+    "length": 5,
+    "text": "month"
+  },
+  {
+    "start": 17.65,
+    "position": 296,
+    "length": 6,
+    "text": "Across"
+  },
+  {
+    "start": 18.085,
+    "position": 303,
+    "length": 5,
+    "text": "three"
+  },
+  {
+    "start": 18.31,
+    "position": 309,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 18.715,
+    "position": 317,
+    "length": 5,
+    "text": "sixty"
+  },
+  {
+    "start": 19.14,
+    "position": 323,
+    "length": 8,
+    "text": "payments"
+  },
+  {
+    "start": 20.1,
+    "position": 333,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 20.24,
+    "position": 337,
+    "length": 9,
+    "text": "unrounded"
+  },
+  {
+    "start": 20.835,
+    "position": 347,
+    "length": 11,
+    "text": "calculation"
+  },
+  {
+    "start": 21.6,
+    "position": 359,
+    "length": 6,
+    "text": "totals"
+  },
+  {
+    "start": 22.02,
+    "position": 366,
+    "length": 3,
+    "text": "ten"
+  },
+  {
+    "start": 22.27,
+    "position": 370,
+    "length": 8,
+    "text": "thousand"
+  },
+  {
+    "start": 22.735,
+    "position": 379,
+    "length": 4,
+    "text": "nine"
+  },
+  {
+    "start": 22.995,
+    "position": 384,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 23.395,
+    "position": 392,
+    "length": 10,
+    "text": "twenty-two"
+  },
+  {
+    "start": 23.995,
+    "position": 403,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 25.395,
+    "position": 412,
+    "length": 5,
+    "text": "About"
+  },
+  {
+    "start": 25.69,
+    "position": 418,
+    "length": 3,
+    "text": "six"
+  },
+  {
+    "start": 26.015,
+    "position": 422,
+    "length": 8,
+    "text": "thousand"
+  },
+  {
+    "start": 26.465,
+    "position": 431,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 26.66,
+    "position": 435,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 27.06,
+    "position": 443,
+    "length": 10,
+    "text": "twenty-two"
+  },
+  {
+    "start": 27.66,
+    "position": 454,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 28.07,
+    "position": 462,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 28.17,
+    "position": 465,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 28.385,
+    "position": 470,
+    "length": 5,
+    "text": "total"
+  },
+  {
+    "start": 28.76,
+    "position": 476,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 28.925,
+    "position": 479,
+    "length": 8,
+    "text": "interest"
+  },
+  {
+    "start": 30.39,
+    "position": 489,
+    "length": 4,
+    "text": "This"
+  },
+  {
+    "start": 30.57,
+    "position": 494,
+    "length": 8,
+    "text": "scenario"
+  },
+  {
+    "start": 31.145,
+    "position": 503,
+    "length": 7,
+    "text": "assumes"
+  },
+  {
+    "start": 31.61,
+    "position": 511,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 31.7,
+    "position": 515,
+    "length": 7,
+    "text": "balance"
+  },
+  {
+    "start": 32.125,
+    "position": 523,
+    "length": 5,
+    "text": "stays"
+  },
+  {
+    "start": 32.475,
+    "position": 529,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 32.6,
+    "position": 532,
+    "length": 5,
+    "text": "place"
+  },
+  {
+    "start": 32.945,
+    "position": 538,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 33.085,
+    "position": 542,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 33.165,
+    "position": 546,
+    "length": 4,
+    "text": "full"
+  },
+  {
+    "start": 33.435,
+    "position": 551,
+    "length": 4,
+    "text": "term"
+  },
+  {
+    "start": 34.265,
+    "position": 557,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 34.415,
+    "position": 562,
+    "length": 2,
+    "text": "no"
+  },
+  {
+    "start": 34.64,
+    "position": 565,
+    "length": 5,
+    "text": "early"
+  },
+  {
+    "start": 34.93,
+    "position": 571,
+    "length": 9,
+    "text": "repayment"
+  },
+  {
+    "start": 35.48,
+    "position": 581,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 35.64,
+    "position": 584,
+    "length": 11,
+    "text": "refinancing"
+  },
+  {
+    "start": 37.275,
+    "position": 597,
+    "length": 2,
+    "text": "It"
+  },
+  {
+    "start": 37.41,
+    "position": 600,
+    "length": 8,
+    "text": "excludes"
+  },
+  {
+    "start": 37.955,
+    "position": 609,
+    "length": 5,
+    "text": "taxes"
+  },
+  {
+    "start": 38.675,
+    "position": 616,
+    "length": 9,
+    "text": "insurance"
+  },
+  {
+    "start": 39.48,
+    "position": 627,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 39.61,
+    "position": 631,
+    "length": 4,
+    "text": "fees"
+  },
+  {
+    "start": 40.935,
+    "position": 637,
+    "length": 7,
+    "text": "Nominal"
+  },
+  {
+    "start": 41.33,
+    "position": 645,
+    "length": 5,
+    "text": "means"
+  },
+  {
+    "start": 41.67,
+    "position": 651,
+    "length": 2,
+    "text": "we"
+  },
+  {
+    "start": 41.855,
+    "position": 654,
+    "length": 3,
+    "text": "add"
+  },
+  {
+    "start": 42.065,
+    "position": 658,
+    "length": 6,
+    "text": "future"
+  },
+  {
+    "start": 42.485,
+    "position": 665,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 42.88,
+    "position": 673,
+    "length": 7,
+    "text": "without"
+  },
+  {
+    "start": 43.175,
+    "position": 681,
+    "length": 9,
+    "text": "adjusting"
+  },
+  {
+    "start": 43.665,
+    "position": 691,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 43.86,
+    "position": 695,
+    "length": 9,
+    "text": "inflation"
+  },
+  {
+    "start": 44.47,
+    "position": 705,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 44.615,
+    "position": 708,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 44.715,
+    "position": 712,
+    "length": 4,
+    "text": "time"
+  },
+  {
+    "start": 45.04,
+    "position": 717,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 45.445,
+    "position": 723,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 45.555,
+    "position": 726,
+    "length": 5,
+    "text": "money"
+  },
+  {
+    "start": 46.775,
+    "position": 733,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 46.855,
+    "position": 737,
+    "length": 11,
+    "text": "forty-eight"
+  },
+  {
+    "start": 47.415,
+    "position": 749,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 47.82,
+    "position": 757,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 48.225,
+    "position": 765,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 48.4,
+    "position": 768,
+    "length": 7,
+    "text": "already"
+  },
+  {
+    "start": 48.82,
+    "position": 776,
+    "length": 8,
+    "text": "included"
+  },
+  {
+    "start": 49.32,
+    "position": 785,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 49.43,
+    "position": 788,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 49.5,
+    "position": 792,
+    "length": 7,
+    "text": "payment"
+  },
+  {
+    "start": 49.91,
+    "position": 800,
+    "length": 5,
+    "text": "total"
+  },
+  {
+    "start": 51.19,
+    "position": 807,
+    "length": 6,
+    "text": "Adding"
+  },
+  {
+    "start": 51.465,
+    "position": 814,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 51.575,
+    "position": 817,
+    "length": 5,
+    "text": "again"
+  },
+  {
+    "start": 51.85,
+    "position": 823,
+    "length": 5,
+    "text": "would"
+  },
+  {
+    "start": 52.025,
+    "position": 829,
+    "length": 6,
+    "text": "double"
+  },
+  {
+    "start": 52.3,
+    "position": 836,
+    "length": 5,
+    "text": "count"
+  },
+  {
+    "start": 52.635,
+    "position": 842,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 52.725,
+    "position": 846,
+    "length": 9,
+    "text": "principal"
+  }
+]

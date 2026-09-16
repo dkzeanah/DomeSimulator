@@ -1,0 +1,18 @@
+{
+  "plate": "franken-triangle",
+  "title": "Three different sticks, one rigid shape",
+  "tool": "film",
+  "concept": "A triangle is rigid whatever its sticks are.",
+  "change": "The Frankendome film's triangle scene.",
+  "recipe": {
+    "lesson": "franken",
+    "chapter": "triangle",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

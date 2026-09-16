@@ -1,0 +1,21 @@
+{
+  "plate": "line-interior-room",
+  "title": "The room around the column",
+  "tool": "line",
+  "concept": "One column carries water and power to the whole round room.",
+  "change": "The interior station from a lower, closer angle.",
+  "recipe": {
+    "stage": "interior",
+    "fraction": 0.99,
+    "cutaway": true,
+    "yaw": -10.0,
+    "pitch": 40.0,
+    "distance": 9.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:35",
+  "tool_process": "line"
+}

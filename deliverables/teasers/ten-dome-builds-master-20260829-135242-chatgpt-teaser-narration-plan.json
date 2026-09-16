@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5df7414e81\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5df7414e81\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5df7414e81\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5df7414e81\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5df7414e81\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5df7414e81\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\ten-dome-builds-master-20260829-135242-chatgpt-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5df7414e81\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    6.127999999999999,
+    4.136,
+    5.576,
+    3.9440000000000004,
+    4.279999999999999,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    4.728,
+    2.736,
+    4.176,
+    2.544,
+    2.88,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    6.127999999999999,
+    10.264,
+    15.84,
+    19.784,
+    24.064,
+    29.064
+  ],
+  "speech_delay": 0.55
+}

@@ -1,0 +1,21 @@
+{
+  "plate": "scratch-pipeline",
+  "title": "From geometry to a pixel",
+  "tool": "film",
+  "concept": "The films compute every picture from first principles.",
+  "change": "The from-scratch film's pipeline scene, moved in so each stage reads.",
+  "recipe": {
+    "lesson": "scratch",
+    "chapter": "pipeline",
+    "progress": 0.9,
+    "camera": {
+      "zoom": 0.7
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

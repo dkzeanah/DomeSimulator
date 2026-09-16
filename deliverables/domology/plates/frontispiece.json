@@ -1,0 +1,23 @@
+{
+  "plate": "frontispiece",
+  "title": "The shell",
+  "tool": "film",
+  "concept": "The book's subject, as the simulator solved it.",
+  "change": "Why Build This Way's dome, centred and rendered as a full page.",
+  "recipe": {
+    "lesson": "why_build",
+    "chapter": "why",
+    "progress": 0.5,
+    "camera": {
+      "fn": "hv_dome_centred",
+      "pitch": 14.0,
+      "radii": 3.7
+    }
+  },
+  "size": [
+    2440,
+    3080
+  ],
+  "rendered": "2026-09-12T14:05:17",
+  "engine": "two_v_demo.app shots"
+}

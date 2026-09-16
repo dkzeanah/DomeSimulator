@@ -1,0 +1,24 @@
+{
+  "plate": "harvest-pile",
+  "title": "Two trees, split",
+  "tool": "film",
+  "concept": "The pile is the whole frame.",
+  "change": "The harvest film's pile, seen along the row from its near end.",
+  "recipe": {
+    "lesson": "harvest",
+    "chapter": "cost",
+    "progress": 0.5,
+    "camera": {
+      "fn": "hv_pile",
+      "yaw": -160.0,
+      "pitch": 22.0,
+      "distance": 13.0
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

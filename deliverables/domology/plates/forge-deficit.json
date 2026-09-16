@@ -1,0 +1,21 @@
+{
+  "plate": "forge-deficit",
+  "title": "Why a flat fan rises",
+  "tool": "forge",
+  "concept": "Angular deficit is what curves a dome.",
+  "change": "The jig shop's last stage, which assembles a fan around one hub.",
+  "recipe": {
+    "mode": "jigs",
+    "jig": 1,
+    "stage": "deficit",
+    "yaw": 64.0,
+    "pitch": 60.0,
+    "distance": 7.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

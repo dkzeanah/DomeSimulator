@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-989e930106\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-989e930106\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-989e930106\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-989e930106\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-989e930106\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-989e930106\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\the-20-dollar-pine-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-989e930106\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    5.768,
+    4.088,
+    4.4479999999999995,
+    6.3919999999999995,
+    3.4,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    4.368,
+    2.688,
+    3.048,
+    4.992,
+    1.92,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    5.768,
+    9.856,
+    14.303999999999998,
+    20.695999999999998,
+    24.095999999999997,
+    29.095999999999997
+  ],
+  "speech_delay": 0.55
+}

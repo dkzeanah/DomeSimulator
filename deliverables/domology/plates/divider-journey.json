@@ -1,0 +1,18 @@
+{
+  "plate": "divider-journey",
+  "title": "Book Two",
+  "tool": "film",
+  "concept": "The tools of Book Two.",
+  "change": "The world lineup, rendered as a full page.",
+  "recipe": {
+    "lesson": "world",
+    "chapter": "world_open",
+    "progress": 0.9
+  },
+  "size": [
+    2440,
+    3080
+  ],
+  "rendered": "2026-09-12T14:05:17",
+  "engine": "two_v_demo.app shots"
+}

@@ -1,0 +1,16 @@
+{
+  "plate": "forge-nesting",
+  "title": "Covers nested on the sheet",
+  "tool": "chart",
+  "concept": "Flat patterns nest onto real sheet sizes.",
+  "change": "From dome_forge.patterns.auto_nest.",
+  "recipe": {
+    "chart": "nesting"
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:03:56",
+  "source": "domology.charts"
+}

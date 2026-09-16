@@ -1,0 +1,121 @@
+{
+  "schema": "two-trees-publication/v1",
+  "created": "20260912T053538860119Z",
+  "title": "2 trees: Build your (D)Home",
+  "edition": "Codex publication sample / current manuscript",
+  "pdf": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\2-trees-reading-edition.pdf",
+  "pages": [
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0001.png",
+      "page_number": 1,
+      "source_page_id": "publication-cover",
+      "title": "2 trees: Build your (D)Home",
+      "kind": "cover",
+      "word_count": 32,
+      "text": "2 TREES / THE BOOK\n2 trees: Build your\n(D)Home\nWorking manuscript\nCodex publication sample / current manuscript\nA reading edition of the current editable manuscript. Illustrations retain\ntheir captions and source notes.\n"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0002.png",
+      "page_number": 2,
+      "source_page_id": "publication-contents",
+      "title": "Contents",
+      "kind": "contents",
+      "word_count": 27,
+      "text": "Contents\n3\nPart I — The idea in the wood\n .  .  .  .  .  .  .  .  .  .  . 4\n10. Eight sections, sixty-four blanks, sixty accepted members\n .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6\n17. The triangle corner is a physical object"
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0003.png",
+      "page_number": 3,
+      "source_page_id": "codex-part-origin",
+      "title": "Part I — The idea in the wood",
+      "kind": "part",
+      "word_count": 55,
+      "text": "PART / story / draft\nPart I — The idea in the\nwood\nBefore a cut list, there was a question: what if the useful shape was already\ninside the tree?\nWe begin with the earlier experiments, then arrive at the wedge. This part\nexplains the discovery without pretending that every later detail was\nobvious at the beginning."
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0004.png",
+      "page_number": 4,
+      "source_page_id": "codex-tree-ledger",
+      "title": "10. Eight sections, sixty-four blanks, sixty accepted members",
+      "kind": "worked",
+      "word_count": 218,
+      "text": "WORKED / explanation / draft\n10. Eight sections, sixty-four\nblanks, sixty accepted\nmembers\nQuantity\nOne tree\nTwo trees\nPlanned six-foot sections\n8\n16\nPotential blanks at eight per\nsection\n64\n128\nTarget allocation\n60\n120\nPotential spare or rejected\nblanks\n4\n8\nThe eight potential spares represent 6.25 percent of the gross 128-piece\ninventory. If eight blanks are rejected, the remaining 120 exactly meet the\ncount and leave no accepted replacements. At a ten-percent rejection rate,\nthe arithmetic no longer supports a complete 120-member frame from this\ninventory. Report that shortage while there is still time to change the plan.\nEight six-foot sections contain forty-eight feet of net section length. They\ncannot all be cut from exactly forty-eight feet while also losing material to\nseparating cuts. If seven interior bucking cuts remove a quarter inch each,\nthe minimum span before outer-end trimming is 48 feet plus 1.75 inches, or\nabout 48.146 feet. Additional cuts at the ends and defect removals require\nmore length. This example declares its kerf assumption; it is not a\nmeasurement of the author's saw.\nSeparate bucking kerf from ripping kerf. The first reduces the longitudinal\ninventory as sections are separated. The second removes wood from their\ncross-sections as wedges are produced. Both matter, but subtracting one\nfrom the other would mix different dimensions."
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0005.png",
+      "page_number": 5,
+      "source_page_id": "codex-tree-ledger",
+      "title": "10. Eight sections, sixty-four blanks, sixty accepted members",
+      "kind": "worked",
+      "word_count": 144,
+      "text": "One organizational option is to reserve one tree's qualified blanks for A\nmembers and the other tree's for B members. That makes the title easy to\nexplain, but assignment should follow the actual inventory. A short or\ndefective A candidate may be perfectly useful in a B position if its material\nproperties and finished dimensions meet the design. Keep its original tree\nand section ID when reassigning it.\nThe project's earlier timber demonstration also explores twelve-foot\nsections split and then divided into shorter members. That is a different cut\nplan. Its yield cannot be copied onto this eight-by-six-foot plan without\naccounting for usable trunk length and every additional crosscut.\nFigure 1\nEight sections per tree, eight potential blanks per section: 128 gross blanks and a target of 120\nmembers.\nSource: Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print\ncolors are illustrative."
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0006.png",
+      "page_number": 6,
+      "source_page_id": "codex-joint-geometry",
+      "title": "17. The triangle corner is a physical object",
+      "kind": "chapter",
+      "word_count": 259,
+      "text": "CHAPTER / explanation / draft\n17. The triangle corner is a\nphysical object\nThe ideal triangle has vertices where lines meet. Real members have width,\ndepth, and ends that must occupy different space. The project's pinwheel\narrangement gives each member a receiving role at one end and a\nterminating role at the other. One member ends against the side of its\nneighbor while receiving another member in turn.\nEarlier explanatory code describes simplified square-ended pinwheel\nmembers. The current raw-wedge simulator carries more detailed corner\ngeometry: the terminating end is solved against its receiving surface, and\nthe other end is clipped to the triangle's envelope. The corresponding cut\nplanes and stock extents should govern the fabrication discussion for this\nconfiguration.\nThis correction matters to the story. Preserving the longitudinal\nforty-five-degree sector does not imply that every end is a square crosscut.\nThe long radial faces, the panel-to-panel fold, and the member's end cuts\nare separate geometric questions. A process can preserve the raw sector\nwhile still requiring an oblique end cut.\nStart with a full-size representative corner using the intended cross-section\nand orientation. Mark the mathematical reference points and the actual cut\nsurfaces separately. Check the receiving relationship, the available bearing\nregion, the fastening space, and whether either member extends beyond\nthe intended panel envelope.\nMove from that corner to one A-A-A panel and one B-A-B panel. Check\ntheir reference dimensions and their physical boundaries. A fixture that\nreproduces one family does not automatically reproduce the other. Before\ncutting the batch, retain a labeled master example and the configuration\nthat produced it."
+    },
+    {
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\pages\\page-0007.png",
+      "page_number": 7,
+      "source_page_id": "codex-joint-geometry",
+      "title": "17. The triangle corner is a physical object",
+      "kind": "chapter",
+      "word_count": 37,
+      "text": "Figure 1\nTwo separate cyclic pinwheel triangles, each with three members. Two members remain at their\nshared axis. Colors identify member ownership.\nSource: Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print\ncolors are illustrative."
+    }
+  ],
+  "manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749\\publication.json",
+  "output_dir": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\publication_test\\publication-20260912T053535551011Z-1125e749",
+  "page_size_points": [
+    432,
+    648
+  ],
+  "raster_dpi": 200,
+  "figures": [
+    {
+      "source_page_id": "codex-tree-ledger",
+      "asset_id": "codex-e291d7df04ea495c",
+      "source_path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\assets\\codex-e291d7df04ea495c.png",
+      "source_size": [
+        1800,
+        1400
+      ],
+      "draw_size_points": [
+        342.0,
+        266.0
+      ],
+      "metadata": {
+        "path": "assets/codex-e291d7df04ea495c.png",
+        "caption": "Eight sections per tree, eight potential blanks per section: 128 gross blanks and a target of 120 members.",
+        "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+        "source_key": "initial-plate-inventory"
+      }
+    },
+    {
+      "source_page_id": "codex-joint-geometry",
+      "asset_id": "codex-47e9910aba8b4b12",
+      "source_path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\assets\\codex-47e9910aba8b4b12.png",
+      "source_size": [
+        1800,
+        1400
+      ],
+      "draw_size_points": [
+        342.0,
+        266.0
+      ],
+      "metadata": {
+        "path": "assets/codex-47e9910aba8b4b12.png",
+        "caption": "Two separate cyclic pinwheel triangles, each with three members. Two members remain at their shared axis. Colors identify member ownership.",
+        "provenance": "Rendered from existing DomeSim model geometry; see two_trees_codex/render.py. Print colors are illustrative.",
+        "source_key": "initial-plate-pinwheel-pair"
+      }
+    }
+  ],
+  "source_updated": "20260909T031218512229Z",
+  "layout_authority": "PDF; reader and video use its rendered physical pages"
+}

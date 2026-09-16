@@ -1,0 +1,18 @@
+{
+  "plate": "hex-deficit",
+  "title": "Curvature is bought with missing angle",
+  "tool": "film",
+  "concept": "Descartes' theorem: every closed cage is short the same total angle.",
+  "change": "The hex masterclass's deficit scene.",
+  "recipe": {
+    "lesson": "hex",
+    "chapter": "buy_curve",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

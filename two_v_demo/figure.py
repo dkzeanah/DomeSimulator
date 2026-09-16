@@ -326,6 +326,7 @@ def joint_positions(
     origin=(0.0, 0.0, 0.0),
     yaw_deg: float = 0.0,
     ground: bool = True,
+    fractions: Mapping[str, float] | None = None,
 ) -> dict[str, np.ndarray]:
     """Every joint of the figure in world space, for one pose.
 
@@ -334,8 +335,13 @@ def joint_positions(
     height.  Grounding is what keeps a squat from floating: the pelvis is
     lowered by the pose, and the whole body is then lifted back until the
     feet touch again.
+
+    ``fractions`` swaps the stature fractions for a different frame --
+    :mod:`two_v_demo.glam_figure` passes a female-proportioned set.  It
+    defaults to the Drillis and Contini table above, so every existing
+    caller builds exactly the figure it always did.
     """
-    f = STATURE_FRACTION
+    f = STATURE_FRACTION if fractions is None else fractions
     down = np.array([0.0, 0.0, -1.0])
     up = np.array([0.0, 0.0, 1.0])
     joints: dict[str, np.ndarray] = {}

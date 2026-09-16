@@ -44,6 +44,16 @@ class NarrationPlan:
     track_path: Path
 
 
+def boundary_path(clip: Path) -> Path:
+    """Where the sentence timings for one synthesized clip are kept.
+
+    ``chapter_07.mp3`` keeps them in ``chapter_07.boundaries.jsonl``. Clips cached
+    before timings were recorded simply have none, and anything that wants them
+    falls back to an estimate.
+    """
+    return clip.with_suffix(".boundaries.jsonl")
+
+
 def spoken_chapter_text(
     index: int,
     chapters: tuple[Chapter, ...] = CHAPTERS,
@@ -230,6 +240,11 @@ async def _synthesize_one(
 ) -> None:
     edge_tts = _edge_tts_module()
     last: Exception | None = None
+    # The service reports where each sentence starts in the audio it sends. Saving
+    # that beside the clip costs nothing and lets on-screen figures arrive with the
+    # words that say them (see callouts.speech_timings). The request itself is
+    # unchanged, so the audio is the same audio.
+    timings = boundary_path(path)
     for attempt in range(1, SYNTHESIS_ATTEMPTS + 1):
         communicator = edge_tts.Communicate(
             text,
@@ -240,14 +255,15 @@ async def _synthesize_one(
             boundary="SentenceBoundary",
         )
         try:
-            await communicator.save(str(path))
+            await communicator.save(str(path), str(timings))
         except Exception as exc:  # network, DNS, or endpoint hiccup
             last = exc
             # A partial file would look like a valid cached clip next time.
-            try:
-                path.unlink()
-            except OSError:
-                pass
+            for partial in (path, timings):
+                try:
+                    partial.unlink()
+                except OSError:
+                    pass
             if attempt == SYNTHESIS_ATTEMPTS:
                 break
             if progress is not None:

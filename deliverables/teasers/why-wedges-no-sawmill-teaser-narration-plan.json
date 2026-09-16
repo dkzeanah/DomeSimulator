@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2d3b7d84a2\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2d3b7d84a2\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2d3b7d84a2\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2d3b7d84a2\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2d3b7d84a2\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2d3b7d84a2\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\why-wedges-no-sawmill-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2d3b7d84a2\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    8.024,
+    5.528,
+    6.4399999999999995,
+    6.247999999999999,
+    3.704,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    6.624,
+    4.128,
+    5.04,
+    4.848,
+    2.304,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    8.024,
+    13.552,
+    19.991999999999997,
+    26.239999999999995,
+    29.943999999999996,
+    34.943999999999996
+  ],
+  "speech_delay": 0.55
+}

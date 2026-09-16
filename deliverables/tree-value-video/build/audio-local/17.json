@@ -1,0 +1,704 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 8,
+    "text": "Firewood"
+  },
+  {
+    "start": 0.68,
+    "position": 9,
+    "length": 8,
+    "text": "converts"
+  },
+  {
+    "start": 1.165,
+    "position": 18,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 1.395,
+    "position": 23,
+    "length": 4,
+    "text": "into"
+  },
+  {
+    "start": 1.63,
+    "position": 28,
+    "length": 4,
+    "text": "heat"
+  },
+  {
+    "start": 1.875,
+    "position": 33,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 2.015,
+    "position": 37,
+    "length": 8,
+    "text": "consumes"
+  },
+  {
+    "start": 2.565,
+    "position": 46,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 2.645,
+    "position": 50,
+    "length": 8,
+    "text": "material"
+  },
+  {
+    "start": 3.2,
+    "position": 59,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 3.315,
+    "position": 62,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 3.385,
+    "position": 66,
+    "length": 7,
+    "text": "process"
+  },
+  {
+    "start": 4.97,
+    "position": 75,
+    "length": 12,
+    "text": "Construction"
+  },
+  {
+    "start": 5.62,
+    "position": 88,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 5.825,
+    "position": 92,
+    "length": 4,
+    "text": "keep"
+  },
+  {
+    "start": 6.095,
+    "position": 97,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 6.28,
+    "position": 102,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 6.505,
+    "position": 107,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 6.65,
+    "position": 110,
+    "length": 7,
+    "text": "service"
+  },
+  {
+    "start": 7.075,
+    "position": 118,
+    "length": 2,
+    "text": "as"
+  },
+  {
+    "start": 7.23,
+    "position": 121,
+    "length": 4,
+    "text": "part"
+  },
+  {
+    "start": 7.54,
+    "position": 126,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 7.635,
+    "position": 129,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 7.695,
+    "position": 131,
+    "length": 7,
+    "text": "durable"
+  },
+  {
+    "start": 8.075,
+    "position": 139,
+    "length": 5,
+    "text": "asset"
+  },
+  {
+    "start": 9.445,
+    "position": 146,
+    "length": 5,
+    "text": "Using"
+  },
+  {
+    "start": 9.775,
+    "position": 152,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 9.86,
+    "position": 156,
+    "length": 24,
+    "text": "two-hundred-fifty-dollar"
+  },
+  {
+    "start": 11.115,
+    "position": 181,
+    "length": 8,
+    "text": "firewood"
+  },
+  {
+    "start": 11.67,
+    "position": 190,
+    "length": 12,
+    "text": "illustration"
+  },
+  {
+    "start": 12.865,
+    "position": 204,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 12.945,
+    "position": 208,
+    "length": 26,
+    "text": "forty-eight-hundred-dollar"
+  },
+  {
+    "start": 14.16,
+    "position": 235,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 14.6,
+    "position": 243,
+    "length": 10,
+    "text": "comparison"
+  },
+  {
+    "start": 15.225,
+    "position": 254,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 15.38,
+    "position": 257,
+    "length": 8,
+    "text": "nineteen"
+  },
+  {
+    "start": 15.94,
+    "position": 266,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 16.27,
+    "position": 272,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 16.49,
+    "position": 276,
+    "length": 5,
+    "text": "times"
+  },
+  {
+    "start": 16.895,
+    "position": 282,
+    "length": 2,
+    "text": "as"
+  },
+  {
+    "start": 17.055,
+    "position": 285,
+    "length": 5,
+    "text": "large"
+  },
+  {
+    "start": 18.37,
+    "position": 292,
+    "length": 3,
+    "text": "But"
+  },
+  {
+    "start": 18.52,
+    "position": 296,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 18.625,
+    "position": 300,
+    "length": 6,
+    "text": "deeper"
+  },
+  {
+    "start": 18.93,
+    "position": 307,
+    "length": 11,
+    "text": "distinction"
+  },
+  {
+    "start": 19.535,
+    "position": 319,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 19.695,
+    "position": 322,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 19.79,
+    "position": 326,
+    "length": 10,
+    "text": "continuing"
+  },
+  {
+    "start": 20.405,
+    "position": 337,
+    "length": 8,
+    "text": "function"
+  },
+  {
+    "start": 21.795,
+    "position": 347,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 21.89,
+    "position": 349,
+    "length": 9,
+    "text": "completed"
+  },
+  {
+    "start": 22.905,
+    "position": 360,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 23.32,
+    "position": 367,
+    "length": 8,
+    "text": "building"
+  },
+  {
+    "start": 23.71,
+    "position": 376,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 23.91,
+    "position": 380,
+    "length": 7,
+    "text": "provide"
+  },
+  {
+    "start": 24.355,
+    "position": 388,
+    "length": 7,
+    "text": "shelter"
+  },
+  {
+    "start": 24.845,
+    "position": 396,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 24.965,
+    "position": 400,
+    "length": 8,
+    "text": "enclosed"
+  },
+  {
+    "start": 25.51,
+    "position": 409,
+    "length": 5,
+    "text": "space"
+  },
+  {
+    "start": 26.44,
+    "position": 416,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 26.56,
+    "position": 420,
+    "length": 3,
+    "text": "may"
+  },
+  {
+    "start": 26.72,
+    "position": 424,
+    "length": 10,
+    "text": "contribute"
+  },
+  {
+    "start": 27.305,
+    "position": 435,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 27.4,
+    "position": 438,
+    "length": 8,
+    "text": "property"
+  },
+  {
+    "start": 27.95,
+    "position": 447,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 28.385,
+    "position": 453,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 28.545,
+    "position": 457,
+    "length": 5,
+    "text": "owner"
+  },
+  {
+    "start": 28.855,
+    "position": 463,
+    "length": 6,
+    "text": "equity"
+  },
+  {
+    "start": 30.17,
+    "position": 471,
+    "length": 12,
+    "text": "Appreciation"
+  },
+  {
+    "start": 30.955,
+    "position": 484,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 31.095,
+    "position": 487,
+    "length": 8,
+    "text": "possible"
+  },
+  {
+    "start": 32.105,
+    "position": 497,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 32.36,
+    "position": 501,
+    "length": 10,
+    "text": "guaranteed"
+  },
+  {
+    "start": 33.925,
+    "position": 513,
+    "length": 7,
+    "text": "Framing"
+  },
+  {
+    "start": 34.38,
+    "position": 521,
+    "length": 2,
+    "text": "by"
+  },
+  {
+    "start": 34.58,
+    "position": 524,
+    "length": 6,
+    "text": "itself"
+  },
+  {
+    "start": 35.005,
+    "position": 531,
+    "length": 4,
+    "text": "does"
+  },
+  {
+    "start": 35.255,
+    "position": 536,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 35.48,
+    "position": 540,
+    "length": 9,
+    "text": "establish"
+  },
+  {
+    "start": 36.065,
+    "position": 550,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 36.12,
+    "position": 552,
+    "length": 8,
+    "text": "finished"
+  },
+  {
+    "start": 36.565,
+    "position": 561,
+    "length": 10,
+    "text": "building's"
+  },
+  {
+    "start": 37.015,
+    "position": 572,
+    "length": 6,
+    "text": "market"
+  },
+  {
+    "start": 37.405,
+    "position": 579,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 38.76,
+    "position": 586,
+    "length": 11,
+    "text": "Connections"
+  },
+  {
+    "start": 39.535,
+    "position": 599,
+    "length": 7,
+    "text": "weather"
+  },
+  {
+    "start": 39.815,
+    "position": 607,
+    "length": 10,
+    "text": "protection"
+  },
+  {
+    "start": 40.59,
+    "position": 619,
+    "length": 11,
+    "text": "foundations"
+  },
+  {
+    "start": 41.56,
+    "position": 632,
+    "length": 8,
+    "text": "services"
+  },
+  {
+    "start": 42.37,
+    "position": 642,
+    "length": 11,
+    "text": "maintenance"
+  },
+  {
+    "start": 43.125,
+    "position": 655,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 43.23,
+    "position": 659,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 43.35,
+    "position": 663,
+    "length": 4,
+    "text": "rest"
+  },
+  {
+    "start": 43.64,
+    "position": 668,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 43.745,
+    "position": 671,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 43.825,
+    "position": 675,
+    "length": 7,
+    "text": "project"
+  },
+  {
+    "start": 44.36,
+    "position": 683,
+    "length": 5,
+    "text": "still"
+  },
+  {
+    "start": 44.625,
+    "position": 689,
+    "length": 6,
+    "text": "matter"
+  },
+  {
+    "start": 45.895,
+    "position": 697,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 46.045,
+    "position": 701,
+    "length": 8,
+    "text": "economic"
+  },
+  {
+    "start": 46.61,
+    "position": 710,
+    "length": 11,
+    "text": "opportunity"
+  },
+  {
+    "start": 47.325,
+    "position": 722,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 47.48,
+    "position": 725,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 47.585,
+    "position": 728,
+    "length": 8,
+    "text": "preserve"
+  },
+  {
+    "start": 48.02,
+    "position": 737,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 48.25,
+    "position": 742,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 48.355,
+    "position": 745,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 48.425,
+    "position": 747,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 48.85,
+    "position": 754,
+    "length": 7,
+    "text": "capital"
+  },
+  {
+    "start": 49.345,
+    "position": 762,
+    "length": 5,
+    "text": "asset"
+  },
+  {
+    "start": 49.725,
+    "position": 768,
+    "length": 5,
+    "text": "whose"
+  },
+  {
+    "start": 49.955,
+    "position": 774,
+    "length": 7,
+    "text": "service"
+  },
+  {
+    "start": 50.355,
+    "position": 782,
+    "length": 5,
+    "text": "lasts"
+  },
+  {
+    "start": 50.75,
+    "position": 788,
+    "length": 6,
+    "text": "beyond"
+  },
+  {
+    "start": 51.205,
+    "position": 795,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 51.26,
+    "position": 797,
+    "length": 6,
+    "text": "single"
+  },
+  {
+    "start": 51.645,
+    "position": 804,
+    "length": 3,
+    "text": "use"
+  }
+]

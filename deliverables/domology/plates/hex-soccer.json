@@ -1,0 +1,18 @@
+{
+  "plate": "hex-soccer",
+  "title": "A soccer-ball dome",
+  "tool": "film",
+  "concept": "Hex domes trade triangles for flat polygons.",
+  "change": "The hex masterclass's soccer-ball scene.",
+  "recipe": {
+    "lesson": "hex",
+    "chapter": "one_hexagon",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

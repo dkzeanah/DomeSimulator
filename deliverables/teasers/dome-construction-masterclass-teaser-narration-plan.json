@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-315d1b25e4\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-315d1b25e4\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-315d1b25e4\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-315d1b25e4\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-315d1b25e4\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-315d1b25e4\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\dome-construction-masterclass-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-315d1b25e4\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    5.239999999999999,
+    5.672,
+    5.744,
+    6.704,
+    5.864,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    3.84,
+    4.272,
+    4.344,
+    5.304,
+    4.464,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    5.239999999999999,
+    10.911999999999999,
+    16.656,
+    23.36,
+    29.224,
+    34.224000000000004
+  ],
+  "speech_delay": 0.55
+}

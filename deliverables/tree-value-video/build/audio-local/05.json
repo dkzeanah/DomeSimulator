@@ -1,0 +1,752 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 6,
+    "text": "Before"
+  },
+  {
+    "start": 0.42,
+    "position": 7,
+    "length": 7,
+    "text": "pricing"
+  },
+  {
+    "start": 0.905,
+    "position": 15,
+    "length": 8,
+    "text": "firewood"
+  },
+  {
+    "start": 1.96,
+    "position": 25,
+    "length": 2,
+    "text": "we"
+  },
+  {
+    "start": 2.09,
+    "position": 28,
+    "length": 4,
+    "text": "need"
+  },
+  {
+    "start": 2.285,
+    "position": 33,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 2.415,
+    "position": 36,
+    "length": 10,
+    "text": "understand"
+  },
+  {
+    "start": 3.055,
+    "position": 47,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 3.11,
+    "position": 49,
+    "length": 4,
+    "text": "cord"
+  },
+  {
+    "start": 4.365,
+    "position": 55,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 4.43,
+    "position": 57,
+    "length": 8,
+    "text": "standard"
+  },
+  {
+    "start": 4.92,
+    "position": 66,
+    "length": 4,
+    "text": "cord"
+  },
+  {
+    "start": 5.24,
+    "position": 71,
+    "length": 8,
+    "text": "occupies"
+  },
+  {
+    "start": 5.805,
+    "position": 80,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 6.01,
+    "position": 84,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 6.41,
+    "position": 92,
+    "length": 12,
+    "text": "twenty-eight"
+  },
+  {
+    "start": 7.0,
+    "position": 105,
+    "length": 5,
+    "text": "cubic"
+  },
+  {
+    "start": 7.395,
+    "position": 111,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 7.685,
+    "position": 116,
+    "length": 4,
+    "text": "when"
+  },
+  {
+    "start": 7.87,
+    "position": 121,
+    "length": 7,
+    "text": "stacked"
+  },
+  {
+    "start": 8.795,
+    "position": 130,
+    "length": 8,
+    "text": "commonly"
+  },
+  {
+    "start": 9.27,
+    "position": 139,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 9.55,
+    "position": 144,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 9.82,
+    "position": 149,
+    "length": 4,
+    "text": "high"
+  },
+  {
+    "start": 10.525,
+    "position": 155,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 10.78,
+    "position": 160,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 11.07,
+    "position": 165,
+    "length": 4,
+    "text": "deep"
+  },
+  {
+    "start": 11.79,
+    "position": 171,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 11.92,
+    "position": 175,
+    "length": 5,
+    "text": "eight"
+  },
+  {
+    "start": 12.11,
+    "position": 181,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 12.39,
+    "position": 186,
+    "length": 4,
+    "text": "long"
+  },
+  {
+    "start": 13.62,
+    "position": 192,
+    "length": 4,
+    "text": "That"
+  },
+  {
+    "start": 13.815,
+    "position": 197,
+    "length": 5,
+    "text": "stack"
+  },
+  {
+    "start": 14.17,
+    "position": 203,
+    "length": 8,
+    "text": "includes"
+  },
+  {
+    "start": 14.705,
+    "position": 212,
+    "length": 5,
+    "text": "empty"
+  },
+  {
+    "start": 15.015,
+    "position": 218,
+    "length": 6,
+    "text": "spaces"
+  },
+  {
+    "start": 15.505,
+    "position": 225,
+    "length": 7,
+    "text": "between"
+  },
+  {
+    "start": 15.925,
+    "position": 233,
+    "length": 6,
+    "text": "pieces"
+  },
+  {
+    "start": 17.345,
+    "position": 241,
+    "length": 5,
+    "text": "Solid"
+  },
+  {
+    "start": 17.775,
+    "position": 247,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 17.975,
+    "position": 252,
+    "length": 6,
+    "text": "volume"
+  },
+  {
+    "start": 18.425,
+    "position": 259,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 18.565,
+    "position": 262,
+    "length": 7,
+    "text": "smaller"
+  },
+  {
+    "start": 19.93,
+    "position": 271,
+    "length": 3,
+    "text": "Our"
+  },
+  {
+    "start": 20.06,
+    "position": 275,
+    "length": 5,
+    "text": "model"
+  },
+  {
+    "start": 20.435,
+    "position": 281,
+    "length": 4,
+    "text": "uses"
+  },
+  {
+    "start": 20.815,
+    "position": 286,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 21.095,
+    "position": 292,
+    "length": 6,
+    "text": "ninety"
+  },
+  {
+    "start": 21.475,
+    "position": 299,
+    "length": 5,
+    "text": "cubic"
+  },
+  {
+    "start": 21.875,
+    "position": 305,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 22.16,
+    "position": 310,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 22.265,
+    "position": 313,
+    "length": 5,
+    "text": "solid"
+  },
+  {
+    "start": 22.655,
+    "position": 319,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 22.875,
+    "position": 324,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 23.045,
+    "position": 328,
+    "length": 4,
+    "text": "cord"
+  },
+  {
+    "start": 24.3,
+    "position": 334,
+    "length": 8,
+    "text": "Forestry"
+  },
+  {
+    "start": 24.86,
+    "position": 343,
+    "length": 10,
+    "text": "references"
+  },
+  {
+    "start": 25.415,
+    "position": 354,
+    "length": 4,
+    "text": "show"
+  },
+  {
+    "start": 25.675,
+    "position": 359,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 25.84,
+    "position": 364,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 25.99,
+    "position": 368,
+    "length": 6,
+    "text": "actual"
+  },
+  {
+    "start": 26.42,
+    "position": 375,
+    "length": 6,
+    "text": "amount"
+  },
+  {
+    "start": 26.79,
+    "position": 382,
+    "length": 6,
+    "text": "varies"
+  },
+  {
+    "start": 27.15,
+    "position": 389,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 27.3,
+    "position": 394,
+    "length": 5,
+    "text": "piece"
+  },
+  {
+    "start": 27.59,
+    "position": 400,
+    "length": 4,
+    "text": "size"
+  },
+  {
+    "start": 27.97,
+    "position": 405,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 28.11,
+    "position": 409,
+    "length": 8,
+    "text": "stacking"
+  },
+  {
+    "start": 29.07,
+    "position": 419,
+    "length": 2,
+    "text": "so"
+  },
+  {
+    "start": 29.31,
+    "position": 422,
+    "length": 6,
+    "text": "ninety"
+  },
+  {
+    "start": 29.74,
+    "position": 429,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 29.89,
+    "position": 432,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 29.945,
+    "position": 434,
+    "length": 10,
+    "text": "conversion"
+  },
+  {
+    "start": 30.485,
+    "position": 445,
+    "length": 10,
+    "text": "assumption"
+  },
+  {
+    "start": 31.035,
+    "position": 456,
+    "length": 6,
+    "text": "rather"
+  },
+  {
+    "start": 31.32,
+    "position": 463,
+    "length": 4,
+    "text": "than"
+  },
+  {
+    "start": 31.46,
+    "position": 468,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 31.525,
+    "position": 470,
+    "length": 9,
+    "text": "universal"
+  },
+  {
+    "start": 32.14,
+    "position": 480,
+    "length": 8,
+    "text": "physical"
+  },
+  {
+    "start": 32.59,
+    "position": 489,
+    "length": 8,
+    "text": "constant"
+  },
+  {
+    "start": 34.07,
+    "position": 499,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 34.15,
+    "position": 503,
+    "length": 8,
+    "text": "supplied"
+  },
+  {
+    "start": 34.65,
+    "position": 512,
+    "length": 5,
+    "text": "yield"
+  },
+  {
+    "start": 34.94,
+    "position": 518,
+    "length": 8,
+    "text": "examples"
+  },
+  {
+    "start": 35.51,
+    "position": 527,
+    "length": 5,
+    "text": "place"
+  },
+  {
+    "start": 35.875,
+    "position": 533,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 35.93,
+    "position": 535,
+    "length": 12,
+    "text": "fifteen-inch"
+  },
+  {
+    "start": 36.625,
+    "position": 548,
+    "length": 4,
+    "text": "pine"
+  },
+  {
+    "start": 36.945,
+    "position": 553,
+    "length": 4,
+    "text": "near"
+  },
+  {
+    "start": 37.15,
+    "position": 558,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 37.51,
+    "position": 564,
+    "length": 5,
+    "text": "three"
+  },
+  {
+    "start": 37.74,
+    "position": 570,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 38.09,
+    "position": 575,
+    "length": 4,
+    "text": "cord"
+  },
+  {
+    "start": 38.43,
+    "position": 580,
+    "length": 2,
+    "text": "at"
+  },
+  {
+    "start": 38.55,
+    "position": 583,
+    "length": 5,
+    "text": "sixty"
+  },
+  {
+    "start": 38.97,
+    "position": 589,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 39.26,
+    "position": 594,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 39.405,
+    "position": 598,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 39.74,
+    "position": 604,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 39.995,
+    "position": 609,
+    "length": 5,
+    "text": "seven"
+  },
+  {
+    "start": 40.35,
+    "position": 615,
+    "length": 4,
+    "text": "cord"
+  },
+  {
+    "start": 40.67,
+    "position": 620,
+    "length": 2,
+    "text": "at"
+  },
+  {
+    "start": 40.795,
+    "position": 623,
+    "length": 6,
+    "text": "eighty"
+  },
+  {
+    "start": 41.02,
+    "position": 630,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 41.785,
+    "position": 636,
+    "length": 9,
+    "text": "depending"
+  },
+  {
+    "start": 42.245,
+    "position": 646,
+    "length": 2,
+    "text": "on"
+  },
+  {
+    "start": 42.42,
+    "position": 649,
+    "length": 7,
+    "text": "species"
+  },
+  {
+    "start": 42.99,
+    "position": 657,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 43.13,
+    "position": 661,
+    "length": 6,
+    "text": "usable"
+  },
+  {
+    "start": 43.51,
+    "position": 668,
+    "length": 3,
+    "text": "top"
+  },
+  {
+    "start": 43.83,
+    "position": 672,
+    "length": 8,
+    "text": "diameter"
+  },
+  {
+    "start": 45.36,
+    "position": 682,
+    "length": 3,
+    "text": "For"
+  },
+  {
+    "start": 45.58,
+    "position": 686,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 45.705,
+    "position": 690,
+    "length": 14,
+    "text": "representative"
+  },
+  {
+    "start": 46.39,
+    "position": 705,
+    "length": 4,
+    "text": "stem"
+  },
+  {
+    "start": 47.21,
+    "position": 711,
+    "length": 2,
+    "text": "we"
+  },
+  {
+    "start": 47.355,
+    "position": 714,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 47.6,
+    "position": 718,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 47.95,
+    "position": 724,
+    "length": 5,
+    "text": "three"
+  },
+  {
+    "start": 48.18,
+    "position": 730,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 48.53,
+    "position": 735,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 48.64,
+    "position": 738,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 48.99,
+    "position": 744,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 49.245,
+    "position": 749,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 49.595,
+    "position": 754,
+    "length": 4,
+    "text": "cord"
+  }
+]

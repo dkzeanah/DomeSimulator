@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-13df34ed7c\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-13df34ed7c\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-13df34ed7c\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-13df34ed7c\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-13df34ed7c\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-13df34ed7c\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\frankendome-montage-v5-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-13df34ed7c\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    3.9200000000000004,
+    3.4,
+    3.4,
+    5.191999999999999,
+    3.656,
+    4.0,
+    5.191999999999999
+  ],
+  "speech_durations": [
+    2.52,
+    1.968,
+    1.968,
+    3.792,
+    2.256,
+    1.632,
+    3.792
+  ],
+  "chapter_starts": [
+    0.0,
+    3.9200000000000004,
+    7.32,
+    10.72,
+    15.911999999999999,
+    19.567999999999998,
+    23.567999999999998
+  ],
+  "speech_delay": 0.55
+}

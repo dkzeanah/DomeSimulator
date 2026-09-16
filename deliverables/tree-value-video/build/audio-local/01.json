@@ -1,0 +1,590 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 7,
+    "text": "Picture"
+  },
+  {
+    "start": 0.48,
+    "position": 8,
+    "length": 2,
+    "text": "an"
+  },
+  {
+    "start": 0.605,
+    "position": 11,
+    "length": 8,
+    "text": "ordinary"
+  },
+  {
+    "start": 1.065,
+    "position": 20,
+    "length": 4,
+    "text": "pine"
+  },
+  {
+    "start": 1.405,
+    "position": 25,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 2.65,
+    "position": 31,
+    "length": 7,
+    "text": "Someone"
+  },
+  {
+    "start": 3.1,
+    "position": 39,
+    "length": 5,
+    "text": "might"
+  },
+  {
+    "start": 3.34,
+    "position": 45,
+    "length": 5,
+    "text": "offer"
+  },
+  {
+    "start": 3.635,
+    "position": 51,
+    "length": 6,
+    "text": "twenty"
+  },
+  {
+    "start": 4.005,
+    "position": 58,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 4.4,
+    "position": 66,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 4.58,
+    "position": 70,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 4.7,
+    "position": 73,
+    "length": 8,
+    "text": "standing"
+  },
+  {
+    "start": 5.15,
+    "position": 82,
+    "length": 2,
+    "text": "in"
+  },
+  {
+    "start": 5.25,
+    "position": 85,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 5.34,
+    "position": 89,
+    "length": 5,
+    "text": "woods"
+  },
+  {
+    "start": 6.685,
+    "position": 96,
+    "length": 7,
+    "text": "Someone"
+  },
+  {
+    "start": 7.135,
+    "position": 104,
+    "length": 4,
+    "text": "else"
+  },
+  {
+    "start": 7.39,
+    "position": 109,
+    "length": 5,
+    "text": "could"
+  },
+  {
+    "start": 7.57,
+    "position": 115,
+    "length": 4,
+    "text": "turn"
+  },
+  {
+    "start": 7.855,
+    "position": 120,
+    "length": 3,
+    "text": "its"
+  },
+  {
+    "start": 8.04,
+    "position": 124,
+    "length": 4,
+    "text": "wood"
+  },
+  {
+    "start": 8.265,
+    "position": 129,
+    "length": 4,
+    "text": "into"
+  },
+  {
+    "start": 8.495,
+    "position": 134,
+    "length": 7,
+    "text": "several"
+  },
+  {
+    "start": 8.915,
+    "position": 142,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 9.32,
+    "position": 150,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 9.73,
+    "position": 158,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 9.86,
+    "position": 161,
+    "length": 6,
+    "text": "lumber"
+  },
+  {
+    "start": 11.13,
+    "position": 169,
+    "length": 3,
+    "text": "And"
+  },
+  {
+    "start": 11.25,
+    "position": 173,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 11.305,
+    "position": 175,
+    "length": 6,
+    "text": "person"
+  },
+  {
+    "start": 11.745,
+    "position": 182,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 11.89,
+    "position": 187,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 12.02,
+    "position": 191,
+    "length": 5,
+    "text": "right"
+  },
+  {
+    "start": 12.28,
+    "position": 197,
+    "length": 8,
+    "text": "building"
+  },
+  {
+    "start": 12.645,
+    "position": 206,
+    "length": 6,
+    "text": "system"
+  },
+  {
+    "start": 13.055,
+    "position": 213,
+    "length": 5,
+    "text": "might"
+  },
+  {
+    "start": 13.295,
+    "position": 219,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 13.52,
+    "position": 223,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 13.635,
+    "position": 226,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 13.76,
+    "position": 229,
+    "length": 7,
+    "text": "replace"
+  },
+  {
+    "start": 14.265,
+    "position": 237,
+    "length": 9,
+    "text": "thousands"
+  },
+  {
+    "start": 14.81,
+    "position": 247,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 14.93,
+    "position": 250,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 15.34,
+    "position": 258,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 15.45,
+    "position": 261,
+    "length": 9,
+    "text": "purchased"
+  },
+  {
+    "start": 15.95,
+    "position": 271,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 17.3,
+    "position": 280,
+    "length": 3,
+    "text": "How"
+  },
+  {
+    "start": 17.49,
+    "position": 284,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 17.725,
+    "position": 288,
+    "length": 3,
+    "text": "all"
+  },
+  {
+    "start": 17.935,
+    "position": 292,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 18.035,
+    "position": 295,
+    "length": 5,
+    "text": "those"
+  },
+  {
+    "start": 18.275,
+    "position": 301,
+    "length": 12,
+    "text": "descriptions"
+  },
+  {
+    "start": 18.93,
+    "position": 314,
+    "length": 2,
+    "text": "be"
+  },
+  {
+    "start": 19.065,
+    "position": 317,
+    "length": 4,
+    "text": "true"
+  },
+  {
+    "start": 20.325,
+    "position": 323,
+    "length": 4,
+    "text": "This"
+  },
+  {
+    "start": 20.52,
+    "position": 328,
+    "length": 12,
+    "text": "presentation"
+  },
+  {
+    "start": 21.32,
+    "position": 341,
+    "length": 7,
+    "text": "follows"
+  },
+  {
+    "start": 21.76,
+    "position": 349,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 21.995,
+    "position": 353,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 22.225,
+    "position": 358,
+    "length": 7,
+    "text": "through"
+  },
+  {
+    "start": 22.485,
+    "position": 366,
+    "length": 9,
+    "text": "different"
+  },
+  {
+    "start": 22.87,
+    "position": 376,
+    "length": 4,
+    "text": "uses"
+  },
+  {
+    "start": 23.775,
+    "position": 382,
+    "length": 4,
+    "text": "then"
+  },
+  {
+    "start": 23.955,
+    "position": 387,
+    "length": 8,
+    "text": "examines"
+  },
+  {
+    "start": 24.47,
+    "position": 396,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 24.53,
+    "position": 398,
+    "length": 8,
+    "text": "proposed"
+  },
+  {
+    "start": 25.04,
+    "position": 407,
+    "length": 8,
+    "text": "two-tree"
+  },
+  {
+    "start": 25.505,
+    "position": 416,
+    "length": 4,
+    "text": "dome"
+  },
+  {
+    "start": 26.74,
+    "position": 422,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 26.82,
+    "position": 426,
+    "length": 7,
+    "text": "central"
+  },
+  {
+    "start": 27.275,
+    "position": 434,
+    "length": 4,
+    "text": "idea"
+  },
+  {
+    "start": 27.7,
+    "position": 439,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 27.84,
+    "position": 442,
+    "length": 6,
+    "text": "simple"
+  },
+  {
+    "start": 29.14,
+    "position": 450,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 29.22,
+    "position": 454,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 29.625,
+    "position": 460,
+    "length": 7,
+    "text": "depends"
+  },
+  {
+    "start": 30.04,
+    "position": 468,
+    "length": 2,
+    "text": "on"
+  },
+  {
+    "start": 30.18,
+    "position": 471,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 30.27,
+    "position": 475,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 30.57,
+    "position": 480,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 30.775,
+    "position": 484,
+    "length": 3,
+    "text": "add"
+  },
+  {
+    "start": 31.45,
+    "position": 489,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 31.53,
+    "position": 493,
+    "length": 8,
+    "text": "function"
+  },
+  {
+    "start": 31.99,
+    "position": 502,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 32.095,
+    "position": 506,
+    "length": 6,
+    "text": "create"
+  },
+  {
+    "start": 32.975,
+    "position": 514,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 33.08,
+    "position": 518,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 33.165,
+    "position": 522,
+    "length": 5,
+    "text": "costs"
+  },
+  {
+    "start": 33.645,
+    "position": 528,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 33.765,
+    "position": 532,
+    "length": 5,
+    "text": "avoid"
+  },
+  {
+    "start": 35.06,
+    "position": 539,
+    "length": 4,
+    "text": "Each"
+  },
+  {
+    "start": 35.32,
+    "position": 544,
+    "length": 6,
+    "text": "number"
+  },
+  {
+    "start": 35.655,
+    "position": 551,
+    "length": 7,
+    "text": "answers"
+  },
+  {
+    "start": 36.045,
+    "position": 559,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 36.105,
+    "position": 561,
+    "length": 9,
+    "text": "different"
+  },
+  {
+    "start": 36.5,
+    "position": 571,
+    "length": 8,
+    "text": "economic"
+  },
+  {
+    "start": 37.04,
+    "position": 580,
+    "length": 8,
+    "text": "question"
+  }
+]

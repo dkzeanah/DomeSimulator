@@ -1,0 +1,25 @@
+{
+  "plate": "forge-rain",
+  "title": "In the rain",
+  "tool": "forge",
+  "concept": "Every panel sheds its own water.",
+  "change": "Rain and panel runoff on, from low on the ground.",
+  "recipe": {
+    "mode": "dome",
+    "clock": 2.2,
+    "layers": {
+      "rain": {
+        "visible": true
+      }
+    },
+    "yaw": 32.0,
+    "pitch": 6.0,
+    "distance": 12.5
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

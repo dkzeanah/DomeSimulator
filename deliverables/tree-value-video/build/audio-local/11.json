@@ -1,0 +1,686 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 7,
+    "text": "Against"
+  },
+  {
+    "start": 0.51,
+    "position": 8,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 0.605,
+    "position": 10,
+    "length": 11,
+    "text": "requirement"
+  },
+  {
+    "start": 1.2,
+    "position": 22,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 1.295,
+    "position": 25,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 1.57,
+    "position": 31,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 1.77,
+    "position": 35,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 2.17,
+    "position": 43,
+    "length": 6,
+    "text": "twenty"
+  },
+  {
+    "start": 2.53,
+    "position": 50,
+    "length": 7,
+    "text": "members"
+  },
+  {
+    "start": 3.455,
+    "position": 59,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 3.65,
+    "position": 63,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 4.055,
+    "position": 71,
+    "length": 5,
+    "text": "sixty"
+  },
+  {
+    "start": 4.48,
+    "position": 77,
+    "length": 11,
+    "text": "theoretical"
+  },
+  {
+    "start": 5.135,
+    "position": 89,
+    "length": 6,
+    "text": "blanks"
+  },
+  {
+    "start": 5.58,
+    "position": 96,
+    "length": 5,
+    "text": "leave"
+  },
+  {
+    "start": 5.81,
+    "position": 102,
+    "length": 5,
+    "text": "forty"
+  },
+  {
+    "start": 6.14,
+    "position": 108,
+    "length": 9,
+    "text": "potential"
+  },
+  {
+    "start": 6.655,
+    "position": 118,
+    "length": 6,
+    "text": "pieces"
+  },
+  {
+    "start": 8.1,
+    "position": 126,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 8.18,
+    "position": 130,
+    "length": 6,
+    "text": "source"
+  },
+  {
+    "start": 8.55,
+    "position": 137,
+    "length": 10,
+    "text": "identifies"
+  },
+  {
+    "start": 9.25,
+    "position": 148,
+    "length": 7,
+    "text": "several"
+  },
+  {
+    "start": 9.625,
+    "position": 156,
+    "length": 4,
+    "text": "uses"
+  },
+  {
+    "start": 10.01,
+    "position": 161,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 10.145,
+    "position": 165,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 10.365,
+    "position": 170,
+    "length": 9,
+    "text": "allowance"
+  },
+  {
+    "start": 11.31,
+    "position": 181,
+    "length": 7,
+    "text": "rejects"
+  },
+  {
+    "start": 12.365,
+    "position": 190,
+    "length": 7,
+    "text": "shorter"
+  },
+  {
+    "start": 12.755,
+    "position": 198,
+    "length": 7,
+    "text": "members"
+  },
+  {
+    "start": 13.685,
+    "position": 207,
+    "length": 8,
+    "text": "flooring"
+  },
+  {
+    "start": 14.135,
+    "position": 216,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 14.265,
+    "position": 219,
+    "length": 7,
+    "text": "support"
+  },
+  {
+    "start": 14.73,
+    "position": 227,
+    "length": 8,
+    "text": "material"
+  },
+  {
+    "start": 15.765,
+    "position": 237,
+    "length": 7,
+    "text": "bracing"
+  },
+  {
+    "start": 16.695,
+    "position": 246,
+    "length": 4,
+    "text": "door"
+  },
+  {
+    "start": 16.94,
+    "position": 251,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 17.845,
+    "position": 260,
+    "length": 4,
+    "text": "test"
+  },
+  {
+    "start": 18.14,
+    "position": 265,
+    "length": 6,
+    "text": "pieces"
+  },
+  {
+    "start": 19.07,
+    "position": 273,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 19.2,
+    "position": 277,
+    "length": 11,
+    "text": "replacement"
+  },
+  {
+    "start": 19.865,
+    "position": 289,
+    "length": 5,
+    "text": "stock"
+  },
+  {
+    "start": 21.195,
+    "position": 296,
+    "length": 5,
+    "text": "Those"
+  },
+  {
+    "start": 21.445,
+    "position": 302,
+    "length": 5,
+    "text": "forty"
+  },
+  {
+    "start": 21.775,
+    "position": 308,
+    "length": 6,
+    "text": "pieces"
+  },
+  {
+    "start": 22.21,
+    "position": 315,
+    "length": 6,
+    "text": "cannot"
+  },
+  {
+    "start": 22.59,
+    "position": 322,
+    "length": 3,
+    "text": "all"
+  },
+  {
+    "start": 22.785,
+    "position": 326,
+    "length": 2,
+    "text": "be"
+  },
+  {
+    "start": 22.92,
+    "position": 329,
+    "length": 8,
+    "text": "promised"
+  },
+  {
+    "start": 23.4,
+    "position": 338,
+    "length": 2,
+    "text": "as"
+  },
+  {
+    "start": 23.57,
+    "position": 341,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 23.98,
+    "position": 348,
+    "length": 6,
+    "text": "extras"
+  },
+  {
+    "start": 25.45,
+    "position": 356,
+    "length": 4,
+    "text": "Some"
+  },
+  {
+    "start": 25.77,
+    "position": 361,
+    "length": 3,
+    "text": "may"
+  },
+  {
+    "start": 25.93,
+    "position": 365,
+    "length": 2,
+    "text": "be"
+  },
+  {
+    "start": 26.06,
+    "position": 368,
+    "length": 8,
+    "text": "consumed"
+  },
+  {
+    "start": 26.6,
+    "position": 377,
+    "length": 2,
+    "text": "by"
+  },
+  {
+    "start": 26.77,
+    "position": 380,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 26.87,
+    "position": 384,
+    "length": 6,
+    "text": "losses"
+  },
+  {
+    "start": 27.32,
+    "position": 391,
+    "length": 6,
+    "text": "needed"
+  },
+  {
+    "start": 27.61,
+    "position": 398,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 27.72,
+    "position": 401,
+    "length": 6,
+    "text": "obtain"
+  },
+  {
+    "start": 28.125,
+    "position": 408,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 28.2,
+    "position": 412,
+    "length": 4,
+    "text": "main"
+  },
+  {
+    "start": 28.475,
+    "position": 417,
+    "length": 5,
+    "text": "frame"
+  },
+  {
+    "start": 29.785,
+    "position": 424,
+    "length": 5,
+    "text": "Still"
+  },
+  {
+    "start": 30.635,
+    "position": 431,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 30.755,
+    "position": 435,
+    "length": 9,
+    "text": "allowance"
+  },
+  {
+    "start": 31.205,
+    "position": 445,
+    "length": 5,
+    "text": "makes"
+  },
+  {
+    "start": 31.505,
+    "position": 451,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 31.595,
+    "position": 455,
+    "length": 8,
+    "text": "planning"
+  },
+  {
+    "start": 32.03,
+    "position": 464,
+    "length": 8,
+    "text": "question"
+  },
+  {
+    "start": 32.52,
+    "position": 473,
+    "length": 8,
+    "text": "concrete"
+  },
+  {
+    "start": 34.065,
+    "position": 483,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 34.19,
+    "position": 485,
+    "length": 7,
+    "text": "sawmill"
+  },
+  {
+    "start": 34.65,
+    "position": 493,
+    "length": 4,
+    "text": "asks"
+  },
+  {
+    "start": 34.995,
+    "position": 498,
+    "length": 3,
+    "text": "how"
+  },
+  {
+    "start": 35.15,
+    "position": 502,
+    "length": 4,
+    "text": "much"
+  },
+  {
+    "start": 35.42,
+    "position": 507,
+    "length": 12,
+    "text": "standardized"
+  },
+  {
+    "start": 36.19,
+    "position": 520,
+    "length": 6,
+    "text": "lumber"
+  },
+  {
+    "start": 36.55,
+    "position": 527,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 36.62,
+    "position": 529,
+    "length": 3,
+    "text": "log"
+  },
+  {
+    "start": 36.89,
+    "position": 533,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 37.09,
+    "position": 537,
+    "length": 7,
+    "text": "produce"
+  },
+  {
+    "start": 38.55,
+    "position": 546,
+    "length": 4,
+    "text": "This"
+  },
+  {
+    "start": 38.74,
+    "position": 551,
+    "length": 8,
+    "text": "building"
+  },
+  {
+    "start": 39.125,
+    "position": 560,
+    "length": 6,
+    "text": "method"
+  },
+  {
+    "start": 39.46,
+    "position": 567,
+    "length": 4,
+    "text": "asks"
+  },
+  {
+    "start": 39.83,
+    "position": 572,
+    "length": 3,
+    "text": "how"
+  },
+  {
+    "start": 39.985,
+    "position": 576,
+    "length": 4,
+    "text": "much"
+  },
+  {
+    "start": 40.245,
+    "position": 581,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 40.345,
+    "position": 584,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 40.425,
+    "position": 588,
+    "length": 8,
+    "text": "proposed"
+  },
+  {
+    "start": 40.945,
+    "position": 597,
+    "length": 9,
+    "text": "structure"
+  },
+  {
+    "start": 41.46,
+    "position": 607,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 41.59,
+    "position": 611,
+    "length": 9,
+    "text": "available"
+  },
+  {
+    "start": 42.045,
+    "position": 621,
+    "length": 5,
+    "text": "stock"
+  },
+  {
+    "start": 42.41,
+    "position": 627,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 42.61,
+    "position": 631,
+    "length": 6,
+    "text": "supply"
+  },
+  {
+    "start": 43.98,
+    "position": 639,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 44.11,
+    "position": 641,
+    "length": 8,
+    "text": "measured"
+  },
+  {
+    "start": 44.505,
+    "position": 650,
+    "length": 3,
+    "text": "cut"
+  },
+  {
+    "start": 44.765,
+    "position": 654,
+    "length": 4,
+    "text": "list"
+  },
+  {
+    "start": 45.035,
+    "position": 659,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 45.145,
+    "position": 663,
+    "length": 2,
+    "text": "an"
+  },
+  {
+    "start": 45.255,
+    "position": 666,
+    "length": 9,
+    "text": "inventory"
+  },
+  {
+    "start": 45.905,
+    "position": 676,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 46.015,
+    "position": 679,
+    "length": 8,
+    "text": "accepted"
+  },
+  {
+    "start": 46.565,
+    "position": 688,
+    "length": 6,
+    "text": "pieces"
+  },
+  {
+    "start": 46.985,
+    "position": 695,
+    "length": 7,
+    "text": "connect"
+  },
+  {
+    "start": 47.36,
+    "position": 703,
+    "length": 5,
+    "text": "those"
+  },
+  {
+    "start": 47.635,
+    "position": 709,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 47.855,
+    "position": 713,
+    "length": 9,
+    "text": "questions"
+  },
+  {
+    "start": 48.44,
+    "position": 723,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 48.57,
+    "position": 726,
+    "length": 7,
+    "text": "reality"
+  }
+]

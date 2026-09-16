@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2bf5bc8035\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2bf5bc8035\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2bf5bc8035\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2bf5bc8035\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2bf5bc8035\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2bf5bc8035\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\eight-cuts-to-a-house-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2bf5bc8035\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    3.464,
+    4.784,
+    3.4,
+    3.56,
+    4.088,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    2.064,
+    3.384,
+    1.8,
+    2.16,
+    2.688,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    3.464,
+    8.248,
+    11.648,
+    15.208,
+    19.296,
+    24.296
+  ],
+  "speech_delay": 0.55
+}

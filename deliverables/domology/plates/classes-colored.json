@@ -1,0 +1,18 @@
+{
+  "plate": "classes-colored",
+  "title": "Forty triangles, two shapes",
+  "tool": "film",
+  "concept": "A 2V dome has only two strut lengths and two triangle shapes.",
+  "change": "The classes scene once every strut has taken its class colour.",
+  "recipe": {
+    "lesson": "2v",
+    "chapter": "classes",
+    "progress": 0.92
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:45",
+  "engine": "two_v_demo.app shots"
+}

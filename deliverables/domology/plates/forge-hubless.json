@@ -1,0 +1,31 @@
+{
+  "plate": "forge-hubless",
+  "title": "Forty separate triangles",
+  "tool": "forge",
+  "concept": "A hubless dome is a set of panels, not a set of sticks.",
+  "change": "Only the panel assemblies shown, fills off; every face selected and popped out.",
+  "recipe": {
+    "mode": "dome",
+    "only": [
+      "ground",
+      "assemblies"
+    ],
+    "layers": {
+      "assemblies": {
+        "show_fills": false,
+        "highlight": false
+      }
+    },
+    "select": "all",
+    "explode": 1.4,
+    "yaw": 38.0,
+    "pitch": 24.0,
+    "distance": 14.5
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

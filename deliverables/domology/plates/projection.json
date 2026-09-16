@@ -1,0 +1,18 @@
+{
+  "plate": "projection",
+  "title": "Push the new points out",
+  "tool": "film",
+  "concept": "Projection turns a subdivided solid into a geodesic sphere.",
+  "change": "Near the end of the projection, with the points on the sphere.",
+  "recipe": {
+    "lesson": "2v",
+    "chapter": "project",
+    "progress": 0.9
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

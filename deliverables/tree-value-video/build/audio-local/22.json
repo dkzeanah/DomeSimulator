@@ -1,0 +1,686 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 0.18,
+    "position": 4,
+    "length": 7,
+    "text": "formula"
+  },
+  {
+    "start": 0.745,
+    "position": 12,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 0.905,
+    "position": 15,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 1.0,
+    "position": 19,
+    "length": 10,
+    "text": "commercial"
+  },
+  {
+    "start": 1.505,
+    "position": 30,
+    "length": 8,
+    "text": "function"
+  },
+  {
+    "start": 1.96,
+    "position": 39,
+    "length": 9,
+    "text": "displaced"
+  },
+  {
+    "start": 3.005,
+    "position": 50,
+    "length": 5,
+    "text": "minus"
+  },
+  {
+    "start": 3.37,
+    "position": 56,
+    "length": 4,
+    "text": "cash"
+  },
+  {
+    "start": 3.715,
+    "position": 61,
+    "length": 10,
+    "text": "processing"
+  },
+  {
+    "start": 4.355,
+    "position": 72,
+    "length": 5,
+    "text": "costs"
+  },
+  {
+    "start": 5.345,
+    "position": 79,
+    "length": 5,
+    "text": "minus"
+  },
+  {
+    "start": 5.745,
+    "position": 85,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 5.895,
+    "position": 89,
+    "length": 11,
+    "text": "opportunity"
+  },
+  {
+    "start": 6.56,
+    "position": 101,
+    "length": 4,
+    "text": "cost"
+  },
+  {
+    "start": 6.935,
+    "position": 106,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 7.07,
+    "position": 109,
+    "length": 5,
+    "text": "labor"
+  },
+  {
+    "start": 8.33,
+    "position": 116,
+    "length": 4,
+    "text": "Cash"
+  },
+  {
+    "start": 8.65,
+    "position": 121,
+    "length": 5,
+    "text": "costs"
+  },
+  {
+    "start": 9.11,
+    "position": 127,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 9.295,
+    "position": 131,
+    "length": 7,
+    "text": "include"
+  },
+  {
+    "start": 9.725,
+    "position": 139,
+    "length": 10,
+    "text": "harvesting"
+  },
+  {
+    "start": 10.79,
+    "position": 151,
+    "length": 9,
+    "text": "transport"
+  },
+  {
+    "start": 11.86,
+    "position": 162,
+    "length": 11,
+    "text": "consumables"
+  },
+  {
+    "start": 13.07,
+    "position": 175,
+    "length": 4,
+    "text": "tool"
+  },
+  {
+    "start": 13.355,
+    "position": 180,
+    "length": 4,
+    "text": "wear"
+  },
+  {
+    "start": 14.14,
+    "position": 186,
+    "length": 6,
+    "text": "drying"
+  },
+  {
+    "start": 14.99,
+    "position": 194,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 15.095,
+    "position": 198,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 15.235,
+    "position": 202,
+    "length": 5,
+    "text": "other"
+  },
+  {
+    "start": 15.47,
+    "position": 208,
+    "length": 8,
+    "text": "expenses"
+  },
+  {
+    "start": 16.055,
+    "position": 217,
+    "length": 8,
+    "text": "required"
+  },
+  {
+    "start": 16.59,
+    "position": 226,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 16.72,
+    "position": 230,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 16.8,
+    "position": 234,
+    "length": 10,
+    "text": "substitute"
+  },
+  {
+    "start": 18.505,
+    "position": 246,
+    "length": 5,
+    "text": "Count"
+  },
+  {
+    "start": 18.81,
+    "position": 252,
+    "length": 4,
+    "text": "each"
+  },
+  {
+    "start": 19.04,
+    "position": 257,
+    "length": 4,
+    "text": "cost"
+  },
+  {
+    "start": 19.415,
+    "position": 262,
+    "length": 4,
+    "text": "once"
+  },
+  {
+    "start": 19.745,
+    "position": 267,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 19.88,
+    "position": 271,
+    "length": 7,
+    "text": "compare"
+  },
+  {
+    "start": 20.285,
+    "position": 279,
+    "length": 10,
+    "text": "equivalent"
+  },
+  {
+    "start": 20.785,
+    "position": 290,
+    "length": 6,
+    "text": "scopes"
+  },
+  {
+    "start": 22.255,
+    "position": 298,
+    "length": 11,
+    "text": "Opportunity"
+  },
+  {
+    "start": 22.92,
+    "position": 310,
+    "length": 4,
+    "text": "cost"
+  },
+  {
+    "start": 23.3,
+    "position": 315,
+    "length": 5,
+    "text": "means"
+  },
+  {
+    "start": 23.595,
+    "position": 321,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 23.685,
+    "position": 325,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 24.09,
+    "position": 331,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 24.19,
+    "position": 334,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 24.28,
+    "position": 338,
+    "length": 4,
+    "text": "best"
+  },
+  {
+    "start": 24.61,
+    "position": 343,
+    "length": 9,
+    "text": "realistic"
+  },
+  {
+    "start": 25.19,
+    "position": 353,
+    "length": 11,
+    "text": "alternative"
+  },
+  {
+    "start": 25.81,
+    "position": 365,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 25.96,
+    "position": 369,
+    "length": 4,
+    "text": "give"
+  },
+  {
+    "start": 26.175,
+    "position": 374,
+    "length": 2,
+    "text": "up"
+  },
+  {
+    "start": 27.31,
+    "position": 378,
+    "length": 2,
+    "text": "If"
+  },
+  {
+    "start": 27.44,
+    "position": 381,
+    "length": 5,
+    "text": "forty"
+  },
+  {
+    "start": 27.805,
+    "position": 387,
+    "length": 5,
+    "text": "hours"
+  },
+  {
+    "start": 28.15,
+    "position": 393,
+    "length": 2,
+    "text": "on"
+  },
+  {
+    "start": 28.285,
+    "position": 396,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 28.365,
+    "position": 400,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 28.605,
+    "position": 405,
+    "length": 7,
+    "text": "replace"
+  },
+  {
+    "start": 29.085,
+    "position": 413,
+    "length": 5,
+    "text": "forty"
+  },
+  {
+    "start": 29.46,
+    "position": 419,
+    "length": 5,
+    "text": "hours"
+  },
+  {
+    "start": 29.805,
+    "position": 425,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 29.9,
+    "position": 428,
+    "length": 9,
+    "text": "available"
+  },
+  {
+    "start": 30.355,
+    "position": 438,
+    "length": 4,
+    "text": "paid"
+  },
+  {
+    "start": 30.645,
+    "position": 443,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 31.42,
+    "position": 449,
+    "length": 4,
+    "text": "your"
+  },
+  {
+    "start": 31.645,
+    "position": 454,
+    "length": 9,
+    "text": "after-tax"
+  },
+  {
+    "start": 32.275,
+    "position": 464,
+    "length": 8,
+    "text": "earnings"
+  },
+  {
+    "start": 32.645,
+    "position": 473,
+    "length": 4,
+    "text": "from"
+  },
+  {
+    "start": 32.855,
+    "position": 478,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 33.075,
+    "position": 483,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 33.36,
+    "position": 488,
+    "length": 3,
+    "text": "are"
+  },
+  {
+    "start": 33.5,
+    "position": 492,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 33.565,
+    "position": 494,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 33.995,
+    "position": 501,
+    "length": 9,
+    "text": "benchmark"
+  },
+  {
+    "start": 35.495,
+    "position": 512,
+    "length": 2,
+    "text": "If"
+  },
+  {
+    "start": 35.625,
+    "position": 515,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 35.76,
+    "position": 519,
+    "length": 11,
+    "text": "alternative"
+  },
+  {
+    "start": 36.34,
+    "position": 531,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 36.5,
+    "position": 534,
+    "length": 9,
+    "text": "different"
+  },
+  {
+    "start": 37.41,
+    "position": 545,
+    "length": 6,
+    "text": "choose"
+  },
+  {
+    "start": 37.705,
+    "position": 552,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 37.755,
+    "position": 554,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 38.16,
+    "position": 560,
+    "length": 4,
+    "text": "that"
+  },
+  {
+    "start": 38.34,
+    "position": 565,
+    "length": 8,
+    "text": "reflects"
+  },
+  {
+    "start": 38.83,
+    "position": 574,
+    "length": 4,
+    "text": "your"
+  },
+  {
+    "start": 38.975,
+    "position": 579,
+    "length": 13,
+    "text": "circumstances"
+  },
+  {
+    "start": 40.9,
+    "position": 594,
+    "length": 7,
+    "text": "Finally"
+  },
+  {
+    "start": 41.815,
+    "position": 603,
+    "length": 7,
+    "text": "compare"
+  },
+  {
+    "start": 42.21,
+    "position": 611,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 42.325,
+    "position": 615,
+    "length": 9,
+    "text": "resulting"
+  },
+  {
+    "start": 42.84,
+    "position": 625,
+    "length": 3,
+    "text": "net"
+  },
+  {
+    "start": 43.07,
+    "position": 629,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 43.305,
+    "position": 633,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 43.73,
+    "position": 639,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 43.895,
+    "position": 644,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 44.02,
+    "position": 648,
+    "length": 6,
+    "text": "amount"
+  },
+  {
+    "start": 44.4,
+    "position": 655,
+    "length": 3,
+    "text": "you"
+  },
+  {
+    "start": 44.53,
+    "position": 659,
+    "length": 5,
+    "text": "could"
+  },
+  {
+    "start": 44.73,
+    "position": 665,
+    "length": 7,
+    "text": "receive"
+  },
+  {
+    "start": 45.11,
+    "position": 673,
+    "length": 2,
+    "text": "by"
+  },
+  {
+    "start": 45.3,
+    "position": 676,
+    "length": 7,
+    "text": "selling"
+  },
+  {
+    "start": 45.705,
+    "position": 684,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 45.79,
+    "position": 688,
+    "length": 4,
+    "text": "tree"
+  },
+  {
+    "start": 46.08,
+    "position": 693,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 46.225,
+    "position": 697,
+    "length": 4,
+    "text": "with"
+  },
+  {
+    "start": 46.37,
+    "position": 702,
+    "length": 3,
+    "text": "any"
+  },
+  {
+    "start": 46.6,
+    "position": 706,
+    "length": 5,
+    "text": "other"
+  },
+  {
+    "start": 46.855,
+    "position": 712,
+    "length": 9,
+    "text": "realistic"
+  },
+  {
+    "start": 47.455,
+    "position": 722,
+    "length": 3,
+    "text": "use"
+  }
+]

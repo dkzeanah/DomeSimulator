@@ -1,0 +1,30 @@
+{
+  "plate": "forge-panel",
+  "title": "Three kinds of stock in one frame",
+  "tool": "forge",
+  "concept": "A frame can mix its stock: each seam gets the stick it needs.",
+  "change": "The split-log stack, fills off, moved in close so the different stock reads.",
+  "recipe": {
+    "mode": "dome",
+    "stack": "splitlog",
+    "only": [
+      "ground",
+      "assemblies"
+    ],
+    "layers": {
+      "assemblies": {
+        "show_fills": false,
+        "highlight": false
+      }
+    },
+    "yaw": 38.0,
+    "pitch": 30.0,
+    "distance": 7.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

@@ -1,0 +1,848 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 7,
+    "text": "Milling"
+  },
+  {
+    "start": 0.425,
+    "position": 8,
+    "length": 7,
+    "text": "creates"
+  },
+  {
+    "start": 0.85,
+    "position": 16,
+    "length": 7,
+    "text": "another"
+  },
+  {
+    "start": 1.185,
+    "position": 24,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 1.59,
+    "position": 31,
+    "length": 7,
+    "text": "product"
+  },
+  {
+    "start": 2.525,
+    "position": 40,
+    "length": 6,
+    "text": "boards"
+  },
+  {
+    "start": 3.855,
+    "position": 48,
+    "length": 1,
+    "text": "A"
+  },
+  {
+    "start": 3.985,
+    "position": 50,
+    "length": 5,
+    "text": "board"
+  },
+  {
+    "start": 4.295,
+    "position": 56,
+    "length": 4,
+    "text": "foot"
+  },
+  {
+    "start": 4.555,
+    "position": 61,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 4.68,
+    "position": 64,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 4.735,
+    "position": 66,
+    "length": 6,
+    "text": "volume"
+  },
+  {
+    "start": 5.175,
+    "position": 73,
+    "length": 4,
+    "text": "unit"
+  },
+  {
+    "start": 5.46,
+    "position": 78,
+    "length": 10,
+    "text": "equivalent"
+  },
+  {
+    "start": 5.98,
+    "position": 89,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 6.11,
+    "position": 92,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 6.175,
+    "position": 94,
+    "length": 5,
+    "text": "board"
+  },
+  {
+    "start": 6.485,
+    "position": 100,
+    "length": 3,
+    "text": "one"
+  },
+  {
+    "start": 6.7,
+    "position": 104,
+    "length": 4,
+    "text": "inch"
+  },
+  {
+    "start": 6.91,
+    "position": 109,
+    "length": 5,
+    "text": "thick"
+  },
+  {
+    "start": 7.655,
+    "position": 116,
+    "length": 6,
+    "text": "twelve"
+  },
+  {
+    "start": 7.985,
+    "position": 123,
+    "length": 6,
+    "text": "inches"
+  },
+  {
+    "start": 8.35,
+    "position": 130,
+    "length": 4,
+    "text": "wide"
+  },
+  {
+    "start": 9.115,
+    "position": 136,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 9.245,
+    "position": 140,
+    "length": 6,
+    "text": "twelve"
+  },
+  {
+    "start": 9.59,
+    "position": 147,
+    "length": 6,
+    "text": "inches"
+  },
+  {
+    "start": 9.975,
+    "position": 154,
+    "length": 4,
+    "text": "long"
+  },
+  {
+    "start": 11.21,
+    "position": 160,
+    "length": 3,
+    "text": "You"
+  },
+  {
+    "start": 11.345,
+    "position": 164,
+    "length": 6,
+    "text": "cannot"
+  },
+  {
+    "start": 11.725,
+    "position": 171,
+    "length": 4,
+    "text": "turn"
+  },
+  {
+    "start": 12.01,
+    "position": 176,
+    "length": 5,
+    "text": "every"
+  },
+  {
+    "start": 12.28,
+    "position": 182,
+    "length": 5,
+    "text": "cubic"
+  },
+  {
+    "start": 12.69,
+    "position": 188,
+    "length": 4,
+    "text": "inch"
+  },
+  {
+    "start": 12.88,
+    "position": 193,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 12.975,
+    "position": 196,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 13.045,
+    "position": 198,
+    "length": 3,
+    "text": "log"
+  },
+  {
+    "start": 13.31,
+    "position": 202,
+    "length": 4,
+    "text": "into"
+  },
+  {
+    "start": 13.53,
+    "position": 207,
+    "length": 8,
+    "text": "standard"
+  },
+  {
+    "start": 14.03,
+    "position": 216,
+    "length": 6,
+    "text": "lumber"
+  },
+  {
+    "start": 15.305,
+    "position": 224,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 15.385,
+    "position": 228,
+    "length": 3,
+    "text": "saw"
+  },
+  {
+    "start": 15.655,
+    "position": 232,
+    "length": 5,
+    "text": "blade"
+  },
+  {
+    "start": 15.995,
+    "position": 238,
+    "length": 7,
+    "text": "removes"
+  },
+  {
+    "start": 16.405,
+    "position": 246,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 16.46,
+    "position": 248,
+    "length": 5,
+    "text": "strip"
+  },
+  {
+    "start": 16.815,
+    "position": 254,
+    "length": 6,
+    "text": "called"
+  },
+  {
+    "start": 17.155,
+    "position": 261,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 17.24,
+    "position": 265,
+    "length": 4,
+    "text": "kerf"
+  },
+  {
+    "start": 18.53,
+    "position": 271,
+    "length": 5,
+    "text": "Outer"
+  },
+  {
+    "start": 18.8,
+    "position": 277,
+    "length": 5,
+    "text": "slabs"
+  },
+  {
+    "start": 19.805,
+    "position": 284,
+    "length": 6,
+    "text": "edging"
+  },
+  {
+    "start": 20.6,
+    "position": 292,
+    "length": 7,
+    "text": "defects"
+  },
+  {
+    "start": 21.6,
+    "position": 301,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 21.715,
+    "position": 305,
+    "length": 11,
+    "text": "dimensional"
+  },
+  {
+    "start": 22.25,
+    "position": 317,
+    "length": 12,
+    "text": "requirements"
+  },
+  {
+    "start": 22.9,
+    "position": 330,
+    "length": 6,
+    "text": "reduce"
+  },
+  {
+    "start": 23.32,
+    "position": 337,
+    "length": 8,
+    "text": "recovery"
+  },
+  {
+    "start": 24.805,
+    "position": 347,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 24.885,
+    "position": 351,
+    "length": 6,
+    "text": "source"
+  },
+  {
+    "start": 25.245,
+    "position": 358,
+    "length": 5,
+    "text": "gives"
+  },
+  {
+    "start": 25.505,
+    "position": 364,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 25.56,
+    "position": 366,
+    "length": 13,
+    "text": "southern-pine"
+  },
+  {
+    "start": 26.235,
+    "position": 380,
+    "length": 8,
+    "text": "recovery"
+  },
+  {
+    "start": 26.76,
+    "position": 389,
+    "length": 5,
+    "text": "range"
+  },
+  {
+    "start": 27.09,
+    "position": 395,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 27.195,
+    "position": 398,
+    "length": 5,
+    "text": "seven"
+  },
+  {
+    "start": 27.555,
+    "position": 404,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 27.89,
+    "position": 410,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 28.22,
+    "position": 415,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 28.37,
+    "position": 418,
+    "length": 5,
+    "text": "eight"
+  },
+  {
+    "start": 28.555,
+    "position": 424,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 28.89,
+    "position": 430,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 29.155,
+    "position": 435,
+    "length": 5,
+    "text": "board"
+  },
+  {
+    "start": 29.46,
+    "position": 441,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 29.72,
+    "position": 446,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 29.89,
+    "position": 450,
+    "length": 5,
+    "text": "cubic"
+  },
+  {
+    "start": 30.29,
+    "position": 456,
+    "length": 4,
+    "text": "foot"
+  },
+  {
+    "start": 30.57,
+    "position": 461,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 30.705,
+    "position": 464,
+    "length": 3,
+    "text": "log"
+  },
+  {
+    "start": 31.955,
+    "position": 469,
+    "length": 2,
+    "text": "We"
+  },
+  {
+    "start": 32.095,
+    "position": 472,
+    "length": 3,
+    "text": "use"
+  },
+  {
+    "start": 32.325,
+    "position": 476,
+    "length": 5,
+    "text": "seven"
+  },
+  {
+    "start": 32.645,
+    "position": 482,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 32.98,
+    "position": 488,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 33.295,
+    "position": 493,
+    "length": 2,
+    "text": "as"
+  },
+  {
+    "start": 33.44,
+    "position": 496,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 33.54,
+    "position": 500,
+    "length": 7,
+    "text": "working"
+  },
+  {
+    "start": 33.915,
+    "position": 508,
+    "length": 6,
+    "text": "factor"
+  },
+  {
+    "start": 35.29,
+    "position": 516,
+    "length": 12,
+    "text": "Thirty-seven"
+  },
+  {
+    "start": 35.96,
+    "position": 529,
+    "length": 5,
+    "text": "times"
+  },
+  {
+    "start": 36.3,
+    "position": 535,
+    "length": 5,
+    "text": "seven"
+  },
+  {
+    "start": 36.625,
+    "position": 541,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 36.96,
+    "position": 547,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 37.27,
+    "position": 552,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 37.415,
+    "position": 555,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 37.665,
+    "position": 559,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 38.07,
+    "position": 567,
+    "length": 13,
+    "text": "seventy-seven"
+  },
+  {
+    "start": 38.885,
+    "position": 581,
+    "length": 5,
+    "text": "point"
+  },
+  {
+    "start": 39.22,
+    "position": 587,
+    "length": 4,
+    "text": "five"
+  },
+  {
+    "start": 40.03,
+    "position": 593,
+    "length": 7,
+    "text": "rounded"
+  },
+  {
+    "start": 40.435,
+    "position": 601,
+    "length": 4,
+    "text": "here"
+  },
+  {
+    "start": 40.69,
+    "position": 606,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 40.825,
+    "position": 609,
+    "length": 5,
+    "text": "about"
+  },
+  {
+    "start": 41.11,
+    "position": 615,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 41.365,
+    "position": 619,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 41.77,
+    "position": 627,
+    "length": 12,
+    "text": "seventy-five"
+  },
+  {
+    "start": 42.49,
+    "position": 640,
+    "length": 5,
+    "text": "board"
+  },
+  {
+    "start": 42.795,
+    "position": 646,
+    "length": 4,
+    "text": "feet"
+  },
+  {
+    "start": 44.025,
+    "position": 652,
+    "length": 2,
+    "text": "At"
+  },
+  {
+    "start": 44.15,
+    "position": 655,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 44.285,
+    "position": 659,
+    "length": 7,
+    "text": "assumed"
+  },
+  {
+    "start": 44.775,
+    "position": 667,
+    "length": 6,
+    "text": "dollar"
+  },
+  {
+    "start": 45.085,
+    "position": 674,
+    "length": 6,
+    "text": "twenty"
+  },
+  {
+    "start": 45.45,
+    "position": 681,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 45.58,
+    "position": 684,
+    "length": 6,
+    "text": "dollar"
+  },
+  {
+    "start": 45.895,
+    "position": 691,
+    "length": 5,
+    "text": "fifty"
+  },
+  {
+    "start": 46.26,
+    "position": 697,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 46.44,
+    "position": 701,
+    "length": 5,
+    "text": "board"
+  },
+  {
+    "start": 46.745,
+    "position": 707,
+    "length": 4,
+    "text": "foot"
+  },
+  {
+    "start": 47.465,
+    "position": 713,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 47.57,
+    "position": 717,
+    "length": 6,
+    "text": "result"
+  },
+  {
+    "start": 47.955,
+    "position": 724,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 48.095,
+    "position": 727,
+    "length": 7,
+    "text": "roughly"
+  },
+  {
+    "start": 48.47,
+    "position": 735,
+    "length": 5,
+    "text": "three"
+  },
+  {
+    "start": 48.74,
+    "position": 741,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 49.15,
+    "position": 749,
+    "length": 6,
+    "text": "thirty"
+  },
+  {
+    "start": 49.46,
+    "position": 756,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 49.6,
+    "position": 759,
+    "length": 4,
+    "text": "four"
+  },
+  {
+    "start": 49.885,
+    "position": 764,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 50.28,
+    "position": 772,
+    "length": 8,
+    "text": "thirteen"
+  },
+  {
+    "start": 50.74,
+    "position": 781,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 52.125,
+    "position": 790,
+    "length": 4,
+    "text": "Mill"
+  },
+  {
+    "start": 52.34,
+    "position": 795,
+    "length": 13,
+    "text": "configuration"
+  },
+  {
+    "start": 53.385,
+    "position": 810,
+    "length": 5,
+    "text": "grade"
+  },
+  {
+    "start": 53.915,
+    "position": 817,
+    "length": 3,
+    "text": "and"
+  },
+  {
+    "start": 54.065,
+    "position": 821,
+    "length": 5,
+    "text": "local"
+  },
+  {
+    "start": 54.39,
+    "position": 827,
+    "length": 6,
+    "text": "prices"
+  },
+  {
+    "start": 54.895,
+    "position": 834,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 55.1,
+    "position": 838,
+    "length": 6,
+    "text": "change"
+  },
+  {
+    "start": 55.495,
+    "position": 845,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 55.61,
+    "position": 849,
+    "length": 6,
+    "text": "result"
+  }
+]

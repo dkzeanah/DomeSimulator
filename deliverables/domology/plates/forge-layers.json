@@ -1,0 +1,29 @@
+{
+  "plate": "forge-layers",
+  "title": "Every layer at once",
+  "tool": "forge",
+  "concept": "A dome is a stack of layers, each with one job.",
+  "change": "The panel assemblies at a third opacity, with the cutaway open.",
+  "recipe": {
+    "mode": "dome",
+    "cut": [
+      160.0,
+      90.0
+    ],
+    "clock": 1.0,
+    "layers": {
+      "assemblies": {
+        "opacity": 0.33
+      }
+    },
+    "yaw": 210.0,
+    "pitch": 22.0,
+    "distance": 12.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:28",
+  "tool_process": "forge"
+}

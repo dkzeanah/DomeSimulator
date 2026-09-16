@@ -1,0 +1,13 @@
+{
+  "schema": "two-trees-scene-still/v1",
+  "scene": {
+    "id": "harvest:assume",
+    "lesson_key": "harvest",
+    "chapter_slug": "assume",
+    "stage": "hv_harvest"
+  },
+  "progress": 0.95,
+  "width": 1600,
+  "height": 1000,
+  "overlay": "math"
+}

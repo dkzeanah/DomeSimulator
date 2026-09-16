@@ -1,0 +1,722 @@
+[
+  {
+    "start": 0.1,
+    "position": 0,
+    "length": 7,
+    "text": "Suppose"
+  },
+  {
+    "start": 0.6,
+    "position": 8,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 0.695,
+    "position": 12,
+    "length": 3,
+    "text": "two"
+  },
+  {
+    "start": 0.95,
+    "position": 16,
+    "length": 8,
+    "text": "standing"
+  },
+  {
+    "start": 1.425,
+    "position": 25,
+    "length": 5,
+    "text": "trees"
+  },
+  {
+    "start": 1.745,
+    "position": 31,
+    "length": 8,
+    "text": "together"
+  },
+  {
+    "start": 2.15,
+    "position": 40,
+    "length": 4,
+    "text": "have"
+  },
+  {
+    "start": 2.35,
+    "position": 45,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 2.405,
+    "position": 47,
+    "length": 6,
+    "text": "timber"
+  },
+  {
+    "start": 2.75,
+    "position": 54,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 3.155,
+    "position": 60,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 3.26,
+    "position": 63,
+    "length": 5,
+    "text": "fifty"
+  },
+  {
+    "start": 3.61,
+    "position": 69,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 5.015,
+    "position": 78,
+    "length": 11,
+    "text": "Forty-eight"
+  },
+  {
+    "start": 5.58,
+    "position": 90,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 5.985,
+    "position": 98,
+    "length": 7,
+    "text": "divided"
+  },
+  {
+    "start": 6.425,
+    "position": 106,
+    "length": 2,
+    "text": "by"
+  },
+  {
+    "start": 6.59,
+    "position": 109,
+    "length": 5,
+    "text": "fifty"
+  },
+  {
+    "start": 7.0,
+    "position": 115,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 7.165,
+    "position": 118,
+    "length": 10,
+    "text": "ninety-six"
+  },
+  {
+    "start": 8.855,
+    "position": 130,
+    "length": 4,
+    "text": "That"
+  },
+  {
+    "start": 9.05,
+    "position": 135,
+    "length": 5,
+    "text": "gives"
+  },
+  {
+    "start": 9.295,
+    "position": 141,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 9.35,
+    "position": 143,
+    "length": 5,
+    "text": "gross"
+  },
+  {
+    "start": 9.715,
+    "position": 149,
+    "length": 12,
+    "text": "raw-material"
+  },
+  {
+    "start": 10.39,
+    "position": 162,
+    "length": 5,
+    "text": "ratio"
+  },
+  {
+    "start": 10.87,
+    "position": 168,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 10.98,
+    "position": 171,
+    "length": 10,
+    "text": "ninety-six"
+  },
+  {
+    "start": 11.69,
+    "position": 182,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 12.11,
+    "position": 190,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 12.215,
+    "position": 193,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 12.655,
+    "position": 201,
+    "length": 8,
+    "text": "function"
+  },
+  {
+    "start": 13.1,
+    "position": 210,
+    "length": 3,
+    "text": "for"
+  },
+  {
+    "start": 13.285,
+    "position": 214,
+    "length": 4,
+    "text": "each"
+  },
+  {
+    "start": 13.515,
+    "position": 219,
+    "length": 6,
+    "text": "dollar"
+  },
+  {
+    "start": 13.85,
+    "position": 226,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 13.955,
+    "position": 229,
+    "length": 8,
+    "text": "standing"
+  },
+  {
+    "start": 14.43,
+    "position": 238,
+    "length": 6,
+    "text": "timber"
+  },
+  {
+    "start": 14.745,
+    "position": 245,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 16.105,
+    "position": 252,
+    "length": 3,
+    "text": "Now"
+  },
+  {
+    "start": 16.34,
+    "position": 256,
+    "length": 7,
+    "text": "include"
+  },
+  {
+    "start": 16.8,
+    "position": 264,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 16.895,
+    "position": 268,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 18.14,
+    "position": 274,
+    "length": 2,
+    "text": "If"
+  },
+  {
+    "start": 18.27,
+    "position": 277,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 18.37,
+    "position": 281,
+    "length": 14,
+    "text": "transformation"
+  },
+  {
+    "start": 19.27,
+    "position": 296,
+    "length": 5,
+    "text": "takes"
+  },
+  {
+    "start": 19.585,
+    "position": 302,
+    "length": 6,
+    "text": "eighty"
+  },
+  {
+    "start": 19.845,
+    "position": 309,
+    "length": 5,
+    "text": "hours"
+  },
+  {
+    "start": 20.675,
+    "position": 316,
+    "length": 11,
+    "text": "forty-eight"
+  },
+  {
+    "start": 21.22,
+    "position": 328,
+    "length": 7,
+    "text": "hundred"
+  },
+  {
+    "start": 21.63,
+    "position": 336,
+    "length": 7,
+    "text": "divided"
+  },
+  {
+    "start": 22.07,
+    "position": 344,
+    "length": 2,
+    "text": "by"
+  },
+  {
+    "start": 22.285,
+    "position": 347,
+    "length": 6,
+    "text": "eighty"
+  },
+  {
+    "start": 22.545,
+    "position": 354,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 22.685,
+    "position": 357,
+    "length": 5,
+    "text": "sixty"
+  },
+  {
+    "start": 23.09,
+    "position": 363,
+    "length": 7,
+    "text": "dollars"
+  },
+  {
+    "start": 23.47,
+    "position": 371,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 23.685,
+    "position": 375,
+    "length": 4,
+    "text": "hour"
+  },
+  {
+    "start": 24.87,
+    "position": 381,
+    "length": 4,
+    "text": "This"
+  },
+  {
+    "start": 25.07,
+    "position": 386,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 25.205,
+    "position": 389,
+    "length": 5,
+    "text": "gross"
+  },
+  {
+    "start": 25.515,
+    "position": 395,
+    "length": 7,
+    "text": "framing"
+  },
+  {
+    "start": 25.96,
+    "position": 403,
+    "length": 12,
+    "text": "substitution"
+  },
+  {
+    "start": 26.79,
+    "position": 416,
+    "length": 3,
+    "text": "per"
+  },
+  {
+    "start": 26.975,
+    "position": 420,
+    "length": 4,
+    "text": "work"
+  },
+  {
+    "start": 27.255,
+    "position": 425,
+    "length": 4,
+    "text": "hour"
+  },
+  {
+    "start": 28.44,
+    "position": 431,
+    "length": 2,
+    "text": "It"
+  },
+  {
+    "start": 28.555,
+    "position": 434,
+    "length": 2,
+    "text": "is"
+  },
+  {
+    "start": 28.69,
+    "position": 437,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 28.915,
+    "position": 441,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 28.975,
+    "position": 443,
+    "length": 9,
+    "text": "take-home"
+  },
+  {
+    "start": 29.52,
+    "position": 453,
+    "length": 4,
+    "text": "wage"
+  },
+  {
+    "start": 29.83,
+    "position": 458,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 29.98,
+    "position": 461,
+    "length": 1,
+    "text": "a"
+  },
+  {
+    "start": 30.025,
+    "position": 463,
+    "length": 6,
+    "text": "profit"
+  },
+  {
+    "start": 30.515,
+    "position": 470,
+    "length": 4,
+    "text": "rate"
+  },
+  {
+    "start": 31.25,
+    "position": 476,
+    "length": 7,
+    "text": "because"
+  },
+  {
+    "start": 31.69,
+    "position": 484,
+    "length": 2,
+    "text": "it"
+  },
+  {
+    "start": 31.79,
+    "position": 487,
+    "length": 3,
+    "text": "has"
+  },
+  {
+    "start": 31.98,
+    "position": 491,
+    "length": 3,
+    "text": "not"
+  },
+  {
+    "start": 32.235,
+    "position": 495,
+    "length": 8,
+    "text": "deducted"
+  },
+  {
+    "start": 32.7,
+    "position": 504,
+    "length": 4,
+    "text": "cash"
+  },
+  {
+    "start": 33.045,
+    "position": 509,
+    "length": 8,
+    "text": "expenses"
+  },
+  {
+    "start": 33.65,
+    "position": 518,
+    "length": 2,
+    "text": "or"
+  },
+  {
+    "start": 33.79,
+    "position": 521,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 33.885,
+    "position": 525,
+    "length": 5,
+    "text": "value"
+  },
+  {
+    "start": 34.29,
+    "position": 531,
+    "length": 2,
+    "text": "of"
+  },
+  {
+    "start": 34.395,
+    "position": 534,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 34.49,
+    "position": 538,
+    "length": 6,
+    "text": "timber"
+  },
+  {
+    "start": 35.78,
+    "position": 546,
+    "length": 4,
+    "text": "Both"
+  },
+  {
+    "start": 36.06,
+    "position": 551,
+    "length": 8,
+    "text": "measures"
+  },
+  {
+    "start": 36.465,
+    "position": 560,
+    "length": 3,
+    "text": "can"
+  },
+  {
+    "start": 36.685,
+    "position": 564,
+    "length": 2,
+    "text": "be"
+  },
+  {
+    "start": 36.82,
+    "position": 567,
+    "length": 6,
+    "text": "useful"
+  },
+  {
+    "start": 37.245,
+    "position": 574,
+    "length": 2,
+    "text": "at"
+  },
+  {
+    "start": 37.37,
+    "position": 577,
+    "length": 4,
+    "text": "once"
+  },
+  {
+    "start": 38.655,
+    "position": 583,
+    "length": 3,
+    "text": "One"
+  },
+  {
+    "start": 38.87,
+    "position": 587,
+    "length": 9,
+    "text": "describes"
+  },
+  {
+    "start": 39.43,
+    "position": 597,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 39.54,
+    "position": 601,
+    "length": 12,
+    "text": "relationship"
+  },
+  {
+    "start": 40.3,
+    "position": 614,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 40.41,
+    "position": 617,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 40.54,
+    "position": 621,
+    "length": 3,
+    "text": "raw"
+  },
+  {
+    "start": 40.68,
+    "position": 625,
+    "length": 8,
+    "text": "material"
+  },
+  {
+    "start": 42.175,
+    "position": 635,
+    "length": 3,
+    "text": "The"
+  },
+  {
+    "start": 42.31,
+    "position": 639,
+    "length": 5,
+    "text": "other"
+  },
+  {
+    "start": 42.54,
+    "position": 645,
+    "length": 9,
+    "text": "describes"
+  },
+  {
+    "start": 43.1,
+    "position": 655,
+    "length": 6,
+    "text": "output"
+  },
+  {
+    "start": 43.545,
+    "position": 662,
+    "length": 8,
+    "text": "relative"
+  },
+  {
+    "start": 43.955,
+    "position": 671,
+    "length": 2,
+    "text": "to"
+  },
+  {
+    "start": 44.08,
+    "position": 674,
+    "length": 4,
+    "text": "time"
+  },
+  {
+    "start": 45.345,
+    "position": 680,
+    "length": 7,
+    "text": "Neither"
+  },
+  {
+    "start": 45.655,
+    "position": 688,
+    "length": 9,
+    "text": "justifies"
+  },
+  {
+    "start": 46.305,
+    "position": 698,
+    "length": 8,
+    "text": "treating"
+  },
+  {
+    "start": 46.71,
+    "position": 707,
+    "length": 3,
+    "text": "the"
+  },
+  {
+    "start": 46.85,
+    "position": 711,
+    "length": 5,
+    "text": "other"
+  },
+  {
+    "start": 47.105,
+    "position": 717,
+    "length": 6,
+    "text": "inputs"
+  },
+  {
+    "start": 47.59,
+    "position": 724,
+    "length": 2,
+    "text": "as"
+  },
+  {
+    "start": 47.755,
+    "position": 727,
+    "length": 4,
+    "text": "free"
+  }
+]

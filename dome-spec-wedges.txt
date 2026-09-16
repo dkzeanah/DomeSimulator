@@ -1,0 +1,1460 @@
+dome spec
+
+# PARAMETRIC 2V GEODESIC DOME — RAW 1/8-LOG WEDGE PANEL + EDGE SPLINE SYSTEM
+
+## 1. PROJECT PURPOSE
+
+Build a complete interactive 3D application that models a 2-frequency geodesic hemispherical dome constructed using an unconventional panelized framing system.
+
+The structural concept is:
+
+* Start with round tree trunks.
+* Split each trunk longitudinally into exactly 8 equal radial sectors.
+* Do NOT plane the sector sides into rectangular lumber.
+* Do NOT shave the 45° sector cross-section to conventional dome bevel angles.
+* Preserve the natural 1/8-circle cross-section.
+* Use the raw wedge members to create 40 independent triangular frames.
+* Every triangular panel owns all three of its edge members.
+* Therefore a geometric dome edge shared by two triangles contains TWO wooden members rather than one conventional shared strut.
+* The two neighboring raw wedge members do not directly mate.
+* A separate continuous spacer / spline / key / gasket occupies the space between them.
+* The spacer determines or accommodates the required angle between adjacent triangle panels.
+* Spacer implementations must include:
+
+  1. rigid triangular spline,
+  2. round rubber hose,
+  3. compressible circular gasket,
+  4. generic custom extruded profile.
+
+The application must show the system as a real buildable assembly, not merely draw lines representing a geodesic dome.
+
+---
+
+# 2. PRIMARY GEOMETRY
+
+Use a standard 2V icosahedral geodesic hemisphere.
+
+Set the LONG geodesic edge length:
+
+A = 72.000 inches
+
+Use standard 2V chord factors:
+
+A factor = 0.61803
+B factor = 0.54653
+
+Derive sphere radius from A:
+
+sphere_radius = 72 / 0.61803
+
+Expected:
+
+sphere_radius ≈ 116.499 inches
+sphere_diameter ≈ 232.998 inches
+sphere_radius ≈ 9.708 feet
+sphere_diameter ≈ 19.417 feet
+
+Calculate short edge B from the ratio rather than storing an arbitrary value:
+
+B = A × (0.54653 / 0.61803)
+
+Expected:
+
+B ≈ 63.670 inches
+
+The application must expose A as a user-editable master dimension and recalculate the entire dome from it.
+
+---
+
+# 3. DOME TOPOLOGY
+
+The final hemisphere must contain exactly:
+
+40 triangular faces
+26 vertices
+65 unique topological edges
+
+Face types:
+
+10 × A-A-A equilateral triangles
+30 × B-A-B isosceles triangles
+
+Conventional unique edge counts:
+
+35 × A edges
+30 × B edges
+
+The base perimeter consists of:
+
+10 × A edges
+
+Therefore interior shared seams consist of:
+
+25 × A seams
+30 × B seams
+
+Total interior panel-to-panel seams:
+
+55
+
+These are the seams requiring spacers.
+
+There are 10 exposed A edges around the base and these do not receive an adjacent-panel spacer unless an optional foundation interface is enabled.
+
+---
+
+# 4. PANELIZED WOOD MEMBER COUNT
+
+Every triangle owns all three wooden edge members.
+
+Do NOT deduplicate wooden members across neighboring triangles.
+
+Total wooden wedge members:
+
+40 × 3 = 120
+
+By type:
+
+A-A-A panels:
+10 × 3 A members = 30 A members
+
+B-A-B panels:
+30 × 1 A member = 30 A members
+30 × 2 B members = 60 B members
+
+TOTAL:
+
+60 × A members at 72.000 inches
+60 × B members at approximately 63.670 inches
+
+This duplication is intentional.
+
+The topology has 65 abstract dome edges, but the physical wooden model contains 120 independent edge members.
+
+---
+
+# 5. RAW WOOD CROSS-SECTION
+
+Default source trunk:
+
+diameter = 8.000 inches
+radius = 4.000 inches
+
+Each trunk is split longitudinally through its center into 8 equal sectors.
+
+Sector central angle:
+
+360° / 8 = 45°
+
+Each member is therefore an extrusion of a 45° circular sector.
+
+Cross-sectional area:
+
+A_sector = πR² / 8
+
+For R = 4":
+
+A_sector ≈ 6.283185 in²
+
+Outer curved arc length:
+
+arc = 2πR / 8
+
+Expected:
+
+arc ≈ 3.141593 inches
+
+Straight chord between the two outside corners:
+
+chord = 2R sin(22.5°)
+
+Expected:
+
+chord ≈ 3.061467 inches
+
+Radial side lengths:
+
+4.000 inches each
+
+Generate the cross-section mathematically.
+
+Do not approximate it as a triangle.
+
+The curved outer tree surface must remain genuinely circular.
+
+Use configurable radial segmentation for rendering, defaulting to at least 12 segments across the 45° arc.
+
+---
+
+# 6. ABSOLUTE ORIENTATION CONVENTION
+
+This convention must be used everywhere and must never be reversed.
+
+For every wooden wedge:
+
+CURVED ORIGINAL TREE SURFACE = TOWARD DOME EXTERIOR / SKY
+
+POINT OF THE SECTOR / ORIGINAL TREE CENTER = TOWARD DOME INTERIOR / SPHERE CENTER
+
+In a cross-section perpendicular to a strut:
+
+```
+            DOME EXTERIOR
+                  ↑
+
+            curved arc
+          ╭───────────╮
+         /             \
+        /               \
+       /                 \
+      /                   \
+     ●
+     ↑
+sector point
+
+   DOME INTERIOR
+```
+
+The bisector of the 45° sector should nominally align with the outward normal of its triangular panel.
+
+The two flat radial-sawn sides lie at:
+
++22.5° and -22.5°
+
+relative to that sector bisector.
+
+---
+
+# 7. IMPORTANT DISTINCTION: IDEAL DOME EDGE VS PHYSICAL WOOD
+
+Create the geodesic dome first as a zero-thickness mathematical mesh.
+
+Each mesh edge is an IDEAL SEAM AXIS.
+
+Do NOT automatically place both duplicated wooden members directly on this same axis.
+
+Doing so would make the raw 45° sectors interfere with one another.
+
+Instead:
+
+1. Generate the ideal triangle face planes.
+2. Generate an independent edge-member for each face.
+3. Keep each edge-member longitudinal direction parallel to its corresponding ideal mesh edge.
+4. Align its 45° sector bisector with that triangle's outward face normal.
+5. Translate the member within the plane perpendicular to the edge until the selected spacer/contact solution is satisfied.
+
+The spacer solver, rather than the ideal edge line alone, determines the final lateral separation of the two duplicated wooden members.
+
+Maintain both:
+
+* ideal mathematical topology, and
+* physical offset assembly geometry.
+
+Allow them to be displayed simultaneously.
+
+---
+
+# 8. LOCAL COORDINATE FRAME FOR EVERY PANEL EDGE
+
+For every directed face-edge establish:
+
+T = normalized longitudinal edge direction
+
+N = outward triangle-face normal
+
+S = in-plane vector perpendicular to the edge
+
+S = normalize(cross(N, T))
+
+Flip S when necessary so that it points toward the interior of the triangle.
+
+Use:
+
+local X = T
+local Y = S
+local Z = N
+
+The wooden wedge is extruded along local X.
+
+In the local Y-Z cross-section:
+
+* sector point is toward -Z / dome interior,
+* curved arc lies toward +Z / dome exterior,
+* one radial face points toward triangle interior,
+* the other radial face points outward across the panel boundary toward the neighboring panel.
+
+Mark the outward-facing radial face as:
+
+SEAM_FACE
+
+Mark the other radial face as:
+
+PANEL_INTERIOR_FACE
+
+This labeling must be visible in debug mode.
+
+---
+
+# 9. COMPUTE DOME FOLD ANGLES FROM GEOMETRY
+
+Do not use hard-coded spacer angles as the authoritative geometry.
+
+For every interior topological edge:
+
+* find the two adjacent faces,
+* calculate their outward unit normals N1 and N2,
+* calculate the actual angular difference between the face normals.
+
+Define:
+
+fold_angle = acos(clamp(dot(N1, N2), -1, +1))
+
+This is the small angular change from one panel plane orientation to the neighboring panel orientation.
+
+Expected validation values for a standard 2V dome are approximately:
+
+A-type shared seam:
+~18°
+
+B-type shared seam:
+~22.4° to 22.5°
+
+The precise model-generated value controls the spacer.
+
+Never rely solely upon naming conventions such as "dihedral", because different references use supplementary-angle definitions.
+
+Show both:
+
+small fold angle
+
+and
+
+traditional internal dihedral = 180° - fold_angle
+
+in the inspector.
+
+---
+
+# 10. RAW-SECTOR EXCESS ANGLE
+
+Each raw wooden sector contributes a 22.5° flat-face inclination relative to its panel normal.
+
+Two raw sectors therefore geometrically represent:
+
+45°
+
+of total included sector-face angle.
+
+For an interior seam whose required face fold is F:
+
+raw_gap_angle = 45° - F
+
+This gap angle is the basis of the spacer geometry.
+
+Expected approximately:
+
+A seam:
+
+F ≈ 18°
+
+raw_gap_angle ≈ 27°
+
+B seam:
+
+F ≈ 22.5°
+
+raw_gap_angle ≈ 22.5°
+
+Do not simply use these approximate numbers.
+
+Calculate F from the actual adjacent face normals and derive the gap.
+
+---
+
+# 11. RIGID TRIANGULAR SPLINE MODE
+
+Implement a rigid spline that runs continuously along the seam.
+
+In the cross-sectional plane perpendicular to the seam, the spline is bounded by the two actual SEAM_FACE planes of the neighboring wooden members.
+
+The spline should be generated geometrically from those actual faces.
+
+Preferred algorithm:
+
+1. Project both neighboring SEAM_FACE planes into the seam cross-section.
+2. Represent them as two 2D lines.
+3. Extend the lines until they intersect toward the dome exterior.
+4. This intersection becomes the virtual spline nose/apex.
+5. Follow each contact line inward by the desired contact depth.
+6. Connect the two resulting endpoints to form the spline's interior base.
+7. Extrude this profile along the length of the seam.
+
+Default contact depth:
+
+4.000 inches
+
+This allows full contact with the complete radial face of the raw wood sector.
+
+Expose:
+
+spline_contact_depth
+
+as an editable parameter from 0.25" through 4.00".
+
+For an ideal symmetric approximation with full 4" contact:
+
+base_width = 2R sin(raw_gap_angle / 2)
+
+For R = 4":
+
+A seam around 27°:
+base ≈ 1.87"
+
+B seam around 22.5°:
+base ≈ 1.56"
+
+These values are validation references only.
+
+The actual polygon must be generated from the real seam geometry.
+
+---
+
+# 12. SPLINE ORIENTATION
+
+The wooden wedge and the spline point in opposite radial directions.
+
+WOOD:
+
+wide curved portion = exterior
+point = interior
+
+SPLINE:
+
+narrow nose = exterior
+wide base = interior
+
+Conceptual cross-section:
+
+```
+                EXTERIOR
+                    ↑
+
+      wood        spline        wood
+    curved          ▲          curved
+      ╲            / \            ╱
+       ╲          /   \          ╱
+        ╲        /     \        ╱
+         ╲      /       \      ╱
+          ●____/_________\____●
+
+                    ↓
+                 INTERIOR
+```
+
+This diagram is conceptual.
+
+The application must calculate the real geometry from the neighboring faces rather than drawing a fixed symmetric icon.
+
+---
+
+# 13. ROUND HOSE / CIRCULAR GASKET MODE
+
+Add a second spacer implementation consisting of a circular hose running longitudinally along every seam.
+
+The hose is represented initially as a cylinder.
+
+Cross-section:
+
+circle tangent to both opposing raw SEAM_FACE lines.
+
+Given:
+
+gap angle = G
+hose radius = r
+
+For an ideal two-line wedge:
+
+distance from virtual face intersection to hose center:
+
+d = r / sin(G / 2)
+
+distance from virtual intersection to each tangent point along the wood face:
+
+t = r / tan(G / 2)
+
+The tangent point must remain inside the available wooden radial face:
+
+t ≤ R
+
+Therefore the maximum uncompressed hose radius that remains fully within a 4" radial contact face is approximately:
+
+r_max = R tan(G / 2)
+
+Calculate this dynamically for every seam.
+
+For approximately 27° A-seam gap:
+
+r_max ≈ 0.96"
+max uncompressed diameter ≈ 1.92"
+
+For approximately 22.5° B-seam gap:
+
+r_max ≈ 0.80"
+max uncompressed diameter ≈ 1.60"
+
+These are geometric reference values, not material recommendations.
+
+Allow arbitrary hose OD and show a warning when the ideal tangent locations exceed the available wood face.
+
+---
+
+# 14. COMPRESSIBLE HOSE MODE
+
+Add optional visual compression.
+
+Parameters:
+
+hose_outer_diameter
+hose_wall_thickness
+hose_compression_percent
+hose_material_name
+hose_shore_hardness informational field
+hose_internal_pressure optional
+hose_hollow = true/false
+
+No full nonlinear finite-element simulation is required.
+
+For visualization, deformation may be represented using an ellipse or custom capsule-like cross-section.
+
+Display:
+
+original hose circle
+compressed profile
+wood contact locations
+approximate compression percentage
+
+The user must be able to switch instantly between:
+
+RIGID_SPLINE
+ROUND_HOSE
+COMPRESSED_HOSE
+NO_SPACER
+
+---
+
+# 15. IMPORTANT STRUCTURAL BEHAVIOR OF A HOSE
+
+The visualization must distinguish between:
+
+ANGLE-DEFINING CONNECTOR
+
+and
+
+GAP-FILLING GASKET.
+
+A rigid spline can geometrically index the panel angle if it has full mating surfaces and adequate fastening.
+
+A round hose by itself generally does not uniquely establish the panel fold angle.
+
+The panels may rotate around the hose unless separate clamps, bolts, straps, plates, or node connectors constrain them.
+
+Therefore include two hose assembly modes:
+
+HOSE_GASKET_ONLY
+
+HOSE_WITH_MECHANICAL_ANGLE_CONSTRAINT
+
+The second mode adds configurable fasteners or plates spanning the seam.
+
+Do not imply that a soft hose alone is a rigid structural spline.
+
+---
+
+# 16. GENERIC CUSTOM SPACER PROFILE
+
+Create a common SpacerProfile interface.
+
+Required implementations:
+
+TriangularSplineProfile
+CircularHoseProfile
+CompressedHoseProfile
+CustomPolygonProfile
+
+Every spacer profile must support:
+
+2D cross-section generation
+extrusion along seam
+material assignment
+contact-face visualization
+collision checking
+dimensions
+volume
+mass estimate
+exploded-view offset
+
+A custom profile should be defined as editable 2D points in the seam cross-section and extruded along the seam.
+
+---
+
+# 17. PANEL CORNERS
+
+The edge spline system solves panel-to-panel seams.
+
+It does NOT by itself solve the places where several triangular panels converge at one dome vertex.
+
+The program must explicitly model this.
+
+The 2V hemisphere has 26 vertices.
+
+Expected topology:
+
+6 interior five-valence nodes
+10 interior six-valence nodes
+10 base four-valence nodes
+
+Because each triangular panel owns its own edge members, several physically separate wood ends and several spline ends converge around each mathematical geodesic vertex.
+
+Do not hide this with intersecting meshes.
+
+Create a NODE CONNECTOR subsystem.
+
+---
+
+# 18. NODE CONNECTOR / VERTEX KEY SYSTEM
+
+For each mathematical dome vertex:
+
+1. Collect every panel corner touching the vertex.
+2. Collect every wood member terminating there.
+3. Collect every spline or hose terminating there.
+4. Establish a local radial axis from sphere center through the vertex.
+5. Generate a connector volume capable of occupying the central remaining void.
+6. Clip or terminate all seam keys cleanly against the connector.
+
+Support node connector styles:
+
+NONE
+RUBBER_PUCK
+WOODEN_KEY
+METAL_PLATE
+PROCEDURAL_FILLER
+CUSTOM
+
+The procedural filler should be generated from the actual surrounding member surfaces.
+
+A practical implementation can:
+
+* define an inner clipping plane around the node,
+* trim member and spline ends,
+* collect resulting boundary polygons,
+* construct a convex or triangulated central connector.
+
+Render five-way, six-way, and base four-way nodes distinctly.
+
+This node system is critical because the 55 longitudinal seams terminate at the dome vertices.
+
+---
+
+# 19. TRIANGLE FRAME END JOINTS
+
+Within each individual triangular panel, its three wood members must form an actual triangular frame.
+
+Support at least:
+
+OVERLAP_DEBUG
+PLANAR_MITER
+NODE_BLOCK
+
+Default visual construction:
+
+PLANAR_MITER
+
+For each triangle corner:
+
+* calculate the two incident edge directions,
+* calculate the triangle's true interior angle,
+* construct the angle-bisector plane,
+* clip both edge-member ends to that plane.
+
+Expected planar triangle angles:
+
+A-A-A:
+60°, 60°, 60°
+
+B-A-B with A ≈ 72" and B ≈ 63.67":
+
+apex angle opposite A ≈ 68.86°
+
+two base angles ≈ 55.57°
+
+Calculate these from side lengths rather than hard-code them.
+
+Keep the 45° sector CROSS-SECTION unchanged.
+
+Only longitudinal end cuts may modify the raw member geometry.
+
+---
+
+# 20. MATERIAL MODEL
+
+Default wood:
+
+species = pine
+
+Wood parameters:
+
+source_trunk_diameter
+moisture_percent
+density_lb_ft3
+elastic_modulus optional
+mass_per_member
+volume_per_member
+
+Default geometry should use actual sector volume rather than bounding-box volume.
+
+For constant 8" trunk diameter:
+
+cross_section_area = π × 4² / 8
+
+Member volume:
+
+volume = cross_section_area × member_length
+
+Display volume in:
+
+in³
+ft³
+
+Display mass from:
+
+mass = volume_ft3 × density_lb_ft3
+
+Allow the user to compare the wedge against actual dimensional lumber such as a real:
+
+1.5" × 3.5" 2×4
+
+but do not replace the wedge geometry with rectangular lumber.
+
+---
+
+# 21. WEDGE BENDING-GEOMETRY VISUALIZER
+
+For a selected member show its cross-section and:
+
+sector centroid
+neutral axes
+cross-sectional area
+principal axes
+second moments of area
+section modulus in selected loading direction
+
+The purpose is to visualize why equal wood area is not equivalent to equal rectangular-beam bending performance.
+
+Allow the selected wedge to rotate around its longitudinal axis in a standalone comparison viewer.
+
+However, dome construction mode must retain the required:
+
+curved-out / point-in
+
+orientation.
+
+---
+
+# 22. 3D DISPLAY MODES
+
+Required display modes:
+
+COMPLETE DOME
+IDEAL GEODESIC MESH
+PANEL FRAMES ONLY
+WOOD ONLY
+SPACERS ONLY
+NODE CONNECTORS ONLY
+SINGLE PANEL
+SINGLE SEAM
+SEAM CROSS-SECTION
+EXPLODED DOME
+EXPLODED PANEL
+EXPLODED SEAM
+TRANSPARENT ASSEMBLY
+COLLISION VIEW
+NORMALS / LOCAL AXES DEBUG VIEW
+
+Exploded seam view should separate:
+
+wood member A
+spacer
+wood member B
+
+laterally so all three components are obvious.
+
+---
+
+# 23. CROSS-SECTION INSPECTOR
+
+The most important diagnostic feature is an interactive cross-section perpendicular to a selected seam.
+
+The user clicks any seam.
+
+Show a synchronized 2D section containing:
+
+ideal mathematical edge reference
+triangle face planes
+face normals
+both raw 45° wood sectors
+both seam faces
+virtual extension/intersection of seam faces
+raw gap angle
+required panel fold angle
+rigid spline profile
+hose circle if enabled
+hose tangent locations
+contact lengths
+interior/exterior labels
+all dimensions
+
+This view must make it impossible to confuse interior and exterior.
+
+Always place:
+
+EXTERIOR / SKY
+
+at the top.
+
+Always place:
+
+INTERIOR / SPHERE CENTER
+
+at the bottom.
+
+---
+
+# 24. UI CONTROLS
+
+Provide live controls for:
+
+long edge A
+source trunk diameter
+number of radial trunk splits, default 8
+spacer mode
+spline contact depth
+hose outside diameter
+hose wall thickness
+hose compression
+wood density
+wood moisture informational value
+exploded-view distance
+member opacity
+spacer opacity
+node opacity
+show ideal mesh
+show face normals
+show dimensions
+show seam labels
+show member IDs
+show panel IDs
+show collision volumes
+
+Changing trunk diameter must regenerate every wooden cross-section and spacer solution.
+
+Changing the split count from 8 must regenerate sector angle:
+
+sector_angle = 360° / split_count
+
+and derive all subsequent spacer calculations from that angle.
+
+Do not bake 45° into the architecture even though 8-way split is the default.
+
+General relationship:
+
+raw two-member sector angle contribution = 2 × (sector_angle / 2) = sector_angle
+
+therefore approximately:
+
+gap_angle = sector_angle - fold_angle
+
+when the selected sector orientation is used.
+
+---
+
+# 25. OBJECT IDENTIFICATION
+
+Every object must have a stable ID.
+
+Examples:
+
+PANEL_AAA_001
+PANEL_BAB_001
+
+WOOD_P001_E0
+WOOD_P001_E1
+WOOD_P001_E2
+
+SEAM_A_001
+SEAM_B_001
+
+SPACER_SEAM_A_001
+
+NODE_5WAY_001
+NODE_6WAY_001
+NODE_BASE_001
+
+A click on an object should populate an inspector showing:
+
+type
+dimensions
+world coordinates
+local axes
+adjacent objects
+material
+volume
+estimated mass
+edge class
+face class
+fold angle
+spacer parameters
+
+---
+
+# 26. COLLISION AND VALIDATION
+
+Perform geometry validation after every regeneration.
+
+Detect:
+
+wood-to-wood unintended intersections
+wood-to-spacer gaps
+wood-to-spacer penetrations
+member-end collisions
+node connector collisions
+hose exceeding contact face
+inverted normals
+incorrect panel count
+incorrect edge classification
+
+Use tolerances rather than exact floating-point equality.
+
+Validation panel should display PASS / WARNING / FAIL.
+
+---
+
+# 27. AUTOMATIC EDGE CLASSIFICATION
+
+Do not depend solely on manually labeled A/B topology.
+
+After generating the ideal mesh:
+
+1. calculate every unique edge length,
+2. cluster lengths within tolerance,
+3. classify the longer group as A,
+4. classify the shorter group as B.
+
+Validate:
+
+A unique count = 35
+B unique count = 30
+
+Validate panel incidence counts:
+
+physical A members = 60
+physical B members = 60
+
+Validate interior seams:
+
+A = 25
+B = 30
+
+Validate base:
+
+10 A edges
+
+---
+
+# 28. PANEL GENERATION
+
+Create one physical Panel object per mathematical triangle.
+
+A Panel contains:
+
+face index
+three vertex references
+face normal
+face center
+triangle type
+three physical WoodMember objects
+three edge references
+neighbor references
+optional panel skin
+
+Do not share WoodMember objects between Panels.
+
+This is fundamental to the construction paradigm.
+
+---
+
+# 29. OPTIONAL PANEL SKIN
+
+Support an optional thin triangular skin mounted on the exterior side of each frame.
+
+Parameters:
+
+skin_enabled
+skin_thickness
+skin_offset
+skin_material
+skin_transparency
+
+The skin should follow each individual triangle plane.
+
+This makes it possible to visualize how the edge spacer also functions as a weather seal between panelized triangular roof sections.
+
+---
+
+# 30. WEATHER-SEAL CONCEPT
+
+Because a rubber spline or hose may ultimately serve as both:
+
+geometric separator
+
+and
+
+weather gasket,
+
+add an exterior seam-cover option.
+
+Types:
+
+NONE
+ROUND_BULB
+FLAT_EPDM_STRIP
+CAP_STRIP
+CUSTOM
+
+This is separate from the structural/internal spline.
+
+Allow the user to view a cutaway showing:
+
+panel skin
+wood wedge
+edge spline
+external gasket
+fastener
+
+---
+
+# 31. FASTENER VISUALIZATION
+
+Support optional fastening systems across the duplicated edge pair.
+
+Initial types:
+
+THROUGH_BOLT
+WOOD_SCREW_TO_SPLINE
+STRAP
+EXTERIOR_PLATE
+INTERIOR_PLATE
+CLAMP
+
+Fastener geometry should be generated relative to the seam local frame.
+
+No structural load certification is required.
+
+The purpose is to visualize assembly concepts and detect impossible fastener locations.
+
+---
+
+# 32. EXPLODED ASSEMBLY ANIMATION
+
+Create an animated build sequence.
+
+Stages:
+
+1. show ideal geodesic mesh,
+2. show 40 separated triangle planes,
+3. construct raw wedge members around each triangle,
+4. assemble triangle frames,
+5. move triangle panels into dome position,
+6. leave intentional seam gaps,
+7. insert 55 edge spacers,
+8. insert node connectors,
+9. add optional fasteners,
+10. add optional panel skins,
+11. show complete dome.
+
+Animation must be scrub-able with a timeline.
+
+---
+
+# 33. CONSTRUCTION METRICS
+
+Display live totals:
+
+40 panels
+120 wooden wedge members
+60 A wood members
+60 B wood members
+55 interior spacers
+25 A spacers
+30 B spacers
+26 node locations
+10 base perimeter edges
+
+Also calculate:
+
+total wood length
+total wood volume
+estimated dry mass
+estimated green mass
+total spline length
+total spline volume
+total hose length
+total gasket length
+
+---
+
+# 34. SEAM LENGTH TOTALS
+
+Spacer lengths correspond to interior topological seams only.
+
+Long spacer length total:
+
+25 × A
+
+Short spacer length total:
+
+30 × B
+
+With A = 72":
+
+long spline total:
+
+25 × 72 = 1800 inches = 150 feet
+
+With B ≈ 63.67":
+
+short spline total ≈ 1910.1 inches ≈ 159.18 feet
+
+Total interior edge-spacer run:
+
+approximately 309.2 feet
+
+Recalculate from generated geometry rather than storing these values.
+
+---
+
+# 35. CAMERA AND NAVIGATION
+
+Provide:
+
+orbit camera
+pan
+zoom
+perspective view
+orthographic view
+top view
+side view
+interior view
+exterior view
+focus selected object
+frame whole dome
+walk/fly camera optional
+
+Allow clipping plane control so the dome can be sliced open.
+
+---
+
+# 36. MEASUREMENT TOOL
+
+Implement interactive measurement.
+
+The user should be able to click:
+
+point-to-point
+edge length
+angle between faces
+angle between surfaces
+gap width
+hose diameter
+member depth
+member chord width
+
+Measurements should appear directly in the 3D world.
+
+---
+
+# 37. GEOMETRIC SOURCE OF TRUTH
+
+The hierarchy of truth must be:
+
+1. mathematical 2V topology,
+2. generated vertex coordinates,
+3. face planes and normals,
+4. actual panel fold geometry,
+5. raw wood sector geometry,
+6. actual collision/contact geometry,
+7. spacer geometry solved from those surfaces.
+
+Do not work backward from approximate published bevel numbers.
+
+Approximate bevel numbers exist only as validation checks.
+
+---
+
+# 38. NUMERICAL TESTS
+
+At default parameters, automated tests should confirm approximately:
+
+A = 72.000"
+B ≈ 63.67"
+
+sphere radius ≈ 116.50"
+
+faces = 40
+vertices = 26
+unique edges = 65
+
+AAA faces = 10
+BAB faces = 30
+
+physical wood members = 120
+
+physical A members = 60
+physical B members = 60
+
+interior seams = 55
+
+interior A seams = 25
+interior B seams = 30
+
+base edges = 10
+
+8" wedge area ≈ 6.2832 in²
+
+8" wedge arc ≈ 3.1416"
+
+8" wedge outer chord ≈ 3.0615"
+
+A-seam fold approximately 18°
+
+B-seam fold approximately 22.5°
+
+A-seam raw spacer gap approximately 27°
+
+B-seam raw spacer gap approximately 22.5°
+
+The program should fail loudly if topology differs substantially from these values.
+
+---
+
+# 39. GEOMETRIC DEBUG REQUIREMENTS
+
+Include a mode that draws:
+
+red = local X / edge direction
+green = local Y / panel inward direction
+blue = local Z / panel outward normal
+
+Also draw:
+
+sphere center
+radial line from sphere center to selected face
+face normal
+wood-sector bisector
+seam-face normals
+spacer cross-section axes
+
+Every selected object should state explicitly:
+
+"EXTERIOR DIRECTION"
+
+and
+
+"INTERIOR / SPHERE CENTER DIRECTION"
+
+This is required to prevent orientation ambiguity.
+
+---
+
+# 40. ARCHITECTURE
+
+Keep geometry generation separated from rendering.
+
+Suggested conceptual modules:
+
+geometry/geodesic.py
+geometry/panel.py
+geometry/wood_sector.py
+geometry/seam.py
+geometry/spacer.py
+geometry/node.py
+geometry/collision.py
+geometry/measurements.py
+
+model/dome_model.py
+model/materials.py
+model/settings.py
+
+render/renderer.py
+render/camera.py
+render/debug_draw.py
+render/selection.py
+
+ui/inspector.py
+ui/controls.py
+ui/cross_section.py
+ui/timeline.py
+
+app.py
+
+Equivalent architecture is acceptable, but geometry logic must not be buried inside rendering code.
+
+---
+
+# 41. DATA MODEL REQUIREMENTS
+
+All geometry parameters must be serializable.
+
+Support save/load of a project configuration using JSON.
+
+Saved configuration should include:
+
+dome parameters
+trunk parameters
+wood material
+spacer type
+spacer dimensions
+hose settings
+node type
+fastener type
+render settings
+camera state
+
+Do not serialize generated mesh vertex arrays unless useful.
+
+They should be reproducible from the parametric source data.
+
+---
+
+# 42. EXPORT
+
+Support export of:
+
+complete dome OBJ
+complete dome STL
+individual triangle panel OBJ/STL
+individual wedge member OBJ/STL
+rigid spline OBJ/STL
+node connector OBJ/STL
+
+Also export CSV BOM containing:
+
+object ID
+object type
+quantity
+length
+cross-section
+volume
+material
+estimated mass
+panel association
+seam association
+
+---
+
+# 43. MOST IMPORTANT DESIGN PRINCIPLE
+
+The simulator must NOT turn this concept back into an ordinary rectangular-lumber geodesic dome.
+
+The defining physical construction is:
+
+RAW RADIAL LOG SECTOR
++
+SEPARATE TRIANGULAR PANEL
++
+DUPLICATED PANEL EDGE
++
+CONTINUOUS EDGE SPLINE / GASKET
++
+NODE CONNECTOR
+
+The raw wood cross-section is a feature of the system, not a temporary shape to be machined away.
+
+Only necessary longitudinal end cuts are allowed.
+
+The two radial-sawn longitudinal faces and curved outer-log surface remain intact.
+
+---
+
+# 44. VISUAL DESIGN INTENT
+
+The final result should visibly read as a dome made from trees split like pizza slices.
+
+From outside:
+
+the curved former-bark surfaces should form the visually dominant wooden ribs.
+
+From inside:
+
+the pointed radial portions of the sectors should project inward.
+
+Between adjacent triangle frames:
+
+the separate spline, key, or gasket should be visibly identifiable as a continuous third component.
+
+The assembly should make this paradigm visually obvious without requiring an explanation.
+
+---
+
+# 45. IMPLEMENTATION QUALITY
+
+Produce a fully runnable application.
+
+Do not use placeholders.
+
+Do not omit modules.
+
+Do not leave TODO methods.
+
+Do not use pseudo-code in place of required geometry.
+
+Comment the non-obvious geometry extensively.
+
+All generated geometry must respond live to parameter changes.
+
+Where an engineering assumption is uncertain, expose it as a parameter rather than hiding it as a magic number.
+
+The software is a geometric design and visualization tool, not a substitute for structural engineering certification.
+
+---
+
+# 46. DEVELOPMENT PRIORITY
+
+Implement in this order internally:
+
+ideal 2V topology
+→ face classification
+→ raw sector mesh
+→ panel-local coordinate system
+→ duplicated 120-member panel system
+→ seam-angle calculation
+→ rigid spline solver
+→ seam cross-section inspector
+→ hose solver
+→ node connectors
+→ collision checking
+→ UI
+→ animation
+→ export
+
+A correct seam cross-section is more important than decorative rendering.
+
+The core proof of success is selecting any shared edge and clearly seeing:
+
+RAW WOOD A
+→ CONTACT FACE
+→ SPLINE OR HOSE
+→ CONTACT FACE
+→ RAW WOOD B
+
+with the two triangular panels sitting at the correct mathematically generated 2V dome orientation.

@@ -1,0 +1,19 @@
+{
+  "rendered": {
+    "forge-pattern": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\forge-pattern.png",
+    "force-panel": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\force-panel.png",
+    "platonic": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\platonic.png",
+    "compound-cut": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\compound-cut.png",
+    "zome-star": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\zome-star.png",
+    "scratch-pipeline": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\scratch-pipeline.png",
+    "wedge-round": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\wedge-round.png",
+    "wedge-chain": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\wedge-chain.png",
+    "harvest-explode": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\harvest-explode.png",
+    "wedge-section": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\wedge-section.png",
+    "harvest-buck": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\harvest-buck.png",
+    "harvest-pile": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\harvest-pile.png",
+    "divider-build": "C:\\Users\\Don\\Desktop\\DomeSim\\domology\\.cache\\plate-work\\20260912-135253-28852\\divider-build.png"
+  },
+  "failed": {},
+  "log": "pygame 2.6.1 (SDL 2.28.4, Python 3.12.10)\nHello from the pygame community. https://www.pygame.org/contribute.html\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0006.00s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0018.00s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0027.00s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0038.50s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0049.00s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0059.00s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0069.00s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0077.20s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0089.00s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0092.60s.png\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0105.00s.png\n\npygame 2.6.1 (SDL 2.28.4, Python 3.12.10)\nHello from the pygame community. https://www.pygame.org/contribute.html\nsaved C:\\Users\\Don\\Desktop\\DomeSim\\two_v_demo_output\\domology_plates\\plate_0007.00s.png\n"
+}

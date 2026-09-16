@@ -1,0 +1,29 @@
+{
+  "plate": "method-dome",
+  "title": "A dome from the floor you want",
+  "tool": "scene",
+  "concept": "Method A: choose the floor, and the members follow.",
+  "change": "The solved dome with its radius, height and floor marked.",
+  "recipe": {
+    "scene": "dimensioned_dome",
+    "camera": {
+      "eye": [
+        9.5,
+        -12.5,
+        5.6
+      ],
+      "target": [
+        0.0,
+        0.0,
+        2.1
+      ],
+      "fov": 42.0
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

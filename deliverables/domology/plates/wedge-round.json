@@ -1,0 +1,21 @@
+{
+  "plate": "wedge-round",
+  "title": "The same round, two ways",
+  "tool": "film",
+  "concept": "The corners of a log are only waste to a rectangle.",
+  "change": "The wedge argument's round-section scene, moved in so its labels separate.",
+  "recipe": {
+    "lesson": "why",
+    "chapter": "round",
+    "progress": 0.9,
+    "camera": {
+      "zoom": 0.85
+    }
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

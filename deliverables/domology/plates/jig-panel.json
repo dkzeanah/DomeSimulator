@@ -1,0 +1,18 @@
+{
+  "plate": "jig-panel",
+  "title": "Locate first, cut second",
+  "tool": "film",
+  "concept": "The jig solves the geometry once.",
+  "change": "Why Build This Way's jig scene as the members arrive.",
+  "recipe": {
+    "lesson": "why_build",
+    "chapter": "jig",
+    "progress": 0.5
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

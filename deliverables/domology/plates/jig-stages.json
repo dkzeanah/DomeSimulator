@@ -1,0 +1,18 @@
+{
+  "plate": "jig-stages",
+  "title": "The fabrication bench",
+  "tool": "film",
+  "concept": "A flat bench is the whole factory.",
+  "change": "The wedge argument's bench scene.",
+  "recipe": {
+    "lesson": "why",
+    "chapter": "bench",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

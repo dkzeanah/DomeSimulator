@@ -1,0 +1,18 @@
+{
+  "plate": "creator-homestead",
+  "title": "The Split-Log Homestead",
+  "tool": "film",
+  "concept": "Split logs can frame a dome directly.",
+  "change": "The world film's Split-Log Homestead chapter.",
+  "recipe": {
+    "lesson": "world",
+    "chapter": "show_02",
+    "progress": 0.8
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}

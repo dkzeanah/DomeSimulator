@@ -1,0 +1,21 @@
+{
+  "plate": "line-frame",
+  "title": "The shell on the line",
+  "tool": "line",
+  "concept": "A line builds the shell first, while it is open.",
+  "change": "The line stopped as the framing station finishes.",
+  "recipe": {
+    "stage": "frame",
+    "fraction": 0.97,
+    "cutaway": false,
+    "yaw": -150.0,
+    "pitch": 24.0,
+    "distance": 14.0
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:05:35",
+  "tool_process": "line"
+}

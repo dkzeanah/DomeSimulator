@@ -1,0 +1,281 @@
+{
+  "path": "C:\\Users\\Don\\Desktop\\DomeSim\\two_trees_codex\\workspace\\expanded-art\\tools-20260912T064848369517Z-cc4b2b\\forge-jig-layout.png",
+  "title": "Transfer the triangle to a jig",
+  "purpose": "Show the layout reference before fences and stops are added.",
+  "caption": "Transfer the triangle to a jig. Native Dome Forge jig demonstration using mitered board frames. Use its locating and repeatability principle as a comparison; the book's butt-to-side wedge pinwheel requires its own contact layout.",
+  "provenance": "Native Dome Forge render; clean scene; source files unchanged.",
+  "recipe": {
+    "schema": "two-trees-native-tool-still/v1",
+    "tool": "Dome Forge",
+    "size": [
+      2000,
+      1400
+    ],
+    "overlay": "none",
+    "source_hashes": {
+      "dome_forge/app.py": "6488ca204377cea6394e1d813889acd7eceea3d2e9b67f172e31a4189476d508",
+      "dome_forge/build.py": "661b1f8ae68956aa526363b32707cecf3d8eb15500ccac22aa05f894f85d363e",
+      "dome_forge/panel.py": "0424b4ac3c64bff28103dbb2c8b3f216530345513be93701277634197dcfd0dc",
+      "dome_forge/jigs.py": "c89d0ed440e19c0ca5067d29f4979f3b80d6a575cf59bdaaf5f50ac3a2261e41",
+      "dome_forge/layers.py": "fbc591c4df7e5da0cd0877191ab29de3283d8e7a990cf46b6deddf35812295f8"
+    },
+    "mode": "jigs",
+    "yaw": 64,
+    "pitch": 65,
+    "distance": 7.0,
+    "centered_without_ui_pan": true,
+    "clock_t": 1.4,
+    "stack": {
+      "schema": 3,
+      "settings": {
+        "radius": 4.2,
+        "cut_enabled": true,
+        "cut_start": 150,
+        "cut_sweep": 105
+      },
+      "assignments": {
+        "fill": "polycarbonate",
+        "strut_long": "lumber_2x4",
+        "strut_short": "lumber_2x4",
+        "face_fill": {},
+        "face_struts": {},
+        "joint": "banding",
+        "waist_joint": {}
+      },
+      "designs": {
+        "triangles": [
+          {
+            "name": "Split-log glazed",
+            "struts": [
+              "log_half",
+              "lumber_2x2",
+              "log_quarter"
+            ],
+            "fill": "polycarbonate"
+          },
+          {
+            "name": "Split-log solid",
+            "struts": [
+              "log_half",
+              "lumber_2x2",
+              "log_quarter"
+            ],
+            "fill": "wood_planks"
+          },
+          {
+            "name": "2x4 window",
+            "struts": [
+              "lumber_2x4",
+              "lumber_2x4",
+              "lumber_2x4"
+            ],
+            "fill": "glass"
+          },
+          {
+            "name": "2x4 solar",
+            "struts": [
+              "lumber_2x4",
+              "lumber_2x4",
+              "lumber_2x4"
+            ],
+            "fill": "solar"
+          },
+          {
+            "name": "2x4 vent",
+            "struts": [
+              "lumber_2x4",
+              "lumber_2x4",
+              "lumber_2x4"
+            ],
+            "fill": "vent"
+          }
+        ],
+        "groups": [
+          {
+            "name": "Split-log pentagon",
+            "kind": "pentagon",
+            "triangles": [
+              "Split-log glazed",
+              "Split-log glazed",
+              "Split-log glazed",
+              "Split-log glazed",
+              "Split-log glazed"
+            ],
+            "joint": "banding"
+          },
+          {
+            "name": "Solar pentagon",
+            "kind": "pentagon",
+            "triangles": [
+              "2x4 solar",
+              "2x4 solar",
+              "2x4 solar",
+              "2x4 solar",
+              "2x4 solar"
+            ],
+            "joint": "banding"
+          },
+          {
+            "name": "Vented pentagon",
+            "kind": "pentagon",
+            "triangles": [
+              "2x4 vent",
+              "2x4 window",
+              "2x4 vent",
+              "2x4 window",
+              "2x4 window"
+            ],
+            "joint": "banding"
+          },
+          {
+            "name": "Split-log hourglass",
+            "kind": "hourglass",
+            "triangles": [
+              "Split-log solid",
+              "Split-log solid"
+            ],
+            "joint": "wood_brace"
+          }
+        ]
+      },
+      "layers": [
+        {
+          "kind": "ground",
+          "name": "Ground pad",
+          "visible": true,
+          "opacity": 1.0,
+          "params": {
+            "extent": 1.6,
+            "tint": "charcoal"
+          }
+        },
+        {
+          "kind": "cistern",
+          "name": "Cistern",
+          "visible": true,
+          "opacity": 0.5,
+          "params": {
+            "radius": 1.15,
+            "depth": 1.5,
+            "sink": 0.25,
+            "fill": 0.55,
+            "tint": "steel"
+          }
+        },
+        {
+          "kind": "downpipe",
+          "name": "Downpipe",
+          "visible": true,
+          "opacity": 1.0,
+          "params": {
+            "bore": 0.1,
+            "azimuth": 210.0,
+            "tint": "steel"
+          }
+        },
+        {
+          "kind": "collector_ring",
+          "name": "Collector ring",
+          "visible": true,
+          "opacity": 1.0,
+          "params": {
+            "bore": 0.11,
+            "drop": 0.14,
+            "inset": 0.1,
+            "tint": "copper"
+          }
+        },
+        {
+          "kind": "veins",
+          "name": "Seam veins (gasket)",
+          "visible": true,
+          "opacity": 1.0,
+          "params": {
+            "gap": 0.16,
+            "bore": 0.075,
+            "wrap": 0.62,
+            "segments": 7,
+            "samples": 9,
+            "tint": "copper"
+          }
+        },
+        {
+          "kind": "vein_water",
+          "name": "Water in the veins",
+          "visible": true,
+          "opacity": 0.9,
+          "params": {
+            "speed": 0.35,
+            "density": 4,
+            "size": 0.055,
+            "tint": "water"
+          }
+        },
+        {
+          "kind": "assemblies",
+          "name": "Panel assemblies",
+          "visible": true,
+          "opacity": 1.0,
+          "params": {
+            "seam": 0.004,
+            "show_fills": true,
+            "highlight": true
+          }
+        },
+        {
+          "kind": "waist_joints",
+          "name": "Hourglass waist joints",
+          "visible": true,
+          "opacity": 1.0,
+          "params": {
+            "size": 1.0
+          }
+        },
+        {
+          "kind": "micro_drains",
+          "name": "Micro-drains",
+          "visible": true,
+          "opacity": 1.0,
+          "params": {
+            "bore": 0.045,
+            "spout": 0.13,
+            "tint": "copper"
+          }
+        },
+        {
+          "kind": "panel_runoff",
+          "name": "Runoff on panels",
+          "visible": true,
+          "opacity": 0.85,
+          "params": {
+            "speed": 0.5,
+            "density": 3,
+            "size": 0.04,
+            "tint": "water"
+          }
+        },
+        {
+          "kind": "rain",
+          "name": "Rain",
+          "visible": false,
+          "opacity": 0.5,
+          "params": {
+            "count": 220,
+            "speed": 3.2,
+            "spread": 1.5,
+            "length": 0.26,
+            "tint": "water"
+          }
+        }
+      ]
+    },
+    "jig_index": 1,
+    "jig_step": "scribe",
+    "bench_struts": [
+      "log_half",
+      "lumber_2x2",
+      "log_quarter"
+    ],
+    "bench_fill": "polycarbonate"
+  }
+}

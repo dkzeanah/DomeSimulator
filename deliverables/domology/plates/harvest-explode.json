@@ -1,0 +1,18 @@
+{
+  "plate": "harvest-explode",
+  "title": "A section opened into its wedges",
+  "tool": "film",
+  "concept": "Each bucked section becomes a set of wedges.",
+  "change": "The harvest film's close look at one opened section.",
+  "recipe": {
+    "lesson": "harvest",
+    "chapter": "why",
+    "progress": 0.5
+  },
+  "size": [
+    2400,
+    1500
+  ],
+  "rendered": "2026-09-12T14:04:46",
+  "engine": "two_v_demo.app shots"
+}
