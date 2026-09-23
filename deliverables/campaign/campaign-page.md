@@ -152,13 +152,50 @@ If you have trees, the frame is already standing on your land and we send you ev
 
 ---
 
-## The quilt
+## The quilt network
 
-One layer covers about 592 square feet and is roughly **132 t-shirts**.
+**A fully quilted dome wears 987 t-shirts.**
 
-It costs $50 in materials if the fabric is a waste stream, which it is. Including the bigger cap it forces, a layer costs $69 and adds about R-1.6.
+355 pounds of clothing that was going to landfill — about 4.4 person-years of US textile waste, against the EPA's 82 pounds a person a year. And 63 hours of somebody's evening.
 
-We want a register of people who will sew them. Not a charity drive -- a paid, listed, ongoing thing, where somebody with a dome can find somebody with a machine.
+The first layer is 592 square feet and about **132 shirts**. Every layer after it goes *over* the ones already there, so it is a size up — the seventh is 150 shirts. That is the same arithmetic as the caps, felt by the person at the machine.
+
+### This is not a donation drive
+
+A layer sewn for somebody else's dome is paid: $90, against $50 of materials. If it is not paid it is a request for free labour with extra steps, and it will not last a year.
+
+**Three ways in:**
+
+- **Send shirts.** A box of clothes nobody will wear again. It gets weighed, logged against your name, and cut up by somebody with a machine.
+- **Sew a layer for your own dome.** The kit is the pattern, the binding and the specification -- how big, how thick, how to close the edge. The dome tells you which size it needs next, because each layer is bigger than the one under it.
+- **Sew a layer for somebody else's.** Listed, paid, and tagged with your name. This is the part that has to be paid or it is not a network, it is a request for free labour.
+
+### Every layer is tagged, and the dome keeps the record
+
+A quilted layer is removable and the stack has an order, so a building can always say what it is wearing and who made it. Each layer carries a tag:
+
+- **layer** — which layer of the stack this is, counting outward from 1
+- **dome** — the dome's registry number, so a layer belongs somewhere
+- **sewn by** — the maker's name or handle, as they want it written
+- **sewn** — the month and year
+- **shirts** — how many garments went into it
+- **from** — one line about where the clothes came from, if they want it
+
+And every dome ships with the card:
+
+```
+WHAT THIS DOME IS WEARING
+
+ layer    sq ft   shirts      lb      R
+     1      592      132    47.5    1.6
+     2      605      135    48.6    1.6
+     3      618      138    49.7    1.6
+--------------------------------------
+ total               405   145.8    6.3
+
+27 hours of somebody's evening.
+1.8 person-years of textile waste, against the EPA's 82 lb a year.
+```
 
 ---
 

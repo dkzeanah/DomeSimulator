@@ -20,6 +20,7 @@ from pathlib import Path
 
 import kickstarter
 import pad_deck
+import quilt_network
 import seed_model
 import soft_shell
 
@@ -289,20 +290,52 @@ def page() -> str:
     add("")
 
     # -- the quilt network --------------------------------------------
-    add("## The quilt")
+    add("## The quilt network")
     add("")
-    add("One layer covers about "
-        f"{quilt['sqft_per_layer']:,.0f} square feet and is roughly "
-        f"**{quilt['shirts_per_layer']:,} t-shirts**.")
+    full = quilt_network.dome_totals(7)
+    first = quilt_network.layer(1)
+    add(f"**A fully quilted dome wears {full['shirts']:,} t-shirts.**")
     add("")
-    add(f"It costs {_usd(quilt['usd_per_layer'])} in materials if the fabric "
-        f"is a waste stream, which it is. Including the bigger cap it forces, "
-        f"a layer costs {_usd(quilt['marginal_usd_per_layer'])} and adds "
-        f"about R-{quilt['r_per_layer']:.1f}.")
+    add(f"{full['pounds']:,.0f} pounds of clothing that was going to "
+        f"landfill — about {full['waste_years']:.1f} person-years of US "
+        f"textile waste, against the EPA's "
+        f"{quilt_network.declared('us_textile_waste_lb_per_person_year'):.0f} "
+        f"pounds a person a year. And {full['hours']:.0f} hours of "
+        f"somebody's evening.")
     add("")
-    add("We want a register of people who will sew them. Not a charity "
-        "drive -- a paid, listed, ongoing thing, where somebody with a dome "
-        "can find somebody with a machine.")
+    add(f"The first layer is {first.sqft:,.0f} square feet and about "
+        f"**{first.shirts} shirts**. Every layer after it goes *over* the "
+        f"ones already there, so it is a size up — the seventh is "
+        f"{quilt_network.layer(7).shirts} shirts. That is the same "
+        f"arithmetic as the caps, felt by the person at the machine.")
+    add("")
+    add("### This is not a donation drive")
+    add("")
+    add(f"A layer sewn for somebody else's dome is paid: "
+        f"{_usd(first.pay_usd)}, against {_usd(first.materials_usd)} of "
+        f"materials. If it is not paid it is a request for free labour with "
+        f"extra steps, and it will not last a year.")
+    add("")
+    add("**Three ways in:**")
+    add("")
+    for title, what in quilt_network.WAYS_IN:
+        add(f"- **{title}.** {what}")
+    add("")
+    add("### Every layer is tagged, and the dome keeps the record")
+    add("")
+    add("A quilted layer is removable and the stack has an order, so a "
+        "building can always say what it is wearing and who made it. Each "
+        "layer carries a tag:")
+    add("")
+    for field, why in quilt_network.TAG_FIELDS:
+        add(f"- **{field}** — {why}")
+    add("")
+    add("And every dome ships with the card:")
+    add("")
+    add("```")
+    for line in quilt_network.provenance_card(3):
+        add(line)
+    add("```")
     add("")
     add("---")
     add("")
@@ -372,6 +405,8 @@ def validate_campaign() -> None:
             n["goal"], n["hard"].price, n["upgrade"], n["cheapest_pad"],
             n["staple_pad"], n["quilt"]["usd_per_layer"],
             n["quilt"]["marginal_usd_per_layer"],
+            quilt_network.declared("quilt_pay_per_layer"),
+            quilt_network.layer(1).materials_usd,
         )
     }
     known |= {_usd(cost) for _k, _l, cost in stack.groups}
@@ -397,6 +432,9 @@ def validate_campaign() -> None:
     # The risks are the model's own, not a softened retelling.
     for head, _body in soft_shell.CONCERNS:
         assert head in text, f"the page drops the concern {head!r}"
+
+    # The quilt network's own arithmetic, since the page now quotes it.
+    quilt_network.validate_quilt_network()
 
     # And the hand-written kit beside it, which is where a stale number
     # actually hides -- the generated page cannot go stale and a document
@@ -450,6 +488,13 @@ def kit_numbers() -> set[str]:
                stack.built, stack.ground}
     quilt = kickstarter.quilt_economics()
     values |= {quilt["usd_per_layer"], quilt["marginal_usd_per_layer"]}
+    # The quilt network's own rates, which the copy quotes.
+    for layers in range(1, 9):
+        row = quilt_network.layer(layers)
+        values |= {row.materials_usd, row.pay_usd}
+    for layers in (3, 7):
+        totals = quilt_network.dome_totals(layers)
+        values |= {totals["pay_usd"], totals["materials_usd"]}
     for group in quote.groups:
         values.add(group.cost)
     for layers in range(0, 9):
