@@ -6,7 +6,9 @@ figures: C:\Users\Don\Desktop\DomeSim\book_wedge\05-variations-and-future-system
 
 # 19. Reference Designs
 
-<!-- not written yet -->
+Five domes, from one you build to get it wrong to one nobody has built at all.
+
+Every figure is solved from the same factors at the diameter it claims, so a reader who checks one against the simulator gets the same answer. Where a size has not been built, it says so.
 
 <!-- NOTES
 CHAPTER GOAL: Build a practical, illustrated chapter covering 19. Reference Designs.

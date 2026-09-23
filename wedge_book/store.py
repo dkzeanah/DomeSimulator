@@ -475,6 +475,7 @@ def validate_store() -> None:
     book = load_json()
     validate_reference_dome(book)
     validate_no_mitre_claim(book)
+    validate_cut_not_scaled(book)
     assert book.parts, "no parts"
     assert len(book.sections) > 100, len(book.sections)
     assert book.metadata.get("title"), "the book has no title"
@@ -503,18 +504,25 @@ def validate_store() -> None:
         assert changed == 0, f"{changed} sections changed on a round trip"
         assert before == after, "the tree round trip altered the prose"
 
-        # And an edit in the tree has to come back. Use a section that is
-        # genuinely empty, so the placeholder is there to overwrite.
-        part, chapter, section = next(
-            (p, c, s) for p, c, s in book.sections if not s.written)
+        # And an edit in the tree has to come back. This used to pick an
+        # unwritten section so the placeholder was there to overwrite, and
+        # then the book was finished and there were none -- so the check
+        # that Markdown wins started raising StopIteration instead of
+        # testing anything. Any section will do; put it back afterwards.
+        part, chapter, section = book.sections[0]
         target = (base / numbered(part.index, part.title)
                   / numbered(chapter.index, chapter.title)
                   / (numbered(section.index, section.title) + ".md"))
         assert target.is_file(), target
-        target.write_text(target.read_text(encoding="utf-8").replace(
-            "<!-- not written yet -->", "Edited on disk."), encoding="utf-8")
-        assert read_tree(book, base) >= 1
-        assert "Edited on disk." in section.body, section.title
+        original = section.body
+        try:
+            target.write_text(
+                target.read_text(encoding="utf-8") + "\n\nEdited on disk.\n",
+                encoding="utf-8")
+            assert read_tree(book, base) >= 1
+            assert "Edited on disk." in section.body, section.title
+        finally:
+            section.body = original
 
     # The database has to answer the questions the tree cannot.
     with tempfile.TemporaryDirectory() as folder:
@@ -650,3 +658,50 @@ def validate_no_mitre_claim(book: "Book | None" = None) -> None:
         f"of {cut['setting_count']:.0f} mitres:" + NEWLINE_BULLET
         + NEWLINE_BULLET.join(wrong))
 
+
+
+def validate_cut_not_scaled(book: "Book | None" = None) -> None:
+    """The strut table must subtract a bite, not scale the chord.
+
+    The cut length is the chord minus what the pinwheel takes at each end,
+    and that bite is set by the member's WIDTH. A member does not get wider
+    because the dome does, so the bite is identical at every diameter --
+    proven here rather than asserted, by solving the same pinwheel at two
+    radii and comparing.
+
+    The table got this wrong once. It used a fixed ratio, which is exactly
+    right at the reference build and wrong at every other row, by more than
+    eight inches at the small end. Every stick.
+    """
+    import seed_world
+    import two_v_demo.wedge_geometry as wedge
+
+    geometry = seed_world.geometry()
+    width = geometry.member_width_in
+    a_factor = geometry.long_edge_in / geometry.radius_in
+
+    def bite(radius_in: float) -> float:
+        panels = wedge.pinwheel_panels(radius_in, width)
+        longest = max(m.length_in for p in panels for m in p.members)
+        return radius_in * a_factor - longest
+
+    small, large = bite(48.0), bite(180.0)
+    assert abs(small - large) < 1e-6, (
+        f"the bite is no longer constant with radius: {small} vs {large}; "
+        f"the strut table's arithmetic depends on it being so")
+
+    # And the published table has to carry the solver's own reference row.
+    book = book or load_json()
+    for _part, chapter, section in book.sections:
+        if section.title != "Strut tables":
+            continue
+        text = section.body or ""
+        for member in geometry.members:
+            cut = f"{member.stock_length_in:.3f}"
+            assert cut in text, (
+                f"the strut table no longer prints the solved "
+                f"{member.edge_type} cut of {cut} in")
+        assert "MINUS" in text.upper() or "minus a constant" in text, (
+            "the strut table must say the cut is the chord minus a bite")
+        return
+    raise AssertionError("the strut table has gone")
