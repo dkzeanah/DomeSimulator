@@ -93,6 +93,24 @@ EXTERNAL_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
      "assumption: a small, well-insulated dwelling on grid power"),
     ("tenant_kgal_per_month", 2.6, "1000 gal/month",
      "assumption: one to two occupants, ordinary use"),
+    ("meter_submeter_usd_per_pad", 340.0, "USD/pad",
+     "a revenue-grade submeter and its enclosure on the pedestal, installed. "
+     "Only the rebilling cases need one"),
+    ("meter_admin_usd_per_month", 12.00, "USD/month",
+     "assumption: a flat monthly charge for reading a meter and issuing a "
+     "bill. Billing for the service rather than marking up the commodity is "
+     "the form most US jurisdictions allow without a reseller licence"),
+    ("utility_allowance_usd_per_month", 95.00, "USD/month",
+     "assumption: a flat utility allowance bundled into a lease, set above "
+     "the modelled draw so the host is not underwater on an average tenant. "
+     "The host keeps the difference and carries the overage"),
+    ("heavy_tenant_multiple", 2.10, "multiple of the modelled draw",
+     "assumption: what a tenant running a workshop or a grow light does to "
+     "the bill. It is what makes a flat allowance a risk rather than a fee"),
+    ("guarantee_months", 12.0, "months",
+     "assumption: how long the manufacturer underwrites a new host's "
+     "occupancy. Long enough to cover a first summer season and a first "
+     "winter, short enough to price"),
     ("occupancy_fraction", 0.80, "fraction of the year leased",
      "assumption: the owner's planning figure for a mature park"),
 
@@ -485,6 +503,176 @@ def host_comparison(pad: Pad, nightly_equivalent: float | None = None
             "the same, plus cleaning, damage reserve, platform fee and "
             "renovation, every year"),
     )
+
+
+# ----------------------------------------------------------------------
+# Who pays the power bill, and the five ways that can be arranged
+# ----------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class Metering:
+    """One arrangement for a pad's power and water.
+
+    The five of these are not variations on a theme; they differ in who holds
+    the utility account, who carries a heavy month, and how much regulation
+    applies. What they do *not* differ in, much, is what the host earns --
+    which is the finding, and the reason a host should pick on paperwork and
+    risk rather than on return.
+    """
+
+    key: str
+    label: str
+    host_extra_build: float
+    host_earns_per_month: float
+    tenant_pays_per_month: float
+    carries_overage: str
+    regulated: bool
+    note: str
+
+    def share_of(self, gross_per_year: float) -> float:
+        """What this arrangement is worth as a fraction of a year's gross."""
+        earned = self.host_earns_per_month * 12.0 * declared("occupancy_fraction")
+        return earned / gross_per_year if gross_per_year else 0.0
+
+
+def metering_options() -> tuple[Metering, ...]:
+    """Every way a pad's utilities can be handled, priced on one basis.
+
+    Ordered by how much the host touches: from holding the account and
+    marking up the commodity, to not being in the transaction at all.
+    """
+    at_cost = tenant_utilities(False)
+    with_margin = tenant_utilities(True)
+    allowance = declared("utility_allowance_usd_per_month")
+    submeter = declared("meter_submeter_usd_per_pad")
+    admin = declared("meter_admin_usd_per_month")
+
+    return (
+        Metering(
+            "markup", "Submeter, rebill at cost plus a margin",
+            submeter, with_margin - at_cost, with_margin,
+            "nobody -- the tenant pays what they used",
+            True,
+            "The host holds the utility account and sells on. Simple to "
+            "explain and the hardest to do legally: many US states and most "
+            "utility tariffs restrict reselling power above cost, and some "
+            "require a reseller registration. Check the tariff before "
+            "promising a host this line of income."),
+        Metering(
+            "admin", "Submeter, rebill at cost, flat admin fee",
+            submeter, admin, at_cost + admin,
+            "nobody -- the tenant pays what they used",
+            False,
+            "The same meter, but the host charges for the service of reading "
+            "it and issuing a bill rather than marking up the commodity. "
+            "This is the form most jurisdictions allow without a licence, "
+            "and it earns the host slightly more than the markup does."),
+        Metering(
+            "allowance", "Flat allowance bundled into the lease",
+            0.0, allowance - at_cost, allowance,
+            "the host -- every kilowatt hour over the allowance",
+            False,
+            "No meter, no bill, no regulator: it is rent. The host keeps the "
+            "difference on an average tenant and eats it on a heavy one, "
+            "which is a real risk and a bounded one, because the thing on "
+            "the pad is a 277 sq ft dome and not a house."),
+        Metering(
+            "direct", "Utility meters the pad and bills the tenant",
+            0.0, 0.0, at_cost,
+            "nobody -- the host is not in the transaction",
+            False,
+            "The cleanest arrangement and the one that earns nothing. The "
+            "obstacle is not money, it is whether the utility will open an "
+            "account against a pad with a removable building on it; many "
+            "will not without a permanent address."),
+        Metering(
+            "generate", "The pad generates and the tenant draws from it",
+            0.0, 0.0, at_cost,
+            "the host -- the array is the host's asset",
+            False,
+            "Solar on the pad, priced separately in solar_credit_per_month "
+            "because it is an asset return and not a metering arrangement. "
+            "Its limit is already on camera: most of what a dome-sized array "
+            "makes is surplus the tenant cannot use."),
+    )
+
+
+def metering(key: str) -> Metering:
+    for option in metering_options():
+        if option.key == key:
+            return option
+    raise KeyError(f"unknown metering arrangement {key!r}")
+
+
+def heavy_tenant_exposure() -> float:
+    """What a flat allowance costs the host when the tenant is a heavy one.
+
+    Per month, and negative means the host is underwater. Stated because the
+    allowance is the arrangement a host will reach for first -- it is the one
+    with no meter and no paperwork -- and it is the only one of the five that
+    can lose money.
+    """
+    heavy = tenant_utilities(False) * declared("heavy_tenant_multiple")
+    return declared("utility_allowance_usd_per_month") - heavy
+
+
+# ----------------------------------------------------------------------
+# The guarantee that gets the first pads built
+# ----------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class Guarantee:
+    """An occupancy guarantee written to a host who builds a pad.
+
+    The network has a chicken-and-egg problem: nobody buys a dome without
+    somewhere to put it, and nobody builds a pad without a dome to put on it.
+    A guarantee breaks it from the pad side, because the pad is the cheaper
+    half and the one with the longer payback.
+    """
+
+    months: float
+    lease_per_month: float
+    occupancy: float
+
+    @property
+    def worst_case(self) -> float:
+        """The pad never rents for the whole term and the writer pays it all."""
+        return self.lease_per_month * self.months
+
+    @property
+    def expected(self) -> float:
+        """What it costs on average, which is only the empty share."""
+        return self.worst_case * (1.0 - self.occupancy)
+
+    def payback_without(self, pad: "Pad") -> float:
+        return pad.year()["payback_years"]
+
+    def payback_with(self, pad: "Pad") -> float:
+        """Payback when the guaranteed months are certain rather than likely.
+
+        The guarantee does not add revenue -- it removes the discount a
+        rational host would apply for the chance of an empty pad. So the
+        first year is modelled at full occupancy and the rest at the declared
+        rate.
+        """
+        year = pad.year()
+        if year["net"] <= 0.0:
+            return 0.0
+        certain = (self.lease_per_month * self.months) - pad.yearly_costs * (
+            self.months / 12.0)
+        remaining = pad.build_cost - certain
+        if remaining <= 0.0:
+            return self.months / 12.0
+        return self.months / 12.0 + remaining / year["net"]
+
+
+def guarantee(pad: "Pad | None" = None, months: float | None = None
+              ) -> Guarantee:
+    pad = pad or basic_pad()
+    return Guarantee(
+        months=declared("guarantee_months") if months is None else months,
+        lease_per_month=pad.lease_per_month,
+        occupancy=declared("occupancy_fraction"))
 
 
 # ----------------------------------------------------------------------
@@ -1138,8 +1326,69 @@ def park_report() -> str:
 
 
 
+def _validate_metering() -> None:
+    """The five arrangements, and the claim the brief makes about them."""
+    options = metering_options()
+    assert len(options) == 5, len(options)
+    assert len({o.key for o in options}) == 5
+
+    pad = basic_pad()
+    gross = pad.year()["gross"]
+    at_cost = tenant_utilities(False)
+
+    for option in options:
+        assert option.note, option.key
+        assert option.host_earns_per_month >= 0.0, option.key
+        # Nobody may be billed less than the power actually cost.
+        assert option.tenant_pays_per_month >= at_cost - 1e-6, option.key
+        # The claim the section rests on: metering is not the business. If any
+        # arrangement ever earns a tenth of a host's gross, that sentence has
+        # to be rewritten rather than left standing.
+        assert option.share_of(gross) < 0.10, (
+            f"{option.key} earns {option.share_of(gross) * 100:.1f}% of gross; "
+            "the brief says metering is a rounding error")
+
+    # Exactly one of them is the regulated one, and it is not the best-paying
+    # one -- which is the whole reason the brief tells a host to pick on
+    # paperwork rather than on return.
+    regulated = [o for o in options if o.regulated]
+    assert len(regulated) == 1, [o.key for o in regulated]
+    best = max(options, key=lambda o: o.host_earns_per_month)
+    assert not best.regulated, "the best-paying arrangement is the regulated one"
+    assert metering("admin").host_earns_per_month > metering(
+        "markup").host_earns_per_month, (
+        "billing for the service earns less than marking up the commodity; "
+        "the brief's advice to use the admin fee no longer holds")
+
+    # And the flat allowance has to be able to lose money, or calling it a
+    # risk in the brief is theatre.
+    assert heavy_tenant_exposure() < 0.0, heavy_tenant_exposure()
+
+
+def _validate_guarantee() -> None:
+    """What underwriting a host's first year costs, and what it does not do."""
+    pad = basic_pad()
+    g = guarantee(pad)
+    assert g.months > 0.0
+    assert g.worst_case > g.expected > 0.0
+    # Expected cost is only the empty share of the term.
+    assert abs(g.expected - g.worst_case * (1.0 - declared("occupancy_fraction"))
+               ) < 1e-6
+
+    # The honest part: the guarantee removes risk, it does not add return. If
+    # it ever starts halving a payback, the brief is understating it.
+    without = g.payback_without(pad)
+    with_it = g.payback_with(pad)
+    assert with_it > 0.0 and without > 0.0
+    assert with_it > without * 0.5, (
+        f"guarantee moved payback {without:.1f} -> {with_it:.1f} yr; the brief "
+        "says it buys certainty rather than return")
+
+
 def validate_park() -> None:
     """Prove the model before anything quotes it."""
+    _validate_metering()
+    _validate_guarantee()
     catalogue = dome_catalogue()
     assert len(catalogue) >= 12, len(catalogue)
     for dome in catalogue:

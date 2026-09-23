@@ -40,6 +40,11 @@ And it is why a dome can be sold for what a dome costs, rather than what a
 dome plus a foundation plus a piece of land costs. Nobody is buying all three
 at once.
 
+Why anybody would take the other side of that trade — what a pad actually
+returns, the five ways its utilities can be arranged and what each earns, and
+the occupancy guarantee meant to get the first ones built — is argued in
+[dome-park-brief.md](dome-park-brief.md#why-anyone-would-build-a-pad).
+
 The dome's price has no floor, no deck and no groundwork in it. That is
 deliberate: a buyer who moves should not buy a deck twice, and a host who
 builds a pad should not be told hosting is free.

@@ -56,6 +56,166 @@ The costs an Airbnb or rental host carries that a pad host simply does not:
 A pad host's exposure is a deck, a power pedestal and a water connection.
 A bad tenant costs them a lease, not a renovation.
 
+### Why anyone would build a pad
+
+The dome side of this sells itself: a house you own, that you can take with
+you, for the price of a car. The pad side is the half that has to be argued
+for, and it is the half the whole network depends on — a dome with nowhere to
+stand is a very expensive tent.
+
+So here is the argument, and every figure in it comes out of `park_model.py`.
+
+**It is the cheapest thing you can put on land that earns rent.** A
+48 ft gravel pad with a power pedestal and a water connection costs
+**$14,724** to build and returns
+**$5,578 a year** net of management, tax and insurance. That is a
+**2.6-year payback** — and the thing being paid back is a deck and two
+connections, not a building somebody has to live in and somebody has to
+maintain.
+
+**The deck is the whole decision.** Same diameter, same lease, same tenant:
+
+| deck | build | net a year | payback |
+|---|---|---|---|
+| gravel | $14,724 | $5,578 | **2.6 yr** |
+| concrete | $26,486 | $5,578 | 4.7 yr |
+| wood | $50,010 | $5,578 | 9.0 yr |
+
+The revenue line does not move. A tenant pays for a level, serviced circle;
+they do not pay more because it is concrete. Anyone who builds the timber deck
+because it looks better in a photograph has turned a 2.6-year asset into a
+9.0-year one and bought nothing with the difference.
+
+**It is landlording with the building taken out.** Against a furnished short
+let earning *the same revenue*:
+
+| | pad host | furnished short let |
+|---|---|---|
+| up front | $55,846 | $73,846 |
+| every year | **$920** | **$6,614** |
+
+**7.2 times less to carry.** The
+difference is not cleverness, it is ownership: the short-let host owns the
+building the tenant lives in, so they pay for cleaning it, insuring it,
+repairing what gets broken and renovating it when taste moves on. The pad host
+owns a deck and two connections. A bad tenant costs them a lease, not a
+renovation. When the tenant leaves, the pad is exactly what it was — because
+the tenant took the house with them.
+
+That is the sentence worth keeping: **the asset that depreciates drives
+away.**
+
+**It is reversible, which is the thing land usually is not.** A gravel pad
+and a pedestal is not a foundation and not a building. If the network never
+materialises, or the rules change, or the owner wants the field back, what has
+to be undone is a deck and a trench. That is a materially different decision
+from putting an ADU on the same ground, and it is why a pad is a reasonable
+thing to try rather than a thing to commit to.
+
+**It puts land to work that cannot be built on.** A parcel with a setback
+problem, a failed perc test, a slope, or a zoning line that forbids a second
+dwelling can very often still take a level circle with a hookup. Nobody builds
+a house there because nobody can. This is the real unlock, and it is also
+where the honest caveat lives — see below.
+
+#### Who pays the power bill, and the five ways to arrange it
+
+This is the part that sounds complicated and turns out not to matter much.
+There are five arrangements. All figures are per month for one tenant at the
+modelled draw of **$70.50** of power and water at cost:
+
+| arrangement | host earns | tenant pays | extra build | share of host's gross | regulated |
+|---|---|---|---|---|---|
+| Submeter, rebill at cost plus a margin | $9.70 | $80.20 | $340 | 1.4% | **yes** |
+| Submeter, rebill at cost, flat admin fee | $12.00 | $82.50 | $340 | 1.8% | no |
+| Flat allowance bundled into the lease | $24.50 | $95.00 | — | 3.6% | no |
+| Utility meters the pad and bills the tenant | $0.00 | $70.50 | — | 0.0% | no |
+| The pad generates and the tenant draws from it | $0.00 | $70.50 | — | 0.0% | no |
+
+Read the fourth column. **The best of the five earns $24.50 a month — 3.6% of
+a host's gross.** Two of them earn nothing at all. The entire spread from best
+to worst is $24.50 a month, which is less than a hundredth of what the pad
+makes.
+
+**Metering is not the business.** The lease is the business. That is a
+liberating finding rather than a disappointing one, because it means a host
+should choose their arrangement on paperwork and risk and never on return:
+
+* **Marking up the commodity is the obvious one and the worst one.** It is the
+  only regulated arrangement of the five — many US states and most utility
+  tariffs restrict reselling power above cost, and some require a reseller
+  registration — and it earns *less* than simply charging a flat fee for
+  reading the meter. Check the tariff before promising a host this line of
+  income.
+* **The flat admin fee is the one to default to.** Same submeter ($340
+  installed), but the host charges for the service of reading it and issuing a
+  bill rather than selling power. That is the form most jurisdictions allow
+  without a licence, and it happens to pay better.
+* **The flat allowance is the tempting one and the only one that can lose
+  money.** No meter, no bill, no regulator — it is rent. It earns the most of
+  the five on an average tenant. On a heavy one, at 2.1× the modelled draw,
+  the host is **$53.05 a month underwater.** The risk is real and it is
+  bounded, because the thing on the pad is a 277 sq ft dome and not a house —
+  but a host who bundles utilities should know they have taken a position, not
+  charged a fee.
+* **Letting the utility bill the tenant directly is the cleanest and earns
+  nothing.** The obstacle is not money; it is whether the utility will open an
+  account against a pad with a removable building on it. Many will not without
+  a permanent address, and that is worth finding out locally before it is
+  designed around.
+* **Solar is an asset return, not a metering arrangement**, which is why it is
+  priced separately. Its limit is already on camera: most of what a dome-sized
+  array makes is surplus the tenant cannot use.
+
+#### How dome buyers can be sure there will be pads
+
+They cannot, yet. That is the honest answer, and pretending otherwise is how a
+two-sided network talks itself into a launch it cannot supply. Nobody buys a
+dome without somewhere to put it and nobody builds a pad without a dome to put
+on it, and no amount of arguing resolves that from inside.
+
+**So we break it from the pad side, by buying the risk.** A host who builds
+one of the first pads gets a written occupancy guarantee: for
+**12 months**, if the pad is empty, we pay the lease.
+
+What that costs the writer, per pad:
+
+| | |
+|---|---|
+| worst case — never rents, we pay the whole term | **$8,006** |
+| expected, at the modelled 80% occupancy | **$1,601** |
+| across fifty pads, expected | $80,058 |
+| across fifty pads, worst case | **$400,288** |
+
+That last figure is the one to look at before writing a single guarantee. It
+is a real balance-sheet commitment and it is the number a campaign has to be
+able to answer for.
+
+And here is what the guarantee does **not** do, because it would be easy to
+oversell: it barely moves the return. A gravel pad pays back in 2.6 years
+without it and 2.4 years with it. The guarantee is not a yield enhancer. **It
+converts "2.6 years if it rents" into "2.4 years, and the first one is
+certain,"** and certainty is the entire product. A host is not being offered
+more money. They are being offered a floor under the only risk in the deal.
+
+The writer's side of that trade is not charity either. Every pad built is
+demand for a dome, and the dome is the half with the margin in it.
+Underwriting 12 months of one pad's lease costs about $1,601 in expectation —
+against a dome that lists at five figures. It is customer acquisition priced
+as insurance.
+
+#### What has to be true, and is not yet
+
+**Zoning is the hard part, not the pad.** Everything above assumes a
+jurisdiction that will permit residential occupancy of a serviced pad. The
+`permit_usd_per_pad` line in the model is a fee; it is not a probability, and
+the model does not claim to price the risk that the answer is simply no. A
+host in a permissive county has the deal described above. A host in a
+restrictive one has a very well-drained gravel circle.
+
+Anyone taking this to a campaign should find three jurisdictions that say yes
+in writing before quoting a payback to anybody.
+
 ### The dome owner's side, specifically
 
 * Money spent improves an asset they keep.
