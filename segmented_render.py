@@ -105,27 +105,42 @@ def probe_seconds(path: Path) -> float:
 
 
 def render(lesson: str, target: Path, plan: Path, per: int = 5,
-           orientation: str = "landscape", keep: bool = False) -> dict:
+           orientation: str = "landscape", keep: bool = False,
+           compose: bool = True) -> dict:
     """Render ``lesson`` in windows of ``per`` chapters and join them.
 
     ``plan`` is an existing narration plan. It is required rather than
     optional: segments must share one, and synthesising per segment would
     both waste the speech service and risk two pieces disagreeing.
     """
-    from two_v_demo.lesson_registry import get_lesson
-
     if not plan.is_file():
         raise FileNotFoundError(
             f"no narration plan at {plan}. Render the film once with "
             "narration (it may fail part way -- the plan is written before "
             "the first frame) and point this at the plan it left behind.")
 
-    chapters = len(get_lesson(lesson).chapters)
+    # The chapter count comes from the narration plan, not from the lesson.
+    # A composed film is the lesson's chapters plus the spliced call-to-action
+    # and outro, so the lesson says 28 where the film the plan was built for
+    # is 30 -- and a window over the wrong count silently drops the end of
+    # the film. The plan is what the render is being matched against, so the
+    # plan is what decides.
+    plan_data = json.loads(plan.read_text(encoding="utf-8"))
+    chapters = len(plan_data.get("chapter_durations") or [])
+    if chapters < 1:
+        raise ValueError(f"{plan} has no chapter_durations")
     segments = plan_segments(chapters, per, target)
     made: list[Segment] = []
     for segment in segments:
         ticket = {
             "lesson": lesson,
+            "action": "export_video",
+            # Composition has to match the plan the segments are muxed
+            # against. The plan was built for the composed film, so the
+            # spliced call-to-action and outro are chapters in their own
+            # right and get rendered by whichever window contains them --
+            # once each, at the end, exactly as in a single-pass render.
+            "compose_segments": compose,
             "export_video": str(segment.path),
             "orientation": orientation,
             "chapter_range": segment.window,
