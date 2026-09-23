@@ -140,6 +140,175 @@ bedroom, a study with a door that shuts, somewhere for guests that is not the
 sofa, a workshop, a garage. Those are the cheapest fit-outs in the catalogue
 because they are mostly panels.
 
+## The utility core, component by component
+
+The quote says **"utility column and seal cap, $1,405"**.
+That is the right granularity for a price and the wrong one for somebody
+deciding whether to buy it, who wants to know whether that is one breaker or
+six and which side of the line each object sits on. So here is the whole
+thing, opened up. `seed_model.CORE_PARTS` is the list; nothing below is
+written twice.
+
+### What the dome owner gets, and owns
+
+**Power**
+
+* **Feeder tail and inlet** — A 50 A four-wire cord from the pad's pedestal to a recessed inlet at the base of the column. It unplugs; that is what makes the dome moveable without an electrician.
+  *Connects to:* the pad's electrical pedestal
+* **Sub-panel** — An eight-space load centre inside the column with a 50 A main. The dome's own distribution starts here and nothing upstream of it belongs to the dome owner.
+  *Connects to:* the feeder inlet below it
+* **Branch breakers** — Four: outlet ring, lighting, the window unit, and one spare that exists so the first snap-in module does not need a panel change.
+  *Connects to:* the sub-panel busbar
+* **Outlet ring** — A circuit around the base ring with receptacles between the wedges, run in the seam channel rather than through a panel.
+  *Connects to:* its breaker, and the seam channel it lies in
+* **Lighting circuit** — One drop at the apex for the central light and fan, taken off the chase where it is already vertical.
+  *Connects to:* its breaker, and the light and fan at the apex
+
+**Water**
+
+* **Riser and shutoff** — A single PEX rise from the pad's stub through the floor port, with a full-port shutoff at knee height. One valve isolates the whole dome.
+  *Connects to:* the pad's water stub under the deck
+* **Manifold** — A four-port PEX manifold on the column with a valve per port, so a fixture can be added or isolated without draining anything else.
+  *Connects to:* the riser below it
+* **Fixture tails** — Capped stubs off the manifold. A dome with no plumbing still ships with these, because the alternative is opening the chase later.
+  *Connects to:* the manifold, and whatever fixture gets added
+
+**Drain**
+
+* **Trap and stack** — A 2 in stack down the column with a trap at its foot, taking whatever the fixture tails eventually feed.
+  *Connects to:* the floor port's drain side
+* **Floor-port tie-in** — The gasketed boot where the stack passes through the deck into the pad's drain. Made once, by the host, and not disturbed when a dome is swapped.
+  *Connects to:* the pad's drain connection
+
+**Air (the experiment)**
+
+* **Seam manifold** — Where the 309 ft of seam channel is gathered and capped so it can be blown or drawn. Not in the standard article -- it is the experiment the campaign is asking to fund.
+  *Connects to:* the seam channels, and a fan at the apex or the pad
+
+**The chase itself**
+
+* **Column housing** — A 12 in square insulated chase standing on the floor port and rising to the apex. Everything below is inside it, which is why one cover panel gets you at all of it.
+  *Connects to:* the floor port in the pad's deck
+* **Apex sleeve** — A flanged collar laminated into the shell's apex ring. The chase lands in it and is gasketed to it; it is the only penetration in the weather surface.
+  *Connects to:* the seal cap above and the column housing below
+* **Seal cap** — A gasketed lid over the apex sleeve with six over-centre catches. Meant to stay shut for years and come off in ten minutes. Under it is where an added service leaves the building.
+  *Connects to:* the apex sleeve, and any exterior run to a utility panel
+
+Priced, that is:
+
+| line | |
+|---|---|
+| column housing and apex sleeve | $380 |
+| water manifold and rise from the pad | $240 |
+| drain stack and floor-port tie-in | $165 |
+| sub-panel, breakers and outlet ring | $310 |
+| service chase, floor to apex, 10.5 ft | $115 |
+| gasketed seal cap over the apex penetration | $195 |
+| **total** | **$1,405** |
+
+Plus the utility panel that hangs off the rim — the "polyp" — at
+$491:
+
+| line | |
+|---|---|
+| panel frame and weather lid | $210 |
+| quick-connect service tails | $95 |
+| gasketed pass-through to the inside | $88 |
+| exterior routing from the seal cap | $98 |
+
+### What the host builds into the pad, and keeps
+
+**Power**
+
+* **Electrical pedestal** — A 50 A RV-style pedestal on the pad edge with a breaker and a lockable cover. The host's meter is upstream of it; everything downstream is the tenant's draw.
+  *Connects to:* the dome's feeder tail
+* **Submeter** — Optional, and only for the two rebilling arrangements. A revenue-grade meter in the pedestal enclosure.
+  *Connects to:* the pedestal's supply side
+
+**Water**
+
+* **Water stub and frost valve** — A stub up through the deck inside the dome's footprint, fed from a frost-proof shutoff at the pad edge so the line can be drained for winter without going under the building.
+  *Connects to:* the dome's riser and shutoff
+* **Water tank** — 120 gal under the floor. It is the host's because it stays when the dome leaves, and it is what the seam catchment would feed if that experiment works.
+  *Connects to:* the water stub, and the seam catchment if fitted
+
+**Drain**
+
+* **Drain connection** — A 2 in stub to the pad's greywater or sewer, terminating in the same floor port. Capped when no dome is on the pad.
+  *Connects to:* the dome's floor-port tie-in
+
+**The chase itself**
+
+* **Service port** — One framed opening through the deck, about 14 in square, that power, water and drain all come up through. The single opening is the design: a dome lands over it and three services are connected in one place.
+  *Connects to:* the base of the dome's column housing
+* **Under-floor storage** — The rest of the void the piers create, boarded and hatched. It is the host's and it is the reason a framed deck beats a slab for anything but thermal mass.
+  *Connects to:* the deck above it
+
+Priced, that is:
+
+| line | |
+|---|---|
+| framed deck on piers, sealed, 369 sq ft (116 boards) | $2,916 |
+| moisture barrier | $152 |
+| service port up through the deck | $340 |
+| water tank, 120 gal | $162 |
+| under-floor storage | $420 |
+| share of one hub panel, 1 of 4 | $600 |
+| spur from the hub | $450 |
+| permits | $1,200 |
+| **total** | **$6,240** |
+
+### How they meet: four joints and a lift
+
+This is the part worth understanding, because it is the whole reason a dome
+can be a thing you move rather than a thing you build.
+
+Everything the pad supplies arrives at **one opening** — a framed service
+port about 14 inches square, in the middle of the deck. Power, water and
+drain all come up through it. The dome lands over it, and connecting the
+building is four operations:
+
+| service | joint | why it is made this way |
+|---|---|---|
+| power | 50 A feeder tail -> pedestal | unplugs; no electrician to move the dome |
+| water | PEX riser -> water stub | one shutoff isolates the building |
+| drain | 2 in stack -> drain connection | gasketed boot, made once by the host |
+| structure | column base -> service port | all three of the above arrive through this one opening |
+
+Then the services go **up**. The column is a single insulated chase standing
+on that port and rising to the apex, and everything lives inside it: the
+sub-panel at chest height, the water manifold beside it, the drain stack
+behind. One cover panel gets you at all of it, which is a maintenance
+argument more than an aesthetic one.
+
+And the chase does not stop at the fixtures. It continues past them and out
+through a **flanged sleeve laminated into the shell's apex**, closed by a
+gasketed cap with six over-centre catches. That is the only penetration in
+the weather surface of the building, and it is the design idea everything
+else hangs off:
+
+**To add a service later, you do not cut a hole.** You open the cap, run the
+line out under it, down the outside of the shell, and into a utility panel
+clipped to the rim — mostly outside the footprint, reaching back in through
+one gasketed pass-through. An exhaust fan, a tankless heater, an air
+conditioner: none of them ever puts a new hole in a weathertight surface.
+
+### Why the split falls where it does
+
+Every part above is on one side or the other, and the rule is simple: **if
+it stays when the dome is lifted off, the host owns it.**
+
+The service port, the water stub, the drain connection, the tank and the
+under-floor storage stay. The column, the sub-panel, the manifold, the stack
+and the seal cap leave, because they are the dome's own organs and they go
+into the next dome when the owner upgrades. That is what "the core moves"
+means — not that the product has options, but that the physical object
+unbolts and is carried out.
+
+It also means the two bills never cross. A dome buyer is never charged for a
+deck; a host is never charged for a sub-panel. `seed_model` enforces that
+with `Group.side`, and the quote prints the two totals apart.
+
 ## The bay: what actually closes a triangle
 
 A wedge is not a rectangle, and that turns out to be the useful part. Its

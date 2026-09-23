@@ -36,12 +36,17 @@ SQFT_PER_SQM = 10.7639104
 
 EXTERNAL_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
     # --- what a pad costs the host to build ---
-    ("deck_wood_usd_per_sqft", 22.0, "USD/sq ft",
-     "assumption: pressure-treated deck, owner-built, materials plus hardware"),
-    ("deck_concrete_usd_per_sqft", 9.0, "USD/sq ft",
-     "assumption: 4 in slab, poured by a local contractor"),
-    ("deck_gravel_usd_per_sqft", 2.5, "USD/sq ft",
-     "assumption: compacted gravel over fabric, owner-built"),
+    # The three flat rates that used to live here -- $22/sq ft for wood,
+    # $9 for concrete, $2.50 for gravel -- are gone. They were contractor
+    # rates carrying an "owner-built" description, and applying $22 to a
+    # 48 ft pad produced a $39,810 deck, which is not a thing anybody would
+    # build. :mod:`pad_deck` counts the piers, beams, joists and boards and
+    # prices them off the one measured 2x6x12 this project already uses.
+    # ``deck_gravel_usd_per_sqft`` survives only because a handful of
+    # scaling checks reference it as a per-area proxy.
+    ("deck_gravel_usd_per_sqft", 1.2, "USD/sq ft",
+     "borrowed: pad_deck's gravel_base_usd_per_sqft, kept here so the "
+     "area-scaling checks have a per-square-foot figure to multiply"),
     ("electric_pedestal_usd", 1400.0, "USD/pad",
      "assumption: 50 A pedestal, breaker, conduit run and trenching"),
     ("water_connection_usd", 1100.0, "USD/pad",
@@ -324,12 +329,17 @@ class Pad:
         return domes_that_fit(self.diameter_ft)
 
     # -- what it costs to build ---------------------------------------
+    # What each of this model's deck names is actually built as.
+    DECK_BUILDS = {"gravel": "gravel", "concrete": "slab", "wood": "blocks"}
+
     def cost_rows(self) -> tuple[tuple[str, float], ...]:
         """Every line of the build cost, so the total can be audited."""
-        deck_rate = declared(f"deck_{self.deck}_usd_per_sqft")
+        import pad_deck
+
+        built = pad_deck.deck(self.DECK_BUILDS[self.deck], self.diameter_ft)
         rows = [
-            (f"{self.deck} deck, {self.area_sqft:.0f} sq ft",
-             self.area_sqft * deck_rate),
+            (f"{built.label.lower()}, {self.area_sqft:.0f} sq ft",
+             built.cost),
             ("electrical pedestal", declared("electric_pedestal_usd")),
             ("water and drain", declared("water_connection_usd")),
             ("site infrastructure, per pad",

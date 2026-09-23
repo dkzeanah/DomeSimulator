@@ -66,25 +66,73 @@ stand is a very expensive tent.
 So here is the argument, and every figure in it comes out of `park_model.py`.
 
 **It is the cheapest thing you can put on land that earns rent.** A
-48 ft gravel pad with a power pedestal and a water connection costs
-**$14,724** to build and returns
-**$5,578 a year** net of management, tax and insurance. That is a
-**2.6-year payback** — and the thing being paid back is a deck and two
+24 ft pad — sized for the seed dome, which is 19.42 ft across — costs
+**$13,491** to build with a framed timber deck on it and
+returns **$4,014 a year** net of management, tax and insurance. That is a
+**3.4-year payback**, and the thing being paid back is a platform and three
 connections, not a building somebody has to live in and somebody has to
 maintain.
 
-**The deck is the whole decision.** Same diameter, same lease, same tenant:
+**What a platform actually costs.** Not a rate — a takeoff. `pad_deck.py`
+counts the piers, the beams, the joists and the boards for a 22.4 ft decagon
+and prices every stick off the same 2x6x12 at $14.00 that the dome's own frame
+is priced against:
+
+| construction | cost | $/sq ft | 2x6x12 | can you live on it |
+|---|---|---|---|---|
+| Compacted gravel base | $443 | $1.20 | — | **no** |
+| Full concrete slab | $2,468 | $6.68 | — | yes |
+| Framed deck on piers, sealed | $2,916 | $7.90 | 116 | yes |
+| Concrete ring, wood middle | $3,039 | $8.23 | 82 | yes |
+| Framed deck on piers, ply and epoxy | $4,263 | $11.55 | 116 | yes |
+
+Three things fall out of that table, and two of them are the opposite of what
+this brief assumed before it was calculated:
+
+* **A slab is cheaper than a deck.** $2,468 against $2,916. Concrete is cheap
+  by the yard and this is only a few yards; framing lumber is not cheap by the
+  foot any more. So the reason to build in wood is **not** money — it is that
+  a deck on piers can be unbolted and the ground put back, and a slab cannot.
+  Reversibility is the product here, and it costs about $448.
+* **The concrete ring is not a saving either.** Pouring a ring under the base
+  decagon and framing the middle comes to $3,039 — more than either the deck
+  or the slab, because you buy concrete *and* most of the floor. It earns its
+  place on a different argument: the dome's load lands at ten points on that
+  ring, and putting those ten points on concrete means no settling, no rot and
+  a frost footing, while the floor stays timber and stays removable.
+* **Gravel is a base course, not a floor.** $443 buys the compacted base that
+  goes under all three of the others. Quoting it as a floor is what made an
+  earlier version of this brief look cheap, and nobody lives on gravel.
+
+**The deck choice, carried through to the pad:**
 
 | deck | build | net a year | payback |
 |---|---|---|---|
-| gravel | $14,724 | $5,578 | **2.6 yr** |
-| concrete | $26,486 | $5,578 | 4.7 yr |
-| wood | $50,010 | $5,578 | 9.0 yr |
+| gravel | $10,708 | $4,014 | 2.7 yr |
+| concrete | $13,029 | $4,014 | 3.2 yr |
+| wood | $13,491 | $4,014 | 3.4 yr |
 
-The revenue line does not move. A tenant pays for a level, serviced circle;
-they do not pay more because it is concrete. Anyone who builds the timber deck
-because it looks better in a photograph has turned a 2.6-year asset into a
-9.0-year one and bought nothing with the difference.
+The revenue line does not move between them. A tenant pays for a level,
+serviced platform; they do not pay more because it is concrete.
+
+#### Building the staple, one stage at a time
+
+This is the bare minimum that hosts a dome, in the order it actually goes up.
+A buyer can stop at any row and know what they have spent:
+
+| | stage | quantity | running total |
+|---|---|---|---|
+| 1 | compacted gravel base over fabric | 369 sq ft at $1.20 | $443 |
+| 2 | precast piers | 20 each at $12.00 | $683 |
+| 3 | beams, doubled 2x6 | 179 ln ft of 2x6 at $1.17 | $892 |
+| 4 | joists at 16 in centres | 310 ln ft of 2x6 at $1.17 | $1,254 |
+| 5 | deck boards, 2x6 laid flat | 902 ln ft of 2x6 at $1.17 | $2,307 |
+| 6 | hangers, structural and deck screws | 369 sq ft at $0.55 | $2,510 |
+| 7 | two coats of penetrating sealer | 369 sq ft at $1.10 | $2,916 |
+
+`pad_deck.build_sequence()` produces that, and its selftest asserts the stages
+add up to the receipt — so a film showing the build cannot drift from the
+quote pricing it.
 
 **It is landlording with the building taken out.** Against a furnished short
 let earning *the same revenue*:

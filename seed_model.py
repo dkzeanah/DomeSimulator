@@ -1156,6 +1156,19 @@ def frame_group(geometry: SeedGeometry | None = None,
 # The floor, and the port it lands on
 # ----------------------------------------------------------------------
 
+PAD_DECK_KIND = "blocks"
+"""Which platform the standard pad quotes.
+
+``blocks`` -- piers, beams, joists, boards, sealed -- because it is the one
+that comes apart again, which is the whole argument for a pad over a
+foundation. :mod:`pad_deck` prices the alternatives.
+"""
+
+
+def declared_deck() -> str:
+    return PAD_DECK_KIND
+
+
 def pad_group(geometry: SeedGeometry | None = None) -> Group:
     """The pad: the host's bill, not the dome buyer's.
 
@@ -1171,18 +1184,25 @@ def pad_group(geometry: SeedGeometry | None = None) -> Group:
     drawn inside. The difference is nineteen square feet, and paying for
     nineteen square feet of deck that is not under the dome is exactly the
     kind of quiet rounding this file exists to stop.
+
+    The deck itself is a *takeoff*, not a rate. It used to be one number a
+    square foot borrowed from the park model, which is how a platform for a
+    nineteen-foot dome came out looking like a contractor's finished deck.
+    :mod:`pad_deck` counts the piers, the beams, the joists and the boards
+    and prices every one of them off the same 2x6x12 the dome's own frame is
+    priced against, so there is one shelf price in this project and not two.
     """
+    import pad_deck
     import park_model
 
     geometry = geometry or seed_geometry()
     area = geometry.floor_decagon_sqft
-    piers = max(6, int(math.ceil(geometry.base_perimeter_ft
-                                 / declared("blocking_spacing_ft"))))
+    built = pad_deck.deck(declared_deck())
     lines = [
-        Line(f"deck on blocks, {area:,.0f} sq ft", area, "sq ft",
-             park_model.declared("deck_on_blocks_usd_per_sqft"), "park_model"),
-        Line("blocking and piers", float(piers), "piers",
-             declared("blocking_usd_per_point"), "blocking_usd_per_point"),
+        Line(f"{built.label.lower()}, {built.area_sqft:,.0f} sq ft "
+             f"({built.boards:.0f} boards)" if built.boards
+             else f"{built.label.lower()}, {built.area_sqft:,.0f} sq ft",
+             1.0, "platform", built.cost, "pad_deck"),
         Line("moisture barrier", area, "sq ft",
              declared("moisture_barrier_usd_per_sqft"),
              "moisture_barrier_usd_per_sqft"),
@@ -2316,6 +2336,236 @@ def trees_against_mitred() -> float:
     return seed_geometry().pinwheel_stock_penalty / harvest().advantage
 
 
+# ----------------------------------------------------------------------
+# The core, component by component, and what it plugs into
+# ----------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class Part:
+    """One orderable object in the utility core or on the pad.
+
+    The quote's core line says "sub-panel, breakers and outlet ring, $310".
+    That is the right granularity for a price and the wrong one for a buyer,
+    who wants to know whether that is one breaker or six and whether they
+    own it or the landowner does. This is that level.
+    """
+
+    service: str          # power | water | drain | air | structure
+    name: str
+    detail: str
+    owner: str            # "dome" or "pad"
+    connects_to: str      # the part on the other side of the joint
+
+
+CORE_PARTS: tuple[Part, ...] = (
+    # -- structure -----------------------------------------------------
+    Part("structure", "Column housing",
+         "A 12 in square insulated chase standing on the floor port and "
+         "rising to the apex. Everything below is inside it, which is why "
+         "one cover panel gets you at all of it.",
+         "dome", "the floor port in the pad's deck"),
+    Part("structure", "Apex sleeve",
+         "A flanged collar laminated into the shell's apex ring. The chase "
+         "lands in it and is gasketed to it; it is the only penetration in "
+         "the weather surface.",
+         "dome", "the seal cap above and the column housing below"),
+    Part("structure", "Seal cap",
+         "A gasketed lid over the apex sleeve with six over-centre "
+         "catches. Meant to stay shut for years and come off in ten "
+         "minutes. Under it is where an added service leaves the building.",
+         "dome", "the apex sleeve, and any exterior run to a utility panel"),
+
+    # -- power ---------------------------------------------------------
+    Part("power", "Feeder tail and inlet",
+         "A 50 A four-wire cord from the pad's pedestal to a recessed inlet "
+         "at the base of the column. It unplugs; that is what makes the "
+         "dome moveable without an electrician.",
+         "dome", "the pad's electrical pedestal"),
+    Part("power", "Sub-panel",
+         "An eight-space load centre inside the column with a 50 A main. "
+         "The dome's own distribution starts here and nothing upstream of "
+         "it belongs to the dome owner.",
+         "dome", "the feeder inlet below it"),
+    Part("power", "Branch breakers",
+         "Four: outlet ring, lighting, the window unit, and one spare that "
+         "exists so the first snap-in module does not need a panel change.",
+         "dome", "the sub-panel busbar"),
+    Part("power", "Outlet ring",
+         "A circuit around the base ring with receptacles between the "
+         "wedges, run in the seam channel rather than through a panel.",
+         "dome", "its breaker, and the seam channel it lies in"),
+    Part("power", "Lighting circuit",
+         "One drop at the apex for the central light and fan, taken off "
+         "the chase where it is already vertical.",
+         "dome", "its breaker, and the light and fan at the apex"),
+
+    # -- water ---------------------------------------------------------
+    Part("water", "Riser and shutoff",
+         "A single PEX rise from the pad's stub through the floor port, "
+         "with a full-port shutoff at knee height. One valve isolates the "
+         "whole dome.",
+         "dome", "the pad's water stub under the deck"),
+    Part("water", "Manifold",
+         "A four-port PEX manifold on the column with a valve per port, so "
+         "a fixture can be added or isolated without draining anything "
+         "else.",
+         "dome", "the riser below it"),
+    Part("water", "Fixture tails",
+         "Capped stubs off the manifold. A dome with no plumbing still "
+         "ships with these, because the alternative is opening the chase "
+         "later.",
+         "dome", "the manifold, and whatever fixture gets added"),
+
+    # -- drain ---------------------------------------------------------
+    Part("drain", "Trap and stack",
+         "A 2 in stack down the column with a trap at its foot, taking "
+         "whatever the fixture tails eventually feed.",
+         "dome", "the floor port's drain side"),
+    Part("drain", "Floor-port tie-in",
+         "The gasketed boot where the stack passes through the deck into "
+         "the pad's drain. Made once, by the host, and not disturbed when "
+         "a dome is swapped.",
+         "dome", "the pad's drain connection"),
+
+    # -- air -----------------------------------------------------------
+    Part("air", "Seam manifold",
+         "Where the 309 ft of seam channel is gathered and capped so it "
+         "can be blown or drawn. Not in the standard article -- it is the "
+         "experiment the campaign is asking to fund.",
+         "dome", "the seam channels, and a fan at the apex or the pad"),
+)
+
+
+PAD_PARTS: tuple[Part, ...] = (
+    Part("power", "Electrical pedestal",
+         "A 50 A RV-style pedestal on the pad edge with a breaker and a "
+         "lockable cover. The host's meter is upstream of it; everything "
+         "downstream is the tenant's draw.",
+         "pad", "the dome's feeder tail"),
+    Part("power", "Submeter",
+         "Optional, and only for the two rebilling arrangements. A "
+         "revenue-grade meter in the pedestal enclosure.",
+         "pad", "the pedestal's supply side"),
+    Part("water", "Water stub and frost valve",
+         "A stub up through the deck inside the dome's footprint, fed from "
+         "a frost-proof shutoff at the pad edge so the line can be drained "
+         "for winter without going under the building.",
+         "pad", "the dome's riser and shutoff"),
+    Part("water", "Water tank",
+         "120 gal under the floor. It is the host's because it stays when "
+         "the dome leaves, and it is what the seam catchment would feed if "
+         "that experiment works.",
+         "pad", "the water stub, and the seam catchment if fitted"),
+    Part("drain", "Drain connection",
+         "A 2 in stub to the pad's greywater or sewer, terminating in the "
+         "same floor port. Capped when no dome is on the pad.",
+         "pad", "the dome's floor-port tie-in"),
+    Part("structure", "Service port",
+         "One framed opening through the deck, about 14 in square, that "
+         "power, water and drain all come up through. The single opening "
+         "is the design: a dome lands over it and three services are "
+         "connected in one place.",
+         "pad", "the base of the dome's column housing"),
+    Part("structure", "Under-floor storage",
+         "The rest of the void the piers create, boarded and hatched. It "
+         "is the host's and it is the reason a framed deck beats a slab "
+         "for anything but thermal mass.",
+         "pad", "the deck above it"),
+)
+
+
+def core_parts(service: str | None = None) -> tuple[Part, ...]:
+    """The dome's own hardware, optionally one service at a time."""
+    if service is None:
+        return CORE_PARTS
+    return tuple(p for p in CORE_PARTS if p.service == service)
+
+
+def pad_parts(service: str | None = None) -> tuple[Part, ...]:
+    """The host's hardware, optionally one service at a time."""
+    if service is None:
+        return PAD_PARTS
+    return tuple(p for p in PAD_PARTS if p.service == service)
+
+
+SERVICES: tuple[str, ...] = ("power", "water", "drain", "air", "structure")
+
+
+def interfaces() -> tuple[tuple[str, str, str], ...]:
+    """Every joint where the dome's hardware meets the host's.
+
+    Four, and that is the whole point: a dome arriving on a pad is four
+    connections and a lift, not a trade call-out.
+    """
+    return (
+        ("power", "50 A feeder tail -> pedestal",
+         "unplugs; no electrician to move the dome"),
+        ("water", "PEX riser -> water stub",
+         "one shutoff isolates the building"),
+        ("drain", "2 in stack -> drain connection",
+         "gasketed boot, made once by the host"),
+        ("structure", "column base -> service port",
+         "all three of the above arrive through this one opening"),
+    )
+
+
+def hardware_report() -> str:
+    """The core and the pad, component by component, as text."""
+    lines = ["UTILITY CORE -- what the dome owner gets", ""]
+    for service in SERVICES:
+        parts = core_parts(service)
+        if not parts:
+            continue
+        lines.append(f"  {service.upper()}")
+        for part in parts:
+            lines.append(f"    - {part.name}")
+            lines.append(f"        {part.detail}")
+            lines.append(f"        connects to: {part.connects_to}")
+        lines.append("")
+    lines.append("THE PAD -- what the host builds and keeps")
+    lines.append("")
+    for service in SERVICES:
+        parts = pad_parts(service)
+        if not parts:
+            continue
+        lines.append(f"  {service.upper()}")
+        for part in parts:
+            lines.append(f"    - {part.name}")
+            lines.append(f"        {part.detail}")
+            lines.append(f"        connects to: {part.connects_to}")
+        lines.append("")
+    lines.append("THE FOUR JOINTS")
+    for service, joint, why in interfaces():
+        lines.append(f"    {service:<10} {joint:<38} {why}")
+    return "\n".join(lines)
+
+
+def validate_hardware() -> None:
+    """The component list has to describe the thing the quote prices."""
+    assert len(CORE_PARTS) >= 12, len(CORE_PARTS)
+    assert len(PAD_PARTS) >= 6, len(PAD_PARTS)
+    for part in CORE_PARTS + PAD_PARTS:
+        assert part.service in SERVICES, part.name
+        assert part.detail and part.connects_to, part.name
+        assert part.owner in ("dome", "pad"), part.name
+    assert all(p.owner == "dome" for p in CORE_PARTS)
+    assert all(p.owner == "pad" for p in PAD_PARTS)
+
+    # Every service the core carries has to be met on the pad side, or the
+    # dome arrives with a tail that plugs into nothing.
+    core_services = {p.service for p in CORE_PARTS} - {"air"}
+    pad_services = {p.service for p in PAD_PARTS}
+    assert core_services <= pad_services, core_services - pad_services
+
+    # The claim the brief makes: four joints, and only four.
+    assert len(interfaces()) == 4, len(interfaces())
+
+    # The apex has to stay the one hole in the weather surface.
+    apex = [p for p in CORE_PARTS if "apex" in p.name.lower()
+            or "seal cap" in p.name.lower()]
+    assert len(apex) == 2, [p.name for p in apex]
+
+
 def heaviest_piece(laminate: str = "boatyard") -> tuple[str, float]:
     """The heaviest single object a disassembled dome comes apart into.
 
@@ -3012,6 +3262,7 @@ def published_report() -> str:
 
 def validate_seed_model() -> None:
     """Everything this module claims, checked."""
+    validate_hardware()
     import hull_laminate
 
     hull_laminate.validate_hull_laminate()
