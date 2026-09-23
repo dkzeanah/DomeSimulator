@@ -1963,6 +1963,7 @@ class MasterclassApp:
         video_encoder: str = "libx264",
         video_preset: str = "medium",
         narration: bool = True,
+        chapter_range: tuple[int, int] | None = None,
         local_narration_plan: Path | None = None,
         voice: str = DEFAULT_VOICE,
         voice_rate: str = DEFAULT_RATE,
@@ -2166,11 +2167,34 @@ class MasterclassApp:
         except Exception:
             encoder_log.close()
             raise
-        total_frames = int(math.ceil(self.total_duration * capture_fps))
+        # A chapter window turns one long render into several short ones.
+        # Long renders on this machine die somewhere past the twenty-minute
+        # mark for reasons that move when the workload does, and a segment
+        # that finishes is worth more than a whole film that does not. The
+        # frames are the same frames -- this only decides which of them this
+        # process draws -- so the pieces join without a seam.
+        first_frame, total_frames = 0, int(
+            math.ceil(self.total_duration * capture_fps))
+        audio_from = 0.0
+        if chapter_range is not None:
+            start, stop = chapter_range
+            starts, clock = [], 0.0
+            for duration in self.chapter_durations:
+                starts.append(clock)
+                clock += duration
+            start = max(0, min(start, len(starts) - 1))
+            stop = max(start + 1, min(stop, len(starts)))
+            audio_from = starts[start]
+            end_time = (starts[stop] if stop < len(starts)
+                        else self.total_duration)
+            first_frame = int(math.floor(audio_from * capture_fps))
+            total_frames = int(math.ceil(end_time * capture_fps))
+            print(f"chapters {start + 1}..{stop} -> "
+                  f"{audio_from:.1f}s to {end_time:.1f}s")
         self.playing = False
         rendered_chapter = -1
         try:
-            for frame in range(total_frames):
+            for frame in range(first_frame, total_frames):
                 self.timeline = frame / capture_fps
                 self.chapter_index, self.chapter_progress = chapter_at_time(
                     self.timeline, self.chapter_durations, self.chapters
@@ -2200,10 +2224,15 @@ class MasterclassApp:
                 f"ffmpeg exited with status {return_code}; its own log is at "
                 f"{log_path}")
         if plan is not None and mux_audio:
+            # A segment takes the slice of the one narration track that
+            # belongs to it, so every piece is cut from the same speech and
+            # the joins do not drift.
+            audio_in = ([] if audio_from <= 0.0
+                        else ["-ss", f"{audio_from:.3f}"])
             mux_command = [
                 ffmpeg, "-y",
                 "-i", str(render_path),
-                "-i", str(plan.track_path),
+                *audio_in, "-i", str(plan.track_path),
                 "-map", "0:v:0", "-map", "1:a:0",
                 "-c:v", "copy", "-c:a", "copy",
                 "-shortest", "-movflags", "+faststart",
@@ -2269,6 +2298,17 @@ def write_narration_plan(target: Path, plan: NarrationPlan, speech_delay: float,
         payload["review_words_sha256"] = text_hash(words)
     target.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     return target
+
+
+def _chapter_range(cfg: dict) -> tuple[int, int] | None:
+    """A ticket's "chapter_range": "5-9" as a zero-based half-open window."""
+    raw = str(cfg.get("chapter_range") or "").strip()
+    if not raw:
+        return None
+    if "-" not in raw:
+        raise ValueError("chapter_range looks like '5-9' (1-based, inclusive)")
+    first, last = raw.split("-", 1)
+    return (int(first) - 1, int(last))
 
 
 def _export_both(cfg: dict) -> int:
@@ -2817,6 +2857,7 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
                 video_encoder=str(cfg.get("video_encoder", "libx264")),
                 video_preset=str(cfg.get("video_preset", "medium")),
                 narration=not no_narration,
+                chapter_range=_chapter_range(cfg),
                 local_narration_plan=(
                     Path(local_narration_plan)
                     if local_narration_plan else None),
@@ -2828,9 +2869,10 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
             print(exc)
             return 1
         app.pygame.quit()
-        if cfg.get("release", True):
+        if cfg.get("release", True) and not cfg.get("chapter_range"):
             _build_release(lesson.key, Path(cfg["export_video"]))
-        _render_teaser(cfg, lesson.key)
+        if not cfg.get("chapter_range"):
+            _render_teaser(cfg, lesson.key)
         return 0
     app.run()
     return 0
