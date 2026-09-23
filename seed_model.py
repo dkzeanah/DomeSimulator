@@ -2323,6 +2323,218 @@ def bays_changed(fitout: str = "stem_cell") -> int:
                for key, count in spec.panels.items())
 
 
+def soft_shell_group(layers: int = 0) -> Group:
+    """The shower cap, as a drop-in replacement for the hull *and* the bays.
+
+    It replaces both, which is the thing to keep hold of when comparing: the
+    cap stack carries its own outer panels, so a dome that buys a cap does
+    not also buy the bay sandwich. Priced in :mod:`soft_shell`.
+    """
+    import soft_shell as soft
+
+    built = soft.soft_shell(layers)
+    lines = [Line(line.label, line.quantity, line.unit, line.unit_cost,
+                  f"soft_shell.{line.source}") for line in built.lines]
+    return Group("shell", "Shower-cap shell", tuple(lines))
+
+
+# ----------------------------------------------------------------------
+# Deferment: what "it works, barely" actually buys
+# ----------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class Rung:
+    """One step of the upgrade ladder, and what you have when you stop there.
+
+    The product is not a dome, it is a dome you are allowed to stop building.
+    Every rung is a place a buyer can live indefinitely, which is a stronger
+    claim than "modular" and a harder one to design for: it means no rung may
+    require the next one to be weathertight, safe or legal.
+    """
+
+    key: str
+    label: str
+    adds: str
+    lives_here: str
+    groups: tuple[str, ...]
+    quilt_layers: int = 0
+
+    def cost(self, priced: "Quote | None" = None, soft: bool = False
+             ) -> float:
+        """What this rung costs to reach.
+
+        ``soft`` swaps the laminated hull and the bay sandwich for the
+        shower-cap stack, which is the configuration the deferment argument
+        actually depends on: a hull cannot be bought a layer at a time.
+        """
+        priced = priced or quote()
+        skip = {"shell", "envelope"} if soft else set()
+        total = sum(g.cost for g in priced.groups
+                    if g.key in self.groups and g.side == "dome"
+                    and g.key not in skip)
+        if soft:
+            total += soft_shell_group(self.quilt_layers).cost
+        elif self.quilt_layers:
+            total += quilt_group(self.quilt_layers).cost
+        return total
+
+
+DEFERMENT_LADDER: tuple[Rung, ...] = (
+    Rung("shelter", "Shelter",
+         "frame, outer panels, membrane, cap, tie-downs",
+         "Dry, lockable, unheated, unplumbed. A workshop or a dry store, "
+         "and a place to sleep in a mild season. This is the rung the "
+         "campaign is actually selling.",
+         ("frame", "envelope", "shell")),
+    Rung("serviced", "Serviced",
+         "the utility column, sub-panel, light and fan",
+         "Power and light. Still no water, still no heating beyond a plug-in "
+         "heater. The difference between camping and living somewhere.",
+         ("frame", "envelope", "shell", "column", "services")),
+    Rung("plumbed", "Plumbed",
+         "manifold, fixture tails, drain stack and the shower tray",
+         "A bathroom. This is the rung that makes it a dwelling in most "
+         "jurisdictions, and the one most likely to need an inspection.",
+         ("frame", "envelope", "shell", "column", "services", "polyps")),
+    Rung("warm", "Warm",
+         "quilted layers, one at a time, and a bigger cap for each",
+         "A winter house. Bought over years out of a waste stream rather "
+         "than in one cheque, which is the whole reason the cap is soft.",
+         ("frame", "envelope", "shell", "column", "services", "polyps"),
+         quilt_layers=7),
+)
+
+
+def ladder_costs(soft: bool = False
+                 ) -> tuple[tuple[Rung, float, float], ...]:
+    """Each rung, what it costs to reach, and the step up from the last."""
+    priced = quote()
+    out, previous = [], 0.0
+    for rung in DEFERMENT_LADDER:
+        total = rung.cost(priced, soft=soft)
+        out.append((rung, total, total - previous))
+        previous = total
+    return tuple(out)
+
+
+# ----------------------------------------------------------------------
+# The joint: bought once, at the size of the dome after next
+# ----------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class Joint:
+    """How one triangle is fastened to the next, and why it is oversized.
+
+    The first build screws triangle frames together. That is deliberately not
+    the clever answer -- a demountable strut is the clever answer and it is a
+    later problem -- but the *hardware* is chosen now for the later one, so
+    that upgrading a dome does not mean re-buying every fastener in it.
+    """
+
+    name: str
+    detail: str
+    per_joint: float
+    why_oversized: str
+
+
+def joint_hardware() -> tuple[Joint, ...]:
+    steps = declared("hardware_size_steps")
+    over = declared("hardware_oversize_fraction")
+    return (
+        Joint("Threaded insert",
+              "A stainless insert driven into the side face of each wedge, "
+              "on the centreline, at the two points where the neighbouring "
+              "triangle's members cross it. The insert takes the thread so "
+              "the wood never does, which is what lets a joint be undone and "
+              "remade without chewing out.",
+              2.0,
+              "An insert is sized by the bolt it accepts, not by the member "
+              "it sits in, so the same insert serves every dome size."),
+        Joint("Bolt through the side",
+              "A stainless bolt passed through the adjacent member's web and "
+              "into that insert. Triangle to triangle, from outside, with a "
+              "driver -- no jig, no clamping, and it comes apart in the same "
+              "order it went together.",
+              2.0,
+              f"Cut {over * 100:.0f}% longer than this dome needs, so the "
+              f"same bolt reaches through the thicker members of the next "
+              f"{steps:.0f} sizes up. The extra length costs pennies now and "
+              "saves re-buying 240 fasteners later."),
+        Joint("Washer and nyloc",
+              "A wide washer to spread the pull into the wedge's sawn face, "
+              "and a nylon-insert nut so a building that moves in the wind "
+              "does not slowly undo itself.",
+              2.0,
+              "Sized to the bolt, so it inherits the same oversizing."),
+    )
+
+
+def joints_per_dome() -> float:
+    """How many triangle-to-triangle joints there are to make."""
+    return float(seed_geometry().member_count)
+
+
+def fasteners_per_dome() -> float:
+    """Every discrete piece of stainless in the frame."""
+    return joints_per_dome() * sum(j.per_joint for j in joint_hardware())
+
+
+def deferment_report() -> str:
+    lines = ["DEFERMENT LADDER  (shower cap)", ""]
+    for rung, total, step in ladder_costs(soft=True):
+        lines.append(f"  {rung.label:<10} ${total:>8,.0f}  (+${step:,.0f})")
+        lines.append(f"    adds: {rung.adds}")
+        lines.append(f"    {rung.lives_here}")
+        lines.append("")
+    lines.append("THE JOINT")
+    for joint in joint_hardware():
+        lines.append(f"  {joint.name} x{joint.per_joint:.0f} per joint")
+        lines.append(f"    {joint.detail}")
+        lines.append(f"    oversized because: {joint.why_oversized}")
+    lines.append(f"  {joints_per_dome():.0f} joints, "
+                 f"{fasteners_per_dome():.0f} pieces of stainless")
+    return "\n".join(lines)
+
+
+def validate_deferment() -> None:
+    """The ladder has to be a ladder, and the hardware has to be oversized."""
+    assert len(DEFERMENT_LADDER) >= 4
+    priced = quote()
+    keys = {g.key for g in priced.groups}
+    seen: set[str] = set()
+    previous = 0.0
+    for rung, total, step in ladder_costs():
+        # Every rung names real groups.
+        for key in rung.groups:
+            assert key in keys, (rung.key, key)
+        # And every rung contains the one below it, or it is not a ladder.
+        assert seen <= set(rung.groups), (rung.key, seen - set(rung.groups))
+        seen = set(rung.groups)
+        # Each rung costs more than the last, and the step is real money.
+        assert total > previous, (rung.key, total, previous)
+        assert step > 0.0, rung.key
+        previous = total
+        assert rung.adds and rung.lives_here
+
+    # The soft ladder has to be a ladder too, and cheaper at every rung --
+    # that is the reason the cap exists.
+    for (_r, hard, _s), (_r2, soft_total, _s2) in zip(ladder_costs(),
+                                                      ladder_costs(True)):
+        assert soft_total < hard, (soft_total, hard)
+
+    # The first rung has to be genuinely cheap, or "it works, barely" is a
+    # slogan rather than a price.
+    first = ladder_costs(soft=True)[0][1]
+    assert first < priced.price * 0.55, (
+        f"the shelter rung is ${first:,.0f} against a list of "
+        f"${priced.price:,.0f}; deferment has to start lower than that")
+
+    assert declared("hardware_oversize_fraction") > 0.0
+    assert declared("hardware_size_steps") >= 2.0
+    assert len(joint_hardware()) >= 3
+    assert fasteners_per_dome() > joints_per_dome()
+
+
 def trees_against_mitred() -> float:
     """How many trees this dome takes against a shared-strut one. Below 1 wins.
 
