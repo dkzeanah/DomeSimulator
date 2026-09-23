@@ -855,9 +855,12 @@ def validate_seed_facts() -> None:
             assert phrase not in text, (name, phrase)
 
     # And the campaign's own window has to actually contain the product.
-    assert 15000.0 <= priced.price <= 50000.0, priced.price
+    # The floor moved when the quote stopped billing lay-up labour
+    # for a dome with no laminate, and when the markup became 20 per
+    # cent on cost rather than 35 per cent on price.
+    assert 9000.0 <= priced.price <= 50000.0, priced.price
     _build, floor = seed_model.floor_price()
-    assert 15000.0 <= floor <= priced.price, floor
+    assert 8000.0 <= floor <= priced.price, floor
 
 
 if __name__ == "__main__":

@@ -668,6 +668,12 @@ def scene_floating(app, opaque, transparent, p: float) -> None:
     creator.draw(app, seed.float_rig(cable=cable, hang=rise),
                  offset=tuple(shift + np.array([0.0, 0.0, _base()])))
     creator.draw(app, seed.mast(), offset=tuple(shift + up))
+    # The column goes UP. It unbolts at the pad port and at the apex sleeve
+    # and travels with the dome -- that is the modular argument the whole
+    # film is built on, and leaving it out of this shot quietly contradicted
+    # it. What was left standing on the pad was the host's metered pedestal,
+    # which reads at this distance like the dome's services abandoned.
+    creator.draw(app, seed.core(), offset=tuple(shift + up))
     creator.draw(app, seed.dome_floor(1.0),
                  offset=tuple(shift + up + np.array([0.0, 0.0, 0.06])))
     creator.draw(app, seed.frame(), offset=tuple(shift + up))
@@ -691,6 +697,11 @@ def scene_floating(app, opaque, transparent, p: float) -> None:
     if p > 0.60:
         _label(app, shift + np.array([0.0, -4.6, 1.9]),
                f"FRAME  ·  {seed_model.frame_weight_lb():,.0f} LB", HOST)
+    if p > 0.70:
+        # Said on the picture, because the one thing still standing down
+        # there is the host's meter and it should not read as the dome's.
+        _label(app, shift + np.array([radius * 0.55, radius * 0.55, 1.5]),
+               "THE PAD AND ITS METER STAY", MUTED)
     if p > 0.78:
         # The one thing this chapter must not let the picture imply.
         _label(app, shift + np.array([0.0, -4.6, 1.2]),
@@ -757,12 +768,12 @@ def _math(slug: str, title: str, promise: str, narration, steps, duration,
 CHAPTERS: tuple[Chapter, ...] = (
     Chapter(
         "open", "00", "A house you can take apart",
-        "Sixteen thousand at the floor. Two hundred and seventy-seven "
+        "Under ten thousand at the floor. Two hundred and seventy-seven "
         "square feet.",
         ("This is a tiny house. It is nineteen feet across, it has two "
          "hundred and seventy-seven square feet of floor, and it comes apart "
-         "into pieces a trailer can take. Sixteen thousand dollars "
-         "stripped to the bone, eighteen and a half as we would "
+         "into pieces a trailer can take. Under ten thousand dollars "
+         "stripped to the bone, twelve as we would "
          "actually ship it.",
          "We are not selling you a finished home. We are selling you the "
          "part of a home that is hard to make -- and leaving you the part "
@@ -1249,23 +1260,24 @@ CHAPTERS: tuple[Chapter, ...] = (
         steps_floating(), 20.0, (86.0, 11.0, 22.0), "sp_floating"),
     Chapter(
         "close", "00", "Bring your own ground",
-        "Eighteen and a half thousand, sixty-eight dollars a square foot.",
+        "Twelve thousand, forty-three dollars a square foot.",
         ("So: we make the stem cell. You build on it.",
-         "The standard article wears a shower cap, and it lists at eighteen "
-         "and a half thousand dollars. It costs twelve and a quarter thousand "
-         "to build -- sixty-eight dollars a square foot of floor.",
-         "The laminated hull, the fifty-year option, is twenty-seven and a "
+         "The standard article wears a shower cap, and it lists at twelve "
+         "thousand dollars. Ten thousand of that is what it costs us to "
+         "build. Two thousand is our profit -- twenty percent, marked up on "
+         "cost, and you can check it with a calculator.",
+         "That is forty-three dollars a square foot of floor, and it does "
+         "not include the ground. The pad is about six thousand and it is "
+         "yours, or your host's, and we do not mark it up.",
+         "The laminated hull, the fifty-year option, is twenty-one and a "
          "half thousand. The floor, the mast and the floating rig that turn "
          "the dome into something you can hang between two trees are another "
          "four thousand.",
-         "What we are raising money for is the tooling and the first "
-         "production run -- the jigs, the moulds, the core assembly, and the "
-         "stock to build the first domes with.",
          "Every figure in this film came out of a model you can run "
          "yourself, including the three that argue against us. If you think "
          "one of our prices is wrong, tell us which one. That is the most "
          "useful thing a backer can do."),
-        (), 30.0, (36.0, 12.0, 11.5), "sp_close"),
+        (), 34.0, (36.0, 12.0, 11.5), "sp_close"),
 )
 
 
@@ -1359,6 +1371,9 @@ def validate_seed_pitch() -> None:
     upgrade = (seed_model.mast_group(priced.geometry).cost
                + seed_model.dome_floor_group(priced.geometry).cost
                + seed_model.suspension_group(priced.geometry).cost)
+    # The ground is quoted separately and not marked up, so the close says
+    # what it costs and the guard checks that it said the right thing.
+    pad_cost = priced.find("pad").cost
     # Promises count as spoken: they are on screen under the picture for the
     # whole chapter, which is longer than the voice says anything.
     spoken = " ".join(" ".join(chapter.narration) + " " + chapter.promise
@@ -1367,24 +1382,29 @@ def validate_seed_pitch() -> None:
 
     SPOKEN_PRICES = (
         # (what the voice says, the model figure, how far it may round)
-        ("Sixteen thousand at the floor", floor, 600.0),
-        ("Sixteen thousand dollars stripped to the bone", floor, 600.0),
-        ("eighteen and a half as we would", priced.price, 600.0),
-        ("eighteen and a half thousand dollars", priced.price, 600.0),
-        ("twelve and a quarter thousand to build", priced.cost_to_build, 400.0),
-        ("sixty-eight dollars a square foot", priced.price_per_sqft, 3.0),
-        ("twenty-seven and a half thousand", hard.price, 600.0),
+        ("Under ten thousand at the floor", floor, 600.0),
+        ("Under ten thousand dollars stripped to the bone", floor, 600.0),
+        ("twelve as we would", priced.price, 600.0),
+        ("twelve thousand dollars", priced.price, 600.0),
+        ("Ten thousand of that is what it costs us to build",
+         priced.cost_to_build, 400.0),
+        ("Two thousand is our profit", priced.gross_profit, 400.0),
+        ("forty-three dollars a square foot", priced.price_per_sqft, 3.0),
+        ("twenty-one and a half thousand", hard.price, 600.0),
         ("another four thousand", upgrade, 400.0),
+        ("The pad is about six thousand", pad_cost, 800.0),
     )
     WORDS = {
-        "Sixteen thousand at the floor": 16000.0,
-        "Sixteen thousand dollars stripped to the bone": 16000.0,
-        "eighteen and a half as we would": 18500.0,
-        "eighteen and a half thousand dollars": 18500.0,
-        "twelve and a quarter thousand to build": 12250.0,
-        "sixty-eight dollars a square foot": 68.0,
-        "twenty-seven and a half thousand": 27500.0,
+        "Under ten thousand at the floor": 9750.0,
+        "Under ten thousand dollars stripped to the bone": 9750.0,
+        "twelve as we would": 12000.0,
+        "twelve thousand dollars": 12000.0,
+        "Ten thousand of that is what it costs us to build": 10000.0,
+        "Two thousand is our profit": 2000.0,
+        "forty-three dollars a square foot": 43.0,
+        "twenty-one and a half thousand": 21500.0,
         "another four thousand": 4000.0,
+        "The pad is about six thousand": 6000.0,
     }
     for phrase, value, tolerance in SPOKEN_PRICES:
         assert phrase in spoken, f"the film no longer says {phrase!r}"
@@ -1438,7 +1458,12 @@ def validate_seed_pitch() -> None:
             f"the voice says {spelled!r} but the model measures "
             f"{measured * 100:.1f}%")
 
-    assert 15000.0 <= priced.price <= 50000.0, priced.price
+    # The band moved when the quote stopped billing 75 hours of laminate
+    # lay-up for a dome that wears a fabric cap, and again when the price
+    # became a 20 per cent markup on cost rather than a 35 per cent margin
+    # on price. It is a band rather than a figure so a price change moves
+    # the film without breaking it, and a price *collapse* still does.
+    assert 9000.0 <= priced.price <= 50000.0, priced.price
 
 
 SEED_PITCH_LESSON = Lesson(

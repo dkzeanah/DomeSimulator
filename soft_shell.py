@@ -18,16 +18,25 @@ cap for the house.** From the frame outwards --
    barrier to the weather. They are screwed from outside and pull *into* the
    frame, so gravity is working with the fixing rather than against a
    friction fit;
-2. a **monolithic sheet** over all of it -- one continuous polymer membrane,
-   no seams to fail;
+2. a **breather** over all of it -- one continuous vapour-permeable sheet,
+   no seams to fail. It sheds the water that gets past the cap and it lets
+   water vapour out, which is the whole reason it is not a poly sheet;
 3. **quilted layers** of recycled fabric -- thrift-store blankets and
    clothing, quilted by the owner, a declared $50 a layer -- added one at a
    time over years;
-4. a **rain-slick outer cap** pulled over the lot and strapped down.
+4. a **rain-slick outer cap** pulled over the lot and strapped down. This is
+   the ONLY watertight layer in the building.
 
 The point is 4 over 3. A cap is a bag: when the stack under it gets thicker,
 you buy a bigger bag. A rigid shell cannot do that, which is the whole
 argument -- "stacking hats", where each hat has to be a size up from the last.
+
+And the point of 2 being a breather rather than a sheet is the other half.
+Two waterproof layers with insulation between them is a moisture trap: the
+dew point lands in the fabric, and fabric that gets damp stops insulating
+and starts rotting. One waterproof layer, on the outside, with everything
+under it free to dry, is how a person dresses for cold and wet -- wool and
+fleece under one shell -- and it is how this dome is dressed.
 
 This module prices that, including the part that is easy to forget: **every
 layer makes the next one bigger.** Area goes as the square of radius, so the
@@ -51,12 +60,33 @@ import seed_model
 # ----------------------------------------------------------------------
 
 EXTERNAL_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
-    ("membrane_usd_per_sqft", 0.62, "USD/sq ft",
-     "assumption: reinforced polyethylene sheet, 12 mil, the weight sold as "
-     "pond and cover liner. One piece, no seams over the dome"),
+    ("membrane_usd_per_sqft", 0.34, "USD/sq ft",
+     "assumption: vapour-permeable building wrap, the grade sold in 9-ft "
+     "rolls for house sheathing. NOT a poly sheet -- it has to let vapour "
+     "out, or the quilt over it is a moisture trap and the building rots "
+     "from the inside. One piece, lapped, no seams over the dome"),
+    ("membrane_perms", 10.0, "US perms",
+     "assumption: the permeance of that wrap. Anything under 1 perm is a "
+     "vapour barrier and would put this layer back in the trap it exists "
+     "to avoid. Stated so a substitute can be checked against it"),
     ("membrane_life_years", 12.0, "years",
-     "assumption: how long that sheet lasts under it, protected from UV by "
+     "assumption: how long that wrap lasts under it, protected from UV by "
      "everything stacked on top of it. Exposed it would be a third of that"),
+    ("cap_vent_gap_in", 0.75, "in",
+     "assumption: the drained, vented gap between the quilt and the cap, "
+     "held open by the strapping. Without it the cap lies on the quilt and "
+     "the breather has nowhere to breathe to"),
+    ("cap_panel_min_each", 11.0, "minutes each",
+     "assumption: hanging one outer wood panel on its four threaded "
+     "inserts, working from outside. Measured against the insert-setting "
+     "time in fitout_wet, which is the same operation from the other side"),
+    ("cap_breather_min_per_sqft", 0.55, "minutes/sq ft",
+     "assumption: lapping and taping the breather over the panels. It is "
+     "housewrap over a faceted surface, which is slower than a wall and "
+     "faster than a boat"),
+    ("cap_strap_hours", 3.5, "hours",
+     "assumption: pulling the cap over, hemming it to the rim and "
+     "tensioning ten ratchet straps to their ground anchors. Two people"),
     ("cap_usd_per_sqft", 1.45, "USD/sq ft",
      "assumption: coated ripstop with a UV-stable face -- the rain-slick "
      "outer. Bought as a made cover with a hem and grommets"),
@@ -200,8 +230,9 @@ def soft_shell(layers: int = 0, quilt: str = "blanket") -> SoftShell:
     membrane_area = hat_sizes(0)[0]
 
     lines = _panel_lines()
-    lines.append(Line("monolithic membrane over the panels", membrane_area,
-                      "sq ft", declared("membrane_usd_per_sqft"),
+    lines.append(Line("breather over the panels (vapour-permeable)",
+                      membrane_area, "sq ft",
+                      declared("membrane_usd_per_sqft"),
                       "membrane_usd_per_sqft"))
 
     if layers > 0:
@@ -315,7 +346,7 @@ def lifetime_usd_per_year(layers: int = 3, years: float = 30.0) -> tuple[float, 
     cap = next(line for line in soft.lines
                if line.label.startswith("rain-slick"))
     membrane = next(line for line in soft.lines
-                    if line.label.startswith("monolithic"))
+                    if line.label.startswith("breather"))
     replacements = (math.ceil(years / declared("cap_life_years")) - 1) * cap.cost
     replacements += (math.ceil(years / declared("membrane_life_years")) - 1
                      ) * membrane.cost
@@ -333,12 +364,15 @@ CONCERNS: tuple[tuple[str, str], ...] = (
      f"the membrane {declared('membrane_life_years'):.0f}. A gelcoat hull "
      "outlives both several times over, which is why this module prices "
      "thirty years and not one purchase."),
-    ("Two impermeable layers with insulation between them is a moisture trap.",
-     "The membrane is inside the quilt and the cap is outside it. In a cold "
-     "climate the dew point lands in the fabric, and fabric that gets damp "
-     "stops insulating and starts rotting. The seam-duct airflow is the "
-     "answer to this and the seam duct is not proven, so this is an "
-     "unresolved dependency and not a solved problem."),
+    ("The breather has to actually breathe, and the cap has to be vented.",
+     "This is the design that replaced a real defect, so it is worth saying "
+     "what it now depends on. The cap is the only watertight layer, and "
+     "everything under it dries outward through the breather into a vented "
+     "gap the strapping holds open. Substitute a poly sheet for the "
+     "breather, or strap the cap down flat onto the quilt, and the moisture "
+     "trap is back: the dew point lands in the fabric and the fabric rots. "
+     "The seam-duct airflow still helps and is still unproven. The "
+     "difference is that the building no longer depends on it."),
     ("It looks like a tarp.",
      "That is a planning objection, a resale problem and a neighbour "
      "problem, and no amount of arithmetic answers it."),

@@ -777,8 +777,16 @@ DECLARED_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
     ("warranty_reserve_fraction", 0.04, "fraction of cost",
      "the owner's stated reserve against a shell that leaks or a column "
      "that has to come back"),
+    ("maker_markup_fraction", 0.20, "fraction of cost",
+     "the owner's profit, marked up on cost: price = cost x 1.20. Note "
+     "which convention this is. A 20 percent MARGIN would be cost / 0.80, "
+     "which is a 25 percent markup and a different number; the campaign "
+     "says markup, on camera, because it is the one a backer can check "
+     "with a calculator"),
     ("gross_margin_fraction", 0.35, "fraction of price",
-     "the owner's stated margin, taken on the selling price, not on cost"),
+     "retained for the reports that quote a trade margin. It no longer "
+     "sets the price -- maker_markup_fraction does -- so changing this "
+     "moves no quote"),
     ("freight_usd", 1250.0, "USD",
      "assumption: one flat-packed dome on a trailer, regional"),
     ("core_service_life_years", 25.0, "years",
@@ -1859,12 +1867,43 @@ def polyp_group(count: int, routing_ft: float | None = None,
 # Labour
 # ----------------------------------------------------------------------
 
+def shell_labour_hours(shell: str = "soft",
+                       geometry: SeedGeometry | None = None,
+                       resin: str = "boatyard"
+                       ) -> tuple[tuple[str, float], ...]:
+    """The hours the skin takes, which depend on which skin it is.
+
+    This used to be one line -- lay up the laminate -- billed whichever
+    shell the dome wore, because when it was written every dome wore a
+    hull. A shower-cap dome was being charged 75 hours of glassing it does
+    not do, which was $2,102 of a $16,109 build cost.
+    """
+    import soft_shell as soft
+
+    geometry = geometry or seed_geometry()
+    if shell == "hard":
+        plan = shell_plan(geometry, resin)
+        return ((f"lay up {plan.laminated_sqft:,.0f} sq ft of shell",
+                 plan.laminated_sqft * declared("shell_min_per_sqft") / 60.0),)
+
+    faces = sum(face.count for face in geometry.faces)
+    area = soft.envelope_sqft()
+    return (
+        (f"hang {faces} outer panels on their inserts",
+         faces * soft.declared("cap_panel_min_each") / 60.0),
+        (f"lap and tape {area:,.0f} sq ft of breather",
+         area * soft.declared("cap_breather_min_per_sqft") / 60.0),
+        ("pull the cap over and strap it down",
+         soft.declared("cap_strap_hours")),
+    )
+
+
 def labour_hours(geometry: SeedGeometry | None = None,
                  resin: str = "boatyard", polyps: int = 0,
-                 insulated: bool = False) -> tuple[tuple[str, float], ...]:
+                 insulated: bool = False,
+                 shell: str = "soft") -> tuple[tuple[str, float], ...]:
     """Every operation, in hours, derived from what there is to do."""
     geometry = geometry or seed_geometry()
-    plan = shell_plan(geometry, resin)
     insulation = insulation_plan(geometry)
     triangles = insulation.triangles
     sewing = ((f"sew {triangles} insulation bladders",
@@ -1876,8 +1915,7 @@ def labour_hours(geometry: SeedGeometry | None = None,
          geometry.member_count * declared("frame_min_per_member") / 60.0),
         (f"assemble {triangles} panels",
          triangles * declared("panel_min_each") / 60.0),
-        (f"lay up {plan.laminated_sqft:,.0f} sq ft of shell",
-         plan.laminated_sqft * declared("shell_min_per_sqft") / 60.0),
+    ) + shell_labour_hours(shell, geometry, resin) + (
         ("build and plumb the utility core", declared("column_hours")),
         (f"build {polyps} utility panels",
          polyps * declared("polyp_hours_each")),
@@ -1887,11 +1925,12 @@ def labour_hours(geometry: SeedGeometry | None = None,
 
 def labour_group(geometry: SeedGeometry | None = None,
                  resin: str = "boatyard", polyps: int = 0,
-                 insulated: bool = False) -> Group:
+                 insulated: bool = False, shell: str = "soft") -> Group:
     rate = declared("labour_usd_per_hour")
     lines = tuple(
         Line(label, hours, "hours", rate, "labour_usd_per_hour")
-        for label, hours in labour_hours(geometry, resin, polyps, insulated)
+        for label, hours in labour_hours(geometry, resin, polyps, insulated,
+                                         shell)
         if hours > 0.0
     )
     return Group("labour", "Build labour", lines)
@@ -2382,15 +2421,16 @@ class Quote:
 
     @property
     def price(self) -> float:
-        """The list price at the declared margin.
+        """The list price: cost plus the maker's markup.
 
-        Margin is taken on price, not on cost, because that is how a margin
-        is quoted: at 35 percent the price is cost divided by 0.65, not cost
-        times 1.35. The two differ by eight percent of the price and the
-        difference is the whole profit on a shell."""
-        margin = declared("gross_margin_fraction")
-        margin = min(max(margin, 0.0), 0.95)
-        return self.cost_to_build / (1.0 - margin)
+        Marked up ON COST, not taken as a margin on price, and the campaign
+        says so out loud. The two conventions are different numbers for the
+        same words -- a 20 percent margin is cost / 0.80, a 25 percent
+        markup -- and a campaign asking strangers for money should quote the
+        one they can check: price = cost x 1.20."""
+        markup = declared("maker_markup_fraction")
+        markup = min(max(markup, 0.0), 5.0)
+        return self.cost_to_build * (1.0 + markup)
 
     @property
     def gross_profit(self) -> float:
@@ -2483,7 +2523,8 @@ def quote(fitout_key: str = "stem_cell", *, resin: str = "boatyard",
         spec.panel_group(geometry),
         spec.module_group(),
         labour_group(geometry, resin, polyp_count,
-                     insulated=include is None or "insulation" in (include or ())),
+                     insulated=include is None or "insulation" in (include or ()),
+                     shell=shell),
         pad_group(geometry),
     ]
     if mast:
@@ -3360,7 +3401,7 @@ def levers() -> tuple:
               "Not a cost saving. It is the owner choosing to earn less per "
               "dome, and it is here so the two kinds of reduction are never "
               "confused with each other.",
-              {"gross_margin_fraction": declared("gross_margin_fraction") / 2.0}),
+              {"maker_markup_fraction": declared("maker_markup_fraction") / 2.0}),
         Lever("bought_logs", "Buy the timber instead of felling it",
               "The other direction: what the frame costs when the customer "
               "has no trees.", {}, frame_stock="wedge_log"),
@@ -3623,7 +3664,7 @@ def quote_report(fitout_key: str = "stem_cell", *, resin: str = "boatyard",
         f"  {'warranty reserve':<46} ${result.warranty:>32,.0f}",
         f"  {'COST TO BUILD':<46} ${result.cost_to_build:>32,.0f}",
         "",
-        f"  {'LIST PRICE at ' + format(declared('gross_margin_fraction') * 100, '.0f') + '% margin':<46} "
+        f"  {'LIST PRICE at ' + format(declared('maker_markup_fraction') * 100, '.0f') + '% markup on cost':<46} "
         f"${result.price:>32,.0f}",
         f"  {'gross profit':<46} ${result.gross_profit:>32,.0f}",
         f"  {'delivered, with freight':<46} ${result.delivered_price:>32,.0f}",
@@ -3814,10 +3855,13 @@ def validate_seed_model() -> None:
         for key in spec.modules:
             assert key in MODULE, key
 
-    # Margin is taken on price. At 35 percent, price times 0.65 is the cost.
+    # Markup is taken on cost, which is the number the campaign quotes and
+    # the one a backer can check: price = cost x (1 + markup).
     stem = quote("stem_cell")
-    margin = declared("gross_margin_fraction")
-    assert abs(stem.price * (1.0 - margin) - stem.cost_to_build) < 1e-6
+    markup = declared("maker_markup_fraction")
+    assert abs(stem.cost_to_build * (1.0 + markup) - stem.price) < 1e-6
+    # And it is not secretly the other convention, which would be dearer.
+    assert stem.price < stem.cost_to_build / (1.0 - markup) - 1.0
 
     # The floor: no optional group, the cheap laminate. It must be cheaper
     # than the same dome with everything, or "cheapest" means nothing.

@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -97,6 +98,71 @@ def concat(segments: list[Segment], target: Path) -> Path:
         check=True, capture_output=True)
     listing.unlink(missing_ok=True)
     return target
+
+
+CUE = re.compile(
+    r"(\d\d):(\d\d):(\d\d),(\d\d\d)\s*-->\s*(\d\d):(\d\d):(\d\d),(\d\d\d)")
+
+
+def _stamp(seconds: float) -> str:
+    if seconds < 0:
+        seconds = 0.0
+    whole = int(seconds)
+    ms = int(round((seconds - whole) * 1000.0))
+    if ms == 1000:
+        whole, ms = whole + 1, 0
+    return f"{whole // 3600:02d}:{whole // 60 % 60:02d}:{whole % 60:02d},{ms:03d}"
+
+
+def _seconds(h: str, m: str, s: str, ms: str) -> float:
+    return int(h) * 3600 + int(m) * 60 + int(s) + int(ms) / 1000.0
+
+
+def concat_captions(segments: list[Segment], target: Path) -> Path | None:
+    """Join the segments' subtitles, shifted to where each segment lands.
+
+    Every segment's SRT starts its clock at zero, so pasting them together
+    gives a film whose captions restart every five chapters. Each one is
+    offset by the real duration of everything before it -- measured off the
+    rendered pieces rather than taken from the plan, because the plan is
+    what was asked for and the file is what was made.
+
+    Without this the joined film has no subtitle file at all, and
+    ``release.build_release`` looks for exactly one beside the cut -- so a
+    segmented render quietly shipped a release folder with no captions in
+    it.
+    """
+    pieces = [(s, s.path.with_suffix(".srt")) for s in segments]
+    if not all(srt.is_file() for _s, srt in pieces):
+        return None
+
+    out: list[str] = []
+    number = 0
+    offset = 0.0
+    for segment, srt in pieces:
+        for block in re.split(r"\n\s*\n", srt.read_text(
+                encoding="utf-8-sig").strip()):
+            lines = block.strip().splitlines()
+            if len(lines) < 2:
+                continue
+            # Drop the segment's own cue number; the joined file renumbers.
+            if lines[0].strip().isdigit():
+                lines = lines[1:]
+            match = CUE.match(lines[0].strip())
+            if not match:
+                continue
+            start = _seconds(*match.group(1, 2, 3, 4)) + offset
+            end = _seconds(*match.group(5, 6, 7, 8)) + offset
+            number += 1
+            out.append(f"{number}\n{_stamp(start)} --> {_stamp(end)}\n"
+                       + "\n".join(lines[1:]).rstrip())
+        offset += probe_seconds(segment.path)
+
+    if not out:
+        return None
+    path = target.with_suffix(".srt")
+    path.write_text("\n\n".join(out) + "\n", encoding="utf-8")
+    return path
 
 
 def probe_seconds(path: Path) -> float:
@@ -170,11 +236,16 @@ def render(lesson: str, target: Path, plan: Path, per: int = 5,
 
     concat(made, target)
     seconds = probe_seconds(target)
+    # Captions before the pieces are deleted: the offsets are measured off
+    # the rendered segments.
+    captions = concat_captions(made, target)
     if not keep:
         for segment in made:
             segment.path.unlink(missing_ok=True)
+            segment.path.with_suffix(".srt").unlink(missing_ok=True)
     return {"ok": True, "segments": len(made), "path": str(target),
-            "seconds": round(seconds, 2)}
+            "seconds": round(seconds, 2),
+            "captions": str(captions) if captions else None}
 
 
 def validate_segmented_render() -> None:

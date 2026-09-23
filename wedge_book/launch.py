@@ -55,6 +55,14 @@ def status() -> str:
             lines.append(f"    ch{chapter:>2}  {key:<38} {title[:30]}")
     else:
         lines.append(f"  all {len(figures.catalogue())} figures rendered")
+    pdf = ROOT / "deliverables" / "book" / "the-wedge-method-kdp.pdf"
+    lines.append("")
+    if pdf.is_file():
+        lines.append(f"  KDP interior: {pdf.name}, "
+                     f"{pdf.stat().st_size / 1e6:.2f} MB")
+    else:
+        lines.append("  KDP interior: not built yet (Export PDF)")
+
     queue = store.unwritten()
     if queue:
         lines.append("")
@@ -80,6 +88,32 @@ def main() -> int:
         result = store.sync(direction)
         for key, value in result.items():
             print(f"  {key}: {value}")
+        return 0
+
+    if action in ("export_pdf", "check_pdf"):
+        from wedge_book import kdp
+
+        if action == "check_pdf":
+            report = kdp.validate_kdp()
+            print(f"  pages      {report['pages']}")
+            print(f"  trim       {report['sizes'][0]} pt")
+            print(f"  embedded   {', '.join(report['embedded'])}")
+            print(f"  size       {report['bytes'] / 1e6:.2f} MB")
+            print("  every KDP check passed")
+            return 0
+        path = kdp.build()
+        print(f"  wrote {path}")
+        print("  run the KDP check before uploading it")
+        return 0
+
+    if action == "tidy_paragraphs":
+        from wedge_book import paragraphs
+
+        report = paragraphs.rewrite()
+        for title, (before, after, _b, _a) in report.items():
+            print(f"  {title}: one-sentence paragraphs "
+                  f"{before * 100:.0f}% -> {after * 100:.0f}%")
+        print(f"  repaired {paragraphs.repair_display()} buried formulas")
         return 0
 
     if action == "render_figures":
