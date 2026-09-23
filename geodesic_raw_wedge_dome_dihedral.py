@@ -4890,9 +4890,13 @@ THE TWO ENDS ARE NOT THE SAME OPERATION
         # The calculator and its toolbar sit above everything else, because
         # they are the only things in this window you point at rather than
         # look through.
-        self._refresh_seed_console()
+        # A book figure turns the whole calculator off -- see run_figure_shots.
+        # The toolbar is drawn unconditionally otherwise, which is right for a
+        # person driving the tool and wrong for a printed page.
+        if not getattr(self, "chrome_off", False):
+            self._refresh_seed_console()
         toolbar = self.renderer.overlays.get("seed_toolbar")
-        if toolbar is not None:
+        if toolbar is not None and not getattr(self, "chrome_off", False):
             self.renderer.render_overlay(
                 "seed_toolbar", self.width, self.height,
                 x_px=self._seed_toolbar_origin[0],
@@ -5019,6 +5023,24 @@ def run_figure_shots(spec_path: str) -> None:
             app.camera.yaw_deg = float(camera.get("yaw", 90.0))
             app.camera.pitch_deg = float(camera.get("pitch", -3.0))
 
+            # A book figure wants the world, not the keyboard legend. The
+            # HUD is the tool explaining itself to somebody driving it, and
+            # in a printed figure it is four hundred words of chrome over
+            # the thing the caption is pointing at. A shot can ask for it
+            # back with "hud": true when the HUD *is* the subject.
+            app.show_hud = bool(shot.get("hud", False))
+            app.show_ground = bool(shot.get("ground", True))
+            # The cost toolbar is chrome too. Same rule as the HUD.
+            app.show_seed_console = bool(shot.get("console", False))
+            app.config.cost_console_open = app.show_seed_console
+            app.chrome_off = not bool(shot.get("console", False))
+
+            # Draw it twice before reading. render() ends in a buffer swap,
+            # so a single draw leaves the *previous* frame in the buffer that
+            # screen.read() returns -- which silently produced five identical
+            # figures on the first batch, each carrying the shot before it.
+            # Two draws put this scene in both buffers.
+            app.render()
             app.render()
             out = Path(shot["path"])
             out.parent.mkdir(parents=True, exist_ok=True)

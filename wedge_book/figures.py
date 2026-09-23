@@ -70,6 +70,10 @@ class Figure:
     # reference build uses. Both go in the caption.
     axis: str = ""
     is_standard: bool = False
+    # The tool's own HUD is off in a printed figure unless the HUD is what
+    # the figure is about.
+    hud: bool = False
+    ground: bool = True
 
     @property
     def path(self) -> Path:
@@ -113,6 +117,7 @@ def _cfg(**overrides) -> dict:
 
 PERMUTATIONS: dict[str, dict] = {
     "wedge_orientation": {
+        "camera": {"back": 2.30, "pitch": -14.0, "yaw": 82.0},
         "chapter": 2,
         "why": "Which way the wedge's point faces in the wall. It changes "
                "the seam, the key and how much of the log ends up as "
@@ -126,6 +131,7 @@ PERMUTATIONS: dict[str, dict] = {
         },
     },
     "seam_join_mode": {
+        "camera": {"back": 2.10, "pitch": -10.0, "yaw": 86.0},
         "chapter": 7,
         "why": "What fills the gap two sawn faces leave at a seam. The "
                "trapezoid keeps the raw sector and truncates its point; "
@@ -136,6 +142,7 @@ PERMUTATIONS: dict[str, dict] = {
         },
     },
     "spacer_mode": {
+        "camera": {"back": 2.15, "pitch": -12.0, "yaw": 74.0},
         "chapter": 7,
         "why": "What goes in the seam channel: a rigid spline, a hose, or "
                "nothing at all.",
@@ -149,6 +156,7 @@ PERMUTATIONS: dict[str, dict] = {
     # for it, so there is no permutation to show and a figure claiming
     # otherwise would be inventing an option the tool does not have.
     "radial_splits": {
+        "camera": {"back": 2.40, "pitch": -16.0, "yaw": 96.0},
         "chapter": 3,
         "why": "How many sectors the trunk is split into. Fewer splits "
                "means a fatter wedge and a deeper wall; more means thinner "
@@ -163,6 +171,7 @@ PERMUTATIONS: dict[str, dict] = {
         },
     },
     "panel_joint_handedness": {
+        "camera": {"back": 2.25, "pitch": -20.0, "yaw": 60.0},
         "chapter": 5,
         "why": "Which way the three members of a triangle pinwheel. It "
                "mirrors the whole dome and it has to be the same in all "
@@ -208,14 +217,14 @@ def catalogue() -> list[Figure]:
         "The frame is exploded here so you can see into the seam and see "
         "what fills it",
         chapter=7, config=_cfg(panel_explode_in=14.0),
-        camera={"back": 0.62, "pitch": -14.0, "yaw": 78.0}))
+        camera={"back": 2.05, "pitch": -12.0, "yaw": 78.0}))
 
     figures.append(Figure(
         "key-close", "One seam, close",
         "The same seam with the camera inside the gap. The key is the "
         "truncated point of the raw sector, not a machined part",
         chapter=7, config=_cfg(panel_explode_in=20.0),
-        camera={"back": 0.34, "pitch": -4.0, "yaw": 84.0}))
+        camera={"back": 1.70, "pitch": -8.0, "yaw": 84.0}))
 
     # -- the jig ------------------------------------------------------
     figures.append(Figure(
@@ -243,8 +252,8 @@ def catalogue() -> list[Figure]:
                 f"{axis.replace('_', ' ')}: {value}",
                 f"{blurb.capitalize()}",
                 chapter=spec["chapter"],
-                config=_cfg(**{axis: value}, panel_explode_in=10.0),
-                camera={"back": 0.75, "pitch": -10.0, "yaw": 80.0},
+                config=_cfg(**{axis: value}, panel_explode_in=5.0),
+                camera=dict(spec["camera"]),
                 axis=axis, is_standard=standard))
 
     return figures
@@ -267,7 +276,7 @@ def spec_file(figures: list[Figure] | None = None,
     path.write_text(json.dumps({
         "shots": [
             {"key": f.key, "path": str(f.path), "config": f.config,
-             "camera": f.camera}
+             "camera": f.camera, "hud": f.hud, "ground": f.ground}
             for f in figures
         ]
     }, indent=2), encoding="utf-8")
@@ -356,6 +365,15 @@ def validate_figures() -> None:
 
     keys = [f.key for f in figures]
     assert len(set(keys)) == len(keys), "two figures share a key"
+
+    # Two figures with the same config AND the same camera are the same
+    # picture twice. That happened: every axis showed its standard value from
+    # one shared viewpoint, so five files held one identical dome.
+    shots = [(json.dumps(f.config, sort_keys=True),
+              json.dumps(f.camera, sort_keys=True)) for f in figures]
+    assert len(set(shots)) == len(shots), (
+        "two figures would render the same picture; give the axis its own "
+        "camera or drop the duplicate")
     for figure in figures:
         assert figure.title and figure.caption, figure.key
         assert figure.chapter >= 1, figure.key
