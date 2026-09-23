@@ -7,23 +7,11 @@ kind: section
 
 The basic orientation rule for the wedge method is simple:
 
-The narrow side points inward.
+The narrow side points inward. The wide side points outward. That rule should stay obvious from the moment the member is made until the moment it is installed.
 
-The wide side points outward.
+The reason is geometric. The dome wraps around a center point. The inside of the frame is closer to that center.
 
-That rule should stay obvious from the moment the member is made until the moment it is installed.
-
-The reason is geometric.
-
-The dome wraps around a center point.
-
-The inside of the frame is closer to that center.
-
-The outside of the frame is farther away.
-
-As neighboring triangular faces move outward from the interior toward the exterior, they need more separation between them.
-
-The widening wedge gives us that extra width.
+The outside of the frame is farther away. As neighboring triangular faces move outward from the interior toward the exterior, they need more separation between them. The widening wedge gives us that extra width.
 
 That is why the member is shaped the way it is.
 
@@ -31,71 +19,43 @@ GEOMETRY
 
 A wedge member has two primary widths:
 
-$$
-w_i
-$$
+$$ w_i $$
 
 for the inside width,
 
 and:
 
-$$
-w_o
-$$
+$$ w_o $$
 
 for the outside width.
 
 For the standard inward-pointing orientation:
 
-$$
-w_o > w_i
-$$
+$$ w_o > w_i $$
 
 The difference is:
 
-$$
-\Delta w = w_o-w_i
-$$
+$$ \Delta w = w_o-w_i $$
 
 That difference is what creates the taper.
 
 If the wedge is symmetrical, half of that change appears on each side:
 
-$$
-x=\frac{w_o-w_i}{2}
-$$
+$$ x=\frac{w_o-w_i}{2} $$ The wider face therefore spreads the neighboring surfaces farther apart toward the exterior. The narrow face allows them to remain closer together toward the interior.
 
-The wider face therefore spreads the neighboring surfaces farther apart toward the exterior.
-
-The narrow face allows them to remain closer together toward the interior.
-
-That is the part that matters physically.
-
-The wedge is not being installed wide-side outward because it looks right.
-
-It is installed that way because its widening cross-section is intended to follow the direction in which the dome faces diverge.
+That is the part that matters physically. The wedge is not being installed wide-side outward because it looks right. It is installed that way because its widening cross-section is intended to follow the direction in which the dome faces diverge.
 
 THINK FROM THE CENTER OF THE DOME
 
-The easiest way to understand orientation is to ignore the individual strut for a moment and think about the center of the sphere.
+The easiest way to understand orientation is to ignore the individual strut for a moment and think about the center of the sphere. Every point on the dome surface exists some distance from that center. The inside of the timber is closer to the center.
 
-Every point on the dome surface exists some distance from that center.
-
-The inside of the timber is closer to the center.
-
-The outside of the timber is farther from it.
-
-If we take a cross-section through a wedge member, the narrow face points generally toward that center.
+The outside of the timber is farther from it. If we take a cross-section through a wedge member, the narrow face points generally toward that center.
 
 The wider face points away from it.
 
 That gives us a reliable visual rule:
 
-**narrow toward the center, wide away from the center.**
-
-For an assembled dome, "toward the center" is normally the interior.
-
-That same rule can be used during panel fabrication, preassembly, and field erection.
+**narrow toward the center, wide away from the center.** For an assembled dome, "toward the center" is normally the interior. That same rule can be used during panel fabrication, preassembly, and field erection.
 
 If a triangular module is lying flat on a work table, the installer may not be able to think in terms of "up" and "down."
 
@@ -107,11 +67,7 @@ That is the narrow side.
 
 REVERSING A WEDGE
 
-A wedge installed backward does not become another valid version of the same part.
-
-Its geometry is reversed.
-
-Instead of becoming wider toward the exterior, it becomes narrower.
+A wedge installed backward does not become another valid version of the same part. Its geometry is reversed. Instead of becoming wider toward the exterior, it becomes narrower.
 
 That changes how the neighboring faces are allowed to sit around it.
 
@@ -124,11 +80,7 @@ The result may appear as:
 * an exterior panel that no longer fits,
 * or accumulated distortion farther away from the reversed member.
 
-The exact symptom depends on the connection system.
-
-The important point is that the error may not show up directly beside the incorrectly installed piece.
-
-Geodesic structures distribute geometry across connected triangles.
+The exact symptom depends on the connection system. The important point is that the error may not show up directly beside the incorrectly installed piece. Geodesic structures distribute geometry across connected triangles.
 
 One reversed member can push an error into the next face, then the next connection, and eventually appear somewhere else in the dome.
 
@@ -136,9 +88,7 @@ That makes orientation marking worth doing before assembly begins.
 
 ORIENTATION SHOULD NOT DEPEND ON MEMORY
 
-A production system should assume that a member will eventually be handled by somebody who did not make it.
-
-Even if one person cuts and assembles the entire dome, the same member may sit in a stack for days or weeks between operations.
+A production system should assume that a member will eventually be handled by somebody who did not make it. Even if one person cuts and assembles the entire dome, the same member may sit in a stack for days or weeks between operations.
 
 The orientation should be physically marked.
 
@@ -154,17 +104,11 @@ Possible marking methods include:
 * a routed identification mark,
 * or a consistent label location.
 
-Whatever system is used, it should be difficult to interpret backward.
-
-A single line on one face may be enough if the convention is fixed.
-
-A more complete production label can identify both orientation and part family.
+Whatever system is used, it should be difficult to interpret backward. A single line on one face may be enough if the convention is fixed. A more complete production label can identify both orientation and part family.
 
 For example:
 
-$$
-A-W1-\text{IN}
-$$
+$$ A-W1-\text{IN} $$
 
 could indicate:
 
@@ -178,11 +122,7 @@ The useful part is making the information survive handling.
 
 LEFT AND RIGHT SIDES
 
-For a symmetric wedge, the left and right side tapers are the same.
-
-That makes orientation simpler.
-
-The important distinction is only inside versus outside.
+For a symmetric wedge, the left and right side tapers are the same. That makes orientation simpler. The important distinction is only inside versus outside.
 
 For an asymmetric wedge, the problem becomes more complicated.
 
@@ -195,81 +135,37 @@ Now the member may have:
 * end A,
 * end B.
 
-That creates more ways to install the correct member incorrectly.
-
-If asymmetric wedges are ever introduced, the labeling system has to preserve all of those relationships.
-
-A simple arrow may no longer be enough.
+That creates more ways to install the correct member incorrectly. If asymmetric wedges are ever introduced, the labeling system has to preserve all of those relationships. A simple arrow may no longer be enough.
 
 Unless the geometry gives us a reason to do otherwise, symmetry reduces the number of orientation mistakes that can occur.
 
 THREE-MEMBER TRIANGLE
 
-The orientation becomes easier to see when three wedge members are assembled into one triangular face.
+The orientation becomes easier to see when three wedge members are assembled into one triangular face. Each member should point its narrow side toward the same side of the triangle. That side becomes the interior-facing side of the module.
 
-Each member should point its narrow side toward the same side of the triangle.
+The wider faces all point toward the opposite side. When the triangle is viewed from the interior, we should see the narrow side of each edge member. When viewed from the exterior, we should see the wider side.
 
-That side becomes the interior-facing side of the module.
+This gives us a simple inspection before the triangle ever reaches the dome. Lay out the three members. Identify the intended interior face.
 
-The wider faces all point toward the opposite side.
-
-When the triangle is viewed from the interior, we should see the narrow side of each edge member.
-
-When viewed from the exterior, we should see the wider side.
-
-This gives us a simple inspection before the triangle ever reaches the dome.
-
-Lay out the three members.
-
-Identify the intended interior face.
-
-Check that all three narrow sides face that direction.
-
-Then connect them.
-
-If one member shows its wide side while the other two show their narrow sides, something is wrong before any fastener is tightened.
+Check that all three narrow sides face that direction. Then connect them. If one member shows its wide side while the other two show their narrow sides, something is wrong before any fastener is tightened.
 
 TWO TRIANGLES SHARING AN EDGE
 
-Now add a second triangle beside the first.
+Now add a second triangle beside the first. The shared wedge member sits between the two triangular faces. Both faces extend away from the narrow side toward the wider side.
 
-The shared wedge member sits between the two triangular faces.
+This is the relationship the wedge is designed to support. The interior edges remain closer together. The exterior faces spread farther apart.
 
-Both faces extend away from the narrow side toward the wider side.
-
-This is the relationship the wedge is designed to support.
-
-The interior edges remain closer together.
-
-The exterior faces spread farther apart.
-
-This is where the orientation stops being merely a label and becomes part of the geometry.
-
-If that shared member is reversed, the two faces are being asked to do the opposite.
-
-The member becomes narrower in the direction where the structure expects it to widen.
+This is where the orientation stops being merely a label and becomes part of the geometry. If that shared member is reversed, the two faces are being asked to do the opposite. The member becomes narrower in the direction where the structure expects it to widen.
 
 That is why orientation has to remain consistent across the whole frame.
 
 VERTEX ORIENTATION
 
-At a five-member or six-member vertex, multiple wedges meet around one point.
+At a five-member or six-member vertex, multiple wedges meet around one point. Every one of them should follow the same inward/outward logic. Their narrow sides converge toward the dome interior.
 
-Every one of them should follow the same inward/outward logic.
+Their wider sides expand toward the exterior shell. From the interior, the vertex should therefore read as a group of narrow wedge faces converging around the joint. From the exterior, those same members present their wider portions.
 
-Their narrow sides converge toward the dome interior.
-
-Their wider sides expand toward the exterior shell.
-
-From the interior, the vertex should therefore read as a group of narrow wedge faces converging around the joint.
-
-From the exterior, those same members present their wider portions.
-
-This is also useful for checking a partially assembled dome.
-
-An installer should be able to inspect the frame visually and identify a member that appears opposite to the others.
-
-The connection hardware may hide some of the cross-section later.
+This is also useful for checking a partially assembled dome. An installer should be able to inspect the frame visually and identify a member that appears opposite to the others. The connection hardware may hide some of the cross-section later.
 
 That is another reason the orientation marks should remain visible until the frame has been verified.
 
@@ -287,9 +183,7 @@ A practical sequence can be:
 6. verify the triangle or vertex,
 7. then complete the fastening operation.
 
-This check is simple enough that it can become part of the normal assembly rhythm.
-
-It is cheaper to catch a reversed member before the next several triangles depend on it.
+This check is simple enough that it can become part of the normal assembly rhythm. It is cheaper to catch a reversed member before the next several triangles depend on it.
 
 PANEL ORIENTATION
 
@@ -303,29 +197,15 @@ The jig can establish:
 * wedge orientation,
 * and panel skin location.
 
-That removes another decision from the operator.
+That removes another decision from the operator. Instead of asking which way each wedge belongs every time, the fixture itself can make the correct orientation obvious. For example, a panel jig might always be loaded with the narrow face toward the table center or toward a marked "INTERIOR" side.
 
-Instead of asking which way each wedge belongs every time, the fixture itself can make the correct orientation obvious.
-
-For example, a panel jig might always be loaded with the narrow face toward the table center or toward a marked "INTERIOR" side.
-
-The exact method depends on the manufacturing setup.
-
-The useful principle is that orientation should be controlled by the process, not remembered separately for every part.
+The exact method depends on the manufacturing setup. The useful principle is that orientation should be controlled by the process, not remembered separately for every part.
 
 DESIGN VARIATION
 
-There may be later systems where the wedge is intentionally reversed or reoriented for another purpose.
+There may be later systems where the wedge is intentionally reversed or reoriented for another purpose. For example, a special edge condition, opening, base transition, or nonstandard panel might require geometry different from the main dome field. If that happens, the special member should receive a separate part definition.
 
-For example, a special edge condition, opening, base transition, or nonstandard panel might require geometry different from the main dome field.
-
-If that happens, the special member should receive a separate part definition.
-
-It should not be treated as a normal wedge installed backward.
-
-That distinction matters.
-
-A reversed standard part is an assembly error.
+It should not be treated as a normal wedge installed backward. That distinction matters. A reversed standard part is an assembly error.
 
 A deliberately opposite or modified part is a different component and should have its own label, drawing, and installation location.
 
@@ -343,11 +223,7 @@ If the wedge contains:
 * fastener recesses,
 * or other asymmetric connection features,
 
-reversing it may move those features into different structural positions.
-
-That can change edge distances, bearing surfaces, connection alignment, or the way loads pass through the joint.
-
-For that reason, a completed structural member should be treated as directional whenever its geometry is directional.
+reversing it may move those features into different structural positions. That can change edge distances, bearing surfaces, connection alignment, or the way loads pass through the joint. For that reason, a completed structural member should be treated as directional whenever its geometry is directional.
 
 A part that fits physically when reversed is not automatically structurally interchangeable.
 
@@ -357,23 +233,11 @@ For the 20-foot 2V reference dome, every production member should eventually car
 
 The simplest standard should be:
 
-**NARROW = IN**
+**NARROW = IN** **WIDE = OUT** That convention can be printed on drawings, shown in every assembly diagram, and physically marked on the timber.
 
-**WIDE = OUT**
+If a member is shown in cross-section, the interior side should always appear consistently in the same direction where practical. If a panel diagram is shown, the reader should always be able to tell which face points toward the dome center. If a vertex is shown, the narrow sides should visibly converge toward the interior.
 
-That convention can be printed on drawings, shown in every assembly diagram, and physically marked on the timber.
-
-If a member is shown in cross-section, the interior side should always appear consistently in the same direction where practical.
-
-If a panel diagram is shown, the reader should always be able to tell which face points toward the dome center.
-
-If a vertex is shown, the narrow sides should visibly converge toward the interior.
-
-This may seem repetitive.
-
-That is intentional.
-
-Orientation is simple enough that it should never become a source of confusion.
+This may seem repetitive. That is intentional. Orientation is simple enough that it should never become a source of confusion.
 
 The wedge only performs its intended geometric job when it points the right way.
 

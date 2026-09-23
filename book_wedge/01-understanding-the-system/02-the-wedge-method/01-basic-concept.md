@@ -7,33 +7,17 @@ kind: section
 
 The wedge method starts with one simple change:
 
-Instead of building the dome from rectangular struts and solving most of the three-dimensional geometry at the joints, we shape the struts so the timber itself participates in the dome geometry.
+Instead of building the dome from rectangular struts and solving most of the three-dimensional geometry at the joints, we shape the struts so the timber itself participates in the dome geometry. That is the core idea. A normal rectangular board has approximately the same width on its inside and outside faces.
 
-That is the core idea.
+A wedge-shaped member does not. Its narrow side faces toward the interior of the dome. Its wider side faces toward the exterior.
 
-A normal rectangular board has approximately the same width on its inside and outside faces.
-
-A wedge-shaped member does not.
-
-Its narrow side faces toward the interior of the dome.
-
-Its wider side faces toward the exterior.
-
-When those members are arranged into triangles, the changing width of the wedge helps neighboring triangular faces turn relative to one another.
-
-The member is therefore doing two jobs at once.
-
-It spans between vertices.
+When those members are arranged into triangles, the changing width of the wedge helps neighboring triangular faces turn relative to one another. The member is therefore doing two jobs at once. It spans between vertices.
 
 It also helps establish the angular relationship between the faces on either side of it.
 
 GEOMETRY
 
-The theoretical geodesic frame can still be represented as straight chord lines connecting vertices.
-
-The wedge does not replace those chord lines.
-
-It is built around them.
+The theoretical geodesic frame can still be represented as straight chord lines connecting vertices. The wedge does not replace those chord lines. It is built around them.
 
 That distinction is useful because it lets us separate the geometry into two layers.
 
@@ -58,11 +42,7 @@ That layer tells us:
 * where the fasteners pass through it,
 * and how neighboring members actually meet.
 
-The wedge method works when those two layers agree.
-
-If the theoretical dome is correct but the wedge profile is wrong, the physical frame will not follow the intended geometry correctly.
-
-If the wedge profile is correct but the strut lengths are wrong, the vertices will be misplaced.
+The wedge method works when those two layers agree. If the theoretical dome is correct but the wedge profile is wrong, the physical frame will not follow the intended geometry correctly. If the wedge profile is correct but the strut lengths are wrong, the vertices will be misplaced.
 
 Both parts matter.
 
@@ -70,93 +50,39 @@ THE WEDGE ORIENTATION
 
 The basic orientation is:
 
-narrow side inward,
+narrow side inward, wide side outward. This should remain visually obvious during fabrication and assembly.
 
-wide side outward.
+The reason is geometric. The interior side of the dome is closer to the center of the sphere. The exterior side is farther from the center.
 
-This should remain visually obvious during fabrication and assembly.
+As neighboring triangular faces wrap around the dome, they spread apart toward the exterior. The wedge shape gives us a member whose cross-section follows that general relationship. A reversed wedge works against the intended orientation.
 
-The reason is geometric.
-
-The interior side of the dome is closer to the center of the sphere.
-
-The exterior side is farther from the center.
-
-As neighboring triangular faces wrap around the dome, they spread apart toward the exterior.
-
-The wedge shape gives us a member whose cross-section follows that general relationship.
-
-A reversed wedge works against the intended orientation.
-
-If a member is installed wide-side inward and narrow-side outward, it is not merely cosmetically reversed.
-
-Its cross-section is now pointing in the wrong direction relative to the dome.
-
-That is why every finished member should eventually have an obvious inside/outside marking.
+If a member is installed wide-side inward and narrow-side outward, it is not merely cosmetically reversed. Its cross-section is now pointing in the wrong direction relative to the dome. That is why every finished member should eventually have an obvious inside/outside marking.
 
 A simple label, arrow, burn mark, paint mark, stamped letter, or other repeatable identifier can prevent an orientation error during assembly.
 
 THE TRIANGLE STILL CONTROLS THE FRAME
 
-The wedge does not make the dome by itself.
+The wedge does not make the dome by itself. The triangles do. The strut lengths still define the triangle edges.
 
-The triangles do.
+The triangle geometry still determines the shape of each flat face. The wedge then helps those faces meet in three dimensions. This distinction should stay clear throughout the book.
 
-The strut lengths still define the triangle edges.
-
-The triangle geometry still determines the shape of each flat face.
-
-The wedge then helps those faces meet in three dimensions.
-
-This distinction should stay clear throughout the book.
-
-A wedge angle is not a substitute for the correct triangle.
-
-A correct triangle does not automatically tell us the correct wedge profile.
-
-And the correct wedge profile does not automatically tell us the correct connection.
+A wedge angle is not a substitute for the correct triangle. A correct triangle does not automatically tell us the correct wedge profile. And the correct wedge profile does not automatically tell us the correct connection.
 
 We can treat those as three linked design problems:
 
-$$
-\text{triangle geometry}
-$$
-
-$$
-\text{wedge geometry}
-$$
-
-$$
-\text{connection geometry}
-$$
+$$ \text{triangle geometry} $$ $$ \text{wedge geometry} $$ $$ \text{connection geometry} $$
 
 The complete system comes from making all three agree.
 
 ONE MEMBER, TWO NEIGHBORING FACES
 
-Each wedge member can be thought of as lying along the shared edge between two neighboring triangular faces.
+Each wedge member can be thought of as lying along the shared edge between two neighboring triangular faces. One face exists on one side of the strut. Another face exists on the other side.
 
-One face exists on one side of the strut.
+Those faces are not normally coplanar. They meet at an angle. That means the edge between them has to work in three dimensions.
 
-Another face exists on the other side.
+A rectangular member gives both sides approximately parallel reference faces. A wedge member gives the two sides a controlled divergence between the interior and exterior. That is the physical feature we are trying to use.
 
-Those faces are not normally coplanar.
-
-They meet at an angle.
-
-That means the edge between them has to work in three dimensions.
-
-A rectangular member gives both sides approximately parallel reference faces.
-
-A wedge member gives the two sides a controlled divergence between the interior and exterior.
-
-That is the physical feature we are trying to use.
-
-The wedge is therefore best understood from a cross-section perpendicular to the strut length.
-
-Looking only at the long side of the timber can hide the entire concept.
-
-From the side, the wedge may look like an ordinary straight board.
+The wedge is therefore best understood from a cross-section perpendicular to the strut length. Looking only at the long side of the timber can hide the entire concept. From the side, the wedge may look like an ordinary straight board.
 
 From the end, the difference becomes obvious.
 
@@ -164,39 +90,19 @@ That end view should be used repeatedly throughout this book.
 
 VERTICES
 
-A dome vertex is where several struts meet.
+A dome vertex is where several struts meet. The number of members depends on the location and the geometry. Some vertices may have five members meeting.
 
-The number of members depends on the location and the geometry.
+Others may have six. Boundary conditions can create other arrangements. The wedge method does not eliminate those vertex patterns.
 
-Some vertices may have five members meeting.
+It changes the shapes of the members entering them. At a vertex, several wedge-shaped struts approach from different directions. The connection must still locate those members correctly and hold them together.
 
-Others may have six.
+The wedge profile helps the surrounding faces occupy the correct spatial relationship, but the vertex still needs a practical connection system. That connection might be very simple. It might not be.
 
-Boundary conditions can create other arrangements.
-
-The wedge method does not eliminate those vertex patterns.
-
-It changes the shapes of the members entering them.
-
-At a vertex, several wedge-shaped struts approach from different directions.
-
-The connection must still locate those members correctly and hold them together.
-
-The wedge profile helps the surrounding faces occupy the correct spatial relationship, but the vertex still needs a practical connection system.
-
-That connection might be very simple.
-
-It might not be.
-
-The final detail depends on how the member ends are cut, how much timber remains around the fasteners, whether the members contact one another directly, whether plates are used, and where the theoretical vertex lies relative to the physical wood.
-
-For that reason, the vertex should be thought of as an assembly of several controlled parts rather than a point where we simply force the lumber together.
+The final detail depends on how the member ends are cut, how much timber remains around the fasteners, whether the members contact one another directly, whether plates are used, and where the theoretical vertex lies relative to the physical wood. For that reason, the vertex should be thought of as an assembly of several controlled parts rather than a point where we simply force the lumber together.
 
 THREE-MEMBER RELATIONSHIPS
 
-Before thinking about a full five-way or six-way vertex, it is useful to reduce the problem.
-
-Take three members and build one triangle.
+Before thinking about a full five-way or six-way vertex, it is useful to reduce the problem. Take three members and build one triangle.
 
 Now the basic relationships are visible.
 
@@ -209,29 +115,13 @@ Each member has:
 * a right side,
 * and two ends.
 
-That orientation needs to remain consistent.
+That orientation needs to remain consistent. If the triangle is assembled correctly, the narrow faces point toward the interior side of the future dome. The wider faces point toward the exterior.
 
-If the triangle is assembled correctly, the narrow faces point toward the interior side of the future dome.
+That triangle becomes one flat face of the larger structure. Add another triangle along one of its edges and the three-dimensional relationship becomes easier to see. The shared wedge member sits between the two faces.
 
-The wider faces point toward the exterior.
+Repeat this around the structure and the dome emerges. This is a useful way to think about assembly because the complete vertex can look complicated while the individual relationships remain simple. Start with one member.
 
-That triangle becomes one flat face of the larger structure.
-
-Add another triangle along one of its edges and the three-dimensional relationship becomes easier to see.
-
-The shared wedge member sits between the two faces.
-
-Repeat this around the structure and the dome emerges.
-
-This is a useful way to think about assembly because the complete vertex can look complicated while the individual relationships remain simple.
-
-Start with one member.
-
-Then one triangle.
-
-Then two neighboring triangles.
-
-Then the complete vertex.
+Then one triangle. Then two neighboring triangles. Then the complete vertex.
 
 Then the dome.
 
@@ -260,9 +150,7 @@ Those dimensions define the physical part.
 
 A basic symmetric wedge cross-section can be described by:
 
-$$
-\Delta w = w_{outside}-w_{inside}
-$$
+$$ \Delta w = w_{outside}-w_{inside} $$
 
 where:
 
@@ -271,31 +159,19 @@ where:
 
 If the taper is symmetric about the member centerline, each side accounts for half of that difference:
 
-$$
-\frac{\Delta w}{2}
-$$
+$$ \frac{\Delta w}{2} $$
 
 If \(t\) is the distance from the inside face to the outside face, one side taper angle is:
 
-$$
-\beta=\tan^{-1}\left(\frac{\Delta w/2}{t}\right)
-$$
+$$ \beta=\tan^{-1}\left(\frac{\Delta w/2}{t}\right) $$
 
 and the total included wedge angle is:
 
-$$
-\alpha=2\beta
-$$
+$$ \alpha=2\beta $$
 
 or:
 
-$$
-\alpha=2\tan^{-1}\left(\frac{\Delta w}{2t}\right)
-$$
-
-This gives us a way to describe a finished wedge once the required widths and thickness are known.
-
-It does not yet tell us what those dimensions should be for the reference dome.
+$$ \alpha=2\tan^{-1}\left(\frac{\Delta w}{2t}\right) $$ This gives us a way to describe a finished wedge once the required widths and thickness are known. It does not yet tell us what those dimensions should be for the reference dome.
 
 That has to come from the verified dome and joint geometry.
 
@@ -305,39 +181,19 @@ Once a wedge profile is established, it should become a repeatable shop operatio
 
 The goal is not:
 
-measure a strange shape,
-
-cut it,
-
-check whether it fits,
+measure a strange shape, cut it, check whether it fits,
 
 then adjust the next one.
 
 The goal is:
 
-define the part,
+define the part, define the process, repeat the process.
 
-define the process,
+That may mean a fence setting. It may mean a dedicated sled. It may mean a taper jig.
 
-repeat the process.
+It may mean splitting or ripping larger stock along predetermined lines. It may mean using one finished surface as the datum for every later operation. The actual production method can vary.
 
-That may mean a fence setting.
-
-It may mean a dedicated sled.
-
-It may mean a taper jig.
-
-It may mean splitting or ripping larger stock along predetermined lines.
-
-It may mean using one finished surface as the datum for every later operation.
-
-The actual production method can vary.
-
-The principle should not.
-
-Every repeatable dimension should come from a repeatable reference.
-
-That becomes especially important when the dome requires many parts.
+The principle should not. Every repeatable dimension should come from a repeatable reference. That becomes especially important when the dome requires many parts.
 
 A small error repeated once may be manageable.
 
@@ -362,55 +218,31 @@ For the reference build, that means documenting:
 * marking method,
 * and measured variation between finished parts.
 
-Those details should come from the actual fabrication process.
-
-Until they are measured, they remain development work rather than finished production specifications.
+Those details should come from the actual fabrication process. Until they are measured, they remain development work rather than finished production specifications.
 
 MATERIAL DOES NOT HAVE TO START AS A BOARD
 
-The wedge shape can be produced from different starting materials.
-
-One method starts with dimensional lumber and removes material until the required cross-section remains.
-
-Another can begin with larger sawn timber.
+The wedge shape can be produced from different starting materials. One method starts with dimensional lumber and removes material until the required cross-section remains. Another can begin with larger sawn timber.
 
 Another can begin with a log and recover wedge-like sectors directly from the original round material.
 
 The finished requirement is the same:
 
-the structural member must end up with controlled geometry.
+the structural member must end up with controlled geometry. How we reach that geometry can change. This gives the wedge method an important manufacturing flexibility.
 
-How we reach that geometry can change.
-
-This gives the wedge method an important manufacturing flexibility.
-
-The geometric part is defined first.
-
-The raw material strategy can then be chosen based on what is available.
+The geometric part is defined first. The raw material strategy can then be chosen based on what is available.
 
 DESIGN VARIATION
 
-A wedge can also become more than a bare strut.
+A wedge can also become more than a bare strut. It can become the edge of a triangular panel. It can be laminated from several pieces.
 
-It can become the edge of a triangular panel.
-
-It can be laminated from several pieces.
-
-It can be reinforced with metal.
-
-It can include a groove, rabbet, panel seat, gasket channel, or other feature.
-
-It can be produced as part of a larger prefabricated module.
+It can be reinforced with metal. It can include a groove, rabbet, panel seat, gasket channel, or other feature. It can be produced as part of a larger prefabricated module.
 
 Those variations should all be treated as later branches of the basic system.
 
 The simplest version is still the best place to start:
 
-a straight structural member,
-
-with a controlled wedge-shaped cross-section,
-
-oriented narrow-side inward and wide-side outward,
+a straight structural member, with a controlled wedge-shaped cross-section, oriented narrow-side inward and wide-side outward,
 
 placed along a verified geodesic edge,
 
@@ -430,35 +262,17 @@ Each family will need:
 * a quantity,
 * and a label.
 
-Those values should not be mixed together prematurely.
+Those values should not be mixed together prematurely. First the exact 2V geometry must be frozen. Then the connection reference has to be defined.
 
-First the exact 2V geometry must be frozen.
-
-Then the connection reference has to be defined.
-
-Then the wedge profile can be derived around that system.
-
-Once those decisions are fixed, the book can move from concept to a real shop table.
+Then the wedge profile can be derived around that system. Once those decisions are fixed, the book can move from concept to a real shop table.
 
 That table should eventually allow a builder to look at a member labeled, for example, "A," and know exactly what that means:
 
-which stock to start with,
+which stock to start with, which wedge profile to cut, how long to make it,
 
-which wedge profile to cut,
+where to drill it, which direction faces inward, and where it belongs in the dome.
 
-how long to make it,
-
-where to drill it,
-
-which direction faces inward,
-
-and where it belongs in the dome.
-
-That is the basic concept of the wedge method in practical terms.
-
-Turn the geometry into defined parts.
-
-Turn the defined parts into repeatable operations.
+That is the basic concept of the wedge method in practical terms. Turn the geometry into defined parts. Turn the defined parts into repeatable operations.
 
 Then assemble those operations back into the dome.
 

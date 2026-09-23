@@ -5,21 +5,11 @@ kind: section
 
 # Wedge-shaped structural members
 
-A wedge-shaped structural member is still a strut.
+A wedge-shaped structural member is still a strut. It still has to connect two vertices, hold its place in the triangle, and fit the other members around it. The difference is in the cross-section.
 
-It still has to connect two vertices, hold its place in the triangle, and fit the other members around it.
+Instead of carrying the same width from the inside of the dome to the outside, the member becomes wider toward the exterior. That shape gives us another geometric variable to work with. We are no longer defining a strut only by length.
 
-The difference is in the cross-section.
-
-Instead of carrying the same width from the inside of the dome to the outside, the member becomes wider toward the exterior.
-
-That shape gives us another geometric variable to work with.
-
-We are no longer defining a strut only by length.
-
-We are defining it by length and profile.
-
-For the wedge method, that profile is part of the building system.
+We are defining it by length and profile. For the wedge method, that profile is part of the building system.
 
 GEOMETRY
 
@@ -32,9 +22,7 @@ A basic wedge member can be described with four primary dimensions:
 
 The difference between the outside and inside widths is:
 
-$$
-\Delta w = w_o-w_i
-$$
+$$ \Delta w = w_o-w_i $$
 
 where:
 
@@ -43,47 +31,29 @@ where:
 
 For a symmetric wedge, half of that width change occurs on each side of the member:
 
-$$
-x=\frac{w_o-w_i}{2}
-$$
+$$ x=\frac{w_o-w_i}{2} $$
 
 If the distance between the interior and exterior faces is \(t\), the taper angle on each side is:
 
-$$
-\beta=\tan^{-1}\left(\frac{x}{t}\right)
-$$
+$$ \beta=\tan^{-1}\left(\frac{x}{t}\right) $$
 
 or:
 
-$$
-\beta=\tan^{-1}\left(\frac{w_o-w_i}{2t}\right)
-$$
+$$ \beta=\tan^{-1}\left(\frac{w_o-w_i}{2t}\right) $$
 
 The full included wedge angle is:
 
-$$
-\alpha=2\beta
-$$
+$$ \alpha=2\beta $$
 
 which gives:
 
-$$
-\alpha=2\tan^{-1}\left(\frac{w_o-w_i}{2t}\right)
-$$
+$$ \alpha=2\tan^{-1}\left(\frac{w_o-w_i}{2t}\right) $$ Those equations describe the physical cross-section once its dimensions are known. They do not determine what the correct wedge should be for the dome.
 
-Those equations describe the physical cross-section once its dimensions are known.
-
-They do not determine what the correct wedge should be for the dome.
-
-That comes from the dome geometry and the way the neighboring faces are intended to meet.
-
-A wedge can be mathematically consistent as a piece of timber and still be the wrong wedge for the structure.
+That comes from the dome geometry and the way the neighboring faces are intended to meet. A wedge can be mathematically consistent as a piece of timber and still be the wrong wedge for the structure.
 
 THE MEMBER HAS TWO DIFFERENT GEOMETRIES
 
-It helps to separate the strut into longitudinal geometry and cross-sectional geometry.
-
-Longitudinal geometry runs from one end of the member to the other.
+It helps to separate the strut into longitudinal geometry and cross-sectional geometry. Longitudinal geometry runs from one end of the member to the other.
 
 That includes:
 
@@ -104,33 +74,17 @@ That includes:
 * centerline,
 * and any grooves, rabbets, bevels, or panel seats added later.
 
-Those two geometries solve different problems.
+Those two geometries solve different problems. The length helps place the vertices. The wedge profile helps the member occupy the space between neighboring faces.
 
-The length helps place the vertices.
-
-The wedge profile helps the member occupy the space between neighboring faces.
-
-Changing one does not automatically correct the other.
-
-A member can have the correct wedge profile and still be too long.
-
-It can have the correct length and still have the wrong taper.
+Changing one does not automatically correct the other. A member can have the correct wedge profile and still be too long. It can have the correct length and still have the wrong taper.
 
 For production purposes, both have to be inspected.
 
 STARTING STOCK
 
-A finished wedge may begin as rectangular dimensional lumber, a larger sawn timber, a laminated blank, or a rough section recovered from a log.
+A finished wedge may begin as rectangular dimensional lumber, a larger sawn timber, a laminated blank, or a rough section recovered from a log. Whatever the source, the starting material needs a known reference. With dressed lumber, that means recording the actual measured dimensions rather than relying only on the nominal lumber name.
 
-Whatever the source, the starting material needs a known reference.
-
-With dressed lumber, that means recording the actual measured dimensions rather than relying only on the nominal lumber name.
-
-The nominal size tells us what class of material we started with.
-
-The actual measured size tells us what material is physically available for cutting the wedge.
-
-Those are not interchangeable in the fabrication record.
+The nominal size tells us what class of material we started with. The actual measured size tells us what material is physically available for cutting the wedge. Those are not interchangeable in the fabrication record.
 
 If the wedge calculation requires a specific outside width, inside width, and thickness, the stock has to contain enough material to produce those dimensions after cutting and cleanup.
 
@@ -144,9 +98,7 @@ It is:
 
 REFERENCE SURFACES
 
-A repeatable wedge needs repeatable reference surfaces.
-
-If every cut is referenced from a different irregular face, errors begin stacking on top of one another.
+A repeatable wedge needs repeatable reference surfaces. If every cut is referenced from a different irregular face, errors begin stacking on top of one another.
 
 A controlled process should establish which surface is the datum.
 
@@ -158,11 +110,7 @@ That might be:
 * a centerline,
 * or a fixture that locates the part independently of an unfinished edge.
 
-Once that datum is chosen, later operations should reference it intentionally.
-
-This becomes even more important when the starting material comes from rough-sawn timber or a log-derived sector.
-
-A rough wedge may already have approximately the right shape, but "approximately wedge-shaped" is not enough for a repeated structural part.
+Once that datum is chosen, later operations should reference it intentionally. This becomes even more important when the starting material comes from rough-sawn timber or a log-derived sector. A rough wedge may already have approximately the right shape, but "approximately wedge-shaped" is not enough for a repeated structural part.
 
 At least some surfaces have to be brought under dimensional control.
 
@@ -174,31 +122,21 @@ Its left and right sides taper equally away from the centerline.
 
 If the total width difference is:
 
-$$
-\Delta w=w_o-w_i
-$$
+$$ \Delta w=w_o-w_i $$
 
 then each side accounts for:
 
-$$
-\frac{\Delta w}{2}
-$$
-
-That gives the member a centered profile.
+$$ \frac{\Delta w}{2} $$ That gives the member a centered profile.
 
 A wedge does not have to be symmetric, however.
 
 DESIGN VARIATION
 
-An asymmetric wedge could place more of the taper on one side than the other.
-
-That might become useful if the connection system, panel geometry, fabrication method, or dome-face relationship requires it.
+An asymmetric wedge could place more of the taper on one side than the other. That might become useful if the connection system, panel geometry, fabrication method, or dome-face relationship requires it.
 
 In that case, the left and right offsets should be recorded separately:
 
-$$
-x_L+x_R=w_o-w_i
-$$
+$$ x_L+x_R=w_o-w_i $$
 
 where:
 
@@ -207,25 +145,13 @@ where:
 
 If:
 
-$$
-x_L=x_R
-$$
+$$ x_L=x_R $$ the wedge is symmetric. If they differ, the member is asymmetric.
 
-the wedge is symmetric.
-
-If they differ, the member is asymmetric.
-
-This distinction matters because an asymmetric member also gains a left-hand and right-hand orientation.
-
-That increases the possibility of installing a geometrically correct part in the wrong direction.
-
-Unless a later design requires asymmetry, a symmetric member is easier to manufacture, label, inspect, and reverse end-for-end.
+This distinction matters because an asymmetric member also gains a left-hand and right-hand orientation. That increases the possibility of installing a geometrically correct part in the wrong direction. Unless a later design requires asymmetry, a symmetric member is easier to manufacture, label, inspect, and reverse end-for-end.
 
 THE CENTERLINE
 
-The wedge needs a clearly defined centerline.
-
-That centerline gives us a stable way to describe the part even though its side faces are angled.
+The wedge needs a clearly defined centerline. That centerline gives us a stable way to describe the part even though its side faces are angled.
 
 It can be used to locate:
 
@@ -235,17 +161,9 @@ It can be used to locate:
 * panel features,
 * and the member relative to the theoretical chord.
 
-The physical timber does not automatically have to be centered on the mathematical chord.
+The physical timber does not automatically have to be centered on the mathematical chord. That is a design decision. But once that relationship is chosen, it should remain fixed.
 
-That is a design decision.
-
-But once that relationship is chosen, it should remain fixed.
-
-For example, if the theoretical chord passes through the cross-sectional center of the wedge, that becomes one kind of member definition.
-
-If the fastener-center line is offset from the geometric center of the wedge, that becomes another.
-
-Both can be modeled.
+For example, if the theoretical chord passes through the cross-sectional center of the wedge, that becomes one kind of member definition. If the fastener-center line is offset from the geometric center of the wedge, that becomes another. Both can be modeled.
 
 What creates problems is changing references between calculations and shop drawings without stating it.
 
@@ -269,25 +187,15 @@ The end treatment can change the physical overall length even when the theoretic
 
 For that reason, the final member drawing should eventually distinguish between at least:
 
-$$
-L_c=\text{theoretical chord length}
-$$
+$$ L_c=\text{theoretical chord length} $$
 
 and:
 
-$$
-L_f=\text{finished physical member length}
-$$
+$$ L_f=\text{finished physical member length} $$
 
 If fastener centers define the structural reference, we may also need:
 
-$$
-L_b=\text{bolt-center to bolt-center distance}
-$$
-
-Those three numbers should not be assumed to be equal.
-
-A production drawing has to tell the builder which one is being measured.
+$$ L_b=\text{bolt-center to bolt-center distance} $$ Those three numbers should not be assumed to be equal. A production drawing has to tell the builder which one is being measured.
 
 HOLES AND CONNECTION FEATURES
 
@@ -304,25 +212,15 @@ That can include:
 * drilling direction,
 * and which surface the drill or jig references.
 
-A hole that is shifted along the member changes the effective connection location.
-
-A hole that wanders sideways may change edge distance or interfere with neighboring hardware.
-
-A hole drilled at the wrong angle may prevent plates, washers, or neighboring members from seating correctly.
+A hole that is shifted along the member changes the effective connection location. A hole that wanders sideways may change edge distance or interfere with neighboring hardware. A hole drilled at the wrong angle may prevent plates, washers, or neighboring members from seating correctly.
 
 For repeated production, the drilling operation should eventually use a jig or fixed reference instead of being independently laid out on every member.
 
 THE PROFILE HAS TO SURVIVE THE FULL LENGTH
 
-A wedge is not useful if the correct dimensions exist only at one end.
+A wedge is not useful if the correct dimensions exist only at one end. The profile has to remain controlled along the member. If the inside width changes unexpectedly from one end to the other, then the member contains a second taper running along its length.
 
-The profile has to remain controlled along the member.
-
-If the inside width changes unexpectedly from one end to the other, then the member contains a second taper running along its length.
-
-That may happen intentionally with some future design.
-
-For the basic wedge member, it should not happen accidentally.
+That may happen intentionally with some future design. For the basic wedge member, it should not happen accidentally.
 
 This gives us another inspection problem.
 
@@ -347,41 +245,21 @@ If the target profile is supposed to be constant, those measurements should show
 
 TWIST
 
-Twist deserves separate attention.
+Twist deserves separate attention. A member can have the correct width at both ends and still have one end rotated relative to the other. That matters because the wedge has a defined inward and outward orientation.
 
-A member can have the correct width at both ends and still have one end rotated relative to the other.
+If the cross-section twists along the member, the side surfaces no longer remain in the intended planes. Some twist may originate in the stock. Some may appear as timber dries.
 
-That matters because the wedge has a defined inward and outward orientation.
-
-If the cross-section twists along the member, the side surfaces no longer remain in the intended planes.
-
-Some twist may originate in the stock.
-
-Some may appear as timber dries.
-
-Some may come from poor workholding during machining.
-
-Whatever the cause, a member that cannot sit consistently in the intended geometry should not be treated as correct merely because its tape-measure dimensions match.
+Some may come from poor workholding during machining. Whatever the cause, a member that cannot sit consistently in the intended geometry should not be treated as correct merely because its tape-measure dimensions match.
 
 BUILD NOTE
 
-The final inspection process for the reference build should include an actual method for checking twist.
-
-That could be a flat inspection table, winding sticks, a dedicated fixture, a straightedge arrangement, or another repeatable method.
-
-The method and acceptable measured variation should come from the actual build record rather than being invented here.
+The final inspection process for the reference build should include an actual method for checking twist. That could be a flat inspection table, winding sticks, a dedicated fixture, a straightedge arrangement, or another repeatable method. The method and acceptable measured variation should come from the actual build record rather than being invented here.
 
 MEMBER FAMILIES
 
-Different strut lengths do not automatically require different wedge profiles.
+Different strut lengths do not automatically require different wedge profiles. That depends on the geometry. It is possible for several length families to share the same cross-section.
 
-That depends on the geometry.
-
-It is possible for several length families to share the same cross-section.
-
-It is also possible that different edge relationships require different profiles.
-
-Until the reference geometry is fully modeled, we should not assume either result.
+It is also possible that different edge relationships require different profiles. Until the reference geometry is fully modeled, we should not assume either result.
 
 This creates two separate classification systems.
 
@@ -409,11 +287,7 @@ A-W2
 
 B-W1
 
-The point is not the exact naming scheme.
-
-The point is to avoid hiding multiple geometric properties inside one ambiguous letter.
-
-A member family should tell us enough to manufacture the correct part.
+The point is not the exact naming scheme. The point is to avoid hiding multiple geometric properties inside one ambiguous letter. A member family should tell us enough to manufacture the correct part.
 
 FABRICATION FAILURE MODES
 
@@ -461,11 +335,7 @@ A perfectly manufactured part can still be installed in the wrong position.
 
 Reversed orientation:
 
-The wide side and narrow side trade places relative to the dome.
-
-Those failures should eventually be incorporated into a shop inspection sheet.
-
-A finished member should be accepted because it matches its definition, not because it looks close enough to the previous piece.
+The wide side and narrow side trade places relative to the dome. Those failures should eventually be incorporated into a shop inspection sheet. A finished member should be accepted because it matches its definition, not because it looks close enough to the previous piece.
 
 REPEATABLE FABRICATION
 
@@ -484,37 +354,17 @@ One possible sequence is:
 9. apply the member-family label,
 10. perform final inspection.
 
-The exact order may change once the actual tooling is developed.
+The exact order may change once the actual tooling is developed. For example, it may be easier to cut long continuous wedge stock first and crosscut individual struts afterward. Another process may cut blanks to length before tapering.
 
-For example, it may be easier to cut long continuous wedge stock first and crosscut individual struts afterward.
-
-Another process may cut blanks to length before tapering.
-
-A log-derived process may require an entirely different sequence.
-
-That is why the actual shop setup has to be documented instead of assumed.
-
-The final method should be selected based on repeatability, workholding, material yield, tool access, and the ability to inspect the result.
+A log-derived process may require an entirely different sequence. That is why the actual shop setup has to be documented instead of assumed. The final method should be selected based on repeatability, workholding, material yield, tool access, and the ability to inspect the result.
 
 DESIGN VARIATION
 
-Once the basic wedge is controlled, other features can be built into it.
+Once the basic wedge is controlled, other features can be built into it. The exterior portion could receive a panel seat. The interior face could receive a finish strip.
 
-The exterior portion could receive a panel seat.
+A groove could locate a gasket. A machined recess could locate a plate. A laminated wedge could place stronger or more durable material where the connection occurs.
 
-The interior face could receive a finish strip.
-
-A groove could locate a gasket.
-
-A machined recess could locate a plate.
-
-A laminated wedge could place stronger or more durable material where the connection occurs.
-
-A replaceable exterior attachment could be added without changing the underlying chord geometry.
-
-Those features create new member types, but they should all grow from the same controlled base profile.
-
-The more functions a single timber performs, the more important its drawing becomes.
+A replaceable exterior attachment could be added without changing the underlying chord geometry. Those features create new member types, but they should all grow from the same controlled base profile. The more functions a single timber performs, the more important its drawing becomes.
 
 At that point, it is no longer enough to call it a "wedge strut."
 
@@ -522,23 +372,11 @@ It is a manufactured component with defined interfaces.
 
 SAFETY / ENGINEERING
 
-Removing material to create a wedge changes the physical cross-section of the timber.
+Removing material to create a wedge changes the physical cross-section of the timber. Adding bolt holes, notches, grooves, rabbets, or other features changes it again. Those changes can affect structural behavior.
 
-Adding bolt holes, notches, grooves, rabbets, or other features changes it again.
+The fact that a profile fits the dome geometry does not establish its capacity. Structural evaluation has to use the actual finished section, actual material, actual connections, and actual loading conditions. The same applies to defects in the starting timber.
 
-Those changes can affect structural behavior.
-
-The fact that a profile fits the dome geometry does not establish its capacity.
-
-Structural evaluation has to use the actual finished section, actual material, actual connections, and actual loading conditions.
-
-The same applies to defects in the starting timber.
-
-A knot, split, check, or other defect does not disappear because the outside dimensions of the wedge are correct.
-
-Dimensional inspection and structural material inspection are separate requirements.
-
-For this book, the geometry defines the intended part.
+A knot, split, check, or other defect does not disappear because the outside dimensions of the wedge are correct. Dimensional inspection and structural material inspection are separate requirements. For this book, the geometry defines the intended part.
 
 Structural engineering determines whether that part is adequate for a particular building and load condition.
 
@@ -563,11 +401,7 @@ A complete member definition should eventually tell us:
 * its inspection dimensions,
 * and where it belongs in the dome.
 
-Once all of those values are known, the wedge becomes something we can reproduce.
-
-That is the point.
-
-We are not trying to make a collection of similar-looking pieces of timber.
+Once all of those values are known, the wedge becomes something we can reproduce. That is the point. We are not trying to make a collection of similar-looking pieces of timber.
 
 We are defining structural parts.
 

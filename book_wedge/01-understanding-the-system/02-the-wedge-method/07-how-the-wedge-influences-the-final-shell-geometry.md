@@ -5,21 +5,11 @@ kind: section
 
 # How the wedge influences the final shell geometry
 
-The wedge does more than affect how two pieces of timber meet.
+The wedge does more than affect how two pieces of timber meet. It changes where the inside and outside surfaces of the finished dome end up. That matters once we stop thinking about the frame as a collection of centerlines and start thinking about actual wood, actual panels, actual insulation, and an actual weather surface.
 
-It changes where the inside and outside surfaces of the finished dome end up.
+A geodesic calculator can give us a network of ideal points and straight chord lengths. That is enough to define the mathematical frame. It is not enough to define the finished shell.
 
-That matters once we stop thinking about the frame as a collection of centerlines and start thinking about actual wood, actual panels, actual insulation, and an actual weather surface.
-
-A geodesic calculator can give us a network of ideal points and straight chord lengths.
-
-That is enough to define the mathematical frame.
-
-It is not enough to define the finished shell.
-
-The wedge adds thickness and taper around those lines.
-
-Once that happens, the dome has several different surfaces instead of one.
+The wedge adds thickness and taper around those lines. Once that happens, the dome has several different surfaces instead of one.
 
 GEOMETRY
 
@@ -31,21 +21,13 @@ At minimum, we need to distinguish between:
 * the panel or sheathing surface,
 * and the final weather surface.
 
-Those surfaces are offset from one another.
-
-They do not necessarily have the same radius.
-
-They also do not necessarily use identical triangle dimensions.
+Those surfaces are offset from one another. They do not necessarily have the same radius. They also do not necessarily use identical triangle dimensions.
 
 That distinction becomes important as soon as the wedge has enough thickness to matter.
 
 THEORETICAL GEOMETRY
 
-The cleanest mathematical model starts with vertices located on a defined sphere.
-
-Straight lines connect those vertices.
-
-Those straight lines are the geodesic chords.
+The cleanest mathematical model starts with vertices located on a defined sphere. Straight lines connect those vertices. Those straight lines are the geodesic chords.
 
 If we stopped there, every member would have zero thickness.
 
@@ -56,43 +38,23 @@ The model would tell us:
 * which triangles exist,
 * and how the triangular faces meet.
 
-That is the skeleton of the dome.
-
-The wedge is physical material wrapped around that skeleton.
-
-Once we add the real timber, one side of the member lies closer to the dome center and another lies farther away.
+That is the skeleton of the dome. The wedge is physical material wrapped around that skeleton. Once we add the real timber, one side of the member lies closer to the dome center and another lies farther away.
 
 That immediately creates more than one envelope.
 
 THE INSIDE ENVELOPE
 
-The narrow side of the wedge faces inward.
+The narrow side of the wedge faces inward. If we connect those narrow faces around the dome, they create an interior structural envelope. That envelope is not automatically the same surface as the theoretical geodesic sphere.
 
-If we connect those narrow faces around the dome, they create an interior structural envelope.
-
-That envelope is not automatically the same surface as the theoretical geodesic sphere.
-
-Its exact location depends on where the wedge is positioned relative to the theoretical chord.
-
-For example, if the mathematical chord passes through the center of the timber section, then part of the wedge lies inside that line and part lies outside it.
-
-If the chord is aligned with another datum, such as a bolt-center line or interior reference face, then the offsets change.
+Its exact location depends on where the wedge is positioned relative to the theoretical chord. For example, if the mathematical chord passes through the center of the timber section, then part of the wedge lies inside that line and part lies outside it. If the chord is aligned with another datum, such as a bolt-center line or interior reference face, then the offsets change.
 
 That is why the physical datum has to be fixed before final dimensions are generated.
 
 THE OUTSIDE ENVELOPE
 
-The wide side of the wedge creates the exterior structural envelope.
+The wide side of the wedge creates the exterior structural envelope. Because the member widens toward the outside, the exterior edge occupies a larger local envelope than the interior edge. This is part of what makes the wedge useful.
 
-Because the member widens toward the outside, the exterior edge occupies a larger local envelope than the interior edge.
-
-This is part of what makes the wedge useful.
-
-It gives the structure a controlled transition from a smaller interior perimeter to a larger exterior perimeter.
-
-But it also means that an exterior panel cannot automatically be cut to the same dimensions as an interior panel.
-
-The outside triangle is physically farther from the dome center.
+It gives the structure a controlled transition from a smaller interior perimeter to a larger exterior perimeter. But it also means that an exterior panel cannot automatically be cut to the same dimensions as an interior panel. The outside triangle is physically farther from the dome center.
 
 Its edges may therefore have different finished dimensions depending on how the panel lands on the wedge.
 
@@ -108,17 +70,9 @@ We can think of them as:
 4. the exterior panel triangle,
 5. the finished weather-surface triangle.
 
-Those outlines may be close to one another.
+Those outlines may be close to one another. They are not automatically identical. This becomes especially important in larger members or thick insulated assemblies.
 
-They are not automatically identical.
-
-This becomes especially important in larger members or thick insulated assemblies.
-
-If the difference is ignored, gaps can appear where panels meet.
-
-Edges can overhang.
-
-Fastener locations can move away from the intended framing.
+If the difference is ignored, gaps can appear where panels meet. Edges can overhang. Fastener locations can move away from the intended framing.
 
 A panel that fits perfectly on a computer-generated theoretical triangle may not fit the actual outside of the timber frame.
 
@@ -128,67 +82,35 @@ A useful way to think about the wedge is that it generates an offset between the
 
 Suppose the distance from the inside face of the wedge to the outside face is:
 
-$$
-t
-$$
+$$ t $$
 
 That thickness moves the exterior surface outward from the interior surface.
 
 At the same time, the wedge widens from:
 
-$$
-w_i
-$$
+$$ w_i $$
 
 to:
 
-$$
-w_o
-$$
+$$ w_o $$
 
 The width difference is:
 
-$$
-\Delta w=w_o-w_i
-$$
+$$ \Delta w=w_o-w_i $$ The wedge therefore changes the shell in two directions at once. It moves the exterior surface outward.
 
-The wedge therefore changes the shell in two directions at once.
-
-It moves the exterior surface outward.
-
-It also spreads the neighboring face edges apart.
-
-That means the shell is not created by simply taking the interior triangle and moving it outward by one constant dimension.
-
-The face plane moves outward, and the edge geometry changes with it.
+It also spreads the neighboring face edges apart. That means the shell is not created by simply taking the interior triangle and moving it outward by one constant dimension. The face plane moves outward, and the edge geometry changes with it.
 
 This is why a full three-dimensional model becomes useful.
 
 FACE PLANES
 
-Each triangular face can be represented as a plane.
+Each triangular face can be represented as a plane. The neighboring face has another plane. Those two planes intersect along their shared edge.
 
-The neighboring face has another plane.
+The wedge occupies space around that edge. If the wide surfaces of the wedge are intended to support exterior paneling, then the outside panel planes have to agree with the wedge geometry. There are several possible ways to handle this.
 
-Those two planes intersect along their shared edge.
+One approach is to shape the wedge so its side faces directly establish the neighboring panel planes. Another approach is to let the panels sit on another prepared surface. Another is to use battens, spacers, clips, or a secondary frame over the wedge structure.
 
-The wedge occupies space around that edge.
-
-If the wide surfaces of the wedge are intended to support exterior paneling, then the outside panel planes have to agree with the wedge geometry.
-
-There are several possible ways to handle this.
-
-One approach is to shape the wedge so its side faces directly establish the neighboring panel planes.
-
-Another approach is to let the panels sit on another prepared surface.
-
-Another is to use battens, spacers, clips, or a secondary frame over the wedge structure.
-
-Each approach creates a different shell geometry.
-
-The important part is that the relationship is deliberate.
-
-A panel should not be forced into whatever space remains after the frame is built.
+Each approach creates a different shell geometry. The important part is that the relationship is deliberate. A panel should not be forced into whatever space remains after the frame is built.
 
 THE PANEL CONTACT SURFACE
 
@@ -203,35 +125,19 @@ The panel may bear on:
 * a secondary strip,
 * or a separate panel frame.
 
-That contact surface becomes part of the shell datum.
-
-Once it is defined, the panel dimensions can be derived from it.
-
-Without that definition, the phrase "exterior panel size" is incomplete.
+That contact surface becomes part of the shell datum. Once it is defined, the panel dimensions can be derived from it. Without that definition, the phrase "exterior panel size" is incomplete.
 
 The geometry depends on where the panel actually sits.
 
 PANEL THICKNESS
 
-The panel itself also has thickness.
-
-A plywood skin, fiberglass panel, composite panel, or insulated assembly adds another offset outside the structural frame.
+The panel itself also has thickness. A plywood skin, fiberglass panel, composite panel, or insulated assembly adds another offset outside the structural frame.
 
 If the panel thickness is:
 
-$$
-p
-$$
+$$ p $$ then the finished exterior surface lies farther outward than the panel-support surface. If another weather layer is added, that creates another offset.
 
-then the finished exterior surface lies farther outward than the panel-support surface.
-
-If another weather layer is added, that creates another offset.
-
-This means the finished weather radius can be larger than the structural radius used for the original geodesic calculation.
-
-That is not a problem.
-
-It simply has to be understood.
+This means the finished weather radius can be larger than the structural radius used for the original geodesic calculation. That is not a problem. It simply has to be understood.
 
 The reference diameter of the dome should always state which surface it describes.
 
@@ -248,9 +154,7 @@ Those are different measurements once the structure has real thickness.
 
 PANEL SEAMS
 
-The wedge also affects what happens where panels meet.
-
-Two flat panels on neighboring faces approach each other at an angle.
+The wedge also affects what happens where panels meet. Two flat panels on neighboring faces approach each other at an angle.
 
 Their edges can be handled several ways.
 
@@ -264,41 +168,21 @@ They may:
 * sit inside a channel,
 * or meet against a cover strip.
 
-The wedge can help create the space required for that joint.
+The wedge can help create the space required for that joint. For example, a wider exterior portion may allow a panel edge to land fully on timber while leaving room for a seam cover or gasket. The amount of usable exterior bearing width therefore becomes part of the panel-joint design.
 
-For example, a wider exterior portion may allow a panel edge to land fully on timber while leaving room for a seam cover or gasket.
-
-The amount of usable exterior bearing width therefore becomes part of the panel-joint design.
-
-A narrow wedge may fit the geometry but provide too little practical panel attachment area.
-
-A wider wedge may improve the interface but use more material.
-
-That is another example of geometry and construction requirements meeting in the same part.
+A narrow wedge may fit the geometry but provide too little practical panel attachment area. A wider wedge may improve the interface but use more material. That is another example of geometry and construction requirements meeting in the same part.
 
 THREE-MEMBER TRIANGLE
 
-Take one triangular wedge frame.
+Take one triangular wedge frame. On the interior side, the three narrow edges define one perimeter. On the exterior side, the three wider edges define another.
 
-On the interior side, the three narrow edges define one perimeter.
+If the wedge profiles are symmetrical and consistent, the exterior envelope expands around the triangle. A panel attached outside the frame therefore follows the exterior triangle, not the interior one. That sounds obvious once the physical member is visible.
 
-On the exterior side, the three wider edges define another.
-
-If the wedge profiles are symmetrical and consistent, the exterior envelope expands around the triangle.
-
-A panel attached outside the frame therefore follows the exterior triangle, not the interior one.
-
-That sounds obvious once the physical member is visible.
-
-It becomes easy to miss when working from a line drawing where every strut is represented by one thin line.
-
-This is why the book should show the same triangle in several layers.
+It becomes easy to miss when working from a line drawing where every strut is represented by one thin line. This is why the book should show the same triangle in several layers.
 
 The reader should be able to see:
 
-the chord triangle,
-
-the timber triangle,
+the chord triangle, the timber triangle,
 
 and the panel triangle.
 
@@ -319,9 +203,7 @@ For example, the wedge frame could support:
 * insulation blocks,
 * or another attachment system.
 
-That can create a more continuous exterior surface.
-
-It can also decouple the structural wedge geometry from the final weather skin.
+That can create a more continuous exterior surface. It can also decouple the structural wedge geometry from the final weather skin.
 
 This may be useful if:
 
@@ -331,19 +213,11 @@ This may be useful if:
 * removable panels are desired,
 * or the shell needs a drainage cavity.
 
-The tradeoff is additional material and another layer of geometry to manage.
-
-The cleanest system is not automatically the one with the fewest layers.
-
-It is the one where every layer has a defined job and a defined reference.
+The tradeoff is additional material and another layer of geometry to manage. The cleanest system is not automatically the one with the fewest layers. It is the one where every layer has a defined job and a defined reference.
 
 INTERIOR FINISH
 
-The same problem exists on the inside.
-
-If interior finish is attached directly to the narrow faces, those narrow faces define the interior panel geometry.
-
-If a secondary interior frame is added, the visible interior surface moves inward.
+The same problem exists on the inside. If interior finish is attached directly to the narrow faces, those narrow faces define the interior panel geometry. If a secondary interior frame is added, the visible interior surface moves inward.
 
 That can change:
 
@@ -353,9 +227,7 @@ That can change:
 * utility routing,
 * and the relationship between the interior finish and the structural frame.
 
-The shell should therefore be thought of as a layered system.
-
-The wedge is one layer.
+The shell should therefore be thought of as a layered system. The wedge is one layer.
 
 It influences the others.
 
@@ -369,21 +241,13 @@ An insulated dome can place material:
 * inside panel assemblies,
 * or in combinations of these locations.
 
-Each approach changes the final shell thickness.
+Each approach changes the final shell thickness. If insulation fills the space between neighboring wedge frames, the face geometry of that cavity matters. If insulation is continuous outside the frame, then panel clips or secondary members may move the weather shell farther outward.
 
-If insulation fills the space between neighboring wedge frames, the face geometry of that cavity matters.
-
-If insulation is continuous outside the frame, then panel clips or secondary members may move the weather shell farther outward.
-
-If insulation is inside the structure, the interior envelope moves inward.
-
-The geometry of the building should therefore be tracked through the complete wall section rather than only through the strut centerlines.
+If insulation is inside the structure, the interior envelope moves inward. The geometry of the building should therefore be tracked through the complete wall section rather than only through the strut centerlines.
 
 DOORS AND WINDOWS
 
-Openings make these offsets more obvious.
-
-A door frame or window frame has to pass through some portion of the shell thickness.
+Openings make these offsets more obvious. A door frame or window frame has to pass through some portion of the shell thickness.
 
 If the structure has:
 
@@ -393,11 +257,7 @@ If the structure has:
 * weather layer,
 * interior finish,
 
-then the opening detail has to connect all of those surfaces.
-
-The frame depth cannot be designed from the theoretical geodesic line alone.
-
-The real shell has thickness.
+then the opening detail has to connect all of those surfaces. The frame depth cannot be designed from the theoretical geodesic line alone. The real shell has thickness.
 
 That shell thickness may also vary depending on whether a secondary panel system is used.
 
@@ -405,9 +265,7 @@ Special opening modules should therefore reference the actual finished wall sect
 
 BASE GEOMETRY
 
-The wedge can also influence the base of the dome.
-
-At the bottom course, the exterior structural envelope and interior structural envelope may intersect the floor or foundation at different locations.
+The wedge can also influence the base of the dome. At the bottom course, the exterior structural envelope and interior structural envelope may intersect the floor or foundation at different locations.
 
 That can affect:
 
@@ -418,53 +276,25 @@ That can affect:
 * insulation transitions,
 * and anchor locations.
 
-If the mathematical base ring is defined only by chord centerlines, the physical timber can extend inward or outward from that ring.
-
-That extension needs to be accounted for when the floor and foundation are designed.
-
-Otherwise the frame may be mathematically correct while the physical base does not land where the foundation detail expects it.
+If the mathematical base ring is defined only by chord centerlines, the physical timber can extend inward or outward from that ring. That extension needs to be accounted for when the floor and foundation are designed. Otherwise the frame may be mathematically correct while the physical base does not land where the foundation detail expects it.
 
 SHELL SMOOTHNESS
 
-The wedge does not turn the geodesic dome into a continuously curved surface.
+The wedge does not turn the geodesic dome into a continuously curved surface. The shell is still made from flat or nearly flat triangular faces unless another curved skin system is added. The wedge influences how those flat faces meet.
 
-The shell is still made from flat or nearly flat triangular faces unless another curved skin system is added.
+It can make the transition between faces cleaner and more controlled. Increasing dome frequency still reduces the size of the facets. The wedge does not replace frequency.
 
-The wedge influences how those flat faces meet.
-
-It can make the transition between faces cleaner and more controlled.
-
-Increasing dome frequency still reduces the size of the facets.
-
-The wedge does not replace frequency.
-
-It works within the chosen frequency.
-
-A low-frequency dome with wedge members still has large visible triangular faces.
-
-A higher-frequency dome still uses smaller facets.
+It works within the chosen frequency. A low-frequency dome with wedge members still has large visible triangular faces. A higher-frequency dome still uses smaller facets.
 
 The wedge helps define the physical edge between them.
 
 FABRICATION ERROR AND SHELL FIT
 
-Errors in wedge geometry can show up dramatically at the shell.
+Errors in wedge geometry can show up dramatically at the shell. Suppose the wedge is slightly too narrow on the outside. One isolated member may not look badly wrong.
 
-Suppose the wedge is slightly too narrow on the outside.
+But when panels are installed, the joint may close more tightly than intended. If the wedge is too wide, a seam may open. If the profile varies along the member, the panel gap may change from one end to the other.
 
-One isolated member may not look badly wrong.
-
-But when panels are installed, the joint may close more tightly than intended.
-
-If the wedge is too wide, a seam may open.
-
-If the profile varies along the member, the panel gap may change from one end to the other.
-
-If the wedge twists, the supporting surface may no longer remain in the intended panel plane.
-
-This gives us another inspection method.
-
-The wedge can be checked as an individual part.
+If the wedge twists, the supporting surface may no longer remain in the intended panel plane. This gives us another inspection method. The wedge can be checked as an individual part.
 
 But a completed triangular frame or sample panel assembly can reveal whether the combined geometry actually produces the intended shell surfaces.
 
@@ -490,23 +320,13 @@ The mockup can then be checked for:
 * interior clearance,
 * and whether the panels sit naturally without being forced.
 
-A three-dimensional mockup can expose problems that do not appear in a flat panel drawing.
-
-That is especially valuable before producing an entire dome worth of panels.
+A three-dimensional mockup can expose problems that do not appear in a flat panel drawing. That is especially valuable before producing an entire dome worth of panels.
 
 TOLERANCE STACK-UP
 
-Shell geometry also gives us a reason to track cumulative error.
+Shell geometry also gives us a reason to track cumulative error. Imagine a panel system where every wedge is slightly too wide on the exterior. One joint may absorb the error.
 
-Imagine a panel system where every wedge is slightly too wide on the exterior.
-
-One joint may absorb the error.
-
-Several repeated joints can move the final position of a distant vertex or cause the last panel in a course to fit poorly.
-
-The same can happen with panel dimensions.
-
-A small seam-width error repeated around a ring can become a large closure error.
+Several repeated joints can move the final position of a distant vertex or cause the last panel in a course to fit poorly. The same can happen with panel dimensions. A small seam-width error repeated around a ring can become a large closure error.
 
 For that reason, tolerances should eventually be assigned to the complete assembly instead of only to individual pieces.
 
@@ -536,25 +356,13 @@ Possible variations include:
 * a secondary insulation seat,
 * or an interior finish seat.
 
-Each added feature changes the physical member.
-
-That feature should therefore be included in the member drawing rather than added casually during installation.
-
-A structural wedge with a panel rabbet is a different manufactured part from a plain wedge of the same overall size.
+Each added feature changes the physical member. That feature should therefore be included in the member drawing rather than added casually during installation. A structural wedge with a panel rabbet is a different manufactured part from a plain wedge of the same overall size.
 
 EXPERIMENTAL
 
-A more developed version of the system could treat the wedge as an interface between structure and replaceable shell panels.
+A more developed version of the system could treat the wedge as an interface between structure and replaceable shell panels. The frame could remain permanent while exterior triangular panels are mechanically attached to standardized wedge edges. A damaged panel could then potentially be replaced without replacing the frame.
 
-The frame could remain permanent while exterior triangular panels are mechanically attached to standardized wedge edges.
-
-A damaged panel could then potentially be replaced without replacing the frame.
-
-Opaque, transparent, insulated, or specialized utility panels could share a common edge interface.
-
-This depends heavily on the final joint design.
-
-Weather sealing, structural contribution, drainage, tolerances, panel restraint, and long-term movement would all have to be developed and tested.
+Opaque, transparent, insulated, or specialized utility panels could share a common edge interface. This depends heavily on the final joint design. Weather sealing, structural contribution, drainage, tolerances, panel restraint, and long-term movement would all have to be developed and tested.
 
 The geometry makes the concept possible.
 
@@ -562,9 +370,7 @@ It does not prove the finished enclosure system.
 
 SAFETY / ENGINEERING
 
-The shell can also participate structurally depending on how it is built.
-
-A thin nonstructural cover attached to a complete frame is different from a structural panel intended to transfer load between members.
+The shell can also participate structurally depending on how it is built. A thin nonstructural cover attached to a complete frame is different from a structural panel intended to transfer load between members.
 
 The same is true for:
 
@@ -585,51 +391,17 @@ For the 20-foot 2V reference dome, the shell should eventually be modeled as a s
 
 At minimum:
 
-$$
-S_0 = \text{theoretical geodesic/chord geometry}
-$$
+$$ S_0 = \text{theoretical geodesic/chord geometry} $$ $$ S_1 = \text{interior structural surface} $$ $$ S_2 = \text{exterior structural/panel-support surface} $$
 
-$$
-S_1 = \text{interior structural surface}
-$$
+$$ S_3 = \text{exterior panel surface} $$ $$ S_4 = \text{finished weather surface} $$ An interior finish surface can be added separately if required.
 
-$$
-S_2 = \text{exterior structural/panel-support surface}
-$$
+The exact offsets between those surfaces will depend on the final wedge size and enclosure design. Once those layers are defined, we can generate different dimensions for different jobs. The strut cut list comes from the structural geometry.
 
-$$
-S_3 = \text{exterior panel surface}
-$$
+The exterior panel cut list comes from the panel-support geometry. The floor interface comes from the physical base geometry. The window and door depth comes from the complete shell section.
 
-$$
-S_4 = \text{finished weather surface}
-$$
+The finished outside diameter comes from the weather surface. Those are all parts of the same dome. They are not the same measurement.
 
-An interior finish surface can be added separately if required.
-
-The exact offsets between those surfaces will depend on the final wedge size and enclosure design.
-
-Once those layers are defined, we can generate different dimensions for different jobs.
-
-The strut cut list comes from the structural geometry.
-
-The exterior panel cut list comes from the panel-support geometry.
-
-The floor interface comes from the physical base geometry.
-
-The window and door depth comes from the complete shell section.
-
-The finished outside diameter comes from the weather surface.
-
-Those are all parts of the same dome.
-
-They are not the same measurement.
-
-That is the main way the wedge influences the shell.
-
-It takes the dome from a network of mathematical lines and gives that network thickness.
-
-Once the frame has thickness, every layer attached to it needs its own defined geometry.
+That is the main way the wedge influences the shell. It takes the dome from a network of mathematical lines and gives that network thickness. Once the frame has thickness, every layer attached to it needs its own defined geometry.
 
 <!-- NOTES
 SECTION GOAL: Explain 'How the wedge influences the final shell geometry' as it applies to 2. The Wedge Method.
