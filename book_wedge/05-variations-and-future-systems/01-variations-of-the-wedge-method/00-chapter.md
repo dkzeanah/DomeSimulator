@@ -6,7 +6,9 @@ figures: C:\Users\Don\Desktop\DomeSim\book_wedge\05-variations-and-future-system
 
 # 15. Variations of the Wedge Method
 
-<!-- not written yet -->
+The wedge is a sector of a log, and the reason the method works is that the 45-degree sector you split out of a tree is exactly the seam budget the dome needs -- both pairs of seam angles sum to 45 degrees.
+
+Everything in this chapter is a way of making that member some other way, and each one trades a piece of that argument for something else. It is worth knowing which piece.
 
 <!-- NOTES
 CHAPTER GOAL: Build a practical, illustrated chapter covering 15. Variations of the Wedge Method.

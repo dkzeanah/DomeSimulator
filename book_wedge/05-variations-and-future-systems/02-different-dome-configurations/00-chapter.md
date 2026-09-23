@@ -6,7 +6,9 @@ figures: C:\Users\Don\Desktop\DomeSim\book_wedge\05-variations-and-future-system
 
 # 16. Different Dome Configurations
 
-<!-- not written yet -->
+Frequency decides how many pieces you cut. Where you cut the sphere decides what it is like to live in.
+
+Most of the disappointment people report with domes comes from the second of those, and nearly all the writing about them is about the first.
 
 <!-- NOTES
 CHAPTER GOAL: Build a practical, illustrated chapter covering 16. Different Dome Configurations.

@@ -473,6 +473,7 @@ def validate_store() -> None:
     import tempfile
 
     book = load_json()
+    validate_reference_dome(book)
     assert book.parts, "no parts"
     assert len(book.sections) > 100, len(book.sections)
     assert book.metadata.get("title"), "the book has no title"
@@ -535,3 +536,59 @@ if __name__ == "__main__":
     print(f"The Wedge Method: {book.progress()}")
     for title, words, done in word_counts(DB_PATH) if DB_PATH.exists() else []:
         print(f"  {title[:44]:<44} {words:>6,} words  {done} written")
+
+# ----------------------------------------------------------------------
+# The two-domes trap
+# ----------------------------------------------------------------------
+
+def _other_dome_figures() -> dict[str, str]:
+    """Figures that belong to the *other* dome in this repository.
+
+    ``wedge_geometry.build_plan()`` sizes a dome from the log it is cut out
+    of and lands at 22.0 feet. ``seed_world.geometry()`` sizes one from a
+    six-foot member and lands at 19.416 feet -- and that is the one the
+    campaign film prices, the one the figures are rendered from, and the one
+    this book calls the reference build.
+
+    Both are right about their own building, so nothing raises when a
+    chapter reaches for the wrong one. Three sections of this book described
+    a 22-foot dome with a 369-square-foot floor before anybody noticed, and
+    369 is the pad platform rather than any dome's floor at all.
+
+    So: the numbers that only make sense for the other dome are listed here
+    by name, with what the reference build says instead.
+    """
+    import seed_model
+    import seed_world
+    import two_v_demo.wedge_geometry as wedge
+
+    geometry = seed_world.geometry()
+    plan = wedge.build_plan()
+    seed = seed_model.seed_geometry()
+    return {
+        f"{plan.radius_in:.1f}":
+            f"the log-sized dome's radius; this book's is "
+            f"{geometry.radius_in:.4f} in",
+        f"{2.0 * plan.radius_in / 12.0:.1f}-foot":
+            f"the log-sized dome's diameter; this book's is "
+            f"{2.0 * geometry.radius_in / 12.0:.3f} ft",
+        "369 square feet of floor":
+            f"the pad platform, not a floor; the dome's is "
+            f"{seed.floor_decagon_sqft:.0f} sq ft",
+    }
+
+
+def validate_reference_dome(book: "Book | None" = None) -> None:
+    """No section may quote the other dome's figures as this one's."""
+    book = book or load_json()
+    wrong = []
+    for _part, chapter, section in book.sections:
+        text = section.body or ""
+        if not text:
+            continue
+        for figure, why in _other_dome_figures().items():
+            if figure in text:
+                wrong.append(f"{chapter.title} / {section.title}: "
+                             f"{figure!r} is {why}")
+    assert not wrong, "the book is describing the wrong dome:\n  " + \
+        "\n  ".join(wrong)
