@@ -2364,6 +2364,19 @@ def main() -> int:
         print(f"SMOKETEST: {len(launched)}/{expected_buttons} launch buttons produced "
               f"a config ticket")
         return 0
+
+    # Open on a named tab when asked. LAUNCHER_TAB is matched case-insensitively
+    # against the tab labels, so "book" finds "Wedge Method Book" without
+    # anybody having to spell it exactly.
+    wanted = (os.environ.get("LAUNCHER_TAB") or "").strip().lower()
+    if wanted:
+        for tab_id in notebook.tabs():
+            if wanted in notebook.tab(tab_id, "text").lower():
+                notebook.select(tab_id)
+                break
+        else:
+            append_log(f"no tab matching {wanted!r}; opening on the first")
+
     root.mainloop()
     return 0
 

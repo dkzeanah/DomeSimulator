@@ -578,6 +578,7 @@ def _build() -> tuple[Token, ...]:
         *_calorie_tokens(),
         *_domology_tokens(),
         *_part3_tokens(),
+        *_seed_tokens(),
 
         # -- build choices ---------------------------------------------
         Token("jig.head_overfit_in", "stock deliberately left long",
@@ -1833,6 +1834,114 @@ def _seam_groups() -> tuple[tuple[float, int], ...]:
             counts[angle] = counts.get(angle, 0) + 1
         _SEAM_GROUPS = tuple(sorted(counts.items()))
     return _SEAM_GROUPS
+
+
+def _seed_tokens() -> list[Token]:
+    """The manufactured stem-cell systems (Part 3): the shower-cap soft
+    shell, the blanket quilt, the mast, the floor and the floating rig.
+
+    Every figure reads live from :mod:`soft_shell` and :mod:`seed_model`,
+    the same modules the campaign film quotes, so the book and the pitch
+    cannot disagree about a dollar of cap fabric or a foot of mast.
+    """
+    try:
+        import soft_shell
+        import seed_model
+    except ImportError:
+        return []
+
+    def soft_row(layers: int, attr: str):
+        def value() -> str:
+            row = soft_shell.compare(12)[layers]
+            return _n(getattr(row, attr))
+        return value
+
+    def seed_quote(shell: str, attr: str, places: int = 0):
+        def value() -> str:
+            quoted = seed_model.quote("stem_cell", shell=shell)
+            return _n(getattr(quoted, attr), places)
+        return value
+
+    def group_cost(name: str, attr: str = "cost"):
+        def value() -> str:
+            group = getattr(seed_model, name)()
+            return _n(getattr(group, attr))
+        return value
+
+    return [
+        # ---- 69: the dome that stacks hats -----------------------------
+        Token("hat.standard_list", "the standard article's list price, dollars",
+              seed_quote("soft", "price")),
+        Token("hat.standard_build", "what it costs to build, dollars",
+              seed_quote("soft", "cost_to_build")),
+        Token("hat.per_sqft", "the standard article, dollars per sq ft of floor",
+              lambda: _n(seed_model.quote("stem_cell").price
+                         / seed_model.seed_geometry().floor_decagon_sqft, 0)),
+        Token("hat.hard_list", "the same dome with the laminated hull, dollars",
+              seed_quote("hard", "price")),
+        Token("hat.list_saving", "what the cap takes off the list price, dollars",
+              lambda: _n(seed_model.quote("stem_cell", shell="hard").price
+                         - seed_model.quote("stem_cell").price)),
+        Token("hat.soft_0", "the cap stack with no quilts, dollars",
+              soft_row(0, "soft_usd")),
+        Token("hat.soft_3", "the cap stack with three quilts, dollars",
+              soft_row(3, "soft_usd")),
+        Token("hat.soft_7", "the cap stack with seven quilts, dollars",
+              soft_row(7, "soft_usd")),
+        Token("hat.hard_3", "the hull plus its bays and three quilts, dollars",
+              soft_row(3, "hard_usd")),
+        Token("hat.hard_7", "the hull plus its bays and seven quilts, dollars",
+              soft_row(7, "hard_usd")),
+        Token("hat.saving_3", "what the cap saves at three quilts, dollars",
+              soft_row(3, "saving")),
+        Token("hat.saving_7", "what the cap saves at seven quilts, dollars",
+              soft_row(7, "saving")),
+        Token("hat.cavity_limit", "quilt layers the hull's cavity holds",
+              lambda: _n(soft_shell.cavity_limit())),
+        Token("hat.growth_7", "per cent bigger the seventh cap is than the first",
+              lambda: _n(soft_shell.growth_fraction(7) * 100.0, 1)),
+        Token("hat.cap_life", "years a rain-slick cap lasts before UV takes it",
+              lambda: _n(soft_shell.declared("cap_life_years"))),
+        Token("hat.membrane_life", "years the monolithic membrane lasts",
+              lambda: _n(soft_shell.declared("membrane_life_years"))),
+        Token("quilt.blanket", "a blanket-quilted layer, dollars",
+              lambda: _n(soft_shell.declared("blanket_quilt_usd_per_layer"))),
+        Token("quilt.thickness", "how thick one quilted layer compresses to, in",
+              lambda: _n(soft_shell.declared("layer_thickness_in"), 2)),
+        Token("quilt.yard_first", "a yard-priced quilt at the first size, dollars",
+              lambda: _n(soft_shell.soft_shell(1, quilt="yard").cost
+                         - soft_shell.soft_shell(0).cost)),
+        Token("hat.cap_sqft", "fabric in the outer cap at three quilts, sq ft",
+              lambda: _n(soft_shell.soft_shell(3).cap_sqft)),
+        # ---- 70: the mast and the floor ---------------------------------
+        Token("mast.total", "the mast through the column, dollars",
+              group_cost("mast_group")),
+        Token("mast.rise_ft", "how long the mast runs, ft",
+              lambda: _n(seed_model.mast_rise_ft(), 1)),
+        Token("mast.ring", "the apex lifting ring, dollars",
+              lambda: _n(seed_model.declared("mast_apex_ring_usd"))),
+        Token("floor.total", "the dome's own floor, dollars",
+              group_cost("dome_floor_group")),
+        Token("floor.hub", "the hub ring that clamps the mast, dollars",
+              lambda: _n(seed_model.declared("floor_hub_usd"))),
+        Token("floor.deck_sqft", "floor the deck covers, sq ft",
+              lambda: _n(seed_model.seed_geometry().floor_decagon_sqft)),
+        Token("floor.spokes", "radial steel spokes under the deck",
+              lambda: _n(seed_model.seed_geometry().base_sides)),
+        # ---- 71: the floating dome --------------------------------------
+        Token("rig.total", "the floating rig, dollars",
+              group_cost("suspension_group")),
+        Token("rig.cables", "cables from the apex hanger",
+              lambda: _n(3)),
+        Token("rig.span", "the cable span the rig is priced on, ft",
+              lambda: _n(seed_model.declared("suspension_span_ft"))),
+        Token("float.frame_lb", "the frame's weight in green pine, lb",
+              lambda: _n(seed_model.frame_weight_lb())),
+        Token("float.all", "mast, floor and rig together, dollars",
+              lambda: _n(seed_model.mast_group().cost
+                         + seed_model.dome_floor_group().cost
+                         + seed_model.suspension_group().cost)),
+    ]
 
 
 def _chapter_tokens() -> list[Token]:

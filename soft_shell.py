@@ -20,7 +20,9 @@ cap for the house.** From the frame outwards --
    friction fit;
 2. a **monolithic sheet** over all of it -- one continuous polymer membrane,
    no seams to fail;
-3. **quilted layers** of recycled fabric, added one at a time over years;
+3. **quilted layers** of recycled fabric -- thrift-store blankets and
+   clothing, quilted by the owner, a declared $50 a layer -- added one at a
+   time over years;
 4. a **rain-slick outer cap** pulled over the lot and strapped down.
 
 The point is 4 over 3. A cap is a bag: when the stack under it gets thicker,
@@ -70,6 +72,11 @@ EXTERNAL_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
     ("layer_thickness_in", 1.25, "in",
      "measured: how thick one quilted layer of recycled fabric compresses "
      "to under a strapped cap. It is what makes the next cap bigger"),
+    ("blanket_quilt_usd_per_layer", 50.0, "USD/layer",
+     "assumption: one quilted layer made of thrift-store blankets and "
+     "recycled clothing -- the fabric is a waste stream, and the owner does "
+     "the quilting. What a $50 layer buys, and the reason the soft shell is "
+     "the first choice before the yard-priced quilt"),
     ("outer_panel_usd_per_sqft", 2.40, "USD/sq ft",
      "borrowed: seed_model's hard_panel_usd_per_sqft. The panel that used "
      "to compression-fit from outside becomes the weather barrier, screwed "
@@ -179,8 +186,15 @@ def _panel_lines() -> list[Line]:
     ]
 
 
-def soft_shell(layers: int = 0) -> SoftShell:
-    """The whole cap stack at ``layers`` of quilted insulation."""
+def soft_shell(layers: int = 0, quilt: str = "blanket") -> SoftShell:
+    """The whole cap stack at ``layers`` of quilted insulation.
+
+    ``quilt`` prices the insulation layers. ``blanket`` (the first choice)
+    is thrift-store blankets and recycled clothing quilted by the owner --
+    one declared $50 layer of waste-stream fabric. ``yard`` is the
+    purchased quilt fabric priced per square foot, which is what the
+    hard-shell comparison and the park model use.
+    """
     geometry = seed_model.seed_geometry()
     cap_area = hat_sizes(layers)[-1]
     membrane_area = hat_sizes(0)[0]
@@ -191,15 +205,23 @@ def soft_shell(layers: int = 0) -> SoftShell:
                       "membrane_usd_per_sqft"))
 
     if layers > 0:
-        ladder = seed_model.quilt_ladder(layers, geometry)
-        # Each layer is bought at the size it actually has to be, not the
-        # size of the first one. This is the stacking-hats cost.
-        sizes = hat_sizes(layers)
-        per_sqft = ladder.usd_per_sqft_layer
-        for index in range(layers):
-            lines.append(Line(
-                f"quilted layer {index + 1}", sizes[index], "sq ft",
-                per_sqft, "quilt_ladder"))
+        if quilt == "blanket":
+            for index in range(layers):
+                lines.append(Line(
+                    f"blanket-quilted layer {index + 1} "
+                    f"(recycled clothing)", 1.0, "layer",
+                    declared("blanket_quilt_usd_per_layer"),
+                    "blanket_quilt_usd_per_layer"))
+        else:
+            ladder = seed_model.quilt_ladder(layers, geometry)
+            # Each layer is bought at the size it actually has to be, not the
+            # size of the first one. This is the stacking-hats cost.
+            sizes = hat_sizes(layers)
+            per_sqft = ladder.usd_per_sqft_layer
+            for index in range(layers):
+                lines.append(Line(
+                    f"quilted layer {index + 1}", sizes[index], "sq ft",
+                    per_sqft, "quilt_ladder"))
 
     # The outer cap is sized for the finished stack, and its seam runs the
     # ten base edges plus the ten meridians it is panelled from.
@@ -240,8 +262,7 @@ def hard_equivalent(layers: int) -> float:
     """
     geometry = seed_model.seed_geometry()
     shell = seed_model.shell_group(geometry, "boatyard").cost
-    bays = next(g for g in seed_model.quote().groups
-                if g.label == "Panel bays").cost
+    bays = seed_model.envelope_group(geometry).cost
     quilt = seed_model.quilt_group(layers, geometry).cost if layers else 0.0
     return shell + bays + quilt
 
@@ -256,12 +277,18 @@ def cavity_limit() -> int:
     return int(depth_in // declared("layer_thickness_in"))
 
 
-def compare(max_layers: int = 12) -> tuple[Comparison, ...]:
-    """Soft against hard, layer by layer, including past the cavity's limit."""
+def compare(max_layers: int = 12, quilt: str = "blanket"
+            ) -> tuple[Comparison, ...]:
+    """Soft against hard, layer by layer, including past the cavity's limit.
+
+    ``quilt`` chooses how the soft side's layers are priced: ``blanket``
+    (thrift blankets and clothing, $50 a layer -- the campaign's first
+    choice) or ``yard`` (purchased quilt fabric per square foot).
+    """
     geometry = seed_model.seed_geometry()
     out = []
     for layers in range(max_layers + 1):
-        soft = soft_shell(layers)
+        soft = soft_shell(layers, quilt)
         added = (seed_model.quilt_ladder(layers, geometry).added_r
                  if layers else 0.0)
         capped = min(layers, cavity_limit())
@@ -325,6 +352,8 @@ def report() -> str:
         f"{envelope_sqft():,.0f} sq ft at the skin",
         f"  one quilted layer is {declared('layer_thickness_in'):.2f} in "
         "thick, so every hat is a size up",
+        f"  a blanket-quilted layer is a declared "
+        f"${declared('blanket_quilt_usd_per_layer'):,.0f} of thrift fabric",
         f"  the hard shell's cavity holds {cavity_limit()} layers and then "
         "it is full",
         "",
@@ -337,6 +366,9 @@ def report() -> str:
             f"  {row.layers:>4}  ${row.soft_usd:>7,.0f} ${row.hard_usd:>7,.0f} "
             f"${row.saving:>8,.0f}  {row.soft_r:>7.1f}  {row.hard_r:>6.1f}  "
             f"{cap:>8,.0f}")
+    yard_first = soft_shell(1, quilt="yard").cost - soft_shell(0).cost
+    lines.append(f"  (a yard-priced quilted layer would cost "
+                 f"${yard_first:,.0f} at the first size instead)")
     grow = growth_fraction(7) * 100.0
     lines.append("")
     lines.append(f"  seven layers makes the outer cap {grow:.1f}% bigger "
@@ -375,11 +407,20 @@ def validate_soft_shell() -> None:
             assert line.quantity > 0.0, line.label
             assert line.unit_cost > 0.0, line.label
             assert line.source, line.label
-        # The quilted layers must be bought at growing sizes.
-        quilted = [l for l in shell.lines if l.label.startswith("quilted")]
+        # The blanket-quilted layers are one declared $50 layer each.
+        quilted = [l for l in shell.lines if l.label.startswith("blanket-")]
         assert len(quilted) == layers, (layers, len(quilted))
+        # The yard-priced layers must be bought at growing sizes.
+        yard = soft_shell(layers, quilt="yard")
+        yard_quilted = [l for l in yard.lines if l.label.startswith("quilted")]
+        assert len(yard_quilted) == layers, (layers, len(yard_quilted))
         assert all(b.quantity > a.quantity
-                   for a, b in zip(quilted, quilted[1:])), layers
+                   for a, b in zip(yard_quilted, yard_quilted[1:])), layers
+        # A blanket layer is the declared flat price, wherever the stack is.
+        if layers:
+            blanket = next(l for l in shell.lines
+                           if l.label.startswith("blanket-"))
+            assert blanket.cost == declared("blanket_quilt_usd_per_layer")
 
     # The claim worth making: the soft shell is cheaper to buy. If it ever
     # stops being, the argument for it is only the growth and the prose has

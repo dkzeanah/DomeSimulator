@@ -658,6 +658,65 @@ DECLARED_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
      "assumption: the gasketed pass-through where a polyp reaches back "
      "through the shell to the inside"),
 
+    # --- the mast, the floor, and the floating rig ------------------
+    ("mast_steel_core_usd_per_ft", 18.0, "USD/ft",
+     "assumption: 2.5 in schedule-40 steel pipe, the core that carries the "
+     "whole structure when it is hoisted. Metal where the strength is"),
+    ("mast_wood_clad_usd_per_ft", 6.0, "USD/ft",
+     "assumption: the mast's timber cladding -- softwood boxed around the "
+     "steel core, because everything else in the room is wood and a bare "
+     "steel pipe reads as scaffolding"),
+    ("mast_apex_ring_usd", 240.0, "USD",
+     "assumption: the forged lifting ring that lands on top of the mast at "
+     "the apex, under the seal cap -- the hoist point for the whole "
+     "building. Sized by an engineer for the lifted weight; priced here as "
+     "the fitting it is"),
+    ("mast_base_flange_usd", 95.0, "USD",
+     "assumption: the base plate that lands the mast on the service port, "
+     "bolted through the pad's deck framing"),
+    ("mast_hours", 5.0, "hours",
+     "assumption: cutting, welding and cladding one mast, apex ring and "
+     "flange"),
+    ("floor_hub_usd", 310.0, "USD",
+     "assumption: the steel hub ring that clamps the mast and takes ten "
+     "radial floor spokes -- the metal heart of an otherwise wooden floor"),
+    ("floor_spokes_usd_each", 34.0, "USD each",
+     "assumption: one radial steel spoke from the hub to a base vertex, "
+     "bracketed to the ring -- metal where the strength is"),
+    ("floor_deck_usd_per_sqft", 3.10, "USD/sq ft",
+     "assumption: pressure-treated deck boards over the spokes, owner-"
+     "installed. The floor is the upgrade, bought after the dome"),
+    ("floor_rail_usd_per_ft", 6.50, "USD/ft",
+     "assumption: the low edge rail around the deck, one board high, so a "
+     "floor ten feet up is not a ledge"),
+    ("floor_hours", 9.0, "hours",
+     "assumption: hanging the hub, running the spokes, laying the boards "
+     "and the rail"),
+    ("hoist_winch_usd", 640.0, "USD",
+     "assumption: a brake winch and block, priced as the tool. Its rating "
+     "is the engineer's number, not the model's -- this model does not "
+     "rate lifting gear"),
+    ("suspension_cable_usd_per_ft", 1.85, "USD/ft",
+     "assumption: galvanized steel cable, three legs from the apex hanger "
+     "to the trees"),
+    ("suspension_hanger_usd", 260.0, "USD",
+     "assumption: the forged hanger that rides on the mast's apex ring and "
+     "takes the three cables -- what turns the hoist point into a hang "
+     "point"),
+    ("tree_saddle_usd_each", 145.0, "USD each",
+     "assumption: a tree-hugger sling and shackle per leg -- no holes in "
+     "the tree, which is the whole point"),
+    ("rigging_hours", 8.0, "hours",
+     "assumption: two people, half a day, to set three slings, three "
+     "cables and the winch"),
+    ("suspension_span_ft", 28.0, "ft",
+     "assumption: the cable span the floating rig is priced on -- apex to "
+     "tree, on average. Longer spans buy more cable and the same rig"),
+    ("pine_green_lb_per_cuft", 38.0, "lb/cu ft",
+     "borrowed: published density of green southern pine. Used once, to "
+     "put a weight on the frame so the floating chapter can say what is "
+     "being lifted -- the lifted whole is the engineer's number"),
+
     # --- the modules the stem cell ships with ----------------------
     ("ac_usd_per_kbtu", 78.0, "USD per 1000 BTU/h",
      "assumption: a small inverter mini-split, installed cost per unit of "
@@ -1539,6 +1598,128 @@ def column_group(geometry: SeedGeometry | None = None) -> Group:
 
 
 # ----------------------------------------------------------------------
+# The mast, the floor, and the floating rig
+# ----------------------------------------------------------------------
+
+def mast_rise_ft(geometry: SeedGeometry | None = None) -> float:
+    """How long the mast runs: service port to apex, plus the stub that
+    carries the lifting ring above the shell."""
+    geometry = geometry or seed_geometry()
+    return column_rise_ft(geometry) + 1.5
+
+
+def mast_group(geometry: SeedGeometry | None = None) -> Group:
+    """The mast through the utility column: steel where the strength is,
+    wood everywhere else.
+
+    The floor hangs off it, the hoist lifts by it, and the floating rig
+    hangs from it. The mast does not replace the column -- it stands inside
+    it, so the services and the structure share one penetration and one
+    object to look at."""
+    geometry = geometry or seed_geometry()
+    rise = mast_rise_ft(geometry)
+    return Group("mast", "Mast through the utility column", (
+        Line("steel core, service port to apex ring", rise, "ft",
+             declared("mast_steel_core_usd_per_ft"),
+             "mast_steel_core_usd_per_ft"),
+        Line("timber cladding over the core", rise, "ft",
+             declared("mast_wood_clad_usd_per_ft"),
+             "mast_wood_clad_usd_per_ft"),
+        Line("apex lifting ring under the seal cap", 1.0, "each",
+             declared("mast_apex_ring_usd"), "mast_apex_ring_usd"),
+        Line("base flange on the service port", 1.0, "each",
+             declared("mast_base_flange_usd"), "mast_base_flange_usd"),
+    ), optional=True)
+
+
+def dome_floor_group(geometry: SeedGeometry | None = None) -> Group:
+    """The dome's own floor: the upgrade, bought after the dome.
+
+    A steel hub clamps the mast; radial steel spokes run from the hub to
+    the base ring; timber decking covers them. The pad's deck was the
+    host's and stays when the dome leaves; this floor is the buyer's and
+    goes with the dome -- which is what makes a floating dome possible at
+    all."""
+    geometry = geometry or seed_geometry()
+    spokes = float(geometry.base_sides)
+    deck_sqft = geometry.floor_decagon_sqft
+    rail_ft = geometry.base_perimeter_ft
+    return Group("floor", "The dome's own floor (the upgrade)", (
+        Line("hub ring that clamps the mast", 1.0, "each",
+             declared("floor_hub_usd"), "floor_hub_usd"),
+        Line("radial steel spokes, hub to base ring", spokes, "each",
+             declared("floor_spokes_usd_each"), "floor_spokes_usd_each"),
+        Line("timber decking over the spokes", deck_sqft, "sq ft",
+             declared("floor_deck_usd_per_sqft"), "floor_deck_usd_per_sqft"),
+        Line("edge rail", rail_ft, "ft",
+             declared("floor_rail_usd_per_ft"), "floor_rail_usd_per_ft"),
+    ), optional=True)
+
+
+def suspension_group(geometry: SeedGeometry | None = None) -> Group:
+    """The floating rig: three cables, three tree saddles, and the hanger
+    that rides the mast's lifting ring. Priced, not rated -- the loads
+    are the engineer's."""
+    geometry = geometry or seed_geometry()
+    span = declared("suspension_span_ft")
+    return Group("suspend", "Floating rig (cables and trees)", (
+        Line("galvanized cable, three legs", 3.0 * span, "ft",
+             declared("suspension_cable_usd_per_ft"),
+             "suspension_cable_usd_per_ft"),
+        Line("apex hanger on the lifting ring", 1.0, "each",
+             declared("suspension_hanger_usd"), "suspension_hanger_usd"),
+        Line("tree saddle and shackle", 3.0, "each",
+             declared("tree_saddle_usd_each"), "tree_saddle_usd_each"),
+        Line("brake winch and block", 1.0, "each",
+             declared("hoist_winch_usd"), "hoist_winch_usd"),
+    ), optional=True)
+
+
+def frame_weight_lb(geometry: SeedGeometry | None = None) -> float:
+    """The frame alone, in green pine: volume times a declared density.
+
+    Not the lifted whole -- the shell or cap, the column and the floor add
+    to it, and the hoist's rating is the engineer's number, not this one.
+    The number exists so the floating chapter can say what is being lifted
+    without inventing a rating."""
+    geometry = geometry or seed_geometry()
+    return geometry.member_volume_cuft * declared("pine_green_lb_per_cuft")
+
+
+def floating_report(geometry: SeedGeometry | None = None) -> str:
+    """The mast, the floor and the floating rig, priced as one upgrade
+    path."""
+    geometry = geometry or seed_geometry()
+    mast = mast_group(geometry)
+    floor = dome_floor_group(geometry)
+    rig = suspension_group(geometry)
+    lines = [
+        "THE MAST, THE FLOOR, AND THE FLOATING RIG",
+        f"  frame weight, green pine          {frame_weight_lb(geometry):>8,.0f} lb",
+        "    (the lifted whole -- shell, column, floor -- is the",
+        "     engineer's number; this model prices the parts, not a rating)",
+        "",
+        "  " + mast.label,
+        *[f"    {line.label:<38} ${line.cost:>8,.0f}"
+          for line in mast.lines],
+        f"    {'total':<38} ${mast.cost:>8,.0f}",
+        "",
+        "  " + floor.label,
+        *[f"    {line.label:<38} ${line.cost:>8,.0f}"
+          for line in floor.lines],
+        f"    {'total':<38} ${floor.cost:>8,.0f}",
+        "",
+        "  " + rig.label,
+        *[f"    {line.label:<38} ${line.cost:>8,.0f}"
+          for line in rig.lines],
+        f"    {'total':<38} ${rig.cost:>8,.0f}",
+        "",
+        f"  mast + floor + rig              ${mast.cost + floor.cost + rig.cost:>8,.0f}",
+    ]
+    return "\n".join(lines)
+
+
+# ----------------------------------------------------------------------
 # Sizing the machinery off the envelope
 # ----------------------------------------------------------------------
 
@@ -2117,6 +2298,21 @@ class Quote:
                 return item
         raise KeyError(key)
 
+    def find(self, key: str, *fallbacks: str) -> Group | None:
+        """A group by key, or the first fallback present, or None.
+
+        The quote's shape depends on the shell: a hard-shelled dome has an
+        "envelope" group of bay panels and a "shell" group of laminate, while
+        a shower-capped one has a single "shell" group that carries its own
+        outer panels. Anything asking for a group that only exists in one of
+        those configurations should ask this way rather than assume.
+        """
+        for candidate in (key, *fallbacks):
+            for item in self.groups:
+                if item.key == candidate:
+                    return item
+        return None
+
     def has(self, key: str) -> bool:
         return any(item.key == key for item in self.groups)
 
@@ -2230,7 +2426,8 @@ anything."""
 def quote(fitout_key: str = "stem_cell", *, resin: str = "boatyard",
           frame_stock: str = "customer_trees", seam: str = "hose",
           ac: str = "window", polyps: int | None = None, quilt: int = 0,
-          shell: str = "hard",
+          shell: str = "soft", mast: bool = False, floor_kit: bool = False,
+          suspend: bool = False,
           include: tuple[str, ...] | None = STANDARD_OPTIONS,
           geometry: SeedGeometry | None = None) -> Quote:
     """Price one dome.
@@ -2245,11 +2442,16 @@ def quote(fitout_key: str = "stem_cell", *, resin: str = "boatyard",
     *pad* side: it is in the quote so the whole picture is visible, and it is
     out of the dome's price because a dome buyer does not pay for it.
 
-    ``shell`` picks the skin. ``"hard"`` is the default and the best case: a
-    laminated hull, a fifty-year object, and what the standard article ships
-    with. ``"soft"`` is the shower-cap stack -- cheaper to buy and, unlike a
-    hull, able to grow a layer at a time -- and it replaces both the hull and
-    the bay panels, because the cap carries its own. See :mod:`soft_shell`.
+    ``shell`` picks the skin. ``"soft"`` is the default and the first
+    choice: the shower-cap stack -- cheaper to buy, and unlike a hull it
+    grows a layer at a time -- and it replaces both the hull and the bay
+    panels, because the cap carries its own. ``"hard"`` is the laminated
+    hull, a fifty-year object, sold as the upgrade. See :mod:`soft_shell`.
+
+    ``mast``, ``floor_kit`` and ``suspend`` add the three upgrade groups
+    that turn the stem cell into a structure that can be hoisted and hung:
+    the mast through the utility column, the dome's own floor, and the
+    floating rig.
     """
     if shell not in ("hard", "soft"):
         raise ValueError(f"shell must be 'hard' or 'soft', not {shell!r}")
@@ -2284,8 +2486,18 @@ def quote(fitout_key: str = "stem_cell", *, resin: str = "boatyard",
                      insulated=include is None or "insulation" in (include or ())),
         pad_group(geometry),
     ]
+    if mast:
+        groups.append(mast_group(geometry))
+    if floor_kit:
+        groups.append(dome_floor_group(geometry))
+    if suspend:
+        groups.append(suspension_group(geometry))
     if include is not None:
         keep = set(include)
+        for key, wanted in (("mast", mast), ("floor", floor_kit),
+                            ("suspend", suspend)):
+            if wanted:
+                keep.add(key)
         groups = [g for g in groups if not g.optional or g.key in keep]
     return Quote(fitout=spec, resin=resin, frame_stock=frame_stock,
                  groups=tuple(g for g in groups if g.lines), geometry=geometry,
@@ -3090,10 +3302,11 @@ def levers() -> tuple:
         # because it makes the floor price look reachable by a route that
         # does not exist.
         Lever("soft_shell", "A shower cap instead of a laminated hull",
-              "Outer panels, a monolithic membrane, quilted layers and a "
-              "strapped rain cap in place of the boatyard laminate. Cheaper "
-              "to buy and, unlike a hull, it can be added to a layer at a "
-              "time. See soft_shell.py for what it gives up.",
+              "What the standard article already does, shown as the saving "
+              "it took: outer panels, a monolithic membrane, quilted layers "
+              "and a strapped rain cap, against the boatyard hull and the "
+              "bay sandwich it replaced. See soft_shell.py for what the cap "
+              "gives up.",
               {}, shell="soft"),
         Lever("two_slices", "Two shell halves instead of four slices",
               "Half the S-lip seam to mould and gasket. Cheaper, and it "
@@ -3164,11 +3377,18 @@ a margin cut is the owner earning less, and insulation, bought timber and a
 vinyl ester skin are things you pay MORE for. They share the table so the two
 kinds of change can never be mistaken for one another."""
 
+HULL_LEVERS = ("soft_shell", "thin_panels", "sheathed", "two_slices",
+               "eight_slices", "vinylester")
+"""Levers that change the *hull*. The standard article now ships the shower
+cap, so these are priced against the laminated hull -- the option they
+modify -- while every other lever is priced against the soft standard."""
+
 
 def lever_prices(geometry=None) -> tuple:
     """Each lever's own price and what it saves, ranked by saving."""
     geometry = geometry or seed_geometry()
-    base = quote("stem_cell", geometry=geometry).price
+    base_soft = quote("stem_cell", geometry=geometry).price
+    base_hard = quote("stem_cell", shell="hard", geometry=geometry).price
     rows = []
     saved = dict(_OVERRIDES)
     try:
@@ -3183,10 +3403,12 @@ def lever_prices(geometry=None) -> tuple:
                 seam=lever.seam or "hose",
                 polyps=lever.polyps,
                 quilt=lever.quilt or 0,
-                shell=lever.shell or "hard",
+                shell=lever.shell or ("hard" if lever.key in HULL_LEVERS
+                                      else "soft"),
                 include=(lever.include if lever.include is not None
                          else STANDARD_OPTIONS),
                 geometry=geometry).price
+            base = base_hard if lever.key in HULL_LEVERS else base_soft
             rows.append((lever, priced, base - priced))
     finally:
         _OVERRIDES.clear()
@@ -3219,8 +3441,11 @@ def floor_price(geometry=None) -> tuple:
 def lever_report(geometry=None) -> str:
     geometry = geometry or seed_geometry()
     base = quote("stem_cell", geometry=geometry)
+    hard = quote("stem_cell", shell="hard", geometry=geometry)
     out = ["HOW FAR DOWN THE STEM CELL GOES", "",
-           f"  {'standard stem cell':<50} ${base.price:>9,.0f}", ""]
+           f"  {'standard stem cell (shower cap)':<50} ${base.price:>9,.0f}",
+           f"  {'the same dome, laminated hull':<50} ${hard.price:>9,.0f}",
+           ""]
     for lever, priced, saving in lever_prices(geometry):
         sign = "-" if saving >= 0 else "+"
         out.append(f"  {lever.label[:50]:<50} ${priced:>9,.0f}  "

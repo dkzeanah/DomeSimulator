@@ -397,6 +397,255 @@ def render_jig(figure: Figure, path_key: str | None = None) -> Path:
     return save(fig, path_key or figure.key)
 
 
+# ----------------------------------------------------------------------
+# The hat stack and the mast: the campaign's soft shell, floor and rig
+# ----------------------------------------------------------------------
+
+QUILT_PALETTE: tuple[tuple[float, float, float, float], ...] = (
+    (0.42, 0.47, 0.60, 1.0),   # denim
+    (0.62, 0.27, 0.26, 1.0),   # flannel red
+    (0.70, 0.60, 0.28, 1.0),   # mustard
+    (0.48, 0.55, 0.42, 1.0),   # sage
+    (0.84, 0.79, 0.68, 1.0),   # cream
+    (0.46, 0.39, 0.32, 1.0),   # brown
+    (0.55, 0.55, 0.58, 1.0),   # grey wool
+    (0.34, 0.50, 0.48, 1.0),   # teal
+    (0.60, 0.44, 0.56, 1.0),   # mauve
+    (0.76, 0.66, 0.48, 1.0),   # tan
+)
+
+CAP_RGBA = (0.72, 0.80, 0.88, 0.45)
+MEMBRANE_RGBA = (0.55, 0.58, 0.60, 0.30)
+STEEL = (0.24, 0.26, 0.30, 1.0)
+STEEL_WOOD = (0.55, 0.42, 0.27, 1.0)
+CABLE = (0.15, 0.16, 0.18, 1.0)
+TREE = (0.33, 0.24, 0.16, 1.0)
+
+
+def _face_triangles(model, offset_in: float, colour=None,
+                    patchwork: bool = False):
+    """The dome's solved 40 faces, stood ``offset_in`` proud of the sphere.
+
+    A layer of constant thickness over a hemisphere is the same surface
+    scaled about its centre, so the quilt and the cap are the model's own
+    panel triangles -- not a redrawn dome -- scaled outward by the layer's
+    thickness.
+    """
+    import numpy as np
+
+    vertices = np.asarray(model.topology.vertices, dtype=np.float64)
+    radius = model.topology.sphere_radius_in
+    scale = (radius + offset_in) / radius
+    tris = []
+    for face in model.topology.faces:
+        tris.append([vertices[i] * scale for i in face.vertices])
+    tris = np.asarray(tris, dtype=np.float64)
+    if patchwork:
+        colours = np.asarray([QUILT_PALETTE[i % len(QUILT_PALETTE)]
+                              for i in range(len(tris))])
+    else:
+        colours = np.zeros((len(tris), 4))
+        colours[:, :] = colour
+    return tris, colours
+
+
+def _draw_mesh(axes, tris, colours, shade: bool = True):
+    """Add one triangle batch to a 3-D axes, lambert-shaded like the dome."""
+    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+    facecolors = _shade(tris, colours) if shade else colours
+    collection = Poly3DCollection(tris, facecolors=facecolors,
+                                  edgecolors="none", linewidths=0.0)
+    axes.add_collection3d(collection)
+
+
+def _base_ring(model):
+    """The ten vertices where the hemisphere meets the ground."""
+    import numpy as np
+
+    vertices = np.asarray(model.topology.vertices, dtype=np.float64)
+    return vertices[np.abs(vertices[:, 2]) < 1e-6]
+
+
+def render_hat_stack(figure: Figure, path_key: str | None = None) -> Path:
+    """The dome stacking hats: frame, quilted layers, and the shower cap.
+
+    Everything here is the solved model: the frame is the simulator's own
+    mesh, and the quilt and cap are the model's 40 panel faces scaled
+    outward by the layer thicknesses -- the same geometry
+    :mod:`soft_shell` prices, drawn instead of described.
+    """
+    import numpy as np
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection
+
+    from . import raw_wedge_bridge as bridge
+
+    spec = figure.spec
+    layers = int(spec.get("layers", 3))
+    view = spec.get("view", "three_quarter")
+    long_edge_in = spec.get("long_edge_in")
+    trunk_diameter_in = spec.get("trunk_diameter_in")
+    elevation, azimuth, zoom = VIEWS.get(view, VIEWS["three_quarter"])
+
+    model = bridge.model(long_edge_in=long_edge_in,
+                         trunk_diameter_in=trunk_diameter_in)
+    sim = bridge.simulator()
+    meshes = sim.build_world_meshes(model)
+
+    height = PAGE_H_IN if figure.full_page else HALF_H_IN
+    fig = new_figure(PAGE_W_IN, height)
+    axes = fig.add_subplot(111, projection="3d")
+    axes.set_axis_off()
+    axes.set_facecolor(STYLE.paper)
+
+    radius = model.topology.sphere_radius_in
+
+    # The frame, in the print palette.
+    data = meshes.get("wood")
+    if data is None:
+        raise RuntimeError("the solved model produced no frame mesh")
+    frame_tris, frame_colours = _mesh_triangles(data)
+    _draw_mesh(axes, frame_tris, _recolour(frame_colours, "timber"))
+
+    # The membrane, just proud of the frame -- what the quilts lie on.
+    membrane_tris, membrane_colours = _face_triangles(
+        model, 0.15, colour=MEMBRANE_RGBA)
+    _draw_mesh(axes, membrane_tris, membrane_colours, shade=False)
+
+    # The quilt: the dome's own forty panels, one fabric patch each, at the
+    # thickness of the stack. A monolithic layer with the seams of the
+    # building still visible through it.
+    quilt_in = 0.15 + 1.25 * layers
+    quilt_tris, quilt_colours = _face_triangles(
+        model, quilt_in, patchwork=True)
+    _draw_mesh(axes, quilt_tris, quilt_colours, shade=False)
+
+    # The shower cap over all of it, water-slick and translucent, strapped
+    # from the base ring to the crown.
+    cap_in = quilt_in + 0.5
+    cap_tris, cap_colours = _face_triangles(model, cap_in, colour=CAP_RGBA)
+    _draw_mesh(axes, cap_tris, cap_colours, shade=False)
+
+    ring = _base_ring(model) * (radius + cap_in) / radius
+    apex = np.asarray([[0.0, 0.0, radius + cap_in]])
+    straps = [np.asarray([point, apex[0]]) for point in ring]
+    axes.add_collection3d(Line3DCollection(straps, colors=CABLE[:3],
+                                           linewidths=0.7))
+    axes.scatter(*apex.T, s=26, color=STEEL[:3], depthshade=False)
+
+    limit = (radius + cap_in) * zoom
+    axes.set_xlim(-limit, limit)
+    axes.set_ylim(-limit, limit)
+    axes.set_zlim(0.0, limit * 1.15)
+    axes.set_box_aspect((1.0, 1.0, 0.72))
+    axes.view_init(elev=elevation, azim=azimuth)
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
+    return save(fig, path_key or figure.key)
+
+
+def render_mast_floor(figure: Figure, path_key: str | None = None) -> Path:
+    """The mast through the column, the floor that clamps it, and -- with
+    ``rig`` -- the cables that hang the whole thing between trees.
+
+    The frame is the simulator's mesh; the mast is a line through the
+    centre to the apex, the floor is the solved base ring raised onto the
+    mast, and the rig is three cables from the apex to three trees. The
+    concept, drawn to scale, with the metal where the metal is.
+    """
+    import numpy as np
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection, Poly3DCollection
+
+    from . import raw_wedge_bridge as bridge
+
+    spec = figure.spec
+    view = spec.get("view", "hero")
+    show_floor = bool(spec.get("floor", True))
+    show_rig = bool(spec.get("rig", True))
+    floor_height_in = float(spec.get("floor_height_in", 24.0))
+    long_edge_in = spec.get("long_edge_in")
+    trunk_diameter_in = spec.get("trunk_diameter_in")
+    elevation, azimuth, zoom = VIEWS.get(view, VIEWS["hero"])
+
+    model = bridge.model(long_edge_in=long_edge_in,
+                         trunk_diameter_in=trunk_diameter_in)
+    sim = bridge.simulator()
+    meshes = sim.build_world_meshes(model)
+
+    height = PAGE_H_IN if figure.full_page else HALF_H_IN
+    fig = new_figure(PAGE_W_IN, height)
+    axes = fig.add_subplot(111, projection="3d")
+    axes.set_axis_off()
+    axes.set_facecolor(STYLE.paper)
+
+    radius = model.topology.sphere_radius_in
+
+    # The frame.
+    data = meshes.get("wood")
+    frame_tris, frame_colours = _mesh_triangles(data)
+    _draw_mesh(axes, frame_tris, _recolour(frame_colours, "timber"))
+
+    # The mast: timber cladding over a steel core, floor to apex and a
+    # stub above, carrying the lifting ring.
+    mast_top = radius + 10.0
+    mast_line = np.asarray([[0.0, 0.0, 0.0], [0.0, 0.0, mast_top]])
+    axes.add_collection3d(Line3DCollection([mast_line], colors=STEEL_WOOD[:3],
+                                           linewidths=9.0))
+    axes.add_collection3d(Line3DCollection([mast_line], colors=STEEL[:3],
+                                           linewidths=3.0))
+    axes.scatter([0.0], [0.0], [mast_top], s=60, color=STEEL[:3],
+                 depthshade=False)
+
+    # The floor: the solved base ring raised onto the mast, decked in
+    # timber over radial steel spokes from a hub that clamps the mast.
+    if show_floor:
+        ring = _base_ring(model)
+        ring = ring * (radius / radius)  # the floor matches the base ring
+        centre = np.zeros((1, 3))
+        ring[:, 2] = floor_height_in
+        deck = np.asarray(
+            [np.asarray([centre[0], ring[i], ring[(i + 1) % len(ring)]])
+             for i in range(len(ring))])
+        deck_colours = np.zeros((len(deck), 4))
+        deck_colours[:, :] = (0.76, 0.62, 0.42, 1.0)
+        _draw_mesh(axes, deck, deck_colours)
+        spokes = [np.asarray([centre[0], point]) for point in ring]
+        axes.add_collection3d(Line3DCollection(spokes, colors=STEEL[:3],
+                                               linewidths=1.4))
+        axes.scatter(*centre.T, s=40, color=STEEL[:3], depthshade=False)
+        rail = ring + np.asarray([[0.0, 0.0, 0.0]])
+        axes.add_collection3d(Line3DCollection(
+            [np.asarray([rail[i], rail[(i + 1) % len(rail)]])
+             for i in range(len(rail))],
+            colors=STEEL_WOOD[:3], linewidths=2.2))
+
+    # The rig: three cables from the lifting ring to three trees.
+    if show_rig:
+        for angle in (0.0, 120.0, 240.0):
+            radians = np.radians(angle)
+            tree_x, tree_y = (radius * 2.6 * np.cos(radians),
+                              radius * 2.6 * np.sin(radians))
+            tree_top = mast_top * 0.88
+            axes.add_collection3d(Line3DCollection(
+                [np.asarray([[tree_x, tree_y, -radius * 0.35],
+                             [tree_x, tree_y, tree_top]])],
+                colors=TREE[:3], linewidths=8.0))
+            axes.add_collection3d(Line3DCollection(
+                [np.asarray([[0.0, 0.0, mast_top],
+                             [tree_x, tree_y, tree_top]])],
+                colors=CABLE[:3], linewidths=1.1))
+
+    limit = radius * 1.2 if not show_rig else radius * zoom + radius
+    axes.set_xlim(-limit * 2.6 if show_rig else -limit,
+                  limit * 2.6 if show_rig else limit)
+    axes.set_ylim(-limit * 2.6 if show_rig else -limit,
+                  limit * 2.6 if show_rig else limit)
+    axes.set_zlim(0.0, mast_top * 1.12)
+    axes.set_box_aspect((1.0, 1.0, 0.66))
+    axes.view_init(elev=elevation, azim=azimuth)
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
+    return save(fig, path_key or figure.key)
+
+
 def render_panel_svg(figure: Figure, path_key: str | None = None) -> Path:
     """A flat, full-size panel drawing, exported by the simulator itself.
 
@@ -547,6 +796,8 @@ RENDERERS = {
     "book_plot": render_plot,
     "book_diagram": render_diagram,
     "photo_slot": render_photo_slot,
+    "hat_stack": render_hat_stack,
+    "mast_floor": render_mast_floor,
 }
 
 

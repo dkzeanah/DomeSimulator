@@ -158,9 +158,13 @@ def steps_bay() -> tuple[str, ...]:
         "nothing in that stack is screwed to anything.",
         "the shape of the member holds it.",
         "",
+        # A hard-shelled dome prices the bays separately; a shower-capped one
+        # carries its outer panels inside the shell line. Ask for whichever
+        # this quote has rather than assuming the shell kind.
         "   " + _row(f"{sum(f.count for f in geometry.faces)} bays, "
                      "two panels each",
-                     usd(priced.group("envelope").cost)),
+                     usd((priced.find("envelope", "shell")
+                          or priced.group("shell")).cost)),
         "",
         "and the cavity ships empty on purpose. an empty cavity",
         "is a duct, and every one of them is connected.",

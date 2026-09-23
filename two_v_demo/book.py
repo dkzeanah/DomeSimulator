@@ -340,6 +340,8 @@ SHOT = "lesson_still"           # a frame from one of the films
 PLOT = "book_plot"              # a chart drawn from book_math
 DIAG = "book_diagram"           # a labelled line drawing from geometry
 PHOTO = "photo_slot"            # a photograph the author supplies
+HAT = "hat_stack"               # the dome stacking hats: frame, quilt, cap
+MAST = "mast_floor"             # the mast, the floor, and the floating rig
 
 
 # ======================================================================
@@ -2839,7 +2841,126 @@ PART_SCALE = Part(
     ),
 )
 
-PARTS: tuple[Part, ...] = (PART_BUILD, PART_SCALE)
+PART_FUTURE = Part(
+    number=3,
+    title="Variations and Future Systems",
+    epigraph="The same frame can wear more than one roof, stand on more "
+             "than one ground, and hang from nothing at all.",
+    promise="The manufactured version of the method, and the two systems "
+            "that turn it into something you can lift and hang: the "
+            "shower-cap soft shell, the mast and the floor, and the "
+            "floating dome.",
+    chapters=(
+        Chapter(
+            _NEXT_NUMBER + 16, "The Dome That Stacks Hats",
+            "A soft shell instead of a hard one: the frame wears quilted "
+            "layers of recycled clothing and a rain-slick shower cap, and "
+            "each new hat is a size up from the last",
+            "explain",
+            (
+                _p("opener", "The Dome That Stacks Hats",
+                   "A hard shell is made once, at one size, and quietly "
+                   "caps how good the building is ever allowed to get. A "
+                   "soft one grows a hat at a time.", words=240),
+                _p("plate", "Frame, quilt, cap",
+                   "The dome wearing the stack: the solved frame, the "
+                   "forty fabric patches of the quilted layer, and the "
+                   "translucent cap over all of it.",
+                   figures=(_f("hat-stack",
+                               "The frame, three blanket quilts, and the "
+                               "shower cap over all of it.", HAT,
+                               full_page=True, layers=3),),),
+                _p("table", "The cap against the hull",
+                   "The shower-cap stack against the laminated hull plus "
+                   "its bays, layer by layer, with the saving printed "
+                   "rather than asserted.", words=420),
+                _p("text", "What the cap gives up",
+                   "The honest list: it is not structural, the outer "
+                   "layer is sacrificial, and two impermeable layers with "
+                   "fabric between them is a moisture problem the seam "
+                   "duct has to answer.", words=380),
+                _p("text", "Why the hull becomes the upgrade",
+                   "The hard shell stops being the standard article and "
+                   "becomes the thing you buy later: fifty years, "
+                   "gelcoat, and it fits the same frame.", words=260),
+            ),
+            derives=("soft_shell.soft_shell", "soft_shell.compare",
+                     "soft_shell.cavity_limit",
+                     "seed_model.quote"),
+            ref="stacking_hats",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 17, "The Mast and the Floor",
+            "A steel-core mast through the utility column, a wooden floor "
+            "that clamps to it -- the upgrade bought after the dome -- "
+            "and an apex ring that hoists the whole structure",
+            "explain",
+            (
+                _p("opener", "The Mast and the Floor",
+                   "The dome's own floor is the upgrade, bought after the "
+                   "dome. It hangs off a mast that runs through the "
+                   "utility column: metal where the strength is, wood "
+                   "everywhere else.", words=240),
+                _p("plate", "The mast and the floor",
+                   "The frame, the mast through its centre, and the "
+                   "floor clamped to the mast at working height.",
+                   figures=(_f("mast-floor",
+                               "The mast through the column, and the "
+                               "floor that clamps to it.", MAST,
+                               full_page=True, floor=True, rig=False),),),
+                _p("text", "Why the mast runs through the column",
+                   "The services and the structure share one penetration "
+                   "and one object to look at: the column is already "
+                   "floor-to-apex, so the mast is a core inside it, not "
+                   "a second pole beside it.", words=360),
+                _p("worked", "What it costs, and what it lifts",
+                   "The mast, the floor and the rig priced line by line, "
+                   "with the honest note that the hoist's rating is an "
+                   "engineer's number, not this book's.", words=400),
+            ),
+            derives=("seed_model.mast_group", "seed_model.dome_floor_group",
+                     "seed_model.frame_weight_lb",
+                     "seed_model.floating_report"),
+            ref="the_mast",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 18, "The Floating Dome",
+            "Hang the mast from three cables between trees and the dome "
+            "floats with its own floor under it -- a design possibility, "
+            "with the loads named as the engineer's job",
+            "explain",
+            (
+                _p("opener", "The Floating Dome",
+                   "The mast that hoists the dome can also hang it. Three "
+                   "cables, three tree saddles, and the dome floats "
+                   "between the trees with its own floor under it.",
+                   words=240),
+                _p("plate", "Hung between trees",
+                   "The same mast and floor, hung from the apex ring by "
+                   "three cables to three trees.",
+                   figures=(_f("floating-dome",
+                               "The same mast and floor, hung between "
+                               "trees on three cables.", MAST,
+                               full_page=True, floor=True, rig=True),),),
+                _p("text", "What changes when the ground goes away",
+                   "The base ring is no longer what holds the building "
+                   "up; the mast is. Everything hangs from one point, "
+                   "which is why the floor clamps to the mast instead of "
+                   "standing on its own legs.", words=380),
+                _p("text", "What would have to be true",
+                   "The trees, the cables, the mast and the hoist all "
+                   "carry real loads, and none of those ratings is in "
+                   "this book. This is a design possibility, labelled "
+                   "as one.", words=360),
+            ),
+            derives=("seed_model.suspension_group",
+                     "seed_model.floating_report"),
+            ref="floating_dome",
+        ),
+    ),
+)
+
+PARTS: tuple[Part, ...] = (PART_BUILD, PART_SCALE, PART_FUTURE)
 
 
 # ======================================================================
@@ -3027,7 +3148,7 @@ def validate_book() -> None:
                 f"chapter {chapter.number} prints numbers but derives none"
 
     # Every renderer named by a figure is one book_figures implements.
-    known = {DOME, JIG, PANEL, SHOT, PLOT, DIAG, PHOTO}
+    known = {DOME, JIG, PANEL, SHOT, PLOT, DIAG, PHOTO, HAT, MAST}
     for fig in book.figures:
         assert fig.source in known, (fig.key, fig.source)
 
