@@ -639,9 +639,16 @@ def steps_seeds() -> tuple[str, ...]:
     return tuple(steps)
 
 
+#: How many quilted layers the hats chapter compares at, and how many the
+#: scene behind it stacks. One number, because a worksheet that says three
+#: over a picture of four is the sort of thing nobody notices for months.
+#: The standard article itself ships none -- the layers are the upgrade.
+QUILT_COMPARE_LAYERS = 3
+
+
 def steps_hats() -> tuple[str, ...]:
     """A dome is a structure that wears hats. A cap is a bag, so it grows."""
-    row = soft_shell.compare(3)[3]
+    row = soft_shell.compare(QUILT_COMPARE_LAYERS)[QUILT_COMPARE_LAYERS]
     soft = quote()
     hard = seed_model.quote("stem_cell", shell="hard")
     return (

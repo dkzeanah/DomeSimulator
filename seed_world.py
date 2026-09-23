@@ -1091,6 +1091,174 @@ def build_tree_support(b: MeshBuilder, origin, base_z: float, radius: float,
 
 
 # ----------------------------------------------------------------------
+# The mast, the dome's own floor, and the floating rig
+# ----------------------------------------------------------------------
+
+def build_mast(b: MeshBuilder, origin, base_z: float, *,
+               clad: float = 1.0, ring: bool = True) -> None:
+    """The mast that stands *inside* the utility column.
+
+    Steel where the strength is, timber everywhere else, which is the whole
+    argument of the upgrade: the services and the structure share one
+    penetration and one object to look at. ``clad`` winds the timber on from
+    the bottom, so a chapter can show the core before it is boxed in.
+
+    The rise is :func:`seed_model.mast_rise_ft`, the same length that
+    :func:`seed_model.mast_group` prices, so the picture and the invoice are
+    the same mast.
+    """
+    ox, oy = origin
+    rise = m(seed_model.mast_rise_ft() * 12.0)
+    top = base_z + rise
+    # The base flange, landing the mast on the service port.
+    b.cylinder((ox, oy, base_z), (ox, oy, base_z + 0.06), 0.30, 12,
+               DARK_STEEL, mat_id=MAT_METAL)
+    b.cylinder((ox, oy, base_z + 0.04), (ox, oy, top), 0.075, 10,
+               STEEL, mat_id=MAT_METAL)
+    # Timber boxed round the core. Square in section, because that is what
+    # four boards make, and it is the quickest way to read "wood over steel".
+    grown = clamp01(clad)
+    clad_base = base_z + 0.20
+    clad_top = clad_base + (top - 0.55 - clad_base) * grown
+    if clad_top - clad_base > 0.02:
+        half = 0.13
+        for sx, sy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            box(b, (ox + sx * half, oy + sy * half,
+                    (clad_base + clad_top) * 0.5),
+                (0.075 if sx else 0.30, 0.30 if sx else 0.075,
+                 clad_top - clad_base),
+                (0.52, 0.40, 0.26), MAT_WOOD)
+    if ring:
+        # The forged lifting ring, above the shell and under the seal cap.
+        # This is the hoist point for the whole structure and the thing the
+        # floating rig hangs from.
+        b.cylinder((ox, oy, top - 0.10), (ox, oy, top + 0.02), 0.165, 14,
+                   DARK_STEEL, mat_id=MAT_METAL, cap_ends=False)
+        b.disc((ox, oy, top + 0.02), 0.165, 14, (0.42, 0.45, 0.48),
+               mat_id=MAT_METAL)
+        for point, _ in _ring((ox, oy, top + 0.10), 0.125, 3):
+            b.sphere(point, 0.055, (0.70, 0.73, 0.76), mat_id=MAT_METAL,
+                     rings=4, sides=8)
+
+
+def mast_top_m(base_z: float = 0.0) -> float:
+    """Where the mast's lifting ring sits: what the floating rig hangs from."""
+    return base_z + m(seed_model.mast_rise_ft() * 12.0)
+
+
+def build_dome_floor(b: MeshBuilder, origin, base_z: float, radius: float, *,
+                     sides: int = 10, reveal: float = 1.0,
+                     rail: bool = True) -> None:
+    """The dome's own floor, clamped to the mast: hub, spokes, deck, rail.
+
+    The pad's deck is the host's and stays when the dome leaves. This floor
+    is the buyer's and goes with the dome, which is the only reason a
+    floating dome is possible at all -- there is no ground under it to
+    stand on.
+
+    ``reveal`` deals the spokes and their decking out one bay at a time, so
+    a chapter can show it being built rather than appearing.
+    """
+    ox, oy = origin
+    z = base_z
+    hub_r = 0.42
+    deck = (0.50, 0.38, 0.25)
+    b.cylinder((ox, oy, z - 0.06), (ox, oy, z + 0.10), hub_r, 14, DARK_STEEL,
+               mat_id=MAT_METAL)
+    b.disc((ox, oy, z + 0.10), hub_r, 14, (0.46, 0.49, 0.52), mat_id=MAT_METAL)
+    shown = clamp01(reveal) * sides
+    for index in range(sides):
+        local = clamp01(shown - index)
+        if local <= 0.001:
+            continue
+        a0 = math.tau * index / sides
+        a1 = math.tau * (index + 1) / sides
+        mid = (a0 + a1) * 0.5
+        # The spoke draws out to the base ring, then its bay decks over.
+        reach = hub_r + (radius - hub_r) * local
+        b.cylinder((ox + math.cos(mid) * hub_r, oy + math.sin(mid) * hub_r,
+                    z - 0.02),
+                   (ox + math.cos(mid) * reach, oy + math.sin(mid) * reach,
+                    z - 0.02), 0.045, 6, STEEL, mat_id=MAT_METAL)
+        if local < 0.999:
+            continue
+        inner0 = (ox + math.cos(a0) * hub_r, oy + math.sin(a0) * hub_r, z)
+        inner1 = (ox + math.cos(a1) * hub_r, oy + math.sin(a1) * hub_r, z)
+        outer0 = (ox + math.cos(a0) * radius, oy + math.sin(a0) * radius, z)
+        outer1 = (ox + math.cos(a1) * radius, oy + math.sin(a1) * radius, z)
+        b.quad(inner0, inner1, outer1, outer0, (0.0, 0.0, 1.0), deck,
+               mat_id=MAT_WOOD)
+        if rail:
+            b.cylinder((outer0[0], outer0[1], z + 0.02),
+                       (outer1[0], outer1[1], z + 0.02), 0.035, 6,
+                       (0.40, 0.30, 0.20), mat_id=MAT_WOOD)
+
+
+def float_tree_positions(radius: float, spread: float = 2.35
+                         ) -> tuple[tuple[float, float], ...]:
+    """Where the trees stand for the floating rig.
+
+    Two trees, because that is what the chapter says -- and three cables, so
+    one tree takes two legs. Kept in one place so the picture and anything
+    that checks it read the same arrangement.
+    """
+    return ((-radius * spread, -radius * 0.35),
+            (radius * spread, radius * 0.30))
+
+
+def build_float_rig(b: MeshBuilder, origin, base_z: float, hang_z: float,
+                    radius: float, *, cable: float = 1.0,
+                    trees: bool = True) -> None:
+    """Three cables from the apex hanger to saddles on two trees.
+
+    Saddles, not holes: nothing is drilled into a tree. ``cable`` runs the
+    legs out from the hanger, so a chapter can show them being rigged.
+
+    This draws what :func:`seed_model.suspension_group` prices. It does not
+    draw a rating -- the loads on the trees, the cables and the mast are the
+    engineer's number, and the chapter says so out loud.
+    """
+    ox, oy = origin
+    trunk = (0.34, 0.26, 0.18)
+    canopy = (0.20, 0.38, 0.20)
+    spots = float_tree_positions(radius)
+    # The saddles have to stand well clear of the hanger or the three legs
+    # come out near horizontal and read as one clothesline strung between
+    # two trees, which is not what is holding the building up.
+    tree_h = hang_z + 6.4
+    if trees:
+        for tx, ty in spots:
+            b.cylinder((ox + tx, oy + ty, base_z - 0.4),
+                       (ox + tx, oy + ty, base_z + tree_h), 0.40, 10, trunk,
+                       mat_id=MAT_WOOD)
+            for dz, rad in ((0.15, 1.75), (1.05, 1.40), (1.85, 0.95)):
+                b.sphere((ox + tx, oy + ty, base_z + tree_h * 0.70 + dz),
+                         rad, canopy, mat_id=materials_grass(),
+                         rings=5, sides=10)
+    # Two legs to the first tree, one to the second: three cables, two trees.
+    saddles = (spots[0], spots[0], spots[1])
+    hanger = (ox, oy, base_z + hang_z)
+    b.sphere(hanger, 0.14, (0.38, 0.41, 0.44), mat_id=MAT_METAL,
+             rings=5, sides=10)
+    run = clamp01(cable)
+    for index, (tx, ty) in enumerate(saddles):
+        # The two legs sharing a tree land either side of its saddle, or they
+        # draw as one cable and the picture quietly loses a leg.
+        skew = (index - 0.5) * 1.30 if index < 2 else 0.0
+        anchor = (ox + tx + skew, oy + ty, base_z + tree_h * 0.80)
+        end = tuple(hanger[k] + (anchor[k] - hanger[k]) * run
+                    for k in range(3))
+        b.cylinder(hanger, end, 0.035, 5, (0.62, 0.64, 0.66),
+                   mat_id=MAT_METAL)
+    if run > 0.985:
+        # The saddle: a strap round the trunk, no hole in the tree.
+        for tx, ty in spots:
+            b.cylinder((ox + tx, oy + ty, base_z + tree_h * 0.80 - 0.14),
+                       (ox + tx, oy + ty, base_z + tree_h * 0.80 + 0.14),
+                       0.46, 10, (0.30, 0.32, 0.34), mat_id=MAT_METAL,
+                       cap_ends=False)
+
+# ----------------------------------------------------------------------
 # The removable shell
 # ----------------------------------------------------------------------
 
@@ -1110,7 +1278,8 @@ def _shell_faces(offset_in: float) -> list[tuple[np.ndarray, str]]:
 
 def build_seed_shell(b: MeshBuilder, placement: SeedPlacement, *,
                      lift: float = 0.0, lit_faces: int = 0,
-                     alpha: float = 1.0, split: float = 0.0) -> int:
+                     alpha: float = 1.0, split: float = 0.0,
+                     grow_in: float = 0.0, colour=None) -> int:
     """The shell that fits over the frame and latches to the pad.
 
     ``lift`` raises it clear, which is the only way to show what a removable
@@ -1122,9 +1291,16 @@ def build_seed_shell(b: MeshBuilder, placement: SeedPlacement, *,
     At 0 they are closed and it reads as one skin; wind it up and each slice
     draws out along its own bearing, which is the only way to show that a
     piece of this roof is something two people can carry.
+
+    ``grow_in`` stands the skin further off the frame, in inches. That is
+    what a soft cap does and a hull cannot: every quilted layer underneath
+    makes the next cap a size bigger, by
+    :func:`soft_shell.soft_shell(n).added_r`. ``colour`` overrides the skin,
+    so a stack of them can be told apart.
     """
     geo = geometry()
-    offset = geo.member_depth_in + seed_model.declared("shell_standoff_in")
+    offset = (geo.member_depth_in + seed_model.declared("shell_standoff_in")
+              + float(grow_in))
     faces = _shell_faces(offset)
     h, v, mirror = SHAPES.get(placement.shape, SHAPES["hemisphere"])
     ox, oy = placement.origin
@@ -1187,7 +1363,10 @@ def build_seed_shell(b: MeshBuilder, placement: SeedPlacement, *,
             b.triangle(*inset, AD_TINTS[index % len(AD_TINTS)], alpha=1.0,
                        mat_id=MAT_EMISSIVE)
         else:
-            b.triangle(*corners, SHELL_WHITE, alpha=alpha, mat_id=MAT_SHINGLE)
+            # A fabric cap is not shingled, so an overridden colour drops the
+            # shingle material with it -- otherwise the quilt comes out tiled.
+            b.triangle(*corners, colour or SHELL_WHITE, alpha=alpha,
+                       mat_id=MAT_PLAIN if colour else MAT_SHINGLE)
         count += 1
 
     # The rim skirt and the latches that hold it to the pad.
@@ -1464,8 +1643,39 @@ def _validate_deck_stages() -> None:
         line.label.split(",")[0] for line in pad_deck.deck("blocks").lines)) - 2
 
 
+def _validate_float_rig() -> None:
+    """The saddles have to be clear above the hanger, and the caps apart.
+
+    Both of these were wrong in a render and neither was wrong in a number.
+    The three legs came out near horizontal and read as one clothesline
+    strung between two trees, and a stack of caps 1.6 inches apart on a
+    116-inch radius read as one dome, which is the opposite of what the
+    chapter using it claims.
+    """
+    import soft_shell
+
+    hang = mast_top_m() + 3.4
+    spots = float_tree_positions(footprint_radius_m("hemisphere"))
+    assert len(spots) == 2, spots
+    saddle_z = (hang + 6.4) * 0.80
+    run = max(abs(x) for x, _ in spots)
+    assert saddle_z - hang > 1.8, (
+        f"the saddles are only {saddle_z - hang:.2f} m above the hanger; the "
+        f"cables will draw as one horizontal line")
+    assert (saddle_z - hang) / run > 0.25, (
+        "the cable legs are too shallow to read as three")
+
+    # And the growth the cap chapter shows is the model's, not a guess.
+    added = [soft_shell.soft_shell(n).added_r for n in range(4)]
+    assert added[0] == 0.0, added
+    assert all(b > a for a, b in zip(added, added[1:])), added
+    assert added[3] < 8.0, ("a three-layer stack should be inches, not feet; "
+                            f"got {added[3]:.1f} in")
+
+
 def validate_seed_world() -> None:
     _validate_deck_stages()
+    _validate_float_rig()
     """Everything this module draws has to be there and be the right size."""
     seed_model.validate_seed_model()
     geo = geometry()

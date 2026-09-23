@@ -92,6 +92,66 @@ def shell(fitout: str = "stem_cell", lift: float = 0.0,
                  "shell", builder.build())
 
 
+@lru_cache(maxsize=32)
+def cap(layers: int = 0, *, alpha: float = 1.0, colour=None,
+        lift: float = 0.0, extra_in: float = 0.0) -> creator.Build:
+    """One soft skin at the standoff a given quilt stack pushes it to.
+
+    A hull is moulded once at one size. A cap is a bag, so each quilted
+    layer under it buys a cap a size up -- ``soft_shell.soft_shell(n).added_r``
+    inches of it. Draw several of these at rising ``layers`` and the stack
+    is the picture.
+
+    ``extra_in`` is presentation, not model: a fraction of an inch of
+    daylight between two skins that genuinely occupy the same radius -- a
+    quilt and the cap strapped straight onto it -- which otherwise z-fight
+    and come out striped.
+    """
+    import soft_shell
+
+    grow = soft_shell.soft_shell(max(0, int(layers))).added_r + extra_in
+    builder = MeshBuilder()
+    seed_world.build_seed_shell(
+        builder, _placement("stem_cell", True, lift > 0.0, "hose"),
+        lift=lift, alpha=alpha, grow_in=grow, colour=colour)
+    tint = "-" if colour is None else ",".join(f"{c:.2f}" for c in colour)
+    return _wrap(f"cap:{layers}:{alpha:.2f}:{tint}:{lift:.2f}:{extra_in:.2f}",
+                 f"cap over {layers} layers", builder.build())
+
+
+@lru_cache(maxsize=16)
+def mast(clad: float = 1.0, ring: bool = True) -> creator.Build:
+    """The mast alone: steel core, timber cladding, lifting ring."""
+    builder = MeshBuilder()
+    seed_world.build_mast(builder, (0.0, 0.0), 0.0, clad=clad, ring=ring)
+    return _wrap(f"mast:{clad:.2f}:{int(ring)}", "mast", builder.build())
+
+
+@lru_cache(maxsize=48)
+def dome_floor(reveal: float = 1.0) -> creator.Build:
+    """The dome's own floor, clamped to the mast and built out one bay at
+    a time."""
+    builder = MeshBuilder()
+    seed_world.build_dome_floor(
+        builder, (0.0, 0.0), 0.0,
+        seed_world.footprint_radius_m("hemisphere"), reveal=reveal)
+    return _wrap(f"domefloor:{reveal:.2f}", "dome floor", builder.build())
+
+
+@lru_cache(maxsize=48)
+def float_rig(cable: float = 1.0, trees: bool = True,
+              hang: float = 0.0) -> creator.Build:
+    """Three cables to two trees, hanging from the mast's lifting ring."""
+    builder = MeshBuilder()
+    seed_world.build_float_rig(
+        builder, (0.0, 0.0), 0.0,
+        seed_world.mast_top_m() + hang,
+        seed_world.footprint_radius_m("hemisphere"),
+        cable=cable, trees=trees)
+    return _wrap(f"floatrig:{cable:.2f}:{int(trees)}:{hang:.2f}",
+                 "floating rig", builder.build())
+
+
 @lru_cache(maxsize=4)
 def core(open_cap: bool = False) -> creator.Build:
     """The utility core alone: pad port, column, riser and seal cap.

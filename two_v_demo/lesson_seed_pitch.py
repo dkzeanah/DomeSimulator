@@ -52,6 +52,7 @@ from .render_kit import (
 )
 from .seed_facts import (
     ALL_SCREENS,
+    QUILT_COMPARE_LAYERS,
     steps_deck,
     steps_paint,
     steps_solar,
@@ -142,6 +143,15 @@ def _apex() -> float:
 def _ground(app, shift) -> None:
     """The Creator's own field, so the dome is not on an island."""
     creator.draw(app, creator.environment(), offset=tuple(shift))
+
+
+#: The three skins of the soft shell, kept apart on purpose: wood panels
+#: under a quilt under a cap. Drawn in one colour each because the whole
+#: point of the chapters that use them is that they are separate objects
+#: which come off separately.
+PANEL_WOOD = (0.52, 0.38, 0.22)
+QUILT_RED = (0.68, 0.26, 0.28)
+CAP_BLUE = (0.34, 0.60, 0.74)
 
 
 # ----------------------------------------------------------------------
@@ -480,6 +490,213 @@ def scene_swap(app, opaque, transparent, p: float) -> None:
                "SAME FRAME. SAME PAD. SAME CORE.", HOST)
 
 
+def scene_cap(app, opaque, transparent, p: float) -> None:
+    """Hats stacking: the frame, its panels, and a cap a size up each time.
+
+    A hull is moulded once at one size and its cavity holds four layers,
+    full stop. A cap is a bag, so every quilted layer under it buys the next
+    cap a size up.
+
+    The stack is drawn *apart* in the middle of the chapter, because the
+    real spacing -- ``soft_shell.soft_shell(n).added_r`` inches on a radius
+    of 116 -- reads as one dome and puts the chapter's whole claim off
+    screen. The last beat lowers them, so the picture it ends on is the
+    true one and the labels carry the real areas throughout.
+    """
+    import soft_shell
+
+    shift = _shift(app)
+    _ground(app, shift)
+    up = np.array([0.0, 0.0, _base()])
+    creator.draw(app, seed.pad(), offset=tuple(shift))
+    creator.draw(app, seed.frame(), offset=tuple(shift + up))
+    # The wood panels first: they are what the cap goes over, and they are
+    # on the outside face of the frame, which is the whole reversal.
+    if p > 0.12:
+        creator.draw(app, seed.cap(0, colour=PANEL_WOOD),
+                     offset=tuple(shift + up))
+    stack = QUILT_COMPARE_LAYERS
+    sizes = soft_shell.hat_sizes(stack)
+    # Apart from 0.34, together again from 0.78. Quantised, so the caches
+    # hold: each of these is a whole dome mesh.
+    spread = round(ease_in_out(clamp((p - 0.34) / 0.22))
+                   - ease_in_out(clamp((p - 0.78) / 0.18)), 2)
+    shown = clamp((p - 0.20) / 0.40) * stack
+    top = _base() + _apex()
+    for layer in range(stack):
+        if clamp(shown - layer) <= 0.02:
+            continue
+        rise = spread * 0.78 * (layer + 1)
+        creator.draw(app, seed.cap(layer + 1, alpha=0.90, colour=QUILT_RED,
+                                   lift=rise),
+                     offset=tuple(shift + up))
+        if spread > 0.45:
+            _label(app, shift + np.array([0.0, 0.0, top + rise + 0.32]),
+                   f"CAP {layer + 1}  ·  {sizes[layer + 1]:,.0f} SQ FT",
+                   GREEN if layer else BUYER)
+    if p > 0.12 and spread > 0.45:
+        _label(app, shift + np.array([0.0, 0.0, top + 0.32]),
+               f"BARE  ·  {sizes[0]:,.0f} SQ FT", MUTED)
+    if p > 0.62:
+        creator.draw(app, seed.cap(stack, alpha=0.55, colour=CAP_BLUE,
+                                   extra_in=0.9,
+                                   lift=spread * 0.78 * (stack + 1)),
+                     offset=tuple(shift + up))
+    if p < 0.34:
+        _label(app, shift + np.array([0.0, 0.0, top + 1.0]),
+               "PANELS ON THE OUTSIDE", BUYER)
+    if p > 0.82:
+        grown = soft_shell.growth_fraction(stack)
+        _label(app, shift + np.array([0.0, 0.0, top + 1.0]),
+               f"{stack} LAYERS  ·  CAP {grown * 100.0:.1f}% BIGGER", GREEN)
+    if p > 0.90:
+        soft = soft_shell.soft_shell(stack)
+        _label(app, shift + np.array([0.0, -4.4, 0.6]),
+               f"SHOWER CAP  ·  ${soft.cost:,.0f}", HOST)
+
+
+def scene_quilt(app, opaque, transparent, p: float) -> None:
+    """One quilted layer going on over the frame and under the cap.
+
+    Recycled clothing, sewn by the owner. It is the cheapest thing in the
+    building and the only insulation in it, which is worth seeing on its
+    own before the cap covers it up.
+
+    The two prices on screen are both true and mean different things: the
+    quilt is fifty dollars and the layer costs sixty-nine, because a layer
+    also buys the bigger cap that has to go over it. Shown together, and
+    said, rather than left to look like a mistake.
+    """
+    import soft_shell
+
+    shift = _shift(app)
+    _ground(app, shift)
+    up = np.array([0.0, 0.0, _base()])
+    creator.draw(app, seed.pad(), offset=tuple(shift))
+    creator.draw(app, seed.frame(), offset=tuple(shift + up))
+    creator.draw(app, seed.cap(0, colour=PANEL_WOOD), offset=tuple(shift + up))
+    # The layer arrives from above rather than fading in: it is a blanket,
+    # and a blanket goes *over* something.
+    drop = round((1.0 - ease_in_out(clamp((p - 0.08) / 0.38))) * 3.0, 2)
+    if p > 0.08:
+        creator.draw(app, seed.cap(1, alpha=0.95, colour=QUILT_RED,
+                                   lift=drop),
+                     offset=tuple(shift + up))
+    # And the cap straps over the lot, which is what makes the layer
+    # removable: the cap comes off and the quilt comes off with it.
+    cap_drop = round((1.0 - ease_in_out(clamp((p - 0.58) / 0.26))) * 3.4, 2)
+    if p > 0.58:
+        creator.draw(app, seed.cap(1, alpha=0.52, colour=CAP_BLUE,
+                                   extra_in=0.9, lift=cap_drop),
+                     offset=tuple(shift + up))
+    top = _base() + _apex()
+    quilt = soft_shell.declared("blanket_quilt_usd_per_layer")
+    marginal = soft_shell.soft_shell(1).cost - soft_shell.soft_shell(0).cost
+    if 0.14 < p < 0.58:
+        _label(app, shift + np.array([0.0, 0.0, top + drop + 0.9]),
+               "ONE QUILTED LAYER", BUYER)
+    if p > 0.62:
+        _label(app, shift + np.array([0.0, 0.0, top + cap_drop + 0.9]),
+               "THE CAP STRAPS OVER IT", HOST)
+    if p > 0.34:
+        _label(app, shift + np.array([0.0, -4.4, 1.9]),
+               f"THE QUILT  ·  ${quilt:,.0f}", GREEN)
+    if p > 0.46:
+        _label(app, shift + np.array([0.0, -4.4, 1.2]),
+               f"WITH THE BIGGER CAP  ·  ${marginal:,.0f}", GREEN)
+    if p > 0.86:
+        # The chapter says this out loud, so the picture should carry it.
+        _label(app, shift + np.array([0.0, -4.4, 0.5]),
+               "MOISTURE TRAP  ·  UNPROVEN", MUTED)
+
+
+def scene_mast(app, opaque, transparent, p: float) -> None:
+    """The mast, then the column round it, then the floor clamped to it.
+
+    In the finished building the mast stands inside the column, which is the
+    argument -- one penetration carrying the services and the structure
+    both -- and also means it cannot be seen. So it goes up on its own
+    first, gets its timber, and only then does the column arrive round it.
+    """
+    shift = _shift(app)
+    _ground(app, shift)
+    up = np.array([0.0, 0.0, _base()])
+    creator.draw(app, seed.pad(), offset=tuple(shift))
+    # Steel first, then the timber boxed round it, so the film shows which
+    # of the two is carrying the load.
+    clad = round(ease_in_out(clamp((p - 0.18) / 0.24)), 2)
+    creator.draw(app, seed.mast(clad=clad), offset=tuple(shift + up))
+    if p > 0.46:
+        creator.draw(app, seed.core(), offset=tuple(shift + up))
+    if p > 0.30:
+        creator.draw(app, seed.frame(), offset=tuple(shift + up))
+    # The floor is the upgrade and it arrives last, a bay at a time.
+    if p > 0.58:
+        reveal = round(clamp((p - 0.58) / 0.30), 2)
+        creator.draw(app, seed.dome_floor(reveal),
+                     offset=tuple(shift + up + np.array([0.0, 0.0, 0.06])))
+    ring_z = _base() + seed_world.mast_top_m()
+    if p > 0.10:
+        _label(app, shift + np.array([0.0, 0.0, ring_z + 0.55]),
+               "THE LIFTING RING", BUYER)
+    if 0.24 < p < 0.62:
+        _label(app, shift + np.array([0.0, 0.0, _base() + 1.55]),
+               "STEEL INSIDE, TIMBER OUTSIDE", MUTED)
+    if p > 0.66:
+        _label(app, shift + np.array([0.0, -4.4, 2.3]),
+               f"THE MAST  ·  ${seed_model.mast_group().cost:,.0f}", GREEN)
+    if p > 0.76:
+        _label(app, shift + np.array([0.0, -4.4, 1.2]),
+               f"THE FLOOR, BOUGHT LATER  ·  "
+               f"${seed_model.dome_floor_group().cost:,.0f}", HOST)
+
+
+def scene_floating(app, opaque, transparent, p: float) -> None:
+    """The dome hung between two trees on three cables.
+
+    Saddles, not holes. The dome's own floor is what it stands on up there,
+    which is why the previous chapter had to come first, and the pad stays
+    on the ground because the pad is the host's.
+    """
+    shift = _shift(app)
+    _ground(app, shift)
+    radius = seed_world.footprint_radius_m("hemisphere")
+    rise = round(ease_in_out(clamp((p - 0.28) / 0.44)) * 3.4, 2)
+    creator.draw(app, seed.pad(), offset=tuple(shift))
+    up = np.array([0.0, 0.0, _base() + rise])
+    cable = round(clamp((p - 0.04) / 0.20), 2)
+    creator.draw(app, seed.float_rig(cable=cable, hang=rise),
+                 offset=tuple(shift + np.array([0.0, 0.0, _base()])))
+    creator.draw(app, seed.mast(), offset=tuple(shift + up))
+    creator.draw(app, seed.dome_floor(1.0),
+                 offset=tuple(shift + up + np.array([0.0, 0.0, 0.06])))
+    creator.draw(app, seed.frame(), offset=tuple(shift + up))
+    creator.draw(app, seed.cap(0, alpha=0.72, colour=CAP_BLUE),
+                 offset=tuple(shift + up))
+    # The label goes on whichever tree reads as screen-left. Naming one of
+    # them "the left tree" put it behind the worksheet panel, because which
+    # side of the frame a world point lands on is the camera's business and
+    # not the scene's.
+    spots = seed_world.float_tree_positions(radius)
+    leftward = _screen_left(app)
+    near = max(spots, key=lambda s: float(np.dot(np.array([s[0], s[1], 0.0]),
+                                                 leftward)))
+    if p > 0.16:
+        _label(app, shift + np.array([near[0], near[1], _base() + 5.4]),
+               "SADDLES, NOT HOLES", BUYER)
+    if p > 0.44:
+        _label(app, shift + np.array([0.0, -4.6, 2.6]),
+               f"THREE CABLES  ·  "
+               f"${seed_model.suspension_group().cost:,.0f}", GREEN)
+    if p > 0.60:
+        _label(app, shift + np.array([0.0, -4.6, 1.9]),
+               f"FRAME  ·  {seed_model.frame_weight_lb():,.0f} LB", HOST)
+    if p > 0.78:
+        # The one thing this chapter must not let the picture imply.
+        _label(app, shift + np.array([0.0, -4.6, 1.2]),
+               "NOT AN ENGINEERED STRUCTURE", MUTED)
+
+
 def scene_secondary(app, opaque, transparent, p: float) -> None:
     """A row of the buildings a homestead actually wants second."""
     shift = _shift(app)
@@ -515,6 +732,10 @@ SCENES: dict = {
     "sp_standing": scene_standing,
     "sp_frame": scene_frame,
     "sp_shell": scene_shell_on,
+    "sp_cap": scene_cap,
+    "sp_quilt": scene_quilt,
+    "sp_mast": scene_mast,
+    "sp_floating": scene_floating,
     "sp_core": scene_core,
     "sp_polyp": scene_polyp,
     "sp_move": scene_move,
@@ -985,7 +1206,7 @@ CHAPTERS: tuple[Chapter, ...] = (
          "done. The worksheet does the arithmetic.",
          "The hull does not go away. It becomes the upgrade -- the "
          "fifty-year option, sold to the buyer who wants it."),
-        steps_hats(), 22.0, (62.0, 15.0, 13.5), "sp_shell"),
+        steps_hats(), 22.0, (58.0, 17.0, 13.0), "sp_cap"),
     _math(
         "quilt", "A $50 quilt, and a bigger cap for each",
         "Recycled clothing, quilted by the owner, into one layer under the cap.",
@@ -999,7 +1220,7 @@ CHAPTERS: tuple[Chapter, ...] = (
          "And the caveat, out loud: two impermeable layers with fabric "
          "between them is a moisture trap, and the seam duct is the unproven "
          "answer."),
-        steps_quilt(), 22.0, (62.0, 15.0, 13.5), "sp_shell"),
+        steps_quilt(), 22.0, (48.0, 14.0, 11.5), "sp_quilt"),
     _math(
         "mast", "A mast through the column, and a floor that comes later",
         "Steel where the strength is, wood everywhere else. The floor clamps on.",
@@ -1013,7 +1234,7 @@ CHAPTERS: tuple[Chapter, ...] = (
          "The apex lifting ring is the hoist point for the whole structure. "
          "What it weighs, and what the hoist is rated for, are the "
          "engineer's numbers, not ours."),
-        steps_mast(), 20.0, (62.0, 15.0, 13.5), "sp_shell"),
+        steps_mast(), 20.0, (70.0, 12.0, 12.5), "sp_mast"),
     _math(
         "floating", "Hang it between two trees",
         "Three cables, three saddles, one winch. And an engineer first.",
@@ -1025,7 +1246,7 @@ CHAPTERS: tuple[Chapter, ...] = (
          "Say it plainly: this is a design possibility, not an engineered "
          "structure. The loads on the trees, the cables and the mast need an "
          "engineer before anyone stands under it."),
-        steps_floating(), 20.0, (62.0, 15.0, 13.5), "sp_shell"),
+        steps_floating(), 20.0, (86.0, 11.0, 22.0), "sp_floating"),
     Chapter(
         "close", "00", "Bring your own ground",
         "Eighteen and a half thousand, sixty-eight dollars a square foot.",
@@ -1080,6 +1301,29 @@ def validate_seed_pitch() -> None:
             assert chapter.equations, chapter.slug
         else:
             assert not chapter.equations, chapter.slug
+
+    # The soft-shell chapters each get their own picture. They shipped once
+    # pointing at the hull coming off by crane -- four chapters of narration
+    # about a fabric cap, a quilt, a mast and a dome in two trees, played
+    # over one frozen shot of a laminated shell labelled with its weight.
+    # Nothing in the checks caught it, because every field was valid.
+    own = {"cap": "sp_cap", "quilt": "sp_quilt", "mast": "sp_mast",
+           "floating": "sp_floating"}
+    by_slug = {chapter.slug: chapter for chapter in CHAPTERS}
+    for slug, stage in own.items():
+        assert slug in by_slug, f"{slug} chapter has gone"
+        assert by_slug[slug].stage == stage, (
+            f"the {slug} chapter is drawing {by_slug[slug].stage!r}; it needs "
+            f"its own scene, not a borrowed one")
+    borrowed = [chapter.slug for chapter in CHAPTERS
+                if chapter.stage in own.values() and chapter.slug not in own]
+    assert not borrowed, f"{borrowed} borrowed a soft-shell scene"
+
+    # And every scene in the registry is on a chapter, so a painter cannot
+    # be quietly orphaned by a retarget.
+    staged = {chapter.stage for chapter in CHAPTERS}
+    orphans = sorted(set(SCENES) - staged)
+    assert not orphans, f"scenes nothing draws: {orphans}"
 
     # Every worksheet this module imports has to be on a chapter, or it is a
     # screen nobody will ever see.
