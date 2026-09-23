@@ -332,3 +332,32 @@ def validate_seed_bridge() -> None:
 if __name__ == "__main__":
     validate_seed_bridge()
     print("seed bridge ok")
+
+
+@lru_cache(maxsize=48)
+def layer_stack(layers: int = 3, spread: float = 1.0) -> creator.Build:
+    """The cap stack cut through and laid flat, so the order is legible.
+
+    The whole-dome hat stack shows that the skin grows. This shows which
+    layer keeps the water out, which one breathes, and where the vented gap
+    is -- and those are what the campaign actually claims.
+    """
+    builder = MeshBuilder()
+    rows = seed_world.build_layer_stack(builder, (0.0, 0.0), 0.0,
+                                        layers=layers, spread=spread)
+    build = _wrap(f"stack:{layers}:{spread:.2f}", "layer stack",
+                  builder.build())
+    build.stats["layers"] = rows
+    return build
+
+
+@lru_cache(maxsize=24)
+def composite_member(explode: float = 0.0) -> creator.Build:
+    """The member the campaign is raising money to be able to make."""
+    builder = MeshBuilder()
+    parts = seed_world.build_composite_member(builder, (0.0, 0.0), 0.0,
+                                              explode=explode)
+    build = _wrap(f"composite:{explode:.2f}", "composite member",
+                  builder.build())
+    build.stats["parts"] = parts
+    return build

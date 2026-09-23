@@ -1259,6 +1259,127 @@ def build_float_rig(b: MeshBuilder, origin, base_z: float, hang_z: float,
                        cap_ends=False)
 
 # ----------------------------------------------------------------------
+# The wall in section, and the member we would rather make
+# ----------------------------------------------------------------------
+
+def build_layer_stack(b: MeshBuilder, origin, base_z: float, *,
+                      layers: int = 3, spread: float = 1.0,
+                      width: float = 2.6) -> tuple[tuple[str, float], ...]:
+    """The cap stack cut through, laid flat, so the ORDER is legible.
+
+    A dome wearing hats shows that the stack grows. It cannot show which
+    layer keeps the water out, and that is the thing the campaign is
+    actually claiming: exactly one watertight layer, on the outside, with
+    everything under it free to dry.
+
+    Returns each layer's name and the height it was drawn at, so the scene
+    can label them without guessing where they landed.
+    """
+    import soft_shell as soft
+
+    ox, oy = origin
+    depth = width * 0.62
+    gap = m(soft.declared("cap_vent_gap_in"))
+    quilt = m(soft.declared("layer_thickness_in"))
+
+    # Thicknesses, bottom (inside) to top (outside). The sheet layers have
+    # no real thickness worth drawing, so they get a readable minimum and
+    # the label carries the truth.
+    sheet = 0.035
+    plan: list[tuple[str, float, tuple[float, float, float]]] = [
+        ("THE FRAME", m(seed_model.seed_geometry().member_depth_in) * 0.5,
+         (0.46, 0.34, 0.22)),
+        ("WOOD PANEL", sheet * 1.6, (0.56, 0.44, 0.30)),
+        ("BREATHER", sheet, (0.86, 0.86, 0.80)),
+    ]
+    for index in range(max(0, layers)):
+        plan.append((f"QUILT {index + 1}", quilt, (0.68, 0.26, 0.28)))
+    plan.append(("VENTED GAP", gap, (0.30, 0.34, 0.38)))
+    plan.append(("THE CAP", sheet * 1.3, (0.34, 0.60, 0.74)))
+
+    placed: list[tuple[str, float]] = []
+    z = base_z
+    for index, (name, thickness, colour) in enumerate(plan):
+        # The exploded view separates them along the wall's normal, which is
+        # the only way a sheet 0.03 m thick is visible at all.
+        z += spread * 0.30 * (1 if index else 0)
+        box(b, (ox, oy, z + thickness * 0.5), (width, depth, thickness),
+            colour, MAT_WOOD if "PANEL" in name or "FRAME" in name
+            else MAT_PLAIN)
+        placed.append((name, z + thickness * 0.5))
+        z += thickness
+    return tuple(placed)
+
+
+def build_composite_member(b: MeshBuilder, origin, base_z: float, *,
+                           length: float = 1.83, explode: float = 0.0
+                           ) -> tuple[tuple[str, tuple[float, float, float]], ...]:
+    """The member the campaign wants to make: hardware moulded in.
+
+    Steel core where the strength has to be, a moulded body around it,
+    metal inserts where a fixing lands, and a spline ridge where the gasket
+    sits. It does not exist. It is drawn because a chapter asking for the
+    tooling to make it should show what the tooling is for.
+
+    Returns each part's name and a point to hang a label on.
+    """
+    import soft_shell as soft
+
+    ox, oy = origin
+    geometry = seed_model.seed_geometry()
+    # DRAWN AT 2.2x SECTION. A real member is 6 ft long and 4.6 in across,
+    # and at that ratio the inserts -- which are the point of the chapter --
+    # are three specks on a stick. The length is true; the section is not,
+    # and the scene says so on screen.
+    fat = 2.2
+    depth = m(geometry.member_depth_in) * fat
+    width = m(geometry.member_width_in) * fat
+    lift = explode * 0.55
+
+    # The moulded body: the wedge section, as a box tapering is not worth
+    # the vertices at this size.
+    box(b, (ox, oy, base_z + depth * 0.5), (length, width, depth),
+        (0.30, 0.33, 0.38), MAT_PLAIN)
+
+    # The steel core, drawn proud so it reads as inside rather than behind.
+    b.cylinder((ox - length * 0.5, oy, base_z + depth * 0.5 + lift * 0.35),
+               (ox + length * 0.5, oy, base_z + depth * 0.5 + lift * 0.35),
+               width * 0.22, 10, STEEL, mat_id=MAT_METAL)
+
+    # Threaded inserts along the face a panel screws into. They lift a
+    # little less than the core does and they are drawn fat, because at a
+    # full 0.55 m of explode they read as four brass discs somebody left on
+    # the grass nearby rather than as parts of this member.
+    count = int(soft.declared("panel_inserts_per_bay"))
+    insert_lift = lift * 0.34
+    for index in range(count):
+        t = (index + 0.5) / count
+        x = ox - length * 0.5 + length * t
+        b.cylinder((x, oy, base_z + depth + insert_lift),
+                   (x, oy, base_z + depth + insert_lift + 0.10),
+                   width * 0.22, 12, (0.72, 0.66, 0.36), mat_id=MAT_METAL)
+        # A stalk back down to the hole it came out of, so the eye joins
+        # them up while they are apart.
+        if insert_lift > 0.02:
+            b.cylinder((x, oy, base_z + depth),
+                       (x, oy, base_z + depth + insert_lift),
+                       width * 0.05, 6, (0.55, 0.50, 0.28), mat_id=MAT_METAL)
+
+    # The spline ridge, where the seam gasket sits: a rib down one edge.
+    b.cylinder((ox - length * 0.5, oy + width * 0.5, base_z + depth * 0.62),
+               (ox + length * 0.5, oy + width * 0.5, base_z + depth * 0.62),
+               0.018, 8, (0.80, 0.52, 0.24), mat_id=MAT_PLAIN)
+
+    return (
+        ("MOULDED BODY", (ox, oy, base_z + depth * 0.5)),
+        ("STEEL CORE", (ox - length * 0.30, oy,
+                        base_z + depth * 0.5 + lift * 0.35)),
+        (f"{count} INSERTS, MOULDED IN",
+         (ox + length * 0.22, oy, base_z + depth + lift * 0.34 + 0.22)),
+        ("SPLINE RIDGE FOR THE SEAL",
+         (ox, oy + width * 0.5, base_z + depth * 0.62)),
+    )
+# ----------------------------------------------------------------------
 # The removable shell
 # ----------------------------------------------------------------------
 

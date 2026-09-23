@@ -53,6 +53,11 @@ from .render_kit import (
 from .seed_facts import (
     ALL_SCREENS,
     QUILT_COMPARE_LAYERS,
+    steps_goal,
+    steps_head,
+    steps_invoice,
+    steps_next,
+    steps_three,
     steps_deck,
     steps_paint,
     steps_solar,
@@ -708,6 +713,206 @@ def scene_floating(app, opaque, transparent, p: float) -> None:
                "NOT AN ENGINEERED STRUCTURE", MUTED)
 
 
+def scene_head(app, opaque, transparent, p: float) -> None:
+    """The wall cut through, so the ORDER of the layers is on screen.
+
+    The hat-stack chapter shows that the skin grows. It cannot show which
+    layer keeps the water out, and that is what this chapter claims: one
+    watertight layer, on the outside, with everything under it free to dry.
+
+    So the stack is drawn flat and exploded, bottom to top, and the labels
+    come off the builder rather than being counted again here.
+    """
+    shift = _shift(app)
+    _ground(app, shift)
+    spread = round(ease_in_out(clamp((p - 0.10) / 0.35)), 2)
+    stack = seed.layer_stack(QUILT_COMPARE_LAYERS, spread)
+    base = shift + np.array([0.0, 0.0, 0.35])
+    creator.draw(app, stack, offset=tuple(base))
+    rows = stack.stats.get("layers", ())
+    if spread < 0.25:
+        return
+    # Dealt out bottom upward over the chapter, so the eye follows the
+    # order rather than meeting eight labels at once.
+    shown = clamp((p - 0.30) / 0.46) * len(rows)
+    for index, (name, height) in enumerate(rows):
+        if index >= shown:
+            break
+        outer = index >= len(rows) - 1
+        colour = BUYER if outer else (GREEN if "QUILT" in name else MUTED)
+        _label(app, base + np.array([1.9, 0.0, height]), name, colour)
+    if p > 0.84:
+        # Well clear of the stack: at 0.2 it landed on the third quilt.
+        _label(app, shift + np.array([0.0, -3.4, -0.55]),
+               "ONE WATERTIGHT LAYER, AND IT IS THE OUTSIDE ONE", HOST)
+
+
+def scene_invoice(app, opaque, transparent, p: float) -> None:
+    """The dome assembling group by group, each one named with its cost.
+
+    The worksheet carries the invoice. The world carries the building it is
+    an invoice for, put together in the order the invoice lists it, so the
+    two are obviously about the same object.
+    """
+    shift = _shift(app)
+    _ground(app, shift)
+    up = np.array([0.0, 0.0, _base()])
+    priced = seed_model.quote()
+    creator.draw(app, seed.pad(), offset=tuple(shift))
+    if p > 0.10:
+        creator.draw(app, seed.frame(), offset=tuple(shift + up))
+    if p > 0.30:
+        creator.draw(app, seed.core(), offset=tuple(shift + up))
+    if p > 0.46:
+        creator.draw(app, seed.cap(0, colour=PANEL_WOOD),
+                     offset=tuple(shift + up))
+    if p > 0.60:
+        creator.draw(app, seed.cap(0, alpha=0.62, colour=CAP_BLUE,
+                                   extra_in=0.9),
+                     offset=tuple(shift + up))
+    top = _base() + _apex()
+    if 0.12 < p <= 0.30:
+        _label(app, shift + np.array([0.0, 0.0, top + 0.8]),
+               f"FRAME  ·  ${priced.find('frame').cost:,.0f}", GREEN)
+    if 0.32 < p <= 0.46:
+        _label(app, shift + np.array([0.0, 0.0, top + 0.8]),
+               f"COLUMN  ·  ${priced.find('column').cost:,.0f}", GREEN)
+    if 0.48 < p <= 0.72:
+        _label(app, shift + np.array([0.0, 0.0, top + 0.8]),
+               f"SHELL  ·  ${priced.find('cap', 'envelope').cost:,.0f}",
+               GREEN)
+    if p > 0.66:
+        _label(app, shift + np.array([0.0, -4.4, 1.9]),
+               f"COST TO BUILD  ·  ${priced.cost_to_build:,.0f}", MUTED)
+    if p > 0.76:
+        _label(app, shift + np.array([0.0, -4.4, 1.2]),
+               f"OUR PROFIT  ·  ${priced.gross_profit:,.0f}", BUYER)
+    if p > 0.86:
+        _label(app, shift + np.array([0.0, -4.4, 0.5]),
+               f"YOU PAY  ·  ${priced.price:,.0f}", HOST)
+
+
+def scene_goal(app, opaque, transparent, p: float) -> None:
+    """The first thing the money buys: one dome, standing, measured.
+
+    Everything in this project is solved and almost none of it is measured.
+    The test platform is the top line of the budget and it is the only one
+    that can be photographed, so it is what this chapter shows.
+    """
+    import kickstarter
+
+    shift = _shift(app)
+    _ground(app, shift)
+    up = np.array([0.0, 0.0, _base()])
+    # The platform goes down first, then the dome on it -- the same order
+    # the deck chapter uses, so it reads as the same build.
+    stage = seed_world.DECK_STAGES[-1]
+    creator.draw(app, seed.deck(stage, 1.0), offset=tuple(shift))
+    if p > 0.22:
+        creator.draw(app, seed.frame(), offset=tuple(shift + up))
+        creator.draw(app, seed.core(), offset=tuple(shift + up))
+    if p > 0.40:
+        creator.draw(app, seed.cap(0, colour=PANEL_WOOD),
+                     offset=tuple(shift + up))
+        creator.draw(app, seed.cap(0, alpha=0.62, colour=CAP_BLUE,
+                                   extra_in=0.9),
+                     offset=tuple(shift + up))
+    budget = {line.key: line.usd for line in kickstarter.goal_lines()}
+    top = _base() + _apex()
+    if p > 0.14:
+        _label(app, shift + np.array([0.0, 0.0, top + 1.1]),
+               "ONE OF THESE, STANDING, FOR A YEAR", BUYER)
+    if p > 0.46:
+        _label(app, shift + np.array([0.0, -4.4, 1.9]),
+               f"THE TEST PLATFORM  ·  "
+               f"${budget['test_platform']:,.0f}", GREEN)
+    if p > 0.60:
+        _label(app, shift + np.array([0.0, -4.4, 1.2]),
+               f"SENSORS IN THE WALL  ·  "
+               f"${budget['instrumentation']:,.0f}", GREEN)
+    if p > 0.76:
+        _label(app, shift + np.array([0.0, -4.4, 0.5]),
+               f"THE GOAL  ·  ${kickstarter.goal():,.0f}", HOST)
+
+
+def scene_next(app, opaque, transparent, p: float) -> None:
+    """The member we want to make, taken apart.
+
+    It does not exist. It is drawn because a chapter asking for the tooling
+    to make it should show what the tooling is for, and because the whole
+    claim -- hardware moulded in, so the hardware set becomes reusable --
+    is invisible in a photograph of a finished stick.
+    """
+    shift = _shift(app)
+    _ground(app, shift)
+    explode = round(ease_in_out(clamp((p - 0.18) / 0.40)), 2)
+    build = seed.composite_member(explode)
+    # Up at eye level and near the camera. On the ground at 4.6 m it read
+    # as a stick somebody dropped, and the inserts -- which are the whole
+    # point of the chapter -- were three gold specks.
+    base = shift + np.array([0.0, 0.0, 1.55])
+    creator.draw(app, build, offset=tuple(base))
+    parts = build.stats.get("parts", ())
+    shown = clamp((p - 0.34) / 0.44) * len(parts)
+    for index, (name, point) in enumerate(parts):
+        if index >= shown:
+            break
+        colour = (GREEN, MUTED, BUYER, HOST)[index % 4]
+        _label(app, base + np.array(point) + np.array([0.0, 0.0, 0.30]),
+               name, colour)
+    if p > 0.62:
+        # The section is drawn 2.2x for legibility and the film says so
+        # rather than letting a viewer measure a picture that lies.
+        _label(app, shift + np.array([0.0, -1.9, 0.55]),
+               "SECTION DRAWN 2.2x  ·  LENGTH IS TRUE", MUTED)
+    if p > 0.88:
+        _label(app, shift + np.array([0.0, -1.9, 0.20]),
+               "THIS DOES NOT EXIST YET", HOST)
+
+
+def scene_three(app, opaque, transparent, p: float) -> None:
+    """Three audiences, as three objects: a pad, a dome, and a quilt.
+
+    The campaign is one thing because the three need each other, and a row
+    of three is the only way to say that without a diagram. Laid out along
+    screen-left so an oblique camera does not foreshorten them into a
+    diagonal.
+    """
+    shift = _shift(app)
+    _ground(app, shift)
+    # A math chapter owns the left half of the frame, so a row of three
+    # has to fit in it. At 7.4 apart and centred on the subject point, the
+    # third object sat behind the worksheet panel and the chapter showed
+    # two of the three things it is about.
+    across = _screen_left(app) * 5.0
+    middle = shift + across * 0.15
+    left = middle + across
+    right = middle - across
+
+    # The host's pad, bare.
+    creator.draw(app, seed.pad(), offset=tuple(left))
+    # The owner's dome, standing on its own.
+    creator.draw(app, seed.pad(), offset=tuple(middle))
+    if p > 0.12:
+        up = np.array([0.0, 0.0, _base()])
+        creator.draw(app, seed.frame(), offset=tuple(middle + up))
+        creator.draw(app, seed.cap(0, colour=PANEL_WOOD),
+                     offset=tuple(middle + up))
+    # The quilter's layers, as the stack they make.
+    if p > 0.30:
+        creator.draw(app, seed.layer_stack(QUILT_COMPARE_LAYERS, 1.0),
+                     offset=tuple(right + np.array([0.0, 0.0, 0.35])))
+    if p > 0.20:
+        _label(app, left + np.array([0.0, 0.0, 2.1]), "PAD HOSTS", HOST)
+    if p > 0.16:
+        _label(app, middle + np.array([0.0, 0.0, _base() + _apex() + 1.0]),
+               "DOME OWNERS", BUYER)
+    if p > 0.38:
+        _label(app, right + np.array([0.0, 0.0, 3.1]), "QUILTERS", GREEN)
+    if p > 0.70:
+        _label(app, middle + np.array([0.0, -6.4, 0.3]),
+               "EACH ONE NEEDS THE OTHER TWO", MUTED)
+
 def scene_secondary(app, opaque, transparent, p: float) -> None:
     """A row of the buildings a homestead actually wants second."""
     shift = _shift(app)
@@ -747,6 +952,11 @@ SCENES: dict = {
     "sp_quilt": scene_quilt,
     "sp_mast": scene_mast,
     "sp_floating": scene_floating,
+    "sp_head": scene_head,
+    "sp_invoice": scene_invoice,
+    "sp_goal": scene_goal,
+    "sp_next": scene_next,
+    "sp_three": scene_three,
     "sp_core": scene_core,
     "sp_polyp": scene_polyp,
     "sp_move": scene_move,
@@ -1206,6 +1416,26 @@ CHAPTERS: tuple[Chapter, ...] = (
          "any of this is affordable."),
         steps_seeds(), 28.0, (74.0, 16.0, 36.0), "sp_secondary"),
     _math(
+        "head", "A dome is a head, and it wears hats",
+        "One waterproof layer, on the outside. Everything under it stays dry.",
+        ("I stood lookout in the Arctic Circle.",
+         "Forward and aft lookout means you are outside the skin of the "
+         "ship, in the weather, for hours. You do not stay warm by wearing "
+         "one very good thing. You wear a lot of ordinary things, and then "
+         "you put one waterproof shell over the lot. Ours was a pumpkin "
+         "suit, and it was the only waterproof layer any of us had on.",
+         "That is this building. A dome is a head. Bare, it is a head in "
+         "the cold. Put a knit hat on it, then another over that -- and the "
+         "second one has to be a size up, because the first one is in the "
+         "way.",
+         "Then one waterproof cap over everything. The layers underneath "
+         "are not waterproof and they must not be. They are warm because "
+         "they are dry.",
+         "Put a second waterproof layer underneath them and you have built "
+         "a bag that collects your own sweat. On a building that is called "
+         "a moisture trap, and it rots the thing from the inside."),
+        steps_head(), 30.0, (52.0, 18.0, 6.6), "sp_head"),
+    _math(
         "cap", "The standard article wears a shower cap",
         "The cap replaces the hull and the bays, and it stacks hats.",
         ("We changed what goes over the frame.",
@@ -1258,6 +1488,74 @@ CHAPTERS: tuple[Chapter, ...] = (
          "structure. The loads on the trees, the cables and the mast need an "
          "engineer before anyone stands under it."),
         steps_floating(), 20.0, (86.0, 11.0, 22.0), "sp_floating"),
+    _math(
+        "invoice", "What it costs, all of it",
+        "Ten thousand to build. Two thousand is ours. Twelve to you.",
+        ("We are going to show you the whole invoice.",
+         "The frame, the shell, the column, the services and the labour. "
+         "Materials and labour, then the shop overhead, then the warranty "
+         "reserve. That is what it costs us to build one.",
+         "Then twenty percent, marked up on cost, and that is our profit. "
+         "Not a margin on price, which would be more. You can check it on "
+         "your phone.",
+         "The ground is quoted beside it and not inside it, and we do not "
+         "mark it up. It is yours, or your host's, and you can build it "
+         "yourself for the number on the screen.",
+         "A campaign that will not say its margin is hiding one."),
+        steps_invoice(), 34.0, (58.0, 15.0, 13.5), "sp_invoice"),
+    _math(
+        "goal", "What the goal buys",
+        "A hundred and ten thousand, and it is the sum of a list.",
+        ("This is not a pre-order dressed up as a campaign.",
+         "The geometry is solved and the first dome can be built by hand. "
+         "What we do not have is any way to make the second one, or any "
+         "measurement of the first one standing through a winter.",
+         "So the top of the list is a test platform and one dome on it, "
+         "left up through a full year, with sensors at every layer of the "
+         "wall. That turns the moisture question from an argument into a "
+         "measurement, and we will publish it whichever way it comes out.",
+         "Then the tooling: a router for panels, a plasma table for the "
+         "steel, a laser for gaskets, and the automated processing that is "
+         "the difference between making one dome and making the second.",
+         "The goal is the sum of that list. It is not a round number we "
+         "liked."),
+        steps_goal(), 34.0, (66.0, 14.0, 15.0), "sp_goal"),
+    _math(
+        "next", "The member we want to make instead",
+        "Hardware moulded in, so the hardware set becomes reusable.",
+        ("Everything you have seen is split out of a log by hand.",
+         "That is on purpose -- it is the version somebody can build with a "
+         "chainsaw and two trees. But the same geometry can be made a much "
+         "better way, and most of the tooling budget is for that.",
+         "A member that arrives with its screw holes, its threaded inserts "
+         "and its spline ridge already moulded in. Then the hardware set "
+         "that joins two members is a standard part, it is reusable, and it "
+         "comes off with a driver.",
+         "A steel core where the strength has to be, a moulded body around "
+         "it, metal where a fixing lands, and a ridge where the gasket "
+         "sits. One part, no joinery, and a load rating that came off a "
+         "test rig rather than an argument.",
+         "It does not exist yet. That is what the money is for, and we will "
+         "publish what breaks."),
+        steps_next(), 32.0, (34.0, 10.0, 2.9), "sp_next"),
+    _math(
+        "three", "Three things at once",
+        "Quilters, pad hosts, dome owners. Each one needs the other two.",
+        ("This is not a campaign to sell domes.",
+         "A dome's insulation is a quilted layer of recycled clothing -- "
+         "about a hundred and thirty t-shirts a layer. It is the only "
+         "building insulation we know of that a person can make at a "
+         "kitchen table. So we want a register of people who will sew them, "
+         "paid and listed, not a charity drive.",
+         "A pad host has land and does not want to be a landlord. You "
+         "maintain a deck and a service connection -- not a roof, not a "
+         "boiler, not somebody's kitchen. The building is theirs and it "
+         "leaves when they do.",
+         "And a dome owner wants a building, with trees or without.",
+         "A dome with nobody to quilt for it is a cold dome. A dome with "
+         "nowhere to stand is a kit in a garage. A pad with no dome on it "
+         "is a deck. That is why it is one campaign."),
+        steps_three(), 34.0, (86.0, 16.0, 21.0), "sp_three"),
     Chapter(
         "close", "00", "Bring your own ground",
         "Twelve thousand, forty-three dollars a square foot.",
@@ -1320,7 +1618,10 @@ def validate_seed_pitch() -> None:
     # over one frozen shot of a laminated shell labelled with its weight.
     # Nothing in the checks caught it, because every field was valid.
     own = {"cap": "sp_cap", "quilt": "sp_quilt", "mast": "sp_mast",
-           "floating": "sp_floating"}
+           "floating": "sp_floating",
+           # And the campaign ending, for the same reason.
+           "head": "sp_head", "invoice": "sp_invoice", "goal": "sp_goal",
+           "next": "sp_next", "three": "sp_three"}
     by_slug = {chapter.slug: chapter for chapter in CHAPTERS}
     for slug, stage in own.items():
         assert slug in by_slug, f"{slug} chapter has gone"
@@ -1358,7 +1659,11 @@ def validate_seed_pitch() -> None:
     # The written total is not the finished length. The exporter stretches
     # each chapter to fit its own narration, which adds about a quarter.
     total = sum(chapter.duration for chapter in CHAPTERS)
-    assert 300.0 <= total <= 900.0, total
+    # The band grew with the campaign ending: the invoice, what the
+    # goal buys, the member we want to make next, and who the three
+    # audiences are. Still a band rather than a figure, so a chapter
+    # can be re-timed without editing a test.
+    assert 300.0 <= total <= 1400.0, total
 
     # The film must never say a price the model does not currently give.
     # Every spoken figure that is supposed to be a price is listed here with

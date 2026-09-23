@@ -18,6 +18,7 @@ The same discipline the dome-park film uses, in
 from __future__ import annotations
 
 import hull_laminate
+import kickstarter
 import park_model
 import seed_model
 import soft_shell
@@ -752,6 +753,159 @@ def steps_floating() -> tuple[str, ...]:
     )
 
 
+
+# ----------------------------------------------------------------------
+# The campaign ending
+# ----------------------------------------------------------------------
+
+def steps_head() -> tuple[str, ...]:
+    """A dome is a head, and only the outside layer is waterproof."""
+    quilt = kickstarter.quilt_economics()
+    return (
+        "a dome is a head. it wears hats.",
+        "",
+        "bare, it is a head in the cold. put a knit hat on.",
+        "put another over that -- and the second one has to be",
+        "a size up, because the first one is in the way.",
+        "",
+        "then one waterproof cap over everything.",
+        "",
+        "   " + _row("bare skin", f"R-{quilt['base_r']:.1f}"),
+        "   " + _row("each quilted layer", f"+R-{quilt['r_per_layer']:.1f}"),
+        "   " + _row(f"at {quilt['layers']} layers",
+                     f"R-{quilt['stacked_r']:.1f}"),
+        "",
+        "the layers underneath are NOT waterproof, and must not be.",
+        "they are warm because they are dry.",
+        "",
+        "   " + _row("the breather, vapour-permeable",
+                     f"{soft_shell.declared('membrane_perms'):.0f} perms"),
+        "   " + _row("the vented gap under the cap",
+                     f"{soft_shell.declared('cap_vent_gap_in'):.2f} in"),
+        "   " + _row("watertight layers in the building", "1"),
+        "",
+        "two waterproof layers with insulation between them",
+        "is a bag that collects your own sweat.",
+    )
+
+
+def steps_invoice() -> tuple[str, ...]:
+    """The whole invoice, and the markup named as profit."""
+    priced = quote()
+    markup = seed_model.declared("maker_markup_fraction")
+    steps = [
+        "what it costs, all of it.",
+        "",
+    ]
+    for group in priced.dome_groups:
+        if group.cost > 0.0:
+            steps.append("   " + _row(group.label, usd(group.cost)))
+    steps += [
+        "   " + _rule(),
+        "   " + _row("materials and labour", usd(priced.direct_cost)),
+        "   " + _row("shop overhead", usd(priced.overhead)),
+        "   " + _row("warranty reserve", usd(priced.warranty)),
+        "   " + _row("COST TO BUILD", usd(priced.cost_to_build)),
+        "",
+        "   " + _row(f"our profit, {markup * 100:.0f}% marked up on cost",
+                     usd(priced.gross_profit)),
+        "   " + _row("WHAT YOU PAY", usd(priced.price)),
+        "",
+        "   " + _row("per square foot of floor",
+                     f"${priced.price_per_sqft:,.2f}"),
+        "",
+        "and the ground is quoted beside it, not inside it:",
+        "   " + _row("a platform to stand on", usd(priced.pad_cost)),
+        "   " + _row("we mark that up by", "nothing"),
+    ]
+    return tuple(steps)
+
+
+def steps_goal() -> tuple[str, ...]:
+    """What the goal buys, line by line. The goal is the sum."""
+    steps = [
+        "the goal is the sum of this list.",
+        "it is not a round number we liked.",
+        "",
+    ]
+    for line in kickstarter.goal_lines():
+        steps.append("   " + _row(line.what[:40], usd(line.usd)))
+    steps += [
+        "   " + _rule(),
+        "   " + _row("THE GOAL", usd(kickstarter.goal())),
+        "",
+        "none of it is salary and none of it is marketing.",
+        "it is the equipment and the prototypes that turn",
+        "a solved geometry into something makeable twice.",
+    ]
+    return tuple(steps)
+
+
+def steps_next() -> tuple[str, ...]:
+    """The member we want to make instead of splitting one."""
+    geometry = seed_model.seed_geometry()
+    inserts = (soft_shell.declared("panel_inserts_per_bay")
+               * sum(face.count for face in geometry.faces))
+    budget = {line.key: line.usd for line in kickstarter.goal_lines()}
+    return (
+        "today every member is split out of a log by hand.",
+        "",
+        "   " + _row("members in one dome", f"{geometry.member_count}"),
+        "   " + _row("threaded inserts, set by hand", f"{inserts:.0f}"),
+        "   " + _row("saw settings for the butt cut", "3"),
+        "",
+        "what we want instead is a member that arrives with",
+        "its hardware already in it:",
+        "",
+        "   screw holes, moulded in",
+        "   threaded inserts, moulded in",
+        "   a spline ridge where the gasket sits",
+        "   a steel core where the strength has to be",
+        "",
+        "then the hardware set that joins two members is a",
+        "standard part -- reusable, and it comes off with a driver.",
+        "",
+        "   " + _row("tooling for a moulded member",
+                     usd(budget["strut_tooling"])),
+        "   " + _row("composite triangle, three rounds",
+                     usd(budget["composite_rnd"])),
+        "",
+        "neither of those exists yet. that is what the",
+        "money is for, and we will publish what breaks.",
+    )
+
+
+def steps_three() -> tuple[str, ...]:
+    """Three audiences, and why it is one campaign."""
+    quilt = kickstarter.quilt_economics()
+    pad = kickstarter.tiers()
+    host = next(t for t in pad if t.key == "pad")
+    sewer = next(t for t in pad if t.key == "quilter")
+    return (
+        "this is not a campaign to sell domes.",
+        "it is three things that need each other.",
+        "",
+        "QUILTERS -- you sew.",
+        "   " + _row("one layer, in t-shirts",
+                     f"{quilt['shirts_per_layer']:,}"),
+        "   " + _row("what a layer is worth",
+                     usd(quilt['marginal_usd_per_layer'])),
+        "   " + _row("what it adds", f"R-{quilt['r_per_layer']:.1f}"),
+        "",
+        "PAD HOSTS -- you have land, not a vocation as a landlord.",
+        "   " + _row("you maintain a deck and a service connection"),
+        "   " + _row("not a roof, not a boiler, not their kitchen"),
+        "   " + _row("the host's pack", usd(host.pledge)),
+        "",
+        "DOME OWNERS -- you want a building.",
+        "   " + _row("with trees", usd(quote().price)),
+        "   " + _row("the quilter's kit", usd(sewer.pledge)),
+        "",
+        "a dome with nobody to quilt for it is a cold dome.",
+        "a dome with nowhere to stand is a kit in a garage.",
+        "a pad with no dome on it is a deck.",
+    )
+
 ALL_SCREENS = (
     ("declared", steps_declared),
     ("frame", steps_frame),
@@ -773,6 +927,11 @@ ALL_SCREENS = (
     ("seeds", steps_seeds),
     ("hats", steps_hats),
     ("quilt", steps_quilt),
+    ("head", steps_head),
+    ("invoice", steps_invoice),
+    ("goal", steps_goal),
+    ("next", steps_next),
+    ("three", steps_three),
     ("mast", steps_mast),
     ("floating", steps_floating),
 )
