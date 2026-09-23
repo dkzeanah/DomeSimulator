@@ -125,6 +125,42 @@ def kind_of(key: str) -> str:
 # ----------------------------------------------------------------------
 
 SPECS: dict[str, TeaserSpec] = {
+    # The campaign film. Hand-written rather than auto-picked, because the
+    # automatic spec chose "the shell is a boat hull" and "the top of the
+    # dome is a socket" -- true, and not what the campaign is about any
+    # more. The spine now is: your own trees, one waterproof layer over as
+    # many warm ones as you like, and a price with the invoice shown.
+    "seed_pitch": TeaserSpec(
+        hook=Beat("head",
+                  "A dome is a head. It wears hats -- and only the outside "
+                  "one is waterproof.",
+                  "One waterproof layer. As many warm ones as you like.",
+                  "A HOUSE YOU CAN TAKE APART"),
+        beats=(
+            Beat("frame",
+                 "{{dome.trees}} trees, split into {{frame.members}} wedges. "
+                 "No hubs, no jig.",
+                 "{{dome.trees}} trees. {{frame.members}} wedges. No hubs.",
+                 window=(0.25, 0.85)),
+            Beat("cap",
+                 "Every quilted layer buys the next cap a size up. A rigid "
+                 "shell fills at {{hat.cavity_limit}} and stops.",
+                 "It gets warmer every winter."),
+            Beat("quilt",
+                 "The insulation is recycled clothing at "
+                 "${{quilt.blanket}} a layer, quilted at a kitchen table.",
+                 "${{quilt.blanket}} a layer. Nearly a thousand t-shirts."),
+            Beat("invoice",
+                 "${{hat.standard_list}}, and the whole invoice is on the "
+                 "page. ${{hat.per_sqft}} a square foot.",
+                 "${{hat.standard_list}}. The invoice is on the page.",
+                 window=(0.55, 0.95)),
+        ),
+        cta="The whole film works every number on screen, and it is linked "
+            "below.",
+        cta_words="Every number, worked on screen.",
+        outreach="Back it, and tell us which price is wrong.",
+        outreach_words="Tell us which price is wrong."),
     "why": TeaserSpec(
         hook=Beat("round",
                   "Saw a log into two-by-fours and you keep {{tree.sawn_recovery_pct}} percent "
