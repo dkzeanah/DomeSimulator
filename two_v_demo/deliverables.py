@@ -253,6 +253,19 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "percent more wood than a shared-strut frame, and a price "
                 "list that is an assumption.",
                 compose=True),
+    Deliverable("pitch_hero", "stem-cell-hero-cut.mp4",
+                "A hundred seconds for the top of the Kickstarter page. Not "
+                "an extract of the campaign film -- a separate cut, because "
+                "an extract inherits the long film's pacing and a backer "
+                "gives a campaign video about fifteen seconds. Your own "
+                "trees; one waterproof layer over as many warm ones as you "
+                "like, which is how a sailor dresses; twelve thousand "
+                "dollars with the whole invoice shown and the profit named; "
+                "and the three kinds of people it needs to work at all. "
+                "Every scene is the campaign film's own painter, so the "
+                "short cut and the long one cannot show different "
+                "buildings.",
+                compose=False),
     Deliverable("module_build", "stem-cell-utility-core-build.mp4",
                 "The shop-floor cut: building one utility core, in the order "
                 "you would actually build one. Fourteen steps, five stages, "

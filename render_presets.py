@@ -333,6 +333,15 @@ PRESETS: tuple[RenderPreset, ...] = (
            "pitch.",
            compose_segments=True),
 
+    _video("pitch_hero", "pitch_hero", "stem-cell-hero-cut.mp4",
+           "THE HERO CUT. A hundred seconds for the top of the Kickstarter "
+           "page: your own trees, one waterproof layer over as many warm "
+           "ones as you like, twelve thousand dollars with the invoice "
+           "shown, and the three kinds of people it needs. Every scene is "
+           "the campaign film's own, so the short cut and the long one "
+           "cannot show different buildings.",
+           compose_segments=False),
+
     _video("module_build", "module_build",
            "stem-cell-utility-core-build.mp4",
            "BUILD ONE UTILITY CORE. The shop-floor cut: fourteen steps, five "
