@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_07.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_08.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-1cc9a93f4b\\chapter_09.mp3"
+  ],
+  "chapter_durations": [
+    35.36,
+    28.0,
+    40.184,
+    32.192,
+    47.744,
+    42.872,
+    37.808,
+    39.224,
+    32.768
+  ],
+  "speech_durations": [
+    33.96,
+    23.592,
+    38.784,
+    30.792,
+    46.344,
+    41.472,
+    36.408,
+    37.824,
+    31.368
+  ],
+  "chapter_starts": [
+    0.0,
+    35.36,
+    63.36,
+    103.544,
+    135.736,
+    183.48,
+    226.35199999999998,
+    264.15999999999997,
+    303.38399999999996
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "2a5a861ec63d03adf8f23b8ed48b36d428aecdd42659e1e10de18c564b630eda"
+}

@@ -51,6 +51,13 @@ class Token:
         return self.compute()
 
 
+def _deck(kind: str, across_ft: float = 48.0):
+    """One pad deck, taken off rather than rated. See :mod:`pad_deck`."""
+    import pad_deck
+
+    return pad_deck.deck(kind, across_ft)
+
+
 def _n(value: float, places: int = 0) -> str:
     """A number set the way a book sets numbers: grouped, fixed places."""
     return f"{value:,.{places}f}"
@@ -1522,21 +1529,22 @@ def _part3_tokens() -> list[Token]:
               lambda: _n(standard.lease_per_month)),
         Token("pad.occupancy_pct", "share of the year the host plans to lease it",
               lambda: _pct(pm.declared("occupancy_fraction"), 0)),
-        Token("pad.gravel_rate", "gravel deck, dollars per sq ft",
-              lambda: _n(pm.declared("deck_gravel_usd_per_sqft"), 1)),
+        # These used to read three flat rates off park_model. Those rates
+        # were contractor prices carrying an "owner-built" description, and
+        # they are gone; pad_deck counts the piers, beams, joists and boards
+        # instead. The tokens ask it, so the book moves when the takeoff does.
+        Token("pad.gravel_rate", "gravel base, dollars per sq ft",
+              lambda: _n(_deck("gravel").usd_per_sqft, 1)),
         Token("pad.concrete_rate", "concrete slab, dollars per sq ft",
-              lambda: _n(pm.declared("deck_concrete_usd_per_sqft"))),
-        Token("pad.wood_rate", "wood deck, dollars per sq ft",
-              lambda: _n(pm.declared("deck_wood_usd_per_sqft"))),
-        Token("pad.gravel_48", "a 48 ft gravel pad's deck, dollars",
-              lambda: _n(standard.area_sqft
-                         * pm.declared("deck_gravel_usd_per_sqft"))),
-        Token("pad.concrete_48", "a 48 ft slab's deck, dollars",
-              lambda: _n(standard.area_sqft
-                         * pm.declared("deck_concrete_usd_per_sqft"))),
-        Token("pad.wood_48", "a 48 ft wood deck, dollars",
-              lambda: _n(standard.area_sqft
-                         * pm.declared("deck_wood_usd_per_sqft"))),
+              lambda: _n(_deck("slab").usd_per_sqft)),
+        Token("pad.wood_rate", "framed deck, dollars per sq ft",
+              lambda: _n(_deck("blocks").usd_per_sqft)),
+        Token("pad.gravel_48", "a 48 ft gravel base, dollars",
+              lambda: _n(_deck("gravel").cost)),
+        Token("pad.concrete_48", "a 48 ft slab, dollars",
+              lambda: _n(_deck("slab").cost)),
+        Token("pad.wood_48", "a 48 ft framed deck, dollars",
+              lambda: _n(_deck("blocks").cost)),
         Token("pad.cheap_area", "the cheap pad's area, sq ft",
               lambda: _n(pm.pad_area_sqft(pm.declared("iris_max_ft")))),
         Token("pad.cheap_deck", "its deck on blocks, dollars",

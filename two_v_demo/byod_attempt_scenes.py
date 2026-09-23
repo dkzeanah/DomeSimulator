@@ -181,7 +181,13 @@ def scene_decks(app, opaque, transparent, p):
         # draw request, so one deck mesh per material serves any number of
         # pads and the three here are the same object three times.
         creator.draw(app, park.pad(spec), offset=(x, 0.0, 0.0))
-        rate = pm.declared(f"deck_{deck}_usd_per_sqft")
+        # The three flat deck rates this used to read are gone; pad_deck
+        # counts the boards instead, so the rate is derived from the real
+        # takeoff for this diameter rather than looked up.
+        import pad_deck
+
+        built = pad_deck.deck(pm.Pad.DECK_BUILDS[deck], diameter)
+        rate = built.usd_per_sqft
         # One label, not three. Three stacked world labels on one subject
         # cannot be kept apart by the declutter pass, and the first cut of
         # this chapter had them printing through each other.
