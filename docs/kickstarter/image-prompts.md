@@ -1,5 +1,10 @@
 # Image rendering prompts — Gemini (Imagen) and ChatGPT image generation
 
+> **Numbers in this file come from the model.** Regenerate them with
+> `py -3.12 -m campaign` (writes `deliverables/campaign/campaign-page.md`)
+> and check them with `py -3.12 -c "import campaign; campaign.validate_kit()"`,
+> which fails on any figure the model does not produce.
+
 One prompt per asset, keyed to the checklist in `asset-inventory.md`
 ("H1", "S1" ...). Each prompt is self-contained: paste it as-is, then
 attach the style reference listed under it. The numbers are the campaign's
@@ -47,7 +52,7 @@ Style reference: `deliverables/book/figures/hat-stack.png` + any two
 
 Subject: one dome shown as four separated layers floating in vertical
 explosion, bottom to top: (1) the bare timber frame, forty triangular
-bays, wedge struts; (2) a thin semi-transparent grey membrane; (3) a
+bays, wedge struts; (2) a thin semi-transparent breather sheet (vapour-permeable, NOT waterproof); (3) a
 thick quilted layer made of visible fabric patches — denim, flannel red,
 mustard, sage, cream, brown, teal — stitched together along the triangle
 edges; (4) the rain-slick outer cap, a smooth translucent skin with ten

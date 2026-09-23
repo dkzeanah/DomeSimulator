@@ -398,6 +398,158 @@ def validate_campaign() -> None:
     for head, _body in soft_shell.CONCERNS:
         assert head in text, f"the page drops the concern {head!r}"
 
+    # And the hand-written kit beside it, which is where a stale number
+    # actually hides -- the generated page cannot go stale and a document
+    # somebody typed can.
+    validate_kit()
+
+
+
+# ----------------------------------------------------------------------
+# The handoff kit
+# ----------------------------------------------------------------------
+
+KIT_DIR = ROOT / "docs" / "kickstarter"
+
+#: The table in the kit's README, regenerated rather than remembered.
+KIT_TABLE_START = "| figure | value |"
+#: A blank line ends the table.
+KIT_TABLE_END = "\n\n"
+
+
+def kit_numbers() -> set[str]:
+    """Every dollar figure the model can currently produce.
+
+    The kit is written by hand -- image prompts, a video outline, tier
+    copy -- and a hand-written number goes stale the moment a constant
+    moves. This is the set anything in the kit is allowed to say, and
+    :func:`validate_kit` fails on anything outside it.
+    """
+    values: set[float] = set()
+    quote = seed_model.quote()
+    hard = seed_model.quote("stem_cell", shell="hard")
+    values |= {
+        quote.price, quote.cost_to_build, quote.gross_profit,
+        quote.direct_cost, quote.overhead, quote.warranty, quote.pad_cost,
+        quote.delivered_price, quote.price_per_sqft,
+        hard.price, hard.cost_to_build, hard.price - quote.price,
+        kickstarter.goal(),
+        seed_model.declared("freight_usd"),
+        seed_model.frame_weight_lb(),
+        soft_shell.declared("blanket_quilt_usd_per_layer"),
+    }
+    values |= set(seed_model.floor_price())
+    upgrade = 0.0
+    for group in (seed_model.mast_group(), seed_model.dome_floor_group(),
+                  seed_model.suspension_group()):
+        values.add(group.cost)
+        upgrade += group.cost
+    # The sums the copy actually quotes, as well as the parts.
+    stack = kickstarter.cost_stack()
+    values |= {upgrade, stack.standing, stack.price, stack.margin,
+               stack.built, stack.ground}
+    quilt = kickstarter.quilt_economics()
+    values |= {quilt["usd_per_layer"], quilt["marginal_usd_per_layer"]}
+    for group in quote.groups:
+        values.add(group.cost)
+    for layers in range(0, 9):
+        values.add(soft_shell.soft_shell(layers).cost)
+    for kind in pad_deck.KINDS:
+        values.add(pad_deck.deck(kind).cost)
+    for line in kickstarter.goal_lines():
+        values.add(line.usd)
+    for tier in kickstarter.tiers():
+        values |= {tier.pledge, tier.cost, tier.contribution}
+    # Every fit-out, because the catalogue chapter quotes them.
+    for key in seed_model.FITOUT_ORDER:
+        try:
+            priced = seed_model.quote(key)
+        except Exception:
+            continue
+        values |= {priced.price, priced.cost_to_build}
+    # The cap-against-hull comparison at every layer count, and the saving,
+    # because the copy quotes both sides of it.
+    for row in soft_shell.compare(8):
+        values |= {row.soft_usd, row.hard_usd, row.hard_usd - row.soft_usd}
+    # And the yard-priced quilt, which is the alternative the copy names.
+    for layers in range(0, 4):
+        yard = soft_shell.soft_shell(layers, quilt="yard")
+        values.add(yard.cost)
+        values.add(yard.cost - soft_shell.soft_shell(0, quilt="yard").cost)
+    out: set[str] = set()
+    for value in values:
+        out.add(f"${value:,.0f}")
+        out.add(f"${value:,.2f}")
+    return out
+
+
+def kit_table() -> str:
+    """The live-numbers table for the kit's README."""
+    n = numbers()
+    stack = n["stack"]
+    geo = n["geometry"]
+    quilt = n["quilt"]
+    rows = [
+        ("the stem cell: dome across / tall",
+         f"{geo.diameter_ft:.2f} ft / {geo.diameter_ft / 2:.2f} ft"),
+        ("floor (ten-sided) / bays / members",
+         f"{geo.floor_decagon_sqft:.0f} sq ft / 40 / {geo.member_count}"),
+        ("**standard article, shower cap -- what you pay**",
+         f"**{_usd(stack.price)}**"),
+        ("... what it costs us to build", _usd(stack.built)),
+        ("... our profit, 20% marked up on cost", _usd(stack.margin)),
+        ("... per square foot of floor", _cents(stack.per_sqft)),
+        ("the same dome, laminated hull", _usd(n["hard"].price)),
+        ("the hull is dearer by", _usd(n["hard"].price - stack.price)),
+        ("one blanket-quilted layer", _usd(quilt["usd_per_layer"])),
+        ("... with the bigger cap it forces",
+         _usd(quilt["marginal_usd_per_layer"])),
+        ("... in t-shirts", f"{quilt['shirts_per_layer']:,}"),
+        ("watertight layers in the building", "1 -- the outer cap"),
+        ("mast + floor + rig", _usd(n["upgrade"])),
+        ("the host's pad", _usd(stack.ground)),
+        ("dome + ground, standing", _usd(stack.standing)),
+        ("**the campaign goal**", f"**{_usd(n['goal'])}**"),
+    ]
+    lines = ["| figure | value |", "|---|---|"]
+    lines += [f"| {label} | {value} |" for label, value in rows]
+    return "\n".join(lines)
+
+
+def refresh_kit() -> Path:
+    """Rewrite the kit README's number table from the model."""
+    readme = KIT_DIR / "README.md"
+    text = readme.read_text(encoding="utf-8")
+    start = text.index(KIT_TABLE_START)
+    end = text.index(KIT_TABLE_END, start)
+    text = text[:start] + kit_table() + text[end:]
+    readme.write_text(text, encoding="utf-8")
+    return readme
+
+
+def validate_kit() -> dict:
+    """No file in the kit may quote a figure the model does not produce."""
+    import re
+
+    known = kit_numbers()
+    pattern = re.compile(r"\$\d[\d,]*\d(?:\.\d\d)?|\$\d")
+    stale: list[str] = []
+    checked = 0
+    for path in sorted(KIT_DIR.glob("*.md")):
+        checked += 1
+        for number, line in enumerate(
+                path.read_text(encoding="utf-8").splitlines(), start=1):
+            for found in pattern.findall(line):
+                if found not in known:
+                    stale.append(f"{path.name}:{number}  {found}")
+    bullet = "\n  "
+    assert not stale, (
+        "the campaign kit quotes figures the model does not produce:"
+        + bullet + bullet.join(stale[:24])
+        + (f"{bullet}... and {len(stale) - 24} more"
+           if len(stale) > 24 else ""))
+    return {"files": checked}
+
 
 def main(argv: list[str] | None = None) -> int:
     import argparse

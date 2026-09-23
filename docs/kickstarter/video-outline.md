@@ -1,5 +1,10 @@
 # Video outline — the hero cut, and the full v6 film
 
+> **Numbers in this file come from the model.** Regenerate them with
+> `py -3.12 -m campaign` (writes `deliverables/campaign/campaign-page.md`)
+> and check them with `py -3.12 -c "import campaign; campaign.validate_kit()"`,
+> which fails on any figure the model does not produce.
+
 ## A. The 60–90 second hero video (for the top of the page)
 
 Structure, in order. Give this to the editor and to Veo/Gemini as the
@@ -13,7 +18,7 @@ shot list; every number is from the live table in `README.md`.
 | 4 | 26–38 | H2: the hat stack exploding — frame, membrane, quilt, cap | "The standard article wears a shower cap. The hull is the upgrade." |
 | 5 | 38–48 | Q1→Q2→Q3: the quilt being stitched, tucked on, capped | "A fifty-dollar blanket quilt. A bigger cap for every layer." |
 | 6 | 48–60 | M1→F1: the mast, the floor clamping on, the dome hanging between trees | "A floor you buy later. A mast that hoists the whole thing. And if you have the trees — it floats." |
-| 7 | 60–72 | G1: the price cards — $18,522 vs $27,581 | "Eighteen and a half thousand, list. The hull version: twenty-seven five. The pad belongs to the host." |
+| 7 | 60–72 | G1: the price cards — $12,036 vs $21,513 | "Eighteen and a half thousand, list. The hull version: twenty-seven five. The pad belongs to the host." |
 | 8 | 72–82 | P1: the empty pad, then the dome landing on it | "You bring the home. The ground stays somebody else's." |
 | 9 | 82–90 | H1 again, now with the door light on, camera pulling back | "Every figure in this film came out of a model you can run yourself — including the ones that argue against us." |
 
@@ -36,7 +41,7 @@ is:
    (new).
 6. **`floating` — Hang it between two trees** (new).
 7. The honest chapters, the price, and the close (existing, re-spoken to
-   the v6 figures: $18,522 list, $12,040 build, $66.87/sq ft, $27,581
+   the v6 figures: $12,036 list, $10,030 build, $43.45/sq ft, $21,513
    hull, $4,011 mast+floor+rig).
 
 Render from the launcher: preset **stem-cell-dome-campaign.mp4** builds

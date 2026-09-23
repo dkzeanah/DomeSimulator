@@ -1,5 +1,10 @@
 # Asset inventory — what exists, what to render, what to make
 
+> **Numbers in this file come from the model.** Regenerate them with
+> `py -3.12 -m campaign` (writes `deliverables/campaign/campaign-page.md`)
+> and check them with `py -3.12 -c "import campaign; campaign.validate_kit()"`,
+> which fails on any figure the model does not produce.
+
 Everything the campaign already owns, where it lives, and the checklist of
 what the Kickstarter page still needs. Paths are relative to the repo root.
 

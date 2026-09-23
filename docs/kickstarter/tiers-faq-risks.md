@@ -1,32 +1,30 @@
 # Tiers, FAQ, and risks — for the campaign page
 
+> **Numbers in this file come from the model.** Regenerate them with
+> `py -3.12 -m campaign` (writes `deliverables/campaign/campaign-page.md`)
+> and check them with `py -3.12 -c "import campaign; campaign.validate_kit()"`,
+> which fails on any figure the model does not produce.
+
 All prices below are the live model's numbers (see `README.md`); anything
 marked [OWNER] is a decision the campaign owner makes, not a number an
 LLM should invent. Early-bird discounts are [OWNER] decisions — the model
 does not invent them, and neither should the copy.
 
-## Reward tiers (draft)
+## Reward tiers
 
-| tier | reward | model price |
-|---|---|---|
-| $15 | **The plans.** Full digital cut list, seam schedule and the brief, plus the calculator files | [OWNER] |
-| $50 | **The quilt kit.** One blanket-quilted layer's worth of pattern + the quilting guide (the fabric itself is the backer's — that's the point) | $50 |
-| $75 | **Name a bay.** Your name etched on one of the forty bays of the first production frame | [OWNER] |
-| $350 | **The cap upgrade.** The shower-cap stack (outer panels, membrane, cap, straps) for your own frame | $3,265 is the full stack — [OWNER] picks the tier price |
-| $2,600 | **The mast and the floor.** The steel-core mast, hub, spokes, deck and rail — the upgrade, shipped to your dome | $2,521 (mast $622 + floor $1,899) |
-| $1,500 | **The floating rig.** Three cables, the hanger, tree saddles, the brake winch — with the engineer's-note letter enclosed | $1,490 |
-| $19,000 | **The stem cell itself.** The standard article: frame hardware, forty bays, shower-cap shell, the utility core, cooling, light and fan — delivered | $18,522 list |
-| $6,300 | **Be the host.** A serviced pad in the first park, and the first dome lands on it | $6,240 |
-| [OWNER] | **A seed fit-out.** Gym, guest house, sauna, food — any fit-out from the catalogue at its model price | $23,252–$34,218 |
+Generated from `kickstarter.tiers()`; every tier's cost to deliver and its contribution to the goal are in the model.
 
-Notes to keep on the page:
-- The dome tier's price has **no floor, no deck, no groundwork** in it —
-  say so on the tier card; the host tier is the other half of the same
-  sentence.
-- The floating rig tier must carry the design-possibility label and the
-  engineer's note.
-- Every tier above the plans ships with the "numbers you can run
-  yourself" link.
+| pledge | what it is |
+|---:|---|
+| **$35** | **The drawings and the numbers.** Every table in the book, the cut list for any diameter, and the solver that made them. It is a download; the two dollars is card fees and hosting |
+| **$95** | **Quilter's kit.** Pattern, thread, the binding, and the layer specification -- how big, how thick, how to close the edge. Sew a layer for your own dome, or sew one for somebody else's and get paid for it |
+| **$180** | **One bay's hardware set.** Four threaded inserts, the flange screws, the spline gasket and the seam key for one triangle. The smallest piece of the building that is a real object rather than a drawing |
+| **$1,450** | **A shower cap for your dome.** The rain-slick outer cap, made to the reference diameter, hemmed with grommets and strapping. The only watertight layer in the building, and the one you cannot sew at home |
+| **$2,400** | **The utility hub.** The centre column, assembled and tested: pad port, water manifold, drain stack, sub-panel, riser and seal cap. The part an owner cannot make and the part the goal exists to get right |
+| **$19,800** | **Dome kit, frame included.** Everything, including the timber, for somebody with no trees. The expensive version, honestly priced: you are paying for somebody else's 45 percent recovery |
+| **$11,400** | **Dome kit, bring your own trees.** Everything except the frame. You fell, split and cut the members from your own land -- which is the whole argument -- and we send the rest |
+| **$640** | **Pad host's pack.** The platform drawings at five foundation types, the service-port spec, the rim latch pattern, and the host's costing sheet. For somebody with land who wants a dome to be able to land on it |
+
 
 ## FAQ (draft answers — the brief already speaks these)
 

@@ -1,5 +1,10 @@
 # Campaign page outline — the Kickstarter page, section by section
 
+> **Numbers in this file come from the model.** Regenerate them with
+> `py -3.12 -m campaign` (writes `deliverables/campaign/campaign-page.md`)
+> and check them with `py -3.12 -c "import campaign; campaign.validate_kit()"`,
+> which fails on any figure the model does not produce.
+
 Give this to ChatGPT or Gemini as the skeleton; the copy it writes must
 stay in the campaign voice (builder's voice, concrete figures, no fluff)
 and pull every number from the live table in `README.md`. Sections marked
@@ -13,7 +18,7 @@ Logline options (pick one, or the owner's own):
 
 - "Forty triangles. One frame. A gym on Monday, a guest room on Friday,
   and a house you can winch into the trees."
-- "The bare standard dome you build on: $18,522 list, a $50 quilt, and a
+- "The bare standard dome you build on: $12,036 list, a $50 quilt, and a
   hard shell whenever you want it."
 - "We make the stem cell. You build on it."
 
@@ -22,7 +27,7 @@ Logline options (pick one, or the owner's own):
 - Hero image H1 (shower-cap dome at dusk) + hero video (see
   `video-outline.md`).
 - One-line over the image: the logline.
-- Three stat chips under it: **40 bays · $66.87/sq ft · stacks hats**.
+- Three stat chips under it: **40 bays · $43.45/sq ft · stacks hats**.
 
 ## 3. The problem
 
@@ -65,16 +70,14 @@ Logline options (pick one, or the owner's own):
 ## 7. The price story
 
 - Image G1 + the live numbers table (README.md).
-- Standard article: **$18,522 list**, $12,040 to build, $66.87 per sq ft.
-  The hull version: **$27,581**. The host's pad: **$6,240** — and the
+- Standard article: **$12,036 list**, $10,030 to build, $43.45 per sq ft.
+  The hull version: **$21,513**. The host's pad: **$6,240** — and the
   dome's price carries no floor, no deck, no groundwork, on purpose.
-- The floor price with every saving lever pulled: **$15,599**.
+- The floor price with every saving lever pulled: **$9,756**.
 
 ## 8. The seeds (why one frame, nine buildings)
 
-- Table of fit-outs from `README.md` (Nursery $26,922 … Workshop
-  $34,218), one line each: same frame, same pad, same core, panels
-  changed.
+- Table of fit-outs, generated (Nursery $18,588 … Workshop $24,279), one line each: same frame, same pad, same core, panels changed.
 - Image S2 again, or a three-up: gym / guest house / garage.
 
 ## 9. The honest section (risks and what it is not)

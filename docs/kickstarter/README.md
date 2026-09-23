@@ -1,5 +1,10 @@
 # Kickstarter campaign kit — how to use it
 
+> **Numbers in this file come from the model.** Regenerate them with
+> `py -3.12 -m campaign` (writes `deliverables/campaign/campaign-page.md`)
+> and check them with `py -3.12 -c "import campaign; campaign.validate_kit()"`,
+> which fails on any figure the model does not produce.
+
 This folder is the handoff pack for the stem-cell dome Kickstarter. The
 campaign model is being tuned in the repo right now (Claude Code is working
 alongside), so **every number in these files is a snapshot**: regenerate the
@@ -18,30 +23,20 @@ The numbers on this page were generated from the model on 2026-09-20.
 |---|---|
 | the stem cell: dome across / tall | 19.42 ft / 9.71 ft |
 | floor (ten-sided) / bays / members | 277 sq ft / 40 / 120 |
-| stock in the frame / trees it comes from | 664 ft / 1.5 of the buyer's own |
-| **standard article, shower cap — list** | **$18,522** |
-| ... to build | $12,040 |
-| ... per square foot of floor | $66.87 |
-| the same dome, laminated hull — list | $27,581 |
-| the cap saves, at list | $9,059 |
-| cap stack: 0 / 3 / 7 blanket quilts | $3,265 / $3,471 / $3,748 |
-| hull + bays: 0 / 3 / 7 quilts | $8,091 / $9,905 / $12,324 |
-| **the cap saves at 3 quilts (materials)** | **$6,434** |
-| one blanket-quilted layer | $50 (yard-priced: ~$670 at the first size) |
-| the hull's cavity fills at | 4 layers |
-| the seventh cap is bigger than the first by | 15.6% |
-| thirty years, replacements in | soft $221/yr vs hard $330/yr |
-| mast through the column | $622 |
-| the dome's own floor (the upgrade) | $1,899 |
-| floating rig (cables, saddles, winch) | $1,490 |
-| **mast + floor + rig** | **$4,011** |
-| the frame's weight, green pine | 2,478 lb |
+| **standard article, shower cap -- what you pay** | **$12,036** |
+| ... what it costs us to build | $10,030 |
+| ... our profit, 20% marked up on cost | $2,006 |
+| ... per square foot of floor | $43.45 |
+| the same dome, laminated hull | $21,513 |
+| the hull is dearer by | $9,477 |
+| one blanket-quilted layer | $50 |
+| ... with the bigger cap it forces | $69 |
+| ... in t-shirts | 132 |
+| watertight layers in the building | 1 -- the outer cap |
+| mast + floor + rig | $4,011 |
 | the host's pad | $6,240 |
-| every saving lever at once (the floor price) | $15,599 |
-| freight (regional, flat-packed) | $1,250 |
-| fit-outs (same frame): Nursery / Gym / Studio | $26,922 / $28,761 / $28,902 |
-| Guest house / Garage / Workshop | $31,186 / $32,093 / $34,218 |
-| Home / Food / Advertiser / Sauna / Jacuzzi | $32,378 / $35,798 / $32,810 / $23,252 / $25,377 |
+| dome + ground, standing | $18,276 |
+| **the campaign goal** | **$110,000** |
 
 The honest lines the campaign says out loud (and should keep saying):
 the cap is not structural (uplift rides the anchors and the frame), the
