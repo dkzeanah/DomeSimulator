@@ -30,6 +30,7 @@ from __future__ import annotations
 import subprocess
 import sys
 from dataclasses import dataclass
+import pathlib
 import re
 from pathlib import Path
 
@@ -252,6 +253,17 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "percent more wood than a shared-strut frame, and a price "
                 "list that is an assumption.",
                 compose=True),
+    Deliverable("module_build", "stem-cell-utility-core-build.mp4",
+                "The shop-floor cut: building one utility core, in the order "
+                "you would actually build one. Fourteen steps, five stages, "
+                "nine tools and twenty-three material lines, all generated "
+                "from column_build.py's process sheet so the film cannot "
+                "show a step the sheet does not have. Wet before dry, heavy "
+                "before fragile, nothing buried -- and the two places you do "
+                "not get a second chance: the crimp gauge and the pressure "
+                "test. 7.2 hours practised, 17.2 for a first build, which is "
+                "the number nobody quotes.",
+                compose=False),
 )
 
 
@@ -373,7 +385,17 @@ def next_version_path(path: Path) -> Path:
     # Strip a version suffix already on the name so -v2 does not become -v2-v2.
     match = re.match(r"^(.*)-v(\d+)$", stem)
     base = match.group(1) if match else stem
+    # Climb above the highest version that has ever existed here, rather than
+    # taking the first free number. Those are the same thing until somebody
+    # deletes an old cut -- and then they are not: filling the gap gives a
+    # brand new film the name of one that was already shared, which is
+    # exactly what this function's docstring promises never to do. Found
+    # after deleting a v2 and a v3 sent the next render back to v2.
     version = 2
+    for sibling in path.parent.glob(f"{base}-v*{path.suffix}"):
+        found = re.match(rf"^{re.escape(base)}-v(\d+)$", sibling.stem)
+        if found:
+            version = max(version, int(found.group(1)) + 1)
     while True:
         candidate = path.with_name(f"{base}-v{version}{path.suffix}")
         if not candidate.exists():
@@ -381,9 +403,40 @@ def next_version_path(path: Path) -> Path:
         version += 1
 
 
+def _validate_versioning() -> None:
+    """A new render may never take a name an old one already had."""
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as folder:
+        root = pathlib.Path(folder)
+        base = root / "cut.mp4"
+        assert next_version_path(base) == base, "a free name should be used"
+
+        base.write_bytes(b"")
+        assert next_version_path(base).name == "cut-v2.mp4"
+
+        (root / "cut-v2.mp4").write_bytes(b"")
+        (root / "cut-v3.mp4").write_bytes(b"")
+        (root / "cut-v4.mp4").write_bytes(b"")
+        assert next_version_path(base).name == "cut-v5.mp4"
+
+        # The case this exists for: delete the middle versions and the next
+        # render must still climb, not refill the gap with a different film.
+        (root / "cut-v2.mp4").unlink()
+        (root / "cut-v3.mp4").unlink()
+        assert next_version_path(base).name == "cut-v5.mp4", (
+            "deleting an old cut handed its name to a new one")
+
+        # And deleting the highest does not hand that name out again either.
+        (root / "cut-v4.mp4").unlink()
+        assert next_version_path(base).name == "cut-v2.mp4"
+
+
 def validate_deliverables() -> None:
     """Every deliverable must name a real lesson and a unique file."""
     from .lesson_registry import LESSONS
+
+    _validate_versioning()
 
     keys = [item.lesson for item in DELIVERABLES]
     assert len(set(keys)) == len(keys), "a lesson is listed twice"

@@ -203,9 +203,18 @@ and at the time of this update it was:
 - **77 figures in the outline** (was 65); 75 resolve on disk. The one
   outstanding is `franken-standing`, a film still that needs PyOpenGL; the
   export prints the launcher action that produces it.
+- **Reader-clean exports.** As of this update the exports omit unwritten
+  chapters and matter rather than marking them, drop unrendered and
+  photo-slot figures silently, and strip the manuscript's page-plan
+  comments — a published copy shows no authoring machinery. The front
+  matter now carries the title page, the copyright and the engineer's
+  note (not a substitute for site-specific engineering), and the back
+  matter carries the master tables, the glossary, the software section
+  and the colophon. The publisher's KDP layout guidance and its mapping
+  onto this book are in `docs/kdp-layout-mapping.md`.
 - **Release exports built, versioned as always:**
-  `deliverables/book/2-trees-v7.md`, `2-trees-v5.html`, `2-trees-v3.pdf`,
-  `2-trees-outline-v4.txt`. The selftest is green end to end
+  `deliverables/book/2-trees-v8.md`, `2-trees-v7.html`, `2-trees-v4.pdf`,
+  `2-trees-outline-v5.txt`. The selftest is green end to end
   (`validate_everything()`).
 
 What remains: the ~44 Part 1 scaffolds (the original 140k-word writing pass,

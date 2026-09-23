@@ -27,6 +27,27 @@ The Read tab, the HTML and the PDF are all built from one function
 (`book_export.book_html`), so what you read on screen and what you send
 somebody cannot be different books.
 
+## The reader's copy is clean
+
+The exports (`read_html`, `read_pdf`, `export`) are what a reader gets, and
+they never show the writing desk. Chapters and back-matter sections that
+have no prose yet are simply **omitted** rather than marked, figures that
+have not been rendered (or photographs not yet taken) are simply **absent**
+rather than replaced by a placeholder card, and the manuscript's page-plan
+comments never reach the file. There is no "(not written yet)" anywhere in
+an exported book — the Write tab and the `progress` action are where the
+state of the writing lives.
+
+The front matter carries the book's title page, copyright and the
+engineer's note: the book documents methods and prototypes, it is not a
+substitute for site-specific structural engineering, and anything intended
+for permanent occupancy should be reviewed by a qualified engineer and the
+local authority. The back matter carries the master tables, the glossary,
+the software section and the colophon.
+
+The KDP layout mapping — how the publisher's structure guidance was
+adapted onto this book — is `docs/kdp-layout-mapping.md`.
+
 ## Write it
 
 Open the **Book: 2 Trees** tab with the `studio` action. Six tabs: Outline,

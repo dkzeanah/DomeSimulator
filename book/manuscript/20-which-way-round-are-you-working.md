@@ -1,5 +1,5 @@
 ---
-chapter: 17
+chapter: 20
 title: Which Way Round Are You Working?
 strand: howto
 status: drafting
@@ -7,7 +7,7 @@ target: 2100
 updated: 2026-09-08
 ---
 
-# 17. Which Way Round Are You Working?
+# 20. Which Way Round Are You Working?
 
 *Choose your method before you touch anything*
 

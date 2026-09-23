@@ -1,5 +1,5 @@
 ---
-chapter: 19
+chapter: 22
 title: Method B: From the Tree You Have
 strand: howto
 status: drafting
@@ -7,7 +7,7 @@ target: 2450
 updated: 2026-09-08
 ---
 
-# 19. Method B: From the Tree You Have
+# 22. Method B: From the Tree You Have
 
 *Section length in, dome out*
 

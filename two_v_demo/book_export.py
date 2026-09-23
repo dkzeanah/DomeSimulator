@@ -153,11 +153,6 @@ li { margin: 0 0 .4rem; }
                    letter-spacing: .16em; text-transform: uppercase;
                    color: var(--accent); margin-top: 3.5rem; }
 .deck { font-style: italic; color: var(--muted); margin: 0 0 2rem; }
-.unwritten { color: var(--warn); font-family: "Segoe UI", sans-serif;
-             font-size: .85rem; }
-.missing-figure { border: 1px dashed var(--rule); color: var(--muted);
-                  text-align: center; padding: 2.5rem 1rem; margin: 1.6rem 0;
-                  font: .85rem/1.5 "Segoe UI", sans-serif; }
 
 nav.toc { margin: 2rem 0 4rem; font: .92rem/1.6 "Segoe UI", sans-serif; }
 nav.toc h2 { font-size: 1.1rem; }
@@ -356,8 +351,11 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
                 f"<h1>{html_escape.escape(chapter.title)}</h1>"
                 f'<p class="deck">{html_escape.escape(chapter.deck)}</p>')
             if has_prose:
+                # The scaffold's page-plan comments are for the desk, not
+                # the reader; a published copy carries prose only.
                 parts.append(_markdown_to_html(
-                    _resolve_images(body, embed_images, found, missing)))
+                    _resolve_images(manuscript.HTML_COMMENT.sub("", body),
+                                    embed_images, found, missing)))
             else:
                 parts.append(
                     '<p class="unwritten">This chapter is planned but not '

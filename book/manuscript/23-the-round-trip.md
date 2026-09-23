@@ -1,5 +1,5 @@
 ---
-chapter: 20
+chapter: 23
 title: The Round Trip
 strand: explain
 status: drafting
@@ -7,7 +7,7 @@ target: 1750
 updated: 2026-09-08
 ---
 
-# 20. The Round Trip
+# 23. The Round Trip
 
 *Proving the two methods are one calculation*
 

@@ -1,5 +1,5 @@
 ---
-chapter: 18
+chapter: 21
 title: Method A: From the Dome You Want
 strand: howto
 status: drafting
@@ -7,7 +7,7 @@ target: 2700
 updated: 2026-09-08
 ---
 
-# 18. Method A: From the Dome You Want
+# 21. Method A: From the Dome You Want
 
 *Radius in, cut list out*
 
