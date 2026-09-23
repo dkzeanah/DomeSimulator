@@ -1,6 +1,0 @@
-file 'deliverables/masterclass/.stem-cell-dome-campaign-v5-seg01.mp4'
-file 'deliverables/masterclass/.stem-cell-dome-campaign-v5-seg02.mp4'
-file 'deliverables/masterclass/.stem-cell-dome-campaign-v5-seg03.mp4'
-file 'deliverables/masterclass/.stem-cell-dome-campaign-v5-seg04.mp4'
-file 'deliverables/masterclass/.stem-cell-dome-campaign-v5-seg05.mp4'
-file 'deliverables/masterclass/.stem-cell-dome-campaign-v5-seg06.mp4'

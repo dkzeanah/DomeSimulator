@@ -82,9 +82,15 @@ def _ffmpeg() -> str:
 def concat(segments: list[Segment], target: Path) -> Path:
     """Join the pieces without re-encoding a single frame."""
     listing = target.with_suffix(".segments.txt")
+    # Absolute paths, and written as ASCII without a BOM. ffmpeg resolves a
+    # concat entry relative to the *listing file's* directory rather than the
+    # working directory, so a relative path that reads correctly from the
+    # shell resolves to nonsense from inside the list -- which is how the
+    # first six-segment run rendered every piece and then failed to join
+    # them.
     listing.write_text(
-        "\n".join(f"file '{s.path.as_posix()}'" for s in segments) + "\n",
-        encoding="utf-8")
+        "\n".join(f"file '{s.path.resolve().as_posix()}'" for s in segments)
+        + "\n", encoding="ascii")
     subprocess.run(
         [_ffmpeg(), "-y", "-f", "concat", "-safe", "0", "-i", str(listing),
          "-c", "copy", "-movflags", "+faststart", str(target)],
