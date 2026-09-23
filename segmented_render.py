@@ -100,69 +100,53 @@ def concat(segments: list[Segment], target: Path) -> Path:
     return target
 
 
-CUE = re.compile(
-    r"(\d\d):(\d\d):(\d\d),(\d\d\d)\s*-->\s*(\d\d):(\d\d):(\d\d),(\d\d\d)")
+def write_captions(lesson: str, plan: Path, target: Path) -> Path | None:
+    """Write the whole film's subtitles and script from the narration plan.
 
+    NOT by stitching the segments' own subtitle files together. Every
+    segment is exported against the *whole film's* plan, so every segment
+    writes the whole film's SRT -- all 436 cues of it, with absolute
+    times. Concatenating those with rising offsets produced eight copies
+    of the captions on a film that is one, running to fifty minutes on a
+    twenty-six minute cut.
 
-def _stamp(seconds: float) -> str:
-    if seconds < 0:
-        seconds = 0.0
-    whole = int(seconds)
-    ms = int(round((seconds - whole) * 1000.0))
-    if ms == 1000:
-        whole, ms = whole + 1, 0
-    return f"{whole // 3600:02d}:{whole // 60 % 60:02d}:{whole % 60:02d},{ms:03d}"
-
-
-def _seconds(h: str, m: str, s: str, ms: str) -> float:
-    return int(h) * 3600 + int(m) * 60 + int(s) + int(ms) / 1000.0
-
-
-def concat_captions(segments: list[Segment], target: Path) -> Path | None:
-    """Join the segments' subtitles, shifted to where each segment lands.
-
-    Every segment's SRT starts its clock at zero, so pasting them together
-    gives a film whose captions restart every five chapters. Each one is
-    offset by the real duration of everything before it -- measured off the
-    rendered pieces rather than taken from the plan, because the plan is
-    what was asked for and the file is what was made.
-
-    Without this the joined film has no subtitle file at all, and
-    ``release.build_release`` looks for exactly one beside the cut -- so a
-    segmented render quietly shipped a release folder with no captions in
-    it.
+    The plan holds every chapter's duration and every speech duration, so
+    the companion files can be written directly from it. That is what a
+    single-pass export does, and it is what the joined film gets.
     """
-    pieces = [(s, s.path.with_suffix(".srt")) for s in segments]
-    if not all(srt.is_file() for _s, srt in pieces):
-        return None
+    from two_v_demo.lesson_registry import LESSONS
+    from two_v_demo.narration import write_companion_files
 
-    out: list[str] = []
-    number = 0
-    offset = 0.0
-    for segment, srt in pieces:
-        for block in re.split(r"\n\s*\n", srt.read_text(
-                encoding="utf-8-sig").strip()):
-            lines = block.strip().splitlines()
-            if len(lines) < 2:
-                continue
-            # Drop the segment's own cue number; the joined file renumbers.
-            if lines[0].strip().isdigit():
-                lines = lines[1:]
-            match = CUE.match(lines[0].strip())
-            if not match:
-                continue
-            start = _seconds(*match.group(1, 2, 3, 4)) + offset
-            end = _seconds(*match.group(5, 6, 7, 8)) + offset
-            number += 1
-            out.append(f"{number}\n{_stamp(start)} --> {_stamp(end)}\n"
-                       + "\n".join(lines[1:]).rstrip())
-        offset += probe_seconds(segment.path)
-
-    if not out:
+    found = LESSONS.get(lesson)
+    if found is None:
         return None
-    path = target.with_suffix(".srt")
-    path.write_text("\n\n".join(out) + "\n", encoding="utf-8")
-    return path
+    data = json.loads(plan.read_text(encoding="utf-8"))
+    durations = tuple(data.get("chapter_durations") or ())
+    speech = tuple(data.get("speech_durations") or ())
+    if not durations:
+        return None
+    chapters = tuple(found.chapters)
+    # A composed film has the spliced call-to-action and outro on the end
+    # of the plan; the lesson does not know about them, and
+    # write_companion_files needs one chapter per duration.
+    if len(chapters) != len(durations):
+        # A composed film is the lesson plus the spliced call-to-action and
+        # outro, which the lesson itself does not carry. app.compose is what
+        # the exporter uses, so it is what the captions use.
+        from two_v_demo import app as _app
+
+        try:
+            chapters = tuple(_app.compose(found).chapters)
+        except Exception as exc:
+            print(f"  captions: could not compose {lesson}: {exc}")
+    if len(chapters) != len(durations):
+        print(f"  captions: plan has {len(durations)} chapters and the "
+              f"lesson has {len(chapters)}; skipping")
+        return None
+    _script, subtitles = write_companion_files(
+        target, durations, speech, float(data.get("speech_delay") or 0.0),
+        chapters, found.title)
+    return subtitles
 
 
 def probe_seconds(path: Path) -> float:
@@ -236,9 +220,8 @@ def render(lesson: str, target: Path, plan: Path, per: int = 5,
 
     concat(made, target)
     seconds = probe_seconds(target)
-    # Captions before the pieces are deleted: the offsets are measured off
-    # the rendered segments.
-    captions = concat_captions(made, target)
+    # Captions from the plan, not from the segments: see write_captions.
+    captions = write_captions(lesson, plan, target)
     if not keep:
         for segment in made:
             segment.path.unlink(missing_ok=True)
