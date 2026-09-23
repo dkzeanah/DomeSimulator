@@ -191,8 +191,17 @@ a duration floor of 20 seconds or more so the reveal can breathe.
     style="teaching",              # or "hype" for a full-frame montage
     label_layout="declutter",      # new work; "raw" reproduces old renders
     voice_rate=None,               # e.g. "+7%" for a montage
+    beat_badge=True,               # default; False only for a clean frame
 )
 ```
+
+**The beat badge.** Every chapter of every film draws its own number in
+the top left -- `03 /27` -- so a note about a cut can say *beat 17 is
+wrong* instead of describing the picture and hoping. It is on by
+default, it stays clear of the title card and the math overlay, and it
+skips `plate` chapters. Leave it on unless the film is a plate reel:
+the person reviewing your work will ask for it back. It is drawn by
+`MasterclassApp.draw_beat_badge`.
 
 ### 3d. Numbers on screen: callouts and tallies
 
@@ -287,6 +296,19 @@ def scene_hv_harvest(app, opaque, transparent, p):
   −0.34 to −0.06 and the depth buffer will tear both into stripes.
 * **A row only reads as a row from a side-on camera.** At an oblique yaw
   it foreshortens into a diagonal.
+* **Mark your scenery `backdrop=True`, or the phone cut will frame it.**
+  A 9:16 render re-fits the camera to whatever the painter drew, and it
+  measures every Creator draw request it is given. Draw
+  `creator.environment()` -- the Creator's build field, sixty metres of
+  graded ground with a tree line round it -- and the fit dutifully
+  frames *that*, which puts a nineteen-foot dome in the middle of a lot
+  of grass. `creator.environment()` is already in `BACKDROP_KEYS` and
+  excludes itself. **Anything else you draw as context** -- a
+  neighbouring park, a row of distant buildings, a skyline -- must say
+  so: `creator.draw(app, thing, backdrop=True)`. It is still drawn; it
+  just does not get a vote on the framing. The landscape cut never
+  shows this, so you will not see it unless you look at a portrait
+  still.
 
 ---
 
@@ -332,11 +354,19 @@ In order. Do not skip step 4.
 
 1. `Action = selftest, Lesson = <key>` — runs your proofs *and* writes
    the companion files.
-2. Render a still per chapter.
+2. Render a still per chapter. Do not hand-pick the seconds: ask
+   `render_presets.chapter_shots("<key>")` for them and it returns one
+   mark in the middle of every chapter, read off the lesson's own
+   written durations. A hardcoded `range(8, 530, 20)` slides the moment
+   you add a chapter and drops the last ones off the end entirely,
+   which is exactly when a stills pass matters most.
 3. **Look at every one.** This catches what nothing else can: objects
    behind the teaching card, labels stacked on labels, a figure at
    doll-house scale, a saw not touching the wood. Every one of those
    happened here and none was caught by a test.
+   **Look at a portrait still too** -- `orientation: "portrait"` in the
+   same shots ticket. The phone cut re-fits the camera, so it can be
+   wrong in ways the landscape cut simply cannot show.
 4. Export, then verify by **frame count**, not duration:
    `nb_frames ≈ duration × fps`, and picture length ≈ audio length. A
    truncated render still reports a plausible duration — that is exactly

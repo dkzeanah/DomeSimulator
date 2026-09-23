@@ -144,6 +144,33 @@ Every frame is a pure function of `t`. Nothing accumulates between
 frames, which is why the render is deterministic and why you can render
 a still at any moment without playing up to it.
 
+Two things happen on top of that picture that a painter never asks for.
+
+**The beat badge.** The overlay draws the chapter's own number in the
+top left of every frame -- `03 /27` -- so a note about a finished cut
+can name a beat instead of describing the picture. It is on for every
+lesson (`Lesson.beat_badge`, default `True`), it keeps clear of the
+title card and the math overlay, and it skips `plate` chapters.
+
+**The frame fit, on a narrower screen only.** A 9:16 render plans the
+overlay first, paints the scene, and then gives the film's own camera
+room for what was painted -- it measures the subject and dollies,
+zooms and shifts to put it in the space the overlay left. The
+landscape cut never does this, which is why a framing fault can exist
+for months without anyone seeing it.
+
+What counts as "the subject" is the catch. The fit is handed every
+Creator draw request, and `creator.environment()` is a sixty-metre
+graded site with a tree line around it; framing *that* is how every
+phone cut in this repository once put a nineteen-foot dome in the
+middle of a lot of grass. `Draw.backdrop` settles it: `None` decides
+from the build (and `BACKDROP_KEYS` holds `environment`), `True` marks
+anything else you draw as context. A backdrop is still drawn -- a dome
+on a bare disc looks like it is floating -- it just does not get a vote
+on the framing. `creator_bridge.validate_creator_bridge` proves the
+field is excluded and that a dome's points are less than half its
+reach.
+
 ---
 
 ## 4. The drawing kit
@@ -282,6 +309,13 @@ Then:
    one. This catches the things nothing else can: objects behind the
    teaching card, labels stacked, a figure at doll-house scale, a saw
    that is not touching the wood.
+   Ask `render_presets.chapter_shots("<key>")` for the seconds rather
+   than writing a range: it reads the lesson's own durations and puts
+   one mark in the middle of each chapter, so adding a chapter cannot
+   silently slide the marks or drop the last ones off the end. Render
+   a portrait still or two as well (`orientation: "portrait"`), because
+   the phone cut re-fits the camera and can be wrong in ways the
+   landscape stills cannot show.
 7. **Export**, then verify by **frame count**, not duration:
    `nb_frames ≈ duration × fps` and picture-length ≈ audio-length. A
    truncated render still reports a plausible duration.

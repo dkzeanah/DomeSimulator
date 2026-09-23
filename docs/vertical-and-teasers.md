@@ -5,6 +5,36 @@ was made as, and a vertical cut for phones (Shorts, Reels, TikTok). And every
 film has a teaser: a thirty-to-forty-second hype cut built out of the film
 itself.
 
+**All of that is what one render means now.** An export produces the
+landscape cut, the phone cut beside it, the release folder of
+per-chapter thumbnails and platform copy, *and* the teaser — without
+anybody asking for any of it. The teaser used to be a separate thing
+somebody had to remember, which is why most films did not have one.
+`teaser=False` in a ticket is the only way to skip it, and that flag
+exists so the teaser's own ticket can set it and not recurse. A render
+that goes through `_export_both` passes `release=False, teaser=False`
+to both children, so the pair produces one teaser and one release
+folder between them rather than three of each.
+
+**Two things a painter has to know about the vertical cut**, because
+neither shows up in a landscape still:
+
+* **Scenery must be marked.** The phone cut re-fits the camera to what
+  was painted, and it measures every Creator draw request. Anything you
+  draw as context rather than as subject needs
+  `creator.draw(app, thing, backdrop=True)`, or the fit frames the
+  context and shrinks the subject to nothing.
+  `creator.environment()` already excludes itself.
+* **Labels get dropped, not stacked.** `portrait_ui` budgets the picture
+  area world labels may cover, drops what the resolver reports as
+  unplaceable, and re-resolves the survivors so they spread into the
+  freed room. If a label you wanted goes missing, the fix is fewer
+  labels in that painter, not a bigger budget — and the drop is written
+  to `plan.steps`, so the render log names it.
+
+Every chapter also carries its **beat number** in the top left
+(`03 /27`), in both orientations, so feedback on a cut can name a beat.
+
 Nothing about the horizontal films changes. A film shown in the shape it was
 made for takes exactly the path it always did, and re-renders pixel for pixel
 as it shipped. That was checked on sixteen chapters across every overlay style
