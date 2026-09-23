@@ -52,12 +52,66 @@ MAX_BEAT = 15.0
 MIN_BEAT = 7.0
 
 
+#: Which slice of each borrowed scene a beat plays.
+#:
+#: The campaign film's painters are choreographed for twenty to
+#: thirty-four seconds: the cap stack explodes over a third of its
+#: chapter, the dome leaves the ground a third of the way into its. Played
+#: from zero for eleven seconds, a beat shows the setup and never the
+#: payoff -- the floating beat rendered a dome sitting on the ground with
+#: nothing happening to it.
+#:
+#: So each beat plays a window of its scene instead, the way a teaser beat
+#: does. See :func:`two_v_demo.teasers._borrow`, which is the same idea.
+WINDOWS: dict[str, tuple[float, float]] = {
+    "open": (0.45, 1.00),
+    "frame": (0.40, 0.95),
+    "head": (0.52, 1.00),
+    "grow": (0.60, 1.00),
+    "quilt": (0.40, 0.95),
+    "price": (0.68, 1.00),
+    "hull": (0.74, 1.00),
+    "three": (0.60, 1.00),
+    "close": (0.45, 1.00),
+}
+
+
+def _windowed(stage: str, window: tuple[float, float]):
+    """The campaign film's own painter, playing only ``window`` of itself."""
+    painter = PITCH_SCENES[stage]
+    start, end = window
+
+    def paint(app, opaque, transparent, progress: float) -> None:
+        painter(app, opaque, transparent, start + (end - start) * progress)
+
+    return paint
+
+
+SCENES = {slug: _windowed(stage, WINDOWS[slug])
+          for slug, stage in (
+              ("open", "sp_standing"), ("frame", "sp_frame"),
+              ("head", "sp_head"), ("grow", "sp_cap"),
+              ("quilt", "sp_quilt"), ("price", "sp_invoice"),
+              ("hull", "sp_floating"), ("three", "sp_three"),
+              ("close", "sp_close"))}
+"""One scene per beat, each a window of the campaign film's own painter.
+
+Keyed by the beat's slug rather than by the film's stage name, so two
+beats could borrow the same scene at different windows without colliding.
+"""
+
+
 def _beat(slug: str, title: str, promise: str, narration: tuple[str, ...],
           duration: float, camera: tuple[float, float, float],
           stage: str) -> Chapter:
-    """One beat. No equations: there is no time to read a worksheet."""
+    """One beat. No equations: there is no time to read a worksheet.
+
+    ``stage`` is the campaign film's scene this beat borrows; the chapter
+    itself points at the beat's own windowed copy of it.
+    """
+    assert SCENES.get(slug) is not None, slug
     return Chapter(slug, "00", title, promise, narration, (), duration,
-                   camera, stage, overlay="title")
+                   camera, slug, overlay="title")
 
 
 def _chapters() -> tuple[Chapter, ...]:
@@ -173,9 +227,16 @@ def validate_pitch_hero() -> None:
         f"about fifteen seconds and this is the top of the page")
 
     for chapter in CHAPTERS:
-        assert chapter.stage in PITCH_SCENES, (
-            f"{chapter.slug} draws {chapter.stage!r}, which the campaign "
-            f"film does not have -- the two cuts must show one building")
+        assert chapter.stage in SCENES, (
+            f"{chapter.slug} has no windowed scene")
+        assert chapter.slug in WINDOWS, chapter.slug
+        start, end = WINDOWS[chapter.slug]
+        assert 0.0 <= start < end <= 1.0, (chapter.slug, start, end)
+        # A window that starts at zero is a beat that shows the setup and
+        # never the payoff, which is the bug this table exists for.
+        assert start >= 0.25, (
+            f"{chapter.slug} plays its scene from {start:.2f}; the campaign "
+            f"film's scenes spend their first third setting up")
         assert MIN_BEAT <= chapter.duration <= MAX_BEAT, (
             f"{chapter.slug} runs {chapter.duration}s")
         assert chapter.narration, chapter.slug
@@ -236,7 +297,7 @@ PITCH_HERO_LESSON = Lesson(
     brand="THE STEM CELL DOME",
     title="A house you can take apart",
     chapters=CHAPTERS,
-    scenes=PITCH_SCENES,
+    scenes=SCENES,
     selftest=validate_pitch_hero,
     report=hero_report,
     snapshot_prefix="pitchhero",
