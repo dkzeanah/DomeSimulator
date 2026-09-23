@@ -98,7 +98,7 @@ def _chapters() -> tuple[Chapter, ...]:
                "A rigid shell fills up and stops. This one does not."),
               10.0, (58.0, 17.0, 13.0), "sp_cap"),
 
-        _beat("quilt", "The insulation is nine hundred t-shirts",
+        _beat("quilt", "The insulation is a thousand t-shirts",
               "Sewn by somebody, tagged with their name.",
               ("The insulation is recycled clothing, quilted at a kitchen "
                "table.",
@@ -192,11 +192,43 @@ def validate_pitch_hero() -> None:
                    "profit", "quilt", "three different"):
         assert needed in spoken, f"the hero cut no longer says {needed!r}"
 
-    # And the price it says is the price the model says.
+    # Every figure the voice says, against what the model says. This is
+    # the same guard the long film carries, and it is the guard that has
+    # caught every price drift in this project -- a narration line is the
+    # one place a number cannot be interpolated.
     priced = seed_model.quote()
-    assert abs(priced.price - 12036.0) < 1500.0, (
-        f"the hero cut says twelve thousand and the model says "
-        f"{priced.price:,.0f}; re-word it")
+    import quilt_network
+
+    shirts = quilt_network.dome_totals(7)["shirts"]
+    SPOKEN = (
+        # (what the voice says, the model's figure, how far it may round)
+        ("Twelve thousand dollars", priced.price, 600.0),
+        ("Ten to build", priced.cost_to_build, 400.0),
+        ("two thousand is our profit", priced.gross_profit, 400.0),
+        ("nearly a thousand t-shirts", shirts, 150.0),
+        ("a hundred and twenty wedges", priced.geometry.member_count, 5.0),
+        ("two hundred and seventy-seven square feet",
+         priced.geometry.floor_decagon_sqft, 4.0),
+    )
+    WORDS = {
+        "Twelve thousand dollars": 12000.0,
+        "Ten to build": 10000.0,
+        "two thousand is our profit": 2000.0,
+        "nearly a thousand t-shirts": 1000.0,
+        "a hundred and twenty wedges": 120.0,
+        "two hundred and seventy-seven square feet": 277.0,
+    }
+    said = " ".join(" ".join(c.narration) + " " + c.promise for c in CHAPTERS)
+    for phrase, value, tolerance in SPOKEN:
+        assert phrase in said, f"the hero cut no longer says {phrase!r}"
+        assert abs(WORDS[phrase] - value) <= tolerance, (
+            f"the voice says {phrase!r} but the model says {value:,.1f}; "
+            f"re-word the beat or accept the drift")
+
+    # And the twenty per cent has to be the markup the model applies, not a
+    # number the copy liked.
+    assert abs(seed_model.declared("maker_markup_fraction") - 0.20) < 1e-9, (
+        "the hero cut says twenty per cent on camera")
 
 
 PITCH_HERO_LESSON = Lesson(
