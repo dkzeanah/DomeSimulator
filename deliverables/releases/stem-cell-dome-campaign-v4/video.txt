@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\stem-cell-dome-campaign-v4.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\stem-cell-dome-campaign-vertical-v4.mp4
