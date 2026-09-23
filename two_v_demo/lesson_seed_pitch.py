@@ -537,7 +537,7 @@ CHAPTERS: tuple[Chapter, ...] = (
         ("This is a tiny house. It is nineteen feet across, it has two "
          "hundred and seventy-seven square feet of floor, and it comes apart "
          "into pieces a trailer can take. Twenty-two thousand dollars "
-         "stripped to the bone, thirty thousand five hundred as we would "
+         "stripped to the bone, twenty-seven and a half as we would "
          "actually ship it.",
          "We are not selling you a finished home. We are selling you the "
          "part of a home that is hard to make -- and leaving you the part "
@@ -868,7 +868,7 @@ CHAPTERS: tuple[Chapter, ...] = (
          "dome any cheaper to build. It is us earning less. We put it in the "
          "same table so the two can never be quietly mixed up.",
          "Pull all of the real ones and the floor is twenty-two thousand "
-         "dollars, at about seventy-eight dollars a square foot."),
+         "dollars, at about eighty dollars a square foot."),
         steps_ladder(), 30.0, (42.0, 13.0, 12.5), "sp_standing"),
     _math(
         "against", "Three things this says against itself",
@@ -971,13 +971,13 @@ CHAPTERS: tuple[Chapter, ...] = (
         steps_seeds(), 28.0, (74.0, 16.0, 36.0), "sp_secondary"),
     Chapter(
         "close", "00", "Bring your own ground",
-        "Twenty-two to thirty thousand. Then it is yours.",
+        "Twenty-two to twenty-eight thousand. Then it is yours.",
         ("So: we make the stem cell. You build on it.",
          "Twenty-two thousand dollars for the bare bones, once every "
-         "saving is taken. Thirty thousand five hundred for the one we "
-         "would actually hand you, about thirty-two on your land with the "
-         "freight in it, and around forty-one thousand for a gym with the "
-         "panels in it.",
+         "saving is taken. Twenty-seven and a half for the one we "
+         "would actually hand you, about twenty-nine on your land with the "
+         "freight in it, and around thirty-eight thousand for a gym with "
+         "the panels in it.",
          "What we are raising money for is the tooling and the first "
          "production run -- the jigs, the moulds, the core assembly, and the "
          "stock to build the first domes with.",
@@ -1064,18 +1064,18 @@ def validate_seed_pitch() -> None:
         # (what the voice says, the model figure, how far it may round)
         ("Twenty-two thousand at the floor", floor, 600.0),
         ("Twenty-two thousand dollars stripped to the bone", floor, 600.0),
-        ("thirty thousand five hundred as we would", priced.price, 600.0),
-        ("Thirty thousand five hundred for the one we", priced.price, 600.0),
-        ("about thirty-two on your land", priced.delivered_price, 700.0),
-        ("around forty-one thousand for a gym", gym.price, 800.0),
+        ("twenty-seven and a half as we would", priced.price, 600.0),
+        ("Twenty-seven and a half for the one we", priced.price, 600.0),
+        ("about twenty-nine on your land", priced.delivered_price, 700.0),
+        ("around thirty-eight thousand for a gym", gym.price, 800.0),
     )
     WORDS = {
         "Twenty-two thousand at the floor": 22000.0,
         "Twenty-two thousand dollars stripped to the bone": 22000.0,
-        "thirty thousand five hundred as we would": 30500.0,
-        "Thirty thousand five hundred for the one we": 30500.0,
-        "about thirty-two on your land": 32000.0,
-        "around forty-one thousand for a gym": 41000.0,
+        "twenty-seven and a half as we would": 27500.0,
+        "Twenty-seven and a half for the one we": 27500.0,
+        "about twenty-nine on your land": 29000.0,
+        "around thirty-eight thousand for a gym": 38000.0,
     }
     for phrase, value, tolerance in SPOKEN_PRICES:
         assert phrase in spoken, f"the film no longer says {phrase!r}"

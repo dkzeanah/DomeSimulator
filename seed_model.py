@@ -1169,6 +1169,20 @@ def declared_deck() -> str:
     return PAD_DECK_KIND
 
 
+def wet_group(glazed: bool = False) -> Group:
+    """The shower: a fabricated insert, not a curtain and a hope.
+
+    Optional and off by default, because the Shelter and Serviced rungs of
+    the deferment ladder do not have one and the price should say so.
+    """
+    import fitout_wet
+
+    area = fitout_wet.wet_area(glazed)
+    lines = [Line(line.label, line.quantity, line.unit, line.unit_cost,
+                  f"fitout_wet.{line.source}") for line in area.lines]
+    return Group("wet", "Shower and wet area", tuple(lines), optional=True)
+
+
 def pad_group(geometry: SeedGeometry | None = None) -> Group:
     """The pad: the host's bill, not the dome buyer's.
 
@@ -1278,38 +1292,29 @@ def insulation_plan(geometry: SeedGeometry | None = None) -> InsulationPlan:
 def envelope_group(geometry: SeedGeometry | None = None) -> Group:
     """What closes the forty triangles: two panels and the void between them.
 
-    The bay is a sandwich, and it is held together by the shape of the
-    member rather than by fasteners. A wedge presents a lip on its inward
-    face; the inner panel drops onto that lip from inside. The outer panel
-    drops into the same bay from outside and compression-fits against the
-    frame. Between them is a cavity as deep as the member, and the removable
-    shell lands on top of the whole thing.
+    The bay used to be a sandwich held by friction: an inner panel onto the
+    wedge's lip from inside and an outer panel compression-fitted from
+    outside. That is optimistic on a dome, because most of a dome's bays are
+    overhead, and a friction fit overhead spends the life of the building
+    arguing with gravity.
 
-    The cavity ships EMPTY. That is not a saving, it is the design: an empty
-    cavity is a duct, and the seam channels connect all forty of them. What
-    goes in it later -- quilt, foam, blown fill, nothing at all -- is a
-    decision the owner makes once they know the climate, and the shell comes
-    off to make it.
+    So the panel sits on the **outside face** and is pulled *into* the frame
+    by screws landing in threaded inserts. Gravity works with the fixing; the
+    panel is itself the barrier to the weather; and it comes off with a
+    driver rather than a pry bar. :mod:`fitout_wet` prices it, and the
+    inserts it leaves behind are a grid of anchor points a shelf or a bunk
+    can span three triangles and bolt to.
+
+    The cavity behind it still ships EMPTY. That is not a saving, it is the
+    design: an empty cavity is a duct, and the seam channels connect all
+    forty of them.
     """
+    import fitout_wet
+
     geometry = geometry or seed_geometry()
-    plan = insulation_plan(geometry)
-    gasket_ft = sum(face.count * face.perimeter_in
-                    for face in geometry.faces) / 12.0
-    panels = max(1.0, declared("panel_bays_panels"))
-    lines = [
-        Line(f"outer panels, {plan.triangles} bays, compression fit",
-             geometry.panel_sqft, "sq ft",
-             declared("hard_panel_usd_per_sqft"), "hard_panel_usd_per_sqft"),
-    ]
-    if panels >= 2.0:
-        lines.insert(0, Line(
-            f"inner panels, {plan.triangles} bays, onto the wedge lip",
-            geometry.panel_sqft, "sq ft",
-            declared("hard_panel_usd_per_sqft"), "hard_panel_usd_per_sqft"))
-    lines.append(Line(f"panel edge gasket, {panels:.0f} face(s)",
-                      gasket_ft * panels, "ft",
-                      declared("hard_panel_gasket_usd_per_ft"),
-                      "hard_panel_gasket_usd_per_ft"))
+    lines = [Line(line.label, line.quantity, line.unit, line.unit_cost,
+                  f"fitout_wet.{line.source}")
+             for line in fitout_wet.panel_lines(geometry)]
     return Group("envelope", "Panel bays", tuple(lines))
 
 
@@ -2225,6 +2230,7 @@ anything."""
 def quote(fitout_key: str = "stem_cell", *, resin: str = "boatyard",
           frame_stock: str = "customer_trees", seam: str = "hose",
           ac: str = "window", polyps: int | None = None, quilt: int = 0,
+          shell: str = "hard",
           include: tuple[str, ...] | None = STANDARD_OPTIONS,
           geometry: SeedGeometry | None = None) -> Quote:
     """Price one dome.
@@ -2238,15 +2244,31 @@ def quote(fitout_key: str = "stem_cell", *, resin: str = "boatyard",
     The pad group is always built and always carried, but it sits on the
     *pad* side: it is in the quote so the whole picture is visible, and it is
     out of the dome's price because a dome buyer does not pay for it.
+
+    ``shell`` picks the skin. ``"hard"`` is the default and the best case: a
+    laminated hull, a fifty-year object, and what the standard article ships
+    with. ``"soft"`` is the shower-cap stack -- cheaper to buy and, unlike a
+    hull, able to grow a layer at a time -- and it replaces both the hull and
+    the bay panels, because the cap carries its own. See :mod:`soft_shell`.
     """
+    if shell not in ("hard", "soft"):
+        raise ValueError(f"shell must be 'hard' or 'soft', not {shell!r}")
     geometry = geometry or seed_geometry()
     spec = fitout(fitout_key)
     polyp_count = spec.polyps if polyps is None else int(polyps)
 
+    # The cap carries its own outer panels, so a soft-shelled dome buys one
+    # group where a hard-shelled one buys two.
+    soft = shell == "soft"
     groups = [
         frame_group(geometry, frame_stock, seam),
-        envelope_group(geometry),
-        shell_group(geometry, resin),
+    ]
+    if soft:
+        groups.append(soft_shell_group(quilt))
+    else:
+        groups.append(envelope_group(geometry))
+        groups.append(shell_group(geometry, resin))
+    groups += [
         column_group(geometry),
         services_group(geometry, ac),
         stove_group(geometry),
@@ -3037,6 +3059,7 @@ class Lever:
     polyps: int | None = None
     seam: str | None = None
     quilt: int | None = None
+    shell: str | None = None
     include: tuple | None = None
 
 
@@ -3060,11 +3083,18 @@ def levers() -> tuple:
               "The panels are placeholders the shell covers; they hold the "
               "envelope closed and nothing else.",
               {"hard_panel_usd_per_sqft": 1.40}),
-        Lever("one_panel", "One panel a bay, not two",
-              "Ship the outer panel and leave the bay open to the inside. "
-              "The owner closes it when they line the inside, which is a "
-              "job they were going to do anyway.",
-              {"panel_bays_panels": 1.0}),
+        # "One panel a bay, not two" used to live here. It is gone because
+        # the bay is no longer a sandwich: the panel moved to the outside
+        # face and is screwed into inserts, so one panel is the design and
+        # not an economy. A lever that saves nothing is worse than no lever,
+        # because it makes the floor price look reachable by a route that
+        # does not exist.
+        Lever("soft_shell", "A shower cap instead of a laminated hull",
+              "Outer panels, a monolithic membrane, quilted layers and a "
+              "strapped rain cap in place of the boatyard laminate. Cheaper "
+              "to buy and, unlike a hull, it can be added to a layer at a "
+              "time. See soft_shell.py for what it gives up.",
+              {}, shell="soft"),
         Lever("two_slices", "Two shell halves instead of four slices",
               "Half the S-lip seam to mould and gasket. Cheaper, and it "
               "takes two people and a trailer instead of one person and a "
@@ -3123,7 +3153,7 @@ def levers() -> tuple:
     )
 
 
-SAVING_LEVERS = ("no_ac", "no_polyp", "thin_panels", "one_panel",
+SAVING_LEVERS = ("no_ac", "no_polyp", "thin_panels", "soft_shell",
                  "no_seam_hose", "owner_build", "sheathed", "two_slices")
 MARGIN_LEVERS = ("half_margin",)
 """Levers that lower the price without lowering a cost. Kept apart from the
@@ -3153,6 +3183,7 @@ def lever_prices(geometry=None) -> tuple:
                 seam=lever.seam or "hose",
                 polyps=lever.polyps,
                 quilt=lever.quilt or 0,
+                shell=lever.shell or "hard",
                 include=(lever.include if lever.include is not None
                          else STANDARD_OPTIONS),
                 geometry=geometry).price

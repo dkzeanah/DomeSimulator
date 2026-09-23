@@ -149,6 +149,15 @@ def panels(fitout: str = "gym", reveal: float = 1.0) -> creator.Build:
 
 
 @lru_cache(maxsize=64)
+def core_stage(stage: str = "close", partial: float = 1.0) -> creator.Build:
+    """The utility core at one stage of being assembled on the bench."""
+    builder = MeshBuilder()
+    seed_world.build_core_stage(builder, stage, partial=partial)
+    return _wrap(f"corestage:{stage}:{partial:.2f}", f"core {stage}",
+                 builder.build())
+
+
+@lru_cache(maxsize=64)
 def deck(stage: str = "sealed", partial: float = 1.0) -> creator.Build:
     """The host's platform at one stage of being built."""
     builder = MeshBuilder()

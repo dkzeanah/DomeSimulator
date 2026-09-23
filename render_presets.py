@@ -331,6 +331,27 @@ PRESETS: tuple[RenderPreset, ...] = (
            "the pitch.",
            compose_segments=True),
 
+    _video("module_build", "module_build",
+           "stem-cell-utility-core-build.mp4",
+           "BUILD ONE UTILITY CORE. The shop-floor cut: fourteen steps, five "
+           "stages, and the two places you do not get a second chance. Every "
+           "step, tool, checkpoint and part on screen comes out of "
+           "column_build.py's process sheet, so the film cannot show a step "
+           "the sheet does not have.",
+           compose_segments=False),
+
+    RenderPreset(
+        key="module_build_stills",
+        label="utility core build -- one still per chapter",
+        summary="A still from each chapter of the core build, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "module_build",
+            "action": "shots",
+            "shots": chapter_shots("module_build"),
+        },
+    ),
+
     RenderPreset(
         key="seed_pitch_stills",
         label="stem cell dome -- one still per chapter",

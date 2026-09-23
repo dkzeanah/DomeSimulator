@@ -395,6 +395,123 @@ def build_pad_port(b: MeshBuilder, origin, z: float) -> None:
                    radius, 10, colour, mat_id=MAT_PLAIN)
 
 
+# ----------------------------------------------------------------------
+# The core on the bench, stage by stage
+# ----------------------------------------------------------------------
+
+CORE_STAGES: tuple[str, ...] = ("chase", "drain", "water", "power", "close")
+"""The five stages :mod:`column_build` sequences, in build order."""
+
+FLANGE = (0.44, 0.46, 0.50)
+CHASE = (0.55, 0.57, 0.60)
+STACK_ABS = (0.18, 0.18, 0.20)
+PEX_RED = (0.70, 0.24, 0.24)
+PEX_BLUE = (0.24, 0.40, 0.70)
+PANEL_GREY = (0.32, 0.34, 0.38)
+CAP_GOLD = (0.78, 0.62, 0.26)
+
+
+def build_core_stage(b: MeshBuilder, stage: str, origin=(0.0, 0.0),
+                     base_z: float = 0.0, partial: float = 1.0) -> int:
+    """The utility core, built up to and including ``stage``.
+
+    Laid out the way :mod:`column_build` says to build it -- on a bench, with
+    water on one face and power on the opposite one -- so a film following
+    this is following the process sheet and not an artist's impression.
+    """
+    if stage not in CORE_STAGES:
+        raise KeyError(f"unknown core stage {stage!r}")
+    reached = CORE_STAGES.index(stage)
+    ox, oy = origin
+    height = 2.9
+    half = 0.16
+    drawn = 0
+
+    def part(centre, size, colour, mat=MAT_METAL):
+        nonlocal drawn
+        box(b, centre, size, colour, mat)
+        drawn += 6
+
+    # 1. The chase: base flange, four sections, grommets.
+    if reached >= 0:
+        share = partial if reached == 0 else 1.0
+        part((ox, oy, base_z + 0.04), (0.62, 0.62, 0.08), FLANGE, MAT_METAL)
+        sections = 4
+        built = max(1, int(round(sections * share)))
+        for index in range(built):
+            z = base_z + 0.10 + (index + 0.5) * (height / sections)
+            part((ox, oy, z), (half * 2, half * 2, height / sections - 0.03),
+                 CHASE, MAT_METAL)
+
+    # 2. Drain: the 2 in stack down the back face, trap at its foot.
+    if reached >= 1:
+        share = partial if reached == 1 else 1.0
+        run = height * share
+        b.cylinder((ox, oy - half - 0.05, base_z + 0.18),
+                   (ox, oy - half - 0.05, base_z + 0.18 + run), 0.052, 10,
+                   STACK_ABS, mat_id=MAT_PLAIN)
+        drawn += 10
+        if share > 0.85:
+            part((ox, oy - half - 0.05, base_z + 0.12), (0.16, 0.16, 0.12),
+                 STACK_ABS, MAT_PLAIN)
+
+    # 3. Water: valve low, manifold at chest, four capped tails. West face.
+    if reached >= 2:
+        share = partial if reached == 2 else 1.0
+        if share > 0.15:
+            part((ox - half - 0.06, oy, base_z + 0.55), (0.10, 0.14, 0.12),
+                 PEX_BLUE, MAT_PLAIN)
+        if share > 0.35:
+            part((ox - half - 0.06, oy, base_z + 1.35), (0.09, 0.34, 0.14),
+                 (0.72, 0.70, 0.66), MAT_METAL)
+        tails = int(4 * min(1.0, max(0.0, (share - 0.45) / 0.55)))
+        for index in range(tails):
+            y = oy - 0.12 + index * 0.08
+            b.cylinder((ox - half - 0.06, y, base_z + 1.35),
+                       (ox - half - 0.22, y, base_z + 1.35), 0.016, 8,
+                       PEX_RED if index % 2 else PEX_BLUE, mat_id=MAT_PLAIN)
+            drawn += 8
+        if share > 0.9:
+            # The riser, once the run is proved.
+            b.cylinder((ox - half - 0.06, oy, base_z + 0.20),
+                       (ox - half - 0.06, oy, base_z + 1.30), 0.018, 8,
+                       PEX_BLUE, mat_id=MAT_PLAIN)
+            drawn += 8
+
+    # 4. Power: inlet low, load centre at chest, branches out. East face.
+    if reached >= 3:
+        share = partial if reached == 3 else 1.0
+        if share > 0.12:
+            part((ox + half + 0.05, oy, base_z + 0.35), (0.09, 0.16, 0.16),
+                 PANEL_GREY, MAT_METAL)
+        if share > 0.30:
+            part((ox + half + 0.06, oy, base_z + 1.45), (0.11, 0.30, 0.42),
+                 PANEL_GREY, MAT_METAL)
+        branches = int(4 * min(1.0, max(0.0, (share - 0.5) / 0.5)))
+        for index in range(branches):
+            y = oy - 0.10 + index * 0.07
+            b.cylinder((ox + half + 0.06, y, base_z + 1.45),
+                       (ox + half + 0.30, y, base_z + 1.62 + index * 0.05),
+                       0.013, 6, (0.16, 0.16, 0.17), mat_id=MAT_PLAIN)
+            drawn += 6
+
+    # 5. Close: apex sleeve, seal cap, cover panel.
+    if reached >= 4:
+        share = partial if reached == 4 else 1.0
+        top = base_z + 0.10 + height
+        part((ox, oy, top + 0.10), (0.30, 0.30, 0.14), (0.62, 0.64, 0.66),
+             MAT_METAL)
+        if share > 0.35:
+            part((ox, oy, top + 0.26), (0.36, 0.36, 0.09), CAP_GOLD,
+                 MAT_METAL)
+        if share > 0.7:
+            # The cover panel goes on the face the camera is looking at, so
+            # the film can show it closing over everything just made.
+            part((ox, oy + half + 0.04, base_z + 1.55),
+                 (half * 2, 0.03, 2.2), (0.46, 0.48, 0.52), MAT_METAL)
+    return drawn
+
+
 def build_utility_column(b: MeshBuilder, origin, base_z: float,
                          apex_z: float, *, fixtures: bool = True,
                          face_deg: float = 0.0) -> None:

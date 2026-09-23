@@ -926,6 +926,14 @@ class MasterclassApp:
     nothing does today, and the plate style opts out on its own below because
     a printed book page is not a beat of anything."""
 
+    # Where the badge goes on a teaching-style landscape frame, in the same
+    # 1080-referenced units the badge is scaled in. Teaching puts a brand
+    # bar across the top AND a chapter card under its left end, so the badge
+    # cannot go down (it lands on the card) and cannot stay put (it lands on
+    # the brand line). It slides right instead, into the empty middle of the
+    # bar, which both measurements off a still agree is clear.
+    BEAT_BADGE_TEACHING_RIGHT = 560
+
     def draw_beat_badge(self, surface, width: int, height: int) -> None:
         """A small number in the top-left corner: which beat this is.
 
@@ -937,7 +945,8 @@ class MasterclassApp:
         if not getattr(self.lesson, "beat_badge", self.BEAT_BADGE):
             return
         chapter = self.chapters[self.chapter_index]
-        if (chapter.overlay or self.lesson.style) == "plate":
+        style = chapter.overlay or self.lesson.style
+        if style == "plate":
             return
         pg = self.pygame
         # Scaled off the frame's short side, so it is the same size on a
@@ -947,7 +956,14 @@ class MasterclassApp:
         text = font.render(str(chapter.number), True, (18, 24, 32))
         pad = int(12 * unit)
         margin = int(26 * unit)
-        box = pg.Rect(margin, margin,
+        left, top = margin, margin
+        # The teaching style hangs a brand bar across the top and a chapter
+        # card under its left end. The badge slides right along the bar
+        # rather than shrinking: it is meant to be read off a paused frame,
+        # so it stays full size and moves.
+        if style == "teaching" and not self.frame.portrait:
+            left = margin + int(self.BEAT_BADGE_TEACHING_RIGHT * unit)
+        box = pg.Rect(left, top,
                       text.get_width() + pad * 2, text.get_height() + pad)
         self.rounded_panel(surface, box, (245, 197, 66, 236),
                            (255, 236, 186, 255), int(7 * unit))
