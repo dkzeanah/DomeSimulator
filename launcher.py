@@ -1451,6 +1451,62 @@ def main() -> int:
     ttk.Separator(foot).pack(fill="x")
     launch_button(foot, "Launch Dome Composer", go_composer)
 
+    # ---- The Wedge Method (book) -----------------------------------------
+
+    t, body, foot = scrollable_tab("Wedge Method Book")
+    intro(body,
+         "The book: The Wedge Method, a builder's guide to timber "
+         "geodesic domes. This is the separate one -- not the 2 Trees "
+         "book in Book Studio -- and it has its own editor, its own "
+         "outline and its own figures. Twenty chapters across five "
+         "parts, a hundred and fifty-two sections, and the text lives in "
+         "three places at once: the editor's own project file, a "
+         "database that can answer which sections are still empty, and a "
+         "folder of Markdown you can open in any text editor. The "
+         "figures are not drawings of the dome. They are the raw-wedge "
+         "solver, run with the settings that make the thing visible -- "
+         "the frame pushed apart so you can see into a seam, the same "
+         "dome four times with the wedge turned each way -- and every "
+         "one of them is labelled with where it came from.")
+
+    section(body, "What to do")
+    wb_action = LabeledCombo(
+        body, "Action",
+        ["open_editor", "sync_from_tree", "sync_from_project",
+         "render_figures", "status"], "open_editor")
+    wb_action.pack(fill="x", pady=3)
+    action_help(body, wb_action, {
+        "open_editor": "open the Tkinter book editor. This is where you "
+                       "write: pick a section, type into it, and use "
+                       "Write Next Section to get a brief for a model.",
+        "sync_from_tree": "you edited the Markdown files in book_wedge/. "
+                          "Pull that text back into the editor's project "
+                          "file and the database. This is the safe "
+                          "direction and the default.",
+        "sync_from_project": "you edited in the app. Push the project "
+                             "file back out over the Markdown folder. "
+                             "This overwrites the .md files, so only do "
+                             "it when the app is the newer copy.",
+        "render_figures": "run the raw-wedge solver over the whole "
+                          "figure list and write the PNGs into "
+                          "book_wedge/figures/. Needs a display; takes a "
+                          "couple of minutes.",
+        "status": "no window: print how many sections are written, how "
+                  "many words, and which figures are still missing.",
+    })
+
+    note(body,
+         "The Markdown folder is the writing surface and it wins by "
+         "default. Sync never guesses which copy is newer -- you say.")
+
+    ttk.Separator(foot).pack(fill="x")
+
+    def go_wedge_book():
+        run("wedge_book/launch.py", "wedge_book",
+            {"action": wb_action.get()}, "Wedge Method Book")
+
+    launch_button(foot, "Run", go_wedge_book)
+
     # ---- Raw Wedge Dome ---------------------------------------------------
 
     t, body, foot = scrollable_tab("Raw Wedge Dome")
@@ -2237,10 +2293,10 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 15
+        expected = 16
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 16
+        expected_buttons = 17
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks
