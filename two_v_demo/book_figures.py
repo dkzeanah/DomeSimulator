@@ -417,12 +417,34 @@ def render_panel_svg(figure: Figure, path_key: str | None = None) -> Path:
     return path
 
 
+def _archived_still(lesson_key: str, prefix: str, second: float) -> Path | None:
+    """An already-rendered frame of one film, from the stills archive.
+
+    The launcher's shots action leaves frames named
+    ``<prefix>_<time>s.png`` under ``two_v_demo_output/<lesson>/``. A book
+    figure that names the same lesson and second can take that exact frame
+    -- it is the film's own render, not a re-drawing -- which is what lets
+    a machine without PyOpenGL still put real film stills in the book.
+    """
+    root = Path(__file__).resolve().parent.parent / "two_v_demo_output"
+    name = f"{prefix}_{second:07.2f}s.png"
+    direct = root / lesson_key / name
+    if direct.is_file():
+        return direct
+    for candidate in root.glob(f"*/{name}"):
+        return candidate
+    return None
+
+
 def render_lesson_still(figure: Figure, path_key: str | None = None) -> Path:
     """One frame of an existing film.
 
-    Needs an OpenGL context. When there is not one, this raises with the
-    launcher action that will produce the frame on a machine that has one,
-    rather than failing obscurely inside a GL call.
+    Needs an OpenGL context. When there is not one, an already-rendered
+    frame of the same lesson and second is copied out of the stills
+    archive instead -- the film's own render, so the book's plate and the
+    film cannot disagree. When neither exists, this raises with the
+    launcher action that will produce the frame on a machine that has
+    OpenGL, rather than failing obscurely inside a GL call.
     """
     spec = figure.spec
     lesson = spec.get("lesson", "why")
@@ -430,10 +452,21 @@ def render_lesson_still(figure: Figure, path_key: str | None = None) -> Path:
     try:
         import OpenGL  # noqa: F401
     except ImportError:
+        from .lesson_registry import get_lesson
+
+        prefix = get_lesson(lesson).snapshot_prefix
+        archived = _archived_still(lesson, prefix, second)
+        if archived is not None:
+            target = FIGURE_DIR / f"{path_key or figure.key}.png"
+            if target.exists():
+                target = next_version(target)
+            target.write_bytes(archived.read_bytes())
+            return target
         raise RuntimeError(
             f"figure {figure.key!r} is a frame of the {lesson!r} film at "
             f"{second:.1f}s, and rendering it needs PyOpenGL, which is not "
-            "installed here. Render it from the launcher's Masterclass tab: "
+            "installed here -- and the stills archive has no frame at that "
+            "second. Render it from the launcher's Masterclass tab: "
             f"Lesson = {lesson}, Action = shots, Shot times = {second:g}. "
             "The frame lands in two_v_demo_output/ and can be copied into "
             f"{FIGURE_DIR}/{figure.key}.png."

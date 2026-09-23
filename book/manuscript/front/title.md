@@ -20,6 +20,12 @@ prototype.
 By the builder. Built with the tools included with this book, which are
 named in the back.
 
+![The frame, day fourteen.](../../../deliverables/book/figures/front-frame.png)
+
+That is the whole claim in one picture: a frame of {{frame.members}} members,
+cut from two trees, standing on day fourteen of the fortnight this book
+teaches.
+
 ## Copyright, and the engineer's note
 
 Copyright © 2026, the author.

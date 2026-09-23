@@ -67,6 +67,18 @@ sits on the copyright page, where a reader meets it before any claim.
 - **Kindle.** Not designed for; fixed print layout first, per the
   guidance.
 
+## Illustrations are film frames, not sketches
+
+The book's plates of the dome itself are real film stills. The
+frontispiece, the worked build's plate and the raising plate are frames of
+the decluttered wedge film — the orientation chapter at 425 s, the assemble
+chapter at 842.5 s and the closing shot at 973 s respectively — copied out
+of the stills archive as 1920×1080 frames, so a plate and the film cannot
+disagree about what the dome looks like. On a machine with PyOpenGL the
+same figure re-renders that exact second; without it, the archived frame is
+used. (The frankendome plate names the film's settle chapter, at 158 s;
+that frame still awaits a PyOpenGL machine or the launcher's shots action.)
+
 ## What remains, in order
 
 1. The 44 unwritten Part 1 chapters (the manual's body) — the next big

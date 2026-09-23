@@ -355,9 +355,8 @@ FRONT: tuple[Matter, ...] = (
         _p("plate", "Frontispiece",
            "The finished frame against sky, so the reader knows on page two "
            "what the book is for.",
-           figures=(_f("front-frame", "The frame, day fourteen.", DOME,
-                       full_page=True, orientation="point_dome_in",
-                       view="hero", parts=("wood",)),)),
+           figures=(_f("front-frame", "The frame, day fourteen.", SHOT,
+                       full_page=True, lesson="wedge", second=425.0),),),
         _p("text", "Title page", "Title, subtitle, author, imprint.",
            words=40),
         _p("text", "Copyright and colophon",
@@ -502,7 +501,7 @@ PART_I = Part(
                    figures=(_f("franken-standing",
                                "The frankendome: it stood, and no two "
                                "members matched.", SHOT, full_page=True,
-                               lesson="franken", second=42.0),)),
+                               lesson="franken", second=158.0),)),
                 _p("text", "The ten-piece pentagon",
                    "The one part of the frankendome that was genuinely "
                    "better, and carried forward.", words=750),
@@ -1402,8 +1401,8 @@ PART_IV = Part(
                    figures=(_f("worked-render",
                                "{{dome.diameter_ft}} feet across, "
                                "{{dome.floor_sqft}} square feet of floor.",
-                               DOME, full_page=True, view="three_quarter",
-                               parts=("wood", "rigid")),),),
+                               SHOT, full_page=True, lesson="wedge",
+                               second=973.0),),),
             ),
             derives=("book_math.book_math_report", "book_math.tree_first"),
         
@@ -1625,8 +1624,8 @@ PART_V = Part(
                    "Full page. The frame complete.",
                    figures=(_f("standing-frame",
                                "Day fourteen. {{frame.members}} members, "
-                               "two trees.", DOME, full_page=True,
-                               view="hero", parts=("wood", "rigid")),),),
+                               "two trees.", SHOT, full_page=True,
+                               lesson="wedge", second=842.5),),),
                 _p("text", "What was not done",
                    "Honest inventory of what a standing frame is not: not a "
                    "shell, not a home, not finished.", words=600),

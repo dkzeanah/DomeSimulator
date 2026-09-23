@@ -165,17 +165,28 @@ not sketches of them.
   you print these and lay a stick on them.
 * **book_plot** — tables and charts from `book_math`.
 * **book_diagram** — explanatory drawings, from the same geometry.
-* **lesson_still** — a frame of an existing film. Needs PyOpenGL; without it,
-  it tells you which launcher action produces the frame instead of failing.
+* **lesson_still** — a real frame of one of the films. Needs PyOpenGL to
+  render a new frame; without it, the renderer takes the already-rendered
+  frame of the same lesson and second out of the stills archive
+  (`two_v_demo_output/`), and only if neither exists does it tell you which
+  launcher action produces the frame.
 * **photo_slot** — a placeholder card describing the photograph still to be
   taken, laid out at the right size so a proof reads end to end.
 
-The dome renders default to a `timber` palette. The simulator paints a
-wedge's two sawn faces red and green because that is how you read a stick's
-orientation while flying around it; on paper that reads as a painted climbing
-frame, so print figures re-map those to shades of sawn pine. The geometry is
-untouched — only the colour. Chapter 13's plate keeps the loud version,
-because there the colour *is* the lesson.
+The book's plates of the dome itself are film stills, not re-drawings: the
+frontispiece, the worked build's plate and the raising plate are frames of
+the decluttered wedge film (the frontispiece is the film's orientation
+chapter at 425 s; the raising plate is the assemble chapter at 842.5 s; the
+worked build's plate is the closing shot at 973 s). They are 1920×1080 film
+frames copied into the figure slot, so the book and the film cannot
+disagree about what the dome looks like.
+
+The remaining dome renders default to a `timber` palette. The simulator
+paints a wedge's two sawn faces red and green because that is how you read a
+stick's orientation while flying around it; on paper that reads as a painted
+climbing frame, so print figures re-map those to shades of sawn pine. The
+geometry is untouched — only the colour. Chapter 13's plate keeps the loud
+version, because there the colour *is* the lesson.
 
 **Nothing is ever overwritten.** Re-rendering a figure that exists writes
 `-v2`; so does exporting a book. Same rule as every other deliverable here.

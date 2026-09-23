@@ -2143,7 +2143,29 @@ class MasterclassApp:
             "-pix_fmt", "yuv420p", "-movflags", "+faststart",
             str(render_path),
         ]
-        process = subprocess.Popen(command, stdin=subprocess.PIPE)
+        # ffmpeg's own chatter goes to a file beside the render, never to an
+        # inherited handle.
+        #
+        # This is a deadlock fix, and the deadlock is worth describing because
+        # it looks like a crash. ffmpeg prints a progress line per frame on
+        # stderr. When that stderr is a pipe somebody upstream has stopped
+        # draining -- a CI capture, a background task's log reader, an
+        # orchestrator -- ffmpeg blocks writing it, and an ffmpeg blocked on
+        # stderr is an ffmpeg that has stopped reading stdin. This loop then
+        # blocks writing the next frame, and both processes sit at zero CPU
+        # forever. A render that dies this way leaves a half-length mp4, no
+        # traceback, and an exit code from whatever eventually kills it.
+        #
+        # Writing to a real file cannot block that way, and it also leaves the
+        # encoder log where somebody can read it after a bad render.
+        log_path = render_path.with_suffix(".ffmpeg.log")
+        encoder_log = open(log_path, "wb")
+        try:
+            process = subprocess.Popen(command, stdin=subprocess.PIPE,
+                                       stdout=encoder_log, stderr=encoder_log)
+        except Exception:
+            encoder_log.close()
+            raise
         total_frames = int(math.ceil(self.total_duration * capture_fps))
         self.playing = False
         rendered_chapter = -1
@@ -2167,12 +2189,16 @@ class MasterclassApp:
             assert process.stdin is not None
             process.stdin.close()
             return_code = process.wait()
+            encoder_log.close()
         except BaseException:
             process.kill()
+            encoder_log.close()
             raise
         print()
         if return_code != 0:
-            raise RuntimeError(f"ffmpeg exited with status {return_code}")
+            raise RuntimeError(
+                f"ffmpeg exited with status {return_code}; its own log is at "
+                f"{log_path}")
         if plan is not None and mux_audio:
             mux_command = [
                 ffmpeg, "-y",
