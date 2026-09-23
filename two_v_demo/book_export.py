@@ -46,7 +46,7 @@ from pathlib import Path
 
 from . import book_manuscript as manuscript
 from . import book_tokens
-from .book import BOOK, EXPORT_DIR, MANUSCRIPT_DIR, Book
+from .book import (BOOK, EXPORT_DIR, MANUSCRIPT_DIR, Book, figure_index)
 
 
 FIGURE_SUFFIXES = (".png", ".svg", ".jpg")
@@ -215,7 +215,12 @@ def _markdown_to_html(text: str) -> str:
 
 def _resolve_images(text: str, embed: bool,
                     found: list[str], missing: list[str]) -> str:
-    """Point every image link at the newest render, or mark it absent.
+    """Point every image link at the newest render, or drop it silently.
+
+    A reader's book never shows authoring machinery: a figure that has not
+    been rendered yet, or a photograph the author has not taken, is simply
+    absent from the page. The writing desk (``book_app``) is where a missing
+    figure is reported; the export is where it is not.
 
     With ``embed`` the picture goes into the file as a data URI, which is
     what makes an exported HTML book a single portable object.
@@ -226,9 +231,12 @@ def _resolve_images(text: str, embed: bool,
         path = latest_figure(key)
         if path is None:
             missing.append(key)
-            return (f'<div class="missing-figure">Figure <code>{key}</code> '
-                    f"has not been rendered yet.<br>{html_escape.escape(alt)}"
-                    "</div>")
+            return ""
+        spec = figure_index(BOOK).get(key)
+        if spec is not None and spec.source == "photo_slot":
+            # A photograph slot is a shot the author still has to take.
+            missing.append(key)
+            return ""
         found.append(key)
         if embed:
             mime = ("image/svg+xml" if path.suffix == ".svg"
@@ -260,12 +268,18 @@ def _strip_leading_heading(body: str, title: str) -> str:
 
 def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
               embed_images: bool = True, strict: bool = True,
-              include_unwritten: bool = True,
+              include_unwritten: bool = False,
               contents: bool = True) -> tuple[str, BuildReport]:
     """The whole book as one HTML document.
 
     This is the single source the reader, the HTML export and the PDF all
     build from, so they cannot drift into being different books.
+
+    The export is a reader's artifact, not the writing desk: chapters and
+    matter with no prose in them are omitted rather than marked, so a
+    published copy never shows "(not written yet)" or any other authoring
+    trace. ``include_unwritten=True`` restores the working view for the
+    desk, and is off by default.
     """
     found: list[str] = []
     missing: list[str] = []
@@ -280,13 +294,25 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         "DomeSim project.</p>",
     ]
 
+    # The contents list names only what the book actually contains: a
+    # reader who follows a link must always land on a written chapter.
+    # "Written" is the author's own declaration -- the manuscript file's
+    # status, anything beyond the untouched outline scaffold.
+    written_chapters = [
+        chapter for chapter in book.chapters
+        if manuscript.read_chapter(chapter, root).is_started]
+
     if contents:
         parts.append('<nav class="toc"><h2>Contents</h2><ol>')
         for part in book.parts:
+            listed = [chapter for chapter in part.chapters
+                      if chapter in written_chapters]
+            if not listed and not include_unwritten:
+                continue
             parts.append(
                 f'<li class="toc-part">Part {part.number} &middot; '
                 f"{html_escape.escape(part.title)}</li>")
-            for chapter in part.chapters:
+            for chapter in listed:
                 parts.append(
                     f'<li><a href="#ch{chapter.number}">'
                     f'<span class="num">{chapter.number}</span>'
@@ -296,11 +322,17 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
 
     for matter in book.front:
         text = manuscript._matter_markdown(matter, "front", root)
+        if not text.strip() and not include_unwritten:
+            continue
         parts.append(_markdown_to_html(
             _resolve_images(text, embed_images, found, missing)))
         parts.append("<hr>")
 
     for part in book.parts:
+        included = [chapter for chapter in part.chapters
+                    if chapter in written_chapters]
+        if not included and not include_unwritten:
+            continue
         parts.append(
             f'<section class="part">'
             f'<div class="part-eyebrow">Part {part.number}</div>'
@@ -311,10 +343,10 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
             f"</section>")
         for chapter in part.chapters:
             item = manuscript.read_chapter(chapter, root)
-            if not item.exists and not include_unwritten:
-                continue
             body = _strip_leading_heading(item.body, chapter.title)
-            has_prose = manuscript.count_words(body) > 60
+            has_prose = item.is_started
+            if not has_prose and not include_unwritten:
+                continue
             if has_prose:
                 written += 1
             parts.append(
@@ -336,6 +368,8 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
 
     for matter in book.back:
         text = manuscript._matter_markdown(matter, "back", root)
+        if not text.strip() and not include_unwritten:
+            continue
         parts.append("<hr>")
         parts.append(_markdown_to_html(
             _resolve_images(text, embed_images, found, missing)))
@@ -536,7 +570,12 @@ def available_backends() -> tuple[str, ...]:
 # ----------------------------------------------------------------------
 
 def validate_export() -> None:
-    """Both readable forms build, and both contain the book."""
+    """Both readable forms build, and both contain the book.
+
+    The exported book is the reader's copy: every chapter with prose appears,
+    unwritten chapters are absent rather than marked, and no authoring
+    machinery ("not written yet", missing-figure cards) ever reaches it.
+    """
     import tempfile
 
     document, report = book_html(embed_images=False, strict=True)
@@ -545,13 +584,26 @@ def validate_export() -> None:
     assert BOOK.title in document, "the title is missing"
     assert report.chapters_total == len(BOOK.chapters), report
     assert report.chapters_written >= 1, report
-    # Every part and chapter has to appear, or the reader silently drops one.
-    for part in BOOK.parts:
-        assert html_escape.escape(part.title) in document, part.title
-        for chapter in part.chapters:
-            assert f'id="ch{chapter.number}"' in document, chapter.number
-    assert document.count('class="chapter"') == len(BOOK.chapters), \
+
+    # Every written chapter appears; every unwritten one is gone, with no
+    # authoring-trace banner left behind anywhere.
+    written_ids = {f'id="ch{chapter.number}"'
+                   for chapter in BOOK.chapters
+                   if manuscript.read_chapter(chapter).is_started}
+    assert written_ids, "no chapter has prose, so nothing can be checked"
+    for chapter in BOOK.chapters:
+        marker = f'id="ch{chapter.number}"'
+        if marker in written_ids:
+            assert marker in document, chapter.number
+        else:
+            assert marker not in document, (
+                f"unwritten chapter {chapter.number} leaked into the export")
+    assert document.count('class="chapter"') == len(written_ids), \
         document.count('class="chapter"')
+    assert "not written yet" not in document, "an authoring banner leaked"
+    assert "has not been rendered" not in document, \
+        "a missing-figure card leaked"
+    assert "PHOTOGRAPH" not in document, "a photograph slot leaked"
 
     # Embedding really embeds, and produces a bigger, portable document.
     embedded, _ = book_html(embed_images=True, strict=True)

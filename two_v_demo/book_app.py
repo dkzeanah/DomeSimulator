@@ -575,16 +575,16 @@ def main() -> int:
                 page.insert("end", piece, base)
 
     def _emit_figure(key: str, caption: str) -> None:
-        """Place one figure, scaled to the reading measure."""
+        """Place one figure, scaled to the reading measure.
+
+        The Read tab is a reader's view: a figure that has not been rendered
+        yet, or a photograph not yet taken, is simply absent. The Figures tab
+        is where missing figures are reported.
+        """
         from . import book_export
 
         path = book_export.latest_figure(key)
         if path is None or path.suffix == ".svg":
-            page.insert("end",
-                        f"[figure {key} has not been rendered yet]\n",
-                        ("missing", "centre"))
-            if caption:
-                page.insert("end", caption + "\n", "caption")
             return
         try:
             from PIL import Image, ImageTk

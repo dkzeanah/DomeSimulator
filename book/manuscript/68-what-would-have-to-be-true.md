@@ -57,6 +57,16 @@ retrofit multiple, the iris, the network -- and a proposal is not a finding.
 The difference between those columns is the difference between a report and
 a plan, and this part of the book is one of each.
 
+The three statuses are the three kinds of claim the front of this book
+keeps apart, under their working names. **Measured** is tested
+construction: the thing happened, on the standing prototype, and somebody
+wrote the count down. **Modelled** is known geometry carried through with
+declared constants: the arithmetic is real, the input is named, the thing
+itself has not been run. **Proposed** is a design possibility: priced or
+drawn, not built, and labelled as such wherever it appears. A reader who
+keeps those three apart is reading this table the way it was written --
+and the way the whole book was written.
+
 Measured is the rarest word in the table, and it deserves a definition
 before the other two, because it is the one that cannot be borrowed. A row
 is measured when the thing exists and somebody put hands on it, counted it,

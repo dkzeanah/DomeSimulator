@@ -1,0 +1,56 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-23T08:38:25.532362+00:00",
+  "lesson": "teaser_module_build",
+  "title": "Build one utility core: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "THE STEM CELL DOME / SHOP FLOOR",
+      "narration": [
+        "7.2 hours practised. 17.2 for your first."
+      ],
+      "start": 0.0,
+      "end": 5.983999999999999
+    },
+    {
+      "slug": "wrap",
+      "title": "One core, every dome",
+      "narration": [
+        "Build it once. It moves to the next dome when you outgrow this one."
+      ],
+      "start": 5.983999999999999,
+      "end": 11.008
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 11.008,
+      "end": 16.008
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 16.008,
+      "end": 22.04
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

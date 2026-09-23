@@ -1,0 +1,120 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-23T08:18:35.733933+00:00",
+  "lesson": "module_build",
+  "title": "Build one utility core",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "Build one utility core",
+      "narration": [
+        "This is not the pitch. This is the work.",
+        "A utility core is the one part of this dome that is identical in every dome we make -- every size, every fit-out, every shape -- because the interface it plugs into never changes. So it is the first thing worth learning to build, and the first thing worth building a jig for.",
+        "Fourteen steps, five stages, about seven hours once you have done a few. Your first will take closer to seventeen, and anybody who tells you otherwise has not built one."
+      ],
+      "start": 0.0,
+      "end": 35.36
+    },
+    {
+      "slug": "tools",
+      "title": "What has to be on the bench",
+      "narration": [
+        "Before anything, the bench.",
+        "Nine tools, and two of them are the ones people leave in the van. The go/no-go gauge for the crimps, because a bad crimp passes a pressure test. And the torque screwdriver for the panel, because a terminal that feels tight is not a terminal that is tight.",
+        "Everything else on this list you probably own."
+      ],
+      "start": 35.36,
+      "end": 63.36
+    },
+    {
+      "slug": "chase",
+      "title": "Build the chase on the bench",
+      "narration": [
+        "The chase first, and on a bench, upside down.",
+        "Four insulated sections, a base flange, and every hole you will ever need drilled and grommeted while the thing is in pieces at waist height. That is the whole reason this stage exists: a hole drilled now takes thirty seconds and a hole drilled later takes an hour and a hole saw inside a finished core.",
+        "Dry-fit it, check it is plumb over the full run, then take it apart again. The chase is the one part where an eighth of an inch at the bottom is an inch at the apex, and the apex is where the seal cap has to seat."
+      ],
+      "start": 63.36,
+      "end": 103.544
+    },
+    {
+      "slug": "drain",
+      "title": "Drain first, because it is the one you cannot re-route",
+      "narration": [
+        "Drain next, because it is the one you cannot re-route.",
+        "A two-inch stack the full height with a trap at its foot. Dry-fit the whole run and mark every joint across the socket before you open the cement, because solvent cement gives you about five seconds and no second chance at alignment.",
+        "Bottom to top so gravity is not pulling a fresh joint apart. Then the floor-port boot, which is the joint the host makes once and nobody touches again for the life of the pad."
+      ],
+      "start": 103.544,
+      "end": 135.736
+    },
+    {
+      "slug": "water",
+      "title": "Water, then prove it before anything electrical exists",
+      "narration": [
+        "Then water -- and then you prove it, before any electrical part exists inside this thing.",
+        "Manifold at chest height, isolating valve at knee height where somebody who has never seen the building will look for it, and both on the opposite face from where the panel is going. Four capped tails off the manifold, because a dome with no plumbing still ships with them -- the alternative is opening the chase later.",
+        "Every crimp gets the go/no-go gauge. Every single one, including the ones you are sure about, because an uncrimped ring will pass a pressure test and fail in a year.",
+        "And then the test. Eighty psi, thirty minutes, a gauge on it. This is the last moment a leak costs you nothing. After this the panel goes in, and a leak costs the panel."
+      ],
+      "start": 135.736,
+      "end": 183.48
+    },
+    {
+      "slug": "power",
+      "title": "Power last, into a core already known to be dry",
+      "narration": [
+        "Power last, into a core you already know is dry.",
+        "Load centre at chest height on the dry face, inlet at the base. Feeder to the main lugs, strain relief at both ends, and every lug torqued to the figure printed inside the panel door -- with a torque screwdriver, not by feel. A loose terminal is how a panel burns, and it is the failure nobody sees coming.",
+        "Four breakers. Outlet ring, lighting, the window unit, and one spare that exists so the first module somebody snaps on does not need this door opened again. Label them in writing, on the door, now -- not from memory in a year."
+      ],
+      "start": 183.48,
+      "end": 226.35199999999998
+    },
+    {
+      "slug": "close",
+      "title": "Close it, prove the cap, stand it up",
+      "narration": [
+        "Close it, prove the cap, stand it up.",
+        "Sleeve on the chase, cap on the sleeve, six catches set so the gasket compresses evenly all the way round. Then open and close it five times on the bench. If it is stiff down here it is impossible at the top of a dome in the rain, and that cap is the one thing between the building and the weather.",
+        "Cover on captive fasteners so there is no bag of screws to lose. Then two people stand it up and it goes onto the pad's service port as one object -- and every joint you made in the last thirteen steps is still reachable with that cover off."
+      ],
+      "start": 226.35199999999998,
+      "end": 264.15999999999997
+    },
+    {
+      "slug": "materials",
+      "title": "Everything you buy for one",
+      "narration": [
+        "And the shopping list, which is the least exciting slide here and the one people actually screenshot.",
+        "Twenty-three lines, and nothing on it is exotic. PEX and crimp rings, ABS and cement, a load centre and four breakers, four sections of insulated chase, and a cap. Every one of these is a thing you can buy this afternoon from somewhere that is already near you.",
+        "Parts come to about fourteen hundred dollars. Labour at shop rate is two hundred more once you are practised. That is the object that turns a frame and a platform into a building with services in it."
+      ],
+      "start": 264.15999999999997,
+      "end": 303.38399999999996
+    },
+    {
+      "slug": "wrap",
+      "title": "One core, every dome",
+      "narration": [
+        "Last thing, and it is the reason this film is separate from the others.",
+        "This object is not consumed by the dome it goes into. It unbolts from four joints and a lift, and it goes into the next one. When somebody outgrows a stem cell and builds the size up, the core they built on a bench in a weekend goes with them.",
+        "Which means the seven hours you just watched is not seven hours per dome. It is seven hours, once, for as long as you keep building."
+      ],
+      "start": 303.38399999999996,
+      "end": 336.15199999999993
+    }
+  ],
+  "render_config": {
+    "orientation": "landscape",
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+2%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

@@ -39,6 +39,8 @@ STATUSES = ("outline", "drafting", "draft", "revised", "final")
 
 FRONT_MATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 
+HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
+
 
 # ----------------------------------------------------------------------
 # One chapter's file
@@ -374,30 +376,26 @@ def read_matter(matter: Matter, where: str,
 
 def _matter_markdown(matter: Matter, where: str = "front",
                      root: Path = MANUSCRIPT_DIR) -> str:
-    """A matter section: its own prose if written, its plan if not."""
-    written = read_matter(matter, where, root)
-    if written:
-        return written
-    lines = [f"# {matter.title}", ""]
-    for page in matter.pages:
-        lines += [f"## {page.title}", "", f"*{page.purpose}*", ""]
-        for figure in page.figures:
-            lines += [f"![{figure.caption}](figures/{figure.key}.png)", ""]
-        if page.beats:
-            lines += [f"{index}. {beat}"
-                      for index, beat in enumerate(page.beats, start=1)]
-            lines.append("")
-        lines.append("**(not written yet)**")
-        lines.append("")
-    return "\n".join(lines)
+    """A matter section's prose, or empty when nobody has written it.
+
+    Exports omit unwritten matter entirely: a published book never shows a
+    "(not written yet)" plan where a section should be. The outline remains
+    the place the plan lives; this returns only what a reader may see.
+    """
+    return read_matter(matter, where, root)
 
 
 def export_markdown(root: Path = MANUSCRIPT_DIR,
                     out_dir: Path = EXPORT_DIR,
                     book: Book = BOOK,
                     strict: bool = True,
-                    include_unwritten: bool = True) -> Path:
+                    include_unwritten: bool = False) -> Path:
     """One Markdown file containing the whole book, numbers resolved.
+
+    The export is a reader's artifact, not the writing desk: chapters and
+    matter with no prose in them are omitted rather than marked, and the
+    scaffold's page-plan comments never reach the file. ``include_unwritten``
+    restores the working view for the desk, and is off by default.
 
     Never overwrites: a previous export may already be with a reader, so a
     second export writes ``-v2``. Same rule as every other deliverable here.
@@ -411,26 +409,39 @@ def export_markdown(root: Path = MANUSCRIPT_DIR,
         "", "---", ""]
 
     for matter in book.front:
-        parts += [_matter_markdown(matter, "front", root), "", "---", ""]
+        text = _matter_markdown(matter, "front", root)
+        if not text and not include_unwritten:
+            continue
+        parts += [text, "", "---", ""]
 
     for part in book.parts:
+        part_lines: list[str] = []
+        for chapter in part.chapters:
+            item = read_chapter(chapter, root)
+            body = item.body.strip()
+            if not (item.is_started and body) and not include_unwritten:
+                continue
+            if body:
+                # The scaffold's own page plan lives in HTML comments; a
+                # reader's copy carries prose only.
+                body = HTML_COMMENT.sub("", body).strip()
+                part_lines += [body, "", "---", ""]
+            else:
+                part_lines += [f"## {chapter.number}. {chapter.title}", "",
+                               f"*{chapter.deck}*", "",
+                               "**(not written yet)**", "", "---", ""]
+        if not part_lines and not include_unwritten:
+            continue
         parts += [f"# Part {part.number}: {part.title}", "",
                   f"> {part.epigraph}", "", f"*{part.promise}*", "",
                   "---", ""]
-        for chapter in part.chapters:
-            item = read_chapter(chapter, root)
-            if not item.exists and not include_unwritten:
-                continue
-            if item.body.strip():
-                parts += [item.body.strip(), ""]
-            else:
-                parts += [f"## {chapter.number}. {chapter.title}", "",
-                          f"*{chapter.deck}*", "",
-                          "**(not written yet)**", ""]
-            parts += ["---", ""]
+        parts += part_lines
 
     for matter in book.back:
-        parts += [_matter_markdown(matter, "back", root), "", "---", ""]
+        text = _matter_markdown(matter, "back", root)
+        if not text and not include_unwritten:
+            continue
+        parts += [text, "", "---", ""]
 
     text = "\n".join(parts)
     text = book_tokens.resolve(text, strict=strict)
@@ -527,6 +538,12 @@ def validate_manuscript() -> None:
         text = path.read_text(encoding="utf-8")
         assert "{{" not in text, "an export still contains raw tokens"
         assert "120 members" in text, text[:400]
+        # A reader's export carries prose only: no authoring banners, no
+        # scaffold page-plan comments, and no unwritten chapter at all.
+        assert "not written" not in text, "an authoring banner leaked"
+        assert "<!--" not in text, "a scaffold comment leaked"
+        assert "Nine Processes" not in text, \
+            "an unwritten chapter leaked into the export"
 
         # A second export versions rather than replacing the first.
         second = export_markdown(root, out, strict=True)
