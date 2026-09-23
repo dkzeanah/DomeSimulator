@@ -25,20 +25,59 @@ flat face on its side for the neighbour to land on.
 So every stick has a butting end and a receiving face, and they are not the
 same operation.
 
-THE PART THAT IS EASIER THAN IT SOUNDS
+THE CORRECTION
 
-Here is the good news, and it is the reason this method exists.
+An earlier telling of this -- in the films and in an earlier draft of this
+chapter -- said every one of those cuts was a plain angle. No compound
+mitre, no bevel and mitre at once.
 
-Every one of those cuts is a plain angle. No compound mitre. No bevel and
-mitre at the same time. No holding a workpiece at two angles at once while a
-blade comes at it.
+That is wrong, and it is worth saying plainly rather than quietly fixing,
+because a lot of people heard it.
 
-You are making flat cuts across a stick at a stated angle, which is the thing
-a mitre saw does well and a person can check with a protractor.
+Here is what the solve actually gives. The butt end is a COMPOUND cut: a
+bevel and a mitre together, which is the trickiest operation in the whole
+build.
 
-That is the trade the wedge method makes. It uses more wood -- eighty percent
-more than a dome that shares its struts -- and in return every cut is a cut
-you can make accurately at two in the afternoon on your fourth day.
+WHAT IS TRUE INSTEAD, AND WHY IT IS STILL GOOD NEWS
+
+Two things come out of it that make the cut jiggable rather than
+hand-fitted, and they are better news than the false version was.
+
+The bevel is the same on every member in the dome:
+22.5 degrees, which is exactly half the
+45-degree sector the log was split into.
+
+Read that again, because it is the whole thing. The bevel is set by HOW THE
+LOG WAS SPLIT, not by where the member sits in the shell. Set it once, on
+the first stick, and never touch it again for the other 120.
+
+And the mitre takes only 3 values across all
+120 members: 21.138, 30.000, 34.431 degrees.
+
+So the real number to hold on to is 3 saw settings
+for a whole dome. Not one, as the earlier version claimed -- but three, all
+of them under 50 degrees and so within what an
+ordinary mitre saw will swing.
+
+THE PART THAT IS GENUINELY AWKWARD
+
+The cut runs a long way along the stick, because it lands on a face that is
+itself tilted. The sector's point reaches past its bark corner by
+2.23 to 2.91 inches.
+
+That is why the blank has to be long on that side, and it is the part that
+gets judged by eye when there is no fixture. Make the fixture.
+
+WHAT THE PINWHEEL DID REMOVE
+
+Not the mitre. The shared vertex.
+
+No stick is coped, shaved or brought to a point, and no two ends meet each
+other -- every end lands on somebody's flat side. That is a real and large
+simplification and it is what the method actually buys.
+
+It uses more wood -- eighty percent more than a dome that shares its struts
+-- and in return there are three saw settings and no fitted joints.
 
 THE FENCES
 

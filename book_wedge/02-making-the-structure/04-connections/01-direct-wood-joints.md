@@ -13,17 +13,29 @@ each other round the corner. That is the pinwheel.
 
 WHAT IT BUYS YOU
 
-No end of any member is mitred. Every cut is a plain angle across a stick.
+Not what an earlier version of this section claimed. It said no end of any
+member is mitred and every cut is a plain angle, and that is not true. See
+the correction in the chapter on making the struts: the butt is a compound
+cut of a 22.5-degree bevel and one of
+3 mitres.
 
-That is the entire reason this method exists, and it is worth being clear
-about what it replaces: in a hub dome, the angles live in the hub, and the hub
-is either an expensive casting or a piece of steel somebody has to fabricate
-accurately. In a hubless dome without the pinwheel, the angles live in
-compound mitres cut on the ends of every stick, which is a cut most people
-cannot make repeatably.
+What the pinwheel genuinely buys is this.
 
-The pinwheel moves the angle out of the joint and into the *arrangement*. The
-sticks are simple; the pattern is clever.
+No shared vertex. Three members reach each corner and none of them meets
+another end-to-end. Every end lands on the flat side of a neighbour, so
+nothing is coped, shaved, brought to a point or fitted.
+
+No hub. In a hub dome the angles live in the hub, and the hub is either an
+expensive casting or a piece of steel somebody has to fabricate accurately.
+
+And a very short list of settings. 3 saw settings
+for 120 members, with the bevel constant because it comes
+from the split rather than from the shell.
+
+The pinwheel moves the angle out of the *fit* and into the arrangement. The
+joints are dumb; the pattern is clever. That is a smaller claim than the one
+this section used to make and it is the one that survives contact with a
+real log.
 
 WHAT IT COSTS
 

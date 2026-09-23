@@ -474,6 +474,7 @@ def validate_store() -> None:
 
     book = load_json()
     validate_reference_dome(book)
+    validate_no_mitre_claim(book)
     assert book.parts, "no parts"
     assert len(book.sections) > 100, len(book.sections)
     assert book.metadata.get("title"), "the book has no title"
@@ -592,3 +593,60 @@ def validate_reference_dome(book: "Book | None" = None) -> None:
                              f"{figure!r} is {why}")
     assert not wrong, "the book is describing the wrong dome:\n  " + \
         "\n  ".join(wrong)
+
+#: How a list of offending sections is laid out in an assertion message.
+NEWLINE_BULLET = "\n  "
+
+
+def validate_no_mitre_claim(book: "Book | None" = None) -> None:
+    """The book may not repeat a claim the films already corrected.
+
+    ``lesson_wedge_why`` has a chapter that names the mitre error and then
+    corrects it, because a published film that says something wrong gets a
+    chapter rather than a silent re-cut. The book then said the wrong thing
+    again in two places and built two more chapters on top of it.
+
+    What the solve gives: the butt IS a compound cut. The bevel is constant
+    at half the sector angle, because it comes from how the log was split
+    rather than from where the member sits, and the mitre takes three values
+    across all 120 members. What the pinwheel removes is the shared vertex,
+    not the mitre.
+    """
+    from two_v_demo import wedge_why_facts
+
+    cut = wedge_why_facts.butt_cut_model()
+    assert cut["bevel_is_constant"], "the bevel is no longer constant"
+    assert cut["setting_count"] <= 4, cut["setting_count"]
+
+    banned = (
+        "No compound mitre",
+        "No end of any member is mitred",
+        "no member is mitred",
+        "Every cut is a plain angle",
+        "every cut is a plain angle",
+        "no mitre anywhere",
+    )
+    # A correction has to be allowed to quote the thing it is correcting, or
+    # this check forbids the very pattern the repository requires: name the
+    # error, then fix it. So the test is per paragraph, and a paragraph that
+    # retracts the claim in the same breath is doing the right thing.
+    retracting = ("not true", "an earlier", "earlier version",
+                  "earlier telling", "corrected", "correction",
+                  "is wrong", "was wrong")
+    book = book or load_json()
+    wrong = []
+    for _part, chapter, section in book.sections:
+        for para in (section.body or "").split("\n\n"):
+            lowered = para.lower()
+            if any(mark in lowered for mark in retracting):
+                continue
+            for phrase in banned:
+                if phrase in para:
+                    wrong.append(
+                        f"{chapter.title} / {section.title}: {phrase!r}")
+    assert not wrong, (
+        "the book is repeating the mitre claim the films corrected; the butt "
+        f"is a compound cut of a {cut['bevel_deg']:.1f} degree bevel and one "
+        f"of {cut['setting_count']:.0f} mitres:" + NEWLINE_BULLET
+        + NEWLINE_BULLET.join(wrong))
+

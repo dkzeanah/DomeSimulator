@@ -6,7 +6,9 @@ figures: C:\Users\Don\Desktop\DomeSim\book_wedge\05-variations-and-future-system
 
 # 18. The Dome as a Platform
 
-<!-- not written yet -->
+A dome is not a house. It is a volume with services in it, and what it becomes is decided by which panels are in the bays and what is bolted to the inserts.
+
+This chapter is the catalogue of what people actually do with them, including the two uses where the shape's disadvantages stop mattering and the one where they get worse.
 
 <!-- NOTES
 CHAPTER GOAL: Build a practical, illustrated chapter covering 18. The Dome as a Platform.
