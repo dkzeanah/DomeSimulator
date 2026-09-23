@@ -1,0 +1,543 @@
+2 Trees: Build Your (D)Home
+One small chainsaw, 120 wedge struts, and a geodesic dome in a fortnight
+
+3 parts, 71 chapters, 792 pages, 192,460 words targeted, 80 figures
+
+FRONT MATTER
+  Title pages  (4pp, 260w)
+      [plate] Half-title
+      [plate] Frontispiece
+      [text] Title page
+      [text] Copyright and colophon
+  How to read this  (8pp, 2,100w)
+      [text] What this book is
+      [spread] The three strands
+      [safety] Before you start a saw
+      [table] Every number in this book, and where it comes from
+
+PART 1 -- HOW TO BUILD ONE  (614pp, 153,100w, story/explain/howto/reference)
+    “A dome is a frame, a skin and a floor, and the frame is the only part of it that has to be got right.”
+   1. The Tree That Was Already Down  [story] (11pp, 2,650w)
+      A windfall pine, a small saw, and a question nobody had asked out loud
+        [opener] The Tree That Was Already Down
+        [text] Sixty feet of pine, and no way to use it
+        [spread] The tree, measured [tree-measured]
+        [text] What I actually wanted
+   2. Fifteen Middlemen  [explain] (13pp, 3,300w)
+      Why a two-by-four costs what it costs, and how much of that is wood
+        [opener] Fifteen Middlemen
+        [text] From stump to rack
+        [spread] The chain, and where the wood goes [middlemen-chain]
+        [text] The price of a 2x4, taken apart
+        [sidebar] Nominal, dressed, and the missing third
+   3. The Frankendome  [story] (11pp, 2,800w)
+      Forty triangles, no two struts alike, and the failure that taught the method
+        [opener] The Frankendome
+        [text] Strut-agnostic, and what that cost
+        [plate] The frankendome standing [franken-standing]
+        [text] The ten-piece pentagon
+        [text] Why I stopped
+   4. The V-Bracket Afternoon  [story] (9pp, 2,300w)
+      Trying to join shapes that have nothing in common
+        [opener] The V-Bracket Afternoon
+        [text] A bracket that does not care
+        [spread] Four joints that nearly worked [bracket-attempts]
+        [text] The question that ended it
+   5. The Cut That Changed It  [story] (13pp, 3,200w)
+      Split the trunk like a cake, and the stick is already the right shape
+        [opener] The Cut That Changed It
+        [text] Half, half, half again
+        [spread] One trunk, eight sticks [trunk-eighths]
+        [text] What became obvious immediately
+        [text] And what took another week
+   6. Triangles Do Not Care What Shape Your Stick Is  [explain] (12pp, 2,950w)
+      Why a triangulated frame can accept a member no mill would sell
+        [opener] Triangles Do Not Care
+        [text] Axial, not bending
+        [spread] The same load, two frames [racking-compare]
+        [text] What the wedge is good at
+        [sidebar] One eighth of a tree
+   7. Not a Worse Two-by-Four  [explain] (19pp, 5,100w)
+      The head-to-head nobody runs honestly, run honestly
+        [opener] Not a Worse Two-by-Four
+        [text] The rectangle is not the tree's idea
+        [text] More wood, from a modest tree
+        [spread] The two sections, side by side [section-compare]
+        [text] And now the number that does not help
+        [table] The comparison in full [versus-table]
+        [text] Which is the right question
+        [text] What this chapter does not claim
+   8. Forty Panels, One Hundred and Twenty Members  [explain] (10pp, 2,350w)
+      The 2V hemisphere, counted
+        [opener] Forty Panels
+        [text] Where 2V comes from
+        [plate] The frame, exploded [frame-exploded]
+        [table] What the frame contains [frame-counts]
+        [text] Why hemispheres and not spheres
+   9. Two Lengths, Not Forty  [explain] (8pp, 2,200w)
+      The whole reason a dome can be built by one person
+        [opener] Two Lengths
+        [text] Short and long
+        [table] The member schedule [member-classes]
+        [text] Why the pinwheel splits two into four
+  10. Compression, Tension, and One Eighth of a Tree  [explain] (12pp, 3,000w)
+      What a wedge strut can actually carry
+        [opener] One Eighth of a Tree
+        [text] Along the grain, and across it
+        [text] The end-to-side bearing
+        [safety] What this book will not tell you
+        [sidebar] The number I will give you
+  11. What a Dome Costs You  [explain] (13pp, 3,450w)
+      The chapter that argues against the book
+        [opener] What a Dome Costs You
+        [text] Furniture does not fit a curve
+        [text] Roofing a compound surface
+        [text] Permits, appraisals and resale
+        [text] When to build a rectangle
+  12. Split Like a Cake  [howto] (12pp, 3,150w)
+      Three passes, eight sectors, and why eight
+        [opener] Split Like a Cake
+        [steps] The three passes
+        [spread] Three cuts, eight sticks [split-sequence]
+        [text] One log, two, four, eight
+        [text] Why eight and not six or twelve
+        [table] What other split counts give you [split-counts]
+  13. Eighty-Seven Percent  [explain] (13pp, 3,300w)
+      The recovery arithmetic, with the kerf paid for
+      CORRECTS: The 88% recovery figure in the project brief, which was computed for a 15-inch butt rather than this book's 12-inch tree.
+        [opener] Eighty-Seven Percent
+        [text] What a mill loses, and to what
+        [text] What the wedge loses
+        [spread] Both conversions, same log [recovery-compare]
+        [table] Section by section [section-rows]
+        [errata] Where 88 became 87
+  14. Four Ways Up  [explain] (15pp, 3,700w)
+      One stick, four orientations, four different buildings
+        [opener] Four Ways Up
+        [text] Rotating about its own axis
+        [plate] All four, side by side [orientations-four]
+        [text] Point dome in
+        [text] Point panel in
+        [text] Point dome out
+        [text] Point panel out
+        [table] Choosing one [orientation-table]
+  15. The Pinwheel  [explain] (15pp, 3,750w)
+      Three sticks, one triangle, and not one mitre
+      CORRECTS: The 'no mitres anywhere' claim, already corrected on camera in lesson_wedge_why.
+        [opener] The Pinwheel
+        [text] Why mitres were the enemy
+        [text] Each end lands on a side, not a point
+        [spread] One panel, taken apart [pinwheel-exploded]
+        [text] What the inset costs
+        [errata] The mitre claim, corrected
+  16. The Seam and Its Key  [explain] (13pp, 3,450w)
+      Where two panels meet, and the angle nobody wants to hear about
+        [opener] The Seam and Its Key
+        [text] The fold angle is not constant
+        [text] Raw trapezoid, or shaved flat
+        [spread] One seam, both ways [seam-both-ways]
+        [table] Every seam in the dome [seam-schedule]
+        [text] Hose, key or nothing
+  17. Let the Connector Hold the Angle  [explain] (18pp, 4,750w)
+      Keep the wood, machine the small part
+        [opener] Let the Connector Hold the Angle
+        [text] Three jobs, three different things doing them
+        [spread] Where the precision lives [precision-location]
+        [text] The wedge starts close to useful
+        [worked] What planing the faces actually costs [shaving-cost]
+        [text] Or do not plane at all
+        [text] Why this is a manufacturing idea, not a dodge
+  18. Why Every Panel Keeps Its Own Edge  [explain] (14pp, 3,800w)
+      One hundred and twenty members for sixty-five edges, and what the difference buys
+        [opener] Every Panel Keeps Its Own Edge
+        [text] The arithmetic that does not look right
+        [spread] One seam, two members [seam-sandwich]
+        [text] What the extra wood buys
+        [text] The check that has to close
+        [text] When to share a strut instead
+  19. Bends, Knots and Small Units  [explain] (18pp, 4,450w)
+      Why six-foot pieces forgive what sixteen-foot boards do not
+        [opener] Small Units
+        [text] A bend costs you a section, not a tree
+        [text] Knots, and where they are allowed
+        [spread] One bent trunk, salvaged [bent-trunk]
+        [text] Grade your own stock
+        [text] Trees nobody else wants
+        [text] And the journey it does not take
+  20. Which Way Round Are You Working?  [howto] (9pp, 2,100w)
+      Choose your method before you touch anything
+        [opener] Which Way Round
+        [text] Design first, or tree first
+        [spread] The decision, drawn [method-decision]
+        [text] The one thing both methods share
+  21. Method A: From the Dome You Want  [howto] (11pp, 3,000w)
+      Radius in, cut list out
+        [opener] Method A
+        [steps] The procedure
+        [worked] Three hundred square feet [method-a-worked]
+        [text] Where this method surprises people
+        [table] Design-first lookup [design-lookup]
+  22. Method B: From the Tree You Have  [howto] (10pp, 3,000w)
+      Section length in, dome out
+        [opener] Method B
+        [steps] The procedure
+        [worked] Two trees, one hundred and twenty struts [method-b-worked]
+        [text] You do not get to choose the diameter
+        [table] Tree-first lookup [tree-lookup]
+  23. The Round Trip  [explain] (9pp, 2,150w)
+      Proving the two methods are one calculation
+        [opener] The Round Trip
+        [text] Run it forwards, then backwards
+        [worked] The residual [round-trip]
+        [text] What would break it
+  24. The Worked Build  [reference] (6pp, 1,100w)
+      Every number for this book's dome, in one place
+        [opener] The Worked Build
+        [table] The tree [worked-tree]
+        [table] The dome [worked-dome]
+        [table] The cut list [worked-cutlist]
+        [table] The seam schedule [worked-seams]
+        [plate] The dome this describes [worked-render]
+  25. When the Numbers Say No  [howto] (13pp, 3,150w)
+      Reading a result that means do not build this
+        [opener] When the Numbers Say No
+        [text] Not enough struts
+        [text] Too big to lift alone
+        [text] Stock too small in section
+        [text] Three ways out
+  26. Day Zero: The Saw  [story] (12pp, 2,950w)
+      A hundred and ninety-nine dollars and a sixteen-inch bar
+        [opener] Day Zero
+        [text] The smallest saw on the shelf
+        [sidebar] What I would have bought instead
+        [steps] Setting it up
+        [safety] Chaps, helmet, and never alone
+  27. Days One and Two: Felling  [howto] (14pp, 3,600w)
+      Putting two trees on the ground where you want them
+        [opener] Felling
+        [safety] Read this before the notch
+        [steps] The notch and the back cut
+        [spread] The hinge, drawn [felling-hinge]
+        [text] Limbing without pinching
+        [text] What actually happened
+  28. Days Three and Four: Bucking  [howto] (12pp, 2,900w)
+      Cutting the trunk into the only length that matters
+        [opener] Bucking
+        [steps] Marking and cutting to length
+        [text] Where to start, and why not at the butt
+        [spread] Eight sections from one trunk [bucking-plan]
+        [text] Moving six-foot green sections alone
+  29. Days Five to Eight: Ripping  [howto] (18pp, 4,400w)
+      One hundred and twenty struts, thirty to an afternoon
+        [opener] Ripping
+        [steps] The three passes, at the log
+        [text] Holding a round section still
+        [text] Reading the pith
+        [spread] The cutting rhythm [ripping-rhythm]
+        [text] Chain, file, and the cost of a dull cut
+        [sidebar] What this is worth an hour
+  30. Day Nine: The Jig  [howto] (9pp, 2,100w)
+      One flat bench that makes forty panels the same
+        [opener] The Jig
+        [text] Why a jig and not a tape
+        [steps] Building it
+        [plate] The jig, complete [jig-complete]
+  31. Days Ten to Twelve: Forty Panels  [howto] (12pp, 2,950w)
+      The same twelve motions, forty times
+        [opener] Forty Panels
+        [steps] One panel, start to finish
+        [text] Sorting the pile
+        [text] The fourth panel is the first good one
+        [table] Panel variants [panel-variants]
+  32. Days Thirteen and Fourteen: Raising  [howto] (13pp, 3,350w)
+      Forty panels become one building
+        [opener] Raising
+        [steps] Bottom ring first
+        [text] Propping, and what holds it up before it is closed
+        [text] Closing the top
+        [plate] Standing [standing-frame]
+        [text] What was not done
+  33. One Bench, Forty Panels  [reference] (10pp, 2,650w)
+      What the jig is and what each part of it does
+        [opener] One Bench
+        [table] The twelve stages [jig-stages]
+        [spread] The jig, labelled [jig-labelled]
+        [text] Setting it out on a real floor
+        [text] Locate from the sawn faces, never the bark
+  34. The Butt Cut  [reference] (9pp, 2,200w)
+      The one compound angle, made before anything is assembled
+        [opener] The Butt Cut
+        [text] The angle its neighbour presents
+        [table] Butt cut setups [butt-setups]
+        [steps] Making it
+  35. The Head Overfit  [reference] (13pp, 3,000w)
+      Deliberately cutting it too long
+        [opener] The Head Overfit
+        [text] Where error goes
+        [sidebar] Locate first, cut second
+        [spread] Long, then flush [head-overfit]
+        [text] How much to leave
+        [table] Offcut per dome [offcut-total]
+  36. Flush-Cutting in Place  [reference] (6pp, 1,650w)
+      The cut that makes the panel true
+        [opener] Flush-Cutting
+        [steps] Against the fence
+        [text] Why this cannot be done first
+  37. Panel Drawings  [reference] (6pp, 1,050w)
+      One flat drawing per distinct panel, full size
+        [opener] Panel Drawings
+        [plate] Panel drawing, type one [panel-1]
+        [plate] Panel drawing, type two [panel-2]
+        [text] Reading a panel drawing
+  38. Where Error Goes  [explain] (13pp, 3,200w)
+      A tolerance budget for a building made of split logs
+        [opener] Where Error Goes
+        [text] Four places error can land
+        [text] Three of them are absorbed
+        [spread] The tolerance budget [tolerance-budget]
+        [text] The one that accumulates
+  39. The Footing and the Ring  [howto] (12pp, 3,000w)
+      What the dome stands on
+        [opener] The Footing
+        [text] Ten points, or one ring
+        [steps] Setting out a circle accurately
+        [text] Anchoring against uplift
+        [safety] This is where to ask somebody
+  40. Closing the Shell  [howto] (12pp, 3,000w)
+      Forty triangles of something over forty triangles of nothing
+        [opener] Closing the Shell
+        [text] Sheathing a triangle
+        [text] Nesting the cuts
+        [table] Sheet count [sheet-count]
+        [text] The alternatives
+  41. Doors, Windows and the Rim  [howto] (13pp, 3,150w)
+      Cutting holes in something that works by being closed
+        [opener] Doors and Windows
+        [text] A door at the rim
+        [text] A window in a panel
+        [spread] Three openings that work [openings-three]
+        [text] Risers: cheating height at the rim
+  42. Weather and Water  [howto] (13pp, 3,300w)
+      Where it leaks, and where the water goes
+        [opener] Weather and Water
+        [text] Every seam is a potential leak
+        [text] Shedding, not sealing
+        [text] Harvesting it instead
+        [text] Condensation and the inside face
+  43. Inside a Round Room  [explain] (12pp, 2,950w)
+      Living with curves
+        [opener] Inside a Round Room
+        [text] Where the usable floor really is
+        [spread] Standing height, mapped [headroom-map]
+        [text] Furniture, storage and the wall that curves away
+        [text] Acoustics, and the whispering problem
+  44. Heat, Power and the Small Systems  [howto] (14pp, 3,350w)
+      Making a shell into somewhere you can be in February
+        [opener] The Small Systems
+        [text] Insulating between wedges
+        [text] Running services in a frame with no studs
+        [text] Heating a round volume
+        [text] Off grid, or not
+  45. The Money, Both Ways  [reference] (9pp, 2,350w)
+      What was spent, and what was avoided
+      CORRECTS: The $50/hour figure in the project brief, which doubled a volume ratio for safety rather than computing the section.
+        [opener] The Money
+        [table] What was actually spent [money-spent]
+        [text] Substitution value is not income
+        [table] The strut, valued three ways [strut-value]
+        [errata] The fifty dollars an hour claim
+  46. The Hours  [reference] (8pp, 2,000w)
+      Where fourteen days actually went
+        [opener] The Hours
+        [table] The fortnight, hour by hour [hours-log]
+        [text] What took longest and why
+        [text] What a second build would take
+  47. What Broke  [story] (12pp, 3,050w)
+      The failures, listed
+        [opener] What Broke
+        [text] The stick that split along the pith
+        [text] The seam that would not close
+        [text] The panel I built backwards
+        [text] What I would call a near miss
+  48. Corrections  [reference] (12pp, 2,550w)
+      Everything this project has published and had to fix
+      CORRECTS: Every published claim this project has had to revise.
+        [opener] Corrections
+        [errata] The mitre claim
+        [errata] The recovery percentage
+        [errata] The hourly rate
+        [errata] Seams against edges
+        [text] How to report one
+  49. Bigger, Smaller, Other Frequencies  [explain] (9pp, 2,200w)
+      Changing the dome without changing the method
+        [opener] Other Frequencies
+        [text] More panels, shorter sticks
+        [table] Frequency comparison [frequency-compare]
+        [text] Where the method stops working
+  50. Other Species, Other Sections  [howto] (11pp, 2,850w)
+      Hardwood, hemlock, and a trunk that is not round
+        [opener] Other Species
+        [text] Density, splitting and the drying schedule
+        [text] A trunk that is oval
+        [text] Green versus dry
+  51. Building With Other People  [howto] (10pp, 2,400w)
+      What changes when there are three of you
+        [opener] Other People
+        [text] Parallel jigs
+        [text] Teaching the twelve steps
+        [text] A build that is not yours
+  52. What I Would Do Differently  [story] (12pp, 2,800w)
+      The honest closing chapter
+        [opener] What I Would Do Differently
+        [text] The five decisions I would change
+        [text] What I would keep exactly
+        [text] The next one
+        [plate] The dome, a year on [closing-image]
+
+PART 2 -- WHY IT SCALES  (127pp, 29,170w, explain)
+    “The parts list does not grow with the house. Everything downstream of that one fact is this part.”
+  53. The List That Does Not Grow  [explain] (13pp, 2,930w)
+      Triple the diameter and the parts count does not move: the same forty triangles and one hundred and twenty struts frame a ten foot dome or a thirty foot one
+        [opener] The List That Does Not Grow
+        [table] The same list, four times
+        [spread] One grows as the square, one as a line [flat-rate-curves]
+        [text] What is flat and what quietly is not
+        [worked] The limit is my arms, not the arithmetic [solo-band]
+        [text] Inside the band, nothing changes at all
+        [text] Solve it once
+        [text] Why it is worth counting this way
+  54. Nine Processes at Any Size  [explain] (9pp, 2,400w)
+      The nine operations named one by one, and why a list this short is the thing worth improving: fix one process and every dome you ever build gets cheaper
+        [opener] Nine Processes at Any Size
+        [steps] The nine, in the order they happen [nine-process-counts]
+        [table] Seven of the nine do not move at all [nine-process-table]
+        [text] Why a short list compounds
+        [worked] What one process is worth, in hours [nine-rip-payback]
+        [text] The processes that are not on the list
+  55. What an Hour at the Log Is Worth  [explain] (8pp, 1,820w)
+      Splitting your own struts pays a rate; here is the rate, computed three ways, including the way that flatters it least
+        [opener] What an Hour at the Log Is Worth
+        [worked] One strut, valued three ways [scale-strut-value]
+        [text] Why the dressed number is the honest one
+        [text] The shelf price is a stack
+        [sidebar] This is not money anybody has been paid
+  56. Where the Fuel Actually Goes  [explain] (8pp, 1,920w)
+      A metabolic ledger of one build: every part lifted, carried and fastened, priced in calories -- and the discovery that most of the fuel raises nothing at all
+        [opener] Where the Fuel Actually Goes
+        [table] One house, counted in parts and motions [fuel-station-ledger]
+        [worked] The fastening surprise [fuel-motion-split] [fuel-motion-efficiency]
+        [text] What this says about the hardware
+        [sidebar] What is measured and what is modelled
+  57. Less Skin for the Same Floor  [explain] (7pp, 1,560w)
+      A dome wraps a given floor in noticeably less outside surface than a box does, and the wall you never build never costs anything to build, heat or repair
+        [opener] Less Skin for the Same Floor
+        [spread] The same floor, two envelopes [skin-two-envelopes]
+        [text] What the saved skin is worth four times over [skin-claims]
+        [text] Where the box wins [skin-versus-size]
+  58. The Cheapest Square Footage in the Building  [explain] (7pp, 1,560w)
+      Standing the shell on a short straight wall buys floor, headroom and usable edge for the least money per square foot of anything in the build
+        [opener] The Cheapest Square Footage in the Building
+        [table] The pony wall ladder
+        [text] Why the edge is the expensive part of a dome
+        [worked] Where the ladder stops paying
+  59. The Roof Is Already a Gutter  [explain] (7pp, 1,540w)
+      An overhanging brim throws water clear of every joint and collects it in the same move, and the annual catch off a dome this size is not a trivial number
+        [opener] The Roof Is Already a Gutter
+        [spread] Where the water goes, with and without a brim
+        [worked] The annual catch
+        [text] What the catch is actually good for
+  60. A House That Gets Warmer Every Winter  [explain] (7pp, 1,580w)
+      Build the skeleton once and add layers to it for as long as you own it: the shell ladder turns a shelter into a house in steps you can afford one at a time
+        [opener] A House That Gets Warmer Every Winter
+        [table] The shell ladder, rung by rung
+        [text] Why the bones are the thing to get right
+        [worked] The rung that pays back fastest
+  61. One Hardware Set, Three Sizes  [explain] (7pp, 1,500w)
+      The brackets, keys and fasteners that frame a small dome frame a large one unchanged, which is what makes a shared parts bin possible across a whole site
+        [opener] One Hardware Set, Three Sizes
+        [table] The same bin, three domes
+        [text] What invariance buys a site
+        [text] What does change, and it is the timber
+  62. Buy for the Next Two Steps  [explain] (7pp, 1,580w)
+      The cheapest thing you can do on a site is oversize the parts that are hard to change later and undersize nothing else
+        [opener] Buy for the Next Two Steps
+        [text] What is hard to change and what is not
+        [worked] The cost of the upgrade you did not leave room for
+        [text] The growth path as a sequence, not a plan
+  63. The Ground Is What You Cannot Take With You  [explain] (7pp, 1,600w)
+      Measured across the dome catalogue, the foundation is between a small fraction and most of what a dome costs -- and it is the only part you leave behind
+        [opener] The Ground Is What You Cannot Take With You
+        [table] Foundation share, across the catalogue
+        [text] Why the share swings so far
+        [worked] The hinge, stated as a decision
+  64. A Pad, Not a Plot  [explain] (7pp, 1,620w)
+      A serviced pad is the unit a dome site is actually built from: a deck, a set of services and a diameter, priced as one thing
+        [opener] A Pad, Not a Plot
+        [table] What a pad is made of
+        [text] Gravel, concrete or wood
+        [worked] The cheap pad, costed honestly
+  65. Turning the House Toward the Sun, Until It Stops Being Worth It  [explain] (8pp, 1,900w)
+      A rotating foundation is buildable and it does raise the solar yield -- and the honest arithmetic says it pays only under conditions that are worth stating before anybody pours a ring
+        [opener] Turning the House Toward the Sun
+        [text] Why a dome can do this and a box cannot
+        [worked] What tracking actually returns
+        [text] Where it stops paying, said plainly
+        [sidebar] Why it is still in the book
+  66. One Pad, Every Dome Size  [explain] (7pp, 1,600w)
+      An iris of hinged blades closes a single oversized pad down to whatever dome is standing on it, so one pad serves the whole catalogue instead of one model
+        [opener] One Pad, Every Dome Size
+        [spread] How the blades swing
+        [worked] What the iris costs against what it saves
+        [text] The case against it
+  67. Why a Network Beats a Park  [explain] (8pp, 1,940w)
+      A park is pads you rent. A network is pads that hold their value because a dome can leave one and arrive at another, and that difference is the whole resale argument
+        [opener] Why a Network Beats a Park
+        [text] The line, and what runs along it
+        [worked] Host and tenant, both sides of the ledger
+        [text] Resale, with the haircut left in
+        [sidebar] This is the least-built idea in the book
+  68. What Would Have to Be True  [explain] (9pp, 2,120w)
+      The closing audit: every claim in this part restated as a condition, with the ones that are not met yet marked as not met
+        [opener] What Would Have to Be True
+        [table] Every claim, and what it rests on
+        [text] The finished number nobody likes
+        [text] The energy claim this book does not make
+        [text] What one person has actually done
+
+PART 3 -- VARIATIONS AND FUTURE SYSTEMS  (20pp, 3,280w, explain)
+    “The same frame can wear more than one roof, stand on more than one ground, and hang from nothing at all.”
+  69. The Dome That Stacks Hats  [explain] (7pp, 1,300w)
+      A soft shell instead of a hard one: the frame wears quilted layers of recycled clothing and a rain-slick shower cap, and each new hat is a size up from the last
+        [opener] The Dome That Stacks Hats
+        [plate] Frame, quilt, cap [hat-stack]
+        [table] The cap against the hull
+        [text] What the cap gives up
+        [text] Why the hull becomes the upgrade
+  70. The Mast and the Floor  [explain] (6pp, 1,000w)
+      A steel-core mast through the utility column, a wooden floor that clamps to it -- the upgrade bought after the dome -- and an apex ring that hoists the whole structure
+        [opener] The Mast and the Floor
+        [plate] The mast and the floor [mast-floor]
+        [text] Why the mast runs through the column
+        [worked] What it costs, and what it lifts
+  71. The Floating Dome  [explain] (6pp, 980w)
+      Hang the mast from three cables between trees and the dome floats with its own floor under it -- a design possibility, with the loads named as the engineer's job
+        [opener] The Floating Dome
+        [plate] Hung between trees [floating-dome]
+        [text] What changes when the ground goes away
+        [text] What would have to be true
+
+BACK MATTER
+  The Master Tables  (4pp, 800w)
+      [table] Full cut list
+      [table] Full seam schedule
+      [table] Butt cut setups
+      [table] Declared constants
+  Glossary  (5pp, 1,400w)
+      [text] Glossary
+  The Software in This Book  (7pp, 2,000w)
+      [text] What generated these numbers
+      [steps] Reproducing every figure in this book
+      [text] The launcher
+  Index and Colophon  (3pp, 350w)
+      [text] Index
+      [text] Colophon

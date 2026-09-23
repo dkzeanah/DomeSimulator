@@ -2562,14 +2562,16 @@ def soft_shell_group(layers: int = 0) -> Group:
 
     It replaces both, which is the thing to keep hold of when comparing: the
     cap stack carries its own outer panels, so a dome that buys a cap does
-    not also buy the bay sandwich. Priced in :mod:`soft_shell`.
+    not also buy the bay sandwich. Priced in :mod:`soft_shell`. Keyed
+    ``cap``, deliberately not ``shell``: the hull keeps ``shell``, so a
+    ladder or a report can always tell which skin it is looking at.
     """
     import soft_shell as soft
 
     built = soft.soft_shell(layers)
     lines = [Line(line.label, line.quantity, line.unit, line.unit_cost,
                   f"soft_shell.{line.source}") for line in built.lines]
-    return Group("shell", "Shower-cap shell", tuple(lines))
+    return Group("cap", "Shower-cap shell", tuple(lines))
 
 
 # ----------------------------------------------------------------------
@@ -2641,8 +2643,13 @@ DEFERMENT_LADDER: tuple[Rung, ...] = (
 
 def ladder_costs(soft: bool = False
                  ) -> tuple[tuple[Rung, float, float], ...]:
-    """Each rung, what it costs to reach, and the step up from the last."""
-    priced = quote()
+    """Each rung, what it costs to reach, and the step up from the last.
+
+    The hard ladder is priced against the hard quote and the soft ladder
+    against the soft one -- the standard article is the cap, but the hull
+    ladder still describes what a hull-shelled build costs to reach.
+    """
+    priced = quote(shell="soft" if soft else "hard")
     out, previous = [], 0.0
     for rung in DEFERMENT_LADDER:
         total = rung.cost(priced, soft=soft)
@@ -2735,12 +2742,15 @@ def validate_deferment() -> None:
     assert len(DEFERMENT_LADDER) >= 4
     priced = quote()
     keys = {g.key for g in priced.groups}
+    # The hard ladder's rungs name hard-shell groups; check them against
+    # the hard quote, and the soft rung against the soft one.
+    hard_keys = {g.key for g in quote(shell="hard").groups}
     seen: set[str] = set()
     previous = 0.0
     for rung, total, step in ladder_costs():
         # Every rung names real groups.
         for key in rung.groups:
-            assert key in keys, (rung.key, key)
+            assert key in hard_keys, (rung.key, key)
         # And every rung contains the one below it, or it is not a ladder.
         assert seen <= set(rung.groups), (rung.key, seen - set(rung.groups))
         seen = set(rung.groups)

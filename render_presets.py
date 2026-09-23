@@ -322,13 +322,15 @@ PRESETS: tuple[RenderPreset, ...] = (
     ),
     _video("seed_pitch", "seed_pitch", "stem-cell-dome-campaign.mp4",
            "THE STEM CELL DOME. The campaign cut: a tiny house you can take "
-           "apart. The frame comes out of the buyer's own trees, the shell "
-           "is a boat hull priced off a composites supplier's own list, the "
-           "services live in a core that moves to the next dome, and the "
-           "ground belongs to somebody else. Every dome on screen is the "
+           "apart. The standard article wears a shower cap -- a soft shell "
+           "that stacks quilted hats over a $50 blanket layer -- the hull "
+           "is the upgrade, the frame comes out of the buyer's own trees, "
+           "the services live in a core that moves to the next dome, a mast "
+           "through the column carries a floor bought later, and the whole "
+           "thing can hang between two trees. Every dome on screen is the "
            "raw-wedge solver's own building and every figure comes from the "
-           "seed model -- including the three chapters that argue against "
-           "the pitch.",
+           "seed model -- including the chapters that argue against the "
+           "pitch.",
            compose_segments=True),
 
     _video("module_build", "module_build",

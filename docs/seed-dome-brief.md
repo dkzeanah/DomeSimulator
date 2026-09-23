@@ -663,3 +663,70 @@ hull laminate table from `hull_laminate.py`, R-values and degree days from
 `two_v_demo/dome_costing.py` — and marked as such on that page, so two parts
 of this repository can never quietly disagree about what a gallon of resin
 costs.
+
+---
+
+## v6: the cap is the standard, the blanket quilt is $50, and the dome can hang
+
+The change this version makes, and the three new systems it adds. Every
+figure below is computed; regenerate with:
+
+```bash
+py -3.12 soft_shell.py     # the cap, the quilts, and the comparison
+py -3.12 seed_model.py     # the quote, the levers, the mast and the rig
+```
+
+### The standard article wears the shower cap
+
+The shower-cap soft shell is now the **standard article** — it replaces the
+laminated hull *and* the bay sandwich, because the cap carries its own outer
+panels. The hull becomes the upgrade, and it fits the same frame whenever the
+buyer wants it. The dome is a structure that **stacks hats**: the membrane,
+then quilted layers, then the rain-slick cap — and because a cap is a bag,
+every new quilted layer gets a cap a size up (a hull cannot do that; its
+cavity holds 4 layers and then it is full).
+
+| | dollars |
+|---|---|
+| standard article, shower cap | **$18,834** list ($12,242 to build, $67.99 / sq ft) |
+| the same dome, laminated hull | $27,581 |
+| the cap, 3 blanket quilts | $3,637 |
+| the hull plus its bays, 3 quilts | $9,905 |
+| **the cap saves, at 3 quilts** | **$6,269** |
+
+`soft_shell.py` prices the whole ladder, the growing cap sizes, the
+thirty-year replacements, and the problems (not structural, sacrificial
+outer layer, the moisture trap the seam duct has to answer, and it looks
+like a tarp). The film's closing numbers in v5 and earlier described the
+hull standard; v6's film reads these instead.
+
+### The blanket quilt
+
+A quilted layer is a declared **$50**: thrift-store blankets and recycled
+clothing, quilted by the owner — the fabric is a waste stream. (A
+yard-priced quilted layer would be about $670 at the first size; the
+model prints both so the choice is a choice.)
+
+### The mast, the floor, and the floating rig
+
+Three upgrade groups, priced out of the same model:
+
+| line | dollars |
+|---|---|
+| mast through the utility column (steel core, timber clad, apex ring, base flange) | $622 |
+| the dome's own floor (steel hub clamps the mast, 10 radial spokes, timber deck, rail) | $1,899 |
+| floating rig (3 cables, apex hanger, tree saddles — no holes in the trees — brake winch) | $1,490 |
+| **mast + floor + rig** | **$4,011** |
+
+The mast runs inside the utility column, the floor clamps to it (the
+upgrade, bought after the dome), and the apex lifting ring hoists the whole
+structure. The frame alone is 2,478 lb of green pine; the lifted whole and
+every rating — mast, ring, hoist, cables, trees — is the **engineer's
+number**, and the model says so rather than printing one.
+
+Hang the mast from three cables between trees and the dome **floats**, with
+its own floor under it — the floating dome, labelled a design possibility.
+The book carries all three systems as its new Part 3 (chapters 69–71, with
+rendered figures: `hat-stack`, `mast-floor`, `floating-dome` in
+`deliverables/book/figures/`), and the campaign film gains four chapters:
+the cap, the quilt, the mast, and the floating dome.

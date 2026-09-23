@@ -60,6 +60,10 @@ from .seed_facts import (
     steps_against,
     steps_bay,
     steps_duct,
+    steps_floating,
+    steps_hats,
+    steps_layering,
+    steps_mast,
     steps_quilt,
     steps_system,
     steps_core,
@@ -532,12 +536,12 @@ def _math(slug: str, title: str, promise: str, narration, steps, duration,
 CHAPTERS: tuple[Chapter, ...] = (
     Chapter(
         "open", "00", "A house you can take apart",
-        "Twenty-two thousand at the floor. Two hundred and seventy-seven "
+        "Sixteen thousand at the floor. Two hundred and seventy-seven "
         "square feet.",
         ("This is a tiny house. It is nineteen feet across, it has two "
          "hundred and seventy-seven square feet of floor, and it comes apart "
-         "into pieces a trailer can take. Twenty-two thousand dollars "
-         "stripped to the bone, twenty-seven and a half as we would "
+         "into pieces a trailer can take. Sixteen thousand dollars "
+         "stripped to the bone, eighteen and a half as we would "
          "actually ship it.",
          "We are not selling you a finished home. We are selling you the "
          "part of a home that is hard to make -- and leaving you the part "
@@ -769,7 +773,7 @@ CHAPTERS: tuple[Chapter, ...] = (
          "spent on a bigger shell instead of on the same plumbing again."),
         steps_core(), 25.0, (76.0, 13.0, 20.0), "sp_move"),
     _math(
-        "quilt", "It gets warmer every winter",
+        "layering", "It gets warmer every winter",
         "Lift the shell. Add a layer. Put the shell back.",
         ("The cavity ships empty, and that is on purpose.",
          "Because the shell comes off, insulation is not a thing you decide "
@@ -781,7 +785,7 @@ CHAPTERS: tuple[Chapter, ...] = (
          "waste stream.",
          "A finished house does not get warmer every winter. This one does, "
          "for as long as somebody owns it and feels like it."),
-        steps_quilt(), 28.0, (62.0, 15.0, 13.5), "sp_shell"),
+        steps_layering(), 28.0, (62.0, 15.0, 13.5), "sp_shell"),
     _math(
         "system", "This only works as a system",
         "The landowner rents ground. You own the house. Nobody owns both.",
@@ -867,8 +871,8 @@ CHAPTERS: tuple[Chapter, ...] = (
          "saving. Halving our margin lowers the price without making the "
          "dome any cheaper to build. It is us earning less. We put it in the "
          "same table so the two can never be quietly mixed up.",
-         "Pull all of the real ones and the floor is twenty-two thousand "
-         "dollars, at about eighty dollars a square foot."),
+         "Pull all of the real ones and the floor is sixteen thousand "
+         "dollars, at about fifty-seven dollars a square foot."),
         steps_ladder(), 30.0, (42.0, 13.0, 12.5), "sp_standing"),
     _math(
         "against", "Three things this says against itself",
@@ -969,15 +973,70 @@ CHAPTERS: tuple[Chapter, ...] = (
          "That is the manufacturing argument, and it is the whole reason "
          "any of this is affordable."),
         steps_seeds(), 28.0, (74.0, 16.0, 36.0), "sp_secondary"),
+    _math(
+        "cap", "The standard article wears a shower cap",
+        "The cap replaces the hull and the bays, and it stacks hats.",
+        ("We changed what goes over the frame.",
+         "The standard article no longer ships the laminated hull. It ships "
+         "a shower cap: wood panels, one membrane, quilted layers added over "
+         "the years, and a rain-slick cap strapped over the lot.",
+         "A cap is a bag, so the dome stacks hats. Each quilted layer gets a "
+         "bigger cap, where a rigid hull fills its cavity and then it is "
+         "done. The worksheet does the arithmetic.",
+         "The hull does not go away. It becomes the upgrade -- the "
+         "fifty-year option, sold to the buyer who wants it."),
+        steps_hats(), 22.0, (62.0, 15.0, 13.5), "sp_shell"),
+    _math(
+        "quilt", "A $50 quilt, and a bigger cap for each",
+        "Recycled clothing, quilted by the owner, into one layer under the cap.",
+        ("The insulation is not a thing we sell you.",
+         "Recycled clothing and thrift-store blankets, quilted by the owner "
+         "into one monolithic layer. It goes over the frame, under the cap, "
+         "and off when the cap is replaced.",
+         "The worksheet prices a declared flat rate a layer, and shows what "
+         "the same layer would cost yard-priced. The fabric is a waste "
+         "stream.",
+         "And the caveat, out loud: two impermeable layers with fabric "
+         "between them is a moisture trap, and the seam duct is the unproven "
+         "answer."),
+        steps_quilt(), 22.0, (62.0, 15.0, 13.5), "sp_shell"),
+    _math(
+        "mast", "A mast through the column, and a floor that comes later",
+        "Steel where the strength is, wood everywhere else. The floor clamps on.",
+        ("One more upgrade, and it changes what the dome can do.",
+         "A mast runs through the utility column: steel core where the "
+         "strength is, timber cladding everywhere else. Structure and "
+         "services share one hole in the building.",
+         "The dome's own floor is the upgrade, bought after the dome. A "
+         "steel hub clamps the mast, radial spokes run to the base ring, and "
+         "timber decking covers them.",
+         "The apex lifting ring is the hoist point for the whole structure. "
+         "What it weighs, and what the hoist is rated for, are the "
+         "engineer's numbers, not ours."),
+        steps_mast(), 20.0, (62.0, 15.0, 13.5), "sp_shell"),
+    _math(
+        "floating", "Hang it between two trees",
+        "Three cables, three saddles, one winch. And an engineer first.",
+        ("The floor is what makes this next part possible.",
+         "Hang the dome between two trees. Three cables run from the apex "
+         "hanger to tree saddles -- saddles, not holes -- and the brake "
+         "winch does the hoisting. The dome's own floor hangs from the mast "
+         "while it is up there.",
+         "Say it plainly: this is a design possibility, not an engineered "
+         "structure. The loads on the trees, the cables and the mast need an "
+         "engineer before anyone stands under it."),
+        steps_floating(), 20.0, (62.0, 15.0, 13.5), "sp_shell"),
     Chapter(
         "close", "00", "Bring your own ground",
-        "Twenty-two to twenty-eight thousand. Then it is yours.",
+        "Eighteen and a half thousand, sixty-eight dollars a square foot.",
         ("So: we make the stem cell. You build on it.",
-         "Twenty-two thousand dollars for the bare bones, once every "
-         "saving is taken. Twenty-seven and a half for the one we "
-         "would actually hand you, about twenty-nine on your land with the "
-         "freight in it, and around thirty-eight thousand for a gym with "
-         "the panels in it.",
+         "The standard article wears a shower cap, and it lists at eighteen "
+         "and a half thousand dollars. It costs twelve and a quarter thousand "
+         "to build -- sixty-eight dollars a square foot of floor.",
+         "The laminated hull, the fifty-year option, is twenty-seven and a "
+         "half thousand. The floor, the mast and the floating rig that turn "
+         "the dome into something you can hang between two trees are another "
+         "four thousand.",
          "What we are raising money for is the tooling and the first "
          "production run -- the jigs, the moulds, the core assembly, and the "
          "stock to build the first domes with.",
@@ -1051,9 +1110,11 @@ def validate_seed_pitch() -> None:
     # narration line is the one place in this repository where a number
     # cannot be interpolated, so it is the one place that needs a guard.
     priced = seed_model.quote()
-    home = seed_model.quote("home")
-    gym = seed_model.quote("gym")
+    hard = seed_model.quote("stem_cell", shell="hard")
     _build, floor = seed_model.floor_price()
+    upgrade = (seed_model.mast_group(priced.geometry).cost
+               + seed_model.dome_floor_group(priced.geometry).cost
+               + seed_model.suspension_group(priced.geometry).cost)
     # Promises count as spoken: they are on screen under the picture for the
     # whole chapter, which is longer than the voice says anything.
     spoken = " ".join(" ".join(chapter.narration) + " " + chapter.promise
@@ -1062,20 +1123,24 @@ def validate_seed_pitch() -> None:
 
     SPOKEN_PRICES = (
         # (what the voice says, the model figure, how far it may round)
-        ("Twenty-two thousand at the floor", floor, 600.0),
-        ("Twenty-two thousand dollars stripped to the bone", floor, 600.0),
-        ("twenty-seven and a half as we would", priced.price, 600.0),
-        ("Twenty-seven and a half for the one we", priced.price, 600.0),
-        ("about twenty-nine on your land", priced.delivered_price, 700.0),
-        ("around thirty-eight thousand for a gym", gym.price, 800.0),
+        ("Sixteen thousand at the floor", floor, 600.0),
+        ("Sixteen thousand dollars stripped to the bone", floor, 600.0),
+        ("eighteen and a half as we would", priced.price, 600.0),
+        ("eighteen and a half thousand dollars", priced.price, 600.0),
+        ("twelve and a quarter thousand to build", priced.cost_to_build, 400.0),
+        ("sixty-eight dollars a square foot", priced.price_per_sqft, 3.0),
+        ("twenty-seven and a half thousand", hard.price, 600.0),
+        ("another four thousand", upgrade, 400.0),
     )
     WORDS = {
-        "Twenty-two thousand at the floor": 22000.0,
-        "Twenty-two thousand dollars stripped to the bone": 22000.0,
-        "twenty-seven and a half as we would": 27500.0,
-        "Twenty-seven and a half for the one we": 27500.0,
-        "about twenty-nine on your land": 29000.0,
-        "around thirty-eight thousand for a gym": 38000.0,
+        "Sixteen thousand at the floor": 16000.0,
+        "Sixteen thousand dollars stripped to the bone": 16000.0,
+        "eighteen and a half as we would": 18500.0,
+        "eighteen and a half thousand dollars": 18500.0,
+        "twelve and a quarter thousand to build": 12250.0,
+        "sixty-eight dollars a square foot": 68.0,
+        "twenty-seven and a half thousand": 27500.0,
+        "another four thousand": 4000.0,
     }
     for phrase, value, tolerance in SPOKEN_PRICES:
         assert phrase in spoken, f"the film no longer says {phrase!r}"

@@ -92,7 +92,7 @@ it is typed and silently wrong from the first time anything changes, and
 there is no way to find those afterwards — nothing fails, the book just
 becomes untrue in places nobody remembers.
 
-The **Numbers** tab in Book Studio lists all 885 tokens with their current
+The **Numbers** tab in Book Studio lists all 920 tokens with their current
 values and a button to drop one into the text. A misspelt token stops the
 export rather than printing a blank.
 
@@ -103,7 +103,7 @@ page promises a reader can follow one track:
 
 * **story** (7 chapters) — what happened, in order, to somebody with a saw.
 * **howto** (18) — do this, then this. A complete set of instructions alone.
-* **explain** (34) — why any of it works. Skippable.
+* **explain** (37) — why any of it works. Skippable.
 * **reference** (9) — tables you come back to at the bench.
 
 ## The two calculations
@@ -118,9 +118,9 @@ directions:
 * **The round trip** (Ch. 23) — proof they are one calculation held at
   opposite ends. It prints the residual rather than asserting it.
 
-## The two parts
+## The three parts
 
-The book is assembled as two parts:
+The book is assembled as three parts:
 
 * **Part 1 — How to Build One** (Ch. 1–52): the story, the method, the
   fortnight and the bench, absorbed unchanged from the original 52-chapter
@@ -128,19 +128,24 @@ The book is assembled as two parts:
 * **Part 2 — Why It Scales** (Ch. 53–68): the flat parts list, the nine
   processes, the hour at the log, the fuel ledger, the envelope, the pad and
   its economics, the iris, the network, and the closing audit of what would
-  have to be true. This part is drafted; Part 1's prose is still mostly
-  scaffolds.
+  have to be true.
+* **Part 3 — Variations and Future Systems** (Ch. 69–71): the manufactured
+  version of the method — the shower-cap soft shell and its $50 blanket
+  quilts, the mast and the floor, and the floating dome. The figures are
+  rendered from the solved model (`hat-stack`, `mast-floor`,
+  `floating-dome`), and the numbers read live from `soft_shell.py` and
+  `seed_model.py`, the same modules the stem-cell campaign quotes.
 
-A third part, *Who This Is For* (the biography), is parked by request and
-drops in at the front when it is written; neither of the other two parts
-depends on it.
+Parts 2 and 3 are drafted; Part 1's prose is still mostly scaffolds. A
+fourth part, *Who This Is For* (the biography), is parked by request and
+drops in at the front when it is written; nothing depends on it.
 
 ## Where the numbers come from
 
 | module | what it holds |
 |---|---|
 | `two_v_demo/book_math.py` | Both methods, the tree model, the declared constants, the audit. |
-| `two_v_demo/book_tokens.py` | The 885 live figures and cross-references the manuscript may quote. |
+| `two_v_demo/book_tokens.py` | The 920 live figures and cross-references the manuscript may quote. |
 | `two_v_demo/book.py` | The outline: parts, chapters, pages, figure placement. |
 | `two_v_demo/book_figures.py` | The renderers, and the append-only save rule. |
 | `two_v_demo/book_plots.py` | Every table and chart. |
@@ -157,7 +162,7 @@ not sketches of them.
 
 ## Illustrations
 
-77 figures, drawn by seven renderers:
+80 figures, drawn by nine renderers:
 
 * **raw_wedge_world** — the solved dome, in a named view. Real geometry.
 * **raw_wedge_jig** — the fabrication jig at one of its twelve stages.

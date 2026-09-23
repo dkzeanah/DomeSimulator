@@ -741,16 +741,39 @@ def validate_seed_console() -> None:
     assert abs(console.quote().price - before) < 1e-6
 
     # Typing a price: select, type, Enter.
+    #
+    # The price typed here has to be one the *standard article* actually
+    # contains, or the quote does not move and this proves nothing. That is
+    # not hypothetical: this test used to type a polyester resin price, and
+    # when the standard article became the shower cap -- which has no resin
+    # in it -- the quote stopped moving and the assertion failed. Worse, it
+    # failed *after* the override was applied and before it was reset, so the
+    # inflated price leaked into every selftest that ran afterwards and three
+    # unrelated modules reported a $10,173 laminate.
+    #
+    # So: pick the column housing, which the standard article carries
+    # whichever shell it wears, and reset in a finally so a failure here can
+    # never poison anything downstream. (The frame's own timber will not do:
+    # it defaults to the buyer's standing trees and costs nothing.)
+    typed = "column_housing_usd"
     console.act("page:prices")
-    console.act("select:resin_gp_polyester_usd_per_gal")
-    assert console.selected == "resin_gp_polyester_usd_per_gal"
-    for char in "9", "9", ".", "5":
-        console.key(char, char)
-    console.key("", "return")
-    assert abs(seed_model.declared("resin_gp_polyester_usd_per_gal")
-               - 99.5) < 1e-9
-    assert console.quote().price > before
-    console.act("reset_all:")
+    console.act("select:" + typed)
+    assert console.selected == typed
+    try:
+        for char in "9", "9", ".", "5":
+            console.key(char, char)
+        console.key("", "return")
+        assert abs(seed_model.declared(typed) - 99.5) < 1e-9
+        # Changed, not increased. 99.5 happened to be a rise on the resin
+        # price this test used to type and is a fall on most others, so
+        # asserting a direction tests the constant that was picked rather
+        # than the thing under test -- which is that a typed price reaches
+        # the quote at all.
+        assert abs(console.quote().price - before) > 1.0, (
+            f"typing a price for {typed!r} did not move the quote; it is not "
+            "in the standard article any more")
+    finally:
+        console.act("reset_all:")
     assert abs(console.quote().price - before) < 1e-6
 
     # A click has to land on the button that was drawn there.

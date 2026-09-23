@@ -20,6 +20,7 @@ from __future__ import annotations
 import hull_laminate
 import park_model
 import seed_model
+import soft_shell
 
 
 # ----------------------------------------------------------------------
@@ -163,8 +164,7 @@ def steps_bay() -> tuple[str, ...]:
         # this quote has rather than assuming the shell kind.
         "   " + _row(f"{sum(f.count for f in geometry.faces)} bays, "
                      "two panels each",
-                     usd((priced.find("envelope", "shell")
-                          or priced.group("shell")).cost)),
+                     usd(priced.find("envelope", "cap").cost)),
         "",
         "and the cavity ships empty on purpose. an empty cavity",
         "is a duct, and every one of them is connected.",
@@ -312,7 +312,7 @@ def steps_solar() -> tuple[str, ...]:
     return tuple(steps)
 
 
-def steps_quilt() -> tuple[str, ...]:
+def steps_layering() -> tuple[str, ...]:
     """What layering buys, a layer at a time."""
     ladder = seed_model.quilt_ladder(7)
     steps = [
@@ -639,6 +639,112 @@ def steps_seeds() -> tuple[str, ...]:
     return tuple(steps)
 
 
+def steps_hats() -> tuple[str, ...]:
+    """A dome is a structure that wears hats. A cap is a bag, so it grows."""
+    row = soft_shell.compare(3)[3]
+    soft = quote()
+    hard = seed_model.quote("stem_cell", shell="hard")
+    return (
+        "a dome is a structure that wears hats.",
+        "",
+        "the cap is a bag. add a quilted layer and the stack",
+        "gets thicker, so the next bag is a size up. a rigid",
+        "hull is made once, at one size, and cannot grow.",
+        "",
+        "   " + _row("the hull's cavity holds",
+                     f"{soft_shell.cavity_limit()} layers",
+                     "then it is full"),
+        "   " + _row("seven layers makes the cap",
+                     f"{soft_shell.growth_fraction(7) * 100:.1f}% bigger"),
+        "",
+        "at three quilted layers, skin against skin:",
+        "   " + _row("shower cap", usd(row.soft_usd)),
+        "   " + _row("hull plus its bays", usd(row.hard_usd)),
+        "   " + _row("saving", usd(row.saving)),
+        "",
+        "and the whole dome, the same way:",
+        "   " + _row("standard, shower cap", usd(soft.price)),
+        "   " + _row("the same, laminated hull", usd(hard.price)),
+        "   " + _row("the hull is the upgrade",
+                     usd(hard.price - soft.price)),
+    )
+
+
+def steps_quilt() -> tuple[str, ...]:
+    """The blanket quilt: a waste stream, quilted by the owner, $50 a layer."""
+    layer = soft_shell.declared("blanket_quilt_usd_per_layer")
+    yard = (soft_shell.soft_shell(1, quilt="yard").cost
+            - soft_shell.soft_shell(0).cost)
+    return (
+        "the blanket quilt is the insulation.",
+        "",
+        "recycled clothing and thrift-store blankets, quilted by the",
+        "owner into one monolithic layer. it goes over the frame,",
+        "under the cap, and off when the cap is replaced.",
+        "",
+        "   " + _row("one layer, declared", usd(layer)),
+        "   " + _row("the same layer yard-priced", usd(yard)),
+        "   " + _row("the fabric is a waste stream"),
+        "",
+        "honest caveat, on camera:",
+        "   two impermeable layers with fabric between them is a",
+        "   moisture trap. the seam duct is the answer, and the",
+        "   seam duct is not proven.",
+    )
+
+
+def steps_mast() -> tuple[str, ...]:
+    """A mast through the column, and the floor that clamps to it."""
+    geometry = seed_model.seed_geometry()
+    mast = seed_model.mast_group(geometry)
+    floor = seed_model.dome_floor_group(geometry)
+    return (
+        "a mast runs through the utility column, floor to apex.",
+        "",
+        "steel where the strength is, timber cladding everywhere",
+        "else. it stands inside the column, so the structure and",
+        "the services share one penetration.",
+        "",
+        "   " + _row("the mast", usd(mast.cost)),
+        "   " + _row("the dome's own floor", usd(floor.cost)),
+        "",
+        "the floor is the upgrade, bought after the dome. a steel",
+        "hub clamps the mast; radial steel spokes run to the base",
+        "ring; timber decking covers them.",
+        "",
+        "   " + _row("frame weight, green pine",
+                     f"{seed_model.frame_weight_lb(geometry):,.0f} lb"),
+        "",
+        "the apex lifting ring is the hoist point for the whole",
+        "structure. the lifted whole, and the hoist's rating, are",
+        "the engineer's number -- not this model's.",
+    )
+
+
+def steps_floating() -> tuple[str, ...]:
+    """The floating dome: hung between trees. A possibility, not a rating."""
+    geometry = seed_model.seed_geometry()
+    mast = seed_model.mast_group(geometry)
+    floor = seed_model.dome_floor_group(geometry)
+    rig = seed_model.suspension_group(geometry)
+    return (
+        "hang the dome between two trees.",
+        "",
+        "three cables run from the apex hanger to tree saddles --",
+        "saddles, not holes. nothing is drilled into the tree. the",
+        "brake winch does the hoisting, and the dome's own floor",
+        "hangs from the mast while it is up there.",
+        "",
+        "   " + _row("the rig", usd(rig.cost)),
+        "   " + _row("mast, floor and rig",
+                     usd(mast.cost + floor.cost + rig.cost)),
+        "",
+        "say it plainly: this is a design possibility, not an",
+        "engineered structure. the loads on the trees, the cables",
+        "and the mast need an engineer before anyone is under it.",
+    )
+
+
 ALL_SCREENS = (
     ("declared", steps_declared),
     ("frame", steps_frame),
@@ -647,7 +753,7 @@ ALL_SCREENS = (
     ("solar", steps_solar),
     ("bay", steps_bay),
     ("duct", steps_duct),
-    ("quilt", steps_quilt),
+    ("layering", steps_layering),
     ("system", steps_system),
     ("shell", steps_shell),
     ("sheet", steps_sheet),
@@ -658,6 +764,10 @@ ALL_SCREENS = (
     ("ladder", steps_ladder),
     ("against", steps_against),
     ("seeds", steps_seeds),
+    ("hats", steps_hats),
+    ("quilt", steps_quilt),
+    ("mast", steps_mast),
+    ("floating", steps_floating),
 )
 
 

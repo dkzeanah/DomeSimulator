@@ -217,6 +217,31 @@ and at the time of this update it was:
   `2-trees-outline-v5.txt`. The selftest is green end to end
   (`validate_everything()`).
 
+### State after the stem-cell v6 build-out (2026-09-20)
+
+The campaign's v6 systems have since been built and carried into the book:
+
+- **3 parts, 71 chapters, 80 figures, 920 tokens.** Part 3 =
+  *Variations and Future Systems* (Ch. 69–71, drafted): the shower-cap
+  soft shell and its $50 blanket quilts, the mast and the floor, and the
+  floating dome. The new `hat.`, `quilt.`, `mast.`, `floor.`, `rig.` and
+  `float.` tokens read live from `soft_shell.py` and `seed_model.py`, the
+  same modules the stem-cell campaign quotes, so the book and the pitch
+  cannot disagree.
+- **New rendered figures** (`hat-stack`, `mast-floor`, `floating-dome`):
+  the solved frame wearing the patchwork quilt and the translucent cap;
+  the mast, the clamped floor and the cables — all from the model's own
+  meshes, via two new renderers in `book_figures.py`.
+- **The campaign model itself changed:** the standard article now ships
+  the shower cap (list $18,834 vs $27,581 for the hull; the cap saves
+  $6,269 at three blanket quilts), the blanket quilt is a declared $50
+  layer, and `seed_model` gains the mast ($622), floor ($1,899) and
+  floating rig ($1,490) groups — $4,011 for the path to a dome that can
+  be hoisted and hung. `docs/seed-dome-brief.md` carries the v6 section;
+  the campaign film gains four chapters.
+- **Release exports rebuilt:** `2-trees-v12.md`, `2-trees-v11.html`,
+  `2-trees-v8.pdf`, `2-trees-outline-v9.txt`.
+
 What remains: the ~44 Part 1 scaffolds (the original 140k-word writing pass,
 now tighter), the parked biography as a future Part 1, the coverage test that
 asserts none of the 62 lexicon concepts is orphaned, and the `franken-standing`
