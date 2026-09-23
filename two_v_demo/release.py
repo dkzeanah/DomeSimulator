@@ -164,13 +164,50 @@ def stamp(seconds: float) -> str:
 # ----------------------------------------------------------------------
 
 def _beats(lesson, limit: int = 6) -> list[str]:
-    """The promises, which are already one line each and already the point."""
+    """The promises, which are already one line each and already the point.
+
+    Spread across the film rather than taken off the front. On a
+    thirty-nine chapter cut the first six promises are the first fifteen
+    per cent of it, so a reader deciding whether to watch saw the opening
+    argument and never the ending -- which on the campaign film is the
+    price, what the money buys and who it is for.
+
+    The first is always kept, because it is the hook.
+    """
+    # The spliced call-to-action and outro are not beats of the film. Their
+    # promises are generic by design ("Follow the experiments"), and an
+    # inclusive spread lands on them every time, so a reader deciding
+    # whether to watch got the outro as the last thing they read.
+    from .teasers import _segment_slugs
+
+    spliced = _segment_slugs()
     seen: list[str] = []
     for chapter in lesson.chapters:
+        if chapter.slug in spliced:
+            continue
         line = chapter.promise.strip()
         if line and line not in seen:
             seen.append(line)
-    return seen[:limit]
+    if len(seen) <= limit:
+        return seen
+    # Even steps through what is left, after the hook, and INCLUSIVE of the
+    # last one -- a spread that stops four chapters short still misses the
+    # ending, which is where a campaign film keeps its price.
+    rest, picks = seen[1:], [seen[0]]
+    span = len(rest) - 1
+    steps = max(1, limit - 2)
+    for index in range(limit - 1):
+        picks.append(rest[min(span, int(round(index * span / steps)))])
+    # A rounding collision would repeat a line; walk forward instead.
+    out: list[str] = []
+    for line in picks:
+        if line in out:
+            for candidate in rest:
+                if candidate not in out:
+                    line = candidate
+                    break
+        out.append(line)
+    return out[:limit]
 
 
 def hashtags(lesson_key: str) -> tuple[str, ...]:
