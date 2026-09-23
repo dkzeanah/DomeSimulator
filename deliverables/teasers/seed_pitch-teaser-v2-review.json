@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-23T02:07:25.571307+00:00",
+  "lesson": "teaser_seed_pitch",
+  "title": "A house you can take apart: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "THE STEM CELL DOME / CAMPAIGN",
+      "narration": [
+        "Twenty-two thousand at the floor. Two hundred and seventy-seven square feet."
+      ],
+      "start": 0.0,
+      "end": 5.552
+    },
+    {
+      "slug": "shell",
+      "title": "The shell is a boat hull",
+      "narration": [
+        "Sheet core, glass, resin, gelcoat. A sixty-year-old trade."
+      ],
+      "start": 5.552,
+      "end": 11.416
+    },
+    {
+      "slug": "core",
+      "title": "The top of the dome is a socket",
+      "narration": [
+        "Power and water come up the middle and out through the apex."
+      ],
+      "start": 11.416,
+      "end": 16.464
+    },
+    {
+      "slug": "modular",
+      "title": "The core moves to the next dome",
+      "narration": [
+        "You buy the plumbing once. The shell is the thing that grows."
+      ],
+      "start": 16.464,
+      "end": 21.56
+    },
+    {
+      "slug": "catalogue",
+      "title": "The buildings a homestead wants second",
+      "narration": [
+        "A gym. A study. A guest room. A workshop. A garage."
+      ],
+      "start": 21.56,
+      "end": 27.471999999999998
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 27.471999999999998,
+      "end": 32.471999999999994
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 32.471999999999994,
+      "end": 38.50399999999999
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}
