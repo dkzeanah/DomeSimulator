@@ -4974,6 +4974,68 @@ def summarize_orientation(orientation: str) -> list[str]:
     ]
 
 
+def run_figure_shots(spec_path: str) -> None:
+    """Render a list of book figures from one GL context and quit.
+
+    The book needs this tool *operated*, not just screenshotted: a chapter
+    about the key wants the frame exploded so you can see the key, a chapter
+    about orientation wants the same dome four times with the wedge turned
+    each way. Each entry in the spec is a set of DomeConfig overrides, a
+    camera, and where to put the PNG.
+
+    One context for the whole run, because building a ModernGL world costs
+    more than drawing in it and a book has dozens of figures.
+    """
+    spec = json.loads(Path(spec_path).read_text(encoding="utf-8"))
+    shots = spec.get("shots", [])
+    if not shots:
+        print("no shots in spec")
+        return
+
+    saved = []
+    app = None
+    try:
+        for shot in shots:
+            overrides = dict(shot.get("config") or {})
+            config = DomeConfig(**overrides)
+            config.validate()
+            if app is None:
+                # The first shot builds the window; later ones re-solve into
+                # the same context.
+                CONFIG_PATH.write_text(json.dumps(overrides, indent=2),
+                                       encoding="utf-8")
+                app = DomeWorldApp()
+            app.config = config
+            app.model = build_physical_model(config)
+            app.rebuild_world(reset_camera=False)
+
+            camera = shot.get("camera") or {}
+            radius = app.model.topology.sphere_radius_in
+            app.camera.position = np.array([
+                float(camera.get("x", 0.0)),
+                float(camera.get("y", -radius * camera.get("back", 1.30))),
+                float(camera.get("z", config.camera_height_in)),
+            ], dtype=np.float64)
+            app.camera.yaw_deg = float(camera.get("yaw", 90.0))
+            app.camera.pitch_deg = float(camera.get("pitch", -3.0))
+
+            app.render()
+            out = Path(shot["path"])
+            out.parent.mkdir(parents=True, exist_ok=True)
+            raw = app.ctx.screen.read(components=3, alignment=1)
+            image = pygame.image.fromstring(
+                raw, (app.width, app.height), "RGB", True)
+            pygame.image.save(image, str(out))
+            saved.append(str(out))
+            print(f"figure: {out}")
+    finally:
+        try:
+            pygame.quit()
+        except Exception:
+            pass
+    print(f"{len(saved)} figures written")
+
+
 def run_geometry_validation() -> None:
     cfg = DomeConfig()
     default_model = build_physical_model(cfg)
@@ -5349,6 +5411,8 @@ def _single_file_cli() -> None:
     group.add_argument("--validate", action="store_true", help="Run all four-orientation geometry validation and exit.")
     group.add_argument("--fabrication", action="store_true", help="Generate the fabrication package headlessly and exit.")
     group.add_argument("--extract-resources", action="store_true", help="Extract embedded master spec/reference images and exit.")
+    group.add_argument("--figures", metavar="SPEC.JSON",
+                       help="Render the book figures named in a spec file and exit.")
     args = parser.parse_args()
 
     ticket = _read_launch_ticket()
@@ -5363,6 +5427,10 @@ def _single_file_cli() -> None:
         return
     if args.extract_resources or action == "extract_resources":
         extract_embedded_resources()
+        return
+    if getattr(args, "figures", None):
+        ensure_graphics_dependencies()
+        run_figure_shots(args.figures)
         return
 
     ensure_graphics_dependencies()
