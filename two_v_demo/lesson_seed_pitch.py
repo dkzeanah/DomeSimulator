@@ -52,6 +52,7 @@ from .render_kit import (
 )
 from .seed_facts import (
     ALL_SCREENS,
+    steps_deck,
     steps_paint,
     steps_solar,
     steps_stemcell,
@@ -206,6 +207,39 @@ def scene_shell_on(app, opaque, transparent, p: float) -> None:
     if p > 0.6:
         _label(app, shift + np.array([0.0, 0.0, _base() + _apex() + lift + 0.3]),
                f"{plan.weight_lb:,.0f} LB", MUTED)
+
+
+def scene_deck(app, opaque, transparent, p: float) -> None:
+    """The platform going up, one course at a time, then the dome on it."""
+    import pad_deck
+
+    shift = _shift(app)
+    _ground(app, shift)
+    stages = seed_world.DECK_STAGES
+    # The last fifth of the chapter stands the dome on the finished thing,
+    # because a platform is only interesting for what lands on it.
+    build_p = clamp(p / 0.80)
+    span = 1.0 / len(stages)
+    index = min(len(stages) - 1, int(build_p / span))
+    local = round(clamp((build_p - index * span) / span), 2)
+    creator.draw(app, seed.deck(stages[index], local), offset=tuple(shift))
+
+    steps = pad_deck.build_sequence("blocks")
+    running = steps[min(index, len(steps) - 1)].cumulative_usd
+    if p > 0.10:
+        _label(app, shift + np.array([0.0, 0.0, 2.3]),
+               stages[index].upper(), BUYER)
+    # The running total retires the moment the final one appears, or the two
+    # land on the same patch of screen and argue.
+    if 0.22 < p <= 0.80:
+        _label(app, shift + np.array([0.0, 0.0, 1.7]),
+               f"${running:,.0f} SO FAR", GREEN)
+    if p > 0.80:
+        creator.draw(app, seed.frame(),
+                     offset=tuple(shift + np.array([0.0, 0.0, 0.66])))
+        total = pad_deck.deck("blocks")
+        _label(app, shift + np.array([0.0, -3.4, 0.5]),
+               f"${total.cost:,.0f}  ·  {total.boards:.0f} BOARDS", HOST)
 
 
 def scene_slices(app, opaque, transparent, p: float) -> None:
@@ -468,6 +502,7 @@ def scene_secondary(app, opaque, transparent, p: float) -> None:
 
 
 SCENES: dict = {
+    "sp_deck": scene_deck,
     "sp_slices": scene_slices,
     "sp_swap": scene_swap,
     "sp_secondary": scene_secondary,
@@ -777,6 +812,28 @@ CHAPTERS: tuple[Chapter, ...] = (
          "it in the price of the dome -- because if we did, you would be "
          "buying a deck every time you moved."),
         (), 26.0, (44.0, 22.0, 11.5), "sp_pad"),
+    _math(
+        "deck", "The platform, built one course at a time",
+        "Piers, beams, joists, boards. A hundred and sixteen of them.",
+        ("Before any of that lands anywhere, somebody builds the thing it "
+         "lands on -- and this is the part people imagine is expensive.",
+         "It is not. It is a list of boards. Gravel goes down and gets "
+         "compacted. Precast piers sit on it. Doubled two-by-six beams go "
+         "across the piers, joists across the beams at sixteen inches, and "
+         "deck boards across the joists. Two coats of sealer and it is "
+         "done. A hundred and sixteen boards, about three thousand dollars, "
+         "and two people can do it in a weekend.",
+         "And here is the part that surprised us when we costed it "
+         "properly. A concrete slab is *cheaper* than this deck. Concrete "
+         "is cheap by the yard and this is only a few yards; framing lumber "
+         "is not cheap by the foot any more. Pouring a ring and framing the "
+         "middle is more expensive than either.",
+         "So we are not going to tell you wood is the cheap option, because "
+         "it is not. Wood is the option that comes apart. Unbolt the piers "
+         "and the ground goes back to being ground -- and that is the whole "
+         "reason a pad is a reasonable thing to try instead of a foundation "
+         "you are stuck with."),
+        steps_deck(), 32.0, (42.0, 26.0, 11.0), "sp_deck"),
     _math(
         "pad_cost", "Whose bill is whose",
         "Seven thousand of ground. None of it in the dome's price.",

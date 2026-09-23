@@ -461,6 +461,36 @@ def steps_core() -> tuple[str, ...]:
     )
 
 
+def steps_deck() -> tuple[str, ...]:
+    """The platform, counted in boards rather than quoted by the square foot."""
+    import pad_deck
+
+    across = pad_deck.pad_diameter_ft()
+    blocks = pad_deck.deck("blocks")
+    slab = pad_deck.deck("slab")
+    ring = pad_deck.deck("ring")
+    steps = [
+        "a platform is a list of boards. so count them.",
+        "",
+        f"   {across:.1f} ft decagon {DOT} {blocks.area_sqft:,.0f} sq ft",
+        f"   every stick off one 2x6x12 at {usd(pad_deck.board_usd())}",
+        "",
+    ]
+    for step in pad_deck.build_sequence("blocks"):
+        steps.append(f"   {step.number}. {step.label[:34]:<34} {DOT} "
+                     f"{usd(step.cumulative_usd)}")
+    steps.extend([
+        "",
+        f"   {blocks.boards:.0f} boards {DOT} {usd(blocks.cost)} {DOT} "
+        f"${blocks.usd_per_sqft:.2f}/sqft",
+        "",
+        f"a slab is cheaper: {usd(slab.cost)}. a concrete ring is not:",
+        f"{usd(ring.cost)}. wood is not the cheap option --",
+        "it is the one that comes apart again.",
+    ])
+    return tuple(steps)
+
+
 def steps_pad() -> tuple[str, ...]:
     """Whose bill is whose."""
     priced = quote()
@@ -618,6 +648,7 @@ ALL_SCREENS = (
     ("shell", steps_shell),
     ("sheet", steps_sheet),
     ("core", steps_core),
+    ("deck", steps_deck),
     ("pad", steps_pad),
     ("price", steps_price),
     ("ladder", steps_ladder),

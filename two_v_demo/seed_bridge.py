@@ -148,6 +148,15 @@ def panels(fitout: str = "gym", reveal: float = 1.0) -> creator.Build:
                  builder.build())
 
 
+@lru_cache(maxsize=64)
+def deck(stage: str = "sealed", partial: float = 1.0) -> creator.Build:
+    """The host's platform at one stage of being built."""
+    builder = MeshBuilder()
+    seed_world.build_deck_stage(builder, stage, partial=partial)
+    return _wrap(f"deck:{stage}:{partial:.2f}", f"deck {stage}",
+                 builder.build())
+
+
 @lru_cache(maxsize=24)
 def bay(explode: float = 0.0) -> creator.Build:
     """One triangular bay taken apart, for the chapter about the wall."""
@@ -241,6 +250,10 @@ def validate_seed_bridge() -> None:
         return float(v[:, 0].max() - v[:, 0].min())
 
     assert _width(shell(split=1.0)) > _width(shell()) * 1.2
+
+    # The platform has to build up through its stages.
+    sizes = [len(deck(s).mesh.vertices) for s in seed_world.DECK_STAGES[:-1]]
+    assert sizes == sorted(sizes) and sizes[0] < sizes[-1], sizes
 
     assert len(bay(0.3).mesh.vertices) > 100
     assert bay(0.3).apex > bay(0.0).apex, "the bay does not come apart"

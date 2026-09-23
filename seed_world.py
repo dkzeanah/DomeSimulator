@@ -668,6 +668,134 @@ def build_polyp(b: MeshBuilder, origin, base_z: float, radius: float,
                    0.045, 8, DARK_STEEL, mat_id=MAT_METAL)
 
 
+# ----------------------------------------------------------------------
+# The platform, built in the order it is actually built
+# ----------------------------------------------------------------------
+
+DECK_STAGES: tuple[str, ...] = (
+    "gravel", "piers", "beams", "joists", "boards", "sealed",
+)
+"""The stages :func:`build_deck_stage` can draw, in build order.
+
+The same order :func:`pad_deck.build_sequence` costs them in, so a film that
+walks through these is walking through the quote.
+"""
+
+GRAVEL = (0.46, 0.45, 0.42)
+PIER = (0.62, 0.62, 0.60)
+BEAM = (0.42, 0.31, 0.20)
+JOIST = (0.52, 0.39, 0.25)
+BOARD = (0.62, 0.47, 0.30)
+SEALED = (0.46, 0.33, 0.20)
+
+
+def build_deck_stage(b: MeshBuilder, stage: str, origin=(0.0, 0.0),
+                     base_z: float = 0.0, across_ft: float | None = None,
+                     partial: float = 1.0) -> int:
+    """The platform, drawn up to and including ``stage``.
+
+    ``partial`` is how much of that last stage is laid, 0 to 1, which is what
+    lets a film show boards going down one at a time rather than appearing.
+    Everything is a decagon because the dome's base is, and because cutting
+    straight boards to ten flats is what the takeoff prices.
+    """
+    import pad_deck
+
+    if stage not in DECK_STAGES:
+        raise KeyError(f"unknown deck stage {stage!r}")
+    reached = DECK_STAGES.index(stage)
+    across = pad_deck.pad_diameter_ft() if across_ft is None else across_ft
+    radius = m(across * 12.0 / 2.0)
+    ox, oy = origin
+    sides = 10
+    drawn = 0
+
+    def ring(r: float, z: float, colour, thickness: float, mat=MAT_WOOD):
+        nonlocal drawn
+        for index in range(sides):
+            a0 = math.tau * index / sides
+            a1 = math.tau * (index + 1) / sides
+            p0 = (ox + math.cos(a0) * r, oy + math.sin(a0) * r, z)
+            p1 = (ox + math.cos(a1) * r, oy + math.sin(a1) * r, z)
+            q0 = (p0[0], p0[1], z - thickness)
+            q1 = (p1[0], p1[1], z - thickness)
+            b.quad(p0, p1, q1, q0, (math.cos((a0 + a1) / 2),
+                                    math.sin((a0 + a1) / 2), 0.0),
+                   colour, mat_id=mat)
+            b.triangle((ox, oy, z), p0, p1, colour, mat_id=mat)
+            drawn += 2
+
+    # 1. Gravel: a shallow decagonal pad of crusher run.
+    if reached >= 0:
+        share = partial if reached == 0 else 1.0
+        ring(radius * 1.04 * share, base_z + 0.04, GRAVEL, 0.10, MAT_PLAIN)
+
+    # 2. Piers: precast blocks on a grid, only where a beam will land.
+    if reached >= 1:
+        spacing = m(pad_deck.declared("beam_spacing_ft") * 12.0)
+        points = []
+        steps = int(radius / spacing) + 1
+        for ix in range(-steps, steps + 1):
+            for iy in range(-steps, steps + 1):
+                x, y = ix * spacing, iy * spacing
+                if math.hypot(x, y) <= radius * 0.92:
+                    points.append((x, y))
+        points.sort(key=lambda pt: math.hypot(pt[0], pt[1]))
+        share = partial if reached == 1 else 1.0
+        for x, y in points[:max(1, int(len(points) * share))]:
+            box(b, (ox + x, oy + y, base_z + 0.20), (0.30, 0.30, 0.22),
+                PIER, MAT_PLAIN)
+            drawn += 6
+
+    # 3. Beams: doubled runs across the platform, on the piers.
+    if reached >= 2:
+        spacing = m(pad_deck.declared("beam_spacing_ft") * 12.0)
+        runs = [i * spacing for i in range(-3, 4)
+                if abs(i * spacing) <= radius * 0.92]
+        share = partial if reached == 2 else 1.0
+        for y in runs[:max(1, int(len(runs) * share))] if share < 1.0 else runs:
+            half = math.sqrt(max(0.0, radius ** 2 - y ** 2)) * 0.96
+            box(b, (ox, oy + y, base_z + 0.38), (half * 2.0, 0.16, 0.14),
+                BEAM, MAT_WOOD)
+            drawn += 6
+
+    # 4. Joists: at 16 in centres, across the beams.
+    if reached >= 3:
+        spacing = m(pad_deck.declared("joist_spacing_in"))
+        count = int(radius * 2.0 / spacing)
+        xs = [(-radius + (i + 0.5) * spacing) for i in range(count)]
+        share = partial if reached == 3 else 1.0
+        for x in xs[:max(1, int(len(xs) * share))]:
+            half = math.sqrt(max(0.0, radius ** 2 - x ** 2)) * 0.97
+            if half <= 0.05:
+                continue
+            box(b, (ox + x, oy, base_z + 0.50), (0.09, half * 2.0, 0.14),
+                JOIST, MAT_WOOD)
+            drawn += 6
+
+    # 5. Boards: laid across the joists, one at a time.
+    if reached >= 4:
+        width = m(pad_deck.declared("board_face_in"))
+        count = int(radius * 2.0 / width)
+        colour = SEALED if reached >= 5 else BOARD
+        ys = [(-radius + (i + 0.5) * width) for i in range(count)]
+        share = partial if reached in (4, 5) else 1.0
+        for y in ys[:max(1, int(len(ys) * share))]:
+            half = math.sqrt(max(0.0, radius ** 2 - y ** 2)) * 0.98
+            if half <= 0.05:
+                continue
+            box(b, (ox, oy + y, base_z + 0.60),
+                (half * 2.0, width * 0.92, 0.05), colour, MAT_WOOD)
+            drawn += 6
+
+    return drawn
+
+
+def deck_top_m(base_z: float = 0.0) -> float:
+    """Where the finished platform's surface sits, for standing a dome on."""
+    return base_z + 0.63
+
+
 def build_open_floor(b: MeshBuilder, origin, base_z: float, radius: float,
                      sides: int = 10, port_radius: float = 0.55) -> None:
     """The dome's own floor: a deck with a hole in the middle of it.
@@ -1185,7 +1313,42 @@ def seed_mesh(placement: SeedPlacement | None = None, **kwargs) -> Mesh:
 # Proof
 # ----------------------------------------------------------------------
 
+def _validate_deck_stages() -> None:
+    """The platform has to actually accumulate, stage by stage."""
+    import pad_deck
+
+    seen = 0
+    for stage in DECK_STAGES[:-1]:
+        builder = MeshBuilder()
+        build_deck_stage(builder, stage)
+        count = len(builder.build().vertices)
+        assert count > seen, (stage, count, seen)
+        seen = count
+
+    # Sealing is a colour, not a course: it must not add geometry, and it
+    # must change what is there.
+    boards = MeshBuilder()
+    build_deck_stage(boards, "boards")
+    sealed = MeshBuilder()
+    build_deck_stage(sealed, "sealed")
+    assert len(sealed.build().vertices) == len(boards.build().vertices)
+    assert not np.array_equal(sealed.build().vertices,
+                              boards.build().vertices), (
+        "sealing the deck changed nothing on screen")
+
+    # Half a stage has to be half-built, or the film cannot show boards
+    # going down one at a time.
+    half = MeshBuilder()
+    build_deck_stage(half, "boards", partial=0.5)
+    assert 0 < len(half.build().vertices) < len(boards.build().vertices)
+
+    # And the thing drawn has to be the thing priced.
+    assert len(DECK_STAGES) >= len(set(
+        line.label.split(",")[0] for line in pad_deck.deck("blocks").lines)) - 2
+
+
 def validate_seed_world() -> None:
+    _validate_deck_stages()
     """Everything this module draws has to be there and be the right size."""
     seed_model.validate_seed_model()
     geo = geometry()
