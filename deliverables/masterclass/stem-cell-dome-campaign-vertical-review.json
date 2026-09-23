@@ -1,0 +1,262 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-20T13:08:08.198779+00:00",
+  "lesson": "seed_pitch",
+  "title": "A house you can take apart",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "A house you can take apart",
+      "narration": [
+        "This is a tiny house. It is nineteen feet across, it has two hundred and seventy-seven square feet of floor, and it comes apart into pieces two people can carry.",
+        "We are not selling you a finished home. We are selling you the part of a home that is hard to make -- and leaving you the part that is yours to decide.",
+        "Everything you are about to see is drawn by the same solver that cuts the real thing, and every number in it comes off the same model. There is no second set of figures for the brochure."
+      ],
+      "start": 0.0,
+      "end": 29.576
+    },
+    {
+      "slug": "declared",
+      "title": "What was typed in, before anything is claimed",
+      "narration": [
+        "Before a single dollar: this film has two kinds of number in it, and it is going to keep them in separate boxes the whole way through.",
+        "The measured ones come off the dome's own geometry. How many members, how much panel, how much floor. Those cannot be argued with, because the same code that reports them cuts the wood.",
+        "The declared ones are prices and rates. A person typed those in. They live in one table with a unit and a reason on every line, and a good number of them are lifted straight off a supplier's own published list.",
+        "If you change one, everything after it moves, because this film reads the table rather than repeating what it said last time."
+      ],
+      "start": 29.576,
+      "end": 69.71199999999999
+    },
+    {
+      "slug": "frame",
+      "title": "The frame is already on your land",
+      "narration": [
+        "Start with the frame, because the frame is the part we do not ship.",
+        "A trunk gets split like a cake into eight wedges, and each wedge is used exactly as it comes off the saw. No squaring, no edging, no planing. Three of them pinwheel into a triangle so that no end is ever mitred -- every cut is a plain angle a beginner can make.",
+        "A hundred and twenty of those, out of about one and a half trees, and you have the skeleton of a house. If the trees are standing on the land the dome is going on, the frame is cut where it will stand up."
+      ],
+      "start": 69.71199999999999,
+      "end": 104.32799999999999
+    },
+    {
+      "slug": "frame_cost",
+      "title": "What that is worth, and what it costs",
+      "narration": [
+        "Here is the part that surprised us.",
+        "We built this model expecting the timber to be the big number. It is not. Buying that wood outright, at yard prices, is less than a hundred dollars. The shell over it is four thousand.",
+        "So the trees are not really a saving on materials. What they save is a delivery and a mill bill, and what they buy you is a frame cut on the site it is going up on.",
+        "And the joint has a price of its own, which we are going to put on screen rather than leave out: giving every triangle its own three sticks, so no end is mitred, costs eighty percent more wood than sharing struts would. We think that trade is worth making. We are not going to pretend it is free."
+      ],
+      "start": 104.32799999999999,
+      "end": 144.32
+    },
+    {
+      "slug": "shell",
+      "title": "The shell is a boat hull",
+      "narration": [
+        "Over the frame goes a shell, and the shell is where the money is.",
+        "It is a wood-cored composite skin: sheet core, chopped strand mat, stitched biaxial cloth, laminating resin, gelcoat on the weather face. That is not an invention. That is how small boats have been built since the nineteen sixties, out of products you can order this afternoon.",
+        "It latches to the pad with over-centre catches -- the kind that seal a preserving jar -- and it lifts off from a ring laminated into its own apex. Which is the part that makes this a house you can take apart rather than a house you can only knock down."
+      ],
+      "start": 144.32,
+      "end": 180.64
+    },
+    {
+      "slug": "shell_cost",
+      "title": "Four ways to skin it, and what each one costs",
+      "narration": [
+        "So what does a hull skin cost?",
+        "Glass and resin are sold by weight, not by the yard, and a laminate is specified as ounces of glass per square foot and a resin-to-glass ratio. The resin quantity falls out of the fabric. Price it any other way and you will be right about one schedule and wrong about every other one.",
+        "Here are four systems anybody in the trade would recognise, over this dome's real area, at a supplier's published prices. The one we ship is the boatyard schedule: the cheapest resin anyone builds a hull out of, over mat and biaxial, with gelcoat on the outside.",
+        "The lightest option is cheaper still. It is also a sheathing rather than a skin, and it will not take the same knock. That is a real trade and it is on the table so you can make it yourself."
+      ],
+      "start": 180.64,
+      "end": 229.344
+    },
+    {
+      "slug": "sheet",
+      "title": "A thing we found out the hard way",
+      "narration": [
+        "One finding, because it changed how the thing gets made.",
+        "We assumed the core would be cut triangle by triangle out of ordinary four-by-eight sheet. It cannot be. A triangle cannot get narrower than its own shortest altitude no matter how you turn it, and both of this dome's triangles are wider than forty-eight inches.",
+        "So the core is sheeted across the frame and the joints are taped, which is how a boat is built anyway. We would rather find that here, in a model, than halfway through a production run."
+      ],
+      "start": 229.344,
+      "end": 261.416
+    },
+    {
+      "slug": "core",
+      "title": "The top of the dome is a socket",
+      "narration": [
+        "Now the part the whole system hangs off.",
+        "Power, water and drain arrive in the middle of the pad. They come up through the floor into a column that carries the shower, the sink, the drain and the outlets at working height. And then they keep going -- up past the ceiling, through a sleeve at the apex, and out.",
+        "So the top of this dome is not a roof. It is a socket. A gasketed cap bolts down over it: meant to stay shut for years, meant to come off in ten minutes.",
+        "Which means every service in the building is already on the outside of the weathertight surface before anybody has decided what to plug in."
+      ],
+      "start": 261.416,
+      "end": 298.84
+    },
+    {
+      "slug": "polyps",
+      "title": "Everything else snaps onto the outside",
+      "narration": [
+        "Under that cap, a line runs down the outside of the shell to a panel hanging off the rim.",
+        "The panel sits outside the footprint -- it does not eat any of your two hundred and seventy-seven square feet -- and it reaches back in through one gasketed port. Modules snap into it. An exhaust fan. A tankless water heater. A cooling unit. A shower.",
+        "The point is what does not happen. Adding a service to this building never cuts a new hole in a surface that was keeping the rain out. The hole already exists, it is at the top, and it has a cap on it."
+      ],
+      "start": 298.84,
+      "end": 333.864
+    },
+    {
+      "slug": "modular",
+      "title": "The core moves to the next dome",
+      "narration": [
+        "And because the services are a column rather than a system built into the walls, they come out.",
+        "Unbolt it, cap the lines, crate it. It goes into the next dome. Outgrow this one, build a bigger frame, lift the core across, and the part you paid a plumber and an electrician for does not get bought twice.",
+        "That is what we mean by modular, and we mean it literally. Not 'our product has options'. The physical object comes out and goes into the next one."
+      ],
+      "start": 333.864,
+      "end": 362.048
+    },
+    {
+      "slug": "core_cost",
+      "title": "What buying it once is worth",
+      "narration": [
+        "Put a number on it.",
+        "The core -- the column, the manifold, the drain, the sub-panel, the light, the fan and the cooling unit -- is about a fifth of everything material in the dome.",
+        "Moving it costs a couple of hundred dollars. Buying a second one costs what the first one cost. So every move is that difference, spent on a bigger shell instead of on the same plumbing again."
+      ],
+      "start": 362.048,
+      "end": 387.048
+    },
+    {
+      "slug": "pad",
+      "title": "The ground is not ours and it is not yours",
+      "narration": [
+        "Here is the half of tiny-house pricing that everybody adds together and should not.",
+        "A dome needs somewhere to stand: a deck on blocks, a moisture barrier, a port for the services, a tank, some storage under the floor. That is the landowner's build. It happens once, it stays in the ground, and the next dome lands on the same port.",
+        "We design to hook onto it. We do not sell it, and we do not put it in the price of the dome -- because if we did, you would be buying a deck every time you moved."
+      ],
+      "start": 387.048,
+      "end": 417.824
+    },
+    {
+      "slug": "pad_cost",
+      "title": "Whose bill is whose",
+      "narration": [
+        "The pad, line by line, on the landowner's side of the fence.",
+        "It is not nothing. It is most of the price of a small car, and anybody telling a landowner that hosting is free has not built one.",
+        "But it is built once and it is kept. Which is why the dome price you are about to see has no floor, no deck and no groundwork in it at all."
+      ],
+      "start": 417.824,
+      "end": 443.824
+    },
+    {
+      "slug": "price",
+      "title": "What one costs, line by line",
+      "narration": [
+        "So here is the whole thing.",
+        "Frame, panels, shell, the utility core, the light and the cooling, one utility panel, and the hours it takes to make all of it. Then overhead, then a reserve against the ones that come back, then our margin.",
+        "That is the number. It is a house, on a pad, for the price of a mid-range car -- and the pad is not in it, because the pad is not ours to sell."
+      ],
+      "start": 443.824,
+      "end": 473.824
+    },
+    {
+      "slug": "ladder",
+      "title": "How far down it goes",
+      "narration": [
+        "How cheap can this get?",
+        "Here is every lever we have, applied one at a time against that standard dome, ranked by what it is worth.",
+        "One of them is marked, and it is marked because it is not a saving. Halving our margin lowers the price without making the dome any cheaper to build. It is us earning less. We put it in the same table so the two can never be quietly mixed up.",
+        "Pull all of the real ones and the floor is under twenty thousand dollars, at about seventy dollars a square foot."
+      ],
+      "start": 473.824,
+      "end": 505.05600000000004
+    },
+    {
+      "slug": "against",
+      "title": "Three things this says against itself",
+      "narration": [
+        "Three things we are going to say against our own pitch, because a proposal that only shows its good numbers is not a proposal.",
+        "The standard dome is not insulated. The bladders and the fill are an upgrade, and they are not cheap.",
+        "The frame wastes wood. Eighty percent more stock than a dome that shares its struts. We think the joint is worth it; the arithmetic does not care what we think.",
+        "And the prices in this film are our assumptions. The quantities are measured off the geometry and we will stand behind those. The rates are ours, every one of them has a reason written next to it, and the first thing a backer should do is argue with them."
+      ],
+      "start": 505.05600000000004,
+      "end": 543.7760000000001
+    },
+    {
+      "slug": "catalogue",
+      "title": "One cut list, however you use it",
+      "narration": [
+        "Last thing. The same hundred and twenty members and the same forty panels make more than one building.",
+        "Stretch it and it is a sauna. Turn it over and it is a tub. Berm soil against it and it is a bunker. Lift it onto a saddle and it is up a tree. Every one of them lands on the same pad and plugs into the same port.",
+        "That is why we can make this at this price at all. We are not manufacturing nine buildings. We are manufacturing one, and the rest is what you do with it."
+      ],
+      "start": 543.7760000000001,
+      "end": 573.5680000000001
+    },
+    {
+      "slug": "seeds",
+      "title": "The catalogue, priced",
+      "narration": [
+        "Every one of them, priced off the same model, cheapest first.",
+        "Look at what does not move between them. The frame is identical in all nine, because it is identical in all nine. The difference between a sauna and a food stall is which modules are in the panels.",
+        "That is the manufacturing argument, and it is the whole reason any of this is affordable."
+      ],
+      "start": 573.5680000000001,
+      "end": 599.5680000000001
+    },
+    {
+      "slug": "close",
+      "title": "Bring your own ground",
+      "narration": [
+        "So: we make the stem cell. You build on it.",
+        "Under twenty thousand dollars for the bare standard article once every saving is taken. Just under twenty-four thousand for the one we actually ship, about twenty-five on your land with the freight in it, and around thirty-one thousand for the fit-out with a shower and a kitchen in it.",
+        "What we are raising money for is the tooling and the first production run -- the jigs, the moulds, the core assembly, and the stock to build the first domes with.",
+        "Every figure in this film came out of a model you can run yourself, including the three that argue against us. If you think one of our prices is wrong, tell us which one. That is the most useful thing a backer can do."
+      ],
+      "start": 599.5680000000001,
+      "end": 640.1120000000001
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 640.1120000000001,
+      "end": 654.6400000000001
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 654.6400000000001,
+      "end": 674.1120000000001
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "deliverables\\masterclass\\stem-cell-dome-campaign-narration-plan.json",
+    "orientation": "portrait",
+    "compose_segments": true,
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+2%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

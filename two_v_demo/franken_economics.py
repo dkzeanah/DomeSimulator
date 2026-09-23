@@ -117,9 +117,18 @@ class DomeSize:
 
     @property
     def processes(self) -> int:
-        """Distinct operations: fell, rip, crosscut, fold, drill, screw,
-        raise, sheathe, glass. The same nine at any size."""
-        return 9
+        """Distinct shop operations. The same nine at any size.
+
+        Named, in order, in :data:`PROCESSES`; the count is the length of
+        that tuple so the list and the number cannot drift apart.
+        """
+        return len(PROCESSES)
+
+    @property
+    def process_counts(self) -> tuple[ProcessCount, ...]:
+        """Each of the nine with how many times it happens at this size."""
+        return tuple(ProcessCount(step, step.repetitions(self))
+                     for step in PROCESSES)
 
     # --- the one that does ------------------------------------------
     @property
@@ -134,11 +143,251 @@ class DomeSize:
             len(geometry.hemisphere_edges)
         return total * doubled / 12.0
 
+    # --- and how long one stick gets, which is what you carry ---------
+    #
+    # These are *cut* lengths, not chords. A hubless pinwheel insets every
+    # member from the vertex by an amount that depends on the member's
+    # width, and the width does not change with the dome -- so the stick
+    # you pick up is shorter than the edge it spans, and by a different
+    # margin at every diameter. Scaling a chord factor gets this wrong in
+    # the unsafe direction, which is why ``wedge_geometry`` solves it.
+    @property
+    def member_classes(self):
+        from . import book_math as bm
+        from . import wedge_geometry as wg
+        return wg.member_classes(self.radius_in, bm.BOOK_TREE.member_width_in,
+                                 SOLO["gasket_in"])
+
+    @property
+    def long_member_ft(self) -> float:
+        """The longest stick you actually have to handle, in feet."""
+        return max(item.length_in for item in self.member_classes) / 12.0
+
+    @property
+    def short_member_ft(self) -> float:
+        return min(item.length_in for item in self.member_classes) / 12.0
+
+    @property
+    def member_feet(self) -> float:
+        """Linear feet of *cut member* standing in the finished frame.
+
+        Not the same as :attr:`strut_feet`, and the gap is the pinwheel
+        again. ``strut_feet`` totals the edge network -- chord lengths, the
+        stock you have to own. This totals what is left after every member
+        is inset from its vertices, which is what ends up in the building.
+        The difference is the vertex gaps, and because the inset is set by
+        member width rather than by radius, the two do not keep a constant
+        ratio: a small dome loses proportionally more of its stock to gaps.
+        """
+        return sum(item.count * item.length_in
+                   for item in self.member_classes) / 12.0
+
+    @property
+    def within_solo_reach(self) -> bool:
+        """True when one person can still handle the longest stick alone."""
+        return self.long_member_ft <= SOLO["solo_long_member_ft"] + 1e-9
+
 
 def flat_rate_table(
     diameters_ft: tuple[float, ...] = (10.0, 16.0, 20.0, 30.0),
 ) -> tuple[DomeSize, ...]:
     return tuple(DomeSize(feet * 12.0 / 2.0) for feet in diameters_ft)
+
+
+# ----------------------------------------------------------------------
+# The nine operations
+# ----------------------------------------------------------------------
+#
+# ``DomeSize.processes`` used to be the literal 9 with the names in a
+# docstring, which meant the book's list and the book's count could drift
+# apart without anything complaining.  They are one object now: the count
+# is the length of this tuple, and a chapter that names the nine reads
+# them from here.
+#
+# Each process also knows how many times it *repeats* at a given size, and
+# that turns out to be the sharper version of the flat-rate claim.  Seven
+# of the nine repeat an identical number of times at every diameter -- not
+# merely "still on the list", the same count.  The two that move are the
+# two that touch raw material and area rather than joints: felling, which
+# follows linear feet of stick, and glassing, which follows the shell.
+
+@dataclass(frozen=True)
+class Process:
+    """One shop operation, with what it is counted in at any size."""
+
+    key: str
+    name: str
+    tool: str
+    unit: str
+    flat: bool
+    note: str
+
+    def repetitions(self, size: "DomeSize") -> float:
+        return _PROCESS_COUNTS[self.key](size)
+
+
+@dataclass(frozen=True)
+class ProcessCount:
+    """A process paired with how often it happens at one diameter."""
+
+    process: Process
+    count: float
+
+    @property
+    def display(self) -> str:
+        if self.process.unit == "sq ft":
+            return f"{self.count:,.0f} sq ft"
+        return f"{self.count:,.0f} {self.process.unit}"
+
+
+def _trees_for(size: DomeSize) -> float:
+    """Whole trees a diameter needs, at this book's trunk."""
+    from . import book_math as bm
+    plan = bm.BOOK_TREE
+    per_tree = plan.usable_length_ft * plan.sectors
+    return float(math.ceil(size.member_feet / per_tree))
+
+
+_PROCESS_COUNTS = {
+    "fell": _trees_for,
+    "rip": lambda size: float(size.struts),
+    "crosscut": lambda size: float(size.struts),
+    "fold": lambda size: float(size.brackets),
+    "drill": lambda size: float(size.screws),
+    "screw": lambda size: float(size.screws),
+    "raise": lambda size: float(size.triangles),
+    "sheathe": lambda size: float(size.triangles),
+    "glass": lambda size: size.shell_area_sqft,
+}
+
+
+PROCESSES: tuple[Process, ...] = (
+    Process("fell", "Fell", "chainsaw", "trees", False,
+            "Drop the tree, limb it, buck it to section length. The only "
+            "process whose count follows the timber rather than the joints, "
+            "and the only one with weather and a chain in it."),
+    Process("rip", "Rip", "mill or bandsaw", "members", True,
+            "Split each round section into wedges along its length. The "
+            "longest of the nine by hours, and therefore the one worth "
+            "improving first."),
+    Process("crosscut", "Crosscut", "mitre saw and jig", "members", True,
+            "Cut each member to its solved length, both ends, on the jig "
+            "that holds the angle so you do not have to measure it."),
+    Process("fold", "Fold", "bench brake", "brackets", True,
+            "Bend flat stock to the connector angle. One setup, then "
+            "repetition; the angle lives in the tool, not in the operator."),
+    Process("drill", "Drill", "drill press", "holes", True,
+            "Pilot the bracket legs. One hole per screw, which is why this "
+            "count is the largest number on the list."),
+    Process("screw", "Screw", "impact driver", "screws", True,
+            "Drive the frame together. The count is fixed by the bracket "
+            "pattern, so it does not care how big the dome is."),
+    Process("raise", "Raise", "cable and winch", "panels", True,
+            "Lift each assembled triangle into place and tie it to its "
+            "neighbours. Panels go up, not members -- that is what keeps "
+            "this a one-person job at the top of the band."),
+    Process("sheathe", "Sheathe", "knife and stapler", "panels", True,
+            "Close each triangle. Still counted in panels, still forty of "
+            "them, whatever the panels measure."),
+    Process("glass", "Glass", "roller and brush", "sq ft", False,
+            "Lay up the shell. The second process that scales, and it "
+            "scales as the square, because it is priced by area."),
+)
+
+
+PROCESS = {step.key: step for step in PROCESSES}
+
+
+# ----------------------------------------------------------------------
+# What one person can handle -- declared, then spent
+# ----------------------------------------------------------------------
+#
+# The flat rate is real but it is not unbounded, and the bound is not a
+# structural one.  It is a handling one, and it is a *choice*: the longest
+# stick the builder is willing to carry, hold at both ends of, and set into
+# a triangle without a second pair of hands.  That number cannot be derived
+# from geometry, so it is declared here with the reason, the way prices are.
+# Everything downstream of it -- which diameters stay inside the band -- is
+# then computed from the 2V chord factors.
+
+@dataclass(frozen=True)
+class Declared:
+    """A figure chosen rather than solved, carrying why it was chosen."""
+
+    key: str
+    value: float
+    units: str
+    note: str
+
+
+SOLO_LIMITS: tuple[Declared, ...] = (
+    Declared("solo_long_member_ft", 6.0, "feet",
+             "Longest single member the builder will handle alone. Chosen, "
+             "not derived: it is the most one person wants to carry, stand "
+             "both ends of, and set without help. Assembled triangles go up "
+             "on an overhead cable and winch slung in the trees, so the limit "
+             "is on the stick in your hands, not on the lift."),
+    Declared("gasket_in", 0.75, "inches",
+             "Gasket allowance between mating members, as used by "
+             "book_math.tree_first. Repeated here so the handling band and "
+             "the book's own dome are solved on identical terms."),
+)
+
+SOLO = {item.key: item.value for item in SOLO_LIMITS}
+
+
+@dataclass(frozen=True)
+class SoloBand:
+    """The band of diameters a declared member limit allows.
+
+    The diameter is *solved*, not scaled. Member length grows with the
+    radius but not proportionally, because the pinwheel overhang depends on
+    the member's width and the width does not change with the dome -- so
+    this defers to :func:`wedge_geometry.radius_for_member_length`, the same
+    inverse :func:`book_math.tree_first` uses to size a dome to a log.
+    """
+
+    member_ft: float
+
+    @property
+    def radius_in(self) -> float:
+        from . import book_math as bm
+        from . import wedge_geometry as wg
+        return wg.radius_for_member_length(
+            self.member_ft * 12.0, bm.BOOK_TREE.member_width_in,
+            SOLO["gasket_in"])
+
+    @property
+    def diameter_ft(self) -> float:
+        """The dome whose longest cut member is the declared limit."""
+        return self.radius_in * 2.0 / 12.0
+
+    @property
+    def radius_ft(self) -> float:
+        return self.diameter_ft / 2.0
+
+    @property
+    def floor_area_sqft(self) -> float:
+        return math.pi * self.radius_ft ** 2
+
+    @property
+    def short_member_ft(self) -> float:
+        """The other stick at that diameter, for the cut list."""
+        return DomeSize(self.radius_in).short_member_ft
+
+    @property
+    def sizes_inside(self) -> tuple[DomeSize, ...]:
+        return tuple(s for s in flat_rate_table() if s.within_solo_reach)
+
+    @property
+    def sizes_outside(self) -> tuple[DomeSize, ...]:
+        return tuple(s for s in flat_rate_table() if not s.within_solo_reach)
+
+
+def solo_band(member_ft: float | None = None) -> SoloBand:
+    """The diameters one person can frame alone, given a handling limit."""
+    limit = SOLO["solo_long_member_ft"] if member_ft is None else member_ft
+    return SoloBand(limit)
 
 
 # ----------------------------------------------------------------------
@@ -349,6 +598,21 @@ def economics_report(radius_in: float = 120.0) -> str:
     lines.append("  every count is identical at every size; only material grows")
     lines.append("")
 
+    band = solo_band()
+    lines.append("--- and where one pair of hands runs out ---")
+    for item in SOLO_LIMITS:
+        lines.append(f"  DECLARED {item.key:<22} {item.value:>6.2f} "
+                     f"{item.units:<8} {item.note}")
+    lines.append(f"  a {band.member_ft:.0f} ft long member is a dome "
+                 f"{band.diameter_ft:.1f} ft across "
+                 f"({band.floor_area_sqft:.0f} sq ft of floor)")
+    lines.append(f"  its other stick is {band.short_member_ft:.2f} ft")
+    for size in flat_rate_table():
+        verdict = "solo" if size.within_solo_reach else "needs help or frequency"
+        lines.append(f"  {size.diameter_ft:>5.0f} ft dome   long member "
+                     f"{size.long_member_ft:>5.2f} ft   {verdict}")
+    lines.append("")
+
     cost = BuildCost(radius_in)
     size, floor, glass = cost.size, cost.floor, cost.glass
     lines.append(f"--- the prototype at {size.diameter_ft:.0f} ft across ---")
@@ -416,6 +680,80 @@ def validate_economics() -> None:
     for size in sizes:
         assert math.isclose(size.shell_area_sqft, size.floor_area_sqft * 2.0,
                             rel_tol=1e-9)
+
+    # The handling band. The declared limit picks out a diameter through the
+    # wedge solver, and the round trip has to close: solve for the diameter,
+    # cut the members at it, and the longest one is the limit again.
+    band = solo_band()
+    assert band.member_ft == SOLO["solo_long_member_ft"] == 6.0
+    round_trip = DomeSize(band.radius_in).long_member_ft
+    assert math.isclose(round_trip, band.member_ft, rel_tol=1e-4), round_trip
+
+    # The cut member is shorter than the chord it spans, because the pinwheel
+    # insets it from the vertex -- and by a *different* fraction at every
+    # diameter, which is exactly why this is solved rather than scaled. If
+    # these two ever came out proportional, the solver would have been
+    # replaced by a multiplication and the band would be wrong.
+    fractions = []
+    for size in sizes:
+        chord = size.measurements.long_center_length / 12.0
+        assert size.long_member_ft < chord, (size.diameter_ft, chord)
+        assert size.long_member_ft > size.short_member_ft
+        fractions.append(size.long_member_ft / chord)
+        # A dome is inside the band exactly when it is no wider than the
+        # diameter the limit picks out.  No third answer.
+        assert size.within_solo_reach == (
+            size.diameter_ft <= band.diameter_ft + 1e-6)
+    assert max(fractions) - min(fractions) > 0.05, fractions
+
+    # The band has to actually split the table, or the caveat is decoration.
+    assert band.sizes_inside and band.sizes_outside
+    assert len(band.sizes_inside) + len(band.sizes_outside) == len(sizes)
+
+    # And the convergence worth knowing: the book's own two-tree dome is
+    # sized by the same 6 ft stick, so the largest dome one person can frame
+    # alone and the largest dome two trees will yield are the same dome.
+    from . import book_math as bm
+    assert math.isclose(bm.tree_first().radius_in, band.radius_in,
+                        rel_tol=1e-6)
+
+    # Cut stock versus edge network. The frame always holds less linear foot-
+    # age than the chords it spans, because every member is inset, and the
+    # book's own dome has to agree with book_math about how much.
+    for size in sizes:
+        assert 0.0 < size.member_feet < size.strut_feet, size.diameter_ft
+    assert math.isclose(DomeSize(band.radius_in).member_feet,
+                        bm.tree_first().timber_in_frame_ft, rel_tol=1e-9)
+    # The edge network is exactly linear in diameter; cut members are not,
+    # and the book says so rather than rounding the difference away.
+    edge_ratio = sizes[-1].strut_feet / sizes[0].strut_feet
+    cut_ratio = sizes[-1].member_feet / sizes[0].member_feet
+    assert math.isclose(edge_ratio,
+                        sizes[-1].diameter_ft / sizes[0].diameter_ft,
+                        rel_tol=1e-6)
+    assert cut_ratio > edge_ratio + 0.2, (cut_ratio, edge_ratio)
+
+    # The nine operations. The count is the list, the list is ordered, and
+    # seven of the nine repeat identically at every diameter -- which is the
+    # flat rate stated at its sharpest.
+    assert len(PROCESSES) == first.processes == 9
+    assert len({step.key for step in PROCESSES}) == len(PROCESSES)
+    flat_keys = {step.key for step in PROCESSES if step.flat}
+    assert len(flat_keys) == 7, sorted(flat_keys)
+    baseline = {item.process.key: item.count
+                for item in first.process_counts}
+    for size in sizes:
+        counts = {item.process.key: item.count for item in size.process_counts}
+        assert set(counts) == set(baseline)
+        for step in PROCESSES:
+            if step.flat:
+                assert counts[step.key] == baseline[step.key], step.key
+            assert counts[step.key] > 0, step.key
+    # The two that move must actually move across the table, or the claim
+    # that seven are flat is trivially true of all nine.
+    for key in ("fell", "glass"):
+        assert sizes[-1].process_counts[
+            [s.key for s in PROCESSES].index(key)].count > baseline[key], key
 
     floor = Floor(120.0)
     assert floor.joists > 1

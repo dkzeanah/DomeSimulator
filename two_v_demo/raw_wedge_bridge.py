@@ -29,6 +29,20 @@ def simulator() -> ModuleType:
     """Import the single-file simulator, once per process."""
     if MODULE_NAME in sys.modules:
         return sys.modules[MODULE_NAME]
+    # When the simulator is the program that is running, it is already in
+    # memory as ``__main__``. Importing the file again would build a second
+    # copy of it -- a second solve, a second set of dataclasses, and two
+    # modules whose objects fail every isinstance check against each other.
+    running = sys.modules.get("__main__")
+    main_file = getattr(running, "__file__", None)
+    if running is not None and main_file:
+        try:
+            same = Path(main_file).resolve() == SIMULATOR
+        except OSError:
+            same = False
+        if same:
+            sys.modules[MODULE_NAME] = running
+            return running
     if not SIMULATOR.is_file():
         raise FileNotFoundError(
             f"the raw-wedge simulator is missing: {SIMULATOR}. The wedge-method "
@@ -44,17 +58,28 @@ def simulator() -> ModuleType:
     return module
 
 
-@lru_cache(maxsize=8)
+@lru_cache(maxsize=16)
 def model(orientation: str = "point_dome_in",
-          seam_join_mode: str = "raw_trapezoid"):
+          seam_join_mode: str = "raw_trapezoid",
+          long_edge_in: float | None = None,
+          trunk_diameter_in: float | None = None):
     """The solved physical dome in one wedge orientation.
 
     Cached because building it solves 120 members and 55 seams, and the film asks for
     the same handful of configurations over and over while it lays out its screens.
+
+    ``long_edge_in`` and ``trunk_diameter_in`` are left at the simulator's own defaults
+    unless a caller has a reason to move them -- the seed-dome costing does, because a
+    product line is defined by the stick it is cut from.
     """
     sim = simulator()
-    config = sim.DomeConfig(wedge_orientation=orientation,
-                            seam_join_mode=seam_join_mode)
+    fields: dict[str, object] = {"wedge_orientation": orientation,
+                                 "seam_join_mode": seam_join_mode}
+    if long_edge_in is not None:
+        fields["long_edge_in"] = float(long_edge_in)
+    if trunk_diameter_in is not None:
+        fields["trunk_diameter_in"] = float(trunk_diameter_in)
+    config = sim.DomeConfig(**fields)
     return sim.build_physical_model(config)
 
 

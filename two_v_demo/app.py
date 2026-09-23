@@ -209,6 +209,11 @@ class MasterclassApp:
         self.camera_pitch = self.chapters[0].camera[1]
         self.camera_distance = self.chapters[0].camera[2]
         self.camera_override = False
+        # How this cut behaves -- camera, pace, mascot, treatment. The empty
+        # profile is the house behaviour, so every film that predates profiles
+        # gets the identical object it always effectively had.
+        from .style_profiles import profile_for
+        self.profile = profile_for(getattr(self.lesson, "profile", ""))
         self.xray = True
         self.metric = False
         self.dragging = False
@@ -899,7 +904,59 @@ class MasterclassApp:
         # A chapter with neither is left exactly as it was.
         from .callouts import draw_extras
         draw_extras(self, surface, width, height, style)
+        # Last, over everything. A profile whose treatment is "clean" -- which
+        # includes the empty profile every shipped film uses -- draws nothing
+        # and this costs one attribute read.
+        from .style_profiles import apply_treatment
+        apply_treatment(self, surface, width, height)
+        # Over absolutely everything, including a profile's own treatment: the
+        # beat number. It is a reference, so it must never be the thing that
+        # got covered up.
+        self.draw_beat_badge(surface, width, height)
         return surface
+
+    BEAT_BADGE = True
+    """Whether the beat number is burned into the top-left of every frame.
+
+    On for every render. It is how a person watching a cut says *"beat 11 is
+    wrong"* instead of *"the bit about the seams, maybe six minutes in"*, and
+    the whole point is that it is there without anybody having to ask for it.
+
+    A lesson can set ``beat_badge=False`` if it ever needs a clean frame --
+    nothing does today, and the plate style opts out on its own below because
+    a printed book page is not a beat of anything."""
+
+    def draw_beat_badge(self, surface, width: int, height: int) -> None:
+        """A small number in the top-left corner: which beat this is.
+
+        Deliberately plain and deliberately unmissable. It carries the
+        chapter's own number, which is the same number the narration script,
+        the release folder's thumbnails and the chapter list all use, so a
+        note about "beat 11" points at exactly one thing.
+        """
+        if not getattr(self.lesson, "beat_badge", self.BEAT_BADGE):
+            return
+        chapter = self.chapters[self.chapter_index]
+        if (chapter.overlay or self.lesson.style) == "plate":
+            return
+        pg = self.pygame
+        # Scaled off the frame's short side, so it is the same size on a
+        # phone as it is on a television.
+        unit = min(width, height) / 1080.0
+        font = self.font(max(15, int(30 * unit)), True)
+        text = font.render(str(chapter.number), True, (18, 24, 32))
+        pad = int(12 * unit)
+        margin = int(26 * unit)
+        box = pg.Rect(margin, margin,
+                      text.get_width() + pad * 2, text.get_height() + pad)
+        self.rounded_panel(surface, box, (245, 197, 66, 236),
+                           (255, 236, 186, 255), int(7 * unit))
+        surface.blit(text, (box.centerx - text.get_width() // 2,
+                            box.centery - text.get_height() // 2))
+        total = self.font(max(11, int(18 * unit)), True).render(
+            f"/{len(self.chapters)}", True, (214, 228, 240))
+        surface.blit(total, (box.right + int(7 * unit),
+                             box.centery - total.get_height() // 2))
 
     # Two labels may overlap by this much of the smaller one before the
     # layout pass intervenes. Generous on purpose: the overlapping look
@@ -1034,7 +1091,14 @@ class MasterclassApp:
         self.draw_world_labels(surface, width, height, scale)
 
         # A scrim only under the type, so the picture stays clean.
-        headline_font = self.font(max(30, int(54 * scale)), True)
+        # The profile's accent and type size. Both default to exactly what this
+        # chrome drew with before profiles existed, so a film with no profile
+        # is pixel-identical.
+        profile = getattr(self, "profile", None)
+        accent = profile.accent if profile else (255, 177, 62)
+        headline_font = self.font(
+            max(30, int(54 * scale * (profile.headline_scale if profile else 1.0))),
+            True)
         kicker_font = self.font(max(13, int(19 * scale)), True)
         margin = int(70 * scale)
         lines = self.wrap_text(chapter.promise, headline_font,
@@ -1064,7 +1128,7 @@ class MasterclassApp:
         bar = int(5 * scale)
         pg.draw.rect(surface, (22, 44, 60, 220),
                      pg.Rect(0, height - bar, width, bar))
-        pg.draw.rect(surface, (255, 177, 62, 255),
+        pg.draw.rect(surface, accent + (255,),
                      pg.Rect(0, height - bar, int(width * played), bar))
         return surface
 
@@ -2176,11 +2240,15 @@ def _export_both(cfg: dict) -> int:
     script = Path(__file__).resolve().parent.parent / "two_v_masterclass.py"
     target = Path(cfg["export_video"])
     folder = target.parent
+    # The children render; this parent builds the one release folder and cuts
+    # the one teaser once both cuts exist. Neither child is allowed either,
+    # or a "both" export produces three teasers and two release folders.
     before = set(folder.glob(f"{target.stem}*.mp4")) if folder.is_dir() else set()
     # The children render; this parent builds the one release folder once
     # both cuts exist, so neither child is allowed to build its own.
     _lc.write_config("two_v_masterclass",
-                     dict(cfg, orientation="landscape", release=False))
+                     dict(cfg, orientation="landscape", release=False,
+                          teaser=False))
     code = subprocess.call([sys.executable, str(script)])
     if code != 0:
         return code
@@ -2189,7 +2257,7 @@ def _export_both(cfg: dict) -> int:
     landscape = written[-1] if written else target
     vertical = target.with_name(f"{target.stem}-vertical{target.suffix}")
     second = dict(cfg, orientation="portrait", export_video=str(vertical),
-                  release=False)
+                  release=False, teaser=False)
     plan_path = landscape.parent / f"{landscape.stem}-narration-plan.json"
     if plan_path.is_file() and not cfg.get("no_narration"):
         second["local_narration_plan"] = str(plan_path)
@@ -2204,7 +2272,74 @@ def _export_both(cfg: dict) -> int:
     if cfg.get("release", True):
         _build_release(str(cfg.get("lesson") or ""), landscape,
                        phone[-1] if phone else None)
+    _render_teaser(cfg, str(cfg.get("lesson") or ""))
     return 0
+
+
+def teaser_tickets(cfg: dict) -> list[dict]:
+    """Every ticket a "both" export writes, so the fan-out can be checked.
+
+    Exists for the selftest. A `both` export spawns two children and each
+    child goes down the single-orientation path, which also cuts a teaser --
+    so without `teaser=False` on the children a single render produced three
+    teasers. Counting the tickets is the cheapest way to notice that again.
+    """
+    landscape = dict(cfg, orientation="landscape", release=False,
+                     teaser=False)
+    portrait = dict(cfg, orientation="portrait", release=False, teaser=False)
+    return [landscape, portrait]
+
+
+def _render_teaser(cfg: dict, lesson_key: str) -> None:
+    """Cut this film's teaser, as part of rendering the film.
+
+    A teaser used to be a separate thing somebody remembered to ask for, which
+    meant most films did not have one. It is now part of what "render" means:
+    every export builds the short vertical cut as well, from the film's own
+    chapters, into ``deliverables/teasers``.
+
+    Never allowed to fail the render that came before it. By the time this
+    runs the film is already safely on disk, and a teaser that would not build
+    is not a reason to report the film as a failure -- it is a reason to print
+    why and move on.
+    """
+    from .teasers import OUTPUT_DIR, PREFIX
+
+    if not lesson_key or lesson_key.startswith(PREFIX):
+        return
+    if not cfg.get("teaser", True):
+        return
+    try:
+        target = Path(OUTPUT_DIR) / f"{lesson_key}-teaser.mp4"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        script = Path(__file__).resolve().parent.parent / "two_v_masterclass.py"
+        ticket = {key: value for key, value in cfg.items()
+                  if key in ("fps", "render_fps", "video_encoder",
+                             "video_preset", "voice", "ffmpeg", "ffprobe",
+                             "no_narration")}
+        ticket.update({
+            "lesson": f"{PREFIX}{lesson_key}",
+            "action": "export_video",
+            "export_video": str(target),
+            # Vertical, because a teaser is for a phone, and its own release
+            # folder would be a folder holding one short file.
+            "orientation": "portrait",
+            "release": False,
+            # The one flag that matters: without it this would render a
+            # teaser of the teaser, and then a teaser of that.
+            "teaser": False,
+            # A teaser is a hook, not a chapter of a film; the shared outro
+            # and call to action belong on the film.
+            "compose_segments": False,
+        })
+        print(f"film done; now the teaser: {target.name}")
+        _lc.write_config("two_v_masterclass", ticket)
+        code = subprocess.call([sys.executable, str(script)])
+        if code != 0:
+            print(f"teaser not built: renderer exited {code}")
+    except (OSError, ValueError, KeyError, RuntimeError,
+            subprocess.CalledProcessError) as exc:
+        print(f"teaser not built: {exc}")
 
 
 def _build_release(lesson_key: str, cut: Path,
@@ -2653,6 +2788,7 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
         app.pygame.quit()
         if cfg.get("release", True):
             _build_release(lesson.key, Path(cfg["export_video"]))
+        _render_teaser(cfg, lesson.key)
         return 0
     app.run()
     return 0

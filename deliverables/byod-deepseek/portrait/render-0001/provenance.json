@@ -1,0 +1,7 @@
+{
+  "render_manifest": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-deepseek\\portrait\\render-0001\\render.json",
+  "audio": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-deepseek\\audio\\take-0001\\narration.m4a",
+  "audio_sha256": "41be6867e43695038e081c01c76265339af44de67ddef2863c3d0c959f07e69d",
+  "cut": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-deepseek\\attempt-v1-deepseek-vertical.mp4",
+  "smoke_test": false
+}

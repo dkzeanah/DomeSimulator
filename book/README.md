@@ -71,7 +71,7 @@ it is typed and silently wrong from the first time anything changes, and
 there is no way to find those afterwards — nothing fails, the book just
 becomes untrue in places nobody remembers.
 
-The **Numbers** tab in Book Studio lists all 145 tokens with their current
+The **Numbers** tab in Book Studio lists all 885 tokens with their current
 values and a button to drop one into the text. A misspelt token stops the
 export rather than printing a blank.
 
@@ -82,26 +82,44 @@ page promises a reader can follow one track:
 
 * **story** (7 chapters) — what happened, in order, to somebody with a saw.
 * **howto** (18) — do this, then this. A complete set of instructions alone.
-* **explain** (18) — why any of it works. Skippable.
+* **explain** (34) — why any of it works. Skippable.
 * **reference** (9) — tables you come back to at the bench.
 
 ## The two calculations
 
-Part IV is the core, and it teaches sizing in both directions:
+The calculations sit in Part 1 as a section, and they teach sizing in both
+directions:
 
-* **Method A, design first** (Ch. 18) — pick a floor area, get a cut list and
+* **Method A, design first** (Ch. 21) — pick a floor area, get a cut list and
   a felling list.
-* **Method B, tree first** (Ch. 19) — measure a trunk, buck it, and find out
+* **Method B, tree first** (Ch. 22) — measure a trunk, buck it, and find out
   what dome it makes. This is the one the title refers to.
-* **The round trip** (Ch. 20) — proof they are one calculation held at
+* **The round trip** (Ch. 23) — proof they are one calculation held at
   opposite ends. It prints the residual rather than asserting it.
+
+## The two parts
+
+The book is assembled as two parts:
+
+* **Part 1 — How to Build One** (Ch. 1–52): the story, the method, the
+  fortnight and the bench, absorbed unchanged from the original 52-chapter
+  book, its old parts kept as sections.
+* **Part 2 — Why It Scales** (Ch. 53–68): the flat parts list, the nine
+  processes, the hour at the log, the fuel ledger, the envelope, the pad and
+  its economics, the iris, the network, and the closing audit of what would
+  have to be true. This part is drafted; Part 1's prose is still mostly
+  scaffolds.
+
+A third part, *Who This Is For* (the biography), is parked by request and
+drops in at the front when it is written; neither of the other two parts
+depends on it.
 
 ## Where the numbers come from
 
 | module | what it holds |
 |---|---|
 | `two_v_demo/book_math.py` | Both methods, the tree model, the declared constants, the audit. |
-| `two_v_demo/book_tokens.py` | The 145 live figures and cross-references the manuscript may quote. |
+| `two_v_demo/book_tokens.py` | The 885 live figures and cross-references the manuscript may quote. |
 | `two_v_demo/book.py` | The outline: parts, chapters, pages, figure placement. |
 | `two_v_demo/book_figures.py` | The renderers, and the append-only save rule. |
 | `two_v_demo/book_plots.py` | Every table and chart. |
@@ -118,7 +136,7 @@ not sketches of them.
 
 ## Illustrations
 
-65 figures, drawn by seven renderers:
+77 figures, drawn by seven renderers:
 
 * **raw_wedge_world** — the solved dome, in a named view. Real geometry.
 * **raw_wedge_jig** — the fabrication jig at one of its twelve stages.

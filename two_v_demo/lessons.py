@@ -38,6 +38,29 @@ class Chapter:
     Empty for every film made before they existed, which is what keeps those
     films re-rendering exactly as they shipped."""
 
+    mood: str = "neutral"
+    """The register this chapter is in, for the project's mascot.
+
+    A key into :data:`two_v_demo.mascot.MOODS` -- the character's colour, its
+    expression and how much it moves. It is called *mood* rather than *tone*
+    because :attr:`two_v_demo.callouts.Callout.tone` already exists one level
+    down and two different tones in one codebase would be a real collision.
+
+    The default is the character's resting skin, so a chapter that says nothing
+    about its mood is not a special case.
+
+    Deliberately trailing, and after ``callouts``: three lessons construct a
+    Chapter with eleven positional arguments and ``callouts`` in slot eleven,
+    so a field inserted before it would silently shift every one of them."""
+
+    mascot: tuple = ()
+    """When the character appears, what it says, what it does.
+
+    A tuple of :class:`two_v_demo.mascot.MascotCue`. Empty for every film made
+    before the mascot existed, and empty means the character is not in this
+    chapter at all -- which is what keeps every shipped film re-rendering
+    exactly as it shipped."""
+
 
 # A scene painter receives the live app, the two geometry batches it should
 # fill, and the chapter's 0..1 progress.
@@ -84,12 +107,36 @@ class Lesson:
     and stacking the overlays (see :mod:`two_v_demo.frame`). ``off`` keeps
     the authored framing exactly, for a lesson that composes its own shots
     for each frame size, like the book's plates."""
+    profile: str = ""
+    """Which stylization register this cut is in.
+
+    A key into :data:`two_v_demo.style_profiles.PROFILES` -- camera behaviour,
+    pacing, how much of the mascot it uses, and what is laid over the finished
+    frame. One script can therefore be cut two ways without a word of it
+    changing.
+
+    Empty is the default and means "as shipped": the house camera, the house
+    pace, no treatment, no character. Every film made before profiles existed
+    behaves exactly like the empty profile, which is why one exists and why it
+    is a no-op rather than the first real register."""
+
     ground: str = "grid"
     """``grid`` lays the renderer's dark plate and grid under every scene.
     ``off`` leaves the stage bare, for a lesson whose subjects bring their
     own ground -- a Dome Creator building arrives standing on its own
     foundation, and the plate only cuts across it. ``grid`` is the default so
     every film made before this existed renders exactly as it shipped."""
+
+    beat_badge: bool = True
+    """Burn the chapter number into the top-left of every frame.
+
+    On for everything, on purpose. It is what lets somebody watching a cut say
+    "beat 11 is wrong" and have that point at exactly one chapter -- the same
+    number the narration script, the thumbnails and the chapter list use.
+
+    This is the one default in this class that deliberately does NOT preserve
+    how older films rendered: every re-render gains the badge, because a
+    reference mark nobody can see is not a reference mark."""
 
     def validate(self) -> None:
         """Fail loudly at load time rather than mid-render."""
@@ -138,6 +185,20 @@ class Lesson:
             for chapter in self.chapters:
                 if chapter.callouts:
                     validate_chapter(chapter, self.style != "hype")
+
+        # The mascot is checked for the same reason: a mood that is not in the
+        # table, or a line cued to words nobody says, is a fault that would
+        # otherwise appear as a character standing silently in the wrong colour
+        # an hour and a half into a render.
+        if any(getattr(chapter, "mascot", ()) for chapter in self.chapters):
+            from .mascot import MOODS, validate_cues
+            for chapter in self.chapters:
+                if getattr(chapter, "mood", "neutral") not in MOODS:
+                    raise ValueError(
+                        f"lesson {self.key!r} chapter {chapter.number} has "
+                        f"unknown mood {chapter.mood!r}")
+                if getattr(chapter, "mascot", ()):
+                    validate_cues(chapter)
 
 
 CHAPTERS: tuple[Chapter, ...] = (

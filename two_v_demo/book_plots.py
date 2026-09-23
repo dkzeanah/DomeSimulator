@@ -141,15 +141,19 @@ def plot_declared_constants(figure: Figure):
     rows = tuple(
         (item.key.replace("_", " "), _fmt(item.value), item.unit, item.kind)
         for item in bm.DECLARED)
+    # The count is len(DECLARED), not a word typed into the note. It was
+    # "eleven" for a while after the table had grown to fourteen rows, which
+    # is exactly the drift this book exists to refuse.
     return table(
         "Declared constants: inputs, not results",
         ("what", "value", "unit", "kind"),
         rows, align="lrll",
         note="Everything else in this book is derived from geometry. These "
-             "eleven could not be, so they are declared here, with what "
-             "kind of number each one is. 'measured' was read off a real "
-             "object; 'priced' came from a shelf; 'decided' is a build "
-             "choice you may make differently.",
+             f"{len(bm.DECLARED)} could not be, so they are declared here, "
+             "with what kind of number each one is. 'measured' was read off "
+             "a real object; 'priced' came from a shelf; 'decided' is a "
+             "build choice you may make differently; 'estimated' is a guess, "
+             "and is labelled so you can discount it.",
         full_page=True)
 
 
@@ -802,10 +806,19 @@ def plot_strut_value(figure: Figure):
     work = bm.fortnight(plan)
     nominal = work.substitute_value_usd(plan.equivalent_two_by_fours)
     dressed = work.substitute_value_usd(plan.equivalent_dressed_two_by_fours)
+    # The brief's own figure is a declared constant, not a literal typed
+    # here, and the rate it implies is derived from it at this build's
+    # ripping pace rather than declared alongside it -- two numbers that
+    # can disagree are two numbers that eventually will.
+    brief = bm.declared("brief_strut_value_usd")
+    brief_rate = brief * work.struts_per_hour
     rows = (
-        ("Against a nominal 2x4 (8.00 sq in)",
+        (f"Against a nominal 2x4 "
+         f"({plan.member_area_in2 / plan.equivalent_two_by_fours:,.2f} sq in)",
          f"{plan.equivalent_two_by_fours:,.2f} boards", f"${nominal:,.2f}"),
-        ("Against a dressed 2x4 (5.25 sq in)",
+        (f"Against a dressed 2x4 "
+         f"({plan.member_area_in2 / plan.equivalent_dressed_two_by_fours:,.2f}"
+         f" sq in)",
          f"{plan.equivalent_dressed_two_by_fours:,.2f} boards",
          f"${dressed:,.2f}"),
         ("By board foot", f"{plan.bf_per_strut:,.2f} bf", "market varies"),
@@ -814,16 +827,21 @@ def plot_strut_value(figure: Figure):
         ("Implied rate, dressed", f"{work.struts_per_hour:,.0f}/hr",
          f"${work.hourly_rate_usd(plan.equivalent_dressed_two_by_fours):,.2f}"
          f"/hr"),
-        ("The brief's estimate", "—", "$50.00/hr"),
+        ("The brief's estimate", f"${brief:,.2f}/strut",
+         f"${brief_rate:,.2f}/hr"),
     )
     return table(
         "One strut, valued three ways",
         ("basis", "quantity", "value"), rows, align="lrr", footer_rows=1,
         note="The last row is the figure this project started from, and it "
-             "is the highest. It valued a strut at $10 by doubling a volume "
-             "ratio for safety; the rows above compute the ratio from the "
-             "actual cross-section. Both computed rates are real; neither "
-             "is money anybody has been paid.")
+             f"is the highest -- ${brief:,.2f} a strut, reached by doubling "
+             "a volume ratio for safety. The rows above compute the ratio "
+             "from the actual cross-section instead. Note which way the "
+             "honest correction runs: a dressed 2x4 is smaller than its "
+             "name, so a strut replaces more of them, and the *dressed* "
+             "comparison is the higher of the two computed rows, not the "
+             "lower. Both computed rates are real; neither is money anybody "
+             "has been paid.")
 
 
 def plot_hours_log(figure: Figure):
@@ -947,8 +965,775 @@ def plot_shaving_cost(figure: Figure):
              "profile fit everywhere.")
 
 
+def plot_flat_rate(figure: Figure):
+    """Three lines: the parts list, the stick, and the floor.
+
+    This is the whole scaling argument in one picture, and it only works
+    if all three are indexed to the same dome, so the reader is comparing
+    multiples and not units.  Everything is swept out of
+    :class:`franken_economics.DomeSize` rather than plotted from a formula,
+    so the curve cannot drift from the table on the facing page.
+    """
+    from . import franken_economics as fe
+
+    base = fe.DomeSize(10.0 * 12.0 / 2.0)
+    # Stop the sweep on the last row of the table, so the multiples written
+    # at the right-hand end are the ones the facing page prints.
+    span = [6.0 + 0.5 * step for step in range(49)]      # 6 ft to 30 ft
+    sizes = [fe.DomeSize(feet * 12.0 / 2.0) for feet in span]
+    floor = [s.floor_area_sqft / base.floor_area_sqft for s in sizes]
+    stick = [s.strut_feet / base.strut_feet for s in sizes]
+    parts = [s.struts / base.struts for s in sizes]
+
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.11, 0.20, 0.72, 0.66])
+    axes.plot(span, floor, color=STYLE.accent, linewidth=2.0,
+              label="floor you get")
+    axes.plot(span, stick, color=STYLE.wood, linewidth=2.0,
+              label="stick you cut")
+    axes.plot(span, parts, color=STYLE.good, linewidth=2.0,
+              label="parts to handle")
+    axes.axhline(1.0, color=STYLE.rule, linewidth=0.6, zorder=0)
+
+    large = fe.flat_rate_table()[-1]
+    ends = (
+        (large.floor_area_sqft / base.floor_area_sqft, STYLE.accent),
+        (large.strut_feet / base.strut_feet, STYLE.wood),
+        (large.struts / base.struts, STYLE.good),
+    )
+    for value, colour in ends:
+        axes.annotate(f"x{value:.0f}", (large.diameter_ft, value),
+                      xytext=(7, 0), textcoords="offset points",
+                      fontsize=8.5, color=colour, weight="bold",
+                      va="center")
+
+    axes.set_xlabel("diameter, feet")
+    axes.set_ylabel(f"multiple of the {base.diameter_ft:.0f} ft dome")
+    axes.set_title("What actually grows when a dome gets bigger")
+    axes.set_xlim(span[0], span[-1] + 2.0)
+    axes.set_ylim(0, max(floor) * 1.08)
+    axes.legend(loc="upper left", fontsize=7.5, frameon=False)
+    axes.text(0.0, -0.26,
+              _wrap("Indexed to the "
+                    f"{base.diameter_ft:.0f} foot dome. Floor area follows "
+                    "the square of the diameter, the stick follows the "
+                    "diameter, and the parts list does not follow it at all "
+                    f"-- {base.struts} members, {base.brackets} brackets and "
+                    f"{base.screws} screws at every point on this chart. The "
+                    "gap between the blue line and the green one is the "
+                    "whole argument.", 92),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def plot_solo_band(figure: Figure):
+    """Where one pair of hands runs out, and what that costs in diameter."""
+    from . import franken_economics as fe
+
+    band = fe.solo_band()
+    span = [6.0 + 0.5 * step for step in range(53)]
+    sizes = [fe.DomeSize(feet * 12.0 / 2.0) for feet in span]
+    longs = [s.long_member_ft for s in sizes]
+    shorts = [s.short_member_ft for s in sizes]
+
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.11, 0.20, 0.72, 0.66])
+    axes.axvspan(span[0], band.diameter_ft, color=STYLE.faint, zorder=0)
+    axes.plot(span, longs, color=STYLE.wood_dark, linewidth=2.0,
+              label="longest stick to cut")
+    axes.plot(span, shorts, color=STYLE.wood, linewidth=1.6,
+              linestyle="--", label="shortest stick to cut")
+    axes.axhline(band.member_ft, color=STYLE.warn, linewidth=1.2)
+    axes.annotate(f"declared limit, {band.member_ft:.0f} ft",
+                  (span[0] + 0.4, band.member_ft), xytext=(0, 4),
+                  textcoords="offset points", fontsize=7.5,
+                  color=STYLE.warn, weight="bold")
+    axes.axvline(band.diameter_ft, color=STYLE.warn, linewidth=1.0,
+                 linestyle=":")
+
+    for size in fe.flat_rate_table():
+        inside = size.within_solo_reach
+        axes.plot([size.diameter_ft], [size.long_member_ft], marker="o",
+                  markersize=5.0,
+                  color=STYLE.good if inside else STYLE.warn, zorder=4)
+        # Above the solid line: the gap between the two members is too
+        # narrow to label into, and the first draft put "20 ft" straight
+        # through the short-member dashes.
+        axes.annotate(f"{size.diameter_ft:.0f} ft",
+                      (size.diameter_ft, size.long_member_ft),
+                      xytext=(0, 7), textcoords="offset points",
+                      fontsize=7.2, color=STYLE.ink, ha="center")
+
+    axes.set_xlabel("diameter, feet")
+    axes.set_ylabel("member length, feet")
+    axes.set_title(f"One pair of hands reaches {band.diameter_ft:.1f} feet")
+    axes.set_xlim(span[0], span[-1])
+    axes.set_ylim(0, max(longs) * 1.08)
+    axes.legend(loc="upper left", fontsize=7.5, frameon=False)
+    axes.text(0.0, -0.26,
+              _wrap(f"The {band.member_ft:.0f} foot limit is declared, not "
+                    "solved: it is the longest stick this builder will carry, "
+                    "stand both ends of and set without help. Everything "
+                    "downstream of it is computed, and computed by the wedge "
+                    "solver rather than by scaling a chord -- a pinwheel "
+                    "member is inset from the vertex by an amount that "
+                    "depends on its width, so these curves are not straight "
+                    "lines through the origin. A "
+                    f"{band.member_ft:.0f} foot cut member is a dome "
+                    f"{band.diameter_ft:.1f} feet across, "
+                    f"{band.floor_area_sqft:.0f} square feet of floor, with "
+                    f"{band.short_member_ft:.2f} feet as the other stick -- "
+                    "which is also the dome two trees yield. Inside the "
+                    "shaded band the parts list, the operations and the "
+                    "effort do not change.", 92),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def plot_process_counts(figure: Figure):
+    """Every operation's repetition count, indexed, across four diameters.
+
+    The point of the picture is the thing that looks like a drawing error:
+    seven of the nine lines land exactly on top of each other at 1.0, so
+    the chart shows one flat line where there are seven.  That is said in
+    the label rather than fixed by jittering them apart, because the
+    superposition *is* the result.  Which operations are flat is read from
+    :data:`franken_economics.PROCESSES`, not decided here.
+    """
+    from . import franken_economics as fe
+
+    span = [10.0 + 0.5 * step for step in range(41)]     # 10 ft to 30 ft
+    sizes = [fe.DomeSize(feet * 12.0 / 2.0) for feet in span]
+    base = sizes[0]
+
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.11, 0.20, 0.72, 0.66])
+
+    flat = [step for step in fe.PROCESSES if step.flat]
+    moving = [step for step in fe.PROCESSES if not step.flat]
+
+    for step in flat:
+        axes.plot(span,
+                  [step.repetitions(s) / step.repetitions(base)
+                   for s in sizes],
+                  color=STYLE.good, linewidth=2.0, zorder=3)
+    for step, colour, style in zip(moving,
+                                   (STYLE.wood, STYLE.accent),
+                                   ("-", "-")):
+        axes.plot(span,
+                  [step.repetitions(s) / step.repetitions(base)
+                   for s in sizes],
+                  color=colour, linewidth=2.0, linestyle=style,
+                  label=f"{step.name.lower()} ({step.unit})", zorder=4)
+
+    axes.plot([], [], color=STYLE.good, linewidth=2.0,
+              label=f"{len(flat)} operations, superimposed")
+    axes.axhline(1.0, color=STYLE.rule, linewidth=0.6, zorder=0)
+
+    for step, colour in zip(moving, (STYLE.wood, STYLE.accent)):
+        end = step.repetitions(sizes[-1]) / step.repetitions(base)
+        axes.annotate(f"x{end:.0f}", (span[-1], end), xytext=(6, 0),
+                      textcoords="offset points", fontsize=8.5,
+                      color=colour, weight="bold", va="center")
+    axes.annotate("x1", (span[-1], 1.0), xytext=(6, 0),
+                  textcoords="offset points", fontsize=8.5,
+                  color=STYLE.good, weight="bold", va="center")
+
+    axes.set_xlabel("diameter, feet")
+    axes.set_ylabel(f"multiple of the {base.diameter_ft:.0f} ft dome")
+    axes.set_title("How often each of the nine happens")
+    axes.set_xlim(span[0], span[-1] + 2.2)
+    axes.set_ylim(0, 9.6)
+    axes.legend(loc="upper left", fontsize=7.5, frameon=False)
+    counts = ", ".join(
+        f"{step.repetitions(base):,.0f} {step.unit}"
+        for step in flat)
+    axes.text(0.0, -0.26,
+              _wrap(f"{len(flat)} of the {len(fe.PROCESSES)} operations are "
+                    "drawn here and only one line is visible, because they "
+                    "are identical: " + counts + ", at every diameter on "
+                    "this chart. They are the operations that work on "
+                    f"joints, and the joint count is fixed. The other "
+                    f"{len(moving)} touch raw material and area instead -- "
+                    "felling follows the linear feet of cut member, "
+                    "glassing follows the shell, and the shell goes as the "
+                    "square. The step in the felling line is a whole tree.",
+                    92),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def plot_process_table(figure: Figure):
+    """The nine operations against four diameters, count by count.
+
+    The chart on the facing page shows that seven lines coincide; this
+    prints what they coincide *at*, because a builder ordering brackets
+    wants the number and not the shape of it.  Both read the same
+    :data:`franken_economics.PROCESSES`.
+    """
+    from . import franken_economics as fe
+
+    sizes = fe.flat_rate_table()
+    headers = ("operation", "tool", "counted in") + tuple(
+        f"{size.diameter_ft:.0f} ft" for size in sizes)
+    rows = []
+    for index, step in enumerate(fe.PROCESSES):
+        counts = tuple(
+            f"{size.process_counts[index].count:,.0f}" for size in sizes)
+        rows.append((step.name, step.tool, step.unit) + counts)
+
+    flat = sum(1 for step in fe.PROCESSES if step.flat)
+    return table(
+        "What each of the nine costs you, at four diameters",
+        headers, tuple(rows),
+        align="lll" + "r" * len(sizes),
+        note=(f"{flat} of the {len(fe.PROCESSES)} rows are constant all the "
+              "way across, and they are the rows that work on joints: the "
+              "joint count is fixed by the frame, and the frame is the same "
+              "frame at every diameter. Felling follows the linear feet of "
+              "cut member, so it steps a whole tree at a time; glassing "
+              "follows the shell, which goes as the square of the diameter. "
+              "Nothing else on the list notices how big the dome is."),
+        key=figure.key)
+
+
+def plot_rip_payback(figure: Figure):
+    """What a saving at one bench returns as the run of domes lengthens.
+
+    Measured against a whole ripping stage rather than in hours, because
+    hours are abstract and "you have been given back the ripping of one
+    dome" is not.  The improvement and the length of the run are the same
+    declared pair the chapter quotes, read from :mod:`book_tokens` so the
+    prose and the picture cannot disagree.
+    """
+    from . import book_tokens as bt
+
+    work = bm.fortnight()
+    fraction = bt.RIP_GAIN_FRACTION
+    run = bt.RIP_GAIN_BUILDS
+    builds = list(range(1, run * 2 + 1))
+    hours = [work.improvement(fraction, n).hours_total for n in builds]
+
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.11, 0.20, 0.72, 0.66])
+    axes.plot(builds, hours, color=STYLE.accent, linewidth=2.0,
+              marker="o", markersize=3.0,
+              label=f"{fraction * 100:.0f}% faster at the rip")
+
+    # The stage lines are labelled on the right, clear of the legend: the
+    # first draft put "2 whole ripping stages" straight through it.
+    stage = work.ripping_hours
+    for multiple in (1, 2):
+        axes.axhline(stage * multiple, color=STYLE.rule, linewidth=0.8,
+                     linestyle=":", zorder=0)
+        axes.annotate(f"{multiple} whole ripping "
+                      f"stage{'s' if multiple > 1 else ''}"
+                      f" ({stage * multiple:.0f} h)",
+                      (builds[-1], stage * multiple), xytext=(-2, 5),
+                      textcoords="offset points", fontsize=7.2,
+                      color=STYLE.muted, ha="right")
+
+    payoff = work.improvement(fraction, run)
+    axes.plot([run], [payoff.hours_total], marker="o", markersize=6.0,
+              color=STYLE.warn, zorder=5)
+    axes.annotate(f"{run} domes: {payoff.hours_total:.0f} h",
+                  (run, payoff.hours_total), xytext=(8, -12),
+                  textcoords="offset points", fontsize=7.8,
+                  color=STYLE.warn, weight="bold")
+
+    axes.set_xlabel("domes built")
+    axes.set_ylabel("hours returned")
+    axes.set_title(f"{payoff.seconds_per_strut:.0f} seconds a member, "
+                   "compounded")
+    axes.set_xlim(0, builds[-1] + 0.5)
+    axes.set_ylim(0, hours[-1] * 1.12)
+    axes.legend(loc="lower right", fontsize=7.5, frameon=False)
+    axes.text(0.0, -0.26,
+              _wrap("The ripping is "
+                    f"{work.ripping_hours:.0f} hours of the fortnight and "
+                    f"moves {work.struts_needed} members, which is "
+                    f"{work.minutes_per_strut:.0f} minutes each. Taking "
+                    f"{fraction * 100:.0f} per cent off that is "
+                    f"{payoff.seconds_per_strut:.0f} seconds a member and "
+                    f"{work.improvement(fraction).hours_per_build:.1f} hours "
+                    f"on one dome. Over {run} it is "
+                    f"{payoff.hours_total:.0f} hours -- "
+                    f"{payoff.rip_stages:.0f} entire ripping stage, handed "
+                    "back. The member count does not change with diameter, "
+                    "so neither does the refund: small domes pay it too.",
+                    92),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def _ledger():
+    """The costed build the fuel chapter reads, at the pinned serial."""
+    from . import book_tokens as bt
+    from . import energetics as en
+    return en.build_energy(bt.CALORIE_SERIAL, bt.CALORIE_CREW)
+
+
+_MOTION_LABEL = {
+    "walk_out": "walk to the pile",
+    "lift": "lift",
+    "carry": "carry",
+    "position": "place",
+    "fasten": "fasten",
+    "recover": "stand up",
+    "pause": "recovery allowance",
+}
+
+
+def plot_motion_split(figure: Figure):
+    """Each motion's share of the clock beside its share of the fuel.
+
+    Drawn as a pair rather than as the fuel alone, because the fuel bar on
+    its own would let a reader think fastening is expensive per minute.  It
+    is not especially: it is 3.5 METs.  It dominates the ledger by filling
+    the day, and only the *gap* between the two bars is intensity.  Saying
+    that with one bar is not possible, so there are two.
+    """
+    energy = _ledger()
+    fuel = energy.by_motion()
+    clock = energy.seconds_by_motion()
+    order = sorted(fuel, key=lambda name: -fuel[name])
+
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.24, 0.20, 0.62, 0.66])
+
+    rows = list(range(len(order)))
+    height = 0.36
+    fuel_share = [fuel[name] / energy.kcal_per_worker * 100.0 for name in order]
+    time_share = [clock[name] / energy.seconds_per_worker * 100.0
+                  for name in order]
+
+    axes.barh([r + height / 2 for r in rows], fuel_share, height=height,
+              color=STYLE.warn, label="share of the food energy")
+    axes.barh([r - height / 2 for r in rows], time_share, height=height,
+              color=STYLE.wood, label="share of the clock")
+
+    for row, (food_pct, time_pct) in enumerate(zip(fuel_share, time_share)):
+        for offset, value, colour in ((height / 2, food_pct, STYLE.warn),
+                                      (-height / 2, time_pct, STYLE.wood)):
+            if value < 0.35:
+                continue
+            # A tenth of a per cent matters down here: the first draft
+            # printed "0%" against bars that are the whole reason for the
+            # chapter.
+            shown = f"{value:.0f}%" if value >= 10.0 else f"{value:.1f}%"
+            axes.annotate(shown, (value, row + offset),
+                          xytext=(4, 0), textcoords="offset points",
+                          fontsize=7.4, color=colour, va="center")
+
+    axes.set_yticks(rows)
+    axes.set_yticklabels([_MOTION_LABEL[name] for name in order], fontsize=8.0)
+    axes.invert_yaxis()
+    axes.set_xlabel("per cent of one worker's build")
+    axes.set_title("Where the day goes, and where the fuel goes")
+    axes.set_xlim(0, 100)
+    axes.legend(loc="lower right", fontsize=7.5, frameon=False)
+
+    fasten_food = fuel["fasten"] / energy.kcal_per_worker * 100.0
+    fasten_time = clock["fasten"] / energy.seconds_per_worker * 100.0
+    handling = sum(fuel[name] for name in ("lift", "carry", "walk_out")
+                   ) / energy.kcal_per_worker * 100.0
+    axes.text(0.0, -0.26,
+              _wrap(f"Fastening is {fasten_time:.0f} per cent of the clock "
+                    f"and {fasten_food:.0f} per cent of the fuel. The "
+                    f"{fasten_food - fasten_time:.0f} points between those "
+                    "two bars are the only part of it that is intensity; "
+                    "the rest is simply where the day goes. The recovery "
+                    "allowance runs the other way, costing less fuel than "
+                    "clock, because standing still is cheap. Lifting, "
+                    "carrying and walking together come to "
+                    f"{handling:.1f} per cent of the food, which is the "
+                    "finding that decides what is worth designing out.", 92),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def plot_motion_efficiency(figure: Figure):
+    """How much of each motion's fuel became height, against the ceiling.
+
+    The whole-build figure and the lift's figure are both true and two
+    orders of magnitude apart, which reads as a contradiction until they
+    are drawn on the same axis with muscle's own limit on it.  The lift is
+    a normal human lift.  The build average is small because a build is
+    hardly ever lifting.
+    """
+    from . import energetics as en
+
+    energy = _ledger()
+    shares = energy.motion_efficiency()
+    order = sorted(shares, key=lambda name: -shares[name])
+
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.24, 0.20, 0.62, 0.66])
+
+    rows = list(range(len(order)))
+    values = [shares[name] * 100.0 for name in order]
+    axes.barh(rows, values, height=0.55, color=STYLE.key)
+    for row, value in zip(rows, values):
+        axes.annotate("nothing" if value < 0.005 else f"{value:.2f}%",
+                      (value, row), xytext=(4, 0),
+                      textcoords="offset points", fontsize=7.4,
+                      color=STYLE.muted if value < 0.005 else STYLE.ink,
+                      va="center")
+
+    ceiling = en.CONCENTRIC_EFFICIENCY * 100.0
+    axes.axvline(ceiling, color=STYLE.rule, linewidth=0.9, linestyle=":")
+    axes.annotate(f"what muscle can convert at best ({ceiling:.0f}%)",
+                  (ceiling, rows[-1]), xytext=(-4, 0),
+                  textcoords="offset points", fontsize=7.2,
+                  color=STYLE.muted, ha="right", va="center")
+
+    average = energy.mechanical_fraction * 100.0
+    axes.axvline(average, color=STYLE.warn, linewidth=1.2)
+    # Set out in a blank row below the bars, with a leader back to the
+    # line. Against the lift it reads as a label for the lift; level with a
+    # bar the leader runs through that bar's "nothing". Both were drawn and
+    # looked at, which is why there is a spare row here.
+    below = rows[-1] + 0.85
+    axes.annotate(f"whole build: {average:.1f}%", xy=(average, below),
+                  xytext=(ceiling * 0.22, below), textcoords="data",
+                  fontsize=7.4, color=STYLE.warn, weight="bold",
+                  va="center",
+                  arrowprops=dict(arrowstyle="->", color=STYLE.warn,
+                                  linewidth=0.9, shrinkB=1.0))
+
+    axes.set_yticks(rows)
+    axes.set_yticklabels([_MOTION_LABEL[name] for name in order], fontsize=8.0)
+    axes.invert_yaxis()
+    axes.set_ylim(rows[-1] + 1.3, rows[0] - 0.6)
+    axes.set_xlabel("per cent of that motion's fuel that became height")
+    axes.set_title("What actually went upward")
+    axes.set_xlim(0, ceiling * 1.12)
+    axes.text(0.0, -0.26,
+              _wrap("The lift converts "
+                    f"{shares['lift'] * 100:.1f} per cent, which is an "
+                    "ordinary human lift and not far off the best a muscle "
+                    "can do. The build converts "
+                    f"{average:.1f} per cent, because across "
+                    f"{energy.hours_per_worker:.0f} hours it is hardly ever "
+                    f"lifting. Put the other way up: "
+                    f"{energy.fuel_per_lifting_kcal:,.0f} calories are "
+                    "burned for every one that ends up as height. Fastening "
+                    "raises nothing at all, and it is most of the build.",
+                    92),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def plot_station_ledger(figure: Figure):
+    """Every station of the line, with what it costs a body to pass through."""
+    energy = _ledger()
+    stages = sorted(energy.by_stage().items(), key=lambda kv: -kv[1]["kcal"])
+    rows = tuple(
+        (name, f"{row['elements']:,.0f}", f"{row['kg']:,.0f}",
+         f"{row['seconds'] / 3600.0:,.1f}", f"{row['kcal']:,.0f}",
+         _fmt(row["kcal"] / energy.kcal_per_worker * 100.0, 1))
+        for name, row in stages)
+    rows += ((
+        "whole build", f"{len(energy.elements):,.0f}",
+        f"{energy.total_mass_kg:,.0f}", f"{energy.hours_per_worker:,.1f}",
+        f"{energy.kcal_per_worker:,.0f}", "100.0"),)
+    # The layers that go on over the frame, against the frame. The grouping
+    # and the arithmetic live in energetics.SKIN_STAGES, because the chapter
+    # quotes these same two multiples in prose.
+    return table(
+        "One building, counted in parts, hours and calories",
+        ("station", "parts", "kg", "hours", "kcal", "% fuel"),
+        rows, align="lrrrrr",
+        note="Per worker, for a crew of "
+             f"{energy.crew}. The hours are task time including the "
+             "recovery allowance; the calories are what a "
+             f"{energy.body_mass:.0f} kg body spends doing them. The order "
+             "is by fuel, and it is not the order of mass. The layers that "
+             f"go on over the frame weigh "
+             f"{energy.skin_versus_frame('kg'):.1f} times what the frame "
+             f"weighs and cost {energy.skin_versus_frame('kcal'):.1f} times "
+             "its fuel -- because there are more parts to fasten, and every "
+             "fastening is time.",
+        full_page=True, footer_rows=1)
+
+
+# ----------------------------------------------------------------------
+# Envelope: the dome against an equal-floor box
+# ----------------------------------------------------------------------
+
+def _envelopes():
+    """Both buildings at the book's own floor area, not the video's.
+
+    :mod:`dome_advantage` defaults to a round 314 sq ft chosen for a
+    campaign film. The book's dome came out of two pines at 365, and
+    ``book_tokens.book_floor_sqft`` is the one place that says so. These
+    plots and the ``skin.*`` tokens both call it, which is the only reason
+    a caption and a paragraph can be trusted to agree.
+    """
+    from . import book_tokens as bt
+    from . import dome_advantage as adv
+    floor = bt.book_floor_sqft()
+    return floor, adv.dome_envelope(floor), adv.box_envelope(floor)
+
+
+def plot_envelope_compare(figure: Figure):
+    """The two buildings in elevation, to one scale, with their skins.
+
+    Drawn rather than tabulated because the argument is a shape argument.
+    The box is taller at the ridge and squarer everywhere, and the reason
+    it costs more skin is visible before any number is read.
+
+    The headroom line is on here for the opposite reason: it is the part
+    of the comparison that does not flatter the dome, and leaving it off
+    would make this a sales drawing.
+    """
+    from . import dome_advantage as adv
+
+    floor, dome, box = _envelopes()
+    radius = adv.dome_radius_ft(floor)
+    side = math.sqrt(floor)
+    wall = adv.FACT["wall_height_ft"]
+    rise = 0.5 * side * adv.FACT["gable_pitch"]
+    head = adv.FACT["headroom_ft"]
+
+    # An equal-aspect drawing letterboxes inside whatever box it is given,
+    # so the axes is sized to the drawing's own proportions rather than to
+    # a round number -- otherwise the slack turns up as a dead band between
+    # the buildings and the caption.
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.04, 0.30, 0.92, 0.51])
+    axes.set_aspect("equal")
+    axes.set_axis_off()
+
+    gap = radius * 0.55
+    box_left = radius + gap
+    box_right = box_left + side
+
+    # The dome, as a real arc rather than a suggestion of one.
+    angles = [math.pi * i / 160.0 for i in range(161)]
+    arc_x = [radius * math.cos(a) for a in angles]
+    arc_y = [radius * math.sin(a) for a in angles]
+    axes.fill(arc_x, arc_y, color=STYLE.faint, zorder=1)
+    axes.plot(arc_x, arc_y, color=STYLE.accent, linewidth=1.8, zorder=3)
+
+    # The box: walls, then the gable on top of them.
+    axes.fill([box_left, box_right, box_right, box_left],
+              [0.0, 0.0, wall, wall], color=STYLE.faint, zorder=1)
+    axes.fill([box_left, box_right, 0.5 * (box_left + box_right)],
+              [wall, wall, wall + rise], color=STYLE.faint, zorder=1)
+    axes.plot([box_left, box_left, 0.5 * (box_left + box_right),
+               box_right, box_right, box_left],
+              [0.0, wall, wall + rise, wall, 0.0, 0.0],
+              color=STYLE.wood, linewidth=1.8, zorder=3)
+
+    # Ground, and the height a person needs to stand under.
+    axes.plot([-radius * 1.12, box_right + radius * 0.12], [0.0, 0.0],
+              color=STYLE.rule, linewidth=1.0, zorder=2)
+    axes.plot([-radius * 1.10, box_right + radius * 0.08], [head, head],
+              color=STYLE.warn, linewidth=0.8, linestyle="--", zorder=4)
+    # Offset far enough to clear the descender in "standing" -- at three
+    # points the dashed line ran through the g.
+    axes.annotate(f"{head:.0f} ft -- standing room", (-radius * 1.10, head),
+                  xytext=(0, 6), textcoords="offset points", fontsize=6.8,
+                  color=STYLE.warn, va="bottom")
+
+    # The dome's floor that the line cuts off, shaded on both flanks. This
+    # is the concession; it is drawn first and largest so that nobody has
+    # to read the caption to find it.
+    inner = math.sqrt(max(0.0, radius ** 2 - head ** 2))
+    span = [inner + (radius - inner) * i / 48.0 for i in range(49)]
+    for sign in (-1.0, 1.0):
+        axes.fill_between([sign * x for x in span], 0.0,
+                          [math.sqrt(max(0.0, radius ** 2 - x ** 2))
+                           for x in span],
+                          color=STYLE.warn, alpha=0.18, linewidth=0.0,
+                          zorder=2)
+
+    for label, envelope, height, centre, colour in (
+            ("2V dome", dome, radius, 0.0, STYLE.accent),
+            ("square house", box, wall + rise,
+             0.5 * (box_left + box_right), STYLE.wood)):
+        axes.annotate(f"{label}\n{envelope.envelope_sqft:,.0f} sq ft of skin\n"
+                      f"{envelope.volume_cuft:,.0f} cu ft inside\n"
+                      f"{height:.1f} ft tall",
+                      (centre, height), xytext=(0, 9),
+                      textcoords="offset points", fontsize=7.2,
+                      ha="center", va="bottom", color=colour, linespacing=1.45)
+
+    axes.set_xlim(-radius * 1.18, box_right + radius * 0.22)
+    axes.set_ylim(-1.0, max(radius, wall + rise) * 1.52)
+    axes.set_title(f"{floor:,.0f} square feet of floor, drawn twice",
+                   fontsize=9.5)
+
+    saving = adv.envelope_saving(floor)
+    stand = adv.standing_sqft(floor)[0]
+    fig.text(0.04, 0.215,
+             _wrap(f"Same floor, same scale. The dome wraps it in "
+                   f"{dome.envelope_sqft:,.0f} square feet of skin against "
+                   f"the box's {box.envelope_sqft:,.0f} -- {saving:.1f} per "
+                   f"cent less to build, seal and pay for. The shaded rim is "
+                   f"the catch: {floor - stand:,.0f} square feet of that "
+                   f"floor has less than {head:.0f} feet over it, while "
+                   f"every square foot of the box clears the line.", 92),
+             fontsize=7.2, va="top", color=STYLE.muted, style="italic")
+    return fig
+
+
+def plot_envelope_versus_size(figure: Figure):
+    """The surface margin against floor area, carried past its own death.
+
+    This is the chart that stops the headline being a slogan. The saving
+    is large at cabin size, ordinary at house size, and gone entirely at
+    the top of the sweep, because a hemisphere has to grow upward to grow
+    outward and a stud wall does not.
+    """
+    from . import dome_advantage as adv
+
+    floor, _dome, _box = _envelopes()
+    low, high = min(adv.SWEEP_FLOORS), max(adv.SWEEP_FLOORS)
+    steps = 240
+    areas = [low + (high - low) * i / steps for i in range(steps + 1)]
+    savings = [adv.envelope_saving(area) for area in areas]
+
+    fig = new_figure(PAGE_W_IN, HALF_H_IN + 0.5)
+    axes = fig.add_axes([0.14, 0.28, 0.81, 0.56])
+
+    axes.axhline(0.0, color=STYLE.rule, linewidth=1.0)
+    axes.fill_between(areas, 0.0, savings,
+                      where=[value >= 0.0 for value in savings],
+                      color=STYLE.good, alpha=0.15, linewidth=0.0)
+    axes.fill_between(areas, 0.0, savings,
+                      where=[value <= 0.0 for value in savings],
+                      color=STYLE.warn, alpha=0.22, linewidth=0.0)
+    axes.plot(areas, savings, color=STYLE.accent, linewidth=1.8)
+
+    crossover = adv.envelope_crossover_sqft()
+    volume_line = adv.volume_crossover_sqft()
+
+    # Three labels on one steep curve, and every obvious placement
+    # collides with something. The book's dome goes *under* the curve,
+    # into the shaded area, which is the only empty quarter near it; the
+    # crossover goes up and left rather than down, where it sat on the
+    # x-axis label; the volume line goes high, above both.
+    axes.axvline(volume_line, color=STYLE.muted, linewidth=0.8, linestyle=":")
+    axes.annotate("left of here the dome also\nencloses less air than the box",
+                  (volume_line, max(savings) * 0.90), xytext=(6, 0),
+                  textcoords="offset points", fontsize=6.6,
+                  color=STYLE.muted, ha="left", va="center", linespacing=1.4)
+
+    axes.plot([crossover], [0.0], "o", color=STYLE.warn, markersize=4.5,
+              zorder=5)
+    axes.annotate(f"the box wins from\n{crossover:,.0f} sq ft up",
+                  (crossover, 0.0), xytext=(-12, 30),
+                  textcoords="offset points", fontsize=7.0,
+                  color=STYLE.warn, ha="right", va="bottom", linespacing=1.4,
+                  arrowprops=dict(arrowstyle="->", color=STYLE.warn,
+                                  linewidth=0.9, shrinkB=3.0))
+
+    here = adv.envelope_saving(floor)
+    axes.plot([floor], [here], "o", color=STYLE.key, markersize=4.5, zorder=5)
+    # Set out into the empty third of the plot with a leader back. Beside
+    # the marker the second line ran along the curve; above it, the
+    # volume-crossover rule went through the middle of the words.
+    axes.annotate(f"this book's dome\n{floor:,.0f} sq ft, {here:.1f}%",
+                  xy=(floor, here),
+                  xytext=(low + (high - low) * 0.34, max(savings) * 0.72),
+                  textcoords="data", fontsize=7.0, color=STYLE.key,
+                  ha="left", va="center", linespacing=1.4,
+                  arrowprops=dict(arrowstyle="->", color=STYLE.key,
+                                  linewidth=0.9, shrinkB=3.0))
+
+    axes.set_xlabel("floor area of both buildings (sq ft)")
+    axes.set_ylabel("per cent less skin than the box")
+    axes.set_title("The saving is a small-building saving")
+    axes.set_xlim(low, high)
+    # Room under zero so the losing tail is a visible band rather than a
+    # thickening of the axis line.
+    axes.set_ylim(min(savings) - 5.0, max(savings) * 1.06)
+    axes.text(0.0, -0.32,
+              _wrap(f"Both buildings keep the same floor at every point on "
+                    f"this line. The dome's advantage falls from "
+                    f"{adv.envelope_saving(low):.1f} per cent at {low:,.0f} "
+                    f"square feet to {adv.envelope_saving(2000.0):.1f} at "
+                    f"2,000, and crosses zero at {crossover:,.0f}, where the "
+                    f"dome would stand "
+                    f"{adv.dome_radius_ft(crossover):.0f} feet tall and be "
+                    f"buying skin to wrap air nobody uses. The answer to "
+                    f"that is not a bigger sphere.", 92),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def plot_advantage_claims(figure: Figure):
+    """The four claims, with the one that is a restatement marked as one.
+
+    Heat loss through the envelope is surface area multiplied by a U-value
+    both buildings share, so its margin is the surface margin wearing a
+    different unit. Quoting the two together sounds like two findings and
+    is one. The column headed "new?" is the whole reason this is a table
+    rather than a list of good news.
+    """
+    from . import dome_advantage as adv
+
+    floor, _dome, _box = _envelopes()
+    claims = adv.advantages(floor)
+    # Marked here rather than explained per row: a sixth column of prose
+    # overflowed the page width, and the table renderer allocates by
+    # character count, so it overflowed silently into the column beside it.
+    new_fact = ("yes", "yes", "no", "yes")
+
+    rows = []
+    for claim, flag in zip(claims, new_fact):
+        places = 3 if max(claim.dome, claim.other) < 10.0 else 0
+        rows.append((claim.headline, _fmt(claim.dome, places),
+                     _fmt(claim.other, places),
+                     f"{claim.percent_better:.1f}%", flag))
+
+    honest = adv.equal_standing_advantage(floor)
+    rows.append((honest.headline, _fmt(honest.dome, 0), _fmt(honest.other, 0),
+                 f"{honest.percent_better:.1f}%", "yes"))
+
+    return table(
+        "Four claims, one of which is the first one again",
+        ("claim", "dome", "box", "margin", "new?"),
+        tuple(rows), align="lrrrl", footer_rows=1,
+        note=f"Row one is geometry -- the least skin that will go round a "
+             f"given floor. Row two asks a different question, skin per "
+             f"cubic foot rather than per square foot of floor, and gets a "
+             f"much smaller answer. Row four is two published drag "
+             f"coefficients and has nothing to do with area. Row three is "
+             f"marked 'no' because at an identical U-value heat loss is "
+             f"surface area in warmer units: it can only ever repeat row "
+             f"one, and quoting the pair sounds like two findings. The "
+             f"ruled-off row is row one re-run honestly. Every building "
+             f"above it has {floor:,.0f} square feet of floor; there the "
+             f"dome is grown to {adv.floor_for_standing(floor):,.0f} so that "
+             f"as much of its floor has {adv.FACT['headroom_ft']:.0f} feet "
+             f"over it as the box's does. Still a win. About half the size "
+             f"of the headline, and the one to quote at somebody who builds "
+             f"for a living.")
+
+
 PLOTS = {
     "declared_constants": plot_declared_constants,
+    "envelope_compare": plot_envelope_compare,
+    "envelope_versus_size": plot_envelope_versus_size,
+    "advantage_claims": plot_advantage_claims,
+    "motion_split": plot_motion_split,
+    "motion_efficiency": plot_motion_efficiency,
+    "station_ledger": plot_station_ledger,
+    "flat_rate": plot_flat_rate,
+    "solo_band": plot_solo_band,
+    "process_counts": plot_process_counts,
+    "process_table": plot_process_table,
+    "rip_payback": plot_rip_payback,
     "frame_counts": plot_frame_counts,
     "member_classes": plot_member_classes,
     "split_counts": plot_split_counts,

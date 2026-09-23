@@ -1,0 +1,284 @@
+{
+  "voice": "en-US-AvaMultilingualNeural",
+  "rate": "+16%",
+  "pitch": "+14Hz",
+  "lines": {
+    "and each other.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-and-each-other.mp3",
+    "it is a shed.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-it-is-a-shed.mp3",
+    "one pad. every size.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-one-pad-every-size.mp3",
+    "just freaking cool.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-just-freaking-cool.mp3",
+    "brainiac build.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-brainiac-build.mp3",
+    "glorified tents.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-glorified-tents.mp3",
+    "that is the whole point.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-that-is-the-whole-point.mp3",
+    "the one that does not help.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-the-one-that-does-not-help.mp3",
+    "not a month. never a month.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-not-a-month-never-a-month.mp3",
+    "it cost me. tremendously.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-it-cost-me-tremendously.mp3",
+    "the little guy. that is who.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-the-little-guy-that-is-who.mp3",
+    "a money shredder. at your convenience.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-a-money-shredder-at-your-convenience.mp3",
+    "one person. that is the whole ask.": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\mascot-lines\\line-one-person-that-is-the-whole-ask.mp3"
+  },
+  "showings": [
+    [
+      "title",
+      []
+    ],
+    [
+      "open",
+      []
+    ],
+    [
+      "why_host",
+      [
+        {
+          "line": "and each other.",
+          "start": 15.924,
+          "end": 18.524,
+          "mood": "smug"
+        }
+      ]
+    ],
+    [
+      "arrive",
+      []
+    ],
+    [
+      "legend",
+      []
+    ],
+    [
+      "storage",
+      [
+        {
+          "line": "it is a shed.",
+          "start": 2.698,
+          "end": 5.498,
+          "mood": "dry"
+        }
+      ]
+    ],
+    [
+      "center",
+      []
+    ],
+    [
+      "rooms",
+      []
+    ],
+    [
+      "pad_build",
+      []
+    ],
+    [
+      "decks",
+      []
+    ],
+    [
+      "iris",
+      [
+        {
+          "line": "one pad. every size.",
+          "start": 11.809,
+          "end": 14.809,
+          "mood": "hyped"
+        }
+      ]
+    ],
+    [
+      "rotation",
+      [
+        {
+          "line": "just freaking cool.",
+          "start": 7.679,
+          "end": 10.479,
+          "mood": "hyped"
+        }
+      ]
+    ],
+    [
+      "channels",
+      []
+    ],
+    [
+      "panel_lip",
+      []
+    ],
+    [
+      "veins",
+      [
+        {
+          "line": "brainiac build.",
+          "start": 19.173,
+          "end": 22.173,
+          "mood": "smug"
+        }
+      ]
+    ],
+    [
+      "floor",
+      [
+        {
+          "line": "glorified tents.",
+          "start": 49.824,
+          "end": 53.024,
+          "mood": "dry"
+        },
+        {
+          "line": "that is the whole point.",
+          "start": 83.113,
+          "end": 85.5,
+          "mood": "warm"
+        }
+      ]
+    ],
+    [
+      "catalog",
+      []
+    ],
+    [
+      "host_scope",
+      []
+    ],
+    [
+      "starter",
+      []
+    ],
+    [
+      "target",
+      []
+    ],
+    [
+      "line",
+      []
+    ],
+    [
+      "operating",
+      []
+    ],
+    [
+      "host_design",
+      []
+    ],
+    [
+      "deluxe",
+      [
+        {
+          "line": "the one that does not help.",
+          "start": 1.033,
+          "end": 4.233,
+          "mood": "grave"
+        }
+      ]
+    ],
+    [
+      "foundation",
+      []
+    ],
+    [
+      "stay",
+      []
+    ],
+    [
+      "crossover",
+      [
+        {
+          "line": "not a month. never a month.",
+          "start": 9.312,
+          "end": 12.312,
+          "mood": "dry"
+        }
+      ]
+    ],
+    [
+      "my_story",
+      [
+        {
+          "line": "it cost me. tremendously.",
+          "start": 24.899,
+          "end": 28.499,
+          "mood": "grave"
+        }
+      ]
+    ],
+    [
+      "little_guy",
+      [
+        {
+          "line": "the little guy. that is who.",
+          "start": 21.781,
+          "end": 25.181,
+          "mood": "warm"
+        }
+      ]
+    ],
+    [
+      "move",
+      []
+    ],
+    [
+      "hardware",
+      []
+    ],
+    [
+      "growth",
+      []
+    ],
+    [
+      "layers",
+      []
+    ],
+    [
+      "r_value",
+      []
+    ],
+    [
+      "solar",
+      []
+    ],
+    [
+      "solar_range",
+      []
+    ],
+    [
+      "shared",
+      []
+    ],
+    [
+      "network",
+      []
+    ],
+    [
+      "ask",
+      []
+    ],
+    [
+      "rewards",
+      []
+    ],
+    [
+      "close",
+      [
+        {
+          "line": "a money shredder. at your convenience.",
+          "start": 9.987,
+          "end": 13.587,
+          "mood": "smug"
+        }
+      ]
+    ],
+    [
+      "share",
+      [
+        {
+          "line": "one person. that is the whole ask.",
+          "start": 18.653,
+          "end": 22.053,
+          "mood": "warm"
+        }
+      ]
+    ],
+    [
+      "outro",
+      []
+    ]
+  ]
+}

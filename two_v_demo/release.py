@@ -43,11 +43,37 @@ from .lesson_registry import get_lesson
 RELEASE_DIR = Path("deliverables/releases")
 
 HASHTAG_BANK: dict[str, tuple[str, ...]] = {
+    "seed_pitch": (
+        # The owner's own five come first, in their order.
+        "#diy", "#construction", "#geodesicdome", "#realestate", "#tinyhome",
+        "#stemcelldome", "#tinyhouse", "#kickstarter", "#modularhousing",
+        "#affordablehousing", "#housingcrisis", "#offgrid", "#homestead",
+        "#boatbuilding", "#fiberglass", "#timberframe", "#starterhome",
+        "#prefab", "#passiveincome", "#landowner",
+    ),
     "dome_park": (
         "#domepark", "#geodesicdome", "#tinyhome", "#offgrid", "#homestead",
         "#nomad", "#vanlife", "#rvlife", "#kickstarter", "#opensource",
         "#alternativehousing", "#housingcrisis", "#solar", "#diy",
         "#owneroccupied", "#modularhousing",
+    ),
+    "byod_snarky": (
+        "#bringyourownhome", "#domepark", "#geodesicdome", "#tinyhome",
+        "#starterhome", "#affordablehousing", "#housingcrisis", "#renting",
+        "#landlord", "#diy", "#offgrid", "#modularhousing", "#kickstarter",
+        "#shorts", "#reels", "#mascot",
+    ),
+    "byod_polished": (
+        "#bringyourownhome", "#domepark", "#geodesicdome", "#tinyhome",
+        "#starterhome", "#affordablehousing", "#offgrid", "#solar",
+        "#modularhousing", "#openbuilding", "#kickstarter", "#housingcrisis",
+        "#diy", "#domehome", "#alternativehousing", "#homestead",
+    ),
+    "byod_deepseek": (
+        "#bringyourownhome", "#domepark", "#geodesicdome", "#tinyhome",
+        "#starterhome", "#affordablehousing", "#offgrid", "#solar",
+        "#modularhousing", "#openbuilding", "#kickstarter", "#housingcrisis",
+        "#diy", "#domehome", "#alternativehousing", "#homestead",
     ),
     "_default": (
         "#geodesicdome", "#domebuilding", "#diy", "#woodworking",
@@ -192,6 +218,30 @@ def caption(lesson, limit: int = 2200) -> str:
     return "\n".join(lines)[:limit].rstrip()
 
 
+POSTSCRIPTS: dict[str, tuple[str, ...]] = {
+    "seed_pitch": (
+        "A note on how this was made, because somebody always asks.",
+        "",
+        "These presentations are rendered out of code. I describe what I "
+        "want explained, and the argument, the geometry and the figures are "
+        "produced from the model that holds them -- no editing timeline, no "
+        "compositing, no hand-set captions. Every number you just watched "
+        "was read off that model while the frame was being drawn, which is "
+        "also why the three chapters that argue against the pitch could not "
+        "quietly be left out of it.",
+        "",
+        "It is not always perfect. It is an extremely reasonable trade for "
+        "being able to say what I want rendered and have it come out, and it "
+        "is an ongoing project in its own right.",
+    ),
+}
+"""A closing note appended to a film's release copy.
+
+Not part of the film -- this is what goes under the video on the platform,
+where a reader has time for it and where the question actually gets asked.
+Keyed by lesson, so a film without one is unaffected."""
+
+
 def description_document(lesson, video: Path) -> str:
     """All three, in one file, so a person copies rather than writes."""
     parts = [
@@ -220,6 +270,11 @@ def description_document(lesson, video: Path) -> str:
         "```",
         "",
     ]
+    postscript = POSTSCRIPTS.get(lesson.key)
+    if postscript:
+        parts += ["## Postscript, for any platform", "", "```"]
+        parts += list(postscript)
+        parts += ["```", ""]
     return "\n".join(parts)
 
 

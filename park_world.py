@@ -23,6 +23,8 @@ import numpy as np
 
 import materials
 import park_model
+import seed_model
+import seed_world
 from materials import (
     MAT_CONCRETE,
     MAT_DECK,
@@ -75,6 +77,21 @@ class Placed:
     """Dome Creator preset name, or empty for a vacant pad."""
     heading_deg: float = 0.0
     """Which way the rotating base is currently aimed."""
+    seed: str = ""
+    """A :mod:`seed_model` fit-out key, for a pad carrying a seed dome.
+
+    A pad holds one or the other. ``dome`` is a building out of the Dome
+    Creator's shipped catalogue -- somebody else's design, parked here. ``seed``
+    is this shop's own product: the 2V wedge dome on a six-foot member, its
+    utility column, its seal cap and its panels. They are drawn by different
+    code because they are different buildings, and the park has to be able to
+    show both standing on the same ground."""
+    show_shell: bool = True
+    """Whether the seed's removable shell is on it."""
+    shell_open: bool = False
+    """Shell held clear, as a crane would hold it."""
+    seam: str = "hose"
+    """What sits between two panels: hose, rigid or none."""
 
     @property
     def radius_m(self) -> float:
@@ -82,7 +99,31 @@ class Placed:
 
     @property
     def occupied(self) -> bool:
-        return bool(self.dome)
+        return bool(self.dome or self.seed)
+
+    @property
+    def is_seed(self) -> bool:
+        return bool(self.seed)
+
+    @property
+    def label(self) -> str:
+        if self.seed:
+            return seed_model.fitout(self.seed).label
+        return self.dome or "vacant"
+
+    def seed_placement(self) -> "seed_world.SeedPlacement":
+        """This pad's seed dome, positioned on top of the deck."""
+        if not self.seed:
+            raise ValueError("this pad carries no seed dome")
+        return seed_world.SeedPlacement(
+            fitout=self.seed,
+            origin=self.origin,
+            base_z=self.dome_base_z,
+            heading_deg=self.heading_deg,
+            show_shell=self.show_shell,
+            shell_open=self.shell_open,
+            seam=self.seam,
+        )
 
     @property
     def deck_height(self) -> float:
@@ -383,6 +424,18 @@ class Park:
     placements: list[Placed] = field(default_factory=list)
     bathhouse: tuple[float, float] | None = None
     service_point: tuple[float, float] = (0.0, 0.0)
+    crane: seed_world.Crane | None = None
+    """The yard crane, when the site has one.
+
+    A park of removable shells needs a way to lift one, and pretending
+    otherwise is how a plan ends up with a building nobody can service. It
+    picks a dome up from the ring in its own shell, the way a boatyard picks a
+    hull up, and it is drawn because it is a real cost and a real obstacle."""
+    highway_y: float | None = None
+    """Where the road runs, when the site is beside one.
+
+    Only an advertiser seed cares, and it cares completely: billboard space is
+    a property of the road, not of the dome."""
     ground_radius: float | None = None
     """How far the graded ground runs, when the caller wants to say.
 
@@ -408,6 +461,12 @@ class Park:
             return float(self.ground_radius)
         reach = max((math.hypot(*p.origin) + p.radius_m
                      for p in self.placements), default=12.0)
+        if self.crane is not None:
+            reach = max(reach, math.hypot(*self.crane.origin) + 4.0)
+        if self.highway_y is not None:
+            reach = max(reach, abs(self.highway_y) + 9.0)
+        if self.bathhouse is not None:
+            reach = max(reach, math.hypot(*self.bathhouse) + 5.0)
         return reach * 1.45 + 6.0
 
     @property
@@ -480,12 +539,137 @@ def park_mesh(park: Park) -> Mesh:
     """Everything on the site except the domes themselves."""
     b = MeshBuilder()
     build_ground(b, park.site_radius)
+    if park.highway_y is not None:
+        # Shorter than the site is wide, so the tarmac stops inside the
+        # grass rather than running off the edge of the world.
+        seed_world.build_highway(b, park.highway_y, park.site_radius * 1.75)
     build_service_spine(b, park.placements, park.service_point)
     for placed in park.placements:
         build_pad(b, placed)
     if park.bathhouse is not None:
         build_bathhouse(b, park.bathhouse)
+    if park.crane is not None:
+        seed_world.build_crane(b, park.crane)
     return b.build()
+
+
+def seed_pad_ft(shape: str = "hemisphere") -> float:
+    """The standard pad a seed of this shape stands on.
+
+    Rounded up to the same four-foot step every other pad in this project
+    uses, so a host who built a pad for a bought dome can take a seed and a
+    host who built one for a seed can take a bought dome."""
+    needed = seed_world.pad_diameter_ft(shape)
+    step = park_model.PAD_STEP_FT
+    return math.ceil(needed / step) * step
+
+
+def seed_park(pad_count: int | None = None, deck: str = "gravel",
+              rotating: bool = False, highway: bool = True,
+              crane: bool = True) -> Park:
+    """A site of this shop's own product rather than other people's domes.
+
+    One pad per seed in the catalogue, in the order the catalogue lists them,
+    so every fit-out is standing somewhere and can be walked up to. The pads
+    are all the same size because the seeds are all the same dome; that is the
+    entire manufacturing argument, made by the layout instead of by a caption.
+    """
+    specs = [seed_model.fitout(key) for key in seed_model.FITOUT_ORDER]
+    if pad_count is not None:
+        specs = specs[:max(1, int(pad_count))]
+
+    # Laid in short rows rather than one long line. Nine pads end to end is
+    # a hundred and forty metres of row: from far enough back to see it all,
+    # every dome is four pixels across, and from close enough to see one, it
+    # is the only one on screen.
+    per_row = SEEDS_PER_ROW
+    spacing = 4.5
+    row_gap = 9.0
+    widest = max(ft(seed_pad_ft(spec.shape)) for spec in specs)
+
+    placements: list[Placed] = []
+    rows = [specs[i:i + per_row] for i in range(0, len(specs), per_row)]
+    for row_index, row in enumerate(rows):
+        cursor = 0.0
+        row_y = row_index * (widest + row_gap)
+        for index, spec in enumerate(row):
+            size_ft = seed_pad_ft(spec.shape)
+            radius = ft(size_ft) / 2.0
+            cursor += radius + spacing
+            pad = park_model.Pad(
+                diameter_ft=size_ft, deck=deck, rotating=rotating,
+                utility_column=True, solar_watts=0.0)
+            placements.append(Placed(
+                pad=pad, origin=(cursor, row_y), seed=spec.key,
+                heading_deg=((row_index * per_row + index) * 24.0) % 360.0,
+                show_shell=spec.key != "stem_cell"))
+            cursor += radius + spacing
+        # Centre each row on its own, so a short last row is not left hanging
+        # off one end of the site.
+        for placed in placements[-len(row):]:
+            placed.origin = (placed.origin[0] - cursor / 2.0, placed.origin[1])
+
+    span = max(abs(p.origin[0]) for p in placements) * 2.0 + widest
+    depth = (len(rows) - 1) * (widest + row_gap)
+
+    # The advertiser dome goes in the front row nearest the road, because
+    # that is the only place it is worth anything. It swaps places with
+    # whatever was there rather than being dropped on top of it.
+    road_y = -(widest * 0.5 + 13.0) if highway else None
+    advertiser = next((p for p in placements if p.seed == "advertiser"), None)
+    if advertiser is not None and road_y is not None:
+        front = min(p.origin[1] for p in placements)
+        roadside = min((p for p in placements if p.origin[1] == front),
+                       key=lambda p: abs(p.origin[0]))
+        if roadside is not advertiser:
+            roadside.origin, advertiser.origin = (advertiser.origin,
+                                                  roadside.origin)
+
+    yard = crane_for(placements, setback=row_gap + widest * 0.8) if crane else None
+    return Park(placements=placements,
+                bathhouse=(-span * 0.34, depth + widest + 14.0),
+                service_point=(span * 0.30, depth + widest + 10.0),
+                crane=yard,
+                highway_y=road_y)
+
+
+SEEDS_PER_ROW = 5
+"""How many pads go in one row before the layout starts another.
+
+A park is not a catalogue page. Nine domes in a line is a row nobody can
+photograph; two short rows is a site."""
+
+CRANE_MAX_REACH_M = 22.0
+"""How far the boom goes. A crane that reaches every pad on a long row is a
+crane nobody can afford, so the reach is capped and the row is served in
+sections -- which is also how a boatyard does it."""
+
+
+def crane_for(placements: list[Placed], setback: float = 15.0
+              ) -> seed_world.Crane:
+    """Stand the crane clear of the row, with its boom aimed back at it.
+
+    Reach is solved rather than chosen: enough to cover the pads nearest it,
+    capped at :data:`CRANE_MAX_REACH_M`. Setting it in the middle of the row
+    would draw a crane standing where a dome has to go."""
+    if not placements:
+        return seed_world.Crane()
+    xs = [p.origin[0] for p in placements]
+    ys = [p.origin[1] for p in placements]
+    stand = (sum(xs) / len(xs), max(ys) + setback)
+    reach = min(CRANE_MAX_REACH_M,
+                max(setback + 1.5,
+                    min(math.hypot(p.origin[0] - stand[0],
+                                   p.origin[1] - stand[1])
+                        for p in placements) + 2.0))
+    return seed_world.Crane(origin=stand, reach=reach,
+                            bearing_deg=-90.0, height=10.5,
+                            hook_drop=6.0)
+
+
+def Crane_for(placements: list[Placed]) -> seed_world.Crane:
+    """Kept so anything that already called this name still works."""
+    return crane_for(placements)
 
 
 # ----------------------------------------------------------------------
@@ -531,6 +715,43 @@ def validate_park_world() -> None:
     figures = park.economics()
     assert figures["build_cost"] > 0.0 and figures["net_year"] > 0.0
     assert figures["payback_years"] > 0.5
+
+    # A seed park has to hold together on the same terms as a bought-dome one.
+    seeds = seed_park()
+    assert len(seeds.placements) == len(seed_model.FITOUT_ORDER)
+    assert all(p.is_seed and p.occupied for p in seeds.placements)
+    for first in range(len(seeds.placements)):
+        for second in range(first + 1, len(seeds.placements)):
+            a, b_ = seeds.placements[first], seeds.placements[second]
+            gap = math.hypot(a.origin[0] - b_.origin[0],
+                             a.origin[1] - b_.origin[1])
+            assert gap > a.radius_m + b_.radius_m, (first, second, gap)
+
+    # Every seed has to fit the pad the layout gave it.
+    for placed in seeds.placements:
+        needed = seed_world.pad_diameter_ft(placed.seed_placement().shape)
+        assert needed <= placed.pad.diameter_ft + 1e-9, (placed.seed, needed)
+
+    seed_mesh_out = park_mesh(seeds)
+    assert len(seed_mesh_out.vertices) > 5000
+    assert seeds.crane is not None and seeds.highway_y is not None
+    # The road must not run under a pad, and neither must the crane.
+    for placed in seeds.placements:
+        assert abs(placed.origin[1] - seeds.highway_y) > placed.radius_m
+        gap = math.hypot(placed.origin[0] - seeds.crane.origin[0],
+                         placed.origin[1] - seeds.crane.origin[1])
+        assert gap > placed.radius_m + 2.0, (placed.seed, gap)
+    # The boom has to reach at least the nearest pad, or it is scenery.
+    nearest = min(math.hypot(p.origin[0] - seeds.crane.origin[0],
+                             p.origin[1] - seeds.crane.origin[1])
+                  for p in seeds.placements)
+    assert seeds.crane.reach >= nearest, (seeds.crane.reach, nearest)
+    # And the grass has to reach past everything standing on it.
+    radius = seeds.site_radius
+    assert radius > abs(seeds.highway_y)
+    assert radius > math.hypot(*seeds.crane.origin) + seeds.crane.reach * 0.5
+    # Nothing the site draws may stand off the edge of the grass.
+    assert radius > math.hypot(*seeds.bathhouse) + 5.0
 
 
 if __name__ == "__main__":

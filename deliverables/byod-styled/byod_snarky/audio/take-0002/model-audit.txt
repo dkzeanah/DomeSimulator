@@ -1,0 +1,144 @@
+BRING YOUR OWN DOME / revision audit
+
+Author's targets:
+pad_target: 10000 USD -- Author's all-in serviced-pad target, not a quote
+starter_target: 5000 USD -- Author's basic dome target; services supplied by site
+rent_low: 500 USD/month -- Author's proposed low rent scenario
+rent_middle: 1000 USD/month -- Midpoint of the author's rent range
+rent_high: 1500 USD/month -- Author's proposed high rent scenario
+upgrade_steps: 2 steps -- Author's hardware design brief; requires load qualification
+life_target: 10 years -- Author's infrastructure service-life goal; not a warranty
+
+Existing model inputs:
+deck_wood_usd_per_sqft: 22 USD/sq ft -- assumption: pressure-treated deck, owner-built, materials plus hardware
+deck_concrete_usd_per_sqft: 9 USD/sq ft -- assumption: 4 in slab, poured by a local contractor
+deck_gravel_usd_per_sqft: 2.5 USD/sq ft -- assumption: compacted gravel over fabric, owner-built
+electric_pedestal_usd: 1400 USD/pad -- assumption: 50 A pedestal, breaker, conduit run and trenching
+water_connection_usd: 1100 USD/pad -- assumption: supply stub, frost protection, drain tie-in
+rotation_ring_usd_per_ft: 190 USD per ft of diameter -- assumption: turntable ring, bearings and drive, scaling with diameter
+utility_column_usd: 2600 USD/pad -- assumption: toilet, sink, shower head, outlets and drain in one column
+solar_usd_per_watt: 1.15 USD/W -- assumption: panels, mounts and inverter, installed by the host
+site_infrastructure_usd_per_pad: 6500 USD/pad -- assumption: share of access road, trunk water and service drop, amortised over the pads they serve
+permit_usd_per_pad: 1200 USD/pad -- assumption: siting, septic or sewer and electrical permits
+management_usd_per_month_per_pad: 45 USD/month/pad -- assumption: bookings, metering, invoicing and turnover admin
+tax_insurance_usd_per_year_per_pad: 380 USD/year/pad -- assumption: property tax and liability cover attributable to one pad
+lease_base_usd_per_month: 450 USD/month -- assumption: what a serviced pad rents for, against local RV pad rates
+lease_usd_per_sqft_month: 0.12 USD per sq ft of pad per month -- assumption: the part of the rent that does scale with size
+power_buy_usd_per_kwh: 0.14 USD/kWh -- assumption: what the host pays the utility
+power_margin_usd_per_kwh: 0.02 USD/kWh -- the owner's stated margin for metering and clerical work
+water_buy_usd_per_kgal: 4.5 USD per 1000 gal -- assumption: what the host pays for water and sewer
+water_margin_usd_per_kgal: 0.5 USD per 1000 gal -- the owner's stated margin, in the same spirit as the power margin
+power_export_usd_per_kwh: 0.045 USD/kWh -- assumption: what the utility pays for a kilowatt hour sent back, which is nothing like what it charges for one
+tenant_kwh_per_month: 420 kWh/month -- assumption: a small, well-insulated dwelling on grid power
+tenant_kgal_per_month: 2.6 1000 gal/month -- assumption: one to two occupants, ordinary use
+occupancy_fraction: 0.8 fraction of the year leased -- assumption: the owner's planning figure for a mature park
+airbnb_furnishing_usd: 18000 USD per unit -- assumption: furnishing a small rental to listing standard
+airbnb_turnover_usd: 95 USD per turnover -- assumption: cleaning and linen for one changeover
+airbnb_turnovers_per_month: 3 turnovers/month -- assumption: short-stay cadence
+airbnb_damage_reserve_fraction: 0.06 fraction of revenue -- assumption: the owner's reserve against tenant damage and wear
+airbnb_platform_fee_fraction: 0.03 fraction of revenue -- assumption: platform's host-side fee
+rental_renovation_usd_per_year: 2200 USD/year -- assumption: amortised repaint, flooring and fittings on a let home
+hotel_usd_per_night: 140 USD/night -- assumption: a mid-range room, utilities and cleaning included
+short_let_usd_per_night: 95 USD/night -- assumption: a whole-home short let at its monthly-discount rate
+apartment_usd_per_month: 1450 USD/month -- assumption: a one-bedroom on a twelve-month lease
+apartment_move_in_months: 2.5 months of rent -- assumption: first month plus a deposit and a half
+apartment_deposit_months: 1.5 months of rent -- assumption: the refundable part of the above
+lease_break_months: 2 months of rent -- assumption: what leaving a twelve-month lease early costs
+dome_transport_usd: 1800 USD per move -- assumption: packing, a trailer and a day of two people's time
+dome_service_life_years: 30 years -- assumption: straight-line life for a dome that is maintained
+dome_residual_fraction: 0.35 fraction of cost -- assumption: the floor a maintained dome's value does not fall below
+resale_haircut_fraction: 0.15 fraction of cost -- assumption: what a secondhand dome loses the day it becomes secondhand -- and the thing a real network would shrink
+dome_upkeep_usd_per_year: 600 USD/year -- assumption: the owner maintaining their own home
+capital_rate_annual: 0.06 fraction/year -- assumption: what the money tied up in a dome would otherwise earn
+deck_on_blocks_usd_per_sqft: 14 USD/sq ft -- assumption: framed timber deck on precast blocks, owner-built, no excavation and no concrete
+hub_panel_usd: 2400 USD -- assumption: one central power panel and water manifold serving a cluster of pads
+hub_pads_served: 4 pads -- the owner's stated cluster: one hub in the middle of four domes, so each pad carries a quarter of it and a short spur instead of a run
+spur_usd_per_pad: 450 USD/pad -- assumption: the wire and pipe from a central hub to a pad beside it
+iris_min_ft: 19 ft -- the owner's stated smallest aperture: a one-person dome
+iris_max_ft: 40 ft -- the owner's stated largest aperture: the large two-person dome
+iris_usd_per_ft: 310 USD per ft of diameter -- assumption: leaves, track and the mechanism that opens and closes them, over a fixed rim at the same size
+kickstarter_goal_usd: 100000 USD -- the owner's stated raise: a test site, repeatable pad architecture, web infrastructure and documentation
+test_pad_count: 3 pads -- the owner's stated first build: one to three pads on land they already hold
+setup_days_fast: 2 days -- the owner's estimate for putting a dome up or taking it down at the quick end
+setup_days_slow: 14 days -- the same at the slow end, for a large or heavily layered dome
+quilt_r_per_layer: 1.6 hr sq ft F/BTU per layer -- assumption: one quilted recycled-fabric layer at about half an inch of loft, set under the published R-3.5/in for cotton fibre
+quilt_usd_per_sqft_layer: 1.1 USD/sq ft per layer -- assumption: thread, backing and the labour to quilt it; the fabric itself is a waste stream
+panel_watts_per_sqft: 18 W/sq ft -- assumption: module output per square foot of exterior at standard test
+sun_hours_per_day: 4.6 peak hours/day -- assumption: annual average for the owner's region
+tracking_gain_fraction: 0.25 fraction -- assumption: single-axis tracking gain over a fixed array
+exterior_usable_fraction: 0.35 fraction of shell area -- assumption: the share of a dome's shell that can carry panels
+
+STARTER SCENARIO / declared unit prices
+20 ft pad = 314 sq ft
+deck on blocks, 314 sq ft: $4,398
+share of one hub panel, 1 of 4: $600
+spur from the hub: $450
+permits: $1,200
+site access + trunk service allowance: $6,500
+TOTAL: $13,148
+Author's all-in target: $10,000
+Fixed rim; shared services; no iris or rotation.
+Site allowance must cover the actual local works.
+Start with a working floor and services; add features later.
+
+DELUXE SCENARIO / declared unit prices
+Same model's 48 ft concrete pad:
+concrete deck, 1810 sq ft: $16,286
+electrical pedestal: $1,400
+water and drain: $1,100
+site infrastructure, per pad: $6,500
+permits: $1,200
+rotating base: $9,120
+utility column: $2,600
+solar, 15,339 W: $17,640
+Add adjustable iris: $14,880
+TOTAL WITH IRIS: $70,726
+A larger pad with rotation, column and solar.
+Optional future build; outside the first-site campaign scope.
+
+WHAT IF the complete pad costs $10,000?
+Power, water and drain included in that TARGET.
+Leased 80% of the year
+Management + tax + insurance: $920/year
+Utility resale profit assumed zero here.
+$500/mo -> $3,880/yr net -> 30.9 months
+$1,000/mo -> $8,680/yr net -> 13.8 months
+$1,500/mo -> $13,480/yr net -> 8.9 months
+Before financing, income tax and additional maintenance.
+One-year payback is a scenario, not a promise.
+
+HARDWARE DESIGN BRIEF / size for two upgrades
+6 ft longest member -> ~314 sq ft
+10 ft longest member -> ~822 sq ft
+12 ft longest member -> ~1,184 sq ft
+These are the author's target sizes, not a load rating.
+Keep qualified connectors; collect longer replacement members.
+Larger frames also need more skin, insulation and pad area.
+Beyond the rated span, change hardware or frequency.
+One purchase should support a planned range of future homes.
+
+REMOVABLE SHELL / upgrade the insulation over time
+Model assumption: +R-1.6 per quilted layer
+0 added layers -> R-1.5
+1 added layers -> R-3.1
+2 added layers -> R-4.7
+3 added layers -> R-6.3
+4 added layers -> R-7.9
+5 added layers -> R-9.5
+6 added layers -> R-11.1
+7 added layers -> R-12.7
+Actual assemblies need tested moisture and fire performance.
+The outer shell supplies the weather and wind barrier.
+Insulation improves when you add suitable layers; age alone adds none.
+
+SAME DOME: 20 ft across
+Panel areas are measured from the model's faces.
+Assumed panel density: 18.0 W/sq ft
+one side: 292 sq ft -> 5.2 kW
+top half, skirt below: 292 sq ft -> 5.2 kW
+whole shell: 583 sq ft -> 10.5 kW
+No panels = zero installed solar capacity.
+Selected layouts: 5.2 to 10.5 kW nameplate.
+Face area sets capacity, not guaranteed energy yield.
+Sun angle, shade, climate and losses set actual kWh.
+The useful limit is the available shell area.

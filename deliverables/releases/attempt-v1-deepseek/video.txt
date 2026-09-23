@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\byod-deepseek\attempt-v1-deepseek.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\byod-deepseek\attempt-v1-deepseek-vertical.mp4

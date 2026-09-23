@@ -1628,8 +1628,78 @@ def main() -> int:
     note(body, "Width by height in pixels. Only used by the 'run' "
                "action; the window can be resized afterwards.")
 
+    section(body, "What it costs to build one")
+    note(body, "The same window now has a price list in it. Press F3 once "
+               "the dome opens, or click the buttons along the bottom left, "
+               "and a calculator appears over the scene. It is pricing the "
+               "dome you are standing in — the 2V frame on a six-foot "
+               "longest member, the standard 'seed' — and nothing in it is "
+               "typed in by hand: the member count, the panel areas, the "
+               "shell area and the cavity volume are all measured off "
+               "the same solved geometry the tool is drawing.\n\n"
+               "The shell is costed out of the marine composites trade. "
+               "Four named hull laminate systems — sheathed ply in epoxy, "
+               "boatyard polyester, premium marine polyester and vinyl "
+               "ester — with their real fabric weights and a supplier's "
+               "published prices, worked out by weight of glass and resin "
+               "the way a yard does it rather than by a rule of thumb. The "
+               "'hull' button switches between them and every figure moves."
+               "\n\n"
+               "Note what is NOT in the dome's price: the deck, the "
+               "moisture barrier, the service port, the tank and the "
+               "under-floor storage. Those are the landowner's pad — built "
+               "once, kept when the dome leaves — and the calculator shows "
+               "them on their own line so the two bills never get added "
+               "together.\n\n"
+               "Four pages. QUOTE is every line of one dome with the total "
+               "and the selling price. PRICES is every rate the model was "
+               "given, with the reason for each one — click a row and type "
+               "your own number, and every figure downstream moves. LEVERS "
+               "shows what each single saving is worth off the price, "
+               "ranked, which is the page to open if the question is how "
+               "cheap this can get. SEEDS is the whole catalogue side by "
+               "side.\n\n"
+               "Your prices are saved to seed_prices.json when you press "
+               "SAVE, and loaded again next time. EXPORT writes the quote "
+               "out as a spreadsheet, to a new file every time.")
+
+    rw_cost_open = CheckRow(body, "Open the calculator as soon as it starts",
+                            False)
+    rw_cost_open.pack(anchor="w", pady=3)
+    rw_cost_page = LabeledCombo(body, "Open it on",
+                                ["quote", "prices", "levers", "seeds"],
+                                "quote")
+    rw_cost_page.pack(fill="x", pady=3)
+    action_help(body, rw_cost_page, {
+        "quote": "every line of one dome: frame, floor, bladders and "
+                 "panels, shell, utility column, machinery, labour — then "
+                 "what it costs to build and what it sells for.",
+        "prices": "the input table. Every price and rate the model was "
+                  "given, its units, and why it holds that value. This is "
+                  "where you put your own numbers in.",
+        "levers": "one change at a time against the standard dome, ranked "
+                  "by what it saves. The last row is every saving pulled at "
+                  "once, which is the floor this product has.",
+        "seeds": "the catalogue: stem cell, home, food, advertiser, "
+                 "storage, bunker, treehouse, sauna and jacuzzi, cheapest "
+                 "first.",
+    })
+    rw_cost_seed = LabeledCombo(
+        body, "Price which seed",
+        ["stem_cell", "home", "food", "advertiser", "storage", "bunker",
+         "treehouse", "sauna", "jacuzzi"], "stem_cell")
+    rw_cost_seed.pack(fill="x", pady=3)
+    note(body, "Every seed is the same dome with a different set of "
+               "snap-in modules. The stem cell is the bare standard "
+               "article — the one that gets manufactured; the rest are "
+               "that plus a module set, and you can switch between them "
+               "inside the calculator too.")
+
     def go_raw_wedge():
         cfg = {"action": rw_action.get()}
+        cfg["cost_console_open"] = bool(rw_cost_open.get())
+        cfg["cost_console_page"] = rw_cost_page.get() or "quote"
+        cfg["cost_seed"] = rw_cost_seed.get() or "stem_cell"
         if rw_orientation.get():
             cfg["wedge_orientation"] = rw_orientation.get()
         if rw_trunk.get():
@@ -1757,9 +1827,12 @@ def main() -> int:
                                "run")
     park_action.pack(fill="x", pady=3)
     action_help(body, park_action, {
-        "run": "open the site and look around it. Drag to orbit, wheel to "
-               "zoom, square brackets to step between pads, and the keys "
-               "listed on screen to change the selected pad.",
+        "run": "open the site and look around it. Click a pad to select "
+               "it, click it again — or press F — to lock the camera onto "
+               "it, and press O to pull back out to the whole site. Drag "
+               "to orbit around whatever is in focus, wheel to zoom, "
+               "square brackets to step between pads, and the keys listed "
+               "on screen to change the selected one.",
         "shots": "no window: save four still images of the site — the whole "
                  "park, the row, one pad close up, and an overhead — into "
                  "the folder below.",
@@ -1768,12 +1841,38 @@ def main() -> int:
                     "a number looks wrong.",
     })
 
+    section(body, "What is parked on it")
+    park_mode = LabeledCombo(body, "Domes", ["domes", "seeds"], "domes")
+    park_mode.pack(fill="x", pady=3)
+    action_help(body, park_mode, {
+        "domes": "other people's buildings — the Dome Creator's shipped "
+                 "catalogue, each parked on the smallest standard pad that "
+                 "takes it. This is the original park: the host owns the "
+                 "ground, the tenant brings whatever dome they own.",
+        "seeds": "your own product line. One pad per seed — stem cell, "
+                 "home, food, advertiser, storage, bunker, treehouse, "
+                 "sauna and jacuzzi — every one of them the same 2V wedge "
+                 "frame on a six-foot member, drawn from the raw-wedge "
+                 "solver itself. Select one and the panel on the right "
+                 "shows what that dome costs to build and sells for. A "
+                 "road runs past the site, because the advertiser dome is "
+                 "only worth anything beside one, and a crane stands off "
+                 "the row, because a removable shell needs something to "
+                 "remove it with.",
+    })
+    park_highway = CheckRow(body, "A road past the site (seeds only)", True)
+    park_highway.pack(anchor="w", pady=3)
+    park_crane = CheckRow(body, "A yard crane (seeds only)", True)
+    park_crane.pack(anchor="w", pady=3)
+
     section(body, "The site")
     park_pads = LabeledEntry(body, "How many pads", "6", placeholder="e.g. 6")
     park_pads.pack(fill="x", pady=3)
     note(body, "Pads are laid in a row, smallest first, each sized to the "
                "largest dome that fits it. Every third one is left vacant, "
-               "because a park with no vacancy has nothing to lease.")
+               "because a park with no vacancy has nothing to lease.\n\n"
+               "With Domes set to 'seeds', leave this blank or at nine and "
+               "you get one pad per seed in the catalogue.")
     park_deck = LabeledCombo(body, "Deck", ["gravel", "concrete", "wood"],
                              "gravel")
     park_deck.pack(fill="x", pady=3)
@@ -1816,6 +1915,9 @@ def main() -> int:
                "pads": park_pads.get() or "6",
                "deck": park_deck.get(),
                "rotating": park_rotating.get(),
+               "mode": park_mode.get() or "domes",
+               "highway": park_highway.get(),
+               "crane": park_crane.get(),
                "size": park_size.get() or "1600x900"}
         if park_shotdir.get():
             cfg["shot_dir"] = park_shotdir.get()

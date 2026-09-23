@@ -35,7 +35,7 @@ What lives where
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, replace, field
 from pathlib import Path
 
 
@@ -162,6 +162,15 @@ class Chapter:
     of arithmetic. Prose writes ``{{ch.method_a}}`` and gets the current
     number. Defaults to the title, slugged, which is fine for a chapter
     nothing points at."""
+
+    section: str = ""
+    """The group inside its part, when the part is too big to read as one run.
+
+    A part prints one divider. When a part carries fifty chapters, one divider
+    at the front of it is not enough navigation, and the honest fix is a second
+    level rather than a longer part title. Empty means the chapter sits directly
+    under its part, which is what every chapter did before this existed -- so a
+    book that sets no sections renders exactly as it always did."""
 
     @property
     def key(self) -> str:
@@ -2196,8 +2205,642 @@ PART_IX = Part(
 )
 
 
-PARTS: tuple[Part, ...] = (PART_I, PART_II, PART_III, PART_IV, PART_V,
-                           PART_VI, PART_VII, PART_VIII, PART_IX)
+# ======================================================================
+# THE TWO PARTS OF THIS BOOK
+# ======================================================================
+#
+# The nine parts above are the original book -- the build, told as it was
+# found. This volume is larger than that: it puts the build inside a first
+# part and follows it with the argument for why any of it scales.
+#
+# The nine are *absorbed*, never rewritten. `_absorb` renumbers their
+# chapters continuously and hangs each one's old part title on it as its
+# `section`, so a reader still gets "The Wedge" and "The Fortnight" as
+# signposts instead of a fifty-two-chapter run with one divider at the front.
+#
+# Renumbering is safe to do here -- and only here -- because prose refers to
+# chapters through `{{ch.…}}` keys, never through numbers.
+
+_LEGACY_PARTS = (PART_I, PART_II, PART_III, PART_IV, PART_V,
+                 PART_VI, PART_VII, PART_VIII, PART_IX)
+
+
+def _absorb(parts, start: int) -> tuple[tuple[Chapter, ...], int]:
+    """Renumber a run of chapters continuously, and say where the next one goes.
+
+    Returns the chapters and the number after the last of them, so the next
+    part can carry on counting without a second place to get it wrong. Each
+    chapter keeps its old part title as its section.
+    """
+    out: list[Chapter] = []
+    number = start
+    for part in parts:
+        for chapter in part.chapters:
+            out.append(replace(chapter, number=number, section=part.title))
+            number += 1
+    return tuple(out), number
+
+
+_BUILD_CHAPTERS, _NEXT_NUMBER = _absorb(_LEGACY_PARTS, 1)
+
+PART_BUILD = Part(
+    number=1,
+    title="How to Build One",
+    epigraph="A dome is a frame, a skin and a floor, and the frame is the "
+             "only part of it that has to be got right.",
+    promise="The method, in the order it is actually done: what a dome is, "
+            "why the shape carries load, how a tree becomes forty panels, and "
+            "the fortnight that turns those panels into a shell.",
+    chapters=_BUILD_CHAPTERS,
+)
+
+PART_SCALE = Part(
+    number=2,
+    title="Why It Scales",
+    epigraph="The parts list does not grow with the house. Everything "
+             "downstream of that one fact is this part.",
+    promise="The argument for the whole idea: why the same frame covers a "
+            "shed and a hall, what that does to cost and labour, and what "
+            "would have to be true for a network of domes to work.",
+    chapters=(
+        Chapter(
+            _NEXT_NUMBER, "The List That Does Not Grow",
+            "Triple the diameter and the parts count does not move: the same "
+            "forty triangles and one hundred and twenty struts frame a ten "
+            "foot dome or a thirty foot one",
+            "explain",
+            (
+                _p("opener", "The List That Does Not Grow",
+                   "What actually changes when a dome gets bigger, and what "
+                   "stays exactly where it was.", words=260),
+                _p("table", "The same list, four times",
+                   "Four diameters from the same frame: every count identical, "
+                   "and only the stick moves.", words=420),
+                _p("spread", "One grows as the square, one as a line",
+                   "Floor area goes as the square of the diameter; the stick "
+                   "to frame it goes as the diameter. Work out what that does "
+                   "to the stick per square foot.", words=430,
+                   figures=(_f("flat-rate-curves",
+                               "Three lines: the floor rises as the square, "
+                               "the stick as a line, and the parts list does "
+                               "not rise at all.", PLOT, plot="flat_rate"),)),
+                _p("text", "What is flat and what quietly is not",
+                   "Nine processes, one hundred and twenty brackets, nine "
+                   "hundred and sixty screws, at every size. Then the two "
+                   "things that are not flat -- the stick and the skin -- "
+                   "said out loud.", words=380),
+                _p("worked", "The limit is my arms, not the arithmetic",
+                   "The ceiling on the flat rate is a declared handling "
+                   "limit: the longest member one person will carry and set "
+                   "alone. Work that limit through the chord factors and it "
+                   "picks out a diameter, and that diameter splits the "
+                   "table.", words=460,
+                   figures=(_f("solo-band",
+                               "Member length against diameter, with the "
+                               "declared handling limit crossing it.",
+                               PLOT, plot="solo_band"),)),
+                _p("text", "Inside the band, nothing changes at all",
+                   "Below the limit the flat rate is not approximate, it is "
+                   "exact: same assembly pattern, same hardware numbers, same "
+                   "operations, same strut preparation. Above it there are "
+                   "two honest options, and raising the frequency is the one "
+                   "move that genuinely lengthens the list.", words=380),
+                _p("text", "Solve it once",
+                   "Every count in the table is a count of things you figure "
+                   "out exactly once. The second build is the same list with "
+                   "the problems already solved, so it can only be better "
+                   "timing than the first.", words=300),
+                _p("text", "Why it is worth counting this way",
+                   "The rate a builder is paid does not move with the size of "
+                   "the job, so the price of floor area falls as the dome "
+                   "grows.", words=300),
+            ),
+            derives=("two_v_demo.franken_economics.flat_rate_table",
+                     "two_v_demo.franken_economics.solo_band",
+                     "two_v_demo.franken_economics.SOLO_LIMITS",
+                     "two_v_demo.franken_economics.SUMMARY"),
+            ref="flat_rate",
+        ),
+
+        # ---------------------------------------------------------- labour
+        Chapter(
+            _NEXT_NUMBER + 1, "Nine Processes at Any Size",
+            "The nine operations named one by one, and why a list this short "
+            "is the thing worth improving: fix one process and every dome you "
+            "ever build gets cheaper",
+            "explain",
+            (
+                _p("opener", "Nine Processes at Any Size",
+                   "The parts list is flat; so is the process list, and the "
+                   "process list is the shorter of the two.", words=240),
+                _p("steps", "The nine, in the order they happen",
+                   "Fell, rip, crosscut, fold, drill, screw, raise, sheathe "
+                   "and glass -- named from franken_economics.PROCESSES, "
+                   "with what each one actually asks of you.", words=620,
+                   figures=(_f("nine-process-counts",
+                               "Every operation's repetition count across "
+                               "four diameters: seven lines dead flat, two "
+                               "climbing.", PLOT, plot="process_counts"),)),
+                _p("table", "Seven of the nine do not move at all",
+                   "Not merely still on the list -- the identical count. "
+                   "The two that move are the two that touch raw material "
+                   "and area rather than joints.", words=300,
+                   figures=(_f("nine-process-table",
+                               "Every operation against four diameters. "
+                               "Seven rows are constant all the way across.",
+                               PLOT, plot="process_table"),)),
+                _p("text", "Why a short list compounds",
+                   "A dome shop optimises differently from a stick-frame "
+                   "shop: there are few operations, they repeat, and "
+                   "improving one improves every dome that follows. A house "
+                   "with a twenty-item framing list alone has nowhere to put "
+                   "that effort -- and a short list concentrates mistakes as "
+                   "well as improvements.", words=460),
+                _p("worked", "What one process is worth, in hours",
+                   "Take the ripping, the longest of the nine, and work out "
+                   "what the declared improvement returns over one build and "
+                   "over a run of them.", words=440,
+                   figures=(_f("nine-rip-payback",
+                               "What a proportional saving at one bench "
+                               "returns as the run of domes lengthens, "
+                               "measured in whole ripping stages.",
+                               PLOT, plot="rip_payback"),)),
+                _p("text", "The processes that are not on the list",
+                   "Permits, inspections, delivery, waiting for a crew. They "
+                   "are real, they are not flat, and they are not in the "
+                   "nine because the nine is a shop count, not a project "
+                   "count.", words=340),
+            ),
+            derives=("two_v_demo.franken_economics.DomeSize",
+                     "two_v_demo.book_math.fortnight"),
+            ref="nine_processes",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 2, "What an Hour at the Log Is Worth",
+            "Splitting your own struts pays a rate; here is the rate, "
+            "computed three ways, including the way that flatters it least",
+            "explain",
+            (
+                _p("opener", "What an Hour at the Log Is Worth",
+                   "Not what timber costs. What an hour of your own time "
+                   "buys when you spend it on a log instead of at a till.",
+                   words=240),
+                _p("worked", "One strut, valued three ways",
+                   "Against a nominal two-by-four, against a dressed one, "
+                   "and by board foot -- with the disagreement between them "
+                   "left in.", words=520,
+                   figures=(_f("scale-strut-value",
+                               "One strut, valued three ways, with the "
+                               "estimate this project started from kept in "
+                               "the table.", PLOT, plot="strut_value"),)),
+                _p("text", "Why the dressed number is the honest one",
+                   "A nominal two-by-four is not two inches by four. It is "
+                   "smaller, so a strut replaces more of them, so the "
+                   "honest comparison is the *higher* one -- which is "
+                   "exactly the direction that deserves suspicion, and "
+                   "gets it here.", words=400),
+                _p("text", "The shelf price is a stack",
+                   "What you pay at a yard is the timber plus the drying "
+                   "plus the handling plus the margin plus the overheads. "
+                   "Harvesting removes some of those layers and not the "
+                   "others, and it is worth knowing which.", words=420),
+                _p("sidebar", "This is not money anybody has been paid",
+                   "Every rate in this chapter is a substitution value: what "
+                   "you did not spend, not what you earned. It buys "
+                   "groceries only if you were going to buy the timber.",
+                   words=240),
+            ),
+            derives=("two_v_demo.book_math.fortnight",
+                     "two_v_demo.book_math.BOOK_TREE",
+                     "two_v_demo.franken_economics.EXTERNAL_PRICES"),
+            ref="hour_at_log",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 3, "Where the Fuel Actually Goes",
+            "A metabolic ledger of one build: every part lifted, carried and "
+            "fastened, priced in calories -- and the discovery that most of "
+            "the fuel raises nothing at all",
+            "explain",
+            (
+                _p("opener", "Where the Fuel Actually Goes",
+                   "Money is one ledger. Calories are another, and it is the "
+                   "one that decides whether a build is finishable alone.",
+                   words=260),
+                _p("table", "One house, counted in parts and motions",
+                   "Every element, its mass, the motions it takes and the "
+                   "energy each motion costs.", words=440,
+                   figures=(_f("fuel-station-ledger",
+                               "Fifteen stations, ordered by what they cost "
+                               "a body rather than by what they weigh.",
+                               PLOT, plot="station_ledger"),)),
+                _p("worked", "The fastening surprise",
+                   "Fastening spends the great majority of the fuel while "
+                   "raising nothing: the screw does not go up, the arm does. "
+                   "Carry that through and it changes which part of the "
+                   "build is worth designing out.", words=520,
+                   figures=(_f("fuel-motion-split",
+                               "Each motion's share of the clock beside its "
+                               "share of the fuel. Only the gap between the "
+                               "two is intensity.",
+                               PLOT, plot="motion_split"),
+                            _f("fuel-motion-efficiency",
+                               "How much of each motion's fuel became "
+                               "height, against the most muscle can convert.",
+                               PLOT, plot="motion_efficiency"))),
+                _p("text", "What this says about the hardware",
+                   "If most of the energy is in fastening, then a joint that "
+                   "needs fewer fasteners is worth more than a joint that is "
+                   "faster per fastener. That is an argument for the key and "
+                   "against more screws.", words=420),
+                _p("sidebar", "What is measured and what is modelled",
+                   "The masses are real and the motions are counted. The "
+                   "calorie cost of a motion is a published model with named "
+                   "constants, and the felling and bucking were never "
+                   "metered at all.", words=280),
+            ),
+            derives=("two_v_demo.energetics.build_energy",
+                     "two_v_demo.energetics.EXTERNAL_CONSTANTS"),
+            ref="fuel_ledger",
+        ),
+
+        # ------------------------------------------------------ the shell
+        Chapter(
+            _NEXT_NUMBER + 4, "Less Skin for the Same Floor",
+            "A dome wraps a given floor in noticeably less outside surface "
+            "than a box does, and the wall you never build never costs "
+            "anything to build, heat or repair",
+            "explain",
+            (
+                _p("opener", "Less Skin for the Same Floor",
+                   "The cheapest square foot of wall is the one that is not "
+                   "in the drawing.", words=240),
+                _p("spread", "The same floor, two envelopes",
+                   "A dome and a box at the same floor area, with their "
+                   "envelopes computed and set side by side.", words=460,
+                   figures=(_f("skin-two-envelopes",
+                               "The same floor drawn twice, to one scale, "
+                               "with the headroom line across both.",
+                               PLOT, plot="envelope_compare"),)),
+                _p("text", "What the saved skin is worth four times over",
+                   "Skin is bought once, insulated once, weatherproofed "
+                   "repeatedly and heated every winter. A saving in area is "
+                   "a saving in all four, which is why this number is worth "
+                   "more than it first looks.", words=440,
+                   figures=(_f("skin-claims",
+                               "Four claims, and which of them are actually "
+                               "separate findings.",
+                               PLOT, plot="advantage_claims"),)),
+                _p("text", "Where the box wins",
+                   "Boxes stack, share walls, take standard sheet goods "
+                   "without cutting, and fit rectangular furniture. Row "
+                   "housing beats a dome on envelope per floor outright, and "
+                   "pretending otherwise is not an argument.", words=420,
+                   figures=(_f("skin-versus-size",
+                               "The surface margin against floor area, "
+                               "carried past the size where it dies.",
+                               PLOT, plot="envelope_versus_size"),)),
+            ),
+            derives=("two_v_demo.dome_advantage.dome_envelope",
+                     "two_v_demo.dome_advantage.box_envelope",
+                     "two_v_demo.dome_advantage.envelope_saving",
+                     "two_v_demo.dome_advantage.envelope_crossover_sqft",
+                     "two_v_demo.dome_advantage.standing_sqft",
+                     "two_v_demo.dome_advantage.EXTERNAL"),
+            ref="less_skin",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 5, "The Cheapest Square Footage in the Building",
+            "Standing the shell on a short straight wall buys floor, "
+            "headroom and usable edge for the least money per square foot of "
+            "anything in the build",
+            "explain",
+            (
+                _p("opener", "The Cheapest Square Footage in the Building",
+                   "The dome's weakness is its edge. A pony wall fixes the "
+                   "edge with the cheapest wall there is.", words=260),
+                _p("table", "The pony wall ladder",
+                   "Wall height against floor gained, headroom gained and "
+                   "cost, so the reader can pick a rung.", words=440),
+                _p("text", "Why the edge is the expensive part of a dome",
+                   "A sphere meets the floor at a tangent, so the last foot "
+                   "of radius has almost no headroom in it. Lifting the "
+                   "whole shell converts that dead ring into room.",
+                   words=420),
+                _p("worked", "Where the ladder stops paying",
+                   "Keep climbing and the wall stops being cheap: it starts "
+                   "carrying load, it starts needing its own framing, and at "
+                   "some rung you have simply built a round box with a hat "
+                   "on. Find that rung.", words=440),
+            ),
+            derives=("two_v_demo.dome_performance.pony_wall_ladder",
+                     "two_v_demo.dome_performance.assemblies"),
+            ref="pony_wall",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 6, "The Roof Is Already a Gutter",
+            "An overhanging brim throws water clear of every joint and "
+            "collects it in the same move, and the annual catch off a dome "
+            "this size is not a trivial number",
+            "explain",
+            (
+                _p("opener", "The Roof Is Already a Gutter",
+                   "The overhang is not decoration. It is the detail that "
+                   "keeps water out of the base joints.", words=240),
+                _p("spread", "Where the water goes, with and without a brim",
+                   "Rain running down a shell into the base joints, against "
+                   "rain dripping clear into a tank.", words=440),
+                _p("worked", "The annual catch",
+                   "Rainfall times footprint times a collection efficiency, "
+                   "carried through to gallons, with the efficiency declared "
+                   "rather than assumed.", words=460),
+                _p("text", "What the catch is actually good for",
+                   "Not drinking, without treatment. Irrigation, flushing, "
+                   "washing and a buffer against a dry well -- and a reason "
+                   "the tank belongs under the pad rather than beside it.",
+                   words=400),
+            ),
+            derives=("two_v_demo.dome_performance.WaterCatch",
+                     "two_v_demo.dome_performance.hat_rim_radius_ft"),
+            ref="brim_gutter",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 7, "A House That Gets Warmer Every Winter",
+            "Build the skeleton once and add layers to it for as long as you "
+            "own it: the shell ladder turns a shelter into a house in steps "
+            "you can afford one at a time",
+            "explain",
+            (
+                _p("opener", "A House That Gets Warmer Every Winter",
+                   "Most houses are finished or unfinished. A dome shell can "
+                   "be neither, permanently and on purpose.", words=260),
+                _p("table", "The shell ladder, rung by rung",
+                   "Each layer, what it costs, what it does to the envelope "
+                   "and what it does to the running bill.", words=460),
+                _p("text", "Why the bones are the thing to get right",
+                   "Every layer in that ladder attaches to the frame. Get "
+                   "the frame right and nothing later is blocked; get it "
+                   "wrong and every rung inherits the error.", words=420),
+                _p("worked", "The rung that pays back fastest",
+                   "Rank the layers by what they return per dollar and per "
+                   "weekend, and be honest that the fastest payback is "
+                   "rarely the one people do first.", words=440),
+            ),
+            derives=("park_model.shell_ladder",
+                     "two_v_demo.dome_performance.running_costs"),
+            ref="shell_ladder",
+        ),
+
+        # --------------------------------------------------- the ground
+        Chapter(
+            _NEXT_NUMBER + 8, "One Hardware Set, Three Sizes",
+            "The brackets, keys and fasteners that frame a small dome frame "
+            "a large one unchanged, which is what makes a shared parts bin "
+            "possible across a whole site",
+            "explain",
+            (
+                _p("opener", "One Hardware Set, Three Sizes",
+                   "The counts were flat in chapter one of this part. The "
+                   "hardware itself is flat too, and that is a different and "
+                   "more useful claim.", words=260),
+                _p("table", "The same bin, three domes",
+                   "Hardware by class across three dome sizes, with the "
+                   "columns that do not move shown not moving.", words=440),
+                _p("text", "What invariance buys a site",
+                   "One order, one bin, one spare set, one training. A park "
+                   "of mixed dome sizes can hold a single inventory, which "
+                   "is the difference between a hobby and an operation.",
+                   words=420),
+                _p("text", "What does change, and it is the timber",
+                   "The stick grows. So does the section, eventually. The "
+                   "hardware does not, and the reason is that a bracket "
+                   "holds an angle, and the angles are the same at every "
+                   "diameter.", words=380),
+            ),
+            derives=("park_model.hardware_invariance",
+                     "park_model.dome_catalogue"),
+            ref="hardware_invariance",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 9, "Buy for the Next Two Steps",
+            "The cheapest thing you can do on a site is oversize the parts "
+            "that are hard to change later and undersize nothing else",
+            "explain",
+            (
+                _p("opener", "Buy for the Next Two Steps",
+                   "Not for the dome you are building. For the two after "
+                   "it.", words=240),
+                _p("text", "What is hard to change and what is not",
+                   "Trenches, conduit, pad diameter and service capacity are "
+                   "hard. Shell layers, interior walls and fixtures are "
+                   "easy. Spend the planning on the first list.", words=440),
+                _p("worked", "The cost of the upgrade you did not leave room "
+                   "for",
+                   "Price the same service upgrade two ways: laid in at "
+                   "build time, and retrofitted under a finished pad.",
+                   words=480),
+                _p("text", "The growth path as a sequence, not a plan",
+                   "A plan is a drawing of the end state. A path is the "
+                   "order in which you get there without ever having to "
+                   "undo a step, and only the second one survives contact "
+                   "with money.", words=420),
+            ),
+            derives=("park_model.housing_options",
+                     "park_model.crossover_months"),
+            ref="growth_path",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 10, "The Ground Is What You Cannot Take With You",
+            "Measured across the dome catalogue, the foundation is between a "
+            "small fraction and most of what a dome costs -- and it is the "
+            "only part you leave behind",
+            "explain",
+            (
+                _p("opener", "The Ground Is What You Cannot Take With You",
+                   "The frame is portable. The ground under it is not, and "
+                   "the ground is where the surprise is.", words=260),
+                _p("table", "Foundation share, across the catalogue",
+                   "Every dome in the catalogue with its foundation as a "
+                   "share of its total, small to large.", words=440),
+                _p("text", "Why the share swings so far",
+                   "A cheap shell on an expensive pad and an expensive shell "
+                   "on a cheap pad are both real configurations, and the "
+                   "spread between them is the single largest lever on this "
+                   "page.", words=440),
+                _p("worked", "The hinge, stated as a decision",
+                   "If the foundation is most of the cost, the shell is not "
+                   "the thing to optimise. Work out which side of that hinge "
+                   "a given build sits on before choosing anything else.",
+                   words=460),
+            ),
+            derives=("park_model.foundation_share", "park_model.on_pad"),
+            ref="foundation_share",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 11, "A Pad, Not a Plot",
+            "A serviced pad is the unit a dome site is actually built from: "
+            "a deck, a set of services and a diameter, priced as one thing",
+            "explain",
+            (
+                _p("opener", "A Pad, Not a Plot",
+                   "Land is sold in acres. Domes sit on pads, and the pad is "
+                   "the thing with a price.", words=260),
+                _p("table", "What a pad is made of",
+                   "Deck, services, drainage and anchorage, each with its "
+                   "cost and its life.", words=460),
+                _p("text", "Gravel, concrete or wood",
+                   "Three decks, three prices, three failure modes. The "
+                   "cheapest to build is not the cheapest to own, and the "
+                   "difference is not small.", words=440),
+                _p("worked", "The cheap pad, costed honestly",
+                   "The least a pad can cost and still be a pad, with every "
+                   "line that got left out named so the number cannot be "
+                   "mistaken for a finished one.", words=460),
+            ),
+            derives=("park_model.Pad", "park_model.pad_sizes",
+                     "park_model.cheap_pad_rows",
+                     "park_model.cheap_pad_cost"),
+            ref="the_pad",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 12,
+            "Turning the House Toward the Sun, Until It Stops Being Worth It",
+            "A rotating foundation is buildable and it does raise the solar "
+            "yield -- and the honest arithmetic says it pays only under "
+            "conditions that are worth stating before anybody pours a ring",
+            "explain",
+            (
+                _p("opener", "Turning the House Toward the Sun",
+                   "The off-the-wall one. A house on a ring, following the "
+                   "sun, and the reason it is in this book is that the "
+                   "arithmetic is interesting even where it loses.",
+                   words=280),
+                _p("text", "Why a dome can do this and a box cannot",
+                   "A circular footprint has no preferred direction, so "
+                   "rotating it changes nothing about how it meets its pad. "
+                   "A rectangle on a turntable is a geometry problem at "
+                   "every angle.", words=420),
+                _p("worked", "What tracking actually returns",
+                   "The yield from a fixed array against a tracked one, "
+                   "carried through with the ring, the drive and the "
+                   "maintenance priced in.", words=500),
+                _p("text", "Where it stops paying, said plainly",
+                   "The ring costs money per foot of circumference and the "
+                   "gain is a percentage of a solar yield. Write both as "
+                   "curves and they cross, and on most sites they cross in "
+                   "the wrong place.", words=440),
+                _p("sidebar", "Why it is still in the book",
+                   "Because it is a real answer to a real question, because "
+                   "the failure is instructive, and because the conditions "
+                   "under which it wins are specific enough to recognise if "
+                   "you ever have them.", words=260),
+            ),
+            derives=("park_model.solar_layouts",
+                     "park_model.declared",
+                     "two_v_demo.park_facts.steps_solar"),
+            ref="rotation",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 13, "One Pad, Every Dome Size",
+            "An iris of hinged blades closes a single oversized pad down to "
+            "whatever dome is standing on it, so one pad serves the whole "
+            "catalogue instead of one model",
+            "explain",
+            (
+                _p("opener", "One Pad, Every Dome Size",
+                   "Pads come in steps. Domes do not. The iris is the "
+                   "adapter between them.", words=260),
+                _p("spread", "How the blades swing",
+                   "The pivot ring, the blade length and the swing angle "
+                   "that closes the opening to a given diameter -- solved, "
+                   "so the drawing and the caption are the same fact.",
+                   words=460),
+                _p("worked", "What the iris costs against what it saves",
+                   "One iris against the alternative of pouring a pad per "
+                   "dome size, over a site with a mixed catalogue.",
+                   words=480),
+                _p("text", "The case against it",
+                   "It is a mechanism on a foundation, which is a thing that "
+                   "can seize, fill with grit and need maintaining. A pad "
+                   "that never moves never fails, and that is a real "
+                   "argument.", words=400),
+            ),
+            derives=("park_model.iris_span", "park_model.iris_covers",
+                     "park_model.iris_cost", "park_model.domes_that_fit"),
+            ref="the_iris",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 14, "Why a Network Beats a Park",
+            "A park is pads you rent. A network is pads that hold their "
+            "value because a dome can leave one and arrive at another, and "
+            "that difference is the whole resale argument",
+            "explain",
+            (
+                _p("opener", "Why a Network Beats a Park",
+                   "The question nobody building a single dome asks, and "
+                   "everybody building the second one does: what is it worth "
+                   "when you want out?", words=280),
+                _p("text", "The line, and what runs along it",
+                   "Power, water, waste and data reach a pad along a line, "
+                   "and the cost of that line per pad falls as pads are "
+                   "added to it. That is the only economy of scale on the "
+                   "site.", words=440),
+                _p("worked", "Host and tenant, both sides of the ledger",
+                   "What the pad owner takes and what the dome owner pays, "
+                   "with the crossover where renting stops beating owning.",
+                   words=500),
+                _p("text", "Resale, with the haircut left in",
+                   "A dome that can only sit on one pad is worth what that "
+                   "pad's owner says. A dome that can move is worth what the "
+                   "network says, minus a recovery penalty that is computed "
+                   "here rather than waved away.", words=460),
+                _p("sidebar", "This is the least-built idea in the book",
+                   "The frame is built. The pad is costed. The network is "
+                   "arithmetic and one film, and it should be read as a "
+                   "proposal rather than a report.", words=260),
+            ),
+            derives=("park_model.host_comparison",
+                     "park_model.tenant_utilities",
+                     "park_model.crossover_months"),
+            ref="the_network",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 15, "What Would Have to Be True",
+            "The closing audit: every claim in this part restated as a "
+            "condition, with the ones that are not met yet marked as not met",
+            "explain",
+            (
+                _p("opener", "What Would Have to Be True",
+                   "A book that only argues one way is a sales document. "
+                   "This is the chapter that argues the other way.",
+                   words=280),
+                _p("table", "Every claim, and what it rests on",
+                   "Each claim in this part with its source, its status "
+                   "-- measured, modelled or proposed -- and its caveat.",
+                   words=520),
+                _p("text", "The finished number nobody likes",
+                   "The honest all-in figure for a finished dome, which is "
+                   "several times the bare shell, and the reason the bare "
+                   "shell keeps getting quoted instead.", words=460),
+                _p("text", "The energy claim this book does not make",
+                   "A dome is not automatically cheaper to heat. The "
+                   "envelope helps and the airtightness is a build-quality "
+                   "question, and this book has not metered a winter.",
+                   words=420),
+                _p("text", "What one person has actually done",
+                   "The narrowest true version of the whole argument: what "
+                   "was built, what was measured, what was modelled, and "
+                   "what is still only a drawing.", words=440),
+            ),
+            derives=("two_v_demo.house_economics.price_total",
+                     "two_v_demo.house_economics.construction_total",
+                     "two_v_demo.dome_performance.ten_points",
+                     "two_v_demo.lexicon_concepts.CONCEPTS"),
+            ref="honest_limits",
+        ),
+    ),
+)
+
+PARTS: tuple[Part, ...] = (PART_BUILD, PART_SCALE)
 
 
 # ======================================================================
@@ -2413,10 +3056,125 @@ def validate_book() -> None:
     assert 300 <= book.sheets <= 800, book.sheets
     assert 60000 <= book.words <= 200000, book.words
 
+    _check_derivations(book)
+
     counts = {strand: len(strand_chapters(strand)) for strand in STRANDS}
     print(f"book OK: {len(book.parts)} parts, {len(book.chapters)} chapters, "
           f"{book.sheets} pages, {book.words:,} words, "
           f"{len(book.figures)} figures; strands {counts}")
+
+
+def _check_derivations(book: Book) -> None:
+    """Every ``derives`` entry names something that actually exists.
+
+    ``derives`` is the promise that a chapter's numbers come from code rather
+    than from the author's memory, and an unchecked promise is a comment. A
+    function that gets renamed, or a module that gets split, should break the
+    outline loudly instead of leaving a chapter pointing at nothing.
+
+    Two spellings are accepted because the outline has always used both: a
+    bare module name is looked up inside ``two_v_demo`` first and then at the
+    top level, so ``book_math.fortnight`` and ``park_model.on_pad`` both
+    resolve without anybody having to remember which package a module lives
+    in. Dotted attribute paths (``BOOK_TREE.recovery``) are walked.
+    """
+    import importlib
+
+    def resolve(reference: str) -> bool:
+        parts = reference.split(".")
+        for split in range(len(parts) - 1, 0, -1):
+            name = ".".join(parts[:split])
+            for candidate in (name, f"{__package__}.{name}"):
+                try:
+                    module = importlib.import_module(candidate)
+                except ImportError:
+                    continue
+                target = module
+                for attribute in parts[split:]:
+                    if not hasattr(target, attribute):
+                        break
+                    target = getattr(target, attribute)
+                else:
+                    return True
+        return False
+
+    broken = [(chapter.number, reference)
+              for chapter in book.chapters
+              for reference in chapter.derives
+              if not resolve(reference)]
+    assert not broken, f"chapters deriving from nothing: {broken}"
+
+    _run_source_selftests(book)
+
+
+def _run_source_selftests(book: Book) -> None:
+    """Run the selftest of every module a chapter derives its numbers from.
+
+    Naming a module in ``derives`` used to prove only that the name still
+    existed. But a chapter's numbers are exactly as trustworthy as the
+    module behind them, and most of those modules carry a ``validate_*``
+    that pins the claims the book repeats -- that the surface margin has
+    not drifted, that a round trip still closes, that a ratio a paragraph
+    describes in words is still the ratio it describes.
+
+    Those selftests were reachable only through the films that happened to
+    call them, so a change could pass the book's own checks and leave a
+    written chapter quietly wrong. Running them here closes that gap: the
+    book cannot report itself sound while any arithmetic it cites is not.
+
+    Costs about twelve seconds, nearly all of it the metabolic ledger
+    walking its element list. That is a fair price for the guarantee.
+    """
+    import contextlib
+    import importlib
+    import io
+
+    seen: dict[str, object] = {}
+    for chapter in book.chapters:
+        for reference in chapter.derives:
+            parts = reference.split(".")
+            for split in range(len(parts) - 1, 0, -1):
+                name = ".".join(parts[:split])
+                for candidate in (name, f"{__package__}.{name}"):
+                    if candidate in seen:
+                        break
+                    try:
+                        seen[candidate] = importlib.import_module(candidate)
+                    except ImportError:
+                        continue
+                    break
+                else:
+                    continue
+                break
+
+    failures = []
+    for name, module in sorted(seen.items()):
+        for attribute in sorted(dir(module)):
+            if not attribute.startswith("validate_"):
+                continue
+            check = getattr(module, attribute)
+            if not callable(check):
+                continue
+            try:
+                # Several of these announce themselves when they pass,
+                # and the book's own summary already says book_math is
+                # sound. Swallow the chatter; keep the failure.
+                with contextlib.redirect_stdout(io.StringIO()):
+                    check()
+            except Exception as error:      # noqa: BLE001 - reported below
+                # A bare `assert x` carries no message at all, so report
+                # the line that failed as well. Without this the whole
+                # report reads "validate_advantage: " and says nothing.
+                import traceback
+                frame = traceback.extract_tb(error.__traceback__)[-1]
+                detail = str(error).strip() or type(error).__name__
+                failures.append(
+                    f"{name}.{attribute}: {detail}\n"
+                    f"      {Path(frame.filename).name}:{frame.lineno}  "
+                    f"{(frame.line or '').strip()}")
+    assert not failures, \
+        "source selftests the book depends on are failing:\n  " \
+        + "\n  ".join(failures)
 
 
 def validate_everything() -> None:

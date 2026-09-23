@@ -581,6 +581,13 @@ def draw_extras(app, surface, width: int, height: int, style: str) -> None:
     """
     _world_icons(app, surface, width, height)
     chapter = app.chapters[app.chapter_index]
+    # The mascot goes before the early return. It is drawn on its own cues and
+    # has nothing to do with whether this chapter carries figures -- putting it
+    # after the callouts check would mean the character could only ever appear
+    # in chapters that also happen to show numbers.
+    if getattr(chapter, "mascot", ()):
+        from .mascot import draw_mascot_ui
+        draw_mascot_ui(app, surface, width, height, style)
     if not getattr(chapter, "callouts", ()):
         return
     index = app.chapter_index

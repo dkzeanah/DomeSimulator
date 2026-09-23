@@ -333,6 +333,10 @@ OVERHEAD_HEIGHT_M = 1.75
 WALK_SPEED = 1.30
 CARRY_SPEED = 1.05
 
+SHIFT_HOURS = 8.0
+"""What this model calls a working day. Used to turn a total into a rate, and
+named rather than typed because the book prints it in prose."""
+
 PFD_ALLOWANCE = _CONSTANT["pfd_allowance"]
 PFD_OVERHEAD_EXTRA = _CONSTANT["pfd_overhead_extra"]
 
@@ -448,6 +452,16 @@ class ElementEnergy:
         return totals
 
 
+FRAME_STAGE = "frame"
+SKIN_STAGES: tuple[str, ...] = ("wrap", "insulation", "fiberglass", "osb",
+                                "sheetrock", "shingles")
+"""The stations that go on *over* the frame rather than being it.
+
+A decided grouping, not a derived one -- the line's stage names carry no flag
+saying which is structure and which is cladding -- so it is named here once and
+read from here by everything that quotes the comparison."""
+
+
 @dataclass(frozen=True)
 class BuildEnergy:
     """Every element of one dome, costed."""
@@ -474,7 +488,7 @@ class BuildEnergy:
 
     @property
     def shifts(self) -> float:
-        return self.hours_per_worker / 8.0
+        return self.hours_per_worker / SHIFT_HOURS
 
     @property
     def rest_seconds(self) -> float:
@@ -550,12 +564,53 @@ class BuildEnergy:
             row["kg"] += float(item.element.weight)
         return totals
 
+    def skin_versus_frame(self, field: str = "kcal") -> float:
+        """The cladding stations as a multiple of the frame station.
+
+        Two places quote this -- the station table's note and the chapter's
+        prose -- so it is computed once here rather than twice there, and
+        the grouping in :data:`SKIN_STAGES` is what decides which is which.
+        """
+        stages = self.by_stage()
+        frame = stages.get(FRAME_STAGE, {}).get(field, 0.0)
+        if not frame:
+            return 0.0
+        skin = sum(stages[name][field] for name in SKIN_STAGES
+                   if name in stages)
+        return skin / frame
+
     def by_motion(self) -> dict[str, float]:
         totals: dict[str, float] = {}
         for item in self.elements:
             for name, kcal in item.by_motion().items():
                 totals[name] = totals.get(name, 0.0) + kcal
         return totals
+
+    def seconds_by_motion(self) -> dict[str, float]:
+        """The same split, in time rather than fuel.
+
+        Worth having beside :meth:`by_motion`, because a motion can be most
+        of the fuel simply by being most of the clock.  Comparing the two
+        splits separates *where the day goes* from *how hard the work is*,
+        and only the gap between them is intensity.
+        """
+        totals: dict[str, float] = {}
+        for item in self.elements:
+            for cost in item.costs:
+                name = cost.motion.name
+                totals[name] = totals.get(name, 0.0) + cost.motion.duration
+        return totals
+
+    @property
+    def fuel_per_lifting_kcal(self) -> float:
+        """Food calories burned for each one that became height.
+
+        The reciprocal of :attr:`mechanical_fraction`, which is the same
+        fact said in the direction people can picture.
+        """
+        if self.mechanical_kcal <= 0.0:
+            return 0.0
+        return self.kcal_per_worker / self.mechanical_kcal
 
     def by_limb(self) -> dict[str, float]:
         totals = {group: 0.0 for group in LIMB_GROUPS}
@@ -745,6 +800,10 @@ def validate_energetics() -> None:
 
     energy = build_energy(1, 2)
     assert len(energy.elements) > 100
+    # Every element goes through the same motion sequence, and the book
+    # prints how many there are, so it must not vary between parts.
+    lengths = {len(item.costs) for item in energy.elements}
+    assert lengths == {len(element_motions(energy.elements[0].element))}, lengths
     # Check the rate, not the total: the total scales with how big a dome
     # was ordered, but a shift is a shift whatever is being built.
     kcal_per_shift = energy.kcal_per_worker / max(energy.shifts, 1e-9)
@@ -760,6 +819,41 @@ def validate_energetics() -> None:
     efficiency = energy.motion_efficiency()
     assert efficiency["lift"] > energy.mechanical_fraction * 5.0, efficiency
     assert efficiency["fasten"] < 1e-6, efficiency["fasten"]
+    # Saying the same fact the other way up must give the same fact.
+    assert abs(energy.fuel_per_lifting_kcal
+               * energy.mechanical_fraction - 1.0) < 1e-9
+
+    # The two splits have to cover the same motions and the same totals, or
+    # the book cannot set them side by side and call the gap intensity.
+    fuel_split = energy.by_motion()
+    time_split = energy.seconds_by_motion()
+    assert set(fuel_split) == set(time_split), (sorted(fuel_split),
+                                                sorted(time_split))
+    assert abs(sum(time_split.values()) - energy.seconds_per_worker) < 1e-6
+    assert abs(sum(fuel_split.values()) - energy.kcal_per_worker) < 1e-6
+    # Fastening is the biggest share of both, and a bigger share of the
+    # fuel than of the clock, because it is the more intense of the two
+    # things that fill a day.  If that ever inverts, the chapter built on
+    # it is wrong.
+    assert max(fuel_split, key=fuel_split.get) == "fasten"
+    assert max(time_split, key=time_split.get) == "fasten"
+    fuel_share = fuel_split["fasten"] / energy.kcal_per_worker
+    time_share = time_split["fasten"] / energy.seconds_per_worker
+    assert fuel_share > time_share, (fuel_share, time_share)
+    # Every named skin stage, and the frame, must actually be on the line,
+    # or the comparison the chapter draws is quietly over a smaller set.
+    stages = energy.by_stage()
+    assert FRAME_STAGE in stages, sorted(stages)
+    missing = [name for name in SKIN_STAGES if name not in stages]
+    assert not missing, (missing, sorted(stages))
+    assert energy.skin_versus_frame("kcal") > 1.0
+    # The finding worth stating: the cladding costs proportionally more fuel
+    # than it weighs, because fuel follows part count and fastening.
+    assert (energy.skin_versus_frame("kcal")
+            > energy.skin_versus_frame("kg") > 1.0), (
+                energy.skin_versus_frame("kcal"),
+                energy.skin_versus_frame("kg"))
+
     # Legs and trunk are heavy; arms cannot dominate the lifting work.
     limb = energy.by_limb()
     assert limb["arms"] < limb["legs"] + limb["trunk"], limb

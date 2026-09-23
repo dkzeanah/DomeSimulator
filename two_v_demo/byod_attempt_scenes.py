@@ -93,6 +93,9 @@ def storage_dome():
 
 def scene_storage(app, opaque, transparent, p):
     """A pad, an insulated dome on it, and goods going in and out."""
+    # The Creator's field, or the shell hangs in a black void and reads as a
+    # product render rather than as a building standing somewhere.
+    creator.draw(app, park.field())
     old._draw_pad(app, park_world.Placed(
         pad=pm.Pad(diameter_ft=36.0, deck="concrete"), origin=(0.0, 0.0),
         dome="", heading_deg=0.0))
@@ -109,14 +112,13 @@ def scene_storage(app, opaque, transparent, p):
         opaque.box((x, 1.6 + (index % 2) * 0.9, 0.34 + stage * 0.5),
                    (1.15, 1.15, 0.9), (0.52, 0.38, 0.24, 1))
     apex = lift + build.apex
-    label(app, (0, 0, apex + 1.9), "A DOME WITH NOTHING LIVING IN IT", CYAN)
-    if p > 0.28:
-        label(app, (0, 0, apex + 0.7),
-              "insulated shell, no rooms, no plumbing", WHITE)
+    label(app, (0, 0, apex + 1.9),
+          "A DOME WITH NOTHING LIVING IN IT\n"
+          "insulated shell, no rooms, no plumbing", CYAN)
     if p > 0.55:
-        label(app, (0, -3.4, 1.1), "THE SAME PAD AS EVERYTHING ELSE", AMBER)
+        label(app, (0, -4.6, 1.2), "THE SAME PAD AS EVERYTHING ELSE", AMBER)
     if p > 0.78:
-        label(app, (0, 0, -0.9),
+        label(app, (0, 0, -1.2),
               "a side thought, not a second business plan", MUTED)
 
 
@@ -150,17 +152,16 @@ def scene_pad_build(app, opaque, transparent, p):
     # an empty mesh must not be handed to the renderer.
     if stage >= 1:
         old._draw_pad(app, placed, stage=stage)
-    top = np.array([0.0, 0.0, 3.6])
-    label(app, top, park.PAD_STAGES[stage].upper(), AMBER)
-    label(app, top - np.array([0.0, 0.0, 1.2]),
-          f"step {stage + 1} of {len(park.PAD_STAGES)}", MUTED)
+    label(app, np.array([0.0, 0.0, 5.6]),
+          f"{park.PAD_STAGES[stage].upper()}\n"
+          f"step {stage + 1} of {len(park.PAD_STAGES)}", AMBER)
     if stage >= 2:
         # The rim is the part a dome latches to. It is the whole difference
         # between this and a patio, so it is named the moment it exists.
-        label(app, np.array([0.0, -placed.radius_m * 1.04, 1.0]),
-              "ACCEPTOR RIM / WHAT A DOME LATCHES TO", AMBER)
+        label(app, np.array([0.0, -placed.radius_m * 1.06, 1.2]),
+              "ACCEPTOR RIM\nWHAT A DOME LATCHES TO", AMBER)
     if stage >= len(park.PAD_STAGES) - 1:
-        label(app, top - np.array([0.0, 0.0, 2.4]),
+        label(app, np.array([0.0, 0.0, -1.0]),
               f"{spec.diameter_ft:.0f} FT  ·  {spec.deck.upper()} DECK  ·  "
               f"${spec.build_cost:,.0f} TO BUILD", GREEN)
 
@@ -168,7 +169,8 @@ def scene_pad_build(app, opaque, transparent, p):
 def scene_decks(app, opaque, transparent, p):
     """The same pad in the three deck materials, priced as each one costs."""
     diameter = pm.basic_pad().diameter_ft
-    span = _m(diameter) + 4.2
+    span = _m(diameter) + 4.0
+    creator.draw(app, park.field())
     reveal = clamp(p * 1.5)
     for index, deck in enumerate(pm.DECKS):
         if index / len(pm.DECKS) > reveal:
@@ -180,18 +182,16 @@ def scene_decks(app, opaque, transparent, p):
         # pads and the three here are the same object three times.
         creator.draw(app, park.pad(spec), offset=(x, 0.0, 0.0))
         rate = pm.declared(f"deck_{deck}_usd_per_sqft")
-        top = np.array([x, 0.0, 2.5])
-        label(app, top, deck.upper(), _rgb_of(DECK_TINT[deck]))
-        label(app, top - np.array([0.0, 0.0, 1.15]),
-              f"${rate:,.2f}/sq ft  ·  {spec.area_sqft:,.0f} sq ft", WHITE)
-        label(app, top - np.array([0.0, 0.0, 2.3]),
-              f"pad total ${spec.build_cost:,.0f}", AMBER)
-    label(app, np.array([0.0, 0.0, -1.1]),
+        # One label, not three. Three stacked world labels on one subject
+        # cannot be kept apart by the declutter pass, and the first cut of
+        # this chapter had them printing through each other.
+        label(app, np.array([x, 0.0, 5.6]),
+              f"{deck.upper()}\n"
+              f"${rate:,.2f}/sq ft  ·  {spec.area_sqft:,.0f} sq ft\n"
+              f"pad total ${spec.build_cost:,.0f}",
+              DECK_TINT[deck])
+    label(app, np.array([0.0, 0.0, 8.6]),
           "whatever the host wants to pay for", MUTED)
-
-
-def _rgb_of(colour) -> tuple[int, int, int]:
-    return tuple(int(round(channel * 255)) for channel in colour[:3])
 
 
 def _m(feet: float) -> float:
@@ -273,8 +273,12 @@ def scene_iris(app, opaque, transparent, p):
         tip = pin + direction * blade
         pitch_pivot = math.tau * pivot / IRIS_LEAVES
         pitch_tip = math.tau * max(radius, 0.02) / IRIS_LEAVES
-        half_p = pitch_pivot * 0.72
-        half_t = pitch_tip * 0.72
+        # Overlap by a fixed share of the local pitch at BOTH ends, so the
+        # blades tile the annulus whether the aperture is wide open or nearly
+        # shut. A fixed metric width would leave gaps at one end and a blocked
+        # hole at the other.
+        half_p = pitch_pivot * 0.78
+        half_t = pitch_tip * 0.78
         axis = tip - pin
         length = float(np.linalg.norm(axis))
         if length > 1e-6:
@@ -346,15 +350,15 @@ def scene_rotation(app, opaque, transparent, p):
     label(app, (6.4, -2.2, 8.0), "MORNING SUN", AMBER)
     label(app, (-5.0, -1.0, 1.4), "PRIVATE CORNER", CYAN)
     label(app, (5.0, 3.2, 1.4), "STREET / VIEW", WHITE)
-    label(app, (0, 0, 8.6), "A FOUNDATION THAT AIMS THE HOUSE", AMBER)
-    if p > 0.34:
-        label(app, (0, 0, 7.4), "no panels needed to want this", WHITE)
+    label(app, (0, 0, 9.2),
+          "A FOUNDATION THAT AIMS THE HOUSE\n"
+          "no panels needed to want this", AMBER)
     if p > 0.60:
-        label(app, (0, 0, 6.2),
-              "bearing, drive and rotating services are their own design",
+        label(app, (0, 0, 6.4),
+              "bearing, drive and rotating services\nare their own design",
               MUTED)
     if p > 0.80:
-        label(app, (0, 0, -0.9),
+        label(app, (0, 0, -1.1),
               "THE UTMOST TOP-LINE KIND  ·  DELUXE PRICING", RED)
 
 
@@ -370,6 +374,10 @@ def scene_veins(app, opaque, transparent, p):
     thing that cannot be built, because the panel is what comes off.
     """
     radius = 5.0
+    # The Creator's own field, so the shell stands somewhere. Drawing the
+    # simulator's dome straight onto black was the first cut of this picture
+    # and it read as a diagram rather than as a building.
+    creator.draw(app, park.field())
     wedge.world_batches(opaque, "point_dome_out", scene_radius=radius,
                         parts=("wood",))
     model = wedge.model("point_dome_out")
@@ -415,9 +423,10 @@ def scene_veins_joke(app, opaque, transparent, p):
     """
     scene_veins(app, opaque, transparent, min(p, 0.62))
     if p > 0.55:
-        label(app, (0, 0, 7.6), "BRAINIAC BUILD", CYAN)
-        label(app, (0, 0, 6.4), "THE FIRST ONE WAS THE FRANKENDOME", MUTED)
-        label(app, (0, 0, 5.2), "A CONGLOMERATE OF STRUT TYPES", MUTED)
+        label(app, (0, 0, 9.4), "BRAINIAC BUILD", CYAN)
+        label(app, (0, 0, 7.9),
+              "the first one was the Frankendome\n"
+              "a conglomerate of strut types", MUTED)
 
 
 # ----------------------------------------------------------------------
@@ -442,22 +451,25 @@ def scene_catalog(app, opaque, transparent, p):
             continue
         radius = _m(size) / 2.0
         # Smallest ring on top, so each size is a terrace rather than a lid.
-        height = 0.06 + (count - 1 - index) * 0.055
-        opaque.disc((0, 0, height), radius, (0.34, 0.33, 0.32, 1), 72)
-        ring(opaque, radius, height + 0.03, AMBER, thickness=.035)
+        # The steps are deliberately tall and the alternate decks light and
+        # dark: at a quarter of this spacing the stack read as one flat disc
+        # with a few faint circles drawn on it.
+        height = 0.08 + (count - 1 - index) * 0.16
+        shade = (0.40, 0.38, 0.36, 1) if index % 2 else (0.26, 0.25, 0.24, 1)
+        opaque.disc((0, 0, height), radius, shade, 72)
+        ring(opaque, radius, height + 0.07, AMBER, thickness=.075)
         fits = len(pm.domes_that_fit(size))
-        # Labels fan around the stack instead of stacking on one ray, where
-        # the three middle sizes would print on top of each other.
-        angle = math.radians(90.0 + index * 42.0)
-        point = np.array([math.cos(angle) * radius * 1.04,
-                          math.sin(angle) * radius * 1.04, height + 0.9])
-        label(app, point, f"{size:.0f} FT", CYAN)
-        label(app, point - np.array([0.0, 0.0, 0.85]),
-              f"{pm.pad_area_sqft(size):,.0f} SQ FT", WHITE)
-        label(app, point - np.array([0.0, 0.0, 1.70]),
-              f"takes {fits} of {total} designs", MUTED)
+        # Two lines per ring, fanned around the stack rather than stacked on
+        # one ray. Six rings of similar radius do not leave room for three
+        # lines each: the detail lines were printing through one another.
+        angle = math.radians(90.0 + index * 47.0)
+        point = np.array([math.cos(angle) * radius * 1.16,
+                          math.sin(angle) * radius * 1.16, height + 1.0])
+        label(app, point,
+              f"{size:.0f} FT  ·  {fits} OF {total} DESIGNS\n"
+              f"{pm.pad_area_sqft(size):,.0f} SQ FT", CYAN)
     # The pad is the host's, so the catalogue wears the host's colour.
-    label(app, np.array([0.0, 0.0, len(sizes) * 0.055 + 1.6]),
+    label(app, np.array([0.0, 0.0, len(sizes) * 0.055 + 4.2]),
           "PAD SIZES, ROUNDED UP FROM THE DOMES THAT MUST FIT", AMBER)
 
 
@@ -474,7 +486,7 @@ def scene_line(app, opaque, transparent, p):
     is a bar in the world, with the pad under it and the house over it.
     """
     spec = pm.basic_pad()
-    height = 3.5
+    height = 4.4
     creator.draw(app, park.field())
     placed = park_world.Placed(pad=spec, origin=(0.0, 0.0), dome="",
                                heading_deg=20.0)
@@ -482,31 +494,33 @@ def scene_line(app, opaque, transparent, p):
     build = park.dome_on_pad(pm.FLAGSHIP_DOME)
     creator.draw(app, build, offset=(0.0, 0.0, park.dome_lift(spec)), yaw=20.0)
 
-    # The line. Drawn last of the three so it reads as being in front.
-    reach = 9.0
-    opaque.cylinder((-reach, 0.0, height), (reach, 0.0, height), .06, WHITE, 10)
-    transparent.box((0.0, 0.0, height), (reach * 2.0, 3.6, 0.02),
-                    (0.91, 0.95, 0.98, 0.10))
+    # The line. The bar is chunky on purpose: this is the one graphic in the
+    # film that has to be unmistakable from across a room.
+    reach = 11.0
+    # A halo under the bar as well as the bar itself. Drawn as one cylinder
+    # the line disappeared into the grass at any distance the whole pad fitted.
+    opaque.cylinder((-reach, 0.0, height), (reach, 0.0, height), .30, WHITE, 12)
+    opaque.cylinder((-reach, 0.0, height), (reach, 0.0, height), .15, WHITE, 12)
+    transparent.box((0.0, 0.0, height), (reach * 2.0, 3.4, 0.02),
+                    (0.91, 0.95, 0.98, 0.09))
 
-    label(app, (-reach + 1.2, 0.0, height + 0.9), "ABOVE THE LINE", CYAN)
-    label(app, (-reach + 1.2, 0.0, height - 0.9), "BELOW THE LINE", AMBER)
+    # Every label sits in its own quarter of the frame. The first cut put four
+    # of them within a metre of the bar and they printed on top of one another.
+    label(app, (-reach - 1.6, 0.0, height + 1.1), "ABOVE THE LINE", CYAN)
+    label(app, (-reach - 1.6, 0.0, height - 1.3), "BELOW THE LINE", AMBER)
     if p > 0.22:
-        label(app, (0.0, -spec.diameter_ft / FT_PER_M / 2 - 0.8, 1.0),
-              "HOST MONEY / IN THE GROUND / IT STAYS", AMBER)
+        label(app, (-4.2, 0.0, 1.0),
+              "HOST MONEY\nIN THE GROUND\nIT STAYS", AMBER)
     if p > 0.44:
-        label(app, (0.0, 0.0, park.dome_lift(spec) + build.apex + 1.5),
-              "TENANT MONEY / A DRIVE AWAY / IT GOES", CYAN)
-    if p > 0.66:
-        label(app, (0.0, 0.0, height + 2.6),
-              "AND NEITHER IS INSIDE THE OTHER'S", WHITE)
+        label(app, (0.0, 0.0, park.dome_lift(spec) + build.apex + 3.4),
+              "TENANT MONEY\nA DRIVE AWAY\nIT GOES", CYAN)
     if p > 0.84:
         # The comparison the sentence is really drawing: a landlord's money is
         # in the walls the tenant is living between, which is where the
         # argument between them comes from.
-        label(app, (reach - 3.0, 0.0, height + 3.8),
-              "A LANDLORD'S MONEY IS IN THE WALLS", RED)
-        label(app, (reach - 3.0, 0.0, height + 2.9),
-              "THE TENANT LIVES BETWEEN", RED)
+        label(app, (6.4, -2.4, height + 6.4),
+              "A LANDLORD'S MONEY IS IN THE WALLS\nTHE TENANT LIVES BETWEEN",
+              RED)
 
 
 # ----------------------------------------------------------------------
@@ -516,38 +530,43 @@ def scene_line(app, opaque, transparent, p):
 HOST_FEATURES = (
     ("FLOOR HEATING", AMBER),
     ("WATER STORAGE", CYAN),
-    ("DEEP FREEZE STORAGE", CYAN),
+    ("FREEZER STORAGE", CYAN),
     ("SUN TRACKING", AMBER),
-    ("SHOP-READY FLOOR", GREEN),
+    ("SHOP FLOOR", GREEN),
     ("SMART SYSTEMS", WHITE),
 )
 """The development branches a host might fit, in the author's own order.
 
 None of these is priced, and the caption says so: the chapter is about what
-the pad standard could grow into, not about what a host should buy."""
+the pad standard could grow into, not about what a host should buy.
+
+The names are kept short on purpose. Six bays across a 16:9 frame leave about
+260 pixels between neighbouring captions, and the first cut's "deep freeze
+storage" ran straight through the bay beside it."""
 
 
 def scene_host_design(app, opaque, transparent, p):
     """Six things a host could add to the pad standard, as six bays."""
     creator.draw(app, park.field())
-    columns, spacing = 3, 6.4
+    columns, spacing = 3, 7.6
     reveal = clamp(p * 1.5)
     for index, (name, colour) in enumerate(HOST_FEATURES):
         if index / len(HOST_FEATURES) > reveal:
             continue
         x = (index % columns - 1) * spacing
         y = (0.5 - index // columns) * spacing
-        opaque.box((x, y, 0.30), (4.6, 4.2, 0.42), (0.14, 0.19, 0.24, 1))
-        ring(opaque, 1.45, 0.62, AMBER, origin=(x, y, 0), thickness=.05)
+        opaque.box((x, y, 0.30), (5.4, 5.0, 0.42), (0.14, 0.19, 0.24, 1))
+        ring(opaque, 1.70, 0.62, AMBER, origin=(x, y, 0), thickness=.05)
         if index % 3 == 0:
-            opaque.cylinder((x, y, 0.55), (x, y, 1.9), .16, colour, 10)
+            opaque.cylinder((x, y, 0.55), (x, y, 2.0), .18, colour, 10)
         elif index % 3 == 1:
-            opaque.box((x, y, 1.20), (2.0, 2.0, 1.5), colour)
+            opaque.box((x, y, 1.25), (2.2, 2.2, 1.6), colour)
         else:
-            opaque.sphere((x, y, 1.45), .78, colour, 5, 10)
-        label(app, (x, y, 3.1), name, colour)
+            opaque.sphere((x, y, 1.55), .84, colour, 5, 10)
+        # Staggered by column, so neighbouring captions never share a baseline.
+        label(app, (x, y, 3.5 + (index % columns) * 1.15), name, colour)
     if p > 0.72:
-        label(app, (0, 0, -0.7),
+        label(app, (0, 0, -6.0),
               "the first job is still the simple pad built well", MUTED)
 
 
@@ -576,22 +595,75 @@ def scene_layers(app, opaque, transparent, p):
 
 
 def scene_growth(app, opaque, transparent, p):
-    """The three sizes the hardware is bought for: this one and two beyond."""
-    base.scene_growth(app, opaque, transparent, p)
-    stage = min(2, int(p * 3))
+    """The three sizes the hardware is bought for: this one and two beyond.
+
+    Redrawn rather than borrowed because the shell has to stand on the
+    Creator's field and to move aside for the worksheet. The first cut put it
+    on black at the origin, which left it floating and ran its captions under
+    the panel.
+    """
+    shift = old._shift(app)
+    creator.draw(app, park.field(), offset=tuple(shift))
+    stage = min(len(pm.DOME_CLASSES) - 1, int(p * len(pm.DOME_CLASSES)))
     size = pm.DOME_CLASSES[stage]
+    radius = 3.0 * size.longest_member_ft / pm.DOME_CLASSES[0].longest_member_ft
+    wedge.world_batches(opaque, "point_dome_out", scene_radius=radius,
+                        parts=("wood", "rigid"), origin=tuple(shift))
+    count = len(wedge.model("point_dome_out").members)
     steps = len(pm.DOME_CLASSES) - 1 - stage
+    top = np.asarray(shift) + np.array([0.0, 0.0, radius + 1.5])
+    label(app, top, f"{size.longest_member_ft:.0f} FT LONG MEMBER  ·  "
+                    f"~{size.floor_sqft:,.0f} SQ FT", CYAN)
+    label(app, top - np.array([0.0, 0.0, 1.15]),
+          f"{count} WEDGE MEMBERS  ·  QUALIFIED HARDWARE KEPT", AMBER)
     if p > 0.30:
-        label(app, (0, 0, -1.9),
+        # The brief is a range, not one house: buy the connectors for where
+        # the build is going, and collect the longer members on the way.
+        label(app, top - np.array([0.0, 0.0, 2.3]),
               "SIZE THE HARDWARE TWO STEPS AHEAD" if steps else
               "THE LAST OF THE THREE PLANNED SIZES", GREEN)
-        label(app, (0, 0, -2.9),
-              f"{steps} size{'s' if steps != 1 else ''} of headroom left "
-              f"in this hardware set", MUTED)
-    if p > 0.70:
-        label(app, (0, 0, -3.9),
-              f"{size.longest_member_ft:.0f} FT MEMBERS · "
-              f"~{size.floor_sqft:,.0f} SQ FT", CYAN)
+        label(app, top - np.array([0.0, 0.0, 3.45]),
+              f"{steps} size{'s' if steps != 1 else ''} of headroom left in "
+              f"this hardware set", MUTED)
+    # Collection rack: the longer members arrive beside the current shell.
+    for index in range(8):
+        if index / 8 > p:
+            continue
+        x = shift[0] + 7.0 + (index % 4) * 0.18
+        opaque.cylinder((x, -2, .3 + (index // 4) * .18),
+                        (x, 2, .3 + (index // 4) * .18),
+                        .075, (.62, .39, .18, 1), 3)
+
+
+def scene_channels(app, opaque, transparent, p):
+    """The wedge buildout, drawn on the Creator's field and off the panel."""
+    shift = old._shift(app)
+    creator.draw(app, park.field(), offset=tuple(shift))
+    radius = 5.0
+    wedge.world_batches(opaque, "point_dome_out", scene_radius=radius,
+                        parts=("wood",), origin=tuple(shift))
+    model = wedge.model("point_dome_out")
+    scale = radius / model.topology.sphere_radius_in
+    # Separate supply and conduit traces rise from the known central service
+    # spot. Drains stay at the floor: the picture must not imply uphill flow.
+    for index, colour in enumerate((CYAN, AMBER)):
+        x = shift[0] + (index - 0.5) * 0.20
+        opaque.cylinder((x, shift[1], 0.15), (x, shift[1], radius + 0.08),
+                        .06, colour, 8)
+    for index, seam in enumerate(model.seams):
+        if index / len(model.seams) > 0.15 + 0.85 * clamp(p * 1.6):
+            continue
+        a = np.asarray(seam.start) * scale + shift
+        b = np.asarray(seam.end) * scale + shift
+        opaque.cylinder(a, b, .035, CYAN, 5)
+        t = (p * 3 + index * 0.09) % 1
+        opaque.sphere(a + (b - a) * t, .085, AMBER, 3, 6)
+    top = np.asarray(shift) + np.array([0.0, 0.0, radius + 1.7])
+    label(app, top, "CENTER UP / OUT / AROUND THE SHELL", CYAN)
+    label(app, top - np.array([0.0, 0.0, 1.2]),
+          "THE PAIRED MEMBERS LEAVE A CHANNEL AT EVERY SEAM", AMBER)
+    label(app, np.asarray(shift) + np.array([0.0, 0.0, -1.0]),
+          "ACCESSIBLE CHANNELS / DRAIN AT FLOOR", MUTED)
 
 
 def scene_hardware(app, opaque, transparent, p):
@@ -606,24 +678,36 @@ def scene_hardware(app, opaque, transparent, p):
               "ONE HARDWARE SET IS A RANGE OF SIZES, NOT ONE HOUSE", GREEN)
 
 
+def scene_rewards(app, opaque, transparent, p):
+    """The three reward categories, standing on the Creator's field.
+
+    The first cut drew them on black, which reads as a slide rather than as
+    objects somebody is being offered.
+    """
+    creator.draw(app, park.field())
+    base.scene_rewards(app, opaque, transparent, p)
+
+
 def scene_close(app, opaque, transparent, p):
-    """The park, with the four answers to "what does a stay cost" named."""
+    """The park, with the four answers to "what does a stay cost" named.
+
+    Held on separate lines rather than stacked at one height: four captions
+    that arrive one after another and share a plane end up printing through
+    each other in the declutter pass.
+    """
     old.scene_site(app, opaque, transparent, 0.35 + 0.5 * clamp(p))
     app.world_labels.clear()
-    shift = old._shift(app)
+    shift = np.asarray(old._shift(app))
     rows = (
-        (0.20, "A HOTEL SELLS YOU A NIGHT", MUTED),
-        (0.42, "A SHORT LET SELLS YOU A FORTNIGHT", MUTED),
-        (0.64, "A LEASE SELLS YOU A YEAR, AND CHARGES YOU TO LEAVE EARLY",
+        (0.20, 15.4, "A HOTEL SELLS YOU A NIGHT", MUTED),
+        (0.42, 13.8, "A SHORT LET SELLS YOU A FORTNIGHT", MUTED),
+        (0.64, 12.2, "A LEASE SELLS YOU A YEAR, AND CHARGES YOU TO LEAVE EARLY",
          MUTED),
+        (0.84, 10.4, "BRING YOUR OWN HOME", CYAN),
     )
-    for threshold, text, colour in rows:
+    for threshold, height, text, colour in rows:
         if p > threshold:
-            label(app, np.asarray(shift) + np.array([0.0, 0.0, 15.0]), text,
-                  colour)
-    if p > 0.84:
-        label(app, np.asarray(shift) + np.array([0.0, 0.0, 12.5]),
-              "BRING YOUR OWN HOME", CYAN)
+            label(app, shift + np.array([0.0, 0.0, height]), text, colour)
 
 
 SCENES: dict = {
@@ -640,7 +724,9 @@ SCENES: dict = {
     "byod_host_design": scene_host_design,
     "byod_layers": scene_layers,
     "byod_growth": scene_growth,
+    "byod_channels": scene_channels,
     "byod_hardware": scene_hardware,
+    "byod_rewards": scene_rewards,
     "byod_close": scene_close,
 }
 
@@ -660,7 +746,11 @@ def validate_byod_attempt_scenes() -> None:
             probe = _Probe(None, (90.0, 20.0, 40.0))
             opaque, transparent = TriangleBatch(), TriangleBatch()
             painter(probe, opaque, transparent, progress)
-            assert probe.creator_draws, (name, progress)
+            # The project's contract, not a stricter one: a painter draws
+            # through the Dome Creator *or* through the simulator bridge, and
+            # both are first class. What is not allowed is drawing nothing.
+            assert (probe.creator_draws or opaque.vertices
+                    or transparent.vertices), (name, progress)
             for batch in (opaque, transparent):
                 assert np.isfinite(np.asarray(batch.vertices)).all(), (
                     name, progress)

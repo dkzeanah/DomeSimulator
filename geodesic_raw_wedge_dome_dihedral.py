@@ -372,6 +372,16 @@ class DomeConfig:
     sprint_multiplier: float = 3.0
     mouse_sensitivity_deg_px: float = 0.10
 
+    # THE COST CALCULATOR.
+    #
+    # The dome this tool solves is also a product somebody has to price, and
+    # the two questions used to live in different programs. These decide
+    # whether the calculator is already open when the window appears, which
+    # page it is on, and which seed it is pricing.
+    cost_console_open: bool = False
+    cost_console_page: str = "quote"
+    cost_seed: str = "stem_cell"
+
     # Window.
     window_width: int = 1600
     window_height: int = 900
@@ -429,6 +439,9 @@ class DomeConfig:
             raise ValueError("head_overfit_in must be >= 0")
         if not 0 <= self.jig_stage < JIG_STAGE_COUNT:
             raise ValueError(f"jig_stage must be 0..{JIG_STAGE_COUNT - 1}")
+        if self.cost_console_page not in {"quote", "prices", "levers", "seeds"}:
+            raise ValueError(
+                "cost_console_page must be quote, prices, levers or seeds")
 
     def save(self, path: str | Path) -> None:
         path = Path(path)
@@ -3295,6 +3308,7 @@ class ControlsHud:
             ("F12", "screenshot"),
             ("F1", "console help"),
             ("F2", "hide this legend"),
+            ("F3", "COST CALCULATOR"),
         ]
 
         orientation_labels = {
@@ -4096,11 +4110,24 @@ class DomeWorldApp:
         self.zoom_max_steps = 8
         self.zoom_min_fov_deg = 15.0
 
+        # The cost calculator. Built the first time it is asked for, because
+        # this tool is useful to somebody who never opens it and solving a
+        # dome should not wait on a price list.
+        self.seed_console = None
+        self.seed_console_renderer = None
+        self.seed_toolbar = None
+        self.show_seed_console = False
+        self._seed_console_key = None
+        self._seed_console_origin = (0, 0)
+        self._seed_toolbar_origin = (0, 0)
+
         self._capture_mouse(True)
         self.rebuild_world(reset_camera=False)
         self.renderer.upload_overlay("crosshair", self.crosshair_hud.build())
         self._refresh_hud(force=True)
         self.print_controls()
+        if self.config.cost_console_open:
+            self.toggle_seed_console(self.config.cost_console_page)
 
     def _capture_mouse(self, captured: bool) -> None:
         self.mouse_captured = captured
@@ -4224,6 +4251,134 @@ class DomeWorldApp:
         self.renderer.upload_overlay("join_solution", join_surface)
         self.renderer.upload_overlay("jig_stage", stage_surface)
         self._hud_cache_key = state
+
+    # ------------------------------------------------------------------
+    # THE COST CALCULATOR
+    # ------------------------------------------------------------------
+    def _ensure_seed_console(self) -> bool:
+        """Load the calculator on first use. False if it is not installed.
+
+        Imported here rather than at the top of the file so this tool keeps
+        working as the standalone single-file simulator it was written as. A
+        checkout with no ``seed_console.py`` in it loses the price button and
+        nothing else."""
+        if self.seed_console is not None:
+            return True
+        try:
+            import seed_console
+            import seed_model
+        except Exception as exc:                       # pragma: no cover
+            print(f"cost calculator unavailable: {exc}")
+            return False
+        seed_model.load_overrides()
+        self.seed_console = seed_console.Console()
+        order = list(seed_model.FITOUT_ORDER)
+        if self.config.cost_seed in order:
+            self.seed_console.fitout_index = order.index(self.config.cost_seed)
+        self.seed_console_renderer = seed_console.ConsoleRenderer()
+        self.seed_toolbar = seed_console.Toolbar()
+        return True
+
+    def toggle_seed_console(self, page: str | None = None) -> None:
+        """Open or close the calculator. Opening it frees the mouse."""
+        if not self._ensure_seed_console():
+            return
+        if page is not None:
+            self.seed_console.act(f"page:{page}")
+            self.show_seed_console = True
+        else:
+            self.show_seed_console = not self.show_seed_console
+        self._seed_console_key = None
+        if self.show_seed_console and self.mouse_captured:
+            # A captured mouse cannot click a button; the calculator is a
+            # thing you point at, so taking it over is the whole gesture.
+            self._capture_mouse(False)
+            self._refresh_hud(force=True)
+
+    def _seed_console_state(self):
+        """Everything the drawn calculator depends on, for the cache key."""
+        import seed_model
+
+        console = self.seed_console
+        return (
+            console.page, console.fitout_key, console.resin,
+            console.frame_stock, console.seam, console.polyps, console.scroll,
+            console.selected, console.edit_buffer, console.message,
+            self.width, self.height,
+            tuple(sorted(seed_model._OVERRIDES.items())),
+        )
+
+    def _refresh_seed_console(self) -> None:
+        # Built on the first frame, not on the first press, so the buttons
+        # that open the calculator are visible to somebody who does not know
+        # the calculator exists. The import is all this costs; no price is
+        # computed until a page is actually drawn.
+        if self.seed_console is None and not self._ensure_seed_console():
+            return
+        console = self.seed_console
+        # Fit the panel to the window, so a small window gets a small panel
+        # rather than a panel with its buttons off the edge of the screen.
+        console.width = max(640, min(1040, self.width - 80))
+        console.height = max(420, min(760, self.height - 120))
+        state = self._seed_console_state()
+        toolbar_surface = self.seed_toolbar.build(
+            console.page if self.show_seed_console else None)
+        self._seed_toolbar_origin = (
+            self.hud.theme.margin_px,
+            self.height - toolbar_surface.get_height()
+            - self.hud.theme.margin_px)
+        self.renderer.upload_overlay("seed_toolbar", toolbar_surface)
+        if not self.show_seed_console:
+            return
+        if state == self._seed_console_key:
+            return
+        surface = self.seed_console_renderer.build(console)
+        self._seed_console_origin = (
+            max(0, (self.width - console.width) // 2),
+            max(0, (self.height - console.height) // 2))
+        self.renderer.upload_overlay("seed_console", surface)
+        self._seed_console_key = state
+
+    def _seed_console_click(self, position) -> bool:
+        """Route a click to the calculator. True if it took it."""
+        if self.seed_toolbar is not None:
+            bx, by = self._seed_toolbar_origin
+            action = self.seed_toolbar.hit(position[0] - bx, position[1] - by)
+            if action:
+                self.toggle_seed_console(action.partition(":")[2])
+                return True
+        if not self.show_seed_console or self.seed_console is None:
+            return False
+        ox, oy = self._seed_console_origin
+        local = (position[0] - ox, position[1] - oy)
+        if not (0 <= local[0] < self.seed_console.width
+                and 0 <= local[1] < self.seed_console.height):
+            return False
+        shift = bool(pygame.key.get_mods() & pygame.KMOD_SHIFT)
+        result = self.seed_console.click(local[0], local[1], shift)
+        if result == "close":
+            self.show_seed_console = False
+        elif result:
+            self.seed_console.message = result
+            print(f"COST: {result}")
+        self._seed_console_key = None
+        return True
+
+    def _seed_console_key_press(self, event) -> bool:
+        """Give the calculator the keyboard while it is editing a price."""
+        if not self.show_seed_console or self.seed_console is None:
+            return False
+        if event.key == pygame.K_F3:
+            return False
+        if not self.seed_console.selected:
+            return False
+        name = pygame.key.name(event.key)
+        message = self.seed_console.key(getattr(event, "unicode", ""), name)
+        if message:
+            self.seed_console.message = message
+            print(f"COST: {message}")
+        self._seed_console_key = None
+        return True
 
     def _upload_jig(self) -> None:
         self.jig_panel %= len(self.model.topology.faces)
@@ -4381,6 +4536,12 @@ E                        Export dome OBJ/config + full 40-panel fabrication pack
 F12                      Save screenshot PNG
 F1                       Print this help again
 F2                       Toggle top control legend
+F3                       Open the seed-dome cost calculator (or click the
+                         buttons along the bottom of the window). It prices
+                         THIS dome -- the same 2V frame on a six-foot member
+                         you are standing in -- line by line, lets you set
+                         your own prices, and shows what each saving is worth
+                         off the selling price.
 
 THE TWO ENDS ARE NOT THE SAME OPERATION
   BUTT end  cut BEFORE assembly, off the jig, to the compound angle its
@@ -4570,6 +4731,8 @@ THE TWO ENDS ARE NOT THE SAME OPERATION
             self.show_hud = not self.show_hud
             if self.show_hud:
                 self._refresh_hud(force=True)
+        elif key == pygame.K_F3:
+            self.toggle_seed_console()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -4579,11 +4742,20 @@ THE TWO ENDS ARE NOT THE SAME OPERATION
                 self.width = max(1, event.w)
                 self.height = max(1, event.h)
             elif event.type == pygame.KEYDOWN:
+                if self._seed_console_key_press(event):
+                    continue
                 self.handle_keydown(event.key)
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                self._seed_console_click(event.pos)
             elif event.type == pygame.MOUSEMOTION and self.mouse_captured:
                 dx, dy = event.rel
                 self.camera.mouse_look(dx, dy)
             elif event.type == pygame.MOUSEWHEEL:
+                if self.show_seed_console and self.seed_console is not None:
+                    self.seed_console.act(
+                        "scroll:up" if event.y > 0 else "scroll:down")
+                    self._seed_console_key = None
+                    continue
                 self.change_zoom(event.y)
 
     def update_camera(self, dt: float) -> None:
@@ -4715,8 +4887,24 @@ THE TWO ENDS ARE NOT THE SAME OPERATION
                         y_px=max(self.hud.theme.margin_px, seam_y - join_overlay.height - 6),
                     )
 
+        # The calculator and its toolbar sit above everything else, because
+        # they are the only things in this window you point at rather than
+        # look through.
+        self._refresh_seed_console()
+        toolbar = self.renderer.overlays.get("seed_toolbar")
+        if toolbar is not None:
+            self.renderer.render_overlay(
+                "seed_toolbar", self.width, self.height,
+                x_px=self._seed_toolbar_origin[0],
+                y_px=self._seed_toolbar_origin[1])
+        if self.show_seed_console:
+            self.renderer.render_overlay(
+                "seed_console", self.width, self.height,
+                x_px=self._seed_console_origin[0],
+                y_px=self._seed_console_origin[1])
+
         crosshair = self.renderer.overlays.get("crosshair")
-        if crosshair is not None:
+        if crosshair is not None and not self.show_seed_console:
             self.renderer.render_overlay(
                 "crosshair",
                 self.width,
@@ -5090,6 +5278,9 @@ TICKET_CONFIG_FIELDS = (
     "jig_stage",
     "jig_butt_hangoff_in",
     "head_overfit_in",
+    "cost_console_open",
+    "cost_console_page",
+    "cost_seed",
     "trapezoid_nose_depth_in",
     "flat_key_width_in",
     "flat_key_depth_in",

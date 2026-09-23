@@ -346,6 +346,35 @@ time figure is editable live through **PRICES**, or directly in
 [al_build.py](al_build.py) (dome line) and [site_shed.py](site_shed.py)
 (site-built comparison).
 
+## Every render is a release, and now a teaser too
+
+An export used to produce a film. It now produces the film, the phone
+cut beside it, the release folder of thumbnails and platform copy --
+and **the teaser**, cut from the same lesson's own chapters into
+`deliverables/teasers/`. That last one used to be a separate thing
+somebody had to remember to ask for, which is why most films did not
+have one. It is part of what "render" means now, for every film, and
+`teaser=False` in a ticket is the only way to skip it.
+
+**A number in the corner.** Every chapter of every film now carries
+its own beat number in the top left -- `03 /26` -- so a note about a
+film can say *beat 17 is wrong* instead of describing the picture and
+hoping. It is in `MasterclassApp.draw_beat_badge`, it is on by default
+for every lesson, it stays out of the way of the title card and the
+math overlays, and `beat_badge=False` on a `Lesson` turns it off for a
+film that wants a clean frame.
+
+**Labels in a phone frame.** A 9:16 picture has a fraction of the
+room a 16:9 one does, and the vertical cuts were handing every world
+label to the layout resolver and drawing whatever came back --
+including the ones the resolver had explicitly reported as
+unplaceable. The result was a pile of overlapping panels with the
+subject somewhere underneath. `portrait_ui` now budgets the area
+labels may cover, drops what will not fit clear of its neighbours,
+and resolves the survivors a second time so they spread into the room
+that freed up. Six labels you can read beat eleven you cannot, and
+`portrait_ui.validate_portrait_ui()` keeps it that way.
+
 ## The teaching-video engine
 
 The Masterclass started as one lesson about domes and is now a general
@@ -695,6 +724,217 @@ Headless modes write the whole fabrication package -- cut schedule
 and where), seam join schedule, a two-phase jig cut sequence, the jig
 walk-through as plain language, per-panel jig SVGs and reusable
 fixture OBJs.
+
+**What it costs, in the same window.** Press `F3`, or click the
+buttons along the bottom left, and a cost calculator opens over the
+scene. It prices the dome you are standing in -- the 2V frame on a
+six-foot longest member, the standard *seed* -- line by line: the
+frame, the open floor, the insulation bladders and pop-in panels, the
+removable shell, the utility column and seal cap, the machinery, the
+utility panels and the shop labour, then what it costs to build and
+what it sells for.
+
+Nothing in it is typed in by hand. The member count, the panel areas,
+the shell area, the cavity volume and the cooling load are all
+measured off the same solved geometry the tool is drawing; the prices
+are declared in one table with a unit and a reason on each, and eleven
+of them are borrowed from `two_v_demo/dome_costing.py` and
+`two_v_demo/dome_performance.py` rather than restated. Four pages:
+**QUOTE** is one dome in full, **PRICES** is every input with a way to
+type your own number, **LEVERS** ranks what each single saving is
+worth off the price, and **SEEDS** is the catalogue side by side. SAVE
+writes your prices to `seed_prices.json`, EXPORT writes the quote out
+as a spreadsheet to a new file every time.
+
+## The seed dome (`seed_model.py`, `seed_world.py`, `seed_console.py`)
+
+The product this shop manufactures: a *stem-cell dome*, shipped bare,
+built on top of. A 2V hemisphere on a six-foot longest member,
+wedge-cut framing, 19.42 ft across and 276.99 sq ft of ten-sided
+floor. Its geometry comes from the raw-wedge solver and is checked
+against Zip Tie Domes' published 2V calculator figure by figure; they
+agree to four decimal places, because both are the same icosahedron.
+
+**The interface boundary.** Power and water arrive in the middle of
+the pad, come up through the floor, up the utility column past the
+fixtures, and out through a sleeve at the apex. The top of the dome is
+a socket, not a roof. A gasketed **seal cap** bolts over it -- meant
+to stay shut for years and come off in ten minutes -- and under it a
+line can be run down the outside of the shell to a **utility panel**
+hanging off the rim, mostly outside the footprint, reaching back in
+through a gasketed port. Adding an exhaust fan, a tankless heater or
+an air conditioner therefore never cuts a new hole in a weathertight
+surface.
+
+**Why "stem cell".** Because the frame has not decided what it is
+yet. It is forty identical triangular openings, and it does not know
+or care what is in one -- a panel compression-fits against the wedge's
+own lip, and lifting it out puts the opening back. So the *function of
+the building is a set of panels*: mirrors and deadening make a gym,
+skylights and louvres make a workshop, three base bays replaced by one
+wide opening make a garage. Nothing structural is touched to do any of
+it, which means this is not a building that *has* a use; it is a
+building that has a use at the moment. The catalogue is
+`seed_model.PANELS` -- blank, window, opening window, door, open-bay
+door, skylight, louvre, exhaust, solar bay, flue, acoustic, mirror,
+serving hatch -- and `seed_world.build_panels` draws whichever set a
+fit-out asks for, which is how the film swaps a guest house into a
+garage on camera.
+
+**The shell comes apart as well as off.** It is moulded in four slices
+meeting down an **S-lip** seam -- one edge folds out, the next folds in, a
+gasket sits in the return and the latch pulls the joint shut, so it is
+watertight because of the shape rather than the sealant. The same lip runs
+round the bottom and snaps onto the pad. `seed_world.build_seed_shell(split=)`
+fans the slices along their own bearings, which is how the film shows it. The
+number that goes with it is on camera and is not the flattering one: a quarter
+of this shell is **427 lb** -- four people or the yard crane, not two people.
+Eight slices halve it and double the seam. `seed_model.heaviest_piece()` holds
+that figure, and the film's selftest refuses any narration that says "two
+people can carry".
+
+**The buildings a homestead wants second.** Most people who would
+build one of these already have somewhere to live; what they are short
+of is a *second* building. Nursery $38,877, gym $40,716, studio
+$40,857, guest house $43,141, garage $44,047, workshop $46,173 -- same
+120 members, same pad, same core, same hardware, different bays. The
+frame line of the quote does not change between any of them, which is
+the whole manufacturing argument. The shapes do the same thing: a
+sauna is the same forty panels stretched up, a jacuzzi the same forty
+turned over, a bunker the same forty with soil against them, a
+treehouse the same forty on a saddle.
+
+**The shell is a boat hull, and it is priced like one.**
+`hull_laminate.py` holds four named systems anybody in the marine
+composites trade would recognise -- sheathed ply in epoxy, the
+boatyard polyester schedule, premium marine polyester, and a vinyl
+ester hull -- with their real fabric weights and a supplier's
+published prices. Laminates are costed **by weight**: ounces of glass
+per square foot times a resin-to-glass ratio, which is the industry's
+own method and the thing the first version of this model got wrong.
+Over this dome's 1,325 sq ft of laminate, with the S-lip seams of a
+four-slice shell in each, the four come to $5,395, $6,045, $6,668 and
+$9,144 -- $4.07 to $6.90 a square foot.
+
+**Whose bill is whose.** The deck, the barrier, the service port, the
+tank and the under-floor storage are the landowner's -- $7,412, built
+once, kept when the dome leaves. That is passive income with no
+building to maintain, and it is what lets a dome be sold for what a
+dome costs rather than what a dome plus a foundation plus a piece of
+land costs. None of it is in the dome's price.
+
+**The bay, which is what a wedge is actually for.** A wedge is not a
+rectangle: its inward face stands proud of where the panel sits, so
+every bay has a 0.75 in lip already cut into it by the shape of a
+split log. An inner panel drops onto that lip, a 6 in cavity sits
+behind it, an outer panel compression-fits from outside, and the
+shell lands on the frame rather than on any of it. Nothing in the
+stack is screwed to anything.
+
+**Why split a log instead of milling it.** Squaring a round trunk
+means throwing the round part away. Split into wedges you take
+**88.4%** of it, 391 board feet; milled into 2x4s you take **45.2%**,
+200 board feet. Nearly twice the building out of the same tree, +191
+bf each, and both figures come from `wedge_geometry.py` packing the
+same bucked sections both ways.
+
+**The seam channel.** A wedge is a triangle in section, so two sawn
+faces meeting at a dihedral angle do not close flush. Everyone else
+machines that out; left alone it is 309 ft of continuous channel
+reaching every vertex, which nobody had to route. It carries the
+services -- and the consequence is worth more than the conduit: **you
+always know where the lines are.** They are in the corners of the
+seams and nowhere else, so every person who ever works on this dome
+knows the one place not to put a drill. Cap it and it is also a duct,
+and it is meant to run both ways: fan inside blowing out and no part
+of a wooden frame sits in damp air; fan outside drawing in and 9,870
+gallons a year goes down the channels into the tank on purpose, by the
+route we chose, instead of finding its own. Priced at $1,326 and
+deliberately **not** in the standard article, because it is an
+experiment being run rather than a result being reported.
+
+**It gets warmer every winter.** The cavity ships empty. Lift the
+shell, lay in a quilted layer of recycled fabric, put it back: $605
+buys R-1.6, and seven layers take the assembly from R-1.5 to R-12.7.
+Put on seven t-shirts and tell me how cold you are.
+
+**Two things that multiply.** This dome's envelope is 583 sq ft
+against 997 for a box with the same floor -- **41.5% less** skin to
+lose heat through, free and already true. Paint the weather face with
+one of the barium-sulphate radiative coatings and the surface under a
+clear sky runs **48 F cooler** than dark, taking another **15.1%** off
+the cooling load for $742. The two *multiply* rather than add, because
+the second works on what the first left: against a painted box, about
+**half**. The physics is `dome_performance.sky_cooling`, which goes
+through sol-air temperature rather than assuming reflectance walks
+straight into the building.
+
+**Running it on nothing.** Sized against this dome's own modelled
+draw, not a guess: 4.59 kWh a day covering its heating and cooling
+year plus the light and the fan. 800 W of panel -- on the sunward bays
+or up a mast -- makes 2.87 kWh a day at 4.6 sun hours, **63%** of it;
+a 10 kWh bank carries 2.2 days with no sun and refills from empty in
+3.5. Panels, battery and a 3 kW inverter: **$5,490**. Two honest
+notes, both on screen: square cells waste the corners of a triangular
+bay and triangular ones are not orderable yet, and "3000" on the
+battery must have meant watt hours, because at kilowatt hours it is
+$1.23m of cells and two years of autonomy.
+
+Every timber figure is scaled off one shelf price: a 2x6x12 at $14
+rips into four 2x3x6 struts at $3.50 each, so 120 of them is $420.
+A wedge off a 12 in trunk is 3.77 times one of those, which is where
+the owner's own "three to four times by weight" lands.
+
+A standard dome is **$19,810 to build and $30,477 to sell**, 277 sq
+ft at $110.03; every real saving lever pulled takes it to $21,706 with
+the margin untouched. The frame is
+not shipped at all -- it is split out of the buyer's own standing
+timber, about one and a half trees, and the joining hardware is sized
+to fit this dome and the next two sizes up.
+
+Findings the model produces and does not hide: the pinwheel, which is
+what lets every cut be a plain angle, costs 80% more stock than a
+shared-strut dome -- 120 members and 664 ft against 65 and 369, which
+sits awkwardly beside the harvest number until you put the two
+together: 1.80x the stock against 1.95x more of the tree is **92% of
+the trees a mitred dome would take**, so splitting wins by 8% and not
+by a headline (`seed_model.trees_against_mitred`). No panel of this
+dome fits a four-foot sheet in any rotation. And the computed cooling
+load is 3,698 BTU/h, which is a window unit and not a mini-split.
+
+`py -3.12 seed_model.py` prints the whole thing. See
+[docs/seed-dome-brief.md](docs/seed-dome-brief.md).
+
+There is a campaign film of it: twenty-six chapters, three of which
+argue against the pitch on camera, and one of which swaps a gym into a
+guest house into a garage on the same frame. Render it from the Render
+tab as **stem-cell-dome-campaign.mp4**, or look at **stem cell dome --
+one still per chapter** first.
+
+## Dome Park (`dome_park.py`)
+
+An RV park for domes: the host builds serviced pads, the dome owner
+brings the house and plugs in. Every pad is priced by `park_model.py`
+and the arithmetic in the corner is the same arithmetic the film
+quotes.
+
+**Click a pad to select it.** Click it again, or press `F`, and the
+camera locks onto it: it glides in, and from then on orbiting turns
+around *that* pad rather than around the middle of the site. `O` or
+`Home` pulls back out to the whole park. Picking is done against a
+sphere over each pad rather than against the drawn mesh, because a
+dome is mostly holes and somebody clicking a gap between two struts
+means the dome.
+
+Set **Domes** to `seeds` in the launcher tab and the park fills with
+this shop's own product line instead of other people's buildings --
+one pad per seed, every one of them the same wedge frame, laid in two
+short rows. A road runs past the front row, because the advertiser
+dome with its forty lit faces is only worth anything beside one, and a
+yard crane stands off the back row, because a removable shell needs
+something to remove it with. `K` takes a shell off, `L` has the crane
+lift it clear, `C` swings the boom, and the panel on the right shows
+what the selected dome costs to build and what it sells for.
 
 ## Presenter Studio (`presenter_studio.py`)
 

@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-837815a7dc\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-837815a7dc\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-837815a7dc\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-837815a7dc\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-837815a7dc\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-837815a7dc\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\seed_pitch-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-837815a7dc\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    5.744,
+    5.864,
+    5.816,
+    5.024,
+    4.327999999999999,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    4.344,
+    4.464,
+    4.416,
+    3.624,
+    2.928,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    5.744,
+    11.608,
+    17.424,
+    22.448,
+    26.776,
+    31.776
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "1be56b1ee568a8e349ef5733eedee54d035f9830bc7417f13691ce182183338f"
+}

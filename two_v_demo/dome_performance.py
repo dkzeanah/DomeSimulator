@@ -35,6 +35,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from .dome_advantage import EXTERNAL as ADVANTAGE_EXTERNAL
 from .dome_advantage import box_envelope, dome_envelope
 from .dome_costing import FLOOR_SQFT, radius_for_floor, shell_sqft
 from .geometry import build_demo_geometry
@@ -49,6 +50,23 @@ class Fact:
     value: float
     units: str
     source: str
+
+
+def _borrowed(key: str) -> Fact:
+    """A fact this module uses but does not own.
+
+    ``headroom_ft`` decides two separate arguments -- how much of a bare
+    dome's floor you can stand on, and how tall the wall under it has to
+    be -- and for a while it was declared twice with two different
+    values, six feet here and six foot eight there.  Both places called
+    it "where a floor stops being usable", so one of them was wrong no
+    matter which number you preferred.  It is declared once now, in
+    :mod:`dome_advantage`, and borrowed here.
+    """
+    for item in ADVANTAGE_EXTERNAL:
+        if item.key == key:
+            return Fact(item.key, item.value, item.units, item.source)
+    raise KeyError(f"dome_advantage declares no fact named {key!r}")
 
 
 EXTERNAL: tuple[Fact, ...] = (
@@ -90,8 +108,7 @@ EXTERNAL: tuple[Fact, ...] = (
          "One inch of rain on one square foot, exactly 144/231."),
     Fact("water_price_per_gal", 0.006, "USD/gal",
          "Typical US municipal water plus sewer."),
-    Fact("headroom_ft", 6.67, "ft",
-         "Where a floor stops being usable: 6 ft 8 in."),
+    _borrowed("headroom_ft"),
     Fact("pony_wall_cost_sqft", 4.20, "USD/sq ft",
          "Studs, sheathing, foam and fasteners for a short stem wall."),
     Fact("h_outer", 4.0, "BTU/hr sq ft F",

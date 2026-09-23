@@ -12,6 +12,8 @@ from .lesson_build import BUILD_LESSON
 from .lesson_cuts import CUTS_LESSON
 from .lesson_dome_park import DOME_PARK_LESSON
 from .lesson_bring_your_own_dome import BYOD_LESSON
+from .lesson_byod_deepseek import BYOD_DEEPSEEK_LESSON
+from .lesson_byod_styled import BYOD_POLISHED, BYOD_SNARKY
 from .lesson_drama import DRAMA_LESSON, SERIES_LESSON
 from .lesson_franken import FRANKEN_LESSON
 from .lesson_harvest import HARVEST_LESSON
@@ -31,6 +33,7 @@ from .lesson_lookbook import LOOKBOOK_LESSON
 from .lesson_master import MASTER_LESSON
 from .lesson_pine_value import PINE_VALUE_LESSON
 from .lesson_scratch import SCRATCH_LESSON
+from .lesson_seed_pitch import SEED_PITCH_LESSON
 from .lesson_wedge import WEDGE_LESSON
 from .lesson_wedge_why import WEDGE_WHY_LESSON
 from .lesson_why_build import WHY_BUILD_LESSON
@@ -53,7 +56,9 @@ LESSONS: dict[str, Lesson] = {
                    SERIES_LESSON, LOOKBOOK_LESSON,
                    WEDGE_WHY_LESSON, HARVEST_LESSON, WHY_BUILD_LESSON,
                    PINE_VALUE_LESSON,
-                   PVTWO_LESSON, ALL_DOMES_LESSON, DOME_PARK_LESSON, BYOD_LESSON)
+                   PVTWO_LESSON, ALL_DOMES_LESSON, DOME_PARK_LESSON, BYOD_LESSON,
+                   BYOD_DEEPSEEK_LESSON, BYOD_POLISHED, BYOD_SNARKY,
+                   SEED_PITCH_LESSON)
 }
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key

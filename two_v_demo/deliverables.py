@@ -207,6 +207,29 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "movable partitions, wedge channels, staged growth, and a "
                 "starter-first budget. Includes the shared contact outro.",
                 compose=False),
+    Deliverable("byod_deepseek", "attempt-v1-deepseek.mp4",
+                "Bring Your Own Dome cut to the author's marked-up transcript: "
+                "the assumptions lecture, the foundation-share section, the "
+                "R-value payback figure and the utility-resale line are out; "
+                "a pad built step by step, the deck materials, the pad "
+                "catalogue, the line between the two people's money and the "
+                "host's feature branches are in; and the iris was redrawn as a "
+                "mechanism whose aperture is solved from the size it claims "
+                "rather than drawn at a convenient radius.",
+                compose=False),
+    Deliverable("byod_snarky", "attempt-v1-byod_snarky.mp4",
+                "Bring Your Own Dome in the social register: handheld camera "
+                "that leans in when the character speaks, a little faster, "
+                "vignetted, and the pink cyber jelly on thirteen cues, taking "
+                "the tone of each passage it stands in. Same script, same "
+                "numbers, same claims as the deepseek cut.",
+                compose=False),
+    Deliverable("byod_polished", "attempt-v1-byod_polished.mp4",
+                "Bring Your Own Dome as a considered presentation: the camera "
+                "drifts in slowly, the pace is generous, nothing is laid over "
+                "the frame, and no character appears. The control for the "
+                "snarky cut -- one script, two registers.",
+                compose=False),
     Deliverable("dome_park", "dome-park-bring-your-own-home.mp4",
                 "The Kickstarter cut. An RV park for domes: what a pad is, "
                 "built one step at a time; what it costs a host and what it "
@@ -216,6 +239,18 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "at which bringing your own home starts winning; one hardware "
                 "set across three sizes; and a shell that comes off so the "
                 "R-value can keep going up for as long as you own the house.",
+                compose=True),
+    Deliverable("seed_pitch", "stem-cell-dome-campaign.mp4",
+                "The campaign cut for the stem-cell dome. A 277 sq ft tiny "
+                "house that comes apart: a frame split out of the buyer's "
+                "own trees with no mitre in it anywhere, a boat-hull shell "
+                "priced off four named laminate systems at a supplier's "
+                "published rates, a utility core that unbolts and moves to "
+                "the next dome, and a pad that belongs to the landowner and "
+                "is kept out of the dome's price. Ends on the three things "
+                "it says against itself: not insulated as standard, eighty "
+                "percent more wood than a shared-strut frame, and a price "
+                "list that is an assumption.",
                 compose=True),
 )
 

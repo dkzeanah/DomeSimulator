@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "voice_profile": "TEST SILENCE",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\smoke-test-0001\\TEST-SILENCE.m4a",
+  "clips": [],
+  "chapter_durations": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+  ],
+  "chapter_starts": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.8
+  ],
+  "speech_durations": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "speech_delay": 0.55,
+  "chapter_slugs": [
+    "title",
+    "iris",
+    "veins",
+    "floor",
+    "close"
+  ],
+  "byod_speech_sha256": "6a02c3481393e63ba8bbf19e7a63f7a024281f8e2ab6a17dcc3fa96894836261",
+  "audio_sha256": "336f0716f1d266e687970f7fa2c1cb08812488414e0f917e7b241d6591233724",
+  "smoke_test": true
+}

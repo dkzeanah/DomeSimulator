@@ -104,6 +104,13 @@ DECLARED: tuple[Declared, ...] = (
              "The largest tank figure in circulation for this size of saw, kept "
              "so a fuel total is shown as a range rather than as a point that "
              "rests on one unverified listing."),
+    Declared("brief_strut_value_usd", 10.0, "usd", "estimated",
+             "What this project's own early brief put one strut at. It was "
+             "reached by doubling a volume ratio for safety rather than by "
+             "measuring a cross-section, so it is an estimate and a generous "
+             "one. Kept, not deleted: the chapter that recomputes the figure "
+             "has to be able to show what it is correcting. The hourly rate "
+             "it implies is derived from it, never declared beside it."),
 )
 
 LITRES_PER_US_GALLON = 3.785411784
@@ -938,6 +945,57 @@ class Fortnight:
     def hourly_rate_usd(self, equivalent_two_by_fours: float) -> float:
         return (self.substitute_value_usd(equivalent_two_by_fours)
                 * self.struts_per_hour)
+
+    @property
+    def minutes_per_strut(self) -> float:
+        """How long one member spends at the rip, on average."""
+        return 60.0 / self.struts_per_hour
+
+    def improvement(self, fraction: float, builds: int = 1) -> "Improvement":
+        """What shaving ``fraction`` off the ripping returns over ``builds``.
+
+        The point of a nine-item process list is that effort spent on one
+        item is not spent once.  This is that sentence as arithmetic: the
+        saving expressed per strut, per build and across a run, and then
+        measured in whole ripping stages so the payoff carries a unit a
+        builder recognises rather than a percentage.
+        """
+        if not 0.0 < fraction < 1.0:
+            raise ValueError(f"fraction must be a proper fraction: {fraction}")
+        if builds < 1:
+            raise ValueError(f"builds must be at least one: {builds}")
+        return Improvement(self, fraction, builds)
+
+
+@dataclass(frozen=True)
+class Improvement:
+    """A proportional speed-up at one process, spent over a run of domes."""
+
+    work: Fortnight
+    fraction: float
+    builds: int
+
+    @property
+    def seconds_per_strut(self) -> float:
+        """The saving at the scale you can actually aim at it."""
+        return self.work.minutes_per_strut * self.fraction * 60.0
+
+    @property
+    def hours_per_build(self) -> float:
+        return self.work.ripping_hours * self.fraction
+
+    @property
+    def hours_total(self) -> float:
+        return self.hours_per_build * self.builds
+
+    @property
+    def afternoons_total(self) -> float:
+        return self.hours_total / self.work.hours_per_afternoon
+
+    @property
+    def rip_stages(self) -> float:
+        """The saving measured in whole ripping stages of one dome."""
+        return self.hours_total / self.work.ripping_hours
 
 
 def fortnight(plan: TreeCutPlan = BOOK_TREE) -> Fortnight:

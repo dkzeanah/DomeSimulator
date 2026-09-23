@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "voice_profile": "TEST SILENCE",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\smoke-test-0001\\TEST-SILENCE.m4a",
+  "clips": [],
+  "chapter_durations": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+  ],
+  "speech_durations": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "chapter_starts": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.8
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "1cfc3e3385a18fd0dc31a6fdea62764cdbb22f3ff312e64e436eeae620d2e779"
+}

@@ -551,6 +551,15 @@ CONCEPTS: tuple[Concept, ...] = (
        """The work is counted in pieces and operations, and those stay fixed as the
        dome grows. What changes is how long each piece is.""",
        ("strut", "floor area"),
+       caveat="""It is a flat rate inside a band, and the band is set by what one
+       pair of hands can handle, not by the arithmetic. The declared limit is a
+       {{flat.solo_member_ft}} ft longest cut member -- the most the builder
+       will carry, stand both ends of and set alone -- which solves to a dome
+       {{flat.solo_dome_ft}} ft across, the same dome two trees yield. Under it
+       nothing changes: same assembly pattern, same hardware counts, same nine
+       operations, same strut preparation, only shorter sticks. Over it you are
+       either buying help or raising the frequency, and raising the frequency is
+       the one move that genuinely lengthens the parts list.""",
        taught=("film:franken/flatrate", "film:kick/flatrate",
                "film:master/ms_math_flatrate"),
        recipe=("type:SAME PARTS LIST", "object:hub_dome")),

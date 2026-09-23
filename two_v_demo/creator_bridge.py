@@ -240,6 +240,12 @@ def variant(base: dict, name: str = "", **changes) -> Build:
     return build(config, name)
 
 
+# Builds that are scenery wherever they appear. A painter can still say so
+# explicitly with ``draw(..., backdrop=True)``; this is the default for the
+# one build that is never the subject of anything.
+BACKDROP_KEYS = frozenset({"environment"})
+
+
 @lru_cache(maxsize=1)
 def environment() -> Build:
     """The Creator's own site: the graded field, its grid, and the tree line.
@@ -269,6 +275,16 @@ class Draw:
     cut_z: float | None = None
     exposure: float = 1.0
     lights: tuple[tuple[float, float, float], ...] = ()
+    # Scenery: drawn, but never part of what the camera is asked to frame.
+    # ``None`` means decide from the build, which is the right answer for
+    # every painter that has not thought about it.
+    backdrop: bool | None = None
+
+    @property
+    def is_backdrop(self) -> bool:
+        if self.backdrop is not None:
+            return self.backdrop
+        return self.build.key in BACKDROP_KEYS
 
     def matrix(self) -> np.ndarray:
         angle = math.radians(self.yaw)
@@ -320,17 +336,58 @@ def draw(app, item: Build, **kwargs) -> Draw:
 
 
 def draw_points(app) -> list[np.ndarray]:
-    """Every placed building's points, for a frame of another shape."""
+    """The points a frame of another shape should fit the camera to.
+
+    Scenery is left out, and that matters more than it sounds. The Creator's
+    build field is a sixty-metre graded site with a tree line around it; a
+    phone cut that fits *that* puts a nineteen-foot dome in the middle of a
+    lot of grass, which is what the vertical cuts used to look like. The
+    backdrop is still drawn -- a dome on a bare disc looks like it is
+    floating -- it just does not get a vote on the framing.
+    """
     return [request.points() for request in getattr(app, "creator_draws", ())
-            if len(request.points())]
+            if not request.is_backdrop and len(request.points())]
 
 
 # ----------------------------------------------------------------------
 # Proof
 # ----------------------------------------------------------------------
 
+class _Stage:
+    """Just enough of an app for a draw list."""
+
+    creator_draws: list = []
+
+
+def _validate_backdrop() -> None:
+    """Scenery is drawn but never framed."""
+    stage = _Stage()
+    stage.creator_draws = []
+    field = Draw(environment())
+    assert field.is_backdrop, "the build field is scenery"
+    assert not Draw(preset(preset_names()[0])).is_backdrop
+
+    draw(stage, environment())
+    assert draw_points(stage) == [], "the tree line is deciding the framing"
+
+    # A dome on the same stage is what the camera should see, and the points
+    # it hands over have to be the dome's, not the dome's plus the field's.
+    dome = preset(preset_names()[0])
+    draw(stage, dome)
+    points = draw_points(stage)
+    assert len(points) == 1, len(points)
+    reach = float(np.abs(points[0][:, 0:2]).max())
+    field_reach = float(np.abs(Draw(environment()).points()[:, 0:2]).max())
+    assert reach < field_reach * 0.5, (reach, field_reach)
+
+    # And a painter can overrule it either way.
+    assert Draw(dome, backdrop=True).is_backdrop
+    assert not Draw(environment(), backdrop=False).is_backdrop
+
+
 def validate_creator_bridge() -> None:
     """The bridge must hand back the tool's real building, not an empty one."""
+    _validate_backdrop()
     names = preset_names()
     assert len(names) >= 12, names
 

@@ -1,0 +1,20 @@
+{
+  "picture": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\video\\render-0001\\picture.mp4",
+  "plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\audio\\take-0002\\plan.json",
+  "plan_sha256": "90a156d0d84d6362b52c563c37703b0c8689b8d630eee0b65bfff38a4f1de7bf",
+  "picture_sha256": "c933aa222c3e18cfda741bf1deaf0bd2fa23ce580f9bb26d9ce147b1c6643be0",
+  "speech_sha256": "b88eeae58eea04f173852c8e0cdfd59fd3db554e66751e5e1ac1e41eb0c78032",
+  "seconds": 1553.015,
+  "fps": 30,
+  "verification": {
+    "file": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\video\\render-0001\\picture.mp4",
+    "frames": 46591,
+    "expected_frames": 46591,
+    "video_seconds": 1553.033008,
+    "audio_seconds": null,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "smoke_test": false
+}

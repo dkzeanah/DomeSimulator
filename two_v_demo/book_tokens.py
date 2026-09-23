@@ -27,6 +27,7 @@ them; :func:`unknown_tokens` finds typos before an export does.
 
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
 from typing import Callable
@@ -55,6 +56,70 @@ def _n(value: float, places: int = 0) -> str:
     return f"{value:,.{places}f}"
 
 
+def _flat_sizes():
+    """The four diameters the flat-rate table covers, from the model."""
+    from . import franken_economics as fe
+    return fe.flat_rate_table()
+
+
+def _solo():
+    """The declared solo handling limit, and what it reaches."""
+    from . import franken_economics as fe
+    return fe.solo_band()
+
+
+def _band_size():
+    """The dome sitting exactly at the top of the handling band."""
+    from . import franken_economics as fe
+    return fe.DomeSize(_solo().radius_in)
+
+
+def _processes():
+    """The nine shop operations, in the order they happen."""
+    from . import franken_economics as fe
+    return fe.PROCESSES
+
+
+def _process(key):
+    """One of the nine operations, by key."""
+    from . import franken_economics as fe
+    return fe.PROCESS[key]
+
+
+def _reps(index, key, places=0):
+    """How many times one process repeats at one of the table diameters."""
+    def value():
+        size = _flat_sizes()[index]
+        return _n(_process(key).repetitions(size), places)
+    return value
+
+
+# The worked improvement in "Nine Processes at Any Size".  The size of the
+# saving and the length of the run are choices -- they are what the chapter
+# asks you to imagine -- so they are declared once, here, and both the prose
+# and the arithmetic read them from this pair.  Change them and the chapter
+# rewrites itself rather than contradicting itself.
+RIP_GAIN_FRACTION = 0.10
+RIP_GAIN_BUILDS = 10
+
+
+def _rip(attribute, builds=1, places=0):
+    """A proportional speed-up at the rip, spent over a run of domes."""
+    def value():
+        gain = bm.fortnight().improvement(RIP_GAIN_FRACTION, builds)
+        return _n(getattr(gain, attribute), places)
+    return value
+
+
+def _flat(index, attribute, places=None):
+    """One cell of the flat-rate table, as text. Whole numbers stay whole."""
+    def value():
+        raw = getattr(_flat_sizes()[index], attribute)
+        if places is None or not isinstance(raw, float):
+            return str(raw)
+        return _n(raw, places)
+    return value
+
 def _build() -> tuple[Token, ...]:
     """Every token, built once against the current geometry."""
     plan = bm.BOOK_TREE
@@ -66,6 +131,184 @@ def _build() -> tuple[Token, ...]:
     trip = bm.round_trip(dome.radius_in)
 
     return (
+        # -- the flat rate ---------------------------------------------
+        Token("flat.struts", "members in the frame, at every size",
+              _flat(0, "struts")),
+        Token("flat.triangles", "triangles in the frame, at every size",
+              _flat(0, "triangles")),
+        Token("flat.brackets", "brackets, at every size",
+              _flat(0, "brackets")),
+        Token("flat.screws", "screws, at every size", _flat(0, "screws")),
+        Token("flat.processes", "distinct processes, at every size",
+              _flat(0, "processes")),
+        Token("flat.small_ft", "the smallest diameter here",
+              _flat(0, "diameter_ft", 0)),
+        Token("flat.large_ft", "the largest diameter here",
+              _flat(3, "diameter_ft", 0)),
+        Token("flat.small_floor", "floor at the smallest",
+              _flat(0, "floor_area_sqft", 0)),
+        Token("flat.large_floor", "floor at the largest",
+              _flat(3, "floor_area_sqft", 0)),
+        Token("flat.small_stick", "stick at the smallest",
+              _flat(0, "strut_feet", 0)),
+        Token("flat.large_stick", "stick at the largest",
+              _flat(3, "strut_feet", 0)),
+        Token("flat.mid_ft", "the middle diameter",
+              _flat(2, "diameter_ft", 0)),
+        Token("flat.mid_floor", "floor at the twenty foot dome",
+              _flat(2, "floor_area_sqft", 0)),
+        Token("flat.mid_stick", "stick at the twenty foot dome",
+              _flat(2, "strut_feet", 0)),
+        Token("flat.small_per_floor", "stick per square foot, smallest",
+              lambda: _n(_flat_sizes()[0].strut_feet
+                         / _flat_sizes()[0].floor_area_sqft, 2)),
+        Token("flat.large_per_floor", "stick per square foot, largest",
+              lambda: _n(_flat_sizes()[3].strut_feet
+                         / _flat_sizes()[3].floor_area_sqft, 2)),
+        # -- the handling band the flat rate actually lives in ----------
+        Token("flat.solo_member_ft", "declared longest member one person handles",
+              lambda: _n(_solo().member_ft, 0)),
+        Token("flat.solo_dome_ft", "the dome that member limit reaches",
+              lambda: _n(_solo().diameter_ft, 1)),
+        Token("flat.solo_floor", "floor at the top of the solo band",
+              lambda: _n(_solo().floor_area_sqft, 0)),
+        Token("flat.solo_short_ft", "the other member at that diameter",
+              lambda: _n(_solo().short_member_ft, 2)),
+        Token("flat.small_long", "longest cut member at the smallest dome",
+              _flat(0, "long_member_ft", 2)),
+        Token("flat.band_ft", "the largest table row inside the band",
+              lambda: _n(_solo().sizes_inside[-1].diameter_ft, 0)),
+        Token("flat.band_long", "longest cut member at that row",
+              lambda: _n(_solo().sizes_inside[-1].long_member_ft, 2)),
+        Token("flat.mid_long", "longest cut member at the twenty foot dome",
+              _flat(2, "long_member_ft", 2)),
+        Token("flat.mid_spare_in", "inches of margin the twenty foot dome has",
+              lambda: _n((_solo().member_ft
+                          - _flat_sizes()[2].long_member_ft) * 12.0, 0)),
+        Token("flat.large_long", "longest cut member at the largest dome",
+              _flat(3, "long_member_ft", 2)),
+        Token("flat.large_over_ft", "how far past the limit the largest is",
+              lambda: _n(_flat_sizes()[3].long_member_ft
+                         - _solo().member_ft, 2)),
+        Token("flat.solo_chord", "the edge that 6 ft member actually spans",
+              lambda: _n(_band_size().measurements.long_center_length
+                         / 12.0, 2)),
+        Token("flat.band_inside", "table rows one person can frame alone",
+              lambda: str(len(_solo().sizes_inside))),
+        # -- cut stock, which is not the edge network -------------------
+        Token("flat.small_cut", "cut member feet in the smallest frame",
+              _flat(0, "member_feet", 0)),
+        Token("flat.mid_cut", "cut member feet at the twenty foot dome",
+              _flat(2, "member_feet", 0)),
+        Token("flat.large_cut", "cut member feet in the largest frame",
+              _flat(3, "member_feet", 0)),
+        Token("flat.edge_ratio", "how the edge network grows, smallest to largest",
+              lambda: _n(_flat_sizes()[3].strut_feet
+                         / _flat_sizes()[0].strut_feet, 2)),
+        Token("flat.cut_ratio", "how the cut stock grows over the same range",
+              lambda: _n(_flat_sizes()[3].member_feet
+                         / _flat_sizes()[0].member_feet, 2)),
+        Token("flat.small_per_cut", "cut member feet per square foot, smallest",
+              lambda: _n(_flat_sizes()[0].member_feet
+                         / _flat_sizes()[0].floor_area_sqft, 2)),
+        Token("flat.large_per_cut", "cut member feet per square foot, largest",
+              lambda: _n(_flat_sizes()[3].member_feet
+                         / _flat_sizes()[3].floor_area_sqft, 2)),
+        Token("flat.cut_gain", "how much further cut member reaches, largest vs smallest",
+              lambda: _n((_flat_sizes()[0].member_feet
+                          / _flat_sizes()[0].floor_area_sqft)
+                         / (_flat_sizes()[3].member_feet
+                            / _flat_sizes()[3].floor_area_sqft), 1)),
+        # -- the nine operations ---------------------------------------
+        Token("nine.count", "operations in the shop list",
+              lambda: str(len(_processes()))),
+        Token("nine.flat_count", "of the nine that repeat identically",
+              lambda: str(sum(1 for s in _processes() if s.flat))),
+        Token("nine.moving_count", "of the nine whose count follows size",
+              lambda: str(sum(1 for s in _processes() if not s.flat))),
+        Token("nine.names", "the nine, in the order they happen",
+              lambda: ", ".join(s.name.lower() for s in _processes())),
+        Token("nine.holes", "holes drilled, at every size",
+              _reps(0, "drill")),
+        Token("nine.panels", "panels raised, at every size",
+              _reps(0, "raise")),
+        Token("nine.trees_small", "trees felled for the smallest dome",
+              _reps(0, "fell")),
+        Token("nine.trees_large", "trees felled for the largest dome",
+              _reps(3, "fell")),
+        Token("nine.glass_small", "shell area at the smallest dome",
+              _reps(0, "glass")),
+        Token("nine.glass_large", "shell area at the largest dome",
+              _reps(3, "glass")),
+        # -- what one process is worth ----------------------------------
+        #
+        # The hours, afternoons and days of ripping already have tokens under
+        # ``work.*``; they are not repeated here.  These are only the figures
+        # that did not exist before: the per-member scale, and what a
+        # proportional saving at that scale returns over a run of domes.
+        Token("rip.day_share", "per cent of the fortnight spent ripping",
+              lambda: _n(100.0 * bm.phase_days("ripping") / work.days, 0)),
+        Token("rip.minutes_per_strut", "minutes one member spends at the rip",
+              lambda: _n(work.minutes_per_strut, 0)),
+        Token("rip.gain_pct", "the improvement the worked example assumes",
+              lambda: _n(RIP_GAIN_FRACTION * 100.0, 0)),
+        Token("rip.builds", "domes the worked example spends it over",
+              lambda: str(RIP_GAIN_BUILDS)),
+        Token("rip.gain_seconds", "seconds per member that improvement buys",
+              _rip("seconds_per_strut")),
+        Token("rip.gain_hours", "hours it returns on one build",
+              _rip("hours_per_build", places=1)),
+        Token("rip.run_hours", "hours it returns over the whole run",
+              _rip("hours_total", RIP_GAIN_BUILDS)),
+        Token("rip.run_afternoons", "afternoons that is",
+              _rip("afternoons_total", RIP_GAIN_BUILDS)),
+        Token("rip.run_stages", "whole ripping stages that is",
+              _rip("rip_stages", RIP_GAIN_BUILDS)),
+        # -- what an hour at the log is worth ---------------------------
+        Token("log.member_area", "cross-section of one strut, square inches",
+              lambda: _n(plan.member_area_in2, 2)),
+        Token("log.nominal_area", "cross-section a 2x4 is named for",
+              lambda: _n(plan.member_area_in2
+                         / plan.equivalent_two_by_fours, 2)),
+        Token("log.dressed_area", "cross-section a 2x4 actually has",
+              lambda: _n(plan.member_area_in2
+                         / plan.equivalent_dressed_two_by_fours, 2)),
+        Token("log.equiv_nominal", "2x4s one strut replaces, at the named size",
+              lambda: _n(plan.equivalent_two_by_fours, 2)),
+        Token("log.equiv_dressed", "2x4s one strut replaces, at the real size",
+              lambda: _n(plan.equivalent_dressed_two_by_fours, 2)),
+        Token("log.section_price", "shelf price of one strut-length of 2x4",
+              lambda: _n(work.price_per_board_section_usd, 2)),
+        Token("log.value_nominal", "one strut valued against the named 2x4",
+              lambda: _n(work.substitute_value_usd(
+                  plan.equivalent_two_by_fours), 2)),
+        Token("log.value_dressed", "one strut valued against the real 2x4",
+              lambda: _n(work.substitute_value_usd(
+                  plan.equivalent_dressed_two_by_fours), 2)),
+        Token("log.rate_nominal", "hourly rate that implies, named size",
+              lambda: _n(work.hourly_rate_usd(
+                  plan.equivalent_two_by_fours), 2)),
+        Token("log.rate_dressed", "hourly rate that implies, real size",
+              lambda: _n(work.hourly_rate_usd(
+                  plan.equivalent_dressed_two_by_fours), 2)),
+        Token("log.nominal_gap_pct",
+              "per cent the named-size comparison understates the rate by",
+              lambda: _n(100.0 * (1.0 - plan.equivalent_two_by_fours
+                                  / plan.equivalent_dressed_two_by_fours), 0)),
+        Token("log.frame_dressed", "the whole frame at the honest rate",
+              lambda: _n(work.substitute_value_usd(
+                  plan.equivalent_dressed_two_by_fours) * bm.MEMBERS_IN_FRAME,
+                  0)),
+        Token("log.brief_strut", "what this project's brief put a strut at",
+              lambda: _n(bm.declared("brief_strut_value_usd"), 2)),
+        Token("log.brief_rate", "the hourly rate that brief implies",
+              lambda: _n(bm.declared("brief_strut_value_usd")
+                         * work.struts_per_hour, 2)),
+        Token("log.brief_over", "how many times the honest rate the brief was",
+              lambda: _n(bm.declared("brief_strut_value_usd")
+                         * work.struts_per_hour
+                         / work.hourly_rate_usd(
+                             plan.equivalent_dressed_two_by_fours), 1)),
         # -- the tree --------------------------------------------------
         Token("tree.butt_diameter_in", "trunk diameter at the butt",
               lambda: _n(plan.butt_diameter_in, 0)),
@@ -324,7 +567,10 @@ def _build() -> tuple[Token, ...]:
         *_house_tokens(),
         *_why_tokens(),
         *_pine_tokens(),
+        *_skin_tokens(),
+        *_calorie_tokens(),
         *_domology_tokens(),
+        *_part3_tokens(),
 
         # -- build choices ---------------------------------------------
         Token("jig.head_overfit_in", "stock deliberately left long",
@@ -517,6 +763,318 @@ def _pine_tokens() -> list[Token]:
             for name, describe, compute in pv.token_specs()]
 
 
+def book_floor_sqft() -> float:
+    """The floor of *this book's* dome, which is the one two trees make.
+
+    :mod:`dome_advantage` defaults to ``dome_costing.FLOOR_SQFT``, a round
+    314 chosen for a campaign video.  The book's dome is the one the first
+    chapter cut out of two pines, and it is 365.  Quoting the video's floor
+    in a book that has said 365 for fifty chapters would be exactly the
+    drift tokens exist to stop, so every ``skin.*`` figure and the envelope
+    plots all call this.
+    """
+    return math.pi * (bm.tree_first().radius_in / 12.0) ** 2
+
+
+def _skin_tokens() -> list[Token]:
+    """Envelope against an equal-floor box, from :mod:`dome_advantage`.
+
+    ``skin.*`` rather than ``dome.*`` because the subject is the surface,
+    and because half of these tokens exist to take the headline apart rather
+    than to state it.  The crossovers, the standing-room deduction and the
+    per-cubic-foot restatement sit here beside the number they qualify, so a
+    chapter cannot quote the good one without the awkward ones being a line
+    away in the writing desk.
+    """
+    from . import dome_advantage as adv
+    from . import dome_costing as dc
+
+    def dome(area: float | None = None):
+        return adv.dome_envelope(book_floor_sqft() if area is None else area)
+
+    def box(area: float | None = None):
+        return adv.box_envelope(book_floor_sqft() if area is None else area)
+
+    def saving(area: float, places: int = 1):
+        return lambda: _n(adv.envelope_saving(area), places)
+
+    def claim(index: int):
+        """One of the four headline margins, by its place in ``advantages()``."""
+        return lambda: _n(adv.advantages(book_floor_sqft())[index].percent_better, 1)
+
+    def fact(key: str, places: int = 2):
+        return lambda: _n(adv.FACT[key], places)
+
+    return [
+        # -- the two buildings being compared ----------------------------
+        Token("skin.floor", "floor area both buildings have, sq ft",
+              lambda: _n(book_floor_sqft())),
+        Token("skin.dome_env", "the dome's exterior surface, sq ft",
+              lambda: _n(dome().envelope_sqft)),
+        Token("skin.box_env", "the box's exterior surface, sq ft",
+              lambda: _n(box().envelope_sqft)),
+        Token("skin.saved_sqft", "exterior surface the dome does not have, sq ft",
+              lambda: _n(box().envelope_sqft - dome().envelope_sqft)),
+        Token("skin.saving_pct", "percent less surface, at the reference floor",
+              saving(book_floor_sqft())),
+        Token("skin.dome_ht", "the dome's height, ft -- which is its radius",
+              lambda: _n(adv.dome_radius_ft(book_floor_sqft()), 1)),
+        Token("skin.box_side", "the box's side, ft",
+              lambda: _n(math.sqrt(book_floor_sqft()), 1)),
+        Token("skin.box_ridge", "the box's ridge height, ft",
+              lambda: _n(adv.FACT["wall_height_ft"] + 0.5
+                         * math.sqrt(book_floor_sqft()) * adv.FACT["gable_pitch"], 1)),
+        Token("skin.wall_ht", "the box's wall height, ft", fact("wall_height_ft", 0)),
+
+        # -- what the saved surface buys, four ways ----------------------
+        Token("skin.dome_sheets", "sheets of 4x8 to clad the dome",
+              lambda: _n(dome().envelope_sqft / dc.SQFT_PER_OSB)),
+        Token("skin.box_sheets", "sheets of 4x8 to clad the box",
+              lambda: _n(box().envelope_sqft / dc.SQFT_PER_OSB)),
+        Token("skin.saved_sheets", "sheets the dome does not buy",
+              lambda: _n((box().envelope_sqft - dome().envelope_sqft)
+                         / dc.SQFT_PER_OSB)),
+        Token("skin.dome_btu_f", "the dome's envelope loss, BTU/hr/F",
+              lambda: _n(dome().heat_loss_btu_hr_f(), 1)),
+        Token("skin.box_btu_f", "the box's envelope loss, BTU/hr/F",
+              lambda: _n(box().heat_loss_btu_hr_f(), 1)),
+        Token("skin.dome_mbtu", "the dome's seasonal envelope loss, million BTU",
+              lambda: _n(dome().seasonal_btu() / 1e6, 1)),
+        Token("skin.box_mbtu", "the box's seasonal envelope loss, million BTU",
+              lambda: _n(box().seasonal_btu() / 1e6, 1)),
+        Token("skin.heat_pct", "percent less heat through the envelope", claim(2)),
+        Token("skin.wind_pct", "percent less drag on the shape", claim(3)),
+        Token("skin.cd_dome", "drag coefficient, hemisphere", fact("cd_hemisphere")),
+        Token("skin.cd_box", "drag coefficient, cube", fact("cd_cube")),
+        Token("skin.wall_u", "assembly U-value both buildings are given",
+              fact("wall_u", 3)),
+        Token("skin.hdd", "heating degree days the season assumes",
+              fact("heating_degree_days", 0)),
+
+        # -- the restatement: volume, and surface per cubic foot ---------
+        Token("skin.dome_vol", "the dome's enclosed volume, cu ft",
+              lambda: _n(dome().volume_cuft)),
+        Token("skin.box_vol", "the box's enclosed volume, cu ft",
+              lambda: _n(box().volume_cuft)),
+        Token("skin.vol_deficit_pct", "percent less air the dome encloses",
+              lambda: _pct(1.0 - dome().volume_cuft / box().volume_cuft, 1)),
+        Token("skin.per_cuft_pct", "percent less surface per cubic foot enclosed",
+              claim(1)),
+        Token("skin.vol_cross", "floor where the dome starts enclosing more, sq ft",
+              lambda: _n(adv.volume_crossover_sqft())),
+
+        # -- the size dependence, including where it reverses ------------
+        Token("skin.sweep_n", "how many sizes the sweep compares",
+              lambda: _n(len(adv.SWEEP_FLOORS))),
+        Token("skin.sweep_lo", "smallest floor in the sweep, sq ft",
+              lambda: _n(min(adv.SWEEP_FLOORS))),
+        Token("skin.sweep_hi", "largest floor in the sweep, sq ft",
+              lambda: _n(max(adv.SWEEP_FLOORS))),
+        Token("skin.save_80", "percent less surface at 80 sq ft", saving(80.0)),
+        Token("skin.save_707", "percent less surface at 707 sq ft", saving(707.0)),
+        Token("skin.save_vol_cross",
+              "percent less surface where the volumes cross",
+              lambda: _n(adv.envelope_saving(adv.volume_crossover_sqft()), 1)),
+        Token("skin.save_2000", "percent less surface at 2,000 sq ft", saving(2000.0)),
+        Token("skin.env_cross", "floor where the box takes less skin, sq ft",
+              lambda: _n(adv.envelope_crossover_sqft())),
+        Token("skin.env_cross_ht", "how tall the dome stands at that crossover, ft",
+              lambda: _n(adv.dome_radius_ft(adv.envelope_crossover_sqft()))),
+
+        # -- the deduction that equal floor area hides -------------------
+        Token("skin.head_ft", "height this comparison calls standing room, ft",
+              fact("headroom_ft", 0)),
+        Token("skin.stand_sqft", "the dome's floor with headroom over it, sq ft",
+              lambda: _n(adv.standing_sqft(book_floor_sqft())[0])),
+        Token("skin.stand_pct", "percent of the dome's floor you can stand on",
+              lambda: _pct(adv.standing_sqft(book_floor_sqft())[0] / book_floor_sqft(), 1)),
+        Token("skin.stand_lost", "dome floor with no headroom over it, sq ft",
+              lambda: _n(book_floor_sqft() - adv.standing_sqft(book_floor_sqft())[0])),
+        Token("skin.stand_floor",
+              "dome floor needed to match the box's standing room, sq ft",
+              lambda: _n(adv.floor_for_standing(book_floor_sqft()))),
+        Token("skin.honest_env", "that bigger dome's surface, sq ft",
+              lambda: _n(adv.equal_standing_advantage(book_floor_sqft()).dome)),
+        Token("skin.honest_pct", "percent less surface at equal standing room",
+              lambda: _n(adv.equal_standing_advantage(book_floor_sqft()).percent_better, 1)),
+    ]
+
+
+CALORIE_SERIAL = 1
+CALORIE_CREW = 2
+"""Which build the metabolic ledger costs, and with how many people.
+
+``energetics.home_spec`` picks a product line from a seeded generator, so the
+serial pins *which* dome got costed; leaving it to chance would let the
+chapter's numbers move between exports.  The crew of two is what that model
+was written for, and the chapter says so rather than quietly presenting a
+two-person shift as the solo fortnight."""
+
+
+def _calorie_tokens() -> list[Token]:
+    """The metabolic ledger of one build, from :mod:`energetics`.
+
+    Note the prefix.  ``fuel.*`` is already the chainsaw's petrol; this is
+    the *other* fuel, the one the body runs on, and the two must never end
+    up sharing a name in a book that puts them three chapters apart.
+
+    Costing a build walks 1,300-odd elements through seven motions each, so
+    it is slow the first time and cached after -- hence the module-level
+    lookup rather than a value captured when this list is built.
+    """
+    from . import energetics as en
+
+    def build():
+        return en.build_energy(CALORIE_SERIAL, CALORIE_CREW)
+
+    def motion_kcal(name: str, places: int = 0):
+        return lambda: _n(build().by_motion()[name], places)
+
+    def motion_fuel_pct(name: str, places: int = 1):
+        return lambda: _pct(build().by_motion()[name]
+                            / build().kcal_per_worker, places)
+
+    def motion_time_pct(name: str, places: int = 1):
+        return lambda: _pct(build().seconds_by_motion()[name]
+                            / build().seconds_per_worker, places)
+
+    def motion_hours(name: str, places: int = 0):
+        return lambda: _n(build().seconds_by_motion()[name] / 3600.0, places)
+
+    def limb_pct(group: str, places: int = 1):
+        def value() -> str:
+            limbs = build().by_limb()
+            return _pct(limbs[group] / sum(limbs.values()), places)
+        return value
+
+    def food(index: int, places: int = 0):
+        return lambda: _n(build().food_equivalent()[index][1], places)
+
+    def top_stage():
+        return max(build().by_stage().items(), key=lambda kv: kv[1]["kcal"])
+
+    def _skin_ratio(field: str) -> float:
+        return build().skin_versus_frame(field)
+
+    return [
+        # -- what was costed, and with whom ------------------------------
+        Token("cal.product", "the product the metabolic ledger costed",
+              lambda: en.home_spec(CALORIE_SERIAL).name),
+        Token("cal.radius_m", "that product's radius, metres",
+              lambda: f"{en.home_spec(CALORIE_SERIAL).radius:.2f}"),
+        Token("cal.stations", "stations on the line that builds it",
+              lambda: str(len(en.home_spec(CALORIE_SERIAL).stages))),
+        Token("cal.crew", "people the ledger assumes", lambda: str(CALORIE_CREW)),
+        Token("cal.body_kg", "the modelled body, kilograms",
+              lambda: _n(en.BODY_MASS_KG, 0)),
+        Token("cal.elements", "parts the ledger costs one at a time",
+              lambda: _n(len(build().elements), 0)),
+        Token("cal.material_kg", "material in the finished building, kg",
+              lambda: _n(build().total_mass_kg, 0)),
+        Token("cal.lifted_kg", "mass one worker personally raises, kg",
+              lambda: _n(build().lifted_mass_kg, 0)),
+        Token("cal.team_lift_kg", "above this, two people take the load",
+              lambda: _n(en.TWO_PERSON_LIFT_KG, 0)),
+
+        # -- the shift ---------------------------------------------------
+        Token("cal.motions", "motions every part is broken into",
+              lambda: str(len(en.element_motions(
+                  build().elements[0].element, crew=CALORIE_CREW)))),
+        Token("cal.hours", "hours of work per person for the whole build",
+              lambda: _n(build().hours_per_worker, 0)),
+        Token("cal.shift_hours", "hours this model calls a working day",
+              lambda: _n(en.SHIFT_HOURS, 0)),
+        Token("cal.shifts", "working days that comes to",
+              lambda: _n(build().shifts, 1)),
+        Token("cal.per_worker", "food energy one worker spends, kcal",
+              lambda: _n(build().kcal_per_worker, 0)),
+        Token("cal.crew_total", "food energy for the whole crew, kcal",
+              lambda: _n(build().kcal_crew, 0)),
+        Token("cal.per_shift", "food energy one working day costs, kcal",
+              lambda: _n(build().kcal_per_shift, 0)),
+        Token("cal.watts", "mean working rate across the build, watts",
+              lambda: _n(build().mean_watts, 0)),
+        Token("cal.mets", "that rate in METs",
+              lambda: f"{build().mean_met:.2f}"),
+        Token("cal.watt_bound", "sustainable whole-shift rate, watts",
+              lambda: _n(en.SUSTAINABLE_SHIFT_WATTS, 0)),
+        Token("cal.rmr_kcal_day", "the same body at rest, kcal a day",
+              lambda: _n(en.resting_metabolic_watts() * 86400.0
+                         * en.KCAL_PER_JOULE, 0)),
+        Token("cal.rest_pct", "share of the timeline that is recovery",
+              lambda: _pct(build().rest_fraction, 1)),
+        Token("cal.rest_hours", "hours of that recovery",
+              lambda: _n(build().rest_seconds / 3600.0, 0)),
+
+        # -- the fastening surprise --------------------------------------
+        Token("cal.mech_mj", "mechanical work actually done, megajoules",
+              lambda: f"{build().mechanical_joules / 1e6:.3f}"),
+        Token("cal.mech_kcal", "that work in kcal",
+              lambda: _n(build().mechanical_kcal, 0)),
+        Token("cal.mech_pct", "what share of the food became height",
+              lambda: _pct(build().mechanical_fraction, 1)),
+        Token("cal.fuel_per_lift", "kcal burned per kcal that went upward",
+              lambda: _n(build().fuel_per_lifting_kcal, 0)),
+        Token("cal.muscle_pct", "the most muscle can convert, per cent",
+              lambda: _pct(en.CONCENTRIC_EFFICIENCY, 0)),
+        Token("cal.fasten_kcal", "food energy spent fastening, kcal",
+              motion_kcal("fasten")),
+        Token("cal.fasten_pct", "fastening's share of the fuel",
+              motion_fuel_pct("fasten")),
+        Token("cal.fasten_time_pct", "fastening's share of the clock",
+              motion_time_pct("fasten")),
+        Token("cal.fasten_hours", "hours spent fastening",
+              motion_hours("fasten")),
+        Token("cal.fasten_gap_pct", "points by which fastening's fuel share "
+                                    "exceeds its time share",
+              lambda: _pct(build().by_motion()["fasten"]
+                           / build().kcal_per_worker
+                           - build().seconds_by_motion()["fasten"]
+                           / build().seconds_per_worker, 0)),
+        Token("cal.lift_kcal", "food energy spent lifting, kcal",
+              motion_kcal("lift")),
+        Token("cal.lift_pct", "lifting's share of the fuel",
+              motion_fuel_pct("lift")),
+        Token("cal.lift_eff_pct", "how much of the lift's fuel became height",
+              lambda: _pct(build().motion_efficiency()["lift"], 1)),
+        Token("cal.carry_pct", "carrying's share of the fuel",
+              motion_fuel_pct("carry")),
+        Token("cal.handling_pct",
+              "lifting, carrying and walking together, share of the fuel",
+              lambda: _pct(sum(build().by_motion()[name]
+                               for name in ("lift", "carry", "walk_out"))
+                           / build().kcal_per_worker, 1)),
+        Token("cal.pause_pct", "the recovery allowance's share of the fuel",
+              motion_fuel_pct("pause")),
+
+        # -- where the lifting lands -------------------------------------
+        Token("cal.trunk_pct", "share of the lifting work done by the trunk",
+              limb_pct("trunk")),
+        Token("cal.arms_pct", "share done by the arms", limb_pct("arms")),
+        Token("cal.legs_pct", "share done by the legs", limb_pct("legs")),
+
+        # -- stations and food -------------------------------------------
+        Token("cal.top_stage", "the station that costs the most fuel",
+              lambda: top_stage()[0]),
+        Token("cal.top_stage_kcal", "what that station costs, kcal",
+              lambda: _n(top_stage()[1]["kcal"], 0)),
+        Token("cal.top_stage_parts", "how many parts pass through it",
+              lambda: _n(top_stage()[1]["elements"], 0)),
+        Token("cal.skin_fuel_ratio",
+              "the layers over the frame, as a multiple of the frame's fuel",
+              lambda: f"{_skin_ratio('kcal'):.1f}"),
+        Token("cal.skin_mass_ratio",
+              "the same layers as a multiple of the frame's mass",
+              lambda: f"{_skin_ratio('kg'):.1f}"),
+        Token("cal.bread", "the crew's total in slices of bread", food(0)),
+        Token("cal.bananas", "the crew's total in bananas", food(1)),
+        Token("cal.diet_days", "the crew's total in days of a normal diet",
+              food(2)),
+        Token("cal.constants", "published constants this model takes on trust",
+              lambda: str(len(en.EXTERNAL_CONSTANTS))),
+    ]
+
+
 def _domology_tokens() -> list[Token]:
     """*Domology*'s dome science and project history, from :mod:`domology.science`.
 
@@ -529,6 +1087,703 @@ def _domology_tokens() -> list[Token]:
         return []
     return [Token(name, describe, compute)
             for name, describe, compute in science.token_specs()]
+
+
+# ----------------------------------------------------------------------
+# Part 2 of the book: Why It Scales (chapters 58-68)
+# ----------------------------------------------------------------------
+#
+# These tokens feed the second part of the book. Every value comes from the
+# same modules the park films teach from -- ``dome_performance`` for the
+# pony wall, the brim and the running costs, ``park_model`` for the pad and
+# its economics -- so a chapter and its film cannot drift apart.
+#
+# The few numbers that are choices rather than derived facts are declared
+# here, next to their reason, the way ``RIP_GAIN_FRACTION`` is above.
+
+BRIM_FT = 1.5
+"""The brim overhang the water chapter's worked example uses (18 inches).
+
+Same value the ten-points list and the park film quote, so all three agree."""
+
+TANK_GALLONS = 1000.0
+TANK_USE_GAL_DAY = 50.0
+"""The tank the water chapter sizes: a 1,000-gallon tank against a two-person
+household's 50 gallons a day. Both are the chapter's declared example, not a
+claim about what a reader needs."""
+
+RETROFIT_MULTIPLIER = 2.0
+"""How much more the same service upgrade costs retrofitted under a finished
+pad than laid in while it is being built.
+
+An estimate, declared rather than derived: cutting a finished deck or slab,
+re-trenching and patching roughly doubles the job. The chapter names it as
+such rather than presenting it as a measured price."""
+
+
+def _dp():
+    """The performance module, imported lazily so the package stays light."""
+    from . import dome_performance as dp
+    return dp
+
+
+def _pm():
+    """The park model, which sits beside the package at the repository root."""
+    import park_model as pm
+    return pm
+
+
+def _rung(index: int, attr: str, places: int = 0):
+    """One cell of the pony-wall ladder."""
+    def value() -> str:
+        rung = _dp().pony_wall_ladder()[index]
+        return _n(getattr(rung, attr), places)
+    return value
+
+
+def _rung_gain(index: int):
+    """Usable floor a rung buys over no wall at all."""
+    def value() -> str:
+        ladder = _dp().pony_wall_ladder()
+        return _n(ladder[index].gain_over(ladder[0]))
+    return value
+
+
+def _rung_rate(index: int):
+    """Dollars per square foot a rung buys its gain at."""
+    def value() -> str:
+        ladder = _dp().pony_wall_ladder()
+        return _n(ladder[index].cost_per_gained_sqft(ladder[0]), 1)
+    return value
+
+
+def _step(index: int, attr: str, places: int = 0):
+    """One rung of the shell ladder, for the flagship dome."""
+    def value() -> str:
+        return _n(getattr(_pm().shell_ladder(_pm().FLAGSHIP_DOME)[index], attr),
+                  places)
+    return value
+
+
+def _bin(index: int, key: str, places: int = 0):
+    """One cell of the hardware-invariance table (small, mid, large)."""
+    def value() -> str:
+        return _n(_pm().hardware_invariance()[index][key], places)
+    return value
+
+
+def _pad_year(which: str, key: str, places: int = 0):
+    """One line of a pad's first-year ledger."""
+    def value() -> str:
+        pad = _pm().standard_pad() if which == "standard" else _pm().basic_pad()
+        return _n(pad.year()[key], places)
+    return value
+
+
+def _layout(index: int, attr: str, places: int = 0):
+    """One figure from the three solar cladding layouts."""
+    def value() -> str:
+        return _n(getattr(_pm().solar_layouts()[index], attr), places)
+    return value
+
+
+def _part3_tokens() -> list[Token]:
+    """The live figures behind chapters 58-68 (Why It Scales)."""
+    from . import dome_performance as dp
+    import park_model as pm
+
+    ladder = pm.shell_ladder(pm.FLAGSHIP_DOME)
+    options = pm.housing_options(pm.FLAGSHIP_DOME)
+    dome_option = options[-1]
+    shares = pm.foundation_share()
+    flagship = pm.on_pad(pm.FLAGSHIP_DOME)
+    solar_one = pm.solar_layouts()[0]
+    solar_all = pm.solar_layouts()[2]
+
+    # The retrofit worked example: the three service lines a pad is built
+    # with, priced at build time and again as a retrofit.
+    service_lines = (pm.declared("electric_pedestal_usd")
+                     + pm.declared("water_connection_usd")
+                     + pm.declared("site_infrastructure_usd_per_pad"))
+
+    out: list[Token] = []
+
+    # ---- 58: the pony wall ---------------------------------------------
+    out += [
+        Token("pony.floor", "the reference floor the ladder is drawn on, sq ft",
+              lambda: _n(dp.FLOOR_SQFT)),
+        Token("pony.headroom", "head height the ceiling must clear, ft",
+              lambda: _n(dp.FACT["headroom_ft"], 1)),
+        Token("pony.radius_ft", "the reference dome's radius, ft",
+              lambda: _n(dp.pony_wall_ladder()[0].radius_ft)),
+        Token("pony.wall_rate", "declared cost of a foot of stem wall, per sq ft",
+              lambda: _n(dp.FACT["pony_wall_cost_sqft"], 2)),
+        Token("pony.usable_0", "usable floor with no wall at all, sq ft",
+              _rung(0, "usable_sqft")),
+        Token("pony.pct_0", "share of the floor that is usable, no wall",
+              lambda: _pct(dp.pony_wall_ladder()[0].usable_fraction, 0)),
+        Token("pony.usable_2", "usable floor on a 2 ft wall, sq ft",
+              _rung(1, "usable_sqft")),
+        Token("pony.pct_2", "share usable on a 2 ft wall", 
+              lambda: _pct(dp.pony_wall_ladder()[1].usable_fraction, 0)),
+        Token("pony.cost_2", "what a 2 ft wall costs, dollars", _rung(1, "cost")),
+        Token("pony.gain_2", "floor the 2 ft wall buys back, sq ft",
+              _rung_gain(1)),
+        Token("pony.rate_2", "dollars per sq ft the 2 ft wall buys at",
+              _rung_rate(1)),
+        Token("pony.usable_3", "usable floor on a 3 ft wall, sq ft",
+              _rung(2, "usable_sqft")),
+        Token("pony.pct_3", "share usable on a 3 ft wall",
+              lambda: _pct(dp.pony_wall_ladder()[2].usable_fraction, 0)),
+        Token("pony.cost_3", "what a 3 ft wall costs, dollars", _rung(2, "cost")),
+        Token("pony.wall_3", "square feet of wall the 3 ft rung is, sq ft",
+              _rung(2, "wall_sqft")),
+        Token("pony.gain_3", "floor the 3 ft wall buys back, sq ft",
+              _rung_gain(2)),
+        Token("pony.rate_3", "dollars per sq ft the 3 ft wall buys at",
+              _rung_rate(2)),
+        Token("pony.gain_pct_3", "per cent more usable floor than no wall",
+              lambda: _pct(dp.pony_wall_ladder()[2].gain_over(
+                  dp.pony_wall_ladder()[0]) / dp.pony_wall_ladder()[0].usable_sqft, 0)),
+        Token("pony.usable_4", "usable floor on a 4 ft wall, sq ft",
+              _rung(3, "usable_sqft")),
+        Token("pony.pct_4", "share usable on a 4 ft wall",
+              lambda: _pct(dp.pony_wall_ladder()[3].usable_fraction, 0)),
+        Token("pony.cost_4", "what a 4 ft wall costs, dollars", _rung(3, "cost")),
+        Token("pony.gain_4", "floor the 4 ft wall buys back, sq ft",
+              _rung_gain(3)),
+        Token("pony.rate_4", "dollars per sq ft the 4 ft wall buys at",
+              _rung_rate(3)),
+    ]
+
+    # ---- 59: the brim is a gutter --------------------------------------
+    water = dp.WaterCatch(BRIM_FT)
+    out += [
+        Token("brim.floor", "the reference floor the catch is computed on, sq ft",
+              lambda: _n(dp.FLOOR_SQFT)),
+        Token("brim.overhang_in", "brim overhang the worked example uses, inches",
+              lambda: _n(BRIM_FT * 12.0)),
+        Token("brim.overhang_ft", "the same overhang, feet",
+              lambda: _n(BRIM_FT, 1)),
+        Token("brim.rim_ft", "plan radius where the hat stops, ft",
+              lambda: _n(water.rim_radius_ft, 1)),
+        Token("brim.catch_ft", "catchment radius with the brim on, ft",
+              lambda: _n(water.catch_radius_ft, 1)),
+        Token("brim.catch_sqft", "catchment area, plan view, sq ft",
+              lambda: _n(water.catchment_sqft)),
+        Token("brim.rain_in", "annual rainfall the catch assumes, inches",
+              lambda: _n(dp.FACT["rainfall_in_year"], 0)),
+        Token("brim.gal_per_in", "gallons a square foot collects per inch of rain",
+              lambda: _n(dp.FACT["gallons_per_sqft_inch"], 3)),
+        Token("brim.runoff_pct", "share of rain that becomes runoff, per cent",
+              lambda: _pct(dp.FACT["runoff_coefficient"], 0)),
+        Token("brim.gallons_yr", "gallons the brim collects in a year",
+              lambda: _n(water.gallons_year)),
+        Token("brim.gallons_day", "the same catch, per day",
+              lambda: _n(water.gallons_day, 1)),
+        Token("brim.value_yr", "what that water is worth at utility rates, dollars",
+              lambda: _n(water.value_year, 0)),
+        Token("brim.tank_gal", "the tank the worked example sizes, gallons",
+              lambda: _n(TANK_GALLONS)),
+        Token("brim.use_gal_day", "daily use the tank is sized against, gallons",
+              lambda: _n(TANK_USE_GAL_DAY)),
+        Token("brim.tank_days", "days a full tank covers at that use",
+              lambda: _n(water.tank_days(TANK_GALLONS, TANK_USE_GAL_DAY))),
+    ]
+
+    # ---- 60: the shell ladder ------------------------------------------
+    out += [
+        Token("ladder.dome", "the dome the ladder is computed on",
+              lambda: pm.FLAGSHIP_DOME),
+        Token("ladder.diameter_ft", "that dome's diameter, ft",
+              lambda: _n(next(d.dome_diameter_ft for d in pm.dome_catalogue()
+                              if d.name == pm.FLAGSHIP_DOME), 1)),
+        Token("ladder.floor", "that dome's floor, sq ft",
+              lambda: _n(next(d.floor_sqft for d in pm.dome_catalogue()
+                              if d.name == pm.FLAGSHIP_DOME))),
+        Token("ladder.layers", "layers the ladder runs to",
+              lambda: _n(len(ladder) - 1)),
+        Token("ladder.r0", "R-value of the bare shell",
+              lambda: _n(ladder[0].r_value, 1)),
+        Token("ladder.r1", "R-value with one layer",
+              lambda: _n(ladder[1].r_value, 1)),
+        Token("ladder.r2", "R-value with two layers",
+              lambda: _n(ladder[2].r_value, 1)),
+        Token("ladder.r3", "R-value with three layers",
+              lambda: _n(ladder[3].r_value, 1)),
+        Token("ladder.r7", "R-value with every layer on",
+              lambda: _n(ladder[-1].r_value, 1)),
+        Token("ladder.per_layer_r", "declared R-value each quilted layer adds",
+              lambda: _n(pm.declared("quilt_r_per_layer"), 1)),
+        Token("ladder.layer_sqft", "declared cost of one layer, per sq ft",
+              lambda: _n(pm.declared("quilt_usd_per_sqft_layer"), 1)),
+        Token("ladder.heat0", "heating bill of the bare shell, dollars a year",
+              _step(0, "heating_usd_per_year")),
+        Token("ladder.heat1", "heating bill with one layer, dollars a year",
+              _step(1, "heating_usd_per_year")),
+        Token("ladder.heat2", "heating bill with two layers, dollars a year",
+              _step(2, "heating_usd_per_year")),
+        Token("ladder.heat3", "heating bill with three layers, dollars a year",
+              _step(3, "heating_usd_per_year")),
+        Token("ladder.heat7", "heating bill with every layer on, dollars a year",
+              _step(7, "heating_usd_per_year")),
+        Token("ladder.drop_pct", "per cent of the heating bill the layers remove",
+              lambda: _pct(1.0 - ladder[-1].heating_usd_per_year
+                           / ladder[0].heating_usd_per_year, 0)),
+        Token("ladder.layer_cost", "what one layer costs, dollars",
+              _step(1, "marginal_cost")),
+        Token("ladder.add1", "cumulative cost after one layer, dollars",
+              _step(1, "added_cost")),
+        Token("ladder.add2", "cumulative cost after two layers, dollars",
+              _step(2, "added_cost")),
+        Token("ladder.add3", "cumulative cost after three layers, dollars",
+              _step(3, "added_cost")),
+        Token("ladder.add7", "cumulative cost of all seven layers, dollars",
+              _step(7, "added_cost")),
+        Token("ladder.save1", "first layer's yearly saving, dollars",
+              _step(1, "marginal_saving")),
+        Token("ladder.save2", "second layer's yearly saving, dollars",
+              _step(2, "marginal_saving")),
+        Token("ladder.save3", "third layer's yearly saving, dollars",
+              _step(3, "marginal_saving")),
+        Token("ladder.save7", "seventh layer's yearly saving, dollars",
+              _step(7, "marginal_saving")),
+        Token("ladder.payback1", "months for the first layer to pay for itself",
+              lambda: _n(ladder[1].marginal_cost
+                         / ladder[1].marginal_saving * 12.0, 0)),
+        Token("ladder.payback7", "years for the seventh layer to pay for itself",
+              lambda: _n(ladder[7].marginal_cost
+                         / ladder[7].marginal_saving, 1)),
+    ]
+
+    # ---- 61: one hardware set, three sizes -----------------------------
+    bins = pm.hardware_invariance()
+    out += [
+        Token("bin.design", "the shipped design the table is drawn on",
+              lambda: str(bins[0]["design"])),
+        Token("bin.small_ft", "smallest diameter in the table, ft",
+              _bin(0, "diameter_ft", 1)),
+        Token("bin.mid_ft", "middle diameter in the table, ft",
+              _bin(1, "diameter_ft", 1)),
+        Token("bin.large_ft", "largest diameter in the table, ft",
+              _bin(2, "diameter_ft", 1)),
+        Token("bin.small_floor", "floor at the smallest, sq ft",
+              _bin(0, "floor_sqft")),
+        Token("bin.mid_floor", "floor at the middle, sq ft",
+              _bin(1, "floor_sqft")),
+        Token("bin.large_floor", "floor at the largest, sq ft",
+              _bin(2, "floor_sqft")),
+        Token("bin.floor_gain", "how many times the floor grows, small to large",
+              lambda: _n(bins[2]["floor_sqft"] / bins[0]["floor_sqft"], 1)),
+        Token("bin.struts", "struts in the frame, at every size",
+              _bin(0, "struts")),
+        Token("bin.hubs", "hubs in the frame, at every size", _bin(0, "hubs")),
+        Token("bin.panels", "panels in the frame, at every size",
+              _bin(0, "panels")),
+        Token("bin.hub_cost", "the hub bill, dollars, identical at every size",
+              _bin(0, "hub_cost")),
+        Token("bin.frame_small", "frame cost at the smallest, dollars",
+              _bin(0, "frame_cost")),
+        Token("bin.frame_mid", "frame cost at the middle, dollars",
+              _bin(1, "frame_cost")),
+        Token("bin.frame_large", "frame cost at the largest, dollars",
+              _bin(2, "frame_cost")),
+        Token("bin.panel_small", "panel cost at the smallest, dollars",
+              _bin(0, "panel_cost")),
+        Token("bin.panel_mid", "panel cost at the middle, dollars",
+              _bin(1, "panel_cost")),
+        Token("bin.panel_large", "panel cost at the largest, dollars",
+              _bin(2, "panel_cost")),
+        Token("bin.foundation_small", "foundation at the smallest, dollars",
+              _bin(0, "foundation_cost")),
+        Token("bin.foundation_mid", "foundation at the middle, dollars",
+              _bin(1, "foundation_cost")),
+        Token("bin.foundation_large", "foundation at the largest, dollars",
+              _bin(2, "foundation_cost")),
+        Token("bin.total_small", "whole build at the smallest, dollars",
+              _bin(0, "total_cost")),
+        Token("bin.total_mid", "whole build at the middle, dollars",
+              _bin(1, "total_cost")),
+        Token("bin.total_large", "whole build at the largest, dollars",
+              _bin(2, "total_cost")),
+    ]
+
+    # ---- 62: buy for the next two steps --------------------------------
+    apartment = options[2]
+    out += [
+        Token("growth.crossover", "month the dome becomes the cheapest roof",
+              lambda: _n(pm.crossover_months(pm.FLAGSHIP_DOME))),
+        Token("growth.hotel_mo", "a hotel room, a month, dollars",
+              lambda: _n(options[0].monthly)),
+        Token("growth.short_mo", "a short let, a month, dollars",
+              lambda: _n(options[1].monthly)),
+        Token("growth.apartment_mo", "a leased apartment, a month, dollars",
+              lambda: _n(options[2].monthly, 0)),
+        Token("growth.dome_mo", "the dome on a pad, a month, dollars",
+              lambda: _n(options[3].monthly)),
+        Token("growth.apartment_entry", "moving into the apartment, dollars",
+              lambda: _n(apartment.entry)),
+        Token("growth.deposit", "the part of that which comes back, dollars",
+              lambda: _n(apartment.recoverable)),
+        Token("growth.break_fee", "leaving the lease early, dollars",
+              lambda: _n(apartment.early_exit_months)),
+        Token("growth.lease_months", "the lease you sign, months",
+              lambda: _n(apartment.lease_months)),
+        Token("growth.dome_entry", "moving onto a pad, dollars",
+              lambda: _n(dome_option.entry)),
+        Token("growth.dome_asset", "of that, the dome you keep, dollars",
+              lambda: _n(dome_option.asset_cost)),
+        Token("growth.transport", "moving the dome between pads, dollars",
+              lambda: _n(pm.declared("dome_transport_usd"))),
+        Token("growth.pad_step", "the step pad sizes come in, ft",
+              lambda: _n(pm.PAD_STEP_FT)),
+        Token("growth.setup_fast", "days to put the dome up, quick end",
+              lambda: _n(pm.declared("setup_days_fast"))),
+        Token("growth.setup_slow", "days at the slow end, large or layered",
+              lambda: _n(pm.declared("setup_days_slow"))),
+        Token("growth.retrofit_mult", "declared cost multiple for retrofitting",
+              lambda: _n(RETROFIT_MULTIPLIER, 1)),
+        Token("growth.service_low", "service upgrade laid in at build time, dollars",
+              lambda: _n(service_lines)),
+        Token("growth.service_high", "the same upgrade retrofitted, dollars",
+              lambda: _n(service_lines * RETROFIT_MULTIPLIER)),
+        Token("growth.service_delta", "what not leaving room costs, dollars",
+              lambda: _n(service_lines * (RETROFIT_MULTIPLIER - 1.0))),
+    ]
+
+    # ---- 63: the ground is what you cannot take with you ----------------
+    ordered = sorted(shares, key=lambda row: row.foundation_share)
+    out += [
+        Token("ground.designs", "shipped designs the measure covers",
+              lambda: _n(len(shares))),
+        Token("ground.min_name", "the design whose ground is cheapest",
+              lambda: ordered[0].name),
+        Token("ground.min_share", "its foundation as a share of the whole, per cent",
+              lambda: _pct(ordered[0].foundation_share, 1)),
+        Token("ground.max_name", "the design whose ground is dearest",
+              lambda: ordered[-1].name),
+        Token("ground.max_share", "its foundation share, per cent",
+              lambda: _pct(ordered[-1].foundation_share, 0)),
+        Token("ground.flagship_full", "the flagship's full cost, dollars",
+              lambda: _n(flagship.full_cost)),
+        Token("ground.flagship_foundation", "of that, the foundation, dollars",
+              lambda: _n(flagship.foundation_cost)),
+        Token("ground.flagship_share", "its foundation share, per cent",
+              lambda: _pct(flagship.foundation_share, 1)),
+        Token("ground.flagship_on_pad", "the flagship without its foundation, dollars",
+              lambda: _n(flagship.on_pad_cost)),
+        Token("ground.mean_share", "foundation share averaged over the catalogue, per cent",
+              lambda: _pct(sum(row.foundation_share for row in shares)
+                           / len(shares), 1)),
+        Token("ground.over_half", "designs whose foundation is over half the cost",
+              lambda: _n(sum(1 for row in shares
+                             if row.foundation_share > 0.5))),
+    ]
+    for _name in (row.name for row in shares):
+        _slug = re.sub(r"[^a-z0-9]+", "_", _name.lower()).strip("_")
+        out.append(Token(
+            f"ground.share_{_slug}",
+            f"foundation share of the {_name}, per cent",
+            (lambda name: lambda: _pct(pm.on_pad(name).foundation_share, 1))(
+                _name)))
+
+    # ---- 64: a pad, not a plot ------------------------------------------
+    sizes = pm.pad_sizes()
+    standard, basic = pm.standard_pad(), pm.basic_pad()
+    out += [
+        Token("pad.sizes_count", "how many standard pad sizes there are",
+              lambda: _n(len(sizes))),
+        Token("pad.sizes_list", "the standard pad sizes, feet",
+              lambda: ", ".join(f"{size:.0f}" for size in sizes[:-1])
+                      + f" and {sizes[-1]:.0f}"),
+        Token("pad.smallest", "the smallest standard pad, ft",
+              lambda: _n(sizes[0])),
+        Token("pad.biggest", "the largest standard pad, ft",
+              lambda: _n(sizes[-1])),
+        Token("pad.step", "the step between pad sizes, ft",
+              lambda: _n(pm.PAD_STEP_FT)),
+        Token("pad.standard_ft", "the flagship's pad diameter, ft",
+              lambda: _n(standard.diameter_ft)),
+        Token("pad.standard_area", "that pad's area, sq ft",
+              lambda: _n(standard.area_sqft)),
+        Token("pad.standard_build", "what the loaded pad costs to build, dollars",
+              lambda: _n(standard.build_cost)),
+        Token("pad.standard_net", "what it nets its host in a year, dollars",
+              _pad_year("standard", "net")),
+        Token("pad.standard_payback", "years for the loaded pad to pay for itself",
+              _pad_year("standard", "payback_years", 1)),
+        Token("pad.basic_build", "what the bare pad costs to build, dollars",
+              lambda: _n(basic.build_cost)),
+        Token("pad.basic_net", "what the bare pad nets in a year, dollars",
+              _pad_year("basic", "net")),
+        Token("pad.basic_payback", "years for the bare pad to pay for itself",
+              _pad_year("basic", "payback_years", 1)),
+        Token("pad.lease_mo", "what the pad rents for, dollars a month",
+              lambda: _n(standard.lease_per_month)),
+        Token("pad.occupancy_pct", "share of the year the host plans to lease it",
+              lambda: _pct(pm.declared("occupancy_fraction"), 0)),
+        Token("pad.gravel_rate", "gravel deck, dollars per sq ft",
+              lambda: _n(pm.declared("deck_gravel_usd_per_sqft"), 1)),
+        Token("pad.concrete_rate", "concrete slab, dollars per sq ft",
+              lambda: _n(pm.declared("deck_concrete_usd_per_sqft"))),
+        Token("pad.wood_rate", "wood deck, dollars per sq ft",
+              lambda: _n(pm.declared("deck_wood_usd_per_sqft"))),
+        Token("pad.gravel_48", "a 48 ft gravel pad's deck, dollars",
+              lambda: _n(standard.area_sqft
+                         * pm.declared("deck_gravel_usd_per_sqft"))),
+        Token("pad.concrete_48", "a 48 ft slab's deck, dollars",
+              lambda: _n(standard.area_sqft
+                         * pm.declared("deck_concrete_usd_per_sqft"))),
+        Token("pad.wood_48", "a 48 ft wood deck, dollars",
+              lambda: _n(standard.area_sqft
+                         * pm.declared("deck_wood_usd_per_sqft"))),
+        Token("pad.cheap_area", "the cheap pad's area, sq ft",
+              lambda: _n(pm.pad_area_sqft(pm.declared("iris_max_ft")))),
+        Token("pad.cheap_deck", "its deck on blocks, dollars",
+              lambda: _n(pm.cheap_pad_rows()[0][1])),
+        Token("pad.cheap_hub", "its share of the hub, dollars",
+              lambda: _n(pm.cheap_pad_rows()[1][1])),
+        Token("pad.cheap_spur", "its spur from the hub, dollars",
+              lambda: _n(pm.cheap_pad_rows()[2][1])),
+        Token("pad.cheap_permits", "its permits, dollars",
+              lambda: _n(pm.cheap_pad_rows()[3][1])),
+        Token("pad.cheap_total", "the whole cheap pad, dollars",
+              lambda: _n(pm.cheap_pad_cost())),
+        Token("pad.rotating", "the rotating base on the loaded pad, dollars",
+              lambda: _n(standard.diameter_ft
+                         * pm.declared("rotation_ring_usd_per_ft"))),
+        Token("pad.column", "the utility column, dollars",
+              lambda: _n(pm.declared("utility_column_usd"))),
+        Token("pad.pedestal", "the electrical pedestal, dollars",
+              lambda: _n(pm.declared("electric_pedestal_usd"))),
+        Token("pad.water_line", "the water and drain tie-in, dollars",
+              lambda: _n(pm.declared("water_connection_usd"))),
+        Token("pad.infra", "share of road and trunk services, dollars",
+              lambda: _n(pm.declared("site_infrastructure_usd_per_pad"))),
+        Token("pad.solar_watts", "array the loaded pad carries, watts",
+              lambda: _n(standard.solar_watts)),
+        Token("pad.solar_cost", "what that array costs, dollars",
+              lambda: _n(standard.solar_watts
+                         * pm.declared("solar_usd_per_watt"))),
+        Token("pad.hub_served", "pads one hub panel serves",
+              lambda: _n(pm.declared("hub_pads_served"))),
+        Token("pad.fits_48", "shipped domes a 48 ft pad can take",
+              lambda: _n(len(pm.domes_that_fit(48.0)))),
+    ]
+
+    # ---- 65: turning the house toward the sun ----------------------------
+    ring40 = 40.0 * pm.declared("rotation_ring_usd_per_ft")
+    gain_yr = solar_one.tracking_gain_kwh * 12.0
+    out += [
+        Token("sun.radius", "the dome radius every solar figure is for, ft",
+              lambda: _n(pm.SOLAR_RADIUS_FT)),
+        Token("sun.panels_one", "panels on one side of that shell",
+              lambda: _n(solar_one.panels)),
+        Token("sun.of_panels", "panels the whole shell has",
+              lambda: _n(solar_one.of_panels)),
+        Token("sun.area", "clad area of one side, sq ft",
+              lambda: _n(solar_one.area_sqft)),
+        Token("sun.kw", "array size of one side, kW",
+              lambda: _n(solar_one.watts / 1000.0, 1)),
+        Token("sun.fixed", "one side, fixed, kWh a month",
+              lambda: _n(solar_one.kwh_fixed)),
+        Token("sun.tracked", "one side, tracking, kWh a month",
+              lambda: _n(solar_one.kwh_tracking)),
+        Token("sun.gain_mo", "what turning the pad adds, kWh a month",
+              lambda: _n(solar_one.tracking_gain_kwh)),
+        Token("sun.gain_pct", "declared tracking gain over fixed, per cent",
+              lambda: _pct(pm.declared("tracking_gain_fraction"), 0)),
+        Token("sun.hours", "peak sun hours a day the model assumes",
+              lambda: _n(pm.declared("sun_hours_per_day"), 1)),
+        Token("sun.tenant", "what a tenant uses, kWh a month",
+              lambda: _n(pm.declared("tenant_kwh_per_month"))),
+        Token("sun.surplus_pct", "share of the tracked output a tenant cannot use",
+              lambda: _pct((solar_one.kwh_tracking
+                            - pm.declared("tenant_kwh_per_month"))
+                           / solar_one.kwh_tracking, 0)),
+        Token("sun.all_fixed", "whole shell, fixed, kWh a month",
+              lambda: _n(solar_all.kwh_fixed)),
+        Token("sun.all_tracked", "whole shell, tracking, kWh a month",
+              lambda: _n(solar_all.kwh_tracking)),
+        Token("sun.all_gain", "what turning a fully clad dome adds, kWh a month",
+              lambda: _n(solar_all.tracking_gain_kwh)),
+        Token("sun.all_mult", "times a tenant's use a full shell makes",
+              lambda: _n(solar_all.kwh_tracking
+                         / pm.declared("tenant_kwh_per_month"), 1)),
+        Token("sun.retail", "what bought power costs, dollars per kWh",
+              lambda: _n(pm.declared("power_buy_usd_per_kwh"), 2)),
+        Token("sun.export", "what sent-back power earns, dollars per kWh",
+              lambda: _n(pm.declared("power_export_usd_per_kwh"), 3)),
+        Token("sun.gain_yr", "the tracking gain, a year, kWh",
+              lambda: _n(gain_yr)),
+        Token("sun.gain_export", "a year of that gain, valued at export rate, dollars",
+              lambda: _n(gain_yr * pm.declared("power_export_usd_per_kwh"), 0)),
+        Token("sun.gain_retail", "the same gain valued at retail, dollars",
+              lambda: _n(gain_yr * pm.declared("power_buy_usd_per_kwh"), 0)),
+        Token("sun.ring_ft", "the rotating ring, dollars per foot of diameter",
+              lambda: _n(pm.declared("rotation_ring_usd_per_ft"))),
+        Token("sun.ring_40", "the ring under a 40 ft pad, dollars",
+              lambda: _n(ring40)),
+        Token("sun.payback_export", "years the ring takes to repay, at export value",
+              lambda: _n(ring40 / (gain_yr
+                                   * pm.declared("power_export_usd_per_kwh")), 0)),
+        Token("sun.payback_retail", "the same, if every gained kWh were worth retail",
+              lambda: _n(ring40 / (gain_yr
+                                   * pm.declared("power_buy_usd_per_kwh")), 0)),
+    ]
+
+    # ---- 66: one pad, every dome size ------------------------------------
+    classes = pm.DOME_CLASSES
+    pad_small = pm.cheap_pad_cost(classes[0].diameter_ft)
+    pad_mid = pm.cheap_pad_cost(classes[1].diameter_ft)
+    pad_large = pm.cheap_pad_cost(classes[2].diameter_ft)
+    one_iris = pm.cheap_pad_cost(pm.declared("iris_max_ft")) + pm.iris_cost()
+    out += [
+        Token("iris.min", "the smallest aperture, ft",
+              lambda: _n(pm.iris_span()[0])),
+        Token("iris.max", "the largest aperture, ft",
+              lambda: _n(pm.iris_span()[1])),
+        Token("iris.rate", "the mechanism, dollars per foot of aperture",
+              lambda: _n(pm.declared("iris_usd_per_ft"))),
+        Token("iris.cost_max", "the mechanism at full aperture, dollars",
+              lambda: _n(pm.iris_cost())),
+        Token("iris.small_ft", "the small dome's diameter, ft",
+              lambda: _n(classes[0].diameter_ft, 1)),
+        Token("iris.mid_ft", "the medium dome's diameter, ft",
+              lambda: _n(classes[1].diameter_ft, 1)),
+        Token("iris.large_ft", "the large dome's diameter, ft",
+              lambda: _n(classes[2].diameter_ft, 1)),
+        Token("iris.small_floor", "the small dome's floor, sq ft",
+              lambda: _n(classes[0].floor_sqft)),
+        Token("iris.mid_floor", "the medium dome's floor, sq ft",
+              lambda: _n(classes[1].floor_sqft)),
+        Token("iris.large_floor", "the large dome's floor, sq ft",
+              lambda: _n(classes[2].floor_sqft)),
+        Token("iris.small_member", "the small dome's longest member, ft",
+              lambda: _n(classes[0].longest_member_ft, 1)),
+        Token("iris.mid_member", "the medium dome's longest member, ft",
+              lambda: _n(classes[1].longest_member_ft, 1)),
+        Token("iris.large_member", "the large dome's longest member, ft",
+              lambda: _n(classes[2].longest_member_ft, 1)),
+        Token("iris.covers", "of the three sizes the one iris covers",
+              lambda: _n(sum(1 for dome in classes if pm.iris_covers(dome)))),
+        Token("iris.pad_small", "a fixed cheap pad at the small size, dollars",
+              lambda: _n(pad_small)),
+        Token("iris.pad_mid", "a fixed cheap pad at the medium size, dollars",
+              lambda: _n(pad_mid)),
+        Token("iris.pad_large", "a fixed cheap pad at the large size, dollars",
+              lambda: _n(pad_large)),
+        Token("iris.three_pads", "three fixed pads, one per size, dollars",
+              lambda: _n(pad_small + pad_mid + pad_large)),
+        Token("iris.one_pad", "one iris pad at full aperture, dollars",
+              lambda: _n(one_iris)),
+        Token("iris.saving", "what the iris saves over three fixed pads, dollars",
+              lambda: _n(pad_small + pad_mid + pad_large - one_iris)),
+    ]
+
+    # ---- 67: why a network beats a park ----------------------------------
+    host = pm.host_comparison(pm.standard_pad())
+    out += [
+        Token("net.crossover", "month the dome becomes the cheapest roof",
+              lambda: _n(pm.crossover_months(pm.FLAGSHIP_DOME))),
+        Token("net.hotel_mo", "a hotel room, a month, dollars",
+              lambda: _n(options[0].monthly)),
+        Token("net.short_mo", "a short let, a month, dollars",
+              lambda: _n(options[1].monthly)),
+        Token("net.apartment_mo", "a leased apartment, a month, dollars",
+              lambda: _n(options[2].monthly, 0)),
+        Token("net.dome_mo", "the dome on a pad, a month, dollars",
+              lambda: _n(options[3].monthly)),
+        Token("net.apartment_entry", "moving into the apartment, dollars",
+              lambda: _n(options[2].entry)),
+        Token("net.deposit", "the part of that which comes back, dollars",
+              lambda: _n(options[2].recoverable)),
+        Token("net.break_fee", "leaving the lease early, dollars",
+              lambda: _n(options[2].early_exit_months)),
+        Token("net.lease_months", "the lease you sign, months",
+              lambda: _n(options[2].lease_months)),
+        Token("net.dome_entry", "moving onto a pad, dollars",
+              lambda: _n(dome_option.entry)),
+        Token("net.dome_asset", "of that, the dome you keep, dollars",
+              lambda: _n(dome_option.asset_cost)),
+        Token("net.transport", "moving the dome between pads, dollars",
+              lambda: _n(pm.declared("dome_transport_usd"))),
+        Token("net.haircut_pct", "what a dome loses the day it is secondhand",
+              lambda: _pct(pm.declared("resale_haircut_fraction"), 0)),
+        Token("net.life_yr", "declared service life of a maintained dome, years",
+              lambda: _n(pm.declared("dome_service_life_years"))),
+        Token("net.residual_pct", "share of its value a dome never falls below",
+              lambda: _pct(pm.declared("dome_residual_fraction"), 0)),
+        Token("net.recovered_12", "what a dome is worth leaving after a year, dollars",
+              lambda: _n(dome_option.recovered(12.0))),
+        Token("net.recovered_60", "after five years, dollars",
+              lambda: _n(dome_option.recovered(60.0))),
+        Token("net.utilities", "a tenant's power and water, a month, dollars",
+              lambda: _n(pm.tenant_utilities(margin=True), 1)),
+        Token("net.utilities_raw", "the same without the host's margin, dollars",
+              lambda: _n(pm.tenant_utilities(margin=False), 1)),
+        Token("net.host_pad_upfront", "a host's upfront cost, dome pad, dollars",
+              lambda: _n(host[0].upfront)),
+        Token("net.host_let_upfront", "a host's upfront cost, furnished let, dollars",
+              lambda: _n(host[1].upfront)),
+        Token("net.host_pad_yearly", "what the dome pad costs its host a year, dollars",
+              lambda: _n(host[0].yearly_costs)),
+        Token("net.host_let_yearly", "what the furnished let costs a year, dollars",
+              lambda: _n(host[1].yearly_costs)),
+        Token("net.hub_panel", "one hub panel and manifold, dollars",
+              lambda: _n(pm.declared("hub_panel_usd"))),
+        Token("net.hub_share", "one pad's quarter of the hub, dollars",
+              lambda: _n(pm.declared("hub_panel_usd")
+                         / pm.declared("hub_pads_served"))),
+        Token("net.spur", "the spur from hub to pad, dollars",
+              lambda: _n(pm.declared("spur_usd_per_pad"))),
+        Token("net.hub_pads", "pads one hub serves",
+              lambda: _n(pm.declared("hub_pads_served"))),
+        Token("net.infra", "share of road and trunk services, dollars",
+              lambda: _n(pm.declared("site_infrastructure_usd_per_pad"))),
+    ]
+
+    # ---- 68: what would have to be true ---------------------------------
+    from . import house_economics as he
+    from . import lexicon_concepts as lc
+    from .dome_costing import build_variants
+    national_sqft = he.value("nahb_finished_sqft")
+    per_sqft = he.construction_total() / national_sqft
+    points = dp.ten_points()
+    finished = build_variants()[2]  # PRISTINE, HAT -- the ten-points figure
+    national_floor = dp.FLOOR_SQFT * per_sqft
+    out += [
+        Token("honest.price", "the national average new-home price, dollars",
+              lambda: _n(he.price_total())),
+        Token("honest.construction", "of that, the building cost, dollars",
+              lambda: _n(he.construction_total())),
+        Token("honest.nahb_sqft", "the finished home that price builds, sq ft",
+              lambda: _n(national_sqft)),
+        Token("honest.per_sqft", "national construction cost per square foot, dollars",
+              lambda: _n(per_sqft, 0)),
+        Token("honest.finished_usd", "the finished dome the ten points quote, dollars",
+              lambda: _n(finished.total)),
+        Token("honest.finished_per_sqft", "that finished dome, dollars per sq ft",
+              lambda: _n(finished.per_sqft)),
+        Token("honest.finished_figure", "the ten-points finished-dome figure",
+              lambda: points[5].figure),
+        Token("honest.finished_detail", "how that figure is composed",
+              lambda: points[5].detail),
+        Token("honest.ref_floor", "the reference floor both numbers cover, sq ft",
+              lambda: _n(dp.FLOOR_SQFT)),
+        Token("honest.national_floor", "the reference floor at the national rate, dollars",
+              lambda: _n(national_floor)),
+        Token("honest.gap", "the gap between the two ways of pricing one floor, dollars",
+              lambda: _n(national_floor - finished.total)),
+        Token("honest.ratio", "how many times the national rate is the finished figure",
+              lambda: _n(national_floor / finished.total, 1)),
+        Token("honest.points", "claims in the ten-points list",
+              lambda: _n(len(points))),
+        Token("honest.concepts", "concepts in the corpus taxonomy",
+              lambda: _n(len(lc.CONCEPTS))),
+    ]
+
+    return out
 
 
 WORKED_A_FLOOR_SQFT = 300.0

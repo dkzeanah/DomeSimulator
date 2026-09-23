@@ -1,0 +1,20 @@
+{
+  "picture": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\smoke-test-0001\\picture.mp4",
+  "plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\smoke-test-0001\\plan.json",
+  "plan_sha256": "19e07d7973ea87224830dfd899eeef7798aa92b024fe92e15afea384cc97a51b",
+  "picture_sha256": "04372d05b94d1b87d68168e8433e4db0051e331c54d8c2a43ed0201d34452170",
+  "speech_sha256": "6a02c3481393e63ba8bbf19e7a63f7a024281f8e2ab6a17dcc3fa96894836261",
+  "seconds": 6.0,
+  "fps": 6,
+  "verification": {
+    "file": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\byod-styled\\byod_snarky\\smoke-test-0001\\picture.mp4",
+    "frames": 36,
+    "expected_frames": 36,
+    "video_seconds": 6.0,
+    "audio_seconds": null,
+    "width": 960,
+    "height": 540,
+    "fps": 6
+  },
+  "smoke_test": true
+}

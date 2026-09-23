@@ -32,6 +32,25 @@ from dataclasses import dataclass, field
 HOUSE_VOICE = "en-US-AndrewMultilingualNeural"
 
 
+def chapter_shots(lesson_key: str) -> str:
+    """A shot list with one still in the middle of every chapter.
+
+    A stills pass exists to answer one question -- *is any chapter pointing
+    the camera at the wrong thing* -- and a fixed range of seconds cannot
+    answer it: add a chapter and the marks slide, and the last chapters fall
+    off the end entirely. So the marks are read off the lesson's own written
+    durations. Imported lazily because the launcher imports this module long
+    before it imports any lesson.
+    """
+    from two_v_demo.lesson_registry import get_lesson
+
+    marks, clock = [], 0.0
+    for chapter in get_lesson(lesson_key).chapters:
+        marks.append(int(clock + chapter.duration * 0.5))
+        clock += chapter.duration
+    return ",".join(str(mark) for mark in marks)
+
+
 @dataclass(frozen=True)
 class RenderPreset:
     """One reproducible video render, as launcher field values."""
@@ -301,6 +320,31 @@ PRESETS: tuple[RenderPreset, ...] = (
             "shots": ",".join(str(second) for second in range(8, 600, 14)),
         },
     ),
+    _video("seed_pitch", "seed_pitch", "stem-cell-dome-campaign.mp4",
+           "THE STEM CELL DOME. The campaign cut: a tiny house you can take "
+           "apart. The frame comes out of the buyer's own trees, the shell "
+           "is a boat hull priced off a composites supplier's own list, the "
+           "services live in a core that moves to the next dome, and the "
+           "ground belongs to somebody else. Every dome on screen is the "
+           "raw-wedge solver's own building and every figure comes from the "
+           "seed model -- including the three chapters that argue against "
+           "the pitch.",
+           compose_segments=True),
+
+    RenderPreset(
+        key="seed_pitch_stills",
+        label="stem cell dome -- one still per chapter",
+        summary="A still from each chapter of the campaign cut, with no "
+                "narration and no video encode. The quick way to look at "
+                "every dome, core, pad and worksheet before committing to "
+                "the full render.",
+        fields={
+            "lesson": "seed_pitch",
+            "action": "shots",
+            "shots": chapter_shots("seed_pitch"),
+        },
+    ),
+
     _video("dome_park", "dome_park", "dome-park-bring-your-own-home.mp4",
            "DOME PARK. The Kickstarter cut: an RV park for houses. A host "
            "builds a serviced pad, a dome owner brings the home and plugs in. "
@@ -334,6 +378,27 @@ PRESETS: tuple[RenderPreset, ...] = (
            "central services, movable partitions, wedge channels, staged "
            "growth and a starter-first budget, with the personal story and "
            "the proposed rewards. Ends on its own contact outro.",
+           compose_segments=False),
+
+    _video("byod_deepseek", "byod_deepseek", "attempt-v1-deepseek.mp4",
+           "BRING YOUR OWN DOME cut to the author's marked-up transcript: the "
+           "assumptions lecture, the foundation-share section and the R-value "
+           "payback figure are out, a pad built step by step and the pad "
+           "catalogue are in, and the iris was redrawn as a mechanism rather "
+           "than a disc. Carries its own contact outro.",
+           compose_segments=False),
+
+    _video("byod_snarky", "byod_snarky", "attempt-v1-byod_snarky.mp4",
+           "BRING YOUR OWN DOME in the social register: handheld camera that "
+           "leans in when the character speaks, a little faster, vignetted, "
+           "and the pink cyber jelly on thirteen cues wearing the tone of each "
+           "passage. Same script and same numbers as the deepseek cut.",
+           compose_segments=False),
+
+    _video("byod_polished", "byod_polished", "attempt-v1-byod_polished.mp4",
+           "BRING YOUR OWN DOME as a considered presentation: the camera "
+           "drifts in slowly, the pace is generous, nothing is laid over the "
+           "frame and no character appears. The control for the snarky cut.",
            compose_segments=False),
 
     RenderPreset(

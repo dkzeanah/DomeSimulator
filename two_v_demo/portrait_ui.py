@@ -119,6 +119,8 @@ def _plan_teaching(app, frame: Frame) -> Plan:
     title_size, title_lines = _fit_lines(app, chapter.title, safe.w, 2, int(46 * u),
                                          int(34 * u), True, steps, "title")
     y = safe.y
+    ops.append(("topscrim", y + int(kicker_size * 1.6)
+                + len(title_lines) * int(title_size * 1.18) + 24 * u))
     ops.append(("text", kicker, kicker_size, True, CYAN, safe.x, y))
     y += int(kicker_size * 1.6)
     title_h = int(title_size * 1.18)
@@ -183,12 +185,16 @@ def _plan_math(app, frame: Frame) -> Plan:
     steps: list[str] = []
     ops: list = []
     kicker_size = int(22 * u)
-    ops.append(("text", f"THE MATH  ·  CHAPTER {chapter.number}", kicker_size, True, AMBER,
-                safe.x, safe.y))
     y = safe.y + int(kicker_size * 1.6)
     title_size, title_lines = _fit_lines(app, chapter.title, safe.w, 2, int(42 * u),
                                          int(32 * u), True, steps, "title")
     title_h = int(title_size * 1.18)
+    # Laid down before the words: the picture behind a top header is whatever
+    # the camera framed, and since the frame fit started giving the subject
+    # the room it deserves that can be a tree line rather than empty sky.
+    ops.append(("topscrim", y + len(title_lines) * title_h + 24 * u))
+    ops.append(("text", f"THE MATH  ·  CHAPTER {chapter.number}", kicker_size, True, AMBER,
+                safe.x, safe.y))
     ops.append(("lines", title_lines, title_size, True, WHITE, safe.x, y, title_h, True))
     header_bottom = y + len(title_lines) * title_h
 
@@ -280,8 +286,26 @@ def _plan_math(app, frame: Frame) -> Plan:
 # Painting
 # ----------------------------------------------------------------------
 
+LABEL_AREA_SHARE = 0.34
+"""How much of the picture's area world labels may cover before the frame is
+declared full.
+
+A wide frame has room beside the subject for a dozen tags. A phone frame does
+not, and the old behaviour was to hand every one of them to the resolver and
+draw whatever came back -- which, once the resolver ran out of room, was a pile
+of overlapping panels with the subject somewhere underneath. Six labels you can
+read beat eleven you cannot."""
+
+
 def _labels(app, surface, plan: Plan, width: int, height: int) -> None:
-    """World labels, set for a phone and resolved inside the picture's space."""
+    """World labels, set for a phone and resolved inside the picture's space.
+
+    Labels arrive in the order the painter added them, and that order is the
+    priority: the first one a chapter asks for is the one it most wants seen.
+    Anything that will not fit clear of its neighbours is *dropped*, not
+    stacked. The resolver runs twice -- once to find out what does not fit,
+    once more with those removed so the survivors can spread into the space
+    they freed."""
     pg = app.pygame
     u = plan.frame.unit
     size = max(18, int(27 * u))
@@ -305,8 +329,57 @@ def _labels(app, surface, plan: Plan, width: int, height: int) -> None:
         return
     bounds = Rect(plan.free.x - 8 * u, plan.free.y - 8 * u, plan.free.w + 16 * u,
                   plan.free.h + 16 * u)
+
+    # Before the resolver is asked to do the impossible: if the labels want
+    # more of the picture than they may have, take the lowest-priority ones
+    # off the list. Priority is the order the painter added them.
+    budget = bounds.w * bounds.h * LABEL_AREA_SHARE
+    keep: list = []
+    kept_looks: list = []
+    used = 0.0
+    for box, look in zip(boxes, looks):
+        area = box.w * box.h
+        if keep and used + area > budget:
+            plan.steps.append(f"drop {box.key}: the frame is full")
+            continue
+        keep.append(box)
+        kept_looks.append(look)
+        used += area
+    boxes, looks = keep, kept_looks
+
+    # The resolver moves and shrinks boxes in place, so keep where each one
+    # wanted to be: the second pass has to start from the same wishes.
+    origin = {box.key: (box.x, box.y, box.w, box.h) for box in boxes}
+    priority = {box.key: box.priority for box in boxes}
+
     result = resolve(boxes, bounds, gap=6.0 * u)
     plan.steps += result.steps
+    if result.unresolved:
+        # Whatever the resolver could not place clear is dropped, and the rest
+        # are resolved again so they can use the room that just opened up.
+        beaten = {key for key, _blocker in result.unresolved}
+        survivors = [(box, look) for box, look in zip(boxes, looks)
+                     if box.key not in beaten]
+        for key in sorted(beaten):
+            plan.steps.append(f"drop {key}: nowhere to put it")
+        if survivors:
+            boxes = [Box(key, *origin[key], priority=priority[key],
+                         min_scale=0.75)
+                     for key in [box.key for box, _look in survivors]]
+            looks = [look for _box, look in survivors]
+            result = resolve(boxes, bounds, gap=6.0 * u)
+            plan.steps += result.steps
+            # Filter the pair together. Filtering the boxes first and then
+            # zipping the survivors against the untouched looks hands every
+            # remaining label somebody else's text.
+            still = {key for key, _blocker in result.unresolved}
+            kept = [(box, look) for box, look in zip(boxes, looks)
+                    if box.key not in still]
+            boxes = [box for box, _look in kept]
+            looks = [look for _box, look in kept]
+        else:
+            boxes, looks = [], []
+
     for box, (lines, colour) in zip(boxes, looks):
         scale = box.scale
         label_font = app.font(max(14, int(size * scale)), True) if scale < 0.999 else font
@@ -327,7 +400,19 @@ def draw(app, plan: Plan, width: int, height: int):
     u = plan.frame.unit
     for op in plan.ops:
         kind = op[0]
-        if kind == "scrim":
+        if kind == "topscrim":
+            # The mirror of "scrim": solid at the very top of the screen,
+            # gone by the time the picture starts.
+            bottom = int(op[1])
+            band = pg.Surface((width, max(1, bottom)), pg.SRCALPHA)
+            rows = band.get_height()
+            for row in range(rows):
+                fade = 1.0 - min(1.0, max(0.0, (row - rows * 0.55))
+                                 / max(1.0, rows * 0.45))
+                pg.draw.line(band, (3, 8, 16, int(212 * fade)),
+                             (0, row), (width, row))
+            surface.blit(band, (0, 0))
+        elif kind == "scrim":
             top = int(op[1])
             scrim = pg.Surface((width, height - top), pg.SRCALPHA)
             rows = scrim.get_height()
@@ -355,3 +440,45 @@ def draw(app, plan: Plan, width: int, height: int):
     pg.draw.rect(surface, (255, 177, 62, 255),
                  pg.Rect(0, height - bar, int(width * _progress(app)), bar))
     return surface
+
+
+# ----------------------------------------------------------------------
+# Proof
+# ----------------------------------------------------------------------
+
+def validate_portrait_ui() -> None:
+    """A crowded phone frame must come back legible, not stacked.
+
+    The defect this guards against shipped in a vertical cut: eleven world
+    labels handed to the resolver in a 9:16 frame came back as a pile of
+    overlapping panels with the subject somewhere underneath. The resolver was
+    doing its job -- it reported two of them unresolved -- and the drawing code
+    was ignoring the report and drawing them anyway.
+    """
+    bounds = Rect(40, 60, 1000, 1000)
+    boxes = [Box(f"l{index}", 300 + (index % 3) * 40, 200 + index * 18,
+                 360, 52, priority=-index, min_scale=0.75)
+             for index in range(11)]
+    result = resolve(boxes, bounds, gap=6.0)
+
+    # More labels than the frame can hold: the resolver has to say so rather
+    # than quietly returning a pile.
+    assert result.unresolved, "the resolver placed eleven labels in a phone frame"
+
+    beaten = {key for key, _blocker in result.unresolved}
+    survivors = [box for box in boxes if box.key not in beaten]
+    assert survivors, "everything was dropped"
+
+    # And what survives must not overlap at all.
+    for index, first in enumerate(survivors):
+        for second in survivors[index + 1:]:
+            across, down = first.overlap(second)
+            assert across <= 0.0 or down <= 0.0, (first.key, second.key)
+
+    # The area budget has to bite before the resolver is asked the impossible.
+    assert 0.0 < LABEL_AREA_SHARE < 1.0
+
+
+if __name__ == "__main__":
+    validate_portrait_ui()
+    print("portrait ui ok")
