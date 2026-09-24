@@ -66,7 +66,11 @@ MIN_BEAT = 7.0
 WINDOWS: dict[str, tuple[float, float]] = {
     "open": (0.45, 1.00),
     "frame": (0.40, 0.95),
-    "head": (0.52, 1.00),
+    # Stops at 0.82 rather than 1.00: scene_head hangs its own summary
+    # label -- "ONE WATERTIGHT LAYER, AND IT IS THE OUTSIDE ONE" -- from
+    # p > 0.84, and this beat's headline is that same sentence. Running to
+    # the end put it on screen twice.
+    "head": (0.50, 0.82),
     "grow": (0.60, 1.00),
     "quilt": (0.40, 0.95),
     "price": (0.68, 1.00),
@@ -110,8 +114,14 @@ def _beat(slug: str, title: str, promise: str, narration: tuple[str, ...],
     itself points at the beat's own windowed copy of it.
     """
     assert SCENES.get(slug) is not None, slug
+    # "hype", not "title". The title overlay centres its headline, and the
+    # subject is centred too, so the two land on each other -- the layer
+    # stack, which is the best explanatory image in the project, rendered
+    # behind the words describing it. The hype overlay is the teaser's:
+    # kicker and headline in the lower third, subject above them, nothing
+    # obscured.
     return Chapter(slug, "00", title, promise, narration, (), duration,
-                   camera, slug, overlay="title")
+                   camera, slug, overlay="hype")
 
 
 def _chapters() -> tuple[Chapter, ...]:
@@ -240,6 +250,9 @@ def validate_pitch_hero() -> None:
         assert MIN_BEAT <= chapter.duration <= MAX_BEAT, (
             f"{chapter.slug} runs {chapter.duration}s")
         assert chapter.narration, chapter.slug
+        assert chapter.overlay == "hype", (
+            f"{chapter.slug} uses the {chapter.overlay!r} overlay; the "
+            f"title overlay centres its headline onto a centred subject")
         # No worksheets. There is no time to read one.
         assert not chapter.equations, (
             f"{chapter.slug} carries a worksheet; nobody can read a table "
