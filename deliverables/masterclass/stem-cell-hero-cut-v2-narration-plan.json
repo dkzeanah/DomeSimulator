@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_07.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_08.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\stem-cell-hero-cut-v2-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-f73ff681a4\\chapter_09.mp3"
+  ],
+  "chapter_durations": [
+    11.0,
+    11.192,
+    17.912000000000003,
+    10.4,
+    12.896,
+    14.384,
+    12.200000000000001,
+    13.112,
+    10.472
+  ],
+  "speech_durations": [
+    8.136,
+    9.792,
+    16.512,
+    9.0,
+    11.496,
+    12.984,
+    10.8,
+    11.712,
+    9.072
+  ],
+  "chapter_starts": [
+    0.0,
+    11.0,
+    22.192,
+    40.104,
+    50.504,
+    63.4,
+    77.78399999999999,
+    89.984,
+    103.09599999999999
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "5c1afe8b0ec3b3964543b97cd3a4b7575f0fc206b8cb8a1e175142cc86c651be"
+}

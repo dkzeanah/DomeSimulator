@@ -34,6 +34,7 @@ from __future__ import annotations
 import json
 import subprocess
 from dataclasses import dataclass
+import re
 from pathlib import Path
 
 from .audio import resolve_executable
@@ -409,6 +410,29 @@ def newest_version(path: Path) -> Path:
     return max(found, key=lambda item: item.stat().st_mtime)
 
 
+
+_VERSION = re.compile(r"-v(\d+)$")
+
+
+def portrait_candidates(cut: Path) -> tuple[Path, ...]:
+    """Every name the phone cut beside ``cut`` could reasonably have.
+
+    The version suffix lands on the END of a name, so re-rendering a film
+    gives ``film-v2.mp4`` and ``film-vertical-v2.mp4`` -- and looking for
+    ``{stem}-vertical`` against a stem of ``film-v2`` asks for
+    ``film-v2-vertical``, which nothing is ever called. Every re-rendered
+    film silently lost its phone cut out of its release folder.
+    """
+    names = [f"{cut.stem}-portrait", f"{cut.stem}-vertical"]
+    match = _VERSION.search(cut.stem)
+    if match:
+        base = cut.stem[:match.start()]
+        version = match.group(0)
+        names += [f"{base}-portrait{version}", f"{base}-vertical{version}",
+                  f"{base}-portrait", f"{base}-vertical"]
+    return tuple(cut.with_name(name + cut.suffix) for name in names)
+
+
 def build_release(lesson_key: str, video: Path | None = None,
                   root: Path = RELEASE_DIR, ffmpeg: str = "",
                   portrait: Path | None = None) -> Release:
@@ -437,8 +461,7 @@ def build_release(lesson_key: str, video: Path | None = None,
     # The phone cut: named by the caller, or found beside the landscape one.
     if portrait is not None and not Path(portrait).is_file():
         portrait = None
-    for candidate in (cut.with_name(f"{cut.stem}-portrait{cut.suffix}"),
-                      cut.with_name(f"{cut.stem}-vertical{cut.suffix}")):
+    for candidate in portrait_candidates(cut):
         if portrait is None and candidate.is_file():
             portrait = candidate
 

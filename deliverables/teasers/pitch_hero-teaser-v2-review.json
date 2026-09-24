@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-23T22:11:10.218617+00:00",
+  "lesson": "teaser_pitch_hero",
+  "title": "A house you can take apart: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "THE STEM CELL DOME",
+      "narration": [
+        "19.4 feet across. 277 square feet."
+      ],
+      "start": 0.0,
+      "end": 6.199999999999999
+    },
+    {
+      "slug": "head",
+      "title": "A dome is a head, and it wears hats",
+      "narration": [
+        "One waterproof layer, and it is the outside one."
+      ],
+      "start": 6.199999999999999,
+      "end": 10.623999999999999
+    },
+    {
+      "slug": "quilt",
+      "title": "The insulation is a thousand t-shirts",
+      "narration": [
+        "Sewn by somebody, tagged with their name."
+      ],
+      "start": 10.623999999999999,
+      "end": 14.28
+    },
+    {
+      "slug": "hull",
+      "title": "And it can be better later",
+      "narration": [
+        "The hull, the mast, the floor, the rig."
+      ],
+      "start": 14.28,
+      "end": 18.08
+    },
+    {
+      "slug": "close",
+      "title": "Every number is a model you can run",
+      "narration": [
+        "Including the ones that argue against us."
+      ],
+      "start": 18.08,
+      "end": 21.784
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 21.784,
+      "end": 26.784
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 26.784,
+      "end": 32.815999999999995
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

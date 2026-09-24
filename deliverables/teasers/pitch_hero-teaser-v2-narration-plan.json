@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-19f73ef59d\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-19f73ef59d\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-19f73ef59d\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-19f73ef59d\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-19f73ef59d\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-19f73ef59d\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\pitch_hero-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-19f73ef59d\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    6.199999999999999,
+    4.4239999999999995,
+    3.656,
+    3.8000000000000003,
+    3.704,
+    5.0,
+    6.031999999999999
+  ],
+  "speech_durations": [
+    4.8,
+    3.024,
+    2.256,
+    2.4,
+    2.304,
+    3.6,
+    4.632
+  ],
+  "chapter_starts": [
+    0.0,
+    6.199999999999999,
+    10.623999999999999,
+    14.28,
+    18.08,
+    21.784,
+    26.784
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "22b823df7e1d907e24f22edc51eebad600a458604eeee80a4d917e2050862cf2"
+}

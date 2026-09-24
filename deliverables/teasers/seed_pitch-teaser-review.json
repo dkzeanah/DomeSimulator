@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-23T22:16:19.795583+00:00",
+  "lesson": "teaser_seed_pitch",
+  "title": "A house you can take apart: the teaser",
+  "chapters": [
+    {
+      "slug": "head",
+      "title": "A HOUSE YOU CAN TAKE APART",
+      "narration": [
+        "A dome is a head. It wears hats -- and only the outside one is waterproof."
+      ],
+      "start": 0.0,
+      "end": 6.103999999999999
+    },
+    {
+      "slug": "frame",
+      "title": "The frame is already on your land",
+      "narration": [
+        "2 trees, split into 120 wedges. No hubs, no jig."
+      ],
+      "start": 6.103999999999999,
+      "end": 12.591999999999999
+    },
+    {
+      "slug": "cap",
+      "title": "The standard article wears a shower cap",
+      "narration": [
+        "Every quilted layer buys the next cap a size up. A rigid shell fills at 4 and stops."
+      ],
+      "start": 12.591999999999999,
+      "end": 19.775999999999996
+    },
+    {
+      "slug": "quilt",
+      "title": "A $50 quilt, and a bigger cap for each",
+      "narration": [
+        "The insulation is recycled clothing at $50 a layer, quilted at a kitchen table."
+      ],
+      "start": 19.775999999999996,
+      "end": 26.623999999999995
+    },
+    {
+      "slug": "invoice",
+      "title": "What it costs, all of it",
+      "narration": [
+        "$12,036, and the whole invoice is on the page. $43 a square foot."
+      ],
+      "start": 26.623999999999995,
+      "end": 34.623999999999995
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The whole film works every number on screen, and it is linked below."
+      ],
+      "start": 34.623999999999995,
+      "end": 39.91199999999999
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Back it, and tell us which price is wrong."
+      ],
+      "start": 39.91199999999999,
+      "end": 44.91199999999999
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}
