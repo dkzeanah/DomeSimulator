@@ -423,13 +423,19 @@ def portrait_candidates(cut: Path) -> tuple[Path, ...]:
     ``film-v2-vertical``, which nothing is ever called. Every re-rendered
     film silently lost its phone cut out of its release folder.
     """
-    names = [f"{cut.stem}-portrait", f"{cut.stem}-vertical"]
+    suffixes = ("-portrait", "-vertical", "-phone")
+    names = [f"{cut.stem}{suffix}" for suffix in suffixes]
     match = _VERSION.search(cut.stem)
     if match:
-        base = cut.stem[:match.start()]
-        version = match.group(0)
-        names += [f"{base}-portrait{version}", f"{base}-vertical{version}",
-                  f"{base}-portrait", f"{base}-vertical"]
+        # film-v7.mp4 pairs with film-vertical-v7.mp4, because the version
+        # goes on the end of whatever the name already was.
+        base, version = cut.stem[:match.start()], match.group(0)
+        names += [f"{base}{suffix}{version}" for suffix in suffixes]
+    # Deliberately NOT falling back to an unversioned "{base}-vertical".
+    # That only ever matches a phone cut from a DIFFERENT, earlier render,
+    # and it did: the v7 release paired itself with a portrait cut of the
+    # film before it and said nothing. A release with no phone cut is a
+    # thing somebody notices; a release with the wrong one is not.
     return tuple(cut.with_name(name + cut.suffix) for name in names)
 
 
@@ -492,3 +498,48 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+def validate_release() -> None:
+    """The phone cut a release pairs itself with has to be this film's.
+
+    Both halves of this were live at once. The version suffix goes on the
+    end of a name, so a re-rendered film's portrait is ``film-vertical-v2``
+    and the lookup asked for ``film-v2-vertical`` -- which nothing is ever
+    called, so every re-render shipped a release with no phone cut in it.
+    And the fallback that was meant to help matched an UNVERSIONED cut from
+    an earlier render, so the v7 release quietly paired itself with the
+    portrait of the film before it.
+
+    A release with no phone cut is a thing somebody notices. A release with
+    the wrong one is not.
+    """
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as folder:
+        base = Path(folder)
+        cut = base / "film-v7.mp4"
+
+        # A phone cut from an earlier render must not be picked up.
+        stale = base / "film-vertical.mp4"
+        stale.write_bytes(b"")
+        names = [item.name for item in portrait_candidates(cut)]
+        assert stale.name not in names, (
+            f"{stale.name} is a phone cut of a different render and "
+            f"{cut.name} must not pair with it")
+
+        # The three names this project's own tools actually produce.
+        for name in ("film-v7-phone.mp4", "film-vertical-v7.mp4",
+                     "film-v7-vertical.mp4"):
+            assert name in names, f"{name} is not looked for"
+
+        # An unversioned film still finds its own.
+        plain = [item.name for item in portrait_candidates(base / "film.mp4")]
+        assert "film-vertical.mp4" in plain, plain
+        assert "film-phone.mp4" in plain, plain
+
+    # And every deliverable's hashtags exist, since a release writes them.
+    from .deliverables import DELIVERABLES
+
+    for item in DELIVERABLES:
+        assert hashtags(item.lesson), item.lesson

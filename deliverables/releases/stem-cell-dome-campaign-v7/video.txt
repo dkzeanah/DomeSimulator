@@ -1,2 +1,2 @@
 landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\stem-cell-dome-campaign-v7.mp4
-portrait:  not exported -- re-run with orientation=both
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\stem-cell-dome-campaign-v7-phone.mp4
