@@ -19,7 +19,7 @@ On the reference build:
 * an AAA triangle is 72.000 inches on every side, and its height is 62.354
   inches
 * a BAB triangle has a 72.000 inch long edge and two 63.670 inch sides, and
-  its height above the long edge is 52.520 inches
+  its height above the long edge is 52.516 inches
 
 Both of those are the *minimum* width the triangle can be squeezed into. You
 cannot rotate a triangle to make it narrower than its shortest altitude.
@@ -28,7 +28,7 @@ WHY THAT NUMBER RUINED A PLAN
 
 A sheet of plywood is 48 inches wide.
 
-62.354 is not 48. 52.520 is not 48 either.
+62.354 is not 48. 52.516 is not 48 either.
 
 No panel of this dome fits on a four-foot sheet. Not in any rotation, not with
 any clever nesting, not if you turn it diagonally. The narrowest panel in the

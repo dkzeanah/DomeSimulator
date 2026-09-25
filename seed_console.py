@@ -460,8 +460,13 @@ class ConsoleRenderer:
              DIM),
             ("overhead and warranty", result.overhead + result.warranty, DIM),
             ("COST TO BUILD", result.cost_to_build, INK),
+            # Markup on cost, not margin on price. The two conventions give
+            # different numbers and this line read "35% margin" beside a
+            # price that was cost x 1.20 for as long as it took somebody to
+            # photograph it for the book.
             (f"LIST PRICE at "
-             f"{seed_model.declared('gross_margin_fraction') * 100:.0f}% margin",
+             f"{seed_model.declared('maker_markup_fraction') * 100:.0f}% "
+             f"markup on cost",
              result.price, MONEY),
             (f"delivered, and ${result.price_per_sqft:,.0f} a square foot",
              result.delivered_price, MONEY),

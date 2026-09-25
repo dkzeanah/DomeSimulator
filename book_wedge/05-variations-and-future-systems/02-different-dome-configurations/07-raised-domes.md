@@ -37,8 +37,9 @@ Hung, not stood.
 
 The reference build prices a mast through the utility column, a floor that
 clamps to that mast, an apex lifting ring and three cables to saddles on two
-trees. The rig is $1,490, the mast and floor are $4,011 together, against a
-frame weighing 2,478 pounds.
+trees. The rig is $1,490, the mast and the dome's own floor are
+$622 and $1,899, and the whole floating upgrade is
+$4,011 -- against a frame weighing 2,478 pounds.
 
 Saddles, not holes: nothing is drilled into the trees.
 

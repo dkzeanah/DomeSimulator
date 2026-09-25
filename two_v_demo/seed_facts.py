@@ -525,7 +525,8 @@ def steps_price() -> tuple[str, ...]:
         if group.key == "labour":
             continue
         steps.append("   " + _row(group.label[:34], usd(group.cost)))
-    margin = seed_model.declared("gross_margin_fraction") * 100.0
+    # The price is a markup on cost, so the label has to say markup.
+    markup = seed_model.declared("maker_markup_fraction") * 100.0
     steps.extend([
         "   " + _row("materials", usd(priced.material_cost)),
         "   " + _row(f"labour, {priced.labour_hours:,.0f} hours",
@@ -534,7 +535,8 @@ def steps_price() -> tuple[str, ...]:
                      usd(priced.overhead + priced.warranty)),
         "   " + _row("COST TO BUILD", usd(priced.cost_to_build)),
         "",
-        "   " + _row(f"LIST PRICE at {margin:.0f}% margin", usd(priced.price)),
+        "   " + _row(f"LIST PRICE at {markup:.0f}% markup on cost",
+                     usd(priced.price)),
         "   " + _row("per square foot of floor",
                      f"${priced.price_per_sqft:,.2f}"),
         "   " + _row("delivered", usd(priced.delivered_price)),

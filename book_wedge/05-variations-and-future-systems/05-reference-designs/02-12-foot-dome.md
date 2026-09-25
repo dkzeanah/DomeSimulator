@@ -10,13 +10,13 @@ one person can build alone without much trouble.
 
 THE NUMBERS
 
-    diameter                     12.00 ft
-    apex height                   6.00 ft
-    A strut, cut length         43.375 in
-    B strut, cut length         38.739 in
-    floor, inside the ring       105.8 sq ft
-    shell surface                210.0 sq ft
-    timber in the frame            411 ft
+    diameter                   12.00 ft
+    apex height                 6.00 ft
+    A strut, cut length       42.681 in
+    B strut, cut length       38.361 in
+    floor, inside the ring     105.8 sq ft
+    shell surface              210.0 sq ft
+    timber in the frame          405 ft
 
 WHAT IT IS FOR
 

@@ -41,7 +41,9 @@ That difference is what creates the taper.
 
 If the wedge is symmetrical, half of that change appears on each side:
 
-$$ x=\frac{w_o-w_i}{2} $$ The wider face therefore spreads the neighboring surfaces farther apart toward the exterior. The narrow face allows them to remain closer together toward the interior.
+$$ x=\frac{w_o-w_i}{2} $$
+
+The wider face therefore spreads the neighboring surfaces farther apart toward the exterior. The narrow face allows them to remain closer together toward the interior.
 
 That is the part that matters physically. The wedge is not being installed wide-side outward because it looks right. It is installed that way because its widening cross-section is intended to follow the direction in which the dome faces diverge.
 

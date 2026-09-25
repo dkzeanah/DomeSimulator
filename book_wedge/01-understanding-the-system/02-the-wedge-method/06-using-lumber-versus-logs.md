@@ -19,13 +19,17 @@ A square edge can sit against a stop. A jig can locate the same board repeatedly
 
 The basic process is:
 
-$$ \text{rectangular stock} \rightarrow \text{wedge profile} \rightarrow \text{finished strut} $$ That looks simple, but the layout matters. Suppose a rectangular timber has a starting width \(W\) and thickness \(T\).
+$$ \text{rectangular stock} \rightarrow \text{wedge profile} \rightarrow \text{finished strut} $$
+
+That looks simple, but the layout matters. Suppose a rectangular timber has a starting width \(W\) and thickness \(T\).
 
 The final wedge requires an inside width \(w_i\) and an outside width \(w_o\).
 
 The starting stock has to contain the complete finished profile:
 
-$$ W \geq w_o $$ before allowing for saw kerf, cleanup, irregular stock, or another machining allowance. The actual board should be measured.
+$$ W \geq w_o $$
+
+before allowing for saw kerf, cleanup, irregular stock, or another machining allowance. The actual board should be measured.
 
 A nominal lumber designation is not enough to develop the final wedge dimensions. If a board is sold under a nominal size, the finished dressed dimensions may be smaller.
 
@@ -43,7 +47,9 @@ Material is removed from both sides.
 
 The amount removed on each side at the narrow face is:
 
-$$ x=\frac{w_o-w_i}{2} $$ The actual saw setup depends on how the blank is oriented during the cut. One process might tilt the workpiece.
+$$ x=\frac{w_o-w_i}{2} $$
+
+The actual saw setup depends on how the blank is oriented during the cut. One process might tilt the workpiece.
 
 Another might use a taper sled. Another may guide the stock along an angled fence while keeping the blade vertical. The geometry of the finished piece matters more than which specific machine configuration is used.
 
@@ -111,7 +117,9 @@ Instead of first producing rectangular boards, we can potentially divide the log
 
 The process becomes:
 
-$$ \text{log} \rightarrow \text{radial sectors} \rightarrow \text{controlled wedge blanks} \rightarrow \text{finished struts} $$ This can remove one intermediate manufacturing step. It also creates several new ones.
+$$ \text{log} \rightarrow \text{radial sectors} \rightarrow \text{controlled wedge blanks} \rightarrow \text{finished struts} $$
+
+This can remove one intermediate manufacturing step. It also creates several new ones.
 
 A log is not a manufactured blank.
 
@@ -148,7 +156,9 @@ $$ \theta_s=\frac{360^\circ}{n} $$
 
 For example, dividing the cross-section into eight equal sectors gives:
 
-$$ \theta_s=\frac{360^\circ}{8}=45^\circ $$ That does not mean an eight-sector log automatically produces the correct wedge profile for a dome. It only describes the rough radial breakdown.
+$$ \theta_s=\frac{360^\circ}{8}=45^\circ $$
+
+That does not mean an eight-sector log automatically produces the correct wedge profile for a dome. It only describes the rough radial breakdown.
 
 The structural wedge may require a different included angle, different truncation, different width, or further resawing. The radial sector is raw material. The finished wedge is the controlled part.
 
@@ -164,7 +174,9 @@ The rough wedge can instead be truncated. Material near the center can be remove
 
 Conceptually:
 
-$$ \text{sharp radial sector} \rightarrow \text{remove inner tip} \rightarrow \text{flat narrow face} $$ The amount removed should come from the final wedge dimensions and material condition rather than from an arbitrary distance from the log center. The result gives us a surface that can be measured, jigged, drilled, and connected more easily than a sharp point.
+$$ \text{sharp radial sector} \rightarrow \text{remove inner tip} \rightarrow \text{flat narrow face} $$
+
+The amount removed should come from the final wedge dimensions and material condition rather than from an arbitrary distance from the log center. The result gives us a surface that can be measured, jigged, drilled, and connected more easily than a sharp point.
 
 ESTABLISHING REFERENCES ON A ROUGH WEDGE
 
@@ -320,7 +332,9 @@ $$ \text{number of radial sectors} = \text{number of finished struts} $$
 
 Instead:
 
-$$ \text{finished yield} = \frac{\text{usable finished members}} {\text{starting material}} $$ The starting material can be measured by board feet, cubic volume, log count, or another consistent quantity depending on what we are comparing. That gives us a way to compare lumber and logs with actual production data later.
+$$ \text{finished yield} = \frac{\text{usable finished members}} {\text{starting material}} $$
+
+The starting material can be measured by board feet, cubic volume, log count, or another consistent quantity depending on what we are comparing. That gives us a way to compare lumber and logs with actual production data later.
 
 LABOR IS PART OF YIELD
 
@@ -353,7 +367,9 @@ It simply requires more processing before the member reaches that state.
 
 A good way to think about the transition is:
 
-$$ \text{irregular natural material} \rightarrow \text{controlled blank} \rightarrow \text{controlled part} $$ Once a log sector has been converted into a controlled blank, the later operations should look much more like the lumber process. At that stage we should no longer be compensating individually for the shape of the tree.
+$$ \text{irregular natural material} \rightarrow \text{controlled blank} \rightarrow \text{controlled part} $$
+
+Once a log sector has been converted into a controlled blank, the later operations should look much more like the lumber process. At that stage we should no longer be compensating individually for the shape of the tree.
 
 The jig should be manufacturing the defined wedge.
 
@@ -439,9 +455,15 @@ REFERENCE BUILD
 
 For the 20-foot 2V reference dome, the cleanest development path is to define the wedge member independently from the raw stock. The finished-part drawing should specify what the dome needs. Then we can develop at least two manufacturing routes.
 
-**Route A — Dimensional lumber** $$ \text{commercial blank} \rightarrow \text{wedge rip} \rightarrow \text{family length} \rightarrow \text{connection machining} \rightarrow \text{finished member} $$ **Route B — Log-derived timber**
+**Route A — Dimensional lumber**
 
-$$ \text{log} \rightarrow \text{rough radial sector} \rightarrow \text{controlled blank} \rightarrow \text{finished wedge profile} \rightarrow \text{family length} \rightarrow \text{connection machining} \rightarrow \text{finished member} $$ Both routes should end at the same inspection drawing if they are producing the same member family. That is the important part.
+$$ \text{commercial blank} \rightarrow \text{wedge rip} \rightarrow \text{family length} \rightarrow \text{connection machining} \rightarrow \text{finished member} $$
+
+**Route B — Log-derived timber**
+
+$$ \text{log} \rightarrow \text{rough radial sector} \rightarrow \text{controlled blank} \rightarrow \text{finished wedge profile} \rightarrow \text{family length} \rightarrow \text{connection machining} \rightarrow \text{finished member} $$
+
+Both routes should end at the same inspection drawing if they are producing the same member family. That is the important part.
 
 The tree and the board are starting materials.
 

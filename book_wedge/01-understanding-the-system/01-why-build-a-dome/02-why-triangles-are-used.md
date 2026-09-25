@@ -80,7 +80,9 @@ The 20-foot-diameter 2V reference dome will contain repeating triangular faces m
 
 For a triangular face with verified side lengths \(a\), \(b\), and \(c\), the calculation will be:
 
-$$ C = \cos^{-1}\left(\frac{a^2+b^2-c^2}{2ab}\right) $$ That gives the flat internal angle of the triangle. It does not yet give us the angle between that triangle and the neighboring face.
+$$ C = \cos^{-1}\left(\frac{a^2+b^2-c^2}{2ab}\right) $$
+
+That gives the flat internal angle of the triangle. It does not yet give us the angle between that triangle and the neighboring face.
 
 That relationship is handled separately when we get into the three-dimensional dome geometry and the wedge itself. This separation is important because it keeps the fabrication logic clean. First determine the correct strut lengths.
 

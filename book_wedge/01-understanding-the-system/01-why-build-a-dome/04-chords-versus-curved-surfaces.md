@@ -27,7 +27,9 @@ where:
 
 The curved distance along the circle between the same two points is the arc length:
 
-$$ s = R\theta $$ when \(\theta\) is measured in radians. Those two distances are not the same.
+$$ s = R\theta $$
+
+when \(\theta\) is measured in radians. Those two distances are not the same.
 
 The arc follows the curve. The chord cuts straight across between the endpoints. For any normal dome segment, the chord is shorter than the arc connecting the same two points.
 
@@ -138,11 +140,15 @@ $$ R=10\text{ ft} $$
 
 or:
 
-$$ R=120\text{ in} $$ That radius alone is not enough to calculate every member. We still need the verified angular relationship between each pair of neighboring vertices in the selected 2V geometry.
+$$ R=120\text{ in} $$
+
+That radius alone is not enough to calculate every member. We still need the verified angular relationship between each pair of neighboring vertices in the selected 2V geometry.
 
 Once a central angle \(\theta\) for a particular strut family is known, its theoretical chord can be calculated from:
 
-$$ c = 2R\sin\left(\frac{\theta}{2}\right) $$ That gives us the straight geometric distance between those vertices. The physical wedge member can then be developed from that chord according to the connection method and whichever construction reference line we decide to use.
+$$ c = 2R\sin\left(\frac{\theta}{2}\right) $$
+
+That gives us the straight geometric distance between those vertices. The physical wedge member can then be developed from that chord according to the connection method and whichever construction reference line we decide to use.
 
 This order matters. We should not begin with the outside surface of a piece of lumber and try to make the spherical geometry conform to it afterward. We establish the geometry first.
 

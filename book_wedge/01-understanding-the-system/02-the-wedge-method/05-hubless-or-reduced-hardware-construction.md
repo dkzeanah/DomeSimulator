@@ -37,7 +37,9 @@ $$ \text{rectangular strut}+\text{geometry-heavy hub} $$
 
 to:
 
-$$ \text{geometry-shaped strut}+\text{simpler connection} $$ The exact amount of simplification depends on the final joint. It may be substantial.
+$$ \text{geometry-shaped strut}+\text{simpler connection} $$
+
+The exact amount of simplification depends on the final joint. It may be substantial.
 
 It may be modest. The important point is that the geometry can be distributed between the timber and the connection instead of concentrated almost entirely in the hub.
 

@@ -10,13 +10,13 @@ twenty sounds better.
 
 THE NUMBERS
 
-    diameter                     16.00 ft
-    apex height                   8.00 ft
-    A strut, cut length         57.833 in
-    B strut, cut length         51.652 in
-    floor, inside the ring       188.1 sq ft
-    shell surface                373.3 sq ft
-    timber in the frame            547 ft
+    diameter                   16.00 ft
+    apex height                 8.00 ft
+    A strut, cut length       57.513 in
+    B strut, cut length       51.478 in
+    floor, inside the ring     188.1 sq ft
+    shell surface              373.3 sq ft
+    timber in the frame          545 ft
 
 WHAT IT IS FOR
 

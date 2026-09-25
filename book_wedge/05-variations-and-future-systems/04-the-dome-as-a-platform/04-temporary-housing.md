@@ -13,7 +13,7 @@ WHAT MAKES IT SUIT
 Speed. A frame goes up in a day with help. The whole building is a few
 weekends.
 
-Cost. $18,834 for the standard article, and a cheaper version is
+Cost. $12,036 for the standard article, and a cheaper version is
 possible by leaving out everything the deferment ladder defers.
 
 It comes apart. That is not a nice feature here, it is the requirement: the

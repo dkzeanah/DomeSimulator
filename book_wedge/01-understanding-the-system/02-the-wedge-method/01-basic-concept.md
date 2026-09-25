@@ -70,7 +70,11 @@ A wedge angle is not a substitute for the correct triangle. A correct triangle d
 
 We can treat those as three linked design problems:
 
-$$ \text{triangle geometry} $$ $$ \text{wedge geometry} $$ $$ \text{connection geometry} $$
+$$ \text{triangle geometry} $$
+
+$$ \text{wedge geometry} $$
+
+$$ \text{connection geometry} $$
 
 The complete system comes from making all three agree.
 
@@ -171,7 +175,9 @@ $$ \alpha=2\beta $$
 
 or:
 
-$$ \alpha=2\tan^{-1}\left(\frac{\Delta w}{2t}\right) $$ This gives us a way to describe a finished wedge once the required widths and thickness are known. It does not yet tell us what those dimensions should be for the reference dome.
+$$ \alpha=2\tan^{-1}\left(\frac{\Delta w}{2t}\right) $$
+
+This gives us a way to describe a finished wedge once the required widths and thickness are known. It does not yet tell us what those dimensions should be for the reference dome.
 
 That has to come from the verified dome and joint geometry.
 

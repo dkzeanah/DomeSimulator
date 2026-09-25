@@ -10,13 +10,13 @@ and the one every figure in the campaign film comes from.
 
 THE NUMBERS
 
-    diameter                     19.42 ft
-    apex height                   9.71 ft
-    A strut, cut length         70.182 in
-    B strut, cut length         62.681 in
-    floor, inside the ring       277.0 sq ft
-    shell surface                549.8 sq ft
-    timber in the frame            664 ft
+    diameter                   19.42 ft
+    apex height                 9.71 ft
+    A strut, cut length       70.182 in
+    B strut, cut length       62.681 in
+    floor, inside the ring     277.0 sq ft
+    shell surface              549.8 sq ft
+    timber in the frame          664 ft
 
 Precisely: a radius of 116.4984 inches, so
 19.416 feet across and 9.708 to the apex.
@@ -46,7 +46,7 @@ other way round.
 
 WHAT IT COSTS
 
-18,834 dollars for the standard article, shower cap and all.
+12,036 dollars for the standard article, shower cap and all.
 
 THE INCONVENIENCE
 

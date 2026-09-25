@@ -96,7 +96,9 @@ $$ w_o $$
 
 The width difference is:
 
-$$ \Delta w=w_o-w_i $$ The wedge therefore changes the shell in two directions at once. It moves the exterior surface outward.
+$$ \Delta w=w_o-w_i $$
+
+The wedge therefore changes the shell in two directions at once. It moves the exterior surface outward.
 
 It also spreads the neighboring face edges apart. That means the shell is not created by simply taking the interior triangle and moving it outward by one constant dimension. The face plane moves outward, and the edge geometry changes with it.
 
@@ -135,7 +137,9 @@ The panel itself also has thickness. A plywood skin, fiberglass panel, composite
 
 If the panel thickness is:
 
-$$ p $$ then the finished exterior surface lies farther outward than the panel-support surface. If another weather layer is added, that creates another offset.
+$$ p $$
+
+then the finished exterior surface lies farther outward than the panel-support surface. If another weather layer is added, that creates another offset.
 
 This means the finished weather radius can be larger than the structural radius used for the original geodesic calculation. That is not a problem. It simply has to be understood.
 
@@ -391,9 +395,17 @@ For the 20-foot 2V reference dome, the shell should eventually be modeled as a s
 
 At minimum:
 
-$$ S_0 = \text{theoretical geodesic/chord geometry} $$ $$ S_1 = \text{interior structural surface} $$ $$ S_2 = \text{exterior structural/panel-support surface} $$
+$$ S_0 = \text{theoretical geodesic/chord geometry} $$
 
-$$ S_3 = \text{exterior panel surface} $$ $$ S_4 = \text{finished weather surface} $$ An interior finish surface can be added separately if required.
+$$ S_1 = \text{interior structural surface} $$
+
+$$ S_2 = \text{exterior structural/panel-support surface} $$
+
+$$ S_3 = \text{exterior panel surface} $$
+
+$$ S_4 = \text{finished weather surface} $$
+
+An interior finish surface can be added separately if required.
 
 The exact offsets between those surfaces will depend on the final wedge size and enclosure design. Once those layers are defined, we can generate different dimensions for different jobs. The strut cut list comes from the structural geometry.
 

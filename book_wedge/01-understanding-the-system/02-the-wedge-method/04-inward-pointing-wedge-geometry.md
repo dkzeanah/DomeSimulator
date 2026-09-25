@@ -51,7 +51,9 @@ $$ \alpha=2\beta $$
 
 or:
 
-$$ \alpha=2\tan^{-1}\left(\frac{w_o-w_i}{2t}\right) $$ That is the same basic wedge relationship used earlier, but now we can give it a physical meaning. If we extend the tapered sides inward, they meet at the virtual point.
+$$ \alpha=2\tan^{-1}\left(\frac{w_o-w_i}{2t}\right) $$
+
+That is the same basic wedge relationship used earlier, but now we can give it a physical meaning. If we extend the tapered sides inward, they meet at the virtual point.
 
 The narrow face of the timber is simply stopping before the wedge reaches that point.
 
@@ -85,7 +87,9 @@ $$ r_i=\frac{t\,w_i}{w_o-w_i} $$
 
 and:
 
-$$ r_o=\frac{t\,w_o}{w_o-w_i} $$ These relationships are useful because they show what "pointing inward" actually means. The wedge sides can be imagined as radiating from a common line or point located inward from the physical timber.
+$$ r_o=\frac{t\,w_o}{w_o-w_i} $$
+
+These relationships are useful because they show what "pointing inward" actually means. The wedge sides can be imagined as radiating from a common line or point located inward from the physical timber.
 
 The member gets wider as we move away from that virtual apex.
 
@@ -95,7 +99,9 @@ If the member actually continued all the way to its theoretical point, the insid
 
 That would give us:
 
-$$ w_i=0 $$ For structural timber, that is generally not the shape we are trying to produce.
+$$ w_i=0 $$
+
+For structural timber, that is generally not the shape we are trying to produce.
 
 We need real wood remaining on the interior side.
 
@@ -152,7 +158,11 @@ From the narrow face toward the wide face is the inward-to-outward direction.
 
 That gives us three useful local axes:
 
-$$ L=\text{along the strut} $$ $$ W=\text{across the strut} $$ $$ R=\text{inward/outward through the wedge} $$
+$$ L=\text{along the strut} $$
+
+$$ W=\text{across the strut} $$
+
+$$ R=\text{inward/outward through the wedge} $$
 
 The geodesic model can tell us where the strut belongs in global three-dimensional space. The local member definition tells us what the timber looks like around that line. This is similar to defining a part in CAD.
 

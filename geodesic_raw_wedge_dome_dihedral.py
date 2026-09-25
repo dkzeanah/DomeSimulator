@@ -1968,7 +1968,10 @@ WEDGE_TIP_COLOR = (1.00, 0.92, 0.10, 1.0)
 WEDGE_BACK_COLOR = (0.60, 0.38, 0.18, 1.0)
 SHAVED_FACE_COLOR = (0.88, 0.79, 0.60, 1.0)
 SPACER_COLOR = (0.85, 0.68, 0.18, 1.0)
-HOSE_COLOR = (0.10, 0.10, 0.12, 1.0)
+# A hose is black, and the world is cleared to (0.035, 0.045, 0.060), so a
+# black hose was invisible against it -- the seam-as-a-service-route figure
+# showed an empty channel. Dark charcoal reads as a hose and is visible.
+HOSE_COLOR = (0.26, 0.28, 0.32, 1.0)
 NODE_COLOR = (0.70, 0.70, 0.73, 1.0)
 SKIN_COLOR = (0.25, 0.55, 0.78, 0.18)
 IDEAL_A_COLOR = (0.20, 0.85, 1.00, 1.0)
@@ -4978,6 +4981,218 @@ def summarize_orientation(orientation: str) -> list[str]:
     ]
 
 
+FIGURE_VIEW_KEYS: dict[str, str] = {
+    "wood": "show_wood",
+    "spacer": "show_spacer",
+    "nodes": "show_nodes",
+    "ideal": "show_ideal",
+    "ground": "show_ground",
+    "skin": "show_skin",
+    "hud": "show_hud",
+    "joints": "show_pinwheel_joints",
+    "jig": "show_jig",
+    "overfit": "show_head_overfit",
+    "solo_panel": "solo_panel",
+}
+"""What a book figure may switch off, and the attribute it switches.
+
+The names on the left are the book's words for them, because a figure list is
+written by somebody laying out a chapter and not by somebody reading this
+file. ``overfit`` is the sacrificial head stock, ``joints`` the pinwheel
+debug lines, ``ideal`` the mathematical wireframe: the three things that make
+a screenshot of this tool look like a diagnostic instead of an illustration.
+"""
+
+
+def figure_anchor(model: DomePhysicalModel, spec) -> np.ndarray:
+    """A named place on the dome, as a world point a camera can look at.
+
+    Figures that show a detail have to be aimed at the detail, and a hand-tuned
+    yaw and pitch is not aiming -- it is guessing, and it stops being right the
+    moment the dome changes size. These names are solved positions:
+
+    ``apex``        the top of the dome
+    ``centre``      the sphere centre, at floor level
+    ``dome``        the middle of the building, for framing the whole of it
+    ``seam:<id>``   a seam by its own id, or ``seam:<n>`` by index
+    ``face:<n>``    a panel centre by index, or ``face:AAA`` / ``face:BAB``
+                    for the first panel of that family
+    ``vertex:<n>``  a geodesic vertex
+    ``member:<id>`` the middle of one member
+    ``base``        the middle of a base edge
+    ``[x, y, z]``   an explicit point, in inches
+    """
+    if isinstance(spec, (list, tuple)) and len(spec) == 3:
+        return np.array([float(v) for v in spec], dtype=np.float64)
+    text = str(spec or "centre").strip()
+    topology = model.topology
+    if text in ("centre", "center"):
+        return np.array([0.0, 0.0, 0.0], dtype=np.float64)
+    if text == "dome":
+        # What a camera framing the whole building should look at. The sphere
+        # centre is on the floor, and aiming there puts half the frame under
+        # the ground and crops the apex.
+        return np.array([0.0, 0.0,
+                         topology.sphere_radius_in * 0.45], dtype=np.float64)
+    if text == "apex":
+        return topology.vertices[int(np.argmax(topology.vertices[:, 2]))].copy()
+    kind, _, rest = text.partition(":")
+    kind = kind.strip().lower()
+    rest = rest.strip()
+    if kind == "seam":
+        for seam in model.seams:
+            if seam.seam_id == rest:
+                return (seam.start + seam.end) * 0.5
+        if rest.isdigit():
+            seam = model.seams[int(rest) % len(model.seams)]
+            return (seam.start + seam.end) * 0.5
+        raise ValueError(f"no seam {rest!r}; ids look like "
+                         f"{model.seams[0].seam_id!r}")
+    if kind == "face":
+        if rest.isdigit():
+            return topology.faces[int(rest) % len(topology.faces)].center.copy()
+        for face in topology.faces:
+            if face.face_type.upper() == rest.upper():
+                return face.center.copy()
+        raise ValueError(f"no face family {rest!r}")
+    if kind == "vertex":
+        return topology.vertices[int(rest) % len(topology.vertices)].copy()
+    if kind == "member":
+        for member in model.members:
+            if member.member_id == rest:
+                return (member.nominal_start + member.nominal_end) * 0.5
+        raise ValueError(f"no member {rest!r}")
+    if kind == "base" or text == "base":
+        edges = model.base_edges
+        edge = edges[int(rest) % len(edges)] if rest.isdigit() else edges[0]
+        a = topology.vertices[edge.key[0]]
+        b = topology.vertices[edge.key[1]]
+        return (a + b) * 0.5
+    raise ValueError(f"unknown anchor {text!r}")
+
+
+def aim_camera(app: "DomeWorldApp", anchor: np.ndarray, distance_in: float,
+               azimuth_deg: float = 0.0, elevation_deg: float = 12.0,
+               mode: str = "world") -> None:
+    """Stand ``distance_in`` from ``anchor`` and look straight at it.
+
+    Two ways of deciding which side to stand on, and on a dome they are not
+    the same question.
+
+    ``world``   the offset is measured in world directions: zero azimuth puts
+                the camera on the same side the tool opens on, positive swings
+                it right, and elevation lifts it. Right for framing the whole
+                building from outside.
+
+    ``radial``  the offset is measured from the sphere's own outward normal at
+                the anchor: zero azimuth and zero elevation put the camera
+                directly outside that point of the shell, looking straight in,
+                and azimuth and elevation then walk it around the surface.
+                Right for anything ON the dome -- a seam, a vertex, a panel --
+                because a world-direction offset from a point on the far side
+                of the building puts the camera inside the building.
+
+    A negative ``distance_in`` in radial mode puts the camera inside, which is
+    how the interior figures are taken.
+    """
+    azimuth = math.radians(float(azimuth_deg))
+    elevation = math.radians(float(elevation_deg))
+    horizontal = math.cos(elevation)
+    if str(mode) == "radial":
+        normal = np.asarray(anchor, dtype=np.float64)
+        length = float(np.linalg.norm(normal))
+        normal = (normal / length if length > 1.0e-6
+                  else np.array([0.0, -1.0, 0.0], dtype=np.float64))
+        up = np.array([0.0, 0.0, 1.0], dtype=np.float64)
+        across = np.cross(normal, up)
+        if float(np.linalg.norm(across)) < 1.0e-6:
+            across = np.array([1.0, 0.0, 0.0], dtype=np.float64)
+        across = normalize(across)
+        over = normalize(np.cross(across, normal))
+        offset = (horizontal * math.cos(azimuth) * normal
+                  + horizontal * math.sin(azimuth) * across
+                  + math.sin(elevation) * over)
+    else:
+        offset = np.array([
+            horizontal * math.sin(azimuth),
+            -horizontal * math.cos(azimuth),
+            math.sin(elevation),
+        ], dtype=np.float64)
+    app.camera.position = anchor + offset * float(distance_in)
+    direction = normalize(anchor - app.camera.position)
+    app.camera.yaw_deg = math.degrees(math.atan2(direction[1], direction[0]))
+    # Stop just short of vertical. A camera looking exactly along world up --
+    # which is what standing under the apex and aiming at it gives -- makes
+    # the look-at matrix degenerate and takes the whole batch down with it.
+    # Half a degree off is invisible in the figure and finite in the maths.
+    app.camera.pitch_deg = clamp(
+        math.degrees(math.asin(clamp(float(direction[2]), -1.0, 1.0))),
+        -89.5, 89.5)
+
+
+def _apply_figure_camera(app: "DomeWorldApp", shot: dict) -> None:
+    """Place the camera for one shot: a station, an aim, or raw angles."""
+    camera = dict(shot.get("camera") or {})
+    jig = dict(shot.get("jig") or {})
+    radius = app.model.topology.sphere_radius_in
+
+    app.zoom_steps = 0
+    if "fov" in camera:
+        app.config.fov_deg = float(camera["fov"])
+
+    station = jig.get("station")
+    if station is not None:
+        stations = app.jig_viewpoints()
+        if isinstance(station, int):
+            index = station % len(stations)
+        else:
+            names = [name for name, _e, _t in stations]
+            wanted = str(station).strip().upper()
+            if wanted not in names:
+                raise ValueError(f"no jig station {station!r}; have {names}")
+            index = names.index(wanted)
+        _name, eye, target = stations[index]
+        app.camera.position = np.asarray(eye, dtype=np.float64)
+        direction = normalize(np.asarray(target, dtype=np.float64)
+                              - app.camera.position)
+        app.camera.yaw_deg = math.degrees(math.atan2(direction[1],
+                                                     direction[0]))
+        app.camera.pitch_deg = math.degrees(
+            math.asin(clamp(float(direction[2]), -1.0, 1.0)))
+        app.camera.fly_mode = True
+        return
+
+    aim = camera.get("aim")
+    if aim is not None:
+        if isinstance(aim, str) or (isinstance(aim, (list, tuple))
+                                    and len(aim) == 3):
+            aim = {"at": aim}
+        at = aim.get("at", "centre")
+        anchor = figure_anchor(app.model, at)
+        if "distance_in" in aim:
+            distance = float(aim["distance_in"])
+        else:
+            distance = radius * float(aim.get("distance", 1.30))
+        # Anything on the shell is stood off radially unless the shot says
+        # otherwise; the middle of the building is framed from the world.
+        on_the_shell = isinstance(at, str) and at.split(":")[0] in (
+            "seam", "face", "vertex", "member", "base", "apex")
+        mode = str(aim.get("mode", "radial" if on_the_shell else "world"))
+        aim_camera(app, anchor, distance,
+                   float(aim.get("azimuth_deg", 0.0)),
+                   float(aim.get("elevation_deg", 12.0)), mode)
+        app.camera.fly_mode = True
+        return
+
+    app.camera.position = np.array([
+        float(camera.get("x", 0.0)),
+        float(camera.get("y", -radius * camera.get("back", 1.30))),
+        float(camera.get("z", app.config.camera_height_in)),
+    ], dtype=np.float64)
+    app.camera.yaw_deg = float(camera.get("yaw", 90.0))
+    app.camera.pitch_deg = float(camera.get("pitch", -3.0))
+
+
 def run_figure_shots(spec_path: str) -> None:
     """Render a list of book figures from one GL context and quit.
 
@@ -4986,6 +5201,23 @@ def run_figure_shots(spec_path: str) -> None:
     about orientation wants the same dome four times with the wedge turned
     each way. Each entry in the spec is a set of DomeConfig overrides, a
     camera, and where to put the PNG.
+
+    A shot also carries the things a person reaches for with the keyboard,
+    because those are half of what turns a screenshot into an illustration:
+
+    ``view``   which layers are drawn -- see :data:`FIGURE_VIEW_KEYS`. A
+               figure of the key in its seam wants the mathematical wireframe,
+               the node markers, the joint debug lines and the sacrificial
+               head stock all switched off, or the reader is looking at four
+               overlapping diagnostics instead of at a key.
+    ``jig``    ``stage`` (a :data:`JIG_STAGES` slug or index), ``panel``
+               (a face index, or a family name), and ``station`` (a named
+               camera post from :meth:`DomeWorldApp.jig_viewpoints`).
+    ``seam``   which seam is highlighted, by id or index.
+    ``camera`` ``aim`` to look at a solved place on the dome by name, with a
+               ``distance_in``, an ``azimuth_deg`` and an ``elevation_deg``
+               measured from the shell's own outward normal; or the older
+               ``back`` / ``yaw`` / ``pitch``; plus ``fov``.
 
     One context for the whole run, because building a ModernGL world costs
     more than drawing in it and a book has dozens of figures.
@@ -5010,30 +5242,77 @@ def run_figure_shots(spec_path: str) -> None:
                                        encoding="utf-8")
                 app = DomeWorldApp()
             app.config = config
-            app.model = build_physical_model(config)
-            app.rebuild_world(reset_camera=False)
 
-            camera = shot.get("camera") or {}
-            radius = app.model.topology.sphere_radius_in
-            app.camera.position = np.array([
-                float(camera.get("x", 0.0)),
-                float(camera.get("y", -radius * camera.get("back", 1.30))),
-                float(camera.get("z", config.camera_height_in)),
-            ], dtype=np.float64)
-            app.camera.yaw_deg = float(camera.get("yaw", 90.0))
-            app.camera.pitch_deg = float(camera.get("pitch", -3.0))
+            # The jig and the solo panel are built during rebuild_world, so
+            # which panel and which step have to be chosen before it runs, or
+            # the figure shows the previous shot's fixture.
+            jig = dict(shot.get("jig") or {})
+            model = build_physical_model(config)
+            if "panel" in jig:
+                panel = jig["panel"]
+                if isinstance(panel, int):
+                    app.jig_panel = panel % len(model.topology.faces)
+                else:
+                    wanted = str(panel).strip().upper()
+                    match = next(
+                        (f.index for f in model.topology.faces
+                         if f.face_type.upper() == wanted), None)
+                    if match is None:
+                        raise ValueError(f"no panel family {panel!r}")
+                    app.jig_panel = match
+            if "stage" in jig:
+                stage = jig["stage"]
+                app.jig_stage = (int(stage) if isinstance(stage, int)
+                                 else jig_stage_index(str(stage)))
+            if "seam" in shot:
+                seam = shot["seam"]
+                if isinstance(seam, int):
+                    app.selected_seam = seam % len(model.seams)
+                else:
+                    match = next(
+                        (i for i, s in enumerate(model.seams)
+                         if s.seam_id == str(seam)), None)
+                    if match is None:
+                        raise ValueError(f"no seam {seam!r}")
+                    app.selected_seam = match
+
+            app.model = model
+            app.rebuild_world(reset_camera=False)
 
             # A book figure wants the world, not the keyboard legend. The
             # HUD is the tool explaining itself to somebody driving it, and
             # in a printed figure it is four hundred words of chrome over
             # the thing the caption is pointing at. A shot can ask for it
             # back with "hud": true when the HUD *is* the subject.
+            #
+            # Every switch is reset from the config first. Without that, one
+            # figure that hides the wireframe hides it in every figure after
+            # it in the batch, because the app is reused and a toggle is
+            # state.
             app.show_hud = bool(shot.get("hud", False))
             app.show_ground = bool(shot.get("ground", True))
+            app.show_jig = bool(config.jig_enabled)
+            app.show_skin = bool(config.skin_enabled)
+            app.show_wood = True
+            app.show_spacer = True
+            app.show_nodes = True
+            app.show_ideal = True
+            app.show_pinwheel_joints = True
+            app.show_head_overfit = True
+            app.solo_panel = False
+            for name, value in (shot.get("view") or {}).items():
+                attribute = FIGURE_VIEW_KEYS.get(name)
+                if attribute is None:
+                    raise ValueError(
+                        f"unknown view switch {name!r}; have "
+                        f"{sorted(FIGURE_VIEW_KEYS)}")
+                setattr(app, attribute, bool(value))
             # The cost toolbar is chrome too. Same rule as the HUD.
             app.show_seed_console = bool(shot.get("console", False))
             app.config.cost_console_open = app.show_seed_console
             app.chrome_off = not bool(shot.get("console", False))
+
+            _apply_figure_camera(app, shot)
 
             # Draw it twice before reading. render() ends in a buffer swap,
             # so a single draw leaves the *previous* frame in the buffer that

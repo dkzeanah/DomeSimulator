@@ -9,13 +9,13 @@ Build this one first. It exists to be got wrong.
 
 THE SIZE
 
-    diameter                      8.00 ft
-    apex height                   4.00 ft
-    A strut, cut length         28.917 in
-    B strut, cut length         25.826 in
-    floor, inside the ring        47.0 sq ft
-    shell surface                 93.3 sq ft
-    timber in the frame            274 ft
+    diameter                    8.00 ft
+    apex height                 4.00 ft
+    A strut, cut length       27.848 in
+    B strut, cut length       25.244 in
+    floor, inside the ring      47.0 sq ft
+    shell surface               93.3 sq ft
+    timber in the frame          265 ft
 
 At eight feet you can reach the apex from a step. The whole frame is
 120 members under three feet each, which is one afternoon of cutting

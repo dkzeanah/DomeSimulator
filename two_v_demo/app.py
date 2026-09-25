@@ -227,6 +227,14 @@ class MasterclassApp:
         self.speech_clips: tuple[Path, ...] | None = None
         self.font_cache: dict[tuple[int, bool], object] = {}
         self.ui_buttons: dict[str, object] = {}
+        self.plate_mode = False
+        """Draw the film without its transport controls.
+
+        A frame of a film printed in a book should not carry the film's
+        scrubber, its play button or the word PAUSED. Those are for somebody
+        driving the video. The layout is unchanged -- the teaching card still
+        reserves the same room -- so a plate is the same frame with the
+        controls not drawn, and not a re-composed one."""
         self.mvp = np.eye(4, dtype=np.float32)
         self.last_frame_time = time.perf_counter()
         self.output_dir = Path("two_v_demo_output")
@@ -942,6 +950,10 @@ class MasterclassApp:
         the release folder's thumbnails and the chapter list all use, so a
         note about "beat 11" points at exactly one thing.
         """
+        # A plate is a page, not a frame of video. The beat number is a
+        # reference into the film and means nothing beside a paragraph.
+        if self.plate_mode:
+            return
         if not getattr(self.lesson, "beat_badge", self.BEAT_BADGE):
             return
         chapter = self.chapters[self.chapter_index]
@@ -1331,9 +1343,10 @@ class MasterclassApp:
             status = "PLAYING" if self.playing else "PAUSED"
             status_color = (83, 233, 152) if self.playing else (255, 179, 70)
             status_suffix = f"  {self.playback_speed:g}x"
-        self.draw_text(surface, f"{status}{status_suffix}",
-                       (width - margin - int(170 * scale), margin + int(25 * scale)),
-                       max(14, int(17 * scale)), status_color, True)
+        if not self.plate_mode:
+            self.draw_text(surface, f"{status}{status_suffix}",
+                           (width - margin - int(170 * scale), margin + int(25 * scale)),
+                           max(14, int(17 * scale)), status_color, True)
 
         # Teaching card.  A verbose chapter has far more narration than the
         # original fourteen-chapter lesson, so the card is laid out twice:
@@ -1426,7 +1439,10 @@ class MasterclassApp:
                 ))
                 line_y += int(18 * scale)
 
-        # Bottom presenter controls and chapter timeline.
+        # Bottom presenter controls and chapter timeline. Not drawn for a
+        # plate: a printed page has no play button.
+        if self.plate_mode:
+            return surface
         bar_height = int(87 * scale)
         bar_y = height - margin - bar_height
         bar_rect = pg.Rect(margin, bar_y, width - 2 * margin, bar_height)
@@ -2834,6 +2850,8 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
         hidden=action in ("shots", "export_video"),
         lesson=lesson,
     )
+    if action == "shots":
+        app.plate_mode = bool(cfg.get("plate", False))
     if action == "shots" and cfg.get("shots"):
         try:
             times = [float(v.strip()) for v in str(cfg["shots"]).split(",")

@@ -41,6 +41,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
+    Image,
+    KeepTogether,
     NextPageTemplate,
     PageBreak,
     PageTemplate,
@@ -218,7 +220,96 @@ def styles(faces: Faces) -> dict[str, ParagraphStyle]:
         "credit": ParagraphStyle(
             "credit", parent=base, fontSize=8.5, leading=12,
             alignment=TA_LEFT),
+        # A figure caption is set smaller than the body and ragged right,
+        # because it is read beside a picture rather than in a column.
+        "caption": ParagraphStyle(
+            "caption", parent=base, fontSize=8.8, leading=11.6,
+            alignment=TA_LEFT, spaceBefore=4, spaceAfter=0),
+        "figure_number": ParagraphStyle(
+            "figure_number", parent=base, fontName=faces.bold, fontSize=8.8,
+            leading=11.6, alignment=TA_LEFT, spaceBefore=0, spaceAfter=0),
     }
+
+
+# ----------------------------------------------------------------------
+# Figures
+# ----------------------------------------------------------------------
+
+#: The width of the text column, which is what a figure is set to.
+COLUMN = TRIM[0] - GUTTER - MARGIN
+
+
+def figure_index() -> dict[int, list[dict]]:
+    """Every picture the book has, by chapter, in the order it prints.
+
+    Two sources and the book says which is which. A *figure* is the
+    raw-wedge solver operated with the settings that make one idea visible.
+    A *plate* is a frame of one of this project's films, taken at a named
+    chapter of it -- which is how the book shows a doorway, a foundation or
+    a utility column, none of which the solver models.
+    """
+    from . import figures as solver_figures
+
+    index: dict[int, list[dict]] = {}
+    for figure in solver_figures.catalogue():
+        if not figure.path.is_file():
+            continue
+        index.setdefault(figure.chapter, []).append({
+            "path": figure.path,
+            "title": figure.title,
+            "caption": figure.full_caption(),
+            "kind": "figure",
+        })
+    try:
+        from . import plates as film_plates
+
+        lessons = film_plates.lessons()
+        for plate in film_plates.PLATES:
+            if not plate.path.is_file():
+                continue
+            lesson = lessons.get(plate.lesson)
+            title = plate.title
+            if not title and lesson is not None:
+                title = film_plates.find_chapter(lesson, plate.chapter).title
+            index.setdefault(plate.book_chapter, []).append({
+                "path": plate.path,
+                "title": title or plate.key,
+                "caption": plate.full_caption(lesson),
+                "kind": "plate",
+            })
+    except Exception as exc:          # a book without films still builds
+        print(f"  plates unavailable: {exc}")
+    return index
+
+
+def figure_flowables(entry: dict, number: str, faces: Faces,
+                     sheet: dict) -> list:
+    """One picture, its number and its caption, as one unbreakable block.
+
+    Unbreakable matters: a caption on the page after its picture is worse
+    than no caption, and reportlab will do that happily.
+    """
+    from PIL import Image as PILImage
+
+    with PILImage.open(entry["path"]) as opened:
+        width, height = opened.size
+    draw_width = COLUMN
+    draw_height = draw_width * height / float(width)
+    # Nothing taller than half the text block, so two figures can share a
+    # page and a figure never arrives alone on one.
+    limit = (TRIM[1] - 2 * MARGIN - 0.30 * inch) * 0.50
+    if draw_height > limit:
+        draw_height = limit
+        draw_width = draw_height * width / float(height)
+    return [KeepTogether([
+        Spacer(1, 9),
+        Image(str(entry["path"]), width=draw_width, height=draw_height),
+        Spacer(1, 3),
+        Paragraph(f"{number}  {escape(entry['title'])}",
+                  sheet["figure_number"]),
+        Paragraph(escape(entry["caption"]), sheet["caption"]),
+        Spacer(1, 11),
+    ])]
 
 
 # ----------------------------------------------------------------------
@@ -383,6 +474,47 @@ class Interior(BaseDocTemplate):
         return super().handle_pageEnd()
 
 
+def chapter_number(book: store.Book, chapter) -> int:
+    """A chapter's number through the whole book, counting across parts.
+
+    The figure catalogues key on this -- chapter 14 is Environmental
+    Control, wherever Part IV starts -- while the store numbers chapters
+    inside their own part.
+    """
+    seen = 0
+    for part in book.parts:
+        for found in part.chapters:
+            seen += 1
+            if found is chapter:
+                return seen
+    return 0
+
+
+def _spread(count: int, sections: int) -> dict[int, list[int]]:
+    """Which figure goes after which section.
+
+    Evenly, with the first under the chapter opening (key ``-1``), because a
+    chapter that opens with a picture tells the reader what it is about
+    before it starts explaining.
+    """
+    places: dict[int, list[int]] = {}
+    if count <= 0:
+        return places
+    if sections <= 0:
+        places[-1] = list(range(count))
+        return places
+    places.setdefault(-1, []).append(0)
+    remaining = list(range(1, count))
+    if not remaining:
+        return places
+    step = max(1, sections // max(1, len(remaining)))
+    slot = 0
+    for figure in remaining:
+        places.setdefault(min(slot, sections - 1), []).append(figure)
+        slot += step
+    return places
+
+
 def build(path: Path | None = None, book: store.Book | None = None) -> Path:
     """Lay the whole book out and write the PDF."""
     book = book or store.load_json()
@@ -425,7 +557,36 @@ def build(path: Path | None = None, book: store.Book | None = None) -> Path:
     story.append(NextPageTemplate("odd"))
     story.append(PageBreak())
 
+    # -- a list of what is in the pictures ---------------------------
+    counted = figure_index()
+    if counted:
+        story.append(Paragraph("Figures", sheet["chapter"]))
+        story.extend(flow(
+            "Every picture in this book was made by running one of this "
+            "project's own tools and photographing the result. A **figure** "
+            "is the raw-wedge solver, operated with the settings that make "
+            "one idea visible -- the frame opened far enough to see into a "
+            "seam, the wireframe switched off, the camera stood off the "
+            "shell at a stated distance. A **plate** is a frame of one of "
+            "the project's films, taken at a named chapter of it, and is "
+            "how the book shows the things the solver does not model: a "
+            "doorway, a foundation, the utility column, a 3V dome.\n\n"
+            "Nothing here was drawn by hand, and every one can be made "
+            "again from the recipe stored beside it.",
+            faces, sheet))
+        for chapter_index in sorted(counted):
+            entries = counted[chapter_index]
+            kinds = sum(1 for e in entries if e["kind"] == "plate")
+            story.append(Paragraph(
+                f"Chapter {chapter_index}: {len(entries)} "
+                f"({len(entries) - kinds} figures, {kinds} plates)",
+                sheet["toc"]))
+        story.append(PageBreak())
+
     # -- the book ---------------------------------------------------
+    pictures = figure_index()
+    printed: list[tuple[str, str, int]] = []
+    number = 0
     for part in book.parts:
         story.append(Paragraph(escape(part.title), sheet["part"]))
         if part.body:
@@ -435,11 +596,32 @@ def build(path: Path | None = None, book: store.Book | None = None) -> Path:
             story.append(Paragraph(escape(chapter.title), sheet["chapter"]))
             if chapter.body:
                 story.extend(flow(chapter.body, faces, sheet))
-            for section in chapter.sections:
+            # This chapter's pictures, spread through its sections rather
+            # than banked at the end, so one lands near the prose that
+            # wants it. The first goes under the chapter opening.
+            queue = list(pictures.get(chapter_number(book, chapter), []))
+            sections = list(chapter.sections)
+            places = _spread(len(queue), len(sections))
+            if places.get(-1):
+                for entry in places[-1]:
+                    number += 1
+                    label = f"Figure {number}."
+                    story.extend(figure_flowables(queue[entry], label,
+                                                  faces, sheet))
+                    printed.append((label, queue[entry]["title"],
+                                    chapter_number(book, chapter)))
+            for index, section in enumerate(sections):
                 story.append(Paragraph(escape(section.title),
                                        sheet["section"]))
                 if section.body:
                     story.extend(flow(section.body, faces, sheet))
+                for entry in places.get(index, ()):
+                    number += 1
+                    label = f"Figure {number}."
+                    story.extend(figure_flowables(queue[entry], label,
+                                                  faces, sheet))
+                    printed.append((label, queue[entry]["title"],
+                                    chapter_number(book, chapter)))
             story.append(PageBreak())
 
     Interior(path, faces, title, author).build(story)

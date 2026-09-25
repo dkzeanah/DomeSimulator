@@ -12,14 +12,95 @@
         "spacer_mode": "rigid",
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
-        "panel_joint_handedness": "clockwise"
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
       },
       "camera": {
-        "back": 1.45,
-        "pitch": -6.0
+        "aim": {
+          "at": "dome",
+          "distance": 1.78,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "dome-from-inside",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\dome-from-inside.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "apex",
+          "distance_in": -58.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 88.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": false,
+      "console": false
+    },
+    {
+      "key": "dome-side-elevation",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\dome-side-elevation.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": [
+            0.0,
+            0.0,
+            52.0
+          ],
+          "distance": 1.95,
+          "elevation_deg": 1.5
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
     },
     {
       "key": "standard-dome-exploded",
@@ -34,18 +115,29 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
         "panel_explode_in": 8.0
       },
       "camera": {
-        "back": 1.6,
-        "pitch": -8.0
+        "aim": {
+          "at": "dome",
+          "distance": 1.92,
+          "elevation_deg": 14.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
-      "key": "key-in-the-seam",
-      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\key-in-the-seam.png",
+      "key": "wedge-cross-section",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\wedge-cross-section.png",
       "config": {
         "long_edge_in": 72.0,
         "trunk_diameter_in": 12.0,
@@ -56,19 +148,31 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 14.0
+        "jig_enabled": false,
+        "panel_explode_in": 3.0
       },
       "camera": {
-        "back": 2.05,
-        "pitch": -12.0,
-        "yaw": 78.0
+        "aim": {
+          "at": "vertex:1",
+          "distance_in": 30.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 30.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
-      "key": "key-close",
-      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\key-close.png",
+      "key": "point-faces-in",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\point-faces-in.png",
       "config": {
         "long_edge_in": 72.0,
         "trunk_diameter_in": 12.0,
@@ -79,15 +183,667 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 20.0
+        "jig_enabled": false,
+        "panel_explode_in": 9.0
       },
       "camera": {
-        "back": 1.7,
-        "pitch": -8.0,
-        "yaw": 84.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 80.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false,
+      "seam": "SEAM_A_016"
+    },
+    {
+      "key": "geodesic-wireframe",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\geodesic-wireframe.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.66,
+          "elevation_deg": 16.0
+        }
+      },
+      "view": {
+        "wood": false,
+        "spacer": false,
+        "ideal": true,
+        "nodes": true,
+        "joints": false,
+        "overfit": false,
+        "skin": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "geometry-over-wood",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\geometry-over-wood.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "face:BAB",
+          "distance_in": 132.0,
+          "azimuth_deg": -16.0,
+          "elevation_deg": 10.0
+        },
+        "fov": 62.0
+      },
+      "view": {
+        "ideal": true,
+        "nodes": true,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "panel-aaa",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\panel-aaa.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "face:AAA",
+          "distance_in": 104.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false,
+        "solo_panel": true
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "panel": "AAA"
+      }
+    },
+    {
+      "key": "panel-bab",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\panel-bab.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "face:BAB",
+          "distance_in": 96.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false,
+        "solo_panel": true
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "panel": "BAB"
+      }
+    },
+    {
+      "key": "dihedral-fold",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\dihedral-fold.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 11.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 96.0,
+          "azimuth_deg": 62.0,
+          "elevation_deg": 26.0
+        },
+        "fov": 46.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "seam": "SEAM_A_016"
+    },
+    {
+      "key": "member-solo",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\member-solo.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "face:BAB",
+          "distance_in": 88.0,
+          "azimuth_deg": 26.0,
+          "elevation_deg": 8.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false,
+        "solo_panel": true
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "panel": "BAB"
+      }
+    },
+    {
+      "key": "jig-01-bench",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-01-bench.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "bench",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
+    },
+    {
+      "key": "jig-02-triangle",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-02-triangle.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "triangle",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
+    },
+    {
+      "key": "jig-03-rails",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-03-rails.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "rails",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
+    },
+    {
+      "key": "jig-04-fences",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-04-fences.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "fences",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
+    },
+    {
+      "key": "jig-05-guides",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-05-guides.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "guides",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
+    },
+    {
+      "key": "jig-06-buttcut",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-06-buttcut.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "buttcut",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
+    },
+    {
+      "key": "jig-07-member1",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-07-member1.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "member1",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
+    },
+    {
+      "key": "jig-08-member2",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-08-member2.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "member2",
+        "panel": "BAB",
+        "station": "CORNER 1"
+      }
+    },
+    {
+      "key": "jig-09-member3",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-09-member3.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "member3",
+        "panel": "BAB",
+        "station": "CORNER 2"
+      }
+    },
+    {
+      "key": "jig-10-closed",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-10-closed.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "closed",
+        "panel": "BAB",
+        "station": "CORNER 3"
+      }
+    },
+    {
+      "key": "jig-11-flush",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-11-flush.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "flush",
+        "panel": "BAB",
+        "station": "CORNER 1"
+      }
+    },
+    {
+      "key": "jig-12-panel",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\jig-12-panel.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "stage": "panel",
+        "panel": "BAB",
+        "station": "WHOLE JIG"
+      }
     },
     {
       "key": "the-jig",
@@ -105,12 +861,474 @@
         "jig_enabled": true
       },
       "camera": {
-        "back": 1.9,
-        "pitch": -10.0,
-        "yaw": 108.0
+        "fov": 42.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true,
+        "wood": false,
+        "spacer": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false,
+      "jig": {
+        "panel": "BAB",
+        "station": "WHOLE JIG",
+        "stage": "closed"
+      }
+    },
+    {
+      "key": "heads-uncut",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\heads-uncut.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:8",
+          "distance_in": 40.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 50.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "heads-cut",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\heads-cut.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:8",
+          "distance_in": 40.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 50.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "key-in-the-seam",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\key-in-the-seam.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 12.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 64.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 42.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "key-close",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\key-close.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 8.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 38.0,
+          "azimuth_deg": 16.0,
+          "elevation_deg": 34.0
+        },
+        "fov": 28.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "keys-everywhere",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\keys-everywhere.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 8.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 56.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": -30.0
+        },
+        "fov": 38.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "vertex-five",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\vertex-five.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:0",
+          "distance_in": 62.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": -32.0
+        },
+        "fov": 52.0
+      },
+      "view": {
+        "ideal": true,
+        "nodes": true,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "vertex-six",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\vertex-six.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:6",
+          "distance_in": 58.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 52.0
+      },
+      "view": {
+        "ideal": true,
+        "nodes": true,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "vertex-base-three",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\vertex-base-three.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:16",
+          "distance_in": 70.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 28.0
+        },
+        "fov": 48.0
+      },
+      "view": {
+        "ideal": true,
+        "nodes": true,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "base-ring-plan",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\base-ring-plan.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "centre",
+          "distance": 1.62,
+          "elevation_deg": 74.0
+        }
+      },
+      "view": {
+        "ideal": true,
+        "nodes": true,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "base-edge-close",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\base-edge-close.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "base",
+          "distance_in": 82.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 22.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "course-first",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\course-first.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": [
+            0.0,
+            0.0,
+            26.0
+          ],
+          "distance": 1.52,
+          "elevation_deg": 5.0
+        },
+        "fov": 56.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "course-second",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\course-second.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": [
+            0.0,
+            0.0,
+            84.0
+          ],
+          "distance": 1.46,
+          "azimuth_deg": 16.0,
+          "elevation_deg": 6.0
+        },
+        "fov": 56.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "course-apex",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\course-apex.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "apex",
+          "distance_in": 108.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": -46.0
+        },
+        "fov": 52.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
     },
     {
       "key": "with-skin",
@@ -125,14 +1343,273 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
         "skin_enabled": true
       },
       "camera": {
-        "back": 1.5,
-        "pitch": -7.0
+        "aim": {
+          "at": "dome",
+          "distance": 1.8,
+          "elevation_deg": 13.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "skin-edge-close",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\skin-edge-close.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "skin_enabled": true,
+        "panel_explode_in": 8.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_002",
+          "distance_in": 76.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "hose-route-close",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\hose-route-close.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "hose",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 9.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_B_004",
+          "distance_in": 52.0,
+          "azimuth_deg": 14.0,
+          "elevation_deg": 34.0
+        },
+        "fov": 34.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "apex-inside",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\apex-inside.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "hose",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "apex",
+          "distance_in": -74.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 68.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": false,
+      "console": false
+    },
+    {
+      "key": "cutaway-inside-skin",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\cutaway-inside-skin.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "skin_enabled": true
+      },
+      "camera": {
+        "aim": {
+          "at": [
+            0.0,
+            62.0,
+            62.0
+          ],
+          "distance_in": 92.0,
+          "azimuth_deg": 180.0,
+          "elevation_deg": 4.0
+        },
+        "fov": 86.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": false,
+      "console": false
+    },
+    {
+      "key": "dome-and-fixture",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\dome-and-fixture.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": true
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 2.35,
+          "azimuth_deg": 34.0,
+          "elevation_deg": 19.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false,
+      "jig": {
+        "panel": "BAB",
+        "stage": "closed"
+      }
+    },
+    {
+      "key": "tool-hud",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\tool-hud.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.86,
+          "elevation_deg": 13.0
+        }
+      },
+      "view": {
+        "ideal": true,
+        "nodes": true,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": true,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "tool-cost-console",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\tool-cost-console.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "cost_console_open": true,
+        "cost_console_page": "quote"
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.98,
+          "azimuth_deg": -16.0,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": true
     },
     {
       "key": "wedge-orientation-point-dome-in",
@@ -147,15 +1624,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 6.0
       },
       "camera": {
-        "back": 2.3,
-        "pitch": -14.0,
-        "yaw": 82.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 84.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "wedge-orientation-point-panel-in",
@@ -170,15 +1659,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 6.0
       },
       "camera": {
-        "back": 2.3,
-        "pitch": -14.0,
-        "yaw": 82.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 84.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "wedge-orientation-point-dome-out",
@@ -193,15 +1694,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 6.0
       },
       "camera": {
-        "back": 2.3,
-        "pitch": -14.0,
-        "yaw": 82.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 84.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "wedge-orientation-point-panel-out",
@@ -216,15 +1729,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 6.0
       },
       "camera": {
-        "back": 2.3,
-        "pitch": -14.0,
-        "yaw": 82.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 84.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "seam-join-mode-raw-trapezoid",
@@ -239,15 +1764,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 8.0
       },
       "camera": {
-        "back": 2.1,
-        "pitch": -10.0,
-        "yaw": 86.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 44.0,
+          "azimuth_deg": 16.0,
+          "elevation_deg": 34.0
+        },
+        "fov": 30.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "seam-join-mode-shaved-flat",
@@ -262,15 +1799,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 8.0
       },
       "camera": {
-        "back": 2.1,
-        "pitch": -10.0,
-        "yaw": 86.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 44.0,
+          "azimuth_deg": 16.0,
+          "elevation_deg": 34.0
+        },
+        "fov": 30.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "spacer-mode-rigid",
@@ -285,15 +1834,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 10.0
       },
       "camera": {
-        "back": 2.15,
-        "pitch": -12.0,
-        "yaw": 74.0
+        "aim": {
+          "at": "seam:SEAM_B_004",
+          "distance_in": 54.0,
+          "azimuth_deg": 16.0,
+          "elevation_deg": 34.0
+        },
+        "fov": 34.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "spacer-mode-hose",
@@ -308,15 +1869,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 10.0
       },
       "camera": {
-        "back": 2.15,
-        "pitch": -12.0,
-        "yaw": 74.0
+        "aim": {
+          "at": "seam:SEAM_B_004",
+          "distance_in": 54.0,
+          "azimuth_deg": 16.0,
+          "elevation_deg": 34.0
+        },
+        "fov": 34.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "spacer-mode-none",
@@ -331,15 +1904,62 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 10.0
       },
       "camera": {
-        "back": 2.15,
-        "pitch": -12.0,
-        "yaw": 74.0
+        "aim": {
+          "at": "seam:SEAM_B_004",
+          "distance_in": 54.0,
+          "azimuth_deg": 16.0,
+          "elevation_deg": 34.0
+        },
+        "fov": 34.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "radial-splits-4",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\radial-splits-4.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 4,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 56.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 36.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
     },
     {
       "key": "radial-splits-6",
@@ -354,15 +1974,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
       },
       "camera": {
-        "back": 2.4,
-        "pitch": -16.0,
-        "yaw": 96.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 56.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 36.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "radial-splits-8",
@@ -377,15 +2009,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
       },
       "camera": {
-        "back": 2.4,
-        "pitch": -16.0,
-        "yaw": 96.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 56.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 36.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "radial-splits-12",
@@ -400,15 +2044,167 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
       },
       "camera": {
-        "back": 2.4,
-        "pitch": -16.0,
-        "yaw": 96.0
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 56.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 36.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "radial-splits-16",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\radial-splits-16.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 16,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_016",
+          "distance_in": 56.0,
+          "azimuth_deg": 20.0,
+          "elevation_deg": 32.0
+        },
+        "fov": 36.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "trunk-diameter-in-8p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\trunk-diameter-in-8p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 8.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:5",
+          "distance_in": 40.0,
+          "azimuth_deg": 34.0,
+          "elevation_deg": -26.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "trunk-diameter-in-12p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\trunk-diameter-in-12p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:5",
+          "distance_in": 40.0,
+          "azimuth_deg": 34.0,
+          "elevation_deg": -26.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "trunk-diameter-in-16p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\trunk-diameter-in-16p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 16.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:5",
+          "distance_in": 40.0,
+          "azimuth_deg": 34.0,
+          "elevation_deg": -26.0
+        },
+        "fov": 44.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
     },
     {
       "key": "panel-joint-handedness-clockwise",
@@ -423,15 +2219,27 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "clockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 4.0
       },
       "camera": {
-        "back": 2.25,
-        "pitch": -20.0,
-        "yaw": 60.0
+        "aim": {
+          "at": "face:AAA",
+          "distance_in": 138.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 56.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
     },
     {
       "key": "panel-joint-handedness-counterclockwise",
@@ -446,15 +2254,579 @@
         "panel_joint_mode": "cyclic_pinwheel_butt",
         "vertex_trim_mode": "triangle_envelope",
         "panel_joint_handedness": "counterclockwise",
-        "panel_explode_in": 5.0
+        "jig_enabled": false,
+        "panel_explode_in": 4.0
       },
       "camera": {
-        "back": 2.25,
-        "pitch": -20.0,
-        "yaw": 60.0
+        "aim": {
+          "at": "face:AAA",
+          "distance_in": 138.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 56.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
       },
       "hud": false,
-      "ground": true
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "trapezoid-nose-depth-in-0p25",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\trapezoid-nose-depth-in-0p25.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "trapezoid_nose_depth_in": 0.25,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_002",
+          "distance_in": 36.0,
+          "azimuth_deg": 14.0,
+          "elevation_deg": 36.0
+        },
+        "fov": 24.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "trapezoid-nose-depth-in-0p5",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\trapezoid-nose-depth-in-0p5.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "trapezoid_nose_depth_in": 0.5,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_002",
+          "distance_in": 36.0,
+          "azimuth_deg": 14.0,
+          "elevation_deg": 36.0
+        },
+        "fov": 24.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "trapezoid-nose-depth-in-1p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\trapezoid-nose-depth-in-1p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "trapezoid_nose_depth_in": 1.0,
+        "panel_explode_in": 7.0
+      },
+      "camera": {
+        "aim": {
+          "at": "seam:SEAM_A_002",
+          "distance_in": 36.0,
+          "azimuth_deg": 14.0,
+          "elevation_deg": 36.0
+        },
+        "fov": 24.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "head-overfit-in-0p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\head-overfit-in-0p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "head_overfit_in": 0.0,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:1",
+          "distance_in": 58.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 42.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "head-overfit-in-6p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\head-overfit-in-6p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "head_overfit_in": 6.0,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:1",
+          "distance_in": 58.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 42.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "head-overfit-in-12p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\head-overfit-in-12p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "head_overfit_in": 12.0,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "vertex:1",
+          "distance_in": 58.0,
+          "azimuth_deg": 0.0,
+          "elevation_deg": 0.0
+        },
+        "fov": 42.0
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": true
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "skin-offset-in-2p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\skin-offset-in-2p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "skin_offset_in": 2.0,
+        "panel_explode_in": 0.0,
+        "skin_enabled": true
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.76,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "skin-offset-in-4p1",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\skin-offset-in-4p1.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "skin_offset_in": 4.1,
+        "panel_explode_in": 0.0,
+        "skin_enabled": true
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.76,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "skin-offset-in-8p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\skin-offset-in-8p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "skin_offset_in": 8.0,
+        "panel_explode_in": 0.0,
+        "skin_enabled": true
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.76,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "long-edge-in-29p666",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\long-edge-in-29p666.png",
+      "config": {
+        "long_edge_in": 29.666,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.84,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "long-edge-in-44p498",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\long-edge-in-44p498.png",
+      "config": {
+        "long_edge_in": 44.498,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.84,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "long-edge-in-72p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\long-edge-in-72p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.84,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "long-edge-in-88p997",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\long-edge-in-88p997.png",
+      "config": {
+        "long_edge_in": 88.997,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.84,
+          "elevation_deg": 12.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "panel-explode-in-0p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\panel-explode-in-0p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 0.0
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.98,
+          "elevation_deg": 15.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "panel-explode-in-6p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\panel-explode-in-6p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 6.0
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.98,
+          "elevation_deg": 15.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
+    },
+    {
+      "key": "panel-explode-in-18p0",
+      "path": "C:\\Users\\Don\\Desktop\\DomeSim\\book_wedge\\figures\\panel-explode-in-18p0.png",
+      "config": {
+        "long_edge_in": 72.0,
+        "trunk_diameter_in": 12.0,
+        "radial_splits": 8,
+        "wedge_orientation": "point_dome_in",
+        "seam_join_mode": "raw_trapezoid",
+        "spacer_mode": "rigid",
+        "panel_joint_mode": "cyclic_pinwheel_butt",
+        "vertex_trim_mode": "triangle_envelope",
+        "panel_joint_handedness": "clockwise",
+        "jig_enabled": false,
+        "panel_explode_in": 18.0
+      },
+      "camera": {
+        "aim": {
+          "at": "dome",
+          "distance": 1.98,
+          "elevation_deg": 15.0
+        }
+      },
+      "view": {
+        "ideal": false,
+        "nodes": false,
+        "joints": false,
+        "overfit": false
+      },
+      "hud": false,
+      "ground": true,
+      "console": false
     }
   ]
 }

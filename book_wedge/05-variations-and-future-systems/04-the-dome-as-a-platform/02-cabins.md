@@ -13,7 +13,7 @@ WHAT YOU GET
 277 square feet, one round room,
 9.7 feet at the middle.
 
-The reference build's standard article lists at $18,834.
+The reference build's standard article lists at $12,036.
 
 WHAT IS HARD ABOUT IT
 

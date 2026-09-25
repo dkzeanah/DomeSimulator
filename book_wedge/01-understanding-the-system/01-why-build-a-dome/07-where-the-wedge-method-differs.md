@@ -194,7 +194,9 @@ $$ \text{log} \rightarrow \text{rectangular lumber} \rightarrow \text{wedge} $$
 
 the process can potentially become:
 
-$$ \text{log} \rightarrow \text{rough wedge sectors} \rightarrow \text{finished wedges} $$ That is more than a different connection detail. It changes how the structural material can be recovered from the original timber.
+$$ \text{log} \rightarrow \text{rough wedge sectors} \rightarrow \text{finished wedges} $$
+
+That is more than a different connection detail. It changes how the structural material can be recovered from the original timber.
 
 CONNECTION GEOMETRY STILL MATTERS
 
@@ -212,7 +214,11 @@ Those questions connect the wedge profile to the actual building system.
 
 The two problems therefore have to be developed together:
 
-$$ \text{member geometry} $$ and $$ \text{connection geometry} $$
+$$ \text{member geometry} $$
+
+and
+
+$$ \text{connection geometry} $$
 
 A good wedge profile attached through a poorly defined connection is not a complete system.
 

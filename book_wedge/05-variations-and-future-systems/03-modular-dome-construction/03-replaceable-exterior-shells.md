@@ -11,11 +11,11 @@ single most consequential decision in this method.
 THE TWO SHELLS THIS BOOK PRICES
 
 A laminated hull: glass fibre in resin over the whole envelope. Sixty years,
-genuinely waterproof, and $8,747
+genuinely waterproof, and $4,826
 more than the alternative.
 
 A shower cap: wood panels, one membrane, quilted layers added over the years,
-and a rain-slick cap strapped over the lot. $3,430 bare.
+and a rain-slick cap strapped over the lot. $3,265 bare.
 
 WHY THE CAP WON
 
@@ -49,8 +49,8 @@ is attached to it.
 THE HULL IS NOT GONE
 
 It became the upgrade -- the fifty-year option, sold to the buyer who wants
-it, at $27,581 against
-$18,834.
+it, at $21,513 against
+$12,036.
 
 That is the shape of every decision in this method: ship the cheap thing that
 works, and let the expensive thing remain available.

@@ -47,7 +47,9 @@ $$ \alpha=2\beta $$
 
 which gives:
 
-$$ \alpha=2\tan^{-1}\left(\frac{w_o-w_i}{2t}\right) $$ Those equations describe the physical cross-section once its dimensions are known. They do not determine what the correct wedge should be for the dome.
+$$ \alpha=2\tan^{-1}\left(\frac{w_o-w_i}{2t}\right) $$
+
+Those equations describe the physical cross-section once its dimensions are known. They do not determine what the correct wedge should be for the dome.
 
 That comes from the dome geometry and the way the neighboring faces are intended to meet. A wedge can be mathematically consistent as a piece of timber and still be the wrong wedge for the structure.
 
@@ -126,7 +128,9 @@ $$ \Delta w=w_o-w_i $$
 
 then each side accounts for:
 
-$$ \frac{\Delta w}{2} $$ That gives the member a centered profile.
+$$ \frac{\Delta w}{2} $$
+
+That gives the member a centered profile.
 
 A wedge does not have to be symmetric, however.
 
@@ -145,7 +149,9 @@ where:
 
 If:
 
-$$ x_L=x_R $$ the wedge is symmetric. If they differ, the member is asymmetric.
+$$ x_L=x_R $$
+
+the wedge is symmetric. If they differ, the member is asymmetric.
 
 This distinction matters because an asymmetric member also gains a left-hand and right-hand orientation. That increases the possibility of installing a geometrically correct part in the wrong direction. Unless a later design requires asymmetry, a symmetric member is easier to manufacture, label, inspect, and reverse end-for-end.
 
@@ -195,7 +201,9 @@ $$ L_f=\text{finished physical member length} $$
 
 If fastener centers define the structural reference, we may also need:
 
-$$ L_b=\text{bolt-center to bolt-center distance} $$ Those three numbers should not be assumed to be equal. A production drawing has to tell the builder which one is being measured.
+$$ L_b=\text{bolt-center to bolt-center distance} $$
+
+Those three numbers should not be assumed to be equal. A production drawing has to tell the builder which one is being measured.
 
 HOLES AND CONNECTION FEATURES
 

@@ -10,13 +10,13 @@ three places.
 
 WHAT A 24-FOOT 2V LOOKS LIKE
 
-    diameter                     24.00 ft
-    apex height                  12.00 ft
-    A strut, cut length         86.750 in
-    B strut, cut length         77.478 in
-    floor, inside the ring       423.2 sq ft
-    shell surface                839.9 sq ft
-    timber in the frame            821 ft
+    diameter                   24.00 ft
+    apex height                12.00 ft
+    A strut, cut length       87.179 in
+    B strut, cut length       77.711 in
+    floor, inside the ring     423.2 sq ft
+    shell surface              839.9 sq ft
+    timber in the frame          824 ft
 
 THE THREE PROBLEMS
 

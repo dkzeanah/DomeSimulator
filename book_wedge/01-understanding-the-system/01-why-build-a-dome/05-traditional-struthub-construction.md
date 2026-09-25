@@ -121,7 +121,9 @@ $$ \text{simple member} + \text{specialized vertex connection} $$
 
 Wedge construction:
 
-$$ \text{geometry-shaped member} + \text{connection adapted to that member} $$ That distinction is central to the rest of this book. The question is not whether a dome needs connection geometry.
+$$ \text{geometry-shaped member} + \text{connection adapted to that member} $$
+
+That distinction is central to the rest of this book. The question is not whether a dome needs connection geometry.
 
 It does. The question is where we choose to put that geometry. We can concentrate more of it in a hub.
 

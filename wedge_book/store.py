@@ -476,6 +476,7 @@ def validate_store() -> None:
     validate_reference_dome(book)
     validate_no_mitre_claim(book)
     validate_cut_not_scaled(book)
+    validate_no_placeholders(book)
     assert book.parts, "no parts"
     assert len(book.sections) > 100, len(book.sections)
     assert book.metadata.get("title"), "the book has no title"
@@ -604,6 +605,46 @@ def validate_reference_dome(book: "Book | None" = None) -> None:
 
 #: How a list of offending sections is laid out in an assertion message.
 NEWLINE_BULLET = "\n  "
+
+
+#: Text that means "nobody has written this yet", however confident it looks.
+#:
+#: The book reported 152 of 152 sections written while chapter 1 still
+#: carried the instruction to write one of them, because `written` means
+#: "the body is not empty" and an instruction is not empty. Four pages in.
+PLACEHOLDERS: tuple[str, ...] = (
+    "Put the finished manuscript prose",
+    "Do not include these bracketed instructions",
+    "TODO",
+    "FIXME",
+    "Lorem ipsum",
+    "[write ",
+    "[TK]",
+)
+
+
+def validate_no_placeholders(book: "Book | None" = None) -> None:
+    """No section may ship with its own instructions in it."""
+    book = book or load_json()
+    found = []
+    for _part, chapter, section in book.sections:
+        body = section.body or ""
+        for mark in PLACEHOLDERS:
+            if mark.lower() in body.lower():
+                found.append(f"{chapter.title} / {section.title}: {mark!r}")
+    assert not found, (
+        f"{len(found)} sections still carry placeholder text:"
+        + NEWLINE_BULLET + NEWLINE_BULLET.join(found))
+
+    # And a section that is a sentence long is not written either, whatever
+    # the count says. Twelve words is generous: the shortest real section in
+    # this book is a stated refusal and it is longer than that.
+    thin = [f"{c.title} / {s.title} ({len(s.body.split())} words)"
+            for _p, c, s in book.sections
+            if s.body and len(s.body.split()) < 12]
+    assert not thin, (
+        f"{len(thin)} sections are too short to be written:"
+        + NEWLINE_BULLET + NEWLINE_BULLET.join(thin))
 
 
 def validate_no_mitre_claim(book: "Book | None" = None) -> None:

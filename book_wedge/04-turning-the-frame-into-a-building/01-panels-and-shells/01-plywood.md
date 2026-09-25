@@ -10,7 +10,7 @@ getting out of the way first.
 
 NO PANEL FITS A SHEET
 
-The narrowest panel in a 2V hemisphere on a six-foot member is 52.520 inches
+The narrowest panel in a 2V hemisphere on a six-foot member is 52.516 inches
 across its shortest altitude. The widest AAA panel is 62.354.
 
 A sheet of plywood is 48 inches wide.
