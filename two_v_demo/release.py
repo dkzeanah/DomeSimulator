@@ -52,6 +52,13 @@ HASHTAG_BANK: dict[str, tuple[str, ...]] = {
         "#boatbuilding", "#fiberglass", "#timberframe", "#starterhome",
         "#prefab", "#passiveincome", "#landowner",
     ),
+    "seam": (
+        "#geodesicdome", "#rainwaterharvesting", "#offgrid", "#diy",
+        "#timberframe", "#dehumidifier", "#peltier", "#thermoelectric",
+        "#ventilation", "#buildingscience", "#vapourbarrier", "#homestead",
+        "#watercapture", "#tinyhome", "#construction", "#dometech",
+        "#passivehouse", "#rainwater", "#selfbuild", "#stemcelldome",
+    ),
     "dome_park": (
         "#domepark", "#geodesicdome", "#tinyhome", "#offgrid", "#homestead",
         "#nomad", "#vanlife", "#rvlife", "#kickstarter", "#opensource",

@@ -36,6 +36,7 @@ from .lesson_scratch import SCRATCH_LESSON
 from .lesson_pitch_hero import PITCH_HERO_LESSON
 from .lesson_seed_pitch import SEED_PITCH_LESSON
 from .lesson_module_build import MODULE_BUILD_LESSON
+from .lesson_seam import SEAM_LESSON
 from .lesson_wedge import WEDGE_LESSON
 from .lesson_wedge_why import WEDGE_WHY_LESSON
 from .lesson_why_build import WHY_BUILD_LESSON
@@ -61,6 +62,7 @@ LESSONS: dict[str, Lesson] = {
                    PVTWO_LESSON, ALL_DOMES_LESSON, DOME_PARK_LESSON, BYOD_LESSON,
                    BYOD_DEEPSEEK_LESSON, BYOD_POLISHED, BYOD_SNARKY,
                    SEED_PITCH_LESSON, MODULE_BUILD_LESSON,
+                   SEAM_LESSON,
                    PITCH_HERO_LESSON)
 }
 
