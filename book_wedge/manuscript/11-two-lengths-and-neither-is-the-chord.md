@@ -95,6 +95,8 @@ A second, simpler model treats a member as a rectangular band lying with its
 face on the edge line. It gives a bite of {{cut.band_bite}} inches for the
 same stick — several times larger.
 
+![How much of the tree survives, measured.](plate-yield.png)
+
 Neither is a mistake. They are answers about differently shaped sticks.
 
 The numbers in this book are the first. **If you are cutting rectangular
@@ -107,3 +109,5 @@ the difference is inches on every member.
 {{cut.a_cut}}.
 
 If your own arithmetic gives that, the rest will behave.
+
+![Chord factors turning into a cut list.](plate-factors-to-lumber.png)

@@ -34,6 +34,8 @@ which I do not recommend and did anyway.
 
 It did not care.
 
+![How much shelter an hour buys, which is the question this book is an answer to.](plate-why-hour.png)
+
 ## Why it did not care
 
 A dome carries its loads *axially*. The members are in compression along

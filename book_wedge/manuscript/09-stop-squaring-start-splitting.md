@@ -48,8 +48,12 @@ Three passes. Eight sticks. Every one of them a {{cut.sector}}-degree sector
 of the same circle, to whatever tolerance the tree was round to, which is a
 tolerance nobody had to hold and nobody had to check.
 
+![The whole woodpile, standing up.](plate-two-trees.png)
+
 That was the afternoon. It is not a clever idea and it took me a year to have
 it, because I was busy asking a question that had no answer.
+
+![How much of the stem survives splitting, against sawing.](plate-recovery.png)
 
 ## What the mill is actually for
 
@@ -70,6 +74,8 @@ Splitting does not beat sawing at making lumber. It beats sawing at making
 That distinction matters because it tells you when the method stops working.
 Build something with right angles in it and you want a mill. Build a
 triangulated shell and you do not.
+
+![The tree is the product.](plate-tree-is-the-product.png)
 
 ## What comes off the log
 

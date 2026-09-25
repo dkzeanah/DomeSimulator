@@ -53,7 +53,9 @@ Two {{cut.sector}}-degree sectors, points inward, and the
 {{seam.gap_a}} degrees of sector angle they cannot close between them.
 
 The key fills that. It is {{seam.key_a}} inches across its base on an A seam
-and {{seam.key_b}} on a B, and it is not a manufactured part: it is the
+and {{seam.key_b}} on a B, and it is not a manufactured part
+
+![The gasket does the shaving: the part of the joint that is not made of wood.](plate-gasket.png): it is the
 truncated point of another raw sector, cut from the same log at the same
 angle.
 
@@ -108,3 +110,5 @@ So the honest claim is not "no compound angles". It is **three saw settings
 for a hundred and twenty members**, which is a better claim anyway, and true.
 
 What the pinwheel removes is the shared vertex. It does not remove the mitre.
+
+![Six ways to join the same sticks. This book uses the second.](plate-six-joints.png)

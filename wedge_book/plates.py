@@ -138,248 +138,278 @@ PLATES: tuple[Plate, ...] = (
           why="what the inside of one is actually like, furnished"),
 
     # -- 2. The wedge method ------------------------------------------
-    Plate("plate-stop-squaring", "wedge", "split", 2,
+    Plate("plate-stop-squaring", "wedge", "split", 9,
           plan="Log divided into wedge members",
           why="the round log being split, which the solver starts after"),
-    Plate("plate-round-log-corners", "why", "round", 2,
+    Plate("plate-round-log-corners", "why", "round", 9,
           plan="Conventional rectangular strut versus wedge strut",
           why="the square section a sawmill cuts out of a round log, and "
               "what it throws away"),
-    Plate("plate-tree-is-the-product", "why_build", "tree", 2,
+    Plate("plate-tree-is-the-product", "why_build", "tree", 9,
           plan="Log divided into wedge members",
           why="the whole tree, before anything is taken out of it"),
 
     # -- 3. Geometry ---------------------------------------------------
-    Plate("plate-frequency", "world", "math_frequency", 3,
+    Plate("plate-frequency", "world", "math_frequency", 26,
           plan="Frequency and truncation comparison silhouettes",
           why="2V against 3V and 4V, which this solver does not build"),
-    Plate("plate-frequency-cost", "world", "ladder", 16,
+    Plate("plate-frequency-cost", "world", "ladder", 26,
           plan="Frequency and truncation comparison silhouettes",
           why="what each frequency costs, counted"),
 
     # -- 4. Materials --------------------------------------------------
-    Plate("plate-two-trees", "harvest", "tree", 4,
+    Plate("plate-two-trees", "harvest", "tree", 9,
           plan="Grain/defect examples for member selection",
           why="the standing timber a frame comes out of"),
-    Plate("plate-eight-materials", "all_domes", "materials", 4,
+    Plate("plate-eight-materials", "all_domes", "materials", 24,
           plan="Nominal versus actual lumber cross-section",
           why="eight frame materials priced against each other -- steel, "
               "aluminium, timber, whole trunk, PVC, bamboo"),
-    Plate("plate-eight-sections", "all_domes", "shapes", 4,
+    Plate("plate-eight-sections", "all_domes", "shapes", 24,
           plan="Conventional rectangular strut versus wedge strut",
           why="eight strut cross sections side by side, including the "
               "rectangular stick this method is an argument against"),
-    Plate("plate-recovery", "pine_value", "recovery", 4,
+    Plate("plate-recovery", "pine_value", "recovery", 9,
           plan="Log divided into wedge members",
           why="how much of a log survives splitting against sawing"),
 
     # -- 5. Turning timber into wedges ---------------------------------
-    Plate("plate-blade-tilt", "cuts", "tilt", 5,
+    Plate("plate-blade-tilt", "cuts", "tilt", 14,
           plan="Dimensional-lumber wedge-cutting layouts",
           why="the saw being set, which is the operation the book is "
               "describing"),
-    Plate("plate-two-machines", "cuts", "machines", 5,
+    Plate("plate-two-machines", "cuts", "machines", 14,
           plan="Saw/jig sequence for repetitive wedge production",
           why="why the cut takes two machines"),
 
     # -- 7. Connections ------------------------------------------------
-    Plate("plate-gasket", "wedge", "gasket", 7,
+    Plate("plate-gasket", "wedge", "gasket", 12,
           plan="Exploded fastener/plate alternatives",
           why="the gasket doing the shaving, which is the alternative to a "
               "machined key"),
-    Plate("plate-six-joints", "all_domes", "styles", 7,
+    Plate("plate-six-joints", "all_domes", "styles", 12,
           plan="Exploded fastener/plate alternatives",
           why="six ways to join the same sticks, which is the whole "
               "alternatives question in one frame"),
 
     # -- 8 and 12. The ground -------------------------------------------
-    Plate("plate-meeting-the-ground", "build", "foundation", 12,
+    Plate("plate-meeting-the-ground", "build", "foundation", 19,
           plan="Slab/ring/pier/raised-floor comparison sections",
           why="four foundations in section, which nothing here renders"),
-    Plate("plate-seven-foundations", "all_domes", "foundations", 12,
+    Plate("plate-seven-foundations", "all_domes", "foundations", 19,
           plan="Slab/ring/pier/raised-floor comparison sections",
           why="seven foundations priced against each other"),
-    Plate("plate-the-pad", "seed_pitch", "deck", 12,
+    Plate("plate-the-pad", "seed_pitch", "deck", 32,
           plan="Prepared dome pad",
           why="the platform built one course at a time"),
-    Plate("plate-pad-is-not-yours", "seed_pitch", "pad", 8,
+    Plate("plate-pad-is-not-yours", "seed_pitch", "pad", 20,
           plan="Prepared dome pad",
           why="the pad as a thing somebody else owns"),
 
     # -- 9. Assembly ----------------------------------------------------
-    Plate("plate-one-dome-step-by-step", "all_domes", "build", 9,
+    Plate("plate-one-dome-step-by-step", "all_domes", "build", 13,
           plan="Temporary bracing and raising sequence",
           why="a dome going up in phases, which the wedge solver cannot "
               "show part-built"),
-    Plate("plate-station", "line", "station", 9,
+    Plate("plate-station", "line", "station", 13,
           why="one station of an assembly line, because forty identical "
               "panels is a production question"),
 
     # -- 10. Openings ---------------------------------------------------
-    Plate("plate-openings", "build", "openings", 10,
+    Plate("plate-openings", "build", "openings", 15,
           plan="Door opening",
           why="doors and windows, and what not to cut"),
-    Plate("plate-openings-zome", "zome", "openings", 10,
+    Plate("plate-openings-zome", "zome", "openings", 15,
           plan="Window-frame integration diagram",
           why="the same problem on a different geometry, which is how to "
               "tell a rule from a habit"),
 
     # -- 11. Panels and shells ------------------------------------------
-    Plate("plate-sixteen-panels", "all_domes", "panels", 11,
+    Plate("plate-sixteen-panels", "all_domes", "panels", 24,
           plan="Removable panel",
           why="sixteen panel types -- ply, glass, acrylic, twinwall, SIP, "
               "shingle, metal, solar, canvas, mirror, precast"),
-    Plate("plate-nine-claddings", "all_domes", "layers", 11,
+    Plate("plate-nine-claddings", "all_domes", "layers", 24,
           plan="Insulated panel",
           why="nine cladding layers over the same shell"),
-    Plate("plate-shower-cap", "seed_pitch", "cap", 11,
+    Plate("plate-shower-cap", "seed_pitch", "cap", 2,
           plan="Panel-to-wedge weather-seal detail",
           why="one watertight layer over everything else, which is the "
               "shell strategy this book recommends"),
-    Plate("plate-quilt", "seed_pitch", "quilt", 11,
+    Plate("plate-quilt", "seed_pitch", "quilt", 18,
           plan="Insulated panel",
           why="the insulation as a removable quilted layer"),
-    Plate("plate-four-skins", "seed_pitch", "shell_cost", 11,
+    Plate("plate-four-skins", "seed_pitch", "shell_cost", 17,
           why="four ways to skin the same frame, priced"),
-    Plate("plate-sheet-problem", "seed_pitch", "sheet", 11,
+    Plate("plate-sheet-problem", "seed_pitch", "sheet", 17,
           why="what a four-foot sheet does to a dome sized from its member"),
 
     # -- 13. Utilities ---------------------------------------------------
-    Plate("plate-core-socket", "seed_pitch", "core", 13,
+    Plate("plate-core-socket", "seed_pitch", "core", 32,
           plan="Utility column",
           why="the utility column, which lives in seed_world and not in the "
               "wedge solver"),
-    Plate("plate-build-a-core", "module_build", "chase", 13,
+    Plate("plate-build-a-core", "module_build", "chase", 28,
           plan="Utility column",
           why="a core being built on a bench, service by service"),
-    Plate("plate-core-cap", "module_build", "close", 13,
+    Plate("plate-core-cap", "module_build", "close", 28,
           plan="Gasketed service cap",
           why="the cap proved and the core stood up"),
-    Plate("plate-shared-services", "byod", "shared", 13,
+    Plate("plate-shared-services", "byod", "shared", 28,
           plan="Floor utility interface",
           why="what a site shares and what each dome brings"),
-    Plate("plate-polyps", "seed_pitch", "polyps", 13,
+    Plate("plate-polyps", "seed_pitch", "polyps", 27,
           why="services that hang off the outside instead of going through "
               "the wall"),
 
     # -- 14. Environmental control ----------------------------------------
-    Plate("plate-layering", "seed_pitch", "layering", 14,
+    Plate("plate-layering", "seed_pitch", "layering", 18,
           plan="Insulation/ventilation/condensation path section",
           why="the envelope gaining a layer a winter"),
-    Plate("plate-furnished", "look", "furnished", 14,
+    Plate("plate-furnished", "look", "furnished", 32,
           plan="Completed dome cutaway",
           why="the finished inside, which is the nearest thing to a cutaway "
               "any tool here makes"),
 
     # -- 15 to 18. Variations, configurations, modules, platform ----------
-    Plate("plate-hex", "hex", "one_hexagon", 16,
+    Plate("plate-hex", "hex", "one_hexagon", 23,
           why="a hexagonal dome: the same argument, different tiling"),
-    Plate("plate-zome", "zome", "sweep", 16,
+    Plate("plate-zome", "zome", "sweep", 22,
           why="a zome, where every panel is a flat parallelogram"),
-    Plate("plate-twelve-domes", "all_domes", "open", 16,
+    Plate("plate-twelve-domes", "all_domes", "open", 32,
           plan="Frequency and truncation comparison silhouettes",
           why="twelve finished buildings from one tool"),
-    Plate("plate-swap-everything", "hype6", "swap", 17,
+    Plate("plate-swap-everything", "hype6", "swap", 3,
           plan="Removable panel",
           why="panels swapped without touching the frame"),
-    Plate("plate-core-moves", "seed_pitch", "modular", 17,
+    Plate("plate-core-moves", "seed_pitch", "modular", 28,
           plan="Prefabricated triangle module",
           why="the core lifted out and carried to the next dome"),
-    Plate("plate-mast-and-floor", "seed_pitch", "mast", 18,
+    Plate("plate-mast-and-floor", "seed_pitch", "mast", 30,
           why="a mast through the column and a floor clamped to it"),
-    Plate("plate-floating", "seed_pitch", "floating", 18,
+    Plate("plate-floating", "seed_pitch", "floating", 30,
           why="the dome hung between two trees, priced and not rated"),
-    Plate("plate-catalogue", "seed_pitch", "catalogue", 18,
+    Plate("plate-catalogue", "seed_pitch", "catalogue", 29,
           why="the other buildings a homestead wants"),
 
     # -- 19 and 20. Reference --------------------------------------------
-    Plate("plate-price-line-by-line", "seed_pitch", "price", 19,
+    Plate("plate-price-line-by-line", "seed_pitch", "price", 31,
           plan="Material-yield worksheet example",
           why="the whole invoice, line by line"),
-    Plate("plate-yield", "why", "yield", 20,
+    Plate("plate-yield", "why", "yield", 11,
           plan="Material-yield worksheet example",
           why="how much of the tree survives, measured"),
-    Plate("plate-factors-to-lumber", "scratch", "m_scale", 20,
+    Plate("plate-factors-to-lumber", "scratch", "m_scale", 11,
           plan="Cut-list worksheet example",
           why="chord factors turning into a cut list"),
-    Plate("plate-against-itself", "seed_pitch", "against", 19,
+    Plate("plate-against-itself", "seed_pitch", "against", 31,
           why="the three things the model says against its own argument"),
 # -- the geometry, derived on screen --------------------------------
     Plate("plate-why-triangles", "scratch", "why_triangles", 4,
           why="why the shape is triangles at all, before any dome"),
-    Plate("plate-icosahedron", "scratch", "why_ico", 5,
+    Plate("plate-icosahedron", "scratch", "why_ico", 4,
           why="the solid the whole thing starts from, and why that one"),
-    Plate("plate-phi", "scratch", "m_phi", 6,
+    Plate("plate-phi", "scratch", "m_phi", 5,
           plan="Center/radius/base-polygon layout diagram",
           why="twelve points placed by one irrational number -- the golden "
               "ratio's actual job in this method"),
-    Plate("plate-project", "scratch", "project", 7,
+    Plate("plate-project", "scratch", "project", 8,
           why="the push that turns a subdivided icosahedron into a sphere"),
-    Plate("plate-chords-four-ways", "scratch", "m_chords", 7,
+    Plate("plate-chords-four-ways", "scratch", "m_chords", 6,
           why="the two chord factors derived four independent ways and "
               "cross-checked against each other"),
-    Plate("plate-hemisphere", "scratch", "hemisphere", 8,
+    Plate("plate-hemisphere", "scratch", "hemisphere", 7,
           why="where a sphere gets cut to become a building"),
-    Plate("plate-counting", "scratch", "m_counts", 8,
+    Plate("plate-counting", "scratch", "m_counts", 7,
           why="every part of the building counted from the topology"),
-    Plate("plate-cross-check", "scratch", "cross_check", 7,
+    Plate("plate-cross-check", "scratch", "cross_check", 6,
           why="two ways of computing the same number, and the residual "
               "between them"),
 
     # -- other shapes ----------------------------------------------------
-    Plate("plate-zome-what", "zome", "what", 21,
+    Plate("plate-zome-what", "zome", "what", 22,
           why="a zome is not a piece of a sphere, and the difference is "
               "the whole of why its panels are flat"),
-    Plate("plate-zome-golden", "zome", "golden", 21,
+    Plate("plate-zome-golden", "zome", "golden", 22,
           why="the famous one-panel zome, where the golden ratio is the "
               "design rather than a coincidence"),
-    Plate("plate-zome-versus", "zome", "versus", 21,
+    Plate("plate-zome-versus", "zome", "versus", 22,
           why="zome against geodesic dome, counted"),
-    Plate("plate-hex-twelve", "hex", "twelve", 22,
+    Plate("plate-hex-twelve", "hex", "twelve", 23,
           why="exactly twelve pentagons, always -- the fact that decides "
               "every hexagonal dome"),
-    Plate("plate-hex-compare", "hex", "compare", 22,
+    Plate("plate-hex-compare", "hex", "compare", 23,
           why="the hexagonal and geodesic domes side by side"),
-    Plate("plate-hex-warp", "hex", "warp", 22,
+    Plate("plate-hex-warp", "hex", "warp", 23,
           why="where hexagonal panels stop being flat, and what it costs"),
 
     # -- the catalogue ---------------------------------------------------
-    Plate("plate-framing", "world", "framing", 24,
+    Plate("plate-framing", "world", "framing", 25,
           why="hubs or no hubs, which is the trade this method is an "
               "answer to"),
-    Plate("plate-efficiency", "world", "efficiency", 24,
+    Plate("plate-efficiency", "world", "efficiency", 25,
           why="envelope per square foot of floor, measured across the "
               "whole catalogue"),
-    Plate("plate-economics", "world", "math_economics", 25,
+    Plate("plate-economics", "world", "math_economics", 26,
           why="every design in the catalogue, priced against each other"),
-    Plate("plate-colours", "all_domes", "colours", 25,
+    Plate("plate-colours", "all_domes", "colours", 26,
           why="sixteen finishes over the same shell"),
-    Plate("plate-floor-divisions", "all_domes", "floor", 25,
+    Plate("plate-floor-divisions", "all_domes", "floor", 26,
           why="four ways to divide a round floor, which is the question "
               "everybody asks second"),
-    Plate("plate-fitout", "all_domes", "fitout", 25,
+    Plate("plate-fitout", "all_domes", "fitout", 26,
           why="the part nobody films: what goes inside"),
 
     # -- the stem cell ---------------------------------------------------
-    Plate("plate-stem-cell", "seed_pitch", "stemcell", 26,
+    Plate("plate-stem-cell", "seed_pitch", "stemcell", 27,
           why="why the product line is called a stem cell: one body, many "
               "things it can become"),
-    Plate("plate-slices", "seed_pitch", "slices", 26,
+    Plate("plate-slices", "seed_pitch", "slices", 27,
           why="the roof comes apart too"),
-    Plate("plate-core-cost", "seed_pitch", "core_cost", 27,
+    Plate("plate-core-cost", "seed_pitch", "core_cost", 28,
           why="what buying the core once is worth -- the argument for "
               "sinking the cost into hardware that transfers"),
-    Plate("plate-system", "seed_pitch", "system", 27,
+    Plate("plate-system", "seed_pitch", "system", 28,
           why="why this only works as a system rather than as one "
               "building"),
-    Plate("plate-seeds-priced", "seed_pitch", "seeds", 28,
+    Plate("plate-seeds-priced", "seed_pitch", "seeds", 29,
           why="the whole catalogue of structures, priced"),
-    Plate("plate-ladder", "seed_pitch", "ladder", 28,
+    Plate("plate-ladder", "seed_pitch", "ladder", 29,
           why="how far down the price ladder goes, and what each rung "
               "gives up"),
-    Plate("plate-line", "line", "overview", 28,
+    Plate("plate-line", "line", "overview", 29,
           why="one building, fifteen stations: the manufacturing view of "
               "the same nine processes"),
+    # -- the park, which is the network argument drawn -------------------
+    Plate("plate-park-open", "dome_park", "open", 21,
+          why="an RV park for houses, which is the comparison everybody "
+              "reaches for first"),
+    Plate("plate-two-owners", "dome_park", "legend", 20,
+          why="two people, and what each of them owns -- the split the "
+              "whole arrangement rests on"),
+    Plate("plate-line-never-moves", "dome_park", "two_sides", 20,
+          why="the line between host and tenant, and why nothing "
+              "straddles it"),
+    Plate("plate-four-ways-roof", "dome_park", "stay", 21,
+          why="four ways to have a roof for a year, priced against each "
+              "other"),
+    Plate("plate-crossover", "dome_park", "crossover", 21,
+          why="how long you have to stay before owning beats renting"),
+    Plate("plate-host-exposure", "dome_park", "exposure", 21,
+          why="the host's side against the obvious alternative, including "
+              "the number that does not flatter the pad"),
+    Plate("plate-why-network", "dome_park", "network", 21,
+          why="why one pad is a transaction and many pads are a network"),
+    Plate("plate-hardware-set", "dome_park", "hardware", 28,
+          why="one hardware set, any size of house -- the transfer "
+              "argument as the park film states it"),
+    Plate("plate-what-does-not-move", "dome_park", "math_hardware", 28,
+          why="what does not move when the house does, counted"),
+    Plate("plate-ground-worth", "dome_park", "foundation", 19,
+          why="the part of a house you never take with you, priced across "
+              "the catalogue"),
+    Plate("plate-layers-worth", "dome_park", "math_layers", 18,
+          why="what each quilted layer is actually worth"),
 )
 
 
@@ -533,10 +563,7 @@ def validate_plates() -> None:
         f"{len(solver_gaps)} illustrations the solver cannot make; the films "
         "draw more than that")
 
-    # Every plate names a chapter the book actually has. This used to ask
-    # the old section store, which knew about a different book with twenty
-    # chapters in it, so the first plate placed in chapter twenty-four of
-    # the rewrite failed a check that had nothing to do with the rewrite.
+    # Every plate names a chapter the book actually has...
     from . import outline
 
     numbers = {chapter.number for chapter in outline.BOOK.chapters}
@@ -544,6 +571,41 @@ def validate_plates() -> None:
     assert not stray, (
         f"plates are placed in chapters the book does not have: {stray}; "
         f"it has 1..{max(numbers)}")
+
+    # ...and the chapter it names is the chapter whose prose prints it.
+    #
+    # This field drifted through two renumberings without anybody noticing,
+    # because nothing read it: what reaches a page is the image link in the
+    # manuscript. So something reads it now.
+    import re as _re
+
+    link = _re.compile(r"\]\(([a-z0-9\-]+)\.png\)")
+    printed: dict[str, int] = {}
+    for chapter in outline.BOOK.chapters:
+        path = chapter.path(outline.MANUSCRIPT_DIR)
+        if not path.is_file():
+            continue
+        for key in link.findall(path.read_text(encoding="utf-8")):
+            printed.setdefault(key, chapter.number)
+
+    misfiled = [
+        f"{plate.key}: filed under {plate.book_chapter}, printed in "
+        f"{printed[plate.key]}"
+        for plate in PLATES
+        if plate.key in printed and printed[plate.key] != plate.book_chapter]
+    assert not misfiled, (
+        f"{len(misfiled)} plates name a chapter they do not appear in:"
+        + store.NEWLINE_BULLET + store.NEWLINE_BULLET.join(misfiled[:10]))
+
+    # And how much rendered material the book is sitting on unused. Not an
+    # error -- a plate may be rendered ahead of the chapter that will want
+    # it -- but a large pile of them means the book has lost track of what
+    # it has, which is how it ended up with no chapter about doorways while
+    # holding two pictures of one.
+    unused = sorted({p.key for p in PLATES} - set(printed))
+    assert len(unused) <= 12, (
+        f"{len(unused)} plates are rendered and never printed; either use "
+        f"them or drop them: {unused[:12]}")
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -25,7 +25,9 @@ Here they are, in the order they happen:
 
 > {{nine.list}}
 
-That is the whole shop. Everything in this book that is not thinking is one of
+That is the whole shop.
+
+![The tool's own construction order, played end to end.](plate-one-dome-step-by-step.png) Everything in this book that is not thinking is one of
 those nine.
 
 ## Why verbs matter more than parts
@@ -129,4 +131,6 @@ something real.
 And it does not say nine is a natural number. Count differently and you get
 seven, or eleven. What is not arbitrary is the *order of magnitude*: this is a
 method with nine-ish operations, and the alternative is a method with fifty.
+
+![Inside one station: the manufacturing view of the same nine.](plate-station.png)
 That difference is the argument, and it survives any reasonable recount.

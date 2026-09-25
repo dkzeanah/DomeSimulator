@@ -98,6 +98,8 @@ This is the **only** cut made before assembly, and every stick of the same
 family takes the same one — so it runs through a saw bench in a batch rather
 than being fitted one at a time. Sixty A butts, then sixty B butts.
 
+![Setting the blade tilt.](plate-blade-tilt.png)
+
 ### 7. First stick down
 
 Butt now cut, dropped against its rail and its two fences. The head end is
@@ -170,6 +172,8 @@ it now if you are sheathing on the bench, which you should be.
 
 Then do it {{dome.panels}} times, in two families: {{dome.aaa}} equilateral
 and {{dome.bab}} isosceles.
+
+![Why the compound cut takes two saws.](plate-two-machines.png)
 
 ## What the jig is really buying
 
