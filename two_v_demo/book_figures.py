@@ -543,7 +543,8 @@ def render_hat_stack(figure: Figure, path_key: str | None = None) -> Path:
     return save(fig, path_key or figure.key)
 
 
-def render_mast_floor(figure: Figure, path_key: str | None = None) -> Path:
+def render_mast_floor(figure: Figure, path_key: str | None = None,
+                      directory: Path | None = None) -> Path:
     """The mast through the column, the floor that clamps it, and -- with
     ``rig`` -- the cables that hang the whole thing between trees.
 
@@ -599,9 +600,15 @@ def render_mast_floor(figure: Figure, path_key: str | None = None) -> Path:
     # timber over radial steel spokes from a hub that clamps the mast.
     if show_floor:
         ring = _base_ring(model)
-        ring = ring * (radius / radius)  # the floor matches the base ring
         centre = np.zeros((1, 3))
-        ring[:, 2] = floor_height_in
+        # A floor raised off the ground has to shrink to the dome it is
+        # inside. The base ring is the shell's widest circle; carrying that
+        # radius up to floor height put the deck through the frame and out
+        # the other side, which is what the earlier render showed.
+        lift = float(np.clip(floor_height_in, 0.0, radius * 0.98))
+        inset = float(np.sqrt(max(0.0, 1.0 - (lift / radius) ** 2)))
+        ring = ring * np.asarray([inset, inset, 1.0])
+        ring[:, 2] = lift
         deck = np.asarray(
             [np.asarray([centre[0], ring[i], ring[(i + 1) % len(ring)]])
              for i in range(len(ring))])
@@ -635,15 +642,22 @@ def render_mast_floor(figure: Figure, path_key: str | None = None) -> Path:
                 colors=CABLE[:3], linewidths=1.1))
 
     limit = radius * 1.2 if not show_rig else radius * zoom + radius
-    axes.set_xlim(-limit * 2.6 if show_rig else -limit,
-                  limit * 2.6 if show_rig else limit)
-    axes.set_ylim(-limit * 2.6 if show_rig else -limit,
-                  limit * 2.6 if show_rig else limit)
-    axes.set_zlim(0.0, mast_top * 1.12)
-    axes.set_box_aspect((1.0, 1.0, 0.66))
+    # With the rig on, the frame has to hold the trees and nothing more.
+    # Scaling the limit by the tree distance instead of by 2.6 times an
+    # already-padded limit left the dome occupying a fifth of the picture.
+    span = radius * 2.6 * 1.14 if show_rig else limit
+    low_z = -radius * 0.45 if show_rig else 0.0
+    high_z = mast_top * 1.12
+    axes.set_xlim(-span, span)
+    axes.set_ylim(-span, span)
+    axes.set_zlim(low_z, high_z)
+    # One inch is one inch in every direction. A fixed 1:1:0.66 box against
+    # limits that grow 2.6x sideways for the trees squashed the horizontal
+    # and stretched the vertical, and the hanging dome came out as a cone.
+    axes.set_box_aspect((2.0 * span, 2.0 * span, high_z - low_z))
     axes.view_init(elev=elevation, azim=azimuth)
     fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
-    return save(fig, path_key or figure.key)
+    return save(fig, path_key or figure.key, directory)
 
 
 def render_panel_svg(figure: Figure, path_key: str | None = None) -> Path:

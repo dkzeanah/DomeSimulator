@@ -209,8 +209,14 @@ def _markdown_to_html(text: str) -> str:
 
 
 def _resolve_images(text: str, embed: bool,
-                    found: list[str], missing: list[str]) -> str:
+                    found: list[str], missing: list[str],
+                    index: dict | None = None,
+                    figure_dir: Path | None = None) -> str:
     """Point every image link at the newest render, or drop it silently.
+
+    ``index`` and ``figure_dir`` belong to the book being built. They default
+    to *2 Trees*, which is what every caller wanted when this engine held one
+    book.
 
     A reader's book never shows authoring machinery: a figure that has not
     been rendered yet, or a photograph the author has not taken, is simply
@@ -223,11 +229,11 @@ def _resolve_images(text: str, embed: bool,
     def replace(match: re.Match) -> str:
         alt = match.group("alt")
         key = figure_key_from_src(match.group("src"))
-        path = latest_figure(key)
+        path = latest_figure(key, figure_dir)
         if path is None:
             missing.append(key)
             return ""
-        spec = figure_index(BOOK).get(key)
+        spec = (index if index is not None else figure_index(BOOK)).get(key)
         if spec is not None and spec.source == "photo_slot":
             # A photograph slot is a shot the author still has to take.
             missing.append(key)
@@ -264,7 +270,9 @@ def _strip_leading_heading(body: str, title: str) -> str:
 def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
               embed_images: bool = True, strict: bool = True,
               include_unwritten: bool = False,
-              contents: bool = True) -> tuple[str, BuildReport]:
+              contents: bool = True,
+              figure_dir: Path | None = None,
+              tokens=None) -> tuple[str, BuildReport]:
     """The whole book as one HTML document.
 
     This is the single source the reader, the HTML export and the PDF all
@@ -279,6 +287,11 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
     found: list[str] = []
     missing: list[str] = []
     written = 0
+    index = figure_index(book)
+
+    def images(body: str) -> str:
+        return _resolve_images(body, embed_images, found, missing,
+                               index, figure_dir)
 
     parts: list[str] = [
         '<div class="wrap">',
@@ -320,7 +333,7 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         if not text.strip() and not include_unwritten:
             continue
         parts.append(_markdown_to_html(
-            _resolve_images(text, embed_images, found, missing)))
+            images(text)))
         parts.append("<hr>")
 
     for part in book.parts:
@@ -354,14 +367,12 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
                 # The scaffold's page-plan comments are for the desk, not
                 # the reader; a published copy carries prose only.
                 parts.append(_markdown_to_html(
-                    _resolve_images(manuscript.HTML_COMMENT.sub("", body),
-                                    embed_images, found, missing)))
+                    images(manuscript.HTML_COMMENT.sub("", body))))
             else:
                 parts.append(
                     '<p class="unwritten">This chapter is planned but not '
                     "written yet. Its page plan is in the outline.</p>")
-                parts.append(_markdown_to_html(_resolve_images(
-                    body, embed_images, found, missing)))
+                parts.append(_markdown_to_html(images(body)))
             parts.append("</article>")
 
     for matter in book.back:
@@ -370,7 +381,7 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
             continue
         parts.append("<hr>")
         parts.append(_markdown_to_html(
-            _resolve_images(text, embed_images, found, missing)))
+            images(text)))
 
     parts.append("</div>")
 
@@ -382,7 +393,8 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         f"<style>{BOOK_CSS}</style></head><body>"
         + "\n".join(parts) + "</body></html>")
 
-    document = book_tokens.resolve(document, strict=strict)
+    resolve = tokens if tokens is not None else book_tokens.resolve
+    document = resolve(document, strict=strict)
 
     report = BuildReport(
         path=Path(), chapters_written=written,
@@ -396,7 +408,9 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
 # ----------------------------------------------------------------------
 
 def export_html(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
-                book: Book = BOOK, strict: bool = True) -> BuildReport:
+                book: Book = BOOK, strict: bool = True,
+                stem: str = "2-trees", figure_dir: Path | None = None,
+                tokens=None) -> BuildReport:
     """One self-contained HTML file: the book, pictures and all.
 
     Never overwrites. Open it in a browser to read; press Ctrl+P and choose
@@ -405,9 +419,10 @@ def export_html(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
     from .deliverables import next_version_path
 
     document, report = book_html(root, book, embed_images=True,
-                                 strict=strict)
+                                 strict=strict, figure_dir=figure_dir,
+                                 tokens=tokens)
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / "2-trees.html"
+    path = out_dir / f"{stem}.html"
     if path.exists():
         path = next_version_path(path)
     path.write_text(document, encoding="utf-8")
@@ -478,7 +493,8 @@ def _pdf_via_chrome(document: str, path: Path, chrome: str) -> None:
                 + (result.stderr or result.stdout or "no output")[-500:])
 
 
-def _pdf_via_pymupdf(document: str, path: Path) -> None:
+def _pdf_via_pymupdf(document: str, path: Path,
+                     archive: Path | None = None) -> None:
     """Lay the book out with PyMuPDF's own engine.
 
     Pure Python and always available, so this is the fallback that means a
@@ -492,7 +508,8 @@ def _pdf_via_pymupdf(document: str, path: Path) -> None:
     margin = 54  # three quarters of an inch
     frame = page + (margin, margin, -margin, -margin)
 
-    story = fitz.Story(html=document, archive=fitz.Archive(FIGURE_DIR))
+    story = fitz.Story(html=document,
+                       archive=fitz.Archive(archive or FIGURE_DIR))
     writer = fitz.DocumentWriter(str(path))
     more, pages = 1, 0
     while more:
@@ -510,7 +527,8 @@ def _pdf_via_pymupdf(document: str, path: Path) -> None:
 
 def export_pdf(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
                book: Book = BOOK, strict: bool = True,
-               backend: str = "auto") -> BuildReport:
+               backend: str = "auto", stem: str = "2-trees",
+               figure_dir: Path | None = None, tokens=None) -> BuildReport:
     """A typeset PDF of the whole book.
 
     ``backend`` is ``auto`` (Chrome if present, else PyMuPDF), ``chrome`` or
@@ -522,10 +540,11 @@ def export_pdf(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
     # embedded as base64 is enormous; PyMuPDF wants them as files it can
     # find in its archive. Either way, do not embed for PDF.
     document, report = book_html(root, book, embed_images=False,
-                                 strict=strict)
+                                 strict=strict, figure_dir=figure_dir,
+                                 tokens=tokens)
 
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / "2-trees.pdf"
+    path = out_dir / f"{stem}.pdf"
     if path.exists():
         path = next_version_path(path)
 
@@ -542,7 +561,7 @@ def export_pdf(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
         _pdf_via_chrome(document, path, chrome)
         used = f"Chrome ({Path(chrome).name})"
     elif backend == "pymupdf":
-        _pdf_via_pymupdf(document, path)
+        _pdf_via_pymupdf(document, path, figure_dir)
         used = "PyMuPDF"
     else:
         raise ValueError(f"unknown backend {backend!r}; "
