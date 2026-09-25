@@ -196,7 +196,7 @@ PART_RIGHT = Part(
 # ----------------------------------------------------------------------
 
 CH_SPLIT = Chapter(
-    number=4, ref="split", strand="story",
+    number=9, ref="split", strand="story",
     title="Stop Squaring. Start Splitting.",
     deck="A round log is already rotationally symmetric, and three splits "
          "give you eight identical sticks nobody had to measure",
@@ -219,7 +219,7 @@ CH_SPLIT = Chapter(
     ))
 
 CH_MEMBER = Chapter(
-    number=5, ref="member", strand="explain",
+    number=10, ref="member", strand="explain",
     title="One Eighth of a Tree, Used as a Stick",
     deck="What a 45-degree sector actually is, and why its shape is an "
          "advantage rather than something to apologise for",
@@ -247,7 +247,7 @@ CH_MEMBER = Chapter(
     ))
 
 CH_TWO_LENGTHS = Chapter(
-    number=6, ref="two_lengths", strand="howto",
+    number=11, ref="two_lengths", strand="howto",
     title="Two Lengths, and Neither Is the Chord",
     deck="72.000 and 63.670 inches are what the geometry says; what you cut "
          "is those minus a bite that does not scale",
@@ -269,7 +269,7 @@ CH_TWO_LENGTHS = Chapter(
     ))
 
 PART_STICK = Part(
-    number=2, title="The Stick",
+    number=3, title="The Stick",
     epigraph="Every radius of a round log is the same as every other. "
              "That is the whole trick, and the tree held the tolerance.",
     promise="How a standing tree becomes 120 structural members, what a "
@@ -282,7 +282,7 @@ PART_STICK = Part(
 # ----------------------------------------------------------------------
 
 CH_PINWHEEL = Chapter(
-    number=7, ref="pinwheel", strand="explain",
+    number=12, ref="pinwheel", strand="explain",
     title="Nothing Meets at the Corner",
     deck="Three sticks, each butting into the side of the next, and not one "
          "of them reaching the vertex it is named after",
@@ -309,7 +309,7 @@ CH_PINWHEEL = Chapter(
     ))
 
 CH_NINE = Chapter(
-    number=8, ref="nine", strand="explain",
+    number=13, ref="nine", strand="explain",
     title="Nine Processes, Whatever Size You Build",
     deck="Nine operations turn standing timber into a shell. Not nine "
          "categories with sub-steps hiding inside them -- nine setups",
@@ -334,7 +334,7 @@ CH_NINE = Chapter(
     ))
 
 CH_JIG = Chapter(
-    number=9, ref="jig", strand="howto",
+    number=14, ref="jig", strand="howto",
     title="One Flat Board, Forty Identical Panels",
     deck="The only thing in the whole build that has to be true is the "
          "bench, and everything else is measured from it",
@@ -378,7 +378,7 @@ CH_JIG = Chapter(
     ))
 
 PART_PANEL = Part(
-    number=3, title="The Panel",
+    number=4, title="The Panel",
     epigraph="Forty panels come off one board, and nothing on the board is "
              "adjusted between them. Panel forty is panel one.",
     promise="The joint that removes the hub, the nine processes that make "
@@ -392,7 +392,7 @@ PART_PANEL = Part(
 # ----------------------------------------------------------------------
 
 CH_RAISE = Chapter(
-    number=10, ref="raise", strand="howto",
+    number=15, ref="raise", strand="howto",
     title="Raising It",
     deck="Ten panels on the ring, thirty above them, and five around the "
          "apex -- in that order, and braced until the second course closes",
@@ -410,7 +410,7 @@ CH_RAISE = Chapter(
     ))
 
 CH_ONE_LAYER = Chapter(
-    number=11, ref="one_layer", strand="explain",
+    number=16, ref="one_layer", strand="explain",
     title="One Watertight Layer, and Only One",
     deck="Two impermeable skins with insulation between them is a trap, and "
          "this project shipped that design before it noticed",
@@ -431,7 +431,7 @@ CH_ONE_LAYER = Chapter(
     ))
 
 CH_HATS = Chapter(
-    number=12, ref="hats", strand="explain",
+    number=17, ref="hats", strand="explain",
     title="A Dome Is a Head, and It Wears Hats",
     deck="Bare skin, then layers, then one rain-slick shell over the lot -- "
          "the way you dress for the Arctic, and for the same reasons",
@@ -450,7 +450,7 @@ CH_HATS = Chapter(
     ))
 
 PART_SKIN = Part(
-    number=4, title="The Skin",
+    number=5, title="The Skin",
     epigraph="A frame that is out by an inch stands for fifty years. A skin "
              "that leaks for one winter takes the frame with it.",
     promise="Raising the shell, the single watertight layer over it, and the "
@@ -464,7 +464,7 @@ PART_SKIN = Part(
 # ----------------------------------------------------------------------
 
 CH_FLOOR = Chapter(
-    number=13, ref="floor", strand="howto",
+    number=18, ref="floor", strand="howto",
     title="The Floor Is the Other Thing to Get Right",
     deck="It carries everything you own, you touch it all day, and it is "
          "where the ground sends its water",
@@ -488,7 +488,7 @@ CH_FLOOR = Chapter(
     ))
 
 CH_PAD = Chapter(
-    number=14, ref="pad", strand="explain",
+    number=19, ref="pad", strand="explain",
     title="A Pad, Not a Plot",
     deck="The ground is the one thing you cannot take with you, so stop "
          "buying it",
@@ -505,7 +505,7 @@ CH_PAD = Chapter(
     ))
 
 PART_FLOOR = Part(
-    number=5, title="The Floor and the Ground",
+    number=6, title="The Floor and the Ground",
     epigraph="Everything you own sits on the floor, and the ground is the "
              "one part of the building you cannot take with you.",
     promise="The second thing that has to be right, the five ways to build "
@@ -518,7 +518,7 @@ PART_FLOOR = Part(
 # ----------------------------------------------------------------------
 
 CH_NETWORK = Chapter(
-    number=15, ref="network", strand="explain",
+    number=20, ref="network", strand="explain",
     title="Why a Network Beats a Park",
     deck="An RV park rents you a slot for a week. This rents you a "
          "foundation for a decade, and both sides come out ahead",
@@ -551,7 +551,7 @@ CH_NETWORK = Chapter(
     ))
 
 PART_NETWORK = Part(
-    number=6, title="The Network",
+    number=7, title="The Network",
     epigraph="Own the building. Rent the ground. Move when you want to, and "
              "leave a platform behind rather than a house.",
     promise="One chapter, the economics of a pad network from both sides of "
@@ -565,7 +565,7 @@ PART_NETWORK = Part(
 # ----------------------------------------------------------------------
 
 CH_ALTERNATIVES = Chapter(
-    number=16, ref="alternatives", strand="reference",
+    number=23, ref="alternatives", strand="reference",
     title="Every Other Way of Doing It",
     deck="Eight frame materials, eight sections, sixteen panels, nine "
          "claddings and twelve foundations -- priced on this dome, not in "
@@ -589,7 +589,7 @@ CH_ALTERNATIVES = Chapter(
     ))
 
 CH_FLOATING = Chapter(
-    number=17, ref="floating", strand="explain",
+    number=29, ref="floating", strand="explain",
     title="Hang It Between Two Trees",
     deck="The most speculative corner of the method: a mast, three cables, "
          "and no ground at all -- priced, and explicitly not rated",
@@ -608,13 +608,12 @@ CH_FLOATING = Chapter(
     ))
 
 PART_VARIATIONS = Part(
-    number=7, title="Variations",
+    number=11, title="Variations",
     epigraph="The same frame can wear more than one roof, stand on more than "
              "one ground, and hang from nothing at all.",
-    promise="The full gamut of substitutions with a price on each, and the "
-            "one variation that is a design possibility rather than a "
-            "tested build.",
-    chapters=(CH_ALTERNATIVES, CH_FLOATING))
+    promise="The one variation that is a design possibility rather than a "
+            "tested build, priced and explicitly not rated.",
+    chapters=(CH_FLOATING,))
 
 
 # ----------------------------------------------------------------------
@@ -622,7 +621,7 @@ PART_VARIATIONS = Part(
 # ----------------------------------------------------------------------
 
 CH_TOOLING = Chapter(
-    number=18, ref="tooling", strand="reference",
+    number=30, ref="tooling", strand="reference",
     title="The Software That Wrote This Book",
     deck="Eight three-dimensional worlds, a cost model and a solver -- what "
          "each one is for, what it can do, and how to open it",
@@ -636,7 +635,7 @@ CH_TOOLING = Chapter(
     ))
 
 CH_WORLDS = Chapter(
-    number=19, ref="worlds", strand="reference",
+    number=31, ref="worlds", strand="reference",
     title="What Each World Shows You",
     deck="One picture from every three-dimensional environment in the "
          "project, with what it is for and what to do in it",
@@ -670,7 +669,7 @@ CH_WORLDS = Chapter(
     ))
 
 PART_TOOLS = Part(
-    number=8, title="The Tools",
+    number=12, title="The Tools",
     epigraph="Every number in this book came out of a program about a second "
              "before it reached the page. Here are the programs.",
     promise="What ships with this book: the solver, the worlds, the cost "
@@ -712,8 +711,306 @@ BACK: tuple[Matter, ...] = (
 )
 
 
-PARTS: tuple[Part, ...] = (PART_RIGHT, PART_STICK, PART_PANEL, PART_SKIN,
-                           PART_FLOOR, PART_NETWORK, PART_VARIATIONS,
+
+# ----------------------------------------------------------------------
+# PART -- The geometry, from scratch
+# ----------------------------------------------------------------------
+
+CH_TRIANGLES = Chapter(
+    number=4, ref="triangles", strand="explain",
+    title="Why It Is Triangles",
+    deck="Every other polygon is a mechanism. A triangle is the only shape "
+         "that cannot change without something breaking",
+    derives=("two_v_demo.scratch_facts.steps_phi",),
+    pages=(
+        _p("opener", "Why it is triangles",
+           "The property that makes the whole method possible, before any "
+           "dome.", words=460,
+           figures=(_f("plate-why-triangles",
+                       "Why the shape is triangles at all."),),
+           beats=("a four-bar linkage folds; a triangle does not",
+                  "so a triangulated frame needs no rigid corner",
+                  "which is why the joint can be two flat faces touching")),
+        _p("text", "And why an icosahedron",
+           "Why the subdivision starts from that solid and not another.",
+           words=440,
+           figures=(_f("plate-icosahedron",
+                       "The solid everything starts from."),)),
+    ))
+
+CH_PHI = Chapter(
+    number=5, ref="phi", strand="explain",
+    title="Twelve Points From One Number",
+    deck="Where the golden ratio actually sits in this method -- and the "
+         "place everybody expects it and it is not",
+    derives=("two_v_demo.scratch_facts.PHI",),
+    pages=(
+        _p("opener", "Twelve points from one number",
+           "The golden ratio's real job: placing the icosahedron's twelve "
+           "vertices.", words=520,
+           figures=(_f("plate-phi",
+                       "Twelve points placed by one irrational number."),),
+           beats=("phi is the number whose square is itself plus one",
+                  "(0, +/-1, +/-phi) and its rotations give twelve points",
+                  "every one of them the same distance from its neighbours",
+                  "nobody measured anything")),
+        _p("text", "It survives all the way to the cut list",
+           "The long chord factor is exactly one over phi.", words=420),
+        _p("text", "And the place it is not",
+           "The ratio between the two struts is not golden, and that "
+           "surprise is worth a page.", words=380),
+    ))
+
+CH_FOUR_WAYS = Chapter(
+    number=6, ref="four_ways", strand="explain",
+    title="Two Lengths, Four Ways",
+    deck="Four independent routes to the same chord factor, and the "
+         "residual between them printed rather than promised",
+    derives=("two_v_demo.scratch_facts.build_demo_geometry",),
+    pages=(
+        _p("opener", "Two lengths, four ways",
+           "Never trust one calculation.", words=480,
+           figures=(_f("plate-chords-four-ways",
+                       "The two chord factors, derived four ways."),)),
+        _p("worked", "The four routes",
+           "Coordinates, central angle, law of cosines, and CAD.",
+           words=460,
+           figures=(_f("plate-cross-check",
+                       "Two ways of computing the same number, and the "
+                       "residual between them."),)),
+    ))
+
+CH_HEMISPHERE = Chapter(
+    number=7, ref="hemisphere", strand="explain",
+    title="Half a Sphere Is a Building",
+    deck="Where the sphere gets cut, what survives the cut, and how every "
+         "count in this book falls out of it",
+    derives=("wedge_book.numbers.quantities",),
+    pages=(
+        _p("opener", "Half a sphere is a building",
+           "The truncation, and why this one.", words=440,
+           figures=(_f("plate-hemisphere",
+                       "Where a sphere gets cut to become a building."),)),
+        _p("table", "Counting the building",
+           "Vertices, edges, faces, seams, base -- all from the topology.",
+           words=360,
+           figures=(_f("plate-counting",
+                       "Every part of the building, counted."),)),
+    ))
+
+CH_SIZE = Chapter(
+    number=8, ref="size", strand="howto",
+    title="Choosing a Size, At Last",
+    deck="One number decides the whole building, and this book picks it "
+         "from the stick rather than from the floor plan",
+    derives=("wedge_book.numbers.reference_designs",),
+    pages=(
+        _p("opener", "Choosing a size, at last",
+           "From factors to lumber.", words=460,
+           figures=(_f("plate-project",
+                       "The push that makes it geodesic."),)),
+        _p("table", "Five sizes, and what each is for",
+           "The reference designs.", words=420),
+    ))
+
+PART_MATHS = Part(
+    number=2, title="The Geometry, From Scratch",
+    epigraph="One irrational number places twelve points in perfectly even "
+             "space. Everything else in this book is consequences.",
+    promise="The whole derivation, on screen: why triangles, why an "
+            "icosahedron, where the golden ratio really sits, and the two "
+            "lengths that come out of it.",
+    chapters=(CH_TRIANGLES, CH_PHI, CH_FOUR_WAYS, CH_HEMISPHERE, CH_SIZE))
+
+
+# ----------------------------------------------------------------------
+# PART -- Other shapes
+# ----------------------------------------------------------------------
+
+CH_ZOME = Chapter(
+    number=21, ref="zome", strand="explain",
+    title="A Zome Is Not a Piece of a Sphere",
+    deck="Swept from a star of directions instead of subdivided from a "
+         "solid -- which is why every panel comes out flat, guaranteed",
+    derives=("two_v_demo.zome_geometry",),
+    pages=(
+        _p("opener", "A zome is not a piece of a sphere",
+           "The other way to make a round building.", words=500,
+           figures=(_f("plate-zome-what",
+                       "A zome is not a piece of a sphere."),)),
+        _p("text", "Every panel flat, guaranteed",
+           "What the sweep buys and what it costs.", words=420),
+        _p("text", "The famous one-panel zome",
+           "Where the golden ratio is the design rather than a "
+           "coincidence.", words=440,
+           figures=(_f("plate-zome-golden",
+                       "The famous one-panel zome."),)),
+        _p("text", "Against a geodesic dome",
+           "The comparison, counted.", words=380,
+           figures=(_f("plate-zome-versus",
+                       "Zome against geodesic dome."),)),
+    ))
+
+CH_HEX = Chapter(
+    number=22, ref="hex", strand="explain",
+    title="Exactly Twelve Pentagons, Always",
+    deck="A sheet of hexagons will not curve. Curvature is bought with "
+         "missing angle, and the price is always twelve pentagons",
+    derives=("two_v_demo.hex_geometry",),
+    pages=(
+        _p("opener", "Exactly twelve pentagons, always",
+           "The fact that decides every hexagonal dome.", words=480,
+           figures=(_f("plate-hex-twelve",
+                       "Exactly twelve pentagons. Always."),)),
+        _p("text", "Where the panels stop being flat",
+           "The warp, and what it costs.", words=420,
+           figures=(_f("plate-hex-warp",
+                       "The panels stop being flat."),)),
+        _p("spread", "The two domes, side by side",
+           "Hexagonal against geodesic.", words=360,
+           figures=(_f("plate-hex-compare",
+                       "The two domes, side by side."),)),
+    ))
+
+PART_SHAPES = Part(
+    number=8, title="Other Shapes",
+    epigraph="A zome is swept, a hex dome is tiled, and a geodesic dome is "
+             "subdivided. Three answers to one question about curvature.",
+    promise="The two other round buildings this project solves, what each "
+            "one is good at, and what it costs against the dome in the "
+            "rest of this book.",
+    chapters=(CH_ZOME, CH_HEX))
+
+
+# ----------------------------------------------------------------------
+# PART -- The catalogue
+# ----------------------------------------------------------------------
+
+CH_FRAMING = Chapter(
+    number=24, ref="framing", strand="explain",
+    title="Hubs, or No Hubs",
+    deck="The trade this whole method is an answer to, counted across "
+         "twelve designs rather than argued",
+    derives=("two_v_demo.hubless_geometry",),
+    pages=(
+        _p("opener", "Hubs, or no hubs",
+           "The decision every dome builder makes, and what each side "
+           "costs.", words=480,
+           figures=(_f("plate-framing", "Hubs, or no hubs."),)),
+        _p("text", "The cheapest wall is the one you never build",
+           "Envelope per square foot of floor, measured.", words=420,
+           figures=(_f("plate-efficiency",
+                       "Envelope per floor, measured."),)),
+    ))
+
+CH_CREATOR = Chapter(
+    number=25, ref="creator", strand="reference",
+    title="Twelve Buildings, One Tool",
+    deck="Every finish, floor division and fit-out the Dome Creator will "
+         "put on a shell, priced against each other",
+    derives=("materials.PANEL_TYPES", "wedge_book.alternatives.catalogue"),
+    pages=(
+        _p("opener", "Twelve buildings, one tool",
+           "What the catalogue contains and how to read it.", words=420,
+           figures=(_f("plate-economics",
+                       "Every design in the catalogue, priced."),)),
+        _p("table", "Finishes and floors",
+           "The decisions that change how it looks and lives.", words=320,
+           figures=(_f("plate-colours", "Sixteen finishes."),
+                    _f("plate-floor-divisions",
+                       "Four ways to divide a round floor."),
+                    _f("plate-fitout", "The part nobody films."))),
+    ))
+
+PART_CATALOGUE = Part(
+    number=9, title="The Catalogue",
+    epigraph="Twelve finished buildings, drawn by the tool that builds "
+             "them, with the price of every choice in each one.",
+    promise="The whole substitution space -- frame, section, panel, "
+            "cladding, foundation, finish and fit-out -- and the two "
+            "arguments that decide most of it.",
+    chapters=(CH_ALTERNATIVES, CH_FRAMING, CH_CREATOR))
+
+
+# ----------------------------------------------------------------------
+# PART -- The stem cell
+# ----------------------------------------------------------------------
+
+CH_STEMCELL = Chapter(
+    number=26, ref="stemcell", strand="explain",
+    title="Why We Call It a Stem Cell",
+    deck="One body, undifferentiated, that becomes fifteen different "
+         "buildings depending on what you put in it",
+    derives=("seed_model.FITOUT_ORDER", "seed_model.quote"),
+    pages=(
+        _p("opener", "Why we call it a stem cell",
+           "The product idea, and why it is not a model range.", words=480,
+           figures=(_f("plate-stem-cell",
+                       "One body, many things it can become."),)),
+        _p("text", "The socket at the top",
+           "The utility column, and why everything plugs into one place.",
+           words=460,
+           figures=(_f("plate-slices", "The roof comes apart too."),)),
+    ))
+
+CH_CORE = Chapter(
+    number=27, ref="core", strand="explain",
+    title="Sink the Money Into the Part That Moves",
+    deck="The utility core is thirty per cent of the dome and the only "
+         "part that transfers -- so it is the part worth overbuilding",
+    derives=("seed_model.core_parts", "seed_model.quote"),
+    pages=(
+        _p("opener", "Sink the money into the part that moves",
+           "The central economic argument of the product line.", words=540,
+           figures=(_f("plate-core-cost",
+                       "What buying it once is worth."),),
+           beats=("the core is 30 per cent of the dome's cost",
+                  "it is the only assembly that is not shaped by this dome",
+                  "so it outlives the shell it was bought for",
+                  "which turns a purchase into a fixed asset")),
+        _p("text", "What is actually in it",
+           "Fourteen parts, five services, one penetration.", words=520),
+        _p("text", "Moving it",
+           "What a transfer costs and what it is worth.", words=420,
+           figures=(_f("plate-system",
+                       "This only works as a system."),)),
+    ))
+
+CH_SEEDS = Chapter(
+    number=28, ref="seeds", strand="reference",
+    title="Fifteen Buildings From One Body",
+    deck="The catalogue a homestead wants second, priced from the same "
+         "frame and the same core",
+    derives=("seed_model.FITOUT_ORDER",),
+    pages=(
+        _p("opener", "Fifteen buildings from one body",
+           "The range, and what differentiates one from another.",
+           words=420,
+           figures=(_f("plate-seeds-priced",
+                       "The catalogue, priced."),)),
+        _p("table", "The catalogue", "Every structure, cheapest first.",
+           words=300,
+           figures=(_f("plate-ladder",
+                       "How far down the ladder goes."),)),
+        _p("text", "One building, fifteen stations",
+           "The manufacturing view of the same nine processes.", words=400,
+           figures=(_f("plate-line",
+                       "One building, fifteen stations."),)),
+    ))
+
+PART_STEMCELL = Part(
+    number=10, title="The Stem Cell",
+    epigraph="Buy the plumbing once. The shell is the thing that grows, "
+             "and the core is the thing that moves.",
+    promise="The product line: one undifferentiated body, the utility core "
+            "that is thirty per cent of it and outlives it, and the "
+            "fifteen buildings it becomes.",
+    chapters=(CH_STEMCELL, CH_CORE, CH_SEEDS))
+
+
+PARTS: tuple[Part, ...] = (PART_RIGHT, PART_MATHS, PART_STICK, PART_PANEL,
+                           PART_SKIN, PART_FLOOR, PART_NETWORK, PART_SHAPES,
+                           PART_CATALOGUE, PART_STEMCELL, PART_VARIATIONS,
                            PART_TOOLS)
 
 BOOK = Book(title=TITLE, subtitle=SUBTITLE, front=FRONT, parts=PARTS,

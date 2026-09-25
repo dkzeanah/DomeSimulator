@@ -304,6 +304,82 @@ PLATES: tuple[Plate, ...] = (
           why="chord factors turning into a cut list"),
     Plate("plate-against-itself", "seed_pitch", "against", 19,
           why="the three things the model says against its own argument"),
+# -- the geometry, derived on screen --------------------------------
+    Plate("plate-why-triangles", "scratch", "why_triangles", 4,
+          why="why the shape is triangles at all, before any dome"),
+    Plate("plate-icosahedron", "scratch", "why_ico", 5,
+          why="the solid the whole thing starts from, and why that one"),
+    Plate("plate-phi", "scratch", "m_phi", 6,
+          plan="Center/radius/base-polygon layout diagram",
+          why="twelve points placed by one irrational number -- the golden "
+              "ratio's actual job in this method"),
+    Plate("plate-project", "scratch", "project", 7,
+          why="the push that turns a subdivided icosahedron into a sphere"),
+    Plate("plate-chords-four-ways", "scratch", "m_chords", 7,
+          why="the two chord factors derived four independent ways and "
+              "cross-checked against each other"),
+    Plate("plate-hemisphere", "scratch", "hemisphere", 8,
+          why="where a sphere gets cut to become a building"),
+    Plate("plate-counting", "scratch", "m_counts", 8,
+          why="every part of the building counted from the topology"),
+    Plate("plate-cross-check", "scratch", "cross_check", 7,
+          why="two ways of computing the same number, and the residual "
+              "between them"),
+
+    # -- other shapes ----------------------------------------------------
+    Plate("plate-zome-what", "zome", "what", 21,
+          why="a zome is not a piece of a sphere, and the difference is "
+              "the whole of why its panels are flat"),
+    Plate("plate-zome-golden", "zome", "golden", 21,
+          why="the famous one-panel zome, where the golden ratio is the "
+              "design rather than a coincidence"),
+    Plate("plate-zome-versus", "zome", "versus", 21,
+          why="zome against geodesic dome, counted"),
+    Plate("plate-hex-twelve", "hex", "twelve", 22,
+          why="exactly twelve pentagons, always -- the fact that decides "
+              "every hexagonal dome"),
+    Plate("plate-hex-compare", "hex", "compare", 22,
+          why="the hexagonal and geodesic domes side by side"),
+    Plate("plate-hex-warp", "hex", "warp", 22,
+          why="where hexagonal panels stop being flat, and what it costs"),
+
+    # -- the catalogue ---------------------------------------------------
+    Plate("plate-framing", "world", "framing", 24,
+          why="hubs or no hubs, which is the trade this method is an "
+              "answer to"),
+    Plate("plate-efficiency", "world", "efficiency", 24,
+          why="envelope per square foot of floor, measured across the "
+              "whole catalogue"),
+    Plate("plate-economics", "world", "math_economics", 25,
+          why="every design in the catalogue, priced against each other"),
+    Plate("plate-colours", "all_domes", "colours", 25,
+          why="sixteen finishes over the same shell"),
+    Plate("plate-floor-divisions", "all_domes", "floor", 25,
+          why="four ways to divide a round floor, which is the question "
+              "everybody asks second"),
+    Plate("plate-fitout", "all_domes", "fitout", 25,
+          why="the part nobody films: what goes inside"),
+
+    # -- the stem cell ---------------------------------------------------
+    Plate("plate-stem-cell", "seed_pitch", "stemcell", 26,
+          why="why the product line is called a stem cell: one body, many "
+              "things it can become"),
+    Plate("plate-slices", "seed_pitch", "slices", 26,
+          why="the roof comes apart too"),
+    Plate("plate-core-cost", "seed_pitch", "core_cost", 27,
+          why="what buying the core once is worth -- the argument for "
+              "sinking the cost into hardware that transfers"),
+    Plate("plate-system", "seed_pitch", "system", 27,
+          why="why this only works as a system rather than as one "
+              "building"),
+    Plate("plate-seeds-priced", "seed_pitch", "seeds", 28,
+          why="the whole catalogue of structures, priced"),
+    Plate("plate-ladder", "seed_pitch", "ladder", 28,
+          why="how far down the price ladder goes, and what each rung "
+              "gives up"),
+    Plate("plate-line", "line", "overview", 28,
+          why="one building, fifteen stations: the manufacturing view of "
+              "the same nine processes"),
 )
 
 
@@ -457,14 +533,17 @@ def validate_plates() -> None:
         f"{len(solver_gaps)} illustrations the solver cannot make; the films "
         "draw more than that")
 
-    # Every book chapter that has a plate has a real chapter number.
-    book = store.load_json()
-    numbers = {c.index + sum(len(p.chapters) for p in book.parts[:pi])
-               for pi, part in enumerate(book.parts)
-               for c in part.chapters}
-    for plate in PLATES:
-        assert plate.book_chapter in numbers or plate.book_chapter <= 20, (
-            plate.key, plate.book_chapter)
+    # Every plate names a chapter the book actually has. This used to ask
+    # the old section store, which knew about a different book with twenty
+    # chapters in it, so the first plate placed in chapter twenty-four of
+    # the rewrite failed a check that had nothing to do with the rewrite.
+    from . import outline
+
+    numbers = {chapter.number for chapter in outline.BOOK.chapters}
+    stray = sorted({p.book_chapter for p in PLATES} - numbers)
+    assert not stray, (
+        f"plates are placed in chapters the book does not have: {stray}; "
+        f"it has 1..{max(numbers)}")
 
 
 def main(argv: list[str] | None = None) -> int:

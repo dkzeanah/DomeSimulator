@@ -201,6 +201,65 @@ def _table() -> dict[str, Token]:
     add("net.pad_payback", "how long a pad takes to pay back",
         lambda: f"{pad_case.payback_years():,.1f} years")
 
+    # -- the geometry, from scratch ----------------------------------
+    from two_v_demo import scratch_facts
+
+    phi = scratch_facts.PHI
+    add("phi.value", "the golden ratio", lambda: f"{phi:.9f}")
+    add("phi.short", "the golden ratio, to three places",
+        lambda: f"{phi:.3f}")
+    add("phi.reciprocal", "one over the golden ratio",
+        lambda: f"{1.0 / phi:.9f}")
+    add("phi.radius", "how far the twelve points sit from the centre",
+        lambda: f"{(1.0 + phi * phi) ** 0.5:.6f}")
+    add("phi.chord_ratio", "the long chord over the short chord",
+        lambda: f"{values['a_chord_in'].value / values['b_chord_in'].value:.6f}")
+    add("phi.icosa_points", "points in an icosahedron", lambda: "12")
+    add("phi.icosa_faces", "faces in an icosahedron", lambda: "20")
+
+    # -- the stem cell -----------------------------------------------
+    import seed_model
+
+    catalogue = []
+    for key in seed_model.FITOUT_ORDER:
+        try:
+            catalogue.append((key, seed_model.fitout(key).label,
+                              seed_model.quote(key).price))
+        except Exception:
+            continue
+    quote = seed_model.quote()
+
+    def seed_table() -> str:
+        rows = sorted(catalogue, key=lambda r: r[2])
+        return "\n".join(f"{label:<26}${price:>10,.0f}"
+                          for _key, label, price in rows)
+
+    add("seed.count", "structures in the catalogue",
+        lambda: str(len(catalogue)))
+    add("seed.cheapest", "the cheapest structure in the catalogue",
+        lambda: min(catalogue, key=lambda r: r[2])[1])
+    add("seed.dearest", "the dearest structure in the catalogue",
+        lambda: max(catalogue, key=lambda r: r[2])[1])
+    add("seed.cheapest_usd", "what the cheapest one lists at",
+        lambda: f"{min(catalogue, key=lambda r: r[2])[2]:,.0f}")
+    add("seed.dearest_usd", "what the dearest one lists at",
+        lambda: f"{max(catalogue, key=lambda r: r[2])[2]:,.0f}")
+    add("seed.table", "the whole catalogue, priced", seed_table)
+
+    # -- the core that transfers -------------------------------------
+    add("core.cost", "what the utility core costs to build",
+        lambda: f"{quote.core_cost:,.0f}")
+    add("core.share", "the core as a percentage of the dome's cost",
+        lambda: f"{quote.core_share * 100.0:,.0f}")
+    add("core.parts", "how many parts the core is documented as",
+        lambda: str(len(seed_model.core_parts())))
+    add("core.services", "how many services the core carries",
+        lambda: str(len({p.service for p in seed_model.core_parts()})))
+    add("core.moves", "what moving a core to the next dome costs",
+        lambda: f"{seed_model.declared('core_move_usd'):,.0f}")
+    add("core.life", "how long a core lasts, in years",
+        lambda: f"{seed_model.declared('core_service_life_years'):,.0f}")
+
     # -- cross-references --------------------------------------------
     for chapter in book.chapters:
         add(f"ch.{chapter.key}", f"chapter number of {chapter.title!r}",
