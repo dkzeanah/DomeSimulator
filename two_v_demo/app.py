@@ -228,6 +228,12 @@ class MasterclassApp:
         self.font_cache: dict[tuple[int, bool], object] = {}
         self.ui_buttons: dict[str, object] = {}
         self.plate_mode = False
+        self.plate_bare = False
+        """Draw the world with no text on it at all.
+
+        Stronger than plate_mode, which only drops the transport controls.
+        This drops the film's own headline, cards and callouts too, which is
+        what a book's frontispiece wants and what nothing else does."""
         """Draw the film without its transport controls.
 
         A frame of a film printed in a book should not carry the film's
@@ -894,6 +900,14 @@ class MasterclassApp:
         # four-second sting goes full-frame inside a teaching lesson.
         chapter = self.chapters[self.chapter_index]
         style = chapter.overlay or self.lesson.style
+        if self.plate_bare:
+            # A frontispiece: the world and nothing written on it. Every
+            # other plate keeps the film's own words, because those are what
+            # make a film frame worth printing; a title page is the one
+            # place that wants the picture on its own.
+            import pygame as _pg
+
+            return _pg.Surface((width, height), _pg.SRCALPHA)
         if self.portrait_plan is not None and self.adapting:
             # A phone frame: the stacked layout planned before the scene was drawn.
             from . import portrait_ui
@@ -2852,6 +2866,7 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
     )
     if action == "shots":
         app.plate_mode = bool(cfg.get("plate", False))
+        app.plate_bare = bool(cfg.get("bare", False))
     if action == "shots" and cfg.get("shots"):
         try:
             times = [float(v.strip()) for v in str(cfg["shots"]).split(",")

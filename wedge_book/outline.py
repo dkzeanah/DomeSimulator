@@ -58,12 +58,10 @@ ROOT = store.ROOT
 MANUSCRIPT_DIR = store.BOOK_DIR / "manuscript"
 FIGURE_DIR = store.BOOK_DIR / "figures"
 EXPORT_DIR = ROOT / "deliverables" / "book"
-STEM = "the-wedge-method"
+STEM = "the-40-hour-cabin"
 
-TITLE = "The Wedge Method"
-SUBTITLE = ("Let the frame be lumpy. Get the skin and the floor right. "
-            "A dome from split logs, and the two layers that decide "
-            "whether it lasts")
+TITLE = "Geodesic Dome: 2V Timberframe"
+SUBTITLE = "The 40 Hour Cabin"
 
 
 # ----------------------------------------------------------------------
@@ -760,7 +758,12 @@ PART_TOOLS = Part(
 FRONT: tuple[Matter, ...] = (
     Matter("title", "Title page", (
         _p("text", "Title page", "Title, subtitle and the one-line claim.",
-           words=120),
+           words=120,
+           figures=(_f("plate-frame-on-land",
+                       "The frame, on its own land."),)),
+        _p("text", "Forty hours",
+           "The arithmetic the title rests on, and the honest caveat "
+           "about doing it linearly.", words=560),
         _p("text", "What this book is", "Three strands and how to read.",
            words=560),
         _p("text", "Every number here is computed",

@@ -75,6 +75,8 @@ class Plate:
     caption: str = ""
     #: What this plate is showing that the solver cannot.
     why: str = ""
+    #: True for a frontispiece: the world with no text on it at all.
+    bare: bool = False
 
     @property
     def path(self) -> Path:
@@ -410,6 +412,21 @@ PLATES: tuple[Plate, ...] = (
               "the catalogue"),
     Plate("plate-layers-worth", "dome_park", "math_layers", 19,
           why="what each quilted layer is actually worth"),
+    # -- the frontispiece -------------------------------------------------
+    Plate("plate-cabin", "world", "show_02", 1, at=0.55,
+          title="Split-Log Homestead",
+          why="the frontispiece: a split-log timber dome standing in "
+              "woodland, which is the building this book is about"),
+    Plate("plate-lodge", "world", "show_03", 1, at=0.55,
+          title="Whole Trunk Lodge",
+          why="the same method at twenty feet, in whole trunks"),
+    Plate("plate-frame-on-land", "seed_pitch", "frame", 1, at=0.62,
+          bare=True, title="The frame is already on your land",
+          why="the wedge timber frame standing in its own woodland, which "
+              "is what this book is a picture of"),
+    Plate("plate-frame-cost", "seed_pitch", "frame_cost", 1, at=0.5,
+          title="What the frame costs",
+          why="the same frame with its price on it, outdoors")
 )
 
 
@@ -442,12 +459,15 @@ def render(plates: tuple[Plate, ...] | None = None,
     """
     plates = plates if plates is not None else PLATES
     registry = lessons()
-    wanted: dict[str, list[Plate]] = {}
+    # Grouped by film AND by whether the frame is bare, because bare is a
+    # property of the whole render rather than of one shot: a frontispiece
+    # and an ordinary plate from the same film need two runs.
+    wanted: dict[tuple[str, bool], list[Plate]] = {}
     for plate in plates:
-        wanted.setdefault(plate.lesson, []).append(plate)
+        wanted.setdefault((plate.lesson, plate.bare), []).append(plate)
 
     made, missing, failed = [], [], []
-    for key, group in wanted.items():
+    for (key, bare), group in wanted.items():
         lesson = registry.get(key)
         if lesson is None:
             failed.append(f"no lesson {key!r}")
@@ -464,11 +484,12 @@ def render(plates: tuple[Plate, ...] | None = None,
             "lesson": key,
             "action": "shots",
             "shots": ",".join(f"{t:.2f}" for t in times.values()),
+            "bare": bare,
             # No scrubber, no play button, no PAUSED. A printed page has
             # none of those and the film's layout is unchanged without them.
             "plate": True,
         }
-        print(f"{key}: {len(times)} plates")
+        print(f"{key}: {len(times)} plates{' (bare)' if bare else ''}")
         result = subprocess.run(
             [PYTHON, *PYTHON_ARGS, "-c",
              "import json,sys;from two_v_demo import app;"

@@ -294,6 +294,26 @@ def _table() -> dict[str, Token]:
     add("sys.pad_table", "the pad's materials, line by line",
         lambda: bill["pad"].table())
 
+    clock = systems.build_clock()
+    add("hr.split_session", "wedges from one session at the log",
+        lambda: f"{clock['wedges_per_session']:,.0f}")
+    add("hr.session", "how long that session is, in hours",
+        lambda: f"{clock['session_hours']:,.0f}")
+    add("hr.split", "hours to split every member",
+        lambda: f"{clock['split_hours']:,.0f}")
+    add("hr.minutes", "minutes per member, tree to standing",
+        lambda: f"{clock['minutes_per_member']:,.0f}")
+    add("hr.straight", "hours for the whole frame, straight through",
+        lambda: f"{clock['straight_hours']:,.0f}")
+    add("hr.redundancy", "what is added for error, as a percentage",
+        lambda: f"{clock['redundancy'] * 100:,.0f}")
+    add("hr.total", "the build, with error allowed for",
+        lambda: f"{clock['with_error']:,.1f}")
+    add("hr.week", "the working week this book is named after",
+        lambda: f"{clock['week']:,.0f}")
+    add("hr.split_share", "splitting as a share of the whole build",
+        lambda: f"{clock['split_share'] * 100:,.0f}")
+
     add("air.cfm", "cubic feet a minute the barrier needs",
         lambda: f"{air['cfm']:,.0f}")
     add("air.volume", "the interior, in cubic feet",

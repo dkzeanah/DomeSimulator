@@ -161,6 +161,23 @@ EXTERNAL_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
      "the owner's stated rule: each flap may run out to half the member's "
      "length, so the screws are spread along the stick rather than "
      "clustered at its end"),
+    # -- the clock ----------------------------------------------------
+    ("split_wedges_per_session", 30.0, "wedges",
+     "the owner's own measured rate: what one four-hour session at the log "
+     "with a meagre chainsaw actually produces"),
+    ("split_session_hours", 4.0, "hours",
+     "the length of that session, measured rather than planned"),
+    ("minutes_per_member_erected", 15.0, "minutes",
+     "the owner's own figure for one member all the way through: split, "
+     "cut, drilled, joined and standing in the shell. It averages the fast "
+     "work and the slow work rather than timing one operation"),
+    ("error_redundancy_fraction", 0.25, "fraction",
+     "what is added for getting it wrong. Not contingency on price -- time, "
+     "for the stick that splits off the radius, the panel that goes down in "
+     "the wrong order, and the hour spent looking for the drill"),
+    ("working_week_hours", 40.0, "hours",
+     "the week this book is named after, which is a target rather than a "
+     "result"),
 )
 
 CONSTANTS: dict[str, float] = {name: value
@@ -451,6 +468,43 @@ def v_bracket() -> dict:
     }
 
 
+def build_clock() -> dict:
+    """The forty-hour week this book is named after, worked out.
+
+    Every figure here is the owner's own measured rate rather than an
+    estimate from a process model: what a session at the log produces, and
+    what one member costs from tree to standing. The arithmetic is the only
+    part this module does.
+    """
+    geometry = _geometry()
+    members = float(geometry.member_count)
+
+    per_session = declared("split_wedges_per_session")
+    session = declared("split_session_hours")
+    split_hours = members / per_session * session
+
+    minutes = declared("minutes_per_member_erected")
+    straight_hours = members * minutes / 60.0
+
+    redundancy = declared("error_redundancy_fraction")
+    with_error = straight_hours * (1.0 + redundancy)
+    week = declared("working_week_hours")
+
+    return {
+        "members": members,
+        "wedges_per_session": per_session,
+        "session_hours": session,
+        "split_hours": split_hours,
+        "minutes_per_member": minutes,
+        "straight_hours": straight_hours,
+        "redundancy": redundancy,
+        "with_error": with_error,
+        "week": week,
+        "spare": week - with_error,
+        "split_share": split_hours / straight_hours,
+    }
+
+
 def total() -> float:
     return sum(bill.cost for bill in bills())
 
@@ -543,6 +597,21 @@ def validate_systems() -> None:
     assert water["kwh_per_litre"] > 1.0, (
         "thermoelectric condensing has become cheap per litre; check the "
         "assumption before printing it")
+
+    clock = build_clock()
+    assert clock["members"] == 120, clock
+    # The arithmetic the title rests on. If any of the three measured rates
+    # moves far enough that the week stops being a week, the book is called
+    # the wrong thing and this should say so rather than round quietly.
+    assert abs(clock["split_hours"] - 16.0) < 0.5, clock["split_hours"]
+    assert abs(clock["straight_hours"] - 30.0) < 0.5, clock
+    assert clock["with_error"] <= clock["week"], (
+        f"the build comes to {clock['with_error']:,.1f} hours against a "
+        f"{clock['week']:,.0f} hour week; the title no longer holds")
+    assert clock["with_error"] > clock["week"] * 0.8, (
+        "the build now fits the week with room to spare, which means the "
+        "redundancy is doing nothing and should be re-measured")
+    assert 0.4 < clock["split_share"] < 0.7, clock["split_share"]
 
     bracket = v_bracket()
     assert bracket["holes_per_flap"] == 4, bracket
