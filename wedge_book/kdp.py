@@ -521,7 +521,17 @@ def build(path: Path | None = None, book: store.Book | None = None) -> Path:
     faces = register_fonts()
     sheet = styles(faces)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = Path(path) if path else (OUT_DIR / "the-wedge-method-kdp.pdf")
+    # Rendered output is append-only in this repository, and the default name
+    # is one that already exists the moment the book has been built once. A
+    # plain --check would have quietly replaced the copy somebody had already
+    # sent somewhere, so the default climbs a version instead. An explicit
+    # path is the caller's own choice and is left alone.
+    if path:
+        path = Path(path)
+    else:
+        from two_v_demo.deliverables import next_version_path
+
+        path = next_version_path(OUT_DIR / "the-wedge-method-kdp.pdf")
 
     title = book.metadata.get("title", "Untitled")
     subtitle = book.metadata.get("subtitle", "")
