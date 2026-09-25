@@ -23,7 +23,15 @@ WHAT EACH ONE IS FOR
 ``plates``        every film frame names a real chapter of a real film
 ``paragraphs``    a display formula is still alone on its line
 ``mathtext``      the LaTeX in the manuscript converts
-``kdp``           the finished PDF is a file Amazon will accept
+``outline``       the new book's structure is coherent and its pictures exist
+``graphics``      the seam section is a real slice, and the renders are drawn
+``network``       the pad adds up for the tenant AND for the host
+``tooling``       every program the last part names exists and does what is
+                  claimed of it
+``tokens``        every live number in the prose resolves
+``assembly``      the book builds, with no unresolved token and no missing
+                  picture
+``kdp``           the older typeset interior is a file Amazon will accept
 
 ``kdp`` is not in the default sweep because it lays out a 400-page book and
 that is minutes rather than seconds. ``--full`` includes it.
@@ -37,6 +45,12 @@ import traceback
 CHECKS: tuple[tuple[str, str, str], ...] = (
     ("store", "wedge_book.store", "validate_store"),
     ("numbers", "wedge_book.numbers", "validate_numbers"),
+    ("outline", "wedge_book.outline", "validate_outline"),
+    ("graphics", "wedge_book.graphics", "validate_graphics"),
+    ("network", "wedge_book.network", "validate_network"),
+    ("tooling", "wedge_book.tooling", "validate_tooling"),
+    ("tokens", "wedge_book.tokens", "validate_tokens"),
+    ("assembly", "wedge_book.build", "validate_build"),
     ("alternatives", "wedge_book.alternatives", "validate_alternatives"),
     ("figures", "wedge_book.figures", "validate_figures"),
     ("plates", "wedge_book.plates", "validate_plates"),

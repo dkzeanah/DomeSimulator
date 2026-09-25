@@ -313,7 +313,7 @@ CH_NINE = Chapter(
     title="Nine Processes, Whatever Size You Build",
     deck="Nine operations turn standing timber into a shell. Not nine "
          "categories with sub-steps hiding inside them -- nine setups",
-    derives=("two_v_demo.book_math.process_list",),
+    derives=("two_v_demo.franken_economics.PROCESSES",),
     pages=(
         _p("opener", "Nine processes, whatever size you build",
            "The crux of the book: the verb list is shorter than the parts "
