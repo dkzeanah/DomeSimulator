@@ -461,7 +461,7 @@ CH_ONE_LAYER = Chapter(
     ))
 
 CH_HATS = Chapter(
-    number=18, ref="hats", strand="explain",
+    number=19, ref="hats", strand="explain",
     title="A Dome Is a Head, and It Wears Hats",
     deck="Bare skin, then layers, then one rain-slick shell over the lot -- "
          "the way you dress for the Arctic, and for the same reasons",
@@ -479,6 +479,51 @@ CH_HATS = Chapter(
                        "The envelope gaining a layer a winter."),)),
     ))
 
+CH_SEAM_MODULE = Chapter(
+    number=18, ref="seam_module", strand="explain",
+    title="The Seam Does Four Jobs",
+    deck="Gutter, vent, dehumidifier and air barrier -- all of it in the "
+         "space two sawn faces were always going to leave",
+    derives=("wedge_book.systems.seam_module",
+             "wedge_book.systems.water_comparison"),
+    pages=(
+        _p("opener", "The seam does four jobs",
+           "The channel, fitted out.", words=520,
+           figures=(_f("keys-everywhere",
+                       "Every seam in the dome, and the channel in each "
+                       "one."),),
+           beats=("the channel exists whether or not anybody uses it",
+                  "rain in at the ridge, water out at the bottom",
+                  "air along the wood faces, which is what dries timber",
+                  "a desiccant leg for when the air will not do it",
+                  "and a plate that condenses on purpose")),
+        _p("text", "The air barrier",
+           "Positive pressure, and why a leak stops being a leak.",
+           words=520),
+        _p("text", "Condensing on purpose",
+           "The thermoelectric plates, and the number that decides how "
+           "seriously to take them.", words=560),
+        _p("table", "What the module costs", "Line by line.", words=320),
+    ))
+
+CH_BOM = Chapter(
+    number=34, ref="bom", strand="reference",
+    title="Every Part, Priced",
+    deck="The column, the pad, the hardware, the power bench and the water "
+         "bench -- the whole bill, with a source on every line",
+    derives=("wedge_book.systems.bills",),
+    pages=(
+        _p("opener", "Every part, priced",
+           "How to read the bills and what is deliberately separate.",
+           words=420),
+        _p("table", "The utility column", "Including the steel.",
+           words=260),
+        _p("table", "Power and water", "The two benches.", words=300),
+        _p("table", "Hardware and pad", "Stainless, and the host's bill.",
+           words=280),
+    ))
+
+
 PART_SKIN = Part(
     number=5, title="The Skin",
     epigraph="A frame that is out by an inch stands for fifty years. A skin "
@@ -486,7 +531,7 @@ PART_SKIN = Part(
     promise="Raising the shell, the single watertight layer over it, and the "
             "hats that go on afterwards -- the part of the building this "
             "book says matters most.",
-    chapters=(CH_RAISE, CH_ONE_LAYER, CH_HATS))
+    chapters=(CH_RAISE, CH_ONE_LAYER, CH_SEAM_MODULE, CH_HATS))
 
 
 # ----------------------------------------------------------------------
@@ -494,7 +539,7 @@ PART_SKIN = Part(
 # ----------------------------------------------------------------------
 
 CH_FLOOR = Chapter(
-    number=19, ref="floor", strand="howto",
+    number=20, ref="floor", strand="howto",
     title="The Floor Is the Other Thing to Get Right",
     deck="It carries everything you own, you touch it all day, and it is "
          "where the ground sends its water",
@@ -518,7 +563,7 @@ CH_FLOOR = Chapter(
     ))
 
 CH_PAD = Chapter(
-    number=20, ref="pad", strand="explain",
+    number=21, ref="pad", strand="explain",
     title="A Pad, Not a Plot",
     deck="The ground is the one thing you cannot take with you, so stop "
          "buying it",
@@ -548,7 +593,7 @@ PART_FLOOR = Part(
 # ----------------------------------------------------------------------
 
 CH_NETWORK = Chapter(
-    number=21, ref="network", strand="explain",
+    number=22, ref="network", strand="explain",
     title="Why a Network Beats a Park",
     deck="An RV park rents you a slot for a week. This rents you a "
          "foundation for a decade, and both sides come out ahead",
@@ -595,7 +640,7 @@ PART_NETWORK = Part(
 # ----------------------------------------------------------------------
 
 CH_ALTERNATIVES = Chapter(
-    number=24, ref="alternatives", strand="reference",
+    number=25, ref="alternatives", strand="reference",
     title="Every Other Way of Doing It",
     deck="Eight frame materials, eight sections, sixteen panels, nine "
          "claddings and twelve foundations -- priced on this dome, not in "
@@ -619,7 +664,7 @@ CH_ALTERNATIVES = Chapter(
     ))
 
 CH_FLOATING = Chapter(
-    number=30, ref="floating", strand="explain",
+    number=31, ref="floating", strand="explain",
     title="Hang It Between Two Trees",
     deck="The most speculative corner of the method: a mast, three cables, "
          "and no ground at all -- priced, and explicitly not rated",
@@ -651,7 +696,7 @@ PART_VARIATIONS = Part(
 # ----------------------------------------------------------------------
 
 CH_TOOLING = Chapter(
-    number=31, ref="tooling", strand="reference",
+    number=32, ref="tooling", strand="reference",
     title="The Software That Wrote This Book",
     deck="Eight three-dimensional worlds, a cost model and a solver -- what "
          "each one is for, what it can do, and how to open it",
@@ -665,7 +710,7 @@ CH_TOOLING = Chapter(
     ))
 
 CH_WORLDS = Chapter(
-    number=32, ref="worlds", strand="reference",
+    number=33, ref="worlds", strand="reference",
     title="What Each World Shows You",
     deck="One picture from every three-dimensional environment in the "
          "project, with what it is for and what to do in it",
@@ -705,7 +750,7 @@ PART_TOOLS = Part(
     promise="What ships with this book: the solver, the worlds, the cost "
             "model and the calculators, with what each is for and how to "
             "drive it.",
-    chapters=(CH_TOOLING, CH_WORLDS))
+    chapters=(CH_TOOLING, CH_WORLDS, CH_BOM))
 
 
 # ----------------------------------------------------------------------
@@ -858,7 +903,7 @@ PART_MATHS = Part(
 # ----------------------------------------------------------------------
 
 CH_ZOME = Chapter(
-    number=22, ref="zome", strand="explain",
+    number=23, ref="zome", strand="explain",
     title="A Zome Is Not a Piece of a Sphere",
     deck="Swept from a star of directions instead of subdivided from a "
          "solid -- which is why every panel comes out flat, guaranteed",
@@ -882,7 +927,7 @@ CH_ZOME = Chapter(
     ))
 
 CH_HEX = Chapter(
-    number=23, ref="hex", strand="explain",
+    number=24, ref="hex", strand="explain",
     title="Exactly Twelve Pentagons, Always",
     deck="A sheet of hexagons will not curve. Curvature is bought with "
          "missing angle, and the price is always twelve pentagons",
@@ -917,7 +962,7 @@ PART_SHAPES = Part(
 # ----------------------------------------------------------------------
 
 CH_FRAMING = Chapter(
-    number=25, ref="framing", strand="explain",
+    number=26, ref="framing", strand="explain",
     title="Hubs, or No Hubs",
     deck="The trade this whole method is an answer to, counted across "
          "twelve designs rather than argued",
@@ -934,7 +979,7 @@ CH_FRAMING = Chapter(
     ))
 
 CH_CREATOR = Chapter(
-    number=26, ref="creator", strand="reference",
+    number=27, ref="creator", strand="reference",
     title="Twelve Buildings, One Tool",
     deck="Every finish, floor division and fit-out the Dome Creator will "
          "put on a shell, priced against each other",
@@ -967,7 +1012,7 @@ PART_CATALOGUE = Part(
 # ----------------------------------------------------------------------
 
 CH_STEMCELL = Chapter(
-    number=27, ref="stemcell", strand="explain",
+    number=28, ref="stemcell", strand="explain",
     title="Why We Call It a Stem Cell",
     deck="One body, undifferentiated, that becomes fifteen different "
          "buildings depending on what you put in it",
@@ -984,7 +1029,7 @@ CH_STEMCELL = Chapter(
     ))
 
 CH_CORE = Chapter(
-    number=28, ref="core", strand="explain",
+    number=29, ref="core", strand="explain",
     title="Sink the Money Into the Part That Moves",
     deck="The utility core is thirty per cent of the dome and the only "
          "part that transfers -- so it is the part worth overbuilding",
@@ -1007,7 +1052,7 @@ CH_CORE = Chapter(
     ))
 
 CH_SEEDS = Chapter(
-    number=29, ref="seeds", strand="reference",
+    number=30, ref="seeds", strand="reference",
     title="Fifteen Buildings From One Body",
     deck="The catalogue a homestead wants second, priced from the same "
          "frame and the same core",

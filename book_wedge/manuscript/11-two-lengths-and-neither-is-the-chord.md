@@ -46,7 +46,7 @@ For this frame:
 
 ## The bite does not scale
 
-This is the part that catches people, and it caught this book.
+This is the part that catches people.
 
 The bite is set by **how wide the member is**. A member does not get wider
 because the dome gets bigger — you are still splitting the same size of log —
@@ -68,20 +68,21 @@ Both at this book's {{cut.width}}-inch member. A wider member takes a bigger
 bite, roughly in proportion, so a frame cut from heavier stock wants its own
 solve rather than this number.
 
-## What this book got wrong
+## Why the distinction is worth a page
 
-An earlier version of the reference-design tables scaled the bite with the
-dome.
+Scaling the bite with the dome is the natural mistake, because everything
+else about a dome does scale.
 
-It is correct at the reference build — that is how it got past everybody —
-and wrong at every other size. At eight feet across it made every stick more
-than an inch too long. At twenty-four feet it made them half an inch short.
-Every stick, all {{dome.members}} of them, in the two sizes a first-time
-builder is most likely to pick.
+It is also invisible at the reference build, where the two arithmetics agree
+exactly. It only shows up at other sizes: at eight feet across, scaling
+makes every stick more than an inch too long; at twenty-four feet, half an
+inch short. Every stick, all {{dome.members}} of them, in the two sizes a
+first-time builder is most likely to pick.
 
-It was found by a program that reads the finished book and checks every
-number in it against what the code can produce. That program is in
-Chapter {{ch.tooling}}, and this is the error it was written to catch.
+That is why every figure in this book is generated rather than typed, and
+checked against the solver on each build — Chapter {{ch.tooling}}. An error
+that is exactly right in the one case you test is the kind that survives
+proofreading.
 
 ## Two models, and they disagree
 

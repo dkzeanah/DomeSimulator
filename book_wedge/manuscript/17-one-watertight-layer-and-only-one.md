@@ -16,23 +16,20 @@ Put a second one on the inside of the same wall and you have built a bag.
 
 ![The frame with its skin on.](with-skin.png)
 
-## What this book used to say
+## The design this replaces
 
-The shell in an earlier version of this design had a waterproof membrane
-*under* the panels and a rain-slick cap *over* them, with the insulation
-between the two.
+The obvious shell is a waterproof membrane *under* the panels and a
+rain-slick cap *over* them, with the insulation between the two. Two skins,
+belt and braces.
 
-That is a vapour trap. Water gets into every wall — from the weather, from
-the air inside, from somebody's breath — and the only question a wall design
+It is a vapour trap. Water gets into every wall — from the weather, from the
+air inside, from somebody's breath — and the only question a wall design
 answers is where it goes next. A wall with an impermeable layer on both sides
 has no answer. Moisture arrives, cannot leave in either direction, and
 condenses on whichever surface is colder that night.
 
-The old design listed this as an unresolved concern, in its own documentation,
-for months. Writing it down is not the same as fixing it.
-
-The fix is the subject of this chapter and it came from a one-line note: there
-should only be one watertight layer, on the outside, like a shower cap.
+So: **one watertight layer, on the outside, like a shower cap** — and under
+it, a route for vapour to leave. The rest of this chapter is that route.
 
 ## The stack, outside in
 

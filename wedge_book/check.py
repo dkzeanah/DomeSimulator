@@ -26,6 +26,8 @@ WHAT EACH ONE IS FOR
 ``outline``       the new book's structure is coherent and its pictures exist
 ``graphics``      the seam section is a real slice, and the renders are drawn
 ``network``       the pad adds up for the tenant AND for the host
+``systems``       every bill of materials is real, and the seam module's
+                  water claim still loses to an inch of rain
 ``tooling``       every program the last part names exists and does what is
                   claimed of it
 ``tokens``        every live number in the prose resolves
@@ -48,6 +50,7 @@ CHECKS: tuple[tuple[str, str, str], ...] = (
     ("outline", "wedge_book.outline", "validate_outline"),
     ("graphics", "wedge_book.graphics", "validate_graphics"),
     ("network", "wedge_book.network", "validate_network"),
+    ("systems", "wedge_book.systems", "validate_systems"),
     ("tooling", "wedge_book.tooling", "validate_tooling"),
     ("tokens", "wedge_book.tokens", "validate_tokens"),
     ("assembly", "wedge_book.build", "validate_build"),

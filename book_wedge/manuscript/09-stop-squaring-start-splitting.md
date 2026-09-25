@@ -11,9 +11,19 @@ updated: 2026-09-25
 
 I was sitting on a log when this stopped being difficult.
 
-Not thinking about it. Sitting on it, having spent the morning failing to
-make a connector that would join any stick to any other stick at any angle,
-which is a problem you can work on forever because it has no answer.
+Not thinking about it. Sitting on it, having spent the morning on
+connectors.
+
+The connector question does have an answer, and it is a flat V bracket: two
+flaps meeting at the panel's angle, four holes in each flap, and each flap
+run out to as much as half the member's length so the screws are spread
+along the stick instead of clustered at its end. Chapter {{ch.pinwheel}} has
+the detail. It works, it is cheap, and you can make forty of them on a bench
+brake in an afternoon.
+
+What it does not do is make the sticks alike. It joins dissimilar sticks by
+absorbing the difference, which means the connector is now doing that work,
+in every joint, forever.
 
 ![The same log, opened a different way.](plate-stop-squaring.png)
 
@@ -59,8 +69,8 @@ it, because I was busy asking a question that had no answer.
 
 ![The corners of a round log are not bad wood. They are wood of the wrong shape.](plate-round-log-corners.png)
 
-Here is the thing to be careful about, and I got it wrong in an earlier
-version of this argument.
+One thing to be careful about, because the recovery argument is easy to
+overstate.
 
 The corners a mill throws away are not bad wood. They are perfectly good wood
 of the wrong *shape*. A sawmill exists to turn trees into a standard

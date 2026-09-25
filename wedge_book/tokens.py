@@ -161,6 +161,7 @@ def _table() -> dict[str, Token]:
     add("money.cap_bare", "a bare shower cap", lambda: m("cap_bare"))
     add("money.frame_weight", "the frame's weight in green pine, pounds",
         lambda: m("frame_weight_lb"))
+    add("money.mast", "the mast through the column", lambda: m("mast"))
     add("money.float_rig", "the floating rig", lambda: m("float_rig"))
     add("money.float_total", "mast, floor and rig together",
         lambda: m("float_total"))
@@ -259,6 +260,70 @@ def _table() -> dict[str, Token]:
         lambda: f"{seed_model.declared('core_move_usd'):,.0f}")
     add("core.life", "how long a core lasts, in years",
         lambda: f"{seed_model.declared('core_service_life_years'):,.0f}")
+
+    # -- the systems: seam module, air barrier, water, bench ---------
+    from . import systems
+
+    bill = {b.key: b for b in systems.bills()}
+    air = systems.air_barrier()
+    water = systems.water_comparison()
+    bracket = systems.v_bracket()
+
+    add("sys.seam", "the seam module, whole dome",
+        lambda: f"{bill['seam'].cost:,.0f}")
+    add("sys.column", "the utility column, complete",
+        lambda: f"{bill['column'].cost:,.0f}")
+    add("sys.power", "the power bench", lambda: f"{bill['power'].cost:,.0f}")
+    add("sys.water", "the water bench", lambda: f"{bill['water'].cost:,.0f}")
+    add("sys.hardware", "stainless joining hardware",
+        lambda: f"{bill['hardware'].cost:,.0f}")
+    add("sys.pad", "the pad's own materials",
+        lambda: f"{bill['pad'].cost:,.0f}")
+    add("sys.total", "every system on this page, added up",
+        lambda: f"{systems.total():,.0f}")
+    add("sys.seam_table", "the seam module, line by line",
+        lambda: bill["seam"].table())
+    add("sys.column_table", "the utility column, line by line",
+        lambda: bill["column"].table())
+    add("sys.power_table", "the power bench, line by line",
+        lambda: bill["power"].table())
+    add("sys.water_table", "the water bench, line by line",
+        lambda: bill["water"].table())
+    add("sys.hardware_table", "the hardware, line by line",
+        lambda: bill["hardware"].table())
+    add("sys.pad_table", "the pad's materials, line by line",
+        lambda: bill["pad"].table())
+
+    add("air.cfm", "cubic feet a minute the barrier needs",
+        lambda: f"{air['cfm']:,.0f}")
+    add("air.volume", "the interior, in cubic feet",
+        lambda: f"{air['volume_cuft']:,.0f}")
+    add("air.ach", "air changes an hour", lambda: f"{air['ach']:.2f}")
+    add("air.pressure", "how far above outside, in pascals",
+        lambda: f"{air['pressure_pa']:.0f}")
+    add("air.fans", "how many fans", lambda: f"{air['fans']:.0f}")
+
+    add("cond.gallons_per_inch", "gallons off the roof per inch of rain",
+        lambda: f"{water['gallons_per_inch']:,.0f}")
+    add("cond.watts", "what the condensing plates draw",
+        lambda: f"{water['peltier_watts']:,.0f}")
+    add("cond.gal_day", "gallons the plates make in a day",
+        lambda: f"{water['peltier_gallons_per_day']:,.2f}")
+    add("cond.gal_year", "gallons the plates make in a year",
+        lambda: f"{water['peltier_gallons_per_year']:,.0f}")
+    add("cond.rain_equal", "inches of rain that equal a year of plates",
+        lambda: f"{water['rain_inches_equal_to_a_year']:,.1f}")
+    add("cond.kwh_per_litre", "kilowatt hours per litre condensed",
+        lambda: f"{water['kwh_per_litre']:,.2f}")
+
+    add("brk.flap", "how long a V bracket's flap may be, in inches",
+        lambda: f"{bracket['flap_in']:,.1f}")
+    add("brk.holes", "holes in each flap",
+        lambda: str(bracket["holes_per_flap"]))
+    add("brk.spacing", "inches between holes along a flap",
+        lambda: f"{bracket['spacing_in']:,.1f}")
+    add("brk.each", "what one V bracket costs",
+        lambda: f"{bracket['usd_each']:,.2f}")
 
     # -- cross-references --------------------------------------------
     for chapter in book.chapters:
