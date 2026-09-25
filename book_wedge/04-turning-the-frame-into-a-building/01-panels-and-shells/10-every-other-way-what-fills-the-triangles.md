@@ -33,6 +33,6 @@ This book assumes plywood. Nothing else in it depends on that: change the row an
 
 WHERE THESE NUMBERS COME FROM
 
-materials.PANEL_TYPES, applied to the reference build's own quantities. Nothing on this page is a rate quoted from outside the project, and nothing on it was typed: regenerate the whole table with `py -3.12 -m wedge_book.alternatives`.
+materials.PANEL_TYPES, applied to the reference build's own quantities. Nothing on this page is a rate quoted from outside the project, and nothing on it was typed: regenerate the whole table with `py -3.12 -m wedge_book.alternatives --apply`.
 
 There is no straw-bale row and no earthbag row, because this project cannot cost one. A table with a plausible number in it that came from nowhere is worse than a table with a gap.

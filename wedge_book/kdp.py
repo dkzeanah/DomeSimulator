@@ -678,7 +678,12 @@ def validate_kdp(path: Path | None = None) -> dict:
     constant can be right while the frame that uses it is wrong, and the
     thing Amazon reads is the PDF.
     """
+    # A path that does not exist yet means "build it here and check that",
+    # which is what --out is for. Reading it and failing on a missing file
+    # is a trap the caller falls into once each time.
     path = Path(path) if path else build()
+    if not path.is_file():
+        path = build(path)
     report = inspect(path)
 
     assert len(report["sizes"]) == 1, (
