@@ -1120,7 +1120,12 @@ def record(figures: list[Figure] | None = None, db: Path | None = None) -> int:
     conn = store.connect(db)
     try:
         with conn:
-            conn.execute("DELETE FROM figure")
+            # Only this module's rows. A blanket DELETE took the film plates
+            # out of the table every time the solver figures were recorded,
+            # and whichever module ran last was the only one the book could
+            # see.
+            conn.executemany("DELETE FROM figure WHERE key = ?",
+                             [(f.key,) for f in catalogue()])
             for figure in figures:
                 conn.execute(
                     "INSERT INTO figure (key, chapter, title, caption, path,"
