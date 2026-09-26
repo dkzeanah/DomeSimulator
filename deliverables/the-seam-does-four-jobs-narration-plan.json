@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-d7a02bd7e7\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-d7a02bd7e7\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-d7a02bd7e7\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-d7a02bd7e7\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-d7a02bd7e7\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-d7a02bd7e7\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-d7a02bd7e7\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    28.040000000000003,
+    24.0,
+    29.792,
+    42.248,
+    31.088,
+    52.952,
+    41.144
+  ],
+  "speech_durations": [
+    26.64,
+    21.72,
+    28.392,
+    40.848,
+    29.688,
+    51.552,
+    39.744
+  ],
+  "chapter_starts": [
+    0.0,
+    28.040000000000003,
+    52.040000000000006,
+    81.83200000000001,
+    124.08000000000001,
+    155.168,
+    208.12
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "b692dc0c09a6904498432a27c8ccc7b64fc0614c1dfcc8329f0420a1c5afd913"
+}

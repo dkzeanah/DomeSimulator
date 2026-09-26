@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\the-seam-does-four-jobs.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\the-seam-does-four-jobs-vertical.mp4

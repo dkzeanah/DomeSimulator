@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-25T20:54:55.774388+00:00",
+  "lesson": "teaser_seam",
+  "title": "The seam does four jobs: the teaser",
+  "chapters": [
+    {
+      "slug": "channel",
+      "title": "THE STEM CELL DOME / THE SEAM",
+      "narration": [
+        "55 seams, 309 feet of void."
+      ],
+      "start": 0.0,
+      "end": 5.215999999999999
+    },
+    {
+      "slug": "open",
+      "title": "What is actually in there",
+      "narration": [
+        "A key, and room around it."
+      ],
+      "start": 5.215999999999999,
+      "end": 8.703999999999999
+    },
+    {
+      "slug": "air",
+      "title": "The air barrier",
+      "narration": [
+        "4 pascals, and a leak stops being a leak."
+      ],
+      "start": 8.703999999999999,
+      "end": 13.127999999999998
+    },
+    {
+      "slug": "dry",
+      "title": "Drying the wood",
+      "narration": [
+        "Air along the faces, or through the silica."
+      ],
+      "start": 13.127999999999998,
+      "end": 17.383999999999997
+    },
+    {
+      "slug": "bill",
+      "title": "What it costs",
+      "narration": [
+        "$7,549 of module on a dome that lists at $12,036."
+      ],
+      "start": 17.383999999999997,
+      "end": 25.912
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 25.912,
+      "end": 30.936
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 30.936,
+      "end": 36.92
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}
