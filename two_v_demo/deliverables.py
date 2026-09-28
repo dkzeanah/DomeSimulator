@@ -277,6 +277,12 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "test. 7.2 hours practised, 17.2 for a first build, which is "
                 "the number nobody quotes.",
                 compose=False),
+    Deliverable("cabin_wedge_explained", "the-wedge-dome-explained.mp4",
+                "The whole method in the Cabin World, and the channel in every "
+                "seam: what fits (water, wire), what does not (a round duct), "
+                "the key as a spacer and what that costs, printed half-keys, "
+                "and where the channels meet.",
+                compose=True),
 )
 
 
@@ -461,7 +467,8 @@ def validate_deliverables() -> None:
         assert item.note, f"{item.filename} has no description"
     # Every lesson that produces a video should be listed, so nothing can
     # be rendered once and then quietly forgotten.
-    unlisted = set(LESSONS) - set(keys)
+    # cabin_pilot is the Cabin World's worked example, copied rather than shipped.
+    unlisted = set(LESSONS) - set(keys) - {"cabin_pilot"}
     assert unlisted == {"2v"}, (
         f"lessons missing from the deliverable list: {sorted(unlisted)}"
     )

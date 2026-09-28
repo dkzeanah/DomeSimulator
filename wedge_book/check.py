@@ -23,6 +23,7 @@ WHAT EACH ONE IS FOR
 ``plates``        every film frame names a real chapter of a real film
 ``paragraphs``    a display formula is still alone on its line
 ``mathtext``      the LaTeX in the manuscript converts
+``glossary``      every glossary (and index) term is a word the book uses
 ``outline``       the new book's structure is coherent and its pictures exist
 ``graphics``      the seam section is a real slice, and the renders are drawn
 ``network``       the pad adds up for the tenant AND for the host
@@ -60,10 +61,14 @@ CHECKS: tuple[tuple[str, str, str], ...] = (
     ("paragraphs", "wedge_book.paragraphs", "validate_paragraphs"),
     ("display", "wedge_book.paragraphs", "validate_display_alone"),
     ("mathtext", "wedge_book.mathtext", "validate_mathtext"),
+    ("glossary", "wedge_book.glossary", "validate_glossary"),
 )
 
 SLOW: tuple[tuple[str, str, str], ...] = (
     ("kdp", "wedge_book.kdp", "validate_kdp"),
+    ("paper", "wedge_book.paper", "validate_paper"),
+    ("print", "wedge_book.print_edition", "check_print_edition"),
+    ("cover", "wedge_book.cover", "check_cover"),
 )
 
 

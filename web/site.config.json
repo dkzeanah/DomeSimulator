@@ -1,0 +1,14 @@
+{
+  "_note": "The links page and site header. 'links' seeds the database on FIRST start only; after that, edit links on the site's Admin page. Handles copied from CONTACTS in two_v_demo/segments.py (the films' outro card). Add your YouTube channel link and the Kickstarter URL when it is live.",
+  "name": "Zeanah Lab",
+  "tagline": "Stem-cell domes, split from a log. Free book, films and the dome network.",
+  "avatar": "/mark.svg",
+  "kickstarterUrl": "",
+  "youtubeChannelUrl": "",
+  "links": [
+    { "label": "Instagram @DonovanZeanah", "url": "https://www.instagram.com/DonovanZeanah/", "icon": "instagram" },
+    { "label": "TikTok @shortcircuitr5", "url": "https://www.tiktok.com/@shortcircuitr5", "icon": "tiktok" },
+    { "label": "Facebook", "url": "https://www.facebook.com/zeanah", "icon": "facebook" },
+    { "label": "The code, open on GitHub", "url": "https://github.com/dkzeanah/DomeSimulator", "icon": "github" }
+  ]
+}

@@ -1,0 +1,1633 @@
+{
+ "categories": [
+  {
+   "id": "geometry",
+   "label": "Geodesic geometry",
+   "blurb": "The mathematics of the shell: frequencies, chords, angles."
+  },
+  {
+   "id": "wedge",
+   "label": "Wedge method",
+   "blurb": "Hubless 2V framing from split-log wedges -- the book's core."
+  },
+  {
+   "id": "timber",
+   "label": "Timber & harvest",
+   "blurb": "From standing tree to member: felling, ripping, yield, wood."
+  },
+  {
+   "id": "envelope",
+   "label": "Skin & comfort",
+   "blurb": "Panels, layers, insulation, moisture, cooling."
+  },
+  {
+   "id": "systems",
+   "label": "Services & systems",
+   "blurb": "The utility column, power, water, air, modules."
+  },
+  {
+   "id": "site",
+   "label": "Site & network",
+   "blurb": "Pads, foundations, dome parks, hosts and tenants, permits."
+  },
+  {
+   "id": "modular",
+   "label": "Modular housing",
+   "blurb": "Stem cell, fit-outs, ADUs, kit homes, the housing market."
+  },
+  {
+   "id": "economics",
+   "label": "Cost & campaign",
+   "blurb": "Prices, labour, margins, Kickstarter, deferment."
+  },
+  {
+   "id": "structure",
+   "label": "Structure & safety",
+   "blurb": "Loads, engineering, the mast, floating domes."
+  },
+  {
+   "id": "media",
+   "label": "Media & storytelling",
+   "blurb": "Films, the render engine, the book, how it is told."
+  }
+ ],
+ "nodes": [
+  {
+   "id": "geodesic-dome",
+   "label": "Geodesic dome",
+   "category": "geometry",
+   "summary": "A sphere approximated by flat triangles, so every piece is short, straight and loaded along its length.",
+   "seeds": [
+    "geodesic dome",
+    "how geodesic domes work",
+    "geodesic dome explained",
+    "buckminster fuller dome"
+   ],
+   "files": [
+    "two_v_demo/geometry.py",
+    "geodesic_raw_wedge_dome_dihedral.py"
+   ],
+   "order": 0,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "2v-frequency",
+   "label": "2V frequency",
+   "category": "geometry",
+   "summary": "Each icosahedron face split in two: two strut lengths, two triangle shapes, 40 triangles in a hemisphere.",
+   "seeds": [
+    "2v geodesic dome",
+    "2v dome calculator",
+    "2 frequency dome strut lengths",
+    "2v vs 3v dome"
+   ],
+   "files": [
+    "seed_model.py",
+    "two_v_masterclass.py"
+   ],
+   "order": 1,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "icosahedron",
+   "label": "Icosahedron",
+   "category": "geometry",
+   "summary": "The 20-faced solid every geodesic dome is subdivided from; its 12 corners become the five-way junctions.",
+   "seeds": [
+    "icosahedron geodesic",
+    "why domes use the icosahedron",
+    "icosahedron subdivision"
+   ],
+   "files": [
+    "two_v_demo/geometry.py"
+   ],
+   "order": 2,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "chord-factors",
+   "label": "Chord factors & strut lengths",
+   "category": "geometry",
+   "summary": "Multipliers that turn a dome radius into member lengths; the book derives them rather than copying tables.",
+   "seeds": [
+    "geodesic dome chord factors",
+    "dome strut length formula",
+    "geodesic dome cut list"
+   ],
+   "files": [
+    "two_v_demo/wedge_geometry.py",
+    "seed_model.py"
+   ],
+   "order": 3,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "dihedral-angle",
+   "label": "Dihedral angle & fold",
+   "category": "geometry",
+   "summary": "The bend between neighbouring faces: 18 deg across long seams, 22.5 across short ones in the reference 2V.",
+   "seeds": [
+    "geodesic dome dihedral angle",
+    "dome panel angles",
+    "geodesic dome compound angles"
+   ],
+   "files": [
+    "geodesic_raw_wedge_dome_dihedral.py",
+    "campaign_schematics.py"
+   ],
+   "order": 4,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "frequency-families",
+   "label": "3V, 4V and beyond",
+   "category": "geometry",
+   "summary": "Higher frequencies: rounder, more parts, more lengths -- the trade the book declines for a first building.",
+   "seeds": [
+    "3v geodesic dome",
+    "4v dome",
+    "dome frequency explained",
+    "which dome frequency is best"
+   ],
+   "files": [
+    "two_v_demo/lesson_hex.py"
+   ],
+   "order": 5,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "zome",
+   "label": "Zome",
+   "category": "geometry",
+   "summary": "A dome swept from spirals instead of subdivided from a sphere; a different family, compared honestly.",
+   "seeds": [
+    "zome house",
+    "zome structure",
+    "zome vs geodesic dome",
+    "zome building"
+   ],
+   "files": [
+    "zome_masterclass.py",
+    "two_v_demo/lesson_zome.py"
+   ],
+   "order": 6,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "hex-dome",
+   "label": "Hex dome & twelve pentagons",
+   "category": "geometry",
+   "summary": "Why every dome of this family has exactly twelve five-way points, however it is tiled.",
+   "seeds": [
+    "hexagon dome",
+    "goldberg polyhedron",
+    "why 12 pentagons",
+    "hexagon geodesic dome"
+   ],
+   "files": [
+    "hex_masterclass.py",
+    "two_v_demo/lesson_hex.py"
+   ],
+   "order": 7,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "wedge-member",
+   "label": "Split-log wedge member",
+   "category": "wedge",
+   "summary": "Every member is one-eighth of a round log: triangular section, rounded face out, 45 deg point in.",
+   "seeds": [
+    "split log dome",
+    "log wedge construction",
+    "wedge timber frame",
+    "radial sawn timber"
+   ],
+   "files": [
+    "geodesic_raw_wedge_dome_dihedral.py",
+    "two_v_demo/wedge_geometry.py",
+    "wedge_book/figures.py"
+   ],
+   "order": 8,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "hubless",
+   "label": "Hubless geodesic dome",
+   "category": "wedge",
+   "summary": "No connectors: members meet members. Removes the part most dome builders buy, machine or get wrong.",
+   "seeds": [
+    "hubless geodesic dome",
+    "geodesic dome without hubs",
+    "dome connectors alternative",
+    "no hub dome"
+   ],
+   "files": [
+    "hubless_cut_masterclass.py",
+    "two_v_demo/hubless_geometry.py"
+   ],
+   "order": 9,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "pinwheel-joint",
+   "label": "Pinwheel corner joint",
+   "category": "wedge",
+   "summary": "Each member's end butts into the side of the next; three chase round the triangle; the vertex stays empty.",
+   "seeds": [
+    "pinwheel joint",
+    "pinwheel geodesic dome",
+    "reciprocal frame joint",
+    "dome corner joint wood"
+   ],
+   "files": [
+    "geodesic_raw_wedge_dome_dihedral.py",
+    "book_wedge/manuscript/12-nothing-meets-at-the-corner.md"
+   ],
+   "order": 10,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "panelized-dome",
+   "label": "Panel-first framing",
+   "category": "wedge",
+   "summary": "Each triangle is its own frame, built flat on a bench and lifted as a finished object.",
+   "seeds": [
+    "panelized geodesic dome",
+    "prefab dome panels",
+    "dome triangle panels build"
+   ],
+   "files": [
+    "jig_focus_world.py",
+    "book_wedge/manuscript/14-one-flat-board-forty-identical-panels.md"
+   ],
+   "order": 11,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "seam-key",
+   "label": "Seam and key",
+   "category": "wedge",
+   "summary": "Two members back to back at every seam; a key -- a slimmer wedge -- fills the V they leave.",
+   "seeds": [
+    "geodesic dome seams",
+    "dome panel joints",
+    "timber spline joint"
+   ],
+   "files": [
+    "two_v_demo/lesson_seam.py",
+    "wedge_book/graphics.py"
+   ],
+   "order": 12,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "seam-channel",
+   "label": "The seam channel",
+   "category": "wedge",
+   "summary": "Left open, the V is a duct and a conduit that reaches every junction: air, cable, water.",
+   "seeds": [
+    "dome ventilation",
+    "service chase in walls",
+    "hidden wiring timber frame"
+   ],
+   "files": [
+    "seed_model.py",
+    "book_wedge/manuscript/18-the-seam-does-four-jobs.md"
+   ],
+   "order": 13,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "compound-cut",
+   "label": "Compound butt cut",
+   "category": "wedge",
+   "summary": "Bevel constant at half the sector angle; three saw settings for 120 members.",
+   "seeds": [
+    "compound miter cut",
+    "geodesic dome cuts",
+    "compound angle saw setup"
+   ],
+   "files": [
+    "geodesic_raw_wedge_dome_dihedral.py"
+   ],
+   "order": 14,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "assembly-jig",
+   "label": "Assembly jig",
+   "category": "wedge",
+   "summary": "The bench that makes forty identical panels: one set-up, many repeats.",
+   "seeds": [
+    "geodesic dome jig",
+    "panel assembly jig",
+    "repeatable woodworking jig"
+   ],
+   "files": [
+    "jig_focus_world.py",
+    "workshop.py"
+   ],
+   "order": 15,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "wedge-orientation",
+   "label": "Point in, face out",
+   "category": "wedge",
+   "summary": "Four ways a wedge could sit; the book's is point toward the centre, rounded face to the weather.",
+   "seeds": [
+    "wedge orientation",
+    "log orientation timber frame"
+   ],
+   "files": [
+    "wedge_book/figures.py"
+   ],
+   "order": 16,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "chainsaw-ripping",
+   "label": "Ripping logs with a chainsaw",
+   "category": "timber",
+   "summary": "The splitting process of the book's clock: one session at the log, 30 wedges.",
+   "seeds": [
+    "chainsaw ripping logs",
+    "chainsaw milling",
+    "rip cut log chainsaw",
+    "alaskan mill"
+   ],
+   "files": [
+    "wedge_book/systems.py",
+    "book_wedge/manuscript/09-stop-squaring-start-splitting.md"
+   ],
+   "order": 17,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "log-yield",
+   "label": "Log yield: split vs sawn",
+   "category": "timber",
+   "summary": "Split into wedges a log keeps 1.95x the wood of milling it into boards.",
+   "seeds": [
+    "lumber yield from a log",
+    "how much lumber in a tree",
+    "board feet in a log"
+   ],
+   "files": [
+    "seed_model.py",
+    "two_v_demo/lesson_harvest.py"
+   ],
+   "order": 18,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "trees-per-dome",
+   "label": "Trees per dome",
+   "category": "timber",
+   "summary": "The frame against a mitred dome: 92 percent of the trees -- a small win, stated as small.",
+   "seeds": [
+    "how many trees to build a house",
+    "timber for a cabin",
+    "build a cabin from your own trees"
+   ],
+   "files": [
+    "seed_model.py",
+    "two_v_demo/lesson_pine_value.py"
+   ],
+   "order": 19,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "green-wood",
+   "label": "Green wood & drying",
+   "category": "timber",
+   "summary": "Building with fresh-cut timber: weight, movement, checking, and why the frame forgives it.",
+   "seeds": [
+    "green wood construction",
+    "building with green logs",
+    "wood shrinkage drying"
+   ],
+   "files": [
+    "seed_model.py"
+   ],
+   "order": 20,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "timber-framing",
+   "label": "Timber framing",
+   "category": "timber",
+   "summary": "The craft tradition the method sits beside: heavy members, wooden joinery, no stud walls.",
+   "seeds": [
+    "timber framing",
+    "timber frame cabin build",
+    "traditional timber frame joinery"
+   ],
+   "files": [
+    "book_wedge/manuscript/03-build-it-so-you-can-change-your-mind.md"
+   ],
+   "order": 21,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "pine-value",
+   "label": "What a pine is worth",
+   "category": "timber",
+   "summary": "Standing, firewood, sawn, split, structure: the value ladder of one tree.",
+   "seeds": [
+    "value of a pine tree",
+    "timber value per tree",
+    "stumpage price"
+   ],
+   "files": [
+    "two_v_demo/lesson_pine_value.py"
+   ],
+   "order": 22,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "owner-builder",
+   "label": "Owner-builder",
+   "category": "timber",
+   "summary": "One person, a chainsaw, forty hours of effort spread over months.",
+   "seeds": [
+    "build your own cabin",
+    "one man cabin build",
+    "off grid cabin alone"
+   ],
+   "files": [
+    "wedge_book/systems.py",
+    "book_wedge/manuscript/front/title.md"
+   ],
+   "order": 23,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "dome-panels",
+   "label": "Pop-in panels",
+   "category": "envelope",
+   "summary": "Forty identical openings; the panel set decides what the building is.",
+   "seeds": [
+    "dome panels",
+    "geodesic dome windows",
+    "dome skylight panel"
+   ],
+   "files": [
+    "seed_model.py",
+    "fitout_wet.py"
+   ],
+   "order": 24,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "shower-cap",
+   "label": "The shower-cap shell",
+   "category": "envelope",
+   "summary": "One watertight outer cap over breathable layers -- a hat stack, not a sealed box.",
+   "seeds": [
+    "dome cover",
+    "geodesic dome waterproofing",
+    "dome roof leak"
+   ],
+   "files": [
+    "soft_shell.py",
+    "book_wedge/manuscript/19-a-dome-is-a-head-and-it-wears-hats.md"
+   ],
+   "order": 25,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "quilt-insulation",
+   "label": "Quilted insulation",
+   "category": "envelope",
+   "summary": "Layers of recycled clothing, sewn at a kitchen table; about 132 t-shirts a layer.",
+   "seeds": [
+    "recycled textile insulation",
+    "diy insulation",
+    "yurt insulation"
+   ],
+   "files": [
+    "quilt_network.py",
+    "soft_shell.py"
+   ],
+   "order": 26,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "moisture",
+   "label": "Moisture & dew point",
+   "category": "envelope",
+   "summary": "Why two waterproof layers rot a wall, and why the breather sits under the cap.",
+   "seeds": [
+    "dome condensation problem",
+    "dew point in walls",
+    "vapor barrier mistakes"
+   ],
+   "files": [
+    "soft_shell.py",
+    "book_wedge/manuscript/02-water-is-the-silent-killer.md"
+   ],
+   "order": 27,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "hull-laminate",
+   "label": "Boat-hull shell",
+   "category": "envelope",
+   "summary": "Marine composites priced by weight: the rigid alternative, and why it caps the building.",
+   "seeds": [
+    "fiberglass dome",
+    "epoxy fiberglass shell",
+    "boat building techniques house"
+   ],
+   "files": [
+    "hull_laminate.py"
+   ],
+   "order": 28,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "radiative-cooling",
+   "label": "Radiative cooling coat",
+   "category": "envelope",
+   "summary": "A barium-sulphate coat that runs 48 F cooler than dark; compounds with the dome's small envelope.",
+   "seeds": [
+    "radiative cooling paint",
+    "cool roof paint",
+    "barium sulfate paint"
+   ],
+   "files": [
+    "two_v_demo/dome_performance.py",
+    "seed_model.py"
+   ],
+   "order": 29,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "surface-to-volume",
+   "label": "Less envelope per floor",
+   "category": "envelope",
+   "summary": "A dome encloses a floor with 41.5 percent less skin than a box.",
+   "seeds": [
+    "dome energy efficiency",
+    "surface area to volume house",
+    "are domes more efficient"
+   ],
+   "files": [
+    "two_v_demo/dome_advantage.py"
+   ],
+   "order": 30,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "utility-column",
+   "label": "Utility column",
+   "category": "systems",
+   "summary": "Every service comes up the middle and out through one sealed hole at the apex.",
+   "seeds": [
+    "dome plumbing",
+    "utility core house",
+    "service core design"
+   ],
+   "files": [
+    "column_build.py",
+    "seed_model.py",
+    "two_v_demo/lesson_module_build.py"
+   ],
+   "order": 31,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "seal-cap",
+   "label": "Apex seal cap",
+   "category": "systems",
+   "summary": "The one penetration in the weather surface, gasketed, opened in ten minutes.",
+   "seeds": [
+    "dome roof vent",
+    "dome apex",
+    "roof penetration flashing"
+   ],
+   "files": [
+    "seed_world.py"
+   ],
+   "order": 32,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "utility-panel",
+   "label": "Utility panel (polyp)",
+   "category": "systems",
+   "summary": "Noisy, hot or weather-facing equipment outside the footprint, fed from the cap.",
+   "seeds": [
+    "outdoor utility cabinet",
+    "off grid power shed"
+   ],
+   "files": [
+    "seed_model.py"
+   ],
+   "order": 33,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "off-grid-power",
+   "label": "Off-grid solar",
+   "category": "systems",
+   "summary": "800 W and a 10 kWh bank against the dome's own 4.59 kWh a day.",
+   "seeds": [
+    "off grid solar cabin",
+    "tiny house solar setup",
+    "10kwh battery off grid"
+   ],
+   "files": [
+    "seed_model.py",
+    "electrical.py"
+   ],
+   "order": 34,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "rainwater",
+   "label": "Rain & water from the seams",
+   "category": "systems",
+   "summary": "The seams as gutters into the pad's tank -- an experiment, reported as one.",
+   "seeds": [
+    "rainwater harvesting cabin",
+    "off grid water system",
+    "rain catchment roof"
+   ],
+   "files": [
+    "seed_model.py",
+    "book_wedge/manuscript/18-the-seam-does-four-jobs.md"
+   ],
+   "order": 35,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "modules",
+   "label": "Snap-in modules",
+   "category": "systems",
+   "summary": "Shower, sink, cooktop, fridge, camera ring: modules that plug into five mounting places.",
+   "seeds": [
+    "modular bathroom pod",
+    "tiny house kitchen module"
+   ],
+   "files": [
+    "seed_model.py",
+    "fitout_wet.py"
+   ],
+   "order": 36,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "pad",
+   "label": "The pad",
+   "category": "site",
+   "summary": "A serviced platform built once by a host; the dome lands on it with four connections and a lift.",
+   "seeds": [
+    "dome platform",
+    "cabin foundation on piers",
+    "diy deck foundation"
+   ],
+   "files": [
+    "pad_deck.py",
+    "park_world.py"
+   ],
+   "order": 37,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "foundation-types",
+   "label": "Foundation types",
+   "category": "site",
+   "summary": "Gravel, piers, epoxy deck, concrete ring, slab -- priced side by side.",
+   "seeds": [
+    "cheapest cabin foundation",
+    "pier vs slab foundation",
+    "yurt platform"
+   ],
+   "files": [
+    "pad_deck.py"
+   ],
+   "order": 38,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "dome-park",
+   "label": "Dome Park",
+   "category": "site",
+   "summary": "An RV park for domes: hosts build pads, owners bring buildings. Foundations are 8-63 percent of a dome.",
+   "seeds": [
+    "rv park for tiny homes",
+    "tiny home community",
+    "land lease tiny house"
+   ],
+   "files": [
+    "dome_park.py",
+    "park_model.py",
+    "two_v_demo/lesson_dome_park.py"
+   ],
+   "order": 39,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "dome-network",
+   "label": "The dome network",
+   "category": "site",
+   "summary": "Hosts, owners, quilters, builders and people with trees, found through the website.",
+   "seeds": [
+    "tiny house community",
+    "land sharing tiny homes"
+   ],
+   "files": [
+    "web/server/src/routes/network.js",
+    "book_wedge/manuscript/22-why-a-network-beats-a-park.md"
+   ],
+   "order": 40,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "permits-codes",
+   "label": "Permits & codes",
+   "category": "site",
+   "summary": "Local, and the book says so: ask the building department before the first tree falls.",
+   "seeds": [
+    "dome building permit",
+    "geodesic dome building code",
+    "tiny house legal"
+   ],
+   "files": [
+    "book_wedge/manuscript/front/title.md"
+   ],
+   "order": 41,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "stem-cell",
+   "label": "The stem cell dome",
+   "category": "modular",
+   "summary": "A frame that has not decided what it is yet; the panels and modules decide.",
+   "seeds": [
+    "modular dome home",
+    "stem cell architecture",
+    "adaptable house design"
+   ],
+   "files": [
+    "seed_model.py",
+    "seed_world.py",
+    "two_v_demo/lesson_seed_pitch.py"
+   ],
+   "order": 42,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "fit-outs",
+   "label": "Fifteen buildings from one frame",
+   "category": "modular",
+   "summary": "Home, food stand, sauna, gym, studio, garage, bunker, treehouse, jacuzzi -- same frame.",
+   "seeds": [
+    "dome sauna",
+    "dome studio backyard",
+    "dome greenhouse",
+    "backyard dome office"
+   ],
+   "files": [
+    "seed_model.py",
+    "book_wedge/manuscript/30-fifteen-buildings-from-one-body.md"
+   ],
+   "order": 43,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "adu",
+   "label": "Backyard ADU",
+   "category": "modular",
+   "summary": "Most buyers already have a house: the dome as the second building.",
+   "seeds": [
+    "backyard adu",
+    "accessory dwelling unit cost",
+    "backyard office build"
+   ],
+   "files": [
+    "seed_model.py"
+   ],
+   "order": 44,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "kit-home",
+   "label": "Kit homes & prefab",
+   "category": "modular",
+   "summary": "Where the dome sits against kits, prefab and shed-to-house conversions.",
+   "seeds": [
+    "dome home kit",
+    "prefab cabin kit",
+    "cheapest kit home"
+   ],
+   "files": [
+    "kickstarter.py"
+   ],
+   "order": 45,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "tiny-house",
+   "label": "Tiny houses",
+   "category": "modular",
+   "summary": "The audience next door: small, owner-built, off-grid curious.",
+   "seeds": [
+    "tiny house build",
+    "tiny house on a budget",
+    "tiny house tour"
+   ],
+   "files": [],
+   "order": 46,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "housing-affordability",
+   "label": "Housing affordability",
+   "category": "modular",
+   "summary": "The author's aim: change the housing market for the better.",
+   "seeds": [
+    "housing crisis solutions",
+    "cheap way to build a house",
+    "affordable housing ideas"
+   ],
+   "files": [
+    "wedge_book/print_edition.py"
+   ],
+   "order": 47,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "code-a-home",
+   "label": "Coding a home",
+   "category": "modular",
+   "summary": "Modular, reusable, decoupled, extensible: a house built like good software.",
+   "seeds": [
+    "open source house",
+    "open source architecture",
+    "parametric house design"
+   ],
+   "files": [
+    "wedge_book/print_edition.py",
+    "two_v_demo/creator_bridge.py"
+   ],
+   "order": 48,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "dome-cost",
+   "label": "What a dome costs",
+   "category": "economics",
+   "summary": "Built cost, margin named as profit, per square foot -- all computed.",
+   "seeds": [
+    "how much does a geodesic dome cost",
+    "dome home cost",
+    "cost to build a dome"
+   ],
+   "files": [
+    "kickstarter.py",
+    "seed_model.py",
+    "two_v_demo/dome_costing.py"
+   ],
+   "order": 49,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "labour-hours",
+   "label": "The 40-hour clock",
+   "category": "economics",
+   "summary": "37.5 hours for the frame, 67 for the whole standard building, both on page one.",
+   "seeds": [
+    "how long to build a dome",
+    "build a cabin in a week",
+    "40 hour cabin"
+   ],
+   "files": [
+    "wedge_book/systems.py",
+    "book_wedge/manuscript/front/title.md"
+   ],
+   "order": 50,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "deferment",
+   "label": "Build now, finish later",
+   "category": "economics",
+   "summary": "The deferment ladder: live in the shelter while the building grows.",
+   "seeds": [
+    "build a house in stages",
+    "pay as you go house build",
+    "debt free house"
+   ],
+   "files": [
+    "seed_model.py"
+   ],
+   "order": 51,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "kickstarter",
+   "label": "Kickstarter campaign",
+   "category": "economics",
+   "summary": "Tiers, a goal that is the sum of its list, and the risks said out loud.",
+   "seeds": [
+    "kickstarter housing project",
+    "crowdfunding a house",
+    "kickstarter tiny house"
+   ],
+   "files": [
+    "kickstarter.py",
+    "campaign.py",
+    "campaign_prompts.py"
+   ],
+   "order": 52,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "free-book",
+   "label": "The free book",
+   "category": "economics",
+   "summary": "Email-gated PDF on the site; KDP paperback alongside.",
+   "seeds": [
+    "free dome plans",
+    "geodesic dome plans pdf",
+    "dome building book"
+   ],
+   "files": [
+    "web/server/src/routes/leads.js",
+    "wedge_book/print_edition.py"
+   ],
+   "order": 53,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "engineering",
+   "label": "Loads & the engineer",
+   "category": "structure",
+   "summary": "Snow, wind, ground: an engineer's numbers, never the book's.",
+   "seeds": [
+    "geodesic dome snow load",
+    "dome wind resistance",
+    "are domes strong"
+   ],
+   "files": [
+    "book_wedge/manuscript/front/title.md"
+   ],
+   "order": 54,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "triangles-rigid",
+   "label": "Why triangles",
+   "category": "structure",
+   "summary": "A triangle cannot change shape without changing a side: the whole structural argument.",
+   "seeds": [
+    "why triangles are strong",
+    "triangulation structure",
+    "why domes are strong"
+   ],
+   "files": [
+    "book_wedge/manuscript/04-why-it-is-triangles.md"
+   ],
+   "order": 55,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "floating-dome",
+   "label": "The floating dome",
+   "category": "structure",
+   "summary": "Hung from three trees by a mast: a design possibility, priced not rated.",
+   "seeds": [
+    "treehouse dome",
+    "suspended treehouse",
+    "hanging tent tree"
+   ],
+   "files": [
+    "seed_model.py",
+    "book_wedge/manuscript/31-hang-it-between-two-trees.md"
+   ],
+   "order": 56,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "error-tolerance",
+   "label": "A frame that forgives error",
+   "category": "structure",
+   "summary": "Error lands in the seam's key, not in the neighbours: why a lumpy frame still stands.",
+   "seeds": [
+    "woodworking mistakes fix",
+    "tolerance in construction"
+   ],
+   "files": [
+    "book_wedge/manuscript/01-your-skull-is-not-symmetrical-either.md"
+   ],
+   "order": 57,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "film-engine",
+   "label": "The film engine",
+   "category": "media",
+   "summary": "Programmatic films: every number on screen computed, every camera move code.",
+   "seeds": [
+    "programmatic video",
+    "python 3d animation",
+    "explainer video engine"
+   ],
+   "files": [
+    "two_v_demo/app.py",
+    "two_v_demo/lesson_registry.py"
+   ],
+   "order": 58,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "simulator",
+   "label": "The wedge simulator",
+   "category": "media",
+   "summary": "The raw-wedge solver's 3-D world: the source of the book's figures and the cover.",
+   "seeds": [
+    "3d dome simulator",
+    "geodesic dome software",
+    "dome design software free"
+   ],
+   "files": [
+    "geodesic_raw_wedge_dome_dihedral.py",
+    "two_v_demo/raw_wedge_bridge.py"
+   ],
+   "order": 59,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "lumen",
+   "label": "Lumen the mascot",
+   "category": "media",
+   "summary": "A low-poly jellyfish with its own voice who carries the jokes and the warmth.",
+   "seeds": [
+    "mascot explainer video",
+    "animated mascot youtube"
+   ],
+   "files": [
+    "two_v_demo/mascot.py"
+   ],
+   "order": 60,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "the-book",
+   "label": "Geodesic Dome Wedge Method",
+   "category": "media",
+   "summary": "The 40 Hour Cabin: 176 pages, every figure computed, KDP-ready.",
+   "seeds": [
+    "geodesic dome book",
+    "how to build a dome book",
+    "cabin building book"
+   ],
+   "files": [
+    "wedge_book/print_edition.py",
+    "wedge_book/cover_scene.py"
+   ],
+   "order": 61,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "cinematic-reveal",
+   "label": "Cinematic reveal shots",
+   "category": "media",
+   "summary": "Hook-first footage: the build from nothing, the orbit at golden hour, the macro of a seam.",
+   "seeds": [
+    "cinematic build video",
+    "time lapse cabin build",
+    "cinematic woodworking"
+   ],
+   "files": [
+    "wedge_book/cover_scene.py",
+    "two_v_demo/drama_camera.py"
+   ],
+   "order": 62,
+   "status": "seed",
+   "notes": ""
+  },
+  {
+   "id": "frankendome",
+   "label": "The Frankendome",
+   "category": "media",
+   "summary": "The first dome, lumpy and patched: the origin story the films keep.",
+   "seeds": [
+    "first dome build fail",
+    "diy dome mistakes"
+   ],
+   "files": [
+    "frankendome_masterclass.py",
+    "two_v_demo/lesson_franken.py"
+   ],
+   "order": 63,
+   "status": "seed",
+   "notes": ""
+  }
+ ],
+ "edges": [
+  {
+   "id": "geodesic-dome__2v-frequency",
+   "source": "geodesic-dome",
+   "target": "2v-frequency",
+   "relation": "chooses"
+  },
+  {
+   "id": "icosahedron__geodesic-dome",
+   "source": "icosahedron",
+   "target": "geodesic-dome",
+   "relation": "subdivides into"
+  },
+  {
+   "id": "2v-frequency__chord-factors",
+   "source": "2v-frequency",
+   "target": "chord-factors",
+   "relation": "sets"
+  },
+  {
+   "id": "2v-frequency__dihedral-angle",
+   "source": "2v-frequency",
+   "target": "dihedral-angle",
+   "relation": "sets"
+  },
+  {
+   "id": "geodesic-dome__frequency-families",
+   "source": "geodesic-dome",
+   "target": "frequency-families",
+   "relation": "compared with"
+  },
+  {
+   "id": "geodesic-dome__zome",
+   "source": "geodesic-dome",
+   "target": "zome",
+   "relation": "compared with"
+  },
+  {
+   "id": "geodesic-dome__hex-dome",
+   "source": "geodesic-dome",
+   "target": "hex-dome",
+   "relation": "same family"
+  },
+  {
+   "id": "icosahedron__hex-dome",
+   "source": "icosahedron",
+   "target": "hex-dome",
+   "relation": "twelve pentagons"
+  },
+  {
+   "id": "2v-frequency__wedge-member",
+   "source": "2v-frequency",
+   "target": "wedge-member",
+   "relation": "framed with"
+  },
+  {
+   "id": "wedge-member__hubless",
+   "source": "wedge-member",
+   "target": "hubless",
+   "relation": "enables"
+  },
+  {
+   "id": "hubless__pinwheel-joint",
+   "source": "hubless",
+   "target": "pinwheel-joint",
+   "relation": "by way of"
+  },
+  {
+   "id": "pinwheel-joint__panelized-dome",
+   "source": "pinwheel-joint",
+   "target": "panelized-dome",
+   "relation": "makes"
+  },
+  {
+   "id": "panelized-dome__seam-key",
+   "source": "panelized-dome",
+   "target": "seam-key",
+   "relation": "leaves"
+  },
+  {
+   "id": "seam-key__seam-channel",
+   "source": "seam-key",
+   "target": "seam-channel",
+   "relation": "opens as"
+  },
+  {
+   "id": "dihedral-angle__seam-key",
+   "source": "dihedral-angle",
+   "target": "seam-key",
+   "relation": "sizes"
+  },
+  {
+   "id": "wedge-member__compound-cut",
+   "source": "wedge-member",
+   "target": "compound-cut",
+   "relation": "needs"
+  },
+  {
+   "id": "panelized-dome__assembly-jig",
+   "source": "panelized-dome",
+   "target": "assembly-jig",
+   "relation": "built on"
+  },
+  {
+   "id": "wedge-member__wedge-orientation",
+   "source": "wedge-member",
+   "target": "wedge-orientation",
+   "relation": "placed by"
+  },
+  {
+   "id": "chainsaw-ripping__wedge-member",
+   "source": "chainsaw-ripping",
+   "target": "wedge-member",
+   "relation": "produces"
+  },
+  {
+   "id": "log-yield__wedge-member",
+   "source": "log-yield",
+   "target": "wedge-member",
+   "relation": "argues for"
+  },
+  {
+   "id": "log-yield__trees-per-dome",
+   "source": "log-yield",
+   "target": "trees-per-dome",
+   "relation": "feeds"
+  },
+  {
+   "id": "pine-value__log-yield",
+   "source": "pine-value",
+   "target": "log-yield",
+   "relation": "explains"
+  },
+  {
+   "id": "green-wood__wedge-member",
+   "source": "green-wood",
+   "target": "wedge-member",
+   "relation": "material of"
+  },
+  {
+   "id": "timber-framing__wedge-member",
+   "source": "timber-framing",
+   "target": "wedge-member",
+   "relation": "tradition of"
+  },
+  {
+   "id": "owner-builder__chainsaw-ripping",
+   "source": "owner-builder",
+   "target": "chainsaw-ripping",
+   "relation": "does"
+  },
+  {
+   "id": "owner-builder__labour-hours",
+   "source": "owner-builder",
+   "target": "labour-hours",
+   "relation": "measured by"
+  },
+  {
+   "id": "panelized-dome__dome-panels",
+   "source": "panelized-dome",
+   "target": "dome-panels",
+   "relation": "closed by"
+  },
+  {
+   "id": "dome-panels__shower-cap",
+   "source": "dome-panels",
+   "target": "shower-cap",
+   "relation": "under"
+  },
+  {
+   "id": "shower-cap__quilt-insulation",
+   "source": "shower-cap",
+   "target": "quilt-insulation",
+   "relation": "covers"
+  },
+  {
+   "id": "shower-cap__moisture",
+   "source": "shower-cap",
+   "target": "moisture",
+   "relation": "answers"
+  },
+  {
+   "id": "shower-cap__hull-laminate",
+   "source": "shower-cap",
+   "target": "hull-laminate",
+   "relation": "compared with"
+  },
+  {
+   "id": "radiative-cooling__shower-cap",
+   "source": "radiative-cooling",
+   "target": "shower-cap",
+   "relation": "coats"
+  },
+  {
+   "id": "surface-to-volume__geodesic-dome",
+   "source": "surface-to-volume",
+   "target": "geodesic-dome",
+   "relation": "property of"
+  },
+  {
+   "id": "seam-channel__rainwater",
+   "source": "seam-channel",
+   "target": "rainwater",
+   "relation": "carries"
+  },
+  {
+   "id": "seam-channel__utility-column",
+   "source": "seam-channel",
+   "target": "utility-column",
+   "relation": "feeds"
+  },
+  {
+   "id": "utility-column__seal-cap",
+   "source": "utility-column",
+   "target": "seal-cap",
+   "relation": "ends in"
+  },
+  {
+   "id": "seal-cap__utility-panel",
+   "source": "seal-cap",
+   "target": "utility-panel",
+   "relation": "feeds"
+  },
+  {
+   "id": "utility-column__modules",
+   "source": "utility-column",
+   "target": "modules",
+   "relation": "hosts"
+  },
+  {
+   "id": "utility-panel__off-grid-power",
+   "source": "utility-panel",
+   "target": "off-grid-power",
+   "relation": "houses"
+  },
+  {
+   "id": "rainwater__pad",
+   "source": "rainwater",
+   "target": "pad",
+   "relation": "stored in"
+  },
+  {
+   "id": "pad__utility-column",
+   "source": "pad",
+   "target": "utility-column",
+   "relation": "services"
+  },
+  {
+   "id": "pad__foundation-types",
+   "source": "pad",
+   "target": "foundation-types",
+   "relation": "built as"
+  },
+  {
+   "id": "pad__dome-park",
+   "source": "pad",
+   "target": "dome-park",
+   "relation": "unit of"
+  },
+  {
+   "id": "dome-park__dome-network",
+   "source": "dome-park",
+   "target": "dome-network",
+   "relation": "grows into"
+  },
+  {
+   "id": "pad__permits-codes",
+   "source": "pad",
+   "target": "permits-codes",
+   "relation": "subject to"
+  },
+  {
+   "id": "quilt-insulation__dome-network",
+   "source": "quilt-insulation",
+   "target": "dome-network",
+   "relation": "made by"
+  },
+  {
+   "id": "stem-cell__fit-outs",
+   "source": "stem-cell",
+   "target": "fit-outs",
+   "relation": "becomes"
+  },
+  {
+   "id": "dome-panels__stem-cell",
+   "source": "dome-panels",
+   "target": "stem-cell",
+   "relation": "defines"
+  },
+  {
+   "id": "stem-cell__adu",
+   "source": "stem-cell",
+   "target": "adu",
+   "relation": "sold as"
+  },
+  {
+   "id": "stem-cell__kit-home",
+   "source": "stem-cell",
+   "target": "kit-home",
+   "relation": "compared with"
+  },
+  {
+   "id": "stem-cell__tiny-house",
+   "source": "stem-cell",
+   "target": "tiny-house",
+   "relation": "neighbour of"
+  },
+  {
+   "id": "code-a-home__stem-cell",
+   "source": "code-a-home",
+   "target": "stem-cell",
+   "relation": "philosophy of"
+  },
+  {
+   "id": "stem-cell__housing-affordability",
+   "source": "stem-cell",
+   "target": "housing-affordability",
+   "relation": "aims at"
+  },
+  {
+   "id": "modules__fit-outs",
+   "source": "modules",
+   "target": "fit-outs",
+   "relation": "make"
+  },
+  {
+   "id": "stem-cell__dome-cost",
+   "source": "stem-cell",
+   "target": "dome-cost",
+   "relation": "priced in"
+  },
+  {
+   "id": "dome-cost__kickstarter",
+   "source": "dome-cost",
+   "target": "kickstarter",
+   "relation": "funds"
+  },
+  {
+   "id": "labour-hours__dome-cost",
+   "source": "labour-hours",
+   "target": "dome-cost",
+   "relation": "part of"
+  },
+  {
+   "id": "deferment__dome-cost",
+   "source": "deferment",
+   "target": "dome-cost",
+   "relation": "spreads"
+  },
+  {
+   "id": "dome-park__dome-cost",
+   "source": "dome-park",
+   "target": "dome-cost",
+   "relation": "halves foundation"
+  },
+  {
+   "id": "free-book__kickstarter",
+   "source": "free-book",
+   "target": "kickstarter",
+   "relation": "audience for"
+  },
+  {
+   "id": "triangles-rigid__geodesic-dome",
+   "source": "triangles-rigid",
+   "target": "geodesic-dome",
+   "relation": "why"
+  },
+  {
+   "id": "error-tolerance__seam-key",
+   "source": "error-tolerance",
+   "target": "seam-key",
+   "relation": "absorbed by"
+  },
+  {
+   "id": "engineering__floating-dome",
+   "source": "engineering",
+   "target": "floating-dome",
+   "relation": "rates"
+  },
+  {
+   "id": "utility-column__floating-dome",
+   "source": "utility-column",
+   "target": "floating-dome",
+   "relation": "holds the mast"
+  },
+  {
+   "id": "engineering__permits-codes",
+   "source": "engineering",
+   "target": "permits-codes",
+   "relation": "required by"
+  },
+  {
+   "id": "simulator__pinwheel-joint",
+   "source": "simulator",
+   "target": "pinwheel-joint",
+   "relation": "solves"
+  },
+  {
+   "id": "simulator__the-book",
+   "source": "simulator",
+   "target": "the-book",
+   "relation": "illustrates"
+  },
+  {
+   "id": "film-engine__simulator",
+   "source": "film-engine",
+   "target": "simulator",
+   "relation": "draws"
+  },
+  {
+   "id": "lumen__film-engine",
+   "source": "lumen",
+   "target": "film-engine",
+   "relation": "stars in"
+  },
+  {
+   "id": "the-book__free-book",
+   "source": "the-book",
+   "target": "free-book",
+   "relation": "given as"
+  },
+  {
+   "id": "cinematic-reveal__film-engine",
+   "source": "cinematic-reveal",
+   "target": "film-engine",
+   "relation": "shot with"
+  },
+  {
+   "id": "frankendome__error-tolerance",
+   "source": "frankendome",
+   "target": "error-tolerance",
+   "relation": "proves"
+  },
+  {
+   "id": "the-book__labour-hours",
+   "source": "the-book",
+   "target": "labour-hours",
+   "relation": "titled by"
+  }
+ ]
+}

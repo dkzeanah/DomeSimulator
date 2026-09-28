@@ -95,7 +95,8 @@ point to bark. The frame needs {{dome.members}} of them, which is
 {{dome.timber_ft}} feet of stick.
 
 Nothing in that sentence required a tape measure on the tree. It required a
-froe, a mallet, and a willingness to let the log decide the section.
+chainsaw, a steady rip along the radius, and a willingness to let the log
+decide the section.
 
 The next chapter is what that section actually is, and which way round to put
 it — which is the first decision in this build you cannot take back.

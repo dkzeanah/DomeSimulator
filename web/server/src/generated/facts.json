@@ -1,0 +1,335 @@
+{
+  "_generated_by": "web/export_facts.py from seed_model and kickstarter -- do not edit",
+  "dome": {
+    "acrossFt": 19.42,
+    "tallFt": 9.71,
+    "floorSqft": 277.0,
+    "bays": 40,
+    "members": 120,
+    "vertices": 26,
+    "baseSides": 10
+  },
+  "price": {
+    "stemCell": 12036,
+    "costToBuild": 10030,
+    "profit": 2006,
+    "marginOnCost": 0.2,
+    "perSqft": 43.45
+  },
+  "wood": {
+    "wedgeVsMilled": 1.95,
+    "treesVsMitred": 0.921
+  },
+  "quilt": {
+    "shirtsPerLayer": 132
+  },
+  "goal": {
+    "total": 110000,
+    "lines": [
+      {
+        "key": "test_platform",
+        "usd": 4200.0,
+        "what": "A full test platform and one standing dome",
+        "why": "A serviced pad and a complete 19.4-foot dome on it, built and left up through a full year of weather. Everything in this project is solved and almost none of it is measured. A dome that has stood through one winter is worth more than any amount of arithmetic"
+      },
+      {
+        "key": "instrumentation",
+        "usd": 1850.0,
+        "what": "Sensors in the wall, logging for a year",
+        "why": "Temperature and humidity at each layer of the cap stack, inside and out, logged continuously. This is what turns the moisture question from a design argument into a measurement -- and it is the number the campaign has promised to publish whichever way it comes out"
+      },
+      {
+        "key": "hub_rnd",
+        "usd": 9500.0,
+        "what": "Utility hub: three iterations to a design that ships",
+        "why": "The centre column is the one part that has to be right, because it carries every service and it is the part an owner cannot make. Three builds: one to find what breaks, one to fix it, one to prove the fix. Tooling, fittings, test rig and the parts thrown away"
+      },
+      {
+        "key": "cnc_router",
+        "usd": 14500.0,
+        "what": "CNC router, 4x8 bed",
+        "why": "Panel prototyping. No panel of this dome fits a 4-foot sheet, so every panel is a cut somebody has to get right forty times. A router with a 4x8 bed cuts a panel set in an afternoon and cuts the same set again next year"
+      },
+      {
+        "key": "cnc_plasma",
+        "usd": 11800.0,
+        "what": "CNC plasma table",
+        "why": "Steel: hub rings, floor spokes, mast flanges, threaded-insert carriers, the brackets a composite member needs moulded into it. Plasma rather than laser because the work is plate steel and plate steel is what plasma is for"
+      },
+      {
+        "key": "laser_cutter",
+        "usd": 8900.0,
+        "what": "Laser cutter, for gaskets and templates",
+        "why": "Spline gaskets, seam seals, panel templates, insert jigs. The parts that are thin, flat, and have to be identical a hundred and twenty times. It is also the fastest way to make the fixture that holds a member for its compound butt cut"
+      },
+      {
+        "key": "strut_tooling",
+        "usd": 18000.0,
+        "what": "Tooling to mould a strut with its hardware in it",
+        "why": "The largest single line and the one that changes the product. A moulded or printed member arrives with its screw holes, its threaded inserts and its spline ridge already in it -- so the hardware set that joins two members is standard, reusable, and comes off with a driver. Pattern, mould and the first run of members"
+      },
+      {
+        "key": "composite_rnd",
+        "usd": 12500.0,
+        "what": "Composite triangle: steel core, moulded shell",
+        "why": "A member with a steel core for the strength, a moulded plastic body around it, metal inserts where hardware lands and a spline ridge where the seal sits. Materials, three rounds of samples, and destructive testing, because the point of a core is the number it survives to"
+      },
+      {
+        "key": "automation",
+        "usd": 7600.0,
+        "what": "Automated processing for the repetitive work",
+        "why": "Feed, index, cut, repeat. One dome is 120 members, 160 threaded inserts and 40 panels, and all of it is the same operation done many times. This is the difference between making one dome and being able to make the second one"
+      },
+      {
+        "key": "quilt_seed",
+        "usd": 5000.0,
+        "what": "Seeding the quilt network",
+        "why": "Sewing machines, shipping, and paying the first quilters for the first layers. Insulation in this building is a waste stream and somebody's evening, and the network has to exist before the first dome needs it"
+      },
+      {
+        "key": "engineering",
+        "usd": 6800.0,
+        "what": "An engineer, for the things that carry people",
+        "why": "The frame's wind and snow loads, the mast, and the hoist rating for the floating rig. This project prices those parts and refuses to rate them, and that refusal has a cost attached. It is on this list so nobody has to wonder whether it got skipped"
+      },
+      {
+        "key": "fulfilment",
+        "usd": 9350.0,
+        "what": "Making and shipping what backers are owed",
+        "why": "Kits, plans, hardware sets and freight for the reward tiers. Budgeted at cost rather than at the tier price, because a campaign that funds its tooling out of its shipping budget delivers neither"
+      }
+    ]
+  },
+  "tiers": [
+    {
+      "key": "plans",
+      "label": "The drawings and the numbers",
+      "pledge": 35.0,
+      "why": "Every table in the book, the cut list for any diameter, and the solver that made them. It is a download; the two dollars is card fees and hosting"
+    },
+    {
+      "key": "quilter",
+      "label": "Quilter's kit",
+      "pledge": 95.0,
+      "why": "Pattern, thread, the binding, and the layer specification -- how big, how thick, how to close the edge. Sew a layer for your own dome, or sew one for somebody else's and get paid for it"
+    },
+    {
+      "key": "hardware",
+      "label": "One bay's hardware set",
+      "pledge": 180.0,
+      "why": "Four threaded inserts, the flange screws, the spline gasket and the seam key for one triangle. The smallest piece of the building that is a real object rather than a drawing"
+    },
+    {
+      "key": "cap",
+      "label": "A shower cap for your dome",
+      "pledge": 1450.0,
+      "why": "The rain-slick outer cap, made to the reference diameter, hemmed with grommets and strapping. The only watertight layer in the building, and the one you cannot sew at home"
+    },
+    {
+      "key": "core",
+      "label": "The utility hub",
+      "pledge": 2400.0,
+      "why": "The centre column, assembled and tested: pad port, water manifold, drain stack, sub-panel, riser and seal cap. The part an owner cannot make and the part the goal exists to get right"
+    },
+    {
+      "key": "kit_notrees",
+      "label": "Dome kit, frame included",
+      "pledge": 19800.0,
+      "why": "Everything, including the timber, for somebody with no trees. The expensive version, honestly priced: you are paying for somebody else's 45 percent recovery"
+    },
+    {
+      "key": "kit_trees",
+      "label": "Dome kit, bring your own trees",
+      "pledge": 11400.0,
+      "why": "Everything except the frame. You fell, split and cut the members from your own land -- which is the whole argument -- and we send the rest"
+    },
+    {
+      "key": "pad",
+      "label": "Pad host's pack",
+      "pledge": 640.0,
+      "why": "The platform drawings at five foundation types, the service-port spec, the rim latch pattern, and the host's costing sheet. For somebody with land who wants a dome to be able to land on it"
+    }
+  ],
+  "fitouts": [
+    {
+      "key": "stem_cell",
+      "label": "Stem cell",
+      "shape": "hemisphere",
+      "blurb": "The bare standard article: frame, floor, shell, panels, column, seal cap and one blank utility panel. Everything else is built on top of this."
+    },
+    {
+      "key": "home",
+      "label": "Home seed",
+      "shape": "hemisphere",
+      "blurb": "A starter domicile: wash, cook, drain and see out. The camera ring sits on the seal cap and the screen inside shows what it sees."
+    },
+    {
+      "key": "food",
+      "label": "Food seed",
+      "shape": "hemisphere",
+      "blurb": "Food-truck service in a fixed shell: a hatch to the outside, a hood, three bays of sink and a cold box."
+    },
+    {
+      "key": "advertiser",
+      "label": "Advertiser seed",
+      "shape": "hemisphere",
+      "blurb": "Every one of the 40 triangles is a lit advert facing out. Park it beside a highway and the shell is the product."
+    },
+    {
+      "key": "storage",
+      "label": "Cold storage seed",
+      "shape": "hemisphere",
+      "blurb": "A conditioned storage building: a shutter to load through, racking, and the dehumidifier that makes the difference between a shed and a store."
+    },
+    {
+      "key": "bunker",
+      "label": "Bunker seed",
+      "shape": "buried",
+      "blurb": "The same dome, buried. The liner and collar keep the ground out; the apex riser is the only thing above grade, which is exactly what the interface boundary was for."
+    },
+    {
+      "key": "treehouse",
+      "label": "Treehouse seed",
+      "shape": "treed",
+      "blurb": "A pad in a tree instead of on the ground. Same dome, same port, and the services come up the trunk."
+    },
+    {
+      "key": "sauna",
+      "label": "Sauna seed",
+      "shape": "hemisphere",
+      "blurb": "The same frame, lined and sealed. Blank bays hold the heat in and one louvre lets it out when you are done."
+    },
+    {
+      "key": "gym",
+      "label": "Gym seed",
+      "shape": "hemisphere",
+      "blurb": "A second building for the thing that does not fit in the house. Mirrors on the low bays, deadening on the rest, and a door wide enough to get a rack through."
+    },
+    {
+      "key": "guest",
+      "label": "Guest house seed",
+      "shape": "hemisphere",
+      "blurb": "Somewhere for people to stay that is not your sofa. The home fit-out at a smaller module count, on a pad at the other end of the property."
+    },
+    {
+      "key": "workshop",
+      "label": "Workshop seed",
+      "shape": "hemisphere",
+      "blurb": "Light, air and power, and nothing precious about the floor. Skylights do the work a strip light would, because on a dome the upper ring IS the roof."
+    },
+    {
+      "key": "garage",
+      "label": "Garage seed",
+      "shape": "hemisphere",
+      "blurb": "One wide opening instead of three base bays, and a roll-up door across it. The frame does not care -- the ring above the opening is already carrying itself."
+    },
+    {
+      "key": "studio",
+      "label": "Studio seed",
+      "shape": "hemisphere",
+      "blurb": "The room that is not in the house: a study, a den, a place to make a noise in. Acoustic bays and one good window."
+    },
+    {
+      "key": "nursery",
+      "label": "Nursery seed",
+      "shape": "hemisphere",
+      "blurb": "A room that attaches to the house rather than replacing it, and then becomes something else when it is grown out of. Which is the whole argument in one building."
+    },
+    {
+      "key": "jacuzzi",
+      "label": "Jacuzzi seed",
+      "shape": "inverted",
+      "blurb": "The dome turned over and used as the vessel. The shell becomes the tub and the frame becomes its cradle."
+    }
+  ],
+  "panels": [
+    {
+      "key": "blank",
+      "label": "Blank panel",
+      "usd": 0.0,
+      "note": "the standard bay, closed. What every dome ships with."
+    },
+    {
+      "key": "window",
+      "label": "Window panel",
+      "usd": 210.0,
+      "note": "a fixed triangular light. The shape is the frame's, so there is no header and no trimming out"
+    },
+    {
+      "key": "vent_window",
+      "label": "Opening window",
+      "usd": 340.0,
+      "note": "the same light on a hinge, with a screen behind it"
+    },
+    {
+      "key": "door",
+      "label": "Door panel",
+      "usd": 620.0,
+      "note": "a bay cut to a door and its frame, at the base ring where the wall is nearly upright"
+    },
+    {
+      "key": "bay_door",
+      "label": "Open-bay door",
+      "usd": 1480.0,
+      "note": "three base bays taken out and replaced by one wide opening with a roll-up door: what turns a dome into a garage"
+    },
+    {
+      "key": "skylight",
+      "label": "Skylight panel",
+      "usd": 395.0,
+      "note": "a light in the upper ring, which on a dome is most of the roof"
+    },
+    {
+      "key": "louvre",
+      "label": "Louvre panel",
+      "usd": 260.0,
+      "note": "fixed slats and a screen: how a workshop or a gym gets air without a fan"
+    },
+    {
+      "key": "exhaust",
+      "label": "Exhaust panel",
+      "usd": 290.0,
+      "note": "a blanked bay with a fan and a backdraft damper in it"
+    },
+    {
+      "key": "solar",
+      "label": "Solar panel bay",
+      "usd": 330.0,
+      "note": "rails and a triangular cell array on the sunward face. Square cells waste the corners today; triangular cells are the fix and they are not on the shelf yet"
+    },
+    {
+      "key": "stove_flue",
+      "label": "Flue panel",
+      "usd": 180.0,
+      "note": "a blanked bay with a lined penetration for the stove pipe"
+    },
+    {
+      "key": "acoustic",
+      "label": "Acoustic panel",
+      "usd": 240.0,
+      "note": "mass-loaded and absorbent, for the bays a gym or a studio wants deadened"
+    },
+    {
+      "key": "mirror",
+      "label": "Mirror panel",
+      "usd": 275.0,
+      "note": "a full-height mirror in the bay. Cheap in a gym, and a dome is already the shape that wants one"
+    },
+    {
+      "key": "serving",
+      "label": "Serving hatch",
+      "usd": 780.0,
+      "note": "a counter-height opening with an awning"
+    }
+  ],
+  "sources": {
+    "dome": "seed_model.seed_geometry()",
+    "price": "kickstarter.cost_stack()",
+    "wood": "seed_model.harvest(), seed_model.trees_against_mitred()",
+    "quilt": "kickstarter.quilt_economics()",
+    "goal": "kickstarter.goal_lines()",
+    "tiers": "kickstarter.tiers()",
+    "fitouts": "seed_model.fitouts()",
+    "panels": "seed_model.PANELS"
+  }
+}

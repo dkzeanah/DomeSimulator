@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from .lesson_all_domes import ALL_DOMES_LESSON
 from .lesson_build import BUILD_LESSON
+from .lesson_cabin_pilot import CABIN_PILOT_LESSON
+from .lesson_cabin_wedge_explained import CABIN_WEDGE_EXPLAINED_LESSON
 from .lesson_cuts import CUTS_LESSON
 from .lesson_dome_park import DOME_PARK_LESSON
 from .lesson_bring_your_own_dome import BYOD_LESSON
@@ -63,7 +65,9 @@ LESSONS: dict[str, Lesson] = {
                    BYOD_DEEPSEEK_LESSON, BYOD_POLISHED, BYOD_SNARKY,
                    SEED_PITCH_LESSON, MODULE_BUILD_LESSON,
                    SEAM_LESSON,
-                   PITCH_HERO_LESSON)
+                   PITCH_HERO_LESSON,
+                   CABIN_PILOT_LESSON,
+                   CABIN_WEDGE_EXPLAINED_LESSON)
 }
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key

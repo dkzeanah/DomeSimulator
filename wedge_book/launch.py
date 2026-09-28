@@ -116,6 +116,27 @@ def main() -> int:
         print(f"  repaired {paragraphs.repair_display()} buried formulas")
         return 0
 
+    # The KDP upload set: interior, figures for paper, cover art, cover.
+    if action == "print_edition":
+        from wedge_book import print_edition
+        return print_edition.main([])
+    if action == "paper_figures":
+        from wedge_book import paper
+        return paper.main([])
+    if action == "cover_art":
+        from wedge_book import cover_scene, cover_type
+        cover_scene.main([])
+        return cover_type.main()
+    if action == "cover":
+        from wedge_book import cover
+        return cover.main([])
+    if action == "cold_open":
+        from wedge_book import cold_open
+        return cold_open.main([])
+    if action == "check_all":
+        from wedge_book import check
+        return check.main(["--full"])
+
     if action == "render_figures":
         result = figures.render()
         print(f"  asked {result['asked']}, made {result['made']}")

@@ -1,10 +1,10 @@
 ---
 title: Title page
 status: draft
-updated: 2026-09-25
+updated: 2026-09-26
 ---
 
-# Geodesic Dome: 2V Timberframe
+# Geodesic Dome Wedge Method
 
 ## The 40 Hour Cabin
 
@@ -12,10 +12,53 @@ updated: 2026-09-25
 
 *A dwelling of {{dome.members}} split-log members, {{dome.panels}} panels and
 {{dome.floor_sqft}} square feet of floor — cut from standing timber with a
-chainsaw and a froe, and stood up in a working week.*
+chainsaw, with a frame that stands up in a working week.*
 
 Built from the geometry in the DomeSim project. Every figure in this book was
 computed at build time by the same software that draws the models.
+
+---
+
+# The Engineer's Note
+
+Read this before anything else in the book, and before you pick up a saw.
+
+**This book is not engineering.** Nothing in it is a structural rating.
+Snow load, wind load, the ground under the pad and the way a frame is
+fastened are specific to your site, and they are a licensed engineer's
+numbers, not this book's. Where a chapter reaches one of those questions it
+says so and stops. Before anybody sleeps in a building made this way, have
+an engineer look at the drawings and at the frame.
+
+**This book is not your building code.** Permits, setbacks, fire, egress
+and occupancy rules are local. Ask your building department what they need
+before you fell the first tree, not after you raise the last panel.
+
+**Electricity and water are trades.** The utility column carries a
+full-size electrical feed and real plumbing. Have a licensed electrician
+connect and inspect the electrical work and a licensed plumber the water
+and drain, and follow what your inspector asks for.
+
+**Felling is the most dangerous hour in this book.** Chapter
+{{ch.nine}} lists it as the first process and, on purpose, does not teach
+it. Learn it from a qualified instructor, in person. Wear a helmet with a face screen, hearing protection, cut-resistant
+chaps, gloves and boots; never fell alone; plan your escape route before
+the first cut.
+
+**The rest of the work is heavy.** Ripping logs throws chips and sawdust,
+so wear eye protection as well as the rest of your saw gear. Wedges and panels are lifted above your head,
+so work in pairs from a stable platform. The shell comes apart in pieces
+that are a job for several people or a crane, and the book gives their
+weights so nobody has to guess.
+
+**Some of this book is a design possibility, not a tested product.** The
+book keeps three kinds of claim apart -- known geometry, tested
+construction, and design possibility -- and says which is which. The
+floating dome in Chapter {{ch.floating}} is the clearest example: it is
+priced, not rated.
+
+You build at your own risk. The author and publisher accept no liability
+for injury, loss or damage arising from the use of this book.
 
 ---
 
@@ -24,7 +67,7 @@ computed at build time by the same software that draws the models.
 The goal is a house built so efficiently that one person can go from standing
 timber to a standing shell inside a single working week.
 
-Not a kit. Not a shell delivered on a lorry. A tree, a chainsaw, a froe, and
+Not a kit. Not a shell delivered on a lorry. A tree, a chainsaw, and
 {{hr.week}} hours.
 
 That is not an aspiration bolted onto the method afterwards. It is where the
@@ -86,3 +129,12 @@ than on the frame for exactly that reason.
 
 The frame is the part you can do in a week. It is also the part you are
 allowed to get wrong.
+
+## The whole building, counted the same way
+
+So that nobody has to find it on the last page: the forty hours is the
+frame and its shell -- {{hr.total}} hours with error allowed for. The whole
+standard building, counted the same way -- frame, panels, shell, utility
+column and the rest -- is **{{money.labour_hours}} hours** of labour, and
+Chapter {{ch.core}} shows every one of them. The title is the part one
+person can do in a week. The rest is the part worth doing slowly.

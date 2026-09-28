@@ -1,0 +1,3 @@
+prompts/
+.queue.lock
+*.tmp

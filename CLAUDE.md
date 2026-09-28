@@ -84,3 +84,17 @@ Hashtags live in `release.HASHTAG_BANK`. A new film gets its own entry there.
 The plug-in segments (call to action, outro, frankendome party) are spliced during the
 export when a preset sets `compose_segments`; new films turn that on unless the lesson
 already carries its own outro.
+
+## The Cabin World is the baseline scene
+
+New films are set in `two_v_demo/cabin_world.py`: the hilltop at sunset, the solver's
+dome on its pad, the builder, the log, the stump and chainsaw, the member stack. Aim
+cameras at `cabin_world.landmarks()` by name, never at copied coordinates.
+`two_v_demo/lesson_cabin_pilot.py` is the worked example of a narrated film in it;
+`wedge_book/cold_open.py` of a short one. Music for them is synthesised by
+`two_v_demo/score.py`, never sampled.
+
+Every earlier film is queued to be re-made in it (`rerender/`, the launcher's
+**Re-render Queue**). Work that queue only through `py -3.12 -m rerender`: claim before
+starting, note as you go, stop at `review`. The user alone marks a film `done`, and an
+original is never edited to make a re-render.

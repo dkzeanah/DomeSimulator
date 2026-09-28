@@ -1,0 +1,26 @@
+{
+  "name": "dome-network-web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Book download, accounts, the dome network, links and media -- React + Express, SQLite locally, Postgres in production.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm:dev -w server\" \"npm:dev -w client\"",
+    "build": "npm run build -w client",
+    "start": "npm run start -w server",
+    "migrate": "npm run migrate -w server",
+    "test": "npm test -w server",
+    "test:pg": "npm run test:pg -w server",
+    "facts": "py -3.12 export_facts.py"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "allowScripts": {
+    "better-sqlite3@13.0.3": true,
+    "@embedded-postgres/windows-x64@18.4.0-beta.17": true
+  }
+}

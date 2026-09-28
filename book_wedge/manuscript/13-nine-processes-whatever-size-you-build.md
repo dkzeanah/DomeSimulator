@@ -50,10 +50,10 @@ member plus waste. One chainsaw. The failure is felling into something you
 did not intend; the fix is the same as it has always been and is not in this
 book.
 
-**2. Rip.** Split each section radially into {{cut.splits}} sectors. Froe and
-mallet, or wedges and a sledge. The failure is a split that wanders off the
-radius on a section with a knot in it; the fix is to buck around the knot and
-accept a shorter stick.
+**2. Rip.** Rip each section radially into {{cut.splits}} sectors with the
+chainsaw, every cut through the heart of the log. The failure is a rip that
+wanders off the radius on a section with a knot in it; the fix is to buck
+around the knot and accept a shorter stick.
 
 **3. Crosscut.** Cut each stick to length — {{cut.a_cut}} or {{cut.b_cut}}
 inches — with the compound butt at one end and nothing yet at the other. This

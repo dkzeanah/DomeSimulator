@@ -114,8 +114,8 @@ which is why it can be checked against a merchant's quote.
 Labour, which is Chapter {{ch.core}}'s territory and is
 {{money.labour_hours}} hours on the standard article.
 
-Tools. A chainsaw, a froe, a circular saw, a drill and a bench brake, none of
-which are consumed by one dome.
+Tools. A chainsaw, a circular saw, a drill and a bench brake, none of which
+are consumed by one dome.
 
 And freight, permits, and the ground itself, all of which are local and none
 of which this book can know.

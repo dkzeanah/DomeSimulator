@@ -60,8 +60,9 @@ FIGURE_DIR = store.BOOK_DIR / "figures"
 EXPORT_DIR = ROOT / "deliverables" / "book"
 STEM = "the-40-hour-cabin"
 
-TITLE = "Geodesic Dome: 2V Timberframe"
+TITLE = "Geodesic Dome Wedge Method"
 SUBTITLE = "The 40 Hour Cabin"
+AUTHOR = "Donovan Zeanah"
 
 
 # ----------------------------------------------------------------------

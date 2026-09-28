@@ -1,0 +1,28 @@
+{
+  "_note": "Books offered for download. 'file' is the base name in BOOKS_DIR (default ../deliverables/book); the site always serves its highest -vN version, so publishing a new edition needs no change here. Slugs: lowercase letters, digits and dashes only.",
+  "books": [
+    {
+      "slug": "the-40-hour-cabin",
+      "title": "Geodesic Dome Wedge Method",
+      "subtitle": "The 40 Hour Cabin",
+      "blurb": "The stem-cell dome from log to frame: how to split the wedges, cut the members and stand a 2V hemisphere, with every table computed from the solver.",
+      "file": "the-40-hour-cabin.pdf",
+      "featured": true,
+      "cover": "/covers/the-40-hour-cabin.jpg"
+    },
+    {
+      "slug": "the-wedge-method",
+      "title": "The Wedge Method",
+      "subtitle": "Why a split log beats a milled one",
+      "blurb": "The geometry behind triangular wedge members -- point in, flat face out -- and the seam they leave between them.",
+      "file": "the-wedge-method.pdf"
+    },
+    {
+      "slug": "2-trees",
+      "title": "2 Trees",
+      "subtitle": "A dome from two trees",
+      "blurb": "The book that started it: what two standing trees can become.",
+      "file": "2-trees.pdf"
+    }
+  ]
+}

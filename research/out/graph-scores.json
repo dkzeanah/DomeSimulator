@@ -1,0 +1,450 @@
+{
+ "timber-framing": {
+  "score": 58.6,
+  "basis": "demand only",
+  "demand": 41,
+  "phrase": "timber framing",
+  "updated": "2026-09-27"
+ },
+ "geodesic-dome": {
+  "score": 55.7,
+  "basis": "demand only",
+  "demand": 39,
+  "phrase": "geodesic dome",
+  "updated": "2026-09-27"
+ },
+ "tiny-house": {
+  "score": 54.3,
+  "basis": "demand only",
+  "demand": 38,
+  "phrase": "tiny house build",
+  "updated": "2026-09-27"
+ },
+ "chainsaw-ripping": {
+  "score": 45.7,
+  "basis": "demand only",
+  "demand": 32,
+  "phrase": "alaskan mill",
+  "updated": "2026-09-27"
+ },
+ "hex-dome": {
+  "score": 44.3,
+  "basis": "demand only",
+  "demand": 31,
+  "phrase": "hexagon dome",
+  "updated": "2026-09-27"
+ },
+ "shower-cap": {
+  "score": 44.3,
+  "basis": "demand only",
+  "demand": 31,
+  "phrase": "dome cover",
+  "updated": "2026-09-27"
+ },
+ "owner-builder": {
+  "score": 40.0,
+  "basis": "demand only",
+  "demand": 28,
+  "phrase": "build your own cabin",
+  "updated": "2026-09-27"
+ },
+ "quilt-insulation": {
+  "score": 37.1,
+  "basis": "demand only",
+  "demand": 26,
+  "phrase": "diy insulation",
+  "updated": "2026-09-27"
+ },
+ "cinematic-reveal": {
+  "score": 35.7,
+  "basis": "demand only",
+  "demand": 25,
+  "phrase": "cinematic build video",
+  "updated": "2026-09-27"
+ },
+ "pad": {
+  "score": 34.3,
+  "basis": "demand only",
+  "demand": 24,
+  "phrase": "diy deck foundation",
+  "updated": "2026-09-27"
+ },
+ "dome-network": {
+  "score": 32.9,
+  "basis": "demand only",
+  "demand": 23,
+  "phrase": "tiny house community",
+  "updated": "2026-09-27"
+ },
+ "adu": {
+  "score": 32.9,
+  "basis": "demand only",
+  "demand": 23,
+  "phrase": "backyard office build",
+  "updated": "2026-09-27"
+ },
+ "radiative-cooling": {
+  "score": 31.4,
+  "basis": "demand only",
+  "demand": 22,
+  "phrase": "cool roof paint",
+  "updated": "2026-09-27"
+ },
+ "dome-park": {
+  "score": 31.4,
+  "basis": "demand only",
+  "demand": 22,
+  "phrase": "tiny home community",
+  "updated": "2026-09-27"
+ },
+ "trees-per-dome": {
+  "score": 28.6,
+  "basis": "demand only",
+  "demand": 20,
+  "phrase": "timber for a cabin",
+  "updated": "2026-09-27"
+ },
+ "compound-cut": {
+  "score": 27.1,
+  "basis": "demand only",
+  "demand": 19,
+  "phrase": "compound miter cut",
+  "updated": "2026-09-27"
+ },
+ "rainwater": {
+  "score": 25.7,
+  "basis": "demand only",
+  "demand": 18,
+  "phrase": "rain catchment roof",
+  "updated": "2026-09-27"
+ },
+ "fit-outs": {
+  "score": 25.7,
+  "basis": "demand only",
+  "demand": 18,
+  "phrase": "dome greenhouse",
+  "updated": "2026-09-27"
+ },
+ "wedge-orientation": {
+  "score": 24.3,
+  "basis": "demand only",
+  "demand": 17,
+  "phrase": "wedge orientation",
+  "updated": "2026-09-27"
+ },
+ "hull-laminate": {
+  "score": 24.3,
+  "basis": "demand only",
+  "demand": 17,
+  "phrase": "fiberglass dome",
+  "updated": "2026-09-27"
+ },
+ "the-book": {
+  "score": 24.3,
+  "basis": "demand only",
+  "demand": 17,
+  "phrase": "cabin building book",
+  "updated": "2026-09-27"
+ },
+ "wedge-member": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "radial sawn timber",
+  "updated": "2026-09-27"
+ },
+ "moisture": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "vapor barrier mistakes",
+  "updated": "2026-09-27"
+ },
+ "utility-column": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "dome plumbing",
+  "updated": "2026-09-27"
+ },
+ "off-grid-power": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "off grid solar cabin",
+  "updated": "2026-09-27"
+ },
+ "stem-cell": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "modular dome home",
+  "updated": "2026-09-27"
+ },
+ "housing-affordability": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "cheap way to build a house",
+  "updated": "2026-09-27"
+ },
+ "floating-dome": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "treehouse dome",
+  "updated": "2026-09-27"
+ },
+ "error-tolerance": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "woodworking mistakes fix",
+  "updated": "2026-09-27"
+ },
+ "simulator": {
+  "score": 22.9,
+  "basis": "demand only",
+  "demand": 16,
+  "phrase": "3d dome simulator",
+  "updated": "2026-09-27"
+ },
+ "assembly-jig": {
+  "score": 21.4,
+  "basis": "demand only",
+  "demand": 15,
+  "phrase": "panel assembly jig",
+  "updated": "2026-09-27"
+ },
+ "seam-channel": {
+  "score": 20.0,
+  "basis": "demand only",
+  "demand": 14,
+  "phrase": "dome ventilation",
+  "updated": "2026-09-27"
+ },
+ "permits-codes": {
+  "score": 20.0,
+  "basis": "demand only",
+  "demand": 14,
+  "phrase": "dome building permit",
+  "updated": "2026-09-27"
+ },
+ "film-engine": {
+  "score": 20.0,
+  "basis": "demand only",
+  "demand": 14,
+  "phrase": "programmatic video",
+  "updated": "2026-09-27"
+ },
+ "lumen": {
+  "score": 20.0,
+  "basis": "demand only",
+  "demand": 14,
+  "phrase": "animated mascot youtube",
+  "updated": "2026-09-27"
+ },
+ "frequency-families": {
+  "score": 18.6,
+  "basis": "demand only",
+  "demand": 13,
+  "phrase": "3v geodesic dome",
+  "updated": "2026-09-27"
+ },
+ "zome": {
+  "score": 18.6,
+  "basis": "demand only",
+  "demand": 13,
+  "phrase": "zome vs geodesic dome",
+  "updated": "2026-09-27"
+ },
+ "dome-cost": {
+  "score": 18.6,
+  "basis": "demand only",
+  "demand": 13,
+  "phrase": "dome home cost",
+  "updated": "2026-09-27"
+ },
+ "labour-hours": {
+  "score": 18.6,
+  "basis": "demand only",
+  "demand": 13,
+  "phrase": "build a cabin in a week",
+  "updated": "2026-09-27"
+ },
+ "engineering": {
+  "score": 18.6,
+  "basis": "demand only",
+  "demand": 13,
+  "phrase": "are domes strong",
+  "updated": "2026-09-27"
+ },
+ "hubless": {
+  "score": 17.1,
+  "basis": "demand only",
+  "demand": 12,
+  "phrase": "hubless geodesic dome",
+  "updated": "2026-09-27"
+ },
+ "panelized-dome": {
+  "score": 17.1,
+  "basis": "demand only",
+  "demand": 12,
+  "phrase": "prefab dome panels",
+  "updated": "2026-09-27"
+ },
+ "pine-value": {
+  "score": 17.1,
+  "basis": "demand only",
+  "demand": 12,
+  "phrase": "timber value per tree",
+  "updated": "2026-09-27"
+ },
+ "dome-panels": {
+  "score": 17.1,
+  "basis": "demand only",
+  "demand": 12,
+  "phrase": "dome panels",
+  "updated": "2026-09-27"
+ },
+ "foundation-types": {
+  "score": 17.1,
+  "basis": "demand only",
+  "demand": 12,
+  "phrase": "cheapest cabin foundation",
+  "updated": "2026-09-27"
+ },
+ "frankendome": {
+  "score": 17.1,
+  "basis": "demand only",
+  "demand": 12,
+  "phrase": "first dome build fail",
+  "updated": "2026-09-27"
+ },
+ "chord-factors": {
+  "score": 15.7,
+  "basis": "demand only",
+  "demand": 11,
+  "phrase": "dome strut length formula",
+  "updated": "2026-09-27"
+ },
+ "pinwheel-joint": {
+  "score": 15.7,
+  "basis": "demand only",
+  "demand": 11,
+  "phrase": "pinwheel joint",
+  "updated": "2026-09-27"
+ },
+ "green-wood": {
+  "score": 15.7,
+  "basis": "demand only",
+  "demand": 11,
+  "phrase": "green wood construction",
+  "updated": "2026-09-27"
+ },
+ "surface-to-volume": {
+  "score": 15.7,
+  "basis": "demand only",
+  "demand": 11,
+  "phrase": "are domes more efficient",
+  "updated": "2026-09-27"
+ },
+ "seal-cap": {
+  "score": 15.7,
+  "basis": "demand only",
+  "demand": 11,
+  "phrase": "dome roof vent",
+  "updated": "2026-09-27"
+ },
+ "kit-home": {
+  "score": 15.7,
+  "basis": "demand only",
+  "demand": 11,
+  "phrase": "dome home kit",
+  "updated": "2026-09-27"
+ },
+ "free-book": {
+  "score": 15.7,
+  "basis": "demand only",
+  "demand": 11,
+  "phrase": "dome building book",
+  "updated": "2026-09-27"
+ },
+ "seam-key": {
+  "score": 14.3,
+  "basis": "demand only",
+  "demand": 10,
+  "phrase": "dome panel joints",
+  "updated": "2026-09-27"
+ },
+ "log-yield": {
+  "score": 14.3,
+  "basis": "demand only",
+  "demand": 10,
+  "phrase": "lumber yield from a log",
+  "updated": "2026-09-27"
+ },
+ "utility-panel": {
+  "score": 14.3,
+  "basis": "demand only",
+  "demand": 10,
+  "phrase": "outdoor utility cabinet",
+  "updated": "2026-09-27"
+ },
+ "kickstarter": {
+  "score": 14.3,
+  "basis": "demand only",
+  "demand": 10,
+  "phrase": "crowdfunding a house",
+  "updated": "2026-09-27"
+ },
+ "modules": {
+  "score": 12.9,
+  "basis": "demand only",
+  "demand": 9,
+  "phrase": "tiny house kitchen module",
+  "updated": "2026-09-27"
+ },
+ "code-a-home": {
+  "score": 12.9,
+  "basis": "demand only",
+  "demand": 9,
+  "phrase": "open source house",
+  "updated": "2026-09-27"
+ },
+ "2v-frequency": {
+  "score": 11.4,
+  "basis": "demand only",
+  "demand": 8,
+  "phrase": "2v geodesic dome",
+  "updated": "2026-09-27"
+ },
+ "icosahedron": {
+  "score": 10.0,
+  "basis": "demand only",
+  "demand": 7,
+  "phrase": "icosahedron geodesic",
+  "updated": "2026-09-27"
+ },
+ "deferment": {
+  "score": 8.6,
+  "basis": "demand only",
+  "demand": 6,
+  "phrase": "build a house in stages",
+  "updated": "2026-09-27"
+ },
+ "dihedral-angle": {
+  "score": 7.1,
+  "basis": "demand only",
+  "demand": 5,
+  "phrase": "dome panel angles",
+  "updated": "2026-09-27"
+ },
+ "triangles-rigid": {
+  "score": 7.1,
+  "basis": "demand only",
+  "demand": 5,
+  "phrase": "triangulation structure",
+  "updated": "2026-09-27"
+ }
+}

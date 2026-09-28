@@ -216,6 +216,36 @@ def launch_tool(script: str, tool: str, config: dict,
     return process
 
 
+def launch_module(module: str, args: list[str], on_line=None, on_exit=None,
+                  cwd: Path | None = None, tool: str = "research"):
+    """Run ``python -m module *args`` with output streamed to ``on_line``.
+
+    For tools that are packages with their own command line (the research
+    engine, the book's print pipeline) rather than ticket-reading scripts.
+    """
+    env = dict(os.environ)
+    env.setdefault("PYTHONUNBUFFERED", "1")
+    process = subprocess.Popen(
+        [python_for(tool), "-m", module, *args], cwd=str(cwd or ROOT), env=env,
+        stdout=subprocess.PIPE if on_line else None,
+        stderr=subprocess.STDOUT if on_line else None,
+        text=True, bufsize=1)
+    if on_line is None:
+        return process
+
+    def pump():
+        try:
+            for line in process.stdout:
+                on_line(line.rstrip("\n"))
+        finally:
+            process.wait()
+            if on_exit:
+                on_exit(process.returncode)
+
+    threading.Thread(target=pump, daemon=True).start()
+    return process
+
+
 def parse_size(value: str) -> tuple[int, int]:
     """Parse a 'WIDTHxHEIGHT' string; raises ValueError if malformed."""
     width_text, height_text = value.lower().split("x", 1)

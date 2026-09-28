@@ -138,6 +138,18 @@ class Lesson:
     how older films rendered: every re-render gains the badge, because a
     reference mark nobody can see is not a reference mark."""
 
+    backdrop: Callable[..., object] | None = None
+    """A painted picture behind the scene -- a sky, hills, a horizon.
+
+    Called as ``backdrop(app, eye, target, mvp, width, height)`` and returns
+    an ``(height, width, 3)`` float array, top row first. The Cabin World
+    films use it for their sunset (:mod:`two_v_demo.cabin_world`). ``None``
+    clears to the renderer's own colour, as every earlier film did."""
+
+    light: tuple[float, float, float] | None = None
+    """Direction the light travels, when a lesson brings its own sun.
+    ``None`` keeps the renderer's house light."""
+
     def validate(self) -> None:
         """Fail loudly at load time rather than mid-render."""
         if not self.chapters:

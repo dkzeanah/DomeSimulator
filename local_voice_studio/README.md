@@ -1,5 +1,44 @@
 # Local Voice Studio
 
+## My Voice: your recordings in, your voice as the narrator out (automatic)
+
+Open **DomeSim Launcher → Films & media → My Voice**. Paste or pick videos, audio
+files or folders of yourself speaking, tick the box confirming it is your own
+voice, and press **Build / strengthen my voice**. Nothing else is manual:
+
+1. the audio is pulled out of each file and cleaned for speech (rumble cut, noise
+   reduced, loudness levelled); files already used, and recordings whose audio
+   duplicates one already used, are skipped;
+2. it is cut into sentence clips and transcribed locally (faster-whisper);
+3. every clip gets a speaker fingerprint, and only the clips that cluster as one
+   voice -- yours -- are kept; other people, music and noise are set aside;
+4. your voice card is measured: pitch and range, speaking rate, loudness,
+   brightness (`my_voice/voice_card.json`);
+5. the voice is built: the cleanest ~14 s become the reference, and the identity
+   vectors are averaged over **every** accepted clip -- so adding recordings makes
+   the voice stronger, not just the pool larger. A calibration sentence is spoken
+   both ways and scored against your real voice; the closer one is kept, and its
+   pace is matched to yours;
+6. it becomes the default narrator: every film render (Masterclass page, the
+   re-render queue, `py -3.12 -m rerender render …`) narrates locally in your
+   voice. Switch back to Andrew on the same page at any time.
+
+Run Build again with more recordings whenever you like. Everything lives in
+`my_voice/` (git-ignored: it is your voice). From a terminal:
+
+```powershell
+.\.venv-voice\Scripts\python.exe -m local_voice_studio.my_voice build "H:\videos" --i-own-this-voice
+.\.venv-voice\Scripts\python.exe -m local_voice_studio.my_voice say "Testing one two three."
+py -3.12 -m local_voice_studio.my_voice status
+py -3.12 -m local_voice_studio.my_voice default andrew
+```
+
+What it is and is not: this is reference-conditioned cloning with Chatterbox
+Turbo, strengthened by averaging -- it sounds like you, it is not a trained model
+of you. Every build also exports `my_voice/project/runs/f5-dataset/` (clips plus
+transcripts), which is what a real fine-tune needs once there are 30-60 clean
+minutes (see *Optional F5 fine-tuning* below).
+
 ## Presentation Voice: paste text and make a narration clip
 
 Open **DomeSim Launcher → Local Voice Studio → Presentation Voice — text to audio**.

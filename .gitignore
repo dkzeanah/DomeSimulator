@@ -69,3 +69,6 @@ voice_clips/
 
 # Local video review history and handoff snapshots (keep/back up on disk).
 video_reviews/
+
+# The owner's voice: recordings, clips, fingerprints and the built voice. Personal; never committed.
+my_voice/

@@ -351,6 +351,24 @@ PRESETS: tuple[RenderPreset, ...] = (
            "the sheet does not have.",
            compose_segments=False),
 
+    _video("cabin_wedge_explained", "cabin_wedge_explained", "the-wedge-dome-explained.mp4",
+           "THE WEDGE DOME, EXPLAINED. The whole method in the Cabin World, and the "
+           "channel in every seam: what fits in it (water, wire), what does not (a "
+           "round duct), the key as a spacer and what that costs, printed half-keys, "
+           "and where the channels meet. Every figure from channel_facts."),
+
+    RenderPreset(
+        key="cabin_wedge_explained_stills",
+        label="wedge dome explained -- one still per chapter",
+        summary="A still from each chapter of the Cabin World explanation, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_wedge_explained",
+            "action": "shots",
+            "shots": chapter_shots("cabin_wedge_explained"),
+        },
+    ),
+
     RenderPreset(
         key="module_build_stills",
         label="utility core build -- one still per chapter",

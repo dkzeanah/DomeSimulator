@@ -321,8 +321,8 @@ PERMUTATIONS: dict[str, dict] = {
         "why": "How many sectors the trunk is split into. Fewer splits "
                "means a fatter wedge and a deeper wall; more means thinner "
                "sticks and more of them. Eight is what the reference build "
-               "uses because it is the split a person can do accurately "
-               "with a froe and a wedge, not because the geometry prefers "
+               "uses because it is the split a person can rip accurately "
+               "with a chainsaw, not because the geometry prefers "
                "it -- and the seam channel it leaves shrinks fast as the "
                "count goes up, which is the cost nobody expects.",
         "values": {
@@ -561,7 +561,7 @@ def catalogue() -> list[Figure]:
         "wedge-cross-section", "One wedge, end on",
         "The end of a single member, close enough to read the section: a "
         "45-degree slice of a 12-inch log, two sawn radial faces and a bark "
-        "face. Nothing has been machined -- this is what the froe leaves",
+        "face. Nothing has been planed -- this is what the chainsaw rip leaves",
         chapter=2, config=_cfg(panel_explode_in=3.0), view=WITH_OVERFIT,
         camera={"aim": {"at": "vertex:1", "distance_in": 30.0,
                         "azimuth_deg": 0.0, "elevation_deg": 0.0},

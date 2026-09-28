@@ -108,7 +108,7 @@ The whole of it — geometry, prices, figures, this book — regenerates from on
 set of inputs.
 
 Change the trunk diameter to what you actually felled. Change the split count
-to what your froe will do. Rebuild. Every chapter that mentions a figure now
+to what your saw and your log will give you. Rebuild. Every chapter that mentions a figure now
 says your figure, without anybody going looking, and the pictures are redrawn
 from your solve.
 

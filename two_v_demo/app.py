@@ -90,6 +90,13 @@ from .render_kit import (
 )
 from .frame import Frame, FitSmoother, apply_fit, design_aspect, fit_camera, subject_points
 
+
+#: The stage in print colours: light enough to read as the page, dark enough
+#: that the grid and the shadows still show the ground plane.
+PAPER_STAGE = (0.80, 0.81, 0.82, 1.0)
+PAPER_GRID = (0.62, 0.66, 0.70, 1.0)
+PAPER_RING = (0.52, 0.60, 0.66, 1.0)
+
 class MasterclassApp:
     """Interactive presenter and deterministic video renderer."""
 
@@ -170,6 +177,13 @@ class MasterclassApp:
         self.creator_program = None
         self.creator_cache: dict = {}
         self.creator_sky = (0.16, 0.26, 0.38)
+        # Heavy scenery a painter builds once and hands over by key -- the
+        # Cabin World's forest, ground and dome -- uploaded on first use and
+        # drawn from the GPU every frame after. Empty for every other film.
+        self.static_draws: list = []
+        self.static_cache: dict = {}
+        self.backdrop_texture = None
+        self.backdrop_size = (0, 0)
         """Sky the Creator's shader lights glass, mirrors and haze against.
 
         Dimmed from the tool's daylight blue because a film is graded dark; the
@@ -229,6 +243,15 @@ class MasterclassApp:
         self.ui_buttons: dict[str, object] = {}
         self.plate_mode = False
         self.plate_bare = False
+        #: What the frame is cleared to. The films' dark field unless a
+        #: ticket asks for another -- a printed book wants a light page, and
+        #: nothing else in the renderer reads this colour, so changing it
+        #: changes the background and nothing else.
+        self.clear_rgba = BG
+        #: The stage the films stand things on: a dark slab with a grid. A
+        #: printed page wants the same stage in light greys, which is the only
+        #: thing ``paper_stage`` changes.
+        self.stage_colors = (GROUND, (0.08, 0.18, 0.24, 1.0), (0.08, 0.32, 0.42, 1.0))
         """Draw the world with no text on it at all.
 
         Stronger than plate_mode, which only drops the transport controls.
@@ -251,8 +274,8 @@ class MasterclassApp:
     # ------------------------------------------------------------------
 
     def add_ground(self, opaque: TriangleBatch) -> None:
-        opaque.box((0.0, 0.0, -0.20), (36.0, 28.0, 0.28), GROUND)
-        grid_color = (0.08, 0.18, 0.24, 1.0)
+        ground_color, grid_color, ring_color = self.stage_colors
+        opaque.box((0.0, 0.0, -0.20), (36.0, 28.0, 0.28), ground_color)
         for value in range(-16, 17, 2):
             opaque.cylinder(
                 np.array([value, -12.0, -0.045]),
@@ -270,7 +293,7 @@ class MasterclassApp:
             a = np.array([6.4 * math.cos(angle), 6.4 * math.sin(angle), -0.035])
             b_angle = angle + math.tau / 40
             b = np.array([6.4 * math.cos(b_angle), 6.4 * math.sin(b_angle), -0.035])
-            opaque.cylinder(a, b, 0.018, (0.08, 0.32, 0.42, 1.0), 5)
+            opaque.cylinder(a, b, 0.018, ring_color, 5)
 
     def add_edges(
         self,
@@ -394,6 +417,7 @@ class MasterclassApp:
         self.world_labels = []
         self.world_icons = []
         self.creator_draws = []
+        self.static_draws = []
         if getattr(self.lesson, "ground", "grid") != "off":
             self.add_ground(opaque)
         # Everything after this index is the subject, which is what a screen
@@ -405,6 +429,45 @@ class MasterclassApp:
         else:
             getattr(self, f"scene_{stage}")(opaque, transparent, progress)
         return opaque, transparent
+
+    def static_layer(self, key: str, make, subject_points=None) -> None:
+        """Draw a batch that never changes, built and uploaded only once.
+
+        ``make`` returns a :class:`TriangleBatch` and is called the first time
+        ``key`` is seen. ``subject_points`` -- a few points, say a bounding
+        box -- are what a phone cut frames; scenery passes none, so it is
+        never mistaken for the subject.
+        """
+        if key not in self.static_cache:
+            batch = make()
+            data = np.asarray(batch.vertices, dtype="f4")
+            vbo = self.ctx.buffer(data.tobytes()) if data.size else None
+            vao = (self.ctx.vertex_array(
+                self.scene_program,
+                [(vbo, "3f 3f 4f", "in_position", "in_normal", "in_color")])
+                if vbo is not None else None)
+            self.static_cache[key] = (vbo, vao)
+        points = [] if subject_points is None else [
+            np.asarray(p, dtype=np.float32) for p in subject_points]
+        self.static_draws.append((key, points))
+
+    def draw_backdrop(self, eye, target, width: int, height: int) -> None:
+        image = self.lesson.backdrop(self, eye, target, self.mvp, width, height)
+        pixels = (np.clip(np.asarray(image, dtype=np.float32), 0.0, 1.0) * 255.0
+                  ).astype(np.uint8)
+        rgba = np.dstack([pixels, np.full(pixels.shape[:2], 255, np.uint8)])
+        size = (width, height)
+        if self.backdrop_texture is None or self.backdrop_size != size:
+            if self.backdrop_texture is not None:
+                self.backdrop_texture.release()
+            self.backdrop_texture = self.ctx.texture(size, 4)
+            self.backdrop_size = size
+        # Textures are bottom row first, as the overlay's upload flips too.
+        self.backdrop_texture.write(np.ascontiguousarray(np.flipud(rgba)).tobytes())
+        self.ctx.disable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)
+        self.backdrop_texture.use(0)
+        self.overlay_program["u_texture"].value = 0
+        self.overlay_vao.render(self.moderngl.TRIANGLE_STRIP)
 
     def scene_hero(self, opaque: TriangleBatch, transparent: TriangleBatch, p: float) -> None:
         scale = 5.0
@@ -1707,7 +1770,7 @@ class MasterclassApp:
     def render(self, present: bool = True) -> None:
         width, height = self.pygame.display.get_window_size()
         self.ctx.viewport = (0, 0, width, height)
-        self.ctx.clear(*BG)
+        self.ctx.clear(*self.clear_rgba)
         eye, target = self.camera()
         projection = perspective(48.0, width / max(1, height), 0.08, 120.0)
         chapter = self.chapters[self.chapter_index]
@@ -1733,6 +1796,8 @@ class MasterclassApp:
             region = self.plan_frame(width, height)
             opaque, transparent = self.build_scene(chapter.stage, self.chapter_progress)
             extra = [label.point for label in self.world_labels]
+            for _key, subject in self.static_draws:
+                extra.extend(subject)
             if self.creator_draws:
                 # Dome Creator buildings never pass through the film's batches,
                 # so the fit is given their points directly; without this a
@@ -1758,13 +1823,29 @@ class MasterclassApp:
             np.ascontiguousarray(self.mvp.T).tobytes()
         )
         self.scene_program["u_camera"].value = tuple(float(value) for value in eye)
+        # Kept as a literal line: lesson_scratch reads the house light out of
+        # this source to state it on screen.
         self.scene_program["u_light"].value = (-0.45, -0.55, -0.72)
+        if getattr(self.lesson, "light", None) is not None:
+            # A lesson with its own sun -- the Cabin World's -- replaces it.
+            self.scene_program["u_light"].value = tuple(self.lesson.light)
         if not adapting:
             opaque, transparent = self.build_scene(chapter.stage, self.chapter_progress)
+        if getattr(self.lesson, "backdrop", None) is not None:
+            self.draw_backdrop(eye, target, width, height)
 
         self.ctx.enable(self.moderngl.DEPTH_TEST | self.moderngl.CULL_FACE)
         self.ctx.depth_mask = True
         self.opaque_mesh.draw(opaque)
+        if self.static_draws:
+            # Built by hand, not by the film's own primitives, so drawn
+            # two-sided: the shader lights a back face as a front one.
+            self.ctx.disable(self.moderngl.CULL_FACE)
+            for key, _points in self.static_draws:
+                vao = self.static_cache[key][1]
+                if vao is not None:
+                    vao.render(self.moderngl.TRIANGLES)
+            self.ctx.enable(self.moderngl.CULL_FACE)
         if self.creator_draws:
             self.draw_creator("opaque", eye)
         if transparent.vertices:
@@ -2037,6 +2118,20 @@ class MasterclassApp:
                 "'libx264' or 'h264_nvenc'"
             )
         ffmpeg = resolve_executable("ffmpeg", ffmpeg_path)
+        # The owner's own voice, when it has been built and chosen as the default
+        # (local_voice_studio.my_voice, the launcher's My Voice page). Only the
+        # house voice is replaced: a render that asks for another neural voice by
+        # name keeps it, and a plan handed in (the phone cut replaying the
+        # landscape one) is used as it is.
+        if local_narration_plan is None and narration and voice == DEFAULT_VOICE:
+            try:
+                from local_voice_studio import my_voice
+            except ImportError:
+                my_voice = None
+            if my_voice is not None and my_voice.default_voice()["engine"] == "mine":
+                path.parent.mkdir(parents=True, exist_ok=True)
+                local_narration_plan = my_voice.narrate_for_export(
+                    self.chapters, self.speak_promise, self.lesson.key, path, print)
         plan: NarrationPlan | None = None
         speech_delay = SPEECH_DELAY
         self.exporting = True
@@ -2867,6 +2962,11 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
     if action == "shots":
         app.plate_mode = bool(cfg.get("plate", False))
         app.plate_bare = bool(cfg.get("bare", False))
+        if cfg.get("background"):
+            r, g, b = (float(v) for v in cfg["background"])
+            app.clear_rgba = (r, g, b, 1.0)
+        if cfg.get("paper_stage"):
+            app.stage_colors = (PAPER_STAGE, PAPER_GRID, PAPER_RING)
     if action == "shots" and cfg.get("shots"):
         try:
             times = [float(v.strip()) for v in str(cfg["shots"]).split(",")

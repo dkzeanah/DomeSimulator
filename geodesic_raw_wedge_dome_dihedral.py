@@ -4801,7 +4801,7 @@ THE TWO ENDS ARE NOT THE SAME OPERATION
 
     def render(self) -> None:
         self.ctx.viewport = (0, 0, self.width, self.height)
-        self.ctx.clear(0.035, 0.045, 0.060, 1.0, depth=1.0)
+        self.ctx.clear(*getattr(self, "clear_rgb", (0.035, 0.045, 0.060)), 1.0, depth=1.0)
 
         projection = perspective_matrix(
             self.current_fov_deg(),
@@ -5289,6 +5289,12 @@ def run_figure_shots(spec_path: str) -> None:
             # figure that hides the wireframe hides it in every figure after
             # it in the batch, because the app is reused and a toggle is
             # state.
+            # A printed page is light; the tool's own field is dark. A shot
+            # may name the colour it is cleared to, reset every shot like
+            # the switches below so one light figure does not leak into the
+            # next.
+            app.clear_rgb = tuple(float(v) for v in shot.get(
+                "background", (0.035, 0.045, 0.060)))
             app.show_hud = bool(shot.get("hud", False))
             app.show_ground = bool(shot.get("ground", True))
             app.show_jig = bool(config.jig_enabled)

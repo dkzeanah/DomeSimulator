@@ -30,6 +30,137 @@ import render_presets
 
 ROOT = Path(__file__).resolve().parent
 
+#: The sidebar's groups, in order, and which tools sit in each. A tool not
+#: listed lands in "Other", so adding a tab never makes it disappear.
+NAV_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("Design & build", ("Dome Creator", "Dome Forge", "Dome Composer",
+                        "Raw Wedge Dome", "Assembly Line",
+                        "Assembly Line (Simple)", "Flatten Utility")),
+    ("Films & media", ("Masterclass", "Re-render Queue", "My Voice", "Presenter Studio",
+                       "Video Review", "Beat Studio", "Local Voice Studio")),
+    ("Books", ("Wedge Method Book", "Book: 2 Trees")),
+    ("Park & network", ("Dome Park",)),
+    ("Research", ("Research & Keywords",)),
+    ("Agents", ("Project Agent",)),
+)
+
+
+def make_tool_nav(tk, ttk):
+    """A grouped sidebar that stands in for the old strip of seventeen tabs.
+
+    It offers exactly what the launcher used from ``ttk.Notebook`` --
+    ``add``, ``tabs``, ``tab(id, "text")``, ``select`` and the
+    ``<<NotebookTabChanged>>`` event -- so every tool's page is built
+    unchanged; only how you get to it is new.
+    """
+
+    class ToolNav(ttk.Frame):
+        WIDTH = 196
+        BG = "#1d2a24"
+
+        def __init__(self, master):
+            super().__init__(master)
+            # The sidebar scrolls, so no tool can ever fall off the bottom of
+            # a short screen; on a normal one it all fits and never moves.
+            self.side_canvas = tk.Canvas(self, bg=self.BG, width=self.WIDTH,
+                                         highlightthickness=0, bd=0)
+            self.side_canvas.pack(side="left", fill="y")
+            self.side = tk.Frame(self.side_canvas, bg=self.BG)
+            self.side_canvas.create_window((0, 0), window=self.side, anchor="nw",
+                                           width=self.WIDTH)
+            self.side.bind("<Configure>", lambda _e: self.side_canvas.configure(
+                scrollregion=self.side_canvas.bbox("all")))
+            self.side_canvas.bind("<Enter>", lambda _e: self.side_canvas.bind_all(
+                "<MouseWheel>", self._wheel))
+            self.side_canvas.bind("<Leave>", lambda _e: self.side_canvas.unbind_all(
+                "<MouseWheel>"))
+            self.content = ttk.Frame(self)
+            self.content.pack(side="left", fill="both", expand=True, padx=(10, 0))
+            self._pages: list[tuple[str, object, str]] = []
+            self._buttons: dict[str, object] = {}
+            self._current: str = ""
+            self._groups: dict[str, object] = {}
+            for title, _members in NAV_GROUPS + (("Other", ()),):
+                box = tk.Frame(self.side, bg=self.BG)
+                tk.Label(box, text=title.upper(), bg=self.BG, fg="#9fb3a8",
+                         font=("Segoe UI", 8, "bold"), anchor="w").pack(
+                    fill="x", padx=12, pady=(7, 1))
+                self._groups[title] = box
+
+        def _wheel(self, event) -> None:
+            if self.side.winfo_height() > self.side_canvas.winfo_height():
+                self.side_canvas.yview_scroll(int(-event.delta / 120), "units")
+
+        def _order(self, text: str) -> int:
+            for _title, members in NAV_GROUPS:
+                if text in members:
+                    return members.index(text)
+            return 999
+
+        def _group_of(self, text: str) -> str:
+            for title, members in NAV_GROUPS:
+                if text in members:
+                    return title
+            return "Other"
+
+        def add(self, frame, text: str = "") -> None:
+            page_id = str(frame)
+            self._pages.append((page_id, frame, text))
+            box = self._groups[self._group_of(text)]
+            button = tk.Button(
+                box, text=text, anchor="w", relief="flat", bd=0,
+                bg=self.BG, fg="#e4ece7", activebackground="#2e4238",
+                activeforeground="#ffffff", font=("Segoe UI", 9),
+                padx=14, pady=2, cursor="hand2",
+                command=lambda: self.select(page_id))
+            self._buttons[page_id] = button
+            # Keep each group in the order NAV_GROUPS lists, whatever order
+            # the pages happen to be built in.
+            siblings = sorted(((self._order(t), pid) for pid, _f, t in self._pages
+                               if self._group_of(t) == self._group_of(text)))
+            for _rank, pid in siblings:
+                self._buttons[pid].pack_forget()
+            for _rank, pid in siblings:
+                self._buttons[pid].pack(fill="x")
+            if not box.winfo_ismapped():
+                self._show_groups()
+            if not self._current:
+                self.select(page_id)
+
+        def _show_groups(self) -> None:
+            for box in self._groups.values():
+                box.pack_forget()
+            for title, box in self._groups.items():
+                if any(self._group_of(t) == title for _i, _f, t in self._pages):
+                    box.pack(fill="x")
+
+        def tabs(self) -> tuple[str, ...]:
+            return tuple(page_id for page_id, _f, _t in self._pages)
+
+        def tab(self, page_id, option: str = "text"):
+            for pid, _f, text in self._pages:
+                if pid == str(page_id):
+                    return text
+            raise KeyError(page_id)
+
+        def select(self, page_id=None):
+            if page_id is None:
+                return self._current
+            page_id = str(page_id)
+            for pid, frame, _t in self._pages:
+                if pid == page_id:
+                    frame.pack(in_=self.content, fill="both", expand=True)
+                    self._buttons[pid].configure(bg="#c8792b", fg="#1a1007")
+                else:
+                    frame.pack_forget()
+                    self._buttons[pid].configure(bg="#1d2a24", fg="#e4ece7")
+            if page_id != self._current:
+                self._current = page_id
+                self.event_generate("<<NotebookTabChanged>>")
+            return page_id
+
+    return ToolNav
+
 
 def main() -> int:
     w = lc.build_widgets()
@@ -40,7 +171,7 @@ def main() -> int:
 
     root = tk.Tk()
     root.title("DomeSim Launcher")
-    root.geometry("1040x760")
+    root.geometry("1180x780")
     root.minsize(860, 620)
 
     style = ttk.Style(root)
@@ -69,21 +200,17 @@ def main() -> int:
 
     header = ttk.Label(
         root, text="DomeSim Launcher",
-        font=("Segoe UI", 15, "bold"))
-    header.pack(anchor="w", padx=12, pady=(10, 0))
+        font=("Segoe UI", 13, "bold"))
+    header.pack(anchor="w", padx=12, pady=(8, 0))
     header_help = ttk.Label(
-        root, text="Every tool below used to take command-line flags; "
-                   "they are now set here and launched with one click. "
-                   "Each tab explains what its tool does and what its "
-                   "fields mean — you do not need to read any code to "
-                   "use this. Most tools open a fullscreen 3-D window "
-                   "when launched: press Escape to release the mouse, "
-                   "then Escape again to quit and return here.",
+        root, text="Pick a tool on the left, set it up, press its button. "
+                   "3-D tools open fullscreen: Escape releases the mouse, "
+                   "Escape again quits back here.",
         wraplength=1000, justify="left",
         foreground=NOTE_FG)
-    header_help.pack(anchor="w", padx=12, pady=(0, 8))
+    header_help.pack(anchor="w", padx=12, pady=(0, 6))
 
-    notebook = ttk.Notebook(root)
+    notebook = make_tool_nav(tk, ttk)(root)
     notebook.pack(fill="both", expand=True, padx=12, pady=(0, 6))
     manual_reference_panels = []
 
@@ -91,7 +218,7 @@ def main() -> int:
     log_frame.pack(fill="both", expand=False, padx=12, pady=(0, 12))
     # Reserve the log's space before allocating the expandable tab content.
     log_frame.pack_configure(side="bottom", before=notebook)
-    log = tk.Text(log_frame, height=11, bg="#12141a", fg="#d8dee9",
+    log = tk.Text(log_frame, height=7, bg="#12141a", fg="#d8dee9",
                   insertbackground="#d8dee9", font=("Consolas", 9),
                   wrap="word")
     log.pack(fill="both", expand=True, side="left")
@@ -1234,7 +1361,7 @@ def main() -> int:
             header_help.pack(anchor="w", padx=12, pady=(0, 8), after=header)
             log_frame.pack(side="bottom", fill="both", expand=False,
                            padx=12, pady=(0, 12), before=notebook)
-        log.configure(height=3 if is_voice else 11)
+        log.configure(height=3 if is_voice else 7)
     notebook.bind("<<NotebookTabChanged>>", voice_tab_layout, add="+")
     voice_tabs.bind("<<NotebookTabChanged>>", voice_tab_layout, add="+")
 
@@ -1455,25 +1582,20 @@ def main() -> int:
 
     t, body, foot = scrollable_tab("Wedge Method Book")
     intro(body,
-         "The book: The Wedge Method, a builder's guide to timber "
-         "geodesic domes. This is the separate one -- not the 2 Trees "
-         "book in Book Studio -- and it has its own editor, its own "
-         "outline and its own figures. Twenty chapters across five "
-         "parts, a hundred and fifty-two sections, and the text lives in "
-         "three places at once: the editor's own project file, a "
-         "database that can answer which sections are still empty, and a "
-         "folder of Markdown you can open in any text editor. The "
-         "figures are not drawings of the dome. They are the raw-wedge "
-         "solver, run with the settings that make the thing visible -- "
-         "the frame pushed apart so you can see into a seam, the same "
-         "dome four times with the wedge turned each way -- and every "
-         "one of them is labelled with where it came from.")
+         "The book: Geodesic Dome Wedge Method -- The 40 Hour Cabin, by "
+         "Donovan Zeanah. Its own editor, outline and figures (not the "
+         "2 Trees book). The text lives as Markdown in book_wedge/, every "
+         "number in it is computed, and the figures are the raw-wedge solver "
+         "run with the settings that make each idea visible. The KDP upload "
+         "set -- print interior, light print figures, cover art and the "
+         "wraparound cover -- is built from here too.")
 
     section(body, "What to do")
     wb_action = LabeledCombo(
         body, "Action",
         ["open_editor", "sync_from_tree", "sync_from_project",
-         "render_figures", "status"], "open_editor")
+         "render_figures", "paper_figures", "print_edition", "cover_art",
+         "cover", "cold_open", "check_all", "status"], "open_editor")
     wb_action.pack(fill="x", pady=3)
     action_help(body, wb_action, {
         "open_editor": "open the Tkinter book editor. This is where you "
@@ -1491,6 +1613,22 @@ def main() -> int:
                           "figure list and write the PNGs into "
                           "book_wedge/figures/. Needs a display; takes a "
                           "couple of minutes.",
+        "paper_figures": "re-render every figure the book prints on a light "
+                         "page, without the films' captions. Long: it "
+                         "renders each film's frames again.",
+        "print_edition": "build the KDP print interior: title and copyright "
+                         "pages, contents with page numbers, folios, glossary "
+                         "and index. Never overwrites; writes the next -vN.",
+        "cover_art": "render the cover scene from the model (the solver's "
+                     "own dome) and set the title lettering over it.",
+        "cover": "build the wraparound cover (back, spine, front) sized for "
+                 "the newest interior's page count.",
+        "cold_open": "film the cover's world: from the log's end grain, "
+                     "crane up to the dome at sunset, with the title. "
+                     "Landscape and phone cuts plus a release folder; about "
+                     "twenty minutes.",
+        "check_all": "run every check the book has, including the print "
+                     "interior and the cover's fit to it.",
         "status": "no window: print how many sections are written, how "
                   "many words, and which figures are still missing.",
     })
@@ -1984,6 +2122,511 @@ def main() -> int:
 
     # ---- Project Agent ----------------------------------------------------
 
+    # ---- Research & Keywords ---------------------------------------------
+
+    GRAPH_URL = "https://claude.ai/artifact/Uo7mikiULfLudRHezZyC98"
+
+    def run_module(module: str, args: list[str], name: str) -> None:
+        append_log(f"--- running {name}: python -m {module} {' '.join(args)} " + "-" * 12)
+        if smoketest:
+            launched.append((name, module, {"args": args}))
+            return
+        try:
+            lc.launch_module(module, args, on_line=append_log, cwd=ROOT,
+                             on_exit=lambda code: append_log(f"--- {name} exited (code {code})"))
+        except Exception as exc:  # noqa: BLE001 - surface to the log pane
+            append_log(f"!!! failed to run {name}: {exc}")
+
+    def open_graph() -> None:
+        append_log(f"--- opening the knowledge graph: {GRAPH_URL}")
+        if smoketest:
+            launched.append(("Knowledge graph", "browser", {"url": GRAPH_URL}))
+            return
+        import webbrowser
+        webbrowser.open(GRAPH_URL)
+
+    t, body, foot = scrollable_tab("Research & Keywords")
+    intro(body,
+         "What to make next, and how to make it grab people. The knowledge "
+         "graph holds every idea in this project as keywords you can cycle "
+         "through, each with search phrases and one-click YouTube and "
+         "Google searches; you can edit it in the browser. The research "
+         "engine checks which of those phrases people actually search for "
+         "(free) and which do well on YouTube (with a free API key), and "
+         "writes a ranked report. Storycraft turns the best topics into "
+         "episode plans that hook first and explain second. Everything it "
+         "writes goes to the research/out folder.")
+    section(body, "Topic research")
+    rs_stage = LabeledCombo(body, "Stage", ["all", "demand", "performance", "report"], "all")
+    rs_stage.pack(fill="x", pady=3)
+    action_help(body, rs_stage, {
+        "all": "search demand, then performance if a key is set, then the report.",
+        "demand": "YouTube autocomplete for every phrase in the graph. Free, about "
+                  "twenty minutes the first time, instant after (it is cached).",
+        "performance": "views, age and channel size of the top videos per phrase. "
+                       "Needs YOUTUBE_API_KEY set in your environment; see research/README.md.",
+        "report": "rank the topics and list the searches the graph does not cover yet.",
+    })
+    section(body, "Episode plans")
+    rs_top = LabeledEntry(body, "How many top topics to plan", "10")
+    rs_top.pack(fill="x", pady=3)
+    note(body, "Plans land in research/out/plans, one file per keyword.")
+    ttk.Separator(foot).pack(fill="x")
+    buttons = ttk.Frame(foot)
+    buttons.pack(fill="x")
+    for text, command in (
+            ("Open knowledge graph", open_graph),
+            ("Run topic research",
+             lambda: run_module("research.engine", [rs_stage.get()], "Topic research")),
+            ("Write episode plans",
+             lambda: run_module("research.storycraft", ["--top", rs_top.get() or "10"],
+                                "Episode plans")),
+            ("Rebuild graph page",
+             lambda: run_module("research.graph_page", [], "Graph page"))):
+        ttk.Button(buttons, text=text, command=command).pack(side="left", padx=(0, 8), pady=(10, 4))
+        smoke_callbacks.append((text, command))
+
+    # ---- Re-render Queue --------------------------------------------------
+    # Every film this project has rendered, as a checklist to re-make in the
+    # Cabin World. The list reads rerender/catalogue.json and queue.json in
+    # process (plain JSON, instant); prompts are generated by
+    # ``py -m rerender`` in the background because they read the live scene.
+
+    from rerender import catalogue as rr_catalogue
+    from rerender import state as rr_state
+
+    rr_tab = tab("Re-render Queue")
+    intro(rr_tab,
+          "A checklist of every video this project has rendered, to be re-made "
+          "one at a time with the new Cabin World scene (the dome at sunset from "
+          "the cold open) as the picture. The originals are never touched. Pick "
+          "a film and press Copy prompt: it copies a complete set of "
+          "instructions -- the rules, the files, the film's chapters and "
+          "numbers, the commands -- that you can paste into Claude or any other "
+          "AI to have it make that film. Whoever does the work marks progress "
+          "here, so several sessions can work through the list without doing "
+          "the same film twice.")
+
+    rr_filter_row = ttk.Frame(rr_tab)
+    rr_filter_row.pack(fill="x")
+    ttk.Label(rr_filter_row, text="Show").pack(side="left")
+    rr_filter = tk.StringVar(value="all")
+    ttk.Combobox(rr_filter_row, textvariable=rr_filter, width=10, state="readonly",
+                 values=("all",) + rr_state.STATUSES).pack(side="left", padx=(6, 16))
+    rr_counts = ttk.Label(rr_filter_row, text="")
+    rr_counts.pack(side="left")
+
+    # The controls are packed from the bottom up first, so they always show;
+    # the list and detail take whatever height is left between.
+    rr_bottom = ttk.Frame(rr_tab)
+    rr_bottom.pack(side="bottom", fill="x")
+    rr_panes = ttk.PanedWindow(rr_tab, orient="horizontal")
+    rr_panes.pack(fill="both", expand=True, pady=(8, 6))
+    rr_left = ttk.Frame(rr_panes)
+    rr_tree = ttk.Treeview(rr_left, columns=("status", "priority", "chapters", "film"),
+                           show="headings", selectmode="browse", height=6)
+    for column, heading, width, stretch in (
+            ("status", "Status", 78, False), ("priority", "Priority", 64, False),
+            ("chapters", "Ch.", 40, False), ("film", "Film", 300, True)):
+        rr_tree.heading(column, text=heading)
+        rr_tree.column(column, width=width, stretch=stretch,
+                       anchor="w" if column == "film" else "center")
+    rr_scroll = ttk.Scrollbar(rr_left, orient="vertical", command=rr_tree.yview)
+    rr_tree.configure(yscrollcommand=rr_scroll.set)
+    rr_tree.pack(side="left", fill="both", expand=True)
+    rr_scroll.pack(side="left", fill="y")
+    rr_panes.add(rr_left, weight=3)
+    rr_detail = tk.Text(rr_panes, wrap="word", width=40, height=6, relief="flat",
+                        font=("Segoe UI", 9), padx=10, pady=8, state="disabled")
+    rr_panes.add(rr_detail, weight=2)
+    for status, colour in (("done", "#2f7d4f"), ("review", "#1f6aa5"),
+                           ("claimed", "#b06a12"), ("rendering", "#b06a12"),
+                           ("skip", "#8a8a8a")):
+        rr_tree.tag_configure(status, foreground=colour)
+
+    rr_items: dict = {}
+
+    def rr_selected():
+        chosen = rr_tree.selection()
+        return rr_items.get(chosen[0]) if chosen else None
+
+    def rr_show_detail(*_a) -> None:
+        item = rr_selected()
+        rr_detail.configure(state="normal")
+        rr_detail.delete("1.0", "end")
+        if item is not None:
+            e = rr_state.entry(rr_state.load(), item)
+            lines = [item.title, "",
+                     f"Key: {item.key}    Kind: {item.kind}",
+                     f"Status: {e['status']}    Priority: {e['priority']}"
+                     + (f"    Held by: {e['owner']}" if e["owner"] else ""),
+                     f"Made by: {item.source}",
+                     f"Originals on disk: {len(item.originals) or 'none found'}",
+                     f"Will become: {item.target_file}"]
+            if item.family:
+                lines.append(f"Family: {item.family} ({item.family_note or item.kind})")
+            if item.superseded_by:
+                lines.append(f"Superseded by: {item.superseded_by} -- probably skip")
+            if item.fit:
+                lines += ["", item.fit]
+            lines += ["", f"{len(item.chapters)} chapters:"]
+            lines += [f"  {c.number}. {c.title}" for c in item.chapters[:40]]
+            if len(item.chapters) > 40:
+                lines.append(f"  ... and {len(item.chapters) - 40} more")
+            if e["log"]:
+                lines += ["", "Log:"]
+                lines += [f"  {x['at'][:16]} {x['by'] or '?'}: {x['text']}" for x in e["log"][-8:]]
+            rr_detail.insert("1.0", "\n".join(lines))
+        rr_detail.configure(state="disabled")
+
+    def rr_reload(keep: str | None = None) -> None:
+        keep = keep or (rr_tree.selection()[0] if rr_tree.selection() else None)
+        rr_tree.delete(*rr_tree.get_children())
+        rr_items.clear()
+        try:
+            items = rr_catalogue.load() if rr_catalogue.CATALOGUE.is_file() else []
+        except Exception as exc:  # noqa: BLE001 - a broken catalogue must not kill the launcher
+            append_log(f"!!! re-render catalogue unreadable: {exc}")
+            items = []
+        data = rr_state.load()
+        counts: dict = {}
+        for item in items:
+            e = rr_state.entry(data, item)
+            counts[e["status"]] = counts.get(e["status"], 0) + 1
+            if rr_filter.get() not in ("all", e["status"]):
+                continue
+            rr_items[item.key] = item
+            rr_tree.insert("", "end", iid=item.key, tags=(e["status"],),
+                           values=(e["status"], e["priority"], len(item.chapters), item.title))
+        total = sum(counts.values())
+        rr_counts.configure(text=(f"{total} films: " + ", ".join(
+            f"{n} {s}" for s, n in sorted(counts.items()))) if total else
+            "No catalogue yet -- press Refresh list.")
+        if keep in rr_items:
+            rr_tree.selection_set(keep)
+            rr_tree.see(keep)
+        elif rr_tree.get_children():
+            rr_tree.selection_set(rr_tree.get_children()[0])
+        rr_show_detail()
+
+    rr_tree.bind("<<TreeviewSelect>>", rr_show_detail)
+    rr_filter.trace_add("write", lambda *_a: rr_reload())
+
+    def rr_copy(args: list[str], label: str) -> None:
+        append_log(f"--- writing the {label} (reads the live scene; a few seconds)")
+        if smoketest:
+            launched.append((f"Copy {label}", "rerender", {"args": args}))
+            return
+        chunks: list[str] = []
+
+        def done(code: int) -> None:
+            def finish():
+                text = "\n".join(line for line in chunks if not line.startswith("<!--"))
+                if code != 0 or not text.strip():
+                    append_log(f"!!! could not write the {label} (code {code})")
+                    return
+                root.clipboard_clear()
+                root.clipboard_append(text)
+                append_log(f"--- copied the {label}: {len(text.split()):,} words. Paste it "
+                           "into Claude or any AI. Also saved in rerender/prompts/.")
+            root.after(0, finish)
+        lc.launch_module("rerender", args, on_line=chunks.append, on_exit=done, cwd=ROOT)
+
+    def rr_copy_item() -> None:
+        item = rr_selected()
+        if item is None and not smoketest:
+            append_log("--- pick a film in the list first")
+            return
+        key = item.key if item is not None else "why"
+        rr_copy(["prompt", key], f"prompt for {key}")
+
+    def rr_copy_queue() -> None:
+        rr_copy(["prompt", "--queue"], "take-the-next-film prompt")
+
+    rr_actions = ttk.Frame(rr_bottom)
+    rr_actions.pack(fill="x")
+    for text, command in (("Copy prompt", rr_copy_item),
+                          ("Copy 'next in queue' prompt", rr_copy_queue)):
+        ttk.Button(rr_actions, text=text, command=command).pack(side="left", padx=(0, 8), pady=4)
+        smoke_callbacks.append((text, command))
+
+    def rr_refresh() -> None:
+        append_log("--- re-reading every film from the code (a minute or two)")
+        if smoketest:
+            return
+        lc.launch_module("rerender", ["refresh"], on_line=append_log, cwd=ROOT,
+                         on_exit=lambda code: root.after(0, rr_reload))
+
+    ttk.Button(rr_actions, text="Refresh list", command=rr_refresh).pack(side="left", padx=(0, 8))
+    ttk.Button(rr_actions, text="Open prompts folder",
+               command=lambda: os.startfile(str(ROOT / "rerender" / "prompts"))
+               if (ROOT / "rerender" / "prompts").is_dir() else
+               append_log("--- no prompts written yet")).pack(side="left")
+
+    rr_mark = ttk.Frame(rr_bottom)
+    rr_mark.pack(fill="x", pady=(4, 0))
+    ttk.Label(rr_mark, text="Your name").pack(side="left")
+    rr_by = tk.StringVar(value=os.environ.get("USERNAME", "me"))
+    ttk.Entry(rr_mark, textvariable=rr_by, width=12).pack(side="left", padx=(6, 14))
+    rr_status = tk.StringVar(value="done")
+    ttk.Combobox(rr_mark, textvariable=rr_status, width=10, state="readonly",
+                 values=rr_state.STATUSES).pack(side="left")
+
+    def rr_apply(kind: str) -> None:
+        item = rr_selected()
+        if item is None:
+            append_log("--- pick a film in the list first")
+            return
+        try:
+            if kind == "status":
+                rr_state.set_status(item, rr_status.get(), rr_by.get().strip())
+                append_log(f"--- {item.key}: {rr_status.get()}")
+            elif kind == "priority":
+                rr_state.set_priority(item, rr_priority.get())
+                append_log(f"--- {item.key}: priority {rr_priority.get()}")
+            elif kind == "note":
+                text = rr_note.get().strip()
+                if not text:
+                    return
+                rr_state.note(item, rr_by.get().strip(), text)
+                rr_note.set("")
+                append_log(f"--- {item.key}: noted")
+        except Exception as exc:  # noqa: BLE001 - refusals are explained, not raised
+            append_log(f"!!! {item.key}: {exc}")
+        rr_reload(item.key)
+
+    ttk.Button(rr_mark, text="Set status", command=lambda: rr_apply("status")).pack(
+        side="left", padx=(6, 14))
+    rr_priority = tk.StringVar(value="high")
+    ttk.Combobox(rr_mark, textvariable=rr_priority, width=7, state="readonly",
+                 values=rr_state.PRIORITIES).pack(side="left")
+    ttk.Button(rr_mark, text="Set priority", command=lambda: rr_apply("priority")).pack(
+        side="left", padx=(6, 14))
+    rr_note_row = ttk.Frame(rr_bottom)
+    rr_note_row.pack(fill="x", pady=(4, 0))
+    rr_note = tk.StringVar()
+    ttk.Entry(rr_note_row, textvariable=rr_note).pack(side="left", fill="x", expand=True)
+    ttk.Button(rr_note_row, text="Add note", command=lambda: rr_apply("note")).pack(
+        side="left", padx=(6, 0))
+    note(rr_bottom, "Statuses: todo, claimed (someone is on it), rendering, review (made -- "
+                 "watch it), done (you approved it), skip (not worth re-making). Only you "
+                 "mark a film done. The same list works from a terminal: "
+                 "py -3.12 -m rerender list.")
+    rr_reload()
+
+    # ---- My Voice -----------------------------------------------------------
+    # Build a narration voice from the owner's own videos, strengthen it with
+    # more, and choose it as the default narrator. The work runs in
+    # .venv-voice (local_voice_studio.my_voice); this page only collects paths
+    # and shows the result, reading my_voice/status.json directly.
+
+    from tkinter import filedialog
+
+    from local_voice_studio import my_voice as mv
+
+    _mv_page, mv_tab, _mv_foot = scrollable_tab("My Voice")
+    intro(mv_tab,
+          "Make every film narrated in your own voice. Add videos or audio of you "
+          "speaking (files or whole folders) and press Build. Everything else is "
+          "automatic: the sound is pulled out and cleaned, cut into sentences, "
+          "transcribed, and checked so only your voice is kept (other people and "
+          "music are set aside). Your pitch, pace and tone are measured, and the "
+          "voice is built and tested against you. Add more recordings any time and "
+          "press Build again: they join the pool and the voice gets stronger. "
+          "Nothing leaves this computer.")
+
+    section(mv_tab, "1. Your recordings")
+    note(mv_tab, "One path per line: a video, an audio file, or a folder of them. Files "
+                 "already used are skipped, and repeated recordings are caught.")
+    mv_box = tk.Text(mv_tab, height=6, wrap="none", font=("Consolas", 9))
+    mv_box.pack(fill="x")
+    try:
+        mv_box.insert("1.0", (mv.HOME / "last-list.txt").read_text(encoding="utf-8"))
+    except OSError:
+        pass
+
+    def mv_add(lines) -> None:
+        current = mv_box.get("1.0", "end").strip()
+        mv_box.insert("end", ("\n" if current else "") + "\n".join(lines))
+
+    def mv_add_files() -> None:
+        pattern = " ".join(f"*{e}" for e in sorted(mv.MEDIA))
+        names = filedialog.askopenfilenames(
+            title="Videos or audio of you speaking",
+            filetypes=[("Video and audio", pattern), ("All files", "*.*")])
+        if names:
+            mv_add(names)
+
+    def mv_add_folder() -> None:
+        folder = filedialog.askdirectory(title="A folder of your videos")
+        if folder:
+            mv_add([folder])
+
+    mv_row = ttk.Frame(mv_tab)
+    mv_row.pack(fill="x", pady=(4, 0))
+    ttk.Button(mv_row, text="Add videos…", command=mv_add_files).pack(side="left", padx=(0, 6))
+    ttk.Button(mv_row, text="Add a folder…", command=mv_add_folder).pack(side="left", padx=(0, 6))
+    ttk.Button(mv_row, text="Clear", command=lambda: mv_box.delete("1.0", "end")).pack(side="left")
+
+    section(mv_tab, "2. Build, or strengthen with more")
+    mv_name = LabeledEntry(mv_tab, "Your name", "Donovan Zeanah")
+    mv_name.pack(fill="x", pady=2)
+    mv_own = tk.BooleanVar(value=(mv.PROJECT_DIR / "consent.json").is_file())
+    ttk.Checkbutton(mv_tab, variable=mv_own,
+                    text="These are recordings of my own voice, and I'm allowed to use them"
+                    ).pack(anchor="w", pady=(2, 4))
+    mv_status = ttk.Label(mv_tab, text=mv.summary(), justify="left", wraplength=730,
+                          style="Live.TLabel")
+
+    def mv_refresh() -> None:
+        mv_status.configure(text=mv.summary())
+        mv_engine.set(mv.default_voice()["engine"])
+
+    def mv_build() -> None:
+        paths = [line.strip() for line in mv_box.get("1.0", "end").splitlines() if line.strip()]
+        args = ["build", "--speaker", mv_name.get().strip() or "Me"]
+        if mv_own.get():
+            args.append("--i-own-this-voice")
+        if smoketest:
+            launched.append(("My Voice: build", "local_voice_studio.my_voice",
+                             {"args": args, "paths": len(paths)}))
+            return
+        if not mv_own.get():
+            append_log("--- tick the box confirming these are recordings of your own voice")
+            return
+        mv.HOME.mkdir(parents=True, exist_ok=True)
+        listing = mv.HOME / "last-list.txt"
+        listing.write_text("\n".join(paths) + "\n", encoding="utf-8")
+        args += ["--list", str(listing)]
+        append_log(f"--- building your voice from {len(paths)} paths "
+                   "(the first build takes a while; later ones only add what is new)")
+        lc.launch_module("local_voice_studio.my_voice", args, on_line=append_log, cwd=ROOT,
+                         tool="local_voice_studio",
+                         on_exit=lambda code: root.after(0, lambda: (
+                             mv_refresh(), append_log(f"--- voice build finished (code {code})"))))
+
+    def mv_play() -> None:
+        status = mv._read(mv.STATUS, {})
+        sample = mv.SAMPLES / status.get("sample", "")
+        if status.get("sample") and sample.is_file():
+            os.startfile(str(sample))
+        else:
+            append_log("--- no sample yet: build your voice first")
+
+    mv_actions = ttk.Frame(mv_tab)
+    mv_actions.pack(fill="x", pady=(2, 6))
+    ttk.Button(mv_actions, text="Build / strengthen my voice", command=mv_build).pack(side="left", padx=(0, 8))
+    smoke_callbacks.append(("Build / strengthen my voice", mv_build))
+    ttk.Button(mv_actions, text="Play the sample", command=mv_play).pack(side="left", padx=(0, 8))
+    ttk.Button(mv_actions, text="Open voice folder",
+               command=lambda: os.startfile(str(mv.HOME)) if mv.HOME.is_dir()
+               else append_log("--- nothing built yet")).pack(side="left")
+
+    section(mv_tab, "3. Who narrates every film from now on")
+    mv_engine = tk.StringVar(value=mv.default_voice()["engine"])
+
+    def mv_choose() -> None:
+        try:
+            label = mv.set_default(mv_engine.get())["label"]
+            append_log(f"--- default narrator: {label}")
+        except Exception as exc:  # noqa: BLE001 - e.g. choosing "mine" before a build
+            append_log(f"!!! {exc}")
+        mv_refresh()
+
+    ttk.Radiobutton(mv_tab, text="My voice (made on this computer from my recordings)",
+                    variable=mv_engine, value="mine", command=mv_choose).pack(anchor="w")
+    ttk.Radiobutton(mv_tab, text="Andrew (Microsoft's online neural voice, the old default)",
+                    variable=mv_engine, value="andrew", command=mv_choose).pack(anchor="w")
+    note(mv_tab, "Applies to every film render: the Masterclass page, the re-render "
+                 "queue and the command line. A render that names a different online "
+                 "voice keeps that voice.")
+
+    section(mv_tab, "Try it")
+    mv_say_row = ttk.Frame(mv_tab)
+    mv_say_row.pack(fill="x")
+    mv_say = tk.StringVar(value="This is my voice, narrating the wedge dome.")
+    ttk.Entry(mv_say_row, textvariable=mv_say).pack(side="left", fill="x", expand=True)
+
+    def mv_speak() -> None:
+        text = mv_say.get().strip()
+        if not text:
+            return
+        append_log(f"--- speaking in your voice: {text}")
+        out = mv.SAMPLES / f"say-{int(__import__('time').time())}.wav"
+        lc.launch_module("local_voice_studio.my_voice", ["say", text, "--out", str(out)],
+                         on_line=append_log, cwd=ROOT, tool="local_voice_studio",
+                         on_exit=lambda code: root.after(0, lambda: os.startfile(str(out))
+                                                         if code == 0 and out.is_file() else None))
+
+    ttk.Button(mv_say_row, text="Speak", command=mv_speak).pack(side="left", padx=(6, 0))
+    section(mv_tab, "4. Shape the sound")
+    note(mv_tab, "Pitch moves the note; Body makes the voice sound bigger (negative) or "
+                 "smaller (positive) without changing the note; the cuts and shelves "
+                 "shape the tone. Preview plays the sample sentence with these settings "
+                 "and saves them -- every film from then on uses them.")
+    mv_tw = mv.tweaks()
+    mv_sliders: dict = {}
+    mv_grid = ttk.Frame(mv_tab)
+    mv_grid.pack(fill="x")
+    mv_labels = {"pitch_semitones": "Pitch (semitones)", "body_semitones": "Body: deeper ↔ lighter",
+                 "speed": "Speed", "low_cut_hz": "Low cut (Hz, 0 = off)",
+                 "high_cut_hz": "High cut (Hz, 0 = off)", "bass_db": "Bass (dB)",
+                 "treble_db": "Treble (dB)"}
+    for index, (name, (lo, hi, _neutral, what)) in enumerate(mv.TWEAK_LIMITS.items()):
+        cell = ttk.Frame(mv_grid)
+        cell.grid(row=index // 2, column=index % 2, sticky="ew", padx=(0, 18), pady=1)
+        var = tk.DoubleVar(value=mv_tw[name])
+        shown = ttk.Label(cell, width=7, anchor="e")
+
+        def show(*_a, v=var, label=shown, n=name):
+            value = v.get()
+            label.configure(text=f"{value:.0f}" if n.endswith("_hz") else f"{value:+.2f}"
+                            if n != "speed" else f"x{value:.2f}")
+        ttk.Label(cell, text=mv_labels[name], width=22).pack(side="left")
+        scale = ttk.Scale(cell, from_=lo, to=hi, variable=var, length=170)
+        scale.pack(side="left")
+        shown.pack(side="left")
+        add_tooltip(scale, what)
+        var.trace_add("write", show)
+        show()
+        mv_sliders[name] = var
+    mv_grid.columnconfigure(0, weight=1)
+    mv_grid.columnconfigure(1, weight=1)
+
+    def mv_load(values: dict) -> None:
+        for name, var in mv_sliders.items():
+            var.set(values[name])
+
+    def mv_preset(name: str) -> None:
+        mv_load(mv.set_tweaks(preset=name))
+        append_log(f"--- sound preset: {name}")
+
+    def mv_preview() -> None:
+        values = {name: round(var.get(), 2) for name, var in mv_sliders.items()}
+        if smoketest:
+            launched.append(("My Voice: preview", "local_voice_studio.my_voice",
+                             {"args": ["preview"], "tweaks": values}))
+            return
+        mv.set_tweaks(values)
+        out = mv.SAMPLES / f"preview-{int(__import__('time').time())}.wav"
+        append_log("--- previewing: " + ", ".join(f"{k}={v:g}" for k, v in values.items()))
+        lc.launch_module("local_voice_studio.my_voice", ["preview", "--out", str(out)],
+                         on_line=append_log, cwd=ROOT, tool="local_voice_studio",
+                         on_exit=lambda code: root.after(0, lambda: os.startfile(str(out))
+                                                         if code == 0 and out.is_file() else
+                                                         append_log("!!! preview failed")))
+
+    mv_presets = ttk.Frame(mv_tab)
+    mv_presets.pack(fill="x", pady=(4, 0))
+    ttk.Label(mv_presets, text="Presets").pack(side="left", padx=(0, 6))
+    for preset in mv.TWEAK_PRESETS:
+        ttk.Button(mv_presets, text=preset.title(),
+                   command=lambda p=preset: mv_preset(p)).pack(side="left", padx=(0, 4))
+    ttk.Button(mv_presets, text="Preview", command=mv_preview).pack(side="left", padx=(12, 0))
+    smoke_callbacks.append(("My Voice: preview", mv_preview))
+
+    mv_status.pack(anchor="w", fill="x", pady=(10, 0))
+
     agent_tab = tab("Project Agent")
     agent_tabs = ttk.Notebook(agent_tab)
     agent_tabs.pack(fill="both", expand=True)
@@ -2293,10 +2936,10 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 16
+        expected = 19
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 17
+        expected_buttons = 25
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks
@@ -2353,6 +2996,13 @@ def main() -> int:
         launched.clear()
         mc_preset.var.set(render_presets.PRESET_LABELS[0])
         root.update()
+
+        notebook.select(rr_tab)
+        root.update()
+        assert len(rr_tree.get_children()) == len(rr_catalogue.load()), "queue list is short"
+        assert rr_detail.get("1.0", "end").strip(), "picking a film shows no detail"
+        print(f"SMOKETEST OK: re-render queue lists {len(rr_tree.get_children())} films "
+              "and shows the selected one")
 
         for label, callback in smoke_callbacks:
             callback()
