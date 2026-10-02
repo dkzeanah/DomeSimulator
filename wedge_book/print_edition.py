@@ -114,6 +114,8 @@ figcaption {{ font-size: 8.5pt; }}
 .title-page .a {{ font: 700 13pt/1 "Segoe UI", sans-serif; letter-spacing: .22em;
                   text-transform: uppercase; margin: 0; }}
 .title-page .p {{ font: 9.5pt Georgia, serif; color: #555; margin-top: 3.4in; }}
+.title-art {{ padding-top: 0; }}
+.title-art .line {{ font: 9pt Georgia, serif; color: #444; margin: .15in 0 0; }}
 
 /* Copyright page */
 .copyright {{ font-size: 8.5pt; line-height: 1.5; color: #333; padding-top: 4.6in; }}
@@ -429,8 +431,26 @@ def cap_figures(document: str) -> str:
     return re.sub(r'<img [^>]*src="(file:[^"]+)"[^>]*>', replace, document)
 
 
+#: The painted cover art, printed as the title page. It is 1024 x 1536 px, so
+#: at this page's text-block height it prints near 165 DPI -- under KDP's
+#: 300 DPI recommendation; a larger export of the same art is the fix.
+TITLE_ART = outline.ROOT / "Book-cover-final4.png"
+
+
 def title_page() -> str:
     e = html_escape.escape
+    if TITLE_ART.is_file():
+        import base64
+
+        data = base64.b64encode(TITLE_ART.read_bytes()).decode("ascii")
+        height = TRIM_IN[1] - TOP_IN - BOTTOM_IN - 0.45
+        # The art carries the title; the line under it says it again as text,
+        # so the page is searchable and the build's title-page check can read it.
+        return (f'<section class="front title-page title-art">'
+                f'<img src="data:image/png;base64,{data}" alt="{e(outline.TITLE)}" '
+                f'style="height:{height:.2f}in;max-width:none;width:auto;display:block;margin:0 auto">'
+                f'<p class="line">{e(outline.TITLE)} &middot; {e(outline.SUBTITLE)} &middot; '
+                f'{e(outline.AUTHOR)}</p></section>')
     return (f'<section class="front title-page">'
             f'<p class="t">{e(outline.TITLE)}</p>'
             f'<p class="s">{e(outline.SUBTITLE)}</p>'

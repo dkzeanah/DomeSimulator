@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "slug": "example-molecular-sieve-fridge",
+  "status": "example",
+  "title": "The fridge with no compressor",
+  "hook": "No compressor, no refrigerant, no moving parts: just water, a vacuum and a mineral.",
+  "brand": "DomeSim concepts",
+  "source": {
+    "url": "<the YouTube URL of the video>",
+    "title": "<the video's title>",
+    "channel": "<the channel>",
+    "transcript_file": "<path to the transcript in the ingesting project>",
+    "retrieved": "<YYYY-MM-DD>",
+    "note": "EXAMPLE CARD. The numbers below are textbook values marked 'standard' or 'estimate' so the pattern is complete; a real card replaces them with what the video says, as 'claimed' numbers with timestamps."
+  },
+  "summary": "A molecular sieve is a zeolite: a mineral full of pores exactly the size of a water molecule. Put one in a sealed, air-free vessel beside a pan of water and it pulls the water's vapour in so hard that the water boils at room temperature, and boiling water gets cold. That is a refrigerator. When the zeolite is full, heat it and it gives the water back, ready to do it again.",
+  "numbers": [
+    {"name": "latent_kj_kg", "label": "heat to boil water", "value": 2450, "unit": "kJ/kg", "kind": "standard",
+     "source": "latent heat of vaporisation of water near 20 C, from steam tables",
+     "why": "what each kilogram of water that boils off carries away"},
+    {"name": "uptake_kg_per_kg", "label": "water per kg of zeolite", "value": 0.2, "unit": "kg/kg", "kind": "estimate",
+     "source": "typical working uptake of zeolite 13X between regenerated and saturated, textbook range 0.15-0.25",
+     "why": "replace with the video's figure if it gives one", "format": ".2f"},
+    {"name": "bed_kg", "label": "zeolite in the bed", "value": 20, "unit": "kg", "kind": "estimate",
+     "source": "an illustrative bed, about what fits a seam cartridge set",
+     "why": "sets the scale of everything after it"},
+    {"name": "cop_thermal", "label": "cooling per unit of heat", "value": 0.4, "unit": "", "kind": "estimate",
+     "source": "single-bed adsorption cycles, typical 0.3-0.5", "why": "how much heat buys how much cold", "format": ".1f"},
+    {"name": "regen_c", "label": "regeneration temperature", "value": 200, "unit": "C", "kind": "estimate",
+     "source": "zeolite 13X regenerates at roughly 150-250 C", "why": "what the collector has to reach"},
+    {"name": "cycles_per_day", "label": "cycles a day", "value": 1, "unit": "", "kind": "estimate",
+     "source": "one regeneration per sunny day", "why": "a solar cycle is daily", "format": ".0f"},
+    {"name": "collector_kwh_m2_day", "label": "useful heat per square metre of collector", "value": 3, "unit": "kWh/m2/day",
+     "kind": "estimate", "source": "a good evacuated-tube collector in good sun, at high temperature",
+     "why": "sizes the collector", "format": ".1f"}
+  ],
+  "figures": [
+    {"name": "water_per_cycle_kg", "label": "water one bed moves", "expr": "bed_kg * uptake_kg_per_kg", "unit": "kg", "format": ".1f"},
+    {"name": "cooling_per_cycle_kwh", "label": "cold from one cycle", "expr": "water_per_cycle_kg * latent_kj_kg / 3600", "unit": "kWh", "format": ".1f"},
+    {"name": "heat_needed_kwh", "label": "heat to reset it", "expr": "cooling_per_cycle_kwh / cop_thermal", "unit": "kWh", "format": ".1f"},
+    {"name": "water_per_year_gal", "label": "water it gathers a year", "expr": "water_per_cycle_kg * cycles_per_day * 365 / 3.785", "unit": "gal", "format": ",.0f"},
+    {"name": "vs_peltier", "label": "against the seam's plates", "expr": "water_per_year_gal / dome_peltier_gal_year", "unit": "x", "format": ".1f"},
+    {"name": "cooling_avg_w", "label": "average cooling", "expr": "cooling_per_cycle_kwh * cycles_per_day * 1000 / 24", "unit": "W", "format": ",.0f"},
+    {"name": "collector_m2", "label": "collector needed", "expr": "heat_needed_kwh / collector_kwh_m2_day", "unit": "m2", "format": ".1f"}
+  ],
+  "shapes": [
+    {"id": "bed", "type": "box", "at": [-2.0, 0.0, 1.2], "size": [1.6, 1.2, 2.4], "color": "white", "label": "zeolite bed"},
+    {"id": "evap", "type": "cylinder", "at": [2.2, 0.0, 0.2], "to": [2.2, 0.0, 1.6], "radius": 0.8, "color": "glass", "alpha": 0.5,
+     "label": "water under vacuum", "label_offset": [0, 0, 2.0]},
+    {"id": "pipe", "type": "cylinder", "at": [1.6, 0.0, 1.5], "to": [-1.2, 0.0, 2.2], "radius": 0.12, "color": "steel"},
+    {"id": "vapour", "type": "flow", "path": [[2.2, 0.0, 1.6], [1.6, 0.0, 1.5], [-1.2, 0.0, 2.2], [-2.0, 0.0, 2.0]],
+     "color": "vapour", "count": 12, "radius": 0.1},
+    {"id": "collector", "type": "box", "at": [-2.0, 0.0, 3.3], "size": [2.4, 1.8, 0.12], "color": "solar", "label": "solar collector"},
+    {"id": "sun", "type": "sphere", "at": [-2.8, -1.6, 6.2], "radius": 0.55, "color": "amber", "label": "sun resets the bed"},
+    {"id": "heat", "type": "flow", "path": [[-2.8, -1.6, 5.6], [-2.0, 0.0, 3.4], [-2.0, 0.0, 2.5]], "color": "heat", "count": 9, "radius": 0.12},
+    {"id": "cold", "type": "arrow", "at": [3.1, 0.0, 0.9], "to": [5.0, 0.0, 0.9], "radius": 0.08, "color": "cold",
+     "label": "cold, dry air to the seam channel", "label_offset": [0.9, 0, 0.6]}
+  ],
+  "beats": [
+    {"title": "Water boils cold",
+     "promise": "Take the air away and water boils at room temperature.",
+     "narration": "Seal water in a vessel with the air pumped out and it boils at room temperature. Boiling takes heat, and it takes it from the water, so the water gets cold: every kilogram that boils off carries away {latent_kj_kg} kilojoules. The only trick is to keep taking the vapour away, and that is the zeolite's job.",
+     "show": ["evap", "pipe", "vapour", "bed"], "figures": ["latent_kj_kg"]},
+    {"title": "One bed, one day",
+     "promise": "How much cold a bed of zeolite holds.",
+     "narration": "A bed of {bed_kg} kilograms soaks up about {water_per_cycle_kg} kilograms of water before it is full. Boiling that much water away pulls {cooling_per_cycle_kwh} kilowatt hours of heat out of whatever the cold side touches.",
+     "show": ["bed", "evap", "pipe", "vapour", "cold"], "figures": ["water_per_cycle_kg", "cooling_per_cycle_kwh"]},
+    {"title": "The sun resets it",
+     "promise": "Heat drives it, not electricity.",
+     "narration": "When the bed is full, heat it to about {regen_c} degrees and it gives its water back, ready to go again. A solar collector does that. The price is heat: every day of cooling needs {heat_needed_kwh} kilowatt hours of it, because the cycle returns only {cop_thermal} of cold for each unit of heat.",
+     "show": ["bed", "collector", "sun", "heat"], "figures": ["heat_needed_kwh", "cop_thermal"]}
+  ],
+  "dome_fit": {
+    "slot": "seam_channel",
+    "title": "Where it fits the dome",
+    "promise": "The seam module's desiccant drawer, grown up.",
+    "narration": "In the dome this is the seam module's desiccant cartridge, grown up. The three-way gate already sends the channel's air through a silica drawer that comes out and goes in an oven. A zeolite bed pulls harder, gives its water back to the sun instead, and makes cold while it works. Run once a day it gathers {water_per_year_gal} gallons of water a year, {vs_peltier} times what the seam's thermoelectric plates condense.",
+    "figures": ["water_per_year_gal", "dome_peltier_gal_year", "vs_peltier"]
+  },
+  "limits": [
+    {"narration": "It is a daily batch, not an air conditioner: spread over the day it cools about {cooling_avg_w} watts on average, a fraction of what a small window unit moves.",
+     "figures": ["cooling_avg_w"]},
+    {"narration": "And the heat has to come from somewhere: about {collector_m2} square metres of collector in good sun, on a dome whose whole shell is {dome_shell_sqft} square feet.",
+     "figures": ["collector_m2", "dome_shell_sqft"]}
+  ],
+  "hashtags": ["#zeolite", "#adsorptionchiller", "#solarcooling", "#geodesicdome", "#offgrid", "#diy"]
+}

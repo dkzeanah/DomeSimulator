@@ -1,0 +1,153 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-29T06:46:33.275201+00:00",
+  "lesson": "cabin_look",
+  "title": "The Dome House Lookbook",
+  "chapters": [
+    {
+      "slug": "room",
+      "title": "A room with no straight walls",
+      "narration": [
+        "This is a sixteen metre dome with nothing in it. The posts show how much room there is overhead as you walk out from the middle: eight metres under the crown, and less every step after that.",
+        "That single fact is what makes furnishing a dome different from furnishing a box, and everything in this lesson is built around it."
+      ],
+      "start": 0.0,
+      "end": 25.232000000000003
+    },
+    {
+      "slug": "furnished",
+      "title": "The same shell, furnished",
+      "narration": [
+        "Here is the same dome as a store. Rails, plinths, a cash desk, fitting pods, a bench, a light ring hung off the shell.",
+        "Every one of those is a piece in a catalogue with a footprint and a height, and every one was placed by the editor we will get to, which measured it against the shell before it agreed to put it down."
+      ],
+      "start": 25.232000000000003,
+      "end": 50.2
+    },
+    {
+      "slug": "cast",
+      "title": "The cast",
+      "narration": [
+        "Eight characters, cast deliberately wide, and each one built to read in a single frame: her own skin tone, her own hair, her own colour, her own way of standing. None of them shares a tone or a hair style with another, and the code refuses to load a cast where two of them do."
+      ],
+      "start": 50.2,
+      "end": 74.376
+    },
+    {
+      "slug": "hair",
+      "title": "Hair is geometry",
+      "narration": [
+        "Hair is most of a silhouette, so it is modelled rather than coloured in. Each strand leaves the scalp along the direction it grew, hands over to gravity a head radius later, and carries a wave or a helix depending on the style.",
+        "Length is a body landmark, so the same style fits a woman of any height without a second set of numbers."
+      ],
+      "start": 74.376,
+      "end": 103.232
+    },
+    {
+      "slug": "wardrobe",
+      "title": "Four ways to dress the same eight people",
+      "narration": [
+        "An outfit is not a function somebody wrote. It is a list: a bodice from this height to that one, a skirt to the knee with this much flare, a sleeve, a heel.",
+        "Every shell is lofted through the body's own cross-section, so a garment cannot come out the wrong size for the woman wearing it, and each look pulls her own colour so one dress on two people is still recognisably two people."
+      ],
+      "start": 103.232,
+      "end": 134.032
+    },
+    {
+      "slug": "form",
+      "title": "The layer underneath",
+      "narration": [
+        "There is a fifth mode with no garment pieces in it at all. It draws the silhouette in her skin tone and nothing else, which is what a shop's dress form looks like, and it is what the editor shows when you cycle a figure's clothes off.",
+        "It carries no anatomy, because a lofted ellipse has none to carry."
+      ],
+      "start": 134.032,
+      "end": 157.608
+    },
+    {
+      "slug": "landmarks",
+      "title": "A hem is a landmark, not a number",
+      "narration": [
+        "Every hem and every hair length names a place on the body rather than a measurement: mid thigh, the knee, the waist, the floor. The number in metres is read off the posed skeleton when the frame is drawn.",
+        "That is why one wardrobe fits a cast of eight different heights, and why nothing has to be retuned when a pose drops a shoulder."
+      ],
+      "start": 157.608,
+      "end": 187.4
+    },
+    {
+      "slug": "composer",
+      "title": "Cycle it, turn it, drop it",
+      "narration": [
+        "You hold one piece at a time. Two keys walk the categories, two walk the pieces inside them, one turns it fifteen degrees at a time, and one drops it.",
+        "The piece you are holding is drawn as a ghost, green where it fits and red where it does not, and the cast are one more category: a woman is placed and turned exactly like a chair."
+      ],
+      "start": 187.4,
+      "end": 212.92000000000002
+    },
+    {
+      "slug": "refusal",
+      "title": "What the dome refuses",
+      "narration": [
+        "This is the whole idea in one shot. A fitting pod is two point two metres tall.",
+        "Near the middle of the dome there is nearly eight metres over it. Walk it outward and the shell comes down to meet it, and at some point the editor stops accepting it and says exactly why.",
+        "Nothing in the catalogue carries a list of legal spots. The geometry decides."
+      ],
+      "start": 212.92000000000002,
+      "end": 242.25600000000003
+    },
+    {
+      "slug": "home",
+      "title": "The other set",
+      "narration": [
+        "The house is a thirteen metre dome, warmer and lower, with a bed, a kitchen run against the curve, a stove whose flue wants the crown, and a sofa whose seat height came out of the seated pose rather than out of a table of furniture dimensions. Swap sets with one key and the catalogue changes with the room."
+      ],
+      "start": 242.25600000000003,
+      "end": 267.24800000000005
+    },
+    {
+      "slug": "finale",
+      "title": "One shell, one catalogue, one editor",
+      "narration": [
+        "A dome, a catalogue measured against it, a cast built out of the same skeleton the rest of this package uses for lifting panels, and an editor that will not let you put a wardrobe where the roof is. Open it with the composer command, hold a piece, and turn it until it fits."
+      ],
+      "start": 267.24800000000005,
+      "end": 290.77600000000007
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 290.77600000000007,
+      "end": 310.05600000000004
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 310.05600000000004,
+      "end": 332.12000000000006
+    }
+  ],
+  "render_config": {
+    "orientation": "landscape",
+    "compose_segments": true,
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "-3%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

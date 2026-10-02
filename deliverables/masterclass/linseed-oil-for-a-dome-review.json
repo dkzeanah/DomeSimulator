@@ -1,0 +1,198 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-30T17:21:58.418020+00:00",
+  "lesson": "cabin_linseed_oil",
+  "title": "Linseed Oil for a Dome: Uses, Limits and Method",
+  "chapters": [
+    {
+      "slug": "purpose",
+      "title": "Linseed oil for a dome",
+      "narration": [
+        "The Lost Handyman video offers 20 linseed oil tricks. Here we bring the useful ones into the wedge dome workshop. Start with the exposed interior wood, shelves, trim and hand tools. Then look at the seams, windows and weather skin, where a finish must work with the rest of the assembly. The source is a set of claims, not a comparison test. We will show the work, the quantities and the limits before calling anything a saving."
+      ],
+      "start": 0.0,
+      "end": 32.3
+    },
+    {
+      "slug": "rags",
+      "title": "Set up the rag station first",
+      "narration": [
+        "Before opening the oil, prepare for the used cloths. Linseed oil reacts with oxygen as it cures and gives off heat. A pile of oily cloths can trap that heat and ignite without a spark. Keep them out of pockets, sawdust and ordinary bins. Follow the label and local fire-service guidance: fully cover used rags with water and an oil-breaking detergent in a tight-lidded metal container, stored away from the building and combustibles. Arrange proper disposal. A wet rag can become hazardous again if it dries in a heap."
+      ],
+      "start": 32.3,
+      "end": 71.62
+    },
+    {
+      "slug": "oils",
+      "title": "Read the exact can",
+      "narration": [
+        "Raw linseed oil generally cures slowly. Many hardware-store boiled oils contain drying additives; some products use heat-polymerized oil instead. Read the ingredient information, safety sheet and intended uses. Do not boil oil yourself. The source's raw-only rule for food contact is too broad: some polymerized finishes are specifically sold for kitchen wood. Choose the exact product for that use and follow its cure instructions. A name like natural, boiled or Danish does not identify a complete formulation."
+      ],
+      "start": 71.62,
+      "end": 113.7
+    },
+    {
+      "slug": "prepare",
+      "title": "Prepare the member",
+      "narration": [
+        "Inspect the wedges before finishing. Reject decay and address splits or loose joints through the actual repair design. Oil cannot restore lost load capacity. Let the timber reach the moisture condition required by the finish and the building design; check with an appropriate wood meter. Remove dirt and unsuitable old coatings, smooth splinters and clear the dust. Test an offcut for color and cure. Mark and mask the places that must bond to adhesive, tape, sealant or gaskets. Finish accessible approved faces while the members are easy to reach."
+      ],
+      "start": 113.7,
+      "end": 157.628
+    },
+    {
+      "slug": "label_inputs",
+      "title": "Two product labels, two schedules",
+      "narration": [
+        "Here are declared examples from Tried and True. Its Danish Oil lists at least 5 minutes before rubbing dry and at least 8 hours of curing. Its Original oil-and-wax finish lists at least 60 minutes before rubbing dry and at least 24 hours of curing. These are different products for interior work. They demonstrate why the original video's generic timing cannot be applied to every can. Minimum intervals do not guarantee full readiness in cold, damp conditions."
+      ],
+      "start": 157.628,
+      "end": 193.468
+    },
+    {
+      "slug": "apply",
+      "title": "Apply thinly, then wipe dry",
+      "narration": [
+        "On the prepared sample, rub on a very thin coat using the applicator the manufacturer specifies. Work in a manageable area and wet it evenly. After that product's penetration interval, rub away the excess until the surface is dry to the touch. Provide the specified ventilation and cure conditions, then assess the surface before another coat. Do not bury a sticky layer under more oil. Check end grain for extra uptake but prevent drips into joints. Do not enclose uncured finishes inside panels or occupied air passages. Handle every cloth through the rag station."
+      ],
+      "start": 193.468,
+      "end": 236.148
+    },
+    {
+      "slug": "seam",
+      "title": "Keep the seam doing its jobs",
+      "narration": [
+        "This is the actual wedge seam specimen and its service channel. Oil on an exposed interior face is different from oil on a sealing land. Adhesives and tapes need compatible, prepared substrates. Keep the printed key, gasket lands, drainage route and electrical services clean. Before coating wood beside a gasket or sealant, check both manufacturers' compatibility instructions and test the complete joint. Do not treat an oil coat as the air seal, rain seal or a remedy for condensation. Inspect the finished seam before closing the panel."
+      ],
+      "start": 236.148,
+      "end": 278.348
+    },
+    {
+      "slug": "weather",
+      "title": "The outside needs a weather system",
+      "narration": [
+        "The source describes linseed oil as outdoor protection and waterproofing. A dome roof still needs a specified weather skin, flashed openings, drained joints and a drying path. Plain oil does not establish those functions or prove resistance to ultraviolet light, decay or insects. Damp linseed-rich finishes can also support mildew. Use an exterior system rated for the substrate and exposure when the wood is outdoors. A compatible pigmented finish may be appropriate, but adding pigment at home does not establish weathering performance. Keep timber off persistent wet surfaces and repair leaks at their source."
+      ],
+      "start": 278.348,
+      "end": 324.62800000000004
+    },
+    {
+      "slug": "planning_inputs",
+      "title": "Declare the planning assumptions",
+      "narration": [
+        "For a worked allowance, assume 2 flat sawn faces per member and 2 coats. Use an estimated coverage of 350 square feet per US gallon per coat, plus 15 percent extra volume for handling. For active application work, assume 2 minutes per member per coat. These are illustrative inputs, not measurements. The face allowance is an area calculation, not an instruction to oil every joint. Measure the actual selected surfaces and the consumption on representative offcuts before purchasing."
+      ],
+      "start": 324.62800000000004,
+      "end": 364.23600000000005
+    },
+    {
+      "slug": "area",
+      "title": "Measure wood, not floor area",
+      "narration": [
+        "The reference solver gives 120 members and 664.3 feet of total member stock. Each flat radial face is 6.0 inches deep. Multiply total stock length by that depth in feet and the declared face count: the planning envelope is 664 square feet. This includes the stock allowance already in the model. It excludes curved backs, end cuts, panels, floors and trim. Subtract masked or hidden surfaces and add only the other surfaces you actually intend to finish."
+      ],
+      "start": 364.23600000000005,
+      "end": 404.5400000000001
+    },
+    {
+      "slug": "quantity",
+      "title": "The oil allowance",
+      "narration": [
+        "At our estimated coverage, the declared coats consume 3.80 US gallons for that planning envelope. The handling allowance brings it to 4.37 gallons. This is a scenario, not a shopping prescription or a cost saving. Roughness, end grain, masking and the actual finish change consumption. Measure how much you dispense for a known sample area through the complete coat schedule. Scale that result to the approved finish surfaces. Account for cloth uptake and leftover material as part of the job."
+      ],
+      "start": 404.5400000000001,
+      "end": 444.5320000000001
+    },
+    {
+      "slug": "limits",
+      "title": "The number that argues against it",
+      "narration": [
+        "The Danish Oil label advertises coverage up to 1000 square feet per gallon. That is a manufacturer claim, not a rough-sawn wedge measurement. Even without a price comparison, hand application has a real time cost. Our estimated 2 minutes per member per coat, multiplied by 120 members and 2 coats, is 8.0 hours of active work. That excludes preparation, access equipment, inspection and waiting for cure. A cheap can can still make an expensive finishing job."
+      ],
+      "start": 444.5320000000001,
+      "end": 482.1720000000001
+    },
+    {
+      "slug": "tools",
+      "title": "Look after the builder's tools",
+      "narration": [
+        "The handle trick transfers well to the dome workshop when the handle is sound. Inspect the hammer, mallet and jig handles for cracks, splinters and loose fittings before finishing. Prepare bare wood, apply the selected finish thinly, wipe it dry and let it cure before gripping it. Oil does not repair a broken handle or tighten a structural joint reliably. A compatible drying-oil film can be considered on clean nonmoving steel for storage. Keep it out of bearings, hinges, chainsaw chains, brakes, electrical contacts and fastener threads. Those need their specified products."
+      ],
+      "start": 482.1720000000001,
+      "end": 525.8840000000001
+    },
+    {
+      "slug": "glazing",
+      "title": "Putty belongs to a specified window",
+      "narration": [
+        "Linseed-based putty has a real place in traditional sash glazing. Use a formulated glazing compound and follow its sash preparation, bedding, retention and painting instructions. This demonstration includes mechanical retainers: putty alone must not carry the glass. The DAP glazing sheet excludes plastic panes and insulating glass units with organic seals, and requires retainers to hold the glass. For sloped or overhead dome glazing, use a complete system explicitly specified for that location; a sash putty example does not establish suitability. Do not transfer the video's homemade chalk-and-oil recipe to the dome's weather seams."
+      ],
+      "start": 525.8840000000001,
+      "end": 577.2520000000002
+    },
+    {
+      "slug": "interior",
+      "title": "Finish the parts people touch",
+      "narration": [
+        "Interior shelves, trim and sound furniture are the most straightforward uses. Test for ambering and for compatibility with any old coating. A labelled linseed-and-wax blend can give a low-sheen surface, but wax complicates later bonding or recoating. Use a floor-rated system for floors; assess wear, cure and slip instead of assuming a furniture oil fits. Kitchen surfaces need a product explicitly suitable for that contact. Use a prepared blend instead of heating an unknown oil formulation. Follow product directions for thinning; the source supplies no universal safe mix."
+      ],
+      "start": 577.2520000000002,
+      "end": 613.9520000000002
+    },
+    {
+      "slug": "maintenance",
+      "title": "Inspect, clean, then renew",
+      "narration": [
+        "Make a finish record: product, batch, preparation, application date and where it was used. Keep a sample with the building notes. Inspect exposed surfaces for wear, tack, mildew and water marks; renew only after finding the cause and following the finish instructions. Gray wood can darken beautifully under oil, but that does not reverse decay. Loose toolbox joints still need repair. The transcript's leather, gunstock and masonry tricks add no validated building function here. In particular, give no foundation waterproofing or freeze-thaw credit to an oil wipe."
+      ],
+      "start": 613.9520000000002,
+      "end": 658.6000000000003
+    },
+    {
+      "slug": "close",
+      "title": "A useful finish in the right places",
+      "narration": [
+        "Use linseed oil where a maintainable wood finish suits the job: accessible interior faces, selected trim and sound tool handles. Keep sealing and bonding lands compatible, give the roof its own weather system, and choose glazing for the actual opening. Base quantities on measured surfaces and a representative sample. Allow for hand labour and cure time. Finish the day by accounting for every oily cloth and arranging its disposal. The worthwhile old skill is careful application, backed by a clear understanding of what the finish can and cannot do for the dome."
+      ],
+      "start": 658.6000000000003,
+      "end": 701.7600000000002
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 701.7600000000002,
+      "end": 721.0400000000002
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 721.0400000000002,
+      "end": 743.1040000000002
+    }
+  ],
+  "render_config": {
+    "orientation": "landscape",
+    "compose_segments": true,
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "-3%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

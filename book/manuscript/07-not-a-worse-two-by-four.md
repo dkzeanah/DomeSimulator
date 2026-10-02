@@ -58,8 +58,9 @@ Take an {{versus.diameter_in}}-inch log — not a monster, a tree most people
 could fell and move without help. Split it {{tree.sectors}} ways and each
 sector holds **{{versus.wedge_area_in2}} square inches** of wood.
 
-A dressed 2x4 — the board actually on the rack, which is 1.5 by 3.5 inches
-whatever it says on the label — holds **{{board.dressed_in2}}**.
+A dressed 2x4 — the board actually on the rack, which is
+{{board.dressed_dims}} inches whatever it says on the label — holds
+**{{board.dressed_in2}}**.
 
 That is **{{versus.area_gain_pct}} per cent more wood** in the wedge, from a
 tree you could carry out of a wood lot in sections.
@@ -69,8 +70,9 @@ sharply, because area grows with the square of the radius while a 2x4 stays a
 2x4. The book quotes the small log deliberately: a claim is worth more made at
 its weakest.
 
-The wedge is also deeper. Pith to bark is {{versus.wedge_depth_in}} inches
-against the board's 3.5, and depth is where bending resistance comes from.
+The wedge is also deeper. Pith to bark is {{versus.wedge_depth_in}} inches,
+against {{board.dressed_dims}} for the board — and depth is where bending
+resistance comes from.
 
 ![The two sections, at the same scale.](../../deliverables/book/figures/section-compare.png)
 

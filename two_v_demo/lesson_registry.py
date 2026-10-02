@@ -11,6 +11,8 @@ from .lesson_all_domes import ALL_DOMES_LESSON
 from .lesson_build import BUILD_LESSON
 from .lesson_cabin_pilot import CABIN_PILOT_LESSON
 from .lesson_cabin_wedge_explained import CABIN_WEDGE_EXPLAINED_LESSON
+from .lesson_cabin_linseed_oil import CABIN_LINSEED_OIL_LESSON
+from .lesson_seam_climate import CABIN_SEAM_CLIMATE_LESSON
 from .lesson_cuts import CUTS_LESSON
 from .lesson_dome_park import DOME_PARK_LESSON
 from .lesson_bring_your_own_dome import BYOD_LESSON
@@ -67,8 +69,29 @@ LESSONS: dict[str, Lesson] = {
                    SEAM_LESSON,
                    PITCH_HERO_LESSON,
                    CABIN_PILOT_LESSON,
-                   CABIN_WEDGE_EXPLAINED_LESSON)
+                   CABIN_WEDGE_EXPLAINED_LESSON,
+                   CABIN_LINSEED_OIL_LESSON,
+                   CABIN_SEAM_CLIMATE_LESSON)
 }
+
+# Every earlier film, re-staged in the Cabin World (two_v_demo/cabin_stage.py):
+# the same chapters and painters on the exhibit platform, with cinematic
+# cameras. Keyed "cabin_<original key>" -- the re-render queue's target keys.
+from .cabin_stage import restage as _restage
+
+for _key in [k for k in LESSONS if not k.startswith("cabin_")]:
+    # A drama's own camera direction is its storytelling: keep it. So is the
+    # harvest's, which follows one thin tree down and round its wedges.
+    LESSONS.setdefault(f"cabin_{_key}", _restage(
+        LESSONS[_key], keep_original_cameras=_key in ("drama", "series", "harvest")))
+
+# Concepts from ingested videos (concepts/cards/*.json), filmed in the Cabin World.
+try:
+    from concepts.film import concept_lessons as _concept_lessons
+except ImportError:          # running without the repository root on the path
+    _concept_lessons = list
+for _lesson in _concept_lessons():
+    LESSONS.setdefault(_lesson.key, _lesson)
 
 DEFAULT_LESSON_KEY = TWO_V_LESSON.key
 

@@ -1,0 +1,139 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-28T23:40:28.589927+00:00",
+  "lesson": "cabin_pitch_hero",
+  "title": "A house you can take apart",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "A house you can take apart",
+      "narration": [
+        "This is a house you can take apart.",
+        "Nineteen feet across, two hundred and seventy-seven square feet, and every piece of it fits in a pickup."
+      ],
+      "start": 0.0,
+      "end": 11.0
+    },
+    {
+      "slug": "frame",
+      "title": "The frame is already on your land",
+      "narration": [
+        "The frame is already standing on your land.",
+        "Two trees, split into a hundred and twenty wedges. No hubs, no jig, and three saw settings for the whole building."
+      ],
+      "start": 11.0,
+      "end": 22.48
+    },
+    {
+      "slug": "head",
+      "title": "A dome is a head, and it wears hats",
+      "narration": [
+        "I stood lookout in the Arctic Circle, outside the skin of the ship.",
+        "You do not stay warm in one very good thing. You wear a lot of ordinary layers, and you put one waterproof shell over the lot.",
+        "A dome is a head. It wears hats, and only the cap is waterproof."
+      ],
+      "start": 22.48,
+      "end": 39.816
+    },
+    {
+      "slug": "grow",
+      "title": "It gets warmer every winter",
+      "narration": [
+        "Every quilted layer you add makes the next cap a size bigger, so there is no limit.",
+        "A rigid shell fills up and stops. This one does not."
+      ],
+      "start": 39.816,
+      "end": 50.096000000000004
+    },
+    {
+      "slug": "quilt",
+      "title": "The insulation is a thousand t-shirts",
+      "narration": [
+        "The insulation is recycled clothing, quilted at a kitchen table.",
+        "A fully dressed dome wears nearly a thousand t-shirts, and every layer is tagged with the name of whoever sewed it."
+      ],
+      "start": 50.096000000000004,
+      "end": 62.944
+    },
+    {
+      "slug": "price",
+      "title": "Twelve thousand, and here is the invoice",
+      "narration": [
+        "Twelve thousand dollars.",
+        "Ten to build, and two thousand is our profit -- twenty per cent, marked up on cost. The whole invoice is on the page.",
+        "The ground it stands on is quoted separately and we do not mark it up."
+      ],
+      "start": 62.944,
+      "end": 77.4
+    },
+    {
+      "slug": "hull",
+      "title": "And it can be better later",
+      "narration": [
+        "Nothing here is finished, on purpose.",
+        "A laminated hull, a steel mast, a floor bought later, and a rig that hangs the whole building between two trees. Buy them when you want them."
+      ],
+      "start": 77.4,
+      "end": 89.31200000000001
+    },
+    {
+      "slug": "three",
+      "title": "It needs three kinds of people",
+      "narration": [
+        "This only works if three different people turn up.",
+        "Somebody who sews. Somebody with land who does not want to be a landlord. And somebody who wants a building.",
+        "A dome with nobody to quilt for it is a cold dome."
+      ],
+      "start": 89.31200000000001,
+      "end": 102.76000000000002
+    },
+    {
+      "slug": "close",
+      "title": "Every number is a model you can run",
+      "narration": [
+        "Every figure you just saw came out of a model you can run yourself -- including the three that argue against us.",
+        "Back it, and tell us which price is wrong."
+      ],
+      "start": 102.76000000000002,
+      "end": 112.76000000000002
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 112.76000000000002,
+      "end": 127.72000000000003
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 127.72000000000003,
+      "end": 146.78400000000002
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "deliverables\\masterclass\\cabin-stem-cell-hero-cut-narration-plan.json",
+    "orientation": "portrait",
+    "compose_segments": true,
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+4%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

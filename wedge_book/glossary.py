@@ -106,8 +106,32 @@ TERMS: tuple[Term, ...] = (
          "noisy, hot or weather-facing equipment, fed from under the seal "
          "cap.", ("utility panels", "polyp", "polyps")),
     Term("wedge", "A member split from a round log like a slice of pie: "
-         "triangular in section, its flat face outward and its point -- the "
-         "heart of the log -- toward the centre of the dome.", ("wedges",)),
+         "triangular in section, its round bark face outward and its point -- "
+         "the heart of the log -- toward the centre of the dome.", ("wedges",)),
+    Term("yakisugi", "Charring the surface of wood with a flame, then brushing "
+         "and oiling it. The char leaves nothing for fungus or insects to eat.",
+         ("charring", "charred", "char")),
+    Term("dew point", "The temperature at which the water in a body of air "
+         "starts coming out as liquid. The lower it is, the drier the air, "
+         "whatever its temperature or relative humidity.", ("dew points",)),
+    Term("desiccant", "A material that pulls water vapour out of air and holds "
+         "it, until heat drives it back out.", ("desiccants",)),
+    Term("molecular sieve", "A zeolite desiccant whose crystal lattice has holes "
+         "the size of a water molecule; the 13X grade holds about a fifth of its "
+         "weight in water and gives it back at around two hundred degrees.",
+         ("13X",)),
+    Term("Peltier plate", "A thermoelectric heat pump: current through it moves "
+         "heat from one face to the other, and reversing the current reverses "
+         "the direction.", ("Peltier", "Peltier plates", "thermoelectric")),
+    Term("galvanic corrosion", "What happens when two different metals touch in "
+         "water: they make a battery, and the less noble one dissolves.",
+         ("galvanic",)),
+    Term("linseed oil", "Oil pressed from flax seed that sets by taking up oxygen "
+         "rather than by drying. Rags soaked in it can catch fire on their own.",
+         ("linseed",)),
+    Term("moisture content", "The weight of water in wood as a share of the "
+         "weight of the dry wood. Below nineteen per cent, wood counts as dry "
+         "and rot cannot get going.", ("moisture",)),
     Term("zome", "A dome-like building swept from a spiral rather than "
          "subdivided from a sphere.", ("zomes",)),
 )

@@ -69,7 +69,7 @@ must pass before it is exported.
 py -3.12 launcher.py
 ```
 
-opens the project's launcher. Its **Book: 2 Trees** tab carries the
+opens the project's launcher. Its **Book** tab carries the
 actions: `read_html` and `read_pdf` build the book you are reading;
 `export` writes the Markdown source; `audit` prints every number the book
 states and the calculation behind it; `progress` shows what is written;

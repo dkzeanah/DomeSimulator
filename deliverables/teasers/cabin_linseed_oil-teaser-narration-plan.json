@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2f3fa567f1\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2f3fa567f1\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2f3fa567f1\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2f3fa567f1\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2f3fa567f1\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2f3fa567f1\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_linseed_oil-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-2f3fa567f1\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    3.488,
+    4.976,
+    3.56,
+    4.231999999999999,
+    3.9920000000000004,
+    5.024,
+    5.983999999999999
+  ],
+  "speech_durations": [
+    2.088,
+    3.576,
+    2.16,
+    2.832,
+    2.592,
+    3.624,
+    4.584
+  ],
+  "chapter_starts": [
+    0.0,
+    3.488,
+    8.464,
+    12.024000000000001,
+    16.256,
+    20.248,
+    25.272000000000002
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "64cf4593594e5d0962ce31c9033106157547725ff1575b8a69bed1bc53e4ea2a"
+}

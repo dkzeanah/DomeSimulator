@@ -8,8 +8,10 @@ updated: 2026-09-08
 
 # What this book is
 
-Two pine trees, one chainsaw off a hardware-store shelf, one hundred and
-twenty structural members, and a geodesic dome standing in fourteen days.
+{{dome.trees}} trees, one chainsaw off a hardware-store shelf, one hundred
+and twenty structural members, and a geodesic dome standing in fourteen
+days — {{hr.with_error}} hours of hands-on work, inside the forty-hour
+week the title is named after.
 
 That is the whole claim, and everything in this book exists to either explain
 it, prove it, or teach you to do it.
@@ -88,3 +90,7 @@ round buildings and they are not in here.
 
 And it is not a promise that you will do this in a fortnight. I did, on the
 second attempt, having already made every mistake in Chapter {{ch.what_broke}}.
+The forty hours is the honest claim — the frame, split wedges to standing —
+and the calendar around it is yours: a fortnight of part days, or a long
+weekend of full ones, with the skin, the floor and the ground added later,
+in any order.

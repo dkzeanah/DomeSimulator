@@ -1,0 +1,25 @@
+LINSEED OIL FOR A WEDGE DOME
+No measured finishing performance is available.
+coats: 2 coats (assumption) -- Planning example; follow the selected finish's actual coat schedule.
+faces: 2 flat faces/member (assumption) -- Reference allowance for both sawn faces; not a directive to oil bonding surfaces.
+coverage: 350 sq ft/US gal/coat (estimate) -- Conservative sensitivity case, not a product claim or a measurement.
+handling: 15 % extra volume (assumption) -- Planning allowance for application losses; validate on an offcut.
+minutes: 2 min/member/coat (estimate) -- Illustrative active wipe-on/wipe-off labour only; excludes preparation and curing.
+danish_wait: 5 min minimum (claimed) -- https://www.triedandtruewoodfinish.com/products/danish-oil/ application instructions; accessed 2026-09-30.
+danish_cure: 8 hours minimum (claimed) -- https://www.triedandtruewoodfinish.com/products/danish-oil/ minimum cure interval, not guaranteed service-ready time.
+wax_wait: 60 min minimum (claimed) -- https://www.triedandtruewoodfinish.com/products/original-wood-finish/ application instructions; accessed 2026-09-30.
+wax_cure: 24 hours minimum (claimed) -- https://www.triedandtruewoodfinish.com/products/original-wood-finish/ minimum cure interval, not guaranteed service-ready time.
+label_coverage: 1000 sq ft/US gal (claimed) -- https://www.triedandtruewoodfinish.com/products/danish-oil/ UP TO coverage; not a rough-sawn timber prediction.
+members: 120
+stock_ft: 664.3145
+depth_in: 6.0000
+area_sqft: 664.3145
+base_gal: 3.7961
+allowance_gal: 4.3655
+label_gal: 1.3286
+sensitivity: 2.8571
+labour_hours: 8.0000
+topic_count: 20
+Planning envelope excludes curved backs, ends, panels, floor and trim.
+Subtract glue, gasket and sealant lands; measure actual selected surfaces.
+Labour excludes sanding, access, inspection and curing. No lifespan/cost comparison is established.

@@ -1,4 +1,4 @@
-"""*2 Trees: Build Your (D)Home* -- the whole book, as a structure.
+"""*The 40 Hour Cabin: 3 Trees* -- the whole book, as a structure.
 
 This module is the outline: every part, every chapter, every page, in order,
 with what each one is for, roughly how long it runs, which figures sit on it,
@@ -48,9 +48,10 @@ WORDS_PER_PAGE = 340
 """Words on a set page at this trim and type size. Used only to turn word
 targets into a believable page count; nothing depends on it being exact."""
 
-TITLE = "2 Trees: Build Your (D)Home"
-SUBTITLE = ("One small chainsaw, 120 wedge struts, and a geodesic dome "
-            "in a fortnight")
+TITLE = "The 40 Hour Cabin: 3 Trees"
+SUBTITLE = ("One small chainsaw, three trees, forty hours or less: "
+            "a geodesic wedge cabin, winched up between the trees, "
+            "skinned and floored in any order")
 
 
 # ----------------------------------------------------------------------
@@ -406,7 +407,7 @@ FRONT: tuple[Matter, ...] = (
 
 PART_I = Part(
     number=1,
-    title="Two Trees",
+    title="Three Trees",
     epigraph="I cut a tree, I rip the trunk, it is usable wood. Fifteen "
              "middlemen, gone.",
     promise="The story strand. How the method was found, and what it "
@@ -503,7 +504,8 @@ PART_I = Part(
                    figures=(_f("franken-standing",
                                "The frankendome: it stood, and no two "
                                "members matched.", SHOT, full_page=True,
-                               lesson="franken", second=158.0),)),
+                               lesson="franken", second=53.02,
+                               note="The plate in the book is the Cabin World re-render premise frame (cabin_franken_0014.00s.png, placed manually); the classic cut archive has no premise frame, so the spec points at its earliest archived still and a future re-render should prefer the cabin remake."),)),
                 _p("text", "The ten-piece pentagon",
                    "The one part of the frankendome that was genuinely "
                    "better, and carried forward.", words=750),
@@ -771,7 +773,11 @@ PART_II = Part(
                    "load.", words=1000),
                 _p("text", "The end-to-side bearing",
                    "The end of a sector is the sector: nothing is notched "
-                   "away to make the joint.", words=800),
+                   "away to make the joint.", words=800,
+                   figures=(_f("force-bearing",
+                               "The bearing, at a seam: one member's butt "
+                               "on the next member's side.", DOME,
+                               view="seam", palette="simulator"),)),
                 _p("safety", "What this book will not tell you",
                    "State the limit clearly: allowable stresses are species, "
                    "grade and moisture dependent, and a book cannot grade "
@@ -1474,7 +1480,7 @@ PART_V = Part(
         ),
         Chapter(
             27, "Days One and Two: Felling",
-            "Putting two trees on the ground where you want them",
+            "Putting {{dome.trees}} trees on the ground where you want them",
             "howto",
             (
                 _p("opener", "Felling", "The most dangerous two days.",
@@ -1626,7 +1632,7 @@ PART_V = Part(
                    "Full page. The frame complete.",
                    figures=(_f("standing-frame",
                                "Day fourteen. {{frame.members}} members, "
-                               "two trees.", SHOT, full_page=True,
+                               "{{dome.trees}} trees.", SHOT, full_page=True,
                                lesson="wedge", second=842.5),),),
                 _p("text", "What was not done",
                    "Honest inventory of what a standing frame is not: not a "
@@ -1849,7 +1855,11 @@ PART_VII = Part(
                    "everything.", words=300),
                 _p("text", "Ten points, or one ring",
                    "The two approaches, and why the ring is usually right "
-                   "here.", words=850),
+                   "here.", words=850,
+                   figures=(_f("ring-plan",
+                               "The base ring from above: ten edges on the "
+                               "ground circle, nothing in the middle.",
+                               DOME, view="plan"),)),
                 _p("steps", "Setting out a circle accurately",
                    "String, stake, and the check that catches an out-of-round "
                    "ring before it matters.", words=800),
@@ -1920,7 +1930,12 @@ PART_VII = Part(
                 _p("opener", "Weather and Water",
                    "The honest chapter about domes and rain.", words=400),
                 _p("text", "Every seam is a potential leak",
-                   "{{frame.seams}} of them. Say the number.", words=750),
+                   "{{frame.seams}} of them. Say the number.", words=750,
+                   figures=(_f("weather-channel",
+                               "One channel, many jobs -- a frame of the "
+                               "seam-climate film.", SHOT,
+                               lesson="cabin_seam_climate",
+                               second=17.29),)),
                 _p("text", "Shedding, not sealing",
                    "The principle that actually works on a compound "
                    "surface.", words=800),
@@ -1970,7 +1985,11 @@ PART_VII = Part(
                    "What has to happen before it is a home.", words=350),
                 _p("text", "Insulating between wedges",
                    "The cavity a wedge frame gives you, and what fits in "
-                   "it.", words=850),
+                   "it.", words=850,
+                   figures=(_f("warmer-still",
+                               "It gets warmer every winter -- a frame of "
+                               "the seed-pitch film.", SHOT,
+                               lesson="seed_pitch", second=441.48),)),
                 _p("text", "Running services in a frame with no studs",
                    "Where the wires and pipes go.", words=750),
                 _p("text", "Heating a round volume",
@@ -2247,11 +2266,14 @@ _BUILD_CHAPTERS, _NEXT_NUMBER = _absorb(_LEGACY_PARTS, 1)
 PART_BUILD = Part(
     number=1,
     title="How to Build One",
-    epigraph="A dome is a frame, a skin and a floor, and the frame is the "
-             "only part of it that has to be got right.",
+    epigraph="Your skull is not symmetrical either, and it protects the "
+             "brain just fine. The frame is the part you are allowed to "
+             "get wrong. The skin and the ground are not.",
     promise="The method, in the order it is actually done: what a dome is, "
-            "why the shape carries load, how a tree becomes forty panels, and "
-            "the fortnight that turns those panels into a shell.",
+            "why the shape carries load, how three trees become forty "
+            "panels, and the forty hours that raise those panels into a "
+            "cabin winched between the trees -- with the skin, the floor "
+            "and the ground added later, in any order.",
     chapters=_BUILD_CHAPTERS,
 )
 
@@ -2417,7 +2439,67 @@ PART_SCALE = Part(
             ref="hour_at_log",
         ),
         Chapter(
-            _NEXT_NUMBER + 3, "Where the Fuel Actually Goes",
+            _NEXT_NUMBER + 3, "The Six Values of One Pine",
+            "The same tree, priced six ways: on the stump, as firewood, as "
+            "sawn lumber, as split stock, as standing structure, and as "
+            "mortgage payments avoided",
+            "explain",
+            (
+                _p("opener", "The Six Values of One Pine",
+                   "A tree has no price. It has a ladder of prices, and "
+                   "which rung you stand on decides what the tree is "
+                   "worth.", words=300),
+                _p("text", "One tree, six rungs",
+                   "Walk the ladder from the stump up, one rung at a time, "
+                   "with the arithmetic shown at each step.", words=750,
+                   beats=(
+                       "Standing: stumpage times tons, and almost nobody "
+                       "wants only two trees.",
+                       "Firewood: a cord's solid wood, and the fraction of "
+                       "a cord a stem is.",
+                       "Sawn: the mill's recovery times the going rate.",
+                       "Split: the wedge's recovery times the same rate.",
+                       "Structure: the framing one tree replaces, divided "
+                       "by the trees it took.",
+                       "Financed: that framing carried on a mortgage.",
+                   )),
+                _p("spread", "The ladder, drawn",
+                   "The six rungs as a staircase, because the distances "
+                   "between rungs are the whole point.", words=400,
+                   figures=(_f("pine-ladder",
+                               "Six rungs for one pine, from the stump to "
+                               "the financed frame.", PLOT,
+                               plot="pine_ladder"),)),
+                _p("text", "The wood did not get better",
+                   "The ratios that embarrass the ladder: structure is "
+                   "twenty-one times firewood and six times sawn lumber, "
+                   "and the wood never changed.", words=600,
+                   beats=(
+                       "Structure against firewood, sawn, and split.",
+                       "The amount of wood is identical on every rung.",
+                       "What changes is what the design asks the wood to "
+                       "do.",
+                   )),
+                _p("text", "What the ladder does not say",
+                   "The honest floor under the ladder: the top rungs are "
+                   "substitution values and financing values, not cash, "
+                   "and the net value to the owner subtracts hours and "
+                   "money.", words=600,
+                   beats=(
+                       "Substitution is not income.",
+                       "Financed value is future payments, not today's.",
+                       "The owner's net rung: function minus labour minus "
+                       "cash.",
+                       "Different owners stand on different rungs, and "
+                       "that is the ladder's real lesson.",
+                   )),
+            ),
+            derives=("pine_value_economics",
+                     "two_v_demo.book_math"),
+            ref="pine_values",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 4, "Where the Fuel Actually Goes",
             "A metabolic ledger of one build: every part lifted, carried and "
             "fastened, priced in calories -- and the discovery that most of "
             "the fuel raises nothing at all",
@@ -2466,7 +2548,7 @@ PART_SCALE = Part(
 
         # ------------------------------------------------------ the shell
         Chapter(
-            _NEXT_NUMBER + 4, "Less Skin for the Same Floor",
+            _NEXT_NUMBER + 5, "Less Skin for the Same Floor",
             "A dome wraps a given floor in noticeably less outside surface "
             "than a box does, and the wall you never build never costs "
             "anything to build, heat or repair",
@@ -2510,7 +2592,7 @@ PART_SCALE = Part(
             ref="less_skin",
         ),
         Chapter(
-            _NEXT_NUMBER + 5, "The Cheapest Square Footage in the Building",
+            _NEXT_NUMBER + 6, "The Cheapest Square Footage in the Building",
             "Standing the shell on a short straight wall buys floor, "
             "headroom and usable edge for the least money per square foot of "
             "anything in the build",
@@ -2538,7 +2620,7 @@ PART_SCALE = Part(
             ref="pony_wall",
         ),
         Chapter(
-            _NEXT_NUMBER + 6, "The Roof Is Already a Gutter",
+            _NEXT_NUMBER + 7, "The Roof Is Already a Gutter",
             "An overhanging brim throws water clear of every joint and "
             "collects it in the same move, and the annual catch off a dome "
             "this size is not a trivial number",
@@ -2565,7 +2647,7 @@ PART_SCALE = Part(
             ref="brim_gutter",
         ),
         Chapter(
-            _NEXT_NUMBER + 7, "A House That Gets Warmer Every Winter",
+            _NEXT_NUMBER + 8, "A House That Gets Warmer Every Winter",
             "Build the skeleton once and add layers to it for as long as you "
             "own it: the shell ladder turns a shelter into a house in steps "
             "you can afford one at a time",
@@ -2576,7 +2658,11 @@ PART_SCALE = Part(
                    "be neither, permanently and on purpose.", words=260),
                 _p("table", "The shell ladder, rung by rung",
                    "Each layer, what it costs, what it does to the envelope "
-                   "and what it does to the running bill.", words=460),
+                   "and what it does to the running bill.", words=460,
+                   figures=(_f("shell-ladder",
+                               "Each layer's cost against the heating bill "
+                               "it removes, rung by rung.", PLOT,
+                               plot="shell_ladder"),)),
                 _p("text", "Why the bones are the thing to get right",
                    "Every layer in that ladder attaches to the frame. Get "
                    "the frame right and nothing later is blocked; get it "
@@ -2590,10 +2676,45 @@ PART_SCALE = Part(
                      "two_v_demo.dome_performance.running_costs"),
             ref="shell_ladder",
         ),
+        Chapter(
+            _NEXT_NUMBER + 9, "The Quilt Network",
+            "The insulation is a quilt of recycled clothing, and the quilt "
+            "is the one part of the whole project a stranger can build at "
+            "their own kitchen table -- which makes it the campaign's "
+            "recruiting half, not its footnote",
+            "explain",
+            (
+                _p("opener", "The Quilt Network",
+                   "Every other part of this book needs a saw, a bench, or "
+                   "a mortgage. The insulation needs a sewing machine and "
+                   "an evening, and that difference is the network.",
+                   words=240),
+                _p("text", "A layer is an object with a number on it",
+                   "A quilted layer is a real thing that lands on a named "
+                   "dome: a count of shirts, an R-value, a winter. Not a "
+                   "donation to a pool.", words=480),
+                _p("text", "Provenance, because the layers come off in "
+                   "order",
+                   "The stack wears in order and strips in reverse order, "
+                   "so every layer carries a name and a date that the dome "
+                   "can state forever.", words=420),
+                _p("text", "What a stranger's layer does to the economics",
+                   "The barrier to entry is a machine and an evening, the "
+                   "unit diverts textile waste, and the labour the builder "
+                   "cannot buy is exactly the labour a network can gift.",
+                   words=460),
+                _p("sidebar", "What is arithmetic here and what is hope",
+                   "The shirt counts and R-values are computed; that "
+                   "people will sew them is a campaign bet, labelled as "
+                   "one.", words=240),
+            ),
+            derives=("quilt_network",),
+            ref="quilt_network",
+        ),
 
         # --------------------------------------------------- the ground
         Chapter(
-            _NEXT_NUMBER + 8, "One Hardware Set, Three Sizes",
+            _NEXT_NUMBER + 10, "One Hardware Set, Three Sizes",
             "The brackets, keys and fasteners that frame a small dome frame "
             "a large one unchanged, which is what makes a shared parts bin "
             "possible across a whole site",
@@ -2622,7 +2743,7 @@ PART_SCALE = Part(
             ref="hardware_invariance",
         ),
         Chapter(
-            _NEXT_NUMBER + 9, "Buy for the Next Two Steps",
+            _NEXT_NUMBER + 11, "Buy for the Next Two Steps",
             "The cheapest thing you can do on a site is oversize the parts "
             "that are hard to change later and undersize nothing else",
             "explain",
@@ -2650,7 +2771,7 @@ PART_SCALE = Part(
             ref="growth_path",
         ),
         Chapter(
-            _NEXT_NUMBER + 10, "The Ground Is What You Cannot Take With You",
+            _NEXT_NUMBER + 12, "The Ground Is What You Cannot Take With You",
             "Measured across the dome catalogue, the foundation is between a "
             "small fraction and most of what a dome costs -- and it is the "
             "only part you leave behind",
@@ -2677,7 +2798,7 @@ PART_SCALE = Part(
             ref="foundation_share",
         ),
         Chapter(
-            _NEXT_NUMBER + 11, "A Pad, Not a Plot",
+            _NEXT_NUMBER + 13, "A Pad, Not a Plot",
             "A serviced pad is the unit a dome site is actually built from: "
             "a deck, a set of services and a diameter, priced as one thing",
             "explain",
@@ -2703,7 +2824,7 @@ PART_SCALE = Part(
             ref="the_pad",
         ),
         Chapter(
-            _NEXT_NUMBER + 12,
+            _NEXT_NUMBER + 14,
             "Turning the House Toward the Sun, Until It Stops Being Worth It",
             "A rotating foundation is buildable and it does raise the solar "
             "yield -- and the honest arithmetic says it pays only under "
@@ -2741,7 +2862,7 @@ PART_SCALE = Part(
             ref="rotation",
         ),
         Chapter(
-            _NEXT_NUMBER + 13, "One Pad, Every Dome Size",
+            _NEXT_NUMBER + 15, "One Pad, Every Dome Size",
             "An iris of hinged blades closes a single oversized pad down to "
             "whatever dome is standing on it, so one pad serves the whole "
             "catalogue instead of one model",
@@ -2770,7 +2891,7 @@ PART_SCALE = Part(
             ref="the_iris",
         ),
         Chapter(
-            _NEXT_NUMBER + 14, "Why a Network Beats a Park",
+            _NEXT_NUMBER + 16, "Why a Network Beats a Park",
             "A park is pads you rent. A network is pads that hold their "
             "value because a dome can leave one and arrive at another, and "
             "that difference is the whole resale argument",
@@ -2805,7 +2926,7 @@ PART_SCALE = Part(
             ref="the_network",
         ),
         Chapter(
-            _NEXT_NUMBER + 15, "What Would Have to Be True",
+            _NEXT_NUMBER + 17, "What Would Have to Be True",
             "The closing audit: every claim in this part restated as a "
             "condition, with the ones that are not met yet marked as not met",
             "explain",
@@ -2846,13 +2967,15 @@ PART_FUTURE = Part(
     title="Variations and Future Systems",
     epigraph="The same frame can wear more than one roof, stand on more "
              "than one ground, and hang from nothing at all.",
-    promise="The manufactured version of the method, and the two systems "
-            "that turn it into something you can lift and hang: the "
-            "shower-cap soft shell, the mast and the floor, and the "
-            "floating dome.",
+    promise="The manufactured version of the method, and the systems that "
+            "turn it into something you can lift, hang and re-skin: the "
+            "shower-cap soft shell, the mast and the floor, the floating "
+            "dome, the seven ways to make a wedge, the zome and the hex, "
+            "the stem cell and its core, and the seam turned into a "
+            "climate machine.",
     chapters=(
         Chapter(
-            _NEXT_NUMBER + 16, "The Dome That Stacks Hats",
+            _NEXT_NUMBER + 18, "The Dome That Stacks Hats",
             "A soft shell instead of a hard one: the frame wears quilted "
             "layers of recycled clothing and a rain-slick shower cap, and "
             "each new hat is a size up from the last",
@@ -2890,7 +3013,7 @@ PART_FUTURE = Part(
             ref="stacking_hats",
         ),
         Chapter(
-            _NEXT_NUMBER + 17, "The Mast and the Floor",
+            _NEXT_NUMBER + 19, "The Mast and the Floor",
             "A steel-core mast through the utility column, a wooden floor "
             "that clamps to it -- the upgrade bought after the dome -- "
             "and an apex ring that hoists the whole structure",
@@ -2924,7 +3047,7 @@ PART_FUTURE = Part(
             ref="the_mast",
         ),
         Chapter(
-            _NEXT_NUMBER + 18, "The Floating Dome",
+            _NEXT_NUMBER + 20, "The Floating Dome",
             "Hang the mast from three cables between trees and the dome "
             "floats with its own floor under it -- a design possibility, "
             "with the loads named as the engineer's job",
@@ -2956,6 +3079,432 @@ PART_FUTURE = Part(
             derives=("seed_model.suspension_group",
                      "seed_model.floating_report"),
             ref="floating_dome",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 21, "Seven Ways to Make a Wedge",
+            "The solid split-log wedge is the reference, not the whole "
+            "idea: hollow, laminated, log-derived, manufactured and hybrid "
+            "members all exist, and each one trades something",
+            "reference",
+            (
+                _p("opener", "Seven Ways to Make a Wedge",
+                   "Every member in this book so far has been one solid "
+                   "eighth of a log. Here are the other six, and what each "
+                   "one buys and gives up.", words=300),
+                _p("text", "The solid split wedge",
+                   "The reference member: what it is good at and what it "
+                   "cannot do, stated as the baseline the others are "
+                   "measured against.", words=550),
+                _p("text", "Hollow members",
+                   "Stiffness lives near the surface, so a hollow triangle "
+                   "uses half the material for most of the stiffness -- "
+                   "and cannot be made with a saw, and gives up the whole "
+                   "harvest advantage.", words=600),
+                _p("text", "Laminated members",
+                   "Glued strips buy size beyond the tree, straightness, "
+                   "and defect-spreading, at the price of a shop and the "
+                   "mill's recovery rate.", words=550),
+                _p("text", "Log-derived, manufactured, and hybrid",
+                   "The middle three: bucking longer logs for two struts "
+                   "per section, moulding the member in a factory, and "
+                   "letting steel take the joints while wood takes the "
+                   "span.", words=650),
+                _p("text", "Choosing one",
+                   "The decision tree that sends each builder to one of "
+                   "the seven, and the two questions that do most of the "
+                   "sorting.", words=500),
+            ),
+            derives=("wedge_book.alternatives",
+                     "wedge_geometry.sector_chord_in"),
+            ref="wedge_variations",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 22, "Every Other Way of Doing It",
+            "Eight frame materials, eight strut sections, sixteen panel "
+            "types, nine claddings and eleven foundations -- all priced on "
+            "this dome, so the choice is a comparison instead of a "
+            "preference",
+            "reference",
+            (
+                _p("opener", "Every Other Way of Doing It",
+                   "This book argues for one combination of material, "
+                   "section, panel, cladding and foundation. Here are all "
+                   "the others, priced on the same dome.", words=260),
+                _p("table", "The breadth tables",
+                   "Every catalogue the wedge book computes: materials, "
+                   "sections, panels, claddings, foundations -- each "
+                   "option costed on the reference quantities.",
+                   words=420,
+                   figures=(_f("breadth-tables",
+                               "Eight materials, eight sections, sixteen "
+                               "panels, nine claddings, eleven "
+                               "foundations, priced on one dome.", PLOT,
+                               plot="breadth_tables"),)),
+                _p("text", "What the prices say",
+                   "The pattern across all five catalogues: the reference "
+                   "combination wins by being the only one that needs no "
+                   "shop, no mill and no second trade.", words=520),
+                _p("text", "When a losing row is the right row",
+                   "Every option in these tables is somebody's right "
+                   "answer -- a foundation for frost, a steel frame for a "
+                   "permanent structure -- and the table exists so that "
+                   "choice is made with the numbers up.", words=440),
+            ),
+            derives=("wedge_book.alternatives",),
+            ref="every_other_way",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 23, "Hubs, or No Hubs",
+            "The trade this method answers, counted across the whole "
+            "catalogue rather than argued: hubs buy a familiar kit and "
+            "charge for it in parts, no-hubs buys the woodpile and "
+            "charges in wood",
+            "explain",
+            (
+                _p("opener", "Hubs, or No Hubs",
+                   "Every geodesic dome in the world faces one decision "
+                   "before any other: do the struts meet at a connector, "
+                   "or at each other?", words=260),
+                _p("text", "What a hub buys",
+                   "A hub makes every joint the same part: drilled, "
+                   "catalogued, replaceable. It is the kit manufacturer's "
+                   "answer, and for manufactured struts it is the right "
+                   "one.", words=520),
+                _p("text", "What a hub costs",
+                   "A hub is a part you buy once per vertex, plus the "
+                   "bolts, plus the error budget it will not absorb. The "
+                   "frankendome's hub experiments in Chapter "
+                   "{{ch.the_frankendome}} were this cost, paid in "
+                   "afternoons.", words=520),
+                _p("text", "What no-hubs buys and costs",
+                   "The pinwheel deletes the hub by letting each member "
+                   "end land on the side of the next -- and pays for it "
+                   "in members, which is the {{edges.duplication_ratio}} "
+                   "of Chapter {{ch.own_edge}}.", words=520),
+                _p("text", "How to choose",
+                   "The three questions that sort it: who is cutting the "
+                   "wood, who is assembling it, and whether the dome will "
+                   "ever be taken apart.", words=380),
+            ),
+            derives=("hubless_geometry.hubless_summary",
+                     "book_math.edge_accounting"),
+            ref="hubs_or_no_hubs",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 24, "A Zome Is Not a Piece of a Sphere",
+            "Sweep a star of directions instead of subdividing a solid and "
+            "every panel is flat by construction -- the zome, the "
+            "one-panel golden zome, and what the flatness costs",
+            "explain",
+            (
+                _p("opener", "A Zome Is Not a Piece of a Sphere",
+                   "The geodesic dome starts from a solid and projects. A "
+                   "zome starts from directions and sweeps -- and the "
+                   "difference decides everything about the panels.",
+                   words=300),
+                _p("text", "The sweep, in four steps",
+                   "From a star of directions to a frame of flat "
+                   "parallelogram panels, with the guarantee that every "
+                   "panel is flat because it was flat from the start.",
+                   words=750),
+                _p("plate", "The zome",
+                   "The zome standing: a point on top, level rings of "
+                   "hubs, and no curved surface anywhere in it.",
+                   figures=(_f("zome-sweep",
+                               "A zome is not a piece of a sphere.",
+                               SHOT, full_page=True, lesson="zome",
+                               second=10.56),),),
+                _p("text", "The famous one-panel zome",
+                   "When the directions are chosen equal, every panel is "
+                   "the same panel -- one strut length, one template, "
+                   "ninety repetitions.", words=650),
+                _p("plate", "One panel",
+                   "The golden zome: the dome that is one panel, "
+                   "repeated.",
+                   figures=(_f("zome-golden",
+                               "The famous one-panel zome.", SHOT,
+                               full_page=True, lesson="zome",
+                               second=268.20),),),
+                _p("text", "Zome against geodesic dome",
+                   "What the flatness costs: the joint gets particular, "
+                   "the floor meets the frame on a slope, and the count "
+                   "of templates decides which one wins.", words=650),
+            ),
+            derives=("lesson_zome", "wedge_book.alternatives"),
+            ref="the_zome",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 25, "Exactly Twelve Pentagons, Always",
+            "A sheet of hexagons will not curve, curvature is bought with "
+            "missing angle, and the missing angle always costs exactly "
+            "twelve pentagons -- the hexagonal dome, and where it stops "
+            "being flat",
+            "explain",
+            (
+                _p("opener", "Exactly Twelve Pentagons, Always",
+                   "The hexagon is the panel a factory loves: one shape, "
+                   "flat sheets, six sides. The question is what it takes "
+                   "to make a sheet of them into a dome.", words=300),
+                _p("text", "Curvature is bought with missing angle",
+                   "Flat hexagons tile a plane exactly. To make the tiling "
+                   "curve, some of the angle has to go missing, and a "
+                   "pentagon is where it goes.", words=750),
+                _p("plate", "Twelve pentagons",
+                   "The hexagonal dome: one strut length, and the twelve "
+                   "pentagons that pay for the curve.",
+                   figures=(_f("hex-twelve",
+                               "Exactly twelve pentagons. Always.", SHOT,
+                               full_page=True, lesson="hex",
+                               second=73.20),),),
+                _p("text", "One strut length, cut ninety times",
+                   "The hexagonal dome's gift to the builder, and what it "
+                   "does to the skin and the joints in exchange.",
+                   words=600),
+                _p("plate", "The single-hexagon dome",
+                   "The smallest hexagonal dome there is.",
+                   figures=(_f("hex-one",
+                               "The single-hexagon dome.", SHOT,
+                               full_page=True, lesson="hex",
+                               second=91.88),),),
+                _p("text", "Where the panels stop being flat",
+                   "Step the hexagon count up and the panels begin to "
+                   "warp -- the honest limit that sends builders back to "
+                   "triangles.", words=600),
+            ),
+            derives=("lesson_hex", "wedge_book.alternatives"),
+            ref="twelve_pentagons",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 26, "Why We Call It a Stem Cell",
+            "One undifferentiated dome body, one cut list, and the "
+            "decision of what the building is for deferred to a set of "
+            "panels -- fifteen buildings from one frame",
+            "explain",
+            (
+                _p("opener", "Why We Call It a Stem Cell",
+                   "A stem cell is a body that has not decided what it "
+                   "will be. The frame this book builds is the building "
+                   "version of that.", words=280),
+                _p("text", "The undifferentiated body",
+                   "The frame, the skin, the cap and the core are the "
+                   "same in every version. What changes is which panels "
+                   "the walls are wearing.", words=620),
+                _p("plate", "The stem cell",
+                   "One body, and the openings that have not decided yet.",
+                   figures=(_f("stem-cell",
+                               "One body, many buildings.", SHOT,
+                               full_page=True, lesson="seed_pitch",
+                               second=93.00),),),
+                _p("text", "The seeds",
+                   "The fifteen named versions -- home, food, storage, "
+                   "guest, gym, studio, workshop, garage, nursery and the "
+                   "rest -- each a set of panels, not a new building.",
+                   words=650),
+                _p("text", "What the name buys",
+                   "Calling it a stem cell is a discipline: it forbids "
+                   "building the decision in, and every fit-out the "
+                   "catalogue prices respects that.", words=500),
+            ),
+            derives=("seed_model", "kickstarter"),
+            ref="stem_cell",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 27, "Sink the Money Into the Part That Moves",
+            "The utility core is the one component that outlives its "
+            "shell, so it is the one worth buying once: fourteen parts, "
+            "five services, one penetration",
+            "explain",
+            (
+                _p("opener", "Sink the Money Into the Part That Moves",
+                   "Every dome this method builds will be outlived by one "
+                   "part of itself. Put the money there.", words=260),
+                _p("text", "What the core is",
+                   "The column through the centre, carrying power, water, "
+                   "waste and air in one object that unbolts and moves to "
+                   "the next dome.", words=620),
+                _p("plate", "The socket at the top",
+                   "The apex is an interface: the seal cap, the mast, and "
+                   "the services that pass through it.",
+                   figures=(_f("core-socket",
+                               "The top of the dome is a socket.", SHOT,
+                               full_page=True, lesson="seed_pitch",
+                               second=326.00),),),
+                _p("text", "Built on a bench, proved before it stands",
+                   "The module-build order: drain first because it cannot "
+                   "be re-routed, water second and proved dry, power last "
+                   "into a core already known to be dry.", words=620),
+                _p("text", "A purchase that becomes an asset",
+                   "The core's share of the dome's cost, and why it is "
+                   "the only line item that transfers to the next "
+                   "building -- which makes it the thing to buy, not "
+                   "build around.", words=520),
+            ),
+            derives=("seed_model", "kickstarter"),
+            ref="the_core",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 28, "The Boat-Hull Shell",
+            "Four ways to skin the dome, priced by the pound of glass and "
+            "resin each one puts on: the hard shell as the fifty-year "
+            "upgrade over the cap",
+            "explain",
+            (
+                _p("opener", "The Boat-Hull Shell",
+                   "The cap keeps the weather off. A hull becomes the "
+                   "weather. Four systems build one, and the prices "
+                   "disagree on purpose.", words=280),
+                _p("text", "Four ways to skin it",
+                   "Sheathed plywood, boatyard polyester, premium marine "
+                   "and vinyl ester -- each one priced and weighed on the "
+                   "same shell, with the honest note about what the "
+                   "prices rest on.", words=700),
+                _p("plate", "The skin systems",
+                   "The shell, costed four ways.",
+                   figures=(_f("hull-skins",
+                               "Four ways to skin it, and what each one "
+                               "costs.", SHOT, full_page=True,
+                               lesson="seed_pitch",
+                               second=279.12),),),
+                _p("text", "Slices instead of a monolith",
+                   "A one-piece hull can never come off; four slices with "
+                   "an S-lip between them can, and the roof comes apart "
+                   "too -- which is what turns a shell into an upgrade "
+                   "path instead of a commitment.", words=620),
+                _p("text", "Which one to pick",
+                   "The honest ranking: the cheapest hull is not the "
+                   "cheapest to own, and the premium skin is a fifty-year "
+                   "decision the cap lets you defer.", words=520),
+            ),
+            derives=("soft_shell", "hull_laminate", "seed_model.quote"),
+            ref="boat_hull",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 29, "Fifteen Buildings From One Body",
+            "The fit-out catalogue, priced cheapest first: the same frame "
+            "as gym, guest house, workshop, garage, studio and nursery",
+            "reference",
+            (
+                _p("opener", "Fifteen Buildings From One Body",
+                   "The stem cell's promise, priced: the same body, "
+                   "fifteen fit-outs, and the ladder that orders them.",
+                   words=260),
+                _p("table", "The catalogue",
+                   "Every named fit-out with its panels changed and its "
+                   "price, from the cheapest to the dearest.", words=500,
+                   figures=(_f("fitout-catalogue",
+                               "The fit-out catalogue, priced cheapest "
+                               "first.", PLOT,
+                               plot="fitout_catalogue"),)),
+                _p("plate", "Snap-on services",
+                   "Everything else snaps onto the outside, so a fit-out "
+                   "never plumbs into a wall.",
+                   figures=(_f("fitout-snap",
+                               "The services snap onto the outside.",
+                               SHOT, full_page=True, lesson="seed_pitch",
+                               second=362.48),),),
+                _p("text", "Reading the ladder",
+                   "What moves between rungs is panels and services, not "
+                   "structure -- which is why the ladder is a catalogue "
+                   "and not a new building each time.", words=560),
+            ),
+            derives=("seed_model", "kickstarter"),
+            ref="fit_outs",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 30, "The Seam That Does Four Jobs",
+            "The gap between two panels is not a joint waiting to leak. "
+            "It is a channel: gutter, vent, dehumidifier and air barrier "
+            "in one, and the services ride in it",
+            "explain",
+            (
+                _p("opener", "The Seam That Does Four Jobs",
+                   "The seam this book closed with a key has a second "
+                   "life. Open it deliberately and it becomes the most "
+                   "useful void in the building.", words=280),
+                _p("text", "Gutter, vent, dehumidifier, air barrier",
+                   "The four jobs, and the one sentence that makes them "
+                   "compatible: the channel runs on positive pressure, "
+                   "so a leak stops being a leak and becomes a vent.",
+                   words=700),
+                _p("text", "What fits in the channel",
+                   "Water and wire fit. A round duct does not -- unless "
+                   "the key becomes a spacer and the seam opens to take "
+                   "it, which makes the channel the duct.", words=650,
+                   figures=(_f("seam-fits",
+                               "Water and wire fit. Round ducts do not.",
+                               SHOT, lesson="cabin_wedge_explained",
+                               second=235.45),)),
+                _p("text", "Keys in halves, and rosettes",
+                   "The key printed in two profiles so it can be fed in "
+                   "from both ends, and the rosette where five channels "
+                   "meet at a vertex.", words=620,
+                   figures=(_f("seam-halves",
+                               "Printing the key in halves.", SHOT,
+                               lesson="cabin_wedge_explained",
+                               second=406.06),)),
+                _p("text", "Two rules",
+                   "No pressure fitting inside a seam, and the cable in "
+                   "its chase is the inspector's call -- the two lines "
+                   "that keep a clever channel from becoming a buried "
+                   "hazard.", words=420),
+            ),
+            derives=("wedge_book.systems",
+                     "book_math.panel_seam_count"),
+            ref="seam_jobs",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 31, "Compare Dew Points, Not Humidity",
+            "Never ask which air is more humid; ask which is drier, where "
+            "it will condense, and which way the water moves -- the "
+            "seam's climate, run by one controller",
+            "explain",
+            (
+                _p("opener", "Compare Dew Points, Not Humidity",
+                   "Humidity numbers lie about moisture. Dew points do "
+                   "not. This chapter is the rule, the levels, and the "
+                   "drawer.", words=280),
+                _p("text", "The rule",
+                   "Two airs compared by relative humidity can point the "
+                   "wrong way; compared by dew point they cannot. The "
+                   "three questions that follow from it.", words=620),
+                _p("text", "The four levels and the ring that cannot "
+                   "drain",
+                   "The seams fall into bands by slope, the pentagon ring "
+                   "is dead level, and the answer is to condense low and "
+                   "drain at the rim.", words=650,
+                   figures=(_f("dew-levels",
+                               "The dome's levels, from the solver.", SHOT,
+                               lesson="cabin_seam_climate",
+                               second=344.38),)),
+                _p("text", "A plate is a heat pump",
+                   "Metal in the seam runs both ways: heat into the room "
+                   "in winter, out in summer, and frost exactly at the "
+                   "dew point -- with the galvanic table that decides "
+                   "which metals may touch.", words=620,
+                   figures=(_f("dew-plate",
+                               "A plate is a heat pump.", SHOT,
+                               lesson="cabin_seam_climate",
+                               second=140.17),)),
+                _p("text", "The desiccant belongs in a drawer",
+                   "A packed seam passes almost no air and cannot be "
+                   "regenerated in place. Two drawers and a gate at the "
+                   "rim do the job, and the stove's heat never shares "
+                   "the stove's air.", words=600,
+                   figures=(_f("dew-drawers",
+                               "Two drawers and a gate.", SHOT,
+                               lesson="cabin_seam_climate",
+                               second=487.77),)),
+                _p("text", "Dew point decides",
+                   "Eleven weathers, one controller, and the loop versus "
+                   "the purge -- drying the structure is not the same "
+                   "job as ventilating the house.", words=520,
+                   figures=(_f("dew-point",
+                               "Compare dew points, not humidity.", SHOT,
+                               lesson="cabin_seam_climate",
+                               second=82.32),)),
+            ),
+            derives=("wedge_book.systems",),
+            ref="dew_point",
         ),
     ),
 )
@@ -3169,12 +3718,16 @@ def validate_book() -> None:
     # These bounds are a tripwire, not a target. They exist so that the
     # outline growing -- which it does every time a chapter is inserted --
     # is something somebody notices and decides about, rather than something
-    # that happens quietly over a month. The plan is currently around
-    # 160,000 words, which is a long book: a complete build manual, a
-    # reference and a narrative bound together. That is a deliberate choice
-    # and the per-page targets in the outline are where to trim it.
-    assert 300 <= book.sheets <= 800, book.sheets
-    assert 60000 <= book.words <= 200000, book.words
+    # that happens quietly over a month. The plan started around 160,000
+    # words and the caps were 800 sheets / 200,000 words. When the book was
+    # expanded into a master totality of the whole project -- the value
+    # ladder, the stem cell, the core, the boat hull, the zome, the hex and
+    # the seam climate -- the caps were raised deliberately to the figures
+    # below, so the tripwire keeps firing only for growth nobody decided
+    # on. That decision, and its scale, are recorded here rather than left
+    # in a changelog nobody reads.
+    assert 300 <= book.sheets <= 1400, book.sheets
+    assert 60000 <= book.words <= 300000, book.words
 
     _check_derivations(book)
 
@@ -3197,12 +3750,20 @@ def _check_derivations(book: Book) -> None:
     top level, so ``book_math.fortnight`` and ``park_model.on_pad`` both
     resolve without anybody having to remember which package a module lives
     in. Dotted attribute paths (``BOOK_TREE.recovery``) are walked.
+
+    The loop starts at the *full* dotted path rather than one segment short
+    of it: ``wedge_book.alternatives`` is a package whose submodule is never
+    imported by the package itself, so ``hasattr(wedge_book, "alternatives")``
+    is false until the submodule has been imported -- importing the full path
+    as a module name is what makes that spelling resolve, and it is also what
+    makes a bare name like ``pine_value_economics`` resolve through the
+    ``two_v_demo`` prefixed candidate.
     """
     import importlib
 
     def resolve(reference: str) -> bool:
         parts = reference.split(".")
-        for split in range(len(parts) - 1, 0, -1):
+        for split in range(len(parts), 0, -1):
             name = ".".join(parts[:split])
             for candidate in (name, f"{__package__}.{name}"):
                 try:
@@ -3315,7 +3876,7 @@ def validate_everything() -> None:
     book_figures.validate_figures()
     book_manuscript.validate_manuscript()
     book_export.validate_export()
-    print("--- 2 Trees: every check passed")
+    print("--- The 40 Hour Cabin: every check passed")
 
 
 if __name__ == "__main__":

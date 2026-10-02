@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-30T20:25:27.936037+00:00",
+  "lesson": "teaser_cabin_linseed_oil",
+  "title": "Linseed Oil for a Dome: Uses, Limits and Method: the teaser",
+  "chapters": [
+    {
+      "slug": "purpose",
+      "title": "DOMESIM",
+      "narration": [
+        "Where it earns a place in the build."
+      ],
+      "start": 0.0,
+      "end": 3.488
+    },
+    {
+      "slug": "prepare",
+      "title": "Prepare the member",
+      "narration": [
+        "Finish sound wood; preserve clean joint surfaces."
+      ],
+      "start": 3.488,
+      "end": 8.464
+    },
+    {
+      "slug": "weather",
+      "title": "The outside needs a weather system",
+      "narration": [
+        "Rain shedding is an assembly job."
+      ],
+      "start": 8.464,
+      "end": 12.024000000000001
+    },
+    {
+      "slug": "limits",
+      "title": "The number that argues against it",
+      "narration": [
+        "Low material cost does not remove labour."
+      ],
+      "start": 12.024000000000001,
+      "end": 16.256
+    },
+    {
+      "slug": "maintenance",
+      "title": "Inspect, clean, then renew",
+      "narration": [
+        "Improved color is not restored strength."
+      ],
+      "start": 16.256,
+      "end": 20.248
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 20.248,
+      "end": 25.272000000000002
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 25.272000000000002,
+      "end": 31.256
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

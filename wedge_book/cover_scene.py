@@ -448,8 +448,11 @@ def pine(batch: TriangleBatch, x: float, y: float, height: float, rng) -> None:
             batch.triangle(np.array([x, y, tip]), p0, p1, colour)
 
 
-def forest(seed: int = 9) -> TriangleBatch:
-    """Pines round the clearing, tall and close at the sides, as in the painting."""
+def forest(seed: int = 9, sites: list | None = None) -> TriangleBatch:
+    """Pines round the clearing, tall and close at the sides, as in the painting.
+
+    ``sites``, if given, receives each pine's (x, y, height) -- what a camera
+    needs to keep out of, and to see past."""
     batch = TriangleBatch()
     rng = np.random.default_rng(seed)
     placed = 0
@@ -461,7 +464,10 @@ def forest(seed: int = 9) -> TriangleBatch:
             continue
         if math.hypot(x, y) < 9:
             continue
-        pine(batch, x, y, rng.uniform(10, 18), rng)
+        height = rng.uniform(10, 18)
+        pine(batch, x, y, height, rng)
+        if sites is not None:
+            sites.append((x, y, height))
         placed += 1
     return batch
 

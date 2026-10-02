@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-28T13:20:17.347195+00:00",
+  "lesson": "teaser_cabin_wedge_explained",
+  "title": "The Wedge Dome, Explained: the teaser",
+  "chapters": [
+    {
+      "slug": "grain",
+      "title": "DOMESIM",
+      "narration": [
+        "A whole house frame, before it is cut."
+      ],
+      "start": 0.0,
+      "end": 4.165541666666666
+    },
+    {
+      "slug": "pinwheel",
+      "title": "No hubs",
+      "narration": [
+        "The sticks hold each other."
+      ],
+      "start": 4.165541666666666,
+      "end": 7.687083333333334
+    },
+    {
+      "slug": "bundle",
+      "title": "Water and wire fit",
+      "narration": [
+        "Room to spare."
+      ],
+      "start": 7.687083333333334,
+      "end": 11.087083333333334
+    },
+    {
+      "slug": "spacer",
+      "title": "If you want a duct: the key becomes a spacer",
+      "narration": [
+        "Every panel moves out."
+      ],
+      "start": 11.087083333333334,
+      "end": 14.490458333333335
+    },
+    {
+      "slug": "rules",
+      "title": "Two rules",
+      "narration": [
+        "A hidden leak is the failure this exists to prevent."
+      ],
+      "start": 14.490458333333335,
+      "end": 18.924541666666666
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 18.924541666666666,
+      "end": 24.87770833333333
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 24.87770833333333,
+      "end": 31.75170833333333
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

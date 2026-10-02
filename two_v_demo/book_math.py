@@ -1,4 +1,4 @@
-"""The arithmetic behind *2 Trees: Build Your (D)Home*.
+"""The arithmetic behind *The 40 Hour Cabin: 3 Trees*.
 
 Every number the book prints comes from here, and everything here comes from
 geometry that already exists in this repository -- :mod:`wedge_geometry` for
@@ -674,7 +674,7 @@ class TreeFirstResult:
 
 
 @lru_cache(maxsize=8)
-def tree_first(plan: TreeCutPlan = BOOK_TREE, trees: int = 2,
+def tree_first(plan: TreeCutPlan = BOOK_TREE, trees: int = 3,
                gasket_in: float = 0.75) -> TreeFirstResult:
     """Size the dome to the tree, not the other way round.
 
@@ -1257,17 +1257,18 @@ def validate_book_math() -> None:
     plan = BOOK_TREE
 
     # The title has to be true: eight sections of eight is sixty-four, and
-    # two trees has to actually cover a hundred and twenty members.
+    # three trees has to actually cover a hundred and twenty members with
+    # room to spare.
     assert plan.sections == 8, plan.sections
     assert plan.struts_per_section == 8, plan.struts_per_section
     assert plan.struts_per_tree == 64, plan.struts_per_tree
     assert plan.offcut_ft == 0.0, plan.offcut_ft
 
-    result = tree_first(plan, trees=2)
+    result = tree_first(plan, trees=3)
     assert result.struts_needed == 120, result.struts_needed
-    assert result.struts_available == 128, result.struts_available
-    assert result.enough, "two trees must cover the frame"
-    assert result.spare_struts == 8, result.spare_struts
+    assert result.struts_available == 192, result.struts_available
+    assert result.enough, "three trees must cover the frame"
+    assert result.spare_struts == 72, result.spare_struts
     assert 1.0 < result.trees_strictly_needed < 2.0, \
         result.trees_strictly_needed
 
@@ -1376,7 +1377,7 @@ def validate_book_math() -> None:
     report = book_math_report()
     assert "ROUND TRIP" in report, report[:200]
     print("book_math OK: "
-          f"{plan.struts_per_tree} struts/tree x 2 = "
+          f"{plan.struts_per_tree} struts/tree x {result.trees} = "
           f"{result.struts_available} for a {result.struts_needed}-member "
           f"frame; {result.diameter_ft:.1f} ft dome, "
           f"{result.floor_sqft:.0f} sq ft floor; "

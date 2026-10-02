@@ -16,9 +16,12 @@ unit mills sell by.
 **Bucking.** Cutting a felled trunk into sections of working length, cross
 grain.
 
-**Butt cut.** The one compound-angled cut in the frame, made at the
-footing end of a member where it meets the ground ring. Once per member,
-once per build, off the jig.
+**Butt cut.** The one compound-angled cut in the frame, made on the
+butt end of a member so it seats flat on the side of its neighbour.
+Once per member, off the jig, at a handful of fixed settings.
+
+**Channel.** The void inside a seam, run as a connected network of
+gutters, vents and service chases through the whole shell.
 
 **Chord.** The straight line between two points on the circle; the edge a
 member spans. A pinwheel member is always shorter than its chord, because
@@ -55,8 +58,9 @@ the angle lives in the tool, not in the operator.
 
 **Kerf.** The width of the cut a saw removes.
 
-**Key.** The folded connector that joins two panels along a seam, set into
-the seam's angle.
+**Key.** The strip of timber or compressible material seated in a seam
+between two panels, cut to the seam's fold angle. The key locates the
+geometry; the gasket beside it seals the gap.
 
 **Limbing.** Cutting the branches off a felled tree.
 
@@ -116,3 +120,50 @@ triangles do the structural work.
 
 **Worked example.** A page that carries one number all the way through a
 calculation, showing every step rather than asserting the answer.
+
+**Boat hull.** The laminated hard shell -- fibreglass and resin over the
+frame -- the fifty-year alternative to the soft cap, built in four
+detachable slices.
+
+**Dew point.** The temperature at which air's moisture begins to
+condense. The book's climate rule: compare dew points, never relative
+humidities.
+
+**Desiccant drawer.** A removable bed of drying beads at the rim, in a
+twin-drawer pair with a gate, so one bed dries while the other works.
+
+**Fit-out.** One of the stem cell's fifteen named purposes -- gym,
+guest house, workshop -- carried by panels and services hung on the
+frame, never built into it.
+
+**Overfit.** The deliberate extra length left on a member's head end so
+error leaves as offcut when the flush cut is made against the jig.
+
+**Peltier plate.** A solid-state heat pump set in the seam channel,
+moving heat into the room in winter and out in summer, and condensing
+moisture deliberately at the dew point.
+
+**Rosette.** The fitting where five or six seam channels meet at a
+vertex, joining them into one continuous network.
+
+**Seam channel.** The connected void running through every seam: the
+building's gutter, vent, dehumidifier and air barrier in one.
+
+**Stem cell.** The undifferentiated dome body -- one frame, one cut
+list, one core -- whose purpose is deferred to a swappable set of
+panels: fifteen buildings from one body.
+
+**Utility core.** The column through the dome's centre carrying power,
+water, waste and air in one object that unbolts and moves to the next
+dome.
+
+**Value ladder.** The six rungs on which one tree can be priced --
+standing, firewood, sawn, split, structure, financed -- and the ratios
+between them.
+
+**Yakisugi.** The char-and-oil finish for the bark face only, leaving
+the sawn faces bare so the seam channel can breathe.
+
+**Zome.** A dome built by sweeping a star of directions into flat
+panels, so every panel is flat by construction rather than by
+approximation.

@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-29T01:28:48.908713+00:00",
+  "lesson": "teaser_cabin_2v",
+  "title": "2V Geodesic Masterclass: the teaser",
+  "chapters": [
+    {
+      "slug": "welcome",
+      "title": "2V / GEODESIC MASTERCLASS",
+      "narration": [
+        "Your 72 in and 63.5 in members are already telling us the sphere."
+      ],
+      "start": 0.0,
+      "end": 6.943999999999999
+    },
+    {
+      "slug": "platonic",
+      "title": "The five regular starting points",
+      "narration": [
+        "The icosahedron wins because twenty small faces begin closest to a sphere."
+      ],
+      "start": 6.943999999999999,
+      "end": 13.695999999999998
+    },
+    {
+      "slug": "subdivide",
+      "title": "Split every parent edge in half",
+      "narration": [
+        "Thirty parent edges create thirty new midpoint candidates."
+      ],
+      "start": 13.695999999999998,
+      "end": 18.72
+    },
+    {
+      "slug": "derive",
+      "title": "Four routes to the same answer",
+      "narration": [
+        "Coordinates, dot products, central angles, and the chord formula agree."
+      ],
+      "start": 18.72,
+      "end": 24.703999999999997
+    },
+    {
+      "slug": "verify",
+      "title": "Close the measurement loop",
+      "narration": [
+        "A good build is calculated, fabricated, measured, and corrected."
+      ],
+      "start": 24.703999999999997,
+      "end": 30.855999999999995
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 30.855999999999995,
+      "end": 35.879999999999995
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 35.879999999999995,
+      "end": 41.864
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

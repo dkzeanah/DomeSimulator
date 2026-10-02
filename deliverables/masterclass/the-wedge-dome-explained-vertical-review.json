@@ -1,0 +1,253 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-28T13:10:10.578863+00:00",
+  "lesson": "cabin_wedge_explained",
+  "title": "The Wedge Dome, Explained",
+  "chapters": [
+    {
+      "slug": "grain",
+      "title": "One log",
+      "narration": [
+        "This is a house frame before it is cut. One log, ripped with a chainsaw straight through its heart into 8 wedges. Every stick in the dome behind it is one of those wedges. By the end of this film you will know what each one does, and what the gap between two of them can carry."
+      ],
+      "start": 0.0,
+      "end": 24.3
+    },
+    {
+      "slug": "member",
+      "title": "Point in, round face out",
+      "narration": [
+        "Each wedge is a 45 degree slice of the log. In the frame the round outer face looks out at the weather and the point faces the centre of the dome. Nothing is squared, so the only wood that leaves the log is the width of the saw."
+      ],
+      "start": 24.3,
+      "end": 45.0
+    },
+    {
+      "slug": "counts",
+      "title": "Two lengths, flat panels",
+      "narration": [
+        "There are 120 members in two lengths: 60 cut to 70.2 inches and 60 to 62.7. Three of them make a triangle, and each triangle is built flat on the ground as its own panel. 40 panels make the dome."
+      ],
+      "start": 45.0,
+      "end": 66.272
+    },
+    {
+      "slug": "pinwheel",
+      "title": "No hubs",
+      "narration": [
+        "Inside a panel the three members do not meet at a point. Each one butts into the side of the next, all turning the same way, like a pinwheel. That is why this dome has no hubs. The corners hold because the sticks lean on each other, not because a steel star is holding them."
+      ],
+      "start": 66.272,
+      "end": 89.772
+    },
+    {
+      "slug": "doubled",
+      "title": "Every edge is two sticks",
+      "narration": [
+        "Where two panels meet, each one brings its own member, so every inside edge is two sticks side by side. That is 55 seams, and 110 of the 120 members. The last 10 sit on the rim. Everything interesting from here on happens inside those seams."
+      ],
+      "start": 89.772,
+      "end": 112.388
+    },
+    {
+      "slug": "vee",
+      "title": "The V",
+      "narration": [
+        "Look at the two members end on. Their sawn faces touch at the ridge on the outside and open toward the inside, at the sector angle less the fold between the two panels. This dome has only two folds: 18.0 degrees at 25 seams and 22.5 at 30. So every V is 27.0 or 22.5 degrees, and 6 inches deep: the radius of the 12 inch log."
+      ],
+      "start": 112.388,
+      "end": 145.156
+    },
+    {
+      "slug": "key",
+      "title": "The key",
+      "narration": [
+        "The key fills the V, and it is what 8 bolts a seam pull the two panels against. Make it solid and it is just a spline. Make it hollow and it is a pipe running the length of every seam: 309 feet of it, touching every panel, reaching the crown and the ground."
+      ],
+      "start": 145.156,
+      "end": 168.44400000000002
+    },
+    {
+      "slug": "room",
+      "title": "How much room",
+      "narration": [
+        "Inside a key with 3 millimetre walls there are 5.3 square inches in the tighter seam and 6.5 in the wider one. The largest round thing that passes through is 1.69 inches, or 1.97. Everything that follows has to fit in that."
+      ],
+      "start": 168.44400000000002,
+      "end": 188.56400000000002
+    },
+    {
+      "slug": "sizes",
+      "title": "The sizes we assumed",
+      "narration": [
+        "Before anything goes in, here are the sizes this film counts on. Pipe and tubing sizes are nominal, from their standards. Cable sizes are estimates, because every brand differs. And the rule for how full a channel may be is borrowed from conduit: 40 percent of the area, so things can still be pulled through."
+      ],
+      "start": 188.56400000000002,
+      "end": 214.18000000000004
+    },
+    {
+      "slug": "bundle",
+      "title": "Water and wire fit",
+      "narration": [
+        "A half-inch PEX water line, a fifteen-amp circuit, the twelve-volt pair to the cooling plates and the condensate drain. All four fit in either seam, and together they fill 11 percent of the tighter one, against the 40 allowed. There is room left over, and that room matters next."
+      ],
+      "start": 214.18000000000004,
+      "end": 235.76400000000004
+    },
+    {
+      "slug": "ducts",
+      "title": "Round ducts do not",
+      "narration": [
+        "Now the number that does not help. The smallest ordinary air duct is three inches round, and the key's largest opening is 1.97 inches at best. A three-inch duct does not fit. A four-inch one is nowhere close. If the plan was round ducts through the seams, the plan does not work as drawn."
+      ],
+      "start": 235.76400000000004,
+      "end": 259.148
+    },
+    {
+      "slug": "air",
+      "title": "The channel is the duct",
+      "narration": [
+        "But the channel does not need a duct in it, because it already is one. With the water, wire and drain inside, one seam still moves 13 cubic feet a minute at a quiet 400 feet a minute. The whole dome needs 18 for fresh air. 2 seams carry the building."
+      ],
+      "start": 259.148,
+      "end": 281.048
+    },
+    {
+      "slug": "dehumid",
+      "title": "Peltier plates and the three-way gate",
+      "narration": [
+        "That air runs past a thermoelectric plate, a Peltier: cold on the channel side, throwing its heat into the room below. Water drops out on the cold plate and runs to the drain. A three-way gate on each seam sends the air along the wood faces to dry them, through a silica cartridge when the weather is too wet, or shuts the air path off from the water path entirely."
+      ],
+      "start": 281.048,
+      "end": 310.548
+    },
+    {
+      "slug": "water",
+      "title": "What the plates are worth",
+      "narration": [
+        "And honestly: 360 watts of plates, run 6 hours a day, make 73 gallons a year. That is 0.4 inches of rain on this roof. The plates are a dehumidifier that happens to make water. They are not a water supply. The roof is the water supply."
+      ],
+      "start": 310.548,
+      "end": 332.708
+    },
+    {
+      "slug": "spacer",
+      "title": "If you want a duct: the key becomes a spacer",
+      "narration": [
+        "If you do want a round duct, the key stops being a filler and becomes a spacer. Push every panel out along its own face and every seam opens. A three-inch duct needs the panels moved out 7.0 inches. A four-inch duct with everything else beside it needs 16.4, and the seams open to 6.4 and 5.1 inches at the ridge, each needing a cap."
+      ],
+      "start": 332.708,
+      "end": 360.94000000000005
+    },
+    {
+      "slug": "ring",
+      "title": "What the spacer costs",
+      "narration": [
+        "And a spacer is not free. Moving every panel out makes the whole dome bigger: 6 percent for the three-inch duct, 14 percent for the four. More wood, more skin, a bigger pad, to carry air the plain channel was already carrying."
+      ],
+      "start": 360.94000000000005,
+      "end": 381.01200000000006
+    },
+    {
+      "slug": "logs",
+      "title": "Or start with a bigger log",
+      "narration": [
+        "The other lever is the log. The room in the channel grows with the square of the log's radius: a 10 inch log gives 3.5 square inches, a 12 inch log gives 5.3 square inches, a 15 inch log gives 8.8 square inches, a 18 inch log gives 13.1 square inches. Even the 18 inch log opens only 2.65 inches round: still not a three-inch duct."
+      ],
+      "start": 381.01200000000006,
+      "end": 412.94000000000005
+    },
+    {
+      "slug": "print",
+      "title": "Printing the key in halves",
+      "narration": [
+        "Here is how the key gets made. Split it down the middle and each member carries its own half, printed and screwed to its sawn face before the panel is built. When two panels meet, the halves close into one channel. The whole dome is 110 half-keys in just 2 profiles, printed 8 pieces to a stick on a 250 millimetre printer."
+      ],
+      "start": 412.94000000000005,
+      "end": 440.23600000000005
+    },
+    {
+      "slug": "print_cost",
+      "title": "What printing costs",
+      "narration": [
+        "Printing every seam is 121 kilograms of plastic, about 2,425 dollars and 1,768 printer hours: 74 days of one printer running flat out. So print only the seams that carry something, 2.2 kilograms and 32 hours each, and cut solid keys from the offcuts for the rest."
+      ],
+      "start": 440.23600000000005,
+      "end": 467.22
+    },
+    {
+      "slug": "hubs",
+      "title": "Where the channels meet",
+      "narration": [
+        "The frame has no hubs, but the services need them. The channels meet at 6 five-way and 10 six-way points, and 10 more on the rim, where they drop to the pad. As built, the V's close to a point there, so each junction is a printed rosette box on the inside of the vertex, where a pipe turns and a wire is spliced, somewhere you can reach. With the four-inch spacer the vertex opens into a hole about 11 inches across, and the hub becomes a printed node the channels plug into."
+      ],
+      "start": 467.22,
+      "end": 505.92
+    },
+    {
+      "slug": "rules",
+      "title": "Two rules",
+      "narration": [
+        "Two rules. Keep pressure joints out of the seams: run the PEX continuous, and make every fitting in a rosette you can open. A hidden leak inside a wooden seam is the one failure this whole system exists to prevent. And whether a cable may run in this chase is your inspector's call, not this film's."
+      ],
+      "start": 505.92,
+      "end": 531.6800000000001
+    },
+    {
+      "slug": "cost",
+      "title": "What the fitted seam costs",
+      "narration": [
+        "Fitted out as gutter, vent and dehumidifier, the seam module across the whole dome is 7,549 dollars, before a single printed key. If you fit one part of it, fit the gutter."
+      ],
+      "start": 531.6800000000001,
+      "end": 548.5600000000001
+    },
+    {
+      "slug": "reveal",
+      "title": "The wedge dome",
+      "narration": [
+        "One log, 8 rip cuts, 120 sticks, 55 seams, and a channel in every one of them. Water and wire for free, air if you let the channel be the duct, and a round duct only if you pay for it in size. That is the wedge dome."
+      ],
+      "start": 548.5600000000001,
+      "end": 569.2600000000001
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 569.2600000000001,
+      "end": 588.5400000000001
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 588.5400000000001,
+      "end": 610.604
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "deliverables\\masterclass\\the-wedge-dome-explained-narration-plan.json",
+    "orientation": "portrait",
+    "compose_segments": true,
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "-3%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

@@ -1,0 +1,9 @@
+Facts selftest: PASS
+Film geometry, labels, cameras and declarations: PASS
+Deliverables: FAIL -- lessons missing from the deliverable list: ['2v', 'seam']
+Render presets: PASS
+New lesson registration, deliverable and launch presets: PASS
+Narration literal-digit audit: PASS
+Teaser composition: PASS (29.6s estimate)
+Visual still review: PENDING -- must run after the other GPU job finishes
+Landscape / phone / release / teaser video: NOT RENDERED

@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-29T11:24:18.579956+00:00",
+  "lesson": "teaser_cabin_look",
+  "title": "The Dome House Lookbook: the teaser",
+  "chapters": [
+    {
+      "slug": "room",
+      "title": "DOME INTERIORS / CAST, WARDROBE AND THE COMPOSER",
+      "narration": [
+        "In a dome, how tall a thing can be depends on where it stands."
+      ],
+      "start": 0.0,
+      "end": 5.215999999999999
+    },
+    {
+      "slug": "cast",
+      "title": "The cast",
+      "narration": [
+        "Eight women, and not one of them a recolour of another."
+      ],
+      "start": 5.215999999999999,
+      "end": 10.143999999999998
+    },
+    {
+      "slug": "wardrobe",
+      "title": "Four ways to dress the same eight people",
+      "narration": [
+        "Poolside, going out, editorial, shop floor. One list of pieces each."
+      ],
+      "start": 10.143999999999998,
+      "end": 16.631999999999998
+    },
+    {
+      "slug": "composer",
+      "title": "Cycle it, turn it, drop it",
+      "narration": [
+        "The park editor, pointed at a dome."
+      ],
+      "start": 16.631999999999998,
+      "end": 20.119999999999997
+    },
+    {
+      "slug": "home",
+      "title": "The other set",
+      "narration": [
+        "A smaller dome, a house instead of a shop, the same machinery."
+      ],
+      "start": 20.119999999999997,
+      "end": 25.623999999999995
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 25.623999999999995,
+      "end": 30.647999999999996
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 30.647999999999996,
+      "end": 36.632
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

@@ -156,7 +156,8 @@ way, without doing something else that costs you elsewhere.
 You have three ways out and they are all in Chapter {{ch.numbers_say_no}}:
 
 * **Buck longer.** A longer section gives a bigger dome, out of fewer and
-  heavier pieces, and at some point two trees stop being enough. The table in
+  heavier pieces, and at some point even {{dome.trees}} trees stop being
+  enough. The table in
   Chapter {{ch.method_b}}'s appendix shows exactly where that line is.
 * **Get a third tree.** Fine, if you have one. It is the honest answer and it
   is not a failure.
@@ -168,16 +169,17 @@ ring.
 
 ![Bucking length against dome size.](../../deliverables/book/figures/tree-lookup.png)
 
-## A note on the second tree
+## A note on the third tree
 
-Two trees is {{dome.struts_available}} struts for a
+{{dome.trees}} trees is {{dome.struts_available}} struts for a
 {{frame.members}}-member frame, so the frame actually consumes
-{{dome.trees_strictly_needed}} trees. The second tree is not fully used, and
-the leftover is not waste — it is the next dome's spare parts, or a porch, or
-the sawhorses.
+{{dome.trees_strictly_needed}} trees. The third tree — and most of the
+second — is not fully used, and
+the leftover is not waste — it is the spares, the blocking, the floor's
+stock and the firewood, plus the next dome's first cut list.
 
-But it does mean the honest headline is not "one dome from two trees." It is
-"one dome from a bit under two trees, and you need the second one because you
+But it does mean the honest headline is not "one dome from three trees." It is
+"one dome from a bit under two trees, and you need the third one because you
 cannot get eight-tenths of a tree."
 
 Which is a worse title.

@@ -1,4 +1,4 @@
-"""Book Studio: the desk where *2 Trees* gets written.
+"""Book Studio: the desk where *The 40 Hour Cabin* gets written.
 
 Everything the book needs is in one window, and none of it requires knowing
 any code:

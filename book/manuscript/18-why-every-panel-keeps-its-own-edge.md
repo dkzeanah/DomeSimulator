@@ -155,7 +155,8 @@ Keep the panel if:
 * **You expect the building to change**, because panels come out.
 
 This book chose the panel, and every number in it follows from that choice.
-Chapter {{ch.method_b}}'s two trees are two trees precisely *because* the
+Chapter {{ch.method_b}}'s {{dome.trees}} trees are {{dome.trees}} trees
+precisely *because* the
 frame duplicates its edges. A shared-strut dome of the same diameter would
 come out of about one.
 

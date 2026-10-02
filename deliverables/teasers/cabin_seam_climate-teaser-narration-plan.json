@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ec546ca0dd\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ec546ca0dd\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ec546ca0dd\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ec546ca0dd\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ec546ca0dd\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ec546ca0dd\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_seam_climate-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ec546ca0dd\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    3.488,
+    3.656,
+    3.512,
+    3.512,
+    3.8000000000000003,
+    5.024,
+    5.983999999999999
+  ],
+  "speech_durations": [
+    2.088,
+    2.256,
+    2.112,
+    2.112,
+    2.4,
+    3.624,
+    4.584
+  ],
+  "chapter_starts": [
+    0.0,
+    3.488,
+    7.144,
+    10.656,
+    14.168000000000001,
+    17.968,
+    22.992
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "662df4888bb29f32945008dc67ca42aa6f198266344f594a4663c6e36ffac6ee"
+}

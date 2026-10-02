@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff848aac92\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff848aac92\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff848aac92\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff848aac92\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff848aac92\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff848aac92\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_wedge_explained-teaser-v2-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-ff848aac92\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    3.8000000000000003,
+    3.488,
+    3.488,
+    3.488,
+    5.048,
+    5.024,
+    5.983999999999999
+  ],
+  "speech_durations": [
+    2.4,
+    2.088,
+    2.088,
+    2.088,
+    3.648,
+    3.624,
+    4.584
+  ],
+  "chapter_starts": [
+    0.0,
+    3.8000000000000003,
+    7.288,
+    10.776,
+    14.264,
+    19.311999999999998,
+    24.336
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "5a961fce666d4a9f9c5f5b7abe8dba1ae6971c6e789acbb4b6893b1b4dd6118e"
+}

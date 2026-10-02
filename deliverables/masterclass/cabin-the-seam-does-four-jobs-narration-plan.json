@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_07.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_08.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-the-seam-does-four-jobs-voice-en-US-AndrewMultilingualNeural-3-2Hz-0-f3792a6579\\chapter_09.mp3"
+  ],
+  "chapter_durations": [
+    28.040000000000003,
+    24.0,
+    29.792,
+    42.248,
+    31.088,
+    52.952,
+    41.144,
+    19.28,
+    22.064000000000004
+  ],
+  "speech_durations": [
+    26.64,
+    21.72,
+    28.392,
+    40.848,
+    29.688,
+    51.552,
+    39.744,
+    17.88,
+    20.664
+  ],
+  "chapter_starts": [
+    0.0,
+    28.040000000000003,
+    52.040000000000006,
+    81.83200000000001,
+    124.08000000000001,
+    155.168,
+    208.12,
+    249.264,
+    268.544
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "0427e943b9ba966ae224ae587fdb97ff81ac6f37e140ee641a0f92730309dc09"
+}

@@ -1,4 +1,4 @@
-"""Turning the manuscript of *2 Trees* into something you can actually read.
+"""Turning the manuscript of *The 40 Hour Cabin* into something you can actually read.
 
 A folder of Markdown files is a good way to *write* a book and a poor way to
 read one.  This module builds the readable forms:
@@ -215,7 +215,7 @@ def _resolve_images(text: str, embed: bool,
     """Point every image link at the newest render, or drop it silently.
 
     ``index`` and ``figure_dir`` belong to the book being built. They default
-    to *2 Trees*, which is what every caller wanted when this engine held one
+    to *The 40 Hour Cabin*, which is what every caller wanted when this engine held one
     book.
 
     A reader's book never shows authoring machinery: a figure that has not

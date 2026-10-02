@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_07.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_08.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_09.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_10.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-hero-cut-voice-en-US-AndrewMultilingualNeural-4-2Hz-0-666bb9011e\\chapter_11.mp3"
+  ],
+  "chapter_durations": [
+    11.0,
+    11.48,
+    17.336000000000002,
+    10.280000000000001,
+    12.848,
+    14.456,
+    11.912,
+    13.448,
+    10.0,
+    14.96,
+    19.064000000000004
+  ],
+  "speech_durations": [
+    8.328,
+    10.08,
+    15.936,
+    8.88,
+    11.448,
+    13.056,
+    10.512,
+    12.048,
+    8.496,
+    13.56,
+    17.664
+  ],
+  "chapter_starts": [
+    0.0,
+    11.0,
+    22.48,
+    39.816,
+    50.096000000000004,
+    62.944,
+    77.4,
+    89.31200000000001,
+    102.76000000000002,
+    112.76000000000002,
+    127.72000000000003
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "940d72faee7b0400879c6191b540ff10cc91616bf50781eef031377cece29011"
+}

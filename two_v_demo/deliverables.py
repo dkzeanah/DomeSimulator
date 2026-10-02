@@ -277,14 +277,49 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "test. 7.2 hours practised, 17.2 for a first build, which is "
                 "the number nobody quotes.",
                 compose=False),
+    Deliverable("cabin_linseed_oil", "linseed-oil-for-a-dome.mp4",
+                "Source-audited linseed-oil workshop: interior finishing, seam "
+                "compatibility, glazing limits, tool care, rag safety and a "
+                "solver-derived material and labour allowance.", compose=True),
     Deliverable("cabin_wedge_explained", "the-wedge-dome-explained.mp4",
                 "The whole method in the Cabin World, and the channel in every "
                 "seam: what fits (water, wire), what does not (a round duct), "
                 "the key as a spacer and what that costs, printed half-keys, "
                 "and where the channels meet.",
                 compose=True),
+    Deliverable("cabin_seam_climate", "which-way-the-seam-breathes.mp4",
+                "The seam channel as the dome's climate system: dew point, not "
+                "humidity; a Peltier on each skin; seven modes and the controller "
+                "that picks one; which rings drain and which lie dead level; why "
+                "the desiccant lives in two drawers at the rim and not in the seams.",
+                compose=True),
 )
 
+
+# The Cabin World re-renders (rerender/ queue): one per film above, never
+# replacing it. Named "cabin-<original stem>.mp4", as the queue's blueprints say.
+DELIVERABLES = DELIVERABLES + tuple(
+    Deliverable(f"cabin_{item.lesson}", f"cabin-{Path(item.filename).stem}.mp4",
+                f"Cabin World re-render of {item.filename}: the same chapters on "
+                "the exhibit platform, with cinematic cameras.", compose=True)
+    for item in DELIVERABLES
+    if not item.lesson.startswith("cabin_")) + (
+    Deliverable("cabin_seam", "cabin-the-seam-does-four-jobs.mp4",
+                "Cabin World re-render of the-seam-does-four-jobs.mp4.", compose=True),
+    Deliverable("cabin_2v", "cabin-2v-geodesic-dome-masterclass.mp4",
+                "Cabin World re-render of the 2V masterclass.", compose=True),
+)
+
+# Concept films from ingested videos (concepts/), one per filmable card.
+try:
+    from concepts.film import filmable_cards as _filmable_cards
+except ImportError:
+    _filmable_cards = list
+DELIVERABLES = DELIVERABLES + tuple(
+    Deliverable(card.key, f"concept-{card.slug}.mp4",
+                f"Concept film from {card.data.get('source', {}).get('title') or card.slug}: "
+                f"{card.data.get('title')}", compose=True)
+    for card in _filmable_cards())
 
 DELIVERABLE_BY_LESSON = {item.lesson: item for item in DELIVERABLES}
 

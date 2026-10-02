@@ -83,10 +83,19 @@ HASHTAG_BANK: dict[str, tuple[str, ...]] = {
         "#modularhousing", "#openbuilding", "#kickstarter", "#housingcrisis",
         "#diy", "#domehome", "#alternativehousing", "#homestead",
     ),
+    "cabin_linseed_oil": (
+        "#geodesicdome", "#domehome", "#linseedoil", "#woodfinishing",
+        "#timberframe", "#woodworking", "#buildingscience", "#diy",
+    ),
     "cabin_wedge_explained": (
         "#geodesicdome", "#domehome", "#timberframe", "#chainsawmilling",
         "#offgrid", "#3dprinting", "#dehumidifier", "#buildyourowncabin",
         "#tinyhome", "#diy",
+    ),
+    "cabin_seam_climate": (
+        "#geodesicdome", "#buildingscience", "#dehumidifier", "#peltier",
+        "#molecularsieve", "#moisturecontrol", "#offgrid", "#timberframe",
+        "#domehome", "#diy",
     ),
     "cabin_cold_open": (
         "#geodesicdome", "#cabinbuild", "#chainsawmilling", "#timberframe",
@@ -229,6 +238,9 @@ def _beats(lesson, limit: int = 6) -> list[str]:
 
 
 def hashtags(lesson_key: str) -> tuple[str, ...]:
+    if lesson_key not in HASHTAG_BANK and lesson_key.startswith("cabin_"):
+        # A Cabin World re-render is the same film: it keeps its original's tags.
+        lesson_key = lesson_key[len("cabin_"):]
     return HASHTAG_BANK.get(lesson_key, HASHTAG_BANK["_default"])
 
 

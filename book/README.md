@@ -1,6 +1,6 @@
-# 2 Trees: Build Your (D)Home
+# The 40 Hour Cabin: 3 Trees
 
-*One small chainsaw, 120 wedge struts, and a geodesic dome in a fortnight.*
+*One small chainsaw, three trees, forty hours or less — a geodesic wedge cabin, winched up between the trees.*
 
 This folder is the book. Everything below explains how it is put together and
 how to work on it, in plain terms — you do not need to read any code to write
@@ -8,7 +8,7 @@ this book.
 
 ## Read it
 
-From the DomeSim launcher, go to the **Book: 2 Trees** tab.
+From the DomeSim launcher, go to the **Book: The 40 Hour Cabin** tab.
 
 ```bash
 py -3.12 launcher.py
@@ -50,7 +50,7 @@ adapted onto this book — is `docs/kdp-layout-mapping.md`.
 
 ## Write it
 
-Open the **Book: 2 Trees** tab with the `studio` action. Six tabs: Outline,
+Open the **Book: The 40 Hour Cabin** tab with the `studio` action. Six tabs: Outline,
 Write, Read, Numbers, Figures, Build.
 
 ## What is where

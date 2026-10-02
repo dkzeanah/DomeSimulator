@@ -1,4 +1,4 @@
-"""Live numbers for the manuscript of *2 Trees*.
+"""Live numbers for the manuscript of *The 40 Hour Cabin*.
 
 The manuscript is prose with holes in it.  Where a sentence needs a figure it
 writes ``{{dome.diameter_ft}}`` rather than ``21.6``, and this module fills it
@@ -61,6 +61,17 @@ def _deck(kind: str, across_ft: float = 48.0):
 def _n(value: float, places: int = 0) -> str:
     """A number set the way a book sets numbers: grouped, fixed places."""
     return f"{value:,.{places}f}"
+
+
+def _clock():
+    """The forty-hour build clock the title is named after.
+
+    Read from the wedge book's own ``build_clock``, whose every rate is
+    the owner's measured session figure rather than a process estimate --
+    the same clock the companion book prints.
+    """
+    from wedge_book import systems
+    return systems.build_clock()
 
 
 def _flat_sizes():
@@ -366,11 +377,46 @@ def _build() -> tuple[Token, ...]:
               "strut section in dressed 2x4s (5.25 sq in)",
               lambda: _n(plan.equivalent_dressed_two_by_fours, 2)),
 
+        # -- the bearing ------------------------------------------------
+        Token("force.bearing_in2",
+              "contact patch where a butt end lands on a side",
+              lambda: _n(wg.bearing_area_in2(plan.member_width_in,
+                                             plan.member_depth_in), 2)),
+        Token("force.bearing_dia_in",
+              "the imaginary circle the bearing patch is a sector of",
+              lambda: _n(plan.member_depth_in * 2.0, 1)),
+        Token("force.sector_angle_deg", "angle of one sector of the bearing "
+              "circle", lambda: _n(wg.SECTOR_ANGLE_DEG, 1)),
+
+        # -- the forty-hour clock --------------------------------------
+        Token("hr.split_hours", "hours at the log to split all members",
+              lambda: _n(_clock()["split_hours"], 0)),
+        Token("hr.session_wedges", "wedges split in one session",
+              lambda: _n(_clock()["wedges_per_session"], 0)),
+        Token("hr.session_hours", "length of one splitting session",
+              lambda: _n(_clock()["session_hours"], 0)),
+        Token("hr.minutes_per_member", "minutes to erect one member",
+              lambda: _n(_clock()["minutes_per_member"], 0)),
+        Token("hr.erect_hours", "straight erection time, no allowance",
+              lambda: _n(_clock()["straight_hours"], 0)),
+        Token("hr.error_pct", "the error allowance, per cent",
+              lambda: _n(_clock()["redundancy"] * 100.0, 0)),
+        Token("hr.with_error", "erection time with the allowance",
+              lambda: _n(_clock()["with_error"], 1)),
+        Token("hr.week", "the forty-hour week the title names",
+              lambda: _n(_clock()["week"], 0)),
+        Token("hr.spare", "hours left inside the week",
+              lambda: _n(_clock()["spare"], 1)),
+        Token("hr.total", "split plus erection, with the allowance",
+              lambda: _n(_clock()["split_hours"] + _clock()["with_error"], 1)),
+
         # -- the board it replaces -------------------------------------
         Token("board.nominal_in2", "section of a nominal 2x4",
               lambda: _n(bm.NOMINAL_TWO_BY_FOUR_IN2, 2)),
         Token("board.dressed_in2", "section of a dressed 2x4",
               lambda: _n(bm.DRESSED_TWO_BY_FOUR_IN2, 2)),
+        Token("board.dressed_dims", "the dressed board's actual dimensions",
+              lambda: "1.5 x 3.5"),
         Token("board.price_usd", "shelf price of a 2x4x16",
               lambda: f"{bm.declared('two_by_four_price_usd'):,.2f}"),
 

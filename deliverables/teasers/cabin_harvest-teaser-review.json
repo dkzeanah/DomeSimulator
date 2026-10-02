@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-29T17:16:57.235748+00:00",
+  "lesson": "teaser_cabin_harvest",
+  "title": "Two Trees, All at Once: the teaser",
+  "chapters": [
+    {
+      "slug": "tree",
+      "title": "TWO TREES",
+      "narration": [
+        "The whole woodpile is standing up."
+      ],
+      "start": 0.0,
+      "end": 3.488
+    },
+    {
+      "slug": "explode",
+      "title": "All at once",
+      "narration": [
+        "Every section splits at the same time."
+      ],
+      "start": 3.488,
+      "end": 7.336
+    },
+    {
+      "slug": "cost",
+      "title": "What it took",
+      "narration": [
+        "8 days of saw work, and a few gallons."
+      ],
+      "start": 7.336,
+      "end": 11.4
+    },
+    {
+      "slug": "labor_share",
+      "title": "Labor is not most of it",
+      "narration": [
+        "Even at the record lumber price, labor is about a quarter."
+      ],
+      "start": 11.4,
+      "end": 16.424
+    },
+    {
+      "slug": "stacking",
+      "title": "Where the saving comes from",
+      "narration": [
+        "Most of it is building your own, not the shape."
+      ],
+      "start": 16.424,
+      "end": 20.607999999999997
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 20.607999999999997,
+      "end": 25.631999999999998
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 25.631999999999998,
+      "end": 31.615999999999996
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

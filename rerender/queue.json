@@ -1,4 +1,436 @@
 {
  "version": 1,
- "items": {}
+ "items": {
+  "pvtwo": {
+   "status": "todo",
+   "priority": "normal",
+   "owner": "",
+   "updated": "2026-09-28T09:10:02-05:00",
+   "outputs": [],
+   "log": [
+    {
+     "at": "2026-09-28T09:10:02-05:00",
+     "by": "rerender-runner",
+     "text": "held: the original is an unfinished scaffold -- its own screen says 'replace these with the real classes', and its narration types figures by hand. Give it real content before re-rendering."
+    }
+   ],
+   "originals": {}
+  },
+  "pitch_hero": {
+   "status": "review",
+   "priority": "normal",
+   "owner": "rerender-runner",
+   "updated": "2026-09-28T18:45:02-05:00",
+   "outputs": [
+    "deliverables/masterclass/cabin-stem-cell-hero-cut.mp4",
+    "deliverables/masterclass/cabin-stem-cell-hero-cut-vertical.mp4",
+    "deliverables/releases/cabin-stem-cell-hero-cut"
+   ],
+   "log": [
+    {
+     "at": "2026-09-28T15:17:46-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-28T15:17:46-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-28T15:43:54-05:00",
+     "by": "rerender-runner",
+     "text": "render failed (code 1) after 26 min; see rerender/logs/pitch_hero.log"
+    },
+    {
+     "at": "2026-09-28T15:43:54-05:00",
+     "by": "rerender-runner",
+     "text": "-> todo: back in the queue after a failed render"
+    },
+    {
+     "at": "2026-09-28T17:50:46-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-28T17:50:46-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-28T18:45:02-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 54 min; watch it and pass it or note what is wrong"
+    }
+   ],
+   "originals": {
+    "deliverables/masterclass/stem-cell-hero-cut-v2.mp4": [
+     40754460,
+     1790201099
+    ],
+    "deliverables/masterclass/stem-cell-hero-cut-v3.mp4": [
+     95924536,
+     1790215833
+    ],
+    "deliverables/masterclass/stem-cell-hero-cut-vertical-v2.mp4": [
+     73692268,
+     1790201301
+    ],
+    "deliverables/masterclass/stem-cell-hero-cut-vertical-v3.mp4": [
+     77227592,
+     1790216059
+    ],
+    "deliverables/masterclass/stem-cell-hero-cut-vertical.mp4": [
+     80579013,
+     1790200471
+    ],
+    "deliverables/masterclass/stem-cell-hero-cut.mp4": [
+     41499140,
+     1790200251
+    ],
+    "deliverables/teasers/pitch_hero-teaser-v2.mp4": [
+     24510345,
+     1790201470
+    ],
+    "deliverables/teasers/pitch_hero-teaser-v3.mp4": [
+     24507718,
+     1790216228
+    ],
+    "deliverables/teasers/pitch_hero-teaser.mp4": [
+     24793029,
+     1790200646
+    ]
+   }
+  },
+  "2v": {
+   "status": "review",
+   "priority": "normal",
+   "owner": "rerender-runner",
+   "updated": "2026-09-28T20:28:50-05:00",
+   "outputs": [
+    "deliverables/masterclass/cabin-2v-geodesic-masterclass.mp4",
+    "deliverables/masterclass/cabin-2v-geodesic-masterclass-vertical.mp4",
+    "deliverables/releases/cabin-2v-geodesic-masterclass"
+   ],
+   "log": [
+    {
+     "at": "2026-09-28T15:43:54-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-28T15:43:54-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-28T18:45:02-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-28T18:45:02-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-28T20:28:50-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 104 min; watch it and pass it or note what is wrong"
+    }
+   ],
+   "originals": {
+    "deliverables/teasers/2v-teaser-vertical.mp4": [
+     19590337,
+     1789271499
+    ],
+    "deliverables/teasers/2v-teaser.mp4": [
+     27969029,
+     1789271262
+    ]
+   }
+  },
+  "series": {
+   "status": "todo",
+   "priority": "normal",
+   "owner": "",
+   "updated": "2026-09-30T15:50:03-05:00",
+   "outputs": [],
+   "log": [
+    {
+     "at": "2026-09-28T20:28:50-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-28T20:28:50-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-28T20:50:57-05:00",
+     "by": "rerender-runner",
+     "text": "render failed (code 4294967295) after 22 min; see rerender/logs/series.log"
+    },
+    {
+     "at": "2026-09-28T20:50:57-05:00",
+     "by": "rerender-runner",
+     "text": "-> todo: back in the queue after a failed render"
+    },
+    {
+     "at": "2026-09-30T11:25:45-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-30T11:25:45-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-30T12:17:43-05:00",
+     "by": "claude-session",
+     "text": "Runner stopped by hand at 11:36 on 2026-09-30 (owner was rendering something else); nothing written."
+    },
+    {
+     "at": "2026-09-30T12:17:43-05:00",
+     "by": "claude-session",
+     "text": "-> todo"
+    },
+    {
+     "at": "2026-09-30T15:25:33-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-30T15:25:33-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-30T15:50:03-05:00",
+     "by": "rerender-runner",
+     "text": "render failed (code 4294967295) after 24 min; see rerender/logs/series.log"
+    },
+    {
+     "at": "2026-09-30T15:50:03-05:00",
+     "by": "rerender-runner",
+     "text": "-> todo: back in the queue after a failed render"
+    }
+   ],
+   "originals": {
+    "deliverables/masterclass/the-vance-network-mini-series.mp4": [
+     15636104,
+     1788295697
+    ],
+    "deliverables/teasers/the-vance-network-mini-series-teaser-vertical.mp4": [
+     9796186,
+     1789281804
+    ],
+    "deliverables/teasers/the-vance-network-mini-series-teaser.mp4": [
+     9577867,
+     1789281621
+    ]
+   }
+  },
+  "seam": {
+   "status": "review",
+   "priority": "high",
+   "owner": "rerender-runner",
+   "updated": "2026-09-28T22:12:29-05:00",
+   "outputs": [
+    "deliverables/masterclass/cabin-the-seam-does-four-jobs.mp4",
+    "deliverables/masterclass/cabin-the-seam-does-four-jobs-vertical.mp4",
+    "deliverables/releases/cabin-the-seam-does-four-jobs"
+   ],
+   "log": [
+    {
+     "at": "2026-09-28T20:50:57-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-28T20:50:57-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-28T22:12:29-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 82 min; watch it and pass it or note what is wrong"
+    }
+   ],
+   "originals": {
+    "deliverables/teasers/seam-teaser.mp4": [
+     23411578,
+     1790369695
+    ],
+    "deliverables/the-seam-does-four-jobs-vertical.mp4": [
+     98028820,
+     1790369423
+    ],
+    "deliverables/the-seam-does-four-jobs.mp4": [
+     124718987,
+     1790368317
+    ]
+   }
+  },
+  "look": {
+   "status": "review",
+   "priority": "normal",
+   "owner": "rerender-runner",
+   "updated": "2026-09-29T06:24:20-05:00",
+   "outputs": [
+    "deliverables/masterclass/cabin-dome-house-lookbook.mp4",
+    "deliverables/masterclass/cabin-dome-house-lookbook-vertical.mp4",
+    "deliverables/releases/cabin-dome-house-lookbook"
+   ],
+   "log": [
+    {
+     "at": "2026-09-28T22:12:29-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-28T22:12:29-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-29T06:24:20-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 492 min; watch it and pass it or note what is wrong"
+    }
+   ],
+   "originals": {
+    "deliverables/teasers/dome-house-lookbook-teaser-vertical.mp4": [
+     16929177,
+     1789283945
+    ],
+    "deliverables/teasers/dome-house-lookbook-teaser.mp4": [
+     21914157,
+     1789282836
+    ]
+   }
+  },
+  "module_build": {
+   "status": "review",
+   "priority": "normal",
+   "owner": "rerender-runner",
+   "updated": "2026-09-30T18:13:51-05:00",
+   "outputs": [
+    "deliverables/masterclass/cabin-stem-cell-utility-core-build.mp4",
+    "deliverables/masterclass/cabin-stem-cell-utility-core-build-vertical.mp4",
+    "deliverables/releases/cabin-stem-cell-utility-core-build",
+    "deliverables/masterclass/cabin-stem-cell-utility-core-build-v2.mp4",
+    "deliverables/releases/cabin-stem-cell-utility-core-build-v2"
+   ],
+   "log": [
+    {
+     "at": "2026-09-29T06:24:20-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-29T06:24:20-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-29T08:40:34-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 136 min; watch it and pass it or note what is wrong"
+    },
+    {
+     "at": "2026-09-29T19:29:29-05:00",
+     "by": "claude-session",
+     "text": "First cut (cabin-stem-cell-utility-core-build.mp4) has the camera about a metre from the utility core in chapters 2-8: the exhibit measure missed the Dome Creator's meshes. Fixed in cabin_stage (Creator meshes measured, height-aware framing); re-render makes -v2, the first cut is kept."
+    },
+    {
+     "at": "2026-09-29T19:29:29-05:00",
+     "by": "claude-session",
+     "text": "-> todo"
+    },
+    {
+     "at": "2026-09-30T15:50:03-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-30T15:50:03-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-30T18:13:51-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 144 min; watch it and pass it or note what is wrong"
+    }
+   ],
+   "originals": {
+    "deliverables/masterclass/stem-cell-utility-core-build-vertical.mp4": [
+     153848910,
+     1790152434
+    ],
+    "deliverables/masterclass/stem-cell-utility-core-build.mp4": [
+     131918651,
+     1790151515
+    ],
+    "deliverables/teasers/module_build-teaser.mp4": [
+     14148667,
+     1790152705
+    ]
+   }
+  },
+  "harvest": {
+   "status": "review",
+   "priority": "normal",
+   "owner": "rerender-runner",
+   "updated": "2026-09-29T12:16:58-05:00",
+   "outputs": [
+    "deliverables/masterclass/cabin-two-trees-all-at-once.mp4",
+    "deliverables/masterclass/cabin-two-trees-all-at-once-vertical.mp4",
+    "deliverables/releases/cabin-two-trees-all-at-once"
+   ],
+   "log": [
+    {
+     "at": "2026-09-29T08:40:34-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-09-29T08:40:34-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-09-29T12:16:58-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 216 min; watch it and pass it or note what is wrong"
+    }
+   ],
+   "originals": {
+    "deliverables/teasers/two-trees-all-at-once-teaser-vertical.mp4": [
+     13422325,
+     1789284771
+    ],
+    "deliverables/teasers/two-trees-all-at-once-teaser.mp4": [
+     19243661,
+     1789284561
+    ],
+    "exports/harvest/two-trees-all-at-once-v2.mp4": [
+     36493042,
+     1789198706
+    ],
+    "exports/harvest/two-trees-all-at-once-v3.mp4": [
+     175143102,
+     1789213412
+    ],
+    "exports/harvest/two-trees-all-at-once.mp4": [
+     37010505,
+     1789183925
+    ]
+   }
+  }
+ }
 }

@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\linseed-oil-for-a-dome-v2.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\linseed-oil-for-a-dome-vertical.mp4

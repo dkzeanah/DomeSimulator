@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-28T13:39:48.663579+00:00",
+  "lesson": "teaser_cabin_wedge_explained",
+  "title": "The Wedge Dome, Explained: the teaser",
+  "chapters": [
+    {
+      "slug": "grain",
+      "title": "DOMESIM",
+      "narration": [
+        "A whole house frame, before it is cut."
+      ],
+      "start": 0.0,
+      "end": 3.8000000000000003
+    },
+    {
+      "slug": "pinwheel",
+      "title": "No hubs",
+      "narration": [
+        "The sticks hold each other."
+      ],
+      "start": 3.8000000000000003,
+      "end": 7.288
+    },
+    {
+      "slug": "bundle",
+      "title": "Water and wire fit",
+      "narration": [
+        "Room to spare."
+      ],
+      "start": 7.288,
+      "end": 10.776
+    },
+    {
+      "slug": "spacer",
+      "title": "If you want a duct: the key becomes a spacer",
+      "narration": [
+        "Every panel moves out."
+      ],
+      "start": 10.776,
+      "end": 14.264
+    },
+    {
+      "slug": "rules",
+      "title": "Two rules",
+      "narration": [
+        "A hidden leak is the failure this exists to prevent."
+      ],
+      "start": 14.264,
+      "end": 19.311999999999998
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 19.311999999999998,
+      "end": 24.336
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 24.336,
+      "end": 30.319999999999997
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

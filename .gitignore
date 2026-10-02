@@ -72,3 +72,7 @@ video_reviews/
 
 # The owner's voice: recordings, clips, fingerprints and the built voice. Personal; never committed.
 my_voice/
+
+# Speech rendered in the owner's cloned voice is personal voice data, like my_voice/.
+*-myvoice/
+*myvoice*.wav

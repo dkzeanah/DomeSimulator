@@ -1,0 +1,243 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-30T12:48:57.729091+00:00",
+  "lesson": "cabin_seam_climate",
+  "title": "Which Way the Seam Breathes",
+  "chapters": [
+    {
+      "slug": "breathe",
+      "title": "One channel, many jobs",
+      "narration": [
+        "Every one of this dome's 55 seams has a channel inside it. Air can go in through it, out through it, round in a loop, through a desiccant or past one, over a cold plate or a warm one. That is a lot of choices. This film works out which one to make, and when, from one number."
+      ],
+      "start": 0.0,
+      "end": 24.7
+    },
+    {
+      "slug": "radial",
+      "title": "Inner skin, outer skin",
+      "narration": [
+        "First, the word you were looking for. The line that runs from the centre of the dome straight outward is the radial direction. Through a wall it is the wall's thickness. In a seam it runs from the V's open mouth on the room side up to the ridge on the weather side. So the channel has two skins: an outer one that touches outside, and an inner one that touches the room. Put a Peltier plate on each and you can set the temperature of both."
+      ],
+      "start": 24.7,
+      "end": 61.0
+    },
+    {
+      "slug": "pump",
+      "title": "A plate is a heat pump",
+      "narration": [
+        "A Peltier plate is not a cooler. It is a pump that moves heat from one face to the other, and reversing the current reverses the direction. So the rule for both plates is simple: throw the heat to the side you want warmer. In winter, into the room. In summer, outside. The first film, The Wedge Dome Explained, showed the plate throwing its heat into the room. That is right in winter and wrong in summer."
+      ],
+      "start": 61.0,
+      "end": 93.3
+    },
+    {
+      "slug": "dewpoint",
+      "title": "Compare dew points, not humidity",
+      "narration": [
+        "Now the rule the whole system runs on. Never compare relative humidity. Compare dew points. Outside air at minus 5 degrees and 60 percent sounds damp. Its dew point is minus 11.6. Inside at 21 degrees and 45 percent, the dew point is 8.6. Per kilogram, the damp-sounding air carries 1.6 grams of water; the room's carries 6.9. Bring it in, and it dries the dome."
+      ],
+      "start": 93.3,
+      "end": 128.564
+    },
+    {
+      "slug": "condense",
+      "title": "Will it condense?",
+      "narration": [
+        "The second question: will this air leave water on that surface? It will whenever the air's dew point is above the surface's temperature. So a condensing plate must be colder than the dew point. And every piece of wood must be warmer than it, with room to spare. This film keeps wood 3 degrees above the dew point of the air that touches it."
+      ],
+      "start": 128.564,
+      "end": 155.664
+    },
+    {
+      "slug": "owner",
+      "title": "Fifteen to twenty degrees colder",
+      "narration": [
+        "You asked: if the wood sits at the dew point and the metal channel is fifteen to twenty degrees below it, will the water go to the metal? Take a room at 21 degrees and 55 percent. Its dew point is 11.6. The middle of your range, 17.5 degrees under that, is minus 5.9. The plate freezes. Frost stops the water running and chokes the fins. So hold the plate 6 degrees under the dew point and never below 1: here, 5.6 degrees."
+      ],
+      "start": 155.664,
+      "end": 192.2
+    },
+    {
+      "slug": "order",
+      "title": "Plate first, wood second",
+      "narration": [
+        "And the real answer: a colder surface somewhere else does not protect wood that is already at the dew point. Wood touching raw room air still gets wet. What protects it is the order. Send the air over the plate first. It leaves with a dew point of 7.6, so wood at 11.6 is now 4.0 degrees clear. One more rule: the cold metal must never touch the wood, or it chills the wood to its own temperature."
+      ],
+      "start": 192.2,
+      "end": 226.26399999999998
+    },
+    {
+      "slug": "modes",
+      "title": "Seven modes",
+      "narration": [
+        "That gives the channel its modes. Take outside air in. Push inside air out. Condense inside air on a cold skin before it leaves. Loop the seam's own air through the desiccant. Purge a wet seam with outside air and send it straight back out. Supply dried air and hold the room at a slight positive pressure. Or shut the exposed intakes in the rain. The loop and the purge never touch the living space."
+      ],
+      "start": 226.26399999999998,
+      "end": 257.764
+    },
+    {
+      "slug": "weathers",
+      "title": "The weathers we assumed",
+      "narration": [
+        "To test the controller, here are the weathers from your table, plus one more. These are typical conditions, our estimates, not measurements from a site. Each one gets inside and outside temperatures and humidities, and the wet ones get a wood moisture reading at or over 19 percent, where lumber stops counting as dry."
+      ],
+      "start": 257.764,
+      "end": 280.86400000000003
+    },
+    {
+      "slug": "choices",
+      "title": "What the controller chose",
+      "narration": [
+        "And here is what the code chose, working only from dew points. Cold and dry: take it in. Hot and humid: dried supply only. Rain: shut. After rain, with dry air outside: purge the seam. Muggy outside with a wet frame: close the loop. All 11 weathers get the answer your table gives, and the film's own test fails if one ever does not."
+      ],
+      "start": 280.86400000000003,
+      "end": 308.16
+    },
+    {
+      "slug": "loop",
+      "title": "The loop and the purge",
+      "narration": [
+        "The two modes worth the extra plumbing are these. The frame loop takes the seam's air, dries it in the desiccant and sends it back: nothing thrown outside, nothing muggy pulled in. The purge takes dry outside air through a wet seam and straight back out. That needs two outside ports per circuit, and it means drying the frame is a separate job from ventilating the house."
+      ],
+      "start": 308.16,
+      "end": 336.944
+    },
+    {
+      "slug": "levels",
+      "title": "The dome's levels, from the solver",
+      "narration": [
+        "Now where each job goes. The solver's dome stands on five heights: 10 corners at the rim, 5 and 5 in a belt that zigzags between two heights, 5 round the crown, and the apex. The seams between them fall into five bands: 20 in the lower band, 10 in the belt, 15 in the upper band, 5 round the crown pentagon, and 5 to the apex."
+      ],
+      "start": 336.944,
+      "end": 365.244
+    },
+    {
+      "slug": "pentagon",
+      "title": "The ring that cannot drain",
+      "narration": [
+        "The slopes decide the jobs. The lower band's seams rise at 57 degrees, and water runs down them fast. The belt zigzags at only 8 degrees, but that zigzag has 5 low points, and each one is a natural drain. The pentagon ring round the crown is dead level. Water there stands in the wood. So that ring carries air, never water."
+      ],
+      "start": 365.244,
+      "end": 392.372
+    },
+    {
+      "slug": "rim",
+      "title": "Condense low, drain at the rim",
+      "narration": [
+        "Your idea of putting the plates on the first ring is right, and here is why. Condensate falls. A plate at the rim drops its water straight into a drain at one of the 10 rim corners, with no seam to travel through. The rain belongs outside, in a gutter at the rim. It should not come in through a seam higher up. Every foot of seam that carries liquid water is a foot of wood waiting for a leak."
+      ],
+      "start": 392.372,
+      "end": 425.872
+    },
+    {
+      "slug": "stack",
+      "title": "Warm air rises",
+      "narration": [
+        "Air has its own preference. Warm inside air wants to leave at the top, so take air in at the rim and let it out at the pentagon ring and the apex. But the pull is small. With the inside ten degrees warmer, the height of this dome makes 1.2 pascals. The barrier fan holds 4. The stack helps; it does not replace the fan."
+      ],
+      "start": 425.872,
+      "end": 453.372
+    },
+    {
+      "slug": "packed",
+      "title": "Why the desiccant stays out of the seams",
+      "narration": [
+        "Now the cartridge. Could you pack the beads into the seams themselves, round a ring, or over the top like a rainbow, a path of 32 feet? Push one seam's share of air, 13 cubic feet a minute, through one packed seam and the beads resist with 65,848 pascals. A small in-line fan manages about 250. At that, a packed seam passes 0.29 cubic feet a minute. The rainbow is longer still."
+      ],
+      "start": 453.372,
+      "end": 487.29200000000003
+    },
+    {
+      "slug": "regen",
+      "title": "And it cannot be dried where it sits",
+      "narration": [
+        "There is a second reason. A molecular sieve gives its water back only when it is hot: about 200 degrees. Even silica gel wants 120. The printed key softens at 80, and this film never sends air hotter than 60 through a seam. A desiccant in the seams could never be regenerated in place."
+      ],
+      "start": 487.29200000000003,
+      "end": 512.308
+    },
+    {
+      "slug": "drawer",
+      "title": "Two drawers and a gate",
+      "narration": [
+        "So the desiccant lives in drawers, at the rim, where the channels come down. One drawer 30 centimetres square and 5 deep holds 2.9 kilograms of beads, and passes the whole dome's 18 cubic feet a minute at 20 pascals. Use two: one working, one being dried. The gate that picks between drawer and bypass should fall back to the bypass when the power goes, so air never stops."
+      ],
+      "start": 512.308,
+      "end": 543.564
+    },
+    {
+      "slug": "honest",
+      "title": "What the desiccant will not do",
+      "narration": [
+        "And the number that does not help. A frame that gets wet, over 19 percent, has 54 kilograms of water to lose to get back to 12. That is 93 drawer fills, and 56 kilowatt hours to regenerate them. The desiccant is for the weather when no air is dry enough. Drying a wet frame is the purge's job, on the next dry day."
+      ],
+      "start": 543.564,
+      "end": 570.764
+    },
+    {
+      "slug": "stove",
+      "title": "The stove's heat, never its air",
+      "narration": [
+        "The stove can help, but only through a wall of steel. A sealed exchanger on the flue warms clean air, and that air can dry the frame or regenerate a drawer. The smoke side never meets it. Keep the seam air under 60 degrees. Give the stove its own outside combustion air. And never let the stove push or pull the seam air, or a back draught puts smoke in the walls."
+      ],
+      "start": 570.764,
+      "end": 601.064
+    },
+    {
+      "slug": "plan",
+      "title": "The layout",
+      "narration": [
+        "So here is the layout. At the rim: 10 ports, the condensing plates, the drains and the two drawers. The lower band carries air up and water down. The belt's 5 low points drain it. The pentagon ring is the exhaust manifold: air only. The cap vents at the apex. Sensors inside, outside and in the seam read temperature and humidity, the wood's moisture, and the rain."
+      ],
+      "start": 601.064,
+      "end": 630.136
+    },
+    {
+      "slug": "close",
+      "title": "Dew point decides",
+      "narration": [
+        "One rule runs all of it. Send air toward the structure only when its dew point is lower than the moisture you are trying to remove, unless you are sending wetter air to a cold metal surface built to collect and drain the water. The same seams, winter and summer, rain and sun."
+      ],
+      "start": 630.136,
+      "end": 652.992
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 652.992,
+      "end": 672.2719999999999
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 672.2719999999999,
+      "end": 694.3359999999999
+    }
+  ],
+  "render_config": {
+    "orientation": "landscape",
+    "compose_segments": true,
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "-3%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

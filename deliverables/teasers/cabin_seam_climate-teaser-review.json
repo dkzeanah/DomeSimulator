@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-09-30T14:24:51.177432+00:00",
+  "lesson": "teaser_cabin_seam_climate",
+  "title": "Which Way the Seam Breathes: the teaser",
+  "chapters": [
+    {
+      "slug": "breathe",
+      "title": "DOMESIM",
+      "narration": [
+        "Which way should the seam breathe?"
+      ],
+      "start": 0.0,
+      "end": 3.488
+    },
+    {
+      "slug": "dewpoint",
+      "title": "Compare dew points, not humidity",
+      "narration": [
+        "The one rule that ends the confusion."
+      ],
+      "start": 3.488,
+      "end": 7.144
+    },
+    {
+      "slug": "weathers",
+      "title": "The weathers we assumed",
+      "narration": [
+        "Estimates, not measurements."
+      ],
+      "start": 7.144,
+      "end": 10.656
+    },
+    {
+      "slug": "rim",
+      "title": "Condense low, drain at the rim",
+      "narration": [
+        "Your first-ring idea is right."
+      ],
+      "start": 10.656,
+      "end": 14.168000000000001
+    },
+    {
+      "slug": "stove",
+      "title": "The stove's heat, never its air",
+      "narration": [
+        "A sealed exchanger, and nothing else."
+      ],
+      "start": 14.168000000000001,
+      "end": 17.968
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 17.968,
+      "end": 22.992
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 22.992,
+      "end": 28.976
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

@@ -1,3 +1,6 @@
 prompts/
 .queue.lock
 *.tmp
+logs/
+sheets/
+STOP

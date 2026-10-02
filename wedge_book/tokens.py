@@ -345,6 +345,10 @@ def _table() -> dict[str, Token]:
     add("brk.each", "what one V bracket costs",
         lambda: f"{bracket['usd_each']:,.2f}")
 
+    _channel_tokens(add)
+    _climate_tokens(add)
+    _wood_tokens(add)
+
     # -- cross-references --------------------------------------------
     for chapter in book.chapters:
         add(f"ch.{chapter.key}", f"chapter number of {chapter.title!r}",
@@ -376,6 +380,268 @@ def _table() -> dict[str, Token]:
         lambda: str(sum(1 for p in processes if p.flat)))
 
     return {token.name: token for token in entries}
+
+
+def _table_text(rows, widths) -> str:
+    """Aligned plain-text rows, the way the manuscript prints its tables."""
+    return "\n".join("".join(f"{cell:<{w}}" for cell, w in zip(row, widths)).rstrip()
+                     for row in rows)
+
+
+def _channel_tokens(add) -> None:
+    """``chan``: what fits in the seam's channel (two_v_demo.channel_facts)."""
+    import math
+
+    from two_v_demo import channel_facts as cf
+
+    types = cf.seam_types()
+    wide = max(types, key=lambda t: t.gap_deg)
+    tight = min(types, key=lambda t: t.gap_deg)
+    rw, rt = cf.room(wide), cf.room(tight)
+    air = cf.air()
+    air_t = next(x for x in air["per_type"] if x["seam"] == tight)
+    sp3 = cf.spacer_for(("duct_3",))
+    sp4 = cf.spacer_for(("duct_4",) + cf.BUNDLE)
+    hub = cf.hubs(sp4.shift_in)
+    ways, node = dict(hub.by_valence), dict(hub.node_radius_in)
+    pr = cf.printing()
+    seams = sum(t.count for t in types)
+
+    def fits_table() -> str:
+        rows = [("item", "size", f"{tight.gap_deg:.1f} deg seam", f"{wide.gap_deg:.1f} deg seam")]
+        for s in cf.SERVICES:
+            size = f"{s.width_in:.2f} in" + (f" x {s.thick_in:.2f}" if s.thick_in else " round")
+            rows.append((s.label, size,
+                         "fits" if s.span_in <= rt.inside_round_in else "no",
+                         "fits" if s.span_in <= rw.inside_round_in else "no"))
+        return _table_text(rows, (42, 18, 16, 16))
+
+    def sizes_table() -> str:
+        rows = [(s.label, s.source.split(":")[0]) for s in cf.SERVICES]
+        rows += [(name.replace("_", " "), f"{value:g} {unit}: {why.split(':')[0]}")
+                 for name, value, unit, why in cf.KEY_CONSTANTS if name != "log_diameters_in"]
+        return _table_text(rows, (44, 60))
+
+    add("chan.area_t", "inside the key, tighter seam, sq in", lambda: f"{rt.inside_in2:.1f}")
+    add("chan.area_w", "inside the key, wider seam, sq in", lambda: f"{rw.inside_in2:.1f}")
+    add("chan.round_t", "largest round item, tighter seam, in", lambda: f"{rt.inside_round_in:.2f}")
+    add("chan.round_w", "largest round item, wider seam, in", lambda: f"{rw.inside_round_in:.2f}")
+    add("chan.gap_t", "the tighter seam's V, degrees", lambda: f"{tight.gap_deg:.1f}")
+    add("chan.gap_w", "the wider seam's V, degrees", lambda: f"{wide.gap_deg:.1f}")
+    add("chan.wall_mm", "the printed key's wall, mm", lambda: f"{cf.K['key_wall_in'] * cf.MM_PER_IN:.0f}")
+    add("chan.fill_t", "the standard bundle's fill, tighter seam, %",
+        lambda: f"{cf.fits(rt)[1] * 100:.0f}")
+    add("chan.fill_w", "the standard bundle's fill, wider seam, %",
+        lambda: f"{cf.fits(rw)[1] * 100:.0f}")
+    add("chan.fill_rule", "the fill allowance borrowed from conduit, %",
+        lambda: f"{cf.K['fill_fraction'] * 100:.0f}")
+    add("chan.fits_table", "every service against both seams", fits_table)
+    add("chan.sizes_table", "the declared sizes and rules, with their kind", sizes_table)
+    add("chan.need_cfm", "the dome's ventilation, cfm", lambda: f"{air['need_cfm']:.0f}")
+    add("chan.cfm_t", "one tighter seam's air with the bundle in, cfm", lambda: f"{air_t['cfm']:.0f}")
+    add("chan.fpm", "the quiet air speed, ft/min", lambda: f"{cf.K['quiet_air_fpm']:.0f}")
+    add("chan.seams_for_air", "seams that carry the dome's air",
+        lambda: f"{math.ceil(air_t['seams_for_the_dome'])}")
+    add("chan.shift3", "panels move out for a 3 in duct, in", lambda: f"{sp3.shift_in:.1f}")
+    add("chan.grow3", "dome radius growth for a 3 in duct, %", lambda: f"{sp3.radius_growth_pct:.0f}")
+    add("chan.shift4", "panels move out for a 4 in duct and the bundle, in", lambda: f"{sp4.shift_in:.1f}")
+    add("chan.grow4", "dome radius growth for that, %", lambda: f"{sp4.radius_growth_pct:.0f}")
+    add("chan.open4_t", "the tighter seam's opening with that spacer, in",
+        lambda: f"{sp4.actual_in[types.index(tight)]:.1f}")
+    add("chan.open4_w", "the wider seam's opening with that spacer, in",
+        lambda: f"{sp4.actual_in[types.index(wide)]:.1f}")
+    add("chan.n5", "five-way junctions", lambda: str(ways.get("5-way", 0)))
+    add("chan.n6", "six-way junctions", lambda: str(ways.get("6-way", 0)))
+    add("chan.nrim", "rim junctions", lambda: str(ways.get("rim", 0)))
+    add("chan.node5", "a five-way node with the spacer, in across", lambda: f"{2 * node.get(5, 0):.0f}")
+    add("chan.half_keys", "printed half-keys for the whole dome", lambda: str(pr.half_keys))
+    add("chan.profiles", "key profiles", lambda: str(pr.profiles))
+    add("chan.pieces", "printed pieces", lambda: f"{pr.segments:,}")
+    add("chan.per_stick", "printed pieces per member", lambda: str(max(pr.segments_each)))
+    add("chan.bed_mm", "the printer bed assumed, mm", lambda: f"{cf.K['printer_bed_in'] * cf.MM_PER_IN:.0f}")
+    add("chan.kg", "plastic to print every seam, kg", lambda: f"{pr.mass_kg:.0f}")
+    add("chan.usd", "what that plastic costs", lambda: f"{pr.cost_usd:,.0f}")
+    add("chan.hours", "printer hours for every seam", lambda: f"{pr.print_hours:,.0f}")
+    add("chan.kg_seam", "plastic per seam, kg", lambda: f"{pr.mass_kg / seams:.1f}")
+    add("chan.h_seam", "printer hours per seam", lambda: f"{pr.print_hours / seams:.0f}")
+    add("chan.usd_seam", "plastic cost per seam", lambda: f"{pr.cost_usd / seams:.0f}")
+
+
+def _climate_tokens(add) -> None:
+    """``clim``: the seam as a climate system (two_v_demo.seam_climate)."""
+    from two_v_demo import seam_climate as scl
+
+    r = scl.rings()
+    bands = {b.key: b for b in r["bands"]}
+    b = scl.beds()
+    g = scl.regeneration()
+    c = scl.cold_channel()
+    cd = next(s for s in scl.SCENARIOS if s.key == "cold_dry").sensors
+    lv = r["levels"]
+
+    def deg(x: float, places: int = 1) -> str:
+        return f"{x:.{places}f}".replace("-", "minus ")
+
+    def modes_table() -> str:
+        return _table_text([(k, scl.MODES[k][0]) for k in scl.ACTIVE_MODES], (14, 60))
+
+    def weathers_table() -> str:
+        rows = [("weather (estimated)", "out", "in", "dew out/in", "mode")]
+        for s in scl.SCENARIOS:
+            d = scl.decide(s.sensors)
+            x = s.sensors
+            rows.append((s.label, f"{x.t_out:.0f} C {x.rh_out * 100:.0f}%",
+                         f"{x.t_in:.0f} C {x.rh_in * 100:.0f}%",
+                         f"{d.dp_out:.0f} / {d.dp_in:.0f}", d.mode))
+        return _table_text(rows, (34, 12, 12, 12, 12))
+
+    def bands_table() -> str:
+        rows = [("band", "seams", "feet", "slope", "")]
+        rows += [(x.label, str(x.seams), f"{x.length_ft:.0f}", f"{x.slope_deg:.0f} deg",
+                  "drains" if x.drains else "dead level") for x in r["bands"]]
+        return _table_text(rows, (32, 8, 8, 10, 12))
+
+    def constants_table() -> str:
+        return _table_text([(n, f"{v:g} {u}", k) for n, v, u, k, _w in scl.CONSTANTS],
+                           (22, 16, 12))
+
+    add("clim.cd_t_out", "the cold, dry example: outside temperature, C", lambda: deg(cd.t_out, 0))
+    add("clim.cd_rh_out", "its outside humidity, %", lambda: f"{cd.rh_out * 100:.0f}")
+    add("clim.cd_t_in", "its inside temperature, C", lambda: f"{cd.t_in:.0f}")
+    add("clim.cd_rh_in", "its inside humidity, %", lambda: f"{cd.rh_in * 100:.0f}")
+    add("clim.cd_dp_out", "its outside dew point, C", lambda: deg(scl.dew_point(cd.t_out, cd.rh_out)))
+    add("clim.cd_dp_in", "its inside dew point, C", lambda: deg(scl.dew_point(cd.t_in, cd.rh_in)))
+    add("clim.cd_w_out", "grams of water per kg of that outside air",
+        lambda: f"{scl.humidity_ratio(cd.t_out, cd.rh_out):.1f}")
+    add("clim.cd_w_in", "grams of water per kg of that inside air",
+        lambda: f"{scl.humidity_ratio(cd.t_in, cd.rh_in):.1f}")
+    add("clim.modes", "how many modes the channel has", lambda: str(len(scl.ACTIVE_MODES)))
+    add("clim.modes_table", "every mode and its air path", modes_table)
+    add("clim.weathers", "weathers the controller is tested on", lambda: str(len(scl.SCENARIOS)))
+    add("clim.weathers_table", "each weather, its dew points and the mode chosen", weathers_table)
+    add("clim.constants_table", "the controller's declared constants, with their kind", constants_table)
+    add("clim.margin", "how far wood is kept above the dew point, K", lambda: f"{scl.C['wood_margin_k']:.0f}")
+    add("clim.below", "how far under the dew point the plate is held, K",
+        lambda: f"{scl.C['plate_below_dp_k']:.0f}")
+    add("clim.frost", "the plate's floor, C", lambda: f"{scl.C['frost_floor_c']:.0f}")
+    add("clim.approach", "air leaving the plate, K above it", lambda: f"{scl.C['plate_approach_k']:.0f}")
+    add("clim.room_t", "the example room, C", lambda: f"{c['t_air']:.0f}")
+    add("clim.room_rh", "the example room, %", lambda: f"{c['rh_air'] * 100:.0f}")
+    add("clim.room_dp", "the example room's dew point, C", lambda: deg(c["dp"]))
+    add("clim.owner_below", "the middle of the owner's range under the dew point, K",
+        lambda: f"{c['below']:.1f}")
+    add("clim.owner_plate", "the owner's plate, C", lambda: deg(c["owners_plate"]))
+    add("clim.plate", "the plate as held, C", lambda: deg(c["plate"]))
+    add("clim.dp_after", "the dew point of air leaving the plate, C", lambda: deg(c["dp_after"]))
+    add("clim.wood_min", "the coldest wood that is safe after the plate, C", lambda: deg(c["wood_min_dried"]))
+    add("clim.rim", "corners on the rim", lambda: str(r["counts"][lv[0]]))
+    add("clim.belt_low", "belt corners at the lower height", lambda: str(r["counts"][lv[1]]))
+    add("clim.belt_high", "belt corners at the upper height", lambda: str(r["counts"][lv[2]]))
+    add("clim.penta", "corners round the crown", lambda: str(r["counts"][lv[3]]))
+    add("clim.bands_table", "the seams by band, with slope", bands_table)
+    for key in ("lower", "belt", "upper", "pentagon", "cap"):
+        add(f"clim.{key}_seams", f"seams in the {key} band", lambda k=key: str(bands[k].seams))
+        add(f"clim.{key}_slope", f"the {key} band's slope, degrees",
+            lambda k=key: f"{bands[k].slope_deg:.0f}")
+    add("clim.stack", "stack pull at 10 K, Pa", lambda: f"{scl.stack_pa(10.0):.1f}")
+    add("clim.meridian", "the rim-apex-rim seam path, feet", lambda: f"{r['meridian_ft']:.0f}")
+    add("clim.seam_flow", "one seam's share of the air, cfm", lambda: f"{b.seam_flow_cfm:.0f}")
+    add("clim.packed_pa", "that air through a packed seam, Pa", lambda: f"{b.seam_drop_pa:,.0f}")
+    add("clim.fan_pa", "what a small in-line fan pushes, Pa", lambda: f"{scl.C['fan_static_pa']:.0f}")
+    add("clim.packed_cfm", "what a packed seam passes at the fan's pressure, cfm",
+        lambda: f"{b.seam_flow_at_fan_cfm:.2f}")
+    add("clim.seams_sieve", "beads to pack every seam, kg", lambda: f"{b.seams_sieve_kg:.0f}")
+    add("clim.seams_hold", "the water those beads would hold, kg", lambda: f"{b.seams_hold_kg:.0f}")
+    add("clim.drawer_cm", "a drawer's face, cm", lambda: f"{scl.C['drawer_face_m'] * 100:.0f}")
+    add("clim.drawer_depth", "a drawer's depth, cm", lambda: f"{scl.C['drawer_depth_m'] * 100:.0f}")
+    add("clim.drawer_kg", "beads in a drawer, kg", lambda: f"{b.drawer_sieve_kg:.1f}")
+    add("clim.drawer_hold", "water a drawer holds, kg", lambda: f"{b.drawer_hold_kg:.2f}")
+    add("clim.drawer_pa", "the dome's air through a drawer, Pa", lambda: f"{b.drawer_drop_pa:.0f}")
+    add("clim.frame_water", "water a wet frame must lose, kg", lambda: f"{b.frame_water_kg:.0f}")
+    add("clim.drawer_fills", "drawer fills that water is", lambda: f"{b.drawers_for_frame:.0f}")
+    add("clim.sieve_c", "13X regenerates at, C", lambda: f"{g['sieve_c']:.0f}")
+    add("clim.silica_c", "silica gel regenerates at, C", lambda: f"{g['silica_c']:.0f}")
+    add("clim.petg_c", "the printed key softens at, C", lambda: f"{g['petg_c']:.0f}")
+    add("clim.seam_max_c", "the hottest air sent through a seam, C", lambda: f"{g['seam_max_c']:.0f}")
+    add("clim.drawer_kwh", "heat to regenerate one drawer, kWh", lambda: f"{g['drawer_kwh']:.2f}")
+    add("clim.stove_kw", "what a stove exchanger hands to clean air, kW",
+        lambda: f"{scl.C['stove_exchanger_kw']:.0f}")
+    add("clim.stove_min", "minutes of that per drawer", lambda: f"{g['stove_minutes']:.0f}")
+    add("clim.frame_kwh", "heat to regenerate a wet frame's worth, kWh", lambda: f"{g['frame_kwh']:.0f}")
+    add("clim.mc_wet", "the moisture line for wet lumber, %", lambda: f"{scl.C['mc_wet'] * 100:.0f}")
+    add("clim.mc_target", "what framing settles to indoors, %", lambda: f"{scl.C['mc_target'] * 100:.0f}")
+
+
+def _wood_tokens(add) -> None:
+    """``wood`` and ``metal``: drying, finishing, and the metal in the seam."""
+    from two_v_demo import wood_care as wc
+
+    d = wc.sector_after_drying()
+    f = wc.finish()
+    e = wc.expansion()
+    k = wc.conduction_ratio()
+    cu_al = wc.pair("copper", "aluminium")
+    ss_al = wc.pair("stainless (passive 304/316)", "aluminium")
+    cu_ss = wc.pair("copper", "stainless (passive 304/316)")
+
+    def pairs_table() -> str:
+        rows = [("metal", "against", "difference", "wet service")]
+        rows += [(a, b, f"{dv:.2f} V", "yes" if ok else "no") for a, b, dv, ok in wc.galvanic()]
+        return _table_text(rows, (30, 30, 13, 12))
+
+    metal_names = ("k_", "alpha_", "wet_", "seam_swing")
+
+    def constants_table(metal: bool) -> str:
+        return _table_text([(n.replace("_", " "), f"{v:g} {u}", kind)
+                            for n, v, u, kind, _w in wc.CONSTANTS
+                            if n.startswith(metal_names) == metal], (22, 16, 12))
+
+    add("wood.shrink_t", "tangential shrinkage, green to oven-dry, %",
+        lambda: f"{wc.C['shrink_tangential'] * 100:.1f}")
+    add("wood.shrink_r", "radial shrinkage, green to oven-dry, %",
+        lambda: f"{wc.C['shrink_radial'] * 100:.1f}")
+    add("wood.fsp", "fibre saturation, %", lambda: f"{wc.C['fibre_saturation'] * 100:.0f}")
+    add("wood.mc", "the moisture the frame dries to, %", lambda: f"{d.mc * 100:.0f}")
+    add("wood.sector_dry", "a 45 degree wedge's angle once dry", lambda: f"{d.sector_dry_deg:.2f}")
+    add("wood.close", "how far the wedge's angle closes, degrees", lambda: f"{d.close_deg:.2f}")
+    add("wood.gap_green", "the tighter V, cut green, degrees", lambda: f"{d.gap_green_deg:.2f}")
+    add("wood.gap_dry", "the tighter V once dry, degrees", lambda: f"{d.gap_dry_deg:.2f}")
+    add("wood.depth_dry", "a wedge's depth once dry, in", lambda: f"{d.depth_dry_in:.2f}")
+    add("wood.open_green", "the V's width at the room side, green, in", lambda: f"{d.opening_green_in:.2f}")
+    add("wood.open_dry", "and dry, in", lambda: f"{d.opening_dry_in:.2f}")
+    add("wood.tilt", "how far each face swings at the room side, in", lambda: f"{d.face_tilt_in:.3f}")
+    add("wood.thick", "a wedge's thickest point, in", lambda: f"{d.thick_in:.1f}")
+    add("wood.faster", "how many times faster a wedge dries than its log",
+        lambda: f"{d.times_faster_than_log:.0f}")
+    add("wood.slower", "how many times slower than a two-by", lambda: f"{d.times_slower_than_board:.0f}")
+    add("wood.water_lb", "water the frame loses drying, lb", lambda: f"{d.water_lb:,.0f}")
+    add("wood.water_gal", "the same, in US gallons", lambda: f"{d.water_gal:,.0f}")
+    add("wood.bark_m2", "the frame's bark faces, m2", lambda: f"{f.bark_m2:.0f}")
+    add("wood.sawn_m2", "the frame's sawn faces, m2", lambda: f"{f.sawn_m2:.0f}")
+    add("wood.char_mm", "the char depth assumed, mm", lambda: f"{f.char_mm:.0f}")
+    add("wood.char_loss", "section lost to the char, %", lambda: f"{f.section_loss_pct:.1f}")
+    add("wood.oil_l", "linseed for the bark faces, every coat, litres", lambda: f"{f.oil_litres:.0f}")
+    add("wood.oil_all", "linseed for every face, litres", lambda: f"{f.oil_litres_all:.0f}")
+    add("wood.coats", "coats of oil", lambda: f"{wc.C['oil_coats']:.0f}")
+    add("wood.oil_rate", "square metres a litre of oil covers", lambda: f"{wc.C['oil_m2_per_l']:.0f}")
+    add("wood.constants_table", "the wood and finish constants, with their kind",
+        lambda: constants_table(False))
+    add("metal.constants_table", "the metal constants, with their kind",
+        lambda: constants_table(True))
+
+    add("metal.pairs_table", "every pair of the seam's metals", pairs_table)
+    add("metal.wet_limit", "the largest difference allowed wet, V", lambda: f"{wc.C['wet_limit_v']:.2f}")
+    add("metal.cu_al", "copper against aluminium, V", lambda: f"{cu_al[0]:.2f}")
+    add("metal.ss_al", "stainless against aluminium, V", lambda: f"{ss_al[0]:.2f}")
+    add("metal.cu_ss", "copper against stainless, V", lambda: f"{cu_ss[0]:.2f}")
+    add("metal.liner_in", "the longest seam liner, in", lambda: f"{e.seam_in:.0f}")
+    add("metal.swing", "the temperature swing assumed, K", lambda: f"{wc.C['seam_swing_k']:.0f}")
+    add("metal.al_mm", "an aluminium liner's movement, mm", lambda: f"{e.aluminium_mm:.1f}")
+    add("metal.cu_mm", "a copper liner's movement, mm", lambda: f"{e.copper_mm:.1f}")
+    add("metal.pine_mm", "the pine's movement, mm", lambda: f"{e.pine_mm:.1f}")
+    add("metal.al_petg", "aluminium carries heat this many times better than the key",
+        lambda: f"{k['aluminium_vs_petg']:,.0f}")
+    add("metal.cu_al_k", "copper against aluminium, heat", lambda: f"{k['copper_vs_aluminium']:.1f}")
 
 
 def tokens() -> dict[str, Token]:

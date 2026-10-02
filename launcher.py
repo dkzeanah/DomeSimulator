@@ -38,7 +38,7 @@ NAV_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
                         "Assembly Line (Simple)", "Flatten Utility")),
     ("Films & media", ("Masterclass", "Re-render Queue", "My Voice", "Presenter Studio",
                        "Video Review", "Beat Studio", "Local Voice Studio")),
-    ("Books", ("Wedge Method Book", "Book: 2 Trees")),
+    ("Books", ("Wedge Method Book", "Book: The 40 Hour Cabin")),
     ("Park & network", ("Dome Park",)),
     ("Research", ("Research & Keywords",)),
     ("Agents", ("Project Agent",)),
@@ -2811,13 +2811,14 @@ def main() -> int:
                   go_authoring_prompt)
     launch_button(foot, "Run Project Agent", go_agent)
 
-    # ---- Book: 2 Trees ----------------------------------------------------
+    # ---- Book: The 40 Hour Cabin ------------------------------------------
 
-    t, body, foot = scrollable_tab("Book: 2 Trees")
+    t, body, foot = scrollable_tab("Book: The 40 Hour Cabin")
     intro(body,
-         "The whole project, written down as a book — \"2 Trees: Build "
-         "Your (D)Home\". One small chainsaw, two pines, a hundred and "
-         "twenty wedge struts and a geodesic dome in a fortnight, told "
+         "The whole project, written down as a book — \"The 40 Hour "
+         "Cabin: 3 Trees\". One small chainsaw, three trees, forty hours "
+         "or less of hands-on work, a hundred and twenty wedge struts and "
+         "a geodesic cabin winched up between the trees, told "
          "three ways at once: the story of how the method was found, the "
          "manual for doing it yourself, and the explanation of why it "
          "works at all. This tab opens Book Studio, which is the desk the "
@@ -2927,7 +2928,7 @@ def main() -> int:
             cfg["chapter"] = book_chapter.get()
         cfg["strict"] = bool(book_strict.get())
         run("book_studio.py", "book_studio", cfg,
-            f"Book: 2 Trees ({action})")
+            f"Book: The 40 Hour Cabin ({action})")
     ttk.Separator(foot).pack(fill="x")
     launch_button(foot, "Open the book", go_book)
 

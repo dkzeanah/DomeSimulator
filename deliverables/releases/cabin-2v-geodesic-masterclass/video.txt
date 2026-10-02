@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\cabin-2v-geodesic-masterclass.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\cabin-2v-geodesic-masterclass-vertical.mp4

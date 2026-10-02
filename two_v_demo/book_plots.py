@@ -1,4 +1,4 @@
-"""Every table and chart in *2 Trees*, generated from the book's arithmetic.
+"""Every table and chart in *The 40 Hour Cabin*, generated from the book's arithmetic.
 
 Not one number here is typed.  Each function reaches into :mod:`book_math`,
 :mod:`wedge_geometry`, :mod:`dome_costing` or the solved dome itself, and
@@ -1721,8 +1721,191 @@ def plot_advantage_claims(figure: Figure):
              f"for a living.")
 
 
+def plot_pine_ladder(figure: Figure):
+    """The six rungs of one pine, as a staircase with the gaps marked.
+
+    The ladder is an order, not a scale chart: the rungs step evenly so
+    the picture shows which comparisons the chapter is making, and the
+    values sit beside each step with their ratios against the structure
+    rung printed at the top of the run.
+    """
+    from . import pine_value_economics as pve
+
+    pine = pve.pine()
+    rungs = (
+        ("Standing", pine.stump_usd, "stumpage x green tons"),
+        ("Firewood", pine.firewood_usd, "0.41 cord, picked up"),
+        ("Sawn lumber", pine.mill_usd, "60% recovery x $1.50/bf"),
+        ("Split stock", pine.wedge_usd, "88% recovery x $1.50/bf"),
+        ("Structure", pine.use_usd, "framing one tree replaces"),
+        ("Financed", pine.financed_usd, "6.5% / 30 yr, payments"),
+    )
+    fig = new_figure(PAGE_W_IN, PAGE_H_IN)
+    axes = fig.add_axes([0.04, 0.16, 0.62, 0.76])
+    axes.set_axis_off()
+    axes.set_xlim(0, 1)
+    axes.set_ylim(0, len(rungs))
+
+    for index, (name, value, basis) in enumerate(rungs):
+        y = len(rungs) - index - 1
+        # The step.
+        axes.add_patch(_stair_step(0.06, 0.62, y, len(rungs)))
+        # The name on the riser.
+        axes.text(0.62 + 0.02, y + 0.28, name, fontsize=8.5,
+                  weight="bold", va="bottom", ha="left", color=STYLE.ink)
+        axes.text(0.62 + 0.02, y + 0.08, basis, fontsize=6.8, va="bottom",
+                  ha="left", color=STYLE.muted, style="italic")
+        # The value on the tread.
+        axes.text(0.60, y + 0.55, f"${value:,.0f}", fontsize=9.5,
+                  weight="bold", ha="right", va="center", color=STYLE.accent)
+    axes.plot([0.06, 0.62], [0.0, 0.0], color=STYLE.rule, linewidth=0.6)
+    axes.set_title("One pine, six rungs", fontsize=10.5, weight="bold",
+                   loc="left")
+
+    # The ratios against the structure rung, on the right.
+    ratios = (
+        ("structure / firewood", pine.use_usd / pine.firewood_usd),
+        ("structure / sawn", pine.use_usd / pine.mill_usd),
+        ("structure / split", pine.use_usd / pine.wedge_usd),
+        ("structure / standing", pine.use_usd / pine.stump_usd),
+    )
+    side = fig.add_axes([0.70, 0.16, 0.28, 0.76])
+    side.set_axis_off()
+    side.set_xlim(0, 1)
+    side.set_ylim(0, len(ratios) + 1)
+    y = len(ratios)
+    for name, ratio in ratios:
+        side.text(0.0, y, name, fontsize=7.6, va="center", color=STYLE.ink)
+        side.text(1.0, y, f"x{ratio:,.0f}", fontsize=8.5, weight="bold",
+                  va="center", ha="right", color=STYLE.good)
+        y -= 1
+    side.text(0.0, len(ratios) + 0.6,
+              _wrap("The wood never changed. The design changed what it "
+                    "was for.", 34), fontsize=7.0, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
+def _stair_step(x0, x1, y, steps):
+    """One staircase tread at level ``y``, scaled to the ladder."""
+    from matplotlib.patches import Polygon
+    rise = 0.16
+    run = (x1 - x0) / steps
+    left = x0 + run * (steps - y - 1)
+    return Polygon([(left, y), (left + run, y), (left + run, y + rise),
+                    (left, y + rise)],
+                   closed=True, facecolor=STYLE.wood, edgecolor=STYLE.ink,
+                   linewidth=0.6, alpha=0.85)
+
+
+def plot_breadth_tables(figure: Figure):
+    """The every-other-way catalogue, one page of priced options.
+
+    Each catalogue is one table: name, price on the reference dome, and
+    the one-line reason it is or is not the reference choice. Read
+    straight from ``wedge_book.alternatives`` so the book and the wedge
+    book cannot disagree about the same dome.
+    """
+    from wedge_book import alternatives as alt
+
+    concepts = {c.key: c for c in alt.catalogue()}
+    order = ("frame_materials", "strut_sections", "panel_types",
+             "claddings", "foundations")
+    labels = {"frame_materials": "Eight frame materials",
+              "strut_sections": "Eight strut sections",
+              "panel_types": "Sixteen panel types",
+              "claddings": "Nine claddings",
+              "foundations": "Eleven foundations"}
+    rows = []
+    for key in order:
+        concept = concepts.get(key)
+        if concept is None:
+            continue
+        rows.append((labels[key], "", ""))
+        for option in concept.options:
+            price = (f"${option.usd:,.0f}" if option.usd is not None
+                     else "--")
+            marker = "reference" if option.reference else ""
+            rows.append((f"  {option.name}", price, marker))
+    return table(
+        "Every other way of doing it, priced on this dome",
+        ("option", "price", "note"), tuple(rows), align="lrr",
+        footer_rows=0, full_page=True,
+        note="Prices are the wedge book's catalogue on the reference "
+             "quantities -- one dome, every alternative, so the choice is "
+             "a comparison instead of a preference. The reference row is "
+             "the one this book builds.")
+
+
+def plot_fitout_catalogue(figure: Figure):
+    """The stem cell's fit-out catalogue, cheapest first."""
+    import seed_model
+
+    rows = []
+    priced = []
+    for spec in seed_model.fitouts():
+        try:
+            quote = seed_model.quote(spec.key)
+            total = sum(getattr(group, "usd", 0.0) or 0.0
+                        for group in quote.groups)
+        except Exception:  # noqa: BLE001 - one seed must not sink the table
+            total = None
+        rows.append((spec.label, total, spec.panels))
+        if total:
+            priced.append((total, spec.label))
+    rows.sort(key=lambda row: (row[1] is None, row[1] or 0.0))
+    rows = [(name, f"${total:,.0f}" if total else "--",
+             f"{panels} panels") for name, total, panels in rows]
+    return table(
+        "Fifteen buildings from one body",
+        ("fit-out", "price", "panels changed"), tuple(rows), align="lrr",
+        footer_rows=0, full_page=True,
+        note="Prices are the stem-cell model's quotes on the reference "
+             "dome, cheapest first. The frame under every row is the same "
+             "body; only the panels and the services change.")
+
+
+def plot_shell_ladder(figure: Figure):
+    """The shell ladder: each quilted layer's cost against the heating
+    bill it removes, rung by rung, from park_model's own steps."""
+    import park_model
+
+    steps = park_model.shell_ladder("Timber Workshop")
+    fig = new_figure(PAGE_W_IN, HALF_H_IN)
+    axes = fig.add_axes([0.12, 0.18, 0.82, 0.68])
+    layers = [s.layers for s in steps]
+    heating = [s.heating_usd_per_year for s in steps]
+    cost = [s.added_cost for s in steps]
+    axes.plot(layers, heating, marker="o", color=STYLE.accent,
+              label="heating, $/yr")
+    axes.set_xlabel("quilted layers")
+    axes.set_ylabel("heating, dollars a year", color=STYLE.accent)
+    axes.set_title("Each layer removes a winter's worth of bill",
+                   fontsize=10.5, weight="bold", loc="left")
+    cost_axes = axes.twinx()
+    cost_axes.plot(layers, cost, marker="s", color=STYLE.wood_dark,
+                   label="spent so far, $", linestyle="--")
+    cost_axes.set_ylabel("spent so far, dollars", color=STYLE.wood_dark)
+    axes.axhline(0, color=STYLE.rule, linewidth=0.6)
+    for spines in (axes, cost_axes):
+        spines.spines["top"].set_visible(False)
+    axes.grid(False)
+    axes.text(0.0, -0.30,
+              _wrap("The first layer buys the biggest drop. Each later "
+                    "layer buys less per dollar -- which is why the "
+                    "ladder's rungs are bought one winter at a time, as "
+                    "the bills prove their worth.", 96),
+              transform=axes.transAxes, fontsize=7.2, va="top",
+              color=STYLE.muted, style="italic")
+    return fig
+
+
 PLOTS = {
     "declared_constants": plot_declared_constants,
+    "pine_ladder": plot_pine_ladder,
+    "breadth_tables": plot_breadth_tables,
+    "fitout_catalogue": plot_fitout_catalogue,
+    "shell_ladder": plot_shell_ladder,
     "envelope_compare": plot_envelope_compare,
     "envelope_versus_size": plot_envelope_versus_size,
     "advantage_claims": plot_advantage_claims,

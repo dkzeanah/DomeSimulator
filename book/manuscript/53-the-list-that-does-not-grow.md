@@ -212,10 +212,10 @@ is free. This is one of them.
 
 And there is a coincidence in that table which is not a coincidence at all.
 {{flat.solo_dome_ft}} feet is the dome this entire book is built around: the one
-two trees yield. It was never sized for my arms. It was sized by the log --
+the tree yields. It was never sized for my arms. It was sized by the log --
 {{flat.solo_member_ft}} foot sections out of a trunk, because that is what a
 trunk gives you before the taper beats you. The biggest dome one person can
-frame alone and the biggest dome two trees will fill turn out to be the same
+frame alone and the biggest dome the tree will fill turn out to be the same
 dome, to the inch, and I did not arrange that.
 
 ## Inside the band, nothing changes at all

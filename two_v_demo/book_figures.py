@@ -1,4 +1,4 @@
-"""Rendering every illustration in *2 Trees*, from the geometry that made it.
+"""Rendering every illustration in *The 40 Hour Cabin*, from the geometry that made it.
 
 The rule this module exists to enforce is the one in ``CLAUDE.md``: a picture
 of the wedge dome shows *the simulator's dome*, not a sketch of one.  So the

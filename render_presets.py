@@ -351,11 +351,40 @@ PRESETS: tuple[RenderPreset, ...] = (
            "the sheet does not have.",
            compose_segments=False),
 
+    _video("cabin_linseed_oil", "cabin_linseed_oil", "linseed-oil-for-a-dome.mp4",
+           "LINSEED OIL FOR A DOME. Interior wood, tools, seam compatibility, "
+           "glazing limits, rag safety and computed material/labour allowances."),
+    RenderPreset(
+        key="cabin_linseed_oil_stills",
+        label="linseed oil for a dome -- one still per chapter",
+        summary="Inspect every workshop chapter before rendering the linseed-oil film.",
+        fields={"lesson": "cabin_linseed_oil", "action": "shots",
+                "shots": chapter_shots("cabin_linseed_oil")},
+    ),
     _video("cabin_wedge_explained", "cabin_wedge_explained", "the-wedge-dome-explained.mp4",
            "THE WEDGE DOME, EXPLAINED. The whole method in the Cabin World, and the "
            "channel in every seam: what fits in it (water, wire), what does not (a "
            "round duct), the key as a spacer and what that costs, printed half-keys, "
            "and where the channels meet. Every figure from channel_facts."),
+
+    _video("cabin_seam_climate", "cabin_seam_climate", "which-way-the-seam-breathes.mp4",
+           "WHICH WAY THE SEAM BREATHES. The seam channel as the dome's climate "
+           "system, in the Cabin World: dew points, a Peltier on each skin, seven "
+           "modes and the controller that picks one, the rings that drain and the "
+           "one that cannot, and where the desiccant belongs. Every figure from "
+           "seam_climate."),
+
+    RenderPreset(
+        key="cabin_seam_climate_stills",
+        label="which way the seam breathes -- one still per chapter",
+        summary="A still from each chapter of the seam climate film, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_seam_climate",
+            "action": "shots",
+            "shots": chapter_shots("cabin_seam_climate"),
+        },
+    ),
 
     RenderPreset(
         key="cabin_wedge_explained_stills",
@@ -465,6 +494,21 @@ PRESETS: tuple[RenderPreset, ...] = (
         },
     ),
 )
+
+
+def _cabin_presets() -> tuple[RenderPreset, ...]:
+    """One narrated export per Cabin World re-render, from the deliverables list."""
+    from two_v_demo.deliverables import DELIVERABLES
+
+    covered = {preset.fields.get("lesson") for preset in PRESETS}
+    return tuple(
+        _video(item.lesson, item.lesson, item.filename,
+               f"CABIN WORLD RE-RENDER. {item.note}")
+        for item in DELIVERABLES
+        if item.lesson.startswith(("cabin_", "concept_")) and item.lesson not in covered)
+
+
+PRESETS = PRESETS + _cabin_presets()
 
 
 PRESET_BY_KEY = {preset.key: preset for preset in PRESETS}

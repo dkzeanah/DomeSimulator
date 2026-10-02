@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\which-way-the-seam-breathes.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\which-way-the-seam-breathes-vertical.mp4

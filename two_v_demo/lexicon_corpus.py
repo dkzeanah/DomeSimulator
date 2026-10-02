@@ -16,8 +16,8 @@ Sources
 ``film``        every lesson in the registry: titles, headlines, narration, equations
 ``segment``     the reusable stingers, outros and calls to action, counted once
 ``presenter``   the presenter-engine presentations: narration, captions, panels
-``book``        the *2 Trees* outline: parts, chapters, pages, beats, figure captions
-``manuscript``  the *2 Trees* chapter drafts, prose only, number tokens resolved
+``book``        the *40 Hour Cabin* outline: parts, chapters, pages, beats, figure captions
+``manuscript``  the *40 Hour Cabin* chapter drafts, prose only, number tokens resolved
 ``notes``       the author's raw notes and the collected pitch material
 ``codex``       the parallel Codex edition of the book
 ``listing``     published video descriptions
@@ -44,8 +44,8 @@ SOURCES: tuple[tuple[str, str], ...] = (
     ("film", "Films rendered by the masterclass engine"),
     ("segment", "Reusable stingers, outros and calls to action"),
     ("presenter", "Presenter-engine presentations"),
-    ("book", "The 2 Trees outline"),
-    ("manuscript", "The 2 Trees chapter drafts"),
+    ("book", "The 40 Hour Cabin outline"),
+    ("manuscript", "The 40 Hour Cabin chapter drafts"),
     ("notes", "The author's raw notes and collected pitch material"),
     ("codex", "The Codex edition of the book"),
     ("listing", "Published video descriptions"),
@@ -280,7 +280,7 @@ def read_presentations() -> tuple[list[Entry], dict[str, str]]:
 
 
 def read_book() -> tuple[list[Entry], dict[str, str]]:
-    """The outline of *2 Trees*: every title, purpose, beat and caption."""
+    """The outline of *The 40 Hour Cabin*: every title, purpose, beat and caption."""
     from .book import BOOK
     from .book_tokens import resolve
 

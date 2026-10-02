@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_07.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_08.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_09.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_10.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\cabin-stem-cell-utility-core-build-voice-en-US-AndrewMultilingualNeural-2-2Hz-0-d65ae58ba0\\chapter_11.mp3"
+  ],
+  "chapter_durations": [
+    36.272,
+    28.0,
+    39.728,
+    31.904000000000003,
+    48.512,
+    41.455999999999996,
+    38.623999999999995,
+    38.336,
+    31.808000000000003,
+    18.296000000000003,
+    21.560000000000002
+  ],
+  "speech_durations": [
+    34.872,
+    23.304,
+    38.328,
+    30.504,
+    47.112,
+    40.056,
+    37.224,
+    36.936,
+    30.408,
+    16.896,
+    20.16
+  ],
+  "chapter_starts": [
+    0.0,
+    36.272,
+    64.27199999999999,
+    104.0,
+    135.904,
+    184.416,
+    225.87199999999999,
+    264.496,
+    302.832,
+    334.64,
+    352.936
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "e2787a18d3d670e608000120f1b762184914868ab93e522c4002d297d6df9dbd"
+}

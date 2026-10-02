@@ -1,4 +1,4 @@
-"""The manuscript of *2 Trees*: files on disk, and what state they are in.
+"""The manuscript of *The 40 Hour Cabin*: files on disk, and what state they are in.
 
 The outline in :mod:`book` says what the book *should* contain.  This module
 is about what has actually been written: one Markdown file per chapter under
