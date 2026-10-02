@@ -1,0 +1,38 @@
+flowchart LR
+  subgraph AUTHOR["What the author writes"]
+    facts["a facts module<br/>computes and proves every figure"]
+    elements["visual objects<br/>one drawable noun, with knobs"]
+    painters["scene painters<br/>the picture as a function of progress"]
+    chapters["chapters<br/>narration, camera, duration"]
+    presentation["a presentation<br/>scenes, shots and panels as data"]
+  end
+  subgraph ENGINE["What the repository runs"]
+    narrate["narration first<br/>synthesize the voice, measure it"]
+    timeline["the measured speech sets the timeline<br/>duration is the floor or the speech plus a tail"]
+    lessonapp["the lesson engine<br/>draws each frame from its painter"]
+    presenterapp["the presenter engine<br/>draws each shot from its data"]
+    stills["a stills pass<br/>one frame per chapter or scene"]
+    beats["beats<br/>render one chapter, join by stream copy"]
+  end
+  subgraph OUT["What comes out"]
+    mp4["a narrated MP4"]
+    subs["subtitles and the timed script"]
+    audit["the audit report"]
+    figures["stills and book figures"]
+  end
+  facts --> painters
+  elements --> painters
+  painters --> chapters
+  chapters --> narrate
+  presentation --> narrate
+  narrate --> timeline
+  timeline --> lessonapp
+  timeline --> presenterapp
+  lessonapp --> stills
+  presenterapp --> stills
+  stills --> mp4
+  lessonapp --> beats
+  beats --> mp4
+  mp4 --> subs
+  mp4 --> audit
+  stills --> figures

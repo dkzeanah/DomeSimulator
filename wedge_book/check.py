@@ -62,6 +62,7 @@ CHECKS: tuple[tuple[str, str, str], ...] = (
     ("display", "wedge_book.paragraphs", "validate_display_alone"),
     ("mathtext", "wedge_book.mathtext", "validate_mathtext"),
     ("glossary", "wedge_book.glossary", "validate_glossary"),
+    ("ledger", "wedge_book.ledger", "validate_ledger"),
 )
 
 SLOW: tuple[tuple[str, str, str], ...] = (

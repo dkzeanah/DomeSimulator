@@ -1,0 +1,29 @@
+flowchart LR
+  subgraph TRUTH["Truth layer — computed, never typed"]
+    geom["geometry modules<br/>raw_wedge_bridge<br/>book_math<br/>external constants, named and sourced"]
+  end
+  subgraph ORCH["Orchestration"]
+    launch["launcher.py<br/>a tab per tool"]
+    tickets["launch tickets<br/>headless, no GUI needed"]
+    presets["render_presets.py<br/>deliverables.py<br/>the append-only register"]
+  end
+  subgraph ENGINES["Engines"]
+    lessons["Lesson pipeline<br/>facts compute and prove<br/>scene painters to 3D"]
+    presenter["Presenter<br/>built-in demos,<br/>object library, shop drawings"]
+    stills["Stills and snapshots<br/>masterclass shots, Dome Forge views,<br/>Dome Creator, turntables"]
+    voice["Voice and audio<br/>voice cache, measured speech<br/>sets the timeline"]
+    books["Books<br/>Book Studio, live tokens,<br/>scene stills with provenance"]
+    worlds["Worlds<br/>Dome Creator, Dome Forge,<br/>Assembly Line, aux worlds"]
+  end
+  subgraph OUT["What comes out"]
+    films["Narrated MP4<br/>plus subtitles, script, audit"]
+    bookout["This book<br/>HTML, PDF, Markdown"]
+    pkg["Fabrication package<br/>cut lists, flat patterns, CSV, SVG, OBJ"]
+  end
+  root(["DomeSim<br/>programmatic media factory"])
+  root --- launch
+  geom --> ENGINES
+  ORCH --> ENGINES
+  ENGINES --> OUT
+  rules["House rules<br/>numbers computed, never typed<br/>reuse, never re-implement<br/>stills before render<br/>verify by frame count<br/>corrections on camera"]
+  rules --- root

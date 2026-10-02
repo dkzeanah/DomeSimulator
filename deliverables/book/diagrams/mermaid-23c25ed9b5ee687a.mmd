@@ -1,0 +1,12 @@
+flowchart TB
+  python["Install Python 3.12<br/>3.10-3.13, not 3.14"]
+  clone["git clone<br/>github.com/dkzeanah/DomeSimulator"]
+  pip["pip install<br/>pygame moderngl numpy"]
+  launch["py -3.12 launcher.py<br/>the front door: a tab per tool"]
+  core["Core tools working now:<br/>Dome Creator, Dome Forge,<br/>Assembly Line, the 2V masterclass,<br/>Presenter Studio"]
+  optional["Optional, for films and voice:<br/>two_v_demo/requirements.txt + ffmpeg<br/>.venv-voice for Local Voice Studio"]
+  book["Book tab:<br/>read, build, check or edit<br/>The 40 Hour Cabin"]
+  python --> clone --> pip --> launch
+  launch --> core
+  launch --> optional
+  launch --> book

@@ -1,0 +1,17 @@
+flowchart LR
+  ms["book/manuscript<br/>Markdown, one file per chapter<br/>figures and diagrams inline"] --> tokens["book_tokens<br/>live figures"]
+  bm["book_math<br/>both sizing methods"] --> tokens
+  ms --> plots["book_plots<br/>tables and charts"]
+  ms --> diag["book_diagrams<br/>line drawings"]
+  ms --> mermaid["mermaid fences<br/>rendered to SVG at export"]
+  bm --> plots
+  ms --> figs["book_figures<br/>renderers at print resolution"]
+  solver["raw wedge solver<br/>meshes via the bridge"] --> figs
+  scenes["existing lesson scenes<br/>scene stills with provenance"] --> figs
+  tokens --> export["book_export<br/>one build, three readers:<br/>HTML, PDF, Markdown"]
+  plots --> export
+  diag --> export
+  mermaid --> export
+  figs --> export
+  export --> out["deliverables/book<br/>append-only versions<br/>never overwritten"]
+  export --> publish["publish.py<br/>PDF, page proofs,<br/>silent readthrough MP4"]

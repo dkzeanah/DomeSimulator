@@ -196,6 +196,23 @@ version, because there the colour *is* the lesson.
 **Nothing is ever overwritten.** Re-rendering a figure that exists writes
 `-v2`; so does exporting a book. Same rule as every other deliverable here.
 
+## Diagrams are Markdown
+
+A diagram is written as a fenced ` ```mermaid ` block, in the manuscript,
+next to the prose it belongs to — the software section at the back uses
+four of them. The source stays readable in the file and renders on GitHub;
+`book_export` draws each one to SVG with the mermaid CLI in
+`node_modules`, caches it by the diagram's own text, and embeds the
+picture, so the HTML stays one self-contained file and the PDF needs no
+JavaScript. On a machine without Node the exporter falls back to a
+`<pre class="mermaid">` block and inlines the mermaid runtime instead, so a
+diagram never blocks an export.
+
+Write diagrams for structure — how the code fits together, what runs in
+what order — not for numbers. A diagram cannot carry a token, and a figure
+that quotes a number belongs in `book_plots.py` where the arithmetic can
+be checked.
+
 ## Corrections are chapters
 
 Following the repository's practice, a published claim that turns out wrong

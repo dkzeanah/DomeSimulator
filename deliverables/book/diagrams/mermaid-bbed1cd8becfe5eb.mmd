@@ -1,0 +1,9 @@
+flowchart LR
+  write["Write<br/>the facts module, the scene painters,<br/>or the chapters"] --> check["Validate<br/>the self-tests prove the numbers<br/>before any frame is rendered"]
+  check --> still["Render stills<br/>one per chapter or scene"]
+  still --> look{"Look at<br/>every one"}
+  look -->|fixes needed| write
+  look -->|good| draw["Draw and record<br/>narration to timeline,<br/>3D frames to the encoder"]
+  draw --> ship["Ship<br/>MP4 with subtitles and script,<br/>or this book as HTML and PDF"]
+  ship --> reg["Register<br/>in the deliverables list<br/>and the render presets"]
+  reg --> verify["Verify<br/>frame count equals<br/>duration times frame rate"]

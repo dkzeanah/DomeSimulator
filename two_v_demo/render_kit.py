@@ -367,9 +367,17 @@ class DynamicGpuMesh:
         data = np.asarray(batch.vertices, dtype="f4")
         required = data.nbytes
         if required > self.buffer.size:
+            # Let the GPU finish every draw that still reads the old buffer
+            # before freeing it. Freeing a buffer the driver is still drawing
+            # from crashed the Series export at the same frame every run
+            # (an access violation on the driver's own thread).
+            old_size = self.buffer.size
+            self.ctx.finish()
             self.vao.release()
             self.buffer.release()
-            capacity = max(required, int(required * 1.35))
+            # Grow by half again or to double the old size, whichever is
+            # bigger, so a scene that keeps growing reallocates rarely.
+            capacity = max(required + required // 2, old_size * 2)
             self.buffer = self.ctx.buffer(reserve=capacity, dynamic=True)
             self.vao = self.ctx.vertex_array(
                 self.program,

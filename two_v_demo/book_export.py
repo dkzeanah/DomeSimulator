@@ -36,6 +36,7 @@ drawings while the old ones stay where they are.
 from __future__ import annotations
 
 import base64
+import hashlib
 import html as html_escape
 import re
 import shutil
@@ -52,6 +53,27 @@ from .book import (BOOK, EXPORT_DIR, MANUSCRIPT_DIR, Book, figure_index)
 FIGURE_SUFFIXES = (".png", ".svg", ".jpg")
 
 IMAGE_LINK = re.compile(r'!\[(?P<alt>[^\]]*)\]\((?P<src>[^)]+)\)')
+
+MERMAID_FENCE = re.compile(
+    r"^[ \t]*```mermaid[ \t]*\r?\n(?P<source>.*?)^[ \t]*```[ \t]*$",
+    re.S | re.M)
+"""A fenced ```mermaid block in the manuscript.
+
+Chapter and matter files are Markdown, and Markdown's own fence syntax is
+where a diagram belongs: the source stays readable in the manuscript,
+renders on GitHub, and is turned into a picture here.  The fence is
+matched *including* its backticks so the whole block can be replaced by
+the drawn diagram before Markdown ever sees it -- Python-Markdown would
+otherwise print the fence as literal text.
+"""
+
+DIAGRAM_DIR_NAME = "diagrams"
+DIAGRAM_TIMEOUT_S = 240
+"""Diagrams are rendered to SVG at export time by the ``mmdc`` CLI that
+ships in ``node_modules``.  A cache means the second export of the same
+diagram is free, and the hash is of the diagram's own source, so editing a
+diagram renders a new file rather than trusting a stale one."""
+
 
 
 # ----------------------------------------------------------------------
@@ -124,6 +146,11 @@ code { font: .9em/1.4 Consolas, monospace; background: #efece6;
 hr { border: 0; border-top: 1px solid var(--rule); margin: 3rem 0; }
 img { max-width: 100%; height: auto; display: block; margin: 1.6rem auto .5rem; }
 figure { margin: 2rem 0; }
+figure.diagram { margin: 2.2rem 0; padding: 1rem; background: #fff;
+  border: 1px solid var(--rule); border-radius: 3px; page-break-inside: avoid; }
+figure.diagram img { margin: 0 auto; }
+pre.mermaid { background: #fff; border: 1px solid var(--rule); padding: 1rem;
+  font-size: .78rem; overflow-x: auto; }
 figcaption { font: italic .85rem/1.5 Georgia, serif; color: var(--muted);
              text-align: center; margin-top: .3rem; }
 table { border-collapse: collapse; width: 100%; margin: 1.4rem 0;
@@ -252,6 +279,101 @@ def _resolve_images(text: str, embed: bool,
     return IMAGE_LINK.sub(replace, text)
 
 
+def _mmdc_command() -> list[str] | None:
+    """The mermaid CLI, if this machine can draw a diagram.
+
+    Checked in order: whatever is on PATH, then the copy inside this
+    project's own ``node_modules``, which is where the book's build
+    expects it because the repository already uses Node for one
+    deliverable's build script.
+    """
+    found = shutil.which("mmdc")
+    if found:
+        return [found]
+    from .book import ROOT
+
+    for name in ("mmdc.cmd", "mmdc"):
+        local = ROOT / "node_modules" / ".bin" / name
+        if local.is_file():
+            return [str(local)]
+    return None
+
+
+def render_diagram(source: str, cache_dir: Path | None = None) -> Path | None:
+    """One mermaid diagram, drawn to a cached SVG. ``None`` if it cannot be.
+
+    The cache is keyed on the diagram's own text, so a diagram that has
+    not changed is not redrawn, and a diagram that has changed cannot
+    silently reuse the old picture.  A failure here is never fatal: the
+    caller falls back to the live-rendering path, which is what a machine
+    without Node gets.
+    """
+    command = _mmdc_command()
+    if command is None:
+        return None
+    cache_dir = cache_dir or (EXPORT_DIR / DIAGRAM_DIR_NAME)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256(source.strip().encode("utf-8")).hexdigest()[:16]
+    svg = cache_dir / f"mermaid-{digest}.svg"
+    if svg.is_file() and svg.stat().st_size > 200:
+        return svg
+    seeded = cache_dir / f"mermaid-{digest}.mmd"
+    seeded.write_text(source, encoding="utf-8")
+    try:
+        result = subprocess.run(
+            command + ["-i", str(seeded), "-o", str(svg),
+                       "-t", "neutral", "-b", "transparent"],
+            capture_output=True, text=True, timeout=DIAGRAM_TIMEOUT_S)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if result.returncode != 0 or not svg.is_file():
+        return None
+    return svg
+
+
+def _mermaid_blocks(text: str, embed: bool, live: list[str],
+                    cache_dir: Path | None = None) -> str:
+    """Replace every ```mermaid fence with the drawn diagram.
+
+    With the CLI present each diagram becomes an SVG, embedded as a data
+    URI like every other figure in this book, so the exported HTML stays
+    one self-contained file and the PDF needs no JavaScript. Without the
+    CLI the fence becomes a ``<pre class="mermaid">`` block and the
+    runtime is added to the document instead, so the diagram still draws
+    in a browser.
+    """
+    def replace(match: re.Match) -> str:
+        source = match.group("source")
+        path = render_diagram(source, cache_dir)
+        if path is None:
+            live.append(source)
+            return (f'<pre class="mermaid">'
+                    f"{html_escape.escape(source.strip())}</pre>")
+        data = base64.b64encode(path.read_bytes()).decode("ascii")
+        src = (f"data:image/svg+xml;base64,{data}" if embed
+               else path.resolve().as_uri())
+        return (f'<figure class="diagram">'
+                f'<img src="{src}" alt="DomeSim code map diagram">'
+                f"</figure>")
+
+    return MERMAID_FENCE.sub(replace, text)
+
+
+def _mermaid_runtime() -> str:
+    """The browser-side fallback: mermaid itself, inlined when present."""
+    from .book import ROOT
+
+    script = ROOT / "node_modules" / "mermaid" / "dist" / "mermaid.min.js"
+    if script.is_file():
+        return (f"<script>{script.read_text(encoding='utf-8')}</script>"
+                "<script>mermaid.initialize({startOnLoad: true, "
+                "theme: 'neutral'});</script>")
+    return ('<script type="module">import mermaid from '
+            '"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";'
+            "mermaid.initialize({startOnLoad: true, theme: 'neutral'});"
+            "</script>")
+
+
 def _strip_leading_heading(body: str, title: str) -> str:
     """Drop the chapter's own H1, since the template already prints one."""
     lines = body.splitlines()
@@ -286,11 +408,13 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
     """
     found: list[str] = []
     missing: list[str] = []
+    live_diagrams: list[str] = []
     written = 0
     index = figure_index(book)
 
     def images(body: str) -> str:
-        return _resolve_images(body, embed_images, found, missing,
+        drawn = _mermaid_blocks(body, embed_images, live_diagrams)
+        return _resolve_images(drawn, embed_images, found, missing,
                                index, figure_dir)
 
     parts: list[str] = [
@@ -391,7 +515,9 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         "initial-scale=1\">"
         f"<title>{html_escape.escape(book.title)}</title>"
         f"<style>{BOOK_CSS}</style></head><body>"
-        + "\n".join(parts) + "</body></html>")
+        + "\n".join(parts)
+        + (_mermaid_runtime() if live_diagrams else "")
+        + "</body></html>")
 
     resolve = tokens if tokens is not None else book_tokens.resolve
     document = resolve(document, strict=strict)
