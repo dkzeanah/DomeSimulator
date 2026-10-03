@@ -75,8 +75,8 @@ one person against buying it.
 
 <!-- concept: harvest/stacking -->
 
-Stack it up and the saving on the floor has four sources, and the shape is the
-smallest of them:
+Stack it up and the saving on the floor has four sources, and the two largest have
+nothing to do with the dome:
 
     bought whole                              ${{stack.buy}}
     the builder's and seller's share you keep ${{stack.margin}}
@@ -85,8 +85,9 @@ smallest of them:
     the shape itself                          ${{stack.shape}}
 
 Most of the saving is building your own, which anyone who builds their own house
-keeps, whatever its shape. The dome's own contribution is real, and it is the
-smallest line.
+keeps, whatever its shape. The dome's own contribution is real -- less framing,
+less skin, a shorter foundation, shorter runs from the column -- and it is a
+small line beside those two.
 
 ## What this does not show
 

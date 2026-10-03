@@ -1,6 +1,7 @@
 {
   "_note": "The links page and site header. 'links' seeds the database on FIRST start only; after that, edit links on the site's Admin page. Handles copied from CONTACTS in two_v_demo/segments.py (the films' outro card). Add your YouTube channel link and the Kickstarter URL when it is live.",
   "name": "Zeanah Lab",
+  "url": "https://zeanahlab.com",
   "tagline": "Stem-cell domes, split from a log. Free book, films and the dome network.",
   "avatar": "/mark.svg",
   "kickstarterUrl": "",

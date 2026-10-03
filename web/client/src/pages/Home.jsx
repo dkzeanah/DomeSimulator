@@ -3,59 +3,74 @@ import { Link } from 'react-router-dom';
 import { api, money } from '../api.js';
 import BookGate from '../components/BookGate.jsx';
 import MediaCard from '../components/MediaCard.jsx';
+import { TwoWays, Upsell } from '../components/Offers.jsx';
+import { offered, useBooks, useFacts } from '../shop.js';
 
 export default function Home() {
-  const [facts, setFacts] = useState(null);
-  const [book, setBook] = useState(null);
+  const facts = useFacts();
+  const { books } = useBooks();
   const [media, setMedia] = useState([]);
 
   useEffect(() => {
-    api('/facts').then((d) => setFacts(d.facts)).catch(() => {});
-    api('/books').then((d) => setBook(d.books.find((b) => b.featured) || d.books[0] || null)).catch(() => {});
     api('/media').then((d) => setMedia(d.media.slice(0, 3))).catch(() => {});
   }, []);
 
+  const sample = offered(books, 'free');
+  const pages = facts?.books?.sample?.pages;
+  const n = facts?.books?.paperback?.numbers;
   const dome = facts?.dome;
   return (
     <>
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">The stem-cell dome</p>
-          <h1>One frame, split from a log. Any building you need.</h1>
+          <p className="eyebrow">Geodesic Dome Wedge Method</p>
+          <h1>Frame a house from trees you split yourself.</h1>
           <p className="lead">
-            A 2V geodesic dome built from triangular wedges, point in and flat face out. The frame never changes;
-            the panels decide whether it is a guest house, a workshop or a garage.
+            A geodesic cabin whose frame is split from logs with a chainsaw -- no mill, no planer, no lumber yard. Every
+            member is one of two lengths, every panel is built flat on one jig, and every number is computed, not
+            guessed.
           </p>
-          {dome && (
+          {n && (
             <ul className="stats">
-              <li><b>{dome.acrossFt} ft</b> across</li>
-              <li><b>{Math.round(dome.floorSqft)} sq ft</b> of floor</li>
-              <li><b>{dome.bays}</b> bays</li>
-              <li><b>{dome.members}</b> wedges</li>
+              <li><b>{n.frameHours} h</b> of frame work</li>
+              <li><b>{n.members}</b> split-log members</li>
+              <li><b>{n.panels}</b> panels</li>
+              <li><b>{n.floorSqft}</b> sq ft of floor</li>
               {facts.price && <li><b>{money(facts.price.stemCell)}</b> the stem cell</li>}
             </ul>
           )}
+          <p className="row hero-links">
+            <Link to="/buy" className="button ghost">The digital edition</Link>
+            <Link to="/paperback" className="button ghost">The paperback</Link>
+          </p>
         </div>
         <div className="hero-card">
-          {book ? (
+          {sample ? (
             <>
-              <p className="eyebrow">Free book</p>
-              {book.cover && <img className="book-cover" src={book.cover} alt={`Cover of ${book.title}: ${book.subtitle}`} width="720" height="931" />}
-              <h2>{book.title}</h2>
-              {book.subtitle && <p className="subtitle">{book.subtitle}</p>}
-              <p className="muted">{book.blurb}</p>
-              <BookGate book={book} />
+              <p className="eyebrow">Free sample{pages ? ` · ${pages} pages` : ''}</p>
+              {sample.cover && <img className="book-cover" src={sample.cover} alt={`Cover of ${sample.subtitle || sample.title}`} width="720" height="931" />}
+              <h2>Read the opening chapters free</h2>
+              <p className="muted">
+                What has to be right, what you are allowed to get wrong, and the cut the whole method rests on -- exactly
+                as the paperback prints them.
+              </p>
+              <BookGate book={sample} cta="Send me the free sample" after={<Upsell books={books} facts={facts} />} />
             </>
           ) : (
-            <p className="muted">Loading the book…</p>
+            <p className="muted">Loading the sample…</p>
           )}
         </div>
       </section>
 
+      <TwoWays books={books} facts={facts} />
+
       <section className="tiles">
         <Link to="/dome" className="tile">
           <h3>How the dome works</h3>
-          <p>The price, what we keep, every fit-out and every reward tier -- straight from the model.</p>
+          <p>
+            {dome ? `${dome.acrossFt} ft across, ${dome.bays} bays. ` : ''}The price, what we keep, every fit-out and
+            every reward tier -- straight from the model.
+          </p>
         </Link>
         <Link to="/network" className="tile">
           <h3>Find the dome network</h3>

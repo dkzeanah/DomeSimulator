@@ -49,4 +49,10 @@ export const config = {
   clientDist: path.join(WEB_ROOT, 'client', 'dist'),
   // How long a download link from the email gate stays valid.
   downloadTokenMinutes: 60 * 24,
+  // Selling the book. With no Stripe key the shop is closed in production,
+  // and locally it runs a test checkout where no card is asked for and no
+  // money moves -- so the whole path can be tried before Stripe is set up.
+  stripeSecretKey: env.STRIPE_SECRET_KEY || '',
+  stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET || '',
+  testCheckout: !production && !env.STRIPE_SECRET_KEY,
 };

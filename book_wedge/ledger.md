@@ -510,7 +510,7 @@ To mark a concept embodied, write it up and put `<!-- concept: film/slug -->` in
 - [x] **What I measured and what I guessed** -- Two piles, kept apart, before any money is discussed. `why/assumptions` -- ch 14 -- `plate-why-assumptions` (to render) -- placed by rule
 - [x] **Machines that stop being necessary** -- Each conversion step is a building full of steel somebody owns. `why/chain` -- ch 39 -- `plate-why-chain` (to render) -- placed by override
 - [x] **Counting the machines out** -- Station by station, which survives and which does not. `why/mills` -- ch 39 -- `plate-why-mills` (to render) -- placed by override
-- [x] **What a shelf price is made of** -- Almost none of it is the tree. `why/middlemen` -- ch 39 -- `plate-why-middlemen` (to render) -- placed by rule
+- [x] **What a shelf price is made of** -- Almost none of it is the tree. `why/middlemen` -- ch 39 -- `plate-stud-hands` -- placed by rule
 - [x] **Fifteen sets of hands** -- Listed, because a round number is easy to say and hard to check. `why/middlemen_math` -- ch 39 -- `plate-why-middlemen-math` (to render) -- placed by override
 - [x] **What one wedge is worth** -- Priced against the sticks it would take to replace it. `why/worth` -- ch 39 -- `plate-why-worth` (to render) -- placed by rule
 - [x] **The rule of thumb, checked** -- Two ways to price a wedge, and how far apart they land. `why/value` -- ch 39 -- `plate-why-value` (to render) -- placed by rule
@@ -522,7 +522,7 @@ To mark a concept embodied, write it up and put `<!-- concept: film/slug -->` in
 
 - [x] **What the house numbers rest on** -- Published, the author's, decided, estimated. `harvest/sources` -- ch 41 -- `plate-harvest-sources` (to render) -- placed by override
 - [x] **Where a house's time goes** -- 7.6 months, most of it inside. `harvest/house_time` -- ch 41 -- `plate-harvest-house-time` (to render) -- placed by override
-- [x] **Where a house's money goes** -- The land, the building, and the people who sell it. `harvest/house_money` -- ch 41 -- `plate-harvest-house-money` (to render) -- placed by rule
+- [x] **Where a house's money goes** -- The land, the building, and the people who sell it. `harvest/house_money` -- ch 41 -- `plate-house-money` -- placed by rule
 - [x] **Labor is not most of it** -- Even at the record lumber price, labor is about a quarter. `harvest/labor_share` -- ch 41 -- `plate-harvest-labor-share` (to render) -- placed by rule
 - [x] **The trailer is built the other way** -- A factory's labor is a smaller share still. `harvest/trailer` -- ch 41 -- `plate-harvest-trailer` (to render) -- placed by rule
 - [x] **What the fortnight is worth** -- Two weeks of one person, against buying the frame. `harvest/worth` -- ch 41 -- `plate-harvest-worth` (to render) -- placed by override
@@ -545,7 +545,7 @@ To mark a concept embodied, write it up and put `<!-- concept: film/slug -->` in
 - [x] **What an hour produces** -- Not a paycheck. Value you no longer have to buy. `why_build/production` -- ch 40 -- `plate-why-build-production` (to render)
 - [x] **Why the hour beats a wage** -- It replaces the wood as well as the work. `why_build/leverage` -- ch 40 -- `plate-why-build-leverage` (to render)
 - [x] **Debt makes it larger** -- An avoided dollar can be an avoided interest-bearing dollar. `why_build/debt` -- ch 40 -- `plate-why-build-debt` (to render)
-- [x] **Interest builds nothing** -- No bedroom, no wall, no square foot. `why_build/interest` -- ch 40 -- `plate-why-build-interest` (to render)
+- [x] **Interest builds nothing** -- No bedroom, no wall, no square foot. `why_build/interest` -- ch 40 -- `plate-interest`
 - [x] **Count it in hours of your life** -- Money is stored labor. `why_build/life_hours` -- ch 40 -- `plate-why-build-life-hours` (to render)
 - [x] **When to build, and when to buy** -- Build while your hour creates more than it earns. `why_build/rule` -- ch 40 -- `plate-why-build-rule` (to render)
 - [x] **Out of the commodity chain** -- Every member from a nearby tree is one less price shock. `why_build/shocks` -- ch 40 -- `plate-why-build-shocks` (to render)
@@ -565,7 +565,7 @@ To mark a concept embodied, write it up and put `<!-- concept: film/slug -->` in
 - [x] **Priced as lumber** -- Priced as wood, splitting is worth $186 more a tree. `pine_value/lumber` -- ch 38 -- `plate-pine-value-lumber` (to render)
 - [x] **Built, it replaces framing** -- Not what the wood would sell for. What it does. `pine_value/use_value` -- ch 38 -- `plate-pine-value-use-value` (to render)
 - [x] **Carried on a mortgage** -- What the same framing costs when it is borrowed. `pine_value/financed` -- ch 38 -- `plate-pine-value-financed` (to render)
-- [x] **The ladder** -- One tree, every rung. `pine_value/ladder` -- ch 38 -- `plate-pine-value-ladder` (to render)
+- [x] **The ladder** -- One tree, every rung. `pine_value/ladder` -- ch 38 -- `plate-pine-ladder`
 - [x] **The wood did not get better** -- It got used. `pine_value/ratios` -- ch 38 -- `plate-pine-value-ratios` (to render)
 - [x] **What the tree is worth to me** -- What it replaces, less what it costs me to make it do so. `pine_value/formula` -- ch 38 -- `plate-pine-value-formula` (to render)
 - [x] **The household as the whole chain** -- Logger, mill, yard, framer and lender, kept at home. `pine_value/upstream` -- ch 38 -- `plate-pine-value-upstream` (to render)
@@ -596,7 +596,7 @@ To mark a concept embodied, write it up and put `<!-- concept: film/slug -->` in
 - [x] **What one costs, line by line** -- Materials, labour, overhead, margin. Nothing hidden in a lump. `seed_pitch/price` -- ch 53 -- `plate-price-line-by-line` -- placed by rule
 - [x] **The catalogue, priced** -- Six second buildings. The frame line never changes. `seed_pitch/seeds` -- ch 51 -- `plate-seeds-priced` -- placed by rule
 - [x] **A $50 quilt, and a bigger cap for each** -- Recycled clothing, quilted by the owner, into one layer under the cap. `seed_pitch/quilt` -- ch 30 -- `plate-quilt` -- placed by rule
-- [x] **What it costs, all of it** -- Ten thousand to build. Two thousand is ours. Twelve to you. `seed_pitch/invoice` -- ch 42 -- `plate-seed-pitch-invoice` (to render) -- placed by rule
+- [x] **What it costs, all of it** -- Ten thousand to build. Two thousand is ours. Twelve to you. `seed_pitch/invoice` -- ch 42 -- `plate-invoice` -- placed by rule
 - [x] **Bring your own ground** -- Twelve thousand, forty-three dollars a square foot. `seed_pitch/close` -- ch 42 -- `plate-seed-pitch-close` (to render) -- placed by rule
 
 **The Dome Simulator Master Presentation** (`master`)

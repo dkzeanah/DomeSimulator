@@ -4,10 +4,15 @@ import { api } from './api.js';
 import Account from './pages/Account.jsx';
 import Admin from './pages/Admin.jsx';
 import Books from './pages/Books.jsx';
+import Buy from './pages/Buy.jsx';
 import Dome from './pages/Dome.jsx';
 import Home from './pages/Home.jsx';
 import Links from './pages/Links.jsx';
 import Network from './pages/Network.jsx';
+import Paperback from './pages/Paperback.jsx';
+import Sample from './pages/Sample.jsx';
+import TestCheckout from './pages/TestCheckout.jsx';
+import Thanks from './pages/Thanks.jsx';
 import Watch from './pages/Watch.jsx';
 
 const Session = createContext({ user: null, site: null, refresh: () => {} });
@@ -44,6 +49,11 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/book" element={<Books />} />
+          <Route path="/sample" element={<Sample />} />
+          <Route path="/buy" element={<Buy />} />
+          <Route path="/paperback" element={<Paperback />} />
+          <Route path="/thanks/:ref" element={<Thanks />} />
+          <Route path="/checkout/test/:ref" element={<TestCheckout />} />
           <Route path="/dome" element={<Dome />} />
           <Route path="/network" element={<Network />} />
           <Route path="/watch" element={<Watch />} />
@@ -77,12 +87,14 @@ function Header() {
         <span />
       </button>
       <nav className={open ? 'open' : ''}>
-        <NavLink to="/book">Free book</NavLink>
+        <NavLink to="/sample">Free sample</NavLink>
+        <NavLink to="/book" end>Books</NavLink>
         <NavLink to="/dome">The dome</NavLink>
         <NavLink to="/network">Network</NavLink>
         <NavLink to="/watch">Watch</NavLink>
         <NavLink to="/links">Links</NavLink>
         {user?.role === 'admin' && <NavLink to="/admin">Admin</NavLink>}
+        <NavLink to="/buy" className="nav-buy">Get the book</NavLink>
         <NavLink to="/account" className="nav-account">
           {user ? user.displayName : 'Sign in'}
         </NavLink>

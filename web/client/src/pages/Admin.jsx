@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import { useSession } from '../App.jsx';
 import Icon from '../components/Icon.jsx';
+import { price } from '../shop.js';
 
 const ICONS = ['link', 'youtube', 'tiktok', 'instagram', 'facebook', 'x', 'kickstarter', 'book', 'email', 'website', 'patreon', 'discord', 'github', 'threads', 'pinterest'];
 
@@ -51,7 +52,66 @@ function Stats() {
       {s.downloadsByBook.length > 0 && (
         <p className="muted small">{s.downloadsByBook.map((b) => `${b.slug}: ${b.count}`).join(' · ')}</p>
       )}
+      <h2>The funnel</h2>
+      <table className="table">
+        <thead>
+          <tr><th>What people asked for</th><th>Book</th><th className="num">People</th></tr>
+        </thead>
+        <tbody>
+          {s.signups.map((r) => (
+            <tr key={`${r.kind}-${r.slug}`}>
+              <td>{{ sample: 'Free sample', waitlist: 'Amazon launch list', purchase: 'Bought' }[r.kind] || r.kind}</td>
+              <td>{r.slug}</td>
+              <td className="num">{r.count}</td>
+            </tr>
+          ))}
+          {s.sales.map((r) => (
+            <tr key={`sale-${r.slug}-${r.currency}-${r.test}`} className={r.test ? 'dim' : ''}>
+              <td>Sales{r.test ? ' (test checkout)' : ''}</td>
+              <td>{r.slug}</td>
+              <td className="num">{r.count} · {price(r.cents, r.currency)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="row">
+        <a className="button" href="/api/admin/signups.csv?kind=waitlist">Download the Amazon launch list (CSV)</a>
+      </p>
+      <p className="muted small">
+        The launch list is everyone who asked to hear when the paperback is on Amazon -- send them that one email. The
+        general mailing list below holds only people who ticked the updates box.
+      </p>
+      <Orders />
     </section>
+  );
+}
+
+function Orders() {
+  const [orders, setOrders] = useState(null);
+  useEffect(() => {
+    api('/admin/orders').then((d) => setOrders(d.orders)).catch(() => setOrders([]));
+  }, []);
+  if (!orders?.length) return null;
+  return (
+    <>
+      <h2>Orders</h2>
+      <table className="table">
+        <thead>
+          <tr><th>When</th><th>Book</th><th>Email</th><th>Status</th><th className="num">Amount</th></tr>
+        </thead>
+        <tbody>
+          {orders.map((o) => (
+            <tr key={o.ref} className={o.test || o.status !== 'paid' ? 'dim' : ''}>
+              <td>{new Date(o.createdAt).toLocaleString()}</td>
+              <td>{o.book}</td>
+              <td>{o.email}</td>
+              <td>{o.status}{o.test ? ' (test)' : ''}</td>
+              <td className="num">{price(o.amountCents, o.currency)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }
 

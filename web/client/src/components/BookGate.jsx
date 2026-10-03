@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import { useSession } from '../App.jsx';
 
-export default function BookGate({ book }) {
+export default function BookGate({ book, after = null, cta = 'Get the free PDF' }) {
   const { user } = useSession();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -25,6 +25,7 @@ export default function BookGate({ book }) {
           Download the PDF{book.sizeMb ? ` (${book.sizeMb} MB)` : ''}
         </a>
         <p className="muted">You are signed in, so there is nothing to fill in.</p>
+        {after}
       </div>
     );
   }
@@ -39,6 +40,7 @@ export default function BookGate({ book }) {
           The link works for a day. Want to keep every edition and join the dome network?{' '}
           <Link to={`/account?email=${encodeURIComponent(email)}&mode=signup`}>Make an account</Link> with the same email.
         </p>
+        {after}
       </div>
     );
   }
@@ -71,10 +73,10 @@ export default function BookGate({ book }) {
       <input className="trap" tabIndex={-1} autoComplete="off" aria-hidden="true" value={trap} onChange={(e) => setTrap(e.target.value)} />
       <label className="check">
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-        Send me the occasional build update and the Kickstarter launch. Unsubscribe any time.
+        Send me the occasional build update, and the paperback and Kickstarter launches. Unsubscribe any time.
       </label>
       <button className="button primary" disabled={state.busy}>
-        {state.busy ? 'One moment…' : 'Get the free PDF'}
+        {state.busy ? 'One moment…' : cta}
       </button>
       {state.error && <p className="error">{state.error}</p>}
       <p className="muted small">

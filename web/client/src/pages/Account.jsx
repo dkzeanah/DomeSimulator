@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../api.js';
 import { useSession } from '../App.jsx';
+import { fullTitle, price } from '../shop.js';
 
 export default function Account() {
   const { user, ready } = useSession();
@@ -48,7 +49,7 @@ function SignIn() {
       <form className="panel form" onSubmit={submit}>
         {mode === 'signup' && (
           <p className="muted">
-            An account lets you download every book any time and put yourself on the dome network. It is free.
+            An account keeps the free sample one click away, holds any book you buy while signed in, and puts you on the dome network. It is free.
           </p>
         )}
         <label>
@@ -148,6 +149,7 @@ function Profile() {
       </p>
       {note && <p className="ok">{note}</p>}
       {error && <p className="error">{error}</p>}
+      <Library />
       <form className="panel form" onSubmit={save}>
         <h2>Profile</h2>
         <label>Name others see<input required maxLength={80} value={form.displayName} onChange={set('displayName')} /></label>
@@ -171,5 +173,35 @@ function Profile() {
         <button className="link danger" onClick={deleteAccount}>Delete my account</button>
       </div>
     </section>
+  );
+}
+
+/** Books bought while signed in. A purchase made signed out lives on its receipt link. */
+function Library() {
+  const [orders, setOrders] = useState(null);
+  useEffect(() => {
+    api('/orders/mine').then((d) => setOrders(d.orders)).catch(() => setOrders([]));
+  }, []);
+  if (!orders) return null;
+  return (
+    <div className="panel form">
+      <h2>Your books</h2>
+      {orders.length === 0 ? (
+        <p className="muted">
+          Nothing bought on this account yet. <Link to="/buy">The digital edition</Link> ·{' '}
+          <Link to="/sample">the free sample</Link>
+        </p>
+      ) : (
+        orders.map((o) => (
+          <div key={o.ref} className="row library-row">
+            <span>
+              <b>{fullTitle(o.book.title, o.book.subtitle)}</b>
+              <span className="muted small"> · {price(o.amountCents, o.currency)} · {new Date(o.paidAt).toLocaleDateString()}</span>
+            </span>
+            <a className="button primary" href={o.downloadUrl}>Download</a>
+          </div>
+        ))
+      )}
+    </div>
   );
 }

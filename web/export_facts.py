@@ -82,8 +82,103 @@ def build() -> dict:
     }
 
 
+BOOK_DIR = HERE.parent / "deliverables" / "book"
+
+
+def _newest_pdf(stem: str) -> Path | None:
+    """The highest -vN of a book, the same rule the server's latestVersion uses."""
+    import re
+
+    best, best_v = None, -1
+    for path in BOOK_DIR.glob(f"{stem}*.pdf"):
+        m = re.fullmatch(rf"{re.escape(stem)}(?:-v(\d+))?\.pdf", path.name)
+        if m and (v := int(m.group(1) or 1)) > best_v:
+            best, best_v = path, v
+    return best
+
+
+def _pages(path: Path | None) -> int | None:
+    if not path:
+        return None
+    import pymupdf
+
+    with pymupdf.open(path) as doc:
+        return doc.page_count
+
+
+def _contents(book) -> list[dict]:
+    return [{"number": p.number, "title": p.title,
+             "chapters": [{"number": c.number, "title": c.title} for c in p.chapters]}
+            for p in book.parts]
+
+
+def books() -> dict:
+    """What the sales pages say about each book: contents, size and the
+    headline figures, every one read from the book's own token resolver --
+    the same values the books print."""
+    from two_v_demo import book as digital_book, book_tokens as digital_tokens
+    from wedge_book import outline as paper_outline, paper, teaser, tokens as paper_tokens
+
+    def d(name: str) -> str:
+        return digital_tokens.resolve("{{" + name + "}}")
+
+    def w(name: str) -> str:
+        return paper_tokens.resolve("{{" + name + "}}")
+
+    digital = digital_book.BOOK
+    paper_book = paper_outline.BOOK
+    return {
+        "digital": {
+            "title": digital_book.TITLE,
+            "subtitle": digital_book.SUBTITLE,
+            "parts": _contents(digital),
+            "chapters": sum(len(p.chapters) for p in digital.parts),
+            "figures": sum(len(c.figures) for p in digital.parts for c in p.chapters),
+            "pages": _pages(_newest_pdf("2-trees")),
+            "numbers": {
+                "trees": d("dome.trees"), "diameterFt": d("dome.diameter_ft"),
+                "floorSqft": d("dome.floor_sqft"), "members": d("frame.members"),
+                "panels": d("frame.panels"), "frameHours": d("hr.total"),
+                "days": d("work.days"), "sawUsd": d("saw.price_usd"),
+                "strutsPerTree": d("tree.struts_per_tree"),
+            },
+        },
+        "paperback": {
+            "title": paper_outline.TITLE,
+            "subtitle": paper_outline.SUBTITLE,
+            "author": paper_outline.AUTHOR,
+            "parts": _contents(paper_book),
+            "chapters": sum(len(p.chapters) for p in paper_book.parts),
+            "figures": len(paper.used_keys()),
+            "pages": _pages(_newest_pdf(paper_outline.STEM)),
+            "numbers": {
+                "members": w("dome.members"), "panels": w("dome.panels"),
+                "floorSqft": w("dome.floor_sqft"), "diameterFt": w("dome.diameter_ft"),
+                "frameHours": w("hr.total"), "labourHours": w("money.labour_hours"),
+                "frameUsd": w("money.frame"), "shellUsd": w("money.cost"),
+                "perSqftUsd": w("money.per_sqft"),
+                "unchangedPct": w("stack.unchanged_pct"),
+            },
+        },
+        "sample": {
+            "pages": _pages(teaser.latest()),
+            "front": list(teaser.FRONT),
+            "chapters": [{"number": c.number, "title": c.title} for c in teaser.SAMPLE],
+            "ofChapters": sum(len(p.chapters) for p in paper_book.parts),
+        },
+        "sources": {
+            "digital": "two_v_demo.book.BOOK and two_v_demo.book_tokens",
+            "paperback": "wedge_book.outline.BOOK, wedge_book.tokens, wedge_book.paper.used_keys()",
+            "sample": "wedge_book.teaser",
+            "pages": "page count of the newest -vN PDF in deliverables/book",
+        },
+    }
+
+
 def render() -> str:
-    return json.dumps(build(), indent=2) + "\n"
+    data = build()
+    data["books"] = books()
+    return json.dumps(data, indent=2) + "\n"
 
 
 MARK = HERE / "client" / "public" / "mark.svg"

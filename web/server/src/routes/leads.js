@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { Router } from 'express';
 import { z } from 'zod';
 import { downloadToken, normaliseEmail, readDownloadToken } from '../lib/auth.js';
-import { loadCatalogue, publicBooks, resolveBook } from '../lib/books.js';
+import { loadCatalogue, offerOf, publicBooks, resolveBook } from '../lib/books.js';
 import { httpError, parse, route } from '../lib/http.js';
 import { config } from '../config.js';
 import { nowIso } from '../db.js';
@@ -29,6 +29,11 @@ export async function upsertSubscriber(db, { email, name = null, consent = false
   return typeof row === 'object' ? row.id : row;
 }
 
+/** One line per thing somebody asked for: the sample, the waitlist, a purchase. */
+export async function recordSignup(db, subscriberId, kind, bookSlug) {
+  await db('signups').insert({ subscriber_id: subscriberId, kind, book_slug: bookSlug, created_at: nowIso() });
+}
+
 const leadSchema = z.object({
   email: z.email().max(320),
   name: z.string().trim().max(120).optional(),
@@ -38,6 +43,17 @@ const leadSchema = z.object({
   website: z.string().max(0, 'leave this empty').optional(),
 });
 
+/** Stream a book's PDF, named for its edition. */
+export function sendPdf(req, res, book, file) {
+  const niceName = `${book.slug}${file.version > 1 ? `-edition-${file.version}` : ''}.pdf`;
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Length', file.size);
+  res.setHeader('Content-Disposition', `attachment; filename="${niceName}"`);
+  res.setHeader('Cache-Control', 'private, no-store');
+  if (req.method === 'HEAD') return res.end();
+  fs.createReadStream(file.path).pipe(res);
+}
+
 export function bookRoutes(db) {
   const router = Router();
 
@@ -46,13 +62,17 @@ export function bookRoutes(db) {
   router.post('/leads', route(async (req, res) => {
     const body = parse(leadSchema, req.body);
     const book = loadCatalogue().find((b) => b.slug === body.book);
-    if (!book || !resolveBook(book)) throw httpError(404, 'That book is not available right now.');
+    // Only a free book is given for an email; a paid one is bought.
+    if (!book || offerOf(book) !== 'free' || !resolveBook(book)) {
+      throw httpError(404, 'That book is not available right now.');
+    }
     const subscriberId = await upsertSubscriber(db, {
       email: body.email,
       name: body.name || null,
       consent: body.marketingConsent,
-      source: 'book',
+      source: book.slug,
     });
+    await recordSignup(db, subscriberId, 'sample', book.slug);
     const token = downloadToken(book.slug, subscriberId);
     res.status(201).json({
       downloadUrl: `/api/books/${encodeURIComponent(book.slug)}/download?token=${token}`,
@@ -72,6 +92,11 @@ export function bookRoutes(db) {
   router.get('/books/:slug/download', route(async (req, res) => {
     const book = loadCatalogue().find((b) => b.slug === req.params.slug);
     if (!book) throw httpError(404, 'No such book.');
+    // A book that is sold is downloaded through its order (routes/store.js);
+    // only the site's owner can take it from here.
+    if (offerOf(book) !== 'free' && req.user?.role !== 'admin') {
+      throw httpError(403, 'This book is sold, not given away. Your purchase link downloads it.');
+    }
     let subscriberId = null;
     if (!req.user) {
       const token = readDownloadToken(req.query.token);
@@ -93,13 +118,7 @@ export function bookRoutes(db) {
         created_at: nowIso(),
       });
     }
-    const niceName = `${book.slug}${file.version > 1 ? `-edition-${file.version}` : ''}.pdf`;
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Length', file.size);
-    res.setHeader('Content-Disposition', `attachment; filename="${niceName}"`);
-    res.setHeader('Cache-Control', 'private, no-store');
-    if (req.method === 'HEAD') return res.end();
-    fs.createReadStream(file.path).pipe(res);
+    sendPdf(req, res, book, file);
   }));
 
   return router;

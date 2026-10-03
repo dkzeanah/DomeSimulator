@@ -14,6 +14,7 @@ import { authRoutes } from './routes/auth.js';
 import { contentRoutes } from './routes/content.js';
 import { bookRoutes } from './routes/leads.js';
 import { networkRoutes } from './routes/network.js';
+import { storeRoutes, stripeWebhook } from './routes/store.js';
 
 export function createApp(db, { rateLimits = true } = {}) {
   const app = express();
@@ -38,6 +39,8 @@ export function createApp(db, { rateLimits = true } = {}) {
       crossOriginEmbedderPolicy: false,
     }),
   );
+  // Stripe signs the raw bytes, so its webhook reads them before any parser.
+  app.post('/api/stripe/webhook', express.raw({ type: 'application/json', limit: '1mb' }), stripeWebhook(db));
   app.use(express.json({ limit: '64kb' }));
   app.use(cookieParser());
 
@@ -59,6 +62,8 @@ export function createApp(db, { rateLimits = true } = {}) {
     app.use('/api/auth/login', limiter(10, 15));
     app.use('/api/auth/signup', limiter(10, 60));
     app.use('/api/leads', limiter(20, 60));
+    app.use('/api/waitlist', limiter(20, 60));
+    app.use('/api/checkout', limiter(20, 60));
     app.use('/api', limiter(600, 15));
   }
 
@@ -67,6 +72,7 @@ export function createApp(db, { rateLimits = true } = {}) {
   app.get('/api/health', (_req, res) => res.json({ ok: true }));
   app.use('/api/auth', authRoutes(db));
   app.use('/api', bookRoutes(db));
+  app.use('/api', storeRoutes(db));
   app.use('/api/network', networkRoutes(db));
   app.use('/api/admin', adminRoutes(db));
   app.use('/api', contentRoutes(db));

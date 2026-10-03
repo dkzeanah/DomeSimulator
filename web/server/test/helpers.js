@@ -12,10 +12,15 @@ const books = fs.mkdtempSync(path.join(os.tmpdir(), 'domenet-books-'));
 fs.writeFileSync(path.join(books, 'test-book.pdf'), '%PDF-1.4 first');
 fs.writeFileSync(path.join(books, 'test-book-v2.pdf'), '%PDF-1.4 second');
 fs.writeFileSync(path.join(books, 'test-book-v3.pdf'), '%PDF-1.4 third edition');
+fs.writeFileSync(path.join(books, 'paid-book.pdf'), '%PDF-1.4 the paid one');
+fs.writeFileSync(path.join(books, 'kdp-book.pdf'), '%PDF-1.4 print');
 fs.writeFileSync(path.join(books, 'books.json'), JSON.stringify({
   books: [
     { slug: 'test-book', title: 'Test Book', file: 'test-book.pdf', featured: true },
     { slug: 'missing-book', title: 'Not Printed Yet', file: 'nope.pdf' },
+    { slug: 'paid-book', title: 'Paid Book', file: 'paid-book.pdf', offer: 'paid', priceCents: 2000, currency: 'usd', page: 'buy' },
+    { slug: 'kdp-book', title: 'Print Book', file: 'kdp-book.pdf', offer: 'amazon' },
+    { slug: 'hidden-book', title: 'Hidden Book', file: 'test-book.pdf', offer: 'none' },
   ],
 }));
 
@@ -26,6 +31,10 @@ process.env.BOOKS_CONFIG = path.join(books, 'books.json');
 process.env.ADMIN_EMAILS = 'boss@example.com';
 process.env.SESSION_SECRET = 'test-secret-test-secret-test-secret';
 process.env.YOUTUBE_CHANNEL_ID = '';
+// No Stripe key: the shop runs its local test checkout.
+process.env.STRIPE_SECRET_KEY = '';
+process.env.STRIPE_WEBHOOK_SECRET = '';
+process.env.NODE_ENV = 'test';
 
 const { createDb, migrate } = await import('../src/db.js');
 const { createApp } = await import('../src/app.js');

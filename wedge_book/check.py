@@ -70,6 +70,7 @@ SLOW: tuple[tuple[str, str, str], ...] = (
     ("paper", "wedge_book.paper", "validate_paper"),
     ("print", "wedge_book.print_edition", "check_print_edition"),
     ("cover", "wedge_book.cover", "check_cover"),
+    ("sample", "wedge_book.teaser", "check_sample"),
 )
 
 

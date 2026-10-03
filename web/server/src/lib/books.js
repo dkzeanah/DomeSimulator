@@ -42,21 +42,49 @@ export function resolveBook(book, dir = config.booksDir) {
   return { ...found, size, updatedAt: mtime.toISOString() };
 }
 
+/**
+ * How a book is offered:
+ *   free    -- the PDF, for an email (the sample)
+ *   paid    -- sold here; priceCents and currency say for how much
+ *   amazon  -- sold on Amazon; amazonUrl once it is live, a waitlist until then
+ *   none    -- kept in the catalogue, not shown
+ */
+export const OFFERS = ['free', 'paid', 'amazon', 'none'];
+export const offerOf = (book) => (OFFERS.includes(book.offer) ? book.offer : 'free');
+
+/** The shop is open for a book when it is paid, priced, and printed. */
+export function priceOf(book) {
+  const cents = Number(book.priceCents);
+  if (offerOf(book) !== 'paid' || !Number.isInteger(cents) || cents < 50) return null;
+  return { cents, currency: String(book.currency || 'usd').toLowerCase() };
+}
+
 /** What the API tells the browser about each book: never a disk path. */
 export function publicBooks(dir = config.booksDir, file = config.booksConfig) {
-  return loadCatalogue(file).map((book) => {
-    const found = resolveBook(book, dir);
-    return {
-      slug: book.slug,
-      title: book.title,
-      subtitle: book.subtitle || '',
-      blurb: book.blurb || '',
-      cover: book.cover || '',
-      featured: Boolean(book.featured),
-      available: Boolean(found),
-      edition: found ? found.version : null,
-      sizeMb: found ? Math.round((found.size / 1048576) * 10) / 10 : null,
-      updatedAt: found ? found.updatedAt : null,
-    };
-  });
+  return loadCatalogue(file)
+    .filter((book) => offerOf(book) !== 'none')
+    .map((book) => {
+      const found = resolveBook(book, dir);
+      const offer = offerOf(book);
+      const price = priceOf(book);
+      return {
+        slug: book.slug,
+        title: book.title,
+        subtitle: book.subtitle || '',
+        author: book.author || '',
+        blurb: book.blurb || '',
+        cover: book.cover || '',
+        featured: Boolean(book.featured),
+        offer,
+        page: book.page || '',
+        facts: book.facts || '',
+        priceCents: price ? price.cents : null,
+        currency: price ? price.currency : null,
+        amazonUrl: offer === 'amazon' ? book.amazonUrl || '' : '',
+        available: Boolean(found),
+        edition: found ? found.version : null,
+        sizeMb: found ? Math.round((found.size / 1048576) * 10) / 10 : null,
+        updatedAt: found ? found.updatedAt : null,
+      };
+    });
 }

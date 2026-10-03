@@ -331,5 +331,758 @@
     "tiers": "kickstarter.tiers()",
     "fitouts": "seed_model.fitouts()",
     "panels": "seed_model.PANELS"
+  },
+  "books": {
+    "digital": {
+      "title": "Geodesic Dome Wedge Method",
+      "subtitle": "The 40 Hour Cabin: 3 Trees",
+      "parts": [
+        {
+          "number": 1,
+          "title": "How to Build One",
+          "chapters": [
+            {
+              "number": 1,
+              "title": "The Tree That Was Already Down"
+            },
+            {
+              "number": 2,
+              "title": "Fifteen Middlemen"
+            },
+            {
+              "number": 3,
+              "title": "The Frankendome"
+            },
+            {
+              "number": 4,
+              "title": "The V-Bracket Afternoon"
+            },
+            {
+              "number": 5,
+              "title": "The Cut That Changed It"
+            },
+            {
+              "number": 6,
+              "title": "Triangles Do Not Care What Shape Your Stick Is"
+            },
+            {
+              "number": 7,
+              "title": "Not a Worse Two-by-Four"
+            },
+            {
+              "number": 8,
+              "title": "Forty Panels, One Hundred and Twenty Members"
+            },
+            {
+              "number": 9,
+              "title": "Two Lengths, Not Forty"
+            },
+            {
+              "number": 10,
+              "title": "Compression, Tension, and One Eighth of a Tree"
+            },
+            {
+              "number": 11,
+              "title": "What a Dome Costs You"
+            },
+            {
+              "number": 12,
+              "title": "Split Like a Cake"
+            },
+            {
+              "number": 13,
+              "title": "Eighty-Seven Percent"
+            },
+            {
+              "number": 14,
+              "title": "Four Ways Up"
+            },
+            {
+              "number": 15,
+              "title": "The Pinwheel"
+            },
+            {
+              "number": 16,
+              "title": "The Seam and Its Key"
+            },
+            {
+              "number": 17,
+              "title": "Let the Connector Hold the Angle"
+            },
+            {
+              "number": 18,
+              "title": "Why Every Panel Keeps Its Own Edge"
+            },
+            {
+              "number": 19,
+              "title": "Bends, Knots and Small Units"
+            },
+            {
+              "number": 20,
+              "title": "Which Way Round Are You Working?"
+            },
+            {
+              "number": 21,
+              "title": "Method A: From the Dome You Want"
+            },
+            {
+              "number": 22,
+              "title": "Method B: From the Tree You Have"
+            },
+            {
+              "number": 23,
+              "title": "The Round Trip"
+            },
+            {
+              "number": 24,
+              "title": "The Worked Build"
+            },
+            {
+              "number": 25,
+              "title": "When the Numbers Say No"
+            },
+            {
+              "number": 26,
+              "title": "Day Zero: The Saw"
+            },
+            {
+              "number": 27,
+              "title": "Days One and Two: Felling"
+            },
+            {
+              "number": 28,
+              "title": "Days Three and Four: Bucking"
+            },
+            {
+              "number": 29,
+              "title": "Days Five to Eight: Ripping"
+            },
+            {
+              "number": 30,
+              "title": "Day Nine: The Jig"
+            },
+            {
+              "number": 31,
+              "title": "Days Ten to Twelve: Forty Panels"
+            },
+            {
+              "number": 32,
+              "title": "Days Thirteen and Fourteen: Raising"
+            },
+            {
+              "number": 33,
+              "title": "One Bench, Forty Panels"
+            },
+            {
+              "number": 34,
+              "title": "The Butt Cut"
+            },
+            {
+              "number": 35,
+              "title": "The Head Overfit"
+            },
+            {
+              "number": 36,
+              "title": "Flush-Cutting in Place"
+            },
+            {
+              "number": 37,
+              "title": "Panel Drawings"
+            },
+            {
+              "number": 38,
+              "title": "Where Error Goes"
+            },
+            {
+              "number": 39,
+              "title": "The Footing and the Ring"
+            },
+            {
+              "number": 40,
+              "title": "Closing the Shell"
+            },
+            {
+              "number": 41,
+              "title": "Doors, Windows and the Rim"
+            },
+            {
+              "number": 42,
+              "title": "Weather and Water"
+            },
+            {
+              "number": 43,
+              "title": "Finishing the Wood"
+            },
+            {
+              "number": 44,
+              "title": "Inside a Round Room"
+            },
+            {
+              "number": 45,
+              "title": "Heat, Power and the Small Systems"
+            },
+            {
+              "number": 46,
+              "title": "The Money, Both Ways"
+            },
+            {
+              "number": 47,
+              "title": "The Hours"
+            },
+            {
+              "number": 48,
+              "title": "Bigger, Smaller, Other Frequencies"
+            },
+            {
+              "number": 49,
+              "title": "Other Species, Other Sections"
+            },
+            {
+              "number": 50,
+              "title": "Building With Other People"
+            },
+            {
+              "number": 51,
+              "title": "What I Would Do Differently"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Why It Scales",
+          "chapters": [
+            {
+              "number": 52,
+              "title": "The List That Does Not Grow"
+            },
+            {
+              "number": 53,
+              "title": "Nine Processes at Any Size"
+            },
+            {
+              "number": 54,
+              "title": "What an Hour at the Log Is Worth"
+            },
+            {
+              "number": 55,
+              "title": "The Six Values of One Pine"
+            },
+            {
+              "number": 56,
+              "title": "Where the Fuel Actually Goes"
+            },
+            {
+              "number": 57,
+              "title": "Less Skin for the Same Floor"
+            },
+            {
+              "number": 58,
+              "title": "The Cheapest Square Footage in the Building"
+            },
+            {
+              "number": 59,
+              "title": "The Roof Is Already a Gutter"
+            },
+            {
+              "number": 60,
+              "title": "A House That Gets Warmer Every Winter"
+            },
+            {
+              "number": 61,
+              "title": "The Quilt Network"
+            },
+            {
+              "number": 62,
+              "title": "One Hardware Set, Three Sizes"
+            },
+            {
+              "number": 63,
+              "title": "Buy for the Next Two Steps"
+            },
+            {
+              "number": 64,
+              "title": "The Ground Is What You Cannot Take With You"
+            },
+            {
+              "number": 65,
+              "title": "A Pad, Not a Plot"
+            },
+            {
+              "number": 66,
+              "title": "Turning the House Toward the Sun, Until It Stops Being Worth It"
+            },
+            {
+              "number": 67,
+              "title": "One Pad, Every Dome Size"
+            },
+            {
+              "number": 68,
+              "title": "Why a Network Beats a Park"
+            },
+            {
+              "number": 69,
+              "title": "What Would Have to Be True"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Variations and Future Systems",
+          "chapters": [
+            {
+              "number": 70,
+              "title": "The Dome That Stacks Hats"
+            },
+            {
+              "number": 71,
+              "title": "The Mast and the Floor"
+            },
+            {
+              "number": 72,
+              "title": "The Floating Dome"
+            },
+            {
+              "number": 73,
+              "title": "Seven Ways to Make a Wedge"
+            },
+            {
+              "number": 74,
+              "title": "Every Other Way of Doing It"
+            },
+            {
+              "number": 75,
+              "title": "Hubs, or No Hubs"
+            },
+            {
+              "number": 76,
+              "title": "A Zome Is Not a Piece of a Sphere"
+            },
+            {
+              "number": 77,
+              "title": "Exactly Twelve Pentagons, Always"
+            },
+            {
+              "number": 78,
+              "title": "Why We Call It a Stem Cell"
+            },
+            {
+              "number": 79,
+              "title": "Sink the Money Into the Part That Moves"
+            },
+            {
+              "number": 80,
+              "title": "The Boat-Hull Shell"
+            },
+            {
+              "number": 81,
+              "title": "Fifteen Buildings From One Body"
+            },
+            {
+              "number": 82,
+              "title": "The Seam That Does Four Jobs"
+            },
+            {
+              "number": 83,
+              "title": "Compare Dew Points, Not Humidity"
+            },
+            {
+              "number": 84,
+              "title": "The House as a Product"
+            },
+            {
+              "number": 85,
+              "title": "What the Campaign Is For"
+            },
+            {
+              "number": 86,
+              "title": "The Module Catalogue"
+            },
+            {
+              "number": 87,
+              "title": "Sixteen Billion Shells"
+            },
+            {
+              "number": 88,
+              "title": "The Four-Point-Five Metre Dome"
+            },
+            {
+              "number": 89,
+              "title": "The Non-Beveled Method"
+            }
+          ]
+        }
+      ],
+      "chapters": 89,
+      "figures": 110,
+      "pages": 429,
+      "numbers": {
+        "trees": "3",
+        "diameterFt": "21.6",
+        "floorSqft": "365",
+        "members": "120",
+        "panels": "40",
+        "frameHours": "53.5",
+        "days": "14",
+        "sawUsd": "199",
+        "strutsPerTree": "64"
+      }
+    },
+    "paperback": {
+      "title": "Geodesic Dome Wedge Method",
+      "subtitle": "The 40 Hour Cabin",
+      "author": "Donovan Zeanah",
+      "parts": [
+        {
+          "number": 1,
+          "title": "What Actually Has to Be Right",
+          "chapters": [
+            {
+              "number": 1,
+              "title": "Your Skull Is Not Symmetrical Either"
+            },
+            {
+              "number": 2,
+              "title": "Water Is the Silent Killer"
+            },
+            {
+              "number": 3,
+              "title": "Build It So You Can Change Your Mind"
+            },
+            {
+              "number": 4,
+              "title": "A House With a Parts List"
+            },
+            {
+              "number": 5,
+              "title": "Why I Built the Ugly One"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "The Geometry, From Scratch",
+          "chapters": [
+            {
+              "number": 6,
+              "title": "Why It Is Triangles"
+            },
+            {
+              "number": 7,
+              "title": "Twelve Points From One Number"
+            },
+            {
+              "number": 8,
+              "title": "Halve Every Edge, Then Push It Out"
+            },
+            {
+              "number": 9,
+              "title": "Two Lengths, Four Ways"
+            },
+            {
+              "number": 10,
+              "title": "Half a Sphere Is a Building"
+            },
+            {
+              "number": 11,
+              "title": "Choosing a Size, At Last"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "title": "The Stick",
+          "chapters": [
+            {
+              "number": 12,
+              "title": "The Woodpile Is Standing Up"
+            },
+            {
+              "number": 13,
+              "title": "Stop Squaring. Start Splitting."
+            },
+            {
+              "number": 14,
+              "title": "What the Saw Actually Does"
+            },
+            {
+              "number": 15,
+              "title": "One Eighth of a Tree, Used as a Stick"
+            },
+            {
+              "number": 16,
+              "title": "Two Lengths, and Neither Is the Chord"
+            },
+            {
+              "number": 17,
+              "title": "Green Wood Moves, and a Split Moves Least"
+            },
+            {
+              "number": 18,
+              "title": "Char the Outside, Oil It, and Leave the Faces Bare"
+            },
+            {
+              "number": 19,
+              "title": "Linseed Oil, Where It Belongs"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "title": "The Panel",
+          "chapters": [
+            {
+              "number": 20,
+              "title": "Nothing Meets at the Corner"
+            },
+            {
+              "number": 21,
+              "title": "Forty Frames, Lifted Whole"
+            },
+            {
+              "number": 22,
+              "title": "Nine Processes, Whatever Size You Build"
+            },
+            {
+              "number": 23,
+              "title": "What the Work Costs the Body"
+            },
+            {
+              "number": 24,
+              "title": "One Flat Board, Forty Identical Panels"
+            },
+            {
+              "number": 25,
+              "title": "If Your Sticks Are Rectangles"
+            },
+            {
+              "number": 26,
+              "title": "Doors, Windows, and What Not to Cut"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "title": "The Skin",
+          "chapters": [
+            {
+              "number": 27,
+              "title": "Raising It"
+            },
+            {
+              "number": 28,
+              "title": "One Watertight Layer, and Only One"
+            },
+            {
+              "number": 29,
+              "title": "The Seam Does Four Jobs"
+            },
+            {
+              "number": 30,
+              "title": "A Dome Is a Head, and It Wears Hats"
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "title": "The Seam at Work",
+          "chapters": [
+            {
+              "number": 31,
+              "title": "What Fits in the Channel"
+            },
+            {
+              "number": 32,
+              "title": "Compare Dew Points, Not Humidity"
+            },
+            {
+              "number": 33,
+              "title": "Four Levels, and the Ring That Cannot Drain"
+            },
+            {
+              "number": 34,
+              "title": "The Desiccant Belongs in a Drawer"
+            },
+            {
+              "number": 35,
+              "title": "Metal in the Seam"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "title": "The Floor and the Ground",
+          "chapters": [
+            {
+              "number": 36,
+              "title": "The Floor Is the Other Thing to Get Right"
+            },
+            {
+              "number": 37,
+              "title": "A Pad, Not a Plot"
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "title": "What It Costs and What It Is Worth",
+          "chapters": [
+            {
+              "number": 38,
+              "title": "A Twenty-Dollar Pine Is Not a Twenty-Dollar Pine"
+            },
+            {
+              "number": 39,
+              "title": "Fifteen Sets of Hands"
+            },
+            {
+              "number": 40,
+              "title": "How Much Shelter Does an Hour Buy"
+            },
+            {
+              "number": 41,
+              "title": "Where a House's Money Goes"
+            },
+            {
+              "number": 42,
+              "title": "What It Costs, Line by Line"
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "title": "The Network",
+          "chapters": [
+            {
+              "number": 43,
+              "title": "Why a Network Beats a Park"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "title": "Other Shapes",
+          "chapters": [
+            {
+              "number": 44,
+              "title": "A Zome Is Not a Piece of a Sphere"
+            },
+            {
+              "number": 45,
+              "title": "Exactly Twelve Pentagons, Always"
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "title": "The Catalogue",
+          "chapters": [
+            {
+              "number": 46,
+              "title": "Every Other Way of Doing It"
+            },
+            {
+              "number": 47,
+              "title": "Hubs, or No Hubs"
+            },
+            {
+              "number": 48,
+              "title": "Twelve Buildings, One Tool"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "title": "The Stem Cell",
+          "chapters": [
+            {
+              "number": 49,
+              "title": "Why We Call It a Stem Cell"
+            },
+            {
+              "number": 50,
+              "title": "Sink the Money Into the Part That Moves"
+            },
+            {
+              "number": 51,
+              "title": "Fifteen Buildings From One Body"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "title": "Variations",
+          "chapters": [
+            {
+              "number": 52,
+              "title": "Hang It Between Two Trees"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "title": "The Tools",
+          "chapters": [
+            {
+              "number": 53,
+              "title": "The Software That Wrote This Book"
+            },
+            {
+              "number": 54,
+              "title": "What Each World Shows You"
+            },
+            {
+              "number": 55,
+              "title": "Every Part, Priced"
+            }
+          ]
+        }
+      ],
+      "chapters": 55,
+      "figures": 176,
+      "pages": 292,
+      "numbers": {
+        "members": "120",
+        "panels": "40",
+        "floorSqft": "277",
+        "diameterFt": "19.42",
+        "frameHours": "37.5",
+        "labourHours": "67",
+        "frameUsd": "692",
+        "shellUsd": "10,030",
+        "perSqftUsd": "43.45",
+        "unchangedPct": "37"
+      }
+    },
+    "sample": {
+      "pages": 24,
+      "front": [
+        "Forty Hours"
+      ],
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Your Skull Is Not Symmetrical Either"
+        },
+        {
+          "number": 2,
+          "title": "Water Is the Silent Killer"
+        },
+        {
+          "number": 3,
+          "title": "Build It So You Can Change Your Mind"
+        },
+        {
+          "number": 13,
+          "title": "Stop Squaring. Start Splitting."
+        }
+      ],
+      "ofChapters": 55
+    },
+    "sources": {
+      "digital": "two_v_demo.book.BOOK and two_v_demo.book_tokens",
+      "paperback": "wedge_book.outline.BOOK, wedge_book.tokens, wedge_book.paper.used_keys()",
+      "sample": "wedge_book.teaser",
+      "pages": "page count of the newest -vN PDF in deliverables/book"
+    }
   }
 }

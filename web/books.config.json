@@ -1,14 +1,45 @@
 {
-  "_note": "Books offered for download. 'file' is the base name in BOOKS_DIR (default ../deliverables/book); the site always serves its highest -vN version, so publishing a new edition needs no change here. Slugs: lowercase letters, digits and dashes only.",
-  "_author_note": "The two wedge books below -- 'The Wedge Method: A Builder's Guide' and 'The Wedge Method' -- are the same book written two different ways, and the author is deciding which one to keep. Do not merge them, retitle them to match, or drop either one; the decision is the author's and it is deliberately still open.",
+  "_note": "Books on the site. 'file' is the base name in BOOKS_DIR (default ../deliverables/book); the site always serves its highest -vN version, so publishing a new edition needs no change here. Slugs: lowercase letters, digits and dashes only. 'offer' is how a book is offered: free (the PDF for an email), paid (sold here at priceCents, in cents), amazon (sold on Amazon -- set amazonUrl when it is live; until then the page runs a waitlist), none (kept, not shown). 'page' is the site path of the book's own sales page; 'facts' names its section in server/src/generated/facts.json.",
+  "_author_note": "Decided 2026-10-03: the paperback on Amazon is Claude's book (wedge_book/, 'Geodesic Dome Wedge Method: The 40 Hour Cabin'); the digital book sold here is DeepSeek's (two_v_demo/book.py, '... The 40 Hour Cabin: 3 Trees'). The author will choose later which to keep and merge them to remove duplicate lessons -- do not merge them, retitle one to match the other, or drop either. 'the-wedge-method' is the earlier edition of the paperback's text; it is kept, not shown, so it does not undersell the paperback.",
   "books": [
     {
-      "slug": "the-40-hour-cabin",
-      "title": "The Wedge Method: A Builder's Guide",
-      "subtitle": "Splitting the wedges, cutting the members, standing the frame",
-      "blurb": "The companion guide to the master book: the stem-cell dome from log to frame, with every table computed from the solver.",
-      "file": "the-40-hour-cabin.pdf",
+      "slug": "sample",
+      "title": "The Free Sample",
+      "subtitle": "Geodesic Dome Wedge Method: The 40 Hour Cabin",
+      "author": "Donovan Zeanah",
+      "blurb": "The opening of the paperback, exactly as printed: what has to be right, what you are allowed to get wrong, and the cut the method is built on.",
+      "file": "the-40-hour-cabin-sample.pdf",
+      "offer": "free",
+      "page": "sample",
+      "facts": "sample",
       "featured": true,
+      "cover": "/covers/the-40-hour-cabin.jpg"
+    },
+    {
+      "slug": "2-trees",
+      "title": "Geodesic Dome Wedge Method",
+      "subtitle": "The 40 Hour Cabin: 3 Trees",
+      "author": "Donovan Zeanah",
+      "blurb": "The digital edition: the whole build day by day, why it scales, and every variation -- from the trees and one chainsaw to a geodesic cabin.",
+      "file": "2-trees.pdf",
+      "offer": "paid",
+      "priceCents": 2000,
+      "currency": "usd",
+      "page": "buy",
+      "facts": "digital",
+      "cover": "/covers/2-trees.jpg"
+    },
+    {
+      "slug": "the-40-hour-cabin",
+      "title": "Geodesic Dome Wedge Method",
+      "subtitle": "The 40 Hour Cabin",
+      "author": "Donovan Zeanah",
+      "blurb": "The paperback: from standing tree to a dry, raised shell, with every length, angle and price computed from the geometry.",
+      "file": "the-40-hour-cabin.pdf",
+      "offer": "amazon",
+      "amazonUrl": "",
+      "page": "paperback",
+      "facts": "paperback",
       "cover": "/covers/the-40-hour-cabin.jpg"
     },
     {
@@ -16,15 +47,8 @@
       "title": "The Wedge Method",
       "subtitle": "Why a split log beats a milled one",
       "blurb": "The geometry behind triangular wedge members -- point in, flat face out -- and the seam they leave between them.",
-      "file": "the-wedge-method.pdf"
-    },
-    {
-      "slug": "2-trees",
-      "title": "Geodesic Dome Wedge Method",
-      "subtitle": "The 40 Hour Cabin: 3 Trees",
-      "blurb": "The master book: three trees, forty hours or less, and a geodesic wedge cabin winched up between the trees.",
-      "file": "2-trees.pdf",
-      "cover": "/covers/2-trees.jpg"
+      "file": "the-wedge-method.pdf",
+      "offer": "none"
     }
   ]
 }

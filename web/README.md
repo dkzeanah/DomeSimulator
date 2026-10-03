@@ -4,7 +4,11 @@ One small website that does five jobs:
 
 | page | what it does |
 |---|---|
-| **/** and **/book** | Gives away the PDF books. A visitor types an email, gets a download link that works for a day, and is asked (not forced) whether they want updates. |
+| **/** and **/sample** | The free sample (a few chapters of the paperback) for an email. The email goes in the database; the visitor is asked (not forced) whether they want updates, then shown the $20 book. |
+| **/buy** | The sales page for the digital edition, sold here, with the Buy button (Stripe). |
+| **/paperback** | The paperback, coming to Amazon: a launch list until you paste in the Amazon link. |
+| **/book** | All three side by side. |
+| **/thanks/...** | Where a buyer lands after paying. That page's address is their receipt and their download link. |
 | **/account** | Lets people make an account: email, name, password. Account holders can download any book any time and list themselves on the network. |
 | **/network** | The dome network: pad hosts, dome owners, quilters, builders and people with trees. Search by keyword, by type, or "near me". |
 | **/links** | A link-in-bio page (like Linktree) for your Instagram and TikTok profiles. |
@@ -73,6 +77,35 @@ ConvertKit...).
 **Update the dome's figures after the model changes.** From the repository
 root, run `py -3.12 web/export_facts.py`. Every figure on the site comes from
 there; none is typed into the website code.
+
+## Selling the book
+
+How each book is offered is set in `books.config.json` (`offer`: `free`, `paid`, `amazon`, `none`). The price is
+`priceCents` there -- `2000` is $20 -- and it is the only place the price lives: the page, the checkout and the free
+sample's last page all read it.
+
+**Before Stripe is set up**, a local server runs a *test checkout*: the Buy button goes to a page that says plainly no
+money moves, and a button there marks the order paid. Use it to try the whole path.
+
+**To take real money:**
+
+1. Make a Stripe account at stripe.com.
+2. Dashboard → Developers → API keys → copy the **Secret key** into `.env` as `STRIPE_SECRET_KEY=`. Start with the
+   *test* key (`sk_test_...`) and Stripe's test card `4242 4242 4242 4242`; swap in the live key when ready.
+3. Dashboard → Developers → Webhooks → Add endpoint: `https://YOUR-SITE/api/stripe/webhook`, event
+   `checkout.session.completed`. Copy its signing secret into `.env` as `STRIPE_WEBHOOK_SECRET=`.
+4. Restart the site. The test checkout switches itself off the moment a key is set.
+
+**When the paperback is on Amazon**, paste its Amazon address into `amazonUrl` in `books.config.json`. The launch
+list becomes a Buy on Amazon button. Admin page → *Download the Amazon launch list* gives you everyone who asked to
+be told -- send them that one email.
+
+**A new free sample**: `py -3.12 -m wedge_book.teaser` cuts it from the newest print edition (rebuild that first with
+`py -3.12 -m wedge_book.print_edition`). The site serves the newest automatically. The sample prints the site's
+address from `site.config.json` (`url`), so set that to your real domain before you build one to hand out.
+
+**After either book changes**, run `py -3.12 web/export_facts.py` so the sales pages' chapter lists, page counts and
+figures match.
 
 ## Put it on the internet
 
