@@ -1,0 +1,53 @@
+93 PARTIAL rows, 52 homes
+45 Heat, Power and the Small Systems :: Utility polyp || Off-grid demand || Off-grid solar sizing || Solar component prices || Battery brief correction || Triangular solar cells gap || Shared bathhouse || Solar nameplate range
+11 What a Dome Costs You :: Price floor and shipped price || Materials+labour+overhead+reserve || Pristine BOM || v1 campaign price || v1 close
+81 Fifteen Buildings From One Body :: Themed skins || Climate-controlled storage dome || Six seeds shape notes || v1 nine fit-outs
+40 Closing the Shell :: Five heights || Shell slices and S-lip || Slice weight
+50 Building With Other People :: Three audiences || Little-guy audience || Customer-assembly lever
+54 What an Hour at the Log Is Worth :: Lumber value || Stumpage benchmarks || Breakeven wage
+65 A Pad, Not a Plot :: Starter pad overshoots target || Ten-year infrastructure aim || BYOD: what a ten-thousand-dollar pad returns
+68 Why a Network Beats a Park :: Forty domes under one builder || The endgame || Glorified-tent argument
+79 Sink the Money Into the Part That Moves :: Core cost || Core life || Buy upgrades later
+82 The Seam That Does Four Jobs :: The exposed face is not a sealing land || Seam duct as water collector || Seam duct is unproven
+87 Sixteen Billion Shells :: The tool's own meshes || The four dials are stepped || The random draw
+15 The Pinwheel :: Net tree outcome || v1 frame cost
+24 The Worked Build :: Graphics: a shape and a picture, two calculations || Proof of concept build
+39 The Footing and the Ring :: Platform build || Deck boards count
+41 Doors, Windows and the Rim :: Putty needs retainers || Glazing restrictions
+57 Less Skin for the Same Floor :: Forty panels from one 10×5 sheet || Drag coefficients
+66 Turning the House Toward the Sun :: Radiative paint || Sky-cooling paint
+66 Turning the House Toward the Sun, Until It Stops Being Worth It :: v1 solar sizing || Tracking foundation excluded
+67 One Pad, Every Dome Size :: Three target dome sizes || Specialized pad needs
+69 What Would Have to Be True :: Four ways to have a roof || Build-it-anyway
+70 The Dome That Stacks Hats :: Hull cavity limit vs cap growth || Quilt layer + bigger cap marginal
+83 Compare Dew Points, Not Humidity :: Winter/summer correction || Conduction-only limit
+10 Compression, Tension, and One Eighth of a Tree :: The proof that shipped
+12 Split Like a Cake :: Operations to frame
+13 Eighty-Seven Percent :: Lumber recovery factor
+16 The Seam and Its Key :: Seam hose vs solid keys
+18 Why Every Panel Keeps Its Own Edge :: Two panels per bay cost
+19 Bends, Knots and Small Units :: Oil cannot restore strength
+21 Method A: From the Dome You Want :: Seven stations from number to pixel
+25 When the Numbers Say No :: Price levers
+26 Day Zero: The Saw :: The saw tank is an estimate
+27 Days One and Two: Felling :: Theoretical member count
+44 Inside a Round Room :: Interior finish choices
+49 Other Species, Other Sections :: Four build variants
+5 The Cut That Changed It :: No-mitre retirement
+51 What I Would Do Differently :: Author backstory
+53 Nine Processes at Any Size :: Hand-built counts
+55 The Six Values of One Pine :: Financed payment detail
+56 Where the Fuel Actually Goes :: Firewood benchmark
+59 The Roof Is Already a Gutter :: Glass the top twenty
+60 A House That Gets Warmer Every Winter :: v1 not-insulated warning
+61 The Quilt Network :: Quilt shirts-per-layer
+62 One Hardware Set, Three Sizes :: Hardware must be qualified
+64 The Ground Is What You Cannot Take With You :: Timber workshop example
+72 The Floating Dome :: Floating is not engineered
+75 Hubs, or No Hubs :: Moulded member
+77 Exactly Twelve Pentagons, Always :: Subdivided hexagons are not regular
+8 Forty Panels, One Hundred and Twenty Members :: Hemisphere edge and face count
+80 The Boat-Hull Shell :: v1 hull numbers
+86 The Module Catalogue :: Apex socket
+9 Two Lengths, Not Forty :: Stock schedule and finish area
+back matter: The Master Tables :: Two kinds of number

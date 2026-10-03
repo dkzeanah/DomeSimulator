@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\cabin-the-vance-network-mini-series.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\cabin-the-vance-network-mini-series-vertical.mp4

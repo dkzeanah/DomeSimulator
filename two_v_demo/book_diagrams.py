@@ -1254,8 +1254,69 @@ def diagram_master_cutlist(figure: Figure):
     return fig
 
 
+def diagram_rag_station(figure: Figure):
+    """Where the oily rags go, set up before the first coat."""
+    from matplotlib.patches import FancyBboxPatch, Polygon
+
+    fig, axes = canvas(
+        PAGE_W_IN, HALF_H_IN + 0.15, "The rag station comes first",
+        "Linseed oil cures by taking oxygen out of the air, and curing "
+        "gives off heat. A heap of rags traps that heat in the middle of "
+        "itself, so a pile with no spark anywhere can reach ignition. The "
+        "prevention is three objects and one habit -- a lidded metal tin, "
+        "water in it, and an oil-breaking detergent -- standing outside, "
+        "away from the building, before the first coat is poured.")
+
+    # The tin, lid closed, rags under water.
+    axes.add_patch(FancyBboxPatch(
+        (-1.10, -0.55), 2.20, 1.10,
+        boxstyle="round,pad=0.03,rounding_size=0.08",
+        facecolor=STYLE.wood, edgecolor=STYLE.bark, linewidth=1.2,
+        zorder=2))
+    axes.add_patch(FancyBboxPatch(
+        (-1.20, 0.39), 2.40, 0.22,
+        boxstyle="round,pad=0.02,rounding_size=0.05",
+        facecolor=STYLE.key, edgecolor=STYLE.wood_dark, linewidth=1.2,
+        zorder=4))
+    axes.add_patch(Polygon(
+        [(-0.96, -0.45), (0.96, -0.45), (0.96, 0.06), (-0.96, 0.06)],
+        closed=True, facecolor="#a9c7d8", edgecolor="#6b8ea1",
+        linewidth=0.9, zorder=3))
+    for x in (-0.72, -0.22, 0.28):
+        axes.add_patch(Polygon(
+            [(x, -0.36), (x + 0.36, -0.30), (x + 0.28, -0.10),
+             (x - 0.04, -0.16)],
+            closed=True, facecolor=STYLE.wood_dark, edgecolor=STYLE.bark,
+            linewidth=0.7, zorder=4))
+
+    # Four call-outs with leader lines: the objects, then the habit.
+    calls = (
+        (0.95, "a lid that closes", (0.35, 0.50), (0.90, 0.78)),
+        (-1.15, "water in the bottom", (-0.60, -0.20), (-1.20, -0.62)),
+        (0.95, "an oil-breaking detergent", (0.10, -0.02), (0.90, -0.10)),
+        (-1.15, "outside, away from the wall", (-1.05, -0.55), (-1.20, -1.00)),
+    )
+    for x, text, start, end in calls:
+        ha = "left" if x > 0 else "right"
+        axes.annotate(
+            text, xy=start, xytext=end, ha=ha, va="center", fontsize=7.6,
+            color=STYLE.ink,
+            arrowprops=dict(arrowstyle="-", color=STYLE.muted,
+                            linewidth=0.8, shrinkA=0, shrinkB=2))
+
+    label(axes, 0.0, -1.32, "oily rags, in the tin, the same session",
+          size=7.4, colour=STYLE.muted)
+
+    axes.set_xlim(-4.3, 4.3)
+    axes.set_ylim(-1.6, 1.1)
+    axes.set_aspect("equal", adjustable="box")
+    axes.set_axis_off()
+    return fig
+
+
 DIAGRAMS = {
     "strand_map": diagram_strand_map,
+    "rag_station": diagram_rag_station,
     "master_cutlist": diagram_master_cutlist,
     "tree_taper": diagram_tree_taper,
     "trunk_eighths": diagram_trunk_eighths,

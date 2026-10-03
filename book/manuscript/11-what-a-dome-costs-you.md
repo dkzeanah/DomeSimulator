@@ -152,3 +152,44 @@ This book exists for the cases where it is not, and the method it
 describes is the strongest version of the alternative — measured against
 the rectangle's own numbers, printed here, in the chapter that was
 supposed to talk you out of it.
+
+## Three prices for the same building
+
+The chapter has spent its length on costs that have nothing to do with the
+dome: furniture, roofing, permits, appraisals. Close it with the three prices
+the project itself quotes for one building, because a reader who has met all of
+them in different chapters is entitled to see them on one page.
+
+| the same building, three ways | price | per square foot | what is in it |
+|---|---|---|---|
+| Built cheaply, by you | {{honest.finished_usd}} | {{honest.finished_per_sqft}} | pressure-treated frame, insulation, glass, basic fittings, nothing salvaged |
+| Built as a product | {{product.built_usd}} | — | the standard article: frame, cap, column, panels, labour at a wage |
+| Sold as a product | {{product.price_usd}} | {{product.per_sqft_usd}} | the same, plus margin, warranty and overhead |
+
+Read those three rows downward and the shape of this book's whole economic
+argument appears. The gap between the first and the second is the labour of
+building it yourself, priced at a market wage — the hours the money chapter
+counted. The gap between the second and the third is what it costs to make a
+product of it: overhead, warranty, and a {{product.markup_pct}} per cent
+margin. Neither gap is a saving to be claimed from the geometry; both are
+decisions about who does the work.
+
+Three notes a reader should carry away from that table.
+
+**The cheapest row is the one with the most caveats.** {{honest.finished_usd}}
+buys a finished, insulated, glassed and fitted shell *if you do the work*, on a
+pad that is priced separately, with the modules bought separately. It is a real
+number and it is not a quotation; the chapter's honest paragraph about the
+{{dm.cheapest_sqft}}-dollar catalogue rows applies to it exactly.
+
+**The product row is not the method's failure.** A reader who wanted to buy
+this building rather than build it is paying for somebody else's hours, and the
+product's {{product.per_sqft_usd}} a square foot is genuinely cheap for a
+finished dwelling — it is only expensive next to the row above it, which
+represents your own evenings.
+
+**And the cap is the line that changes.** The watertight cap over this shell is
+{{hat.cap_sqft}} square feet of membrane, and it is the one part of the
+building that cannot be made at home and cannot be skipped. Every price above
+includes it; a reader comparing a dome to a shed and finding the dome more
+expensive has usually just found the cap.

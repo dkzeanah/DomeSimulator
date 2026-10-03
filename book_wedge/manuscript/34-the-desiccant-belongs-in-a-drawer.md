@@ -55,6 +55,8 @@ through is a bed whose water nobody can reach.
 
 ## And why it cannot be dried where it sits
 
+<!-- concept: cabin_seam_climate/regen -->
+
 A desiccant fills up. To use it again you have to drive the water back out, and
 that takes heat:
 
@@ -96,6 +98,8 @@ everything a long, thin one is not.
 ![A drawer of beads and a bypass, switched by a gate that falls back open.](plate-two-drawers.png)
 
 ## What the desiccant will not do
+
+<!-- concept: cabin_seam_climate/honest -->
 
 And the number that does not help.
 

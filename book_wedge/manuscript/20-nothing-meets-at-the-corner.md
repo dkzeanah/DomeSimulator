@@ -66,6 +66,9 @@ angle.
 
 <!-- concept: why/dihedral -->
 
+<!-- concept: why/fold -->
+<!-- concept: wedge/m_seams -->
+
 Why put the variation there? Because the fold between two panels is not one
 angle. Across this dome it runs from {{geo.fold_lo}} to {{geo.fold_hi}}
 degrees. That spread is small in degrees and large in workshop terms: cut into
@@ -74,6 +77,8 @@ interchangeable. Moved into the key, the wood stays generic and the fussy part
 is small, cheap and replaceable.
 
 ## The price of a panel being a thing
+
+<!-- concept: cabin_wedge_explained/doubled -->
 
 <!-- concept: wedge/duplicate -->
 <!-- concept: why/duplicate -->

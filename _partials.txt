@@ -1,0 +1,55 @@
+141 PARTIAL rows in 54 chapters/films
+* 45 Heat, Power and the Small Systems (11): 360 W of plates make 73 gal/year; Wall as filter: ~1 ft/min crawl; A Peltier is a heat pump; Utility polyp; Off-grid demand; Off-grid solar sizing; Solar component prices; Battery brief correction; Triangular solar cells gap; Shared bathhouse; Solar nameplate range
+* 65 A Pad, Not a Plot (9): Slab is cheaper than deck; Pad line items; Pad size vs car; 48 ft pad build cost; Cheap starter pad; Six-pad reference park; Starter pad overshoots target; Ten-year infrastructure aim; BYOD: what a ten-thousand-dollar pad returns
+* 82 The Seam That Does Four Jobs (7): Key becomes a spacer for a round duct; Spacer costs a bigger dome; The radial direction; Two skins of the channel; The exposed face is not a sealing land; Seam duct as water collector; Seam duct is unproven
+* 81 Fifteen Buildings From One Body (7): Fit-out catalogue (bays changed); Priced catalogue (six second buildings); One skeleton, four products; Themed skins; Climate-controlled storage dome; Six seeds shape notes; v1 nine fit-outs
+* 55 The Six Values of One Pine (7): Pine sources declared; Financed rung; Structure ratios; Pine cautions; Pine source table; Firewood-to-structure ratio; Financed payment detail
+* 57 Less Skin for the Same Floor (5): Forty panels from one 10×5 sheet; Drag coefficients; The ten-point argument; Compounded cooling; Ten reasons
+* 11 What a Dome Costs You (5): Price floor and shipped price; Materials+labour+overhead+reserve; Pristine BOM; v1 campaign price; v1 close
+* 80 The Boat-Hull Shell (5): Shell latching and lift; Laminate by weight; Four laminate systems; Shower cap vs hull price; v1 hull numbers
+* 60 A House That Gets Warmer Every Winter (5): Ships with empty cavity; Year heating/cooling cost; Running cost; Layer payback ladder; v1 not-insulated warning
+* 77 Exactly Twelve Pentagons, Always (4): Subdivided hexagons are not regular; Measured ratio against phi; The icosahedron wins; Phi builds the parent vertices
+* 69 What Would Have to Be True (4): Four ways to have a roof; Ownership haircut; Host competition is offerings; Build-it-anyway
+* 83 Compare Dew Points, Not Humidity (3): Breathing wall / dynamic insulation; Winter/summer correction; Conduction-only limit
+* 66 Turning the House Toward the Sun (3): Radiative sky cooling paint; Radiative paint; Sky-cooling paint
+* 40 Closing the Shell (3): Five heights; Shell slices and S-lip; Slice weight
+* 68 Why a Network Beats a Park (3): Forty domes under one builder; The endgame; Glorified-tent argument
+* 48 Bigger, Smaller, Other Frequencies (3): 2V does not ask for phi; The midpoint lies inside the sphere; Project the midpoints outward
+* 87 Sixteen Billion Shells (3): The tool's own meshes; The four dials are stepped; The random draw
+* 46 The Money, Both Ways (3): Wood is not the expensive part; Margin stated; Maker markup constant
+* 79 Sink the Money Into the Part That Moves (3): Core cost; Core life; Buy upgrades later
+* 50 Building With Other People (3): Three audiences; Little-guy audience; Customer-assembly lever
+* 64 The Ground Is What You Cannot Take With You (3): Timber workshop example; Semi-nomadic move; Dome-move transport cost
+* 54 What an Hour at the Log Is Worth (3): Lumber value; Stumpage benchmarks; Breakeven wage
+* 24 The Worked Build (2): Graphics: a shape and a picture, two calculations; Proof of concept build
+* 41 Doors, Windows and the Rim (2): Putty needs retainers; Glazing restrictions
+* 15 The Pinwheel (2): Net tree outcome; v1 frame cost
+* 39 The Footing and the Ring (2): Platform build; Deck boards count
+* 70 The Dome That Stacks Hats (2): Hull cavity limit vs cap growth; Quilt layer + bigger cap marginal
+* 67 One Pad, Every Dome Size (2): Three target dome sizes; Specialized pad needs
+* 66 Turning the House Toward the Sun, Until It Stops Being Worth It (2): v1 solar sizing; Tracking foundation excluded
+* 21 Method A: From the Dome You Want (1): Seven stations from number to pixel
+* 19 Bends, Knots and Small Units (1): Oil cannot restore strength
+* 9 Two Lengths, Not Forty (1): Stock schedule and finish area
+* 44 Inside a Round Room (1): Interior finish choices
+* 26 Day Zero: The Saw (1): The saw tank is an estimate
+* 8 Forty Panels, One Hundred and Twenty Members (1): Hemisphere edge and face count
+* 12 Split Like a Cake (1): Operations to frame
+* 10 Compression, Tension, and One Eighth of a Tree (1): The proof that shipped
+* back matter: The Master Tables (1): Two kinds of number
+* 18 Why Every Panel Keeps Its Own Edge (1): Two panels per bay cost
+* 86 The Module Catalogue (1): Apex socket
+* 25 When the Numbers Say No (1): Price levers
+* 72 The Floating Dome (1): Floating is not engineered
+* 75 Hubs, or No Hubs (1): Moulded member
+* 53 Nine Processes at Any Size (1): Hand-built counts
+* 61 The Quilt Network (1): Quilt shirts-per-layer
+* 59 The Roof Is Already a Gutter (1): Glass the top twenty
+* 49 Other Species, Other Sections (1): Four build variants
+* 62 One Hardware Set, Three Sizes (1): Hardware must be qualified
+* 51 What I Would Do Differently (1): Author backstory
+* 56 Where the Fuel Actually Goes (1): Firewood benchmark
+* 13 Eighty-Seven Percent (1): Lumber recovery factor
+* 27 Days One and Two: Felling (1): Theoretical member count
+* 5 The Cut That Changed It (1): No-mitre retirement
+* 16 The Seam and Its Key (1): Seam hose vs solid keys

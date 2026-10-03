@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5265eb96f7\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5265eb96f7\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5265eb96f7\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5265eb96f7\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5265eb96f7\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5265eb96f7\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\teasers\\cabin_series-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-5265eb96f7\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    5.359999999999999,
+    7.159999999999999,
+    5.504,
+    4.784,
+    4.4719999999999995,
+    5.024,
+    5.983999999999999
+  ],
+  "speech_durations": [
+    3.96,
+    5.76,
+    4.104,
+    3.384,
+    3.072,
+    3.624,
+    4.584
+  ],
+  "chapter_starts": [
+    0.0,
+    5.359999999999999,
+    12.52,
+    18.024,
+    22.808,
+    27.28,
+    32.304
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "bf067e712603360f9510a9ee65be5eb321d7f27aaab2a45cf4892f9b1fa37fff"
+}

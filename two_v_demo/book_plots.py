@@ -1900,9 +1900,406 @@ def plot_shell_ladder(figure: Figure):
     return fig
 
 
+# ----------------------------------------------------------------------
+# The product, the campaign and the catalogue
+#
+# These four read the campaign's own model -- the same module that puts the
+# numbers on screen in the campaign films -- so a price in the book and a
+# price in the film cannot drift apart.
+# ----------------------------------------------------------------------
+
+def plot_cost_stack(figure: Figure):
+    """What the standard article costs, and what it sells for."""
+    import kickstarter
+
+    stack = kickstarter.cost_stack()
+    rows = [(label, f"${value:,.0f}",
+             f"{value / stack.built * 100.0:,.1f}%")
+            for _key, label, value in stack.groups]
+    rows.append(("Materials and labour, direct", f"${stack.direct:,.0f}", ""))
+    rows.append(("Overhead", f"${stack.overhead:,.0f}", ""))
+    rows.append(("Warranty", f"${stack.warranty:,.0f}", ""))
+    rows.append(("Built, all in", f"${stack.built:,.0f}", "100.0%"))
+    rows.append((f"Margin at {stack.margin_fraction * 100.0:,.0f}%",
+                 f"${stack.margin:,.0f}", ""))
+    rows.append(("Price, shipped", f"${stack.price:,.0f}", ""))
+    rows.append(("Ground, priced separately", f"${stack.ground:,.0f}", ""))
+    rows.append(("Dome standing on its own ground",
+                 f"${stack.standing:,.0f}", ""))
+    return table(
+        "The standard article, priced",
+        ("what", "usd", "share of build"), rows,
+        align="lrr", footer_rows=4,
+        note=f"Built ${stack.built:,.0f}, sold at ${stack.price:,.0f}: "
+             f"${stack.per_sqft:,.2f} a square foot of floor. The ground is "
+             "quoted separately and carries no markup. Read from the "
+             "campaign's own cost stack, so the chapter and the film quote "
+             "the same account.",
+        full_page=True)
+
+
+def plot_goal_lines(figure: Figure):
+    """Every line the campaign asks for, with what each one buys."""
+    import kickstarter
+
+    lines = kickstarter.goal_lines()
+    total = sum(line.usd for line in lines)
+    rows = [(line.what, f"${line.usd:,.0f}",
+             f"{line.usd / total * 100.0:,.1f}%") for line in lines]
+    rows.append(("The whole ask", f"${total:,.0f}", "100.0%"))
+    return table(
+        "The goal, line by line",
+        ("what the line buys", "usd", "share"), rows,
+        align="lrr", footer_rows=1,
+        note="Every line is a thing the project does not have yet: a year of "
+             "weather on a standing dome, the machines that make the parts, "
+             "the engineer, and the first quilters. A line item list is the "
+             "most honest document a campaign produces.",
+        full_page=True)
+
+
+def plot_reward_tiers(figure: Figure):
+    """What each rung is, what it costs to deliver, and what is left."""
+    import kickstarter
+
+    tiers = kickstarter.tiers()
+    rows = [(tier.label, f"${tier.pledge:,.0f}", f"${tier.cost:,.0f}",
+             f"${tier.pledge - tier.cost:,.0f}",
+             f"{(tier.pledge - tier.cost) / tier.pledge * 100.0:,.0f}%")
+            for tier in tiers]
+    return table(
+        "The rungs, and what they cost to deliver",
+        ("rung", "pledge", "delivered", "left", "left %"), rows,
+        align="lrrrr",
+        note="A reward priced without its delivered cost is a promise to "
+             "lose money slowly. The two kits are the campaign's whole "
+             "argument in two numbers: the difference between them is the "
+             "timber, and the buyer who has trees keeps it.",
+        full_page=True)
+
+
+def plot_module_catalogue(figure: Figure):
+    """Every module, by mounting point, price and draw."""
+    import seed_model
+
+    order = ("apex", "column", "polyp", "panel", "floor")
+    rows = []
+    for mount in order:
+        for module in seed_model.MODULES:
+            if module.mount != mount:
+                continue
+            watts = f"{module.watts:,.0f} W" if module.watts else "--"
+            water = "yes" if module.water else "--"
+            rows.append((module.label, mount, f"${module.cost:,.0f}", watts,
+                         water))
+    total = sum(module.cost for module in seed_model.MODULES)
+    rows.append((f"All {len(seed_model.MODULES)} modules, once each",
+                 "", f"${total:,.0f}", "", ""))
+    return table(
+        "The module catalogue",
+        ("module", "mounts at", "usd", "draws", "water"), rows,
+        align="llrll", footer_rows=1,
+        note="Five kinds of mounting point hold the whole catalogue: the "
+             "apex, the utility column, a utility panel, a bay panel and the "
+             "floor. Once those interfaces are fixed, a building's use is a "
+             "shopping list rather than a redesign.",
+        full_page=True)
+
+
+def plot_seed_shelf(figure: Figure):
+    """The named seeds: the same frame, fifteen shopping lists."""
+    import seed_model
+
+    rows = []
+    for key in seed_model.FITOUT_ORDER:
+        seed = seed_model.fitout(key)
+        panels = sum(seed.panels.values()) if seed.panels else 0
+        rows.append((seed.label, seed.shape, str(len(seed.modules)),
+                     str(seed.polyps), str(panels),
+                     seed.modules[0].replace("_", " ")
+                     if len(seed.modules) == 1 else
+                     (f"{len(seed.modules)} modules" if seed.modules
+                      else "the bare article")))
+    return table(
+        "Fifteen seeds, one body",
+        ("seed", "shell", "modules", "panels", "bay panels", "first module"),
+        rows, align="llrrrl",
+        note="Every seed is the same solved dome. The bunker buries it, the "
+             "jacuzzi turns it over and uses the shell as the vessel, the "
+             "treehouse hangs it in a trunk, and the advertiser lights every "
+             "one of its forty triangles and sells them.",
+        full_page=True)
+
+
+def plot_pixel_budget(figure: Figure):
+    """One frame of film, counted off the renderer's own buffer."""
+    from .book_tokens import pixel_facts
+
+    px = pixel_facts()
+    rows = [
+        ("Frame", f"{px['frame_w']:,} x {px['frame_h']:,}",
+             f"{px['fps']} fps"),
+        ("Pixels a frame", f"{px['pixels']:,}", "fragment shader runs, worst case"),
+        ("Floats in the buffer", f"{px['floats']:,}", "10 per vertex"),
+        ("Vertices", f"{px['vertices']:,}", "three per triangle"),
+        ("Triangles in the model", f"{px['triangles']:,}", "no corner shared"),
+        ("Bytes a vertex", f"{px['bytes_vertex']}", "10 floats x 4 bytes"),
+        ("Bytes in the buffer", f"{px['bytes']:,}", f"{px['kb']:,.1f} KB"),
+        ("Sides on a strut tube", f"{px['sides']}", "8 flat sides"),
+        ("Triangles a strut", f"{px['per_strut']}", "2 x 8 sides + two caps"),
+        ("Triangles of frame", f"{px['frame_triangles']:,}",
+             f"{px['struts']} strut tubes"),
+        ("Budget a frame", f"{px['ms_frame']:,.2f} ms", "at 30 fps"),
+        ("Budget a triangle", f"{px['us_triangle']:,.3f} us", "if all were visible"),
+        ("Shader runs a second", f"{px['runs_s']:,.1f} M", "full coverage"),
+        ("Lens", f"{px['fov']:.0f} degrees", "vertical field of view"),
+        ("Near and far planes", f"{px['near']:.2f} / {px['far']:,.0f}",
+             "world units"),
+        ("Specular exponent", f"{px['specular_power']:,.0f}",
+             "rim exponent " + f"{px['rim_power']:,.1f}"),
+        ("Ambient floor", f"{px['ambient']:,.1f}", "before any light lands"),
+    ]
+    return table(
+        "One frame, counted",
+        ("what", "how much", "where it comes from"), rows,
+        align="lll",
+        note="Every number here is counted off the buffer the renderer "
+             "actually builds, not quoted from a specification: the vertex "
+             "list is the film's own mesh, and the tube count follows from "
+             "the ring the renderer walks. A reader who changes the model "
+             "changes this table.",
+        full_page=True)
+
+
+def plot_finish_allowance(figure: Figure):
+    """The oil allowance, the labour, and the two schedules on the cans."""
+    from . import linseed_oil as lo
+
+    facts = lo.facts()
+    c = {name: value for name, value, _u, _k, _r in lo.CONSTANTS}
+    rows = [
+        ("Members to finish", f"{facts['members']}", "two sawn faces each"),
+        ("Stock to work through", f"{facts['stock_ft']:,.1f} ft", "end to end"),
+        ("Depth of a sawn face", f"{facts['depth_in']:,.1f} in", "log radius"),
+        ("Area of sawn face", f"{facts['area_sqft']:,.0f} sq ft",
+             "both faces, all members"),
+        ("Planning coverage", f"{c['coverage']:,.0f} sq ft/gal",
+             "per coat, rough-sawn estimate"),
+        ("Coats allowed", f"{c['coats']:,.0f}", "the working assumption"),
+        ("Handling allowance", f"{c['handling']:,.0f}%",
+             "spillage, brush loss, end grain"),
+        ("Oil the area asks for", f"{facts['base_gal']:,.2f} gal", ""),
+        ("With the allowance", f"{facts['allowance_gal']:,.2f} gal",
+             "what to actually buy"),
+        ("If the can's claim held", f"{facts['label_gal']:,.2f} gal",
+             f"the label says {c['label_coverage']:,.0f} sq ft/gal"),
+        ("Labour", f"{facts['labour_hours']:,.1f} h",
+             f"{c['minutes']:,.0f} min per member per coat"),
+        ("Danish oil lists", f"{c['danish_wait']:,.0f} min / "
+             f"{c['danish_cure']:,.0f} h", "wait before wiping / cure"),
+        ("Oil and wax lists", f"{c['wax_wait']:,.0f} min / "
+             f"{c['wax_cure']:,.0f} h", "the same two numbers, different can"),
+    ]
+    return table(
+        "The oil allowance, and the labour",
+        ("what", "how much", "where it comes from"), rows,
+        align="lll",
+        note="The coverage figure is an estimate on rough-sawn timber, the "
+             "two schedules are claims printed on two real cans, and the "
+             "difference between them is the reason this chapter says to read "
+             "the label rather than the name. Estimated and claimed numbers "
+             "are labelled as such because a reader is entitled to discount "
+             "them.",
+        full_page=True)
+
+
+def plot_space_menus(figure: Figure):
+    """Every menu the creator offers, and what each one multiplies by."""
+    from .book_tokens import catalogue_facts
+
+    space = catalogue_facts()
+    from . import creator_facts as cf
+
+    groups = {axis.key: axis.group for axis in cf.axes()}
+    notes = {axis.key: axis.note for axis in cf.axes()}
+    running = 1
+    rows = []
+    for key, count in space['options'].items():
+        if key == 'layers':
+            running *= count ** space['layers']
+            shown = f"{count} x {space['layers']} slots"
+        elif key == 'sections':
+            running *= count ** space['sections']
+            shown = f"{count} x {space['sections']} sections"
+        else:
+            running *= count
+            shown = str(count)
+        rows.append((notes.get(key, key), groups.get(key, ''), shown,
+                     f"{running:,}"))
+    rows.append(("Shell combinations", "", "", f"{space['shell']:,}"))
+    rows.append(("Floor layouts", "",
+                 f"{space['options']['partitions']} x "
+                 f"{space['options']['sections']}^{space['sections']}",
+                 f"{space['fitout']:,}"))
+    rows.append(("Dial settings", "",
+                 f"{space['dials']} dials, stepped",
+                 f"{space['dial_settings']:,}"))
+    rows.append(("Distinct shells after the deduction", "", "",
+                 f"{space['distinct']:,}"))
+    return table(
+        "Every menu, and what it multiplies by",
+        ("menu", "group", "options", "running total"), rows,
+        align="llrr", footer_rows=4,
+        note=f"Read from the tool's own menu code, not from a list kept in "
+             f"the book. The running total is the honest product: "
+             f"{space['shell']:,} shells before the deduction, "
+             f"{space['distinct']:,} after it, and "
+             f"{space['inert_share'] * 100.0:.1f} per cent of the menu doing "
+             f"nothing at all.",
+        full_page=True)
+
+
+def plot_core_stages(figure: Figure):
+    """The utility core's build, stage by stage, from its own step list."""
+    from .book_tokens import core_facts
+
+    core = core_facts()
+    total = sum(core['stage_minutes'].values())
+    rows = []
+    for name in core['stage_names']:
+        minutes = core['stage_minutes'][name]
+        rows.append((name.title(), f"{minutes:,.0f} min",
+                     f"{minutes / total * 100.0:,.0f}%",
+                     f"{minutes / 60.0:,.2f} h"))
+    rows.append(("Every stage", f"{total:,.0f} min",
+                 "100%", f"{total / 60.0:,.2f} h"))
+    rows.append(("Once practised", "", "", f"{core['practised_hours']:,.2f} h"))
+    rows.append(("The first one", "", "", f"{core['first_hours']:,.1f} h"))
+    rows.append(("Parts", f"{core['parts']} items", "",
+                 f"${core['parts_usd']:,.0f}"))
+    rows.append(("Labour, practised", f"{core['tools']} tools", "",
+                 f"${core['labour_usd']:,.0f}"))
+    rows.append(("Labour, first time", "", "",
+                 f"${core['labour_first_usd']:,.0f}"))
+    return table(
+        "The core's build, stage by stage",
+        ("stage", "time", "share", "hours"), rows,
+        align="lrrr", footer_rows=5,
+        note="Fourteen steps across five stages, read from the build's own "
+             "step list. The chase is drilled flat on a bench, the drain "
+             "goes in first because it cannot be re-routed, the water is "
+             "proved at pressure before anything is closed, and the power "
+             "lands last in a core known dry.",
+        full_page=True)
+
+
+def plot_priced_catalogue(figure: Figure):
+    """The twelve finished designs, priced and counted."""
+    from . import creator_facts as cf
+
+    rows = cf.design_rows()
+    body = []
+    for row in sorted(rows, key=lambda r: r.cost):
+        body.append((
+            row.name,
+            f"{row.frequency}V",
+            f"{row.diameter_ft:,.1f}",
+            f"{row.floor_sqft:,.0f}",
+            f"{row.struts}",
+            f"${row.cost:,.0f}",
+            f"${row.cost / row.floor_sqft:,.0f}",
+        ))
+    cheapest = min(rows, key=lambda r: r.cost)
+    largest = max(rows, key=lambda r: r.floor_sqft)
+    body.append((
+        f"all {len(rows)}",
+        "",
+        "",
+        f"{min(r.floor_sqft for r in rows):,.0f}-"
+        f"{max(r.floor_sqft for r in rows):,.0f}",
+        "",
+        f"${min(r.cost for r in rows):,.0f}-"
+        f"${max(r.cost for r in rows):,.0f}",
+        f"${min(r.cost / r.floor_sqft for r in rows):,.0f}-"
+        f"${max(r.cost / r.floor_sqft for r in rows):,.0f}",
+    ))
+    return table(
+        "The catalogue, priced",
+        ("design", "freq", "diameter ft", "floor sqft", "struts",
+         "cost", "$/sqft"),
+        tuple(body), align="llrrrrr", footer_rows=1,
+        note=f"Sorted by cost. One geometry engine builds all of them: "
+             f"{cheapest.name} is the cheapest at ${cheapest.cost:,.0f}, "
+             f"{largest.name} has the biggest floor at "
+             f"{largest.floor_sqft:,.0f} sq ft, and the spread in cost per "
+             f"square foot is the covering rather than the frame. Every "
+             f"figure is read off the model the tool loads.",
+        full_page=True)
+
+
+def plot_pad_options(figure: Figure):
+    """The pad ladder: what each rung costs and what it returns."""
+    from . import book_tokens as bt
+
+    pads = bt.pad_facts()
+    rows = [
+        ("The cheap pad", f"{pads['cheap_total']:,.0f}",
+         f"{pads['cheap_area']:,.0f} sq ft", "--", "--"),
+        ("A bare pad, no services beyond the port",
+         f"{pads['basic_build']:,.0f}", "48 ft",
+         f"{pads['basic_net']:,.0f}", f"{pads['basic_payback']:,.1f} yr"),
+        ("The standard loaded pad", f"{pads['standard_build']:,.0f}",
+         f"{pads['standard_ft']:,.0f} ft",
+         f"{pads['standard_net']:,.0f}",
+         f"{pads['standard_payback']:,.1f} yr"),
+    ]
+    deck = [
+        ("Gravel", f"${pads['gravel_rate']:,.1f}/sq ft", pads['gravel_48']),
+        ("Concrete slab", f"${pads['concrete_rate']:,.0f}/sq ft",
+         pads['concrete_48']),
+        ("Wood deck", f"${pads['wood_rate']:,.0f}/sq ft", pads['wood_48']),
+    ]
+    body = [("The pad ladder", "", "", "", "")]
+    body += rows
+    body += [("", "", "", "", ""), ("The deck, three ways, on a 48 ft pad",
+                                    "rate", "total", "", "")]
+    body += [(name, rate, f"${total:,.0f}", "", "") for name, rate, total in deck]
+    body += [("", "", "", "", ""),
+             ("Options on the loaded pad", "one-off", "", "", "")]
+    body += [
+        ("Utility column", f"${pads['column']:,.0f}", "", "", ""),
+        ("Rotating ring", f"${pads['rotating']:,.0f}", "", "", ""),
+        ("Solar array", f"${pads['solar_cost']:,.0f}",
+         f"{pads['solar_watts']:,.0f} W", "", ""),
+    ]
+    return table(
+        "The pad ladder, priced",
+        ("what", "cost or rate", "size", "returns a year", "payback"),
+        tuple(body), align="lrrrr",
+        note=f"Sizes run 36, 40, 44, 48, 64 and 80 feet and "
+             f"{pads['fits_48']:,.0f} of the catalogue's twelve designs fit a "
+             f"48 ft pad. A lease at {pads['lease_mo']:,.0f} dollars a month "
+             f"at {pads['occupancy_pct']:,.0f} per cent occupancy is the "
+             f"model every pad payback in this book is run against, and the "
+             f"chapter's caveat is the same one the whole part carries: "
+             f"occupancy is the input nobody can compute.",
+        full_page=True)
+
+
 PLOTS = {
     "declared_constants": plot_declared_constants,
     "pine_ladder": plot_pine_ladder,
+    "cost_stack": plot_cost_stack,
+    "goal_lines": plot_goal_lines,
+    "reward_tiers": plot_reward_tiers,
+    "module_catalogue": plot_module_catalogue,
+    "seed_shelf": plot_seed_shelf,
+    "pixel_budget": plot_pixel_budget,
+    "finish_allowance": plot_finish_allowance,
+    "space_menus": plot_space_menus,
+    "priced_catalogue": plot_priced_catalogue,
+    "pad_options": plot_pad_options,
+    "core_stages": plot_core_stages,
     "breadth_tables": plot_breadth_tables,
     "fitout_catalogue": plot_fitout_catalogue,
     "shell_ladder": plot_shell_ladder,

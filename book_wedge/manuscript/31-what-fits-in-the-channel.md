@@ -14,6 +14,15 @@ dehumidifier and priced it. It did not say how much room there is inside it,
 and every idea anybody has for the channel -- a water line, a circuit, a
 duct, a desiccant -- runs into that number first.
 
+<!-- concept: cabin_wedge_explained/key -->
+<!-- concept: cabin_wedge_explained/room -->
+
+First, what the key is. It fills the V between the two members of a seam, and it
+is what the seam's bolts pull the two panels against. Make it solid and it is a
+spline. Make it hollow and it is a pipe running the length of every seam --
+{{dome.seam_ft}} feet of it, touching every panel, reaching the crown and the
+ground. The room inside that pipe is the whole budget for everything below.
+
 So here it is, from the solver's own seams, for the reference build.
 
 The V between two members is {{chan.gap_t}} degrees at the tighter of the two
@@ -32,6 +41,8 @@ Everything in this chapter has to fit in that.
 ![A water line, a circuit, the plates' pair and the drain, in the tighter of the two seams.](plate-bundle-fits.png)
 
 ## The sizes this chapter assumed
+
+<!-- concept: cabin_wedge_explained/sizes -->
 
 The pipe and tubing sizes are nominal, from their standards. The cable sizes
 are estimates, because every brand's sheath is different. The rule for how full
@@ -61,6 +72,8 @@ bigger log does not rescue it.
 
 ## The channel is the duct
 
+<!-- concept: cabin_wedge_explained/air -->
+
 It does not need a duct in it, because it already is one.
 
 With the water, wire and drain inside, the free space in one tighter seam still
@@ -84,13 +97,29 @@ and the push is set by whichever needs it most:
     a 4 in duct beside the bundle     panels out {{chan.shift4}} in, dome +{{chan.grow4}}%
     seams open at the ridge           {{chan.open4_t}} / {{chan.open4_w}} in
 
+<!-- concept: cabin_wedge_explained/ring -->
+
 **A spacer is not free.** Moving every panel out makes the whole dome bigger:
 more wood, more skin, a bigger pad. And every opened ridge needs a cap over it.
 All of that, to carry air the plain channel was already carrying.
 
 ![As built, and with the seams opened for a four-inch duct.](plate-spacer.png)
 
+## Or start with a bigger log
+
+<!-- concept: cabin_wedge_explained/logs -->
+
+The other lever is the log. The room in the channel grows with the square of the
+log's radius:
+
+    {{chan.logs}}
+
+Even the biggest of those still falls short of passing a three-inch duct. A
+bigger log buys more room for water and wire; it does not buy a round duct.
+
 ## Printing the key in halves
+
+<!-- concept: cabin_wedge_explained/print_cost -->
 
 The key is printed, and it is printed in halves. Split it down the middle of
 the seam and each member carries its own half, screwed to its sawn face before
@@ -115,6 +144,9 @@ channel. Nothing has to be threaded into a finished seam.
 ![Each member carries its own half of the key.](plate-half-keys.png)
 
 ## Where the channels meet
+
+<!-- concept: byod/channels -->
+<!-- concept: cabin_wedge_explained/rules -->
 
 The frame has no hubs, but the services need them. Channels meet at
 {{chan.n5}} five-way and {{chan.n6}} six-way vertices, and at {{chan.nrim}} more

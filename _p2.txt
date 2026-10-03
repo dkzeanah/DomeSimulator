@@ -1,0 +1,15 @@
+108 PARTIAL rows in 52 chapters
+* 45 Heat, Power and the Small Systems (11): 360 W of plates make 73 gal/year; Wall as filter: ~1 ft/min crawl; A Peltier is a heat pump; Utility polyp; Off-grid demand; Off-grid solar sizing; Solar component prices; Battery brief correction; Triangular solar cells gap; Shared bathhouse; Solar nameplate range
+* 55 The Six Values of One Pine (7): Pine sources declared; Financed rung; Structure ratios; Pine cautions; Pine source table; Firewood-to-structure ratio; Financed payment detail
+* 11 What a Dome Costs You (5): Price floor and shipped price; Materials+labour+overhead+reserve; Pristine BOM; v1 campaign price; v1 close
+* 81 Fifteen Buildings From One Body (4): Themed skins; Climate-controlled storage dome; Six seeds shape notes; v1 nine fit-outs
+* 69 What Would Have to Be True (4): Four ways to have a roof; Ownership haircut; Host competition is offerings; Build-it-anyway
+* 83 Compare Dew Points, Not Humidity (3): Breathing wall / dynamic insulation; Winter/summer correction; Conduction-only limit
+* 66 Turning the House Toward the Sun (3): Radiative sky cooling paint; Radiative paint; Sky-cooling paint
+* 40 Closing the Shell (3): Five heights; Shell slices and S-lip; Slice weight
+* 82 The Seam That Does Four Jobs (3): The exposed face is not a sealing land; Seam duct as water collector; Seam duct is unproven
+* 68 Why a Network Beats a Park (3): Forty domes under one builder; The endgame; Glorified-tent argument
+* 87 Sixteen Billion Shells (3): The tool's own meshes; The four dials are stepped; The random draw
+* 79 Sink the Money Into the Part That Moves (3): Core cost; Core life; Buy upgrades later
+* 50 Building With Other People (3): Three audiences; Little-guy audience; Customer-assembly lever
+* 64 The Ground Is What You Cannot Take With You (3): Timber workshop example; Semi-nomadic move; Dome-move transport cost

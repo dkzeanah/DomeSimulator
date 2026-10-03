@@ -9,6 +9,10 @@ updated: 2026-09-25
 
 # 29. The Seam Does Four Jobs
 
+<!-- concept: seam/channel -->
+<!-- concept: why/channel -->
+<!-- concept: seed_pitch/duct -->
+
 The channel is already there.
 
 Two sawn faces meeting at a dihedral angle cannot close flush — Chapter
@@ -22,6 +26,10 @@ You are going to fill it with something. The question is what.
 ![Every seam in the dome, and the channel in each one.](keys-everywhere.png)
 
 ## Four jobs, one space
+
+<!-- concept: seam/open -->
+<!-- concept: seam/water -->
+<!-- concept: seam/dry -->
 
 **Rain in at the ridge.** A slot along the outer cap takes water where it
 already runs — the seam is the low line between two panels, which is where a
@@ -48,6 +56,8 @@ serviceable void that runs everywhere and reaches the ground. Nobody would
 build that void for any one of these jobs. It was free.
 
 ## The air barrier
+
+<!-- concept: seam/air -->
 
 Here is the part that changes how you think about leaks.
 
@@ -79,6 +89,10 @@ treating the barrier as a substitute for the cap of Chapter {{ch.one_layer}}.
 It is a second line, not the first.
 
 ## Condensing on purpose
+
+<!-- concept: seam/condense -->
+<!-- concept: cabin_wedge_explained/dehumid -->
+<!-- concept: cabin_wedge_explained/water -->
 
 Thermoelectric plates — Peltier modules — on the cold side of the channel,
 dropping moisture out of the air as liquid straight into the gutter the rain
@@ -116,6 +130,9 @@ on daylight surplus, treat the drips as a bonus, and never size a tank on
 them.
 
 ## What the module costs
+
+<!-- concept: seam/bill -->
+<!-- concept: cabin_wedge_explained/cost -->
 
     {{sys.seam_table}}
 

@@ -126,6 +126,25 @@ DECLARED: tuple[Declared, ...] = (
              "and its shortest member. The base butts up to this side, which "
              "is why the two sides of a panel are not interchangeable and why "
              "the list is written three ways rather than two."),
+    Declared("dome_target_usd", 5000.0, "usd", "decided",
+             "The campaign's design target for the bare article: the trailer "
+             "model at five thousand dollars, relying on the pad for "
+             "essentials. It is a target and not a quote, which is why the "
+             "chapter prints it beside the computed price of the standard "
+             "article rather than instead of it."),
+    Declared("tooling_ask_usd", 50000.0, "usd", "decided",
+             "What the earlier campaign montage asked for: tooling rather "
+             "than salary, every dollar of it turning back into machines. "
+             "Kept because the later line-item goal supersedes it and the "
+             "book prints both, so a reader can see what the project's first "
+             "estimate of its own tooling was against what it later costed "
+             "line by line."),
+    Declared("pad_target_usd", 10000.0, "usd", "decided",
+             "The pad the campaign aims at: a complete serviced pad for ten "
+             "thousand dollars, so that the ground under a dome costs less "
+             "than the dome. It is a target rather than a figure, which is "
+             "why the pad chapter prints it beside the computed cheap pad "
+             "instead of instead of it."),
 )
 
 LITRES_PER_US_GALLON = 3.785411784

@@ -151,11 +151,15 @@
    }
   },
   "series": {
-   "status": "rendering",
+   "status": "review",
    "priority": "normal",
    "owner": "rerender-runner",
-   "updated": "2026-10-02T23:25:32-05:00",
-   "outputs": [],
+   "updated": "2026-10-03T02:25:29-05:00",
+   "outputs": [
+    "deliverables/masterclass/cabin-the-vance-network-mini-series.mp4",
+    "deliverables/masterclass/cabin-the-vance-network-mini-series-vertical.mp4",
+    "deliverables/releases/cabin-the-vance-network-mini-series"
+   ],
    "log": [
     {
      "at": "2026-09-28T20:28:50-05:00",
@@ -246,6 +250,11 @@
      "at": "2026-10-02T23:25:32-05:00",
      "by": "rerender-runner",
      "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-10-03T02:25:29-05:00",
+     "by": "rerender-runner",
+     "text": "-> review: rendered in 180 min; watch it and pass it or note what is wrong"
     }
    ],
    "originals": {

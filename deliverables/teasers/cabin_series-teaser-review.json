@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-03T07:25:27.154874+00:00",
+  "lesson": "teaser_cabin_series",
+  "title": "THE VANCE NETWORK: the complete mini-series: the teaser",
+  "chapters": [
+    {
+      "slug": "ep_dome_001_b1",
+      "title": "THE VANCE NETWORK / SIX EPISODES",
+      "narration": [
+        "How dare you enter the High Council Dome without my permission!"
+      ],
+      "start": 0.0,
+      "end": 5.359999999999999
+    },
+    {
+      "slug": "ep_dome_001_b4",
+      "title": "The High Council Dome: Cliffhanger",
+      "narration": [
+        "Too late, old man! The explosive charges are already armed across the outer facets!"
+      ],
+      "start": 5.359999999999999,
+      "end": 12.52
+    },
+    {
+      "slug": "ep_dome_003_b2",
+      "title": "The Base Ring: Escalation",
+      "narration": [
+        "A mechanic who saves a dome is still a mechanic. Sign the release."
+      ],
+      "start": 12.52,
+      "end": 18.024
+    },
+    {
+      "slug": "ep_dome_004_b4",
+      "title": "The Originals: Cliffhanger",
+      "narration": [
+        "Then we do this the old way. Convene the vote. Tonight."
+      ],
+      "start": 18.024,
+      "end": 22.808
+    },
+    {
+      "slug": "ep_dome_006_b2",
+      "title": "The Name: Escalation",
+      "narration": [
+        "I gave it to the only person here who ever fixed anything."
+      ],
+      "start": 22.808,
+      "end": 27.28
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 27.28,
+      "end": 32.304
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 32.304,
+      "end": 38.288000000000004
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

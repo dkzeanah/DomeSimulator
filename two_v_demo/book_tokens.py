@@ -102,6 +102,537 @@ def _key_width(facts) -> float:
     return max(xs) - min(xs)
 
 
+# ----------------------------------------------------------------------
+# The product, the campaign, the catalogue and the finish
+#
+# Each of these reads the module the films themselves read, so a chapter's
+# price, a module's cost or a gallon of oil cannot drift from the film that
+# quoted it.
+# ----------------------------------------------------------------------
+
+@lru_cache(maxsize=1)
+def _product():
+    """The product's own cost stack: the standard article, priced."""
+    import kickstarter
+    return kickstarter.cost_stack()
+
+
+@lru_cache(maxsize=1)
+def _cost_groups() -> dict:
+    return {key: value for key, _label, value in _product().groups}
+
+
+@lru_cache(maxsize=1)
+def _goal_lines():
+    import kickstarter
+    return kickstarter.goal_lines()
+
+
+#: The goal's lines that buy a machine rather than a measurement, a person or
+#: a delivery. Named here so the chapter can print what share of the ask is
+#: tooling without anybody counting the list by hand.
+_EQUIPMENT_LINES = ("cnc_router", "cnc_plasma", "laser_cutter",
+                    "strut_tooling", "composite_rnd", "automation", "hub_rnd")
+
+
+@lru_cache(maxsize=1)
+def _tiers():
+    import kickstarter
+    return kickstarter.tiers()
+
+
+@lru_cache(maxsize=1)
+def _quilt():
+    import kickstarter
+    return kickstarter.quilt_economics(3)
+
+
+@lru_cache(maxsize=1)
+def _modules():
+    import seed_model
+    return seed_model.MODULES
+
+
+@lru_cache(maxsize=1)
+def _fitouts():
+    import seed_model
+    return [seed_model.fitout(key) for key in seed_model.FITOUT_ORDER]
+
+
+@lru_cache(maxsize=1)
+def _finish_facts() -> dict:
+    from . import linseed_oil
+    return linseed_oil.facts()
+
+
+@lru_cache(maxsize=1)
+def _finish_constants() -> dict:
+    from . import linseed_oil
+    return {name: value for name, value, _u, _k, _r
+            in linseed_oil.CONSTANTS}
+
+
+@lru_cache(maxsize=1)
+def pixel_facts() -> dict:
+    """What one frame of a film costs, counted off the renderer's own model.
+
+    The numbers are derived rather than quoted: the buffer is the renderer's
+    real vertex list, ten floats a vertex, and the tube count follows from the
+    ring the renderer actually walks. The film's own prose figures are then
+    asserted against the derivation, so a change in the renderer breaks the
+    build instead of quietly making the book wrong.
+    """
+    from . import scratch_facts as sf
+
+    floats = len(sf.dome_batch().vertices)
+    vertices = floats // 10
+    triangles = vertices // 3
+    per_strut = sf.STRUT_SIDES * 2 + 12         # side quads + two 6-tri caps
+    struts = bm.frame_counts()[0] // 2 + 5      # hubless members, 65 struts
+    settings = sf.render_settings()
+    shader = sf.shader_constants()
+    assert per_strut == 28, per_strut
+    assert triangles == 3900, triangles
+    assert struts * per_strut == 1820, struts * per_strut
+    return {
+        "floats": floats,
+        "vertices": vertices,
+        "triangles": triangles,
+        "bytes_vertex": 40,
+        "bytes": floats * 4,
+        "kb": floats * 4 / 1024.0,
+        "per_strut": per_strut,
+        "struts": struts,
+        "frame_triangles": struts * per_strut,
+        "pixels": sf.FRAME_WIDTH * sf.FRAME_HEIGHT,
+        "frame_w": sf.FRAME_WIDTH,
+        "frame_h": sf.FRAME_HEIGHT,
+        "fps": sf.FRAME_FPS,
+        "ms_frame": 1000.0 / sf.FRAME_FPS,
+        "us_triangle": (1000.0 / sf.FRAME_FPS) * 1000.0 / triangles,
+        "runs_s": (sf.FRAME_WIDTH * sf.FRAME_HEIGHT * sf.FRAME_FPS) / 1e6,
+        "fov": settings.fov_degrees,
+        "near": settings.near,
+        "far": settings.far,
+        "sides": sf.STRUT_SIDES,
+        "specular_power": shader.specular_power,
+        "rim_power": shader.rim_power,
+        "ambient": shader.ambient,
+        "yaw_drift": settings.yaw_drift_degrees,
+    }
+
+
+@lru_cache(maxsize=1)
+def catalogue_facts() -> dict:
+    """Every dome the tool can build, counted from the tool's own menus.
+
+    The three big numbers are derived here and then asserted against the
+    figures the films put on screen, so a menu that grows changes this
+    chapter's arithmetic and cannot silently contradict the film.
+    """
+    from . import creator_facts as cf
+
+    menus = {axis.key: axis for axis in cf.axes()}
+    shell = 1
+    for axis in menus.values():
+        if axis.group != "shell":
+            continue
+        count = len(axis.values)
+        if axis.key == "layers":
+            count = count ** cf.LAYER_SLOTS      # three stacked slots
+        shell *= count
+    fitout = len(menus["partitions"].values) * (
+        len(menus["sections"].values) ** cf.SECTION_SLOTS)
+    assert shell == 32105299968, shell
+    assert fitout == 4398046511104, fitout
+    return {
+        "menus": len(menus),
+        "shell_menus": sum(1 for a in menus.values() if a.group == "shell"),
+        "fitout_menus": sum(1 for a in menus.values() if a.group == "fitout"),
+        "options": {key: len(axis.values) for key, axis in menus.items()},
+        "layers": cf.LAYER_SLOTS,
+        "sections": cf.SECTION_SLOTS,
+        "dials": len(cf.dials()),
+        "dial_settings": cf.dial_permutations(),
+        "shell": shell,
+        "fitout": fitout,
+        "distinct": cf.distinct_shells(),
+        "years": cf.years_to_watch(),
+        "seconds": 3.0,
+        "inert_share": 1.0 - cf.distinct_shells() / shell,
+    }
+
+
+@lru_cache(maxsize=1)
+def power_facts() -> dict:
+    """The small power system's own prices, from the model that built it."""
+    import seed_model as sm
+
+    names = ("battery_kwh", "battery_usd_per_kwh", "inverter_watts",
+             "inverter_usd_per_kw", "solar_panel_watts",
+             "solar_usd_per_watt_diy", "solar_derate", "ac_sizes_kbtu",
+             "ac_usd_per_kbtu", "ac_window_usd_per_kbtu", "ac_seer",
+             "btu_per_kwh")
+    out = {name: sm.declared(name) for name in names}
+    out["battery_usd"] = out["battery_kwh"] * out["battery_usd_per_kwh"]
+    out["inverter_usd"] = (out["inverter_watts"] / 1000.0
+                           * out["inverter_usd_per_kw"])
+    out["set_usd"] = (out["battery_usd"] + out["inverter_usd"]
+                      + out["solar_panel_watts"] * out["solar_usd_per_watt_diy"])
+    out["ac_usd"] = out["ac_sizes_kbtu"] * out["ac_usd_per_kbtu"]
+    out["ac_window_usd"] = out["ac_sizes_kbtu"] * out["ac_window_usd_per_kbtu"]
+    return out
+
+
+@lru_cache(maxsize=1)
+def water_facts() -> dict:
+    """What the plates make, against what the roof catches."""
+    from wedge_book import systems
+
+    water = systems.water_comparison()
+    return {
+        "roof_sqft": water["roof_sqft"],
+        "plan_sqft": water["plan_sqft"],
+        "gal_per_in": water["gallons_per_inch"],
+        "watts": water["peltier_watts"],
+        "kwh_day": water["peltier_kwh_per_day"],
+        "litres_day": water["peltier_litres_per_day"],
+        "gal_day": water["peltier_gallons_per_day"],
+        "gal_year": water["peltier_gallons_per_year"],
+        "rain_in": water["rain_inches_equal_to_a_year"],
+        "kwh_per_litre": water["kwh_per_litre"],
+    }
+
+
+@lru_cache(maxsize=1)
+def filter_facts() -> dict:
+    """The wall-as-filter idea's own numbers, at this book's dome.
+
+    The volumetric rate a dome needs for fresh air, spread over the shell it
+    would have to cross, gives the crawl a reader would feel -- or rather not
+    feel. Computed rather than quoted, because the film's own figure came off
+    a different dome.
+    """
+    dome = bm.tree_first()
+    radius_ft = dome.radius_in / 12.0
+    volume_ft3 = (2.0 / 3.0) * math.pi * radius_ft ** 3
+    skin_sqft = 2.0 * math.pi * radius_ft ** 2
+    from wedge_book import systems
+
+    water = systems.water_comparison()
+    return {
+        "radius_ft": radius_ft,
+        "volume_ft3": volume_ft3,
+        "skin_sqft": skin_sqft,
+        "floor_sqft": dome.floor_sqft,
+        "roof_plan_sqft": water["plan_sqft"],
+        "cfm": 17.6,
+        "ft_per_min": 17.6 / skin_sqft,
+        "inches_per_min": 17.6 / skin_sqft * 12.0,
+        "ach": 17.6 * 60.0 / volume_ft3,
+    }
+
+
+@lru_cache(maxsize=1)
+def hull_facts() -> dict:
+    """The four ways to laminate the shell, each priced and weighed.
+
+    Read from the shell model's own laminate schedules: what each system puts
+    on the core, what it costs, and what it weighs -- which is the comparison
+    the films make and the book only ever summarised.
+    """
+    import seed_model as sm
+
+    systems = {}
+    for key in sm.laminate_keys():
+        group = sm.shell_group(resin=key)
+        plan = sm.shell_plan(resin=key)
+        laminate = plan.laminate
+        systems[key] = {
+            "total_usd": sum(line.quantity * line.unit_cost
+                             for line in group.lines),
+            "laminate_usd": laminate.resin_usd + laminate.fabric_usd,
+            "gelcoat_usd": laminate.gelcoat_usd,
+            "resin_gal": laminate.resin_gal,
+            "weight_lb": (sum(p.glass_lb + p.resin_lb
+                              for p in laminate.plies) + laminate.seal_lb),
+            "plies": len(laminate.plies),
+            "label": laminate.system.label,
+        }
+    totals = {key: value["total_usd"] for key, value in systems.items()}
+    weights = {key: value["weight_lb"] for key, value in systems.items()}
+    plan = sm.shell_plan()
+    return {
+        "systems": systems,
+        "count": len(systems),
+        "cheapest": min(totals, key=totals.get),
+        "dearest": max(totals, key=totals.get),
+        "min_usd": min(totals.values()),
+        "max_usd": max(totals.values()),
+        "spread_usd": max(totals.values()) - min(totals.values()),
+        "lightest": min(weights, key=weights.get),
+        "heaviest": max(weights, key=weights.get),
+        "weight_ratio": max(weights.values()) / min(weights.values()),
+        "core_sqft": plan.core_sqft,
+        "core_sheets": plan.core_sheets,
+        "core_lb": plan.core_lb,
+        "latches": plan.latches,
+        "rim_gasket_ft": plan.rim_gasket_ft,
+        "laminated_sqft": plan.laminate.laminated_sqft,
+    }
+
+
+@lru_cache(maxsize=1)
+def geometry_facts() -> dict:
+    """Where the two strut lengths come from, counted off the model.
+
+    Half an edge of the parent icosahedron, the midpoint that falls inside the
+    sphere, the push back out to the surface, and the two chord factors that
+    result -- with the golden ratio's real home named, because the ratio
+    between the two struts is not it.
+    """
+    import itertools
+
+    import numpy as np
+
+    from .geometry import build_demo_geometry
+
+    vertices = np.asarray(build_demo_geometry().ico_vertices)
+    pairs = list(itertools.combinations(range(len(vertices)), 2))
+    lengths = {pair: float(np.linalg.norm(vertices[pair[0]]
+                                          - vertices[pair[1]]))
+               for pair in pairs}
+    parent = min(lengths.values())
+    edges = [pair for pair, length in lengths.items()
+             if abs(length - parent) < 1e-6]
+
+    def projected(pair):
+        midpoint = (vertices[pair[0]] + vertices[pair[1]]) / 2.0
+        return midpoint / float(np.linalg.norm(midpoint)), midpoint
+
+    first = edges[0]
+    projected_a, midpoint_a = projected(first)
+    # a second edge sharing a vertex with the first, so the two projected
+    # midpoints are joined by the LONG strut
+    shared = [pair for pair in edges
+              if pair != first and set(pair) & set(first)]
+    projected_b, _ = projected(shared[0])
+
+    short = float(np.linalg.norm(vertices[first[0]] - projected_a))
+    long_chord = float(np.linalg.norm(projected_a - projected_b))
+    phi = (1.0 + 5.0 ** 0.5) / 2.0
+    ratio = long_chord / short
+    board_long = bm.declared("master_cut_long_in")
+    board_short = bm.declared("master_cut_mid_in")
+    return {
+        "parent_edge": parent,
+        "edges": len(edges),
+        "mid_norm": float(np.linalg.norm(midpoint_a)),
+        "mid_sag": 1.0 - float(np.linalg.norm(midpoint_a)),
+        "mid_sag_pct": (1.0 - float(np.linalg.norm(midpoint_a))) * 100.0,
+        "short_factor": short,
+        "long_factor": long_chord,
+        "factor_ratio": ratio,
+        "phi": phi,
+        "board_ratio": board_long / board_short,
+        "phi_gap_pct": (ratio / phi - 1.0) * 100.0,
+        "board_gap_pct": ((board_long / board_short) / ratio - 1.0) * 100.0,
+    }
+
+
+@lru_cache(maxsize=1)
+def seam_room_facts() -> dict:
+    """The channel's own room, and what a round duct would cost it.
+
+    Read from the film's own channel model: the V's area, the space left once
+    the key is in it, the largest round thing that passes, and the panel shift
+    each duct size would demand -- with the radius growth that follows, which
+    is the cost the film prints beside the benefit.
+    """
+    from . import channel_facts as cf
+
+    rooms = cf.room(cf.seam_types()[0])
+    tight = cf.room(cf.seam_types()[1])
+    fits = cf.fits(rooms)
+    out = {
+        "opening_a_in": cf.seam_types()[0].opening_in,
+        "opening_b_in": cf.seam_types()[1].opening_in,
+        "inside_a_in2": rooms.inside_in2,
+        "inside_b_in2": tight.inside_in2,
+        "v_area_a_in2": rooms.v_area_in2,
+        "v_area_b_in2": tight.v_area_in2,
+        "round_a_in": rooms.inside_round_in,
+        "round_b_in": tight.inside_round_in,
+        "duct_a_in": rooms.equal_area_duct_in,
+        "duct_b_in": tight.equal_area_duct_in,
+        "wall_a_in2": rooms.wall_in2,
+        "fill_pct": fits[1] * 100.0,
+        "bundle_fits": fits[2],
+        "key_wall_in": cf.K["key_wall_in"],
+        "fill_fraction_pct": cf.K["fill_fraction"] * 100.0,
+    }
+    for key, services in (("three", ("duct_3",)),
+                          ("four", ("duct_4",)),
+                          ("bundle", ("duct_4", "pex_half", "nm_14_2",
+                                      "drain"))):
+        spacer = cf.spacer_for(list(services))
+        out[f"shift_{key}_in"] = spacer.shift_in
+        out[f"growth_{key}_pct"] = spacer.radius_growth_pct
+        room = cf.room(cf.seam_types()[0], spacer_in=spacer.shift_in)
+        out[f"round_{key}_in"] = room.inside_round_in
+    return out
+
+
+@lru_cache(maxsize=1)
+def pad_facts() -> dict:
+    """The pad ladder's own numbers, read through the tokens that carry them."""
+    names = ("sizes_list", "smallest", "biggest", "sizes_count", "cheap_total",
+             "cheap_deck", "cheap_spur", "cheap_permits", "cheap_hub",
+             "cheap_area", "standard_build", "standard_ft", "standard_net",
+             "standard_payback", "basic_build", "basic_net", "basic_payback",
+             "concrete_48", "gravel_48", "wood_48", "concrete_rate",
+             "gravel_rate", "wood_rate", "fits_48", "column", "rotating",
+             "solar_cost", "solar_watts", "lease_mo", "occupancy_pct")
+    out = {}
+    for name in names:
+        token = f"pad.{name}"
+        raw = resolve("{{" + token + "}}")
+        text = raw.replace(",", "").replace("$", "")
+        try:
+            out[name] = float(text)
+        except ValueError:
+            out[name] = raw
+    return out
+
+
+@lru_cache(maxsize=1)
+def design_facts() -> dict:
+    """The tool's twelve finished designs, priced and counted."""
+    from . import creator_facts as cf
+
+    rows = cf.design_rows()
+    costs = [r.cost for r in rows]
+    floors = [r.floor_sqft for r in rows]
+    return {
+        "count": len(rows),
+        "cheapest": min(rows, key=lambda r: r.cost),
+        "dearest": max(rows, key=lambda r: r.cost),
+        "smallest": min(rows, key=lambda r: r.floor_sqft),
+        "largest": max(rows, key=lambda r: r.floor_sqft),
+        "cheapest_sqft": min(r.cost / r.floor_sqft for r in rows),
+        "dearest_sqft": max(r.cost / r.floor_sqft for r in rows),
+        "floor_min": min(floors),
+        "floor_max": max(floors),
+        "floor_ratio": max(floors) / min(floors),
+        "cost_min": min(costs),
+        "cost_max": max(costs),
+        "cost_ratio": max(costs) / min(costs),
+        "twos": [r for r in rows if r.frequency == 2],
+        "frequencies": sorted({r.frequency for r in rows}),
+        "weight_min": min(r.weight_kg for r in rows),
+        "weight_max": max(r.weight_kg for r in rows),
+    }
+
+
+@lru_cache(maxsize=1)
+def band_facts() -> dict:
+    """The dome's seams sorted into bands, off the solver's own model.
+
+    Each band carries how many seams it holds, how long they run, and the
+    range of slopes they rise at -- which is the number that decides whether a
+    band can carry water or may only carry air.
+    """
+    import math
+
+    import numpy as np
+
+    from . import seam_climate as sc
+    from wedge_book import numbers
+
+    bands = sc.classify(numbers.reference_model())
+    out = {"count": 0, "seams": 0, "ft": 0.0}
+    for key, seams in bands.items():
+        lengths = []
+        slopes = []
+        for seam in seams:
+            a = np.asarray(seam.apex_start)
+            b = np.asarray(seam.apex_end)
+            delta = b - a
+            length = float(np.linalg.norm(delta))
+            lengths.append(length)
+            slopes.append(math.degrees(math.asin(abs(delta[2]) / length))
+                          if length else 0.0)
+        total_in = sum(lengths)
+        out[key] = {
+            "seams": len(seams),
+            "ft": total_in / 12.0,
+            "slope_min": min(slopes) if slopes else 0.0,
+            "slope_max": max(slopes) if slopes else 0.0,
+        }
+        out["count"] += 1
+        out["seams"] += len(seams)
+        out["ft"] += total_in / 12.0
+    return out
+
+
+@lru_cache(maxsize=1)
+def pine_index_facts() -> dict:
+    """One pine's ladder as a single index, stump value = one.
+
+    The films print the ladder as multipliers rather than dollars, because
+    the point is the *ratio* between rungs rather than the price of any one
+    of them: the same tree, used differently.
+    """
+    from . import pine_value_economics as pv
+
+    pine = pv.pine()
+    rungs = {
+        "stump": pine.stump_usd,
+        "firewood": pine.firewood_usd,
+        "mill": pine.mill_usd,
+        "wedge": pine.wedge_usd,
+        "use": pine.use_usd,
+        "financed": pine.financed_usd,
+    }
+    out = {f"{key}_usd": value for key, value in rungs.items()}
+    base = rungs["stump"]
+    for key, value in rungs.items():
+        out[f"{key}_index"] = value / base
+    return out
+
+
+@lru_cache(maxsize=1)
+def core_facts() -> dict:
+    """The utility core as its own build: stages, steps, hours, money."""
+    import column_build as cb
+    import seed_model as sm
+
+    steps = cb.steps()
+    stages = sorted({step.stage for step in steps})
+    tools = sorted({tool for step in steps for tool in step.tools})
+    return {
+        "steps": len(steps),
+        "stages": len(stages),
+        "stage_names": stages,
+        "stage_minutes": {name: cb.stage_minutes(name) for name in stages},
+        "practised_hours": cb.practised_hours(),
+        "first_hours": cb.first_build_hours(),
+        "labour_usd": cb.labour_usd(),
+        "labour_first_usd": cb.labour_usd(first=True),
+        "tools": len(tools),
+        "parts": len(cb.materials()),
+        "parts_usd": _cost_groups()["column"],
+        "move_usd": sm.declared("core_move_usd"),
+        "longest_stage": max(stages, key=cb.stage_minutes),
+        "longest_stage_min": max(cb.stage_minutes(name) for name in stages),
+    }
+
+
+#: The token rewrite below reads the frame facts through this name; the
+#: plots and the back matter read them through :func:`pixel_facts`.
+_pixels = pixel_facts
+
+
 def _flat_sizes():
     """The four diameters the flat-rate table covers, from the model."""
     from . import franken_economics as fe
@@ -451,8 +982,572 @@ def _build() -> tuple[Token, ...]:
               lambda: _n(_key_width(_section(seam_join_mode="shaved_flat")),
                          2)),
 
+        # -- the product, and what it costs ------------------------------
+        Token("product.price_usd", "the standard article's price, all in",
+              lambda: f"{_product().price:,.0f}"),
+        Token("product.built_usd", "what the standard article costs to build",
+              lambda: f"{_product().built:,.0f}"),
+        Token("product.margin_usd", "the margin at the standard markup",
+              lambda: f"{_product().margin:,.0f}"),
+        Token("product.markup_pct", "the markup on the standard article",
+              lambda: _n(_product().margin_fraction * 100.0, 0)),
+        Token("product.per_sqft_usd", "the standard article per square foot",
+              lambda: f"{_product().per_sqft:,.2f}"),
+        Token("product.direct_usd", "materials and labour before overhead",
+              lambda: f"{_product().direct:,.0f}"),
+        Token("product.overhead_usd", "the overhead the price carries",
+              lambda: f"{_product().overhead:,.0f}"),
+        Token("product.warranty_usd", "the warranty the price carries",
+              lambda: f"{_product().warranty:,.0f}"),
+        Token("product.ground_usd", "the ground the article needs, priced",
+              lambda: f"{_product().ground:,.0f}"),
+        Token("product.standing_usd", "the article standing, dome plus ground",
+              lambda: f"{_product().standing:,.0f}"),
+        Token("product.frame_usd", "the frame's share of the build",
+              lambda: f"{_cost_groups()['frame']:,.0f}"),
+        Token("product.cap_usd", "the shell's share of the build",
+              lambda: f"{_cost_groups()['cap']:,.0f}"),
+        Token("product.column_usd", "the utility column's share",
+              lambda: f"{_cost_groups()['column']:,.0f}"),
+        Token("product.services_usd", "light, fan and cooling",
+              lambda: f"{_cost_groups()['services']:,.0f}"),
+        Token("product.polyps_usd", "the utility panels' share",
+              lambda: f"{_cost_groups()['polyps']:,.0f}"),
+        Token("product.labour_usd", "build labour in the price",
+              lambda: f"{_cost_groups()['labour']:,.0f}"),
+        Token("product.target_usd", "the design target for the bare article",
+              lambda: f"{bm.declared('dome_target_usd'):,.0f}"),
+        Token("product.target_gap_usd", "how far the computed price is above "
+              "that target",
+              lambda: f"{_product().price - bm.declared('dome_target_usd'):,.0f}"),
+
+        # -- the campaign ------------------------------------------------
+        Token("campaign.goal_usd", "what the campaign asks for",
+              lambda: f"{sum(line.usd for line in _goal_lines()):,.0f}"),
+        Token("campaign.lines", "how many lines the goal is spent on",
+              lambda: str(len(_goal_lines()))),
+        Token("campaign.biggest_usd", "the largest line in the goal",
+              lambda: f"{max(line.usd for line in _goal_lines()):,.0f}"),
+        Token("campaign.biggest_what", "what that largest line buys",
+              lambda: max(_goal_lines(), key=lambda l: l.usd).what),
+        Token("campaign.engineering_usd", "the line that pays an engineer",
+              lambda: f"{next(l.usd for l in _goal_lines() if l.key == 'engineering'):,.0f}"),
+        Token("campaign.quilt_usd", "the line that seeds the quilt network",
+              lambda: f"{next(l.usd for l in _goal_lines() if l.key == 'quilt_seed'):,.0f}"),
+        Token("campaign.test_usd", "the line that buys a year of weather",
+              lambda: f"{next(l.usd for l in _goal_lines() if l.key == 'test_platform'):,.0f}"),
+        Token("campaign.tiers", "how many rungs the campaign offers",
+              lambda: str(len(_tiers()))),
+        Token("campaign.cheapest_usd", "the cheapest rung",
+              lambda: f"{min(t.pledge for t in _tiers()):,.0f}"),
+        Token("campaign.dearest_usd", "the dearest rung",
+              lambda: f"{max(t.pledge for t in _tiers()):,.0f}"),
+        Token("campaign.dearest_label", "what the dearest rung is",
+              lambda: max(_tiers(), key=lambda t: t.pledge).label),
+        Token("campaign.dearest_cost_usd", "what that rung costs to deliver",
+              lambda: f"{max(_tiers(), key=lambda t: t.pledge).cost:,.0f}"),
+        Token("campaign.kit_trees_usd", "the kit for somebody with trees",
+              lambda: f"{next(t.pledge for t in _tiers() if t.key == 'kit_trees'):,.0f}"),
+        Token("campaign.kit_notrees_usd", "the kit with the timber included",
+              lambda: f"{next(t.pledge for t in _tiers() if t.key == 'kit_notrees'):,.0f}"),
+        Token("campaign.kit_gap_usd", "what the timber in that kit costs",
+              lambda: f"{next(t.pledge for t in _tiers() if t.key == 'kit_notrees') - next(t.pledge for t in _tiers() if t.key == 'kit_trees'):,.0f}"),
+        Token("campaign.equipment_usd", "the goal's lines that buy machines "
+              "which still exist on day three hundred",
+              lambda: f"{sum(line.usd for line in _goal_lines() if line.key in _EQUIPMENT_LINES):,.0f}"),
+        Token("campaign.equipment_pct", "what share of the goal that is",
+              lambda: _n(sum(line.usd for line in _goal_lines()
+                             if line.key in _EQUIPMENT_LINES)
+                         / sum(line.usd for line in _goal_lines()) * 100.0, 0)),
+        Token("campaign.tooling_ask_usd", "what the earlier cut asked for",
+              lambda: f"{bm.declared('tooling_ask_usd'):,.0f}"),
+        Token("campaign.ask_gap_usd", "the line-item goal against that ask",
+              lambda: f"{sum(line.usd for line in _goal_lines()) - bm.declared('tooling_ask_usd'):,.0f}"),
+
+        # -- the quilt network's own arithmetic --------------------------
+        Token("quilt.usd_per_layer", "what the network charges a layer",
+              lambda: f"{_quilt()['usd_per_layer']:,.0f}"),
+        Token("quilt.marginal_usd", "what one more layer costs at the margin",
+              lambda: f"{_quilt()['marginal_usd_per_layer']:,.2f}"),
+        Token("quilt.shirts_per_layer", "t-shirts in one layer",
+              lambda: f"{_quilt()['shirts_per_layer']:,.0f}"),
+        Token("quilt.r_per_layer", "the R one quilted layer adds",
+              lambda: _n(_quilt()['r_per_layer'], 1)),
+        Token("quilt.base_r", "what the bare shell is worth",
+              lambda: _n(_quilt()['base_r'], 2)),
+        Token("quilt.stacked_r", "three layers of quilt",
+              lambda: _n(_quilt()['stacked_r'], 1)),
+        Token("quilt.sqft_per_layer", "the area one layer has to cover",
+              lambda: f"{_quilt()['sqft_per_layer']:,.0f}"),
+
+        # -- the module catalogue ----------------------------------------
+        Token("module.count", "modules in the catalogue",
+              lambda: str(len(_modules()))),
+        Token("module.cheapest_usd", "the least expensive module",
+              lambda: f"{min(m.cost for m in _modules()):,.0f}"),
+        Token("module.cheapest_label", "what that module is",
+              lambda: min(_modules(), key=lambda m: m.cost).label),
+        Token("module.dearest_usd", "the most expensive module",
+              lambda: f"{max(m.cost for m in _modules()):,.0f}"),
+        Token("module.dearest_label", "what that module is",
+              lambda: max(_modules(), key=lambda m: m.cost).label),
+        Token("module.total_usd", "buying every module once",
+              lambda: f"{sum(m.cost for m in _modules()):,.0f}"),
+        Token("module.mounts", "how many kinds of mounting point there are",
+              lambda: str(len({m.mount for m in _modules()}))),
+        Token("module.watts_dearest", "the module that draws the most",
+              lambda: f"{max(m.watts for m in _modules()):,.0f}"),
+        Token("module.watts_dearest_label", "which module that is",
+              lambda: max(_modules(), key=lambda m: m.watts).label),
+        Token("seed.count", "named seeds in the catalogue",
+              lambda: str(len(_fitouts()))),
+        Token("seed.modules_total", "module types across every seed",
+              lambda: str(sum(len(f.modules) for f in _fitouts()))),
+        Token("seed.most_modules", "the seed with the most modules in it",
+              lambda: str(max(len(f.modules) for f in _fitouts()))),
+        Token("seed.most_modules_label", "which seed that is",
+              lambda: max(_fitouts(), key=lambda f: len(f.modules)).label),
+        Token("seed.buried", "the seed that is the same dome, buried",
+              lambda: next(f.label for f in _fitouts() if f.shape == 'buried')),
+
+        # -- finishing the wood ------------------------------------------
+        Token("finish.stock_ft", "feet of stock to finish",
+              lambda: f"{_finish_facts()['stock_ft']:,.1f}"),
+        Token("finish.area_sqft", "square feet of sawn face to cover",
+              lambda: f"{_finish_facts()['area_sqft']:,.0f}"),
+        Token("finish.depth_in", "how deep the face being finished is",
+              lambda: _n(_finish_facts()['depth_in'], 1)),
+        Token("finish.coverage_sqft_gal", "the planning coverage per gallon",
+              lambda: f"{_finish_constants()['coverage']:,.0f}"),
+        Token("finish.handling_pct", "the handling allowance on the volume",
+              lambda: _n(_finish_constants()['handling'], 0)),
+        Token("finish.coats", "coats the allowance is worked for",
+              lambda: _n(_finish_constants()['coats'], 0)),
+        Token("finish.gal_base", "gallons the area asks for",
+              lambda: _n(_finish_facts()['base_gal'], 2)),
+        Token("finish.gal_allowance", "gallons with the handling allowance",
+              lambda: _n(_finish_facts()['allowance_gal'], 2)),
+        Token("finish.gal_label", "gallons if the label's coverage were true",
+              lambda: _n(_finish_facts()['label_gal'], 2)),
+        Token("finish.label_sqft_gal", "the coverage the can claims",
+              lambda: f"{_finish_constants()['label_coverage']:,.0f}"),
+        Token("finish.label_ratio", "how much better the can's claim is",
+              lambda: _n(_finish_constants()['label_coverage']
+                         / _finish_constants()['coverage'], 1)),
+        Token("finish.minutes_member", "minutes of work per member per coat",
+              lambda: _n(_finish_constants()['minutes'], 0)),
+        Token("finish.hours", "hours of active finishing",
+              lambda: _n(_finish_facts()['labour_hours'], 1)),
+        Token("finish.danish_wait_min", "the Danish-oil can's minimum wait",
+              lambda: _n(_finish_constants()['danish_wait'], 0)),
+        Token("finish.danish_cure_h", "and its minimum cure",
+              lambda: _n(_finish_constants()['danish_cure'], 0)),
+        Token("finish.wax_wait_min", "the oil-and-wax can's minimum wait",
+              lambda: _n(_finish_constants()['wax_wait'], 0)),
+        Token("finish.wax_cure_h", "and its minimum cure",
+              lambda: _n(_finish_constants()['wax_cure'], 0)),
+        Token("finish.topics", "claims in the source video",
+              lambda: str(_finish_facts()['topic_count'])),
+
+        # -- one frame of film -------------------------------------------
+        Token("pixel.fov_deg", "the lens the films are shot on",
+              lambda: _n(_pixels()['fov'], 0)),
+        Token("pixel.near", "how close the near plane sits",
+              lambda: f"{_pixels()['near']:.2f}"),
+        Token("pixel.far", "how far the far plane reaches",
+              lambda: _n(_pixels()['far'], 0)),
+        Token("pixel.width", "frame width in pixels",
+              lambda: f"{_pixels()['frame_w']:,}"),
+        Token("pixel.height", "frame height in pixels",
+              lambda: f"{_pixels()['frame_h']:,}"),
+        Token("pixel.fps", "frames a second",
+              lambda: str(_pixels()['fps'])),
+        Token("pixel.pixels", "pixels in one frame",
+              lambda: f"{_pixels()['pixels']:,}"),
+        Token("pixel.ms_frame", "milliseconds in one frame's budget",
+              lambda: _n(_pixels()['ms_frame'], 2)),
+        Token("pixel.us_triangle", "microseconds each triangle gets",
+              lambda: _n(_pixels()['us_triangle'], 3)),
+        Token("pixel.sides", "flat sides on a tube of strut",
+              lambda: str(_pixels()['sides'])),
+        Token("pixel.tri_strut", "triangles in one strut",
+              lambda: str(_pixels()['per_strut'])),
+        Token("pixel.struts", "strut tubes in the frame being drawn",
+              lambda: str(_pixels()['struts'])),
+        Token("pixel.tri_frame", "triangles of frame",
+              lambda: f"{_pixels()['frame_triangles']:,}"),
+        Token("pixel.tri_dome", "triangles in the whole model",
+              lambda: f"{_pixels()['triangles']:,}"),
+        Token("pixel.vertices", "vertices in the whole model",
+              lambda: f"{_pixels()['vertices']:,}"),
+        Token("pixel.floats", "floats in the uploaded buffer",
+              lambda: f"{_pixels()['floats']:,}"),
+        Token("pixel.bytes_vertex", "bytes per vertex",
+              lambda: str(_pixels()['bytes_vertex'])),
+        Token("pixel.bytes", "bytes in the uploaded buffer",
+              lambda: f"{_pixels()['bytes']:,}"),
+        Token("pixel.kb", "the same buffer in kilobytes",
+              lambda: _n(_pixels()['kb'], 1)),
+        Token("pixel.runs_s", "shader runs a second at full coverage",
+              lambda: _n(_pixels()['runs_s'], 1)),
+        Token("pixel.specular_power", "the specular exponent",
+              lambda: _n(_pixels()['specular_power'], 0)),
+        Token("pixel.rim_power", "the rim-light exponent",
+              lambda: _n(_pixels()['rim_power'], 1)),
+        Token("pixel.ambient", "the ambient floor in the shader",
+              lambda: _n(_pixels()['ambient'], 1)),
+
+        # -- the catalogue, and everything in it --------------------------
+        Token("space.menus", "menus the tool offers",
+              lambda: str(catalogue_facts()['menus'])),
+        Token("space.shell_menus", "menus that change the building itself",
+              lambda: str(catalogue_facts()['shell_menus'])),
+        Token("space.fitout_menus", "menus that change what the floor is for",
+              lambda: str(catalogue_facts()['fitout_menus'])),
+        Token("space.options", "options across every menu",
+              lambda: f"{sum(catalogue_facts()['options'].values()):,}"),
+        Token("space.frequencies", "frequencies on offer",
+              lambda: str(catalogue_facts()['options']['frequency'])),
+        Token("space.frames", "ways the sticks can meet",
+              lambda: str(catalogue_facts()['options']['frame_style'])),
+        Token("space.hubs", "hub styles",
+              lambda: str(catalogue_facts()['options']['hub_style'])),
+        Token("space.sections_shapes", "strut cross-sections",
+              lambda: str(catalogue_facts()['options']['strut_shape'])),
+        Token("space.materials", "frame materials",
+              lambda: str(catalogue_facts()['options']['frame_material'])),
+        Token("space.panels", "panel types",
+              lambda: str(catalogue_facts()['options']['default_panel'])),
+        Token("space.claddings", "cladding layers",
+              lambda: str(catalogue_facts()['options']['layers'])),
+        Token("space.foundations", "foundations",
+              lambda: str(catalogue_facts()['options']['foundation'])),
+        Token("space.rooms", "room types a floor section can be assigned",
+              lambda: str(catalogue_facts()['options']['sections'])),
+        Token("space.layers", "cladding layers that stack",
+              lambda: str(catalogue_facts()['layers'])),
+        Token("space.floor_sections", "sections a floor divides into",
+              lambda: str(catalogue_facts()['sections'])),
+        Token("space.dials", "numeric dials on the tool",
+              lambda: str(catalogue_facts()['dials'])),
+        Token("space.dial_settings", "settings the four dials admit",
+              lambda: f"{catalogue_facts()['dial_settings']:,}"),
+        Token("space.shell_permutations", "combinations that change the shell",
+              lambda: f"{catalogue_facts()['shell']:,}"),
+        Token("space.distinct_shells", "combinations that are a different "
+              "building",
+              lambda: f"{catalogue_facts()['distinct']:,}"),
+        Token("space.inert_pct", "combinations that change nothing",
+              lambda: _n(catalogue_facts()['inert_share'] * 100.0, 1)),
+        Token("space.fitout_permutations", "floor layouts on top of those",
+              lambda: f"{catalogue_facts()['fitout']:,}"),
+        Token("space.years", "years of film to show every one at three "
+              "seconds",
+              lambda: f"{catalogue_facts()['years']:,.0f}"),
+        Token("space.seconds", "seconds each combination would need",
+              lambda: _n(catalogue_facts()['seconds'], 0)),
+
+        # -- the twelve finished designs, priced -------------------------
+        Token("design.count", "finished designs in the tool",
+              lambda: str(design_facts()['count'])),
+        Token("design.cheapest_usd", "the cheapest of them",
+              lambda: f"{design_facts()['cheapest'].cost:,.0f}"),
+        Token("design.cheapest_name", "which one that is",
+              lambda: design_facts()['cheapest'].name),
+        Token("design.dearest_usd", "the dearest of them",
+              lambda: f"{design_facts()['dearest'].cost:,.0f}"),
+        Token("design.dearest_name", "which one that is",
+              lambda: design_facts()['dearest'].name),
+        Token("design.cheapest_sqft", "the cheapest per square foot",
+              lambda: f"{design_facts()['cheapest_sqft']:,.0f}"),
+        Token("design.dearest_sqft", "the dearest per square foot",
+              lambda: f"{design_facts()['dearest_sqft']:,.0f}"),
+        Token("design.floor_min", "the smallest floor in the catalogue",
+              lambda: _n(design_facts()['floor_min'], 0)),
+        Token("design.floor_max", "the largest floor in the catalogue",
+              lambda: _n(design_facts()['floor_max'], 0)),
+        Token("design.floor_ratio", "how many times the larger of those is",
+              lambda: _n(design_facts()['floor_ratio'], 1)),
+        Token("design.cost_ratio", "how many times the dearest shell is",
+              lambda: _n(design_facts()['cost_ratio'], 1)),
+        Token("design.frequencies", "frequencies the catalogue covers",
+              lambda: str(len(design_facts()['frequencies']))),
+        Token("design.twos", "designs built on the two-frequency frame",
+              lambda: str(len(design_facts()['twos']))),
+        Token("design.weight_min_lb", "the lightest shell in the catalogue, "
+              "in pounds",
+              lambda: f"{design_facts()['weight_min'] * 2.20462:,.0f}"),
+        Token("design.weight_max_lb", "the heaviest",
+              lambda: f"{design_facts()['weight_max'] * 2.20462:,.0f}"),
+
+        # -- the off-grid set ---------------------------------------------
+        Token("power.battery_kwh", "kilowatt hours in the bank",
+              lambda: _n(power_facts()['battery_kwh'], 0)),
+        Token("power.battery_usd_kwh", "the bank's price per kilowatt hour",
+              lambda: f"{power_facts()['battery_usd_per_kwh']:,.0f}"),
+        Token("power.battery_usd", "what the bank costs",
+              lambda: f"{power_facts()['battery_usd']:,.0f}"),
+        Token("power.inverter_watts", "the inverter's size",
+              lambda: f"{power_facts()['inverter_watts']:,.0f}"),
+        Token("power.inverter_usd", "what it costs",
+              lambda: f"{power_facts()['inverter_usd']:,.0f}"),
+        Token("power.array_watts", "the starter array",
+              lambda: f"{power_facts()['solar_panel_watts']:,.0f}"),
+        Token("power.array_usd_watt", "array price, self-installed",
+              lambda: f"{power_facts()['solar_usd_per_watt_diy']:.2f}"),
+        Token("power.derate_pct", "what a real array delivers of its rating",
+              lambda: _n(power_facts()['solar_derate'] * 100.0, 0)),
+        Token("power.set_usd", "the whole small set, bought",
+              lambda: f"{power_facts()['set_usd']:,.0f}"),
+        Token("power.ac_kbtu", "cooling the model sizes for",
+              lambda: _n(power_facts()['ac_sizes_kbtu'], 0)),
+        Token("power.ac_usd", "a split unit that size",
+              lambda: f"{power_facts()['ac_usd']:,.0f}"),
+        Token("power.ac_window_usd", "the window unit instead",
+              lambda: f"{power_facts()['ac_window_usd']:,.0f}"),
+        Token("power.seer", "the air conditioner's efficiency",
+              lambda: _n(power_facts()['ac_seer'], 0)),
+
+        # -- the plates, and what they are worth -------------------------
+        Token("plate.watts", "watts of Peltier plates a dome carries",
+              lambda: _n(water_facts()['watts'], 0)),
+        Token("plate.kwh_day", "electricity they take in a day",
+              lambda: _n(water_facts()['kwh_day'], 2)),
+        Token("plate.litres_day", "water they condense in a day",
+              lambda: _n(water_facts()['litres_day'], 3)),
+        Token("plate.gal_year", "water they condense in a year",
+              lambda: _n(water_facts()['gal_year'], 0)),
+        Token("plate.rain_in", "the rain that is equal to",
+              lambda: _n(water_facts()['rain_in'], 2)),
+        Token("plate.kwh_per_litre", "energy for a litre that way",
+              lambda: _n(water_facts()['kwh_per_litre'], 2)),
+        Token("roof.gal_per_in", "gallons the roof catches per inch of rain",
+              lambda: _n(water_facts()['gal_per_in'], 0)),
+        Token("roof.plan_sqft", "the brim's catchment, in plan",
+              lambda: _n(water_facts()['plan_sqft'], 0)),
+        Token("roof.skin_sqft", "the shell's own area",
+              lambda: _n(water_facts()['roof_sqft'], 0)),
+
+        # -- the wall as a filter ----------------------------------------
+        Token("filter.volume_ft3", "air the shell encloses",
+              lambda: f"{filter_facts()['volume_ft3']:,.0f}"),
+        Token("filter.skin_sqft", "surface that air would cross",
+              lambda: f"{filter_facts()['skin_sqft']:,.0f}"),
+        Token("filter.cfm", "fresh air the dome needs",
+              lambda: _n(filter_facts()['cfm'], 1)),
+        Token("filter.ft_min", "how fast air crosses the wall",
+              lambda: _n(filter_facts()['ft_per_min'], 2)),
+        Token("filter.in_min", "the same crawl in inches a minute",
+              lambda: _n(filter_facts()['inches_per_min'], 1)),
+        Token("filter.ach", "air changes an hour that implies",
+              lambda: _n(filter_facts()['ach'], 1)),
+
+        # -- the shell, laminated four ways ------------------------------
+        Token("hull.systems", "laminate systems the model prices",
+              lambda: str(hull_facts()['count'])),
+        Token("hull.min_usd", "the cheapest of them",
+              lambda: f"{hull_facts()['min_usd']:,.0f}"),
+        Token("hull.max_usd", "the dearest",
+              lambda: f"{hull_facts()['max_usd']:,.0f}"),
+        Token("hull.spread_usd", "the difference between those two",
+              lambda: f"{hull_facts()['spread_usd']:,.0f}"),
+        Token("hull.sheathed_usd", "sheathed ply, the light one",
+              lambda: f"{hull_facts()['systems']['sheathed']['total_usd']:,.0f}"),
+        Token("hull.boatyard_usd", "the production hull skin",
+              lambda: f"{hull_facts()['systems']['boatyard']['total_usd']:,.0f}"),
+        Token("hull.marine_usd", "the same schedule in a better resin",
+              lambda: f"{hull_facts()['systems']['marine']['total_usd']:,.0f}"),
+        Token("hull.vinylester_usd", "the below-the-waterline schedule",
+              lambda: f"{hull_facts()['systems']['vinylester']['total_usd']:,.0f}"),
+        Token("hull.gelcoat_usd", "the weather face's gelcoat",
+              lambda: f"{hull_facts()['systems']['boatyard']['gelcoat_usd']:,.0f}"),
+        Token("hull.resin_gal_min", "resin the lightest schedule uses",
+              lambda: _n(hull_facts()['systems']['sheathed']['resin_gal'], 1)),
+        Token("hull.resin_gal_max", "resin the heaviest uses",
+              lambda: _n(hull_facts()['systems']['vinylester']['resin_gal'], 1)),
+        Token("hull.weight_min_lb", "the lightest laminate's weight",
+              lambda: f"{hull_facts()['systems']['sheathed']['weight_lb']:,.0f}"),
+        Token("hull.weight_max_lb", "the heaviest",
+              lambda: f"{hull_facts()['systems']['vinylester']['weight_lb']:,.0f}"),
+        Token("hull.weight_ratio", "how many times heavier the heaviest is",
+              lambda: _n(hull_facts()['weight_ratio'], 1)),
+        Token("hull.core_sqft", "core area to sheath",
+              lambda: f"{hull_facts()['core_sqft']:,.0f}"),
+        Token("hull.core_sheets", "sheets of core",
+              lambda: _n(hull_facts()['core_sheets'], 1)),
+        Token("hull.core_lb", "the core's own weight",
+              lambda: f"{hull_facts()['core_lb']:,.0f}"),
+        Token("hull.latches", "latches around the rim",
+              lambda: str(hull_facts()['latches'])),
+        Token("hull.rim_gasket_ft", "feet of rim gasket",
+              lambda: _n(hull_facts()['rim_gasket_ft'], 0)),
+        Token("hull.laminated_sqft", "square feet actually wet out",
+              lambda: f"{hull_facts()['laminated_sqft']:,.0f}"),
+
+        # -- where the two lengths come from -----------------------------
+        Token("geom.parent_edge", "the parent icosahedron's edge, as a "
+              "fraction of the radius",
+              lambda: f"{geometry_facts()['parent_edge']:.6f}"),
+        Token("geom.parent_edges", "edges in the parent solid",
+              lambda: str(geometry_facts()['edges'])),
+        Token("geom.mid_norm", "how far the halved edge's midpoint sits from "
+              "the centre",
+              lambda: f"{geometry_facts()['mid_norm']:.6f}"),
+        Token("geom.mid_sag", "how far inside the sphere that midpoint "
+              "falls, as a fraction of the radius",
+              lambda: f"{geometry_facts()['mid_sag']:.6f}"),
+        Token("geom.mid_sag_pct", "the same shortfall, in per cent",
+              lambda: _n(geometry_facts()['mid_sag_pct'], 2)),
+        Token("geom.short_factor", "the short strut, as a fraction of the "
+              "radius",
+              lambda: f"{geometry_facts()['short_factor']:.6f}"),
+        Token("geom.long_factor", "the long strut",
+              lambda: f"{geometry_facts()['long_factor']:.6f}"),
+        Token("geom.factor_ratio", "long over short, before any board is cut",
+              lambda: f"{geometry_facts()['factor_ratio']:.6f}"),
+        Token("geom.phi", "the golden ratio, for comparison",
+              lambda: f"{geometry_facts()['phi']:.6f}"),
+        Token("geom.phi_gap_pct", "how far the strut ratio sits below phi",
+              lambda: f"{abs(geometry_facts()['phi_gap_pct']):,.0f}"),
+        Token("geom.board_ratio", "the two measured boards, long over middle",
+              lambda: f"{geometry_facts()['board_ratio']:.6f}"),
+        Token("geom.board_gap_pct", "how far the boards sit above the "
+              "factor ratio",
+              lambda: _n(geometry_facts()['board_gap_pct'], 2)),
+
+        # -- the channel's room, and what a duct would cost -----------------
+        Token("seam.opening_a_in", "the wide seam's opening, at the key",
+              lambda: _n(seam_room_facts()['opening_a_in'], 2)),
+        Token("seam.opening_b_in", "the tight seam's opening",
+              lambda: _n(seam_room_facts()['opening_b_in'], 2)),
+        Token("seam.inside_a_in2", "usable room in the wide seam",
+              lambda: _n(seam_room_facts()['inside_a_in2'], 2)),
+        Token("seam.inside_b_in2", "usable room in the tight seam",
+              lambda: _n(seam_room_facts()['inside_b_in2'], 2)),
+        Token("seam.round_a_in", "largest round thing the wide seam passes",
+              lambda: _n(seam_room_facts()['round_a_in'], 2)),
+        Token("seam.round_b_in", "the same for the tight seam",
+              lambda: _n(seam_room_facts()['round_b_in'], 2)),
+        Token("seam.duct_a_in", "the round duct of equal area, wide seam",
+              lambda: _n(seam_room_facts()['duct_a_in'], 1)),
+        Token("seam.duct_b_in", "the round duct of equal area, tight seam",
+              lambda: _n(seam_room_facts()['duct_b_in'], 1)),
+        Token("seam.wall_a_in2", "the key's own wall, in section",
+              lambda: _n(seam_room_facts()['wall_a_in2'], 2)),
+        Token("seam.fill_pct", "how full the services leave the tight seam",
+              lambda: _n(seam_room_facts()['fill_pct'], 1)),
+        Token("seam.fill_allowed_pct", "the conduit rule's allowance",
+              lambda: _n(seam_room_facts()['fill_fraction_pct'], 0)),
+        Token("seam.key_wall_in", "the printed key's wall thickness",
+              lambda: _n(seam_room_facts()['key_wall_in'], 2)),
+        Token("spacer.shift_3_in", "panel shift a 3 in duct demands",
+              lambda: _n(seam_room_facts()['shift_three_in'], 2)),
+        Token("spacer.growth_3_pct", "radius growth that follows",
+              lambda: _n(seam_room_facts()['growth_three_pct'], 1)),
+        Token("spacer.round_3_in", "round duct the seam then passes",
+              lambda: _n(seam_room_facts()['round_three_in'], 2)),
+        Token("spacer.shift_4_in", "the same shift for a 4 in duct",
+              lambda: _n(seam_room_facts()['shift_four_in'], 2)),
+        Token("spacer.growth_4_pct", "radius growth for a 4 in duct",
+              lambda: _n(seam_room_facts()['growth_four_pct'], 1)),
+        Token("spacer.shift_bundle_in", "shift for a 4 in duct plus services",
+              lambda: _n(seam_room_facts()['shift_bundle_in'], 2)),
+        Token("spacer.growth_bundle_pct", "radius growth for that bundle",
+              lambda: _n(seam_room_facts()['growth_bundle_pct'], 1)),
+
+        # -- the seams, band by band -------------------------------------
+        Token("band.count", "bands the seams fall into",
+              lambda: str(band_facts()['count'])),
+        Token("band.seams", "seams in the shell",
+              lambda: str(band_facts()['seams'])),
+        Token("band.ft", "feet of seam, all bands",
+              lambda: _n(band_facts()['ft'], 0)),
+        Token("band.lower_seams", "seams in the lowest band",
+              lambda: str(band_facts()['lower']['seams'])),
+        Token("band.lower_ft", "feet of seam in the lowest band",
+              lambda: _n(band_facts()['lower']['ft'], 0)),
+        Token("band.lower_slope", "the slope the lowest band rises at",
+              lambda: _n(band_facts()['lower']['slope_min'], 0)),
+        Token("band.belt_seams", "seams in the belt",
+              lambda: str(band_facts()['belt']['seams'])),
+        Token("band.belt_ft", "feet of seam in the belt",
+              lambda: _n(band_facts()['belt']['ft'], 0)),
+        Token("band.belt_slope", "the belt's slope",
+              lambda: _n(band_facts()['belt']['slope_min'], 1)),
+        Token("band.upper_seams", "seams in the upper band",
+              lambda: str(band_facts()['upper']['seams'])),
+        Token("band.upper_ft", "feet of seam above the belt",
+              lambda: _n(band_facts()['upper']['ft'], 0)),
+        Token("band.upper_slope", "the range the upper band rises through",
+              lambda: f"{_n(band_facts()['upper']['slope_min'], 0)}-"
+                      f"{_n(band_facts()['upper']['slope_max'], 0)}"),
+        Token("band.pentagon_seams", "seams in the ring below the cap",
+              lambda: str(band_facts()['pentagon']['seams'])),
+        Token("band.pentagon_ft", "feet of dead-level seam",
+              lambda: _n(band_facts()['pentagon']['ft'], 0)),
+        Token("band.pentagon_slope", "how level that ring is",
+              lambda: _n(band_facts()['pentagon']['slope_max'], 1)),
+        Token("band.cap_seams", "seams around the crown",
+              lambda: str(band_facts()['cap']['seams'])),
+        Token("band.cap_ft", "feet of seam in the cap",
+              lambda: _n(band_facts()['cap']['ft'], 0)),
+        Token("band.cap_slope", "the cap's slope",
+              lambda: _n(band_facts()['cap']['slope_min'], 1)),
+
+        # -- the value ladder as an index -------------------------------
+        Token("index.rungs", "rungs on the ladder, stump value counted as one",
+              lambda: str(len(pine_index_facts()) // 2)),
+        Token("index.stump", "the tree on the stump", lambda: _n(
+            pine_index_facts()['stump_index'], 0)),
+        Token("index.firewood", "the same tree, burned",
+              lambda: _n(pine_index_facts()['firewood_index'], 0)),
+        Token("index.mill", "the same tree, sawn",
+              lambda: _n(pine_index_facts()['mill_index'], 0)),
+        Token("index.wedge", "the same tree, split",
+              lambda: _n(pine_index_facts()['wedge_index'], 0)),
+        Token("index.use", "the same tree, holding a frame up",
+              lambda: _n(pine_index_facts()['use_index'], 0)),
+        Token("index.financed", "and carried on a mortgage",
+              lambda: _n(pine_index_facts()['financed_index'], 0)),
+        Token("index.use_over_firewood", "structure against firewood",
+              lambda: _n(pine_index_facts()['use_index']
+                         / pine_index_facts()['firewood_index'], 1)),
+
+        # -- one utility core, built ------------------------------
+        Token("core.steps", "steps in the core's build",
+              lambda: str(core_facts()['steps'])),
+        Token("core.stages", "stages those steps fall into",
+              lambda: str(core_facts()['stages'])),
+        Token("core.tools", "tools the build calls for",
+              lambda: str(core_facts()['tools'])),
+        Token("core.parts", "purchased parts in the core",
+              lambda: str(core_facts()['parts'])),
+        Token("core.hours", "hours of work once practised",
+              lambda: _n(core_facts()['practised_hours'], 1)),
+        Token("core.first_hours", "hours the first one takes",
+              lambda: _n(core_facts()['first_hours'], 1)),
+        Token("core.labour_usd", "labour at the book's wage, practised",
+              lambda: f"{core_facts()['labour_usd']:,.0f}"),
+        Token("core.labour_first_usd", "labour the first time",
+              lambda: f"{core_facts()['labour_first_usd']:,.0f}"),
+        Token("core.longest_stage", "the stage that decides the build",
+              lambda: str(core_facts()['longest_stage'])),
+        Token("core.longest_stage_min", "minutes in that stage",
+              lambda: _n(core_facts()['longest_stage_min'], 0)),
+        Token("core.parts_usd", "the parts in the price",
+              lambda: f"{core_facts()['parts_usd']:,.0f}"),
+        Token("pad.target_usd", "the pad the campaign aims at",
+              lambda: f"{bm.declared('pad_target_usd'):,.0f}"),
+        Token("pad.target_gap_usd", "how far the computed cheap pad is "
+              "above that aim",
+              lambda: f"{pad_facts()['cheap_total'] - bm.declared('pad_target_usd'):,.0f}"),
+        Token("core.move_usd", "what it costs to move the core to a "
+              "new pad",
+              lambda: f"{core_facts()['move_usd']:,.0f}"),
+
         # -- the master cut list ----------------------------------------
         Token("cut.master_long_in", "the master cut list's long member",
+              lambda: _n(bm.declared("master_cut_long_in"), 1)),
         Token("cut.master_mid_in", "the master cut list's middle member",
               lambda: _n(bm.declared("master_cut_mid_in"), 1)),
         Token("cut.master_short_in", "the master cut list's short member",

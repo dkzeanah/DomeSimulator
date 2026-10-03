@@ -532,6 +532,11 @@ def _worked_tokens(add) -> None:
     def steps(fn):
         return lambda: "\n".join(fn()[:-1]).rstrip()
 
+    add("work.water", "the roof's water plant, worked", steps(mf.steps_water))
+    from two_v_demo import channel_facts as _cf
+    add("chan.logs", "room in the tighter seam by log size",
+        lambda: "\n".join(f"{d:.0f} in log    {a:.1f} sq in inside, {r:.2f} in round"
+                          for d, a, r in _cf.by_log()))
     add("skin.envelope", "dome against box, same floor: skin, volume, drag", steps(mf.steps_envelope))
     add("skin.energy", "a year of heating and cooling, both shapes", steps(mf.steps_energy))
     add("skin.layers", "the R-value ladder, layer by layer", lambda: "\n".join(bf.steps_layers()))

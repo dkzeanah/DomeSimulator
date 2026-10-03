@@ -21,6 +21,9 @@ This chapter makes them on one number.
 
 ## The one rule
 
+<!-- concept: cabin_seam_climate/breathe -->
+<!-- concept: cabin_seam_climate/close -->
+
 **Never compare relative humidity. Compare dew points.**
 
 Relative humidity says how full the air is compared to how much it could hold
@@ -46,6 +49,8 @@ inputs.
 
 ## The three questions
 
+<!-- concept: cabin_seam_climate/condense -->
+
 The controller asks three questions, in this order.
 
 **1. Which air is actually drier?** If the outside dew point is below the
@@ -65,6 +70,8 @@ surface built to collect and drain it (Chapter {{ch.metal}}).
 
 ## The modes
 
+<!-- concept: cabin_seam_climate/modes -->
+
 That gives the one channel {{clim.modes}} ways to move air:
 
     {{clim.modes_table}}
@@ -73,6 +80,9 @@ Two of them never touch the living space at all. They are the ones that make
 this more than a ventilation system.
 
 ## Eleven weathers, one controller
+
+<!-- concept: cabin_seam_climate/weathers -->
+<!-- concept: cabin_seam_climate/choices -->
 
 To test it, here is the table the owner of this design drew up -- the weathers
 that matter and what the seam should do in each -- plus one more: muggy outside
@@ -88,6 +98,8 @@ Every one of the {{clim.weathers}} gets the answer the owner's table gives, and
 the book's own checks fail if one ever does not.
 
 ## The loop and the purge
+
+<!-- concept: cabin_seam_climate/loop -->
 
 The two modes worth the extra plumbing are these.
 

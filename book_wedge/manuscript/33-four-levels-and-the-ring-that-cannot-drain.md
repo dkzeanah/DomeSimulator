@@ -59,6 +59,8 @@ water leaves.
 
 ## Condense low, drain at the rim
 
+<!-- concept: cabin_seam_climate/rim -->
+
 The owner's first instinct was to put the condensing plates on the first ring,
 where the frame meets the floor. That instinct is right, and the reason is
 gravity.
@@ -92,7 +94,19 @@ from there to the tank. The roof still delivers
 The only liquid water inside the channels is condensate, and it is made at the
 rim, where it has no distance to go.
 
+<!-- concept: master/ms_math_water -->
+
+And the rim gutter is a water plant. The cap's brim throws rain off a ring wider
+than the dome, and collecting what falls on that ring is the whole design:
+
+    {{work.water}}
+
+No pump and one downpipe: the roof shape does the collecting. (Those figures use
+the films' declared rainfall and cap brim, not a measurement of any one site.)
+
 ## Warm air rises, and the fan still does the work
+
+<!-- concept: cabin_seam_climate/stack -->
 
 Warm air rising is free, so use its direction: take air in low at the rim ports
 and let it out high at the pentagon ring and the apex.
@@ -103,7 +117,30 @@ the rim and the apex. The barrier fan of Chapter {{ch.seam_module}} holds
 {{air.pressure}}. The chimney effect helps the fan along; it does not replace
 it, and on a summer afternoon it runs the wrong way.
 
+## A tube around the bottom
+
+<!-- concept: build/air_origin -->
+<!-- concept: build/air_direction -->
+<!-- concept: build/air_caveats -->
+
+A dome has an unhelpful habit: warm air, and anything it carries, rises to the
+apex and stays there. The answer that came out of a badly ventilated workshop
+dome is a tube right round the base, on a blower, so the whole perimeter is one
+duct instead of the building having one extract point on one wall.
+
+Run it either way. Push air in at the ring and it leaves through the upper shell
+and the pentagon ring, carrying fumes out through the whole surface. Reverse it
+and outside air is drawn in through the shell, warming against the structure on
+its way: a breathing wall, or dynamic insulation. Same hardware, one switch.
+
+The flows are computed (Chapter {{ch.hats}}); the wall is not. Direction decides
+it, because pushing warm, wet air outward through a cold wall condenses it inside
+the wall -- exactly the failure Chapter {{ch.dewpoint}} exists to prevent -- and a
+sealed skin cannot breathe at all, so any permeable band has to be designed in.
+
 ## The layout
+
+<!-- concept: cabin_seam_climate/plan -->
 
 Put together, every level has one job:
 

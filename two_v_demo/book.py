@@ -1975,6 +1975,61 @@ PART_VII = Part(
             derives=("book_math.panel_seam_count",),
         ),
         Chapter(
+            43, "Finishing the Wood",
+            "What oil does to split timber, what it does not do, and the "
+            "afternoon it costs",
+            "howto",
+            (
+                _p("opener", "Finishing the Wood",
+                   "An oiled member is not a protected member. It is a "
+                   "member that has been finished -- and the difference "
+                   "between those two sentences is the whole chapter.",
+                   words=340),
+                _p("text", "Read the can before the rag",
+                   "Raw, boiled and polymerised linseed oil are three "
+                   "different products: what each one is, why the drying "
+                   "agents in a boiled oil are the reason it cures faster, "
+                   "and why the label rather than the name decides what a "
+                   "can may be used for.", words=720),
+                _p("text", "The rag station comes first",
+                   "Oily rags self-heat as they cure and a heap of them can "
+                   "ignite with no spark anywhere. This is the one part of "
+                   "finishing that can burn a building down, and it is "
+                   "prevented with a lidded metal tin, water and a "
+                   "detergent -- set up before the first coat, not after.",
+                   words=680,
+                   figures=(_f("rag-station",
+                               "The rag station, set up before the first "
+                               "coat.", DIAG, diagram="rag_station"),)),
+                _p("table", "How much oil, and how long it takes",
+                   "{{finish.area_sqft}} square feet of sawn face on "
+                   "{{frame.members}} members: the allowance, the labour, "
+                   "and the reason the planning figure is a range.",
+                   words=640,
+                   figures=(_f("finish-allowance",
+                               "The oil allowance, and the labour.",
+                               PLOT, plot="finish_allowance"),)),
+                _p("text", "What oil cannot do",
+                   "It cannot restore strength, it cannot stop decay, it is "
+                   "not an air seal and it is not a rain seal. Linseed oil "
+                   "on the exposed interior faces is a finish; the weather "
+                   "skin, the flashing and the drainage are what keep the "
+                   "water out.", words=700,
+                   beats=("A split member with decay in it is a repair, not "
+                          "a finishing problem.",
+                          "Keep oil off the lands that have to bond, and off "
+                          "the printed key and its gaskets.",
+                          "A wet frame is dried by air and by time, not by "
+                          "another coat.")),
+                _p("text", "Inspection, and the second coat",
+                   "Grey wood darkens under oil and stays grey underneath: "
+                   "the finish record, the sample board, and when a renewal "
+                   "is a renewal rather than a repair.", words=620),
+            ),
+            derives=("linseed_oil.facts", "linseed_oil.CONSTANTS"),
+            ref="finishing",
+        ),
+        Chapter(
             43, "Inside a Round Room",
             "Living with curves",
             "explain",
@@ -2024,7 +2079,21 @@ PART_VII = Part(
                 _p("text", "Off grid, or not",
                    "Honest treatment of the choice, without romance.",
                    words=700),
+                _p("text", "Build one utility core",
+                   "The one part an owner cannot make, built in "
+                   "{{core.steps}} steps across {{core.stages}} stages: "
+                   "{{core.hours}} hours once practised and "
+                   "{{core.first_hours}} the first time, for "
+                   "{{core.parts_usd}} of parts. The chase is drilled flat "
+                   "on the bench, the drain goes in first because it cannot "
+                   "be re-routed, the water is proved at pressure before "
+                   "anything is closed, and the power lands last in a core "
+                   "known dry.", words=900,
+                   figures=(_f("core-stages",
+                               "The core's build, stage by stage.", PLOT,
+                               plot="core_stages"),)),
             ),
+            derives=("column_build.steps", "column_build.practised_hours"),
         ),
     ),
 )
@@ -2790,6 +2859,16 @@ PART_SCALE = Part(
                    "The least a pad can cost and still be a pad, with every "
                    "line that got left out named so the number cannot be "
                    "mistaken for a finished one.", words=460),
+                _p("table", "The pad ladder, from bare to loaded",
+                   "What each rung of the pad costs and what it returns: "
+                   "the cheap pad at {{pad.cheap_total}}, the standard pad "
+                   "at {{pad.standard_build}} with {{pad.standard_net}} a "
+                   "year against it, and the bare pad at "
+                   "{{pad.basic_build}} returning {{pad.basic_net}}.",
+                   words=640,
+                   figures=(_f("pad-options",
+                               "The pad ladder, priced.", PLOT,
+                               plot="pad_options"),)),
             ),
             derives=("park_model.Pad", "park_model.pad_sizes",
                      "park_model.cheap_pad_rows",
@@ -2945,7 +3024,10 @@ PART_FUTURE = Part(
             "shower-cap soft shell, the mast and the floor, the floating "
             "dome, the seven ways to make a wedge, the zome and the hex, "
             "the stem cell and its core, and the seam turned into a "
-            "climate machine.",
+            "climate machine -- then the same building as an article: what "
+            "it costs to make, what it sells for, what a campaign would "
+            "spend the money on, and the module catalogue that turns one "
+            "frame into fifteen buildings.",
     chapters=(
         Chapter(
             _NEXT_NUMBER + 18, "The Dome That Stacks Hats",
@@ -3379,8 +3461,20 @@ PART_FUTURE = Part(
                    "What moves between rungs is panels and services, not "
                    "structure -- which is why the ladder is a catalogue "
                    "and not a new building each time.", words=560),
+                _p("table", "The same engine, twelve finished designs",
+                   "The tool's own design rows, priced and counted: "
+                   "{{design.count}} buildings from "
+                   "{{design.floor_min}} to {{design.floor_max}} square "
+                   "feet of floor -- {{design.floor_ratio}} times the "
+                   "space -- for between {{design.cheapest_usd}} and "
+                   "{{design.dearest_usd}}, which is "
+                   "{{design.cost_ratio}} times the money.",
+                   words=680,
+                   figures=(_f("priced-catalogue",
+                               "The catalogue, priced.", PLOT,
+                               plot="priced_catalogue"),)),
             ),
-            derives=("seed_model", "kickstarter"),
+            derives=("creator_facts.design_rows", "seed_model"),
             ref="fit_outs",
         ),
         Chapter(
@@ -3479,6 +3573,227 @@ PART_FUTURE = Part(
             derives=("wedge_book.systems",),
             ref="dew_point",
         ),
+        Chapter(
+            _NEXT_NUMBER + 32, "The House as a Product",
+            "What the finished article costs to build, what it sells for, "
+            "and the difference between a target and a quote",
+            "reference",
+            (
+                _p("opener", "The House as a Product",
+                   "Everything so far has been a build. This chapter is the "
+                   "article: one standard dome, priced line by line, with "
+                   "the margin shown and the marketing held to the same "
+                   "arithmetic as the frame.", words=320),
+                _p("text", "One standard article",
+                   "Frame, cap, column, panels, labour: the cost stack, in "
+                   "the order it is actually incurred, and the markup that "
+                   "turns it into a price.", words=700,
+                   figures=(_f("product-stack",
+                               "What the standard article costs, and what "
+                               "it sells for.", PLOT,
+                               plot="cost_stack"),)),
+                _p("text", "The price the films quote",
+                   "{{product.price_usd}} shipped, against "
+                   "{{product.built_usd}} to build it: the margin is "
+                   "{{product.margin_usd}}, which is "
+                   "{{product.markup_pct}} per cent, and the whole article "
+                   "lands at {{product.per_sqft_usd}} a square foot.",
+                   words=640),
+                _p("text", "The target, and the gap",
+                   "The campaign's design target is "
+                   "{{product.target_usd}} for the bare article, relying on "
+                   "the pad for essentials. The computed price of the "
+                   "standard article is {{product.target_gap_usd}} above it, "
+                   "and this chapter prints both because a target that is "
+                   "never compared with the real price is a slogan.",
+                   words=560,
+                   beats=("A target is a decision, a price is an account.",
+                          "The ground is {{product.ground_usd}} of the "
+                          "{{product.standing_usd}} it takes to stand one up.",
+                          "Nothing here is a quote: local labour, freight "
+                          "and permits are somebody else's numbers.")),
+                _p("text", "What the price does not include",
+                   "The ground is priced separately, the modules are priced "
+                   "separately, and the engineer is on the campaign's list "
+                   "rather than in the product. Read the exclusions before "
+                   "the headline.", words=480),
+            ),
+            derives=("kickstarter.cost_stack", "book_math.declared"),
+            ref="product",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 33, "What the Campaign Is For",
+            "The {{campaign.goal_usd}} list, the rungs on offer, and the "
+            "promises the money is meant to keep",
+            "story",
+            (
+                _p("opener", "What the Campaign Is For",
+                   "A campaign's line items are a plan for what the project "
+                   "admits it does not have yet. Read with the arithmetic "
+                   "from the money chapters, this is the most honest "
+                   "document in the project.", words=340),
+                _p("text", "The goal, line by line",
+                   "{{campaign.lines}} lines adding to "
+                   "{{campaign.goal_usd}}: the largest is "
+                   "{{campaign.biggest_usd}} for {{campaign.biggest_what}}.",
+                   words=760,
+                   figures=(_f("goal-lines",
+                               "Every line the campaign asks for.",
+                               PLOT, plot="goal_lines"),)),
+                _p("text", "The line that buys a year of weather",
+                   "{{campaign.test_usd}} buys a serviced pad with a dome "
+                   "standing on it through a winter, and the instrumentation "
+                   "to log it: the project's own admission that almost "
+                   "nothing here is measured yet.", words=520,
+                   beats=("The test platform is the largest single "
+                          "measurement the project has ever bought.",
+                          "The engineer's line is {{campaign.engineering_usd}} "
+                          "so that nobody has to wonder whether it was "
+                          "skipped.",
+                          "The quilt network gets "
+                          "{{campaign.quilt_usd}} before the first dome "
+                          "needs it, which is the order it has to happen in.")),
+                _p("table", "The rungs, and what they cost to deliver",
+                   "{{campaign.tiers}} rungs from "
+                   "{{campaign.cheapest_usd}} to {{campaign.dearest_usd}}, "
+                   "each with its own delivered cost, so the margin on a "
+                   "reward is a number rather than a hope.", words=640,
+                   figures=(_f("reward-tiers",
+                               "What each rung is, and what it costs to "
+                               "deliver.", PLOT, plot="reward_tiers"),)),
+                _p("text", "Bring your own trees, priced",
+                   "The two kits are the whole argument in two prices: "
+                   "{{campaign.kit_trees_usd}} if you fell, split and cut "
+                   "your own members, {{campaign.kit_notrees_usd}} if you "
+                   "would rather somebody else's 45 per cent recovery "
+                   "arrived on a pallet -- "
+                   "{{campaign.kit_gap_usd}} of difference, for the wood.",
+                   words=560),
+                _p("text", "The promises worth holding it to",
+                   "Open source, a model anybody can run, and the "
+                   "commitment to publish the measurement whichever way it "
+                   "comes out. A campaign that promises a number and then "
+                   "buries it has spent the only credibility it had.",
+                   words=480),
+            ),
+            derives=("kickstarter.goal_lines", "kickstarter.tiers"),
+            ref="campaign",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 34, "The Module Catalogue",
+            "{{module.count}} snap-in modules, {{seed.count}} named seeds, "
+            "and five places on a dome where anything can attach",
+            "reference",
+            (
+                _p("opener", "The Module Catalogue",
+                   "The frame is the product and everything else is a "
+                   "module. Once the mounting points are fixed, the "
+                   "building's use is a shopping list rather than a "
+                   "redesign.", words=300),
+                _p("table", "Five kinds of mounting point",
+                   "{{module.count}} modules mount at {{module.mounts}} "
+                   "places: the apex, the utility column, a panel, the "
+                   "floor, and the utility panel. The interface is the "
+                   "product; the modules are what fits it.", words=620,
+                   figures=(_f("module-catalogue",
+                               "Every module, by mounting point and price.",
+                               PLOT, plot="module_catalogue"),)),
+                _p("text", "From {{module.cheapest_label}} to "
+                   "{{module.dearest_label}}",
+                   "The catalogue runs from {{module.cheapest_usd}} to "
+                   "{{module.dearest_usd}}, and buying every module once "
+                   "would cost {{module.total_usd}} -- which is more than "
+                   "the building, and exactly the point: nobody buys the "
+                   "catalogue, they buy the two things their building is "
+                   "for.", words=560,
+                   beats=("The heaviest electrical draw is "
+                          "{{module.watts_dearest_label}} at "
+                          "{{module.watts_dearest}} watts.",
+                          "Modules are priced as delivered parts, not as "
+                          "installed ones.",
+                          "A module that needs water needs a drain, and "
+                          "both are on the column.")),
+                _p("text", "{{seed.count}} seeds, one body",
+                   "{{seed.modules_total}} module slots across "
+                   "{{seed.count}} named seeds, the fullest being the "
+                   "{{seed.most_modules_label}} at {{seed.most_modules}} "
+                   "modules. Every seed is the same frame: the "
+                   "{{seed.buried}} buries it, the jacuzzi turns it over, "
+                   "and the treehouse hangs it in a trunk.", words=640,
+                   figures=(_f("seed-shelf", "The seeds, side by side.", PLOT,
+                               plot="seed_shelf"),)),
+                _p("text", "What the catalogue admits",
+                   "The bare standard article is the stem cell: frame, "
+                   "floor, shell, column and one blank panel. Everything a "
+                   "reader recognises as a building is an add-on, and the "
+                   "catalogue says so in its own prices.", words=460),
+            ),
+            derives=("seed_model.MODULES", "seed_model.fitouts"),
+            ref="modules",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 35, "Sixteen Billion Shells",
+            "Every building the menus can make, counted from the menus "
+            "themselves -- and the honest deduction that half of them are "
+            "the same building",
+            "explain",
+            (
+                _p("opener", "Sixteen Billion Shells",
+                   "The tool offers {{space.menus}} menus and four dials. "
+                   "Multiply them honestly and the catalogue is not a "
+                   "catalogue at all: it is a space so large that the "
+                   "honest answer to 'which one should I build' is an "
+                   "argument, not a search.", words=340),
+                _p("table", "The menus, and how many options each one has",
+                   "{{space.shell_menus}} menus change the building you "
+                   "look at and {{space.fitout_menus}} change what the "
+                   "floor is for; between them they carry "
+                   "{{space.options}} options.", words=640,
+                   figures=(_f("space-menus",
+                               "Every menu, and how many options it "
+                               "carries.", PLOT, plot="space_menus"),)),
+                _p("text", "Multiply it honestly",
+                   "{{space.shell_permutations}} combinations of shell "
+                   "options, {{space.fitout_permutations}} floor layouts on "
+                   "top, and {{space.dial_settings}} settings from the "
+                   "dials -- because the tool moves them in fixed steps, "
+                   "which is what makes a continuum countable.",
+                   words=720),
+                _p("text", "The deduction that matters",
+                   "Half of those combinations change nothing you can see: "
+                   "a hub style on a frame with no hubs, a strut section "
+                   "under a different material, a colour on an open panel. "
+                   "Drop them and {{space.shell_permutations}} becomes "
+                   "{{space.distinct_shells}} -- {{space.inert_pct}} per "
+                   "cent of the menu is decoration, and the tool argues "
+                   "with itself about it rather than rounding it away.",
+                   words=760),
+                _p("text", "Why the book does not describe sixteen billion "
+                   "buildings",
+                   "At {{space.seconds}} seconds each, showing every one "
+                   "would take {{space.years}} years of film. Which is the "
+                   "argument for the rest of this book: not a catalogue to "
+                   "browse but a handful of decisions that collapse the "
+                   "space -- one frequency, one material, one foundation, "
+                   "and a frame whose parts list does not grow.",
+                   words=700,
+                   beats=("A space this large is an argument against "
+                          "shopping and for deciding.",
+                          "The menus that cost nothing are the ones you can "
+                          "change your mind about.",
+                          "The three that cost the most are the three the "
+                          "earlier chapters already chose.")),
+                _p("text", "What the count is for",
+                   "Not to impress anybody with a number, but to show where "
+                   "the decisions are. A reader who knows there are "
+                   "{{space.panels}} panel types and one geometry can stop "
+                   "looking for a better shape and start choosing a skin.",
+                   words=620),
+            ),
+            derives=("creator_facts.axes", "creator_facts.dial_permutations",
+                     "creator_facts.distinct_shells"),
+            ref="space",
+        ),
     ),
 )
 
@@ -3507,6 +3822,61 @@ BACK: tuple[Matter, ...] = (
            "The inputs table, repeated for reference.", words=200,
            figures=(_f("back-constants", "Declared inputs.", PLOT,
                        plot="declared_constants"),)),
+    )),
+    Matter("pixels", "From Number to Pixel", (
+        _p("text", "A strut is not a line",
+           "A graphics card draws triangles, so every member in every film is "
+           "a tube of flat sides and triangles, built by two cross products "
+           "-- and the whole reason the films can show a member at all.",
+           words=700),
+        _p("text", "One frame, counted",
+           "Ten floats a vertex, forty bytes, eleven thousand seven hundred "
+           "vertices, three thousand nine hundred triangles, four hundred and "
+           "fifty-seven kilobytes: the dome the card actually receives, "
+           "rebuilt and re-uploaded thirty times a second.", words=800,
+           figures=(_f("pixel-budget",
+                       "One frame, counted off the renderer's own buffer.",
+                       PLOT, plot="pixel_budget"),)),
+        _p("text", "The camera is a matrix",
+           "There is no camera on a graphics card. Yaw, pitch and distance "
+           "place an eye; a view matrix moves the world to that eye; a "
+           "projection matrix arranges the divide by depth that makes "
+           "distance real.", words=900),
+        _p("text", "Why the lighting is three dot products",
+           "Diffuse, specular and rim, each one dot product, because "
+           "{{pixel.pixels}} pixels at {{pixel.fps}} frames a second is up to "
+           "{{pixel.runs_s}} million shader runs a second and there is no "
+           "budget left for anything clever.", words=800),
+        _p("text", "Nothing is stored",
+           "Every scene is a pure function of its chapter and its progress, "
+           "so the same second of film renders identically on any machine, "
+           "every time -- which is what makes a film's numbers checkable by "
+           "anybody who can run the code.", words=620),
+    )),
+    Matter("composer", "The Composer", (
+        _p("text", "A placement rule, not a drawing",
+           "The tool that furnishes a dome accepts or refuses a piece by "
+           "geometry: held green where it fits the shell, red where it does "
+           "not. Nothing in the catalogue carries a list of legal spots; the "
+           "building decides.", words=700),
+        _p("text", "The cast, and the rules it obeys",
+           "Eight people, each with her own skin, hair and stance, and a "
+           "loader that refuses a cast where two share a tone or a hair "
+           "style. Hair is geometry rather than colour: each strand leaves "
+           "the scalp along its growth direction, hands over to gravity a "
+           "head radius later, and carries a wave or a helix by style.",
+           words=760),
+        _p("text", "Landmarks, not measurements",
+           "Hair lengths and hems name places on a body -- mid thigh, knee, "
+           "waist, floor -- so one wardrobe fits a cast of any height, and an "
+           "outfit is a list of pieces lofted through the body's own "
+           "cross-section rather than a fixed model.", words=700),
+        _p("text", "What the dome refuses",
+           "A fitting pod two point two metres tall stands under eight metres "
+           "of headroom at the middle of a thirteen-metre dome, and the shell "
+           "comes down to meet it before you have walked halfway out. The "
+           "refusal is the same one the building makes to a wardrobe: "
+           "headroom is a function of where you stand.", words=680),
     )),
     Matter("glossary", "Glossary", (
         _p("text", "Glossary",
