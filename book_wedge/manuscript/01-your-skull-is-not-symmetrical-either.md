@@ -52,6 +52,32 @@ stacking up toward a failure; it is a shell that absorbs the difference and
 carries on. The error goes into the seam — and there is already a key in the
 seam, because there was always going to be one.
 
+## Why a triangle, and not a square
+
+<!-- concept: wedge/triangles -->
+
+Push the top corner of a square frame sideways and it leans. Nothing
+breaks: the four sides keep their lengths and the corners simply turn. A
+square is a mechanism, and it needs stiff corners -- nailed, braced, glued --
+to stop being one.
+
+Push the corner of a triangle and nothing moves unless one of its sides gets
+longer or shorter. Timber is very unwilling to do either along its length. So
+a triangle needs nothing from its corners at all.
+
+A geodesic shell repeats that triangle across a curved surface,
+{{dome.panels}} times on this dome. The strength lives in the **network**,
+not in any one member. No single stick is asked to solve the whole problem;
+each one is asked to stay its own length, and that is all.
+
+![Where the strength actually lives.](plate-network-load.png)
+
+That is what lets an odd-shaped member do the job. The structure cares about
+the member's section, its grain, its unsupported length and the path the load
+takes through it. It does not care whether the corner of an imaginary
+rectangle exists -- which is the whole reason a split log, with no rectangle
+anywhere in it, can be a stick in a building.
+
 ## The lumpy skull
 
 You have an asymmetric skull.
@@ -67,6 +93,25 @@ stops the bat is the *shape*, a closed curved shell in compression, and not
 the precision.
 
 That is a dome. The geometry does the work. The accuracy is decoration.
+
+<!-- concept: build/franken_lumpy -->
+
+There are two reasons the lumpy one stays up, and both are worth knowing
+before you trust it.
+
+**The errors have nowhere to accumulate.** A closed, triangulated shell is
+enormously redundant. Every triangle is rigid on its own, so a joint that is
+out is absorbed by the triangles around it instead of walking round a ring and
+adding up the way an error does in a precise, hubbed dome, where every strut
+has to land on the same point as five others. What you get is a frame that is
+near the sphere without being on it -- a lumpy brain, not a ball.
+
+**And the skin covers the rest.** One continuous layer bonded over the outside
+spans the slack between members and gives back the shell action the
+sloppiness cost. Which is the first hint of the argument the next chapter
+makes: the frame can be forgiving because the skin is not allowed to be.
+
+![The errors have nowhere to accumulate, and the skin covers the rest.](plate-lumpy-one.png)
 
 ## What this book does with that
 

@@ -345,6 +345,7 @@ def _table() -> dict[str, Token]:
     add("brk.each", "what one V bracket costs",
         lambda: f"{bracket['usd_each']:,.2f}")
 
+    _parts_list_tokens(add)
     _channel_tokens(add)
     _climate_tokens(add)
     _wood_tokens(add)
@@ -386,6 +387,49 @@ def _table_text(rows, widths) -> str:
     """Aligned plain-text rows, the way the manuscript prints its tables."""
     return "\n".join("".join(f"{cell:<{w}}" for cell, w in zip(row, widths)).rstrip()
                      for row in rows)
+
+
+FLAT_RATE_SIZES_FT = (10.0, 30.0)
+"""The two dome sizes the flat-rate argument compares: the film's own pair,
+the smallest and largest in the product range. Declared, not derived."""
+
+
+def _parts_list_tokens(add) -> None:
+    """``parts`` and ``flat``: the model counting itself, and the flat rate."""
+    import math
+
+    import numpy as np
+    import seed_world
+
+    from two_v_demo import channel_facts as cf
+
+    topo = cf.reference_model().topology
+    lengths = [float(np.linalg.norm(np.asarray(topo.vertices[a]) - np.asarray(topo.vertices[b])))
+               for a, b in (e.key for e in topo.edges.values())]
+    cut = (max(lengths) + min(lengths)) / 2
+    g = seed_world.geometry()
+    members = {}
+    for m in g.members:
+        members[m.edge_type] = members.get(m.edge_type, 0) + m.count
+    small, big = FLAT_RATE_SIZES_FT
+
+    def area(d: float) -> float:
+        return math.pi * (d / 2) ** 2
+
+    add("parts.long_edges", "edges of the long length", lambda: str(sum(l > cut for l in lengths)))
+    add("parts.short_edges", "edges of the short length", lambda: str(sum(l <= cut for l in lengths)))
+    add("parts.long_members", "members cut to the long length", lambda: str(members.get("A", 0)))
+    add("parts.short_members", "members cut to the short length", lambda: str(members.get("B", 0)))
+    import seed_model
+
+    add("parts.sections", "log sections the frame is split from",
+        lambda: str(math.ceil(g.member_count / seed_model.SEED_RADIAL_SPLITS)))
+    add("flat.small_ft", "the small dome, feet across", lambda: f"{small:.0f}")
+    add("flat.big_ft", "the big dome, feet across", lambda: f"{big:.0f}")
+    add("flat.small_sqft", "the small dome's floor, sq ft", lambda: f"{area(small):,.0f}")
+    add("flat.big_sqft", "the big dome's floor, sq ft", lambda: f"{area(big):,.0f}")
+    add("flat.ratio", "how many times the floor the big one has",
+        lambda: f"{area(big) / area(small):.0f}")
 
 
 def _channel_tokens(add) -> None:

@@ -126,20 +126,34 @@ def _join(segments, tolerance: float = 1.0e-6) -> list[list[tuple]]:
     return loops
 
 
-def seam_section_geometry(seam_id: str = "SEAM_A_016") -> dict:
+def seam_section_geometry(seam_id: str = "SEAM_A_016",
+                          orientation: str = "point_dome_in",
+                          seam_join_mode: str = "raw_trapezoid") -> dict:
     """The true cross-section of one seam, cut out of the solved meshes.
 
     The plane is perpendicular to the seam's own tangent at its midpoint, so
     what comes out is what a saw would see if it cut the building across the
     joint. The members and the key are the solver's triangles, intersected --
     not a reconstruction from the angles.
+
+    ``orientation`` is one of the four cardinal wedge orientations the dome
+    can be built in (``point_dome_in``, ``point_panel_in``,
+    ``point_dome_out``, ``point_panel_out``). Rotating a member about its own
+    axis does not change the 45-degree sector, but it does change which of
+    its faces meets the key -- which is the whole subject of the book's
+    orientation chapter, so the section is worth being able to cut in each.
+
+    ``seam_join_mode`` is the solver's own choice of joint: ``raw_trapezoid``
+    (the split faces left exactly as sawn, with a tapered key) or
+    ``shaved_flat`` (a land planed parallel and one flat key throughout).
     """
     import numpy as np
 
     from . import numbers
 
     rw = numbers.solver()
-    model = numbers.reference_model()
+    model = numbers.reference_model(wedge_orientation=orientation,
+                                    seam_join_mode=seam_join_mode)
     seam = next(s for s in model.seams if s.seam_id == seam_id)
 
     # Only this seam's own parts. A plane through one seam cuts the whole
@@ -190,6 +204,8 @@ def seam_section_geometry(seam_id: str = "SEAM_A_016") -> dict:
         "key_base_in": seam.spacer_base_width_in,
         "contact_in": seam.contact_depth_in,
         "seam_id": seam.seam_id,
+        "orientation": orientation,
+        "seam_join_mode": model.config.seam_join_mode,
         "edge_type": seam.edge_type,
         "sector_deg": 360.0 / model.config.radial_splits,
         "trunk_in": model.config.trunk_diameter_in,

@@ -1128,8 +1128,97 @@ def diagram_seam_sandwich(figure: Figure):
     return fig
 
 
+def diagram_master_cutlist(figure: Figure):
+    """The master cut list: three resultant lengths, and how a panel sits.
+
+    The list is what the members measure once they are cut to make a panel
+    the right size -- not stock left long. This drawing puts the numbers on
+    the two panel shapes they belong to: three long members in an
+    equilateral, and in an isosceles the long member at the base, the middle
+    length on the left and the short one on the right. The triangle is
+    solved from the three lengths themselves, so the shape cannot quietly
+    disagree with the numbers beside it.
+    """
+    long_in = bm.declared("master_cut_long_in")
+    mid_in = bm.declared("master_cut_mid_in")
+    short_in = bm.declared("master_cut_short_in")
+
+    fig, axes = canvas(
+        PAGE_W_IN, HALF_H_IN + 1.0,
+        "The master cut list: three lengths, and the side each one takes",
+        "These are resultant lengths: cut to these and the panel is the size "
+        "the dome wants. An equilateral panel is three of the long member. "
+        "An isosceles panel, laid with its base nearest you, takes the long "
+        "member as the base, the middle length on the left and the short one "
+        "on the right -- the left member is the longer of the two and so "
+        "reaches over to the top point, while the base butts up to the short "
+        "right side. That single sentence is the bench rule; nothing about "
+        "the pair is obvious by eye, so the sides are picked from their own "
+        "stacks in order.")
+
+    def member(points, colour, width=6.5):
+        for start, end in points:
+            axes.plot([start[0], end[0]], [start[1], end[1]], color=colour,
+                      linewidth=width, solid_capstyle="round", zorder=3)
+
+    # -- the equilateral panel -----------------------------------------
+    base = long_in
+    apex = (base / 2.0, math.sqrt(base ** 2 - (base / 2.0) ** 2))
+    left = ((0.0, 0.0), apex)
+    right = ((base, 0.0), apex)
+    bottom = ((0.0, 0.0), (base, 0.0))
+    member((left, right, bottom), STYLE.wood)
+    label(axes, base * 0.5, -6.0, f"{long_in:g} in", size=7.6,
+          weight="bold", colour=STYLE.accent)
+    label(axes, base * 0.22, apex[1] * 0.55, f"{long_in:g} in", size=7.6,
+          weight="bold", colour=STYLE.ink)
+    label(axes, base * 0.80, apex[1] * 0.55, f"{long_in:g} in", size=7.6,
+          weight="bold", colour=STYLE.ink)
+    label(axes, base * 0.5, apex[1] * 0.42,
+          "equilateral:\nthree of the long member",
+          size=7.0, colour=STYLE.muted)
+    label(axes, base * 0.5, apex[1] + 5.0, "ten panels", size=8.0,
+          weight="bold")
+
+    # -- the isosceles panel, solved from its own three lengths --------
+    offset = base + 26.0
+    # Law of cosines on the two sides, so the drawn triangle IS the list.
+    cosine = (mid_in ** 2 + base ** 2 - short_in ** 2) / (2.0 * mid_in * base)
+    x = float(cosine) * mid_in
+    y = math.sqrt(mid_in ** 2 - x ** 2)
+    peak = (offset + x, y)
+    member((((offset, 0.0), peak), ((offset + base, 0.0), peak),
+            ((offset, 0.0), (offset + base, 0.0))), STYLE.wood_dark)
+    label(axes, offset + base * 0.5, -6.0, f"{long_in:g} in  (base)",
+          size=7.6, weight="bold", colour=STYLE.accent)
+    label(axes, offset + x * 0.42, y * 0.52, f"{mid_in:g} in\n(left)",
+          size=7.6, weight="bold", colour=STYLE.good)
+    label(axes, offset + x + (base - x) * 0.62, y * 0.52,
+          f"{short_in:g} in\n(right)", size=7.6, weight="bold",
+          colour=STYLE.warn)
+    # The short side is where the base lands: mark the butt, and the top
+    # point the longer left member reaches over to.
+    axes.plot([offset + base], [0.0], "o", markersize=5.0, color=STYLE.warn,
+              zorder=6)
+    label(axes, offset + base + 1.0, 3.4,
+          "the base\nbutts up\nhere", size=6.6, colour=STYLE.warn, ha="left",
+          va="bottom")
+    axes.plot([offset + x], [y], "o", markersize=4.4, color=STYLE.ink,
+              zorder=6)
+    label(axes, offset + x - 1.5, y + 3.0,
+          "top point: the left member reaches over", size=6.6,
+          colour=STYLE.ink, ha="center", va="bottom")
+    label(axes, offset + base * 0.5, y + 9.0, "thirty panels", size=8.0,
+          weight="bold")
+
+    axes.set_xlim(-10.0, offset + base + 22.0)
+    axes.set_ylim(-18.0, max(apex[1], y) + 18.0)
+    return fig
+
+
 DIAGRAMS = {
     "strand_map": diagram_strand_map,
+    "master_cutlist": diagram_master_cutlist,
     "tree_taper": diagram_tree_taper,
     "trunk_eighths": diagram_trunk_eighths,
     "split_sequence": diagram_split_sequence,

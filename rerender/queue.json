@@ -151,10 +151,10 @@
    }
   },
   "series": {
-   "status": "rendering",
+   "status": "todo",
    "priority": "normal",
-   "owner": "rerender-runner",
-   "updated": "2026-10-02T17:57:01-05:00",
+   "owner": "",
+   "updated": "2026-10-02T18:27:05-05:00",
    "outputs": [],
    "log": [
     {
@@ -226,6 +226,16 @@
      "at": "2026-10-02T17:57:01-05:00",
      "by": "rerender-runner",
      "text": "-> rendering: started by the runner"
+    },
+    {
+     "at": "2026-10-02T18:27:05-05:00",
+     "by": "rerender-runner",
+     "text": "render failed (code 4294967295) after 30 min; see rerender/logs/series.log"
+    },
+    {
+     "at": "2026-10-02T18:27:05-05:00",
+     "by": "rerender-runner",
+     "text": "-> todo: back in the queue after a failed render"
     }
    ],
    "originals": {

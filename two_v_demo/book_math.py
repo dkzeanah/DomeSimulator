@@ -111,6 +111,21 @@ DECLARED: tuple[Declared, ...] = (
              "one. Kept, not deleted: the chapter that recomputes the figure "
              "has to be able to show what it is correcting. The hourly rate "
              "it implies is derived from it, never declared beside it."),
+    Declared("master_cut_long_in", 72.0, "in", "measured",
+             "The master cut list, as the panels came together: the long "
+             "member. Three of them make an equilateral panel, and one is the "
+             "base of every isosceles panel. A resultant length -- the end "
+             "that makes a panel the right size -- not stock left long for "
+             "the saw to trim."),
+    Declared("master_cut_mid_in", 63.5, "in", "measured",
+             "The master cut list: the left-hand side of an isosceles panel, "
+             "and the longer of its two sides. Laid with the base nearest "
+             "you, this is the member that reaches over to the top point."),
+    Declared("master_cut_short_in", 61.5, "in", "measured",
+             "The master cut list: the right-hand side of an isosceles panel "
+             "and its shortest member. The base butts up to this side, which "
+             "is why the two sides of a panel are not interchangeable and why "
+             "the list is written three ways rather than two."),
 )
 
 LITRES_PER_US_GALLON = 3.785411784

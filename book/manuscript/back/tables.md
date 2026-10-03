@@ -24,6 +24,36 @@ member on the pile can be found from the table in one look. Mark each class
 with its own colour at the saw, and keep the classes in separate stacks; the
 raise is where a mixed pile turns into a slow afternoon.
 
+### The master cut list
+
+![The master cut list, and which side it goes on.](../../../deliverables/book/figures/master-cutlist.png)
+
+The list the saw is set to, as this build finished it. {{cut.master_count}}
+lengths, and every stick in the frame is one of them:
+
+| length | what it is | where it goes |
+|---|---|---|
+| {{cut.master_long_in}} in | the long member | all three members of an equilateral panel; the **base** of an isosceles panel |
+| {{cut.master_mid_in}} in | the middle member | the **left** side of an isosceles panel |
+| {{cut.master_short_in}} in | the short member | the **right** side of an isosceles panel |
+
+These are resultant lengths: cut a member to one of them and the panel is
+the size the dome wants, with nothing left to trim.
+
+The rule, stated once and followed at the bench: **shortest on the right,
+middle on the left, longest at the base**, laid with the base nearest you.
+The left member is the longer of the two sides, so it reaches over to the
+top point, which sits off the middle of the base; the right member meets it
+there, and the base butts up to that short right side. The two sides of an
+isosceles panel differ by two inches over five feet, so nothing about the
+pair is obvious by eye -- pick them from their own stacks, in order, and the
+panel is right. Equilateral panels have no rule to remember: three long
+members.
+
+The fully seated schedule the pinwheel model prints is in the table above.
+Where the two disagree the master list is the report of the build and the
+model is the model of the joint.
+
 ## Full seam schedule
 
 ![The complete seam schedule.](../../../deliverables/book/figures/back-seams.png)

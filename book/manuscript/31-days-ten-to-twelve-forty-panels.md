@@ -43,6 +43,20 @@ sides, one more of whichever the triangle asks, drawn from the
 marked piles of the sorting pass below. The sticks arrive at the
 bench already decided; the bench never decides.
 
+And for an isosceles panel, *which* side each stick goes on is fixed:
+**the longest — {{cut.master_long_in}} inches — is the base, the middle
+length ({{cut.master_mid_in}}) is the left side, and the shortest
+({{cut.master_short_in}}) is the right.** Lay the base nearest you and the
+left member is the longer of the two: it reaches over to the top point,
+and the short right side runs up to meet it — and it is that short side the
+base butts up to. An equilateral panel is three
+long members and has no such rule to remember, which is most of why the
+run is quick: {{dm.equi_count}} of the panels are the easy kind, and the
+{{dm.iso_count}} isosceles ones carry the one instruction that must not be
+swapped. At the bench the two sides look almost identical — the
+difference is two inches over five feet — so the rule is applied by
+picking from the marked piles in order, never by eye.
+
 **Load the first side.** Butt against the butt stop, sawn faces down
 on the bench, head running long past the head fence. The stop does
 the locating; the hand only presses.

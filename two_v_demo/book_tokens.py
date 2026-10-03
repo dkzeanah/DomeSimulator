@@ -388,6 +388,18 @@ def _build() -> tuple[Token, ...]:
         Token("force.sector_angle_deg", "angle of one sector of the bearing "
               "circle", lambda: _n(wg.SECTOR_ANGLE_DEG, 1)),
 
+        # -- the master cut list ----------------------------------------
+        Token("cut.master_long_in", "the master cut list's long member",
+              lambda: _n(bm.declared("master_cut_long_in"), 1)),
+        Token("cut.master_mid_in", "the master cut list's middle member",
+              lambda: _n(bm.declared("master_cut_mid_in"), 1)),
+        Token("cut.master_short_in", "the master cut list's short member",
+              lambda: _n(bm.declared("master_cut_short_in"), 1)),
+        Token("cut.master_count", "stock lengths in the master cut list",
+              lambda: "3"),
+        Token("cut.equi_members", "members in one equilateral panel",
+              lambda: "3"),
+
         # -- the forty-hour clock --------------------------------------
         Token("hr.split_hours", "hours at the log to split all members",
               lambda: _n(_clock()["split_hours"], 0)),

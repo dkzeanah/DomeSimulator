@@ -159,6 +159,16 @@ pulls back further; a bigger dome changes nothing. That single fact is
 why the method survives scaling — Chapter {{ch.flat_rate}} makes it
 the spine of Part Two — and it is paid here, in the cut list, once.
 
+At the bench the inset is not paid in arithmetic at all. It is already in
+the members: the master cut list of Chapter {{ch.worked_build}} —
+{{cut.master_long_in}}, {{cut.master_mid_in}} and
+{{cut.master_short_in}} inches — is what the sticks measure once they have
+been cut to make a panel the right size, so the inset is spent at the saw
+and never re-derived at the bench. The model's own schedule prints the
+inset as a fourth length; the build's list is the measured three, and the
+difference between the two is a model of the joint rather than a measurement
+of it.
+
 ## The mitre claim, corrected
 
 The errata, named in full, because this project said it in public and

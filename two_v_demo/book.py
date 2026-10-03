@@ -1395,11 +1395,15 @@ PART_IV = Part(
                    figures=(_f("worked-dome", "The dome that results.",
                                PLOT, plot="worked_dome"),)),
                 _p("table", "The cut list",
-                   "All {{frame.members}} members by class and length.",
-                   words=200,
+                   "All {{frame.members}} members by class and length, with "
+                   "the master cut list the saw follows and which side of an "
+                   "isosceles panel each length goes on.", words=260,
                    figures=(_f("worked-cutlist",
                                "The full cut list.", PLOT,
-                               plot="worked_cutlist"),)),
+                               plot="worked_cutlist"),
+                            _f("master-cutlist",
+                               "The master cut list, and which side it goes "
+                               "on.", DIAG, diagram="master_cutlist"),)),
                 _p("table", "The seam schedule",
                    "Every seam and its key.", words=200,
                    figures=(_f("worked-seams", "The seam schedule.", PLOT,

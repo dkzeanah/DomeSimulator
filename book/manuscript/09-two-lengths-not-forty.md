@@ -95,6 +95,17 @@ there is. Chapter {{ch.pinwheel}} is the joint's geometry in full; here
 the point is only that two became four *for a reason*, and the reason is
 printed.
 
+That four-length schedule is what the model prints. What the members
+*measure* — the master cut list, {{cut.master_count}} resultant lengths
+that make a panel the right size once it is together — is shorter:
+{{cut.master_long_in}}, {{cut.master_mid_in}} and
+{{cut.master_short_in}} inches. The equilateral panels take three of the
+long member; the isosceles panels take the long at the base, the middle on
+the left and the short on the right. The build's list is the measured one
+and the model's is the approximation, and Chapter {{ch.worked_build}}
+prints both side by side rather than quietly picking one — a builder needs
+the master list at the saw and the seating schedule at the bench.
+
 ## Why the pinwheel splits two into four
 
 The step from two lengths to four is the one place a sceptical reader

@@ -72,6 +72,36 @@ of Chapter {{ch.pinwheel}}. The table is the jig's job description:
 every stick that crosses the bench is one of these rows, and nothing
 else.
 
+Beside it sits the shorter list the build actually came out with — **the
+master cut list**, {{cut.master_count}} resultant lengths:
+**{{cut.master_long_in}} inches**, **{{cut.master_mid_in}}** and
+**{{cut.master_short_in}}**. Resultant means *finished*: cut a member to
+one of these and the panel it goes into is the size the dome wants, with
+nothing left over to trim. Every equilateral panel takes three of the long
+member. Every isosceles panel takes the long member as its base, the middle
+length on the left and the short one on the right.
+
+That orientation is a bench rule rather than a preference, and the shape
+shows why. Lay an isosceles panel with its base nearest you and the
+{{cut.master_mid_in}}-inch left member is the longer of the two sides: it
+reaches over to the top point, which sits off the middle of the base
+because the two sides are not equal. The {{cut.master_short_in}}-inch right
+side runs up to meet it, and it is that shortest member the base butts up
+to — the base's end lands on the side of the short one, which is the
+pinwheel's chase closing the triangle. Build a panel with the two sides
+swapped and it does not close: two inches over five feet is not something
+the eye catches, so the sides are picked from their two marked stacks, in
+order, every time.
+
+The two lists differ, and the book prints both rather than picking one.
+The table above is the pinwheel model's seated schedule, which represents
+the inset as a fourth length; the master list is what the saw cut and what
+the panels measured when they closed. The model is a model of the joint;
+the master list is a report of the build, and where the two disagree, the
+tape on the finished panel is the authority.
+
+![The master cut list, and which side it goes on.](../../deliverables/book/figures/master-cutlist.png)
+
 ![The full cut list.](../../deliverables/book/figures/worked-cutlist.png)
 
 ## The seam schedule
