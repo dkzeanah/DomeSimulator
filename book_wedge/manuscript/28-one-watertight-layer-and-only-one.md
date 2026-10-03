@@ -84,10 +84,22 @@ envelope. Genuinely waterproof, sixty years, and ${{money.hard_price}} for the
 same dome against ${{money.price}} — a real premium for a real difference.
 
 Chapter {{ch.alternatives}} prices four laminates and the cap side by side. The
-short version: the hull is better at being waterproof and worse at everything
-else, because it is permanent. It cannot be lifted off, it cannot be upgraded,
-and when it fails it fails as a repair job on a bonded shell rather than as a
-component you unstrap.
+short version: the hull is better at being waterproof and worse at being changed.
+
+<!-- concept: seed_pitch/shell -->
+
+It is not exotic. It is a wood-cored composite skin -- a sheet core, chopped
+strand mat, stitched biaxial cloth, laminating resin, and gelcoat on the weather
+face -- which is how small boats have been built for sixty years, from products
+you can order this afternoon. In the stem-cell product of Chapter
+{{ch.stemcell}} it latches to the pad with over-centre catches, the kind that
+seal a preserving jar, and lifts off whole from a ring laminated into its rim.
+So it can come off. What it cannot do is change: a hull is one stiff, finished
+shape, so the quilted layers of Chapter {{ch.hats}} have no room to grow under
+it, and when it fails it fails as a repair on a bonded laminate rather than as a
+component you unstrap and replace.
+
+![The shell is a boat hull.](plate-boat-hull.png)
 
 ## The three things a cap has to get right
 
@@ -103,6 +115,37 @@ membrane.
 to fit a bare shell will not go over a shell wearing two quilted layers.
 
 ![A thing we found out the hard way: no panel fits a four-foot sheet.](plate-sheet-problem.png)
+
+## If you skin it in panels anyway
+
+<!-- concept: build/skin -->
+<!-- concept: build/shelter_nest -->
+
+Some builders will sheathe the frame panel by panel and waterproof the panels,
+and the rules for that are old ones. Start at the rim and work up, so each panel
+laps over the one below it like a shingle and sheds water downhill. Every corner
+where several panels meet is a leak point: flash or tape each one before the next
+course covers it. And give the base a real drip edge that throws water clear of
+whatever the dome stands on. A dome almost never fails structurally; it fails at
+its seams.
+
+For a small dome the panels can be the whole building. Cut the {{dome.panels}}
+triangles as solid sheet, pair the congruent ones into parallelograms and
+strip-pack them: on one {{skin.nest_sheet}} sheet the largest dome that fits is
+{{skin.nest_d}} inches across, with {{skin.nest_floor}} square feet of floor. A
+shelter, a kennel, a seed store. Not a house, and it does not pretend to be.
+
+## One shell, any skin
+
+<!-- concept: master/h_skins -->
+<!-- concept: hype/module -->
+
+The bones do not care what is painted on them. The same panels and the same
+{{dome.members}} sticks wear a baseball, a basketball or a disco ball with a
+facet on every face. And be honest about what a "wall module" is: plywood,
+insulation and sheet metal, in a frame that holds them. The value is not in the
+materials, which anybody can buy. It is in the socket they drop into (Chapter
+{{ch.frames}}).
 
 ## The part that is not solved
 

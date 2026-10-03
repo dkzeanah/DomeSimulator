@@ -453,7 +453,6 @@ def _build() -> tuple[Token, ...]:
 
         # -- the master cut list ----------------------------------------
         Token("cut.master_long_in", "the master cut list's long member",
-              lambda: _n(bm.declared("master_cut_long_in"), 1)),
         Token("cut.master_mid_in", "the master cut list's middle member",
               lambda: _n(bm.declared("master_cut_mid_in"), 1)),
         Token("cut.master_short_in", "the master cut list's short member",

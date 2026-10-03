@@ -30,9 +30,9 @@ so the two can be compared side by side:
 | `PARTIAL` | the book mentions it; the film says more than the page does |
 | `GAP` | absent from the book; a proposed chapter title is given in brackets |
 
-**Where the book stands against the films, at the time of writing: 914
-concept rows — 695 the book covers, 128 it only mentions, 91 it has not
-touched.** The 91 are gathered under 63 proposed homes in the gap list at the
+**Where the book stands against the films, at the time of writing: 919
+concept rows — 697 the book covers, 128 it only mentions, 94 it has not
+touched.** The 94 are gathered under 68 proposed homes in the gap list at the
 end of this file.
 
 To mark a row embodied, write the thing up in the book and put
@@ -1075,6 +1075,20 @@ not as two concepts.
 | Customer-assembly lever | Having the customer assemble and the shop only make parts saves $752. | seed_pitch ch-22 "How far down it goes" | -- | 49 Building With Other People | PARTIAL |
 | 40-hour / three-tree title | The master book promises a 40-hour cabin from 3 trees; the films consistently price a 2-tree, ~120-member, 300 sq ft shell. | (master book title; pine_value/tree_value use 2 trees) | -- | 46 The Hours | IN |
 
+The campaign films were read twice, independently. The rows above are the
+fuller of the two passes (217 rows); the second pass (198 rows) restated
+them in different words, and these five rows are the only ones in it that
+carry a fact the first pass missed. They are folded in rather than listed
+separately.
+
+| concept | what the film says about it | first said in | also in | book chapter | status |
+|---|---|---|---|---|---|
+| Module catalogue prices | The snap-in modules, with their prices: exhaust fan $180, tankless heater $520, shower module $610, sink and drain $340, grey tank $290, cooktop $260, fridge $430, camera ring $470, interior screen $380, solar and battery $1,650, serving hatch $780, prep counter $520, grease hood $940, three-bay sink $610, advert panel $118, advert controller $690, roller shutter $860, shelving bay $145, dehumidifier $330, bunker liner $2,100, bunker vent $780, tree saddle $1,450, access stair $620, sauna heater $1,250, tub liner $2,400. | seed_model.py (MODULES) | — | GAP [The Module Catalogue] | GAP |
+| Park: the three system domes | By floor and longest member: small personal 314.00 sq ft / 20.0 ft / 6 ft member, medium 822.49 sq ft / 32.4 ft / 10 ft, large 1,184.39 sq ft / 38.8 ft / 12 ft. | dome-park-v3 ch-06 "Which domes fit which pad" | byod-deepseek ch-growth | 61 One Hardware Set, Three Sizes | IN |
+| Kick: the one hundred thousand dollar ask | 86 thousand is equipment that still exists on day three hundred and the rest is material for the first units. | kick ch-15 "One hundred thousand dollars" | kick2 ch-19 | GAP [The Campaign Goal and Its Line Items] | GAP |
+| Park: what tracking is worth | Single-axis tracking adds about a quarter over a fixed array (+536 kWh a month; whole shell 1,468 fixed against 1,835 tracking); the ring costs $9,120 on a 48 ft pad. | dome-park ch-21 "What tracking is worth, and what it is not" | dome-park-v3 ch-21 | 65 Turning the House Toward the Sun, Until It Stops Being Worth It | IN |
+| BYOD: what a ten-thousand-dollar pad returns | If a complete serviced pad can be built for about ten thousand dollars, at $500, $1,000 or $1,500 a month it pays back inside a year at the high end; the aim is infrastructure that serves ten years and beyond. | byod ch-target "What would a ten-thousand-dollar pad return?" | byod-deepseek ch-target | GAP [The Ten Thousand Dollar Pad] | GAP |
+
 ---
 
 # The gap list
@@ -1090,22 +1104,24 @@ check is described under "Verification notes" below.
 | **Finishing the wood with oil** | 12 | Choosing the product (raw, boiled and polymerised differ; the raw-only food rule is too broad), oily rags can self-ignite and the rag station that prevents it, preparing sound dry wood, two product schedules (5 min/8 h against 60 min/24 h), applying thin and wiping dry, the exposed face is not a sealing land, bonding surfaces stay free of oil (WEST SYSTEM), the planning allowance (350 sq ft/gallon/coat +15%, 2 min per member), the 664 sq ft flat-face envelope, 3.80 gallons rising to 4.37, the label's 1000 sq ft/gallon claim, 8.0 hours of labour, tools, putty and glazing restrictions, and the finish record. The book mentions linseed exactly once, in passing, in chapter 48. | a chapter in Part VI or VII: **Finishing the Wood** |
 | **The people and wardrobe machine** | 7 | The lookbook's own machinery: eight distinct women and the rule that refuses a cast sharing a tone or hair style, hair built as geometry (growth direction, gravity, wave), length as a body landmark rather than a measurement, an outfit as a list lofted through the body's cross-section, the form mode with no garment at all, and the composer's editor that accepts or refuses a piece by geometry (green where it fits, red where it does not) with its six keys. The tool is documented in the back matter; the idea is not in the book. | a section of the software back matter: **The Composer** |
 | **The catalogue's own numbers** | 5 | The combination space (32,105,299,968 shells; 16,554,295,296 distinct after dead settings; 4.398×10¹² floor layouts; 446,823 dial settings; 1,574 years of film), the four stepped dials and the count of each, the random draw with its seed on screen, the three free menus, and the fact that the films draw the tool's own meshes through its own shader rather than sketches. | a section in Why It Scales, near chapter 68 |
-| **The campaign's commercial material** | 25 | The house as a product: the standard 19.42 ft dome at 277 sq ft and its price floor under $10,000 rising to $12,000 shipped ($12,036, $10,030 cost, $2,006 profit, 20% markup, $43.45/sq ft; the older cut's $23,718), the reward tiers and reward categories, the six and eleven fit-outs with their bays and prices, the utility core built in nine tools and fourteen stages for about $1,405 (with the two tools people skip), the pad and platform costs ($6,240 seed pad, $14,724 48-ft park pad, $2,468 slab against $2,916 deck), the reserved centre of the pad, the apex socket, the cowboy-hat laminate that glasses only the top twenty panels, the four-foot sheet that does not fit, the $110,000 campaign goal line by line and the $100,000 park ask with its six-pad reference bill, the $86,000 startup equipment list, the off-grid power budget ($5,490 set: 800 W panel, 10 kWh bank, 3 kW inverter), the highest-use index (1× / 5× / 15–20× / 100×+ / 250×+), the five-thousand-dollar target, triangular solar cells, the open-source and runnable-model promises, "follow the experiments", and the founder bio. | new chapters in Why It Scales (67–68) and Part IX: product lines, **Reward Tiers and What They Buy**, **The Campaign Goal, Line by Line**, **The Off-Grid Budget**, **The Highest-Use Index** |
+| **The campaign's commercial material** | 28 | The house as a product: the standard 19.42 ft dome at 277 sq ft and its price floor under $10,000 rising to $12,000 shipped ($12,036, $10,030 cost, $2,006 profit, 20% markup, $43.45/sq ft; the older cut's $23,718), the reward tiers and reward categories, the six and eleven fit-outs with their bays and prices, the module catalogue (25 snap-in modules from $118 to $2,400), the utility core built in nine tools and fourteen stages for about $1,405 (with the two tools people skip), the pad and platform costs ($6,240 seed pad, $14,724 48-ft park pad, $2,468 slab against $2,916 deck), what a $10,000 pad returns, the reserved centre of the pad, the apex socket, the cowboy-hat laminate that glasses only the top twenty panels, the four-foot sheet that does not fit, the three system domes by size, the $110,000 campaign goal line by line and the $100,000 ask with its $86,000 of equipment, the six-pad reference park bill and the park ask, the $86,000 startup equipment list, the off-grid power budget ($5,490 set: 800 W panel, 10 kWh bank, 3 kW inverter), solar tracking worth a quarter over fixed, the highest-use index (1× / 5× / 15–20× / 100×+ / 250×+), the five-thousand-dollar target, triangular solar cells, the open-source and runnable-model promises, "follow the experiments", and the founder bio. | new chapters in Why It Scales (67–68) and Part IX: product lines, **The Module Catalogue**, **Reward Tiers and What They Buy**, **The Campaign Goal and Its Line Items**, **The Off-Grid Budget**, **The Ten Thousand Dollar Pad**, **The Highest-Use Index** |
 | **Two physics arguments the book stops short of** | 3 | The Pandolf walking equation (the squared load term that makes doubling a load more than double the cost) is named in the films and never in the book; the breathing wall / dynamic insulation idea is mentioned but its central admission is missing — the flow is computed and the wall is untested, a sealed skin cannot breathe, and an unreachable filter is never changed; and the radiative sky-cooling paint (96% reflection, the 8–13 µm window, below ambient in full sun) is absent although chapter 65 is about exactly that trade. | 55 Where the Fuel Actually Goes · 82 Compare Dew Points, Not Humidity · 65 Turning the House Toward the Sun |
 | **Named geometry the walls chapter lacks** | 1 | The dome's five bands and their slopes: lower 20 (113 ft at 57°), belt 10 (53 ft at 8°), upper 15 (87 ft at 37°), pentagon 5 (30 ft at 0°, the ring that cannot drain), cap 5 (27 ft at 16°) — the slopes are what decide which band can carry water and which may only carry air. | 81 The Seam That Does Four Jobs |
 
 ## The `PARTIAL` rows, which are the other half of the work
 
-34 rows where the book uses the film's words but no section is *about* the
-thing. They are listed at the end of this file's data, and the ones worth
-naming here are: the Peltier plates' yield (chapter 44 has the plate, not the
-73 gallons), the key-as-spacer and its cost in dome size (chapter 81 has the
-channel, not the spacer argument), the wood-drying modes and the
-winter/summer plate correction (chapter 82 has the dew points, not the
-plates' direction), forty panels from one sheet and the sub-$2000 shelter
-(chapter 56), the drag coefficients and the ten-point argument (chapter 56),
-the 2V subdivision arithmetic (chapters 47 and 76 have the results, not the
-routes to them), and the saw's tank estimate being an estimate (chapter 26).
+128 rows where the book uses the film's words but no section is *about* the
+thing — a mention standing where a treatment should be. The ones worth
+naming here: the product's price floor and shipped price (chapter 11 prices
+the frame, not the product); the Peltier plates' yield (chapter 44 has the
+plate, not the 73 gallons); the key-as-spacer and its cost in dome size
+(chapter 81 has the channel, not the spacer argument); the wood-drying modes
+and the winter/summer plate correction (chapter 82 has the dew points, not
+the plates' direction); forty panels from one sheet, the sub-$2000 shelter,
+the drag coefficients and the ten-point argument (chapter 56); the 2V
+subdivision arithmetic (chapters 47 and 76 have the results, not the routes
+to them); the saw's tank estimate being an estimate (chapter 26); and the
+utility core's nine tools with the two people skip (chapter 44).
 
 # Verification notes
 

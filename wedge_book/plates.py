@@ -503,6 +503,19 @@ PLATES: tuple[Plate, ...] = (
               "which no solver view can show"),
     Plate("plate-build-the-next", "master", "ms_close", 5,
           why="the master presentation's closing frame, the argument closed"),
+    # -- Part 5, filled from the concept ledger --------------------------
+    Plate("plate-rings", "build", "rings", 27,
+          why="the corners sorted into level courses, the check heights for the "
+              "raise"),
+    Plate("plate-riser", "build", "riser", 27,
+          why="the same dome stood on a riser wall, with the headroom it buys"),
+    Plate("plate-boat-hull", "seed_pitch", "shell", 28,
+          why="the composite boat-hull shell over the stem-cell frame"),
+    Plate("plate-air-wall", "build", "air_wall", 30,
+          why="air pushed through the whole shell at a speed nobody feels"),
+    Plate("plate-solar-shell", "byod", "solar", 30,
+          why="the same dome with cells on one side, the top half, and the whole "
+              "shell"),
     # -- Part 4, filled from the concept ledger --------------------------
     Plate("plate-forty-frames", "wedge", "panels", 21,
           why="the forty independent triangular frames, each finished before "

@@ -16,6 +16,9 @@ Arctic Circle, on forward lookout, at night.
 
 ## What you wear out there
 
+<!-- concept: dome_park/layers -->
+<!-- concept: byod/layers -->
+
 Nobody wears one warm coat. You wear layers — several of them, each thin,
 each doing one job — and on top of all of it goes a pumpkin suit: an
 immersion suit, bright orange, entirely waterproof, and utterly useless as
@@ -32,6 +35,8 @@ That is the whole shell design in this book, and I did not arrive at it by
 reading about vapour barriers.
 
 ## The dome as a head
+
+<!-- concept: seed_pitch/head -->
 
 A dome is a head. It is round, it is the top of something, and it wears hats.
 
@@ -65,6 +70,16 @@ have.
 
 ## It gets warmer every winter
 
+<!-- concept: byod/r_value -->
+
+Here is the model's ladder, with its one assumption stated:
+
+    {{skin.layers}}
+
+The improvement comes from adding a layer, not from the house getting older; the
+outer shell keeps its separate job of keeping weather and wind out.
+
+
 Here is what the layering model buys that a conventional wall does not.
 
 A conventional wall is insulated once, when it is built, to whatever you could
@@ -94,6 +109,80 @@ The arithmetic is in the model: how many garments, how many pounds, what
 R-value the stack reaches, and what a layer is worth to the person who sews it
 for somebody else's dome. That last one has to be a real number or this is not
 a network, it is a request for free labour.
+
+## What actually closes a triangle
+
+<!-- concept: seed_pitch/bay -->
+
+A wedge is not a rectangle, and the wall uses that. The member's inner face
+stands proud of where a panel sits, so every bay in the frame already has a lip
+in it -- not machined, just left there by the shape of a split log (Chapter
+{{ch.frames}}). So the wall goes together from the inside out:
+
+1. **An inner panel** drops onto the lip from inside.
+2. **The cavity** behind it is as deep as the member, {{cut.depth}} inches.
+3. **An outer panel** drops into the same bay from outside and compression-fits
+   against the frame.
+4. **The shell** lands over everything, and nothing goes through it.
+
+## Less skin to start with
+
+<!-- concept: seed_pitch/paint -->
+<!-- concept: master/ms_math_energy -->
+
+Before any hat, the shape has already paid. Compare a dome with a box of the same
+floor -- worked here for the films' 20-foot dome, slightly larger than this
+book's reference:
+
+    {{skin.envelope}}
+
+Less skin means less to lose heat through in winter and less to gain it through
+in summer, and it is true before a single layer goes on. Run the arithmetic a
+heat-loss engineer would, with the same wall in both buildings and a middling
+American climate -- the climate and the power price are borrowed, and named:
+
+    {{skin.energy}}
+
+The dome wins by exactly its missing skin, every year. One more multiplier is
+available on the outside face: the white radiative paints developed in the last
+few years reflect almost all of the sun and shed heat to the sky even in
+daylight. That is a published research result rather than something this model
+computes, so it is left out of the figures above.
+
+## The wall as a filter
+
+<!-- concept: build/air_wall -->
+
+A dome holds a lot of air behind a lot of wall, and that ratio does something
+useful. Push fresh air in through the shell itself, even hard, and it crosses the
+wall so slowly that nobody inside feels a draught:
+
+    {{skin.air}}
+
+A draught you can feel starts at many times those speeds. So a breathable shell
+could be a filter face for the whole building, with the flow spread over every
+square foot instead of rushing past one vent. Chapter {{ch.seam_module}} and the
+seam chapters are what the air does once it is inside the frame.
+
+![The shell so large the air barely crawls through it.](plate-air-wall.png)
+
+## How much shell can carry solar?
+
+<!-- concept: byod/solar -->
+<!-- concept: byod/solar_range -->
+
+The shell is also the dome's largest surface facing the sky. Three ways to use
+it, on the same dome:
+
+    {{skin.solar}}
+
+Cells on one side give a rotating pad (Chapter {{ch.pad}}) a clear purpose: turn
+the useful face to the sun. Cells on the top half with a metal skirt below make
+the skirt a rain catchment. Cells everywhere give the most capacity and the least
+reason to turn. In every case, face area sets the nameplate, not the year's
+energy.
+
+![One side, top half, whole shell.](plate-solar-shell.png)
 
 ## Where the analogy stops
 

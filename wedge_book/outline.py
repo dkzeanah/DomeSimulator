@@ -654,7 +654,7 @@ PART_PANEL = Part(
 CH_RAISE = Chapter(
     number=27, ref="raise", strand="howto",
     title="Raising It",
-    deck="Ten panels on the ring, thirty above them, and five around the "
+    deck="Twenty panels round the ring, fifteen above them, and five around the "
          "apex -- in that order, and braced until the second course closes",
     pages=(
         _p("opener", "Raising it", "The fortnight's last three days.",

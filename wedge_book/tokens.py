@@ -525,6 +525,71 @@ def _worked_tokens(add) -> None:
     add("en.two_person_kg", "above this a lift takes two people, kg", lambda: f"{en.TWO_PERSON_LIFT_KG:.0f}")
     add("en.overhead_m", "the height above which a lift counts as overhead, m", lambda: f"{en.OVERHEAD_HEIGHT_M:.2f}")
     add("en.body_kg", "the worker the model is built for, kg", lambda: f"{en.BODY_MASS_KG:.0f}")
+    # The skin: envelope and running cost, layers, solar, the shell as a
+    # filter, one-sheet nesting, and this book's own ring heights.
+    from two_v_demo import byod_facts as bf, hubless_geometry as hg, master_facts as mf
+
+    def steps(fn):
+        return lambda: "\n".join(fn()[:-1]).rstrip()
+
+    add("skin.envelope", "dome against box, same floor: skin, volume, drag", steps(mf.steps_envelope))
+    add("skin.energy", "a year of heating and cooling, both shapes", steps(mf.steps_energy))
+    add("skin.layers", "the R-value ladder, layer by layer", lambda: "\n".join(bf.steps_layers()))
+    add("skin.solar", "solar capacity by layout", lambda: "\n".join(bf.steps_solar()))
+
+    def air_table() -> str:
+        m = hg.airflow_model(60.0)
+        rows = [f"dome radius {m.radius_in:.0f} in: shell {m.shell_area_m2:.1f} m2, "
+                f"air {m.volume_cuft:.0f} cu ft"]
+        rows += [f"  {c.air_changes_per_hour:4.0f} ACH -> {c.cfm:5.0f} cfm, through the wall at "
+                 f"{c.face_velocity_fpm:4.2f} ft/min" for c in m.cases]
+        return "\n".join(rows)
+    add("skin.air", "a small dome's air pushed through its own wall", air_table)
+    nest = hg.sheet_nesting()
+    add("skin.nest_sheet", "the sheet the shell is nested on, ft",
+        lambda: f"{nest.sheet_width / 12:.0f} ft x {nest.sheet_height / 12:.0f} ft")
+    add("skin.nest_r", "the largest dome one sheet makes, radius in", lambda: f"{nest.radius:.0f}")
+    add("skin.nest_d", "and its diameter, in", lambda: f"{nest.diameter:.0f}")
+    add("skin.nest_floor", "and its floor, sq ft", lambda: f"{nest.floor_area_sqft:.0f}")
+
+    import numpy as np
+
+    from two_v_demo import channel_facts as cf
+
+    topo = cf.reference_model().topology
+    verts = np.asarray(topo.vertices, dtype=float)
+    heights = sorted({round(float(z), 3) for z in verts[:, 2]})
+    names = ("floor ring", "belt, low corners", "belt, high corners", "pentagon ring", "apex")
+
+    def ring_table() -> str:
+        rows = [("ring", "corners", "height", "across")]
+        for name, z in zip(names, heights):
+            on = verts[np.isclose(verts[:, 2], z, atol=1e-3)]
+            r = float(np.mean(np.hypot(on[:, 0], on[:, 1])))
+            rows.append((name, str(len(on)), f"{z / 12:.2f} ft",
+                         f"{2 * r / 12:.2f} ft" if r > 1e-6 else "--"))
+        return _table_text(rows, (22, 10, 10, 10))
+    add("ring.table", "every ring's corners, height and diameter, this dome", ring_table)
+
+    # The raising courses, counted from the solver's faces by the heights of
+    # their corners: a face with two corners on the floor ring stands on it.
+    rim_z, low_z, high_z, penta_z, apex_z = heights
+    courses = {"up": 0, "down": 0, "second": 0, "cap": 0}
+    for face in topo.faces:
+        zs = sorted(round(float(verts[v][2]), 3) for v in face.vertices)
+        if zs[2] == apex_z:
+            courses["cap"] += 1
+        elif zs[0] == rim_z and zs[1] == rim_z:
+            courses["up"] += 1
+        elif zs[0] == rim_z:
+            courses["down"] += 1
+        else:
+            courses["second"] += 1
+    add("ring.first_up", "first-course panels standing on the floor ring", lambda: str(courses["up"]))
+    add("ring.first_down", "first-course panels inverted between them", lambda: str(courses["down"]))
+    add("ring.first", "panels in the first course", lambda: str(courses["up"] + courses["down"]))
+    add("ring.second", "panels in the second course", lambda: str(courses["second"]))
+    add("ring.cap", "panels round the apex", lambda: str(courses["cap"]))
     add("work.log_butt", "the worked tree's butt diameter, inches", lambda: f"{wf.LOG.butt_diameter_in:.0f}")
     add("work.log_top", "the worked tree's top diameter, inches", lambda: f"{wf.LOG.top_diameter_in:.1f}")
     add("work.log_ft", "the worked tree's usable length, feet", lambda: f"{wf.LOG.usable_length_ft:.0f}")

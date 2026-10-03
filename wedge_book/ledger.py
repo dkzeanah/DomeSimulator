@@ -240,6 +240,8 @@ def _overrides_by_title() -> dict[tuple[str, str], str]:
         **{("build", t): "seam" for t in (
             "The tube around the bottom", "Run it either way", "What would actually decide it")},
         # ...and swapping parts is Part 1's argument.
+        ("master", "The frankendome, audited"): "variations",
+        ("master", "The water plant, derived"): "seam",
         ("hype", "Every answer is yes"): "right",
         ("hype", "And whatever comes next"): "right",
         ("byod", "Buy for the next two steps"): "stemcell",

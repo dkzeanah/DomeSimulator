@@ -20,12 +20,20 @@ the only part that looks like building a dome.
 each one an A chord — so each side is {{cut.a_chord}} inches and the
 perimeter is sixty feet. Chapter {{ch.floor}} is what it sits on.
 
+<!-- concept: build/layout -->
+
+Set it out from the centre, every time. Drive a pin where the middle of the
+floor will be and swing the base radius from it to mark all
+{{dome.base_sides}} corners. Do not step round the ring measuring side to
+side: every small error then adds to the next one.
+
 Get this right and the rest is assembly. Get it wrong and every course above
 it inherits the error, because the base is the one place in this building
 where error does accumulate.
 
-Check it by diagonal, not by angle. Opposite corners of a regular decagon are
-a known distance apart; measure two of them and compare.
+Check it by diagonal, not by angle. On a regular decagon the long diagonals,
+corner to opposite corner, are all the same length -- so measure every one of
+them, and any difference tells you exactly where the setting out drifted.
 
 **Sort the panels into two piles.** {{dome.aaa}} equilateral, {{dome.bab}}
 isosceles. Mixing them up costs an hour on the second course.
@@ -33,9 +41,27 @@ isosceles. Mixing them up costs an hour on the second course.
 **Have more bracing than you think.** You will need it for about six hours
 total and you will need all of it at once.
 
+## Four rings and a crown
+
+<!-- concept: build/rings -->
+
+The corners of the shell sit at fixed heights, and those heights are your check
+numbers during the raise. Write them on the drawing before you start:
+
+    {{ring.table}}
+
+The two belt rows are one zigzag ring that rises and falls between two heights
+(Chapter {{ch.levels}}). Every ring is a level circle you can measure across.
+
+![Twenty-six corners, in courses, at heights you can measure.](plate-rings.png)
+
 ## The first course
 
-Ten panels stand on the ring. They lean inward from the moment they go up,
+<!-- concept: build/raise -->
+
+{{ring.first}} panels: {{ring.first_up}} standing on the ring with two corners
+on it, and {{ring.first_down}} inverted between them with one corner on it. They
+lean inward from the moment they go up,
 which is the first surprise: a dome is not a wall that gradually curves, it
 is leaning in from the ground.
 
@@ -52,8 +78,8 @@ Do not take the bracing out yet.
 
 ![The band above: where the dome starts holding its own shape.](course-second.png)
 
-Thirty panels, leaning further in, each one keying to two below it and to its
-neighbours either side.
+{{ring.second}} panels, leaning further in, each one keying to the course below
+and to its neighbours either side, up to the pentagon ring.
 
 This is where the dome starts holding its own shape — and it is where the
 bracing can come out, once the course is closed all the way round. Not before.
@@ -67,9 +93,11 @@ course is a panel rather than a wedge-shaped gap you have to persuade.
 
 ## The apex
 
+<!-- concept: build/apex -->
+
 ![Closing the top.](course-apex.png)
 
-Five panels around one vertex.
+{{ring.cap}} panels around one vertex.
 
 This is the last thing to go in and the only part of the assembly that has to
 be *held* rather than propped. Two people, or one person and a strap from
@@ -82,7 +110,15 @@ five keys and a cap.
 ## What goes wrong
 
 **The last panel of a course does not fit.** Almost always the ring is out,
-not the panel. Check the base diagonals before you start cutting anything.
+not the panel. Check the base diagonals before you start cutting anything. The
+crown is where every accumulated millimetre finally arrives, so it reports the
+error rather than causing it: if the cap will not close, go back down and measure
+the ring beneath, which is nearly always slightly out of round or out of level.
+
+**Counting the courses wrong.** An earlier draft of this chapter said ten panels
+in the first course, thirty in the second and five round the apex: forty-five
+panels, on a dome that has {{dome.panels}}. The courses above are counted from the
+solved shell.
 
 **A seam gaps at the outside.** The key is not driven far enough. It is a
 wedge; drive it.
@@ -91,6 +127,21 @@ wedge; drive it.
 This happens with the isosceles ones, whose two short sides look alike. Mark
 the long edge of every BAB panel on the jig, in the shop, before it ever comes
 outside.
+
+## The riser wall
+
+<!-- concept: build/riser -->
+
+A hemisphere has no headroom at its edge: the shell meets the floor at the rim,
+which makes the outer ring of floor nearly useless. Stand the whole dome on a
+short vertical wall and every point of the shell rises by that amount, so the
+perimeter becomes furniture height, or door height.
+
+The floor area does not change. The usable area does, a great deal, and it costs
+one ring of studs. Decide on it before you set out, because it changes the
+foundation (Chapter {{ch.floor}}).
+
+![The riser lifts every point of the shell by its own height.](plate-riser.png)
 
 ## Then stop
 
