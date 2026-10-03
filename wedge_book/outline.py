@@ -243,8 +243,68 @@ PART_RIGHT = Part(
 # PART 2 -- The stick
 # ----------------------------------------------------------------------
 
+CH_TREE = Chapter(
+    number=12, ref="tree", strand="story",
+    title="The Woodpile Is Standing Up",
+    deck="What one tree holds, how it comes down, and why the trees decide the "
+         "size of the building rather than the other way round",
+    derives=("two_v_demo.wedge_facts.steps_trunk", "two_v_demo.wedge_why_facts.steps_yield",
+             "two_v_demo.wedge_facts.steps_dome"),
+    pages=(
+        _p("opener", "The woodpile is standing up",
+           "A house frame, before it is cut.", words=360,
+           figures=(_f("plate-one-log", "A whole house frame, before it is cut."),)),
+        _p("worked", "What is standing there", "One tree, measured.", words=300),
+        _p("steps", "The fell line", "The hinge steers the tree.", words=360,
+           figures=(_f("plate-fell-line", "The hinge steers the tree."),)),
+        _p("text", "All at once", "Every section splits the same way.", words=320),
+        _p("worked", "The trees size the building", "Solved backwards from the stick.",
+           words=420,
+           figures=(_f("plate-two-trees-dome", "The dome two trees make."),)),
+    ))
+
+CH_SAW = Chapter(
+    number=14, ref="saw", strand="explain",
+    title="What the Saw Actually Does",
+    deck="Two timed sittings, the fuel written down, a prediction the geometry "
+         "makes without being told -- and the cuts counted both ways",
+    derives=("two_v_demo.wedge_why_facts.steps_rate", "two_v_demo.book_math.ripping_fuel",
+             "two_v_demo.wedge_facts.steps_actions"),
+    pages=(
+        _p("opener", "What the saw actually does", "Measured, and guessed.", words=300),
+        _p("worked", "Two sessions, and do they agree?", "The rate, cross-checked.",
+           words=420,
+           figures=(_f("plate-saw-sessions", "Two sittings, timed."),)),
+        _p("text", "What the harvest took", "Days and fuel.", words=300),
+        _p("worked", "Counting the cuts", "Least actions, most building.", words=360,
+           figures=(_f("plate-counting-cuts", "One tree to a finished member, "
+                                                "counted both ways."),)),
+    ))
+
+CH_LINSEED = Chapter(
+    number=19, ref="linseed", strand="howto",
+    title="Linseed Oil, Where It Belongs",
+    deck="Read the can, set up the rag station, oil the faces people touch, and "
+         "do not ask a finish to be a roof, a seal or a repair",
+    derives=("two_v_demo.linseed_oil.facts",),
+    pages=(
+        _p("opener", "Linseed oil, where it belongs",
+           "Twenty tricks from one video, sorted by what survives in a dome.",
+           words=320),
+        _p("safety", "The rag station comes first", "Oxidation makes heat.", words=220),
+        _p("steps", "Read the can, prepare, apply", "The product, the member, the coat.",
+           words=520,
+           figures=(_f("plate-thin-coat", "Apply thinly, then wipe dry."),)),
+        _p("worked", "How much, and how long", "Measured wood, declared inputs.",
+           words=420),
+        _p("text", "Where it does not belong", "Seams, weather, glazing.", words=420,
+           figures=(_f("plate-oil-seam", "Finish decisions follow the assembly."),)),
+        _p("text", "The parts people touch, and keeping them",
+           "Interior, tools, maintenance.", words=360),
+    ))
+
 CH_SPLIT = Chapter(
-    number=12, ref="split", strand="story",
+    number=13, ref="split", strand="story",
     title="Stop Squaring. Start Splitting.",
     deck="A round log is already rotationally symmetric, and three splits "
          "give you eight identical sticks nobody had to measure",
@@ -267,7 +327,7 @@ CH_SPLIT = Chapter(
     ))
 
 CH_MEMBER = Chapter(
-    number=13, ref="member", strand="explain",
+    number=15, ref="member", strand="explain",
     title="One Eighth of a Tree, Used as a Stick",
     deck="What a 45-degree sector actually is, and why its shape is an "
          "advantage rather than something to apologise for",
@@ -295,7 +355,7 @@ CH_MEMBER = Chapter(
     ))
 
 CH_TWO_LENGTHS = Chapter(
-    number=14, ref="two_lengths", strand="howto",
+    number=16, ref="two_lengths", strand="howto",
     title="Two Lengths, and Neither Is the Chord",
     deck="72.000 and 63.670 inches are what the geometry says; what you cut "
          "is those minus a bite that does not scale",
@@ -317,7 +377,7 @@ CH_TWO_LENGTHS = Chapter(
     ))
 
 CH_GREEN = Chapter(
-    number=15, ref="green", strand="explain",
+    number=17, ref="green", strand="explain",
     title="Green Wood Moves, and a Split Moves Least",
     deck="A wedge closes its own angle as it dries -- which is why it checks "
          "less than a squared timber, and why the key is cut last",
@@ -354,7 +414,7 @@ CH_GREEN = Chapter(
     ))
 
 CH_FINISH = Chapter(
-    number=16, ref="finish", strand="howto",
+    number=18, ref="finish", strand="howto",
     title="Char the Outside, Oil It, and Leave the Faces Bare",
     deck="Yakisugi and linseed on the round face only, because the two sawn "
          "faces carry the key, the bolts and the seam's air",
@@ -388,7 +448,7 @@ PART_STICK = Part(
     promise="How a standing tree becomes 120 structural members, what a "
             "45-degree sector is, the two lengths you actually cut, what "
             "drying does to them, and the one face that gets a finish.",
-    chapters=(CH_SPLIT, CH_MEMBER, CH_TWO_LENGTHS, CH_GREEN, CH_FINISH))
+    chapters=(CH_TREE, CH_SPLIT, CH_SAW, CH_MEMBER, CH_TWO_LENGTHS, CH_GREEN, CH_FINISH, CH_LINSEED))
 
 
 # ----------------------------------------------------------------------
@@ -396,7 +456,7 @@ PART_STICK = Part(
 # ----------------------------------------------------------------------
 
 CH_PINWHEEL = Chapter(
-    number=17, ref="pinwheel", strand="explain",
+    number=20, ref="pinwheel", strand="explain",
     title="Nothing Meets at the Corner",
     deck="Three sticks, each butting into the side of the next, and not one "
          "of them reaching the vertex it is named after",
@@ -423,7 +483,7 @@ CH_PINWHEEL = Chapter(
     ))
 
 CH_NINE = Chapter(
-    number=18, ref="nine", strand="explain",
+    number=21, ref="nine", strand="explain",
     title="Nine Processes, Whatever Size You Build",
     deck="Nine operations turn standing timber into a shell. Not nine "
          "categories with sub-steps hiding inside them -- nine setups",
@@ -448,7 +508,7 @@ CH_NINE = Chapter(
     ))
 
 CH_JIG = Chapter(
-    number=19, ref="jig", strand="howto",
+    number=22, ref="jig", strand="howto",
     title="One Flat Board, Forty Identical Panels",
     deck="The only thing in the whole build that has to be true is the "
          "bench, and everything else is measured from it",
@@ -492,7 +552,7 @@ CH_JIG = Chapter(
     ))
 
 CH_OPENINGS = Chapter(
-    number=20, ref="openings", strand="howto",
+    number=23, ref="openings", strand="howto",
     title="Doors, Windows, and What Not to Cut",
     deck="An opening is a panel you did not close -- which is why it costs "
          "nothing, and why cutting one afterwards costs everything",
@@ -536,7 +596,7 @@ PART_PANEL = Part(
 # ----------------------------------------------------------------------
 
 CH_RAISE = Chapter(
-    number=21, ref="raise", strand="howto",
+    number=24, ref="raise", strand="howto",
     title="Raising It",
     deck="Ten panels on the ring, thirty above them, and five around the "
          "apex -- in that order, and braced until the second course closes",
@@ -554,7 +614,7 @@ CH_RAISE = Chapter(
     ))
 
 CH_ONE_LAYER = Chapter(
-    number=22, ref="one_layer", strand="explain",
+    number=25, ref="one_layer", strand="explain",
     title="One Watertight Layer, and Only One",
     deck="Two impermeable skins with insulation between them is a trap, and "
          "this project shipped that design before it noticed",
@@ -575,7 +635,7 @@ CH_ONE_LAYER = Chapter(
     ))
 
 CH_HATS = Chapter(
-    number=24, ref="hats", strand="explain",
+    number=27, ref="hats", strand="explain",
     title="A Dome Is a Head, and It Wears Hats",
     deck="Bare skin, then layers, then one rain-slick shell over the lot -- "
          "the way you dress for the Arctic, and for the same reasons",
@@ -594,7 +654,7 @@ CH_HATS = Chapter(
     ))
 
 CH_SEAM_MODULE = Chapter(
-    number=23, ref="seam_module", strand="explain",
+    number=26, ref="seam_module", strand="explain",
     title="The Seam Does Four Jobs",
     deck="Gutter, vent, dehumidifier and air barrier -- all of it in the "
          "space two sawn faces were always going to leave",
@@ -621,7 +681,7 @@ CH_SEAM_MODULE = Chapter(
     ))
 
 CH_BOM = Chapter(
-    number=44, ref="bom", strand="reference",
+    number=47, ref="bom", strand="reference",
     title="Every Part, Priced",
     deck="The column, the pad, the hardware, the power bench and the water "
          "bench -- the whole bill, with a source on every line",
@@ -653,7 +713,7 @@ PART_SKIN = Part(
 # ----------------------------------------------------------------------
 
 CH_CHANNEL = Chapter(
-    number=25, ref="channel", strand="reference",
+    number=28, ref="channel", strand="reference",
     title="What Fits in the Channel",
     deck="Water and wire, yes. A round duct, no -- and the channel does not "
          "need one, because it already is one",
@@ -694,7 +754,7 @@ CH_CHANNEL = Chapter(
     ))
 
 CH_DEWPOINT = Chapter(
-    number=26, ref="dewpoint", strand="explain",
+    number=29, ref="dewpoint", strand="explain",
     title="Compare Dew Points, Not Humidity",
     deck="Three questions decide every move the seam's air makes, and none of "
          "them is about relative humidity",
@@ -721,7 +781,7 @@ CH_DEWPOINT = Chapter(
     ))
 
 CH_LEVELS = Chapter(
-    number=27, ref="levels", strand="explain",
+    number=30, ref="levels", strand="explain",
     title="Four Levels, and the Ring That Cannot Drain",
     deck="The solver's dome stands on five heights, its seams fall into five "
          "bands, and the slope of each one decides its job",
@@ -750,7 +810,7 @@ CH_LEVELS = Chapter(
     ))
 
 CH_DESICCANT = Chapter(
-    number=28, ref="desiccant", strand="explain",
+    number=31, ref="desiccant", strand="explain",
     title="The Desiccant Belongs in a Drawer",
     deck="Molecular sieve holds a fifth of its weight in water -- and a seam "
          "packed with it passes almost no air and can never be dried in place",
@@ -784,7 +844,7 @@ CH_DESICCANT = Chapter(
     ))
 
 CH_METAL = Chapter(
-    number=29, ref="metal", strand="explain",
+    number=32, ref="metal", strand="explain",
     title="Metal in the Seam",
     deck="A Peltier plate is a heat pump that runs both ways, and aluminium, "
          "copper and stainless make a battery the moment the seam is wet",
@@ -835,7 +895,7 @@ PART_WATER = Part(
 # ----------------------------------------------------------------------
 
 CH_FLOOR = Chapter(
-    number=30, ref="floor", strand="howto",
+    number=33, ref="floor", strand="howto",
     title="The Floor Is the Other Thing to Get Right",
     deck="It carries everything you own, you touch it all day, and it is "
          "where the ground sends its water",
@@ -859,7 +919,7 @@ CH_FLOOR = Chapter(
     ))
 
 CH_PAD = Chapter(
-    number=31, ref="pad", strand="explain",
+    number=34, ref="pad", strand="explain",
     title="A Pad, Not a Plot",
     deck="The ground is the one thing you cannot take with you, so stop "
          "buying it",
@@ -889,7 +949,7 @@ PART_FLOOR = Part(
 # ----------------------------------------------------------------------
 
 CH_NETWORK = Chapter(
-    number=32, ref="network", strand="explain",
+    number=35, ref="network", strand="explain",
     title="Why a Network Beats a Park",
     deck="An RV park rents you a slot for a week. This rents you a "
          "foundation for a decade, and both sides come out ahead",
@@ -936,7 +996,7 @@ PART_NETWORK = Part(
 # ----------------------------------------------------------------------
 
 CH_ALTERNATIVES = Chapter(
-    number=35, ref="alternatives", strand="reference",
+    number=38, ref="alternatives", strand="reference",
     title="Every Other Way of Doing It",
     deck="Eight frame materials, eight sections, sixteen panels, nine "
          "claddings and twelve foundations -- priced on this dome, not in "
@@ -960,7 +1020,7 @@ CH_ALTERNATIVES = Chapter(
     ))
 
 CH_FLOATING = Chapter(
-    number=41, ref="floating", strand="explain",
+    number=44, ref="floating", strand="explain",
     title="Hang It Between Two Trees",
     deck="The most speculative corner of the method: a mast, three cables, "
          "and no ground at all -- priced, and explicitly not rated",
@@ -992,7 +1052,7 @@ PART_VARIATIONS = Part(
 # ----------------------------------------------------------------------
 
 CH_TOOLING = Chapter(
-    number=42, ref="tooling", strand="reference",
+    number=45, ref="tooling", strand="reference",
     title="The Software That Wrote This Book",
     deck="Eight three-dimensional worlds, a cost model and a solver -- what "
          "each one is for, what it can do, and how to open it",
@@ -1006,7 +1066,7 @@ CH_TOOLING = Chapter(
     ))
 
 CH_WORLDS = Chapter(
-    number=43, ref="worlds", strand="reference",
+    number=46, ref="worlds", strand="reference",
     title="What Each World Shows You",
     deck="One picture from every three-dimensional environment in the "
          "project, with what it is for and what to do in it",
@@ -1236,7 +1296,7 @@ PART_MATHS = Part(
 # ----------------------------------------------------------------------
 
 CH_ZOME = Chapter(
-    number=33, ref="zome", strand="explain",
+    number=36, ref="zome", strand="explain",
     title="A Zome Is Not a Piece of a Sphere",
     deck="Swept from a star of directions instead of subdivided from a "
          "solid -- which is why every panel comes out flat, guaranteed",
@@ -1260,7 +1320,7 @@ CH_ZOME = Chapter(
     ))
 
 CH_HEX = Chapter(
-    number=34, ref="hex", strand="explain",
+    number=37, ref="hex", strand="explain",
     title="Exactly Twelve Pentagons, Always",
     deck="A sheet of hexagons will not curve. Curvature is bought with "
          "missing angle, and the price is always twelve pentagons",
@@ -1295,7 +1355,7 @@ PART_SHAPES = Part(
 # ----------------------------------------------------------------------
 
 CH_FRAMING = Chapter(
-    number=36, ref="framing", strand="explain",
+    number=39, ref="framing", strand="explain",
     title="Hubs, or No Hubs",
     deck="The trade this whole method is an answer to, counted across "
          "twelve designs rather than argued",
@@ -1312,7 +1372,7 @@ CH_FRAMING = Chapter(
     ))
 
 CH_CREATOR = Chapter(
-    number=37, ref="creator", strand="reference",
+    number=40, ref="creator", strand="reference",
     title="Twelve Buildings, One Tool",
     deck="Every finish, floor division and fit-out the Dome Creator will "
          "put on a shell, priced against each other",
@@ -1345,7 +1405,7 @@ PART_CATALOGUE = Part(
 # ----------------------------------------------------------------------
 
 CH_STEMCELL = Chapter(
-    number=38, ref="stemcell", strand="explain",
+    number=41, ref="stemcell", strand="explain",
     title="Why We Call It a Stem Cell",
     deck="One body, undifferentiated, that becomes fifteen different "
          "buildings depending on what you put in it",
@@ -1362,7 +1422,7 @@ CH_STEMCELL = Chapter(
     ))
 
 CH_CORE = Chapter(
-    number=39, ref="core", strand="explain",
+    number=42, ref="core", strand="explain",
     title="Sink the Money Into the Part That Moves",
     deck="The utility core is thirty per cent of the dome and the only "
          "part that transfers -- so it is the part worth overbuilding",
@@ -1385,7 +1445,7 @@ CH_CORE = Chapter(
     ))
 
 CH_SEEDS = Chapter(
-    number=40, ref="seeds", strand="reference",
+    number=43, ref="seeds", strand="reference",
     title="Fifteen Buildings From One Body",
     deck="The catalogue a homestead wants second, priced from the same "
          "frame and the same core",

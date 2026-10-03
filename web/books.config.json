@@ -3,9 +3,9 @@
   "books": [
     {
       "slug": "the-40-hour-cabin",
-      "title": "Geodesic Dome Wedge Method",
-      "subtitle": "The 40 Hour Cabin",
-      "blurb": "The stem-cell dome from log to frame: how to split the wedges, cut the members and stand a 2V hemisphere, with every table computed from the solver.",
+      "title": "The Wedge Method: A Builder's Guide",
+      "subtitle": "Splitting the wedges, cutting the members, standing the frame",
+      "blurb": "The companion guide to the master book: the stem-cell dome from log to frame, with every table computed from the solver.",
       "file": "the-40-hour-cabin.pdf",
       "featured": true,
       "cover": "/covers/the-40-hour-cabin.jpg"
@@ -19,10 +19,11 @@
     },
     {
       "slug": "2-trees",
-      "title": "The 40 Hour Cabin: 3 Trees",
-      "subtitle": "Three trees, one small chainsaw, forty hours or less",
+      "title": "Geodesic Dome Wedge Method",
+      "subtitle": "The 40 Hour Cabin: 3 Trees",
       "blurb": "The master book: three trees, forty hours or less, and a geodesic wedge cabin winched up between the trees.",
-      "file": "2-trees.pdf"
+      "file": "2-trees.pdf",
+      "cover": "/covers/2-trees.jpg"
     }
   ]
 }

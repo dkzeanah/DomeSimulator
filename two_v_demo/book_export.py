@@ -1,4 +1,4 @@
-"""Turning the manuscript of *The 40 Hour Cabin* into something you can actually read.
+"""Turning the manuscript of *Geodesic Dome Wedge Method* into something you can actually read.
 
 A folder of Markdown files is a good way to *write* a book and a poor way to
 read one.  This module builds the readable forms:
@@ -149,6 +149,12 @@ figure { margin: 2rem 0; }
 figure.diagram { margin: 2.2rem 0; padding: 1rem; background: #fff;
   border: 1px solid var(--rule); border-radius: 3px; page-break-inside: avoid; }
 figure.diagram img { margin: 0 auto; }
+section.cover { margin: 0; padding: 0; page-break-after: always; }
+section.cover h1 { display: none; }
+section.cover figure { margin: 0; }
+section.cover img { width: 100%; height: auto; margin: 0; }
+section.cover figcaption { display: none; }
+section.cover + .wrap { padding-top: 2rem; }
 pre.mermaid { background: #fff; border: 1px solid var(--rule); padding: 1rem;
   font-size: .78rem; overflow-x: auto; }
 figcaption { font: italic .85rem/1.5 Georgia, serif; color: var(--muted);
@@ -164,6 +170,8 @@ li { margin: 0 0 .4rem; }
 .book-title { font-size: 2.5rem; margin: 6rem 0 .5rem; }
 .book-sub { font-size: 1.1rem; color: var(--muted); font-style: italic;
             margin-bottom: 3rem; }
+.book-tagline { font-size: .95rem; color: var(--muted); margin: .6rem 0 0;
+  max-width: 30rem; }
 .built { font-size: .82rem; color: var(--muted); }
 
 .part { margin: 5rem 0 2rem; padding: 2.4rem 0; border-top: 2px solid var(--ink);
@@ -242,7 +250,7 @@ def _resolve_images(text: str, embed: bool,
     """Point every image link at the newest render, or drop it silently.
 
     ``index`` and ``figure_dir`` belong to the book being built. They default
-    to *The 40 Hour Cabin*, which is what every caller wanted when this engine held one
+    to *Geodesic Dome Wedge Method*, which is what every caller wanted when this engine held one
     book.
 
     A reader's book never shows authoring machinery: a figure that has not
@@ -417,14 +425,30 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         return _resolve_images(drawn, embed_images, found, missing,
                                index, figure_dir)
 
+    # The cover is the front of the book, so it is assembled first and
+    # placed outside the reading column: full width, no page furniture, and
+    # a page break after it, so the title page and the contents follow it
+    # rather than preceding it.
+    cover_html = ""
+    cover_matter = next((m for m in book.front if m.key == "cover"), None)
+    if cover_matter is not None:
+        cover_text = manuscript._matter_markdown(cover_matter, "front", root)
+        if cover_text.strip() or include_unwritten:
+            cover_html = ('<section class="cover">'
+                          f"{_markdown_to_html(images(cover_text))}</section>")
+
     parts: list[str] = [
         '<div class="wrap">',
         f'<div class="book-title">{html_escape.escape(book.title)}</div>',
         f'<div class="book-sub">{html_escape.escape(book.subtitle)}</div>',
+    ]
+    if book.tagline:
+        parts.append(f'<p class="book-tagline">'
+                     f"{html_escape.escape(book.tagline)}</p>")
+    parts.append(
         f'<p class="built">Built {date.today().isoformat()}. Every figure '
         "in this book was computed at build time from the geometry in the "
-        "DomeSim project.</p>",
-    ]
+        "DomeSim project.</p>")
 
     # The contents list names only what the book actually contains: a
     # reader who follows a link must always land on a written chapter.
@@ -453,6 +477,8 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         parts.append("</ol></nav>")
 
     for matter in book.front:
+        if matter.key == "cover":
+            continue          # already assembled, above the reading column
         text = manuscript._matter_markdown(matter, "front", root)
         if not text.strip() and not include_unwritten:
             continue
@@ -515,6 +541,7 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         "initial-scale=1\">"
         f"<title>{html_escape.escape(book.title)}</title>"
         f"<style>{BOOK_CSS}</style></head><body>"
+        + cover_html
         + "\n".join(parts)
         + (_mermaid_runtime() if live_diagrams else "")
         + "</body></html>")

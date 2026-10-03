@@ -198,6 +198,31 @@ def _overrides_by_title() -> dict[tuple[str, str], str]:
         ("build", "The wall as the filter"): "skin",
         ("master", "Every saw setting, measured off the model"): "panel",
         ("why", "Forty frames, not one lattice"): "panel",
+        # Part 3 review: joints and panels belong to The Panel...
+        **{("wedge", t): "panel" for t in (
+            "Forty independent frames", "The corner nothing touches", "Neighbours do not share",
+            "Forty frames, lifted whole")},
+        **{("why", t): "panel" for t in (
+            "The V bracket that made it possible", "What holds the wedge dome together",
+            "Neighbours never share a stick", "The cut I said did not exist",
+            "How many settings it really takes", "The angle nobody wants to cut",
+            "The cut that is never measured", "What the fixture is enforcing",
+            "A dome from whatever the woodlot gives")},
+        ("build", "Borrowing strength from the site"): "panel",
+        # ...the channel to The Seam...
+        **{("cabin_wedge_explained", t): "seam" for t in (
+            "The sizes we assumed", "Or start with a bigger log", "Two rules")},
+        ("seed_pitch", "The gap nobody wanted"): "seam",
+        # ...and money, the chain and the house to What It Costs.
+        **{("harvest", t): "economics" for t in (
+            "What the house numbers rest on", "Where a house's time goes",
+            "What the fortnight is worth", "Every part of the house",
+            "Where the saving comes from", "What this does not show")},
+        **{("why", t): "economics" for t in (
+            "Machines that stop being necessary", "Counting the machines out",
+            "Fifteen sets of hands", "The part nobody counts", "The same frame, bought")},
+        ("byod", "Buy for the next two steps"): "stemcell",
+        ("seed_pitch", "The member we want to make instead"): "variations",
     }
 
 

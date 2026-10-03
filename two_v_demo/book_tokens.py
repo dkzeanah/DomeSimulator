@@ -1,4 +1,4 @@
-"""Live numbers for the manuscript of *The 40 Hour Cabin*.
+"""Live numbers for the manuscript of *Geodesic Dome Wedge Method*.
 
 The manuscript is prose with holes in it.  Where a sentence needs a figure it
 writes ``{{dome.diameter_ft}}`` rather than ``21.6``, and this module fills it

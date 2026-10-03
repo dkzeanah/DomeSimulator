@@ -1,4 +1,4 @@
-"""The arithmetic behind *The 40 Hour Cabin: 3 Trees*.
+"""The arithmetic behind *Geodesic Dome Wedge Method* -- *The 40 Hour Cabin: 3 Trees*.
 
 Every number the book prints comes from here, and everything here comes from
 geometry that already exists in this repository -- :mod:`wedge_geometry` for

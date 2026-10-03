@@ -347,6 +347,7 @@ def _table() -> dict[str, Token]:
 
     _parts_list_tokens(add)
     _geometry_tokens(add)
+    _worked_tokens(add)
     _channel_tokens(add)
     _climate_tokens(add)
     _wood_tokens(add)
@@ -431,6 +432,70 @@ def _parts_list_tokens(add) -> None:
     add("flat.big_sqft", "the big dome's floor, sq ft", lambda: f"{area(big):,.0f}")
     add("flat.ratio", "how many times the floor the big one has",
         lambda: f"{area(big) / area(small):.0f}")
+
+
+def _worked_tokens(add) -> None:
+    """``work``: the films' own worked arithmetic, printed as it runs.
+
+    Each is a ``steps_*`` function the film's math screen calls, so the book
+    and the film cannot show different working. The last line of each is its
+    conclusion, which the prose usually says in its own words; the block
+    stops before it.
+    """
+    from two_v_demo import wedge_facts as wf, wedge_why_facts as yf
+
+    def block(fn):
+        return lambda: "\n".join(fn()[:-1]).rstrip()
+
+    for name, fn in (("trunk", wf.steps_trunk), ("rectangles", wf.steps_rectangles),
+                     ("compare", wf.steps_compare), ("sector", wf.steps_sector),
+                     ("pinwheel_lengths", wf.steps_lengths), ("dome", wf.steps_dome),
+                     ("actions", wf.steps_actions), ("assumptions", yf.steps_assumptions),
+                     ("rate", yf.steps_rate), ("structure", yf.steps_structure),
+                     ("orientation", yf.steps_orientation), ("defects", yf.steps_defects),
+                     ("yield", yf.steps_yield)):
+        add(f"work.{name}", f"the films' worked {name.replace('_', ' ')}, as computed", block(fn))
+    # The harvest's model-independent figures: ripping the frame's members at
+    # the measured rate, the fuel that took, and the day plan.
+    from two_v_demo import book_math as bm
+
+    fuel = bm.ripping_fuel()
+    gal = 3.785411784
+    add("rip.tanks_hour", "fuel tanks an hour while ripping (measured)", lambda: f"{fuel.tanks_per_hour:.0f}")
+    add("rip.hours", "hours of ripping for the frame", lambda: f"{fuel.hours:.0f}")
+    add("rip.tank_lo", "the saw's tank, low estimate, litres", lambda: f"{fuel.tank_l:.2f}")
+    add("rip.tank_hi", "the saw's tank, high estimate, litres", lambda: f"{fuel.tank_high_l:.2f}")
+    add("rip.tanks", "tanks of fuel for all the ripping",
+        lambda: f"{fuel.tanks_per_hour * fuel.hours:.0f}")
+    add("rip.gal_lo", "fuel for the ripping, low, US gal",
+        lambda: f"{fuel.tanks_per_hour * fuel.hours * fuel.tank_l / gal:.1f}")
+    add("rip.gal_hi", "fuel for the ripping, high, US gal",
+        lambda: f"{fuel.tanks_per_hour * fuel.hours * fuel.tank_high_l / gal:.1f}")
+    for phase in bm.HARVEST_PHASES:
+        add(f"rip.days_{phase}", f"days of {phase}", lambda p=phase: str(bm.phase_days(p)))
+    add("rip.days", "days of saw work in all", lambda: str(bm.harvest_days()))
+
+    # Linseed oil, from the linseed film's own module.
+    from two_v_demo import linseed_oil as lo
+
+    lf = lo.facts()
+    add("lin.area", "the flat-face planning envelope, sq ft", lambda: f"{lf['area_sqft']:,.0f}")
+    add("lin.stock_ft", "member stock the envelope is measured on, ft", lambda: f"{lf['stock_ft']:,.1f}")
+    add("lin.depth_in", "a radial face's depth, in", lambda: f"{lf['depth_in']:.1f}")
+    add("lin.base_gal", "oil for the declared coats, US gal", lambda: f"{lf['base_gal']:.2f}")
+    add("lin.allow_gal", "with the handling allowance, US gal", lambda: f"{lf['allowance_gal']:.2f}")
+    add("lin.label_gal", "the same at the label's best coverage, US gal", lambda: f"{lf['label_gal']:.2f}")
+    add("lin.labour_h", "active hand work for every coat, hours", lambda: f"{lf['labour_hours']:.1f}")
+    for key in ("coats", "faces", "coverage", "handling", "minutes", "danish_wait",
+                "danish_cure", "wax_wait", "wax_cure", "label_coverage"):
+        add(f"lin.{key}", f"linseed constant {key}", lambda k=key: f"{lo.C[k]:g}")
+    add("lin.constants_table", "the linseed constants, with their kind",
+        lambda: _table_text([(n, f"{v:g} {u}", k) for n, v, u, k, _w in lo.CONSTANTS], (16, 26, 12)))
+    add("lin.source", "the video the linseed film adapts",
+        lambda: f"{lo.SOURCE['title']}, by {lo.SOURCE['creator']}")
+    add("work.log_butt", "the worked tree's butt diameter, inches", lambda: f"{wf.LOG.butt_diameter_in:.0f}")
+    add("work.log_top", "the worked tree's top diameter, inches", lambda: f"{wf.LOG.top_diameter_in:.1f}")
+    add("work.log_ft", "the worked tree's usable length, feet", lambda: f"{wf.LOG.usable_length_ft:.0f}")
 
 
 RING_ERROR_IN = 0.125
@@ -785,7 +850,15 @@ def resolve(text: str, strict: bool = True) -> str:
                     f"no token {name!r}. The {name.split('.')[0]!r} "
                     f"namespace has {sorted(near)[:8]}")
             return match.group(0)
-        return found.value()
+        value = found.value()
+        if "\n" in value:
+            # A multi-line value in an indented block (a code block, a
+            # worked table) keeps the block's indentation on every line.
+            line_start = text.rfind("\n", 0, match.start()) + 1
+            prefix = text[line_start:match.start()]
+            if prefix and not prefix.strip():
+                value = value.replace("\n", "\n" + prefix)
+        return value
 
     return TOKEN.sub(swap, text)
 

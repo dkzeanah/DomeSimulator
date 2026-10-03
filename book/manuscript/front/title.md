@@ -9,7 +9,9 @@ updated: 2026-09-17
 
 ## Title page
 
-The 40 Hour Cabin: 3 Trees
+Geodesic Dome Wedge Method
+
+*The 40 Hour Cabin: 3 Trees*
 
 *One small chainsaw, three trees, forty hours or less: a geodesic wedge
 cabin, winched up between the trees, skinned and floored in any order.*

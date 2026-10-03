@@ -81,7 +81,8 @@ def apply(moves: dict[str, tuple[int, int]]) -> list[str]:
     def move(match: re.Match) -> str:
         n = int(match.group(2))
         return f"{match.group(1)}{old_to_new.get(n, n)}"
-    plates_text = re.sub(r'(Plate\("[^"]+", "[^"]+", "[^"]+", )(\d+)\b', move, plates_text)
+    # Any spacing after the commas: an entry written "order",29 must move too.
+    plates_text = re.sub(r'(Plate\("[^"]+",\s*"[^"]+",\s*"[^"]+",\s*)(\d+)\b', move, plates_text)
     PLATES.write_text(plates_text, encoding="utf-8")
     return done
 

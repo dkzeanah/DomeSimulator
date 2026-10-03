@@ -1,4 +1,4 @@
-"""Every table and chart in *The 40 Hour Cabin*, generated from the book's arithmetic.
+"""Every table and chart in *Geodesic Dome Wedge Method*, generated from the book's arithmetic.
 
 Not one number here is typed.  Each function reaches into :mod:`book_math`,
 :mod:`wedge_geometry`, :mod:`dome_costing` or the solved dome itself, and

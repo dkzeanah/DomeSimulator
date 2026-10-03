@@ -84,6 +84,7 @@ not the band you stand in, and a bigger dome only pushes that band outward.
 ## Audit the boards you have
 
 <!-- concept: 2v/your_dome -->
+<!-- concept: build/audit -->
 
 A chord factor turns a radius into a length. It also runs backwards: a length
 you have already cut implies the radius it was cut for. That makes it a way to

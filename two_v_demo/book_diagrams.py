@@ -1,4 +1,4 @@
-"""The explanatory line drawings in *The 40 Hour Cabin*.
+"""The explanatory line drawings in *Geodesic Dome Wedge Method*.
 
 A diagram in this book is not decoration and it is not a photograph of an
 idea.  Where the thing being drawn exists as geometry in this repository, the

@@ -1,4 +1,4 @@
-"""*The 40 Hour Cabin: 3 Trees* -- the whole book, as a structure.
+"""*Geodesic Dome Wedge Method* -- *The 40 Hour Cabin: 3 Trees* -- the whole book, as a structure.
 
 This module is the outline: every part, every chapter, every page, in order,
 with what each one is for, roughly how long it runs, which figures sit on it,
@@ -48,10 +48,16 @@ WORDS_PER_PAGE = 340
 """Words on a set page at this trim and type size. Used only to turn word
 targets into a believable page count; nothing depends on it being exact."""
 
-TITLE = "The 40 Hour Cabin: 3 Trees"
-SUBTITLE = ("One small chainsaw, three trees, forty hours or less: "
-            "a geodesic wedge cabin, winched up between the trees, "
-            "skinned and floored in any order")
+TITLE = "Geodesic Dome Wedge Method"
+SUBTITLE = "The 40 Hour Cabin: 3 Trees"
+TAGLINE = ("One small chainsaw, three trees, forty hours or less: "
+           "a geodesic wedge cabin, winched up between the trees, "
+           "skinned and floored in any order")
+"""The line under the subtitle, on the title page and nowhere else.
+
+Kept out of :data:`SUBTITLE` because the subtitle is the book's short
+name -- it appears in the HTML title, the launcher and the web listing --
+and a blurb that long belongs on a page a reader is already reading."""
 
 
 # ----------------------------------------------------------------------
@@ -265,6 +271,10 @@ class Book:
     front: tuple[Matter, ...]
     parts: tuple[Part, ...]
     back: tuple[Matter, ...]
+    tagline: str = ""
+    """One sentence about the book, for the reader's banner and the title
+    page. Kept out of :attr:`subtitle`, which is the book's short name and
+    travels into the HTML title, the launcher and the web listing."""
 
     @property
     def chapters(self) -> tuple[Chapter, ...]:
@@ -350,6 +360,18 @@ MAST = "mast_floor"             # the mast, the floor, and the floating rig
 # ======================================================================
 
 FRONT: tuple[Matter, ...] = (
+    Matter("cover", "Cover", (
+        _p("plate", "The cover",
+           "The book's cover, the author's own artwork, full page and "
+           "uncaptioned: the frame on the pad at sunset, the split rounds in "
+           "the foreground, and the title as it was designed.", words=30,
+           beats=(
+               "Supplied artwork, not a rendered figure -- the one picture in "
+               "this book that is not computed.",
+               "The exporter prints it as a cover page rather than as an "
+               "illustration, and the manuscript points at the file directly.",
+           )),
+    )),
     Matter("title", "Title pages", (
         _p("plate", "Half-title", "The title alone, on a field of bark.",
            figures=(_f("front-bark", "", PHOTO, full_page=True,
@@ -3512,7 +3534,7 @@ BACK: tuple[Matter, ...] = (
 
 
 BOOK = Book(title=TITLE, subtitle=SUBTITLE, front=FRONT, parts=PARTS,
-            back=BACK)
+            back=BACK, tagline=TAGLINE)
 
 
 # ----------------------------------------------------------------------
@@ -3827,7 +3849,7 @@ def validate_everything() -> None:
     book_figures.validate_figures()
     book_manuscript.validate_manuscript()
     book_export.validate_export()
-    print("--- The 40 Hour Cabin: every check passed")
+    print("--- Geodesic Dome Wedge Method: every check passed")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 """Public launcher for Book Studio.
 
-The desk where *The 40 Hour Cabin: 3 Trees* gets written: the outline, the
+The desk where *Geodesic Dome Wedge Method* -- *The 40 Hour Cabin: 3 Trees* -- gets written: the outline, the
 editor, the live numbers, the figures and the export, in one window.
 
 Launch and configure it from the consolidated launcher (``py -3.12

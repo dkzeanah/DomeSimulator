@@ -40,6 +40,18 @@ bracket, it is a way of housing people. The ugly one stood. So the rest of
 this book is about how to do on purpose, and well, what that frame did by
 accident.
 
+## Who is behind this
+
+<!-- concept: hype/whoami -->
+
+For anyone wondering who is behind this unreasonable quantity of triangles: a
+Navy veteran, a programmer and an avionics bench technician, now using the G.I.
+Bill to study toward aerospace engineering. The longer version is at the back of
+the book. The short version is that a dome, to me, is a home written the way I
+would write software -- modular, reusable, built from parts with clean
+interfaces so one can change without disturbing the rest -- and this book is
+that idea in timber.
+
 ## Build one. Then build the next one faster.
 
 <!-- concept: master/ms_close -->
