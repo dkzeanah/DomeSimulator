@@ -181,6 +181,23 @@ def _overrides_by_title() -> dict[tuple[str, str], str]:
         ("cabin_wedge_explained", "No hubs"): "panel",
         ("build", "Build the triangles flat, first"): "panel",
         ("build", "Choosing your radius"): "geometry",
+        # From Scratch's second half is how the picture is drawn, not the dome.
+        **{("scratch", t): "tools" for t in (
+            "A line with no thickness", "Building one strut", "Which way does a triangle face?",
+            "The normal, the area and the winding", "The model becomes a list of numbers",
+            "Where things are: world space", "The projection matrix",
+            "The divide that makes distance work", "Why depth precision runs out",
+            "Throwing away half of everything", "How bright is this surface?",
+            "The lighting equation this film runs", "Glass, and why order comes back",
+            "And then it does it again", "The whole chain, once more")},
+        ("hype", "Who is behind this"): "right",
+        ("hype", "Three phases"): "network",
+        ("byod", "How much shell can carry solar?"): "skin",
+        ("seed_pitch", "The shell is a boat hull"): "skin",
+        ("seed_pitch", "The core moves to the next dome"): "stemcell",
+        ("build", "The wall as the filter"): "skin",
+        ("master", "Every saw setting, measured off the model"): "panel",
+        ("why", "Forty frames, not one lattice"): "panel",
     }
 
 

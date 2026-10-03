@@ -23,8 +23,8 @@ spreadsheet. It was cut, and the process of cutting it produced a number of
 surprises, most of which are in here. Several chapters exist specifically to
 report a figure that does not flatter the method — Chapter {{ch.recovery}} revises the
 recovery claim downward, Chapter {{ch.money}} halves an hourly rate this project
-publicised, and Chapter {{ch.corrections}} lists everything else that has had to be taken
-back. A book about a new building method that contains no corrections is a
+publicised, and the errata pages list everything else that has had to be
+taken back. A book about a new building method that contains no corrections is a
 brochure.
 
 ## It is three books at once
@@ -89,7 +89,8 @@ It is not a code compliance document. Your jurisdiction has opinions about
 round buildings and they are not in here.
 
 And it is not a promise that you will do this in a fortnight. I did, on the
-second attempt, having already made every mistake in Chapter {{ch.what_broke}}.
+second attempt, having already made every mistake the errata pages
+record.
 The forty hours is the honest claim — the frame, split wedges to standing —
 and the calendar around it is yours: a fortnight of part days, or a long
 weekend of full ones, with the skin, the floor and the ground added later,

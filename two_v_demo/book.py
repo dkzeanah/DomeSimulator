@@ -2076,59 +2076,6 @@ PART_VIII = Part(
             ),
             derives=("book_math.fortnight",),
         ),
-        Chapter(
-            47, "What Broke",
-            "The failures, listed",
-            "story",
-            (
-                _p("opener", "What Broke", "The chapter every build book "
-                   "should have and most do not.", words=350),
-                _p("text", "The stick that split along the pith",
-                   "What happened, why, and how to spot it first.",
-                   words=700),
-                _p("text", "The seam that would not close",
-                   "The fold-angle problem, encountered in the flesh.",
-                   words=750),
-                _p("text", "The panel I built backwards",
-                   "Handedness, and the marking scheme that came from this.",
-                   words=650),
-                _p("text", "What I would call a near miss",
-                   "The safety incident, reported rather than tidied away.",
-                   words=600),
-            ),
-        
-            ref="what_broke",
-        ),
-        Chapter(
-            48, "Corrections",
-            "Everything this project has published and had to fix",
-            "reference",
-            (
-                _p("opener", "Corrections",
-                   "State the policy: a correction is a chapter, never a "
-                   "silent re-cut.", words=450),
-                _p("errata", "The mitre claim",
-                   "Named in full, with the film that corrected it.",
-                   words=500),
-                _p("errata", "The recovery percentage",
-                   "88 for the brief's tree, {{tree.recovery_pct}} for this "
-                   "one. Neither is wrong; they are different trees.",
-                   words=450),
-                _p("errata", "The hourly rate",
-                   "Cross-referenced to chapter 42.", words=350),
-                _p("errata", "Seams against edges",
-                   "{{frame.edges}} edges, {{frame.seams}} seams. An early "
-                   "draft of this book used the wrong one.", words=400),
-                _p("text", "How to report one",
-                   "Invite the reader to find the next error, and say where "
-                   "to send it.", words=400),
-            ),
-            derives=("book_math.frame_counts", "book_math.panel_seam_count",
-                     "book_math.BOOK_TREE.recovery"),
-            corrects="Every published claim this project has had to revise.",
-        
-            ref="corrections",
-        ),
     ),
 )
 

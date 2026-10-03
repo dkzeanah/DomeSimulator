@@ -28,6 +28,10 @@ That is the whole definition. No rectangles, no seashells, no Parthenon.
 
 ## What it does here
 
+<!-- concept: 2v/phi -->
+<!-- concept: build/phi -->
+<!-- concept: scratch/coordinates -->
+
 Write down three numbers: 0, 1 and φ.
 
 Now make points by putting them in every order with every combination of
@@ -88,6 +92,8 @@ list. When you crosscut a member at {{cut.a_chord}} inches, you are cutting
 the radius divided by the golden ratio.
 
 ## And the place it is not
+
+<!-- concept: 2v/welcome -->
 
 Here is the part that surprises everybody, including me.
 

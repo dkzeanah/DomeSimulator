@@ -122,23 +122,29 @@ directions:
 
 The book is assembled as three parts:
 
-* **Part 1 — How to Build One** (Ch. 1–52): the story, the method, the
-  fortnight and the bench, absorbed unchanged from the original 52-chapter
-  book, its old parts kept as sections.
-* **Part 2 — Why It Scales** (Ch. 53–68): the flat parts list, the nine
-  processes, the hour at the log, the fuel ledger, the envelope, the pad and
-  its economics, the iris, the network, and the closing audit of what would
-  have to be true.
-* **Part 3 — Variations and Future Systems** (Ch. 69–71): the manufactured
-  version of the method — the shower-cap soft shell and its $50 blanket
-  quilts, the mast and the floor, and the floating dome. The figures are
-  rendered from the solved model (`hat-stack`, `mast-floor`,
-  `floating-dome`), and the numbers read live from `soft_shell.py` and
-  `seed_model.py`, the same modules the stem-cell campaign quotes.
+* **Part 1 — How to Build One** (Ch. 1–50): the story, the method, the
+  forty-hour clock and the bench, absorbed from the original 52-chapter
+  book, its old parts kept as sections. Two chapters that once sat here —
+  *What Broke* and *Corrections* — were removed by the author: failures and
+  errata now live inside the chapters they belong to, not in chapters of
+  their own.
+* **Part 2 — Why It Scales** (Ch. 51–68): the flat parts list, the nine
+  processes, the hour at the log, the value ladder and the quilt network, the
+  fuel ledger, the envelope, the pad and its economics, the iris, the
+  network, and the closing audit of what would have to be true.
+* **Part 3 — Variations and Future Systems** (Ch. 69–82): the manufactured
+  version of the method — the shower-cap soft shell, the mast and the floor,
+  the floating dome, the seven ways to make a wedge, the breadth tables, the
+  zome and the hex, the stem cell and its core, the boat hull, and the seam
+  turned into a climate machine. The figures are rendered from the solved
+  model (`hat-stack`, `mast-floor`, `floating-dome`), and the numbers read
+  live from `soft_shell.py` and `seed_model.py`, the same modules the
+  stem-cell campaign quotes.
 
-Parts 2 and 3 are drafted; Part 1's prose is still mostly scaffolds. A
-fourth part, *Who This Is For* (the biography), is parked by request and
-drops in at the front when it is written; nothing depends on it.
+All three parts are drafted. The desk's `progress` action shows what is
+written and what is still only a scaffold. A fourth part, *Who This Is For*
+(the biography), is parked by request and drops in at the front when it is
+written; nothing depends on it.
 
 ## Where the numbers come from
 
@@ -213,20 +219,24 @@ what order — not for numbers. A diagram cannot carry a token, and a figure
 that quotes a number belongs in `book_plots.py` where the arithmetic can
 be checked.
 
-## Corrections are chapters
+## Corrections live on the page
 
 Following the repository's practice, a published claim that turns out wrong
-gets a chapter that names it, not a silent edit:
+gets an errata page inside the chapter it belongs to, naming it — never a
+silent edit:
 
-* **Ch. 12** — the 88% recovery figure was computed for a 15-inch butt; this
+* **Ch. 13** — the 88% recovery figure was computed for a 15-inch butt; this
   book's smaller tree gives a lower one. Both are printed, with the reason.
   (This file is documentation, not manuscript, so it does not carry live
   tokens — the chapter itself does.)
-* **Ch. 14** — "no mitres anywhere" was wrong. The butt cut is a compound
+* **Ch. 15** — "no mitres anywhere" was wrong. The butt cut is a compound
   angle. It is still made once, on one end, off the jig.
-* **Ch. 42** — the $50/hour estimate. Computed from the actual section it is
+* **Ch. 45** — the $50/hour estimate. Computed from the actual section it is
   $20.43 against nominal 2x4s, $31.14 against dressed ones.
-* **Ch. 48** — all of the above in one place, plus how to report the next one.
+
+There is deliberately no separate correction chapter: the book has no
+chapter called *What Broke* and no chapter called *Corrections*. Failures and
+errata sit where they happened, in the chapter they belong to.
 
 Chapter 7, *Not a Worse Two-by-Four*, is the same discipline applied to the
 central claim: a wedge from an 8-inch log holds 20% more wood than a dressed

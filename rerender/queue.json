@@ -151,10 +151,10 @@
    }
   },
   "series": {
-   "status": "todo",
+   "status": "rendering",
    "priority": "normal",
-   "owner": "",
-   "updated": "2026-10-02T18:27:05-05:00",
+   "owner": "rerender-runner",
+   "updated": "2026-10-02T23:25:32-05:00",
    "outputs": [],
    "log": [
     {
@@ -236,6 +236,16 @@
      "at": "2026-10-02T18:27:05-05:00",
      "by": "rerender-runner",
      "text": "-> todo: back in the queue after a failed render"
+    },
+    {
+     "at": "2026-10-02T23:25:32-05:00",
+     "by": "rerender-runner",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-10-02T23:25:32-05:00",
+     "by": "rerender-runner",
+     "text": "-> rendering: started by the runner"
     }
    ],
    "originals": {

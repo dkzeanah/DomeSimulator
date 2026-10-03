@@ -218,8 +218,9 @@ which is the
 fortnight's actual deliverable and no more. The dome will move as
 its green wood dries, the keys will settle, and the frame the
 builder checks on day thirty is not quite the frame of day fourteen.
-Chapter {{ch.what_broke}} is the record of that settling, kept the
-way this book keeps everything: named, measured, and left in.
+That settling is a real event in the build's first year, and this book's
+habit is to name it, measure it where it can be measured, and leave it in
+the frame rather than tune it out.
 
 So the fortnight ends the way it began — with an honest sentence.
 {{dome.trees}} trees, one saw, fourteen days, {{hr.with_error}} hands-on

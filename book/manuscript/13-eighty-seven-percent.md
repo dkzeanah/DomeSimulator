@@ -168,8 +168,8 @@ smaller fraction of a smaller pie.
 
 Neither number is wrong, and neither was ever a lie. They are two
 recoveries for two different trees, and the earlier films named their tree while
-this book named a different one. The book's discipline — stated in
-Chapter {{ch.corrections}} and kept there — is that a correction names
+this book named a different one. The book's discipline — stated on this page, and kept on every errata
+page like it — is that a correction names
 the error, prints both numbers, and leaves the arithmetic visible. That
 is what this page is: {{pine.kerf_only_pct}} for the pine the films
 priced, {{tree.recovery_pct}} for the tree this book builds, and the

@@ -26,6 +26,9 @@ available to it.
 
 ## That is the entire structural argument
 
+<!-- concept: 2v/triangles -->
+<!-- concept: build/why_triangle -->
+
 A square frame needs a rigid corner, because the corner is what stops it
 folding. Rigid corners are welds, gussets, plates, moment connections — and
 they are where every framed building spends its engineering.
@@ -49,6 +52,9 @@ The shape is doing the work. That is the sentence this whole book keeps
 returning to.
 
 ## And why an icosahedron
+
+<!-- concept: 2v/platonic -->
+<!-- concept: build/parent -->
 
 ![The solid everything starts from.](plate-icosahedron.png)
 

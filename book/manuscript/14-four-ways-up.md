@@ -53,32 +53,32 @@ pair beside a seam pointing apart. Point *dome out* turns every wedge
 backward, bark to the room, point at the sky. Point *panel out* turns
 the pair toward each other across the seam. Four ways up, same stick.
 
-What changes between them is real: which face the rain lands on, which
-face the next member's butt lands on, whether the seam's key bears on
-flat sawn faces or on curved bark, and whether the outside of the
-building is smooth or ridged. The next four sections take them one at a
-time; the plate shows all four side by side.
+What changes between them is real, and it is measurable: the two sawn
+faces open by a different angle, the key has to be a different shape,
+and the key's own base moves from {{key.base_in}} inches across to
+{{key.base_panel_in_in}} in the widest arrangement. The next four
+sections take them one at a time; the plate shows all four.
 
-![The same pair of sticks, four ways up.](../../deliverables/book/figures/orientations-four.png)
+![The same stick, four ways up.](../../deliverables/book/figures/orientations-four.png)
 
 ## All four, side by side
 
-The plate is the whole chapter in one look: the same pair of sticks
-beside a seam, drawn four times, the only difference being which way
-the wedges point. Study the contact faces, because the contact faces
-are the decision.
+The plate is the whole chapter in one look, and it is not a sketch: each
+pane is a seam **cut across, through the solver's own meshes**, so what
+you are looking at is the joint, not an illustration of it. Two members,
+one from each panel, and the key in gold between them. In every pane the
+weather is up.
 
-In the first drawing the two flat sawn faces lie against the seam's
-key — a flat bearing on a flat bearing, the key doing exactly the job
-it was cut for. In the second the points nearly meet at the panel's
-middle, and the seam bears on the wider, angled side of each stick. In
-the third the bark faces show to the outside, and the building's skin
-becomes a field of rounded ridges. In the fourth the bark faces turn
-inward, and the joint bears on a round surface — the one arrangement
-the key was never designed for.
+Read the panes for the two things that change. First, *which face of the
+stick the key bears on*: in the first pane the key sits between the two
+narrow sawn faces, a slim spline; in the second and fourth it bears on
+the broad sides and becomes a wide shim; in the third the wood is turned
+around, so the key is fitted from the inside. Second, *how much key*:
+the width printed under each pane is the base of the key as the solver
+slices it, and it is not the same number twice.
 
-The four drawings are not four aesthetic choices. They are four
-load-path choices and four weather choices, and the table at the end of
+The four arrangements are not four aesthetic choices. They are four
+key-cutting choices and four weather choices, and the table at the end of
 the chapter prices them. First, each in its own words.
 
 ## Point dome in
@@ -87,10 +87,13 @@ The default. Every wedge points at the centre of the building, bark
 out, sawn faces lying along the seams. This is the orientation the rest
 of the book builds in, for three reasons that stack.
 
-**The key gets flat faces.** A seam's key wants two flat, parallel
-bearing surfaces to sit between. Point dome in puts the stick's two
-sawn faces there — the only faces the saw ever made flat — so the key
-bears on machined wood, not on bark, at every interior seam.
+**The key gets flat faces.** A seam's key sits between the two sticks'
+sawn faces — the only faces the saw ever made flat — so it bears on
+machined wood rather than on bark. At this orientation those two faces
+stand {{key.gap_deg}} degrees apart, the key is a narrow taper
+{{key.base_in}} inches across its base, and it bears
+{{key.contact_in}} inches along the seam. That is the joint every
+chapter before this one has been drawing.
 
 **Bark faces the weather.** The curved back of every wedge is the
 building's outside face: one continuous, shed-ready, bark-clad surface.
@@ -104,6 +107,14 @@ members, because the tree already did — the bark is the outside, the
 point is the inside, and a wrongly rotated stick announces itself the
 moment you try to lay the key against it.
 
+And one geometric detail that turns out to matter at the bench: the key
+is **outboard of the two points**. Cut a seam across and the members'
+points are the innermost thing in it, with the key sitting in the wedge
+of space between them and the meeting line of the two bark faces — so
+the key is reached, fitted and checked from *outside* the shell. That is
+the practical reason this orientation is the one the book builds in,
+and the next one down the page loses it.
+
 The cost of point dome in is the ridged interior: the room's wall is a
 field of points. Acceptable in a frame you will sheath; Chapter
 {{ch.round_room}} decides how to live with it.
@@ -114,21 +125,21 @@ Each stick aims its point into the middle of its own triangle, so the
 pair beside a seam point *apart* — away from each other, one into each
 neighbouring panel's centre.
 
-What it buys: the seam's two faces are now the wide angled faces of the
-pair, and the key sits in a deeper pocket with the panels' own middles
-behind it. The simulator's readings say the contact patch changes
-character — the bearing moves off the narrow sawn edges and onto the
-broad sides of the stick — which is a real gain for a seam asked to
-carry more than alignment.
+What it buys: the key moves off the narrow sawn edges and onto the
+broad sides of the pair, and it stops being a spline and becomes a
+broad shim. Cut the same seam across and the two faces now open
+{{key.gap_panel_in_deg}} degrees, with the key
+{{key.base_panel_in_in}} inches across its base — {{key.widest_ratio}}
+times the width of the default's key. For a seam asked to carry more
+than alignment, that is real contact area rather than a line of it, and
+the simulator keeps the orientation as a first-class option for exactly
+that.
 
 What it costs: the bark faces lean away from the weather and into the
 seam's shadow, so the outside surface is no longer a clean field of
-bark; and the self-labelling gets subtler, because "point toward the
-middle of your panel" is an instruction you must remember, not one the
-stick shouts. Builders who want the seam stiffer than the default
-choose this one, and the book's simulator keeps it as a first-class
-option rather than a footnote, because the difference it makes is
-measurable, not cosmetic.
+bark; the wide key is more timber per seam than the default; and the
+self-labelling gets subtler, because "point toward the middle of your
+panel" is an instruction you must remember, not one the stick shouts.
 
 ## Point dome out
 
@@ -142,11 +153,18 @@ the valleys between ridges instead of on the crests — a configuration
 some roof builders prefer on principle, because the joint lives where
 the water is already heading.
 
-What it costs is everything the default bought. The key loses its flat
-faces — it now bears against the angled backs of two reversed wedges,
-the one arrangement the key was never designed for, and the simulator's
-readings say so plainly. And the self-labelling inverts: pith out, bark
-in, which reads wrong to every instinct a woodworker has.
+What it costs is the thing the previous section praised most. The key
+still sits between the two sawn faces — the geometry does not change
+what the wood is — but the *meeting line* moves to the other side: the
+bark faces now converge on the inside of the shell, the key's base is
+{{key.base_dome_out_in}} inches across (against {{key.base_in}} in the
+default) with the faces {{key.gap_dome_out_deg}} degrees apart, and the
+key now lies *inboard* of the two points. Fitted from the room side, not
+from the weather side. Everything about the joint still works; the
+person fitting it is now indoors, on a ladder, in a small round room,
+which is a worse place to be laying a key than the outside of a roof.
+And the self-labelling inverts: pith out, bark in, which reads wrong to
+every instinct a woodworker has.
 
 Point dome out is the orientation to remember exists and not choose —
 unless the building's skin is a ridged shingle system designed for it,
@@ -159,13 +177,17 @@ other, across the seam* — each stick's point reaching over the joint
 toward its neighbour's back, bark faces turning in toward the panel's
 middles.
 
-What it buys: the seam becomes a pinch between two points, and the
-room side of every panel is a field of the flat sawn faces — the
-smoothest interior the four orientations offer. What it costs: the
-joint's bearing is now between two curved backs on the outside, the
-roundest and weakest contact the geometry allows, and the weather face
-of the building is partly the sawn face — the face the finish chapters
-warn you never to leave exposed. Chapter {{ch.other_species_other_sections}}
+What it buys: the room side of every panel is a field of the flat sawn
+faces — the smoothest interior the four orientations offer — and the
+key is broad, like the panel-in orientation:
+{{key.base_panel_out_in}} inches across its base with the faces
+{{key.gap_panel_out_deg}} degrees apart. What it costs: the pair's
+points are toward each other across the seam, so the weather face of the
+building is partly sawn face — the face the finish chapters warn you
+never to leave exposed — and the two sticks' broad faces, not their
+edges, are what the key bears against, which is more timber per seam
+than any other orientation. Chapter
+{{ch.other_species_other_sections}}
 returns to this when it discusses char and oil, because the one
 orientation that puts sawn face outdoors is the one this book does not
 build.

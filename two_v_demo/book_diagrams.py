@@ -377,59 +377,104 @@ def diagram_recovery_compare(figure: Figure):
     return fig
 
 
+def seam_sections(orientation: str = "point_dome_in",
+                  seam_join_mode: str = "raw_trapezoid",
+                  seam_id: str = "SEAM_A_016") -> dict:
+    """One seam's true cross-section, cut out of the solver's own meshes.
+
+    This is the same cut the wedge book's ``graphics`` module makes: a plane
+    perpendicular to the seam's tangent, through the solved member and key
+    meshes, with the section framed so that the weather is up. The book draws
+    the joint from *this* rather than from a sketch, because the orientation
+    of a wedge against the key is exactly the kind of thing a sketch gets
+    wrong -- the key's taper, which faces bound it, and where the members'
+    points sit all change with the orientation.
+    """
+    from wedge_book import graphics
+
+    return graphics.seam_section_geometry(seam_id, orientation=orientation,
+                                          seam_join_mode=seam_join_mode)
+
+
+def _draw_section(axes, facts: dict, width: float = 1.0) -> None:
+    """Fill one seam section: two members and the key between them."""
+    from matplotlib.patches import Polygon
+
+    for loop in facts["members"]:
+        axes.add_patch(Polygon(loop, closed=True, facecolor=STYLE.wood,
+                               edgecolor=STYLE.bark, linewidth=0.8,
+                               zorder=2))
+    for loop in facts["key"]:
+        axes.add_patch(Polygon(loop, closed=True, facecolor=STYLE.key,
+                               edgecolor=STYLE.wood_dark, linewidth=0.9,
+                               zorder=4))
+    everything = [point for loop in facts["members"] + facts["key"]
+                  for point in loop]
+    if not everything:
+        return
+    xs = [point[0] for point in everything]
+    ys = [point[1] for point in everything]
+    centre_x = (min(xs) + max(xs)) * 0.5
+    centre_y = (min(ys) + max(ys)) * 0.5
+    # A square window about the section's own centre, so the equal aspect is
+    # honest and the narrower axis does not get stretched to fill the pane.
+    half = max(max(xs) - min(xs), max(ys) - min(ys)) * 0.62
+    axes.set_xlim(centre_x - half, centre_x + half)
+    axes.set_ylim(centre_y - half, centre_y + half)
+    axes.set_aspect("equal", adjustable="box")
+    axes.set_axis_off()
+
+
 def diagram_orientation_quad(figure: Figure):
-    """The same pair of sticks at a seam, in all four orientations."""
+    """The same seam in all four orientations, cut from the solver's meshes."""
     from . import raw_wedge_bridge as bridge
 
-    plan = bm.BOOK_TREE
-    diameter = plan.mid_diameter_in
-    radius = diameter * 0.5
     names = bridge.orientations()
-    sim = bridge.simulator()
+    readings = {
+        "point_dome_in": "points inward, bark to the weather",
+        "point_panel_in": "points apart, into each panel's middle",
+        "point_dome_out": "points outward, at the weather",
+        "point_panel_out": "points at each other, across the seam",
+    }
+    sections = {name: seam_sections(name) for name in names}
 
-    height = PAGE_H_IN if figure.full_page else HALF_H_IN + 1.4
-    fig, axes = canvas(
-        PAGE_W_IN, height, "The same stick, four ways up",
-        "Each pane is one seam seen end-on: two members, one from each "
-        "panel, with the seam between them in gold. Only the rotation of "
-        "the members about their own long axes differs -- the sticks "
-        "themselves are identical. The reading under each pane is the "
-        "simulator's own, so the book and the tool cannot describe the same "
-        "rotation differently.")
+    fig = new_figure(PAGE_W_IN, PAGE_H_IN)
+    fig.text(0.02, 0.975, "The same stick, four ways up",
+             fontsize=10.5, weight="bold", va="top", color=STYLE.ink)
+    fig.text(0.02, 0.945,
+             _wrap("Each pane is one seam cut across, out of the solver's "
+                   "own meshes: two members, one from each panel, and the "
+                   "key in gold between them. The weather is up in every "
+                   "pane. Rotating a member about its own axis does not "
+                   "change the 45-degree sector -- it changes which faces "
+                   "meet the key, and so what shape the key has to be.",
+                   92),
+             fontsize=7.0, va="top", color=STYLE.muted, style="italic")
 
-    # One pane per orientation, stacked one above another rather than in a
-    # two-by-two grid: the reading under each pane is a sentence, and four
-    # sentences at grid width are too narrow to set.
-    pane_h = radius * 3.4
-    for index, name in enumerate(names):
-        cy = -index * pane_h
-        rotation = math.radians(sim.wedge_orientation_rotation_deg(name))
+    positions = ((0.03, 0.50), (0.52, 0.50), (0.03, 0.06), (0.52, 0.06))
+    for (x0, y0), name in zip(positions, names):
+        axes = fig.add_axes([x0, y0, 0.44, 0.40])
+        facts = sections[name]
+        _draw_section(axes, facts)
+        title = name.replace("_", " ").upper()
+        axes.set_title(f"{title}\n{readings[name]}", fontsize=7.4,
+                       weight="bold", color=STYLE.ink, pad=3.0)
+        axes.text(0.5, 1.005, "", transform=axes.transAxes)
+        axes.annotate(
+            f"key {facts['key_base_in']:.2f} in across its base  ·  "
+            f"sawn faces {facts['gap_deg']:.1f}° apart",
+            (0.5, -0.03), xycoords="axes fraction", ha="center", va="top",
+            fontsize=6.6, color=STYLE.muted)
 
-        for side in (-1, 1):
-            polygon = sector_polygon(diameter, plan.sectors, 0)
-            # Rotate the sector about its own axis, then place it either
-            # side of the seam, mirrored across it.
-            cos_r, sin_r = math.cos(rotation), math.sin(rotation)
-            xs = polygon[:, 0] * cos_r - polygon[:, 1] * sin_r
-            ys = polygon[:, 0] * sin_r + polygon[:, 1] * cos_r
-            xs = xs * side
-            axes.fill(xs + side * radius * 0.66, ys + cy,
-                      facecolor=STYLE.wood, edgecolor=STYLE.bark,
-                      linewidth=0.9, zorder=2)
-
-        axes.plot([0, 0], [cy - radius * 1.0, cy + radius * 1.0],
-                  color=STYLE.key, linewidth=2.2, zorder=4)
-        label(axes, radius * 2.6, cy + radius * 0.55,
-              name.replace("_", " "), size=9, weight="bold", ha="left")
-        label(axes, radius * 2.6, cy - radius * 0.05,
-              _wrap(bridge.seam_pair_reading(name), 40), size=6.8,
-              colour=STYLE.muted, va="top", ha="left")
-        if index:
-            axes.plot([-radius * 2.2, radius * 8.4],
-                      [cy + pane_h * 0.5, cy + pane_h * 0.5],
-                      color=STYLE.faint, linewidth=0.7, zorder=0)
-    axes.set_xlim(-radius * 2.4, radius * 8.6)
-    axes.set_ylim(-(len(names) - 1) * pane_h - radius * 1.8, radius * 1.8)
+    fig.text(0.02, 0.015,
+             _wrap("In the default frame the key is a narrow spline between "
+                   "the two sawn faces. Put the points into the panel "
+                   "middles and the same seam wants a key more than four "
+                   "times as wide across its base; turn the points outward "
+                   "and the key moves outside the members' meeting point. "
+                   "That is why the orientation is chosen before the first "
+                   "panel is cut and not after.", 96),
+             fontsize=7.0, va="bottom", color=STYLE.muted, style="italic")
     return fig
 
 
@@ -510,59 +555,52 @@ def _dashed_triangle(points):
 
 
 def diagram_seam_modes(figure: Figure):
-    """One seam, closed two ways."""
-    plan = bm.BOOK_TREE
-    radius = plan.mid_diameter_in * 0.5
-    gasket = bm.declared("gasket_thickness_in")
-    gaskets = wg.gasket_plan(bm.tree_first().radius_in, gasket)
+    """One seam, closed two ways: the solver's own two sections, side by side."""
+    raw = seam_sections(seam_join_mode="raw_trapezoid")
+    flat = seam_sections(seam_join_mode="shaved_flat")
 
-    fig, axes = canvas(
-        PAGE_W_IN, HALF_H_IN + 0.3, "One seam, closed two ways",
-        f"The fold angle across this dome runs from "
-        f"{gaskets.min_dihedral_deg:.2f} to {gaskets.max_dihedral_deg:.2f} "
-        "degrees. Left: leave both split faces exactly as sawn and let a "
-        "tapered key take up the difference -- no machining, but every key "
-        "is its own shape. Right: plane both faces parallel and one "
-        "rectangular key fits everywhere -- one extra pass per stick.")
+    fig = new_figure(PAGE_W_IN, HALF_H_IN + 0.9)
+    fig.text(0.02, 0.975, "One seam, closed two ways", fontsize=10.5,
+             weight="bold", va="top", color=STYLE.ink)
+    fig.text(0.02, 0.940,
+             _wrap("Both panes are the same seam -- cut across it through the "
+                   "solver's own meshes, weather up. Left: the split faces "
+                   "left exactly as sawn, so the key has to be a taper that "
+                   "fills the V between them. Right: a land planed flat on "
+                   "each face, which takes the points in and lets one "
+                   "parallel-sided key fit every seam in the dome. The two "
+                   "keys are the same job done two ways, and only one of them "
+                   "can be cut by the dozen.", 94),
+             fontsize=7.0, va="top", color=STYLE.muted, style="italic")
 
-    from matplotlib.patches import Polygon
+    for column, (title, facts, subtitle) in enumerate((
+            ("as sawn: a tapered key", raw,
+             f"the key's base is {raw['key_base_in']:.2f} in across, between "
+             f"the two points"),
+            ("shaved flat: one key", flat,
+             f"the flat key is {_key_span(flat):.2f} in across, with a land "
+             f"planed on each face"))):
+        axes = fig.add_axes([0.02 + column * 0.50, 0.10, 0.46, 0.66])
+        _draw_section(axes, facts)
+        axes.set_title(title, fontsize=8.4, weight="bold", color=STYLE.ink,
+                       pad=4.0)
+        axes.annotate(_wrap(subtitle, 54), (0.5, -0.02),
+                      xycoords="axes fraction", ha="center", va="top",
+                      fontsize=6.8, color=STYLE.muted)
+    fig.text(0.5, 0.965, "outside — the weather", fontsize=7.0,
+             ha="center", va="top", color=STYLE.muted)
+    fig.text(0.5, 0.045, "inside", fontsize=7.0, ha="center", va="bottom",
+             color=STYLE.muted)
+    return fig
 
-    for column, (name, tapered) in enumerate((("raw trapezoid", True),
-                                              ("shaved flat", False))):
-        cx = column * plan.mid_diameter_in * 1.7
-        fold = math.radians(
-            (gaskets.min_dihedral_deg + gaskets.max_dihedral_deg) * 0.5)
-        tilt = (math.pi - fold) * 0.5 if tapered else 0.0
 
-        for side in (-1, 1):
-            polygon = sector_polygon(plan.mid_diameter_in, plan.sectors, 0)
-            angle = side * tilt
-            cos_r, sin_r = math.cos(angle), math.sin(angle)
-            xs = (polygon[:, 0] * cos_r - polygon[:, 1] * sin_r) * side
-            ys = polygon[:, 0] * sin_r + polygon[:, 1] * cos_r
-            axes.fill(xs + cx + side * (gasket * 0.5 + radius * 0.05), ys,
-                      facecolor=STYLE.wood, edgecolor=STYLE.bark,
-                      linewidth=0.8, zorder=2)
-
-        half = gasket * 0.5
-        top = radius * 0.55
-        if tapered:
-            key = [(-half * 0.35, top), (half * 0.35, top),
-                   (half * 1.5, -top), (-half * 1.5, -top)]
-        else:
-            key = [(-half, top), (half, top), (half, -top), (-half, -top)]
-        axes.add_patch(Polygon(
-            [(x + cx, y) for x, y in key], closed=True,
-            facecolor=STYLE.key, edgecolor=STYLE.bark, linewidth=0.7,
-            zorder=4))
-        label(axes, cx, radius * 1.15, name, size=8.5, weight="bold")
-        label(axes, cx, -radius * 1.2,
-              "key is tapered, one per seam" if tapered
-              else "key is rectangular, one for all",
-              size=7, colour=STYLE.muted)
-    axes.set_xlim(-radius * 1.6,
-                  plan.mid_diameter_in * 1.7 + radius * 1.6)
-    axes.set_ylim(-radius * 1.7, radius * 1.5)
+def _key_span(facts: dict) -> float:
+    """The width of the key's own cut section, measured."""
+    loops = facts.get("key") or ()
+    if not loops:
+        return facts["key_base_in"]
+    xs = [point[0] for loop in loops for point in loop]
+    return max(xs) - min(xs)
     return fig
 
 

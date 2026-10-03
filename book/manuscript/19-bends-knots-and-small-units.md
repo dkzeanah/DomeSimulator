@@ -141,8 +141,8 @@ the frame pile.
 
 **Four: the pith pass.** A member that split along the pith — a crack
 running down its point — goes to blocking. It will keep splitting
-under load, and Chapter {{ch.what_broke}} records exactly what that
-looks like.
+under load, and a member with a crack in it has stopped being wood you
+can trust.
 
 The passes take an afternoon for the whole pile, and they are the
 entire quality system. No kiln, no grader, no certificate — four

@@ -127,9 +127,9 @@ engineered standard. Where a load figure matters — a floating dome hung
 from trees, a floor hung from a mast, a roof carrying snow — the book
 names the number as an engineer's job and leaves it there. Chapter
 {{ch.dome_costs}} repeats this in its accounting of the costs nobody puts
-in a dome book, and the corrections chapter (Chapter {{ch.corrections}})
-shows what happens when this project forgot its own rule: it printed a
-load-ish claim, was wrong, and said so in public.
+in a dome book, and when this project forgot its own rule -- printing a
+load-ish claim it could not stand behind -- it said so in public, on the
+page rather than in a footnote.
 
 The rule, once, plainly: **compute the geometry, check the code, and ask
 an engineer about the loads.** Everything this book computes is geometry.
@@ -151,8 +151,8 @@ a computation — and this book will not print one. It will tell you which
 direction to look (across the grain, at the butt, at the wet case), and
 it will tell you that the frame's own redundancy is the reason the method
 tolerates being built from timber nobody graded: {{frame.panels}} panels
-mean a member can be watched, and a member can be swapped, and Chapter
-{{ch.what_broke}} shows what watching one looks like in practice.
+mean a member can be watched, and a member can be swapped, which is how
+the frame was kept honest through its first year.
 
 The book gives you the geometry and the method. The engineer gives you the
 stamp. Neither one can do the other's job, and this book is built so that

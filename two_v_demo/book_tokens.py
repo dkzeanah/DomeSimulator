@@ -30,6 +30,7 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Callable
 
 from . import book_math as bm
@@ -72,6 +73,33 @@ def _clock():
     """
     from wedge_book import systems
     return systems.build_clock()
+
+
+@lru_cache(maxsize=16)
+def _section(orientation: str = "point_dome_in",
+             seam_join_mode: str = "raw_trapezoid"):
+    """One seam's true cross-section, cut out of the solver's own meshes.
+
+    Cached because cutting a section solves a dome: the orientation chapter
+    would otherwise solve four domes to print a dozen numbers.
+    """
+    from wedge_book import graphics
+    return graphics.seam_section_geometry(orientation=orientation,
+                                          seam_join_mode=seam_join_mode)
+
+
+def _key_width(facts) -> float:
+    """How wide the key actually is, measured off its own cut section.
+
+    ``spacer_base_width_in`` is the key's declared base and does not change
+    with the join mode; the width of the key's own slice does, which is the
+    number a builder cutting a flat key needs.
+    """
+    loops = facts.get("key") or ()
+    if not loops:
+        return facts["key_base_in"]
+    xs = [point[0] for loop in loops for point in loop]
+    return max(xs) - min(xs)
 
 
 def _flat_sizes():
@@ -387,6 +415,41 @@ def _build() -> tuple[Token, ...]:
               lambda: _n(plan.member_depth_in * 2.0, 1)),
         Token("force.sector_angle_deg", "angle of one sector of the bearing "
               "circle", lambda: _n(wg.SECTOR_ANGLE_DEG, 1)),
+
+        # -- the key, as the solver cuts it ------------------------------
+        Token("key.base_in", "the key's width across its base, at the default "
+              "orientation",
+              lambda: _n(_section()["key_base_in"], 2)),
+        Token("key.gap_deg", "angle between the two sawn faces at that seam",
+              lambda: _n(_section()["gap_deg"], 2)),
+        Token("key.fold_deg", "the seam's fold angle",
+              lambda: _n(_section()["fold_deg"], 2)),
+        Token("key.contact_in", "how deep the members bear along the seam",
+              lambda: _n(_section()["contact_in"], 1)),
+        Token("key.base_panel_in_in", "the same key with the points aimed "
+              "into the panel middles",
+              lambda: _n(_section("point_panel_in")["key_base_in"], 2)),
+        Token("key.gap_panel_in_deg", "the sawn faces' opening in that "
+              "orientation",
+              lambda: _n(_section("point_panel_in")["gap_deg"], 2)),
+        Token("key.base_dome_out_in", "the same key with the points turned "
+              "outward",
+              lambda: _n(_section("point_dome_out")["key_base_in"], 2)),
+        Token("key.gap_dome_out_deg", "the sawn faces' opening there",
+              lambda: _n(_section("point_dome_out")["gap_deg"], 2)),
+        Token("key.base_panel_out_in", "the same key with the points aimed "
+              "across the seam",
+              lambda: _n(_section("point_panel_out")["key_base_in"], 2)),
+        Token("key.gap_panel_out_deg", "the sawn faces' opening there",
+              lambda: _n(_section("point_panel_out")["gap_deg"], 2)),
+        Token("key.widest_ratio", "how many times wider the widest key is "
+              "than the default",
+              lambda: _n(_section("point_panel_in")["key_base_in"]
+                         / _section()["key_base_in"], 1)),
+        Token("key.flat_width_in", "the planed-flat key's own width, as the "
+              "solver draws that seam",
+              lambda: _n(_key_width(_section(seam_join_mode="shaved_flat")),
+                         2)),
 
         # -- the master cut list ----------------------------------------
         Token("cut.master_long_in", "the master cut list's long member",

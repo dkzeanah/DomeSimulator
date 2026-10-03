@@ -37,8 +37,8 @@ the measured {{hr.session_wedges}} wedges a session is
 {{hr.split_hours}} hours at the log; the same members erected at
 {{hr.minutes_per_member}} minutes each is {{hr.erect_hours}}
 straight hours of assembly; and the {{hr.error_pct}} per cent
-error allowance on the erection — a first build's tuition, paid
-on camera and in Chapter {{ch.what_broke}} — brings the assembly
+error allowance on the erection — a first build's tuition, paid on
+camera — brings the assembly
 to {{hr.with_error}}, with {{hr.spare}} hours spare inside the
 week. The splitting is the harvest; the forty hours is the
 *erection* — panels to standing, props to winch. The fortnight is

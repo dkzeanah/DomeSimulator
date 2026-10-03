@@ -346,6 +346,7 @@ def _table() -> dict[str, Token]:
         lambda: f"{bracket['usd_each']:,.2f}")
 
     _parts_list_tokens(add)
+    _geometry_tokens(add)
     _channel_tokens(add)
     _climate_tokens(add)
     _wood_tokens(add)
@@ -430,6 +431,77 @@ def _parts_list_tokens(add) -> None:
     add("flat.big_sqft", "the big dome's floor, sq ft", lambda: f"{area(big):,.0f}")
     add("flat.ratio", "how many times the floor the big one has",
         lambda: f"{area(big) / area(small):.0f}")
+
+
+RING_ERROR_IN = 0.125
+"""The strut error the ring-error argument is worked for: an eighth of an
+inch, the film's own example. Declared, not measured."""
+
+
+def _geometry_tokens(add) -> None:
+    """``geo``: subdivision and projection, the measurement audit, ring error,
+    and what changes when the same dome is solved for a thin or a fat log."""
+    import math
+
+    from two_v_demo import book_math, channel_facts as cf, scratch_facts as sf
+    from . import numbers
+
+    q = numbers.quantities()
+    R = q["radius_in"].value
+    phi = (1 + math.sqrt(5)) / 2
+    raw_r = math.sqrt(1 + phi * phi)
+    icosa = 2 / raw_r
+    mid = math.sqrt(1 - (icosa / 2) ** 2)
+    ring = 1 / (2 * math.sin(math.pi / 10))
+    fit = sf.FIT
+    thin, fat = 10.0, 15.0
+    t_thin, t_fat = cf.seam_types(thin), cf.seam_types(fat)
+    folds = sorted(t.fold_deg for t in t_thin)
+    wvb = book_math.wedge_versus_board(thin)
+
+    add("geo.raw_r", "the twelve raw points' distance from the centre", lambda: f"{raw_r:.6f}")
+    add("geo.icosa_chord", "the icosahedron's edge on a unit sphere", lambda: f"{icosa:.6f}")
+    add("geo.mid_r", "how far out an edge's midpoint sits, in radii", lambda: f"{mid:.6f}")
+    add("geo.sag", "how far short of the sphere the midpoint falls, in radii", lambda: f"{1 - mid:.6f}")
+    add("geo.sag_pct", "the same, as a percentage", lambda: f"{100 * (1 - mid):.1f}")
+    add("geo.sag_in", "the same on this book's dome, inches", lambda: f"{(1 - mid) * R:.1f}")
+    # The icosahedron's counts from its twenty faces: three edges a face, each
+    # shared by two; Euler's V - E + F = 2 then gives the corners. 2V halves
+    # every edge (one new corner each) and cuts every face into four.
+    faces = 20
+    edges = faces * 3 // 2
+    corners = edges - faces + 2
+    add("geo.parent_edges", "edges of the icosahedron", lambda: str(edges))
+    add("geo.parent_corners", "corners of the icosahedron", lambda: str(corners))
+    add("geo.parent_faces", "faces of the icosahedron", lambda: str(faces))
+    add("geo.sphere_corners", "corners of the whole 2V sphere", lambda: str(corners + edges))
+    add("geo.sphere_edges", "edges of the whole 2V sphere", lambda: str(edges * 2 + faces * 3))
+    add("geo.sphere_faces", "faces of the whole 2V sphere", lambda: str(faces * 4))
+    add("geo.ring_gain", "how much the base ring multiplies a strut error", lambda: f"{ring:.6f}")
+    add("geo.ring_err", "the strut error worked, inches", lambda: f"{RING_ERROR_IN:.3f}")
+    add("geo.ring_r_err", "what it does to the base radius, inches", lambda: f"{RING_ERROR_IN * ring:.3f}")
+    add("geo.ring_d_err", "and to the diameter, inches", lambda: f"{2 * RING_ERROR_IN * ring:.3f}")
+    add("geo.fit_long", "a measured long board, inches", lambda: f"{sf.MEASURED_LONG_IN:.1f}")
+    add("geo.fit_short", "a measured short board, inches", lambda: f"{sf.MEASURED_SHORT_IN:.1f}")
+    add("geo.fit_r_long", "the radius the long board implies", lambda: f"{fit.radius_from_long:.3f}")
+    add("geo.fit_r_short", "the radius the short board implies", lambda: f"{fit.radius_from_short:.3f}")
+    add("geo.fit_r", "the radius that misses both least", lambda: f"{fit.best_fit_radius:.3f}")
+    add("geo.fit_res_long", "how far the long board misses it, inches", lambda: f"{fit.long_residual:+.3f}")
+    add("geo.fit_res_short", "how far the short board misses it, inches", lambda: f"{fit.short_residual:+.3f}")
+    add("geo.fit_ratio", "the measured boards' ratio", lambda: f"{fit.measured_ratio:.4f}")
+    add("geo.true_ratio", "the geometry's ratio of the two lengths", lambda: f"{fit.theoretical_ratio:.4f}")
+    add("geo.thin", "the thin log solved, inches", lambda: f"{thin:.0f}")
+    add("geo.fat", "the fat log solved, inches", lambda: f"{fat:.0f}")
+    add("geo.fold_lo", "the smaller fold angle, at either log", lambda: f"{folds[0]:.3f}")
+    add("geo.fold_hi", "the larger fold angle, at either log", lambda: f"{folds[1]:.3f}")
+    add("geo.key_thin", "the key's base on the thin log, inches",
+        lambda: " to ".join(f"{t.opening_in:.2f}" for t in sorted(t_thin, key=lambda t: t.opening_in)))
+    add("geo.key_fat", "the key's base on the fat log, inches",
+        lambda: " to ".join(f"{t.opening_in:.2f}" for t in sorted(t_fat, key=lambda t: t.opening_in)))
+    add("geo.wedge_s", "a thin-log wedge's weakest section modulus, in3",
+        lambda: f"{min(wvb.wedge.strong_s_in3, wvb.wedge.weak_s_in3):.2f}")
+    add("geo.stud_s", "a two-by-four's section modulus, on edge, in3",
+        lambda: f"{wvb.board.strong_s_in3:.2f}")
 
 
 def _channel_tokens(add) -> None:

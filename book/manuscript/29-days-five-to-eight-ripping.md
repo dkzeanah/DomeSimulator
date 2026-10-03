@@ -103,8 +103,8 @@ off-centre split are nearly identical, and "nearly" is what the
 method budgets for. What matters is that every pass goes *through*
 the pith, so every sector keeps a point that is honest wood, not a
 rag of pith off to one side. A sector whose point misses the pith
-by an inch is a member with a soft, split-prone edge exactly where
-Chapter {{ch.what_broke}} records the failures beginning.
+by an inch is a member with a soft, split-prone edge exactly where a
+member most needs honest wood.
 
 On a section that is not round — the oval butt, the flat-sided
 trunk — the pith still rules. Aim at the centre of the rings, not

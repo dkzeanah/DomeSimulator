@@ -132,9 +132,8 @@ board. The brief's fifty overshot even that.
 
 The correction is the model for the chapter and the book:
 the claim, the error, the arithmetic that produces the smaller
-number, all on the page, and Chapter {{ch.corrections}} keeps
-the complete list of everything this project has had to take
-back. The money chapter's own verdict closes the circle: the
+number, all on the page, and the errata pages are where the rest of the
+list lives. The money chapter's own verdict closes the circle: the
 method's economics are strong enough to be measured properly,
 and measuring properly is the only version this book will
 print.

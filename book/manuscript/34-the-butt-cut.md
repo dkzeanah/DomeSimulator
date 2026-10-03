@@ -13,8 +13,8 @@ updated: 2026-09-17
 
 ## The Butt Cut
 
-Name it honestly at the top, the way the corrections chapter
-insists: the butt cut is a compound cut. A mitre and a bevel
+Name it honestly at the top, because this project got it wrong in public
+once: the butt cut is a compound cut. A mitre and a bevel
 together, on one end of every member, made once, off the jig, before
 anything is assembled. The claim this book makes is not "no mitres"
 — Chapter {{ch.pinwheel}} has the full correction of that claim. The
@@ -26,9 +26,9 @@ guess.
 This reference chapter is that cut: where its angle comes from,
 how few distinct setups the whole dome actually needs, and the
 procedure for making it with the allowance still attached. It is
-the shortest of the jig chapters and the one the corrections pages
-point at most, because it is where the book's honesty and the saw's
-geometry finally agree.
+the shortest of the jig chapters and the one the errata pages point at
+most, because it is where the book's honesty and the saw's geometry
+finally agree.
 
 ## The angle its neighbour presents
 

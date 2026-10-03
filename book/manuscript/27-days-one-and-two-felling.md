@@ -161,8 +161,8 @@ fortnight.
 
 ## What actually happened
 
-The story half, recorded the way the book's corrections are recorded —
-named, not tidied.
+The story half, recorded the way this book records everything that went
+wrong: named, not tidied.
 
 The first tree went exactly where it was aimed. The notch was clean,
 the hinge held, and the trunk landed inside a step of the planned

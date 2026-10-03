@@ -76,31 +76,38 @@ both.
 
 **The raw trapezoid.** Leave the split faces of the members exactly as
 the saw left them — each sits {{seam.half_sector_deg}} degrees off its
-member's centreline — and cut the key to a trapezoid that absorbs the
-difference. The key is tapered: wider where the fold is tight, narrower
-where it opens, one profile per fold angle. Two profiles, cut on a
-bench, repeated {{seam.count_a}} and {{seam.count_b}} times. The cost
-is a key that is not one part but two, and a stock pile sorted by
-profile. The gain is that the member is never touched by a plane, and
-every piece of the joint stays exactly what the saw made.
+member's centreline — and cut the key to fill the V they make. Cut the
+seam across and the two sawn faces stand {{key.gap_deg}} degrees apart,
+with the members' points as the innermost wood and the key lying in the
+space between them and the meeting line of the two bark faces: a taper
+whose base is {{key.base_in}} inches across, at the inside, and whose tip
+reaches the apex at the outside. It bears {{key.contact_in}} inches along
+the seam. The cost is a key that is not one part but two — one profile
+per fold angle — and a stock pile sorted by profile. The gain is that the
+member is never touched by a plane, and every piece of the joint stays
+exactly what the saw made. The figure below is that section, cut out of
+the solver's own meshes.
 
 **The shaved flat.** Plane a narrow land along each member's two sawn
-faces until they sit parallel to the seam, then one parallel key fits
-everywhere. The cost is planing — {{seam.shave_deep_in}} inches at the
-deepest, which is {{seam.shave_pct_of_depth}} per cent of the member's
-depth, over a land only as wide as the key's bearing — and the gain is
-a single key profile for the whole dome. Chapter {{ch.connector}}
-works the planing cost through completely, because the number is
-smaller than the instinct expects, and "smaller than expected" is
-exactly the claim this book verifies before it repeats.
+faces until they sit parallel to the seam, then one flat key fits
+everywhere — {{key.flat_width_in}} inches across as the solver models it,
+one key for all {{frame.seams}} seams. The cost is planing —
+{{seam.shave_deep_in}} inches at the deepest, which is
+{{seam.shave_pct_of_depth}} per cent of the member's depth, over a land
+only as wide as the key's bearing — and the labour of it, which Chapter
+{{ch.connector}} works through completely, because the number is smaller
+than the instinct expects and "smaller than expected" is exactly the claim
+this book verifies before it repeats.
 
 Both answers are correct; they are two ways to spend the same small
-labour. The book's build uses the shaved-flat answer, because one key
-everywhere is one less way for the pile to be sorted wrong, and
-because a planed land gives the key a true bearing. The trapezoid
-remains the answer for a builder with no plane and no patience for one.
+labour, and the figure shows both sections side by side so the choice is a
+comparison rather than a preference. The book's build uses the shaved-flat
+answer, because one key everywhere is one less way for the pile to be
+sorted wrong, and because a planed land gives the key a true bearing. The
+tapered key remains the answer for a builder with no plane and no patience
+for one.
 
-![Leave the split faces alone and taper the key, or plane the faces and use one key everywhere.](../../deliverables/book/figures/seam-both-ways.png)
+![One seam, closed two ways: the tapered key and the shaved flat, both cut from the solver's meshes.](../../deliverables/book/figures/seam-both-ways.png)
 
 ## One seam, both ways
 

@@ -138,7 +138,7 @@ anywhere near the assembly, and the other end is left long and sawn off in
 place.
 
 That is a much better claim than the one I made, and it is a shame I spent
-several months making the wrong one. Chapter {{ch.pinwheel}} has the geometry and Chapter {{ch.corrections}} has the full list of things this project has had to take back.
+several months making the wrong one. Chapter {{ch.pinwheel}} has the geometry, and the errata pages in this part carry the rest of what this project has had to take back.
 
 ## What it is worth
 

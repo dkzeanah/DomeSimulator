@@ -190,8 +190,7 @@ everywhere, and the mitre takes a few fixed values — and that is the
 claim worth making: not "no mitres", but "no mitre is ever measured,
 and no two ends ever meet".
 
-Chapter {{ch.corrections}} keeps the full list of everything this
-project has published and had to take back. This page is one entry in
-it: the claim, the error, the corrected version, and the arithmetic
+The errata pages in this part carry the rest of the list. This page is
+one entry in it: the claim, the error, the corrected version, and the arithmetic
 that decides which is which — the same treatment the book gives every
 number it has ever got wrong.
