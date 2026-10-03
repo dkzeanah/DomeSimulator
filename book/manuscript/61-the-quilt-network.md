@@ -105,3 +105,29 @@ should correct. The network is the project's most hopeful
 chapter, and hope is the one material this book refuses to
 mislabel: everything here that is a number is a number, and
 everything that is a wish is called a wish.
+
+## The layer arithmetic, in one place
+
+One paragraph of arithmetic, because the network's business case is entirely in
+it and the book has so far scattered it. A quilted layer for this building is
+{{quilt.shirts_per_layer}} t-shirts' worth of somebody's evening covering
+{{quilt.sqft_per_layer}} square feet, sold at {{quilt.usd_per_layer}} dollars a
+layer — and at the margin the *next* layer costs {{quilt.marginal_usd}}, which
+is more than the first for the reason the warmth chapter gave: the layer gets
+bigger as the shell gets thicker, and the edge has to be closed again every
+time.
+
+Read those two prices together and the shape of the network appears. A quilter
+is paid for a real evening's work at a price a household can decide on without a
+loan; the buyer gets a measurable improvement — {{quilt.r_per_layer}} of R for
+the first layer, with the ladder above it priced in the warmth chapter — and
+the whole exchange happens at a scale neither party has to finance. That is what
+a waste stream plus a sewing machine buys, and it is the only part of this
+book's economy that scales without anybody borrowing anything.
+
+The honest caveats stay attached. {{quilt.shirts_per_layer}} shirts a layer is
+an estimate from shirt-area figures rather than a count of anybody's actual
+pile; the second and later layers cost more than the first; and none of it
+works until there are enough quilters near enough to a dome for a delivery to
+be worth the trip. The arithmetic is the reason to try it. It is not a reason
+to believe it will happen.

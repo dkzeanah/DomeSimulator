@@ -31,8 +31,37 @@ so the two can be compared side by side:
 | `GAP` | absent from the book; a proposed chapter title is given in brackets |
 | `PARKED` | deliberately not this book's subject — a decision, with the reason written into the row |
 
-**Where the book stands against the films: 919 concept rows — 832 the book
-covers, 85 it only mentions, none unplaced, and 2 by decision.**
+**Where the book stands against the films: 919 concept rows — 844 the book
+covers, 73 it only mentions, none unplaced, and 2 by decision.**
+
+**Round 11 gathered the benchmarks, the core's economics, the audiences and the
+pad target: 12 more rows.**
+
+* **The benchmarks behind the rate** — a section of **54 What an Hour at the
+  Log Is Worth** setting the rate beside the four figures it rests on
+  ({{pine.stumpage}} a ton of stumpage, {{pine.survey_milling_low}} to
+  {{pine.survey_milling_high}} a board foot for custom milling,
+  {{pine.usd_per_bf}} of dressed lumber, {{wage.take_home}} and
+  {{wage.carpenter}} an hour) — and pointing out that
+  {{log.rate_dressed}} converges with the break-even wage {{why.breakeven}}
+  computed by an entirely different route.
+* **What the core costs, and what it is worth over a life** — a section of **79
+  Sink the Money Into the Part That Moves**: {{core.parts_usd}} of parts and
+  {{core.hours}} hours to build, {{core.first_hours}} the first time, and
+  {{core.move_usd}} to move it to the next pad — the one purchase in the book
+  justified by buildings that do not exist yet, and the one place its advice
+  inverts (buy ahead of the building, because retrofitting costs
+  {{growth.retrofit_mult}} times as much).
+* **Who the method is actually for** — a section of **50 Building With Other
+  People** naming the three audiences the campaigns name (trees and no money,
+  money and no trees, neither and wanting the method anyway) and the two levers
+  that connect them: customer assembly, priced here as the
+  {{campaign.kit_gap_usd}} between the two kit rungs, and the little-guy lever
+  that makes fifty owners a market rather than a customer.
+* **What the cheap pad does not reach** — a subsection of **65 A Pad, Not a
+  Plot** printing the campaign's {{pad.target_usd}} aim beside the computed
+  {{pad.cheap_total}}, a gap of {{pad.target_gap_usd}} — and reading it as a gap
+  in what a *pad* is rather than in the arithmetic.
 
 **Round 10 priced the small systems and the three prices: 8 more rows.**
 
@@ -1110,7 +1139,7 @@ not as two concepts.
 | Plasma for plate steel | A CNC plasma table ($11,800) is chosen over laser because the work is plate steel, which is what plasma is for. | seed_pitch ch-34 "What the goal buys" | -- | 85 What the Campaign Is For | IN |
 | Moulded member | The member to make next arrives with screw holes, threaded inserts and spline ridge moulded in — a standard reusable hardware set that comes off with a driver; tooling $18,000, composite triangle $12,500. | seed_pitch ch-35 "The member we want to make instead" | -- | 75 Hubs, or No Hubs | PARTIAL |
 | Hand-built counts | Today: 120 members, 160 threaded inserts set by hand, 3 saw settings for the butt cut. | seed_pitch ch-35 "The member we want to make instead" | -- | 53 Nine Processes at Any Size | PARTIAL |
-| Three audiences | The campaign is three things that need each other: quilters (132 t-shirts a layer, $69 layer worth, R-1.6), pad hosts (host pack $640), dome owners ($12,036 with trees; quilter's kit $95). | seed_pitch ch-36 "Three things at once" | pitch_hero, dome_park | 50 Building With Other People | PARTIAL |
+| Three audiences | The campaign is three things that need each other: quilters (132 t-shirts a layer, $69 layer worth, R-1.6), pad hosts (host pack $640), dome owners ($12,036 with trees; quilter's kit $95). | seed_pitch ch-36 "Three things at once" | pitch_hero, dome_park | 50 Building With Other People | IN |
 | The one-campaign logic | A dome with nobody to quilt for it is a cold dome; a dome with nowhere to stand is a kit in a garage; a pad with no dome is a deck. | seed_pitch ch-36 "Three things at once" | pitch_hero | 50 Building With Other People | IN |
 | Close price summary | $12,036 list, $10,030 to build, $2,000 profit (20% markup), $43/sq ft, pad ~$6,000 not marked up, hull $21.5k, floor+mast+rig another $4,000. | seed_pitch ch-37 "Bring your own ground" | pitch_hero | 11 What a Dome Costs You | IN |
 | Reward tiers | Backer tiers: plans $35, quilter's kit $95, one bay's hardware set $180, shower cap $1,450, utility hub $2,400, dome kit with frame (no trees) $19,800, dome kit bring-your-own-trees $11,400, pad host's pack $640. | kickstarter.py (quoted in seed_pitch ch-36 / three) | byod_deepseek (rewards) | 85 What the Campaign Is For | IN |
@@ -1206,9 +1235,9 @@ not as two concepts.
 | Solar nameplate range | On a 20 ft dome the layouts run ~5–10 kW nameplate capacity; a larger shell has more area; output depends on site. | byod_deepseek (solar_range "The size sets a limit") | -- | 45 Heat, Power and the Small Systems | PARTIAL |
 | Reward categories | Supporters get founder status, a 3-D printed dome keychain, mirror hanger, window decal, poster; middle tier a signed book; top tier a digital build/game plan. | byod_deepseek (rewards "What supporters get") | byod | 85 What the Campaign Is For | IN |
 | Author backstory | At nineteen he could borrow $5,000 for college, joined the military, and at thirty-two is back — a dome would have been revolutionary for his eighteen-year-old self. | byod_deepseek (my_story "What this would have meant to me") | byod | 51 What I Would Do Differently | PARTIAL |
-| Little-guy audience | Built for the little guy — students, single mothers, the economically vulnerable, starting families, bachelors; ambition to give domes away and make dome furniture. | byod_deepseek (little_guy "Built with the little guy in mind") | byod | 50 Building With Other People | PARTIAL |
-| Starter pad overshoots target | The cheapest working pad lands above the $10,000 target — it tells where the design work has to go rather than pretending the difference is gone. | byod_deepseek (starter "Start with the cheapest working version") | byod | 65 A Pad, Not a Plot | PARTIAL |
-| Ten-year infrastructure aim | The aim is pad infrastructure that serves ten years and beyond. | byod_deepseek (target "What would a ten-thousand-dollar pad return?") | byod | 65 A Pad, Not a Plot | PARTIAL |
+| Little-guy audience | Built for the little guy — students, single mothers, the economically vulnerable, starting families, bachelors; ambition to give domes away and make dome furniture. | byod_deepseek (little_guy "Built with the little guy in mind") | byod | 50 Building With Other People | IN |
+| Starter pad overshoots target | The cheapest working pad lands above the $10,000 target — it tells where the design work has to go rather than pretending the difference is gone. | byod_deepseek (starter "Start with the cheapest working version") | byod | 65 A Pad, Not a Plot | IN |
+| Ten-year infrastructure aim | The aim is pad infrastructure that serves ten years and beyond. | byod_deepseek (target "What would a ten-thousand-dollar pad return?") | byod | 65 A Pad, Not a Plot | IN |
 | Pine ladder premise | A pine has no single value but a ladder of rungs, depending on what is done to it and how much is kept. | pine_value ch-01 "What is a pine worth" | tree_value | 55 The Six Values of One Pine | IN |
 | Representative pine | The wedge film's log: 60 ft of usable stem, 15 in at the butt, 5.5 in at the top. | pine_value ch-01 "What is a pine worth" | tree_value | 55 The Six Values of One Pine | IN |
 | Pine sources declared | Author's figures: 60% kept by a mill, 88% by splitting, 90 cu ft wood/cord, sawing $0.60/bd ft, cord $275/$300, $4,800 framing, 1.5 trees used / 2 felled. Published: pine $1.50/bd ft, stumpage $23.23/ton, cord 128 cu ft stacked. | pine_value ch-02 "What the ladder rests on" | -- | 55 The Six Values of One Pine | IN |
@@ -1256,7 +1285,7 @@ not as two concepts.
 | Host maintenance scope | The host maintains a deck and service connection, not a roof, boiler or kitchen; the building is the tenant's and leaves with them. | seed_pitch ch-36 "Three things at once" | dome_park, byod_deepseek | 50 Building With Other People | IN |
 | Quilter registry | The campaign wants a register of paid, listed quilters — not a charity drive. | seed_pitch ch-36 "Three things at once" | -- | 61 The Quilt Network | IN |
 | Seam hose vs solid keys | Solid seam keys save $457 vs hose ($585 in v1). | seed_pitch ch-22 "How far down it goes" | seed_pitch_v1 | 16 The Seam and Its Key | PARTIAL |
-| Customer-assembly lever | Having the customer assemble and the shop only make parts saves $752. | seed_pitch ch-22 "How far down it goes" | -- | 50 Building With Other People | PARTIAL |
+| Customer-assembly lever | Having the customer assemble and the shop only make parts saves $752. | seed_pitch ch-22 "How far down it goes" | -- | 50 Building With Other People | IN |
 | 40-hour / three-tree title | The master book promises a 40-hour cabin from 3 trees; the films consistently price a 2-tree, ~120-member, 300 sq ft shell. | (master book title; pine_value/tree_value use 2 trees) | -- | 47 The Hours | IN |
 
 The campaign films were read twice, independently. The rows above are the
@@ -1271,7 +1300,7 @@ separately.
 | Park: the three system domes | By floor and longest member: small personal 314.00 sq ft / 20.0 ft / 6 ft member, medium 822.49 sq ft / 32.4 ft / 10 ft, large 1,184.39 sq ft / 38.8 ft / 12 ft. | dome-park-v3 ch-06 "Which domes fit which pad" | byod-deepseek ch-growth | 62 One Hardware Set, Three Sizes | IN |
 | Kick: the one hundred thousand dollar ask | 86 thousand is equipment that still exists on day three hundred and the rest is material for the first units. | kick ch-15 "One hundred thousand dollars" | kick2 ch-19 | 85 What the Campaign Is For | IN |
 | Park: what tracking is worth | Single-axis tracking adds about a quarter over a fixed array (+536 kWh a month; whole shell 1,468 fixed against 1,835 tracking); the ring costs $9,120 on a 48 ft pad. | dome-park ch-21 "What tracking is worth, and what it is not" | dome-park-v3 ch-21 | 66 Turning the House Toward the Sun, Until It Stops Being Worth It | IN |
-| BYOD: what a ten-thousand-dollar pad returns | If a complete serviced pad can be built for about ten thousand dollars, at $500, $1,000 or $1,500 a month it pays back inside a year at the high end; the aim is infrastructure that serves ten years and beyond. | byod ch-target "What would a ten-thousand-dollar pad return?" | byod-deepseek ch-target | 65 A Pad, Not a Plot | PARTIAL |
+| BYOD: what a ten-thousand-dollar pad returns | If a complete serviced pad can be built for about ten thousand dollars, at $500, $1,000 or $1,500 a month it pays back inside a year at the high end; the aim is infrastructure that serves ten years and beyond. | byod ch-target "What would a ten-thousand-dollar pad return?" | byod-deepseek ch-target | 65 A Pad, Not a Plot | IN |
 
 ---
 

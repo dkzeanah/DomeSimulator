@@ -241,6 +241,7 @@ def _overrides_by_title() -> dict[tuple[str, str], str]:
             "The tube around the bottom", "Run it either way", "What would actually decide it")},
         # ...and swapping parts is Part 1's argument.
         ("master", "The frankendome, audited"): "variations",
+        ("seed_pitch", "A house you can take apart"): "stemcell",
         ("master", "The water plant, derived"): "seam",
         ("hype", "Every answer is yes"): "right",
         ("hype", "And whatever comes next"): "right",

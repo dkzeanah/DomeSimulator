@@ -129,6 +129,7 @@ in it -- not machined, just left there by the shape of a split log (Chapter
 
 <!-- concept: seed_pitch/paint -->
 <!-- concept: master/ms_math_energy -->
+<!-- concept: master/ms_math_envelope -->
 
 Before any hat, the shape has already paid. Compare a dome with a box of the same
 floor -- worked here for the films' 20-foot dome, slightly larger than this

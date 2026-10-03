@@ -69,6 +69,71 @@ is amortised over more than one occupancy. It is available now rather than
 after a land purchase. And — the part nobody expects to value until they have
 it — it is *leavable*.
 
+## What a pad actually is
+
+<!-- concept: dome_park/pad_build -->
+<!-- concept: byod/iris -->
+<!-- concept: dome_park/fit -->
+
+Graded ground. A deck -- gravel, concrete or timber, whatever the host wants to
+pay for. A rim of wood round the edge that the dome latches to, which is the part
+that makes it a pad rather than a patio. Then power, water and drain coming up
+through the middle.
+
+![A deck, a rim, and the services up the middle.](plate-pad-build.png)
+
+The rim can be a fixed ring. Or it can be an **iris**: leaves on a track that open
+and close like a camera aperture, so one pad takes more than one size of dome
+without being rebuilt. That mechanism is a development concept, priced, and it
+belongs in the upgrade column, not the starter one.
+
+![One pad, more than one dome size.](plate-iris.png)
+
+Pad sizes are not invented. Every design the Dome Creator ships has a foundation
+diameter the tool computes from its own geometry; round each up to the next
+four feet and you have the pad catalogue:
+
+    {{pad.fit}}
+
+## The pad is the floor
+
+<!-- concept: dome_park/landing -->
+<!-- concept: byod/floor -->
+
+This is the move the whole idea turns on. The dome that arrives does not bring a
+foundation, because it does not need one. The deck it lands on is the deck it
+lives on, the services come up through the middle of it, and when the owner
+leaves, the pad is exactly as it was. No slab poured, no footing dug, no permit
+pulled for a structure that will be gone. Bring your carpet if you want one.
+
+Dome rentals already exist, and most of them are glorified tents rented a
+weekend at a time. Own the glorified tent and rent the place to put it, and both
+sides have a reason to make it good.
+
+## Start with the cheapest working version
+
+<!-- concept: byod/starter -->
+
+Before any iris or turning base, price the starting point: a small framed deck on
+blocks, a fixed rim, and four pads sharing one power panel and water manifold:
+
+    {{pad.starter}}
+
+That is above the target, and it is printed anyway. It shows exactly where the
+design work has to go -- the site allowance, mostly -- rather than pretending the
+difference is gone.
+
+## The pad turns
+
+<!-- concept: dome_park/solar -->
+
+A pad on a rotating base can aim whatever stands on it. The panels are on the
+dome; the pad turns them. Worked for the films' medium, two-person dome:
+
+    {{pad.solar}}
+
+The host bought the ring. The tenant bought the panels.
+
 ## The number that decides it
 
 The pad is ${{money.pad}}. The floor a dome brings with it is a few thousand
