@@ -97,6 +97,17 @@ figured out later by somebody with more time.
 
 Later is not a plan. Later is a thing you design for.
 
+## Every answer is yes
+
+<!-- concept: hype/swap -->
+<!-- concept: hype/absurd -->
+
+Built that way, the questions people ask about a dome all get the same answer.
+New insulation? Swap it. Solar? Add it to a panel. A greenhouse wall? Sure. A
+workshop extension? Bolt it to the rim. Some technology nobody has invented yet?
+There should be a panel for that -- and if the frame is a set of sockets
+(Chapter {{ch.frames}}), there will be.
+
 ## Where this leaves us
 
 Three chapters in, the argument of this book is complete:

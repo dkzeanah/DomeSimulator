@@ -19,6 +19,11 @@ This frame has no hubs, because nothing arrives at the point.
 
 ## The pinwheel
 
+<!-- concept: cabin_wedge_explained/pinwheel -->
+<!-- concept: wedge/pinwheel -->
+<!-- concept: why/pinwheel -->
+<!-- concept: wedge/corner -->
+
 Each panel is built complete before it goes anywhere near its neighbours:
 three members, closed into their own triangle.
 
@@ -59,7 +64,21 @@ and {{seam.key_b}} on a B, and it is not a manufactured part
 truncated point of another raw sector, cut from the same log at the same
 angle.
 
+<!-- concept: why/dihedral -->
+
+Why put the variation there? Because the fold between two panels is not one
+angle. Across this dome it runs from {{geo.fold_lo}} to {{geo.fold_hi}}
+degrees. That spread is small in degrees and large in workshop terms: cut into
+the members, it would be a saw setup per seam and sticks that are no longer
+interchangeable. Moved into the key, the wood stays generic and the fussy part
+is small, cheap and replaceable.
+
 ## The price of a panel being a thing
+
+<!-- concept: wedge/duplicate -->
+<!-- concept: why/duplicate -->
+<!-- concept: master/ms_math_hubless -->
+<!-- concept: build/hubless_edge -->
 
 {{dome.panels}} panels times three members is {{dome.members}}. The shell has
 only {{dome.edges}} edges.
@@ -76,6 +95,18 @@ standing.
 Two trees instead of one and a half, against forty panels you can make
 indoors in winter. That has been an easy trade every time I have had to make
 it.
+
+## The pinwheel, measured
+
+<!-- concept: why/joint -->
+
+The pinwheel is not free. Each member lies with its bark face on its own edge
+line, so its centre sits half a member's width inside that line, and that
+offset is what opens the gap at the vertex no stick reaches. The bearing area
+where one member's end lands on the next one's face is the joint's real
+capacity; the vertex gap is what has to be trimmed clean so that panels do not
+fight each other at a corner. Both come out of the same solve, and both are
+what the jig in Chapter {{ch.jig}} has to hold.
 
 ## Where the error goes
 
@@ -96,6 +127,9 @@ allowed to leave the building as offcut, and the method spends it deliberately.
 
 ## What the butt cut actually is
 
+<!-- concept: why/buttcut -->
+<!-- concept: why/buttcut_math -->
+
 One correction, because this project published the wrong version of it and
 some of that is still out there.
 
@@ -105,6 +139,14 @@ The bevel is constant at {{cut.bevel}} degrees — half the sector angle —
 because it comes from how the log was split rather than from where the member
 sits in the dome. The mitre takes {{cut.mitres}} values across all
 {{dome.members}} members.
+
+<!-- concept: wedge/m_pinwheel -->
+
+The wrong version is still on screen in one of the films that come with this
+book: the *Eight Cuts to a House* film's "pinwheel, measured" screen says every
+end in the frame is a square crosscut. Its other figures -- each member sitting
+half its width inside its edge line, no wood reaching the vertex -- stand. Its
+claim about the ends does not.
 
 So the honest claim is not "no compound angles". It is **three saw settings
 for a hundred and twenty members**, which is a better claim anyway, and true.

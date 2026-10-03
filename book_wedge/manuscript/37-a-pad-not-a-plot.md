@@ -1,5 +1,5 @@
 ---
-chapter: 34
+chapter: 37
 title: A Pad, Not a Plot
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 880
 updated: 2026-09-25
 ---
 
-# 34. A Pad, Not a Plot
+# 37. A Pad, Not a Plot
 
 The ground is the one part of this building you cannot take with you.
 

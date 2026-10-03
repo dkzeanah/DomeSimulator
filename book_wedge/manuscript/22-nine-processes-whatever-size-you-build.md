@@ -1,5 +1,5 @@
 ---
-chapter: 21
+chapter: 22
 title: Nine Processes, Whatever Size You Build
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1660
 updated: 2026-09-25
 ---
 
-# 21. Nine Processes, Whatever Size You Build
+# 22. Nine Processes, Whatever Size You Build
 
 The last chapters counted parts. This one counts *verbs*, and the verb list is
 the shorter of the two.

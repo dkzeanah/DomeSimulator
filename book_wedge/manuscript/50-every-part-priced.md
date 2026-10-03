@@ -1,5 +1,5 @@
 ---
-chapter: 47
+chapter: 50
 title: Every Part, Priced
 strand: reference
 status: draft
@@ -7,7 +7,7 @@ target: 1260
 updated: 2026-09-25
 ---
 
-# 47. Every Part, Priced
+# 50. Every Part, Priced
 
 Six bills. Every line carries the constant it came from, so any of them can
 be argued with by editing one number rather than by doubting the total.

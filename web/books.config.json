@@ -1,5 +1,6 @@
 {
   "_note": "Books offered for download. 'file' is the base name in BOOKS_DIR (default ../deliverables/book); the site always serves its highest -vN version, so publishing a new edition needs no change here. Slugs: lowercase letters, digits and dashes only.",
+  "_author_note": "The two wedge books below -- 'The Wedge Method: A Builder's Guide' and 'The Wedge Method' -- are the same book written two different ways, and the author is deciding which one to keep. Do not merge them, retitle them to match, or drop either one; the decision is the author's and it is deliberately still open.",
   "books": [
     {
       "slug": "the-40-hour-cabin",

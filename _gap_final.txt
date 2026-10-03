@@ -1,0 +1,66 @@
+concept rows by status: {'IN': 695, 'PARTIAL': 128, 'GAP': 91}
+
+GAP groups (all four sections):
+* (none) (3): Triangular solar cells gap; $5,000 dome target; Highest-use index
+* Applying the Finish (1): Apply thin, wipe dry
+* Building the Utility Core (8): Utility core build hours; Nine tools, two skipped; Chase stage; Drain stage; Water stage and proof test; Power stage; Close and cap stage; Core materials
+* Choosing the Linseed Oil Product (2): Raw, boiled and polymerised differ; The raw-only food rule is too broad
+* Finishing Quantities: The Allowance (3): Planning assumptions; Oil allowance in gallons; Label coverage is a claim
+* Finishing Tools (1): Tool handles, not moving parts
+* Finishing the Wedge Wood with Linseed Oil (1): Linseed source
+* Follow the Experiments (1): Contact/social handles
+* Fuller's Why (1): Fuller's why
+* Hair as Geometry (1): Hair is geometry
+* Landmarks, Not Measurements (1): Length is a body landmark
+* Maintaining the Finish (2): Finish record and renewal; No waterproofing credit for oil
+* Measured vs. Declared: Two Kinds of Number (1): Two kinds of number
+* Oily-Rag Safety (2): Oily rags can self-ignite; Rag station
+* Open Source, Not Marketing (1): Open source promise
+* Preparing the Wood for Finish (1): Prepare sound dry wood
+* Product-Specific Cure Schedules (1): Two product schedules
+* Rendering: Lambert Lighting (1): Lighting = three dot products
+* Rendering: Lines Are Tubes of Triangles (2): Graphics cards draw only triangles; One strut = 28 triangles, frame = 1,820
+* Rendering: Perspective Is a Divide by w (3): Projection matrix arranges the divide; Perspective = divide by w into a −1..+1 cube; Pixel landing: add 1, halve, multiply, flip y
+* Rendering: Placing the Camera (1): Camera = yaw, pitch, distance
+* Rendering: The 33 ms Budget (1): 33.33 ms per frame, 62.2M shader runs/s
+* Rendering: The Depth Buffer (2): Depth buffer replaces sorting; z-fighting and the near limit
+* Rendering: The Model Is a List of Floats (2): 10 floats per vertex, 40 bytes; The dome = 3,900 triangles, 457 KB
+* Rendering: The Projection Frustum (1): Frustum, FOV 48°, near 0.08, far 120
+* Rendering: The View Matrix (1): View matrix moves the world
+* Rendering: Transparency Ordering (1): Transparency restores drawing order
+* Rendering: Winding and Backface Culling (3): Winding decides front from back; Cross product gives normal and area; Backface culling drops half the triangles
+* Sealant and Adhesive Compatibility (1): Bonding surfaces stay free of oil
+* Sixteen Billion Shells (3): The combination space; Floor layouts and dials; Fifteen centuries of film
+* Ten Reasons This Shape (1): Ten reasons
+* The $50,000 Tooling Ask (1): The tooling ask
+* The Actual Balance of Forces (1): The balance of forces
+* The Apex Socket (1): Apex socket
+* The Campaign Goal (2): Campaign goal; $100k ask
+* The Cast and Its Rules (1): Eight distinct women
+* The Composer and Its Editor (2): The editor refuses by geometry; Editor keys
+* The Cowboy Hat Laminate (1): Glass the top twenty
+* The Dome's Five Bands and Their Slopes (1): Five bands of seams
+* The Form Mode (1): Form mode
+* The Four Dials, Counted (1): The four dials are stepped
+* The Free Menus (1): The free menus
+* The Goal, Line by Line (2): Goal line items; Plasma for plate steel
+* The Labour of Finishing (1): Finishing labour
+* The Model You Can Run (1): Runnable-model promise
+* The One Share Ask (1): The one share ask
+* The Paint That Cools (2): Radiative paint; Sky-cooling paint
+* The Park Campaign Goal (1): Park $100k ask
+* The Random Draw, Seed On Screen (1): The random draw
+* The Real Mesh, Not a Sketch (1): The tool's own meshes
+* The Reference Park Bill (1): Six-pad reference park
+* The Reserved Centre (1): Pad centre reserved
+* The Reward Tiers (2): Reward tiers; Reward categories
+* The Roof That Refuses the Sun (1): Radiative sky cooling paint
+* The Sheet That Does Not Fit (1): Four-foot sheet finding
+* The Six Montages, and What Each Taught (1): The six montages, and what they taught
+* The Startup Equipment List (1): Startup equipment
+* The Vance Network (lore) (1): Vance Network (lore)
+* The Wall as a Breathing Plenum Is Untested (1): Airflow computed, wall not proven
+* Wardrobe as a List (1): An outfit is a list
+* When the Arithmetic Stopped Working (1): The arithmetic stopped working
+* Who Is Behind This (1): Founder bio
+* Wind and the Dome (1): Drag coefficients

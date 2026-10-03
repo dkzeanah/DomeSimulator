@@ -1,5 +1,5 @@
 ---
-chapter: 22
+chapter: 24
 title: One Flat Board, Forty Identical Panels
 strand: howto
 status: draft
@@ -7,7 +7,7 @@ target: 2140
 updated: 2026-09-25
 ---
 
-# 22. One Flat Board, Forty Identical Panels
+# 24. One Flat Board, Forty Identical Panels
 
 The only thing in this entire build that has to be true is a sheet of plywood
 on two sawhorses.
@@ -18,6 +18,8 @@ panels — so panel forty is panel one.
 ![One flat sheet on sawhorses, and nothing else.](jig-01-bench.png)
 
 ## Building the jig
+
+<!-- concept: why/bench -->
 
 ### 1. The bench
 
@@ -143,6 +145,8 @@ All three heads still hang off long.
 
 ### 11. Flush-cut the three heads
 
+<!-- concept: why/flush -->
+
 ![The head is never measured. It is cut in place.](jig-11-flush.png)
 
 Saw each head back to its magenta fence. The stock hanging past the board
@@ -185,3 +189,18 @@ the ground, in whatever weather. The part of dome building that everybody
 pictures — the awkward bit up a ladder holding something heavy at an angle —
 happens once, in Chapter {{ch.raise}}, and takes three days out of a
 fortnight.
+
+<!-- concept: why/jig -->
+
+And it is worth being exact about what the fixture enforces, because it is only
+three things: where each member sits across the panel, which way up it is
+turned, and the plane its head is cut to. Everything else is free. Counted, the
+way the films count it:
+
+    {{work.jig}}
+
+Every stick has some error in it. Cut both ends to a measurement and those errors
+add up around the triangle until the last corner will not close. Cut one end in
+place, against the neighbour, and the error has nowhere to accumulate: it leaves
+in the piece that falls on the floor. The offcut is what the accuracy costs, and
+it is cheap.

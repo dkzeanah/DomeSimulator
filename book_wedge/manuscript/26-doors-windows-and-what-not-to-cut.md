@@ -1,5 +1,5 @@
 ---
-chapter: 23
+chapter: 26
 title: Doors, Windows, and What Not to Cut
 strand: howto
 status: draft
@@ -7,7 +7,7 @@ target: 1800
 updated: 2026-09-25
 ---
 
-# 23. Doors, Windows, and What Not to Cut
+# 26. Doors, Windows, and What Not to Cut
 
 An opening is a panel you did not close.
 

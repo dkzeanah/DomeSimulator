@@ -1,5 +1,5 @@
 ---
-chapter: 25
+chapter: 28
 title: One Watertight Layer, and Only One
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1520
 updated: 2026-09-25
 ---
 
-# 25. One Watertight Layer, and Only One
+# 28. One Watertight Layer, and Only One
 
 Put a waterproof layer on the outside of a building and you have kept the rain
 out.

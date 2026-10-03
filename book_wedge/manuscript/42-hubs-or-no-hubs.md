@@ -1,5 +1,5 @@
 ---
-chapter: 39
+chapter: 42
 title: Hubs, or No Hubs
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 900
 updated: 2026-09-25
 ---
 
-# 39. Hubs, or No Hubs
+# 42. Hubs, or No Hubs
 
 This is the decision every dome builder makes, usually without noticing they
 have made it, and this entire method is one answer to it.

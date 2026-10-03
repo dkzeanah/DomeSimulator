@@ -1,5 +1,5 @@
 ---
-chapter: 32
+chapter: 35
 title: Metal in the Seam
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 2040
 updated: 2026-09-30
 ---
 
-# 32. Metal in the Seam
+# 35. Metal in the Seam
 
 The line that runs from the centre of the dome straight outward has a name: it
 is the **radial** direction. Through an ordinary wall it is the wall's

@@ -451,7 +451,7 @@ def _worked_tokens(add) -> None:
                      ("compare", wf.steps_compare), ("sector", wf.steps_sector),
                      ("pinwheel_lengths", wf.steps_lengths), ("dome", wf.steps_dome),
                      ("actions", wf.steps_actions), ("assumptions", yf.steps_assumptions),
-                     ("rate", yf.steps_rate), ("structure", yf.steps_structure),
+                     ("rate", yf.steps_rate), ("jig", yf.steps_jig), ("structure", yf.steps_structure),
                      ("orientation", yf.steps_orientation), ("defects", yf.steps_defects),
                      ("yield", yf.steps_yield)):
         add(f"work.{name}", f"the films' worked {name.replace('_', ' ')}, as computed", block(fn))
@@ -493,6 +493,38 @@ def _worked_tokens(add) -> None:
         lambda: _table_text([(n, f"{v:g} {u}", k) for n, v, u, k, _w in lo.CONSTANTS], (16, 26, 12)))
     add("lin.source", "the video the linseed film adapts",
         lambda: f"{lo.SOURCE['title']}, by {lo.SOURCE['creator']}")
+    # The compound-cut audit and the assembly-line energy audit, by section.
+    from two_v_demo import energetics as en, sawing as sw
+
+    def section(report_fn, starts: str, drop_head: bool = False):
+        def get() -> str:
+            for part in report_fn().split("\n\n"):
+                if part.lstrip().lower().startswith(starts.lower()):
+                    lines = part.split("\n")
+                    return "\n".join(lines[1:] if drop_head else lines).rstrip()
+            raise KeyError(f"no section starting {starts!r}")
+        return get
+
+    add("saw.stock", "the stock and the saws the audit assumes", section(sw.sawing_report, "stock"))
+    add("saw.settings", "every saw setup for the hubless compound cut",
+        section(sw.sawing_report, "6 distinct setups"))
+    add("saw.bevel_check", "the bevel check by pairing offcuts", section(sw.sawing_report, "bevel verification"))
+    add("saw.five_cut", "the five-cut check on the sled fence", section(sw.sawing_report, "five-cut check"))
+    add("saw.max_tilt", "how far a table saw tilts, degrees", lambda: f"{sw.TABLE_SAW_MAX_TILT_DEG:.0f}")
+    add("saw.max_mitre", "how far a common mitre saw swings, degrees", lambda: f"{sw.TYPICAL_MITRE_SAW_MAX_DEG:.0f}")
+    add("saw.setups", "distinct saw setups for the whole dome", lambda: str(len(sw.cut_plans())))
+    add("saw.steps", "the cutting procedure, with the reason for each step",
+        lambda: "\n\n".join(f"**{title}** {why}" for title, why in sw.STEPS))
+    add("saw.failures", "the five ways the cut goes wrong",
+        lambda: "\n".join(f"- **{title}.** {why}" for title, why in sw.FAILURES))
+    for key, starts in (("product", "product"), ("energy", "elements"), ("mechanical", "mechanical work"),
+                        ("by_motion", "food energy by motion"), ("mech_share", "mechanical share"),
+                        ("by_limb", "mechanical lifting work"), ("by_station", "by station"),
+                        ("in_food", "the crew's total"), ("constants", "external constants")):
+        add(f"en.{key}", f"the energy audit's {starts} section", section(en.energy_report, starts))
+    add("en.two_person_kg", "above this a lift takes two people, kg", lambda: f"{en.TWO_PERSON_LIFT_KG:.0f}")
+    add("en.overhead_m", "the height above which a lift counts as overhead, m", lambda: f"{en.OVERHEAD_HEIGHT_M:.2f}")
+    add("en.body_kg", "the worker the model is built for, kg", lambda: f"{en.BODY_MASS_KG:.0f}")
     add("work.log_butt", "the worked tree's butt diameter, inches", lambda: f"{wf.LOG.butt_diameter_in:.0f}")
     add("work.log_top", "the worked tree's top diameter, inches", lambda: f"{wf.LOG.top_diameter_in:.1f}")
     add("work.log_ft", "the worked tree's usable length, feet", lambda: f"{wf.LOG.usable_length_ft:.0f}")

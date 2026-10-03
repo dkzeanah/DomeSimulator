@@ -221,6 +221,27 @@ def _overrides_by_title() -> dict[tuple[str, str], str]:
         **{("why", t): "economics" for t in (
             "Machines that stop being necessary", "Counting the machines out",
             "Fifteen sets of hands", "The part nobody counts", "The same frame, bought")},
+        # Part 4 review: the hubbed build is the alternative method...
+        **{("build", t): "variations" for t in (
+            "The five words we will keep using", "Two lengths, and nothing else",
+            "Choose the hub system before anything else", "Centre length is not cut length",
+            "The end-cut angle is half the central angle", "The panel bevels",
+            "How many kinds of joint", "Buying the stock", "Cutting: a stop block and a master",
+            "Build the triangles flat, first", "The four things that actually go wrong",
+            "The franken-dome", "Borrowing strength from the site")},
+        ("2v", "Panels, hubs, and build sequence"): "variations",
+        ("hype", "Three hours later"): "variations",
+        # ...raising and skinning are The Skin, the tube is The Seam...
+        **{("build", t): "skin" for t in (
+            "The dome is four rings and a crown", "Setting out the base", "The riser wall",
+            "Closing the crown", "Skinning it, rim upward", "Forty panels from one sheet")},
+        ("seed_pitch", "What actually closes a triangle"): "skin",
+        ("byod", "The size sets a limit"): "skin",
+        **{("build", t): "seam" for t in (
+            "The tube around the bottom", "Run it either way", "What would actually decide it")},
+        # ...and swapping parts is Part 1's argument.
+        ("hype", "Every answer is yes"): "right",
+        ("hype", "And whatever comes next"): "right",
         ("byod", "Buy for the next two steps"): "stemcell",
         ("seed_pitch", "The member we want to make instead"): "variations",
     }

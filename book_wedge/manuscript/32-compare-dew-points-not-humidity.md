@@ -1,5 +1,5 @@
 ---
-chapter: 29
+chapter: 32
 title: Compare Dew Points, Not Humidity
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 2220
 updated: 2026-09-30
 ---
 
-# 29. Compare Dew Points, Not Humidity
+# 32. Compare Dew Points, Not Humidity
 
 The seam channel can move air in almost any direction you like. Outside air
 in, inside air out, round in a loop, through a desiccant or past it, over a

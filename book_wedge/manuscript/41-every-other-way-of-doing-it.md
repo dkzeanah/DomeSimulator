@@ -1,5 +1,5 @@
 ---
-chapter: 38
+chapter: 41
 title: Every Other Way of Doing It
 strand: reference
 status: draft
@@ -7,7 +7,7 @@ target: 780
 updated: 2026-09-25
 ---
 
-# 38. Every Other Way of Doing It
+# 41. Every Other Way of Doing It
 
 This book recommends one way of doing each thing. You are owed the others.
 

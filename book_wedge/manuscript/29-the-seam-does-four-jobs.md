@@ -1,5 +1,5 @@
 ---
-chapter: 26
+chapter: 29
 title: The Seam Does Four Jobs
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1920
 updated: 2026-09-25
 ---
 
-# 26. The Seam Does Four Jobs
+# 29. The Seam Does Four Jobs
 
 The channel is already there.
 

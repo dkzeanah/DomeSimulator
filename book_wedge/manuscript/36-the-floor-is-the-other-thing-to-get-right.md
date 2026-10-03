@@ -1,5 +1,5 @@
 ---
-chapter: 33
+chapter: 36
 title: The Floor Is the Other Thing to Get Right
 strand: howto
 status: draft
@@ -7,7 +7,7 @@ target: 1140
 updated: 2026-09-25
 ---
 
-# 33. The Floor Is the Other Thing to Get Right
+# 36. The Floor Is the Other Thing to Get Right
 
 You will spend more hours in contact with the floor than with any other part
 of this building, and it is the only part in permanent contact with the

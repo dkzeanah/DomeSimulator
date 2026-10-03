@@ -1,5 +1,5 @@
 ---
-chapter: 27
+chapter: 30
 title: A Dome Is a Head, and It Wears Hats
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1340
 updated: 2026-09-25
 ---
 
-# 27. A Dome Is a Head, and It Wears Hats
+# 30. A Dome Is a Head, and It Wears Hats
 
 I learned how to dress a building standing on the outside of a ship in the
 Arctic Circle, on forward lookout, at night.

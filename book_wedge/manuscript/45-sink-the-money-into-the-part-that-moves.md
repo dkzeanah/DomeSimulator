@@ -1,5 +1,5 @@
 ---
-chapter: 42
+chapter: 45
 title: Sink the Money Into the Part That Moves
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1480
 updated: 2026-09-25
 ---
 
-# 42. Sink the Money Into the Part That Moves
+# 45. Sink the Money Into the Part That Moves
 
 Here is the theory, in one sentence.
 

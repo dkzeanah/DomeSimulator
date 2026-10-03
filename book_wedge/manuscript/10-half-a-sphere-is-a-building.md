@@ -87,6 +87,7 @@ model, not typed in beside it.
 ## What actually moves when the log changes
 
 <!-- concept: why/mixed_math -->
+<!-- concept: why/mixed -->
 
 The rest of this book assumes one log diameter. Real trees do not sort
 themselves; a stand of pine gives you a spread of trunks. So solve the same

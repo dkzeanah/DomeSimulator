@@ -1,5 +1,5 @@
 ---
-chapter: 45
+chapter: 48
 title: The Software That Wrote This Book
 strand: reference
 status: draft
@@ -7,7 +7,7 @@ target: 980
 updated: 2026-09-25
 ---
 
-# 45. The Software That Wrote This Book
+# 48. The Software That Wrote This Book
 
 Not one figure in this book was typed into a sentence.
 

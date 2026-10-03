@@ -1,5 +1,5 @@
 ---
-chapter: 30
+chapter: 33
 title: Four Levels, and the Ring That Cannot Drain
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1960
 updated: 2026-09-30
 ---
 
-# 30. Four Levels, and the Ring That Cannot Drain
+# 33. Four Levels, and the Ring That Cannot Drain
 
 The owner of this design describes the dome in levels. The first ring is the
 floor. Above it is the band of triangles that stands on the floor. Above that,

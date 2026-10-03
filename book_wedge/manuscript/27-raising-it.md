@@ -1,5 +1,5 @@
 ---
-chapter: 24
+chapter: 27
 title: Raising It
 strand: howto
 status: draft
@@ -7,7 +7,7 @@ target: 1060
 updated: 2026-09-25
 ---
 
-# 24. Raising It
+# 27. Raising It
 
 Forty panels are stacked against a fence. This part takes three days and it is
 the only part that looks like building a dome.

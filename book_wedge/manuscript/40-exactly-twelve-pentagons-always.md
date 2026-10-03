@@ -1,5 +1,5 @@
 ---
-chapter: 37
+chapter: 40
 title: Exactly Twelve Pentagons, Always
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1260
 updated: 2026-09-25
 ---
 
-# 37. Exactly Twelve Pentagons, Always
+# 40. Exactly Twelve Pentagons, Always
 
 Everybody reaches for hexagons. Honeycomb, graphite, the compound eye — the
 hexagon is nature's answer to tiling a plane, and it is the shape people

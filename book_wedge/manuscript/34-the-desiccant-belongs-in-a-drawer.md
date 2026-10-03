@@ -1,5 +1,5 @@
 ---
-chapter: 31
+chapter: 34
 title: The Desiccant Belongs in a Drawer
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 2160
 updated: 2026-09-30
 ---
 
-# 31. The Desiccant Belongs in a Drawer
+# 34. The Desiccant Belongs in a Drawer
 
 A desiccant is anything that pulls water vapour out of air and holds on to it.
 Two kinds matter here.

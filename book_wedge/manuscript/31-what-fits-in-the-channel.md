@@ -1,5 +1,5 @@
 ---
-chapter: 28
+chapter: 31
 title: What Fits in the Channel
 strand: reference
 status: draft
@@ -7,7 +7,7 @@ target: 2240
 updated: 2026-09-30
 ---
 
-# 28. What Fits in the Channel
+# 31. What Fits in the Channel
 
 Chapter {{ch.seam_module}} fitted the seam out as gutter, vent and
 dehumidifier and priced it. It did not say how much room there is inside it,
