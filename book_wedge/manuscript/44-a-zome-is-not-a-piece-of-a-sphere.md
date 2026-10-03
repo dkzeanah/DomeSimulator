@@ -1,5 +1,5 @@
 ---
-chapter: 39
+chapter: 44
 title: A Zome Is Not a Piece of a Sphere
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 1740
 updated: 2026-09-25
 ---
 
-# 39. A Zome Is Not a Piece of a Sphere
+# 44. A Zome Is Not a Piece of a Sphere
 
 Everything so far has been subdivision: take a solid, cut its faces smaller,
 push the new points onto a sphere. A zome is made the other way and the

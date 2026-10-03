@@ -15,6 +15,7 @@ measured.
 ## Measured, and guessed
 
 <!-- concept: harvest/assume -->
+<!-- concept: why/assumptions -->
 
 Before any rate, here is what the figures rest on, sorted into the two piles
 this book always keeps apart. Geometry, board feet and angles are computed.

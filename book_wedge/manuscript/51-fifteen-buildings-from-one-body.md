@@ -1,5 +1,5 @@
 ---
-chapter: 46
+chapter: 51
 title: Fifteen Buildings From One Body
 strand: reference
 status: draft
@@ -7,7 +7,7 @@ target: 1120
 updated: 2026-09-25
 ---
 
-# 46. Fifteen Buildings From One Body
+# 51. Fifteen Buildings From One Body
 
 The catalogue a homestead wants second, and third, and fifth.
 

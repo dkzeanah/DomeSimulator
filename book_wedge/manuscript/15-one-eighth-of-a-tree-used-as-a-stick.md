@@ -144,6 +144,7 @@ when it is still wet and comes away in strips. Do not plan to do it later.
 
 <!-- concept: wedge/short -->
 <!-- concept: why/short -->
+<!-- concept: why/defects -->
 
 The members are short on purpose. A knot or a bend does not ruin wood; it ruins
 whatever length has to be thrown away around it, and that length is set by the

@@ -348,6 +348,7 @@ def _table() -> dict[str, Token]:
     _parts_list_tokens(add)
     _geometry_tokens(add)
     _worked_tokens(add)
+    _economics_tokens(add)
     _channel_tokens(add)
     _climate_tokens(add)
     _wood_tokens(add)
@@ -602,6 +603,72 @@ def _worked_tokens(add) -> None:
     add("work.log_butt", "the worked tree's butt diameter, inches", lambda: f"{wf.LOG.butt_diameter_in:.0f}")
     add("work.log_top", "the worked tree's top diameter, inches", lambda: f"{wf.LOG.top_diameter_in:.1f}")
     add("work.log_ft", "the worked tree's usable length, feet", lambda: f"{wf.LOG.usable_length_ft:.0f}")
+
+
+def _economics_tokens(add) -> None:
+    """``pine``, ``why`` and ``econ``: what a tree and an hour are worth.
+
+    ``pine.*`` and ``why.*`` are the two economics modules' own token
+    specifications -- the same names the 2 Trees book reads -- so the two books
+    and the films cannot quote different figures. ``econ.*`` are the films'
+    worked blocks for the chain, the house, the price guides and the pads.
+    """
+    from two_v_demo import (byod_facts as bf, house_economics as he, master_facts as mf,
+                            park_facts as pf, pine_value_economics as pv, seed_facts as sf,
+                            wedge_why_facts as yf, why_build_economics as wb)
+
+    for name, describe, value in list(pv.token_specs()) + list(wb.token_specs()):
+        add(name, describe, (lambda v=value: str(v() if callable(v) else v)))
+
+    def steps(fn, keep_last: bool = False):
+        return lambda: "\n".join(fn() if keep_last else fn()[:-1]).rstrip()
+
+    def lines(fn):
+        return lambda: "\n".join(fn()).rstrip()
+
+    add("econ.pine_sources", "what the pine ladder rests on", lines(pv.source_lines))
+    add("econ.why_score", "one cycle of the shell on one sheet", lines(wb.score_lines))
+    add("econ.why_sources", "what the shelter-an-hour argument rests on", lines(wb.source_lines))
+    add("econ.house_sources", "what the house numbers rest on", lines(he.source_lines))
+    add("econ.house_categories", "every part of the house, bought against the dome way",
+        lines(he.category_lines))
+    for name, fn in (("mills", yf.steps_mills), ("middlemen", yf.steps_middlemen),
+                     ("value", yf.steps_value), ("overhead", yf.steps_overhead),
+                     ("why_close", yf.steps_close)):
+        add(f"econ.{name}", f"the Why Wedges film's worked {name}", steps(fn))
+    for name, fn in (("seed_declared", sf.steps_declared), ("seed_frame", sf.steps_frame),
+                     ("seed_pad", sf.steps_pad), ("seed_invoice", sf.steps_invoice),
+                     ("master_price", mf.steps_price), ("master_labour", mf.steps_labour),
+                     ("park_declared", pf.steps_declared), ("park_pad_cost", pf.steps_pad_cost),
+                     ("park_stay", pf.steps_stay)):
+        add(f"econ.{name}", f"worked {name.replace('_', ' ')}", steps(fn))
+    add("econ.deluxe", "the deluxe pad, priced", lines(bf.steps_deluxe))
+
+    h, tr, st = he.house(), he.trailer(), he.stack()
+    b = h.buckets
+    money = lambda v: f"{v:,.0f}"
+    add("house.price", "the survey house's price", lambda: money(h.price))
+    add("house.land", "its land", lambda: money(b["land"]))
+    add("house.building", "the building itself", lambda: money(b["materials"] + b["labor"] + b["fees"]))
+    add("house.builder", "the builder's overhead and profit", lambda: money(b["builder"]))
+    add("house.selling", "selling it: commission, marketing, financing", lambda: money(b["selling"]))
+    add("house.labor", "the labor in the building", lambda: money(b["labor"]))
+    add("house.labor_pct", "labor as a share of the price, %", lambda: f"{100 * b['labor'] / h.price:.1f}")
+    add("house.materials", "materials in the building", lambda: money(b["materials"]))
+    add("trailer.price", "the manufactured home's price", lambda: money(tr.price))
+    add("trailer.dealer", "the dealer's share", lambda: money(tr.dealer))
+    add("trailer.materials", "the factory's materials", lambda: money(tr.materials))
+    add("trailer.payroll", "the factory's payroll", lambda: money(tr.payroll))
+    add("trailer.other", "the factory's overhead and profit", lambda: money(tr.factory_other))
+    add("trailer.labor_pct", "factory labor as a share of the price, %", lambda: f"{100 * tr.payroll / tr.price:.1f}")
+    add("stack.buy", "the floor, bought whole", lambda: money(st.buy))
+    add("stack.cash", "the dome way's cash, every hour yours", lambda: money(st.cash))
+    add("stack.margin", "the builder's and seller's share you keep", lambda: money(st.margin))
+    add("stack.labor", "labor you do yourself", lambda: money(st.labor))
+    add("stack.trees", "lumber from your own trees", lambda: money(st.trees))
+    add("stack.shape", "what the shape itself saves", lambda: money(st.shape))
+    add("stack.unchanged_pct", "share of building cost the shape does not touch, %",
+        lambda: f"{100 * st.unchanged:.0f}")
 
 
 RING_ERROR_IN = 0.125

@@ -1,5 +1,5 @@
 ---
-chapter: 44
+chapter: 49
 title: Why We Call It a Stem Cell
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 940
 updated: 2026-09-25
 ---
 
-# 44. Why We Call It a Stem Cell
+# 49. Why We Call It a Stem Cell
 
 A stem cell is a cell that has not decided what to be yet.
 

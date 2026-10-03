@@ -1,5 +1,5 @@
 ---
-chapter: 47
+chapter: 52
 title: Hang It Between Two Trees
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 660
 updated: 2026-09-25
 ---
 
-# 47. Hang It Between Two Trees
+# 52. Hang It Between Two Trees
 
 This is the most speculative corner of the method, and it exists because the
 floor of Chapter {{ch.floor}} clamps to a mast rather than being framed into

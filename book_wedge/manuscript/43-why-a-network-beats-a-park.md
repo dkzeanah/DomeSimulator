@@ -1,5 +1,5 @@
 ---
-chapter: 38
+chapter: 43
 title: Why a Network Beats a Park
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 2300
 updated: 2026-09-25
 ---
 
-# 38. Why a Network Beats a Park
+# 43. Why a Network Beats a Park
 
 An RV park rents you a slot for a week. This rents you a foundation for a
 decade.

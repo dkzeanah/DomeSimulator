@@ -1,5 +1,5 @@
 ---
-chapter: 43
+chapter: 48
 title: Twelve Buildings, One Tool
 strand: reference
 status: draft
@@ -7,7 +7,7 @@ target: 740
 updated: 2026-09-25
 ---
 
-# 43. Twelve Buildings, One Tool
+# 48. Twelve Buildings, One Tool
 
 The previous chapter priced the frame and the envelope. This one is
 everything else the Dome Creator will put on a shell — and the point of it is
