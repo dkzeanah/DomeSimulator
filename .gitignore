@@ -35,7 +35,11 @@ two_v_demo_output/
 .*-silent-render.mp4
 
 # Local editor/tool state
-.claude/
+# (.claude/* rather than .claude/ so the observer's hook config can be re-included;
+#  settings.local.json, launch.json and the rest stay local)
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
 .vscode/
 
 # Node dependencies (third-party libraries, never commit)
@@ -76,3 +80,6 @@ my_voice/
 # Speech rendered in the owner's cloned voice is personal voice data, like my_voice/.
 *-myvoice/
 *myvoice*.wav
+
+# Project Intelligence Observer: local generated data (source in intelligence/ is committed)
+.intelligence/

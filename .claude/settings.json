@@ -1,0 +1,94 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "py -3.12 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/intelligence_observer.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "py -3.12 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/intelligence_observer.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "py -3.12 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/intelligence_observer.py\"",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "py -3.12 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/intelligence_observer.py\"",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "py -3.12 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/intelligence_observer.py\"",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "py -3.12 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/intelligence_observer.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "py -3.12 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/intelligence_observer.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
