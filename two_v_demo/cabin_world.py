@@ -193,18 +193,48 @@ def horizon_row(eye, target, mvp, width: int, height: int) -> float:
 
 
 _SKIES: dict = {}
+SKY_CACHE = 16
+"""Skies kept at once. Each is a full frame -- 24 MB at 1080p as float32 --
+and a camera that rises keeps asking for new rows, so the cache is bounded
+and forgets the oldest; the renderer turns the sky to float32 anyway."""
+
+
+SKY_STEP = 16
+"""Rows between painted skies. Painting one takes about 1.5 s, and a camera
+that cranes or pushes moves the horizon a few rows every frame, so painting
+per row repainted nearly every frame. The sky is painted every SKY_STEP rows
+and slid the last few rows: the hills and the sun ride the horizon exactly,
+and the gradient is off by under SKY_STEP / 2 rows in hundreds."""
+
+
+def _painted(width: int, height: int, row: int) -> np.ndarray:
+    key = (width, height, row)
+    if key in _SKIES:
+        _SKIES[key] = _SKIES.pop(key)          # most recently used goes last
+    else:
+        while len(_SKIES) >= SKY_CACHE:
+            _SKIES.pop(next(iter(_SKIES)))
+        _SKIES[key] = np.asarray(_scene().backdrop(width, height, row), dtype=np.float32)
+    return _SKIES[key]
 
 
 def sky(width: int, height: int, horizon: float) -> np.ndarray:
     """The painted sunset for a horizon row, cached: the sky depends on
     nothing else, so a slow camera reuses it for many frames."""
     row = int(round(max(-height, min(2 * height, horizon))))
-    key = (width, height, row)
-    if key not in _SKIES:
-        if len(_SKIES) > 64:
-            _SKIES.clear()
-        _SKIES[key] = _scene().backdrop(width, height, row)
-    return _SKIES[key]
+    base = int(round(row / SKY_STEP)) * SKY_STEP
+    img = _painted(width, height, base)
+    shift = row - base
+    if shift == 0:
+        return img
+    out = np.empty_like(img)
+    if shift > 0:                               # horizon lower: slide the picture down
+        out[shift:] = img[:-shift]
+        out[:shift] = img[:1]
+    else:
+        out[:shift] = img[-shift:]
+        out[shift:] = img[-1:]
+    return out
 
 
 def backdrop(app, eye, target, mvp, width: int, height: int) -> np.ndarray:

@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:35:35",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "It has to come out.\n\nThe first web is in the way. Hung from the second, the crown rises to 9.9 metres, and the first web crosses at 6.7: the dome would pass 3.2 metres up through it. So the dome is handed over first, on long cords from the second web, a corner at a time. Then the first web comes out: the spiral unwound from its outer end, and each rope of the X untied at one tree and pulled through from the other.",
+  "watermark": "preserved model-provided watermark"
+}

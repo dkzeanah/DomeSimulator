@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:20:41",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "The price of one point.\n\nAnd here is what that costs. Through the air means through the room. A cord from the rim to the ring under the cap passes, halfway to the wall, only 1.2 metres above a floor laid at the rim. Fine while it is a frame hanging in the trees. In a home, those cords are lowered away once the dome is set where it will stay, or it is hung by its rim instead.",
+  "watermark": "preserved model-provided watermark"
+}

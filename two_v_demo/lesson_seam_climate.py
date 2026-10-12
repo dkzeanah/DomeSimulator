@@ -102,6 +102,21 @@ def _barrier_pa() -> float:
 F = _facts()
 
 
+def _vent_facts() -> dict:
+    """The breathing cap, from :mod:`two_v_demo.seam_vent` -- the same values
+    the wedge book's chapter prints."""
+    from . import seam_vent as sv
+
+    rows = {r["weather"]: r for r in sv.weather_table()}
+    route = sv.descending_seams()
+    cap = sv.capacity()
+    return {"route": route, "cap": cap, "rows": rows, "freeze": sv.freeze_limit(),
+            "need": sv.need_cfm(), "fan": scl.C["fan_static_pa"]}
+
+
+V = _vent_facts()
+
+
 def _label(app, point, text, colour=WHITE) -> None:
     app.world_labels.append(WorldLabel(np.asarray(point, dtype=np.float32), text, colour))
 
@@ -434,6 +449,278 @@ def p_close(app, opaque, transparent, p):
     _label(app, m.apex + [0, 0, 0.7], "DEW POINT DECIDES", AMBER)
 
 
+EXHAUST = (0.95, 0.55, 0.15, 1.0)
+FRESH = (0.35, 0.85, 0.45, 1.0)
+
+
+def _falling(opaque, p: float, colour=None, count: int = 2) -> None:
+    """Exhaust going down every falling band: cap, upper band, lower band."""
+    for band in ("cap", "upper", "lower"):
+        flow(opaque, band_seams(band), p, colour or EXHAUST, up=False, count=count, size=0.30)
+
+
+def _grille(opaque) -> np.ndarray:
+    m = cw.landmarks()
+    g = m.apex - np.array([0.0, 0.0, 0.45])
+    opaque.disc(g, 0.22, (0.15, 0.15, 0.17, 1.0), 20)
+    return g
+
+
+def _ports(opaque, p: float, fresh_every: int = 2) -> None:
+    """A port at every rim corner, outside and below the cap's edge, facing the
+    ground: stale air leaving down, and on every other one fresh air coming in."""
+    m = cw.landmarks()
+    for i, q in enumerate(rim_points()):
+        out = np.array([q[0] - m.dome_centre[0], q[1] - m.dome_centre[1], 0.0])
+        out /= np.linalg.norm(out) + 1e-9
+        # Above the deck, just outside the base ring, mouth facing the deck.
+        port = q + out * 0.22 + np.array([0.0, 0.0, 0.55])
+        opaque.box(port, (0.22, 0.22, 0.14), (0.30, 0.30, 0.33, 1.0))
+        fresh = (i % fresh_every == 1)
+        for k in range(2):
+            t = (k / 2 + p) % 1.0
+            if fresh:
+                c = port - np.array([0.0, 0.0, 0.50 - 0.40 * t])
+                opaque.cone(c, c + np.array([0.0, 0.0, 0.18]), 0.08, FRESH, 10)
+            else:
+                c = port - np.array([0.0, 0.0, 0.10 + 0.40 * t])
+                opaque.cone(c, c - np.array([0.0, 0.0, 0.18]), 0.08, EXHAUST, 10)
+
+
+def _room_rising(opaque, p: float) -> None:
+    m = cw.landmarks()
+    base = m.dome_centre + np.array([0.0, 0.0, 0.4])
+    top = m.apex - np.array([0.0, 0.0, 0.6])
+    d = top - base
+    for k in range(4):
+        c = base + d * ((k / 4 + p) % 1.0)
+        opaque.cone(c, c + np.array([0.0, 0.0, 0.32]), 0.13, HOT, 12)
+
+
+def p_correction(app, opaque, transparent, p):
+    cw.paint(app)
+    paint_bands(app, ("cap",))
+    flow(opaque, band_seams("cap"), p, RED, up=True, count=2, size=0.30)
+    m = cw.landmarks()
+    _label(app, m.apex + [0, 0, 0.85], "CORRECTION: NO VENT AT THE APEX", RED)
+    _label(app, m.apex + [0, 0, 0.5], "A VENT THERE IS A HOLE IN THE CAP", WHITE)
+
+
+def p_crown(app, opaque, transparent, p):
+    cw.paint(app)
+    paint_bands(app, ("cap", "upper", "lower"))
+    g = _grille(opaque)
+    _room_rising(opaque, p)
+    flow(opaque, band_seams("cap"), p, EXHAUST, up=False, count=3, size=0.30)
+    m = cw.landmarks()
+    _label(app, m.apex + [0, 0, 0.85], f"HOLES IN THE CAP: {V['route'].cap_penetrations}", GREEN)
+    _label(app, g - [0, 0, 0.35], "CROWN GRILLE, UNDER THE CAP", AMBER)
+
+
+def p_down(app, opaque, transparent, p):
+    cw.paint(app)
+    paint_bands(app, ("cap", "upper", "lower"))
+    _falling(opaque, p)
+    _ports(opaque, p, fresh_every=10 ** 6)
+    m = cw.landmarks()
+    _label(app, m.apex + [0, 0, 0.85], f"{V['route'].seams_down} SEAMS FALL APEX TO RIM", AMBER)
+    _label(app, near_dome(rim_points())[0] + [0, 0, -0.55], "OUT AT THE RIM, FACING THE GROUND", WHITE)
+
+
+def p_siphon(app, opaque, transparent, p):
+    cw.paint(app)
+    paint_bands(app, ("cap", "upper", "lower"))
+    _room_rising(opaque, p)
+    _falling(opaque, p, (0.45, 0.70, 1.0, 1.0))
+    m = cw.landmarks()
+    w = V["rows"]["winter"]
+    _label(app, m.apex + [0, 0, 0.85], f"WINTER: {w['drive_pa']:.1f} PA, {100 * w['share']:.0f}% OF THE NEED, NO FAN",
+           BLUE)
+    _label(app, m.apex + [0, 0, 0.5], "WARM AIR RISES IN THE ROOM; COOLED AIR FALLS IN THE SEAMS", WHITE)
+
+
+def p_water(app, opaque, transparent, p):
+    cw.paint(app)
+    paint_bands(app, ("lower",))
+    flow(opaque, band_seams("lower"), p, WET, up=False, count=3, size=0.30)
+    _ports(opaque, p, fresh_every=10 ** 6)
+    m = cw.landmarks()
+    for q in rim_points():
+        out = np.array([q[0] - m.dome_centre[0], q[1] - m.dome_centre[1], 0.0])
+        out /= np.linalg.norm(out) + 1e-9
+        for k in range(3):
+            opaque.sphere(q + out * 0.22 + np.array([0.0, 0.0, 0.42 - 0.40 * ((k / 3 + p) % 1.0)]),
+                          0.045, WET, 4, 8)
+    _label(app, near_dome(rim_points())[0] + [0, 0, 0.6], "THE WATER LEAVES BY THE SAME DOOR", BLUE)
+
+
+def p_twoway(app, opaque, transparent, p):
+    cw.paint(app)
+    paint_bands(app, ("cap", "upper", "lower"))
+    _room_rising(opaque, p)
+    _falling(opaque, p, count=1)
+    _ports(opaque, p, fresh_every=2)
+    m = cw.landmarks()
+    _label(app, m.apex + [0, 0, 0.85], "FRESH IN LOW, STALE OUT HIGH", GREEN)
+    _label(app, m.apex + [0, 0, 0.5], "BOTH DOORS AT THE BOTTOM, FACING DOWN", WHITE)
+
+
+def p_limits(app, opaque, transparent, p):
+    cw.paint(app)
+    paint_bands(app, ("lower",))
+    _ports(opaque, p, fresh_every=10 ** 6)
+    _label(app, near_dome(rim_points())[0] + [0, 0, 0.6], f"OUTLETS ICE BELOW {V['freeze']:.0f} C", BLUE)
+    _label(app, near_dome(rim_points())[0] + [0, 0, 0.3], "KEEP PORTS ABOVE THE SNOW; SCREEN THEM", WHITE)
+
+
+# ----------------------------------------------------------------------
+# Ten Peltier modules at the rim, and the power to run them
+# ----------------------------------------------------------------------
+
+def _ring_facts() -> dict:
+    """The owner's ten TEC1-12706s, from :mod:`two_v_demo.peltier_ring` -- the
+    same values the wedge book's chapter prints."""
+    from . import peltier_ring as pr
+
+    f = pr.facts()
+    room = pr.weather("humid")
+    dp = scl.dew_point(room[2], room[3])
+    return {**f, "C": pr.C, "room": room, "dp": dp, "setpoint": scl.plate_setpoint(dp),
+            "rows": pr.voltage_table("humid"), "sun_hours": pr._borrowed("sun_hours_per_day")}
+
+
+R = _ring_facts()
+SINK = (0.78, 0.80, 0.84, 1.0)
+
+
+def _stations(opaque, p: float, strength: float = 1.0, wet: bool = True,
+              hot_inside: bool = False) -> None:
+    """A module at every rim corner: cold plate facing the room (blue), finned
+    hot sink facing out (red), room air drawn onto the plate, heat thrown out,
+    and condensate running down to the port."""
+    m = cw.landmarks()
+    for q in rim_points():
+        out = np.array([q[0] - m.dome_centre[0], q[1] - m.dome_centre[1], 0.0])
+        out /= np.linalg.norm(out) + 1e-9
+        body = q + np.array([0.0, 0.0, 0.45])
+        cold = body - out * 0.20
+        hot = body + out * 0.24
+        opaque.box(body, (0.16, 0.16, 0.16), (0.25, 0.25, 0.28, 1.0))
+        opaque.box(cold, (0.26, 0.26, 0.26), COLD)
+        opaque.box(hot, (0.30, 0.30, 0.30), SINK)
+        for k in range(4):                                   # fins
+            opaque.box(hot + out * 0.17 + np.array([0.0, 0.0, -0.12 + 0.08 * k]),
+                       (0.05, 0.05, 0.05), HOT)
+        if strength <= 0:
+            continue
+        size = 0.10 + 0.14 * strength
+        heat_dir = -out if hot_inside else out
+        heat_from = cold if hot_inside else hot
+        for k in range(2):
+            t = (k / 2 + p) % 1.0
+            a = body - out * (1.10 - 0.70 * t)               # room air onto the plate
+            opaque.cone(a, a + out * size, size * 0.45, COLD, 10)
+            h = heat_from + heat_dir * (0.30 + 0.70 * t) + np.array([0.0, 0.0, 0.10])
+            opaque.cone(h, h + heat_dir * size, size * 0.45, HOT, 10)
+        if wet:
+            for k in range(3):
+                opaque.sphere(cold + np.array([0.0, 0.0, -0.18 - 0.30 * ((k / 3 + p) % 1.0)]),
+                              0.045, WET, 4, 8)
+
+
+ARRAY_ROWS = 3
+
+
+def _array_origin() -> np.ndarray:
+    """Behind the pad, in the open valley the forest leaves clear
+    (cover_scene.forest keeps its pines out of the corridor and the valley)."""
+    m = cw.landmarks()
+    per_row = math.ceil(R["plan"].panels / ARRAY_ROWS)
+    return np.array([-(per_row - 1) * 0.54, m.deck_r + 2.6, 0.0])
+
+
+def _power_bench(opaque) -> tuple[np.ndarray, np.ndarray]:
+    """The 24/7 array, one tile per panel, and the bank, one box per rack."""
+    plan = R["plan"]
+    o = _array_origin()
+    per_row = math.ceil(plan.panels / ARRAY_ROWS)
+    for i in range(plan.panels):
+        row, col = divmod(i, per_row)
+        c = o + np.array([col * 1.08, row * 1.30, 0.75 + row * 0.55])
+        opaque.box(c, (1.0, 1.15, 0.05), (0.10, 0.16, 0.32, 1.0))
+        opaque.box(c - np.array([0.0, 0.0, 0.40 + row * 0.27]), (0.05, 0.05, 0.75 + row * 0.55),
+                   (0.55, 0.55, 0.58, 1.0))
+    bank = o + np.array([per_row * 1.08 + 0.3, -0.4, 0.0])     # the array's east end, in view
+    for j in range(plan.racks):
+        opaque.box(bank + np.array([0.0, 0.0, 0.14 + 0.24 * j]), (0.60, 0.45, 0.22),
+                   (0.20, 0.22, 0.24, 1.0) if j % 2 else (0.28, 0.30, 0.33, 1.0))
+    centre = o + np.array([(per_row - 1) * 0.54, 0.65, 1.6])
+    return centre, bank + np.array([0.0, 0.0, 0.24 * plan.racks + 0.3])
+
+
+def p_module(app, opaque, transparent, p):
+    cw.paint(app)
+    _stations(opaque, p)
+    lc, pt = R["listing"], R["humid"]["point"]
+    q = near_dome(rim_points())[0]
+    _label(app, q + [0, 0, 1.45], f"ON THE BOX {lc['q_max_listed']:.0f} W; THE PHYSICS {lc['q_max_true']:.0f} W", AMBER)
+    _label(app, q + [0, 0, 1.15], f"MOUNTED AT 12 V: {pt.q_cold:.0f} W MOVED FOR {pt.p_station:.0f} W", WHITE)
+
+
+def p_rescore(app, opaque, transparent, p):
+    cw.paint(app)
+    _stations(opaque, p)
+    m = cw.landmarks()
+    _label(app, m.apex + [0, 0, 0.85], f"CORRECTION: {R['C']['old_litres_per_kwh']:.2f} L/kWh WAS ASSUMED", RED)
+    _label(app, m.apex + [0, 0, 0.5], f"SOLVED FROM THE MODULE: {R['humid']['litres_per_kwh']:.2f} L/kWh", GREEN)
+
+
+def p_volts(app, opaque, transparent, p):
+    cw.paint(app)
+    rows = R["rows"]
+    r = rows[min(len(rows) - 1, int(p * len(rows)))]
+    pt = r["point"]
+    _stations(opaque, p, strength=pt.q_cold / rows[-1]["point"].q_cold, wet=r["water_l_day"] > 0)
+    q = near_dome(rim_points())[0]
+    _label(app, q + [0, 0, 1.45], f"{pt.volts:.0f} V: {pt.q_cold:.0f} W MOVED, {pt.cop:.2f} PER WATT", AMBER)
+    _label(app, q + [0, 0, 1.15], f"PLATE {pt.t_cold:.1f} C, DEW {R['dp']:.1f} C: "
+           + (f"{r['water_l_day']:.1f} L/DAY" if r["water_l_day"] > 0 else "NO WATER"),
+           BLUE if r["water_l_day"] > 0 else RED)
+
+
+def p_day(app, opaque, transparent, p):
+    cw.paint(app)
+    inside = p > 0.6
+    _stations(opaque, p, hot_inside=inside)
+    m = cw.landmarks()
+    h, ld = R["humid"], R["loads"]
+    if inside:
+        _label(app, m.apex + [0, 0, 0.85], f"HOT FACES INSIDE: A {h['draw_w']:.0f} W HEATER", RED)
+    else:
+        _label(app, m.apex + [0, 0, 0.85], f"TEN: {h['cooling_w']:.0f} W AND {h['water_l_day']:.1f} L/DAY OUT", BLUE)
+    _label(app, m.apex + [0, 0, 0.5], f"THE ROOM TAKES ON {ld['water_l_day']:.1f} L/DAY", WHITE)
+
+
+def p_sun(app, opaque, transparent, p):
+    cw.paint(app)
+    _stations(opaque, p)
+    array, bank = _power_bench(opaque)
+    plan = R["plan"]
+    _label(app, array + [0, 0, 0.9], f"{plan.array_w:,.0f} W OF PANELS, ${plan.array_usd:,.0f}", AMBER)
+    _label(app, bank + [0, 0, 0.2], f"{plan.bank_nameplate_kwh:.1f} kWh BANK, ${plan.bank_usd:,.0f}", AMBER)
+    m = cw.landmarks()
+    _label(app, m.apex + [0, 0, 0.7], f"${plan.total_usd:,.0f} TO RUN ${plan.modules_usd:,.0f} OF PLATES", RED)
+
+
+def p_instead(app, opaque, transparent, p):
+    cw.paint(app)
+    _stations(opaque, p, strength=R["volts"][9]["point"].q_cold / R["humid"]["point"].q_cold)
+    m = cw.landmarks()
+    d = R["daylight"]
+    _label(app, m.apex + [0, 0, 0.85], f"DAYLIGHT SURPLUS: {d['hours']:.0f} H, {d['litres']:.2f} L/DAY, NO BANK", GREEN)
+    _label(app, m.apex + [0, 0, 0.5], f"CAP THE DRIVE AT {R['best']['point'].volts:.0f} V", WHITE)
+
+
 # ----------------------------------------------------------------------
 # Cameras
 # ----------------------------------------------------------------------
@@ -473,6 +760,25 @@ def _moves() -> dict:
         "stove": shots.push_in(m.dome_centre + [-0.9, -0.6, 1.0], m.dome_centre + [1.3, 1.1, 1.5],
                                m.dome_centre + [0.9, 0.7, 1.4], 56, 50),
         "plan": shots.orbit(dome, 10.0, 6.0, -130, 60, 46),
+        "correction": shots.orbit(dome, 9.0, 4.2, -100, 25, 46),
+        "crown": shots.orbit(dome, 9.5, 3.0, -115, 30, 46),
+        "down": shots.orbit(dome, 8.6, 1.8, -95, -30, 46),
+        "siphon": shots.orbit(dome, 10.0, 2.6, -125, 35, 46),
+        "water": shots.low_hero(m.dome_centre + [0, 0, 0.5], 6.8, eye_height=0.7,
+                                start_deg=-110, sweep_deg=30, look_up=0.2, fov=46),
+        "twoway": shots.orbit(dome, 10.0, 2.4, -80, 30, 46),
+        "limits": shots.low_hero(m.dome_centre + [0, 0, 0.5], 7.2, eye_height=0.8,
+                                 start_deg=-70, sweep_deg=-30, look_up=0.2, fov=46),
+        "module": shots.low_hero(m.dome_centre + [0, 0, 0.5], 6.8, eye_height=0.9,
+                                 start_deg=-110, sweep_deg=30, look_up=0.2, fov=46),
+        "rescore": shots.orbit(dome, 9.0, 3.5, -100, 25, 46),
+        "volts": shots.low_hero(m.dome_centre + [0, 0, 0.5], 6.5, eye_height=0.9,
+                                start_deg=-95, sweep_deg=20, look_up=0.2, fov=46),
+        "day": shots.orbit(dome, 9.5, 2.6, -120, 35, 46),
+        # From above the treeline, south-east, over the dome to the array behind it.
+        "sun": shots.push_in(m.dome_centre + [0.3, 3.2, 0.2], m.dome_centre + [5.2, -10.0, 9.5],
+                             m.dome_centre + [3.8, -8.2, 8.2], 46, 44),
+        "instead": shots.orbit(dome, 10.0, 3.0, -70, -30, 46),
         "close": shots.crane_reveal(m.dome_centre + [0, -0.6, 1.4], near + [0.4, -0.9, 0.3],
                                     cw.HERO_EYE, 40, 46, look_start=near),
     }
@@ -504,6 +810,8 @@ def _chapters() -> tuple[Chapter, ...]:
     choices = [f"{s.label}: dew {deg(d.dp_out)} out / {deg(d.dp_in)} in -> {d.mode}"
                for s, d in f["decisions"]]
     modes = [f"{k}: {scl.MODES[k][0]}" for k in scl.ACTIVE_MODES]
+    r_c, r_lc, r_h, r_ld, r_cmp, r_plan = R["C"], R["listing"], R["humid"], R["loads"], R["compared"], R["plan"]
+    r_pt, r_room, r_rows = r_h["point"], R["room"], R["rows"]
     rows = [
         (1, "breathe", "One channel, many jobs", "Which way should the seam breathe?",
          f"Every one of this dome's {f['seams']} seams has a channel inside it. Air can go in "
@@ -685,7 +993,146 @@ def _chapters() -> tuple[Chapter, ...]:
          ["rim: ports, plates, drains, drawers", "lower band: air up, water down",
           "belt: drains at the low points", "pentagon: exhaust manifold, air only",
           "cap: apex vent", "sensors: T, RH in / out / seam, wood %, rain"]),
-        (22, "close", "Dew point decides", "Send air toward the wood only when it is drier.",
+        (22, "correction", "A correction: the cap never opens", "Chapters 15 and 21 put a hole in the roof.",
+         "First, a correction. Earlier in this film, the stack chapter let the exhaust out at the "
+         "pentagon ring and the apex, and the layout said the cap vents at the apex. That is wrong. "
+         "A vent at the apex is a hole in the cap, at the place the weather hits hardest, with the "
+         "frame right under it. The cap is one watertight layer, and it is never opened. Here is "
+         "how the dome breathes anyway.",
+         ["was: exhaust out at the apex", "now: no opening in the cap above the rim"]),
+        (23, "crown", "In at the crown, under the cap", "The stalest air is at the top.",
+         f"Warm air rises, and the warmest air in the room is also the wettest and the stalest: "
+         f"breath and steam, carried up. In a dome it collects at the crown. So a grille there, "
+         f"inside the shell and under the cap, takes the room's air into the seam channels, inside "
+         f"their printed keys. Holes through the cap above the rim: "
+         f"{V['route'].cap_penetrations}.",
+         ["intake: a grille at the crown, inside the shell",
+          f"holes in the cap = {V['route'].cap_penetrations}"]),
+        (24, "down", "Down the seams, out facing the ground", "Every falling seam is a path.",
+         f"From the crown the air goes down. {V['route'].seams_down} of the dome's {F['seams']} "
+         f"seams fall all the way from the apex to the rim without climbing; the "
+         f"{V['route'].level_seams} level seams of the pentagon ring stay off the path. It leaves at "
+         f"the rim, through ports under the cap's brim that face the ground. Rain falls; an opening "
+         f"that faces down takes in only water that would have to climb. The dome needs "
+         f"{V['need']:.1f} cubic feet a minute, and the five cap seams carry "
+         f"{V['cap']['headroom']:.1f} times that at a quiet speed.",
+         [f"falling seams = {V['route'].seams_down} of {F['seams']}",
+          f"level, kept out = {V['route'].level_seams}",
+          f"capacity = {V['cap']['headroom']:.1f} x the {V['need']:.1f} cfm need"]),
+        (25, "siphon", "In winter the air falls by itself", "A loop that turns itself.",
+         f"Here is why down is the right way. In winter the room's warm air rises to the crown. In "
+         f"the channel the exhaust gives its heat to the cold shell, gets heavier than the room's "
+         f"air, and falls. A warm column rising and a cool one falling make a loop that turns "
+         f"itself. At {V['rows']['winter']['t_out']:.0f} degrees outside it pulls with "
+         f"{V['rows']['winter']['drive_pa']:.1f} pascals and carries "
+         f"{100 * V['rows']['winter']['share']:.0f} percent of the need with no fan. In cool weather, "
+         f"{100 * V['rows']['cool']['share']:.0f} percent. In summer sun it runs backwards, and the "
+         f"fan does it all against {V['rows']['summer sun']['fan_pa']:.0f} pascals, where a small fan "
+         f"pushes {V['fan']:.0f}.",
+         [f"{r['weather']}: {r['drive_pa']:.2f} Pa, {100 * r['share']:.0f}% of the need"
+          for r in V["rows"].values()]),
+        (26, "water", "The water leaves by the same door", "Air and condensate, the same way down.",
+         f"When the channel is colder than the room air's dew point, the exhaust drops water inside "
+         f"the key: {V['rows']['winter']['litres_day']:.2f} litres a day at "
+         f"{V['rows']['winter']['t_out']:.0f} degrees outside, "
+         f"{V['rows']['hard winter']['litres_day']:.1f} at {V['rows']['hard winter']['t_out']:.0f}. "
+         f"That water runs downhill, which is the way the air is already going, and out of the same "
+         f"ports. Sent up, it would run back against the air and pool. Sent down, nothing pools, and "
+         f"the wet air never touches the wood: it runs inside the key.",
+         [f"winter: {V['rows']['winter']['litres_day']:.2f} L/day",
+          f"hard winter: {V['rows']['hard winter']['litres_day']:.2f} L/day", "out with the air, at the rim"]),
+        (27, "twoway", "Two ways, both doors at the bottom", "Fresh in low, stale out high.",
+         "The dome breathes both ways. Fresh air comes in through its own ports at the rim, facing "
+         "the ground, and into the room low, past the drawers and plates. Stale air leaves from the "
+         "crown, down the seams, and out at the rim. The room itself is the loop's rising leg. Run "
+         "the two flows equal, and the room is neither pressed nor pulled, so no air is forced "
+         "through the frame either way.",
+         ["in: rim ports -> room, low", "out: crown -> seams -> rim ports", "in = out"]),
+        (28, "limits", "Where it stops working", "Ice, snow, screens and summer.",
+         f"And where it stops. With the channel halfway between inside and outside, the outlets "
+         f"reach freezing below {V['freeze']:.0f} degrees outside, and ice can close them: heat the "
+         f"outlet stubs, or run the exhaust through the rim drawers on those nights. A port under a "
+         f"snowdrift does nothing, so keep the ports above the snow line. Screen every one. And in "
+         f"summer the fan carries the whole need.",
+         [f"outlets freeze below {V['freeze']:.0f} C (channel halfway, assumed)",
+          "ports above the snow line, screened", "summer: the fan"]),
+        (29, "module", "Seventy on the box", "Ten modules at the rim, run day and night.",
+         f"Now the plates themselves. You bought one thermoelectric module, a TEC1-12706, for "
+         f"{r_c['module_usd']:.0f} dollars, and want {r_c['modules']:.0f} round the rim, one at each "
+         f"port, running day and night on the sun. The listing says {r_lc['q_max_listed']:.0f} watts. "
+         f"Worked from the listing's own maxima, the most it can move is {r_lc['q_max_true']:.0f}, and "
+         f"only with no temperature difference across it. Mounted here, hot face on a finned sink "
+         f"outside at {r_room[4]:.0f} degrees, cold face in a room at {r_room[2]:.0f} and "
+         f"{100 * r_room[3]:.0f} percent, it settles at {r_pt.t_cold:.1f} degrees, draws "
+         f"{r_pt.amps:.1f} amps, and moves {r_pt.q_cold:.0f} watts of heat for {r_pt.p_station:.0f} "
+         f"watts of electricity, its fans included.",
+         [f"listed {r_lc['q_max_listed']:.0f} W; physics {r_lc['q_max_true']:.1f} W at dT = 0",
+          f"mounted, 12 V: cold face {r_pt.t_cold:.1f} C, {r_pt.amps:.2f} A",
+          f"moves {r_pt.q_cold:.1f} W for {r_pt.p_station:.1f} W",
+          "sinks 0.20 K/W hot, 0.40 K/W cold (assumed)"]),
+        (30, "rescore", "A correction: less water per watt", "Two earlier films assumed a yield.",
+         f"A correction. The Seam Does Four Jobs and The Wedge Dome Explained counted "
+         f"{r_c['old_modules']:.0f} plates at {r_c['old_watts_each']:.0f} watts, making "
+         f"{r_c['old_litres_per_kwh']:.2f} litres of water per kilowatt hour. That yield was an "
+         f"assumption, and it was wrong. Solved from the module, the cold face is "
+         f"{R['dp'] - r_pt.t_cold:.1f} degrees under the room's dew point, and only "
+         f"{100 * r_pt.latent_share:.0f} percent of the heat it takes is water. The yield is "
+         f"{r_h['litres_per_kwh']:.2f} litres per kilowatt hour: a litre costs "
+         f"{R['daylight']['kwh_per_litre']:.1f} kilowatt hours, not "
+         f"{R['daylight']['old_kwh_per_litre']:.1f}.",
+         [f"was: {r_c['old_modules']:.0f} x {r_c['old_watts_each']:.0f} W, "
+          f"{r_c['old_litres_per_kwh']:.2f} L/kWh (assumed)",
+          f"now: {r_c['modules']:.0f} x {r_pt.p_station:.0f} W, {r_h['litres_per_kwh']:.2f} L/kWh (solved)",
+          f"water share of the heat = {100 * r_pt.latent_share:.0f}%"]),
+        (31, "volts", "Slower is better, until it stops condensing", "Voltage against water.",
+         f"Run a Peltier gently and it gets far more efficient: at {r_rows[0]['point'].volts:.0f} "
+         f"volts it moves {r_rows[0]['point'].cop:.2f} watts of heat per watt, at 12 only "
+         f"{r_pt.cop:.2f}. But at 6 volts the cold face stops at {R['volts'][6]['point'].t_cold:.1f} "
+         f"degrees, above the dew point, and the water stops. The most water per kilowatt hour "
+         f"comes at {R['best']['point'].volts:.0f} volts. And the controller asks for the plate "
+         f"{f['below']:.0f} degrees under the dew point, {R['setpoint']:.1f}. At full drive the "
+         f"module stops {r_pt.t_cold - R['setpoint']:.1f} short, so chasing that setpoint just runs "
+         f"it flat out. Cap the drive at {R['best']['point'].volts:.0f} volts instead.",
+         [f"{r['point'].volts:.0f} V: {r['point'].q_cold:.0f} W, COP {r['point'].cop:.2f}, "
+          f"plate {r['point'].t_cold:.1f} C, ten make {r['water_l_day']:.1f} L/day"
+          for r in r_rows] + [f"dew point {R['dp']:.1f} C, setpoint {R['setpoint']:.1f} C"]),
+        (32, "day", "A day of ten", "Heat and water out, against what the room takes on.",
+         f"Ten at 12 volts, all day, on a humid day: {r_h['cooling_w']:.0f} watts of heat out of the "
+         f"room, and {r_h['water_l_day']:.1f} litres of water a day. Two people, their cooking and "
+         f"washing, and the fresh air put in {r_ld['water_l_day']:.1f} litres. The ring takes out "
+         f"about {100 * r_h['water_l_day'] / r_ld['water_l_day']:.0f} percent. It helps; it does not "
+         f"keep up. And the hot faces must be outside: they throw {r_h['outside_w']:.0f} watts. "
+         f"Mounted the other way round, the ring is a {r_h['draw_w']:.0f} watt heater that drips.",
+         [f"ten: {r_h['cooling_w']:.0f} W of heat, {r_h['water_l_day']:.1f} L/day of water",
+          f"room takes on {r_ld['water_l_day']:.1f} L/day, {r_ld['heat_w']:.0f} W (sun not counted)",
+          f"hot faces: {r_h['outside_w']:.0f} W, outside"]),
+        (33, "sun", "Feeding it on the sun", "Twenty-four hours a day, priced.",
+         f"Running all day and all night, ten stations draw {r_plan.load_w:.0f} watts: "
+         f"{r_plan.day_kwh:.1f} kilowatt hours a day, {r_plan.night_kwh:.1f} of them off a bank at "
+         f"night. From {R['sun_hours']:.1f} "
+         f"peak sun hours, that takes about {r_plan.array_w:,.0f} watts of panels, and a "
+         f"{r_plan.bank_nameplate_kwh:.1f} kilowatt hour bank to cover the night and one dark day. "
+         f"That is {r_plan.total_usd:,.0f} dollars, for {r_plan.modules_usd:.0f} dollars of modules. "
+         f"A small compressor dehumidifier takes out the same water for "
+         f"{r_cmp['dehumidifier_kwh']:.1f} kilowatt hours a day.",
+         [f"load {r_plan.load_w:.0f} W x 24 h = {r_plan.day_kwh:.1f} kWh/day",
+          f"array {r_plan.array_w:,.0f} W ({r_plan.panels} panels): ${r_plan.array_usd:,.0f}",
+          f"bank {r_plan.bank_nameplate_kwh:.1f} kWh ({r_plan.racks} racks): ${r_plan.bank_usd:,.0f}",
+          f"dehumidifier, same water: {r_cmp['dehumidifier_kwh']:.1f} kWh/day (estimate)"]),
+        (34, "instead", "What to do instead", "Daylight surplus, a cap on the drive, a compressor.",
+         f"So keep the plates for the job only they can do: drying a seam that will not dry itself "
+         f"in warm, still, humid weeks. Run them on daylight surplus, "
+         f"{R['daylight']['hours']:.0f} hours a day: {R['daylight']['kwh']:.1f} kilowatt hours the "
+         f"array was making anyway, and {R['daylight']['litres']:.2f} litres a day, with no extra "
+         f"battery. Cap the drive at {R['best']['point'].volts:.0f} volts. And if the room itself "
+         f"needs drying or cooling for weeks, buy the compressor: the smallest window air "
+         f"conditioner moves {r_cmp['ac_cop']:.1f} watts of heat per watt; the ring moves "
+         f"{r_cmp['ring_cop']:.2f}.",
+         [f"daylight surplus: {R['daylight']['hours']:.0f} h, {R['daylight']['kwh']:.1f} kWh, "
+          f"{R['daylight']['litres']:.2f} L/day",
+          f"cap the drive: {R['best']['point'].volts:.0f} V",
+          f"window AC {r_cmp['ac_cop']:.1f} W per W; the ring {r_cmp['ring_cop']:.2f}"]),
+        (35, "close", "Dew point decides", "Send air toward the wood only when it is drier.",
          "One rule runs all of it. Send air toward the structure only when its dew point is "
          "lower than the moisture you are trying to remove, unless you are sending wetter air to "
          "a cold metal surface built to collect and drain the water. The same seams, winter and "
@@ -702,7 +1149,10 @@ SCENES = {
     "weathers": p_weathers, "choices": p_choices, "loop": p_loop, "levels": p_levels,
     "pentagon": p_pentagon, "rim": p_rim, "stack": p_stack, "packed": p_packed,
     "regen": p_regen, "drawer": p_drawer, "honest": p_honest, "stove": p_stove,
-    "plan": p_plan, "close": p_close,
+    "plan": p_plan, "correction": p_correction, "crown": p_crown, "down": p_down,
+    "siphon": p_siphon, "water": p_water, "twoway": p_twoway, "limits": p_limits,
+    "module": p_module, "rescore": p_rescore, "volts": p_volts, "day": p_day, "sun": p_sun,
+    "instead": p_instead, "close": p_close,
 }
 
 
@@ -728,6 +1178,26 @@ def validate_seam_climate_film() -> None:
     assert F["stack"] < F["barrier"], "the stack helps, it does not replace the fan"
     assert F["b"].seam_flow_at_fan_cfm < 1.0
     assert F["c"]["plate"] > F["frost"] - 1e-9
+    # The breathing cap: no hole in the cap, the correction names the old claim,
+    # and the winter siphon claim holds.
+    assert V["route"].cap_penetrations == 0
+    corr = next(ch for ch in CHAPTERS if ch.slug == "correction").narration[0]
+    assert "apex" in corr and "wrong" in corr
+    assert V["rows"]["winter"]["share"] >= 1.0, "chapter 25 says winter needs no fan"
+    assert V["rows"]["summer sun"]["fan_pa"] < V["fan"]
+    for slug in ("correction", "crown", "down", "siphon", "water", "twoway", "limits",
+                 "module", "rescore", "volts", "day", "sun", "instead"):
+        assert slug in SCENES and slug in MOVES, slug
+    # The ten plates: the module's own validator holds every claim the
+    # narration makes (70 W above the physics, 6 V dry, the setpoint out of
+    # reach, 9 V best, the power system dearer than the plates), and the
+    # correction names what was assumed.
+    from . import peltier_ring as pr
+    pr.validate_peltier_ring()
+    resc = next(ch for ch in CHAPTERS if ch.slug == "rescore").narration[0]
+    assert "correction" in resc.lower() and "assumption" in resc
+    assert R["humid"]["litres_per_kwh"] < R["C"]["old_litres_per_kwh"]
+    assert R["humid"]["water_l_day"] < R["loads"]["water_l_day"], "it does not keep up"
 
 
 CABIN_SEAM_CLIMATE_LESSON = Lesson(

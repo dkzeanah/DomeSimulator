@@ -27,6 +27,12 @@ in every joint, forever.
 
 ![The same log, opened a different way.](plate-stop-squaring.png)
 
+:::box clock
+{{clock.split_bar}}
+
+**{{clock.split_h}} hours of splitting** -- {{clock.split_kind}}. The clock goes from {{clock.split_from}} to **{{clock.split_to}} of {{clock.week}}**, leaving {{clock.split_left}} hours of the week. Splitting is the biggest single block of the week, and the only one timed at the log rather than worked out.
+:::
+
 ## The wrong question
 
 <!-- concept: wedge/square -->

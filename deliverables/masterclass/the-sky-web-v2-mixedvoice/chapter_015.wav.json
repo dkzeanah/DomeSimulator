@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:16:23",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "None of them touching.\n\nAnd there it is. Forty triangles, each in its place, each on its own three cords, none of them touching. The rim hangs 3.0 metres up, 10 feet, the crown at 5.9. Walk underneath and look up through it. Every seam is still open, every edge is reachable, and nothing is holding anything else up.",
+  "watermark": "preserved model-provided watermark"
+}

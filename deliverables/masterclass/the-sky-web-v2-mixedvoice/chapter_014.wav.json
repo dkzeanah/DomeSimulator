@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:15:49",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Keep the middle clear for the hook.\n\nThe order matters. The hook comes down at the centre, so the middle has to stay clear until the end: hang the rim first, then the band above it, and the crown last. And the crown is where the hook runs out. With a metre of harness above them, 5 crown triangles would need the hook higher than it can climb. They are hung low, the pigtails go on, and they are hauled the last 44 centimetres on their own cords.",
+  "watermark": "preserved model-provided watermark"
+}

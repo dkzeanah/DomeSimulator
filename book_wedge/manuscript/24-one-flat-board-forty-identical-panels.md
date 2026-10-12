@@ -17,6 +17,12 @@ panels — so panel forty is panel one.
 
 ![One flat sheet on sawhorses, and nothing else.](jig-01-bench.png)
 
+:::box clock
+{{clock.panels_bar}}
+
+**{{clock.panels_h}} hours of panels on the jig** -- {{clock.panels_kind}}. The clock goes from {{clock.panels_from}} to **{{clock.panels_to}} of {{clock.week}}**, leaving {{clock.panels_left}} hours of the week.
+:::
+
 ## Building the jig
 
 <!-- concept: why/bench -->

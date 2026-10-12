@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:13:56",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Under two minutes a triangle.\n\nUp it goes, flat, under the crossing. The hook tops out 6.1 metres up, 20 feet. A small twelve volt winch brings in about 4 metres a minute at this load, so a triangle takes 1.5 minutes to raise, and all forty about an hour of winding. Flat matters: a triangle that tips on the way up catches the line, the X, and anyone underneath.",
+  "watermark": "preserved model-provided watermark"
+}

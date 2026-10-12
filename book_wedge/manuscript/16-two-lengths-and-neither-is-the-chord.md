@@ -11,6 +11,12 @@ updated: 2026-09-25
 
 A 2V dome has two member lengths. This is the page you come back to.
 
+:::box clock
+{{clock.cut_bar}}
+
+**{{clock.cut_h}} hours of cutting and drilling** -- {{clock.cut_kind}}. The clock goes from {{clock.cut_from}} to **{{clock.cut_to}} of {{clock.week}}**, leaving {{clock.cut_left}} hours of the week. The owner timed fifteen minutes a member for everything after the split; how those minutes divide between cutting, panels and raising is this book's split of them, not a stopwatch's.
+:::
+
 ## The two chords
 
 A chord is the straight-line distance between two vertices of the sphere. It

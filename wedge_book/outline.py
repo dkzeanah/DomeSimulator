@@ -737,7 +737,7 @@ CH_SEAM_MODULE = Chapter(
     ))
 
 CH_BOM = Chapter(
-    number=55, ref="bom", strand="reference",
+    number=77, ref="bom", strand="reference",
     title="Every Part, Priced",
     deck="The column, the pad, the hardware, the power bench and the water "
          "bench -- the whole bill, with a source on every line",
@@ -866,7 +866,7 @@ CH_LEVELS = Chapter(
     ))
 
 CH_DESICCANT = Chapter(
-    number=34, ref="desiccant", strand="explain",
+    number=35, ref="desiccant", strand="explain",
     title="The Desiccant Belongs in a Drawer",
     deck="Molecular sieve holds a fifth of its weight in water -- and a seam "
          "packed with it passes almost no air and can never be dried in place",
@@ -900,7 +900,7 @@ CH_DESICCANT = Chapter(
     ))
 
 CH_METAL = Chapter(
-    number=35, ref="metal", strand="explain",
+    number=36, ref="metal", strand="explain",
     title="Metal in the Seam",
     deck="A Peltier plate is a heat pump that runs both ways, and aluminium, "
          "copper and stainless make a battery the moment the seam is wet",
@@ -935,6 +935,59 @@ CH_METAL = Chapter(
            words=260),
     ))
 
+CH_BREATHE = Chapter(
+    number=34, ref="breathe", strand="explain",
+    title="A Cap With No Holes Still Breathes",
+    deck="Take the room's air in at the crown, inside the shell; send it down "
+         "the seam channels; let it out at the rim, facing the ground. The cap "
+         "is never pierced, and the dome still breathes both ways",
+    derives=("two_v_demo.seam_vent",),
+    corrects="The levels chapter let air out through an apex vent in the cap. "
+             "The cap is never opened: the crown takes air in from the room, "
+             "under the cap, and every port is at the rim, facing down.",
+    pages=(
+        _p("opener", "A cap with no holes still breathes",
+           "Why a watertight dome must still exchange its air.", words=420,
+           figures=(_f("breathing-cap", "The cap is unbroken; the air goes down "
+                       "the seams and out at the bottom, facing the ground."),)),
+        _p("text", "In at the crown, down the seams, out at the bottom",
+           "The path, counted from the solve.", words=420),
+        _p("table", "The air falls by itself in winter",
+           "The cold siphon, weather by weather.", words=380),
+        _p("text", "The water goes the same way as the air",
+           "Condensate in the keys, and where it leaves.", words=320),
+        _p("text", "Two ways in and out", "Fresh air low, stale air high, both "
+           "ports facing the ground.", words=300),
+        _p("text", "Where it stops working", "Ice, snow, summer and the fan.",
+           words=300),
+    ))
+
+CH_RING = Chapter(
+    number=37, ref="ring", strand="explain",
+    title="Ten Plates, Round the Clock",
+    deck="Ten twenty-dollar Peltier modules at the rim ports, run day and night "
+         "on the sun: what they really move, what water they really make, and "
+         "the array and bank it takes to feed them",
+    derives=("two_v_demo.peltier_ring",),
+    corrects="The seam-module chapter's condensing figures assumed six plates at "
+             "60 W yielding 0.35 litres a kilowatt hour. Solved from the module's "
+             "own listing, ten plates draw 65 W a station and yield about 0.2.",
+    pages=(
+        _p("opener", "Ten plates, round the clock",
+           "The owner's proposal and the three questions it asks.", words=300),
+        _p("table", "What one module really does",
+           "The listing's 70 W against the module's physics, mounted.", words=420),
+        _p("table", "Slower is better, until it stops condensing",
+           "Voltage against cooling, draw and water.", words=360),
+        _p("table", "A day of ten",
+           "Heat and water out, against what the room takes on.", words=380),
+        _p("table", "Feeding it on the sun",
+           "Array, bank and price for twenty-four hours a day.", words=360),
+        _p("text", "What to do instead",
+           "Daylight surplus, the dew-point controller, and the compressor.",
+           words=340),
+    ))
+
 PART_WATER = Part(
     number=6, title="The Seam at Work",
     epigraph="Send air toward the wood only when it is drier than the water "
@@ -943,7 +996,8 @@ PART_WATER = Part(
     promise="What fits in the channel and what does not, the rule that decides "
             "which way its air moves, what each level of the dome does, where "
             "the desiccant belongs, and the metal that makes it work.",
-    chapters=(CH_CHANNEL, CH_DEWPOINT, CH_LEVELS, CH_DESICCANT, CH_METAL))
+    chapters=(CH_CHANNEL, CH_DEWPOINT, CH_LEVELS, CH_BREATHE, CH_DESICCANT, CH_METAL,
+              CH_RING))
 
 
 # ----------------------------------------------------------------------
@@ -951,7 +1005,7 @@ PART_WATER = Part(
 # ----------------------------------------------------------------------
 
 CH_FLOOR = Chapter(
-    number=36, ref="floor", strand="howto",
+    number=38, ref="floor", strand="howto",
     title="The Floor Is the Other Thing to Get Right",
     deck="It carries everything you own, you touch it all day, and it is "
          "where the ground sends its water",
@@ -975,7 +1029,7 @@ CH_FLOOR = Chapter(
     ))
 
 CH_PAD = Chapter(
-    number=37, ref="pad", strand="explain",
+    number=39, ref="pad", strand="explain",
     title="A Pad, Not a Plot",
     deck="The ground is the one thing you cannot take with you, so stop "
          "buying it",
@@ -996,7 +1050,7 @@ CH_PAD = Chapter(
 # ----------------------------------------------------------------------
 
 CH_TREE_WORTH = Chapter(
-    number=38, ref="tree_worth", strand="explain",
+    number=40, ref="tree_worth", strand="explain",
     title="A Twenty-Dollar Pine Is Not a Twenty-Dollar Pine",
     deck="One tree priced on every rung: on the stump, burned, sawn, split, built "
          "in, and carried on a mortgage -- the wood never changes, the use does",
@@ -1011,7 +1065,7 @@ CH_TREE_WORTH = Chapter(
     ))
 
 CH_HANDS = Chapter(
-    number=39, ref="hands", strand="explain",
+    number=41, ref="hands", strand="explain",
     title="Fifteen Sets of Hands",
     deck="Every machine and every middleman between a tree and a stud, counted -- "
          "and the same frame bought at the rack, with everything nobody counts",
@@ -1026,7 +1080,7 @@ CH_HANDS = Chapter(
     ))
 
 CH_HOUR = Chapter(
-    number=40, ref="hour", strand="explain",
+    number=42, ref="hour", strand="explain",
     title="How Much Shelter Does an Hour Buy",
     deck="Not how cheap the house is: how much house an hour of your life buys, "
          "how debt multiplies it, and the wage above which you should just buy",
@@ -1045,7 +1099,7 @@ CH_HOUR = Chapter(
     ))
 
 CH_HOUSE_MONEY = Chapter(
-    number=41, ref="house_money", strand="reference",
+    number=43, ref="house_money", strand="reference",
     title="Where a House's Money Goes",
     deck="The builders' own survey of a new house, the factory's split of a "
          "trailer, and where the dome's saving actually comes from",
@@ -1062,7 +1116,7 @@ CH_HOUSE_MONEY = Chapter(
     ))
 
 CH_PRICED = Chapter(
-    number=42, ref="priced", strand="reference",
+    number=44, ref="priced", strand="reference",
     title="What It Costs, Line by Line",
     deck="The invoice, the price guide, the pad, the stay and the factory -- every "
          "figure typed in declared before anything is claimed",
@@ -1101,7 +1155,7 @@ PART_FLOOR = Part(
 # ----------------------------------------------------------------------
 
 CH_NETWORK = Chapter(
-    number=43, ref="network", strand="explain",
+    number=45, ref="network", strand="explain",
     title="Why a Network Beats a Park",
     deck="An RV park rents you a slot for a week. This rents you a "
          "foundation for a decade, and both sides come out ahead",
@@ -1133,14 +1187,105 @@ CH_NETWORK = Chapter(
            words=380),
     ))
 
+CH_PAD_KIT = Chapter(
+    number=46, ref="pad_kit", strand="explain",
+    title="What a Pad Actually Is",
+    deck="A deck, a rim, three pipes up the middle and a meter at the edge -- "
+         "and the line between the host's half and the tenant's that never moves",
+    derives=("two_v_demo.park_facts.steps_fit", "two_v_demo.park_facts.steps_foundation",
+             "park_model.iris_cost"),
+    pages=(
+        _p("opener", "What a pad actually is",
+           "Watch one get built, from graded ground to the pedestal.", words=420),
+        _p("text", "The reserved spot", "Services up the middle, never across the door.",
+           words=340),
+        _p("table", "Sizes are rounded up, not invented",
+           "The pad catalogue, and the iris that spans three domes.", words=380),
+        _p("text", "The pad is the floor", "Nothing poured, nothing dug, nothing left.",
+           words=320),
+        _p("table", "What the ground is worth", "Design by design, measured.", words=360),
+        _p("text", "Below the line and above it", "Who owns what, and why it never moves.",
+           words=320),
+    ))
+
+CH_HOST = Chapter(
+    number=47, ref="host", strand="explain",
+    title="What a Host Earns, Line by Line",
+    deck="The cheapest pad that works, the ten-thousand-dollar target it misses, "
+         "the rents that would repay it, and the bill a host stops paying",
+    derives=("two_v_demo.byod_facts.steps_starter", "two_v_demo.byod_facts.steps_target",
+             "two_v_demo.park_facts.steps_pad_cost", "two_v_demo.park_facts.steps_exposure"),
+    pages=(
+        _p("opener", "Why anybody would host a dome", "Income from land, without a house to keep.",
+           words=360),
+        _p("table", "The cheapest working pad", "Line by line, with the site allowance in.",
+           words=380),
+        _p("table", "What ten thousand dollars would return", "Three rents, payback on net.",
+           words=360),
+        _p("text", "What the host maintains", "A deck and a connection. Not a kitchen.", words=320),
+        _p("table", "The deluxe pad", "Rotation, iris, column and array -- priced.", words=300),
+    ))
+
+CH_TENANT = Chapter(
+    number=48, ref="tenant", strand="explain",
+    title="A House That Moves, and Grows",
+    deck="Start small, reallocate the rooms as life changes, add a layer when you "
+         "can afford it, and take all of it with you when you go",
+    derives=("two_v_demo.park_facts.steps_hardware", "two_v_demo.park_facts.steps_layers",
+             "two_v_demo.byod_facts.steps_growth"),
+    pages=(
+        _p("opener", "Why buy the dome", "Start small; upgrade the home you own.", words=340),
+        _p("text", "The rooms can change", "Nonstructural partitions round a fixed core.",
+           words=320),
+        _p("text", "Semi-nomadic", "A house that comes apart, moved when it is worth it.",
+           words=340),
+        _p("table", "One hardware set, three sizes", "Counts fixed; sticks and skin grow.",
+           words=360),
+        _p("table", "A house that gets warmer every winter", "The layer ladder, and 1 over R.",
+           words=400),
+    ))
+
+CH_TURNS = Chapter(
+    number=49, ref="turns", strand="explain",
+    title="The Pad Turns, and the Site Shares",
+    deck="A rotating base, cells on the shell, a bathhouse so a house can carry "
+         "no plumbing -- and the surplus power a tenant cannot use",
+    derives=("two_v_demo.park_facts.steps_solar", "two_v_demo.byod_facts.steps_solar"),
+    pages=(
+        _p("opener", "The deluxe version", "A house that faces what you want.", words=320),
+        _p("table", "What tracking is worth", "A quarter more power, and far more than anyone uses.",
+           words=420),
+        _p("text", "What a site can share", "A bathhouse, a column, a meter passed through.",
+           words=320),
+        _p("text", "Another use", "A climate-controlled storage dome.", words=200),
+    ))
+
+CH_WHY_ME = Chapter(
+    number=50, ref="why_me", strand="story",
+    title="Who This Is For",
+    deck="A nineteen-year-old with nowhere steady to live, a single mother working "
+         "two shifts, and a man on his seventh holiday watching a rental portfolio",
+    derives=("two_v_demo.park_facts.steps_ask",),
+    pages=(
+        _p("opener", "What this would have meant to me", "The person this is designed for.",
+           words=420),
+        _p("text", "Built with the little guy in mind", "Who it is for, and who it is not.",
+           words=340),
+        _p("text", "Three things at once", "Quilters, hosts and owners, each needing the others.",
+           words=320),
+        _p("table", "Small scale, small risk", "What the first site's money is for.", words=380),
+        _p("text", "The strategy, stated plainly", "Three phases and one honest endgame.",
+           words=300),
+    ))
+
 PART_NETWORK = Part(
     number=9, title="The Network",
     epigraph="Own the building. Rent the ground. Move when you want to, and "
              "leave a platform behind rather than a house.",
-    promise="One chapter, the economics of a pad network from both sides of "
-            "it: what the dome owner saves, what the landowner earns, and "
-            "what would have to be true for either.",
-    chapters=(CH_NETWORK,))
+    promise="The pad network from both sides of it: what a pad is, what a host "
+            "earns and stops paying for, what the house that lands on it can "
+            "become, the deluxe pad that turns, and who all of it is for.",
+    chapters=(CH_NETWORK, CH_PAD_KIT, CH_HOST, CH_TENANT, CH_TURNS, CH_WHY_ME))
 
 
 # ----------------------------------------------------------------------
@@ -1148,7 +1293,7 @@ PART_NETWORK = Part(
 # ----------------------------------------------------------------------
 
 CH_ALTERNATIVES = Chapter(
-    number=46, ref="alternatives", strand="reference",
+    number=57, ref="alternatives", strand="reference",
     title="Every Other Way of Doing It",
     deck="Eight frame materials, eight sections, sixteen panels, nine "
          "claddings and twelve foundations -- priced on this dome, not in "
@@ -1172,7 +1317,7 @@ CH_ALTERNATIVES = Chapter(
     ))
 
 CH_FLOATING = Chapter(
-    number=52, ref="floating", strand="explain",
+    number=72, ref="floating", strand="explain",
     title="Hang It Between Two Trees",
     deck="The most speculative corner of the method: a mast, three cables, "
          "and no ground at all -- priced, and explicitly not rated",
@@ -1190,13 +1335,127 @@ CH_FLOATING = Chapter(
            "The engineer's sentence, boxed and unmissable.", words=200),
     ))
 
+CH_SKYWEB = Chapter(
+    number=73, ref="skyweb", strand="howto",
+    title="Build It in the Air",
+    deck="An X of wire rope between four living trees, a 12 V winch, and forty "
+         "triangles hung on three cords each, then gathered to one point, "
+         "skinned, and left up -- with the owner's weighed struts, every load "
+         "worked, and the numbers that argue back",
+    derives=("two_v_demo.sky_web", "two_v_demo.cell_wall.frame_mass_kg"),
+    pages=(
+        _p("opener", "Build it in the air",
+           "The method in one paragraph, the two tables, and two corrections.",
+           words=520,
+           figures=(_f("plate-sky-floating",
+                       "Forty triangles, each on its own three cords."),)),
+        _p("text", "Four trees and an X",
+           "The span, the sag, the rope, the guys to the next trees.", words=560,
+           figures=(_f("plate-sky-guys",
+                       "Guyed to the base of the next tree out."),)),
+        _p("text", "A tree is a better post",
+           "The living trunk against the 6x6 sawn from it.", words=240,
+           figures=(_f("plate-sky-treepost",
+                       "A milled 6x6 beside the trunk it would be sawn from."),)),
+        _p("steps", "One triangle, start to finish",
+           "Winch, harness, hoist, swing, pigtails, slip.", words=600,
+           figures=(_f("plate-sky-pigtails",
+                       "Three pigtails over the spiral, then it slips the harness."),)),
+        _p("text", "Rim first, crown last, then join",
+           "The order, where the hook runs out, and lashing instead of screws.", words=420),
+        _p("text", "Every cord to the apex",
+           "Through the air, not along the struts; one winch for the whole dome.", words=560,
+           figures=(_f("plate-sky-apex",
+                       "Cords from every joint to one free ring under the cap."),)),
+        _p("text", "A silicone skin",
+           "Cotton soaked in silicone dissolved in naphtha, priced.", words=320,
+           figures=(_f("plate-sky-skin",
+                       "The silicone-cotton skin, laid from the crown down."),)),
+        _p("text", "Building with the trees",
+           "Shade, water, no ground contact, wind, and what the trees ask back.", words=440),
+        _p("text", "Higher, if the trees allow",
+           "An experimental second web, planned before the trees are chosen.", words=300,
+           figures=(_f("plate-sky-corners",
+                       "The joined dome, raised a corner at a time."),)),
+        _p("safety", "What it will and will not carry",
+           "A floor full of life, and nobody under the load.", words=300),
+    ))
+
+CH_HUBBED = Chapter(
+    number=68, ref="hubbed", strand="howto",
+    title="If You Build It on Hubs",
+    deck="The conventional two-frequency dome, for anybody with a hub system "
+         "and no splitting maul: two lengths, one deduction, two bevels, and "
+         "the four things that actually go wrong",
+    derives=("two_v_demo.geometry", "two_v_demo.book_math"),
+    pages=(
+        _p("opener", "The five words", "Hub, strut, panel, chord factor, frequency.",
+           words=300),
+        _p("text", "Two lengths, and the hub that decides every cut",
+           "Chord factors, the connector deduction, end cuts.", words=460),
+        _p("text", "Bevels, hub types and the stock", "What the bench needs to know.",
+           words=360),
+        _p("steps", "Cut, jig, raise", "A stop block, a master, triangles flat first.",
+           words=360),
+        _p("text", "The four things that actually go wrong", "None of them geometry.",
+           words=260),
+    ))
+
+CH_FRANKEN = Chapter(
+    number=69, ref="franken", strand="story",
+    title="The Frankendome",
+    deck="A hundred and twenty sticks of no particular description, brackets "
+         "folded out of a washing machine, ten days, and half a year standing",
+    derives=("two_v_demo.franken_economics", "two_v_demo.lesson_franken"),
+    pages=(
+        _p("opener", "Whatever the chainsaw made", "The experiment, and why it was run.",
+           words=360),
+        _p("text", "A bracket out of a washing machine", "Shear, drill, fold once.", words=320),
+        _p("text", "Nothing lands where it should", "Slack, settling and the skin.", words=380),
+        _p("table", "The ledger", "Brackets, screws, days, and the bill.", words=380),
+        _p("text", "What it trades", "And what comes after it.", words=340),
+    ))
+
+CH_EMPIRE = Chapter(
+    number=70, ref="empire", strand="story",
+    title="The Evil Dome Empire",
+    deck="A house as a platform, a business plan built on ink cartridges, the "
+         "one catastrophic weakness in it -- and then the serious part",
+    derives=(),
+    pages=(
+        _p("opener", "What if a house was a platform?", "Keep the bones.", words=300),
+        _p("text", "The world's poorest supervillain", "Salvage, and affordable failure.",
+           words=360),
+        _p("text", "The business plan", "Tribute, the fortress, and the Hoboclass.",
+           words=360),
+        _p("text", "Now the serious part", "Trillions, a prototype, and one share.",
+           words=420),
+        _p("text", "Who it is for", "A tornado through a hardware store.", words=300),
+    ))
+
+CH_FULLER = Chapter(
+    number=71, ref="fuller", strand="story",
+    title="So a Mother Could Raise Her Child",
+    deck="A single mother, a repossessed trailer, the school lunches I would not "
+         "take -- and the sentence of Buckminster Fuller's that made this a mission",
+    derives=(),
+    pages=(
+        _p("opener", "The list of likes", "Programming, wiring, wood, metal, taking things apart.",
+           words=280),
+        _p("text", "Why women specifically", "A mother who was an angel and a saint.", words=380),
+        _p("text", "And then I heard Fuller", "The sentence, and what it did.", words=320),
+        _p("text", "The proof already exists", "And forty faces facing the road.", words=280),
+    ))
+
 PART_VARIATIONS = Part(
     number=13, title="Variations",
     epigraph="The same frame can wear more than one roof, stand on more than "
              "one ground, and hang from nothing at all.",
-    promise="The one variation that is a design possibility rather than a "
-            "tested build, priced and explicitly not rated.",
-    chapters=(CH_FLOATING,))
+    promise="The conventional hubbed dome for anybody who wants one, the "
+            "author's first dome framed from whatever the chainsaw made, the "
+            "joke and the serious argument behind it, and the floating dome -- "
+            "a design possibility, priced and explicitly not rated.",
+    chapters=(CH_HUBBED, CH_FRANKEN, CH_EMPIRE, CH_FULLER, CH_FLOATING, CH_SKYWEB))
 
 
 # ----------------------------------------------------------------------
@@ -1204,7 +1463,7 @@ PART_VARIATIONS = Part(
 # ----------------------------------------------------------------------
 
 CH_TOOLING = Chapter(
-    number=53, ref="tooling", strand="reference",
+    number=74, ref="tooling", strand="reference",
     title="The Software That Wrote This Book",
     deck="Eight three-dimensional worlds, a cost model and a solver -- what "
          "each one is for, what it can do, and how to open it",
@@ -1218,7 +1477,7 @@ CH_TOOLING = Chapter(
     ))
 
 CH_WORLDS = Chapter(
-    number=54, ref="worlds", strand="reference",
+    number=76, ref="worlds", strand="reference",
     title="What Each World Shows You",
     deck="One picture from every three-dimensional environment in the "
          "project, with what it is for and what to do in it",
@@ -1251,14 +1510,87 @@ CH_WORLDS = Chapter(
                        "The geometry and the price in one program."),)),
     ))
 
+CH_SCREEN = Chapter(
+    number=75, ref="screen", strand="explain",
+    title="From One Number to a Lit Pixel",
+    deck="How every picture in this book was drawn: a strut given a body, a "
+         "camera placed with two angles, three matrices, one divide, one "
+         "comparison and three dot products -- thirty times a second",
+    derives=("two_v_demo.scratch_facts",),
+    pages=(
+        _p("opener", "Nothing but arithmetic", "The shape, and then the picture.", words=300),
+        _p("worked", "A line with no thickness", "Tubes, normals and the upload.", words=520),
+        _p("worked", "Placing the camera", "Two angles, the view matrix, the lens.", words=520),
+        _p("worked", "The divide that makes distance work", "One vertex, all the way to a pixel.",
+           words=400),
+        _p("worked", "What hides what, and how bright", "Depth, culling, light, glass.", words=520),
+        _p("worked", "And then it does it again", "The cost of one frame.", words=300),
+    ))
+
+CH_EVERY_PIECE = Chapter(
+    number=78, ref="everypiece", strand="howto",
+    title="Every Piece, Numbered",
+    deck="The calculator that fills a triangle and frames the floor: every "
+         "piece numbered, every cut set up on the saw before the blade turns, "
+         "ten ways to fill one panel, seven ways to frame the platform under "
+         "the dome from five 20 ft half trunks -- every span and pier checked, "
+         "and the patterns that fail shown failing",
+    derives=("infill.facts", "infill.base", "infill.recipes", "infill.sawview"),
+    pages=(
+        _p("opener", "Every piece, numbered",
+           "What the calculator does, and the two tables it rests on.", words=420,
+           figures=(_f("plate-ep-numbered",
+                       "Seventeen wedges in one triangle, every one numbered."),)),
+        _p("text", "A triangle is a tray",
+           "Two shapes, forty-five degree walls, the folds next door.", words=320),
+        _p("steps", "One wedge, start to finish",
+           "Piece five: its three lengths, the mitre, the bevel, the offcuts.", words=620,
+           figures=(_f("plate-ep-saw",
+                       "Cut one: sawn face down, bark corner to the fence."),
+                    _f("plate-ep-offcut",
+                       "Cut two, and an offcut long enough to keep."))),
+        _p("text", "When the saw cannot reach",
+           "A covering sheet's bevels, marked and cut by hand.", words=240),
+        _p("table", "Ten ways to fill one triangle",
+           "Every pattern, its piece count, and log rounds cut to fit.", words=420,
+           figures=(_f("plate-ep-perms",
+                       "One of the ten: the same triangle, another fill."),
+                    _f("plate-ep-under",
+                       "From underneath, the face the room will see."))),
+        _p("text", "Five trunks, one pentagon",
+           "The floor's edge, the circle inside it, and every corner one cut.", words=520,
+           figures=(_f("plate-ep-frame",
+                       "Five half trunks, round backs out, round the dome's centre."),
+                    _f("plate-ep-corner",
+                       "Thirty-six degrees off square, marked and plumbed for the chainsaw."))),
+        _p("text", "A star, and why it needs joists",
+           "The star alone fails its deck; joists bring every gap inside reach.", words=460,
+           figures=(_f("plate-ep-star",
+                       "The star alone: the gaps a deck board cannot cross."),
+                    _f("plate-ep-joists",
+                       "Joists between the points."))),
+        _p("worked", "Where the weight goes",
+           "Tributary floor, joists, primaries, piers; bending and sag; pads.", words=560),
+        _p("table", "Seven ways to frame the floor",
+           "Every pattern compared, on piers and on gravel, and the materials swapped.", words=600,
+           figures=(_f("plate-ep-gravel",
+                       "Nested rings on a gravel bed, the gaps packed."),
+                    _f("plate-ep-dome",
+                       "The dome on its floor."))),
+        _p("safety", "What these numbers are not",
+           "A guessed wood strength, estimated prices, and an engineer's signature.", words=240),
+    ))
+
+
 PART_TOOLS = Part(
     number=14, title="The Tools",
     epigraph="Every number in this book came out of a program about a second "
              "before it reached the page. Here are the programs.",
     promise="What ships with this book: the solver, the worlds, the cost "
-            "model and the calculators, with what each is for and how to "
-            "drive it.",
-    chapters=(CH_TOOLING, CH_WORLDS, CH_BOM))
+            "model and the calculators, what each is for and how to drive "
+            "it -- and the arithmetic that turns one number into every "
+            "picture in these pages.",
+    chapters=(CH_TOOLING, CH_SCREEN, CH_WORLDS, CH_BOM, CH_EVERY_PIECE))
 
 
 # ----------------------------------------------------------------------
@@ -1448,7 +1780,7 @@ PART_MATHS = Part(
 # ----------------------------------------------------------------------
 
 CH_ZOME = Chapter(
-    number=44, ref="zome", strand="explain",
+    number=51, ref="zome", strand="explain",
     title="A Zome Is Not a Piece of a Sphere",
     deck="Swept from a star of directions instead of subdivided from a "
          "solid -- which is why every panel comes out flat, guaranteed",
@@ -1472,7 +1804,7 @@ CH_ZOME = Chapter(
     ))
 
 CH_HEX = Chapter(
-    number=45, ref="hex", strand="explain",
+    number=54, ref="hex", strand="explain",
     title="Exactly Twelve Pentagons, Always",
     deck="A sheet of hexagons will not curve. Curvature is bought with "
          "missing angle, and the price is always twelve pentagons",
@@ -1492,14 +1824,111 @@ CH_HEX = Chapter(
                        "The two domes, side by side."),)),
     ))
 
+CH_ZOME_FLAT = Chapter(
+    number=53, ref="zome_flat", strand="howto",
+    title="A Zome Without a Bevel",
+    deck="Four identical sticks to a panel, a miter at each end and no "
+         "bevel anywhere -- and the gap on the outside that the method "
+         "allows on purpose",
+    derives=("two_v_demo.panel_method",),
+    pages=(
+        _p("opener", "A zome without a bevel",
+           "The panel thinking, applied to a zome.", words=420,
+           figures=(_f("plate-zome-model", "One stick, one miter, per row."),)),
+        _p("text", "Four sticks in a pinwheel",
+           "Why every stick in a row is the same stick.", words=380,
+           figures=(_f("plate-zome-joint", "Both ends cut parallel; nothing bevelled."),)),
+        _p("table", "Row by row",
+           "Miters, folds and the gap, computed.", words=300),
+        _p("text", "The gap, and what fills it",
+           "Square edges, a V outside, and a wedge block.", words=360),
+    ))
+
+CH_PANEL_GEO = Chapter(
+    number=55, ref="panel_geo", strand="explain",
+    title="Three Frequency, Five Eighths",
+    deck="The dome most bought plans build: a three-frequency sphere cut "
+         "below its middle, a base that zig-zags, and two panel shapes",
+    derives=("two_v_demo.panel_method",),
+    pages=(
+        _p("opener", "Three frequency, five eighths",
+           "Another way to frame the same idea.", words=460,
+           figures=(_f("plate-panel-two", "Two domes, framed two ways."),)),
+        _p("text", "Three lengths, two kinds of point",
+           "The sphere, subdivided three to an edge.", words=360,
+           figures=(_f("plate-panel-sphere", "Three chords: A, B and C."),)),
+        _p("text", "Why five eighths",
+           "The cut, and the wall it buys.", words=380,
+           figures=(_f("plate-panel-cut", "Cut below the middle."),)),
+        _p("text", "A base that zig-zags",
+           "Tapered sections, and level ones.", words=360,
+           figures=(_f("plate-panel-base", "Ten tapered, five level."),)),
+        _p("table", "Two panels, over and over",
+           "The jig's two triangles.", words=300,
+           figures=(_f("plate-panel-panels", "A pentagon panel and a hexagon panel."),)),
+        _p("text", "A floor the shape of the base",
+           "The radial deck.", words=360,
+           figures=(_f("plate-panel-deck", "Joists to the corners, girders on the five-fold."),)),
+    ))
+
+CH_PANEL_JIG = Chapter(
+    number=56, ref="panel_jig", strand="howto",
+    title="A Panel on a Jig",
+    deck="Rip, draw, rail, pinwheel, skin, raise: the framed-panel method "
+         "start to finish, and the bevel no single saw setting gets right",
+    derives=("two_v_demo.panel_method",),
+    pages=(
+        _p("opener", "A panel on a jig",
+           "Every triangle its own small frame.", words=380),
+        _p("text", "Finish, then rip in half",
+           "A cut through the centre makes two copies.", words=320),
+        _p("text", "Draw the jig with two arcs",
+           "A trammel, a base line and three lengths.", words=360,
+           figures=(_f("plate-panel-jig", "Where the arcs cross is the apex."),)),
+        _p("text", "Sticks that turn like a pinwheel",
+           "Why equal sides take different sticks.", words=420,
+           figures=(_f("plate-panel-pinwheel", "Three sticks, six kinds in the dome."),)),
+        _p("table", "Every stick, cut", "The cut list.", words=200),
+        _p("text", "One bevel cannot be exact",
+           "The number that does not flatter the method.", words=340,
+           figures=(_f("plate-panel-bevel", "Red where one setting is furthest off."),)),
+        _p("text", "Skin it in sections, raise it loose",
+           "Sections, windows, gaskets, tape and anchors.", words=520,
+           figures=(_f("plate-panel-skin", "One sheet per pentagon or hexagon."),
+                    _f("plate-panel-window", "A spare frame on two hinges."))),
+        _p("table", "Against the wedge dome", "What each method asks of you.", words=320),
+    ))
+
+CH_ZOME_BUILD = Chapter(
+    number=52, ref="zome_build", strand="howto",
+    title="Building a Zome, Ring by Ring",
+    deck="Two numbers -- a count and a pitch -- give the parts list, the level "
+         "rings, the templates, the hub schedule and the one repeated floor cut",
+    derives=("two_v_demo.zome_geometry.polar_zonohedron",),
+    pages=(
+        _p("opener", "Counting the parts before you buy anything",
+           "Panels, struts and hubs as formulas in the count.", words=380),
+        _p("text", "The top comes to a point", "Why the roof closes on one vertex.",
+           words=260),
+        _p("text", "The hubs land on level rings", "No ring is approximate.", words=300),
+        _p("table", "How many templates, and what pitch buys",
+           "Separation sets the shape; pitch sets the height and nothing else.",
+           words=380),
+        _p("text", "Meeting the floor", "One angle, one length, all the way round.",
+           words=280),
+        _p("steps", "The cut list and the raise", "What the shop gets, and the order it goes up.",
+           words=360),
+    ))
+
 PART_SHAPES = Part(
     number=10, title="Other Shapes",
     epigraph="A zome is swept, a hex dome is tiled, and a geodesic dome is "
              "subdivided. Three answers to one question about curvature.",
     promise="The two other round buildings this project solves, what each "
-            "one is good at, and what it costs against the dome in the "
-            "rest of this book.",
-    chapters=(CH_ZOME, CH_HEX))
+            "one is good at and what it costs against the dome in the rest "
+            "of this book -- and the framed-panel method most bought dome "
+            "plans use, solved again from this book's own geometry.",
+    chapters=(CH_ZOME, CH_ZOME_BUILD, CH_ZOME_FLAT, CH_HEX, CH_PANEL_GEO, CH_PANEL_JIG))
 
 
 # ----------------------------------------------------------------------
@@ -1507,7 +1936,7 @@ PART_SHAPES = Part(
 # ----------------------------------------------------------------------
 
 CH_FRAMING = Chapter(
-    number=47, ref="framing", strand="explain",
+    number=58, ref="framing", strand="explain",
     title="Hubs, or No Hubs",
     deck="The trade this whole method is an answer to, counted across "
          "twelve designs rather than argued",
@@ -1524,7 +1953,7 @@ CH_FRAMING = Chapter(
     ))
 
 CH_CREATOR = Chapter(
-    number=48, ref="creator", strand="reference",
+    number=59, ref="creator", strand="reference",
     title="Twelve Buildings, One Tool",
     deck="Every finish, floor division and fit-out the Dome Creator will "
          "put on a shell, priced against each other",
@@ -1542,14 +1971,52 @@ CH_CREATOR = Chapter(
                     _f("plate-fitout", "The part nobody films."))),
     ))
 
+CH_TWELVE = Chapter(
+    number=60, ref="twelve", strand="reference",
+    title="The Twelve, One at a Time",
+    deck="Every design the Dome Creator ships, rebuilt from its preset and "
+         "read off its own bill of materials -- from a seven-thousand-dollar "
+         "garden dome to a hundred-thousand-dollar hangar",
+    derives=("two_v_demo.creator_facts.design_rows", "two_v_demo.creator_facts.steps_catalogue"),
+    pages=(
+        _p("opener", "One engine, twelve buildings", "Why the spread is the point.", words=320),
+        _p("table", "The catalogue, counted", "All twelve, fit-out included.", words=240),
+        _p("text", "The timber four", "Workshop, glass loft, homestead, trunk lodge.", words=520),
+        _p("text", "The other eight", "Aluminium, steel, rebar, concrete, mirror, canopy.",
+           words=640),
+        _p("text", "Check it yourself", "Load the preset; read the bill.", words=200),
+    ))
+
+CH_CHOICES = Chapter(
+    number=61, ref="choices", strand="explain",
+    title="What Every Choice Costs",
+    deck="Which menu is the expensive one, where the hours go, what the fit-out "
+         "adds, how many domes the menus make -- and what no model prices",
+    derives=("two_v_demo.creator_facts.steps_price_drivers", "two_v_demo.creator_facts.steps_permutations",
+             "two_v_demo.world_chatgpt_facts.steps_production"),
+    pages=(
+        _p("table", "What is declared and what is measured", "The only typed numbers.", words=300),
+        _p("table", "Which menu is the expensive one", "One design, one menu at a time.",
+           words=360),
+        _p("table", "Six ways to frame one shell", "Including where the tool argues with itself.",
+           words=320),
+        _p("table", "Where the hours go", "Three hundred work steps, grouped.", words=300),
+        _p("table", "The dome is the cheap part of the dome", "The fit-out, priced.", words=300),
+        _p("table", "Size is a number you type", "Frequency, dials and scale.", words=360),
+        _p("table", "How many domes that is", "Sixteen billion shells, and eight the dice picked.",
+           words=360),
+        _p("table", "Ten builds, one ledger", "And what the model refuses to hide.", words=360),
+    ))
+
 PART_CATALOGUE = Part(
     number=11, title="The Catalogue",
     epigraph="Twelve finished buildings, drawn by the tool that builds "
              "them, with the price of every choice in each one.",
     promise="The whole substitution space -- frame, section, panel, "
-            "cladding, foundation, finish and fit-out -- and the two "
-            "arguments that decide most of it.",
-    chapters=(CH_ALTERNATIVES, CH_FRAMING, CH_CREATOR))
+            "cladding, foundation, finish and fit-out -- the two arguments "
+            "that decide most of it, the twelve designs one at a time, and "
+            "what every choice in the tool costs.",
+    chapters=(CH_ALTERNATIVES, CH_FRAMING, CH_CREATOR, CH_TWELVE, CH_CHOICES))
 
 
 # ----------------------------------------------------------------------
@@ -1557,7 +2024,7 @@ PART_CATALOGUE = Part(
 # ----------------------------------------------------------------------
 
 CH_STEMCELL = Chapter(
-    number=49, ref="stemcell", strand="explain",
+    number=62, ref="stemcell", strand="explain",
     title="Why We Call It a Stem Cell",
     deck="One body, undifferentiated, that becomes fifteen different "
          "buildings depending on what you put in it",
@@ -1574,7 +2041,7 @@ CH_STEMCELL = Chapter(
     ))
 
 CH_CORE = Chapter(
-    number=50, ref="core", strand="explain",
+    number=63, ref="core", strand="explain",
     title="Sink the Money Into the Part That Moves",
     deck="The utility core is thirty per cent of the dome and the only "
          "part that transfers -- so it is the part worth overbuilding",
@@ -1597,7 +2064,7 @@ CH_CORE = Chapter(
     ))
 
 CH_SEEDS = Chapter(
-    number=51, ref="seeds", strand="reference",
+    number=65, ref="seeds", strand="reference",
     title="Fifteen Buildings From One Body",
     deck="The catalogue a homestead wants second, priced from the same "
          "frame and the same core",
@@ -1618,14 +2085,69 @@ CH_SEEDS = Chapter(
                        "One building, fifteen stations."),)),
     ))
 
+CH_CORE_BUILD = Chapter(
+    number=64, ref="core_build", strand="howto",
+    title="Build One Utility Core",
+    deck="Fourteen steps in five stages: drain first, water proved before anything "
+         "electrical exists, power last into a core already known to be dry",
+    derives=("two_v_demo.module_build",),
+    pages=(
+        _p("opener", "Build one utility core", "Why the core is the first thing to learn.",
+           words=300),
+        _p("table", "What has to be on the bench", "Nine tools, two of them the ones people skip.",
+           words=280),
+        _p("steps", "Drain, water, power", "In that order, and why.", words=620),
+        _p("table", "Everything you buy for one", "Twenty-three lines, nothing exotic.", words=260),
+        _p("text", "One core, every dome", "Seven hours, once.", words=200),
+    ))
+
+CH_TEN = Chapter(
+    number=66, ref="ten", strand="explain",
+    title="Ten Reasons This Shape",
+    deck="Less skin for the same floor, nothing for the wind to push on, a parts list "
+         "that does not grow with the house -- and the stem wall, brim and paint "
+         "that fix what a bare dome gets wrong",
+    derives=("two_v_demo.dome_advantage.advantages", "two_v_demo.dome_performance.ten_points"),
+    pages=(
+        _p("opener", "A house that costs what its parts cost", "The campaign's whole argument.",
+           words=260),
+        _p("text", "Same floor, less building", "Skin, triangles and wind.", words=420),
+        _p("text", "Nine times the house, same parts list", "Flat rate, brackets, the first one.",
+           words=380),
+        _p("text", "Fixing what a dome gets wrong", "The pony wall, the brim, the hat.",
+           words=420),
+        _p("text", "What it costs to run", "Heating, cooling, and the paint.", words=360),
+        _p("text", "One skeleton, many products", "The bones do not care.", words=240),
+    ))
+
+CH_ARTICLE = Chapter(
+    number=67, ref="article", strand="explain",
+    title="The Standard Article, and What the Money Is For",
+    deck="Twelve thousand dollars with the invoice on the page, the four ways to build "
+         "the same dome, running it on nothing, and two campaigns' asks as lists",
+    derives=("seed_model.quote", "two_v_demo.dome_costing.build_variants",
+             "two_v_demo.dome_costing.Startup"),
+    pages=(
+        _p("opener", "A house you can take apart", "The standard article.", words=320),
+        _p("table", "Twelve thousand, and here is the invoice", "Built, marked up, stated.",
+           words=320),
+        _p("table", "Four ways to build the same dome", "Bare to everything, at the till.",
+           words=300),
+        _p("table", "Running it on nothing", "Panels and a bank against a measured draw.",
+           words=320),
+        _p("table", "What the money is for", "Two asks, both as lists.", words=420),
+        _p("text", "Three kinds of people", "And every number a model you can run.", words=240),
+    ))
+
 PART_STEMCELL = Part(
     number=12, title="The Stem Cell",
     epigraph="Buy the plumbing once. The shell is the thing that grows, "
              "and the core is the thing that moves.",
     promise="The product line: one undifferentiated body, the utility core "
-            "that is thirty per cent of it and outlives it, and the "
-            "fifteen buildings it becomes.",
-    chapters=(CH_STEMCELL, CH_CORE, CH_SEEDS))
+            "that is thirty per cent of it and outlives it, how to build "
+            "one, the fifteen buildings it becomes, the ten reasons for the "
+            "shape, and the standard article with its invoice and its asks.",
+    chapters=(CH_STEMCELL, CH_CORE, CH_CORE_BUILD, CH_SEEDS, CH_TEN, CH_ARTICLE))
 
 
 PARTS: tuple[Part, ...] = (PART_RIGHT, PART_MATHS, PART_STICK, PART_PANEL,

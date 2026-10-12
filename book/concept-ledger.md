@@ -34,6 +34,25 @@ so the two can be compared side by side:
 **Where the book stands against the films: 919 concept rows — 844 the book
 covers, 73 it only mentions, none unplaced, and 2 by decision.**
 
+**Beyond the films: two chapters from published plans, added on the author's
+instruction.** The ledger tracks what the *films* have said; these two chapters
+come from sources outside this project, and are recorded here so the book's
+provenance stays complete.
+
+* **88 The Tried and True Dome** sets the popular three-frequency
+  five-eighths panel dome beside the wedge dome for comparison: {{plan.panels}}
+  panels, {{plan.distinct}} distinct sticks, {{plan.tapered}} tapered base
+  sections and a bevel no single setting gets exact -- every figure solved by
+  `panel_method.py` at this book's own reference size.
+* **89 The Non-Beveled Method** frames a zome without a bevel: the
+  {{zome.methods}} customary methods weighed, the reciprocal joint and the
+  {{zome.gap_lo_in}} to {{zome.gap_hi_in}} inch outside gap it leaves on this
+  book's nine-sided zome, the sequence in this book's own order, and the two ways
+  a frame of parallelograms is made rigid.
+
+Both chapters' figures are computed; neither takes a number from anybody's plan
+set.
+
 **Round 11 gathered the benchmarks, the core's economics, the audiences and the
 pad target: 12 more rows.**
 

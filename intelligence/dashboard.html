@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DomeSim Intelligence</title>
+<style>
+:root {
+  --bg: #f6f4ef; --panel: #ffffff; --ink: #1d1b18; --muted: #6b665e; --line: #e2ddd3;
+  --accent: #b5651d; --accent-soft: #f3e3d1; --good: #2e7d4f; --bad: #b3261e; --warn: #9a6b00;
+  --code: #f1eee7; --chip: #ede8de;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #15140f; --panel: #1f1d18; --ink: #ece8df; --muted: #a39d92; --line: #34312a;
+    --accent: #e39a52; --accent-soft: #3a2c1e; --good: #6cc792; --bad: #ef8a80; --warn: #e2b553;
+    --code: #2a2722; --chip: #2d2a24; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 "Segoe UI", system-ui, sans-serif; }
+header { display: flex; align-items: center; gap: 16px; padding: 14px 22px;
+  border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 2; }
+header h1 { font-size: 18px; margin: 0; letter-spacing: .2px; }
+header .sub { color: var(--muted); font-size: 13px; }
+header .spacer { flex: 1; }
+.layout { display: grid; grid-template-columns: 200px 1fr; min-height: calc(100vh - 58px); }
+nav { border-right: 1px solid var(--line); padding: 14px 10px; background: var(--panel); }
+nav button { display: block; width: 100%; text-align: left; padding: 9px 12px; margin: 2px 0;
+  border: 0; border-radius: 8px; background: none; color: var(--ink); font: inherit; cursor: pointer; }
+nav button:hover { background: var(--chip); }
+nav button.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+main { padding: 22px; max-width: 1200px; }
+h2 { font-size: 20px; margin: 0 0 4px; }
+.lead { color: var(--muted); margin: 0 0 18px; max-width: 760px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.card .n { font-size: 26px; font-weight: 650; }
+.card .l { color: var(--muted); font-size: 13px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.panel h3 { margin: 0 0 10px; font-size: 15px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+tr.click { cursor: pointer; } tr.click:hover { background: var(--chip); }
+.bar { height: 8px; background: var(--accent); border-radius: 4px; min-width: 2px; }
+.chip { display: inline-block; padding: 2px 9px; border-radius: 999px; background: var(--chip);
+  font-size: 12.5px; margin: 2px 4px 2px 0; white-space: nowrap; }
+.chip.step::after { content: " \2192"; color: var(--muted); }
+.chip.step:last-child::after { content: ""; }
+.ok { color: var(--good); } .fail { color: var(--bad); } .warn { color: var(--warn); }
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--chip); }
+code, pre { font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; }
+pre { background: var(--code); padding: 12px; border-radius: 8px; overflow: auto; white-space: pre-wrap;
+  word-break: break-word; max-height: 480px; margin: 8px 0 0; }
+textarea, input[type=text] { width: 100%; font: inherit; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+textarea { min-height: 110px; resize: vertical; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+.btn { border: 1px solid var(--accent); background: var(--accent); color: #fff; border-radius: 8px;
+  padding: 8px 14px; font: inherit; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn:disabled { opacity: .5; cursor: progress; }
+label.check { display: inline-flex; gap: 6px; align-items: center; font-size: 14px; margin-right: 12px; }
+.muted { color: var(--muted); }
+.reply { white-space: pre-wrap; background: var(--code); border-radius: 8px; padding: 14px; margin-top: 10px; }
+.presets button { margin: 4px 6px 4px 0; }
+.call { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin: 6px 0; }
+.hidden { display: none; }
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  nav { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 8px; }
+  nav button { white-space: nowrap; width: auto; }
+  main { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>DomeSim Intelligence</h1>
+  <span class="sub" id="lastEvent">loading…</span>
+  <span class="spacer"></span>
+  <button class="btn ghost" id="reextract" title="Re-derive knowledge and playbooks, then give them to the agent">Re-extract &amp; sync agent</button>
+</header>
+<div class="layout">
+<nav id="nav">
+  <button data-v="overview" class="on">Overview</button>
+  <button data-v="episodes">Episodes</button>
+  <button data-v="playbooks">Playbooks</button>
+  <button data-v="failures">Failures</button>
+  <button data-v="knowledge">Knowledge</button>
+  <button data-v="deepseek">DeepSeek</button>
+  <button data-v="agent">Agent</button>
+</nav>
+<main>
+
+<section id="v-overview">
+  <h2>Overview</h2>
+  <p class="lead">Everything the observer recorded while this project was being worked: every tool call, grouped into episodes (one request from you, through to the answer).</p>
+  <div class="cards" id="counts"></div>
+  <div class="panel"><h3>Most-used actions</h3><table id="topActions"></table></div>
+  <div class="panel"><h3>How episodes ended</h3><div id="outcomes"></div></div>
+</section>
+
+<section id="v-episodes" class="hidden">
+  <h2>Episodes</h2>
+  <p class="lead">One row per request. Click one to see every step taken, what it found, and the answer given.</p>
+  <label class="check"><input type="checkbox" id="showAll"> include background-task notifications</label>
+  <div class="panel"><table id="episodes"></table></div>
+  <div class="panel hidden" id="episodeDetail"></div>
+</section>
+
+<section id="v-playbooks" class="hidden">
+  <h2>Playbooks</h2>
+  <p class="lead">The project's repeated workflows, mined from the episodes: the steps in order, how long each takes, the commands actually used, and what failed on the way. <b>Recurring</b> means seen in two or more episodes; <b>observed</b> means once so far.</p>
+  <div id="playbooks"></div>
+</section>
+
+<section id="v-failures" class="hidden">
+  <h2>Failures</h2>
+  <p class="lead">Every tool call that failed, newest first, with what it returned.</p>
+  <div class="panel"><table id="failures"></table></div>
+</section>
+
+<section id="v-knowledge" class="hidden">
+  <h2>Knowledge</h2>
+  <p class="lead">What was derived, by tier: 0 observed, 1 relationships, 2 procedures and playbooks, 3 experiences, 4 deductions, 5 strategies. Deductions stay <i>unverified</i> until confirmed.</p>
+  <div class="panel"><table id="knowledge"></table></div>
+</section>
+
+<section id="v-deepseek" class="hidden">
+  <h2>DeepSeek</h2>
+  <p class="lead">Check the API works, then ask it anything with the learned data attached. The key is read from your environment on this computer and never sent to this page.</p>
+  <div class="panel">
+    <h3>Connection</h3>
+    <div class="row"><button class="btn" id="verify">Verify DeepSeek</button><span id="verifyOut" class="muted"></span></div>
+    <pre id="verifyDetail" class="hidden"></pre>
+  </div>
+  <div class="panel">
+    <h3>Ask</h3>
+    <div class="presets" id="presets"></div>
+    <textarea id="askText" placeholder="Ask anything. The context below is sent with it."></textarea>
+    <div class="row">
+      <span class="muted">Attach:</span>
+      <label class="check"><input type="checkbox" value="playbooks" checked> playbooks</label>
+      <label class="check"><input type="checkbox" value="overview" checked> activity</label>
+      <label class="check"><input type="checkbox" value="failures" checked> failures</label>
+      <label class="check"><input type="checkbox" value="agent" checked> agent tools</label>
+      <label class="check"><input type="checkbox" value="knowledge"> knowledge</label>
+    </div>
+    <div class="row"><button class="btn" id="ask">Ask DeepSeek</button>
+      <button class="btn ghost" id="toAgent" disabled>Send the answer's plan to the agent</button>
+      <span id="askMeta" class="muted"></span></div>
+    <div id="askOut"></div>
+  </div>
+</section>
+
+<section id="v-agent" class="hidden">
+  <h2>Project Agent</h2>
+  <p class="lead">Message the project's own automation agent. It can only act through its tools (stills, selftests, facts, books, renders, the ledger, and now <code>learned</code>), and it plans with the playbooks above. <b>Preview</b> shows the tool calls it would make without running anything; <b>Run</b> executes them.</p>
+  <div class="panel">
+    <div class="row"><span id="agentStatus" class="muted">checking…</span></div>
+    <textarea id="agentText" placeholder="e.g.  learned playbooks   ·   selftest masterclass lesson=cabin_cell_wall   ·   or free text when DeepSeek is the planner"></textarea>
+    <div class="row">
+      <button class="btn" id="plan">Preview plan</button>
+      <button class="btn" id="runPlan" disabled>Run these calls</button>
+      <button class="btn ghost" id="chat">Run as one chat turn</button>
+      <span id="agentMeta" class="muted"></span>
+    </div>
+    <div id="planOut"></div>
+    <pre id="jobOut" class="hidden"></pre>
+  </div>
+</section>
+
+</main>
+</div>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const get = u => fetch(u).then(r => r.json());
+const post = (u, b) => fetch(u, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(b || {})}).then(r => r.json());
+const secs = ms => ms == null ? "" : ms < 1000 ? ms + " ms" : (ms / 1000).toFixed(1) + " s";
+const loaded = {};
+
+function show(view) {
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.v === view));
+  document.querySelectorAll("main > section").forEach(s => s.classList.toggle("hidden", s.id !== "v-" + view));
+  try { localStorage.setItem("intel.view", view); } catch (e) {}
+  if (!loaded[view]) { loaded[view] = true; (loaders[view] || (() => {}))(); }
+}
+$("#nav").addEventListener("click", e => { if (e.target.dataset.v) show(e.target.dataset.v); });
+
+const loaders = {
+  async overview() {
+    const o = await get("/api/overview");
+    $("#lastEvent").textContent = "last event " + (o.last_event || "none").replace("T", " ").slice(0, 19) + " UTC";
+    $("#counts").innerHTML = Object.entries(o.counts).map(([k, v]) =>
+      `<div class="card"><div class="n">${v}</div><div class="l">${k}</div></div>`).join("");
+    const max = Math.max(...o.top_actions.map(a => a.runs), 1);
+    $("#topActions").innerHTML = "<tr><th>action</th><th>runs</th><th></th><th>failed</th><th>avg</th><th>total time</th></tr>" +
+      o.top_actions.map(a => `<tr><td><code>${esc(a.action)}</code></td><td>${a.runs}</td>
+        <td style="width:30%"><div class="bar" style="width:${100 * a.runs / max}%"></div></td>
+        <td class="${a.failures ? "fail" : ""}">${a.failures || ""}</td><td>${secs(a.avg_ms)}</td><td>${secs(a.total_ms)}</td></tr>`).join("");
+    $("#outcomes").innerHTML = o.outcomes.map(x => `<span class="chip">${esc(x.outcome)}: ${x.n}</span>`).join("");
+  },
+  async episodes() {
+    const rows = await get("/api/episodes" + ($("#showAll").checked ? "?all=1" : ""));
+    $("#episodes").innerHTML = "<tr><th>#</th><th>request</th><th>steps</th><th>failed</th><th>outcome</th><th>started</th></tr>" +
+      rows.map(r => `<tr class="click" data-id="${r.episode_id}"><td>${r.episode_id}</td><td>${esc((r.goal || "(no prompt text)").slice(0, 140))}</td>
+        <td>${r.action_count ?? ""}</td><td class="${r.failure_count ? "fail" : ""}">${r.failure_count || ""}</td>
+        <td><span class="badge">${esc(r.outcome)}</span></td><td class="muted">${esc((r.started_at || "").slice(0, 16).replace("T", " "))}</td></tr>`).join("");
+  },
+  async playbooks() {
+    const books = await get("/api/playbooks");
+    $("#playbooks").innerHTML = books.length ? books.map(b => `<div class="panel">
+      <h3>${esc(b.name)} <span class="badge">${b.status}</span> <span class="muted" style="font-weight:400">
+        ${b.episodes} episode${b.episodes > 1 ? "s" : ""} · ${b.sessions} session${b.sessions > 1 ? "s" : ""} · success ${Math.round(100 * b.success_rate)}% · ${esc(b.trigger)}</span></h3>
+      <div>${b.steps.map(s => `<span class="chip step">${esc(s.step)}</span>`).join("")}</div>
+      <table style="margin-top:10px"><tr><th>step</th><th>runs</th><th>median</th><th>failed</th><th>commands used</th></tr>
+      ${b.steps.map(s => `<tr><td><code>${esc(s.step)}</code></td><td>${s.runs}</td><td>${s.median_s == null ? "" : s.median_s + " s"}</td>
+        <td class="${s.failures ? "fail" : ""}">${s.failures || ""}</td><td>${s.examples.map(c => `<code>${esc(c.slice(0, 110))}</code>`).join("<br>")}</td></tr>`).join("")}</table>
+      ${b.recoveries.length ? `<p class="muted" style="margin:10px 0 0">Recoveries: ${b.recoveries.slice(0, 4).map(r => `${esc(r.failed)} failed, then ${esc(r.then || "nothing")}`).join(" · ")}</p>` : ""}
+      ${b.goals.length ? `<p class="muted" style="margin:6px 0 0">From: ${b.goals.slice(0, 2).map(g => "“" + esc(g.slice(0, 90)) + "…”").join(" · ")}</p>` : ""}
+    </div>`).join("") : `<div class="panel">No playbooks yet. Press <b>Re-extract</b>.</div>`;
+  },
+  async failures() {
+    const rows = await get("/api/failures");
+    $("#failures").innerHTML = "<tr><th>when</th><th>action</th><th>command</th><th>what came back</th></tr>" +
+      rows.map(f => `<tr><td class="muted">${esc((f.started_at || "").slice(0, 16).replace("T", " "))}</td><td><code>${esc(f.action)}</code></td>
+        <td><code>${esc(f.pattern)}</code></td><td class="muted">${esc((f.result || "").slice(0, 220))}</td></tr>`).join("");
+  },
+  async knowledge() {
+    const rows = await get("/api/knowledge");
+    $("#knowledge").innerHTML = "<tr><th>tier</th><th>claim</th><th>confidence</th><th>status</th></tr>" +
+      rows.map(k => `<tr><td>${k.tier}</td><td>${esc(k.claim)}</td><td>${k.confidence.toFixed(2)}</td>
+        <td class="${k.verification === "unverified" ? "warn" : ""}">${esc(k.verification)}</td></tr>`).join("");
+  },
+  deepseek() {
+    const presets = [
+      ["What can the agent automate?", "Looking at my playbooks and the agent's tools: which of my workflows could the agent run end to end today, which steps still need me, and what is the smallest new agent tool that would close each gap? Answer as a table."],
+      ["Fix my recurring failures", "Which failures recur, what causes each, and what single rule, check or script would prevent it? Be specific to this repository."],
+      ["Script my most common workflow", "Write the exact sequence of project-agent commands or tool calls to run my most common recurring playbook, with the checks between steps. Use only tools the agent has."],
+      ["Where does the time go?", "From the activity numbers, where does the time go, and what would save the most hours per week? Rank by hours saved."],
+      ["Plan an unattended film", "I want the agent to take a lesson that already exists through selftest, stills, a look at the stills, a render, and verification without me. Using the agent's tools and recipes, give the plan, and say exactly where it must stop and ask me."],
+    ];
+    $("#presets").innerHTML = presets.map(([t, p]) => `<button class="btn ghost" data-p="${esc(p)}">${esc(t)}</button>`).join("");
+    $("#presets").addEventListener("click", e => { if (e.target.dataset.p) $("#askText").value = e.target.dataset.p; });
+  },
+  async agent() {
+    const s = await get("/api/agent/status");
+    $("#agentStatus").innerHTML = s.ok ? (s.planner === "llm"
+      ? `Planner: <b>${esc(s.model)}</b> at <code>${esc(s.base)}</code> (free text works)`
+      : `Planner: <b>rule parser</b> (commands only; set DEEPSEEK_API_KEY for free text)`) + (s.busy ? " · <span class='warn'>busy</span>" : "")
+      : `<span class="fail">${esc(s.error)}</span>`;
+  },
+};
+
+$("#showAll").addEventListener("change", () => loaders.episodes());
+$("#episodes").addEventListener("click", async e => {
+  const tr = e.target.closest("tr[data-id]"); if (!tr) return;
+  const ep = await get("/api/episode/" + tr.dataset.id);
+  const box = $("#episodeDetail"); box.classList.remove("hidden");
+  const steps = (ep.trajectory || []).map(s => `<tr><td>${s.sequence_no ?? ""}</td><td><code>${esc(s.action)}</code></td>
+    <td class="${s.status === "failure" ? "fail" : "ok"}">${esc(s.status)}</td><td>${secs(s.duration_ms)}</td>
+    <td><code>${esc((s.generalized || s.pattern || "").slice(0, 120))}</code></td></tr>`).join("");
+  box.innerHTML = `<h3>Episode ${ep.episode_id} <span class="badge">${esc(ep.outcome)}</span></h3>
+    <p><b>Request:</b> ${esc(ep.goal || "(none)")}</p>
+    <table><tr><th>#</th><th>action</th><th>status</th><th>time</th><th>command</th></tr>${steps}</table>
+    <h3 style="margin-top:14px">Answer</h3><pre>${esc(ep.final_response || "(none)")}</pre>`;
+  box.scrollIntoView({behavior: "smooth"});
+});
+
+$("#reextract").addEventListener("click", async e => {
+  e.target.disabled = true; e.target.textContent = "Re-extracting…";
+  const r = await post("/api/extract");
+  e.target.disabled = false; e.target.textContent = "Re-extract & sync agent";
+  Object.keys(loaded).forEach(k => delete loaded[k]);
+  show(localStorage.getItem("intel.view") || "overview");
+  alert(`${r.playbooks ?? 0} playbooks derived` + (r.agent_synced ? "; the agent has the new learning." : "."));
+});
+
+$("#verify").addEventListener("click", async e => {
+  e.target.disabled = true; $("#verifyOut").textContent = "checking…";
+  const r = await get("/api/deepseek/verify"); e.target.disabled = false;
+  $("#verifyOut").innerHTML = r.ok
+    ? `<span class="ok">Working.</span> ${esc(r.model)} replied “${esc(r.reply)}” in ${secs(r.round_trip_ms)} · key from ${esc(r.key_source)}`
+    : `<span class="fail">Not working:</span> ${esc(r.error)}`;
+  const d = $("#verifyDetail"); d.classList.remove("hidden"); d.textContent = JSON.stringify(r, null, 2);
+});
+
+let lastAnswer = "";
+$("#ask").addEventListener("click", async e => {
+  const prompt = $("#askText").value.trim(); if (!prompt) return;
+  const context = [...document.querySelectorAll("#v-deepseek input[type=checkbox]:checked")].map(c => c.value);
+  e.target.disabled = true; $("#askMeta").textContent = "thinking…"; $("#askOut").innerHTML = "";
+  const r = await post("/api/deepseek/ask", {prompt, context}); e.target.disabled = false;
+  if (!r.ok) { $("#askMeta").innerHTML = `<span class="fail">${esc(r.error)}</span>`; return; }
+  lastAnswer = r.reply;
+  $("#toAgent").disabled = false;
+  $("#askMeta").textContent = `${r.model} · ${secs(r.ms)} · ${r.usage.total_tokens ?? "?"} tokens · ${r.context_chars} chars of context`;
+  $("#askOut").innerHTML = `<div class="reply">${esc(r.reply)}</div>`;
+});
+$("#toAgent").addEventListener("click", () => {
+  $("#agentText").value = "Carry out the following plan using your tools. Stop and report before anything long-running (exports) or anything that writes engine files.\n\n" + lastAnswer;
+  show("agent");
+});
+
+let planned = [];
+$("#plan").addEventListener("click", async e => {
+  const prompt = $("#agentText").value.trim(); if (!prompt) return;
+  e.target.disabled = true; $("#agentMeta").textContent = "planning…"; $("#planOut").innerHTML = "";
+  const r = await post("/api/agent/plan", {prompt}); e.target.disabled = false;
+  if (!r.ok) { $("#agentMeta").innerHTML = `<span class="fail">${esc(r.error)}</span>`; return; }
+  planned = r.calls; $("#runPlan").disabled = !planned.length;
+  $("#agentMeta").textContent = `${r.planner}${r.model ? " · " + r.model : ""} · ${planned.length} call${planned.length === 1 ? "" : "s"} proposed, nothing run yet`;
+  $("#planOut").innerHTML = (r.said ? `<div class="reply">${esc(r.said)}</div>` : "") +
+    planned.map(c => `<div class="call"><code><b>${esc(c.name)}</b> ${esc(JSON.stringify(c.args))}</code></div>`).join("") +
+    (planned.length ? "" : `<p class="muted">No tool calls. ${r.planner === "rule" ? "The rule parser did not recognise that; try <code>help</code> or <code>learned playbooks</code>." : ""}</p>`);
+});
+async function follow(job) {
+  const out = $("#jobOut"); out.classList.remove("hidden");
+  for (;;) {
+    const j = await get("/api/job/" + job);
+    out.textContent = `[${j.state}] ${j.elapsed_s ?? 0} s\n\n` + (j.output || "") +
+      (j.result ? "\n\nRESULT\n" + JSON.stringify(j.result, null, 2).slice(0, 12000) : "");
+    if (j.state !== "running") { loaders.agent(); return; }
+    await new Promise(r => setTimeout(r, 1500));
+  }
+}
+$("#runPlan").addEventListener("click", async e => {
+  if (!planned.length) return;
+  if (!confirm(`Run ${planned.length} tool call(s) through the agent now?`)) return;
+  const r = await post("/api/agent/execute", {calls: planned});
+  if (!r.ok) { $("#agentMeta").innerHTML = `<span class="fail">${esc(r.error)}</span>`; return; }
+  follow(r.job);
+});
+$("#chat").addEventListener("click", async () => {
+  const prompt = $("#agentText").value.trim(); if (!prompt) return;
+  if (!confirm("Let the agent plan and act on this in one turn (up to 8 planning steps)?")) return;
+  const r = await post("/api/agent/chat", {prompt});
+  if (!r.ok) { $("#agentMeta").innerHTML = `<span class="fail">${esc(r.error)}</span>`; return; }
+  follow(r.job);
+});
+
+let start = "overview";
+try { start = localStorage.getItem("intel.view") || "overview"; } catch (e) {}
+loaders.overview(); loaded.overview = true;
+show(start);
+</script>
+</body>
+</html>

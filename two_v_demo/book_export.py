@@ -67,6 +67,41 @@ the drawn diagram before Markdown ever sees it -- Python-Markdown would
 otherwise print the fence as literal text.
 """
 
+BOX_FENCE = re.compile(
+    r'^:::box[ \t]+(?P<kind>[a-z][a-z0-9-]*)(?:[ \t]+"(?P<label>[^"]*)")?[ \t]*\r?\n'
+    r"(?P<body>.*?)^:::[ \t]*$", re.S | re.M)
+"""A boxed aside in the manuscript::
+
+    :::box against
+    **$16,347 to run $200 of plates.** ...
+    :::
+
+The kind picks the box's look and its default label (:data:`BOX_LABELS`); a
+quoted label after the kind overrides it. The body is ordinary Markdown."""
+
+BOX_LABELS = {
+    "against": "The number that doesn't help",
+    "correction": "We got this wrong",
+    "clock": "The 40-hour clock",
+    "aside": "Aside",
+}
+
+
+def _boxes(text: str) -> str:
+    """Replace every ``:::box`` fence with a finished ``<aside>`` block.
+
+    The body is converted here, on its own, and the result is emitted as one
+    raw HTML block with no blank line inside it, so Python-Markdown passes it
+    through untouched instead of reading the box's contents a second time."""
+    def replace(match: re.Match) -> str:
+        kind = match.group("kind")
+        label = match.group("label") or BOX_LABELS.get(kind, kind.replace("-", " ").title())
+        inner = _markdown_to_html(match.group("body")).replace("\n\n", "\n")
+        return (f'\n<aside class="box box-{kind}"><div class="box-label">'
+                f"{html_escape.escape(label)}</div>{inner}</aside>\n")
+    return BOX_FENCE.sub(replace, text)
+
+
 DIAGRAM_DIR_NAME = "diagrams"
 DIAGRAM_TIMEOUT_S = 240
 """Diagrams are rendered to SVG at export time by the ``mmdc`` CLI that
@@ -166,6 +201,25 @@ th, td { border-bottom: 1px solid var(--rule); padding: .42rem .5rem;
 th { font-family: "Segoe UI", sans-serif; font-size: .82rem; }
 ul, ol { margin: 0 0 1.05rem 1.3rem; padding: 0; }
 li { margin: 0 0 .4rem; }
+
+aside.box { margin: 1.8rem 0; padding: .9rem 1.1rem .4rem; border: 1px solid var(--rule);
+  border-left: 5px solid var(--accent); background: #f5f2ec; border-radius: 3px;
+  page-break-inside: avoid; break-inside: avoid; }
+aside.box .box-label { font: 700 .72rem/1 "Segoe UI", sans-serif; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: .55rem; }
+aside.box p { text-align: left; }
+aside.box pre { overflow-x: auto; font-size: .78rem; }
+aside.box-against { border-left-color: var(--warn); background: #f8efec; }
+aside.box-against .box-label { color: var(--warn); }
+aside.box-correction { border-left-color: #b8860b; background: #faf5e8; }
+aside.box-correction .box-label { color: #8a6508; }
+aside.box-clock { border-left-color: #2f6b4a; background: #eef5f0; }
+aside.box-clock .box-label { color: #2f6b4a; }
+.clockbar { display: block; position: relative; height: .7rem; margin: .35rem 0 .7rem;
+  background: #d9e6dd; border-radius: 2px; overflow: hidden; }
+.clockbar .done { position: absolute; left: 0; top: 0; bottom: 0; background: #9cc2a8; }
+.clockbar .now { position: absolute; top: 0; bottom: 0; background: #2f6b4a; }
+.clockbar .week { position: absolute; top: -2px; bottom: -2px; width: 2px; background: #111; }
 
 .book-title { font-size: 2.5rem; margin: 6rem 0 .5rem; }
 .book-sub { font-size: 1.1rem; color: var(--muted); font-style: italic;
@@ -422,8 +476,8 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
 
     def images(body: str) -> str:
         drawn = _mermaid_blocks(body, embed_images, live_diagrams)
-        return _resolve_images(drawn, embed_images, found, missing,
-                               index, figure_dir)
+        return _boxes(_resolve_images(drawn, embed_images, found, missing,
+                                      index, figure_dir))
 
     # The cover is the front of the book, so it is assembled first and
     # placed outside the reading column: full width, no page furniture, and

@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:40:16",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Lightning, growth, deadwood, rot.\n\nThe trees give a lot, and they ask some things back. They are the tallest things on the hill, and now they carry steel rope to the dome: bond the ropes and ground them, or lightning will use them. Trunks grow, so tree-saver straps are loosened every year, never left to girdle the bark. Dead branches fall, so the crowns are cleaned before anything hangs under them. And rot hides, so an arborist looks at all eight trees every season, and after every big storm.",
+  "watermark": "preserved model-provided watermark"
+}

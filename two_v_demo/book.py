@@ -2260,7 +2260,14 @@ PART_IX = Part(
                 _p("plate", "The dome, a year on",
                    "The closing image.",
                    figures=(_f("closing-image", "One year on.", PHOTO,
-                               full_page=True),),),
+                               full_page=True,
+                               note="The last plate, and the only one that "
+                                    "has to be a photograph: the dome standing "
+                                    "where the tree stood, a year after the "
+                                    "frame went up. Frame it from the same "
+                                    "spot and at the same hour as the "
+                                    "frontispiece, so a reader can lay the two "
+                                    "pages side by side and see a year pass."),),),
             ),
         ),
     ),
@@ -3793,6 +3800,202 @@ PART_FUTURE = Part(
             derives=("creator_facts.axes", "creator_facts.dial_permutations",
                      "creator_facts.distinct_shells"),
             ref="space",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 36, "The Tried and True Dome",
+            "The popular three-frequency panel dome, solved by this book's own "
+            "code and set beside the wedge dome for comparison",
+            "reference",
+            (
+                _p("opener", "The Tried and True Dome",
+                   "One of the most popular small domes people build is a "
+                   "three-frequency five-eighths shell of framed panels. It is "
+                   "tried and true, and it is the best comparison this book's "
+                   "method has.", words=340),
+                _p("table", "The dome, solved",
+                   "Its census, its sticks and its saw settings at a "
+                   "{{plan.diameter_ft}} foot base, every figure computed by "
+                   "this book's own solver.", words=700,
+                   figures=(_f("plan-census",
+                               "The popular 3V dome, solved.",
+                               PLOT, plot="plan_census"),)),
+                _p("text", "A base that zig-zags",
+                   "{{plan.panels}} panels, {{plan.base_edges}} base edges on two "
+                   "heights, and the tapered sections that follow from the cut.",
+                   words=760,
+                   figures=(_f("plan-base-ring",
+                               "Fifteen base edges on two heights.",
+                               DIAG, diagram="plan_base_ring"),)),
+                _p("text", "What this method buys and what it costs",
+                   "Panels skinned and lifted as units, sawn sticks on a jig -- "
+                   "and no split log anywhere in it. A method you can start "
+                   "tomorrow, against one you start with the trees you have.",
+                   words=700,
+                   beats=("Its stick is a sawn member ripped on a bevel; this "
+                          "book's is a wedge of the tree.",
+                          "One bevel setting cannot be exact for every joint, and "
+                          "a gasket takes up the difference.",
+                          "Both are geodesic, so both have the same twelve "
+                          "pentagons underneath -- which is the point.")),
+                _p("table", "What the reader may take from it",
+                   "The habits of the panel method this book would borrow, and "
+                   "the parts its own method replaces.",
+                   words=680),
+            ),
+            derives=("panel_method.facts", "book_tokens.plan_facts"),
+            ref="plan3v",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 37, "The Non-Beveled Method",
+            "How a zome is actually framed: two customary methods, one of "
+            "which needs no compound cuts at all, and the sequence that "
+            "makes it work",
+            "howto",
+            (
+                _p("opener", "The Non-Beveled Method",
+                   "The zome chapter described the shape. This one is the "
+                   "method a working shop uses to frame it, and the argument "
+                   "for it is arithmetic rather than taste: one strut per "
+                   "panel type, no jigs, no compound angles.", words=340),
+                _p("table", "Two ways to frame a zome, weighed",
+                   "The {{zome.methods}} customary methods against each "
+                   "other: what each needs at the saw and what each does to "
+                   "the joint.",
+                   words=640,
+                   figures=(_f("zome-methods",
+                               "The two methods, weighed.", PLOT,
+                               plot="zome_methods"),)),
+                _p("text", "The reciprocal joint",
+                   "Two struts overlap at a miter and fasten through each "
+                   "other; the panel's overall length is what is measured, "
+                   "and the angles are scribed rather than calculated. "
+                   "Outside the frame the joint leaves a small gap that "
+                   "widens with the depth of the member: here "
+                   "{{zome.gap_lo_in}} to {{zome.gap_hi_in}} inches, which a "
+                   "bevelled block can fill.", words=820,
+                   figures=(_f("zome-joint",
+                               "The reciprocal joint, and its outside gap.",
+                               DIAG, diagram="zome_joint"),)),
+                _p("steps", "The sequence, as a shop would run it",
+                   "The method in the order this book would teach it: "
+                   "stock, first "
+                   "miters, mark the panel length, scribe, cut to a stop, "
+                   "check the overall dimension, build halves, add the "
+                   "centre strut, then panels.", words=900),
+                _p("text", "The stability the shape does not have",
+                   "A frame of parallelograms is a mechanism until something "
+                   "stops it, which is why the method adds a centre strut or "
+                   "a cover, and why the zome chapter's own geometry said the "
+                   "same thing. The covering is part of the structure here, "
+                   "not decoration on it.", words=680,
+                   beats=("A centre strut per panel converts the "
+                          "parallelogram into two triangles.",
+                          "A diaphragm does the same job and is often "
+                          "cheaper.",
+                          "Final fastening after the panels are up and the "
+                          "geometry has closed.")),
+                _p("text", "Where this leaves the book's own method",
+                   "The honest comparison at the end of two variations "
+                   "chapters: a zome is a better room and a worse shell; a "
+                   "wedge dome is a worse room and a better shell. Which one "
+                   "a reader wants depends on which half of the sentence "
+                   "matters.", words=620),
+            ),
+            derives=("book_math.declared", "book_tokens.zome_facts"),
+            ref="non_beveled",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 38, "One Sheet, Forty Panels",
+            "What one {{plate.sheet_in}} inch sheet of plate becomes when a "
+            "plasma torches the whole shell's panels out of it: a "
+            "{{plate.diameter_ft}} foot vessel, forty panels, "
+            "{{plate.gal}} gallons, and one afternoon of welding",
+            "reference",
+            (
+                _p("opener", "One Sheet, Forty Panels",
+                   "A sheet of plate and a cutting table turn the frame into "
+                   "a vessel: the same forty panels, in steel, nested so "
+                   "tightly that the offcut is a rim rather than a pile of "
+                   "scrap.", words=340),
+                _p("text", "The nest",
+                   "{{plate.panels}} panels on a {{plate.sheet_in}} inch "
+                   "sheet: {{plate.long_in}} inch long members and "
+                   "{{plate.short_in}} inch short ones, paired so the "
+                   "triangles tile, in {{plate.rows}} rows and "
+                   "{{plate.util_pct}} per cent of the plate inside a part.",
+                   words=760,
+                   figures=(_f("plate-nest",
+                               "One sheet, forty panels.", DIAG,
+                               diagram="plate_nest"),)),
+                _p("table", "What the sheet becomes",
+                   "The vessel in the four sizes a sheet can make it: tub, "
+                   "burner, shelter, seat -- with the weight of steel and the "
+                   "seam to weld it up.", words=700,
+                   figures=(_f("plate-vessels",
+                               "Four things one sheet makes.", PLOT,
+                               plot="plate_vessels"),)),
+                _p("text", "The welding, and the honest limit",
+                   "{{plate.weld_ft}} feet of seam and "
+                   "{{plate.weld_hours}} hours of bench time for the vessel; "
+                   "and above a {{plate.v3_side_in}} inch panel the plate "
+                   "stops being one piece, so a bigger dome is cut in "
+                   "segments and welded on the bench -- which is how every "
+                   "large plate dome in the world is actually built.",
+                   words=760),
+            ),
+            derives=("book_tokens.nest_facts", "plate_nesting"),
+            ref="plate_nest",
+        ),
+        Chapter(
+            _NEXT_NUMBER + 39, "The Shop the Campaign Buys",
+            "The machine those lines pay for, built rather than bought: a "
+            "{{shop.travel_ft}} foot table for {{shop.build_usd}} dollars, "
+            "and the router conversion that shares its frame",
+            "reference",
+            (
+                _p("opener", "The Shop the Campaign Buys",
+                   "The campaign budgeted for machines. This chapter is what "
+                   "the machines cost when the shop builds them on the same "
+                   "frame -- and what that difference pays for instead.",
+                   words=340),
+                _p("text", "The table, at ten feet",
+                   "The published design this shop is copying, scaled to "
+                   "{{shop.travel_ft}} feet of travel: "
+                   "{{shop.x_rail_mm}} millimetres of rail on the long axis, "
+                   "{{shop.x_racks}} rack lengths a side, a "
+                   "{{shop.pitch_dia_mm}} millimetre pinion moving "
+                   "{{shop.mm_per_rev}} millimetres per revolution, and the "
+                   "{{shop.steps_per_mm}} steps per millimetre that has to be "
+                   "right before anything else is.", words=820,
+                   figures=(_f("shop-bill",
+                               "The machine's bill, line by line.", PLOT,
+                               plot="shop_bill"),)),
+                _p("table", "What the campaign budgeted, and what the build "
+                   "costs",
+                   "Two lines of the goal against the two machines this shop "
+                   "can build: {{shop.goal_plasma_usd}} and "
+                   "{{shop.goal_router_usd}} budgeted, "
+                   "{{shop.both_usd}} built -- and what the difference buys "
+                   "instead.", words=760),
+                _p("text", "The router conversion",
+                   "The same frame, long axes and gantry; a stiff short Z, a "
+                   "spindle, a spoilboard and dust. Panels, jigs, templates "
+                   "and the parts that are not steel -- for "
+                   "{{shop.router_usd}} on top of a machine that is already "
+                   "built.", words=700,
+                   beats=("The plasma table is a fast, coarse machine.",
+                          "The router is a slow, precise one.",
+                          "They share everything between the floor and the "
+                          "gantry, which is most of the money.")),
+                _p("text", "What the machine makes possible",
+                   "Forty-panel vessels in steel, one-piece panels up to "
+                   "{{plate.v3_side_in}} inches, segment-welded plates above "
+                   "that, and every jig and template this book's own method "
+                   "needs -- which is the argument for the machine being in "
+                   "the campaign at all.", words=680),
+            ),
+            derives=("book_tokens.shop_facts", "cnc_table"),
+            ref="shop",
         ),
     ),
 )

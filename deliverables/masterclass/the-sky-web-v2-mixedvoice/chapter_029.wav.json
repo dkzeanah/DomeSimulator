@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:38:46",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "The shell, yes. A floor full of life, on bigger rope.\n\nSo, leave it up? The shell, frame and skin, 2,695 kilograms, hangs from this X on 5/8 in rope at 34 kilonewtons, the trees guyed. Add a floor and what a household puts on it, by the cell wall's own figure 3.3 tonnes, and it is 6.0 tonnes, pulling 75 kilonewtons: 1 in rope, and every guy and tree checked again. It can be done. It is a structure an engineer and an arborist should sign, and it is priced here, not rated.",
+  "watermark": "preserved model-provided watermark"
+}

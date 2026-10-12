@@ -44,9 +44,10 @@ the wood.
 
 **So the pentagon ring carries air, never water.** Which suits it, because air
 wants to be there: warm, humid air rises to the crown. The pentagon ring is the
-natural **exhaust manifold** -- a closed loop of channel at the top of the room,
-touching every seam above the belt -- and the cap's {{clim.cap_seams}} seams
-carry that air on up to the apex vent.
+natural **manifold** -- a closed loop of channel at the top of the room, touching
+every seam above the belt -- joining the cap's {{clim.cap_seams}} seams so the
+exhaust shares itself among them. Where that exhaust goes is Chapter
+{{ch.breathe}}: down, never up through the cap.
 
 The belt is the opposite surprise. Its {{clim.belt_seams}} seams rise at only
 {{clim.belt_slope}} degrees, which looks like another level ring. But because
@@ -76,6 +77,7 @@ air takes up from the rim ports into the frame.
 
 ## Rain does not come in through the ridge
 
+:::box correction
 Chapter {{ch.seam_module}} described **a slot along the outer cap of every
 seam** taking rain in at the ridge, with a gutter under it. That was wrong, and
 this book corrects it here rather than quietly changing the earlier chapter.
@@ -86,6 +88,7 @@ hits. Water taken in at the crown has to travel the whole height of the frame
 to get out, and on the pentagon ring it cannot get out at all. And every foot
 of seam that carries liquid water is a foot of wood with a leak waiting next to
 it.
+:::
 
 **Rain belongs outside.** Let it run off the cap -- the one watertight layer of
 Chapter {{ch.one_layer}} -- to a gutter round the rim, outside the frame, and
@@ -108,14 +111,18 @@ the films' declared rainfall and cap brim, not a measurement of any one site.)
 
 <!-- concept: cabin_seam_climate/stack -->
 
-Warm air rising is free, so use its direction: take air in low at the rim ports
-and let it out high at the pentagon ring and the apex.
+Warm air rising is free, so use its direction: take fresh air in low at the rim
+ports and let the room carry it up to the crown, where it is taken out of the
+room -- into the channels, under the cap, not through it (Chapter
+{{ch.breathe}}).
 
-But do not count on its strength. With the inside ten degrees warmer than the
+But do not count on its strength going up. With the inside ten degrees warmer than the
 outside, the height of this dome produces {{clim.stack}} pascals of pull between
 the rim and the apex. The barrier fan of Chapter {{ch.seam_module}} holds
 {{air.pressure}}. The chimney effect helps the fan along; it does not replace
-it, and on a summer afternoon it runs the wrong way.
+it, and on a summer afternoon it runs the wrong way. Sent *down* the seams
+instead, through a cold shell, the same physics carries the exhaust on its own
+in winter -- Chapter {{ch.breathe}} works the numbers.
 
 ## A tube around the bottom
 
@@ -150,7 +157,9 @@ Put together, every level has one job:
 - **the belt** -- its low corners drain it;
 - **the upper band** -- air up toward the crown;
 - **the pentagon ring** -- the exhaust manifold, air only;
-- **the cap** -- the apex vent.
+- **the cap** -- unbroken. A grille at the crown, under it, takes the room's air
+  into the channels, and every port in the building is at the rim, facing the
+  ground (Chapter {{ch.breathe}}).
 
 Sensors inside, outside and in the seam read temperature and humidity; a pin in
 the wood reads its moisture; a switch on the cap says whether it is raining.

@@ -291,7 +291,77 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "The seam channel as the dome's climate system: dew point, not "
                 "humidity; a Peltier on each skin; seven modes and the controller "
                 "that picks one; which rings drain and which lie dead level; why "
-                "the desiccant lives in two drawers at the rim and not in the seams.",
+                "the desiccant lives in two drawers at the rim and not in the seams; "
+                "and a correction on camera: the cap never opens -- the room's air "
+                "goes in at the crown, down the seams, and out at the rim facing the "
+                "ground, falling by itself in winter. Then ten $20 Peltier modules "
+                "at the rim, run day and night on the sun: what one really moves "
+                "against the 70 W on its box, the water ten make against what the "
+                "room takes on, the array and bank 24/7 needs and its price, and a "
+                "second correction -- the plates make less water per watt than two "
+                "earlier films assumed.",
+                compose=True),
+    Deliverable("cabin_cell_wall", "the-cell-wall.mp4",
+                "The dome's skin as a stack of layers, each made as one piece -- "
+                "fabric, semi-flexible or hard -- with its channels built in, cut "
+                "away with every layer running at once. A hose-gasket in a C-channel "
+                "round every triangle, ported three times so it can jumper to its "
+                "neighbours through the seam, over it, or not at all: a network of "
+                "locals with no single point of failure, beside the global channel "
+                "in the seams and the rings round the dome. The fabric layers as a "
+                "T-shirt quilt of forty cells. Why build this way, counted: thirty-"
+                "one uses from fourteen networks. A wildfire worked through from the "
+                "first ember -- the house shuts, the sheathing floods metered to the "
+                "heat so the tank lasts twelve times longer, the network checks "
+                "itself and dries the skin out after. And the numbers that argue "
+                "back: the insulation splits the stack, a seam holds two one-inch "
+                "runs, a hard vacuum is fifteen tonnes a panel, soil holds on a "
+                "tenth of the dome, and an address on every cell is 680 valves.",
+                compose=True),
+    Deliverable("cabin_every_piece", "every-piece-numbered.mp4",
+                "The Triangle Infill calculator, filmed. One of the dome's "
+                "triangles filled with wedges split from a log, each piece "
+                "numbered, its lengths along every edge, and both cuts set up on "
+                "the mitre saw -- which face down, what against the fence, the "
+                "mitre and the bevel -- with the offcut falling away; nine more "
+                "ways to fill it. Then the floor under the dome from the owner's "
+                "five 20 ft half trunks: the pentagon and the circle it holds, a "
+                "36 degree corner, a star that fails its deck alone, joists that "
+                "fix it, every span and pier checked, seven ways to frame it and "
+                "five materials compared, and the wood strength named as a guess.",
+                compose=True),
+    Deliverable("cabin_sky_web", "the-sky-web.mp4",
+                "Building the dome in the air, with the trees. Two wire ropes cross "
+                "between four trees in an X, a spiral is woven onto it over the "
+                "footprint, and a 12 V battery winch pulls each of the forty "
+                "triangles up flat in a three-leg harness; it is swung out to its "
+                "place, three pigtails are thrown over the web, and it hangs. Then "
+                "joined -- lashed rather than screwed, if you like -- the cords "
+                "gathered to the apex so one bigger winch lifts the whole dome "
+                "evenly, a cotton skin soaked in silicone dissolved in naphtha, and "
+                "the dome left up in a network of living trees: guyed to the next "
+                "trees out, a tree is a post forty-nine times stiffer than the 6x6 "
+                "sawn from it. The second cut corrects the first -- an electric "
+                "winch, and struts weighed at 15 to 22 kg, two to three times the "
+                "solver's estimate -- and keeps the numbers that argue back: the "
+                "trees break unguyed under a taut web, cords laid on the struts "
+                "lift nothing, today's winch lifts a quarter of the dome, unsorted "
+                "struts tip it, and a second web is experimental.",
+                compose=True),
+    Deliverable("cabin_panel_method", "the-panel-method-3v-dome.mp4",
+                "A three-frequency 5/8 dome of framed panels, built on a jig: the "
+                "sphere's three chords, the zig-zag base and its tapered sections, "
+                "the trammel jig, the pinwheel sticks, the bevel one setting cannot "
+                "make exact, sections skinned whole, the radial deck, and a zome "
+                "framed with no bevel at all. A popular, tried-and-true build "
+                "shown for comparison; every figure solved by panel_method.py.",
+                compose=True),
+    Deliverable("cabin_shop", "the-shop-the-campaign-buys.mp4",
+                "The Kickstarter tooling lines as a shop: a 10 x 5 ft CNC plasma "
+                "table built from the Homemade Madness plans by their own scaling "
+                "rules, the forty panels it nests on one sheet, the welded steel "
+                "vessel, a 3V dome in plate sized to the sheet, and the router head "
+                "on the same frame -- paid, quoted and estimated prices kept apart.",
                 compose=True),
 )
 

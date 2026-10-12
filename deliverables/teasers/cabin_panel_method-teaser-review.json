@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-03T21:19:33.668436+00:00",
+  "lesson": "teaser_cabin_panel_method",
+  "title": "The Panel Method: A Three-Frequency Dome, Framed on a Jig: the teaser",
+  "chapters": [
+    {
+      "slug": "two",
+      "title": "DOMESIM",
+      "narration": [
+        "Same hill, two methods."
+      ],
+      "start": 0.0,
+      "end": 3.4
+    },
+    {
+      "slug": "cut",
+      "title": "Five eighths",
+      "narration": [
+        "Cut below the middle."
+      ],
+      "start": 3.4,
+      "end": 6.8
+    },
+    {
+      "slug": "jig",
+      "title": "Draw the jig with two arcs",
+      "narration": [
+        "Three lengths make one triangle."
+      ],
+      "start": 6.8,
+      "end": 10.624
+    },
+    {
+      "slug": "window",
+      "title": "A window is a panel with hinges",
+      "narration": [
+        "A spare frame on two hinges."
+      ],
+      "start": 10.624,
+      "end": 14.304
+    },
+    {
+      "slug": "zome_joint",
+      "title": "The gap that is allowed",
+      "narration": [
+        "Square edges leave a V outside."
+      ],
+      "start": 14.304,
+      "end": 18.68
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 18.68,
+      "end": 23.704
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 23.704,
+      "end": 29.688
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

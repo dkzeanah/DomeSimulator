@@ -173,3 +173,21 @@ Nothing else depends on it. To discard the data, delete `.intelligence/`.
   with FTS over identifiers.
 - **Better outcome signals:** a test that went from failing to passing, or the
   user's next message as a verdict on the last one.
+
+## Playbooks and the dashboard
+
+    py -3.12 -m intelligence.procedures     # mine playbooks -> .intelligence/playbooks.json
+    py -3.12 -m intelligence.dashboard      # the one-page dashboard (launchers/01 Intelligence Dashboard.bat)
+
+`procedures.py` labels every action with what it means here (`edit:lesson`,
+`render:stills`, `review:stills`, `render:film`, `verify:book`, `ship:commit`, ...),
+turns each episode into its ordered milestones, and groups episodes into named
+playbooks: steps in order, the commands used, median time per step, failures and
+what followed. Seen once is *observed*; in two or more episodes, *recurring*.
+
+`dashboard.py` serves 127.0.0.1 only: overview, episodes, playbooks, failures,
+knowledge, a DeepSeek panel (verify the key, ask with the learned data attached)
+and an agent panel (preview the tool calls DeepSeek would have the project agent
+make, then run them). The key is read from `DEEPSEEK_API_KEY` and never sent to
+the page. **Re-extract & sync agent** re-derives everything and hands it to the
+project agent (`project_agent/kb/learned.json`).

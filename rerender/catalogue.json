@@ -558,7 +558,6 @@
   "title": "2V Dome Construction Masterclass",
   "source": "two_v_demo/lesson_build.py",
   "originals": [
-   "deliverables/masterclass/dome-construction-masterclass.mp4",
    "deliverables/teasers/dome-construction-masterclass-teaser-vertical.mp4",
    "deliverables/teasers/dome-construction-masterclass-teaser.mp4"
   ],
@@ -6175,7 +6174,6 @@
   "title": "From Scratch: Every Calculation Behind a Dome on Screen",
   "source": "two_v_demo/lesson_scratch.py",
   "originals": [
-   "deliverables/masterclass/dome-from-scratch-geometry-to-pixels.mp4",
    "deliverables/teasers/dome-from-scratch-geometry-to-pixels-teaser-vertical.mp4",
    "deliverables/teasers/dome-from-scratch-geometry-to-pixels-teaser.mp4"
   ],
@@ -6963,7 +6961,6 @@
   "title": "The Dome Simulator Master Presentation",
   "source": "two_v_demo/lesson_master.py",
   "originals": [
-   "deliverables/masterclass/domesim-master-presentation.mp4",
    "deliverables/teasers/domesim-master-presentation-teaser-vertical.mp4",
    "deliverables/teasers/domesim-master-presentation-teaser.mp4"
   ],
@@ -8880,8 +8877,6 @@
   "title": "Why Wedges: A Dome That Does Not Need a Sawmill",
   "source": "two_v_demo/lesson_wedge_why.py",
   "originals": [
-   "deliverables/masterclass/why-wedges-no-sawmill-v2.mp4",
-   "deliverables/masterclass/why-wedges-no-sawmill.mp4",
    "deliverables/teasers/why-wedges-no-sawmill-teaser-vertical.mp4",
    "deliverables/teasers/why-wedges-no-sawmill-teaser.mp4"
   ],
@@ -9791,7 +9786,7 @@
     "number": "03",
     "title": "All at once",
     "promise": "Every section splits at the same time.",
-    "narration": "Then everything happens at once. The crown comes off, the trunk is cut into 8 sections, 6 feet each, and every section splits into 8 wedges. That is 64 struts from one tree. With 2 trees it is 128, for a frame that needs 120.",
+    "narration": "Then everything happens at once. The crown comes off, the trunk is cut into 8 sections, 6 feet each, and every section splits into 8 wedges. That is 64 struts from one tree. With 3 trees it is 192, for a frame that needs 120.",
     "equations": [],
     "bullets": [
      "one tree, then two",
@@ -10554,8 +10549,7 @@
   "title": "All Domes",
   "source": "two_v_demo/lesson_all_domes.py",
   "originals": [
-   "deliverables/masterclass/all-domes-every-permutation-vertical.mp4",
-   "deliverables/masterclass/all-domes-every-permutation.mp4"
+   "deliverables/masterclass/all-domes-every-permutation-vertical.mp4"
   ],
   "releases": [],
   "note": "The Dome Creator's whole catalogue drawn by the Creator's own renderer -- grain, glass, mirrors, foundations and the fit-out inside -- one dome built step by step in the tool's own construction order, then every menu swept one setting at a time, eight random draws, and the permutation count.",
@@ -11014,9 +11008,7 @@
   "kind": "lesson",
   "title": "Bring Your Own Dome",
   "source": "two_v_demo/lesson_bring_your_own_dome.py",
-  "originals": [
-   "deliverables/byod/final/cut-0001/bring-your-own-dome.mp4"
-  ],
+  "originals": [],
   "releases": [],
   "note": "The annotated-transcript revision: animated iris, central services, movable partitions, wedge channels, staged growth, and a starter-first budget. Includes the shared contact outro.",
   "family": "Bring Your Own Dome",
@@ -11515,10 +11507,7 @@
   "kind": "lesson",
   "title": "Bring Your Own Dome",
   "source": "two_v_demo/lesson_byod_deepseek.py",
-  "originals": [
-   "deliverables/byod-deepseek/attempt-v1-deepseek-vertical.mp4",
-   "deliverables/byod-deepseek/attempt-v1-deepseek.mp4"
-  ],
+  "originals": [],
   "releases": [
    "deliverables/releases/attempt-v1-deepseek"
   ],
@@ -12060,9 +12049,7 @@
   "kind": "lesson",
   "title": "Bring Your Own Dome (snarky)",
   "source": "two_v_demo/lesson_byod_styled.py",
-  "originals": [
-   "deliverables/byod-styled/byod_snarky/attempt-v1-byod_snarky.mp4"
-  ],
+  "originals": [],
   "releases": [],
   "note": "Bring Your Own Dome in the social register: handheld camera that leans in when the character speaks, a little faster, vignetted, and the pink cyber jelly on thirteen cues, taking the tone of each passage it stands in. Same script, same numbers, same claims as the deepseek cut.",
   "family": "Bring Your Own Dome",
@@ -13106,12 +13093,7 @@
   "kind": "lesson",
   "title": "Dome Park",
   "source": "two_v_demo/lesson_dome_park.py",
-  "originals": [
-   "deliverables/masterclass/dome-park-bring-your-own-home-v2.mp4",
-   "deliverables/masterclass/dome-park-bring-your-own-home-v3-vertical.mp4",
-   "deliverables/masterclass/dome-park-bring-your-own-home-v3.mp4",
-   "deliverables/masterclass/dome-park-bring-your-own-home.mp4"
-  ],
+  "originals": [],
   "releases": [
    "deliverables/releases/dome-park-bring-your-own-home-v2",
    "deliverables/releases/dome-park-bring-your-own-home-v3"
@@ -13563,15 +13545,6 @@
   "title": "A house you can take apart",
   "source": "two_v_demo/lesson_seed_pitch.py",
   "originals": [
-   "deliverables/masterclass/stem-cell-dome-campaign-v4.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign-v5.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign-v6-phone.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign-v6.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign-v7-phone.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign-v7.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign-vertical-v4.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign-vertical.mp4",
-   "deliverables/masterclass/stem-cell-dome-campaign.mp4",
    "deliverables/teasers/seed_pitch-teaser-v3.mp4",
    "deliverables/teasers/seed_pitch-teaser.mp4"
   ],
@@ -15101,6 +15074,109 @@
   "target_file": "deliverables/masterclass/cabin-stem-cell-utility-core-build.mp4"
  },
  {
+  "key": "concept_example_molecular_sieve_fridge",
+  "kind": "lesson",
+  "title": "The fridge with no compressor",
+  "source": "",
+  "originals": [],
+  "releases": [],
+  "note": "Concept film from <the video's title>: The fridge with no compressor",
+  "family": "",
+  "superseded_by": "",
+  "family_note": "",
+  "fit": "",
+  "voice_rate": "",
+  "audio_bed": "",
+  "style": "teaching",
+  "chapters": [
+   {
+    "number": "01",
+    "title": "The fridge with no compressor",
+    "promise": "No compressor, no refrigerant, no moving parts: just water, a vacuum and a mineral.",
+    "narration": "A molecular sieve is a zeolite: a mineral full of pores exactly the size of a water molecule. Put one in a sealed, air-free vessel beside a pan of water and it pulls the water's vapour in so hard that the water boils at room temperature, and boiling water gets cold. That is a refrigerator. When the zeolite is full, heat it and it gives the water back, ready to do it again.",
+    "equations": [],
+    "bullets": []
+   },
+   {
+    "number": "02",
+    "title": "The numbers we are working from",
+    "promise": "Where every figure in this film comes from.",
+    "narration": "Before anything is worked out, here is everything this film rests on: 7 numbers, 1 standard, 6 estimate. A claimed number is what the source said and has not been measured here. Every figure after this is arithmetic on these and on the dome's own computed numbers.",
+    "equations": [
+     "heat to boil water = 2,450 kJ/kg  (standard)",
+     "water per kg of zeolite = 0.20 kg/kg  (estimate)",
+     "zeolite in the bed = 20.0 kg  (estimate)",
+     "cooling per unit of heat = 0.4  (estimate)",
+     "regeneration temperature = 200 C  (estimate)",
+     "cycles a day = 1  (estimate)",
+     "useful heat per square metre of collector = 3.0 kWh/m2/day  (estimate)"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "03",
+    "title": "Water boils cold",
+    "promise": "Take the air away and water boils at room temperature.",
+    "narration": "Seal water in a vessel with the air pumped out and it boils at room temperature. Boiling takes heat, and it takes it from the water, so the water gets cold: every kilogram that boils off carries away 2,450 kilojoules. The only trick is to keep taking the vapour away, and that is the zeolite's job.",
+    "equations": [
+     "heat to boil water = 2,450 kJ/kg"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "04",
+    "title": "One bed, one day",
+    "promise": "How much cold a bed of zeolite holds.",
+    "narration": "A bed of 20.0 kilograms soaks up about 4.0 kilograms of water before it is full. Boiling that much water away pulls 2.7 kilowatt hours of heat out of whatever the cold side touches.",
+    "equations": [
+     "water one bed moves = 4.0 kg",
+     "cold from one cycle = 2.7 kWh"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "05",
+    "title": "The sun resets it",
+    "promise": "Heat drives it, not electricity.",
+    "narration": "When the bed is full, heat it to about 200 degrees and it gives its water back, ready to go again. A solar collector does that. The price is heat: every day of cooling needs 6.8 kilowatt hours of it, because the cycle returns only 0.4 of cold for each unit of heat.",
+    "equations": [
+     "heat to reset it = 6.8 kWh",
+     "cooling per unit of heat = 0.4"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "06",
+    "title": "Where it fits the dome",
+    "promise": "The seam module's desiccant drawer, grown up.",
+    "narration": "In the dome this is the seam module's desiccant cartridge, grown up. The three-way gate already sends the channel's air through a silica drawer that comes out and goes in an oven. A zeolite bed pulls harder, gives its water back to the sun instead, and makes cold while it works. Run once a day it gathers 386 gallons of water a year, 5.1 times what the seam's thermoelectric plates condense.",
+    "equations": [
+     "water it gathers a year = 386 gal",
+     "peltier gal year (this dome) = 75.7 gal/yr",
+     "against the seam's plates = 5.1 x"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "07",
+    "title": "What it will not do",
+    "promise": "The number that does not help.",
+    "narration": "It is a daily batch, not an air conditioner: spread over the day it cools about 113 watts on average, a fraction of what a small window unit moves. And the heat has to come from somewhere: about 2.3 square metres of collector in good sun, on a dome whose whole shell is 550 square feet.",
+    "equations": [
+     "average cooling = 113 W",
+     "collector needed = 2.3 m2",
+     "shell sqft (this dome) = 550 sq ft"
+    ],
+    "bullets": []
+   }
+  ],
+  "number_modules": [],
+  "graph_nodes": [],
+  "target_key": "cabin_concept_example_molecular_sieve_fridge",
+  "target_module": "two_v_demo/lesson_cabin_concept_example_molecular_sieve_fridge.py",
+  "target_file": "deliverables/masterclass/cabin-concept-example-molecular-sieve-fridge.mp4"
+ },
+ {
   "key": "2v",
   "kind": "lesson",
   "title": "2V Geodesic Masterclass",
@@ -15436,16 +15512,16 @@
    {
     "number": "06",
     "title": "Condensing on purpose",
-    "promise": "73 gallons a year, and here is what that is worth.",
-    "narration": "Fourth job, and this is the one the film has to be honest about. Thermoelectric plates on the cold side of the channel, dropping moisture out of the air as liquid straight into the gutter the rain already uses. The appeal is obvious: the plate sits exactly where the moisture is highest and the drain is right there. Now the number. 360 watts of plates make 73 gallons in a year. That is 0.4 inches of rain. At 2.9 kilowatt hours a litre it is several times worse than a compressor, and a compressor is already not how anybody sensible makes water on a roof. So they are a dehumidifier that happens to yield liquid. They are not a water supply. The water supply is the roof.",
+    "promise": "76 gallons a year, and here is what that is worth.",
+    "narration": "Fourth job, and this is the one the film has to be honest about. Thermoelectric plates on the cold side of the channel, dropping moisture out of the air as liquid straight into the gutter the rain already uses. The appeal is obvious: the plate sits exactly where the moisture is highest and the drain is right there. Now the number. 651 watts of plates make 76 gallons in a year. That is 0.4 inches of rain. At 5.0 kilowatt hours a litre it is several times worse than a compressor, and a compressor is already not how anybody sensible makes water on a roof. So they are a dehumidifier that happens to yield liquid. They are not a water supply. The water supply is the roof.",
     "equations": [],
     "bullets": []
    },
    {
     "number": "07",
     "title": "What it costs",
-    "promise": "$7,549 of module on a dome that lists at $12,036.",
-    "narration": "And the price, because a system that is half the cost of the building it is fitted to has to argue for itself. The module is $7,549 across the whole dome. The cap, the liner, the gutter and the drain are per foot of seam and grow with the building; the gates, the cartridges and the plates are per seam and grow more slowly. If you fit one part of it, fit the gutter. Water off the roof is the best return here, it needs no power, and it is the only piece that pays for itself in a season.",
+    "promise": "$7,665 of module on a dome that lists at $12,036.",
+    "narration": "And the price, because a system that is half the cost of the building it is fitted to has to argue for itself. The module is $7,665 across the whole dome. The cap, the liner, the gutter and the drain are per foot of seam and grow with the building; the gates, the cartridges and the plates are per seam and grow more slowly. If you fit one part of it, fit the gutter. Water off the roof is the best return here, it needs no power, and it is the only piece that pays for itself in a season.",
     "equations": [],
     "bullets": []
    }

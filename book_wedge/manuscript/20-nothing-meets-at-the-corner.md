@@ -135,6 +135,7 @@ allowed to leave the building as offcut, and the method spends it deliberately.
 <!-- concept: why/buttcut -->
 <!-- concept: why/buttcut_math -->
 
+:::box correction
 One correction, because this project published the wrong version of it and
 some of that is still out there.
 
@@ -144,6 +145,7 @@ The bevel is constant at {{cut.bevel}} degrees — half the sector angle —
 because it comes from how the log was split rather than from where the member
 sits in the dome. The mitre takes {{cut.mitres}} values across all
 {{dome.members}} members.
+:::
 
 <!-- concept: wedge/m_pinwheel -->
 

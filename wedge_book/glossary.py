@@ -134,6 +134,24 @@ TERMS: tuple[Term, ...] = (
          "and rot cannot get going.", ("moisture",)),
     Term("zome", "A dome-like building swept from a spiral rather than "
          "subdivided from a sphere.", ("zomes",)),
+    Term("3V", "Three-frequency. Each face of an icosahedron is divided into "
+         "nine triangles, three to an edge, before the points are pushed out "
+         "to the sphere. It has three strut lengths.", ("three-frequency",)),
+    Term("five-eighths cut", "A three-frequency sphere sawn off at the ring of "
+         "points nearest five-eighths of the way down. Its base zig-zags "
+         "between two heights.", ("5/8 cut", "five-eighths")),
+    Term("framed panel", "A triangle of the dome built as its own small frame "
+         "of sawn sticks on a jig, then screwed to its neighbours.",
+         ("framed panels", "panel method")),
+    Term("trammel", "A stick with a point at each end, swung like a compass to "
+         "draw an arc of a set radius.", ("trammels",)),
+    Term("base section", "One of the boards a panel dome's bottom panels sit "
+         "on. On a five-eighths dome some must be tapered.", ("base sections",)),
+    Term("radial deck", "A floor framed like a wheel: a joist from the centre "
+         "to every corner of the dome's base, with a rim along its edges.",
+         ("radial decks",)),
+    Term("wedge block", "A strip ripped to a bevel on both faces that fills "
+         "the V between two square-edged panels.", ("wedge blocks",)),
 )
 
 

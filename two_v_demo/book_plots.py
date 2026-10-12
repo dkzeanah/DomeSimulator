@@ -27,6 +27,31 @@ from .book_figures import (HALF_H_IN, PAGE_H_IN, PAGE_W_IN, STYLE,
 # The shared table renderer
 # ----------------------------------------------------------------------
 
+def _renderer(fig):
+    """A renderer to measure text with, drawing the canvas if there is none.
+
+    Measuring needs the same font machinery that will draw the table, so the
+    measurement is taken from the figure that is about to be drawn rather
+    than from a guess about how wide a character is.
+    """
+    try:
+        return fig.canvas.get_renderer()
+    except AttributeError:
+        fig.canvas.draw()
+        return fig.canvas.renderer
+
+
+def _text_width(axes, renderer, text, size, weight, family) -> float:
+    """How wide one string will print, as a fraction of the page width."""
+    artist = axes.text(0.0, 0.0, str(text), fontsize=size, weight=weight,
+                       family=family)
+    try:
+        width_in = artist.get_window_extent(renderer=renderer).width
+    finally:
+        artist.remove()
+    return width_in / (axes.figure.dpi * PAGE_W_IN)
+
+
 def table(title: str, headers: tuple[str, ...],
           rows: tuple[tuple[str, ...], ...],
           note: str = "", align: str = "", key: str = "",
@@ -62,33 +87,52 @@ def table(title: str, headers: tuple[str, ...],
     line_height = min(0.052, (top - 0.10) / max(1, body_rows + 2))
     y = top
 
-    # Column positions, measured from the content rather than spread
-    # evenly. Even spacing looks fine until one column holds a long header
-    # and the next holds a short one, and then they overlap -- which is
-    # exactly what happened to the first draft of this book's tables.
-    widths = []
-    for index in range(columns):
-        longest = len(str(headers[index]))
-        for row in rows:
-            if index < len(row):
-                longest = max(longest,
-                              max(len(part)
-                                  for part in str(row[index]).split("\n")))
-        widths.append(longest + 2)
-    total = float(sum(widths))
+    # Column positions, measured by the renderer rather than guessed from
+    # character counts. A proportional count of characters is close enough
+    # until one column holds a long header, or a body cell longer than its
+    # neighbours, and then two columns print on top of each other. Counting
+    # can only ever be an estimate: a character is not a fixed width, and
+    # the sans-serif body is nearly twice as wide per character as the
+    # count assumes. So each column is measured as it will be drawn.
+    renderer = _renderer(fig)
+    gap = 0.030
+
+    def column_widths(size: float) -> list[float]:
+        out = []
+        for index in range(columns):
+            family = "monospace" if align[index] == "r" else "sans-serif"
+            widest = _text_width(axes, renderer, headers[index], size,
+                                 "bold", family)
+            for position, row in enumerate(rows):
+                if index < len(row):
+                    bold = footer_rows and position >= len(rows) - footer_rows
+                    widest = max(widest, _text_width(
+                        axes, renderer, row[index], size,
+                        "bold" if bold else "normal", family))
+            out.append(widest)
+        return out
+
+    size = 8.0
+    widths = column_widths(size)
+    # A table that does not fit the page is set in smaller type rather than
+    # run off it. Six point is the floor; below that a printed page stops
+    # being readable and the right answer is fewer columns.
+    while sum(widths) + gap * (columns - 1) > 1.0 and size > 6.0:
+        size = round(size - 0.25, 2)
+        widths = column_widths(size)
+
     starts, cursor = [], 0.0
     for width in widths:
-        starts.append(cursor / total)
-        cursor += width
+        starts.append(cursor)
+        cursor += width + gap
     positions = []
     for index, kind in enumerate(align):
         if kind == "l":
             positions.append(starts[index])
         else:
-            # Right-aligned text is drawn at the column's right edge, one
-            # space short of the next column's start.
-            right = (starts[index + 1] if index + 1 < columns else 1.0)
-            positions.append(right - 1.0 / total)
+            # Right-aligned text is drawn at the column's right edge, which
+            # is what the measurement was taken against.
+            positions.append(starts[index] + widths[index])
 
     def draw_row(values, weight="normal", colour=STYLE.ink, size=8.0):
         for index, (value, kind) in enumerate(zip(values, align)):
@@ -98,7 +142,7 @@ def table(title: str, headers: tuple[str, ...],
                       ha="left" if kind == "l" else "right",
                       family="monospace" if kind == "r" else "sans-serif")
 
-    draw_row(headers, weight="bold", size=8.0)
+    draw_row(headers, weight="bold", size=size)
     y -= line_height * 0.55
     axes.plot([0.0, 1.0], [y, y], color=STYLE.ink, linewidth=0.9)
     y -= line_height * 0.45
@@ -109,7 +153,7 @@ def table(title: str, headers: tuple[str, ...],
             y += line_height * 0.12
             axes.plot([0.0, 1.0], [y, y], color=STYLE.rule, linewidth=0.6)
             y -= line_height * 0.30
-        draw_row(row,
+        draw_row(row, size=size,
                  weight="bold" if index >= split_at and footer_rows else
                  "normal")
         y -= line_height
@@ -2286,6 +2330,142 @@ def plot_pad_options(figure: Figure):
         full_page=True)
 
 
+def plot_plan_census(figure: Figure):
+    """The popular 3V panel dome, solved: census, sticks and saw settings."""
+    from .book_tokens import plan_facts
+
+    plan = plan_facts()
+    rows = [
+        ("The design", f"{plan['diameter_ft']:,.0f} ft ({plan['diameter_m']:,.2f} m) across the base",
+         f"three-frequency, cut at {plan['fraction']:.3f} of its width"),
+        ("Panels", f"{plan['panels']:,.0f}",
+         f"{plan['hex_panels']:,.0f} in hexagons, {plan['pent_panels']:,.0f} in pentagons"),
+        ("Edges and points", f"{plan['solver_struts']:,.0f} and {plan['solver_hubs']:,.0f}",
+         f"{plan['solver_classes']:,.0f} chord lengths"),
+        ("Sticks", f"{plan['sticks']:,.0f}", f"{plan['distinct']:,.0f} distinct, three to a panel"),
+        ("Stick section", f"{plan['strut_mm']:,.0f} x {plan['strut_depth_mm']:,.0f} mm",
+         "a 2x3 ripped in half on the bevel"),
+        ("Tail cut, hexagon sticks", f"{plan['miter_hex_short']:.1f} and {plan['miter_hex_long']:.1f} deg",
+         "off square, flat on the jig"),
+        ("Tail cut, pentagon sticks", f"{plan['miter_pent']:.1f} and {plan['miter_pent_long']:.1f} deg",
+         "off square"),
+        ("Exact bevel", f"{plan['bevel_lo']:.1f} to {plan['bevel_hi']:.1f} deg",
+         "one shop setting cannot match every joint"),
+        ("Base", f"{plan['base_edges']:,.0f} edges on two heights",
+         f"{plan['tapered']:,.0f} tapered, {plan['level']:,.0f} level, {plan['taper_mm']:,.0f} mm apart"),
+        ("Skin in whole sections", f"{plan['sections_pent']:,.0f} pentagons, {plan['sections_hex']:,.0f} hexagons",
+         f"{plan['skin_sqm']:,.1f} sq m of panel in all"),
+        ("Floor enclosed", f"{plan['area_sqm']:,.1f} sq m", "inside the fifteen-sided base"),
+    ]
+    return table(
+        "The popular 3V dome, solved",
+        ("what", "how much", "note"), rows, align="lll",
+        note="A tried-and-true build, shown for comparison. Every figure is "
+             "computed by this project's panel_method.py for its own declared "
+             "reference size; none is taken from a plan set.",
+        full_page=True)
+
+
+def plot_zome_methods(figure: Figure):
+    """The two customary zome methods, weighed against each other."""
+    from .book_tokens import zome_facts
+
+    zome = zome_facts()
+    rows = [
+        ("Cutting", "miters only, one per panel type",
+         "a mitre and a bevel on every strut"),
+        ("Jigs", "none", "one per panel type"),
+        ("Compound angles", "none", "many, each with its own orientation"),
+        ("Stock", "any depth", "limited by the saw's cutting depth"),
+        ("Joint", "reciprocal overlap, fastened through",
+         "beveled faces closed against each other"),
+        ("Outside face", "small gaps, wider with deeper stock",
+         "closed, flush"),
+        ("Interior face", "identical to the beveled method",
+         "identical to the non-beveled method"),
+        ("Stability", "needs a centre strut, a wedge block or a cover",
+         "the bevel closes the frame in itself"),
+        ("Outside gap, this zome", f"{zome['gap_lo_in']:.2f} to {zome['gap_hi_in']:.2f} in",
+         "none"),
+    ]
+    return table(
+        "Two ways to frame a zome, weighed",
+        ("at the saw and at the joint", "non-beveled", "beveled"), rows,
+        align="lll",
+        note="Two customary ways to frame a zome, compared in this book's own "
+             "words; the gap is solved by panel_method.py for this book's "
+             "nine-sided zome. The second and third rows are the whole "
+             "argument, and they are arithmetic rather than preference.",
+        full_page=True)
+
+
+def plot_plate_vessels(figure: Figure):
+    """Four things one sheet of plate makes, and what each weighs."""
+    from . import plate_nesting as pn
+    from .book_tokens import nest_facts
+
+    nest = nest_facts()
+    radius = nest['radius_in']
+    rows = []
+    for thickness, use in ((1.5, "a tub liner, upside down or right way up"),
+                           (2.0, "a seat shell, a planter, a fire bowl"),
+                           (3.0, "a wood burner's body and baffle"),
+                           (5.0, "a stove that outlives its owner")):
+        vessel = pn.vessel(radius, thickness_mm=thickness)
+        rows.append((
+            f"{thickness:,.1f} mm plate",
+            f"{vessel['part_lb']:,.0f} lb of panels",
+            f"{vessel['sheet_lb']:,.0f} lb sheet",
+            f"{vessel['offcut_lb']:,.0f} lb offcut",
+            use,
+        ))
+    rows.append((
+        f"the shell itself",
+        f"{nest['diameter_ft']:,.2f} ft across",
+        f"{nest['height_ft']:,.2f} ft high",
+        f"{nest['volume_gal']:,.0f} gal",
+        f"{nest['floor_sqft']:,.1f} sq ft of floor upside down",
+    ))
+    return table(
+        "Four things one sheet makes",
+        ("plate", "panels weigh", "the sheet", "left over", "what it is for"),
+        tuple(rows), align="lllll", footer_rows=1,
+        note=f"The same forty panels, cut from one sheet and welded at "
+             f"{nest['seams']} seams. Weight decides which thickness is honest for "
+             "which job: a tub liner at 1.5 mm, a seat or planter at 2 mm, a wood "
+             "burner's body at 3 mm, and a stove you intend to leave to somebody "
+             "at 5 mm. At this size it is not a shelter: it stands "
+             f"{nest['height_ft']:,.2f} ft tall.",
+        full_page=True)
+
+
+def plot_shop_bill(figure: Figure):
+    """The machine's bill, line by line, at the prices this shop paid."""
+    from .book_tokens import shop_facts
+
+    shop = shop_facts()
+    rows = []
+    for line in shop['lines']:
+        rows.append((f"{line.label} ({line.basis})", f"{line.quantity:,.0f} {line.unit}",
+                     f"${line.unit_usd:,.2f}", f"${line.usd:,.2f}"))
+    rows.append(("The plasma table, built", "", "", f"${shop['build_usd']:,.2f}"))
+    for line in shop['router_lines']:
+        rows.append((f"{line.label} ({line.basis})", f"{line.quantity:,.0f} {line.unit}",
+                     f"${line.unit_usd:,.2f}", f"${line.usd:,.2f}"))
+    rows.append(("The router conversion", "", "", f"${shop['router_usd']:,.2f}"))
+    rows.append(("Both machines, one frame", "", "", f"${shop['both_usd']:,.2f}"))
+    return table(
+        "The machine's bill, line by line",
+        ("part", "quantity", "each", "line"), rows,
+        align="lrrr", footer_rows=3,
+        note="Each line says what kind of price it is. 'paid': the rack, the "
+             "15-tooth pinion and the HGR20 rail kits, at what this shop paid. "
+             "'quoted': a current retail listing (cnc_table.SOURCES names each). "
+             "'allowance': an estimate for a part not yet priced -- a decision, "
+             "labelled as one, to be replaced by a quote.",
+        full_page=True)
+
+
 PLOTS = {
     "declared_constants": plot_declared_constants,
     "pine_ladder": plot_pine_ladder,
@@ -2299,6 +2479,10 @@ PLOTS = {
     "space_menus": plot_space_menus,
     "priced_catalogue": plot_priced_catalogue,
     "pad_options": plot_pad_options,
+    "plan_census": plot_plan_census,
+    "zome_methods": plot_zome_methods,
+    "plate_vessels": plot_plate_vessels,
+    "shop_bill": plot_shop_bill,
     "core_stages": plot_core_stages,
     "breadth_tables": plot_breadth_tables,
     "fitout_catalogue": plot_fitout_catalogue,

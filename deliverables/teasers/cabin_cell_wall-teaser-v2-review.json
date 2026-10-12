@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-07T05:22:12.791840+00:00",
+  "lesson": "teaser_cabin_cell_wall",
+  "title": "The Cell Wall: A Dome Skin in Layers: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "DOMESIM",
+      "narration": [
+        "A skin that does work."
+      ],
+      "start": 0.0,
+      "end": 3.4
+    },
+    {
+      "slug": "localnet",
+      "title": "A network of locals only",
+      "narration": [
+        "Beside the global channel, never part of it."
+      ],
+      "start": 3.4,
+      "end": 7.224
+    },
+    {
+      "slug": "glue",
+      "title": "Glue from the inside",
+      "narration": [
+        "And a vacuum to clamp it while it cures."
+      ],
+      "start": 7.224,
+      "end": 11.264
+    },
+    {
+      "slug": "firethreat",
+      "title": "How a wildfire takes a house",
+      "narration": [
+        "Embers, radiant heat, and flame."
+      ],
+      "start": 11.264,
+      "end": 15.567999999999998
+    },
+    {
+      "slug": "more",
+      "title": "And more",
+      "narration": [
+        "A leak found in six tests; smoke smelled in seconds."
+      ],
+      "start": 15.567999999999998,
+      "end": 20.567999999999998
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 20.567999999999998,
+      "end": 25.592
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 25.592,
+      "end": 31.575999999999997
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

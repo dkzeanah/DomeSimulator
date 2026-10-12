@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:30:22",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Heavy and round, it barely swings.\n\nSkinned, the dome catches wind. Side on it shows 13.8 square metres. A 90 kilometre an hour gust pushes it with about 2.6 kilonewtons; it weighs 26, so it swings 6 degrees. A 144 kilometre an hour storm, 6.6 kilonewtons, 14 degrees. Its weight is what keeps it still, and its round shape sheds the wind the same from every side. Tie it down to the trees on three sides before a storm all the same.",
+  "watermark": "preserved model-provided watermark"
+}

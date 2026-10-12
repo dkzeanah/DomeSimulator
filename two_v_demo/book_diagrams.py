@@ -1314,9 +1314,172 @@ def diagram_rag_station(figure: Figure):
     return fig
 
 
+def diagram_plan_base_ring(figure: Figure):
+    """The 3V five-eighths base, drawn from the solved dome: fifteen edges on
+    two heights, the tapered sections marked."""
+    import math
+
+    from . import panel_method as pm
+
+    d = pm.reference()
+    cut = d.cut
+    v = cut.sphere.vertices
+    lo = min(v[k][2] for e in cut.base for k in (e.a, e.b))
+    fig, axes = canvas(
+        PAGE_W_IN, HALF_H_IN + 0.5, "Fifteen base edges on two heights",
+        f"The five-eighths cut of a three-frequency sphere ends on {len(cut.base)} edges whose "
+        f"corners alternate between two heights, {cut.max_rise * d.radius_m * 1000:,.0f} mm apart "
+        f"at this size. {cut.tapered_count} base sections are tapered (solid) and "
+        f"{cut.level_count} sit level (dashed). Drawn from panel_method.py's own solve.")
+    for e in cut.base:
+        a, b = v[e.a], v[e.b]
+        style = dict(color=STYLE.key if e.tapered else STYLE.wood_dark,
+                     linewidth=2.6 if e.tapered else 1.6,
+                     linestyle="-" if e.tapered else "--")
+        axes.plot([a[0], b[0]], [a[1], b[1]], **style, zorder=3)
+    for k in {k for e in cut.base for k in (e.a, e.b)}:
+        high = v[k][2] - lo > 1e-6
+        axes.plot([v[k][0]], [v[k][1]], marker="o", markersize=5 if high else 3.5,
+                  color=STYLE.key if high else STYLE.bark, zorder=4)
+    label(axes, 1.35, 0.25, "tapered: low at one end,\nhigh at the other", size=7.2,
+          colour=STYLE.key, ha="left")
+    label(axes, 1.35, -0.30, "level: both ends\nat one height", size=7.2,
+          colour=STYLE.wood_dark, ha="left")
+    label(axes, 1.35, -0.75, "large dots: the higher corners", size=7.0, colour=STYLE.muted, ha="left")
+    axes.set_xlim(-1.2, 2.6)
+    axes.set_ylim(-1.15, 1.15)
+    axes.set_aspect("equal", adjustable="box")
+    axes.set_axis_off()
+    return fig
+
+
+def diagram_zome_joint(figure: Figure):
+    """The reciprocal joint: two struts, one miter, and the outside gap."""
+    from matplotlib.patches import Polygon
+
+    from .book_tokens import zome_facts
+
+    zome = zome_facts()
+    fig, axes = canvas(
+        PAGE_W_IN, HALF_H_IN + 0.5, "The reciprocal joint",
+        "Two struts overlap at a miter and are fastened through each other. "
+        "The panel's overall length is what gets measured -- not a cut list "
+        "of angles -- so the saw is set once per panel type and every strut "
+        "of that type is cut to the same stop. Because no bevel is cut, the "
+        "full depth of the member survives and the joint leaves a small gap "
+        f"on the outside face: {zome['gap_lo_in']:.2f} to {zome['gap_hi_in']:.2f} in "
+        f"in a {zome['depth_in']:.1f} in deep stick on this book's zome.")
+
+    depth = 0.34
+    # Two struts meeting at a corner, drawn as the V they make. The inner
+    # edges touch; the outer edges stand apart by the bevel that was not cut.
+    axes.add_patch(Polygon(
+        [(-1.55, -0.10), (0.00, -0.10), (0.00, 0.24), (-1.55, 0.24)],
+        closed=True, facecolor=STYLE.wood, edgecolor=STYLE.bark,
+        linewidth=1.0, zorder=2))
+    axes.add_patch(Polygon(
+        [(0.00, -0.10), (1.55, -0.10), (1.55, 0.24), (0.36, 0.24)],
+        closed=True, facecolor="#c08a51", edgecolor=STYLE.bark,
+        linewidth=1.0, zorder=2))
+    # Where the bevel would have been: a wedge of missing wood on the outside.
+    axes.add_patch(Polygon(
+        [(0.00, 0.24), (0.36, 0.24), (0.00, -0.10)],
+        closed=True, facecolor="#f2e6d2", edgecolor=STYLE.key,
+        linewidth=1.2, hatch="///", zorder=3))
+    label(axes, 0.10, 0.44, "the gap the bevel would have filled",
+          size=7.2, colour=STYLE.key, ha="left")
+    for x in (-0.90, -0.35, 0.95):
+        axes.plot([x], [0.07], marker="o", markersize=2.8,
+                  color=STYLE.wood_dark, zorder=5)
+    # The inside edge is the bottom of the bar -- the two members meet there
+    # and the gap opens at the top. The label used to sit on the outside
+    # edge, which said the opposite of what the drawing shows.
+    label(axes, -1.60, -0.30, "the inside edges touch",
+          size=7.2, colour=STYLE.ink, ha="left")
+    label(axes, -1.60, -0.50, "fastened through both members, toward the "
+                              "inside edge",
+          size=7.2, colour=STYLE.muted, ha="left")
+
+    axes.annotate("", xy=(-1.55, -0.85), xytext=(1.55, -0.85),
+                  arrowprops=dict(arrowstyle="<->", color=STYLE.muted,
+                                  linewidth=0.9))
+    label(axes, 0.0, -1.03,
+          f"the overall panel length, measured over the joint "
+          f"(here {zome['side_in']:,.1f} in)",
+          size=7.2, colour=STYLE.muted)
+
+    label(axes, -1.60, -1.30, "Optional, and worth it on a big zome:",
+          size=7.4, colour=STYLE.ink, ha="left")
+    label(axes, -1.60, -1.47,
+          "a beveled block wedged into that gap, or a centre strut across "
+          "each panel —",
+          size=7.0, colour=STYLE.muted, ha="left")
+    label(axes, -1.60, -1.63,
+          "either of which turns a parallelogram into two triangles.",
+          size=7.0, colour=STYLE.muted, ha="left")
+
+    axes.set_xlim(-1.7, 1.8)
+    axes.set_ylim(-1.80, 0.80)
+    axes.set_aspect("equal", adjustable="box")
+    axes.set_axis_off()
+    return fig
+
+
+def diagram_plate_nest(figure: Figure):
+    """One sheet of plate, nested with a whole shell's panels on it.
+
+    Every part is drawn exactly where :func:`plate_nesting.max_radius` put it,
+    after :func:`plate_nesting.verify` checked that none leaves the margin and
+    no two sit closer than the cutting gap -- so the picture and the numbers
+    cannot disagree.
+    """
+    from matplotlib.patches import Polygon
+
+    from . import plate_nesting as pn
+
+    radius, layout = pn.max_radius("strict")
+    panels = pn.panel_set(radius)
+    sheet_w, sheet_h = pn.SHEET_W_IN, pn.SHEET_H_IN
+    iso, equi = panels.shape("isosceles"), panels.shape("equilateral")
+
+    fig, axes = canvas(
+        PAGE_W_IN, HALF_H_IN + 0.5, "One sheet, forty panels",
+        f"A {sheet_w:,.0f} by {sheet_h:,.0f} inch sheet of plate, nested with "
+        f"the {panels.panels} panels of a {panels.diameter_ft:,.2f} foot shell, in "
+        f"{len(layout.rows)} strips of triangles pointing alternately up and down. "
+        f"{layout.used_area / (sheet_w * sheet_h) * 100.0:.0f} per cent of the plate is "
+        f"inside a part; every part is at least {pn.PART_GAP_IN:g} in from its "
+        f"neighbours and {pn.EDGE_MARGIN_IN:g} in from the edge, checked part by part.")
+
+    axes.add_patch(Polygon(
+        [(0.0, 0.0), (sheet_w, 0.0), (sheet_w, sheet_h), (0.0, sheet_h)],
+        closed=True, facecolor="#f7f4ee", edgecolor=STYLE.bark, linewidth=1.4, zorder=1))
+    for part in layout.parts:
+        colour = STYLE.wood if part.key == "isosceles" else "#c08a51"
+        axes.add_patch(Polygon(part.polygon, closed=True, facecolor=colour,
+                               edgecolor=STYLE.bark, linewidth=0.6, zorder=3))
+
+    label(axes, sheet_w / 2.0, sheet_h + 6.0, f"{sheet_w:,.0f} in", size=7.6, colour=STYLE.muted)
+    label(axes, -7.0, sheet_h / 2.0, f"{sheet_h:,.0f} in", size=7.6, colour=STYLE.muted, ha="center")
+    label(axes, 0.0, -6.0,
+          f"isosceles x {iso.count} ({panels.short_in:,.1f} x {panels.short_in:,.1f} x {iso.base:,.1f} in)",
+          size=7.2, colour=STYLE.ink, ha="left")
+    label(axes, sheet_w * 0.62, -6.0, f"equilateral x {equi.count} ({equi.base:,.1f} in sides)",
+          size=7.2, colour="#8a5a20", ha="left")
+
+    axes.set_xlim(-14.0, sheet_w + 6.0)
+    axes.set_ylim(-11.0, sheet_h + 10.0)
+    axes.set_aspect("equal", adjustable="box")
+    axes.set_axis_off()
+    return fig
+
+
 DIAGRAMS = {
     "strand_map": diagram_strand_map,
     "rag_station": diagram_rag_station,
+    "plan_base_ring": diagram_plan_base_ring,
+    "plate_nest": diagram_plate_nest,
+    "zome_joint": diagram_zome_joint,
     "master_cutlist": diagram_master_cutlist,
     "tree_taper": diagram_tree_taper,
     "trunk_eighths": diagram_trunk_eighths,

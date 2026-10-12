@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-06T12:54:22.817579+00:00",
+  "lesson": "teaser_cabin_cell_wall",
+  "title": "The Cell Wall: A Dome Skin in Layers: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "DOMESIM",
+      "narration": [
+        "One skin, many layers, each with its own wiring."
+      ],
+      "start": 0.0,
+      "end": 5.144
+    },
+    {
+      "slug": "rings",
+      "title": "Bands, like a greenhouse",
+      "narration": [
+        "Channels that run round the dome."
+      ],
+      "start": 5.144,
+      "end": 8.544
+    },
+    {
+      "slug": "foam",
+      "title": "Foam after the cover",
+      "narration": [
+        "Three lifts, and the panel becomes a sandwich."
+      ],
+      "start": 8.544,
+      "end": 13.16
+    },
+    {
+      "slug": "filter",
+      "title": "The whole shell is the filter",
+      "narration": [
+        "Air in, slower than a breeze."
+      ],
+      "start": 13.16,
+      "end": 16.696
+    },
+    {
+      "slug": "more",
+      "title": "And more",
+      "narration": [
+        "A leak found in six tests; smoke smelled in seconds."
+      ],
+      "start": 16.696,
+      "end": 21.696
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 21.696,
+      "end": 26.720000000000002
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 26.720000000000002,
+      "end": 32.704
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

@@ -83,6 +83,14 @@ HASHTAG_BANK: dict[str, tuple[str, ...]] = {
         "#modularhousing", "#openbuilding", "#kickstarter", "#housingcrisis",
         "#diy", "#domehome", "#alternativehousing", "#homestead",
     ),
+    "cabin_shop": (
+        "#cncplasma", "#plasmacutter", "#cncrouter", "#diycnc", "#metalwork",
+        "#welding", "#geodesicdome", "#kickstarter", "#maker", "#fabrication",
+    ),
+    "cabin_panel_method": (
+        "#geodesicdome", "#domehome", "#3vdome", "#zome", "#woodworking",
+        "#timberframe", "#diy", "#buildyourowncabin", "#tinyhome", "#glamping",
+    ),
     "cabin_linseed_oil": (
         "#geodesicdome", "#domehome", "#linseedoil", "#woodfinishing",
         "#timberframe", "#woodworking", "#buildingscience", "#diy",
@@ -96,6 +104,21 @@ HASHTAG_BANK: dict[str, tuple[str, ...]] = {
         "#geodesicdome", "#buildingscience", "#dehumidifier", "#peltier",
         "#molecularsieve", "#moisturecontrol", "#offgrid", "#timberframe",
         "#domehome", "#diy",
+    ),
+    "cabin_cell_wall": (
+        "#geodesicdome", "#buildingscience", "#smarthome", "#offgrid",
+        "#rainwaterharvesting", "#wildfire", "#firesafety", "#faradaycage",
+        "#livingwall", "#sips", "#domehome", "#diy", "#futureofhousing",
+    ),
+    "cabin_sky_web": (
+        "#geodesicdome", "#treehouse", "#rigging", "#wirerope", "#arborist",
+        "#offgrid", "#buildyourowncabin", "#domehome", "#cabinbuild", "#diy",
+        "#engineering",
+    ),
+    "cabin_every_piece": (
+        "#geodesicdome", "#woodworking", "#mitresaw", "#chainsawmilling",
+        "#cutlist", "#deckbuilding", "#floorframing", "#logbuilding",
+        "#buildyourowncabin", "#domehome", "#diy", "#offgrid",
     ),
     "cabin_cold_open": (
         "#geodesicdome", "#cabinbuild", "#chainsawmilling", "#timberframe",

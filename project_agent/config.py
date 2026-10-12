@@ -57,17 +57,37 @@ TICKET_LOCK_WAIT = 900     # how long to wait for another ticket to clear
 # ---------------------------------------------------------------------------
 
 
+DEEPSEEK_BASE = "https://api.deepseek.com/v1"
+DEEPSEEK_MODEL = "deepseek-chat"
+
+
+def using_deepseek() -> bool:
+    """DeepSeek is used when its key is set and no other endpoint is chosen.
+
+    ``PROJECT_AGENT_API_KEY`` (with its base and model) always wins, so an
+    Ollama or OpenAI setup is never silently replaced."""
+    return (not os.environ.get("PROJECT_AGENT_API_KEY")
+            and not os.environ.get("OPENAI_API_KEY")
+            and bool(os.environ.get("DEEPSEEK_API_KEY")))
+
+
 def llm_api_key() -> str:
+    if using_deepseek():
+        return os.environ["DEEPSEEK_API_KEY"]
     return (os.environ.get("PROJECT_AGENT_API_KEY")
             or os.environ.get("OPENAI_API_KEY") or "")
 
 
 def llm_api_base() -> str:
+    if using_deepseek():
+        return (os.environ.get("PROJECT_AGENT_API_BASE") or DEEPSEEK_BASE).rstrip("/")
     return (os.environ.get("PROJECT_AGENT_API_BASE")
             or "https://api.openai.com/v1").rstrip("/")
 
 
 def llm_model() -> str:
+    if using_deepseek():
+        return os.environ.get("PROJECT_AGENT_MODEL") or DEEPSEEK_MODEL
     return os.environ.get("PROJECT_AGENT_MODEL") or "gpt-4o-mini"
 
 

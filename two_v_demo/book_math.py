@@ -145,6 +145,8 @@ DECLARED: tuple[Declared, ...] = (
              "than the dome. It is a target rather than a figure, which is "
              "why the pad chapter prints it beside the computed cheap pad "
              "instead of instead of it."),
+    # -- a published 3V plan set, read as declared inputs -----------------
+    #
 )
 
 LITRES_PER_US_GALLON = 3.785411784

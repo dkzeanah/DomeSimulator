@@ -28,6 +28,10 @@ leaves the log. The frame is already on your land. It is standing up.
 
 ![A whole house frame, before it is cut.](plate-one-log.png)
 
+:::box clock "Not on the clock"
+Felling and bucking are not on the {{clock.week}}-hour clock. The clock counts the frame, from the first log on the splitting stand to the last bolt in the shell -- Chapter {{ch.raise}} adds it up. Budget the trees on their own: the clock starts with a log already on the stand.
+:::
+
 ## What is standing there
 
 <!-- concept: wedge/trunk -->

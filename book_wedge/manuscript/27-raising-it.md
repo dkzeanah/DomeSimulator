@@ -9,10 +9,22 @@ updated: 2026-09-25
 
 # 27. Raising It
 
-Forty panels are stacked against a fence. This part takes three days and it is
-the only part that looks like building a dome.
+Forty panels are stacked against a fence. This is the shortest stretch on the
+clock and the only part that looks like building a dome -- spread over as many
+days as your helpers and your weather allow, because the bracing waits for the
+second course to close.
 
 ![The ten panels that stand on the ring.](course-first.png)
+
+:::box clock
+{{clock.raise_bar}}
+
+**{{clock.raise_h}} hours of raising** -- {{clock.raise_kind}}. The clock goes from {{clock.raise_from}} to **{{clock.raise_to}} of {{clock.week}}**, leaving {{clock.raise_left}} hours of the week.
+
+Then the hours nobody plans for: **{{clock.error_h}} hours** for the stick that splits off the radius, the panel that goes up twice and the drill nobody can find. The clock stops at **{{clock.total}} of {{clock.week}}**.
+
+    {{clock.table}}
+:::
 
 ## Before anything goes up
 

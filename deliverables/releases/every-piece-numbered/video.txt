@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\every-piece-numbered.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\every-piece-numbered-vertical.mp4

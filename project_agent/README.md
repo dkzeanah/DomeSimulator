@@ -140,3 +140,15 @@ checks each of them:
   survive constrained shells.
 * The facts map is curated on purpose: `query_facts` can only call the named,
   validated functions with the declared parameters.
+
+## What it has learned (Intelligence Observer)
+
+The agent reads the playbooks mined from this repository's own work
+(`intelligence/procedures.py`): they are in the LLM planner's system prompt, and
+the `learned` tool returns them (`learned`, `learned playbooks`, `learned failures`,
+`learned sync` in chat). `py -3.12 -m intelligence.dashboard` shows them, and can
+drive the agent from the browser.
+
+**DeepSeek.** With `DEEPSEEK_API_KEY` set and no `PROJECT_AGENT_API_KEY` /
+`OPENAI_API_KEY`, the planner uses DeepSeek (`deepseek-chat` at
+`https://api.deepseek.com/v1`) automatically. `PROJECT_AGENT_*` settings still win.

@@ -1,4 +1,4 @@
-"""The three pictures this book draws for itself.
+"""The four pictures this book draws for itself.
 
 Everything else in *The Wedge Method* is a photograph: either the raw-wedge
 solver operated with settings that make one idea visible
@@ -309,11 +309,89 @@ def floating_dome() -> Path:
                  view="hero")
 
 
+def breathing_cap(path: Path | None = None) -> Path:
+    """A section through the dome: how a cap with no hole in it breathes.
+
+    The profile is the solver's own -- the apex, the pentagon ring, the belt
+    and the rim at their solved heights and radii -- and every number on it
+    comes from :mod:`two_v_demo.seam_vent`. Blue is the cap, unbroken; amber
+    is the exhaust falling through the seam channels; green is fresh air.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import FancyArrowPatch
+
+    from two_v_demo import seam_climate as sc, seam_vent as sv
+
+    rings = sc.rings()
+    R = rings["apex_height_ft"]
+    levels = rings["levels"]                       # heights as fractions of R, rim to apex
+    pts = [(math.sqrt(max(0.0, 1 - z * z)) * R, z * R) for z in levels]
+    route = sv.descending_seams()
+    table = sv.weather_table()
+    winter = next(r for r in table if r["weather"] == "winter")
+    summer = table[-1]
+
+    fig, ax = plt.subplots(figsize=(7.2, 4.6), dpi=220)
+    fig.patch.set_facecolor(PAPER)
+    cap = "#2f6fae"
+    exhaust = "#d98a1c"
+    fresh = "#3f9a45"
+    for side in (-1, 1):
+        xs = [side * x for x, _ in pts]
+        ys = [y for _, y in pts]
+        ax.plot(xs, ys, color=cap, linewidth=3.2, solid_capstyle="round", zorder=3)
+        inner = [(side * x * 0.93, y * 0.93) for x, y in pts]
+        ax.plot([q[0] for q in inner], [q[1] for q in inner], color=TIMBER, linewidth=6, alpha=0.35, zorder=2)
+        # exhaust falling in the channel, crown to rim
+        for (x0, y0), (x1, y1) in zip(inner[::-1][:-1], inner[::-1][1:]):
+            ax.add_patch(FancyArrowPatch((x0, y0), (x1, y1), arrowstyle="-|>", mutation_scale=11,
+                                         color=exhaust, linewidth=1.8, zorder=4))
+        # the brim and a port under it, facing the ground
+        bx = side * R
+        ax.plot([bx, bx + side * 0.9], [0.25, -0.05], color=cap, linewidth=3.2, zorder=3)
+        ax.add_patch(FancyArrowPatch((bx * 0.97, 0.0), (bx * 0.97, -0.9), arrowstyle="-|>", mutation_scale=12,
+                                     color=exhaust, linewidth=2.0, zorder=4))
+    # fresh air in, low, through its own downward ports
+    ax.add_patch(FancyArrowPatch((-R * 0.80, -0.9), (-R * 0.80, 0.1), arrowstyle="-|>", mutation_scale=12,
+                                 color=fresh, linewidth=2.0, zorder=4))
+    ax.add_patch(FancyArrowPatch((-R * 0.78, 0.4), (-R * 0.45, 1.2), arrowstyle="-|>", mutation_scale=12,
+                                 color=fresh, linewidth=1.6, zorder=4))
+    # room air rising to the crown grille
+    ax.add_patch(FancyArrowPatch((0, 1.0), (0, R * 0.86), arrowstyle="-|>", mutation_scale=14,
+                                 color="#b0552a", linewidth=2.2, zorder=4))
+    ax.plot([-0.5, 0.5], [R * 0.9, R * 0.9], color=INK, linewidth=2.4, zorder=5)
+    ax.axhline(0, color=RULE, linewidth=1.0, zorder=1)
+
+    def say(x, y, text, colour=INK, ha="center", size=6.6):
+        ax.text(x, y, text, color=colour, ha=ha, va="center", fontsize=size, zorder=6)
+
+    say(0, R * 1.07, f"the cap: {route.cap_penetrations} holes above the rim", cap)
+    say(0.7, R * 0.70, "the crown grille,\ninside the shell", INK, ha="left")
+    say(0.4, R * 0.45, "the room's warm, wet air\nrises to the crown", "#b0552a", ha="left")
+    say(R * 0.78, R * 1.0, f"down {route.seams_down} falling seams,\ninside the keys", exhaust, ha="left")
+    say(R * 1.08, -1.25, "stale air out,\nfacing the ground", exhaust)
+    say(-R * 0.80, -1.25, "fresh air in,\nfacing the ground", fresh)
+    say(0, -2.05, f"winter: the falling air pulls itself down -- {winter['drive_pa']:.1f} Pa, "
+        f"{100 * winter['share']:.0f}% of the {sv.need_cfm():.1f} cfm the dome needs, no fan. "
+        f"Summer sun: a {summer['fan_pa']:.0f} Pa fan does it.", INK, size=6.3)
+    ax.set_xlim(-R * 1.35, R * 1.45)
+    ax.set_ylim(-2.4, R * 1.18)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    target = path or FIGURE_DIR / "breathing-cap.png"
+    fig.savefig(target, facecolor=PAPER, bbox_inches="tight")
+    plt.close(fig)
+    return target
+
+
 def render_all() -> dict[str, Path]:
     return {
         "seam-section": seam_section(),
         "mast-and-floor": mast_and_floor(),
         "floating-dome": floating_dome(),
+        "breathing-cap": breathing_cap(),
     }
 
 
@@ -337,7 +415,7 @@ def validate_graphics() -> None:
     # A and B are on opposite sides of the seam.
     assert facts["point_a"][0] * facts["point_b"][0] < 0.0, facts
 
-    for key in ("seam-section", "mast-and-floor", "floating-dome"):
+    for key in ("seam-section", "mast-and-floor", "floating-dome", "breathing-cap"):
         path = FIGURE_DIR / f"{key}.png"
         assert path.is_file(), f"{key} has not been drawn yet"
         assert path.stat().st_size > 8_000, f"{key} is suspiciously small"

@@ -118,7 +118,7 @@ def render_figures(keys: set[str], timeout: int = 3600) -> dict:
 
 #: The book's own line drawings (:mod:`wedge_book.graphics`), drawn on white
 #: already. They go into the print set as they are.
-DRAWN = ("seam-section", "mast-and-floor", "floating-dome")
+DRAWN = ("seam-section", "mast-and-floor", "floating-dome", "breathing-cap")
 
 
 def copy_drawn(keys: set[str]) -> list[str]:

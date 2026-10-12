@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:37:12",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Thirty-two pulls, and a bigger winch.\n\nThen up, a corner at a time: the block moves over one corner, the winch raises that side 50 centimetres, its cords are re-tied, and on to the next, each step a tilt of 4.8 degrees. 4 metres up is 8 rounds of four, 32 pulls. The heaviest corner is 726 kilograms, 7.1 kilonewtons: more than today's winch, well within the 4 times one.",
+  "watermark": "preserved model-provided watermark"
+}

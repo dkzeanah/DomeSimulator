@@ -30,6 +30,10 @@ The whole frame has {{wood.bark_m2}} square metres of bark face and
 {{wood.sawn_m2}} of sawn face. The finish in this chapter goes on the smaller
 number.
 
+:::box clock "Not on the clock"
+Charring and oiling are not on the {{clock.week}}-hour clock. The clock counts the frame, from the first log on the splitting stand to the last bolt in the shell -- Chapter {{ch.raise}} adds it up. They fit in the weeks the members dry, which is waiting time anyway.
+:::
+
 ## Charring the round face
 
 Charring wood is old. The Japanese name for it, yakisugi, means burnt cedar,
@@ -56,11 +60,13 @@ below assume that face is bare wood.
    darker one.
 5. **Let it cool and blow it off** before any oil goes near it.
 
+:::box against
 A single pass of about {{wood.char_mm}} millimetres of char takes
 {{wood.char_loss}} percent off each member's cross-section, all of it from the
 bark face, which is the part of the section furthest from the seam. That is the
 number that does not help, and it is small: the frame's strength argument in
 Chapter {{ch.lumpy}} does not rest on the last few millimetres of the bark side.
+:::
 
 **Char is not fireproofing.** A charred surface is slower to catch than a bare
 one, and that is all it is. Do not count it in anything to do with fire.

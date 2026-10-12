@@ -617,6 +617,16 @@ def _t_run_recipe(args: dict) -> dict:
     return recipes.run_recipe(recipe, params)
 
 
+def _t_learned(args: dict) -> dict:
+    from . import learned
+    kind = str(args.get("kind", "all"))
+    if kind == "sync":
+        data = learned.sync()
+        return {"ok": bool(data.get("ok")), "summary": learned.summary(data),
+                "warning": data.get("warning", "")}
+    return learned.query(kind)
+
+
 def _t_help(args: dict) -> dict:  # noqa: ARG001
     from . import recipes
     lines = []
@@ -896,6 +906,20 @@ TOOLS: dict[str, dict] = {
                                            "declare, figures, pdf, "
                                            "no_narration, ...).")},
                           ["recipe"]),
+    },
+    "learned": {
+        "call": _t_learned,
+        "description": ("What has been learned from watching this project being worked: "
+                        "playbooks (the repeated workflows, step by step, with commands and "
+                        "timings), the most-used actions, recurring failures, derived knowledge. "
+                        "kind=sync re-derives it from the observer first. Plan media work the "
+                        "way the matching playbook does it."),
+        "schema": _schema("learned",
+                          "Learned playbooks, statistics and failures from the observer.",
+                          {"kind": _prop("string", "Which part.",
+                                         enum=["all", "playbooks", "top_actions", "failures",
+                                               "knowledge", "counts", "sync"])},
+                          []),
     },
     "help": {
         "call": _t_help,

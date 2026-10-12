@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-03T23:57:59.655290+00:00",
+  "lesson": "teaser_cabin_seam_climate",
+  "title": "Which Way the Seam Breathes: the teaser",
+  "chapters": [
+    {
+      "slug": "breathe",
+      "title": "DOMESIM",
+      "narration": [
+        "Which way should the seam breathe?"
+      ],
+      "start": 0.0,
+      "end": 3.4
+    },
+    {
+      "slug": "condense",
+      "title": "Will it condense?",
+      "narration": [
+        "Dew point against surface temperature."
+      ],
+      "start": 3.4,
+      "end": 7.032
+    },
+    {
+      "slug": "levels",
+      "title": "The dome's levels, from the solver",
+      "narration": [
+        "Four rings, five bands of seams."
+      ],
+      "start": 7.032,
+      "end": 10.928
+    },
+    {
+      "slug": "honest",
+      "title": "What the desiccant will not do",
+      "narration": [
+        "It does not dry a soaked frame."
+      ],
+      "start": 10.928,
+      "end": 14.328000000000001
+    },
+    {
+      "slug": "water",
+      "title": "The water leaves by the same door",
+      "narration": [
+        "Air and condensate, the same way down."
+      ],
+      "start": 14.328000000000001,
+      "end": 18.464000000000002
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 18.464000000000002,
+      "end": 23.488000000000003
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 23.488000000000003,
+      "end": 29.472
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

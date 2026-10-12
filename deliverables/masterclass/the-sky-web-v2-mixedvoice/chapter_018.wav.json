@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:19:06",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Through the air, not along the struts.\n\nThen the pigtails come off the web and are gathered to the top, so the whole dome hangs from one point, and the shell can go over the cords. How they run matters. Laid along the struts, a cord pressed on a curved surface lifts nothing where it lies: what it pulls up at its corner it pushes back down along its length, and the whole weight ends up on the cap. Run straight through the air inside, from each joint to one free ring just under the cap, every joint is lifted by its own cord. 20 cords and the apex, and one line out through the cap. The rim cords lean in at 40 degrees and squeeze the rim with 1.3 kilonewtons, which a dome takes happily. 5 joints sit too close to the ring for a cord, and hang from the apex on their struts.",
+  "watermark": "preserved model-provided watermark"
+}

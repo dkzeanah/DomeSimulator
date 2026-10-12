@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:08:58",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Unguyed, a flat web breaks its trees.\n\nAnd the trees take all of it, eight metres up, as a lever. A 45 centimetre pine, green, breaks in bending at about 35 megapascals. Unguyed, the ten percent web works its trunk to a margin of 1.5, where a living tree should keep three; the five percent web, to 0.77, which is past breaking. So every anchor tree is guyed, and the guy goes where the owner put it: to the base of the next tree out, 8 metres behind. No ground anchors to buy or dig. The guy pulls 36 kilonewtons, 5/8 in rope, on a trunk at its strongest point, its roots.",
+  "watermark": "preserved model-provided watermark"
+}

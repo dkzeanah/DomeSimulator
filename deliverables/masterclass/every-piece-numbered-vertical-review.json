@@ -1,0 +1,280 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-12T21:56:31.657369+00:00",
+  "lesson": "cabin_every_piece",
+  "title": "Every Piece, Numbered: Filling the Triangles and Framing the Floor",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "Every piece, numbered",
+      "narration": [
+        "Two things are built from wood in this film. One of the dome's forty triangles, filled with wedges split from a log. And the floor the whole dome stands on, framed from five twenty-foot half trunks. Every piece of both has a number. Every number has a length, an angle, and a way of cutting it, worked out by one calculator and shown on the saw before anyone picks up a blade."
+      ],
+      "start": 0.0,
+      "end": 23.76004166666667
+    },
+    {
+      "slug": "declared",
+      "title": "What is solved, what is assumed",
+      "narration": [
+        "First, what this rests on. The shapes are solved: the dome from its 72 inch strut, the triangles from the dome, every piece from its triangle and the log it is split from. What cannot be solved is written down, each line with its reason. 34 figures for the triangles: saw kerfs, the sizes things are sold in, prices. And 33 for the floor, from the forty pounds a square foot a floor must carry, to how strong ungraded wood is taken to be. Change any line, and every number after it changes."
+      ],
+      "start": 23.76004166666667,
+      "end": 53.202625000000005
+    },
+    {
+      "slug": "panel",
+      "title": "Two triangles, forty panels",
+      "narration": [
+        "A dome whose longest stick is 72 inches is 22.6 feet across, and its forty triangles come in only two shapes. 30 have a long base of 83.7 inches and two short sides of 74.0. 10 have three long sides. Fill one of each well, and you have filled them all."
+      ],
+      "start": 53.202625000000005,
+      "end": 73.5755
+    },
+    {
+      "slug": "tray",
+      "title": "The frame is a tray",
+      "narration": [
+        "Each frame member is a wedge, an eighth of a 12 inch log, lying on one sawn face with its point toward the opening. Its other sawn face rises at forty-five degrees, so the opening is a tray, narrow at the flat side and widening up the slope, 4.24 inches deep. Every piece that fills it rests on that slope. Next door, the panels fold away at 18.0 and 22.5 degrees, and a covering has to meet those too."
+      ],
+      "start": 73.5755,
+      "end": 101.73358333333334
+    },
+    {
+      "slug": "fill",
+      "title": "Seventeen wedges",
+      "narration": [
+        "Fill it with wedges split from a 12 inch log, in stripes along the long base, flip-flopped: one point up, the next point down, so they nest. It takes 17, from 75.6 inches long down to 5.9. Each one ends where it meets a forty-five degree wall, so every end is a compound cut, and no two pieces are the same length."
+      ],
+      "start": 101.73358333333334,
+      "end": 123.06145833333335
+    },
+    {
+      "slug": "numbered",
+      "title": "A number on every piece",
+      "narration": [
+        "Every piece gets a number, chalked on as it is cut, and the number carries everything: which stick it comes from, its length along each edge, and both end cuts. Take piece 5. Along its point it runs 58.38 inches. Its other two long corners run 50.56 and 43.08. Three lengths, because its ends lean."
+      ],
+      "start": 123.06145833333335,
+      "end": 145.4789166666667
+    },
+    {
+      "slug": "saw1",
+      "title": "Cut one, on the mitre saw",
+      "narration": [
+        "Here is its first cut. The stick lies on its sawn face, the bark corner against the fence, the keeper to the left of the blade. Swing the mitre 34.4 degrees, tilt the blade 45, and take just enough to clear the raw end. What falls away is a tapered sliver, 8.15 inches at its longest and 0.50 at its shortest. The calculator found that setting by trying every face down, both ends toward the fence, and keeping the one a single-bevel saw can make."
+      ],
+      "start": 145.4789166666667,
+      "end": 174.8392916666667
+    },
+    {
+      "slug": "saw2",
+      "title": "Cut two, and an offcut to keep",
+      "narration": [
+        "Then end for end, the point against the fence, and measure from the first cut: 58.38 inches along the point, and the other two corners. Join the marks and the blade follows the line, at the same 34.4 and 45. This offcut is 20.77 inches long. That is a piece in its own right, so it goes back on the pile for a shorter run."
+      ],
+      "start": 174.8392916666667,
+      "end": 197.87537500000002
+    },
+    {
+      "slug": "sheet",
+      "title": "Too steep for the saw",
+      "narration": [
+        "Not every cut fits a mitre saw. Cover the panel instead, with a sheet of strand board cut in 2 halves, and each edge has to lean to meet the next panel's covering, half the fold at its seam: 9.0, 11.2 and 11.2 degrees. Those cuts run the length of a sheet, so they are snapped with a chalk line and made with a circular saw, its blade tilted."
+      ],
+      "start": 197.87537500000002,
+      "end": 221.3561666666667
+    },
+    {
+      "slug": "perms",
+      "title": "Ten ways to fill one triangle",
+      "narration": [
+        "The same triangle, ten ways. Wedges in stripes, 17 pieces. Wedges in a chevron, 18. Sixteenth slices, points alternating, 60. Wedges in rings, 15. Milled boards, 9. Fence pickets as vent louvers, 13. Log rounds, 139. Or covered over: a sheet in 2 halves, 3 strips of metal, 1 piece of film. Every one comes with its cut list, and the calculator will put any of them on the saw."
+      ],
+      "start": 221.3561666666667,
+      "end": 249.30983333333336
+    },
+    {
+      "slug": "rounds",
+      "title": "Rounds, and the gaps cut to fit",
+      "narration": [
+        "Log rounds are the odd one out: slices across a whole trunk, 1.5 inches thick, in a honeycomb 3 layers deep. 18 go in whole, 38 are cut where they meet the wall, and the 83 gaps left over are filled the way a carpenter would: lay another round over the gap, trace the gap onto it from below, and cut to the line. 139 pieces in all."
+      ],
+      "start": 249.30983333333336,
+      "end": 272.2545
+    },
+    {
+      "slug": "under",
+      "title": "Turn it over",
+      "narration": [
+        "Turn the panel over and look at it from the inside, the face the room will see. The flip-flop shows: every other wedge has its point down, and the frame's points run round the edge. The calculator shows every pattern from underneath too, so you can see how the pieces meet before cutting any of them."
+      ],
+      "start": 272.2545,
+      "end": 288.0470833333333
+    },
+    {
+      "slug": "frame5",
+      "title": "Five trunks, one pentagon",
+      "narration": [
+        "Now the floor. The dome stands on a platform, and the owner already has its edge: five half trunks, twenty feet long. Stood on edge, round back out, flat face in, and joined at the corners, they make a pentagon whose backs measure the full 20 feet. The biggest circle inside the flat faces is 13.26 feet in radius. The dome needs 11.78: its sphere, plus 6 inches for its frame at the foot. It fits, with 1.48 feet to spare."
+      ],
+      "start": 288.0470833333333,
+      "end": 316.65749999999997
+    },
+    {
+      "slug": "corner",
+      "title": "Every corner, one cut",
+      "narration": [
+        "Each corner is a mitre, and every one is the same: 36 degrees off square. Along the round back a trunk is the full 20 feet. Along its top, where the flat face starts, the cuts take 4.36 inches off each end, so it is 231.28 inches. No mitre saw takes a log that size: mark the line across the top, plumb it down both sides with a level, and cut to it with the chainsaw."
+      ],
+      "start": 316.65749999999997,
+      "end": 343.01275
+    },
+    {
+      "slug": "star",
+      "title": "A star across it",
+      "narration": [
+        "Inside goes a five-point star, corner to corner, in half trunks again. Each line crosses two others, so each is cut in three: 15 pieces of 148.3 and 91.7 inches, mitred where they meet. A star braces a pentagon across every corner. But on its own it leaves the floor in big triangles. The widest gap a deck board would have to cross is 119 inches, and a two by six deck may cross 24. The star alone fails."
+      ],
+      "start": 343.01275,
+      "end": 369.2860833333333
+    },
+    {
+      "slug": "joists",
+      "title": "Joists between the points",
+      "narration": [
+        "So every space between the points is filled with joists, 2x8 on edge, 24 inches apart, each cut to meet the star or the frame where it lands. 55 of them. Now the widest gap is 22.5 inches, inside the 24 a deck board may cross."
+      ],
+      "start": 369.2860833333333,
+      "end": 386.16387499999996
+    },
+    {
+      "slug": "joist_saw",
+      "title": "A joist on the saw",
+      "narration": [
+        "A joist meets a star line at an angle, so its end is cut off square. Stood on edge, a two by eight is 7.25 inches tall, beyond the saw's 6 inch reach. So it lies flat, and the angle moves from the mitre to the bevel: mitre zero, bevel 18 degrees. Its other end, 54.0° off square, is past the blade's 46 degree tilt, and is marked and cut by hand."
+      ],
+      "start": 386.16387499999996,
+      "end": 410.0375833333333
+    },
+    {
+      "slug": "loads",
+      "title": "Where the weight goes",
+      "narration": [
+        "Every square foot of floor has to go somewhere. Forty pounds for living, ten for the floor itself, over 688 square feet: 34,417 pounds. Each patch goes to the member nearest it. Joists hand theirs to what they hang on; the star and the frame hand everything to the piers; and the piers carry 34,417 pounds, every pound accounted for. Every span is checked for bending and for sag. Where one fails, a pier goes under it: 8 of them, and now the hardest span works at 94 percent of what it can carry."
+      ],
+      "start": 410.0375833333333,
+      "end": 442.51891666666666
+    },
+    {
+      "slug": "piers",
+      "title": "43 piers, each sized",
+      "narration": [
+        "43 stump piers, rounds of log on tamped gravel. Each pad is sized from its own load, at 1,500 pounds a square foot of soil. Most need only the smallest pad, 16 inches square. The heaviest carries 2,902 pounds, and needs 18."
+      ],
+      "start": 442.51891666666666,
+      "end": 458.9989166666667
+    },
+    {
+      "slug": "patterns",
+      "title": "Seven ways to frame the floor",
+      "narration": [
+        "The star is one way. The calculator builds seven, from the same trunks and joists, and checks each the same way. The star with joists. The star alone, which fails its deck. A wheel, five spokes with rings of joists. A sunburst of ten. A fan, its joists square to the walls. Beams across with joists between, the way a deck is usually framed. And nested rings, the idea this began with."
+      ],
+      "start": 458.9989166666667,
+      "end": 483.06825000000003
+    },
+    {
+      "slug": "extremes",
+      "title": "The most to spare, the heaviest pier",
+      "narration": [
+        "They do not pass equally. Beams with joists works its hardest span at only 68 percent. Only the nested rings have more to spare, 59 percent, and they take 130 piers to get it. The fan is the other end: five spokes meet at one centre pier, and that pier carries 7,551 pounds, on a pad 28 inches square. The wheel's carries 5,090. Bring the spokes to one point, and you bring the load there too."
+      ],
+      "start": 483.06825000000003,
+      "end": 509.28633333333335
+    },
+    {
+      "slug": "gravel",
+      "title": "Or lay it on gravel",
+      "narration": [
+        "On a levelled gravel bed nothing spans. Every member bears along its length, and the piers go away. That is where the nested rings belong: 25 rings, each one's back pressed against the flat face of the ring outside it, every corner the same 36 degree cut, the gaps packed with gravel or cob. About 342 dollars of gravel, and nothing else to buy. But it eats logs: 34 of them, against 5 for the star with joists."
+      ],
+      "start": 509.28633333333335,
+      "end": 535.1500833333333
+    },
+    {
+      "slug": "materials",
+      "title": "Trunks, quarters or lumber",
+      "narration": [
+        "Swap what the star is made of, and the floor changes round it. Half trunks: 43 piers and 7 logs. Whole logs: the same piers, but 12 logs. Quarter trunks, weaker: 48 piers. Six by sixes: 48 piers, and about 3,352 dollars, because they are bought. Four by fours: 58 piers, 23 of them propping spans a four by four cannot carry."
+      ],
+      "start": 535.1500833333333,
+      "end": 559.925375
+    },
+    {
+      "slug": "dome",
+      "title": "The dome on its floor",
+      "narration": [
+        "And the dome goes on it, its foot inside the flat faces, 1.48 feet to spare at the narrowest, with the pentagon's five corners left over outside it."
+      ],
+      "start": 559.925375,
+      "end": 570.2696666666667
+    },
+    {
+      "slug": "honest",
+      "title": "What these numbers are not",
+      "narration": [
+        "A word about these numbers. The floor loads are a dwelling's. But the wood's strength, 875 pounds per square inch, is a guess: these logs are not graded, and the guess is a careful one, stricter than a lumber span table. The prices are estimates. Change any of it in the calculator and every pier and span is worked again. Before people live on it, an engineer signs it. Here it is checked and priced, not rated."
+      ],
+      "start": 570.2696666666667,
+      "end": 596.0027083333333
+    },
+    {
+      "slug": "close",
+      "title": "Cut by the numbers",
+      "narration": [
+        "17 wedges and their offcuts. Five trunks and a star. 75 members and 43 piers, every one numbered, every cut shown before it is made. The calculator that worked all of this out is in the launcher, called Triangle Infill, and it will do the same for whatever is stacked by your saw."
+      ],
+      "start": 596.0027083333333,
+      "end": 614.546625
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 614.546625,
+      "end": 630.2422083333333
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 630.2422083333333,
+      "end": 645.68775
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\every-piece-numbered-myvoice-x1.5\\narration-plan.json",
+    "orientation": "portrait",
+    "compose_segments": true,
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "-3%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

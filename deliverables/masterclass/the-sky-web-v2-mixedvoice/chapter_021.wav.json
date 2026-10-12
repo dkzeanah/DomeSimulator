@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:24:51",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "A dome's weight is on its axis.\n\nThis is what a dome can do that a house cannot. Its weight sits on its own axis, so hung from one point it hangs level by itself. A house, with its kitchen at one end and its loads everywhere, would hang at whatever angle its contents chose. But your struts are not all the same. Placed at random, struts of 15 to 22 kilograms tip it about 1 degree, and one time in twenty more than 2: 22 centimetres across the rim. Every heavy strut on one side, 14. So weigh them, and spread the heavy ones round the dome. Sorted, it hangs dead level.",
+  "watermark": "preserved model-provided watermark"
+}

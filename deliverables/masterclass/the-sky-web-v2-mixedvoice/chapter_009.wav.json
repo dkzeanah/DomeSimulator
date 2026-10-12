@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:12:52",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Forty lifts on a fifth of one battery.\n\nThe winch is a twelve volt one, bolted to the first tree and run off a battery. Its line runs up the trunk to a block at the tie, along under the rope to a pulley at the crossing, and down to a hook. The heaviest triangle, 66 kilograms, pulls 0.65 kilonewtons against a winch rated 6.7: 10 times over. Lifting it 6.1 metres costs about 3 watt hours, so all forty take 126, about 21 percent of what one hundred amp hour battery should give.",
+  "watermark": "preserved model-provided watermark"
+}

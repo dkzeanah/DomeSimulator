@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-08T14:49:36.824511+00:00",
+  "lesson": "teaser_cabin_sky_web",
+  "title": "The Sky Web: Building a Dome in the Air: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "DOMESIM",
+      "narration": [
+        "Forty triangles, hung from a web."
+      ],
+      "start": 0.0,
+      "end": 3.7760000000000002
+    },
+    {
+      "slug": "guys",
+      "title": "What the trees take",
+      "narration": [
+        "The guys carry more than the web."
+      ],
+      "start": 3.7760000000000002,
+      "end": 7.176
+    },
+    {
+      "slug": "hoist",
+      "title": "Up, flat",
+      "narration": [
+        "Two minutes a triangle."
+      ],
+      "start": 7.176,
+      "end": 10.576
+    },
+    {
+      "slug": "join",
+      "title": "Join them later",
+      "narration": [
+        "The gap closes on the cords."
+      ],
+      "start": 10.576,
+      "end": 13.976
+    },
+    {
+      "slug": "leave",
+      "title": "Leave it hanging?",
+      "narration": [
+        "The frame, yes. The house, not on these ropes."
+      ],
+      "start": 13.976,
+      "end": 18.328
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 18.328,
+      "end": 23.352
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 23.352,
+      "end": 29.336
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

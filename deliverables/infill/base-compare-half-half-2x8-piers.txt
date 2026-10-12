@@ -1,0 +1,44 @@
+Every floor-base pattern with: frame Half trunk on edge (round back out), primaries Half trunk on edge (round back out), joists 2x8 on edge, On stump piers at every joint (floor clear of the ground), deck 2x6 deck boards, 12 in logs, 20 ft sides.
+
+Star + joists: 75 members; worst span 94%, 8 extra piers, 43 piers; deck gap 22 in ok; logs 7; bought $2,598
+Star alone: 20 members; worst span 85%, 0 extra piers, 10 piers; deck gap 119 in TOO WIDE; logs 6; bought $1,798
+Wheel: 5 spokes + rings: 45 members; worst span 96%, 15 extra piers, 26 piers; deck gap 22 in ok; logs 5; bought $2,571
+Sunburst: 10 spokes + rings: 75 members; worst span 92%, 5 extra piers, 46 piers; deck gap 22 in ok; logs 7; bought $2,640
+Fan: 5 spokes + joists square to the walls: 56 members; worst span 97%, 20 extra piers, 26 piers; deck gap 22 in ok; logs 5; bought $2,672
+Beams + joists: 74 members; worst span 68%, 4 extra piers, 42 piers; deck gap 22 in ok; logs 6; bought $2,704
+Nested rings: 130 members; worst span 59%, 0 extra piers, 130 piers; deck gap 17 in ok; logs 38; bought $2,518
+
+Declared numbers:
+live_psf = 40 lb/ft2 (standard): floor live load for a dwelling (IRC table R301.5)
+dead_psf = 10 lb/ft2 (estimate): decking, framing and fittings spread over the floor
+fb_psi = 875 psi (assumption): allowable bending stress: No. 2 green softwood order of magnitude. Your logs are ungraded, so this is a guess, not a rating
+e_psi = 1.2e+06 psi (estimate): stiffness (modulus of elasticity) of green softwood
+deflect_ratio = 360 L/x (standard): a floor may sag no more than span/360 under live load
+soil_psf = 1500 lb/ft2 (standard): presumptive bearing of ordinary soil (IRC table R401.4.1); each pier's gravel pad is sized from its load with it
+pad_min_in = 16 in (assumption): smallest gravel pad under a stump pier, square
+pier_dia_in = 12 in (assumption): stump piers cut from a 12 in log
+clearance_in = 6 in (assumption): air under the lowest member when the floor is on piers
+dome_overhang_in = 6 in (assumption): how far the dome's frame and skin stand past its sphere radius at the base (the simulator's 8 in-trunk dome shows 3.8 in)
+node_tol_in = 0.5 in (assumption): member ends closer than this are one joint
+min_piece_in = 12 in (assumption): joists shorter than this are left out; block the gap instead
+lumber_max_in = 192 in (nominal): the longest common lumber: 16 ft
+lumber_kerf_in = 0.125 in (nominal): a mitre-saw blade
+saw_height_in = 6 in (nominal): tallest piece a 12 in sliding mitre saw cuts standing on edge
+saw_depth_in = 12 in (nominal): widest crosscut of a 12 in sliding mitre saw
+trim_in = 1 in (assumption): the first cut on a log takes this much past its raw end
+deck_2x6_span_in = 24 in (standard): 2x6 deck boards laid across their supports
+deck_54_span_in = 16 in (standard): 5/4 x 6 deck boards laid across their supports
+deck_ply_span_in = 24 in (standard): 23/32 in tongue-and-groove plywood or OSB subfloor
+deck_puncheon_span_in = 48 in (assumption): half logs flat side up, 10 in or more across
+deck_waste = 0.1  (assumption): decking cut-off and waste
+usd_4x4_ft = 1.6 $/ft (estimate): ground-contact treated 4x4
+usd_6x6_ft = 4.5 $/ft (estimate): ground-contact treated 6x6
+usd_2x6_ft = 1.25 $/ft (estimate): ground-contact treated 2x6
+usd_2x8_ft = 1.7 $/ft (estimate): ground-contact treated 2x8
+usd_2x10_ft = 2.3 $/ft (estimate): ground-contact treated 2x10
+usd_2x12_ft = 3.1 $/ft (estimate): ground-contact treated 2x12
+usd_deck_ft = 1.1 $/ft (estimate): 2x6 or 5/4 x 6 deck board
+usd_log = 0 $ (assumption): a 20 ft log from your own trees; set a price if you buy them
+usd_hanger = 2.5 $ (estimate): one galvanised joist hanger with its nails
+usd_pier_pad = 6 $ (estimate): gravel for one pier pad
+usd_gravel_yd3 = 40 $/yd3 (estimate): a cubic yard of crushed gravel, delivered

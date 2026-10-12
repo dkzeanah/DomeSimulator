@@ -108,11 +108,13 @@ knowing exactly:
 
     {{work.structure}}
 
+:::box against
 **Under that crossover, the wedge is the weaker member and this argument
 fails.** That is the number that does not help, and it is the reason this book
 names a minimum trunk rather than pretending any tree will do. Above it, every
 member is stiffer than the stud it replaces -- and every interior edge carries
 two of them.
+:::
 
 ## What the rotation is worth
 

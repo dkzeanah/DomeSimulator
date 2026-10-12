@@ -1929,6 +1929,25 @@ def main() -> int:
 
     # ---- Beat Studio ------------------------------------------------------
 
+    # ------------------------------------------------------------------
+    # Triangle Infill: the 3-D cutting tool, in its own window.
+    infill_tab = tab("Triangle Infill")
+    infill_head = ttk.Frame(infill_tab)
+    infill_head.pack(fill="x", padx=8, pady=8)
+    ttk.Label(infill_head, wraplength=900, justify="left", text=(
+        "Fill or cover one of the dome's triangles with wedges, slices, boards, sheets, metal, film or "
+        "log rounds, and see every piece in 3-D.\n\n"
+        "Every piece is numbered. Click one for its exact lengths, which face goes down on the mitre saw, "
+        "which side goes against the fence, the mitre and bevel, and an animation of the cut and its offcut. "
+        "Turn the triangle over to see how the pieces fit from underneath. It also saves the cutting "
+        "instructions, a cut sheet, the whole dome's buying list and a sheet of every pattern.\n\n"
+        "Switch 'Make' to Floor base for the platform the dome stands on: your five 20 ft half trunks as a "
+        "pentagon, filled with a star, spokes, beams or rings in trunks, half and quarter trunks, 4x4, 6x6 or "
+        "2x6-2x12 -- every piece numbered and cut, every span and pier checked, and the patterns compared.")).pack(
+        anchor="w")
+    launch_button(infill_head, "Open the 3-D cutting tool",
+                  lambda: run_module("infill.app3d", [], "Triangle Infill 3-D"))
+
     t, body, foot = scrollable_tab("Beat Studio")
     intro(body,
          "A film in this project is not one big video any more: it is a "
@@ -2938,13 +2957,17 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 19
+        expected = 20
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 25
+        expected_buttons = 26
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks
+
+        from infill import app3d as infill_3d
+        infill_3d.validate_meshes()
+        print("SMOKETEST OK: Triangle Infill 3-D pieces and recipes build")
 
         notebook.select(voice_tab)
         root.update()

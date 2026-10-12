@@ -1,0 +1,140 @@
+{
+ "lesson": "cabin_sky_web",
+ "items": [
+  {
+   "i": 1,
+   "text": "Two tables, before the numbers.\n\nFirst, what this rests on, in two tables. What the owner weighed and owns: struts of 15 to 22 kilograms, and a 1,500 pound, twelve volt winch. And what a person assumed, each with a reason: where the trees stand, how high the ropes are tied, how far they sag, what rope, wood and cloth will take. 53 figures. Every load in this film uses the heaviest strut. Change any line, and every number after it changes.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_002.wav"
+  },
+  {
+   "i": 2,
+   "text": "The winch, and what a strut weighs.\n\nThe first cut of this film got two things wrong. It showed a hand winch. The winch is electric: twelve volts, off a battery, rated 1,500 pounds, 6.7 kilonewtons. And it weighed the frame with the solver's estimate, 7.2 kilograms a strut. The owner's struts, weighed, are 15 to 22: 2.1 to 3.0 times as heavy. So a triangle is 45 to 66 kilograms, and the frame 1,800 to 2,640. Every load from here on is the heavier one.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_003.wav"
+  },
+  {
+   "i": 4,
+   "text": "And how hard they pull.\n\nTwo wire ropes, crossing in the middle, carrying 2,640 kilograms of frame. A rope with weight on it pulls sideways on its ends, and the flatter it hangs, the harder it pulls. Sagging ten percent, 1.3 metres, with each triangle's cords on the rope nearest it, the worse rope pulls 27 kilonewtons: five-eighths wire rope, worked at a fifth of its strength. Pull it flatter, to five percent, and it doubles, to 51, and wants 3/4 in rope. With real struts, a deep sag is not a choice. It is the design.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_005.wav"
+  },
+  {
+   "i": 5,
+   "text": "Unguyed, a flat web breaks its trees.\n\nAnd the trees take all of it, eight metres up, as a lever. A 45 centimetre pine, green, breaks in bending at about 35 megapascals. Unguyed, the ten percent web works its trunk to a margin of 1.5, where a living tree should keep three; the five percent web, to 0.77, which is past breaking. So every anchor tree is guyed, and the guy goes where the owner put it: to the base of the next tree out, 8 metres behind. No ground anchors to buy or dig. The guy pulls 36 kilonewtons, 5/8 in rope, on a trunk at its strongest point, its roots.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_006.wav"
+  },
+  {
+   "i": 6,
+   "text": "Why cut it down to hold something up?\n\nGuyed at the tie, the anchor tree stops being a lever. It becomes a post, squeezed from above by 33 kilonewtons, held at the top by its guy, and fixed in the ground by its own roots. Cut that tree, mill it, haul it to a store and back, and you get a six by six post. Eight metres tall, that post buckles at about 90 kilonewtons. The living trunk it came from, at about 4.4 meganewtons, is 49 times stiffer, and it carries this web with 134 times to spare. The tree was already the better post.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_007.wav"
+  },
+  {
+   "i": 7,
+   "text": "So a thrown cord always finds a strand.\n\nThen the spiral, woven out from the crossing and seized to the X wherever it crosses. It covers the dome's footprint, a circle 5.9 metres across, but above it. The turns are 50 centimetres apart, so a cord thrown up from anywhere under it always lands across a strand. That is 5.9 turns, 55 metres of line, and 24 seizings. The X carries the weight. The spiral gives the pigtails somewhere to land.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_008.wav"
+  },
+  {
+   "i": 8,
+   "text": "Forty lifts on a fifth of one battery.\n\nThe winch is a twelve volt one, bolted to the first tree and run off a battery. Its line runs up the trunk to a block at the tie, along under the rope to a pulley at the crossing, and down to a hook. The heaviest triangle, 66 kilograms, pulls 0.65 kilonewtons against a winch rated 6.7: 10 times over. Lifting it 6.1 metres costs about 3 watt hours, so all forty take 126, about 21 percent of what one hundred amp hour battery should give.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_009.wav"
+  },
+  {
+   "i": 10,
+   "text": "Under two minutes a triangle.\n\nUp it goes, flat, under the crossing. The hook tops out 6.1 metres up, 20 feet. A small twelve volt winch brings in about 4 metres a minute at this load, so a triangle takes 1.5 minutes to raise, and all forty about an hour of winding. Flat matters: a triangle that tips on the way up catches the line, the X, and anyone underneath.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_011.wav"
+  },
+  {
+   "i": 12,
+   "text": "Then it slips the harness.\n\nEvery triangle carries three pigtails, a cord tied at each corner. Thrown up over the spiral and tied back, they hold it where it is. Then it slips the harness, and the hook goes back for the next. The pigtails are 1.3 to 4.5 metres long: 120 of them, 363 metres of cord. Each holds 216 newtons, on a cord that breaks at 9 kilonewtons: 42 times over.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_013.wav"
+  },
+  {
+   "i": 13,
+   "text": "Keep the middle clear for the hook.\n\nThe order matters. The hook comes down at the centre, so the middle has to stay clear until the end: hang the rim first, then the band above it, and the crown last. And the crown is where the hook runs out. With a metre of harness above them, 5 crown triangles would need the hook higher than it can climb. They are hung low, the pigtails go on, and they are hauled the last 44 centimetres on their own cords.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_014.wav"
+  },
+  {
+   "i": 14,
+   "text": "None of them touching.\n\nAnd there it is. Forty triangles, each in its place, each on its own three cords, none of them touching. The rim hangs 3.0 metres up, 10 feet, the crown at 5.9. Walk underneath and look up through it. Every seam is still open, every edge is reachable, and nothing is holding anything else up.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_015.wav"
+  },
+  {
+   "i": 16,
+   "text": "Cord, strut to strut, under a hard shell.\n\nAnd the seams need not be screwed. A dome works mostly in compression: its triangles lean on each other. A joint only has to stop them sliding apart, and cord can do that. Lash each of the 55 seams in 3 places, 8 turns round both struts, and it takes 165 lashings and about 1,101 metres of cord. Cord stretches and creeps, so lashings want re-tightening, and they suit best a dome whose shell, fibreglass, say, takes the pulling. Under a hard shell, the lashings only hold the shape.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_017.wav"
+  },
+  {
+   "i": 17,
+   "text": "Through the air, not along the struts.\n\nThen the pigtails come off the web and are gathered to the top, so the whole dome hangs from one point, and the shell can go over the cords. How they run matters. Laid along the struts, a cord pressed on a curved surface lifts nothing where it lies: what it pulls up at its corner it pushes back down along its length, and the whole weight ends up on the cap. Run straight through the air inside, from each joint to one free ring just under the cap, every joint is lifted by its own cord. 20 cords and the apex, and one line out through the cap. The rim cords lean in at 40 degrees and squeeze the rim with 1.3 kilonewtons, which a dome takes happily. 5 joints sit too close to the ring for a cord, and hang from the apex on their struts.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_018.wav"
+  },
+  {
+   "i": 18,
+   "text": "The price of one point.\n\nAnd here is what that costs. Through the air means through the room. A cord from the rim to the ring under the cap passes, halfway to the wall, only 1.2 metres above a floor laid at the rim. Fine while it is a frame hanging in the trees. In a home, those cords are lowered away once the dome is set where it will stay, or it is hung by its rim instead.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_019.wav"
+  },
+  {
+   "i": 19,
+   "text": "Today's winch lifts a quarter of it.\n\nWith every cord at one point, one winch can lift the whole dome, up and down, evenly. But this is the whole weight: the frame and a skin, 2,695 kilograms, 26.4 kilonewtons. Today's winch lifts 25 percent of it. The planned one, 4 times bigger, lifts it with almost nothing to spare. 8 times bigger lifts it twice over, and that is the one to buy. Hang the winch itself at the crossing: pulled from a tree, the line turns at the pulley and loads the X with 37 kilonewtons, not 26. And now every kilogram is at the crossing, so the ropes pull 34: still 5/8 in, with the guys at 47.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_020.wav"
+  },
+  {
+   "i": 20,
+   "text": "A dome's weight is on its axis.\n\nThis is what a dome can do that a house cannot. Its weight sits on its own axis, so hung from one point it hangs level by itself. A house, with its kitchen at one end and its loads everywhere, would hang at whatever angle its contents chose. But your struts are not all the same. Placed at random, struts of 15 to 22 kilograms tip it about 1 degree, and one time in twenty more than 2: 22 centimetres across the rim. Every heavy strut on one side, 14. So weigh them, and spread the heavy ones round the dome. Sorted, it hangs dead level.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_021.wav"
+  },
+  {
+   "i": 21,
+   "text": "Cotton, soaked in silicone dissolved in naphtha.\n\nThe covering. Sailcloth would do, at about 25 dollars a square metre. The owner's way is cheaper: dissolve one hundred percent silicone in naphtha, soak cotton in it, and let the naphtha evaporate. The silicone stays in the fibres, a waterproof, chemically quiet skin. Two layers over 51 square metres of dome, with laps, take about 55 tubes of silicone, 65 litres of naphtha and 112 square metres of cotton: about 1,486 dollars, against 2,809 in sailcloth, and 55 kilograms. Silicone sticks to silicone, so layers stack into one skin; almost nothing else will stick to it later. Naphtha is very flammable: soak outdoors, far from any flame.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_022.wav"
+  },
+  {
+   "i": 22,
+   "text": "Trees move. Give the rope a spring.\n\nTrees move in the wind, and they move apart. A rope sagging ten percent goes straight once its trees lean apart 34 centimetres; at five percent, after only 8.5. After that the rope stretches, and every further centimetre adds about 4 kilonewtons. So the deep sag earns its keep twice, and the X still gets a heavy spring at every end, to let it give.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_023.wav"
+  },
+  {
+   "i": 23,
+   "text": "Heavy and round, it barely swings.\n\nSkinned, the dome catches wind. Side on it shows 13.8 square metres. A 90 kilometre an hour gust pushes it with about 2.6 kilonewtons; it weighs 26, so it swings 6 degrees. A 144 kilometre an hour storm, 6.6 kilonewtons, 14 degrees. Its weight is what keeps it still, and its round shape sheds the wind the same from every side. Tie it down to the trees on three sides before a storm all the same.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_024.wav"
+  },
+  {
+   "i": 24,
+   "text": "Posts, shade and drainage, already standing.\n\nStep back and look at what the trees are doing. They are the posts, stronger than anything sawn from them. Their crowns shade the dome in summer. Their roots draw water out of the ground round it, a mature pine perhaps 150 litres on a summer day, 600 for the four. Nothing touches the soil, so there is no foundation, no damp rising, and air moves under and round it. And the guys tie to the next trees out, so the anchors are trees too: a network of trees, doing a foundation's work. Why cut a tree to make a post, when it is already the post?",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_025.wav"
+  },
+  {
+   "i": 25,
+   "text": "Experimental, and planned before the trees are chosen.\n\nHigher still is possible, and it is experimental. It depends on the trees, and it has to be planned before they are chosen; the owner's are not set up for it. Strung at 12 metres, the same pull is half again the lever: unguyed, the trunks would be worked to a margin of 1.0, at the edge of breaking, and the guys pull 46 kilonewtons. Here is how it would go, if the trees allowed it.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_026.wav"
+  },
+  {
+   "i": 26,
+   "text": "It has to come out.\n\nThe first web is in the way. Hung from the second, the crown rises to 9.9 metres, and the first web crosses at 6.7: the dome would pass 3.2 metres up through it. So the dome is handed over first, on long cords from the second web, a corner at a time. Then the first web comes out: the spiral unwound from its outer end, and each rope of the X untied at one tree and pulled through from the other.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_027.wav"
+  },
+  {
+   "i": 27,
+   "text": "Thirty-two pulls, and a bigger winch.\n\nThen up, a corner at a time: the block moves over one corner, the winch raises that side 50 centimetres, its cords are re-tied, and on to the next, each step a tilt of 4.8 degrees. 4 metres up is 8 rounds of four, 32 pulls. The heaviest corner is 726 kilograms, 7.1 kilonewtons: more than today's winch, well within the 4 times one.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_028.wav"
+  },
+  {
+   "i": 28,
+   "text": "The shell, yes. A floor full of life, on bigger rope.\n\nSo, leave it up? The shell, frame and skin, 2,695 kilograms, hangs from this X on 5/8 in rope at 34 kilonewtons, the trees guyed. Add a floor and what a household puts on it, by the cell wall's own figure 3.3 tonnes, and it is 6.0 tonnes, pulling 75 kilonewtons: 1 in rope, and every guy and tree checked again. It can be done. It is a structure an engineer and an arborist should sign, and it is priced here, not rated.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_029.wav"
+  },
+  {
+   "i": 29,
+   "text": "Lightning, growth, deadwood, rot.\n\nThe trees give a lot, and they ask some things back. They are the tallest things on the hill, and now they carry steel rope to the dome: bond the ropes and ground them, or lightning will use them. Trunks grow, so tree-saver straps are loosened every year, never left to girdle the bark. Dead branches fall, so the crowns are cleaned before anything hangs under them. And rot hides, so an arborist looks at all eight trees every season, and after every big storm.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_030.wav"
+  },
+  {
+   "i": 30,
+   "text": "Sixty-six kilograms at nearly forty kilometres an hour.\n\nAnd the rule that matters most. Nobody stands under a triangle on its way up. Dropped from the top of the hoist, 6.1 metres, a 66 kilogram triangle lands at 39 kilometres an hour, with 4.0 kilojoules. Mark a ring under the hook and keep it empty. Wear a helmet. Climb on a proper climbing system, tied in twice, or hire an arborist for the ties. The web is only as safe as the worst knot in it.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_031.wav"
+  },
+  {
+   "i": 31,
+   "text": "Built with the trees.\n\nTwo ropes for the X, 55 metres of spiral, four guys to four more trees, 363 metres of pigtails, one battery winch and, one day, a bigger one at the top. Forty triangles hung, joined and lifted without a scaffold, a crane or a foundation, by a network of living trees that were already doing the job. The ground can wait. Maybe it can wait for good.",
+   "out": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\the-sky-web-v2-mixedvoice\\chapter_032.wav"
+  }
+ ]
+}

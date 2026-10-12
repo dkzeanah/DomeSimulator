@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:09:58",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Why cut it down to hold something up?\n\nGuyed at the tie, the anchor tree stops being a lever. It becomes a post, squeezed from above by 33 kilonewtons, held at the top by its guy, and fixed in the ground by its own roots. Cut that tree, mill it, haul it to a store and back, and you get a six by six post. Eight metres tall, that post buckles at about 90 kilonewtons. The living trunk it came from, at about 4.4 meganewtons, is 49 times stiffer, and it carries this web with 134 times to spare. The tree was already the better post.",
+  "watermark": "preserved model-provided watermark"
+}

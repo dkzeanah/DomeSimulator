@@ -1,0 +1,61 @@
+chapter,part,part_title,title,strand,status,updated,prose_words,target_words,pct_of_target,figures,tables,live_numbers,grade_level,flesch_ease,avg_sentence_words,you_count,first_person_count,film_concepts
+1,1,What Actually Has to Be Right,Your Skull Is Not Symmetrical Either,story,draft,2026-09-25,1035,1320,78,4,0,3,6.7,76.7,16.7,16,12,2
+2,1,What Actually Has to Be Right,Water Is the Silent Killer,explain,draft,2026-09-25,742,1380,54,2,0,4,6.5,77.2,16.1,24,0,0
+3,1,What Actually Has to Be Right,Build It So You Can Change Your Mind,explain,draft,2026-09-25,832,1360,61,1,0,8,6.8,78.8,18.1,13,1,2
+4,1,What Actually Has to Be Right,A House With a Parts List,explain,draft,2026-10-02,658,1780,37,5,3,34,7.3,76.5,18.8,6,0,5
+5,1,What Actually Has to Be Right,Why I Built the Ugly One,story,draft,2026-10-02,450,800,56,2,0,1,6.9,72.0,15.0,3,8,3
+6,2,"The Geometry, From Scratch",Why It Is Triangles,explain,draft,2026-09-25,465,900,52,2,0,3,6.4,75.1,14.5,11,0,4
+7,2,"The Geometry, From Scratch",Twelve Points From One Number,explain,draft,2026-09-25,607,1320,46,1,3,11,7.1,70.2,14.5,5,0,4
+8,2,"The Geometry, From Scratch","Halve Every Edge, Then Push It Out",explain,draft,2026-10-03,665,1820,37,5,2,22,6.1,78.0,14.8,7,0,15
+9,2,"The Geometry, From Scratch","Two Lengths, Four Ways",explain,draft,2026-09-25,446,940,47,2,2,6,6.7,72.0,13.9,5,0,2
+10,2,"The Geometry, From Scratch",Half a Sphere Is a Building,explain,draft,2026-09-25,679,800,85,4,3,36,8.2,71.0,19.4,7,0,3
+11,2,"The Geometry, From Scratch","Choosing a Size, At Last",howto,draft,2026-09-25,1077,880,122,4,4,31,7.8,74.2,19.6,16,0,11
+12,3,The Stick,The Woodpile Is Standing Up,story,draft,2026-10-03,696,1760,40,3,3,10,6.7,79.7,18.3,10,0,14
+13,3,The Stick,Stop Squaring. Start Splitting.,story,draft,2026-09-25,1060,900,118,5,2,12,7.1,73.4,16.3,15,5,9
+14,3,The Stick,What the Saw Actually Does,explain,draft,2026-10-03,431,1380,31,2,3,16,8.7,66.1,18.7,0,0,7
+15,3,The Stick,"One Eighth of a Tree, Used as a Stick",explain,draft,2026-09-25,947,1200,79,5,4,19,8.6,72.6,22.0,14,0,11
+16,3,The Stick,"Two Lengths, and Neither Is the Chord",howto,draft,2026-09-25,770,940,82,2,6,33,7.4,74.7,18.3,8,0,3
+17,3,The Stick,"Green Wood Moves, and a Split Moves Least",explain,draft,2026-09-30,826,1640,50,1,2,26,5.6,85.4,17.2,6,0,0
+18,3,The Stick,"Char the Outside, Oil It, and Leave the Faces Bare",howto,draft,2026-09-30,908,1480,61,1,2,15,6.6,82.4,19.3,4,0,0
+19,3,The Stick,"Linseed Oil, Where It Belongs",howto,draft,2026-10-03,1197,2260,53,2,3,19,9.2,61.9,18.4,4,0,17
+20,4,The Panel,Nothing Meets at the Corner,explain,draft,2026-09-25,940,1290,73,4,0,17,6.4,78.7,16.5,3,1,16
+21,4,The Panel,"Forty Frames, Lifted Whole",explain,draft,2026-10-03,559,1360,41,2,0,8,7.2,75.5,18.0,3,0,9
+22,4,The Panel,"Nine Processes, Whatever Size You Build",explain,draft,2026-09-25,927,1660,56,2,0,13,6.4,78.3,16.6,17,0,0
+23,4,The Panel,What the Work Costs the Body,explain,draft,2026-10-03,803,1880,43,2,7,12,8.5,68.3,19.1,2,0,22
+24,4,The Panel,"One Flat Board, Forty Identical Panels",howto,draft,2026-09-25,1036,2140,48,13,1,10,6.1,78.1,15.2,10,0,3
+25,4,The Panel,If Your Sticks Are Rectangles,howto,draft,2026-10-03,1164,1940,60,3,4,12,7.5,77.4,20.1,6,0,22
+26,4,The Panel,"Doors, Windows, and What Not to Cut",howto,draft,2026-09-25,972,1800,54,2,0,6,8.4,71.1,20.2,19,0,0
+27,5,The Skin,Raising It,howto,draft,2026-09-25,955,1060,90,5,1,17,6.7,77.3,17.1,14,0,5
+28,5,The Skin,"One Watertight Layer, and Only One",explain,draft,2026-09-25,1135,1520,75,4,0,15,7.4,74.1,18.0,12,0,5
+29,5,The Skin,The Seam Does Four Jobs,explain,draft,2026-09-25,860,1920,45,1,3,26,9.1,67.2,21.0,6,0,12
+30,5,The Skin,"A Dome Is a Head, and It Wears Hats",explain,draft,2026-09-25,1209,1340,90,5,5,10,7.8,72.5,18.6,17,2,11
+31,6,The Seam at Work,What Fits in the Channel,reference,draft,2026-09-30,956,2240,43,5,5,45,7.6,73.8,18.7,3,0,9
+32,6,The Seam at Work,"Compare Dew Points, Not Humidity",explain,draft,2026-09-30,777,2220,35,1,5,18,7.6,72.9,18.1,3,0,7
+33,6,The Seam at Work,"Four Levels, and the Ring That Cannot Drain",explain,draft,2026-09-30,1150,1960,59,2,2,31,7.5,76.2,19.5,2,0,7
+34,6,The Seam at Work,A Cap With No Holes Still Breathes,explain,draft,2026-10-03,1228,2140,57,1,2,36,6.5,82.0,18.9,0,0,0
+35,6,The Seam at Work,The Desiccant Belongs in a Drawer,explain,draft,2026-09-30,909,2160,42,3,2,25,8.0,75.3,21.1,3,0,2
+36,6,The Seam at Work,Metal in the Seam,explain,draft,2026-09-30,975,2040,48,4,3,26,7.5,73.8,18.4,5,0,0
+37,6,The Seam at Work,"Ten Plates, Round the Clock",explain,draft,2026-10-04,1296,2160,60,0,4,82,6.7,78.6,17.8,0,0,6
+38,7,The Floor and the Ground,The Floor Is the Other Thing to Get Right,howto,draft,2026-09-25,650,1140,57,4,1,7,7.4,76.9,19.7,9,0,0
+39,7,The Floor and the Ground,"A Pad, Not a Plot",explain,draft,2026-09-25,791,880,90,5,3,7,7.0,73.4,16.1,5,0,7
+40,8,What It Costs and What It Is Worth,A Twenty-Dollar Pine Is Not a Twenty-Dollar Pine,explain,draft,2026-10-03,606,1680,36,1,3,51,6.4,78.7,16.4,2,0,17
+41,8,What It Costs and What It Is Worth,Fifteen Sets of Hands,explain,draft,2026-10-03,370,1660,22,1,5,5,8.4,76.4,23.1,0,0,10
+42,8,What It Costs and What It Is Worth,How Much Shelter Does an Hour Buy,explain,draft,2026-10-03,637,1980,32,1,2,44,6.3,78.8,16.3,8,0,13
+43,8,What It Costs and What It Is Worth,Where a House's Money Goes,reference,draft,2026-10-03,435,1680,26,1,4,23,9.2,69.8,22.9,2,0,9
+44,8,What It Costs and What It Is Worth,"What It Costs, Line by Line",reference,draft,2026-10-03,413,1540,27,1,10,16,10.3,64.6,24.3,3,0,14
+45,9,The Network,Why a Network Beats a Park,explain,draft,2026-09-25,1128,2300,49,5,2,14,8.5,68.2,19.1,11,0,0
+46,10,Other Shapes,A Zome Is Not a Piece of a Sphere,explain,draft,2026-09-25,797,1740,46,4,1,3,7.5,73.8,18.1,17,3,0
+47,10,Other Shapes,A Zome Without a Bevel,howto,draft,2026-10-03,499,1460,34,2,2,13,7.6,77.9,20.8,0,0,2
+48,10,Other Shapes,"Exactly Twelve Pentagons, Always",explain,draft,2026-09-25,672,1260,53,4,0,1,7.0,70.3,14.3,7,0,0
+49,10,Other Shapes,"Three Frequency, Five Eighths",explain,draft,2026-10-03,803,2220,36,6,3,32,8.1,74.7,21.1,2,0,7
+50,10,Other Shapes,A Panel on a Jig,howto,draft,2026-10-03,1594,2860,56,5,2,24,7.4,77.7,19.9,3,0,11
+51,11,The Catalogue,Every Other Way of Doing It,reference,draft,2026-09-25,441,780,57,4,0,6,7.8,73.2,19.2,4,0,0
+52,11,The Catalogue,"Hubs, or No Hubs",explain,draft,2026-09-25,618,900,69,2,0,11,7.8,70.9,17.7,3,0,0
+53,11,The Catalogue,"Twelve Buildings, One Tool",reference,draft,2026-09-25,432,740,58,6,0,4,8.3,70.2,19.6,4,0,0
+54,12,The Stem Cell,Why We Call It a Stem Cell,explain,draft,2026-09-25,515,940,55,3,0,8,6.6,72.9,14.3,4,0,0
+55,12,The Stem Cell,Sink the Money Into the Part That Moves,explain,draft,2026-09-25,794,1480,54,8,1,16,7.8,72.2,18.5,7,0,0
+56,12,The Stem Cell,Fifteen Buildings From One Body,reference,draft,2026-09-25,519,1120,46,4,1,11,7.4,73.8,17.9,2,0,0
+57,13,Variations,Hang It Between Two Trees,explain,draft,2026-09-25,416,660,63,3,0,4,7.6,71.7,17.3,1,0,0
+58,14,The Tools,The Software That Wrote This Book,reference,draft,2026-09-25,720,980,73,2,1,8,8.3,68.7,18.5,15,1,0
+59,14,The Tools,What Each World Shows You,reference,draft,2026-09-25,680,1080,63,7,0,11,6.7,78.6,17.9,15,0,0
+60,14,The Tools,"Every Part, Priced",reference,draft,2026-09-25,664,1260,53,0,5,26,7.4,74.8,18.4,5,0,0

@@ -122,10 +122,12 @@ input that decides everything, and the label's best figure is a claim made on
 smooth wood, not a rough-sawn wedge. Measure how much you use on a known offcut
 through the whole coat schedule, and scale that.
 
+:::box against
 And the number that argues against it: hand application is labour. At an
 estimated {{lin.minutes}} minutes a member a coat, the coats above are
 **{{lin.labour_h}} hours of active work**, before any preparation, access,
 inspection or waiting for cure. A cheap can can still make an expensive job.
+:::
 
 ## Where it does not belong
 

@@ -418,6 +418,7 @@ class MasterclassApp:
         self.world_icons = []
         self.creator_draws = []
         self.static_draws = []
+        self._evict_static()
         if getattr(self.lesson, "ground", "grid") != "off":
             self.add_ground(opaque)
         # Everything after this index is the subject, which is what a screen
@@ -429,6 +430,30 @@ class MasterclassApp:
         else:
             getattr(self, f"scene_{stage}")(opaque, transparent, progress)
         return opaque, transparent
+
+    STATIC_IDLE_FRAMES = 300
+    """A cached layer not drawn for this many frames (ten seconds of film) is
+    released. On the Intel graphics the films render on, buffers come out of
+    system memory, and a long film that builds many layers -- forty panels,
+    each hung, stacked and joined -- otherwise holds every one of them to the
+    end and runs the machine out of memory partway through. A layer needed
+    again is rebuilt; that costs a frame, not a render."""
+
+    def _evict_static(self) -> None:
+        self._static_frame = getattr(self, "_static_frame", 0) + 1
+        used = getattr(self, "_static_used", None)
+        if used is None:
+            self._static_used = {}
+            return
+        stale = [key for key, last in used.items()
+                 if self._static_frame - last > self.STATIC_IDLE_FRAMES]
+        for key in stale:
+            vbo, vao = self.static_cache.pop(key, (None, None))
+            if vao is not None:
+                vao.release()
+            if vbo is not None:
+                vbo.release()
+            del used[key]
 
     def static_layer(self, key: str, make, subject_points=None) -> None:
         """Draw a batch that never changes, built and uploaded only once.
@@ -447,6 +472,8 @@ class MasterclassApp:
                 [(vbo, "3f 3f 4f", "in_position", "in_normal", "in_color")])
                 if vbo is not None else None)
             self.static_cache[key] = (vbo, vao)
+        if getattr(self, "_static_used", None) is not None:
+            self._static_used[key] = getattr(self, "_static_frame", 0)
         points = [] if subject_points is None else [
             np.asarray(p, dtype=np.float32) for p in subject_points]
         self.static_draws.append((key, points))
@@ -2083,6 +2110,7 @@ class MasterclassApp:
         ffmpeg_path: str | None = None,
         ffprobe_path: str | None = None,
         mux_audio: bool = True,
+        fresh_render: bool = False,
     ) -> None:
         # Rendered output is append-only: a re-render lands beside the previous cut
         # rather than destroying it. See CLAUDE.md and next_version_path.
@@ -2258,40 +2286,6 @@ class MasterclassApp:
             if video_encoder == "h264_nvenc"
             else ["-c:v", "libx264", "-preset", video_preset, "-crf", "18"]
         )
-        command = [
-            ffmpeg, "-y",
-            "-f", "rawvideo", "-pixel_format", "rgb24",
-            "-video_size", f"{width}x{height}",
-            "-framerate", str(capture_fps), "-i", "-",
-            "-vf", "vflip",
-            *encoder_args,
-            "-r", str(fps),
-            "-pix_fmt", "yuv420p", "-movflags", "+faststart",
-            str(render_path),
-        ]
-        # ffmpeg's own chatter goes to a file beside the render, never to an
-        # inherited handle.
-        #
-        # This is a deadlock fix, and the deadlock is worth describing because
-        # it looks like a crash. ffmpeg prints a progress line per frame on
-        # stderr. When that stderr is a pipe somebody upstream has stopped
-        # draining -- a CI capture, a background task's log reader, an
-        # orchestrator -- ffmpeg blocks writing it, and an ffmpeg blocked on
-        # stderr is an ffmpeg that has stopped reading stdin. This loop then
-        # blocks writing the next frame, and both processes sit at zero CPU
-        # forever. A render that dies this way leaves a half-length mp4, no
-        # traceback, and an exit code from whatever eventually kills it.
-        #
-        # Writing to a real file cannot block that way, and it also leaves the
-        # encoder log where somebody can read it after a bad render.
-        log_path = render_path.with_suffix(".ffmpeg.log")
-        encoder_log = open(log_path, "wb")
-        try:
-            process = subprocess.Popen(command, stdin=subprocess.PIPE,
-                                       stdout=encoder_log, stderr=encoder_log)
-        except Exception:
-            encoder_log.close()
-            raise
         # A chapter window turns one long render into several short ones.
         # Long renders on this machine die somewhere past the twenty-minute
         # mark for reasons that move when the workload does, and a segment
@@ -2316,38 +2310,93 @@ class MasterclassApp:
             total_frames = int(math.ceil(end_time * capture_fps))
             print(f"chapters {start + 1}..{stop} -> "
                   f"{audio_from:.1f}s to {end_time:.1f}s")
+        # Every chapter renders into its own MKV in a work folder named for
+        # this job (two_v_demo/resumable.py). A chapter whose encoder finished
+        # is marked done; started again, the same job skips those, so a render
+        # that dies carries on from the chapter it died in instead of from the
+        # first frame. The chunks join without re-encoding at the end.
+        from . import resumable
+        job = resumable.fingerprint(
+            lesson=self.lesson.key, target=str(Path(path).resolve()),
+            size=f"{width}x{height}", fps=fps, capture_fps=capture_fps,
+            durations=[round(float(d), 4) for d in self.chapter_durations],
+            chapters=[c.slug for c in self.chapters],
+            window=[first_frame, total_frames], encoder=encoder_args)
+        work = resumable.work_dir(path, job)
+        if fresh_render:
+            resumable.discard(work)
+        pieces = resumable.chunks(self.chapter_durations, capture_fps,
+                                  first_frame, total_frames)
         self.playing = False
-        rendered_chapter = -1
-        try:
-            for frame in range(first_frame, total_frames):
-                self.timeline = frame / capture_fps
-                self.chapter_index, self.chapter_progress = chapter_at_time(
-                    self.timeline, self.chapter_durations, self.chapters
-                )
-                if self.chapter_index != rendered_chapter:
-                    self.reset_camera()
-                    rendered_chapter = self.chapter_index
-                self.render(present=False)
-                assert process.stdin is not None
-                process.stdin.write(self.capture_rgb())
-                if frame % capture_fps == 0:
-                    print(
-                        f"\rRendering {frame / capture_fps:6.1f}s / "
-                        f"{self.total_duration:6.1f}s", end="", flush=True
-                    )
-            assert process.stdin is not None
-            process.stdin.close()
-            return_code = process.wait()
-            encoder_log.close()
-        except BaseException:
-            process.kill()
-            encoder_log.close()
-            raise
-        print()
-        if return_code != 0:
-            raise RuntimeError(
-                f"ffmpeg exited with status {return_code}; its own log is at "
-                f"{log_path}")
+        with resumable.Lock(work):
+            skipped = [i for i, f0, f1 in pieces
+                       if resumable.is_done(work, i, f0, f1)]
+            if skipped:
+                print(f"resuming: {len(skipped)} of {len(pieces)} chapters "
+                      f"already rendered in {work.name}")
+            for index, chunk_first, chunk_end in pieces:
+                if index in skipped:
+                    continue
+                chunk = resumable.chunk_path(work, index)
+                command = [
+                    ffmpeg, "-y",
+                    "-f", "rawvideo", "-pixel_format", "rgb24",
+                    "-video_size", f"{width}x{height}",
+                    "-framerate", str(capture_fps), "-i", "-",
+                    "-vf", "vflip",
+                    *encoder_args,
+                    "-r", str(fps),
+                    "-pix_fmt", "yuv420p",
+                    str(chunk),
+                ]
+                # ffmpeg's own chatter goes to a file, never to an inherited
+                # handle: an ffmpeg blocked writing a stderr pipe nobody drains
+                # stops reading stdin, and both processes then sit at zero CPU
+                # forever, leaving a short file and no traceback.
+                log_path = chunk.with_suffix(".ffmpeg.log")
+                encoder_log = open(log_path, "wb")
+                try:
+                    process = subprocess.Popen(
+                        command, stdin=subprocess.PIPE,
+                        stdout=encoder_log, stderr=encoder_log)
+                except Exception:
+                    encoder_log.close()
+                    raise
+                rendered_chapter = -1
+                try:
+                    for frame in range(chunk_first, chunk_end):
+                        self.timeline = frame / capture_fps
+                        self.chapter_index, self.chapter_progress = \
+                            chapter_at_time(self.timeline,
+                                            self.chapter_durations,
+                                            self.chapters)
+                        if self.chapter_index != rendered_chapter:
+                            self.reset_camera()
+                            rendered_chapter = self.chapter_index
+                        self.render(present=False)
+                        assert process.stdin is not None
+                        process.stdin.write(self.capture_rgb())
+                        if frame % capture_fps == 0:
+                            print(
+                                f"\rRendering {frame / capture_fps:6.1f}s / "
+                                f"{self.total_duration:6.1f}s", end="",
+                                flush=True)
+                    assert process.stdin is not None
+                    process.stdin.close()
+                    return_code = process.wait()
+                    encoder_log.close()
+                except BaseException:
+                    process.kill()
+                    encoder_log.close()
+                    raise
+                if return_code != 0:
+                    raise RuntimeError(
+                        f"ffmpeg exited with status {return_code}; its own "
+                        f"log is at {log_path}")
+                resumable.mark_done(work, index, chunk_first, chunk_end)
+            print()
+            resumable.join([resumable.chunk_path(work, i) for i, _a, _b in pieces],
+                           render_path, ffmpeg)
         if plan is not None and mux_audio:
             # A segment takes the slice of the one narration track that
             # belongs to it, so every piece is cut from the same speech and
@@ -2386,6 +2435,7 @@ class MasterclassApp:
                 title=self.lesson.title,
                 speak_promise=self.speak_promise,
             )
+        resumable.discard(work)
         from video_review.render_bridge import write_render_receipt
         write_render_receipt(path, self.lesson, self.chapter_durations, {
             **getattr(self, "review_render_config", {}),
@@ -2996,7 +3046,8 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
                     if local_narration_plan else None),
                 voice=voice, voice_rate=voice_rate, voice_pitch=voice_pitch,
                 voice_volume=voice_volume, ffmpeg_path=ffmpeg_path,
-                ffprobe_path=ffprobe_path)
+                ffprobe_path=ffprobe_path,
+                fresh_render=bool(cfg.get("fresh_render")))
         except (RuntimeError, ValueError, subprocess.CalledProcessError) as exc:
             app.pygame.quit()
             print(exc)

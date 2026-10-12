@@ -386,6 +386,66 @@ PRESETS: tuple[RenderPreset, ...] = (
         },
     ),
 
+    _video("cabin_cell_wall", "cabin_cell_wall", "the-cell-wall.mp4",
+           "THE CELL WALL. The dome's skin as layers, each one piece with its "
+           "channels built in, cut away with every layer running at once: ported "
+           "hose-gaskets that jumper into a network of locals, the global channel "
+           "in the seams, rings, one bus addressing every cell, a T-shirt quilt of "
+           "forty cells, a wildfire worked through, and the uses counted -- with "
+           "the numbers that argue back. Every figure from cell_wall."),
+
+    RenderPreset(
+        key="cabin_cell_wall_stills",
+        label="the cell wall -- one still per chapter",
+        summary="A still from each chapter of the cell wall film, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_cell_wall",
+            "action": "shots",
+            "shots": chapter_shots("cabin_cell_wall"),
+        },
+    ),
+
+    _video("cabin_sky_web", "cabin_sky_web", "the-sky-web.mp4",
+           "THE SKY WEB. The dome built in the air, with the trees: an X of wire "
+           "rope, a spiral, a 12 V winch, a harness that hangs each triangle flat, "
+           "three pigtails, forty triangles floating, lashed, gathered to the apex "
+           "for one central lift, a silicone-cotton skin, guys to the next trees "
+           "-- with the owner's weighed struts and the numbers that argue back. "
+           "Every figure from sky_web."),
+
+    _video("cabin_every_piece", "cabin_every_piece", "every-piece-numbered.mp4",
+           "EVERY PIECE, NUMBERED. The Triangle Infill calculator's work: one "
+           "triangle filled with seventeen wedges, every piece numbered and cut "
+           "on the mitre saw with its offcut, ten ways to fill it, then the "
+           "floor under the dome from five 20 ft half trunks -- a star, "
+           "joists, every span and pier checked, seven patterns and five "
+           "materials compared. Every figure from infill.facts."),
+
+    RenderPreset(
+        key="cabin_every_piece_stills",
+        label="every piece, numbered -- one still per chapter",
+        summary="A still from each chapter of the triangle-infill and floor-base "
+                "film, with no narration and no video encode.",
+        fields={
+            "lesson": "cabin_every_piece",
+            "action": "shots",
+            "shots": chapter_shots("cabin_every_piece"),
+        },
+    ),
+
+    RenderPreset(
+        key="cabin_sky_web_stills",
+        label="the sky web -- one still per chapter",
+        summary="A still from each chapter of the sky web film, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_sky_web",
+            "action": "shots",
+            "shots": chapter_shots("cabin_sky_web"),
+        },
+    ),
+
     RenderPreset(
         key="cabin_wedge_explained_stills",
         label="wedge dome explained -- one still per chapter",

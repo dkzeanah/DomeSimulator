@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-03T18:27:33.459887+00:00",
+  "lesson": "teaser_cabin_shop",
+  "title": "The Shop the Campaign Buys: A 10 x 5 Plasma Table and Its Router: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "DOMESIM",
+      "narration": [
+        "Two machine lines, one frame."
+      ],
+      "start": 0.0,
+      "end": 3.656
+    },
+    {
+      "slug": "trim",
+      "title": "Almost fits",
+      "narration": [
+        "A little off each point."
+      ],
+      "start": 3.656,
+      "end": 7.056
+    },
+    {
+      "slug": "steel",
+      "title": "A dome in plate",
+      "narration": [
+        "Size the dome to the sheet."
+      ],
+      "start": 7.056,
+      "end": 10.456
+    },
+    {
+      "slug": "motors",
+      "title": "Motors that fit the pinion",
+      "narration": [
+        "The bore decides the shaft."
+      ],
+      "start": 10.456,
+      "end": 13.856
+    },
+    {
+      "slug": "budget",
+      "title": "Budgeted, and built",
+      "narration": [
+        "The honest version of the line item."
+      ],
+      "start": 13.856,
+      "end": 17.256
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 17.256,
+      "end": 22.28
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 22.28,
+      "end": 28.264
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

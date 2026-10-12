@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:23:21",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Today's winch lifts a quarter of it.\n\nWith every cord at one point, one winch can lift the whole dome, up and down, evenly. But this is the whole weight: the frame and a skin, 2,695 kilograms, 26.4 kilonewtons. Today's winch lifts 25 percent of it. The planned one, 4 times bigger, lifts it with almost nothing to spare. 8 times bigger lifts it twice over, and that is the one to buy. Hang the winch itself at the crossing: pulled from a tree, the line turns at the pulley and loads the X with 37 kilonewtons, not 26. And now every kilogram is at the crossing, so the ropes pull 34: still 5/8 in, with the guys at 47.",
+  "watermark": "preserved model-provided watermark"
+}

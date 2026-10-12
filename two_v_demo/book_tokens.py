@@ -264,6 +264,158 @@ def catalogue_facts() -> dict:
 
 
 @lru_cache(maxsize=1)
+def plan_facts() -> dict:
+    """The popular three-frequency five-eighths panel dome, solved here.
+
+    Shown for comparison with this book's method: a tried-and-true build that
+    a great many people have made. Every figure is computed by
+    :mod:`panel_method` for its declared reference dome -- none is taken from
+    anybody's plan set.
+    """
+    from . import panel_method as pm
+
+    f = pm.facts()
+    cut = pm.reference().cut
+    edges = {tuple(sorted((int(t[k]), int(t[(k + 1) % 3]))))
+             for i in cut.faces for t in [cut.sphere.faces[i]] for k in range(3)}
+    hubs = {v for e in edges for v in e}
+    hex_m = sorted(st.tail_miter for key, _n, st in f["stick_rows"] if key.startswith("hexa"))
+    pent_m = sorted(st.tail_miter for key, _n, st in f["stick_rows"] if key.startswith("pent"))
+    return {
+        "diameter_m": f["diameter_m"], "diameter_ft": pm.CONSTANTS["base_ft"].value,
+        "height_m": f["height_m"], "fraction": f["height_fraction"],
+        "hex_panels": float(f["hex"]), "pent_panels": float(f["pent"]), "panels": float(f["panels"]),
+        "solver_panels": float(f["panels"]), "solver_struts": float(len(edges)),
+        "solver_hubs": float(len(hubs)), "solver_classes": float(len(cut.sphere.chord_classes)),
+        "miter_hex_long": hex_m[-1], "miter_hex_short": hex_m[0],
+        "miter_pent": pent_m[0], "miter_pent_long": pent_m[-1],
+        "strut_mm": f["stick_w_m"] * 1000, "strut_depth_mm": f["stick_d_m"] * 1000,
+        "base_edges": float(f["base_edges"]), "tapered": float(f["tapered"]), "level": float(f["level"]),
+        "taper_mm": f["taper_m"] * 1000,
+        "sticks": float(f["sticks"]), "distinct": float(f["distinct_sticks"]),
+        "bevel_lo": f["bevel_lo"], "bevel_hi": f["bevel_hi"],
+        "area_sqm": f["floor_m2"], "skin_sqm": f["skin_m2"],
+        "sections_pent": float(f["sections_pent"]), "sections_hex": float(f["sections_hex"]),
+    }
+
+
+@lru_cache(maxsize=1)
+def zome_facts() -> dict:
+    """A nine-sided zome framed the non-beveled way, solved by
+    :func:`panel_method.zome_panels` for its declared reference size."""
+    import numpy as np
+
+    from . import panel_method as pm
+    from .zome_geometry import polar_zonohedron
+
+    c = pm.CONSTANTS
+    rows = pm.reference_zome()
+    z = polar_zonohedron(int(c["zome_n"].value), c["zome_pitch_deg"].value)
+    verts = np.asarray(z.vertices, dtype=float)
+    faces = [f for f in z.faces if min(verts[k][2] for k in f) >= z.rim_height - 1e-9]
+    edges = {tuple(sorted((f[k], f[(k + 1) % len(f)]))) for f in faces for k in range(len(f))}
+    side_m = c["zome_side_m"].value
+    return {
+        "methods": 2.0,
+        "side_in": side_m / 0.0254, "side_mm": side_m * 1000,
+        "rows": float(len(rows)), "per_row": float(rows[0].count),
+        "panels_nine": float(sum(r.count for r in rows)),
+        "struts_nine": float(len(edges)),
+        "hubs_nine": float(len({v for e in edges for v in e})),
+        "gap_lo_in": min(r.gap_m for r in rows) / 0.0254,
+        "gap_hi_in": max(r.gap_m for r in rows) / 0.0254,
+        "depth_in": c["zome_d_in"].value,
+    }
+
+
+@lru_cache(maxsize=1)
+def nest_facts() -> dict:
+    """One sheet of plate, cut into a whole shell's panels."""
+    from . import plate_nesting as pn
+
+    radius, layout = pn.max_radius("strict")
+    panels = pn.panel_set(radius)
+    vessel = pn.vessel(radius)
+    seam = pn.seam_weld(vessel["seam_in"])
+    limit = pn.plate_limit_3v()
+    t_radius, t_layout = pn.max_radius("trimmed")
+    trimmed = pn.vessel(t_radius, trim=t_layout.trim)
+    sweet = pn.three_v_sweet_spot(8, 16)
+    best = max(sweet, key=lambda t: (t["used_pct"] >= 60, t["base_ft"] if t["used_pct"] >= 60 else -t["sheets"]))
+    nxt = next(t for t in sweet if t["base_ft"] == best["base_ft"] + 1)
+    return {
+        "sheet_w_in": pn.SHEET_W_IN,
+        "sheet_h_in": pn.SHEET_H_IN,
+        "radius_in": radius,
+        "diameter_in": vessel["diameter_in"],
+        "diameter_ft": vessel["diameter_ft"],
+        "height_ft": vessel["height_ft"],
+        "floor_sqft": vessel["floor_sqft"],
+        "volume_gal": vessel["volume_gal"],
+        "long_in": panels.long_in,
+        "short_in": panels.short_in,
+        "panels": panels.panels,
+        "rows": len(layout.rows),
+        "util_pct": layout.used_area
+        / (pn.SHEET_W_IN * pn.SHEET_H_IN) * 100.0,
+        "part_lb_3mm": pn.vessel(radius, thickness_mm=3.0)["part_lb"],
+        "sheet_lb_3mm": pn.vessel(radius, thickness_mm=3.0)["sheet_lb"],
+        "offcut_lb_3mm": pn.vessel(radius, thickness_mm=3.0)["offcut_lb"],
+        "part_lb_2mm": pn.vessel(radius, thickness_mm=2.0)["part_lb"],
+        "weld_ft": seam["weld_ft"],
+        "weld_hours": seam["minutes"] / 60.0,
+        "v3_side_in": limit["side_in"],
+        "v3_diameter_ft": limit["diameter_ft"],
+        "v3_floor_sqft": limit["floor_sqft"],
+        "v3_sheets": limit["sheets"],
+        "v3_used_pct": limit["used_pct"],
+        "v3_lb_2mm": limit["lb_2mm"],
+        "sweet_ft": best["base_ft"], "sweet_sheets": best["sheets"], "sweet_used_pct": best["used_pct"],
+        "sweet_lb_2mm": best["lb_2mm"], "next_ft": nxt["base_ft"], "next_sheets": nxt["sheets"],
+        "seams": vessel["seams"], "cut_ft": vessel["cut_in"] / 12, "cut_minutes": vessel["cut_minutes"],
+        "trim_radius_in": t_radius, "trim_in": t_layout.trim, "trim_caps": trimmed["caps"],
+        "trim_cap_in": trimmed["cap_in"], "trim_diameter_ft": trimmed["diameter_ft"],
+        "trim_gal": trimmed["volume_gal"], "trim_gain_pct": (t_radius / radius - 1) * 100,
+    }
+
+
+@lru_cache(maxsize=1)
+def shop_facts() -> dict:
+    """The machine the campaign's tooling lines buy, against the lines."""
+    from . import cnc_table as ct
+
+    build = ct.total()
+    router = ct.router_total()
+    goal = {line.key: line.usd for line in _goal_lines()}
+    both = build + router
+    return {
+        "travel_x_in": ct.TRAVEL_X_IN,
+        "travel_y_in": ct.TRAVEL_Y_IN,
+        "x_rail_mm": ct.rails_per_side()["x_rail_mm"],
+        "x_racks": ct.rails_per_side()["x_racks"],
+        "y_racks": ct.rails_per_side()["y_racks"],
+        "build_usd": build,
+        "router_usd": router,
+        "both_usd": both,
+        "goal_plasma_usd": goal["cnc_plasma"],
+        "goal_router_usd": goal["cnc_router"],
+        "saving_plasma_usd": goal["cnc_plasma"] - build,
+        "saving_router_usd": goal["cnc_plasma"] + goal["cnc_router"] - both,
+        "paid_usd": ct.subtotal("paid"), "quoted_usd": ct.subtotal("quoted"),
+        "allowance_usd": ct.subtotal("allowance"),
+        "x_racks_side": ct.rails_per_side()["x_racks"], "racks": ct.counts()["racks"],
+        "kits": ct.counts()["kits"], "rails": ct.counts()["rails"], "pinions": ct.counts()["pinions"],
+        "frame_mm": ct.frame_mm(), "gantry_mm": ct.gantry_tube_mm(),
+        "accel": ct.torque_check()["x_accel_ms2"], "gantry_kg": ct.torque_check()["gantry_kg"],
+        "pitch_dia_mm": ct.pinion_steps_per_mm()["pitch_dia_mm"],
+        "mm_per_rev": ct.pinion_steps_per_mm()["mm_per_rev"],
+        "steps_per_mm": ct.pinion_steps_per_mm()["steps_per_mm"],
+        "lines": ct.bill(),
+        "router_lines": ct.router_variant(),
+    }
+
+
+@lru_cache(maxsize=1)
 def power_facts() -> dict:
     """The small power system's own prices, from the model that built it."""
     import seed_model as sm
@@ -1279,6 +1431,204 @@ def _build() -> tuple[Token, ...]:
               lambda: f"{design_facts()['weight_min'] * 2.20462:,.0f}"),
         Token("design.weight_max_lb", "the heaviest",
               lambda: f"{design_facts()['weight_max'] * 2.20462:,.0f}"),
+
+        # -- one sheet of plate, and the machine that cuts it ---------------
+        Token("plate.sheet_in", "the sheet the shop buys, in inches",
+              lambda: f"{nest_facts()['sheet_w_in']:,.0f} x "
+                      f"{nest_facts()['sheet_h_in']:,.0f}"),
+        Token("plate.sheet_ft", "the same sheet in feet",
+              lambda: f"{nest_facts()['sheet_w_in'] / 12.0:,.0f} x "
+                      f"{nest_facts()['sheet_h_in'] / 12.0:,.0f}"),
+        Token("plate.panels", "panels cut from one sheet",
+              lambda: _n(nest_facts()['panels'], 0)),
+        Token("plate.radius_in", "the largest shell one sheet makes, radius",
+              lambda: _n(nest_facts()['radius_in'], 1)),
+        Token("plate.diameter_ft", "that shell's diameter, feet",
+              lambda: _n(nest_facts()['diameter_ft'], 2)),
+        Token("plate.height_ft", "and its height",
+              lambda: _n(nest_facts()['height_ft'], 2)),
+        Token("plate.floor_sqft", "floor it encloses",
+              lambda: _n(nest_facts()['floor_sqft'], 1)),
+        Token("plate.gal", "volume it holds as a bowl, gallons",
+              lambda: _n(nest_facts()['volume_gal'], 0)),
+        Token("plate.long_in", "the long panel's side",
+              lambda: _n(nest_facts()['long_in'], 1)),
+        Token("plate.short_in", "the short panel's side",
+              lambda: _n(nest_facts()['short_in'], 1)),
+        Token("plate.rows", "rows the nest takes",
+              lambda: _n(nest_facts()['rows'], 0)),
+        Token("plate.util_pct", "share of the sheet in parts",
+              lambda: _n(nest_facts()['util_pct'], 1)),
+        Token("plate.part_lb", "the panels' weight in 3 mm steel",
+              lambda: _n(nest_facts()['part_lb_3mm'], 0)),
+        Token("plate.sheet_lb", "the sheet's weight",
+              lambda: _n(nest_facts()['sheet_lb_3mm'], 0)),
+        Token("plate.offcut_lb", "the offcut's weight",
+              lambda: _n(nest_facts()['offcut_lb_3mm'], 0)),
+        Token("plate.part_lb_2mm", "the same panels in 2 mm",
+              lambda: _n(nest_facts()['part_lb_2mm'], 0)),
+        Token("plate.weld_ft", "seam to weld the vessel up",
+              lambda: _n(nest_facts()['weld_ft'], 0)),
+        Token("plate.weld_hours", "hours of welding that is",
+              lambda: _n(nest_facts()['weld_hours'], 1)),
+        Token("plate.v3_side_in", "largest 3V panel one sheet carries",
+              lambda: _n(nest_facts()['v3_side_in'], 1)),
+        Token("plate.v3_diameter_ft", "the 3V dome that panel builds",
+              lambda: _n(nest_facts()['v3_diameter_ft'], 1)),
+        Token("plate.v3_floor_sqft", "and the floor under it",
+              lambda: _n(nest_facts()['v3_floor_sqft'], 0)),
+
+        # -- the machine ---------------------------------------------------
+        Token("shop.travel_ft", "the table's travel, feet",
+              lambda: f"{shop_facts()['travel_x_in'] / 12.0:,.0f} x "
+                      f"{shop_facts()['travel_y_in'] / 12.0:,.0f}"),
+        Token("shop.x_rail_mm", "rail the long axis needs",
+              lambda: _n(shop_facts()['x_rail_mm'], 0)),
+        Token("shop.x_racks", "rack lengths on the long axis",
+              lambda: _n(shop_facts()['x_racks'], 0)),
+        Token("shop.y_racks", "on the gantry",
+              lambda: _n(shop_facts()['y_racks'], 0)),
+        Token("shop.pitch_dia_mm", "the pinion's pitch diameter",
+              lambda: _n(shop_facts()['pitch_dia_mm'], 1)),
+        Token("shop.mm_per_rev", "millimetres an axis moves per revolution",
+              lambda: _n(shop_facts()['mm_per_rev'], 2)),
+        Token("shop.steps_per_mm", "the number the controller needs",
+              lambda: _n(shop_facts()['steps_per_mm'], 2)),
+        Token("shop.build_usd", "the plasma table, built",
+              lambda: f"{shop_facts()['build_usd']:,.0f}"),
+        Token("shop.router_usd", "the router conversion on the same frame",
+              lambda: f"{shop_facts()['router_usd']:,.0f}"),
+        Token("shop.both_usd", "one frame, both machines",
+              lambda: f"{shop_facts()['both_usd']:,.0f}"),
+        Token("shop.goal_plasma_usd", "the campaign's plasma line",
+              lambda: f"{shop_facts()['goal_plasma_usd']:,.0f}"),
+        Token("shop.goal_router_usd", "the campaign's router line",
+              lambda: f"{shop_facts()['goal_router_usd']:,.0f}"),
+        Token("shop.saving_plasma_usd", "what building beats buying by, "
+              "plasma",
+              lambda: f"{shop_facts()['saving_plasma_usd']:,.0f}"),
+        Token("shop.saving_both_usd", "what building beats buying by, both "
+              "machines",
+              lambda: f"{shop_facts()['saving_router_usd']:,.0f}"),
+        Token("shop.parts_usd", "the drive parts, at the prices paid",
+              lambda: f"{shop_facts()['paid_usd']:,.0f}"),
+        Token("shop.quoted_usd", "parts priced from current listings",
+              lambda: f"{shop_facts()['quoted_usd']:,.0f}"),
+        Token("shop.allowance_usd", "parts still estimates",
+              lambda: f"{shop_facts()['allowance_usd']:,.0f}"),
+        Token("shop.racks", "rack lengths in all, with a spare",
+              lambda: _n(shop_facts()['racks'], 0)),
+        Token("shop.kits", "HGR20 rail kits", lambda: _n(shop_facts()['kits'], 0)),
+        Token("shop.rails", "rails, joined", lambda: _n(shop_facts()['rails'], 0)),
+        Token("shop.pinions", "pinions, with a spare", lambda: _n(shop_facts()['pinions'], 0)),
+        Token("shop.frame_mm", "the base frame, mm",
+              lambda: f"{shop_facts()['frame_mm'][0]:,.0f} x {shop_facts()['frame_mm'][1]:,.0f}"),
+        Token("shop.gantry_mm", "the gantry tube's length, mm", lambda: _n(shop_facts()['gantry_mm'], 0)),
+        Token("shop.accel", "what two long-axis motors can accelerate the gantry at, m/s2",
+              lambda: _n(shop_facts()['accel'], 1)),
+        Token("shop.gantry_kg", "the gantry's estimated moving mass, kg",
+              lambda: _n(shop_facts()['gantry_kg'], 0)),
+        Token("shop.bill", "the plasma table's bill, line by line",
+              lambda: __import__('two_v_demo.cnc_table', fromlist=['x']).bill_table()),
+        Token("plate.seams", "seams in the welded shell", lambda: _n(nest_facts()['seams'], 0)),
+        Token("plate.cut_ft", "plasma cut length for the forty panels, ft", lambda: _n(nest_facts()['cut_ft'], 0)),
+        Token("plate.cut_minutes", "minutes of cutting that is", lambda: _n(nest_facts()['cut_minutes'], 0)),
+        Token("plate.trim_in", "how far the trimmed nest cuts each point back, in", lambda: _n(nest_facts()['trim_in'], 2)),
+        Token("plate.trim_caps", "vertex caps the trimmed shell needs", lambda: _n(nest_facts()['trim_caps'], 0)),
+        Token("plate.trim_cap_in", "each cap at least this wide, in", lambda: _n(nest_facts()['trim_cap_in'], 2)),
+        Token("plate.trim_diameter_ft", "the trimmed shell across, ft", lambda: _n(nest_facts()['trim_diameter_ft'], 2)),
+        Token("plate.trim_gain_pct", "how much bigger trimming makes it, %", lambda: _n(nest_facts()['trim_gain_pct'], 1)),
+        Token("plate.v3_sheets", "sheets for the 3V reference dome in plate", lambda: _n(nest_facts()['v3_sheets'], 0)),
+        Token("plate.v3_used_pct", "share of those sheets in parts", lambda: _n(nest_facts()['v3_used_pct'], 0)),
+        Token("plate.v3_lb_2mm", "that dome in 2 mm steel, lb", lambda: _n(nest_facts()['v3_lb_2mm'], 0)),
+        Token("plate.sweet_ft", "the largest 3V dome that nests efficiently, ft", lambda: _n(nest_facts()['sweet_ft'], 0)),
+        Token("plate.sweet_sheets", "its sheets", lambda: _n(nest_facts()['sweet_sheets'], 0)),
+        Token("plate.sweet_used_pct", "share of them in parts", lambda: _n(nest_facts()['sweet_used_pct'], 0)),
+        Token("plate.sweet_lb_2mm", "its steel in 2 mm, lb", lambda: _n(nest_facts()['sweet_lb_2mm'], 0)),
+        Token("plate.next_ft", "one foot bigger", lambda: _n(nest_facts()['next_ft'], 0)),
+        Token("plate.next_sheets", "and its sheets", lambda: _n(nest_facts()['next_sheets'], 0)),
+
+        # -- a published 3V plan set, and the zome method -----------------
+        Token("plan.diameter_m", "the popular 3V dome's base, metres",
+              lambda: _n(plan_facts()['diameter_m'], 2)),
+        Token("plan.diameter_ft", "and in feet",
+              lambda: _n(plan_facts()['diameter_ft'], 0)),
+        Token("plan.height_m", "its height, metres",
+              lambda: _n(plan_facts()['height_m'], 2)),
+        Token("plan.fraction", "height over width of the 5/8 cut",
+              lambda: _n(plan_facts()['fraction'], 3)),
+        Token("plan.hex_panels", "panels that belong to hexagons",
+              lambda: _n(plan_facts()['hex_panels'], 0)),
+        Token("plan.pent_panels", "panels that belong to pentagons",
+              lambda: _n(plan_facts()['pent_panels'], 0)),
+        Token("plan.panels", "panels in the 5/8 cut",
+              lambda: _n(plan_facts()['panels'], 0)),
+        Token("plan.solver_panels", "panels the solver finds",
+              lambda: _n(plan_facts()['solver_panels'], 0)),
+        Token("plan.solver_struts", "edges in the 5/8 cut",
+              lambda: _n(plan_facts()['solver_struts'], 0)),
+        Token("plan.solver_hubs", "points in it",
+              lambda: _n(plan_facts()['solver_hubs'], 0)),
+        Token("plan.solver_classes", "chord lengths in a class I 3V sphere",
+              lambda: _n(plan_facts()['solver_classes'], 0)),
+        Token("plan.miter_hex_long", "a hexagon stick's larger tail cut, off square",
+              lambda: _n(plan_facts()['miter_hex_long'], 1)),
+        Token("plan.miter_hex_short", "its smaller one",
+              lambda: _n(plan_facts()['miter_hex_short'], 1)),
+        Token("plan.miter_pent", "a pentagon stick's smaller tail cut",
+              lambda: _n(plan_facts()['miter_pent'], 1)),
+        Token("plan.miter_pent_long", "and its larger one",
+              lambda: _n(plan_facts()['miter_pent_long'], 1)),
+        Token("plan.strut_mm", "the stick's width on the jig, mm",
+              lambda: _n(plan_facts()['strut_mm'], 0)),
+        Token("plan.strut_depth_mm", "its depth through the wall, mm",
+              lambda: _n(plan_facts()['strut_depth_mm'], 0)),
+        Token("plan.base_edges", "edges round the base",
+              lambda: _n(plan_facts()['base_edges'], 0)),
+        Token("plan.tapered", "base sections that taper",
+              lambda: _n(plan_facts()['tapered'], 0)),
+        Token("plan.level", "base sections that sit level",
+              lambda: _n(plan_facts()['level'], 0)),
+        Token("plan.taper_mm", "the base's two heights apart, mm",
+              lambda: _n(plan_facts()['taper_mm'], 0)),
+        Token("plan.sticks", "sticks in all",
+              lambda: _n(plan_facts()['sticks'], 0)),
+        Token("plan.distinct", "distinct sticks",
+              lambda: _n(plan_facts()['distinct'], 0)),
+        Token("plan.bevel_lo", "the smallest exact bevel",
+              lambda: _n(plan_facts()['bevel_lo'], 1)),
+        Token("plan.bevel_hi", "the largest",
+              lambda: _n(plan_facts()['bevel_hi'], 1)),
+        Token("plan.area_sqm", "floor inside the base, square metres",
+              lambda: _n(plan_facts()['area_sqm'], 1)),
+        Token("plan.skin_sqm", "panel area, square metres",
+              lambda: _n(plan_facts()['skin_sqm'], 1)),
+        Token("plan.sections_pent", "pentagons skinned in one sheet",
+              lambda: _n(plan_facts()['sections_pent'], 0)),
+        Token("plan.sections_hex", "hexagons skinned in one sheet",
+              lambda: _n(plan_facts()['sections_hex'], 0)),
+        Token("zome.methods", "ways to frame a zome",
+              lambda: _n(zome_facts()['methods'], 0)),
+        Token("zome.side_in", "one panel side, in inches",
+              lambda: _n(zome_facts()['side_in'], 1)),
+        Token("zome.side_mm", "the same in millimetres",
+              lambda: _n(zome_facts()['side_mm'], 0)),
+        Token("zome.rows", "rows of panels",
+              lambda: _n(zome_facts()['rows'], 0)),
+        Token("zome.per_row", "panels in a row",
+              lambda: _n(zome_facts()['per_row'], 0)),
+        Token("zome.panels_nine", "panels in the nine-sided zome",
+              lambda: _n(zome_facts()['panels_nine'], 0)),
+        Token("zome.struts_nine", "struts in one",
+              lambda: _n(zome_facts()['struts_nine'], 0)),
+        Token("zome.hubs_nine", "corners in one",
+              lambda: _n(zome_facts()['hubs_nine'], 0)),
+        Token("zome.gap_lo_in", "the narrowest outside gap, in",
+              lambda: _n(zome_facts()['gap_lo_in'], 2)),
+        Token("zome.gap_hi_in", "the widest, in",
+              lambda: _n(zome_facts()['gap_hi_in'], 2)),
+        Token("zome.depth_in", "the stick's depth, in",
+              lambda: _n(zome_facts()['depth_in'], 1)),
 
         # -- the off-grid set ---------------------------------------------
         Token("power.battery_kwh", "kilowatt hours in the bank",

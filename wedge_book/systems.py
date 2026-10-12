@@ -103,19 +103,11 @@ EXTERNAL_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
      "dwelling rate rather than a workshop one"),
 
     # -- condensing ---------------------------------------------------
-    ("peltier_module_usd", 14.0, "USD each",
-     "assumption: one thermoelectric module with its cold plate, hot-side "
-     "heatsink and thermal paste"),
-    ("peltier_modules", 6.0, "modules",
-     "the owner's stated arrangement: modules at the seams that see the most "
-     "moisture, rather than one big unit in a cupboard"),
-    ("peltier_watts_each", 60.0, "W",
-     "assumption: what one module draws at the voltage it is run at, which "
-     "is below its rating because efficiency collapses at full drive"),
-    ("peltier_litres_per_kwh", 0.35, "L/kWh",
-     "assumption: what a thermoelectric condenser actually yields in humid "
-     "air. A compressor dehumidifier does three to four times this, and "
-     "that difference is the honest case against the idea"),
+    # The module count, its price, what each station draws and what it
+    # condenses per kWh are no longer declared here: they come from
+    # two_v_demo.peltier_ring, which solves the owner's TEC1-12706 from its
+    # listing (see peltier()).  Until 2026-10-04 this table assumed six
+    # modules at 60 W and 0.35 L/kWh; the module's physics gives less.
     ("peltier_run_hours", 6.0, "hours/day",
      "assumption: run on daylight surplus rather than on the battery, "
      "because this is the one load that can wait"),
@@ -178,6 +170,17 @@ EXTERNAL_CONSTANTS: tuple[tuple[str, float, str, str], ...] = (
     ("working_week_hours", 40.0, "hours",
      "the week this book is named after, which is a target rather than a "
      "result"),
+    # The owner's fifteen minutes a member covers everything after the
+    # split. How it divides between the three jobs below is ours, not
+    # measured: the clock in the margins says so wherever it uses them.
+    ("stage_share_cut", 0.35, "fraction",
+     "estimate: of the per-member time that is not splitting, the share "
+     "spent cutting both ends to length and drilling for the inserts"),
+    ("stage_share_panels", 0.40, "fraction",
+     "estimate: the share spent laying members on the jig and bolting "
+     "them into panels"),
+    ("stage_share_raise", 0.25, "fraction",
+     "estimate: the share spent lifting panels and bolting the shell"),
 )
 
 CONSTANTS: dict[str, float] = {name: value
@@ -271,8 +274,8 @@ def seam_module() -> Bill:
              declared("silica_cartridge_usd"), "silica_cartridge_usd"),
         Line("service cover", segments, "each",
              declared("seam_service_cover_usd"), "seam_service_cover_usd"),
-        Line("thermoelectric condensing plate", declared("peltier_modules"),
-             "each", declared("peltier_module_usd"), "peltier_module_usd"),
+        Line("thermoelectric condensing plate", peltier()["modules"],
+             "each", peltier()["module_usd"], "peltier_ring module_usd"),
         Line("ram fan, continuous duty", declared("ram_fans"), "each",
              declared("ram_fan_usd"), "ram_fan_usd"),
     ))
@@ -419,6 +422,16 @@ def air_barrier() -> dict:
     }
 
 
+def peltier() -> dict:
+    """The condensing plates, from the module's own physics: the owner's ten
+    TEC1-12706 at 12 V on a humid summer day (two_v_demo.peltier_ring)."""
+    from two_v_demo import peltier_ring as pr
+
+    ring = pr.ring_day("humid")
+    return {"modules": pr.C["modules"], "module_usd": pr.C["module_usd"],
+            "watts": ring["draw_w"], "litres_per_kwh": ring["litres_per_kwh"]}
+
+
 def water_comparison() -> dict:
     """Rain against thermoelectric condensing, on this roof."""
     geometry = _geometry()
@@ -429,11 +442,11 @@ def water_comparison() -> dict:
     plan_sqft = geometry.floor_circle_sqft
     gallons_per_inch = plan_sqft / 12.0 * GAL_PER_CUFT
 
-    modules = declared("peltier_modules")
-    watts = modules * declared("peltier_watts_each")
+    pel = peltier()
+    watts = pel["watts"]
     hours = declared("peltier_run_hours")
     kwh_per_day = watts * hours / 1000.0
-    litres_per_day = kwh_per_day * declared("peltier_litres_per_kwh")
+    litres_per_day = kwh_per_day * pel["litres_per_kwh"]
     gallons_per_day = litres_per_day / LITRES_PER_GAL
 
     return {
@@ -505,6 +518,54 @@ def build_clock() -> dict:
     }
 
 
+@dataclass(frozen=True)
+class Stage:
+    """One stretch of the forty-hour clock, and the chapter that does it."""
+    key: str
+    label: str
+    chapter: str          # outline ref of the chapter that teaches it
+    hours: float
+    basis: str            # measured | estimate | allowance
+    before: float         # clock reading when it starts
+    after: float          # and when it ends
+
+
+#: Work the clock does not count, and the chapter that says so.
+OFF_THE_CLOCK = (
+    ("tree", "felling and bucking the logs"),
+    ("finish", "charring and oiling"),
+    ("one_layer", "the cap"),
+    ("openings", "doors and windows"),
+    ("floor", "the floor"),
+)
+
+
+def build_stages() -> tuple[Stage, ...]:
+    """The forty-hour clock, stage by stage, in build order.
+
+    Splitting is the owner's measured rate. The rest of the per-member time
+    is divided by the declared ``stage_share_*`` estimates, and the error
+    allowance runs last, because that is when it is spent: on the stick that
+    has to be made again and the panel that goes up twice."""
+    clock = build_clock()
+    rest = clock["straight_hours"] - clock["split_hours"]
+    shares = (declared("stage_share_cut"), declared("stage_share_panels"),
+              declared("stage_share_raise"))
+    plan = (
+        ("split", "splitting the logs into wedges", "split", clock["split_hours"], "measured"),
+        ("cut", "cutting both ends and drilling", "two_lengths", rest * shares[0], "estimate"),
+        ("panels", "bolting members into panels on the jig", "jig", rest * shares[1], "estimate"),
+        ("raise", "lifting the panels into a shell", "raise", rest * shares[2], "estimate"),
+        ("error", "the allowance for getting it wrong", "raise",
+         clock["with_error"] - clock["straight_hours"], "allowance"),
+    )
+    out, t = [], 0.0
+    for key, label, chapter, hours, basis in plan:
+        out.append(Stage(key, label, chapter, hours, basis, t, t + hours))
+        t += hours
+    return tuple(out)
+
+
 def total() -> float:
     return sum(bill.cost for bill in bills())
 
@@ -548,6 +609,15 @@ def validate_systems() -> None:
         assert value > 0.0, name
         assert unit, name
         assert len(why) > 40, f"{name} has no reason attached"
+
+    # The clock: the estimate shares divide the remainder exactly, and the
+    # stages add up to the book's own total.
+    shares = sum(declared(k) for k in ("stage_share_cut", "stage_share_panels",
+                                       "stage_share_raise"))
+    assert abs(shares - 1.0) < 1e-9, shares
+    stages = build_stages()
+    assert abs(stages[-1].after - build_clock()["with_error"]) < 1e-9
+    assert stages[-1].after <= declared("working_week_hours")
 
     every = bills()
     assert len(every) == 6, len(every)

@@ -1,0 +1,318 @@
+"Log rounds (whole-trunk slices) — Honeycomb, layers aligned -- Long base, two short sides (30 triangles)"
+#,piece,material,how it lies,long (in),short (in),end 1,end 2,rip flush (in),triangles,note
+1,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.93,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+2,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.93,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+3,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.93,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+4,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.93,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+5,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.14,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+6,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+7,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+8,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+9,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.80,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+10,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,10.56,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+11,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+12,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+13,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+14,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.89,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+15,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+16,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.14,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+17,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+18,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+19,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+20,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+21,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+22,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+23,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+24,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+25,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+26,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+27,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+28,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+29,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+30,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+31,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+32,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+33,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+34,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+35,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+36,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+37,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+38,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+39,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+40,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+41,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+42,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+43,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+44,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+45,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+46,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+47,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+48,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,10.24,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+49,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.82,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+50,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+51,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+52,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+53,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,10.85,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+54,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.44,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+55,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+56,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+57,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,10.23,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+58,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,10.93,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+59,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.5 in thick
+60,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.52,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+61,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,10.32,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+62,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,8.72,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.5 in thick
+63,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+64,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+65,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+66,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+67,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+68,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+69,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+70,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+71,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+72,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+73,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+74,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+75,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+76,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+77,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+78,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+79,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+80,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+81,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+82,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+83,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+84,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+85,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+86,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+87,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+88,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+89,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+90,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+91,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+92,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+93,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+94,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.87,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+95,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+96,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.24264 in thick
+97,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.24264 in thick
+98,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.24264 in thick
+99,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.53,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+100,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.91,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+101,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.24264 in thick
+102,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.24264 in thick
+103,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+104,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.59,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+105,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,30,1.24264 in thick
+106,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,10.45,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+107,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,11.11,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+108,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.77,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,30,1.24264 in thick
+109,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+110,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+111,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+112,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+113,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+114,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+115,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+116,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+117,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+118,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+119,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+120,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+121,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+122,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+123,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 4 gap piece(s)
+124,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 3 gap piece(s)
+125,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 2 gap piece(s)
+126,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+127,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+128,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+129,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+130,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+131,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+132,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+133,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+134,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+135,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+136,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+137,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+138,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+139,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,30,cut into 1 gap piece(s)
+
+"Log rounds (whole-trunk slices) — Honeycomb, layers aligned -- Three long sides (equilateral) (10 triangles)"
+#,piece,material,how it lies,long (in),short (in),end 1,end 2,rip flush (in),triangles,note
+1,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+2,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+3,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+4,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+5,Layer 1,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+6,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+7,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+8,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+9,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+10,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+11,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+12,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+13,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+14,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+15,Layer 1,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+16,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+17,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+18,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+19,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+20,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+21,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+22,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+23,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+24,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+25,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+26,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+27,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+28,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+29,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+30,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+31,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+32,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+33,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+34,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+35,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+36,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+37,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+38,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+39,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+40,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+41,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+42,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+43,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+44,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+45,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+46,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+47,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+48,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+49,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+50,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+51,Layer 1,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+52,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+53,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+54,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+55,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+56,Layer 2,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.5 in thick
+57,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+58,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+59,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+60,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+61,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+62,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+63,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+64,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+65,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+66,Layer 2,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.5 in thick
+67,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+68,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+69,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+70,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+71,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+72,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+73,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+74,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+75,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+76,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+77,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+78,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+79,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+80,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+81,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+82,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+83,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+84,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+85,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+86,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+87,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+88,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+89,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+90,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+91,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+92,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+93,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+94,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+95,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+96,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+97,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+98,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+99,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+100,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+101,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+102,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+103,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+104,Layer 2,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+105,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+106,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+107,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+108,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+109,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,12.00,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+110,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+111,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+112,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+113,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+114,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+115,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+116,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+117,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+118,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+119,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+120,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+121,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+122,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+123,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+124,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+125,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+126,Layer 3,Log rounds (whole-trunk slices),whole round,12.00,12.00,,,,10,1.24264 in thick
+127,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+128,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+129,Layer 3,Log rounds (whole-trunk slices),round cut along the wall,12.00,9.04,"the chord: mitre 0.0°, bevel 45.0° (the 45° wall: blade tilted to the slope)",,,10,1.24264 in thick
+130,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+131,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+132,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 2 gap piece(s)
+133,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+134,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+135,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+136,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+137,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 2 gap piece(s)
+138,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+139,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+140,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+141,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+142,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+143,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+144,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+145,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+146,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+147,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+148,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 4 gap piece(s)
+149,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+150,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+151,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 3 gap piece(s)
+152,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 2 gap piece(s)
+153,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 2 gap piece(s)
+154,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+155,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+156,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+157,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+158,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 2 gap piece(s)
+159,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+160,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+161,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+162,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+163,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+164,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+165,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+166,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+167,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+168,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+169,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+170,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+171,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+172,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+173,Layer 3,Log rounds (whole-trunk slices),"copied round, cut to fit the gaps",12.00,12.00,,,,10,cut into 1 gap piece(s)
+

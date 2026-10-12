@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\the-shop-the-campaign-buys.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\masterclass\the-shop-the-campaign-buys-vertical.mp4

@@ -110,11 +110,15 @@ Now the number.
     which is the same as              {{cond.rain_equal}} inches of rain
     energy per litre                  {{cond.kwh_per_litre}} kWh
 
+:::box against
 **A whole year of condensing is worth less than half an inch of rain.**
+These figures are solved from the owner's own module in Chapter {{ch.ring}};
+an earlier draft assumed a better yield than the module gives.
 
 At {{cond.kwh_per_litre}} kilowatt hours a litre, thermoelectric condensing is
 several times worse per watt than a compressor, and a compressor is already
 not how anybody sensible makes drinking water on a roof.
+:::
 
 So the honest position, and it is the one this book takes:
 

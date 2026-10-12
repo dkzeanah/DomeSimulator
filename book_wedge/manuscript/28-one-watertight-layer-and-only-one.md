@@ -16,6 +16,10 @@ Put a second one on the inside of the same wall and you have built a bag.
 
 ![The frame with its skin on.](with-skin.png)
 
+:::box clock "Not on the clock"
+The cap is not on the {{clock.week}}-hour clock. The clock counts the frame, from the first log on the splitting stand to the last bolt in the shell -- Chapter {{ch.raise}} adds it up. It is the part that has to be right, and it gets its own days, not the end of somebody's week.
+:::
+
 ## The design this replaces
 
 The obvious shell is a waterproof membrane *under* the panels and a

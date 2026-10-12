@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:28:31",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Trees move. Give the rope a spring.\n\nTrees move in the wind, and they move apart. A rope sagging ten percent goes straight once its trees lean apart 34 centimetres; at five percent, after only 8.5. After that the rope stretches, and every further centimetre adds about 4 kilonewtons. So the deep sag earns its keep twice, and the X still gets a heavy spring at every end, to let it give.",
+  "watermark": "preserved model-provided watermark"
+}

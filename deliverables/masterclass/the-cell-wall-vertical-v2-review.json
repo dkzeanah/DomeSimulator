@@ -1,0 +1,442 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-07T05:18:20.984110+00:00",
+  "lesson": "cabin_cell_wall",
+  "title": "The Cell Wall: A Dome Skin in Layers",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "The cell wall",
+      "narration": [
+        "Most walls do one job: they stand between you and the weather. This one is built like the wall of a living cell, a stack of layers, each made as one piece, each with its own channels built into it, carrying water, air, heat, vacuum and signal. Every layer can run on its own, run backwards, or hand what it carries to the layer beside it. Here they are, cut open, all of them running at once."
+      ],
+      "start": 0.0,
+      "end": 32.3
+    },
+    {
+      "slug": "why",
+      "title": "Why build this way",
+      "narration": [
+        "Why build like this? Because a channel, once it is in the wall, can be used again and again for different jobs. The network that glues the house together while you build it carries rain to a tank while you live in it, floods the sheathing when a wildfire comes, and finds the leak when something fails. This design lists 31 uses for 14 networks: 3 while you build, 14 while you live in it, 8 to protect it, and 6 to look after it. Every use after the first costs a valve and a few lines of code, not a new wall."
+      ],
+      "start": 32.3,
+      "end": 75.0
+    },
+    {
+      "slug": "declared",
+      "title": "Two kinds of number",
+      "narration": [
+        "First, the two kinds of number in this film. Measured: the triangles, seams, areas and lengths, read off the solver's dome. Nobody typed those. Declared: the groove's size, the hoses, the foam, the pressures, the weather, the fire. A person typed those in, 69 of them, each with a unit, a kind and a reason. Each one is marked where it is used, and if one changes, every figure after it moves."
+      ],
+      "start": 75.0,
+      "end": 108.99199999999999
+    },
+    {
+      "slug": "cchannel",
+      "title": "A groove in every round face",
+      "narration": [
+        "It starts with one cut. Down the middle of every member's round face, the fat, curved side of the wedge, rout a groove three quarters of an inch wide and three quarters deep. That middle line is exactly where the sheathing bears, because each wedge sits square to its own panel. A hose goes in the groove. The groove takes 4.0 percent of the wood out of the member, and 4.8 percent of its bending strength. That is the structural price of everything that follows."
+      ],
+      "start": 108.99199999999999,
+      "end": 144.492
+    },
+    {
+      "slug": "local",
+      "title": "Forty gaskets",
+      "narration": [
+        "Every triangle has its own three members, so the three grooves round one triangle make a closed loop. The hose laid in them does two jobs. It is a gasket, sealing the board to the frame. And it is a channel that reaches that one triangle and nothing else. The dome has 40 of them, 4.5 to 4.9 metres each, 182 metres in all. Because each one closes on itself, one triangle can be filled, emptied, warmed or tested without touching its neighbours."
+      ],
+      "start": 144.492,
+      "end": 183.38
+    },
+    {
+      "slug": "ports",
+      "title": "Three ports in every gasket",
+      "narration": [
+        "Now drill each gasket where it passes the middle of a side: three through-holes a triangle, 120 in all. Each port has three choices. A jumper down through the V, the inside seam, to the gasket next door. A jumper over the ridge, the outside seam. Or a cap, and that triangle keeps to itself. The 10 ports along the bottom edge go to a manifold round the rim, which is where the tank, the pump and the outside world connect."
+      ],
+      "start": 183.38,
+      "end": 217.34799999999998
+    },
+    {
+      "slug": "localnet",
+      "title": "A network of locals only",
+      "narration": [
+        "Jumper every port and the gaskets become a network of their own: locals joined only to locals, running beside the global channel in the key but never part of it. 40 gaskets and 55 jumpers make 16 independent loops, so anything in it can always go round. Take away any one jumper and every triangle can still be reached: there is no single point of failure. From the nearest rim port, the farthest triangle is 4 jumpers away."
+      ],
+      "start": 217.34799999999998,
+      "end": 251.796
+    },
+    {
+      "slug": "global",
+      "title": "The global channel",
+      "narration": [
+        "Between the triangles run the seams, and in every seam is the channel the earlier films built, the key. That one is global. It runs from triangle to triangle all over the dome: 55 seams, 94 metres, 309 feet, down to the rim, where all of it can be reached from one place. Local and global: a gasket that touches one cell, and a network that touches every cell."
+      ],
+      "start": 251.796,
+      "end": 283.988
+    },
+    {
+      "slug": "seamroom",
+      "title": "What fits in a seam",
+      "narration": [
+        "Can every layer have its own run along every seam? Not at full size. The tightest seam's key has 5.3 square inches inside, and the rule the channel film used fills 40 percent of that. A one-inch hose fits 2 times. A three-eighths hose fits 10 times: room for all 9 networked layers, with 1 to spare. So the seams carry the small runs, and the big flows, air and flood water, ride the rings."
+      ],
+      "start": 283.988,
+      "end": 316.70799999999997
+    },
+    {
+      "slug": "rings",
+      "title": "Bands, like a greenhouse",
+      "narration": [
+        "There is a third kind. A greenhouse holds its plastic down with channels that run round the house, level. A dome can have those too: a ring at every height where its corners stand, 16.6, 15.8 and 9.8 metres round, and the rim at 18.3. A ring reaches every triangle at its height, so it serves one band of the dome at a time: the bottom, the belt, the crown."
+      ],
+      "start": 316.70799999999997,
+      "end": 347.02799999999996
+    },
+    {
+      "slug": "address",
+      "title": "Every triangle an address",
+      "narration": [
+        "Give every triangle a small board on the room side: a few sensors, a few valves, and one pair of wires along the seams to all of them. That is how a car's body works, one bus with every part addressed. Forty triangles need 6 bits of address. Along every seam the bus is 94 metres. At 500 kilobits a second a bus is good for about 100: it fits, with 6 metres spare, which is too close. At 125 kilobits it is good for 500. Run it slow. Nothing in a wall needs to be fast."
+      ],
+      "start": 347.02799999999996,
+      "end": 387.328
+    },
+    {
+      "slug": "monolithic",
+      "title": "Every layer is one piece",
+      "narration": [
+        "Each layer is made as one piece, the way a quilt or a sheet of twin-wall plastic is, with its channels built in rather than added afterwards. Heat runs in a capillary mat, fine tubes woven into fabric. Room air runs in a textile duct, sewn into cells and perforated. Water runs in twin-wall sheet, the fluted plastic greenhouses are glazed with. Vacuum runs in a spacer fabric whose pile holds the gap open. The bladders are drop-stitch, two skins tied by thousands of threads, as inflatable paddleboards are. 7 layers are fabric, 3 semi-flexible and 3 hard. Outside the frame the whole skin is 78 millimetres thick, inside it 30."
+      ],
+      "start": 387.328,
+      "end": 440.976
+    },
+    {
+      "slug": "quilt",
+      "title": "A quilt of forty shirts",
+      "narration": [
+        "The fabric layers are made like a T-shirt quilt: forty triangular patches, one for every triangle of the frame, each one a cell of its own, sewn together along the seams. The stitching is where the channels run, so one patch can be filled, drained or warmed while the rest stay as they are. A quilt folds flat for carrying. It stacks on the layer below it. And it can be added years later, or taken off and cleaned, without touching the frame."
+      ],
+      "start": 440.976,
+      "end": 475.676
+    },
+    {
+      "slug": "stack",
+      "title": "The stack, as first drawn",
+      "narration": [
+        "Now the stack, the way you first drew it, from the wood outward. Water nearest the wood, catching rain and flooding in a fire. Then the air intake, the filter, the vacuum network, the Faraday cage, the smoke channel, the bladders, heating and cooling, the hard cover, the one watertight cap, and plants on top. Every one of those can work. Not all of them work on the outside of the wood."
+      ],
+      "start": 475.676,
+      "end": 505.976
+    },
+    {
+      "slug": "sides",
+      "title": "The insulation splits the stack",
+      "narration": [
+        "Fill the frame with foam and it becomes the insulation, and insulation splits a wall in two. On a 15 below night, with the room at 21, the room side of the foam sits near 20 degrees and the weather side near minus 15. A heating layer outside the foam sends 97 percent of its heat to the sky. Inside it, 98 percent reaches the room. So heat, cooling, room air and fog move inside the frame. Water, filter, vacuum, cage and bladders stay out, and anything wet out there drains before it freezes."
+      ],
+      "start": 505.976,
+      "end": 548.272
+    },
+    {
+      "slug": "section",
+      "title": "The wall in section",
+      "narration": [
+        "Here it is in section, over one seam, drawn several times thicker than it is so every layer can be seen. In the frame, two members and the key between them, a gasket in each member's groove, and the jumper that joins them through the V. Glued to the frame, the board. Above it the weather side: water, filter, vacuum, cage, the one watertight cap, bladders and plants. Below the frame, an inner skin and the room side: signal, fog, air and heat. Every layer shows its channels where the cut passes through them."
+      ],
+      "start": 548.272,
+      "end": 589.5120000000001
+    },
+    {
+      "slug": "cutaway",
+      "title": "All of it, at once",
+      "narration": [
+        "Now the whole wall, cut open, with everything running at once. Warm water climbs one side of the room-side mat and comes down the other. Fresh air rises through the duct. Signals run down to the controller at the rim. In the core, foam. Outside the board, rain water falls through the flutes toward the tank, filtered air rises through the pleats, vacuum draws toward the rim ring, and water drips through the plants' felt. Each layer does its own job, in its own channels, and not one of them is in another's way."
+      ],
+      "start": 589.5120000000001,
+      "end": 628.6120000000001
+    },
+    {
+      "slug": "glue",
+      "title": "Glue from the inside",
+      "narration": [
+        "Now the build, and the first thing the gaskets are for. Lay a triangle of board on its frame and push glue through the gasket's hose. Flooding the whole groove would take 42 litres for the dome, 140 cartridges. A perforated hose that pushes out a bead takes 5.5 litres, 19 cartridges. While it cures, pull a vacuum on the cavity. At one kilopascal the air presses the biggest panel down with 148 kilograms of force. Boat builders call it vacuum bagging. Every triangle glued to its frame from the inside, with no nails."
+      ],
+      "start": 628.6120000000001,
+      "end": 670.5720000000001
+    },
+    {
+      "slug": "foam",
+      "title": "Foam after the cover",
+      "narration": [
+        "Then the foam, after the cover is on. Each triangle's cavity holds 156 litres. The whole dome takes 6.25 cubic metres, 2,648 board feet, 5 two-part kits, about 3,750 dollars. Pour it in 3 lifts, 52 litres a triangle at a time, with the clamp still on, so the foam's push cannot lift the cover. Glued on the outside and foamed within, each triangle becomes a sandwich panel, and the wall becomes R-36."
+      ],
+      "start": 670.5720000000001,
+      "end": 710.9960000000001
+    },
+    {
+      "slug": "oneway",
+      "title": "One-way doors",
+      "narration": [
+        "Against all that: foam and glue are one-way doors. The glue fills the gaskets it went through, and the foam fills the cavity, so the core's own channels are spent the day they are used. Here is what that costs. A hollow core could soak its whole frame to fibre saturation in a fire, with 124 litres, 27 percent of the tank. A foamed one cannot be reached. Decide which layers are permanent before you build, and keep the ones you will want to change where they can come off."
+      ],
+      "start": 710.9960000000001,
+      "end": 748.4960000000001
+    },
+    {
+      "slug": "water",
+      "title": "Rain to the tank",
+      "narration": [
+        "The water layer lies on the board, nearest the wood. A dome standing on 27.5 square metres catches 40 inches of rain a year: 6,276 gallons off the cap, about 17 a day. The rim channel takes it to the tank, and the 120 gallon tank fills 52 times a year. Below freezing the layer drains: on a 15 below night it sits at minus 15 degrees, and water left in it would split it."
+      ],
+      "start": 748.4960000000001,
+      "end": 782.2
+    },
+    {
+      "slug": "filter",
+      "title": "The whole shell is the filter",
+      "narration": [
+        "Air in. Draw outside air in under the cap at the rim, through a filter layer that covers the whole shell, and hand it to the room-side air layer at the rim. The house needs 17.6 cubic feet a minute. Spread over 51 square metres of filter, it moves 0.16 millimetres a second: 15,401 times slower than a furnace filter. A filter that slow catches nearly everything and almost never clogs. Does it also pick up the heat leaking out? About 4 watts of the 274 the wall loses. The cap is too close to the cold."
+      ],
+      "start": 782.2,
+      "end": 824.2800000000001
+    },
+    {
+      "slug": "vent",
+      "title": "Venting the skin",
+      "narration": [
+        "Venting is the quiet job the network does every week. After a storm, or after the sheathing has been flooded on purpose, dry air pushed through the water layer's flutes carries the wet away and out at the rim. A film of half a millimetre over the side that got wet is 13 kilograms of water. A small fan moving 100 cubic feet a minute, on a 20 degree day at 50 percent, takes 1.4 kilograms an hour: dry in about 9 hours. With only the house's own fresh air it would take 53. The same moving air, under the cap in summer, carries the sun's heat off before it reaches the board."
+      ],
+      "start": 824.2800000000001,
+      "end": 870.9800000000001
+    },
+    {
+      "slug": "declared2",
+      "title": "The services' numbers",
+      "narration": [
+        "Before the services, the numbers they lean on. How warm a wall is run, and how fast it trades heat with a room. The design night. The heat a fire throws and the heat water takes to boil away. How long embers fall. The mesh, the doorway and the radio band. What a floor and its contents weigh. How steep soil will hold. All typed in, all marked as what they are."
+      ],
+      "start": 870.9800000000001,
+      "end": 901.2800000000001
+    },
+    {
+      "slug": "warm",
+      "title": "A wall a degree and a half warm",
+      "narration": [
+        "Heating. On the room side, a layer of warm water makes the whole wall a radiator. A wall 10 degrees warmer than the room gives 4.1 kilowatts. The foamed dome loses only 634 watts on a 15 below night: 274 through the wall and 360 in fresh air. So the wall needs to be just 1.6 degrees warmer than the room, cooler than your skin. Warm walls, not warm air: the most comfortable heat there is."
+      ],
+      "start": 901.2800000000001,
+      "end": 937.2640000000001
+    },
+    {
+      "slug": "cool",
+      "title": "A cool wall, above the dew point",
+      "narration": [
+        "Cooling is the same layer run the other way, with one limit: a wall colder than the room's dew point gets wet. On a humid day, 26 degrees and 60 percent, the dew point is 17.6. Keep the wood's 3 degree margin and the coolest the wall may be is 20.6. Even so, the whole wall takes 2.2 kilowatts out of the room, against the Peltier ring's 281 watts. The cold can come from the water layer outside at night, giving heat to the sky, about 2.0 kilowatts, kept in the tank for the afternoon."
+      ],
+      "start": 937.2640000000001,
+      "end": 976.8480000000001
+    },
+    {
+      "slug": "vacuum",
+      "title": "A vacuum is a load",
+      "narration": [
+        "A vacuum across a sheet is a load. The clamp's one kilopascal puts 1.45 kilonewtons on the biggest triangle. A 40 metre a second gust sucks on the same panel with 1.39, so the clamp holds the skin down, by 4 percent. A central vacuum's 25 kilopascals across that sheet would be 3.7 tonnes: that strength lives in hoses only. A layer completely under vacuum, the kind that insulates, would carry 15 tonnes on one panel. The clamp leaves the air 99 percent as dense: it holds, it does not insulate."
+      ],
+      "start": 976.8480000000001,
+      "end": 1018.9280000000001
+    },
+    {
+      "slug": "levels",
+      "title": "Three vacuums at once",
+      "narration": [
+        "So, different vacuums at once, at different levels. The rim ring is a central vacuum: 25 kilopascals, enough to lift water 2.5 metres, sealed in hoses, with an inlet at every rim corner. A regulator feeds the water layer at 5, which lifts rain 0.5 metres into a raised tank. Another feeds the clamp at 1. One pump, three levels, each strength only where it is safe."
+      ],
+      "start": 1018.9280000000001,
+      "end": 1052.1280000000002
+    },
+    {
+      "slug": "firethreat",
+      "title": "How a wildfire takes a house",
+      "narration": [
+        "Now the case this network was built for. A wildfire takes a house three ways. Embers, carried far ahead of the flames, find a vent or a gap and start the fire from inside; that is how most houses are lost. Radiant heat, which Australia's building standard measures in kilowatts on every square metre: a house rated BAL-29 is built to take 29 at the fire's edge. And flame contact. Above 40 kilowatts a square metre is the flame zone, where no skin is enough and only a cleared perimeter helps."
+      ],
+      "start": 1052.1280000000002,
+      "end": 1092.5040000000001
+    },
+    {
+      "slug": "fireseal",
+      "title": "Close every door",
+      "narration": [
+        "So first, the house shuts. All 10 intakes at the rim close. The filter layer stops drawing outside air, and the room runs on its own air for the hour that matters. The cap has no openings to begin with: the breathing film showed why the cap is never cut, and in a fire this is the reason. An ember landing on this skin finds nothing to climb into."
+      ],
+      "start": 1092.5040000000001,
+      "end": 1121.604
+    },
+    {
+      "slug": "fireflood",
+      "title": "Flood the sheathing, metered",
+      "narration": [
+        "Then the water layer floods the sheathing on the side facing the fire, and here is the multiplier. At a sprinkler's rate, wetting the whole dome takes 55 gallons a minute and empties the tank in 2.2 minutes. But the heat arriving on the fire's side, 741 kilowatts at BAL-29, only boils away 4.5 gallons a minute. Metered to the heat by the sensor in every cell, the same 120 gallon tank lasts 27 minutes: 12 times longer, 89 percent of the half hour embers keep falling. That flow runs through the local-net's jumpers at 0.4 metres a second, on a 111 watt pump."
+      ],
+      "start": 1121.604,
+      "end": 1169.948
+    },
+    {
+      "slug": "fireaim",
+      "title": "Aim the water",
+      "narration": [
+        "What the network changes is where the water goes. A sensor in every cell knows which triangle is hot. One triangle takes 1.4 gallons a minute at the sprinkler's rate, and on one triangle at a time the same tank lasts 87 minutes. Water where the embers are landing, nowhere else. That is the difference between a sprinkler and a nervous system."
+      ],
+      "start": 1169.948,
+      "end": 1197.5320000000002
+    },
+    {
+      "slug": "fireafter",
+      "title": "After the front",
+      "narration": [
+        "When the front has passed, the network turns from defence to recovery. The sensor in every cell reports which triangles got hot. The local-net pressure-tests the cells for damage, halving the search each time: 6 tests find one bad triangle in forty. And the venting run dries the flooded side in about 9 hours. The house defended itself with its own skin, and then it checks itself over."
+      ],
+      "start": 1197.5320000000002,
+      "end": 1227.18
+    },
+    {
+      "slug": "cage",
+      "title": "A cage is its biggest hole",
+      "narration": [
+        "Bond a mesh into one layer and the dome is a Faraday cage: lightning goes round the people inside, and radio is cut down. But a cage is only as good as its biggest hole. Quarter-inch mesh stops everything below 23.6 gigahertz, and cuts Wi-Fi by about 20 decibels. An unbonded seam is a slot 1.8 metres long that lets in everything above 82 megahertz. An open door lets in everything above 167. So bond all 55 seams, 309 feet of it, and give the door a conductive gasket."
+      ],
+      "start": 1227.18,
+      "end": 1270.892
+    },
+    {
+      "slug": "fog",
+      "title": "Fog, not pepper",
+      "narration": [
+        "Security. You asked about pepper spray. A device that sprays a person by itself is a trap, and in many places a trap that hurts an intruder is illegal, even in your own home. It would also gas your family, your dog and the firefighters. Fog does the job instead: a security fog unit fills the dome's 54 cubic metres in about 5 seconds, and nobody can see to take anything. Run the same channel backwards in a fire and it is a smoke exhaust: smoke out of the crown, down the seams, and out at the rim."
+      ],
+      "start": 1270.892,
+      "end": 1311.592
+    },
+    {
+      "slug": "airbag",
+      "title": "If the water comes up",
+      "narration": [
+        "And if the water comes up. The house, frame, cover, floor and everything in it, is about 4.6 tonnes, so it floats once it pushes aside 4.6 cubic metres of water. Bladders round the lower half of the dome, 25.5 square metres inflated 20 centimetres deep, hold 5.1: enough, with 11 percent to spare, from one cylinder of carbon dioxide. But they only lift it when the water is 1.3 metres up the wall, and by then the floor is under water. Seal the floor and the foot of the wall instead and it is a hull: it floats in 17 centimetres, dry inside. Either way it needs guide posts, as amphibious houses have, or it floats away."
+      ],
+      "start": 1311.592,
+      "end": 1362.5520000000001
+    },
+    {
+      "slug": "twoway",
+      "title": "Every layer runs both ways",
+      "narration": [
+        "Most of these layers run both ways. Air in, or air out. Warm water, or cold. Fog out, or smoke in. Vacuum to clamp, or pressure to test for leaks. Rain in to the tank, or the tank's water back out as a flood. A layer is a pipe with valves at both ends, and the valves decide the direction, not the layer."
+      ],
+      "start": 1362.5520000000001,
+      "end": 1389.2520000000002
+    },
+    {
+      "slug": "routes",
+      "title": "Plug one layer into another",
+      "narration": [
+        "And a layer can be plugged into another. The filter hands its air to the room's air layer. Rain runs to the tank, and the tank feeds the flood, the plants and the warm or cool wall. The vacuum pulls the water layer toward the tank, and holds the core while its glue cures. A cylinder fills the bladders. 9 routes in all, and the controller refuses anything not on the list."
+      ],
+      "start": 1389.2520000000002,
+      "end": 1419.5520000000001
+    },
+    {
+      "slug": "scenes",
+      "title": "Situations, not settings",
+      "narration": [
+        "So the house runs in situations, not settings. A winter night: the wall warm, air in through the filter, the water layer drained, the clamp on. A humid afternoon: the wall cool, the plants watered. The summer night after it: water out under the sky, filling the tank with cold. A storm: rain to the tank. Embers: the flood, the smoke drawn out, no outside air. Someone breaking in: fog. Rising water: the bladders. And the interlocks that keep them from fighting."
+      ],
+      "start": 1419.5520000000001,
+      "end": 1457.9360000000001
+    },
+    {
+      "slug": "more",
+      "title": "And more",
+      "narration": [
+        "And more, from the same network. Find a leaking triangle by pressurising half the cells, then half of those: 6 tests find one in forty. Draw air from every gasket to one smoke detector, as big buildings do with sampling pipes: from the farthest triangle a sample takes 10 seconds, inside the 120 the standard allows. Treat bare timber with borate from inside: 10 litres for the frame. Kill insects in a layer with carbon dioxide: 0.45 kilograms. Melt snow off the crown with 1.8 kilowatts. Or run the water layer as a solar collector in summer: up to 7.2 kilowatts off half the dome."
+      ],
+      "start": 1457.9360000000001,
+      "end": 1508.2
+    },
+    {
+      "slug": "chia",
+      "title": "The chia-pet",
+      "narration": [
+        "And the outside can be alive. Over the cap, a root barrier, and over that, plants, watered and fed from inside through the living layer, with the food dissolved in the water, which growers call fertigation. But a dome is steep. Only 12 percent of it, the 5 crown triangles at 19 degrees, is flat enough to hold soil. The rest takes felt pockets. Wet, all of it weighs 2.1 tonnes, 2.4 times the frame, and drinks 153 litres a summer day. It can be done. It is a structural decision, not a decoration."
+      ],
+      "start": 1508.2,
+      "end": 1548.912
+    },
+    {
+      "slug": "multipliers",
+      "title": "The multiplier",
+      "narration": [
+        "Count it. 31 uses from 14 networks: 2.2 for every network built. The water layer alone does 7 jobs: rain to the tank, solar heat, night cooling, snowmelt, borate, drying, and the fire flood. Then the stacked uses: filtered air handed to the room's air layer, the tank feeding the wall and the plants, the vacuum holding the glue. A wall that does one thing is paid for once and used once. This one is paid for once and used every day, in every season, for as long as it stands."
+      ],
+      "start": 1548.912,
+      "end": 1589.5520000000001
+    },
+    {
+      "slug": "cost",
+      "title": "The price of an address",
+      "narration": [
+        "Now the price of all those addresses. 9 networked layers over forty triangles, with the bladders only on the lower half, is 340 cells. A valve in and a valve out on every cell is 680 valves, and joining every cell and every seam run at both ends is 1,600 joints, every one of them a place to leak. Address by band instead, a pair of valves per band per layer at the rim, and it is 82. Address by triangle only where it pays: the water in a fire, the sensors, the bus. Everything else by band."
+      ],
+      "start": 1589.5520000000001,
+      "end": 1630.2520000000002
+    },
+    {
+      "slug": "close",
+      "title": "Start with three",
+      "narration": [
+        "So where to start? Three layers earn their place on day one. Glue and foam through the core while you build, because the gaskets are already there. The bus and its sensors, because a wall that reports its own moisture is a wall that does not rot unseen. And the water layer, because the rain is free and the fire will come. The rest can be added later, if the ports, the rings and the seam runs go in now. The skin of this dome is not a wall. It is an organ."
+      ],
+      "start": 1630.2520000000002,
+      "end": 1668.9520000000002
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 1668.9520000000002,
+      "end": 1688.2320000000002
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 1688.2320000000002,
+      "end": 1710.2960000000003
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "deliverables\\masterclass\\the-cell-wall-v2-narration-plan.json",
+    "orientation": "portrait",
+    "compose_segments": true,
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "-3%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

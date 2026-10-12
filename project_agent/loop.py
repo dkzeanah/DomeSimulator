@@ -48,6 +48,10 @@ Knowledge base summary:
 Pending ledger items:
 {ledger_pending}
 
+Learned from watching this project being worked (use the `learned` tool for detail;
+follow the matching playbook's order of steps):
+{learned}
+
 Answer conversationally but act through tools. When the user asks for
 media, plan the minimal tool sequence and execute it. Report what was
 decided, what remains unresolved, and the files produced."""
@@ -65,8 +69,10 @@ def _system_message() -> dict:
     kb = spec.load_kb()
     summary = spec.kb_summary(kb)
     pending = ledger.ledger_text(only="pending")
+    from . import learned
     return {"role": "system", "content":
-            SYSTEM_PROMPT.format(kb_summary=summary, ledger_pending=pending)}
+            SYSTEM_PROMPT.format(kb_summary=summary, ledger_pending=pending,
+                                 learned=learned.summary())}
 
 
 # ---------------------------------------------------------------------------
@@ -149,6 +155,10 @@ def _parse_tool_calls(text: str) -> list[ToolCall]:
         return one("help", {})
     if low in ("ledger",):
         return one("list_items", {"kind": "ledger"})
+
+    match = re.match(r"^learned(?:\s+(\w+))?$", low)
+    if match:
+        return one("learned", {"kind": match.group(1) or "all"})
 
     match = re.match(r"^list\s+(\w+)$", low)
     if match:

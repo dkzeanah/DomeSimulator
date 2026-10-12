@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:32:34",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Posts, shade and drainage, already standing.\n\nStep back and look at what the trees are doing. They are the posts, stronger than anything sawn from them. Their crowns shade the dome in summer. Their roots draw water out of the ground round it, a mature pine perhaps 150 litres on a summer day, 600 for the four. Nothing touches the soil, so there is no foundation, no damp rising, and air moves under and round it. And the guys tie to the next trees out, so the anchors are trees too: a network of trees, doing a foundation's work. Why cut a tree to make a post, when it is already the post?",
+  "watermark": "preserved model-provided watermark"
+}

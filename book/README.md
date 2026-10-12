@@ -95,7 +95,7 @@ it is typed and silently wrong from the first time anything changes, and
 there is no way to find those afterwards — nothing fails, the book just
 becomes untrue in places nobody remembers.
 
-The **Numbers** tab in Book Studio lists all 920 tokens with their current
+The **Numbers** tab in Book Studio lists all 1,331 tokens with their current
 values and a button to drop one into the text. A misspelt token stops the
 export rather than printing a blank.
 
@@ -105,9 +105,9 @@ Each chapter declares which of three books it belongs to, and the contents
 page promises a reader can follow one track:
 
 * **story** (7 chapters) — what happened, in order, to somebody with a saw.
-* **howto** (18) — do this, then this. A complete set of instructions alone.
-* **explain** (37) — why any of it works. Skippable.
-* **reference** (9) — tables you come back to at the bench.
+* **howto** (20) — do this, then this. A complete set of instructions alone.
+* **explain** (48) — why any of it works. Skippable.
+* **reference** (16) — tables you come back to at the bench.
 
 ## The two calculations
 
@@ -125,24 +125,27 @@ directions:
 
 The book is assembled as three parts:
 
-* **Part 1 — How to Build One** (Ch. 1–50): the story, the method, the
+* **Part 1 — How to Build One** (Ch. 1–51): the story, the method, the
   forty-hour clock and the bench, absorbed from the original 52-chapter
   book, its old parts kept as sections. Two chapters that once sat here —
   *What Broke* and *Corrections* — were removed by the author: failures and
   errata now live inside the chapters they belong to, not in chapters of
   their own.
-* **Part 2 — Why It Scales** (Ch. 51–68): the flat parts list, the nine
+* **Part 2 — Why It Scales** (Ch. 52–69): the flat parts list, the nine
   processes, the hour at the log, the value ladder and the quilt network, the
   fuel ledger, the envelope, the pad and its economics, the iris, the
   network, and the closing audit of what would have to be true.
-* **Part 3 — Variations and Future Systems** (Ch. 69–82): the manufactured
+* **Part 3 — Variations and Future Systems** (Ch. 70–91): the manufactured
   version of the method — the shower-cap soft shell, the mast and the floor,
   the floating dome, the seven ways to make a wedge, the breadth tables, the
   zome and the hex, the stem cell and its core, the boat hull, and the seam
   turned into a climate machine. The figures are rendered from the solved
   model (`hat-stack`, `mast-floor`, `floating-dome`), and the numbers read
   live from `soft_shell.py` and `seed_model.py`, the same modules the
-  stem-cell campaign quotes.
+  stem-cell campaign quotes. It closes on the two ways other people build a
+  small dome — the popular three-frequency panel dome and the non-beveled
+  zome, both solved by `panel_method.py` at this book's own reference size —
+  and on the sheet of steel and the machine the campaign buys.
 
 All three parts are drafted. The desk's `progress` action shows what is
 written and what is still only a scaffold. A fourth part, *Who This Is For*
@@ -154,7 +157,7 @@ written; nothing depends on it.
 | module | what it holds |
 |---|---|
 | `two_v_demo/book_math.py` | Both methods, the tree model, the declared constants, the audit. |
-| `two_v_demo/book_tokens.py` | The 920 live figures and cross-references the manuscript may quote. |
+| `two_v_demo/book_tokens.py` | The 1,331 live figures and cross-references the manuscript may quote. |
 | `two_v_demo/book.py` | The outline: parts, chapters, pages, figure placement. |
 | `two_v_demo/book_figures.py` | The renderers, and the append-only save rule. |
 | `two_v_demo/book_plots.py` | Every table and chart. |
@@ -171,7 +174,7 @@ not sketches of them.
 
 ## Illustrations
 
-80 figures, drawn by nine renderers:
+122 figures, drawn by nine renderers:
 
 * **raw_wedge_world** — the solved dome, in a named view. Real geometry.
 * **raw_wedge_jig** — the fabrication jig at one of its twelve stages.
@@ -204,6 +207,24 @@ version, because there the colour *is* the lesson.
 
 **Nothing is ever overwritten.** Re-rendering a figure that exists writes
 `-v2`; so does exporting a book. Same rule as every other deliverable here.
+
+### A changed drawing is not a changed picture until somebody re-renders it
+
+An export places the *newest file on disk* for each figure, and a figure is
+written only when somebody renders it — so a plot or a diagram whose code (or
+the token it reads) has changed goes on printing its old picture, silently,
+for as long as nobody looks. Ask which ones are out of date:
+
+```bash
+py -3.12 -m two_v_demo.book_figures --stale
+```
+
+It draws every plot and diagram again in a scratch directory, compares the
+picture with the newest file on disk — pixels and header only, ignoring the
+matplotlib version stamp in the PNG metadata — and lists the ones that
+differ. Add `--write` to copy the changed renders in under the next version
+number, which is what puts them in the next export. A re-render is a release,
+so writing is asked for rather than assumed.
 
 ## Diagrams are Markdown
 
@@ -257,3 +278,8 @@ py -3.12 -c "from two_v_demo.book import validate_everything; validate_everythin
 Or the **selftest** action on the launcher's Book tab. It runs the
 arithmetic, the outline, every token, every figure and the manuscript
 machinery, and says what passed.
+
+The one check it does not make is whether the figure files on disk match the
+code that draws them — that costs a full re-render of every plot and diagram,
+so it is run on purpose instead: `py -3.12 -m two_v_demo.book_figures
+--stale`, described under **Illustrations** above.

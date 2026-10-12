@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-05T03:39:43.486151+00:00",
+  "lesson": "teaser_cabin_seam_climate",
+  "title": "Which Way the Seam Breathes: the teaser",
+  "chapters": [
+    {
+      "slug": "breathe",
+      "title": "DOMESIM",
+      "narration": [
+        "Which way should the seam breathe?"
+      ],
+      "start": 0.0,
+      "end": 3.4
+    },
+    {
+      "slug": "owner",
+      "title": "Fifteen to twenty degrees colder",
+      "narration": [
+        "The question you asked, with numbers."
+      ],
+      "start": 3.4,
+      "end": 6.864
+    },
+    {
+      "slug": "rim",
+      "title": "Condense low, drain at the rim",
+      "narration": [
+        "Your first-ring idea is right."
+      ],
+      "start": 6.864,
+      "end": 10.376
+    },
+    {
+      "slug": "crown",
+      "title": "In at the crown, under the cap",
+      "narration": [
+        "The stalest air is at the top."
+      ],
+      "start": 10.376,
+      "end": 13.815999999999999
+    },
+    {
+      "slug": "volts",
+      "title": "Slower is better, until it stops condensing",
+      "narration": [
+        "Voltage against water."
+      ],
+      "start": 13.815999999999999,
+      "end": 17.215999999999998
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 17.215999999999998,
+      "end": 22.24
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 22.24,
+      "end": 28.223999999999997
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

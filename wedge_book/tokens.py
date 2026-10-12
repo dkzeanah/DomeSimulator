@@ -352,6 +352,21 @@ def _table() -> dict[str, Token]:
     _channel_tokens(add)
     _climate_tokens(add)
     _wood_tokens(add)
+    _panel_tokens(add)
+    _vent_tokens(add)
+    _ring_tokens(add)
+    _web_tokens(add)
+    _ep_tokens(add)
+    _clock_tokens(add)
+    _borrowed_tokens(add)
+    _park_tokens(add)
+    _shape_tokens(add)
+    _catalogue_tokens(add)
+    _kick_tokens(add)
+    _core_build_tokens(add)
+    _franken_tokens(add)
+    _hub_tokens(add)
+    _pixel_tokens(add)
 
     # -- cross-references --------------------------------------------
     for chapter in book.chapters:
@@ -1108,6 +1123,1004 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     print(report())
     return 0
+
+
+def _panel_tokens(add) -> None:
+    """``pm`` and ``zm``: the framed-panel method -- a 3V 5/8 dome of panels
+    built on a jig, its deck, and the zome framed without a bevel -- all from
+    :mod:`two_v_demo.panel_method`."""
+    from two_v_demo import panel_method as pm
+    from . import numbers
+
+    f = pm.facts()
+    q = numbers.quantities()
+    IN, FT, SQFT = 1 / 0.0254, 1 / 0.3048, 1 / 0.3048 ** 2
+    pent, hexa = f["pent_class"], f["hex_class"]
+    deck = f["deck"]
+
+    def n(v, d=0):
+        return lambda: f"{v:,.{d}f}"
+
+    add("pm.constants", "the panel method's declared inputs", lambda: pm.constants_table())
+    add("pm.base_ft", "the reference 3V dome across its base corners, ft", n(pm.CONSTANTS["base_ft"].value))
+    add("pm.diameter_m", "the same, metres", n(f["diameter_m"], 2))
+    add("pm.radius_ft", "its sphere radius, ft", n(f["radius_m"] * FT, 2))
+    add("pm.height_ft", "apex above the lowest base corner, ft", n(f["height_m"] * FT, 2))
+    add("pm.height_m", "the same, metres", n(f["height_m"], 2))
+    add("pm.floor_sqft", "floor inside the fifteen-sided base, sq ft", n(f["floor_m2"] * SQFT))
+    add("pm.fraction", "height over diameter of the 5/8 cut", n(f["height_fraction"], 3))
+    add("pm.panels", "panels in the 5/8 dome", n(f["panels"]))
+    add("pm.pent", "panels that belong to pentagons", n(f["pent"]))
+    add("pm.hex", "panels that belong to hexagons", n(f["hex"]))
+    add("pm.base_edges", "edges round the base", n(f["base_edges"]))
+    add("pm.tapered", "base sections that must be tapered", n(f["tapered"]))
+    add("pm.level", "base sections that sit level", n(f["level"]))
+    add("pm.taper_in", "how much higher a tapered section's high end sits, in", n(f["taper_m"] * IN, 2))
+    add("pm.taper_mm", "the same, mm", n(f["taper_m"] * 1000))
+    for x in "ABC":
+        add(f"pm.{x.lower()}_in", f"chord {x}, inches", n(f["chords"][x] * IN, 2))
+        add(f"pm.{x.lower()}_mm", f"chord {x}, mm", n(f["chords"][x] * 1000))
+    add("pm.pent_apex", "a pentagon panel's apex angle", n(pent.angles[0], 2))
+    add("pm.pent_foot", "a pentagon panel's base angles", n(pent.angles[1], 2))
+    add("pm.hex_apex", "a hexagon panel's apex angle", n(hexa.angles[0], 2))
+    add("pm.hex_foot", "a hexagon panel's base angles", n(hexa.angles[1], 2))
+    add("pm.hex_height_in", "a hexagon panel's apex above its base, in", n(hexa.height * IN, 2))
+    add("pm.pent_height_in", "a pentagon panel's apex above its base, in", n(pent.height * IN, 2))
+    add("pm.bevel_lo", "the smallest exact stick bevel, degrees", n(f["bevel_lo"], 1))
+    add("pm.bevel_hi", "the largest exact stick bevel, degrees", n(f["bevel_hi"], 1))
+    add("pm.bevel_mid", "one setting halfway between, degrees", n(f["bevel_mid"], 1))
+    add("pm.bevel_err", "how far that one setting is off at worst, degrees",
+        n((f["bevel_hi"] - f["bevel_lo"]) / 2, 1))
+    b_lo, b_hi = f["folds"]["B"]
+    add("pm.fold_b_lo", "the smallest fold across a B edge, degrees", n(b_lo, 1))
+    add("pm.fold_b_hi", "the largest fold across a B edge, degrees", n(b_hi, 1))
+    add("pm.sticks", "sticks in the whole dome (three per panel)", n(f["sticks"]))
+    add("pm.stick_ft", "total stick length, ft", n(f["stick_m"] * FT))
+    add("pm.distinct", "distinct sticks (length and miter)", n(f["distinct_sticks"]))
+    add("pm.stick_w_in", "stick width, flat on the jig, in", n(f["stick_w_m"] * IN, 2))
+    add("pm.stick_d_in", "stick depth, through the wall, in", n(f["stick_d_m"] * IN, 2))
+    add("pm.sections_pent", "whole pentagons skinned in one piece", n(f["sections_pent"]))
+    add("pm.sections_hex", "whole hexagons skinned in one piece", n(f["sections_hex"]))
+    add("pm.sections_single", "panels left to skin one by one", n(f["sections_single"]))
+    add("pm.skin_sqft", "flat area of all the panels, sq ft", n(f["skin_m2"] * SQFT))
+    add("pm.deck_sides", "joists, and rim boards, in the radial deck", n(deck.sides))
+    add("pm.deck_rim_in", "one rim board, long point to long point, in", n(deck.rim_length_m * IN, 1))
+    add("pm.deck_rim_miter", "a rim board's end cut, off square, degrees", n(deck.rim_miter_deg))
+    add("pm.deck_girders", "sides of the girder ring", n(deck.girders))
+    add("pm.deck_girder_miter", "a girder's end cut, off square, degrees", n(deck.girder_miter_deg))
+    add("pm.deck_sqft", "the deck's area, sq ft", n(deck.area_m2 * SQFT))
+
+    def jig_table() -> str:
+        rows = ["                     pentagon      hexagon",
+                f"panels                  {pent.count:>5}        {hexa.count:>5}",
+                f"sides (letters)     {'-'.join(pent.letters):>9}    {'-'.join(hexa.letters):>9}"]
+        for label, k in (("base, in", 0), ("left side, in", 1), ("right side, in", 2)):
+            rows.append(f"{label:<18}{pent.sides[k] * IN:>9.2f}    {hexa.sides[k] * IN:>9.2f}")
+        rows.append(f"{'apex angle, deg':<18}{pent.angles[0]:>9.2f}    {hexa.angles[0]:>9.2f}")
+        rows.append(f"{'base angles, deg':<18}{pent.angles[1]:>9.2f}    {hexa.angles[1]:>9.2f}")
+        rows.append(f"{'height on jig, in':<18}{pent.height * IN:>9.2f}    {hexa.height * IN:>9.2f}")
+        return "\n".join(rows)
+
+    def stick_table() -> str:
+        rows = ["panel      side   each panel   outer edge, in   tail miter   bevel"]
+        for key, count, s in f["stick_rows"]:
+            rows.append(f"{key:<10} {s.letter:>4}   {count:>10}   {s.outer_length * IN:>14.2f}   "
+                        f"{s.tail_miter:>9.1f}   {s.bevel:>5.1f}")
+        return "\n".join(rows)
+
+    def zome_table() -> str:
+        rows = ["row   panels   sharp corner   miter both ends   fold   outside gap, in   block bevel"]
+        for r in f["zome_rows"]:
+            rows.append(f"{r.row:>3}   {r.count:>6}   {r.acute_deg:>12.1f}   {r.miter_deg:>15.1f}   "
+                        f"{r.fold_deg:>4.1f}   {r.gap_m * IN:>15.2f}   {r.block_bevel_deg:>11.1f}")
+        return "\n".join(rows)
+
+    def compare() -> str:
+        rows = [
+            "                              2V wedge dome     3V panel dome",
+            f"across the base, ft           {q['diameter_ft'].value:>13.2f}     {pm.CONSTANTS['base_ft'].value:>13.2f}",
+            f"height, ft                    {q['height_ft'].value:>13.2f}     {f['height_m'] * FT:>13.2f}",
+            f"floor, sq ft                  {q['floor_sqft'].value:>13.0f}     {f['floor_m2'] * SQFT:>13.0f}",
+            f"triangles                     {q['face_count'].value:>13.0f}     {f['panels']:>13.0f}",
+            f"sticks                        {q['member_count'].value:>13.0f}     {f['sticks']:>13.0f}",
+            f"distinct sticks               {2:>13}     {f['distinct_sticks']:>13}",
+            f"base sections that taper      {0:>13}     {f['tapered']:>13}",
+        ]
+        return "\n".join(rows)
+
+    add("pm.jig_table", "the two panels as drawn on the jig", jig_table)
+    add("pm.stick_table", "every stick, cut", stick_table)
+    add("pm.compare", "the wedge dome beside the panel dome", compare)
+    add("zm.table", "the zome's rows, framed without a bevel", zome_table)
+    add("zm.panels", "panels in the zome", n(f["zome_panels"]))
+    add("zm.rows", "rows of panels", n(len(f["zome_rows"])))
+    add("zm.per_row", "panels in a row", n(f["zome_rows"][0].count))
+    add("zm.rim_ft", "across the zome's rim, ft", n(f["zome_rim_m"] * FT, 1))
+    add("zm.height_ft", "the zome's height above its rim, ft", n(f["zome_height_m"] * FT, 1))
+    add("zm.side_in", "a panel side, in", n(pm.CONSTANTS["zome_side_m"].value * IN, 1))
+    gaps = [r.gap_m * IN for r in f["zome_rows"]]
+    add("zm.gap_lo", "the narrowest outside gap, in", n(min(gaps), 2))
+    add("zm.gap_hi", "the widest outside gap, in", n(max(gaps), 2))
+
+
+def _vent_tokens(add) -> None:
+    """``vent``: the cap that breathes downward -- exhaust taken at the crown,
+    down the seam channels, out at the rim facing the ground -- from
+    :mod:`two_v_demo.seam_vent`."""
+    from two_v_demo import seam_vent as sv
+
+    r = sv.descending_seams()
+    cap = sv.capacity()
+    rows = {row["weather"]: row for row in sv.weather_table()}
+
+    def n(v, d=0):
+        return lambda: f"{v:,.{d}f}"
+
+    add("vent.constants", "the breathing cap's declared inputs", sv.constants_table)
+    add("vent.table", "the cold siphon, weather by weather", sv.table_text)
+    add("vent.holes", "holes through the cap above the rim", n(r.cap_penetrations))
+    add("vent.falling", "seams that fall all the way from the apex to the rim", n(r.seams_down))
+    add("vent.level", "dead-level seams kept out of the exhaust", n(r.level_seams))
+    add("vent.path_ft", "the shortest falling path, apex to rim, ft", n(r.path_ft, 1))
+    add("vent.outlets", "rim corners for ports", n(r.rim_outlets))
+    add("vent.need_cfm", "fresh air the dome needs, cfm", n(cap["need_cfm"], 1))
+    add("vent.seam_cfm", "one empty channel at a quiet speed, cfm", n(cap["per_seam_cfm"], 1))
+    add("vent.cap_cfm", "the five cap seams together, cfm", n(cap["cap_seams_cfm"], 1))
+    add("vent.headroom", "how many times the need they carry", n(cap["headroom"], 1))
+    for key, row in (("hard", rows["hard winter"]), ("winter", rows["winter"]), ("cool", rows["cool"]),
+                     ("mild", rows["mild"]), ("summer", rows["summer sun"])):
+        add(f"vent.{key}_t", f"the {row['weather']} case, outside C", n(row["t_out"]))
+        add(f"vent.{key}_pa", f"siphon in the {row['weather']} case, Pa", n(row["drive_pa"], 2))
+        add(f"vent.{key}_share", f"share of the need it carries, {row['weather']}, %", n(100 * row["share"]))
+        add(f"vent.{key}_fan", f"fan pressure for the rest, {row['weather']}, Pa", n(row["fan_pa"], 1))
+        add(f"vent.{key}_water", f"water dropped in the keys, {row['weather']}, litres a day",
+            n(row["litres_day"], 2))
+    add("vent.dew", "the room air's dew point in winter, C", n(rows["winter"]["dew_point_c"], 1))
+    add("vent.freeze", "outside temperature below which an outlet can ice, C", n(sv.freeze_limit()))
+    add("vent.fan_static", "what the small fan can push, Pa",
+        lambda: f"{__import__('two_v_demo.seam_climate', fromlist=['C']).C['fan_static_pa']:,.0f}")
+
+
+def _borrowed_tokens(add) -> None:
+    """``tt_<group>``: the 2 Trees book's own live figures, borrowed whole.
+
+    Parts 9 to 14 -- the network, the pads, the catalogue, the stem cell, the
+    variations and the tools -- quote the same models 2 Trees already
+    tokenises (park, pad, iris, ground share, solar, product, campaign...).
+    Borrowing them by name means one function behind both books' figure, which
+    is the rule; re-deriving them here would be two. They are prefixed so a
+    group that both books have (``pad``, ``net``, ``core``) never collides.
+    The 2 Trees chapter cross-references are not borrowed: they number that
+    book, not this one."""
+    from two_v_demo import book_tokens as bt
+
+    for token in bt.tokens():
+        group, _, rest = token.name.partition(".")
+        if group == "ch" or not re.fullmatch(r"[a-z_]+", group) or not re.fullmatch(r"[a-z_0-9]+", rest):
+            continue
+        add(f"tt_{group}.{rest}", f"{token.describe} (2 Trees' figure)", token.value)
+
+
+def _park_tokens(add) -> None:
+    """``park``: the pad, the host and the tenant, from the Dome Park and
+    Bring Your Own Dome films' own worksheets (:mod:`two_v_demo.park_facts`,
+    :mod:`two_v_demo.byod_facts`) -- the screens the films print, and the
+    scalars the book's prose quotes out of them."""
+    import park_model as pmod
+    from two_v_demo import byod_facts as bf, park_facts as pf
+
+    def steps(fn):
+        return lambda: "\n".join(fn()[:-1]).rstrip()
+
+    def lines(fn):
+        return lambda: "\n".join(fn()).rstrip()
+
+    def n(fn, d=0):
+        return lambda: f"{fn():,.{d}f}"
+
+    add("park.w_pad_cost", "a pad built and paid back, line by line", steps(pf.steps_pad_cost))
+    add("park.w_exposure", "the host's two ways to earn off one piece of land", steps(pf.steps_exposure))
+    add("park.w_foundation", "what the ground is worth, design by design", steps(pf.steps_foundation))
+    add("park.w_hardware", "one hardware set across three sizes", steps(pf.steps_hardware))
+    add("park.w_layers", "a quilted layer at a time, and what each pays back", steps(pf.steps_layers))
+    add("park.w_solar", "three ways to clad the shell, fixed and tracking", steps(pf.steps_solar))
+    add("park.w_ask", "what the first site's money is for", steps(pf.steps_ask))
+    add("park.w_target", "the ten-thousand-dollar pad at three rents", lines(bf.steps_target))
+    add("park.w_deluxe", "the deluxe pad, every line", lines(bf.steps_deluxe))
+    add("park.w_growth", "the hardware brief, sized for two upgrades", lines(bf.steps_growth))
+    add("park.w_capacity", "how much solar a shell can carry", lines(bf.steps_solar))
+
+    rows = bf.payback_rows()
+    for tag, (rent, net, months) in zip(("low", "mid", "high"), rows):
+        add(f"park.rent_{tag}", f"the {tag} rent scenario, dollars a month", lambda v=rent: f"{v:,.0f}")
+        add(f"park.net_{tag}", f"what the {tag} rent nets a year", lambda v=net: f"{v:,.0f}")
+        add(f"park.months_{tag}", f"months the ten-thousand-dollar pad repays in at the {tag} rent",
+            lambda v=months: f"{v:.1f}")
+    add("park.pad_target", "the author's all-in pad target, dollars", n(lambda: bf.declared("pad_target")))
+    add("park.dome_target", "the author's basic dome target, dollars", n(lambda: bf.declared("starter_target")))
+    add("park.life_target", "the pad's service-life goal, years", n(lambda: bf.declared("life_target")))
+    add("park.starter_ft", "the starter pad's diameter, ft", n(bf.starter_diameter))
+    add("park.starter_cost", "the starter pad, computed, dollars", n(bf.starter_pad_cost))
+    add("park.starter_gap", "how far the starter pad is over the target",
+        n(lambda: bf.starter_pad_cost() - bf.declared("pad_target")))
+    add("park.deluxe_cost", "the deluxe pad with its iris, dollars",
+        n(lambda: pf.loaded_pad().build_cost + pmod.iris_cost(pf.loaded_pad().diameter_ft)))
+    add("park.yearly_costs", "management, tax and insurance on a pad, a year",
+        n(lambda: pf.home_pad().yearly_costs))
+    add("park.occupancy", "share of the year a pad is leased, per cent",
+        n(lambda: 100 * pmod.declared("occupancy_fraction")))
+
+    hw = pmod.hardware_invariance()
+    small, large = hw[0], hw[-1]
+    add("park.hw_struts", "struts at every size of the scaled design", lambda: f"{small['struts']}")
+    add("park.hw_hubs", "hubs at every size", lambda: f"{small['hubs']}")
+    add("park.hw_panels", "panels at every size", lambda: f"{small['panels']}")
+    add("park.hw_hub_usd", "the hub bill, the same at every size", lambda: f"{small['hub_cost']:,.0f}")
+    add("park.hw_small_ft", "the smallest of the three, ft across", lambda: f"{small['diameter_ft']:.0f}")
+    add("park.hw_large_ft", "the largest, ft across", lambda: f"{large['diameter_ft']:.0f}")
+    add("park.hw_floor_x", "times the floor off the same parts",
+        lambda: f"{large['floor_sqft'] / small['floor_sqft']:.1f}")
+
+    goal = pmod.declared("kickstarter_goal_usd")
+    count = int(pmod.declared("test_pad_count"))
+    pads = [pmod.Pad(diameter_ft=s, deck="gravel") for s in pmod.pad_sizes()[:count]]
+    build = sum(p.build_cost for p in pads)
+    whole = pf.reference_park().economics()
+    add("park.ask_goal", "the first site's goal, dollars", lambda: f"{goal:,.0f}")
+    add("park.ask_pads", "test pads it builds", lambda: f"{count}")
+    add("park.ask_build", "what those pads cost", lambda: f"{build:,.0f}")
+    add("park.ask_rest", "what is left for everything that is not concrete", lambda: f"{goal - build:,.0f}")
+    add("park.whole_pads", "pads in a whole reference park", lambda: f"{whole['pads']}")
+    add("park.whole_build", "what a whole park costs to build", lambda: f"{whole['build_cost']:,.0f}")
+
+
+#: The hexagon film's dome: twenty feet across, its radius in inches.
+HEX_RADIUS_IN = 120.0
+
+
+def _shape_tokens(add) -> None:
+    """``hx`` and ``zx``: the hexagon cage and the zome, measured by
+    :mod:`two_v_demo.hex_geometry` and :mod:`two_v_demo.zome_geometry` at the
+    sizes their films build -- a twenty-foot hexagon dome, and a six-direction
+    zome at fifty-four degrees on four-foot struts."""
+    from two_v_demo import hex_geometry as hg, zome_geometry as zg
+    from two_v_demo.lesson_zome import LESSON_COUNT, LESSON_PITCH, LESSON_STRUT_IN, TALL, WIDE
+
+    r = HEX_RADIUS_IN
+
+    def v(x, d=0):
+        return lambda: f"{x:,.{d}f}"
+
+    ti = hg.truncated_icosahedron()
+    cages = (("ti", ti), ("gp2", hg.goldberg(2)), ("gp3", hg.goldberg(3)), ("gp4", hg.goldberg(4)))
+    add("hx.radius_ft", "the hexagon film's dome radius, ft", v(r / 12))
+    add("hx.diameter_ft", "and its diameter, ft", v(2 * r / 12))
+    add("hx.pent_spare", "angle a pentagon corner leaves spare, degrees",
+        v(360.0 - hg.flat_vertex_angle_sum(5)))
+    add("hx.hex_sum", "three hexagon corners, degrees", v(hg.flat_vertex_angle_sum(6)))
+    add("hx.ti_hubs", "hubs in the football cage", lambda: str(len(ti.vertices)))
+    add("hx.ti_struts", "struts in the football cage", lambda: str(len(ti.edges)))
+    add("hx.ti_panels", "panels in the football cage", lambda: str(len(ti.faces)))
+    add("hx.ti_hexagons", "hexagons in it", lambda: str(ti.hexagons))
+    add("hx.ti_dome_panels", "panels in its dome half", lambda: str(len(ti.dome_faces)))
+    add("hx.ti_dome_struts", "struts in its dome half", lambda: str(len(ti.dome_edges)))
+    build = hg.HexBuild(ti, r, 0.0)
+    add("hx.ti_strut_in", "the football cage's one strut, centre to centre, in",
+        v(build.strut_table()[0][2], 1))
+    add("hx.ti_rim_in", "how far the football cage's rim zigzags at that size, in",
+        v(build.base_wobble, 1))
+    add("hx.ti_rim_ft", "the same, ft", v(build.base_wobble / 12, 1))
+    for tag, cage in cages:
+        add(f"hx.{tag}_lengths", f"strut lengths, {cage.notation}", lambda c=cage: str(c.strut_lengths))
+        add(f"hx.{tag}_shapes", f"hexagon shapes, {cage.notation}", lambda c=cage: str(c.hex_shapes))
+        add(f"hx.{tag}_panels", f"panels, {cage.notation}", lambda c=cage: str(len(c.faces)))
+        add(f"hx.{tag}_warp_in", f"worst panel warp at twenty feet, {cage.notation}, in",
+            lambda c=cage: f"{c.worst_planarity * r:.2f}")
+
+    def ladder() -> str:
+        rows = [f"{'cage':<26} {'panels':>6} {'strut lengths':>13} {'hexagon shapes':>14} {'worst warp, in':>14}"]
+        for _tag, cage in cages:
+            rows.append(f"{cage.name + ' ' + cage.notation:<26} {len(cage.faces):>6} {cage.strut_lengths:>13} "
+                        f"{cage.hex_shapes:>14} {cage.worst_planarity * r:>14.2f}")
+        return "\n".join(rows)
+    add("hx.ladder", "every step up multiplies the shapes", ladder)
+
+    zome = zg.polar_zonohedron(LESSON_COUNT, LESSON_PITCH)
+    tall, wide = TALL, WIDE
+    gold = zg.golden_zonohedron()
+    s = LESSON_STRUT_IN / zome.strut_length
+
+    def middle_cut(z):
+        rings = z.level_rings
+        k = len(rings) // 2
+        return z.level_cut((rings[k - 1] + rings[k]) / 2)
+
+    add("zx.n", "directions in the zome film's star", lambda: str(LESSON_COUNT))
+    add("zx.pitch", "their lean from the axis, degrees", v(LESSON_PITCH))
+    add("zx.strut_in", "its one strut, in", v(LESSON_STRUT_IN))
+    add("zx.panels", "panels on the whole closed zome", lambda: str(len(zome.faces)))
+    add("zx.struts", "struts on the whole closed zome", lambda: str(len(zome.edges)))
+    add("zx.hubs", "hubs on it", lambda: str(len(zome.vertices)))
+    add("zx.euler", "V - E + F", lambda: str(zome.euler))
+    add("zx.dome_panels", "panels in the roof that is built", lambda: str(len(zome.dome_faces)))
+    add("zx.dome_struts", "struts in the roof that is built", lambda: str(len(zome.dome_edges)))
+    add("zx.templates", "panel templates", lambda: str(zome.panel_shapes))
+    add("zx.hub_types", "kinds of hub", lambda: str(len(zome.hub_classes)))
+    add("zx.rings", "level rings of hubs", lambda: str(len(zome.level_rings)))
+    add("zx.apex_sum", "panel corners meeting at the point, degrees", v(zome.apex_angle_sum, 1))
+    add("zx.apex_missing", "what they fall short of a full turn by, degrees", v(360 - zome.apex_angle_sum, 1))
+    add("zx.height_ft", "the zome's height above its rim, ft", v(zome.dome_height * s / 12, 1))
+    add("zx.rim_ft", "across its rim, ft", v(2 * zome.rim_radius * s / 12, 1))
+    add("zx.tall_pitch", "the film's steep pitch, degrees", v(tall.pitch_deg))
+    add("zx.wide_pitch", "the film's shallow pitch, degrees", v(wide.pitch_deg))
+    add("zx.tall_ft", "the same struts at the steep pitch: height, ft", v(tall.dome_height * s / 12, 1))
+    add("zx.wide_ft", "the same struts at the shallow pitch: height, ft", v(wide.dome_height * s / 12, 1))
+    add("zx.cuts", "cut settings a level floor line needs, this zome", lambda: str(middle_cut(zome).distinct_cuts))
+    add("zx.gold_faces", "faces of the golden zome", lambda: str(len(gold.faces)))
+    add("zx.gold_templates", "its panel templates", lambda: str(gold.panel_shapes))
+    add("zx.gold_ratio", "its panels' diagonal ratio", v(gold.rhombus_classes[0].diagonal_ratio, 4))
+    add("zx.gold_cuts", "cut settings a level line needs, golden zome", lambda: str(middle_cut(gold).distinct_cuts))
+
+
+def _catalogue_tokens(add) -> None:
+    """``cat``: the Dome Creator's twelve shipped designs, its menus and their
+    count, from the catalogue films' own worksheets
+    (:mod:`two_v_demo.creator_facts`, :mod:`two_v_demo.world_facts`,
+    :mod:`two_v_demo.world_chatgpt_facts`)."""
+    from two_v_demo import creator_facts as cf, world_chatgpt_facts as wcf, world_facts as wf
+
+    def steps(fn):
+        return lambda: "\n".join(fn()[:-1]).rstrip()
+
+    for key, fn in (("catalogue", cf.steps_catalogue), ("inputs", cf.steps_inputs),
+                    ("styles", cf.steps_frame_styles), ("perms", cf.steps_permutations),
+                    ("dials", cf.steps_dials), ("price", cf.steps_price_drivers),
+                    ("build", cf.steps_construction), ("fitout", cf.steps_fitout),
+                    ("framing", wf.steps_hub_vs_hubless), ("efficiency", wf.steps_efficiency),
+                    ("scale", wf.steps_scale), ("frequency", wf.steps_frequency),
+                    ("production", wcf.steps_production)):
+        add(f"cat.w_{key}", f"the catalogue worksheet: {key}", steps(fn))
+
+    rows = cf.design_rows()
+    add("cat.count", "designs the Dome Creator ships", lambda: str(len(rows)))
+    for i, row in enumerate(rows):
+        t = f"cat.d{i:02d}"
+        add(f"{t}_name", f"design {i}'s name", lambda r=row: r.name)
+        add(f"{t}_freq", f"{row.name}: frequency", lambda r=row: str(r.frequency))
+        add(f"{t}_ft", f"{row.name}: across, ft", lambda r=row: f"{r.diameter_ft:.0f}")
+        add(f"{t}_sqft", f"{row.name}: floor, sq ft", lambda r=row: f"{r.floor_sqft:,.0f}")
+        add(f"{t}_struts", f"{row.name}: struts", lambda r=row: str(r.struts))
+        add(f"{t}_panels", f"{row.name}: panels", lambda r=row: str(r.panels))
+        add(f"{t}_items", f"{row.name}: pieces of equipment", lambda r=row: str(r.props))
+        add(f"{t}_usd", f"{row.name}: bill of materials, dollars", lambda r=row: f"{r.cost:,.0f}")
+        add(f"{t}_per_sqft", f"{row.name}: dollars per sq ft", lambda r=row: f"{r.cost_per_sqft:,.0f}")
+        add(f"{t}_tonnes", f"{row.name}: weight, tonnes", lambda r=row: f"{r.weight_kg / 1000:,.1f}")
+    cheap = min(rows, key=lambda r: r.cost)
+    dear = max(rows, key=lambda r: r.cost)
+    add("cat.cheapest", "the cheapest design", lambda: cheap.name)
+    add("cat.cheapest_usd", "its bill, dollars", lambda: f"{cheap.cost:,.0f}")
+    add("cat.dearest", "the dearest design", lambda: dear.name)
+    add("cat.dearest_usd", "its bill, dollars", lambda: f"{dear.cost:,.0f}")
+    add("cat.cost_x", "how many times dearer the dearest is", lambda: f"{dear.cost / cheap.cost:.0f}")
+    add("cat.distinct", "shells that genuinely differ", lambda: f"{cf.distinct_shells():,}")
+    add("cat.years", "years of film to show each for three seconds", lambda: f"{cf.years_to_watch():,.0f}")
+    add("cat.dial_settings", "settings the four dials admit", lambda: f"{cf.dial_permutations():,}")
+
+    def random_table() -> str:
+        out = [f"{'#':<3}{'freq':>5}  {'frame style':<22}{'frame material':<24}{'panels':<22}{'bill':>10}"]
+        for i, config in enumerate(cf.random_designs(), 1):
+            s = cf._stats(config)
+            out.append(f"{i:<3}{config['frequency']:>4}V  {str(config['frame_style'])[:21]:<22}"
+                       f"{str(config['frame_material'])[:23]:<24}{str(config['default_panel'])[:21]:<22}"
+                       f"${s['total_cost']:>9,.0f}")
+        return "\n".join(out)
+    add("cat.w_random", "eight domes the dice picked, seed 7", random_table)
+
+
+def _franken_tokens(add) -> None:
+    """``fk``: the Frankendome -- the author's first dome, framed from whatever
+    the chainsaw made -- from the Franken film's own models
+    (:mod:`two_v_demo.lesson_franken`, :mod:`two_v_demo.franken_economics`)."""
+    from two_v_demo import franken_economics as fe, lesson_franken as lf
+
+    hw, hs = lf.FRANKEN, lf.SUMMARY
+    bc = fe.BuildCost(120.0)
+    g, fl = bc.glass, bc.floor
+    brackets = hw.triangles * hw.brackets_per_triangle
+    screws = brackets * hw.screws_per_bracket
+    bolts = hw.unique_edges * hw.bolts_per_edge
+    vals = {
+        "triangles": hw.triangles, "brackets": brackets, "screws": screws,
+        "screws_per_bracket": hw.screws_per_bracket, "bolts": bolts, "washers": 2 * bolts,
+        "days": hw.build_days, "months": hw.stood_months,
+        "per_day": hw.triangles / hw.build_days,
+        "screws_day": screws / hw.build_days,
+        "times_build": hw.stood_months * 30 / hw.build_days,
+        "struts": hs.struts, "hubbed_struts": hs.unique_edges, "doubled": hs.doubled_edges,
+        "rim": hs.rim_edges,
+        "deck_sqft": fl.area_sqft, "joists": fl.joists, "joist_ft": fl.joist_feet, "blocks": fl.blocks,
+        "shell_sqft": g.shell_sqft, "under_sqft": g.floor_under_sqft, "tower_sqft": g.tower_sqft,
+        "laminate_sqft": g.total_sqft, "resin_gal": g.resin_gallons, "cloth_sqyd": g.cloth_sqyd,
+        "screw_usd": bc.screw_cost, "glass_usd": g.total_cost, "total_usd": bc.total,
+        "per_sqft": bc.cost_per_sqft,
+    }
+    for name, value in vals.items():
+        add(f"fk.{name}", f"the Frankendome: {name.replace('_', ' ')}",
+            lambda v=value: f"{v:,.0f}" if float(v).is_integer() or v >= 100 else f"{v:,.1f}")
+
+
+def _hub_tokens(add) -> None:
+    """``hub``: the conventional hubbed 2V dome's end cuts, from the chord
+    factors the 2 Trees book already computes (``tt_dm``): a strut is a chord,
+    and it leaves the sphere at half the central angle it spans."""
+    import math
+
+    from two_v_demo import book_tokens as bt
+
+    def factor(name: str) -> float:
+        return float(next(t for t in bt.tokens() if t.name == f"dm.{name}").value())
+
+    for tag in ("short", "long"):
+        add(f"hub.endcut_{tag}", f"the {tag} strut's end cut off the sphere, degrees",
+            lambda t=tag: f"{math.degrees(math.asin(factor(t + '_factor') / 2)):.2f}")
+
+
+def _pixel_tokens(add) -> None:
+    """``pix``: the From Scratch film's worksheets for the picture half of the
+    chain -- tube, normal, buffer, camera, view, projection, pixel, depth,
+    light, frame -- from :mod:`two_v_demo.scratch_facts`, computed by the same
+    code that draws the film."""
+    from two_v_demo import scratch_facts as sf
+
+    for key in ("tube", "normal", "buffer", "eye", "view", "projection", "pixel",
+                "depth", "light", "frame"):
+        fn = getattr(sf, f"steps_{key}")
+        add(f"pix.w_{key}", f"the From Scratch worksheet: {key}",
+            lambda f=fn: "\n".join(f()[:-1]).rstrip())
+
+
+def _core_build_tokens(add) -> None:
+    """``corebuild``: one utility core built on a bench, from
+    :mod:`column_build` through the module-build film's own worksheets."""
+    import column_build as cb
+    from two_v_demo import lesson_module_build as mb
+
+    # The film's worksheets clip every line to fit a screen; the page has room
+    # for the whole sentence, so the book prints the steps at full length.
+    def tools() -> str:
+        return "\n".join(f"{tool:<34} {why}" for tool, why in cb.TOOLS)
+
+    def stage_text(stage: str) -> str:
+        rows = []
+        for step in cb.steps(stage):
+            rows.append(f"{step.number:>2}. {step.title}   {step.minutes:.0f} min   "
+                        f"{', '.join(step.tools) or 'no tool'}")
+            if step.checkpoint:
+                rows.append(f"    check: {step.checkpoint}")
+        rows.append(f"    stage total: {cb.stage_minutes(stage):.0f} min")
+        return "\n".join(rows)
+
+    add("corebuild.w_tools", "what has to be on the bench, and why", tools)
+    add("corebuild.w_materials", "everything you buy for one core",
+        lambda: "\n".join(mb.steps_materials()[2:]).rstrip())
+    for stage, _title in cb.STAGES:
+        add(f"corebuild.w_{stage}", f"the {stage} stage, step by step",
+            lambda s=stage: stage_text(s))
+        add(f"corebuild.{stage}_min", f"minutes in the {stage} stage",
+            lambda s=stage: f"{cb.stage_minutes(s):.0f}")
+    add("corebuild.steps", "steps in the core's build", lambda: str(len(cb.STEPS)))
+    add("corebuild.stages", "stages", lambda: str(len(cb.STAGES)))
+    add("corebuild.tools", "tools on the bench", lambda: str(len(cb.TOOLS)))
+    add("corebuild.lines", "lines on the shopping list", lambda: str(len(cb.MATERIALS)))
+    add("corebuild.hours", "hours once practised", lambda: f"{cb.practised_hours():.1f}")
+    add("corebuild.first_hours", "hours the first one takes", lambda: f"{cb.first_build_hours():.1f}")
+    add("corebuild.labour_usd", "labour at shop rate, practised", lambda: f"{cb.labour_usd():,.0f}")
+    add("corebuild.psi", "the pressure test, psi", lambda: f"{cb.declared('pressure_test_psi'):.0f}")
+    add("corebuild.test_min", "and how long it is held, minutes", lambda: f"{cb.declared('pressure_test_min'):.0f}")
+
+
+def _kick_tokens(add) -> None:
+    """``kick``: the campaign films' own figures -- the shape against a box,
+    the four builds, the hat, the startup, the running cost and the paint --
+    from the models those films import (:mod:`two_v_demo.dome_advantage`,
+    :mod:`two_v_demo.dome_costing`, :mod:`two_v_demo.dome_performance`)."""
+    from two_v_demo.dome_advantage import advantages, box_envelope, dome_envelope
+    from two_v_demo.dome_costing import Startup, build_variants
+    from two_v_demo.dome_performance import assemblies, running_costs, sky_cooling
+
+    def v(fn, d=0):
+        return lambda: f"{fn():,.{d}f}"
+
+    surface, _vol, _heat, wind = advantages()
+    add("kick.box_skin", "skin the box house needs for the reference floor, sq ft", v(lambda: surface.other))
+    add("kick.dome_skin", "skin the dome needs for the same floor, sq ft", v(lambda: surface.dome))
+    add("kick.skin_pct", "per cent less exterior", v(lambda: surface.percent_better))
+    add("kick.skin_gap", "square feet of skin the box has over the dome",
+        v(lambda: box_envelope().envelope_sqft - dome_envelope().envelope_sqft))
+    add("kick.drag_dome", "a dome's drag coefficient", v(lambda: wind.dome, 2))
+    add("kick.drag_box", "a box's drag coefficient", v(lambda: wind.other, 2))
+    add("kick.drag_pct", "per cent less wind load from the shape", v(lambda: wind.percent_better))
+    builds = build_variants()
+    for tag, b in zip(("bare", "budget", "standard", "full"), builds):
+        add(f"kick.{tag}_name", f"the {tag} build's name", lambda b=b: b.name)
+        add(f"kick.{tag}_usd", f"the {tag} build, at the till, dollars", lambda b=b: f"{b.total:,.0f}")
+        add(f"kick.{tag}_per_sqft", f"the {tag} build per sq ft", lambda b=b: f"{b.per_sqft:,.0f}")
+    hat = builds[2]
+    add("kick.floor", "the campaign dome's floor, sq ft", v(lambda: hat.floor_sqft))
+    add("kick.hat_sqft", "glass on the top twenty triangles, sq ft", v(lambda: hat.glass_sqft))
+    add("kick.shell_sqft", "the whole shell, sq ft", v(lambda: hat.shell_sqft))
+    s = Startup()
+    add("kick.equipment_usd", "the campaign's equipment, dollars", v(lambda: s.equipment_total))
+    add("kick.working_usd", "the rest, for the first domes, dollars", v(lambda: s.working_capital))
+    add("kick.capital_usd", "the whole ask, dollars", v(lambda: s.capital))
+    dome_run, box_run = running_costs()
+    add("kick.run_dome", "a year to heat and cool the dome, dollars", v(lambda: dome_run.annual_cost))
+    add("kick.run_box", "the same floor in a square house, dollars", v(lambda: box_run.annual_cost))
+    add("kick.run_saved", "a year never spent, dollars", v(lambda: box_run.annual_cost - dome_run.annual_cost))
+    def builds_table() -> str:
+        rows = [f"{'build':<22} {'at the till':>12} {'per sq ft':>10}"]
+        rows += [f"{b.name.title():<22} {'$' + format(b.total, ',.0f'):>12} {'$' + format(b.per_sqft, ',.0f'):>10}"
+                 for b in builds]
+        return "\n".join(rows)
+    add("kick.w_builds", "four ways to build the same dome", builds_table)
+
+    def equipment() -> str:
+        rows = []
+        for item in s.EQUIPMENT:
+            label, cost = (item[0], item[1]) if isinstance(item, tuple) else (str(item), 0.0)
+            rows.append(f"{label[:44]:<44} ${cost:>9,.0f}")
+        rows.append(f"{'equipment':<44} ${s.equipment_total:>9,.0f}")
+        rows.append(f"{'material for the first domes':<44} ${s.working_capital:>9,.0f}")
+        return "\n".join(rows)
+    add("kick.w_equipment", "what the first campaign's equipment is", equipment)
+
+    from two_v_demo import seed_facts as sf
+
+    def steps(fn):
+        return lambda: "\n".join(fn()[:-1]).rstrip()
+    add("kick.w_invoice", "the standard article's invoice", steps(sf.steps_invoice))
+    add("kick.w_offgrid", "running it on nothing", lambda: "\n".join(sf.steps_solar()).rstrip())
+
+    def goal() -> str:
+        # The film clips each line to fit a screen; the page prints it whole.
+        import kickstarter
+        lines = kickstarter.goal_lines()
+        width = max(len(line.what) for line in lines)
+        rows = [f"{line.what:<{width}}  ${line.usd:>8,.0f}" for line in lines]
+        rows.append(f"{'the goal':<{width}}  ${kickstarter.goal():>8,.0f}")
+        return "\n".join(rows)
+    add("kick.w_goal", "the second campaign's goal, as a list", goal)
+
+    paint, thin = sky_cooling(), sky_cooling(assembly=assemblies()[0])
+    add("kick.paint_f", "how much cooler the painted shell runs, F",
+        v(lambda: paint.solar_delta_f + paint.radiative_delta_f))
+    add("kick.paint_usd", "what the paint saves a year on an insulated shell, dollars", v(lambda: paint.annual_saving))
+    add("kick.paint_thin_usd", "and on a thin wall, dollars", v(lambda: thin.annual_saving))
+
+
+def _clock_tokens(add) -> None:
+    """``clock``: the forty-hour clock in the margins of the how-to chapters,
+    stage by stage, from :func:`wedge_book.systems.build_stages`."""
+    from . import systems
+
+    stages = systems.build_stages()
+    week = systems.declared("working_week_hours")
+    BASIS = {"measured": "the owner's measured rate", "estimate": "this book's estimate",
+             "allowance": "the owner's own allowance"}
+
+    def bar(s) -> str:
+        done, now = 100 * s.before / week, 100 * s.hours / week
+        return ('<span class="clockbar" role="img" aria-label="'
+                f'{s.after:.1f} of {week:.0f} hours">'
+                f'<span class="done" style="width:{done:.1f}%"></span>'
+                f'<span class="now" style="left:{done:.1f}%;width:{now:.1f}%"></span></span>')
+
+    for s in stages:
+        add(f"clock.{s.key}_h", f"hours of {s.label}", lambda s=s: f"{s.hours:.1f}")
+        add(f"clock.{s.key}_from", f"clock reading before {s.label}", lambda s=s: f"{s.before:.1f}")
+        add(f"clock.{s.key}_to", f"clock reading after {s.label}", lambda s=s: f"{s.after:.1f}")
+        add(f"clock.{s.key}_left", f"hours of the week left after {s.label}",
+            lambda s=s: f"{week - s.after:.1f}")
+        add(f"clock.{s.key}_kind", f"whether {s.label} is measured or estimated",
+            lambda s=s: BASIS[s.basis])
+        add(f"clock.{s.key}_bar", f"the clock drawn after {s.label}", lambda s=s: bar(s))
+    add("clock.week", "the week the book is named after, hours", lambda: f"{week:.0f}")
+    add("clock.total", "the clock at the end, error allowed for", lambda: f"{stages[-1].after:.1f}")
+
+    def table() -> str:
+        rows = [f"{'stage':<44} {'hours':>6} {'clock':>6}   basis"]
+        rows += [f"{s.label:<44} {s.hours:>6.1f} {s.after:>6.1f}   "
+                 f"{s.basis}" for s in stages]
+        rows.append(f"{'the week':<44} {'':>6} {week:>6.0f}")
+        return "\n".join(rows)
+    add("clock.table", "the forty-hour clock, stage by stage", table)
+    add("clock.off", "the work the clock does not count",
+        lambda: ", ".join(label for _ref, label in systems.OFF_THE_CLOCK))
+
+
+def _md_table(head, rows) -> str:
+    """Columns aligned with spaces: an indented block in the manuscript keeps
+    them, and the print edition turns aligned text into a real table."""
+    cells = [tuple(str(c) for c in head)] + [tuple(str(c) for c in r) for r in rows]
+    w = [max(len(r[i]) for r in cells) for i in range(len(head))]
+    return "\n".join("  ".join(c.ljust(w[i]) for i, c in enumerate(r)).rstrip() for r in cells)
+
+
+def _ep_tokens(add) -> None:
+    """``ep``: every piece numbered -- a triangle filled and the floor framed,
+    from :func:`infill.facts.facts`, the same function the film reads."""
+    from infill import base as bs
+    from infill.constants import table as infill_table
+    from infill.facts import by, facts
+
+    f = facts()
+    B, W = f["base"], f["wedge"]
+    t0, t1 = f["types"]
+    c1, c2 = W["cuts"][0], W["cuts"][1]
+
+    def n(v, d=0):
+        return lambda: f"{v:,.{d}f}"
+
+    add("ep.infill_declared", "figures the triangle calculator declares", n(f["infill_constants"]))
+    add("ep.infill_table", "the triangle calculator's declared table", infill_table)
+    add("ep.base_declared", "figures the floor calculator declares", n(B["declared"]))
+    add("ep.base_table", "the floor calculator's declared table",
+        lambda: _md_table(("Figure", "Value", "Kind", "Why"),
+                          [(n, f"{v:g} {u}".strip(), k, w) for n, v, u, k, w in bs.BASE_CONSTANTS]))
+    add("ep.strut", "the dome's longest stick, in", n(f["strut_in"]))
+    add("ep.dome_ft", "the dome's diameter, ft", n(f["dome_diameter_ft"], 1))
+    add("ep.lss", "triangles with a long base and two short sides", n(t0["count"]))
+    add("ep.lll", "triangles with three long sides", n(t1["count"]))
+    add("ep.long_in", "a long edge, in", n(t0["edges"][0], 2))
+    add("ep.short_in", "a short edge, in", n(t0["edges"][1], 2))
+    add("ep.frame_log", "the frame's log, in", n(f["frame_log_in"]))
+    add("ep.infill_log", "the infill's log, in", n(f["infill_log_in"]))
+    add("ep.depth", "how deep the frame's tray is, in", n(f["thickness_in"], 2))
+    add("ep.fold_a", "the smaller seam fold, deg", n(f["folds"][0], 2))
+    add("ep.fold_b", "the larger seam fold, deg", n(f["folds"][1], 2))
+    add("ep.wedges", "wedges in the striped, flip-flopped fill", n(W["pieces"]))
+    add("ep.wedge_long", "the longest wedge, in", n(W["longest"], 1))
+    add("ep.wedge_short", "the shortest wedge, in", n(W["shortest"], 1))
+    add("ep.piece", "the worked piece's number", n(W["piece"]))
+    add("ep.point", "the worked piece along its point, in", n(W["corners"][0], 2))
+    add("ep.corner_b", "the worked piece's second long corner, in", n(W["corners"][1], 2))
+    add("ep.corner_c", "the worked piece's third long corner, in", n(W["corners"][2], 2))
+    add("ep.mitre", "the worked piece's mitre, deg", n(c1["mitre"], 1))
+    add("ep.bevel", "the worked piece's bevel, deg", n(c1["bevel"]))
+    add("ep.keeper1", "which side of the blade the keeper lies, cut 1",
+        lambda: "right" if c1["keeper_right"] else "left")
+    add("ep.off1_long", "first offcut at its longest, in", n(c1["off_long"], 2))
+    add("ep.off1_short", "first offcut at its shortest, in", n(c1["off_short"], 2))
+    add("ep.off2_long", "second offcut at its longest, in", n(c2["off_long"], 2))
+    add("ep.sheet_halves", "pieces a covering sheet is cut into", n(f["sheet"]["pieces"]))
+    for k, v in enumerate(f["sheet"]["bevels"]):
+        add(f"ep.sheet_bevel{k + 1}", f"a covering sheet's edge bevel {k + 1}, deg", n(v, 1))
+    perms = f["perms"]
+    add("ep.perm_count", "ways to fill the triangle shown", n(len(perms)))
+    add("ep.perm_table", "every way to fill it, and how many pieces",
+        lambda: _md_table(("Material", "Pattern", "Lay", "Fill or cover", "Pieces"),
+                          [(p["material"], p["arrangement"], p["lay"] or "-", p["mode"], str(p["pieces"]))
+                           for p in perms]))
+    rd = f["rounds"]
+    add("ep.round_layers", "layers of log rounds", n(rd["layers"]))
+    add("ep.round_thick", "a log round's thickness, in", n(rd["thick_in"], 1))
+    add("ep.round_whole", "rounds that go in whole", n(rd["kinds"].get("full", 0)))
+    add("ep.round_wall", "rounds cut at the wall", n(rd["kinds"].get("wall", 0)))
+    add("ep.round_gaps", "gap pieces copied and traced", n(rd["kinds"].get("copy", 0)))
+    add("ep.round_pieces", "pieces in the rounds fill", n(rd["pieces"]))
+    add("ep.side_ft", "the floor pentagon's side, along the round backs, ft", n(B["side_ft"]))
+    add("ep.apothem", "the pentagon's crown apothem, ft", n(B["apothem_ft"], 2))
+    add("ep.inner_r", "biggest circle inside the flat faces, ft", n(B["inner_r_ft"], 2))
+    add("ep.corner_r", "corner to centre, ft", n(B["corner_r_ft"], 2))
+    add("ep.area", "floor area, ft2", n(B["area_ft2"]))
+    add("ep.dome_need", "radius the dome's foot needs, ft", n(B["dome_need_ft"], 2))
+    add("ep.overhang", "allowance for the dome's frame at its foot, in", n(B["overhang_in"]))
+    add("ep.margin", "spare between the dome's foot and the flat faces, ft", n(B["margin_ft"], 2))
+    add("ep.corner_deg", "a frame corner's cut, deg off square", n(B["corner_deg"]))
+    add("ep.back_in", "a frame trunk along its round back, in", n(B["frame_back_in"], 2))
+    add("ep.top_in", "a frame trunk along its top, in", n(B["frame_top_in"], 2))
+    add("ep.trim_in", "what a corner cut takes off the top, each end, in",
+        n((B["frame_back_in"] - B["frame_top_in"]) / 2, 2))
+    add("ep.star_pieces", "star pieces", n(B["star_members"]))
+    add("ep.star_long", "a star piece, outer, in", n(B["star_pieces"][1], 1))
+    add("ep.star_short", "a star piece, inner, in", n(B["star_pieces"][0], 1))
+    star = by(f["patterns"], "star")
+    add("ep.star_gap", "the widest deck gap under the star alone, in", n(star["deck_gap_in"]))
+    add("ep.deck_allow", "the most a 2x6 deck may cross, in", n(B["deck_allow_in"]))
+    add("ep.joists", "joists in the star + joists floor", n(B["roles"]["joist"]))
+    add("ep.joist_name", "the joists", lambda: B["joist_name"])
+    add("ep.spacing", "joist spacing, in on centre", n(B["spacing_in"]))
+    add("ep.deck_gap", "the widest deck gap, star + joists, in", n(B["deck_gap_in"], 1))
+    add("ep.joist_depth", "a 2x8 on edge, in", n(B["joist_depth_in"], 2))
+    add("ep.saw_h", "what the mitre saw cuts standing on edge, in", n(B["saw_height_in"]))
+    add("ep.joist_bevel", "the worked joist's bevel laid flat, deg", n(B["joist"]["bevel"]))
+    add("ep.joist_end1", "the worked joist's other end", lambda: B["joist"]["end1"])
+    add("ep.bevel_max", "the most a single-bevel saw tilts, deg", n(B["bevel_max"]))
+    add("ep.live", "floor live load, lb/ft2", n(B["live_psf"]))
+    add("ep.dead", "floor dead load, lb/ft2", n(B["dead_psf"]))
+    add("ep.total_lb", "the floor's whole load, lb", n(B["total_lb"]))
+    add("ep.pier_sum", "what the piers carry, lb", n(B["pier_sum_lb"]))
+    add("ep.fb", "the wood's declared bending strength, psi", n(B["fb_psi"]))
+    add("ep.extra", "piers added under spans that failed", n(B["extra_piers"]))
+    add("ep.worst", "the hardest span, % of what it carries", n(100 * B["worst"]))
+    add("ep.members", "members in the star + joists floor", n(B["members"]))
+    add("ep.piers", "piers under it", n(B["piers"]))
+    add("ep.soil", "soil bearing, lb/ft2", n(B["soil_psf"]))
+    add("ep.pad_min", "the smallest pad, in square", n(B["pad_min_in"]))
+    add("ep.pier_max", "the heaviest pier, lb", n(B["pier_max_lb"]))
+    add("ep.pad_max", "its pad, in square", n(B["pad_max_in"]))
+    add("ep.hangers", "joist ends hung on a hanger or notched", n(B["hangers"]))
+    add("ep.logs", "logs to fell or buy, star + joists", n(B["logs"]))
+    add("ep.usd", "bought materials, star + joists, $", n(B["usd"]))
+    add("ep.patterns", "every floor pattern, side by side",
+        lambda: _md_table(("Pattern", "Pieces", "Piers", "Hardest span", "Deck gap", "Logs", "Bought"),
+                          [(r["name"], str(r["members"]), str(r["piers"]), f"{100 * r['worst']:.0f}%",
+                            f"{r['deck_gap_in']:.1f} in " + ("ok" if r["deck_ok"] else "FAILS"), str(r["logs"]),
+                            f"${r['usd']:,.0f}") for r in f["patterns"]]))
+    add("ep.gravel", "every floor pattern on a gravel bed",
+        lambda: _md_table(("Pattern", "Pieces", "Logs", "Bought"),
+                          [(r["name"], str(r["members"]), str(r["logs"]), f"${r['usd']:,.0f}")
+                           for r in f["gravel"]]))
+    add("ep.materials", "the star + joists floor with its star in each material",
+        lambda: _md_table(("The star in", "Piers", "Added mid-span", "Logs", "Bought"),
+                          [(r["material"], str(r["piers"]), str(r["extra"]), str(r["logs"]), f"${r['usd']:,.0f}")
+                           for r in f["materials"]]))
+    beams, fan, wheel, rings = (by(f["patterns"], k) for k in ("beams", "fan", "wheel", "rings"))
+    add("ep.beams_worst", "beams + joists, hardest span, %", n(100 * beams["worst"]))
+    add("ep.rings_worst", "nested rings on piers, hardest span, %", n(100 * rings["worst"]))
+    add("ep.rings_piers", "nested rings on piers, piers", n(rings["piers"]))
+    add("ep.fan_pier", "the fan's centre pier, lb", n(fan["pier_max_lb"]))
+    add("ep.fan_pad", "the fan's centre pad, in", n(fan["pad_max_in"]))
+    add("ep.wheel_pier", "the wheel's centre pier, lb", n(wheel["pier_max_lb"]))
+    g_rings, g_sj = by(f["gravel"], "rings"), by(f["gravel"], "star_joists")
+    add("ep.rings", "nested rings inside the frame", n(B["rings"]))
+    add("ep.rings_usd", "nested rings on gravel, bought, $", n(g_rings["usd"]))
+    add("ep.rings_logs", "nested rings on gravel, logs", n(g_rings["logs"]))
+    add("ep.gravel_sj_logs", "star + joists on gravel, logs", n(g_sj["logs"]))
+    mats = {r["prim"]: r for r in f["materials"]}
+    add("ep.m4_piers", "the star in 4x4, piers", n(mats["4x4"]["piers"]))
+    add("ep.m4_extra", "the star in 4x4, piers added", n(mats["4x4"]["extra"]))
+    add("ep.m6_usd", "the star in 6x6, bought, $", n(mats["6x6"]["usd"]))
+    add("ep.mround_logs", "the star in whole logs, logs", n(mats["round"]["logs"]))
+
+
+def _web_tokens(add) -> None:
+    """``web``: the dome built in the air from a cable web between four trees,
+    from :mod:`two_v_demo.sky_web` -- at the owner's weighed strut weights."""
+    from two_v_demo import sky_web as sw
+
+    f = sw.facts()
+    C, O = sw.C, sw.O
+
+    def n(v, d=0):
+        return lambda: f"{v:,.{d}f}"
+
+    w8, x, sp, st = f["weights"], f["x"], f["spread"], f["spread_taut"]
+    t1, tt, t2, pv = f["tree1"], f["tree1_taut"], f["tree2"], f["post"]
+    h, ho, w, r, sf, rc = f["hang"], f["hoist"], f["wind"], f["raise"], f["safety"], f["reach"]
+    la, ap, sk, one, lv, fl, mat, spi = (f["lash"], f["apex"], f["skin"], f["one"], f["level"],
+                                         f["floor"], f["materials"], f["spiral"])
+    legs = f["harness"]["rows"]
+    add("web.constants", "the sky web's two tables: weighed or owned, and declared", sw.constants_table)
+    add("web.declared", "how many figures the sky web declares", n(len(sw.CONSTANTS)))
+    add("web.strut_lo", "the owner's lightest strut, kg", n(O["strut_kg_lo"]))
+    add("web.strut_hi", "the owner's heaviest strut, kg", n(O["strut_kg_hi"]))
+    add("web.solver_strut", "the solver's estimate of a strut, kg", n(w8["solver_strut_kg"], 1))
+    add("web.solver_kg", "the solver's estimate of the frame, kg", n(w8["solver_kg"]))
+    add("web.ratio_lo", "owner's lightest strut over the solver's", n(w8["ratio_lo"], 1))
+    add("web.ratio_hi", "owner's heaviest strut over the solver's", n(w8["ratio_hi"], 1))
+    add("web.tri_lo", "lightest triangle, kg", n(w8["tri_lo_kg"]))
+    add("web.tri_hi", "heaviest triangle, kg", n(w8["tri_hi_kg"]))
+    add("web.frame_lo", "frame at the lightest struts, kg", n(w8["frame_lo_kg"]))
+    add("web.frame_hi", "frame at the heaviest struts, kg", n(w8["frame_hi_kg"]))
+    add("web.frame_lb", "frame at the heaviest struts, lb", n(w8["frame_hi_kg"] * sw.LB_PER_KG))
+    add("web.winch_lb", "the owner's 12 V winch, lb", n(O["winch_lb"]))
+    add("web.winch_kn", "the owner's 12 V winch, kN", n(ho["winch_kn"], 1))
+    add("web.up_lo", "the smaller planned winch, times", n(O["upgrade_lo"]))
+    add("web.up_hi", "the larger planned winch, times", n(O["upgrade_hi"]))
+    add("web.square_m", "side of the tree square, m", n(C["tree_square_m"]))
+    add("web.span_m", "the X's span, corner to corner, m", n(x["span_m"], 1))
+    add("web.tie1_m", "height of the web's ties, m", n(C["anchor1_m"]))
+    add("web.tie2_m", "height of an experimental second web, m", n(C["anchor2_m"]))
+    add("web.sag_pct", "the X's design sag, % of span", n(100 * C["sag_ratio"]))
+    add("web.taut_pct", "the flatter alternative, % of span", n(100 * C["sag_ratio_taut"]))
+    add("web.sag_m", "the X's sag, m", n(sp["sag_m"], 1))
+    add("web.t_kn", "the worse rope's tension at the design sag, kN", n(sp["tension_kn"]))
+    add("web.rope", "rope the X needs at the design sag", lambda: sp["rope"])
+    add("web.taut_kn", "the worse rope's tension at 5% sag, kN", n(st["tension_kn"]))
+    add("web.taut_rope", "rope the X needs at 5% sag", lambda: st["rope"])
+    add("web.dbh_cm", "anchor tree trunk, cm", n(100 * C["tree_dbh_m"]))
+    add("web.mor", "green pine bending strength, MPa", n(C["green_mor_mpa"]))
+    add("web.tree_want", "margin a living tree should keep", n(C["tree_factor"]))
+    add("web.tree1", "unguyed tree margin, design sag", n(t1["factor"], 1))
+    add("web.tree1_taut", "unguyed tree margin, 5% sag", n(tt["factor"], 2))
+    add("web.tree2", "unguyed tree margin, second web", n(t2["factor"], 1))
+    add("web.next_m", "the next tree out, m", n(C["next_tree_m"]))
+    add("web.guy_kn", "back-guy tension at the design sag, kN", n(t1["guy_kn"]))
+    add("web.guy_rope", "rope a back-guy needs", lambda: t1["guy_rope"])
+    add("web.guy2_kn", "back-guy tension, second web, kN", n(t2["guy_kn"]))
+    add("web.squeeze_kn", "a guyed tree's squeeze, kN", n(t1["squeeze_kn"]))
+    add("web.buckle_x", "a guyed tree's margin against buckling", n(t1["buckle_factor"]))
+    add("web.post_kn", "a milled 6x6 post's buckling load at the tie height, kN", n(pv["post_kn"]))
+    add("web.tree_mn", "the living trunk's buckling load, MN", n(pv["tree_kn"] / 1000, 1))
+    add("web.tree_x", "the trunk over the post", n(pv["times"]))
+    add("web.pitch_cm", "spacing of the spiral's turns, cm", n(100 * C["spiral_pitch_m"]))
+    add("web.turns", "turns of the spiral", n(spi["turns"], 1))
+    add("web.spiral_m", "length of the spiral, m", n(spi["length_m"]))
+    add("web.seizings", "seizings where the spiral crosses the X", n(spi["ties"]))
+    add("web.footprint_m", "the footprint's diameter, m", n(2 * spi["radius_m"], 1))
+    add("web.pull_kn", "the heaviest triangle's pull, kN", n(ho["pull_kn"], 2))
+    add("web.winch_x", "winch rating over the heaviest triangle", n(ho["winch_margin"]))
+    add("web.one_wh", "battery energy for one lift, Wh", n(ho["one_wh"]))
+    add("web.all_wh", "battery energy for all forty, Wh", n(ho["all_wh"]))
+    add("web.battery_pct", "share of one battery's usable charge, %", n(100 * ho["battery_share"]))
+    add("web.hook_m", "the hook's highest point, m", n(ho["hook_m"], 1))
+    add("web.lift_min", "minutes to raise one triangle", n(ho["lift_min"], 1))
+    add("web.bridle_m", "harness eye above the balance point, m", n(C["bridle_h_m"]))
+    add("web.legs_a", "harness legs, the two-short-sided triangle, m",
+        lambda: " / ".join(f"{l:.2f}" for l in legs[0]["legs_m"]))
+    add("web.legs_b", "harness legs, the equal triangle, m",
+        lambda: " / ".join(f"{l:.2f}" for l in legs[1]["legs_m"]))
+    add("web.pigtails", "pigtails, three per triangle", n(h["pigtails"]))
+    add("web.pig_min_m", "shortest pigtail, m", n(h["pig_min_m"], 1))
+    add("web.pig_max_m", "longest pigtail, m", n(h["pig_max_m"], 1))
+    add("web.cord_m", "cord in all the pigtails, m", n(h["cord_m"]))
+    add("web.pig_n", "load on one pigtail, N", n(w["pig_load_kn"] * 1000))
+    add("web.pig_x", "cord strength over a pigtail's load", n(w["pig_factor"]))
+    add("web.short", "crown triangles the hook cannot reach", n(rc["short"]))
+    add("web.haul_cm", "furthest a crown triangle is hauled by hand, cm", n(100 * rc["haul_max_m"]))
+    add("web.rim_m", "the hung dome's rim height, m", n(h["rim_m"], 1))
+    add("web.apex_m", "the hung dome's crown height, m", n(h["apex_m"], 1))
+    add("web.seams", "seams two triangles share", n(la["seams"]))
+    add("web.lash_per", "lashings a seam", n(C["lash_per_seam"]))
+    add("web.lash_wraps", "turns in one lashing", n(C["lash_wraps"]))
+    add("web.lashings", "lashings in all", n(la["lashings"]))
+    add("web.lash_m", "cord for the lashings, m", n(la["cord_m"]))
+    add("web.joints", "the dome's joints", n(ap["joints"]))
+    add("web.apex_cords", "cords to the free ring, besides the apex", n(ap["cords"] - 1))
+    add("web.strutted", "joints too close to the ring for a cord", n(ap["strutted"]))
+    add("web.rim_deg", "the rim cords' angle, degrees", n(ap["rim_deg"]))
+    add("web.rim_hoop", "the rim ring's squeeze from the cords, kN", n(ap["rim_hoop_kn"], 1))
+    add("web.apex_kn", "what the apex line itself carries, kN", n(ap["apex_kn"], 1))
+    add("web.head_m", "a rim cord's height halfway out, m", n(ap["head_half_m"], 1))
+    add("web.hung_kg", "frame and skin, kg", n(one["mass_kg"]))
+    add("web.hung_kn", "frame and skin, kN", n(one["w_kn"], 1))
+    add("web.now_pct", "today's winch, % of the whole dome", n(100 * one["now_x"]))
+    add("web.lo_x", "the smaller planned winch over the dome", n(one["lo_x"], 2))
+    add("web.hi_x", "the larger planned winch over the dome", n(one["hi_x"], 1))
+    add("web.block_kn", "the crossing's load with the winch at a tree, kN", n(one["block_kn"]))
+    add("web.one_kn", "the X's tension with all the weight at the crossing, kN", n(one["xd"]["tension_kn"]))
+    add("web.one_rope", "rope for one central lift", lambda: one["xd"]["rope"])
+    add("web.one_guy", "guy tension for one central lift, kN", n(one["tree"]["guy_kn"]))
+    add("web.tilt_med", "median tilt with unsorted struts, degrees", n(lv["random_med_deg"], 1))
+    add("web.tilt_95", "1-in-20 tilt with unsorted struts, degrees", n(lv["random_95_deg"], 1))
+    add("web.tilt_cm", "1-in-20 drop across the rim, cm", n(lv["rim_drop_mm_95"] / 10))
+    add("web.tilt_worst", "tilt with every heavy strut on one side, degrees", n(lv["worst_deg"]))
+    add("web.skin_m2", "the dome's shell, m2", n(sk["shell_m2"]))
+    add("web.skin_layers", "layers of skin", n(sk["layers"]))
+    add("web.tubes", "cartridges of silicone", n(sk["tubes"]))
+    add("web.naphtha_l", "naphtha, litres", n(sk["naphtha_l"]))
+    add("web.mix", "naphtha to silicone, by volume", n(C["mix_parts"]))
+    add("web.cotton_m2", "cotton, m2", n(sk["cotton_m2"]))
+    add("web.skin_usd", "the silicone skin, $", n(sk["diy_usd"]))
+    add("web.sail_usd", "the same in sailcloth, $", n(sk["sail_usd"]))
+    add("web.sail_m2", "sailcloth, $/m2", n(C["sailcloth_usd_m2"]))
+    add("web.skin_kg", "the skin's mass, kg", n(sk["mass_kg"]))
+    add("web.tight_cm", "tree spread before the design web goes taut, cm", n(100 * f["tight_m"]))
+    add("web.tight_taut_cm", "tree spread before a 5% web goes taut, cm", n(100 * f["tight_taut_m"], 1))
+    add("web.kn_cm", "added tension per cm of stretch, kN", n(w["kn_per_cm"], 1))
+    add("web.side_m2", "the dome's side area, m2", n(w["side_m2"], 1))
+    add("web.gust_kmh", "a strong gale's gust, km/h", n(C["gust_m_s"] * 3.6))
+    add("web.gust_kn", "the gust's push, kN", n(w["gust_kn"], 1))
+    add("web.gust_deg", "the swing in that gust, degrees", n(w["gust_deg"]))
+    add("web.storm_kmh", "a storm's gust, km/h", n(C["gust_hi_m_s"] * 3.6))
+    add("web.storm_kn", "the storm's push, kN", n(w["storm_kn"], 1))
+    add("web.storm_deg", "the swing in that storm, degrees", n(w["storm_deg"]))
+    add("web.drink_l", "water a pine draws a summer day, L", n(C["transpire_l_day"]))
+    add("web.drink4_l", "water the four draw a summer day, L", n(f["nature"]["drink_l_day"]))
+    add("web.clash_m", "how far the dome would pass up through the first web, m", n(r["clash_m"], 1))
+    add("web.step_cm", "one corner's raise, cm", n(100 * C["raise_step_m"]))
+    add("web.pulls", "pulls to raise the dome", n(r["pulls"]))
+    add("web.corner_kn", "heaviest corner's pull, kN", n(r["corner_pull_kn"], 1))
+    add("web.floor_t", "a floor and its contents, tonnes", n(fl["floor_kg"] / 1000, 1))
+    add("web.house_t", "the shell with a floor, tonnes", n(fl["mass_kg"] / 1000, 1))
+    add("web.house_kn", "the shell with a floor, rope tension, kN", n(fl["tension_kn"]))
+    add("web.house_rope", "rope for the shell with a floor", lambda: fl["rope"])
+    add("web.drop_m", "the hoist's height, m", n(sf["drop_m"], 1))
+    add("web.impact_kmh", "a dropped triangle's speed, km/h", n(sf["impact_kmh"]))
+    add("web.impact_kj", "a dropped triangle's energy, kJ", n(sf["energy_kj"], 1))
+    add("web.guys_m", "rope in the back-guys, m", n(mat["guys_m"]))
+
+
+def _ring_tokens(add) -> None:
+    """``ring``: ten TEC1-12706 modules at the rim ports, run day and night on
+    the sun, from :mod:`two_v_demo.peltier_ring`."""
+    from two_v_demo import peltier_ring as pr
+    from two_v_demo import seam_climate as sc
+
+    f = pr.facts()
+    lc, hum, ld, cmp, plan, day = f["listing"], f["humid"], f["loads"], f["compared"], f["plan"], f["daylight"]
+    p = hum["point"]
+    room = pr.weather("humid")
+
+    def n(v, d=0):
+        return lambda: f"{v:,.{d}f}"
+
+    add("ring.constants", "the ring's declared inputs", pr.constants_table)
+    add("ring.volts_table", "one module and ten, by voltage", pr.voltage_text)
+    add("ring.weather_table", "ten modules in three weathers, against the room's loads", pr.weather_text)
+    add("ring.plan_table", "the array and bank for 24/7, priced", pr.plan_text)
+    add("ring.modules", "modules in the ring", n(pr.C["modules"]))
+    add("ring.module_usd", "what one module cost", n(pr.C["module_usd"]))
+    add("ring.listed_w", "cooling power on the listing, W", n(lc["q_max_listed"]))
+    add("ring.true_w", "the module's real maximum, no temperature difference, W", n(lc["q_max_true"]))
+    add("ring.dt_max", "the listed maximum temperature difference, K", n(pr.C["dt_max"]))
+    add("ring.ideal_amps", "amps at 12 V with no back-voltage", n(lc["i_at_12v_ideal"], 1))
+    add("ring.amps", "amps at 12 V, mounted, humid day", n(p.amps, 1))
+    add("ring.listed_amps", "the listing's working current, middle", n(pr.C["i_listed"], 1))
+    add("ring.room_t", "the humid day's room, C", n(room[2]))
+    add("ring.room_rh", "and its relative humidity, %", n(100 * room[3]))
+    add("ring.out_t", "the humid day's outside, C", n(room[4]))
+    add("ring.dew_c", "the room's dew point that day, C", n(sc.dew_point(room[2], room[3]), 1))
+    add("ring.cold_c", "where the cold face settles at 12 V, C", n(p.t_cold, 1))
+    add("ring.hot_c", "where the hot face settles at 12 V, C", n(p.t_hot, 1))
+    add("ring.under_k", "how far under the dew point that is, K",
+        n(sc.dew_point(room[2], room[3]) - p.t_cold, 1))
+    setpoint = sc.plate_setpoint(sc.dew_point(room[2], room[3]))
+    add("ring.setpoint_c", "where the controller asks the plate to be, C", n(setpoint, 1))
+    add("ring.short_k", "how far the 12 V plate falls short of it, K", n(p.t_cold - setpoint, 1))
+    add("ring.q_each", "heat one module moves at 12 V, mounted, W", n(p.q_cold, 0))
+    add("ring.draw_each", "what one station draws, module and fans, W", n(p.p_station, 0))
+    add("ring.cop", "heat moved per watt, one module", n(p.cop, 2))
+    add("ring.latent_pct", "share of that heat that is water, %", n(100 * p.latent_share))
+    add("ring.water_each", "litres a day one module condenses", n(p.water_l_day, 2))
+    add("ring.cooling_w", "heat ten take out of the room, W", n(hum["cooling_w"]))
+    add("ring.outside_w", "heat ten throw outside, W", n(hum["outside_w"]))
+    add("ring.draw_w", "what ten draw, all day and night, W", n(hum["draw_w"]))
+    add("ring.kwh", "kWh a day, 24/7", n(hum["draw_kwh"], 1))
+    add("ring.water", "litres a day ten condense, humid day", n(hum["water_l_day"], 1))
+    add("ring.l_per_kwh", "litres per kWh", n(hum["litres_per_kwh"], 2))
+    add("ring.muggy_water", "litres a day on a muggy night", n(f["muggy"]["water_l_day"], 1))
+    add("ring.spring_water", "litres a day on a wet spring day", n(f["spring"]["water_l_day"], 1))
+    add("ring.load_water", "litres a day the room takes on, humid day", n(ld["water_l_day"], 1))
+    add("ring.people_water", "of it from two people breathing", n(ld["people_water_l_day"], 1))
+    add("ring.vent_water", "of it on the fresh air", n(ld["vent_water_l_day"], 1))
+    add("ring.water_pct", "share of the day's water ten remove, %",
+        n(100 * hum["water_l_day"] / ld["water_l_day"]))
+    add("ring.load_heat", "heat the room takes on, people and fresh air, W", n(ld["heat_w"]))
+    for v in (3, 6, 9):
+        r = f["volts"][v]
+        add(f"ring.v{v}_cold", f"cold face at {v} V, C", n(r["point"].t_cold, 1))
+        add(f"ring.v{v}_water", f"litres a day, ten at {v} V", n(r["water_l_day"], 1))
+        add(f"ring.v{v}_kwh", f"kWh a day, ten at {v} V", n(r["draw_kwh"], 1))
+        add(f"ring.v{v}_cop", f"heat moved per watt at {v} V", n(r["point"].cop, 2))
+    add("ring.best_v", "the voltage that makes the most water per kWh", n(f["best"]["point"].volts))
+    add("ring.best_lpk", "and its litres per kWh", n(f["best"]["litres_per_kwh"], 2))
+    add("ring.night_kwh", "kWh off the bank each night", n(plan.night_kwh, 1))
+    add("ring.array_w", "array to run ten 24/7, W", n(plan.array_w))
+    add("ring.array_usd", "and its price, USD", n(plan.array_usd))
+    add("ring.bank_kwh", "bank for a night and a dark day, kWh", n(plan.bank_nameplate_kwh, 1))
+    add("ring.bank_usd", "and its price, USD", n(plan.bank_usd))
+    add("ring.total_usd", "modules, array and bank, USD", n(plan.total_usd))
+    add("ring.times_modules", "power system against the modules' price",
+        n((plan.array_usd + plan.bank_usd) / plan.modules_usd))
+    add("ring.modules_usd", "ten modules, USD", n(plan.modules_usd))
+    add("ring.sun_hours", "peak sun hours a day (borrowed)", n(pr._borrowed("sun_hours_per_day"), 1))
+    add("ring.window_h", "hours the array outruns the load", n(pr.C["solar_window_h"]))
+    add("ring.dehum_kwh", "kWh a compressor dehumidifier takes for the same water", n(cmp["dehumidifier_kwh"], 1))
+    add("ring.times_dehum", "how many times more the ring takes", n(cmp["ratio_vs_dehumidifier"]))
+    add("ring.ac_cool_w", "the smallest window AC's cooling, W", n(cmp["ac_cool_w"]))
+    add("ring.ac_draw_w", "and what it draws, W", n(cmp["ac_draw_w"]))
+    add("ring.ac_cop", "its heat moved per watt", n(cmp["ac_cop"], 1))
+    add("ring.ring_cop", "the ring's heat moved per watt, fans included", n(cmp["ring_cop"], 2))
+    add("ring.day_hours", "daylight-surplus hours the book runs them", n(day["hours"]))
+    add("ring.day_kwh", "kWh a day on daylight surplus", n(day["kwh"], 1))
+    add("ring.day_litres", "litres a day on daylight surplus", n(day["litres"], 2))
+    add("ring.old_modules", "modules the book assumed before", n(pr.C["old_modules"]))
+    add("ring.old_watts", "watts each it assumed", n(pr.C["old_watts_each"]))
+    add("ring.old_lpk", "litres per kWh it assumed", n(pr.C["old_litres_per_kwh"], 2))
+    add("ring.old_kpl", "kWh a litre it implied", n(day["old_kwh_per_litre"], 2))
+    add("ring.new_kpl", "kWh a litre now", n(day["kwh_per_litre"], 2))
 
 
 if __name__ == "__main__":

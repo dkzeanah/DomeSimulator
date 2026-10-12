@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:42:22",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Built with the trees.\n\nTwo ropes for the X, 55 metres of spiral, four guys to four more trees, 363 metres of pigtails, one battery winch and, one day, a bigger one at the top. Forty triangles hung, joined and lifted without a scaffold, a crane or a foundation, by a network of living trees that were already doing the job. The ground can wait. Maybe it can wait for good.",
+  "watermark": "preserved model-provided watermark"
+}

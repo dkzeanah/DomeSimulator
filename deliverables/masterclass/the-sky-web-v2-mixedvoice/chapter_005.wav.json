@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:07:27",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "And how hard they pull.\n\nTwo wire ropes, crossing in the middle, carrying 2,640 kilograms of frame. A rope with weight on it pulls sideways on its ends, and the flatter it hangs, the harder it pulls. Sagging ten percent, 1.3 metres, with each triangle's cords on the rope nearest it, the worse rope pulls 27 kilonewtons: five-eighths wire rope, worked at a fifth of its strength. Pull it flatter, to five percent, and it doubles, to 51, and wants 3/4 in rope. With real struts, a deep sag is not a choice. It is the design.",
+  "watermark": "preserved model-provided watermark"
+}

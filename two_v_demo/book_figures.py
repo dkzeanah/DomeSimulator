@@ -863,6 +863,114 @@ def render_all(keys: tuple[str, ...] = (), skip_slow: bool = False,
     return results
 
 
+def figure_pixels(path: Path) -> str:
+    """A hash of a PNG's picture, ignoring the metadata around it.
+
+    Matplotlib stamps its own version into a ``tEXt`` chunk, so two renders
+    of an unchanged figure differ in bytes every time matplotlib is upgraded
+    while the drawing is identical. Comparing whole files would call every
+    figure in the book stale after an upgrade and hide the ones that really
+    did change; comparing the image header and the decompressed pixels does
+    not.
+    """
+    import struct
+    import zlib
+
+    data = path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        import hashlib
+        return hashlib.sha256(data).hexdigest()
+
+    position, header, pixels = 8, b"", bytearray()
+    while position < len(data):
+        (length,) = struct.unpack(">I", data[position:position + 4])
+        kind = data[position + 4:position + 8]
+        chunk = data[position + 8:position + 8 + length]
+        if kind == b"IHDR":
+            header = chunk[:8]
+        elif kind == b"IDAT":
+            pixels += chunk
+        position += 12 + length
+
+    import hashlib
+    return hashlib.sha256(header + zlib.decompress(bytes(pixels))).hexdigest()
+
+
+def stale_figures(keys: tuple[str, ...] = (), write: bool = False,
+                  on_line=None) -> dict[str, str]:
+    """Which drawn figures no longer match the code that draws them.
+
+    Every export places the *newest file on disk* for a figure key, and a
+    figure is only ever written when somebody renders it -- so a plot or a
+    diagram whose drawing code (or the token it reads) has changed keeps
+    printing its old picture, silently, for as long as nobody looks. That is
+    the failure this catches: it draws each plot and diagram again in a
+    scratch directory, compares the picture with the newest file on disk, and
+    reports the ones that differ.
+
+    ``write`` copies the changed renders into ``FIGURE_DIR`` under the next
+    version number, which is what makes them appear in the next export. The
+    text figures a manuscript points at are left alone: only ``book_plot``
+    and ``book_diagram`` sources are redrawn here, because those two are
+    computed from this repository's own code.
+
+    Returns a mapping of figure key to ``"stale"``, ``"written"``,
+    ``"missing"``, ``"identical"`` or ``"FAILED: ..."``.
+    """
+    import tempfile
+
+    from . import book_diagrams, book_plots
+    from .book_export import latest_figure
+
+    index = figure_index(BOOK)
+    wanted = keys or tuple(sorted(index))
+    results: dict[str, str] = {}
+
+    with tempfile.TemporaryDirectory() as scratch:
+        for key in wanted:
+            figure = index.get(key)
+            if figure is None or figure.source not in ("book_plot",
+                                                       "book_diagram"):
+                continue
+            drawer = (book_plots.PLOTS.get(figure.spec.get("plot"))
+                      if figure.source == "book_plot"
+                      else book_diagrams.DIAGRAMS.get(figure.spec.get("diagram")))
+            if drawer is None:
+                results[key] = "FAILED: no drawer for this figure"
+                continue
+            fresh = Path(scratch) / f"{key}.png"
+            try:
+                fig = drawer(figure)
+                fig.savefig(fresh)
+                import matplotlib.pyplot as plt
+                plt.close(fig)
+            except Exception as exc:  # noqa: BLE001 - a book renders partially
+                results[key] = f"FAILED: {exc}"
+                if on_line:
+                    on_line(f"{key}: {results[key]}")
+                continue
+
+            current = latest_figure(key)
+            if current is None or current.suffix != ".png":
+                results[key] = "missing"
+            elif figure_pixels(current) == figure_pixels(fresh):
+                results[key] = "identical"
+                continue
+            else:
+                results[key] = "stale"
+
+            if write:
+                target = FIGURE_DIR / f"{key}.png"
+                if target.exists():
+                    target = next_version(target)
+                target.write_bytes(fresh.read_bytes())
+                results[key] = "written"
+            if on_line:
+                on_line(f"{key}: {results[key]}")
+
+    return results
+
+
 def figure_report() -> str:
     """Every figure in the book, what draws it, and whether it exists yet."""
     index = figure_index(BOOK)
@@ -923,5 +1031,20 @@ def validate_figures() -> None:
 
 
 if __name__ == "__main__":
+    import sys
+
+    args = sys.argv[1:]
+    if args and args[0] in ("--stale", "--sync"):
+        # Reporting is the default; writing is asked for. A re-render is a
+        # new versioned deliverable, so it is a deliberate act.
+        report = stale_figures(write="--write" in args, on_line=print)
+        counts: dict[str, int] = {}
+        for verdict in report.values():
+            counts[verdict.split(":")[0]] = counts.get(verdict.split(":")[0], 0) + 1
+        print(", ".join(f"{count} {verdict}" for verdict, count in
+                        sorted(counts.items())))
+        print(f"figures live in {FIGURE_DIR}")
+        raise SystemExit(0)
+
     print(figure_report())
     validate_figures()

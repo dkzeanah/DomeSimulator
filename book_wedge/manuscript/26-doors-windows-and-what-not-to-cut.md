@@ -16,6 +16,10 @@ in domes comes from not believing it.
 
 ![Take whole panels. Cutting a strut means replacing a load path.](plate-openings.png)
 
+:::box clock "Not on the clock"
+Doors and windows are not on the {{clock.week}}-hour clock. The clock counts the frame, from the first log on the splitting stand to the last bolt in the shell -- Chapter {{ch.raise}} adds it up. They come after the shell stands, and they are the easiest work in the building to do slowly.
+:::
+
 ## Why a whole panel
 
 Chapter {{ch.triangles}} said a triangulated shell carries load because the
@@ -72,9 +76,10 @@ and already the thing the floor meets. Do not build a sill on top of it.
 
 4. **Hang a door in a rectangle inside that triangle.** Doors are
    rectangular; triangles are not. The leftover triangle above the head is
-   either a fixed light, a vent, or infill — and a fixed light is the best
-   answer because it puts daylight above head height where it does the most
-   good.
+   either a fixed light or infill — not a vent: the dome breathes through its
+   seams, with no opening in the cap (Chapter {{ch.breathe}}) — and a fixed
+   light is the best answer because it puts daylight above head height where
+   it does the most good.
 
 5. **Flash it under the cap.** The cap of Chapter {{ch.one_layer}} runs over
    the whole shell and the door is a hole in the shell, so the cap has to be

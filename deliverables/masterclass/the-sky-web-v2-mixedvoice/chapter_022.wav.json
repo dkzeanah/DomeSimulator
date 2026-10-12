@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "synthetic_voice": true,
+  "generated_at": "2026-10-11 23:27:33",
+  "backend": "chatterbox-turbo",
+  "voice": "my-voice-v002",
+  "voice_key": "0d7498a997ee70d2",
+  "tempo": 0.85,
+  "tweaks": {
+    "pitch_semitones": 0.0,
+    "body_semitones": 0.0,
+    "speed": 1.0,
+    "low_cut_hz": 0.0,
+    "high_cut_hz": 0.0,
+    "bass_db": 0.0,
+    "treble_db": 0.0
+  },
+  "text": "Cotton, soaked in silicone dissolved in naphtha.\n\nThe covering. Sailcloth would do, at about 25 dollars a square metre. The owner's way is cheaper: dissolve one hundred percent silicone in naphtha, soak cotton in it, and let the naphtha evaporate. The silicone stays in the fibres, a waterproof, chemically quiet skin. Two layers over 51 square metres of dome, with laps, take about 55 tubes of silicone, 65 litres of naphtha and 112 square metres of cotton: about 1,486 dollars, against 2,809 in sailcloth, and 55 kilograms. Silicone sticks to silicone, so layers stack into one skin; almost nothing else will stick to it later. Naphtha is very flammable: soak outdoors, far from any flame.",
+  "watermark": "preserved model-provided watermark"
+}
