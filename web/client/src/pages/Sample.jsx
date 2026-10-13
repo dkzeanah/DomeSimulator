@@ -9,8 +9,8 @@ export default function Sample() {
   const facts = useFacts();
   const book = offered(books, 'free');
   const sample = facts?.books?.sample;
-  const paperback = facts?.books?.paperback;
-  const n = paperback?.numbers;
+  const edition = facts?.books?.digital;
+  const n = edition?.numbers;
 
   return (
     <>
@@ -52,7 +52,7 @@ export default function Sample() {
           <div>
             <h2>What is in the sample</h2>
             <p>
-              Pages cut straight from the paperback -- its own page numbers, figures and tables -- so what you read is
+              Pages cut straight from the complete edition -- its own page numbers, figures and tables -- so what you read is
               exactly what the book prints. {sample.chapters.length} of its {sample.ofChapters} chapters:
             </p>
             <ol className="checklist">

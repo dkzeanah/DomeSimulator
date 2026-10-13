@@ -93,3 +93,4 @@ my_voice/
 .*-chunks-*/
 # Worked figures, cached by source hash (infill/facts.py); rebuilt on demand.
 infill/.cache/
+two_v_demo/.cache/

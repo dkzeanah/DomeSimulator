@@ -434,7 +434,9 @@ def cap_figures(document: str) -> str:
 #: The painted cover art, printed as the title page. It is 1024 x 1536 px, so
 #: at this page's text-block height it prints near 165 DPI -- under KDP's
 #: 300 DPI recommendation; a larger export of the same art is the fix.
-TITLE_ART = outline.ROOT / "Book-cover-final4.png"
+# The author's painted cover, re-lettered with the current title by
+# wedge_book.cover_type.reletter_painted (the original file is never touched).
+TITLE_ART = outline.ROOT / "book_wedge" / "cover" / "painted-front.png"
 
 
 def title_page() -> str:

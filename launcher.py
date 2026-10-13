@@ -1582,9 +1582,10 @@ def main() -> int:
 
     t, body, foot = scrollable_tab("Wedge Method Book")
     intro(body,
-         "The book: Geodesic Dome Wedge Method -- The 40 Hour Cabin, by "
-         "Donovan Zeanah. Its own editor, outline and figures (not the "
-         "2 Trees book). The text lives as Markdown in book_wedge/, every "
+         "The book: The 40 Hour Cabin -- Complete Edition, by Donovan "
+         "Zeanah: the frame, and every way to style it, priced (sold on the "
+         "site; the Amazon paperback is the separate 3 Trees book). Its own "
+         "editor, outline and figures. The text lives as Markdown in book_wedge/, every "
          "number in it is computed, and the figures are the raw-wedge solver "
          "run with the settings that make each idea visible. The KDP upload "
          "set -- print interior, light print figures, cover art and the "

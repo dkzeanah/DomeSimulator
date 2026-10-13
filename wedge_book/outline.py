@@ -60,8 +60,8 @@ FIGURE_DIR = store.BOOK_DIR / "figures"
 EXPORT_DIR = ROOT / "deliverables" / "book"
 STEM = "the-40-hour-cabin"
 
-TITLE = "Geodesic Dome Wedge Method"
-SUBTITLE = "The 40 Hour Cabin"
+TITLE = "The 40 Hour Cabin"
+SUBTITLE = "Complete Edition"
 AUTHOR = "Donovan Zeanah"
 
 
@@ -737,7 +737,7 @@ CH_SEAM_MODULE = Chapter(
     ))
 
 CH_BOM = Chapter(
-    number=77, ref="bom", strand="reference",
+    number=82, ref="bom", strand="reference",
     title="Every Part, Priced",
     deck="The column, the pad, the hardware, the power bench and the water "
          "bench -- the whole bill, with a source on every line",
@@ -1463,7 +1463,7 @@ PART_VARIATIONS = Part(
 # ----------------------------------------------------------------------
 
 CH_TOOLING = Chapter(
-    number=74, ref="tooling", strand="reference",
+    number=79, ref="tooling", strand="reference",
     title="The Software That Wrote This Book",
     deck="Eight three-dimensional worlds, a cost model and a solver -- what "
          "each one is for, what it can do, and how to open it",
@@ -1477,7 +1477,7 @@ CH_TOOLING = Chapter(
     ))
 
 CH_WORLDS = Chapter(
-    number=76, ref="worlds", strand="reference",
+    number=81, ref="worlds", strand="reference",
     title="What Each World Shows You",
     deck="One picture from every three-dimensional environment in the "
          "project, with what it is for and what to do in it",
@@ -1511,7 +1511,7 @@ CH_WORLDS = Chapter(
     ))
 
 CH_SCREEN = Chapter(
-    number=75, ref="screen", strand="explain",
+    number=80, ref="screen", strand="explain",
     title="From One Number to a Lit Pixel",
     deck="How every picture in this book was drawn: a strut given a body, a "
          "camera placed with two angles, three matrices, one divide, one "
@@ -1528,7 +1528,7 @@ CH_SCREEN = Chapter(
     ))
 
 CH_EVERY_PIECE = Chapter(
-    number=78, ref="everypiece", strand="howto",
+    number=83, ref="everypiece", strand="howto",
     title="Every Piece, Numbered",
     deck="The calculator that fills a triangle and frames the floor: every "
          "piece numbered, every cut set up on the saw before the blade turns, "
@@ -1582,8 +1582,98 @@ CH_EVERY_PIECE = Chapter(
     ))
 
 
+CH_STY_CABIN = Chapter(
+    number=74, ref="stycabin", strand="explain",
+    title="The Cabin in the Creator",
+    deck="The forty-hour cabin's dome rebuilt in the Dome Creator at its own size -- "
+         "the same struts and panels -- priced line by line, with every place the "
+         "Creator's figure and the wedge method's own differ, said out loud",
+    derives=("two_v_demo.cabin_styles", "two_v_demo.creator_facts"),
+    pages=(
+        _p("opener", "The same dome, in another tool",
+           "Why the Creator, and what it measures.", words=420,
+           figures=(_f("plate-sty-bare", "The cabin, bare, in the Creator."),)),
+        _p("table", "The bare cabin, line by line",
+           "Frame, panels, cladding, foundation; weight and hours.", words=380),
+        _p("text", "Where the two tools disagree",
+           "Floor area, the frame line, and the hours.", words=420),
+    ))
+
+CH_STY_TWELVE = Chapter(
+    number=75, ref="stytwelve", strand="howto",
+    title="Twelve Ways to Dress One Frame",
+    deck="The cabin's frame in the skin, colours and foundation of each of the "
+         "Creator's twelve designs: rendered, priced, weighed and timed",
+    derives=("two_v_demo.cabin_styles",),
+    pages=(
+        _p("opener", "A style is a skin and a footing",
+           "What carries over from a design, and what stays the cabin's.", words=360),
+        _p("text", "Timber and glass", "The workshop, the loft, the homestead.", words=320,
+           figures=(_f("plate-sty-timber-workshop", "The cabin as the Timber Workshop."), _f("plate-sty-glass-studio-loft", "The cabin as the Glass Studio Loft."), _f("plate-sty-split-log-homestead", "The cabin as the Split-Log Homestead."),)),
+        _p("text", "Trunks, twinwall and hexes", "The lodge, the grow dome, the pavilion.", words=300,
+           figures=(_f("plate-sty-whole-trunk-lodge--20-ft", "The cabin as the Whole Trunk Lodge - 20 ft."), _f("plate-sty-grow-dome", "The cabin as the Grow Dome."), _f("plate-sty-hex-cell-pavilion", "The cabin as the Hex Cell Pavilion."),)),
+        _p("text", "Open frames and concrete", "The hangar, the garden, the monocoque.", words=300,
+           figures=(_f("plate-sty-continuous-steel-arc-hangar", "The cabin as the Continuous Steel Arc Hangar."), _f("plate-sty-rebar-garden-dome", "The cabin as the Rebar Garden Dome."), _f("plate-sty-concrete-monocoque-form", "The cabin as the Concrete Monocoque Form."),)),
+        _p("text", "Mirrors and a treehouse", "The two mirrors, and the cabin up a tree.", words=320,
+           figures=(_f("plate-sty-woodland-hex-mirror", "The cabin as the Woodland Hex Mirror."), _f("plate-sty-woodland-square-mirror", "The cabin as the Woodland Square Mirror."), _f("plate-sty-treehouse-canopy-dome", "The cabin as the Treehouse Canopy Dome."),)),
+        _p("table", "All twelve, side by side", "Totals, weights, hours, and each line.", words=300),
+    ))
+
+CH_STY_MENUS = Chapter(
+    number=76, ref="stymenus", strand="howto",
+    title="One Menu at a Time",
+    deck="Every frame material, every panel, every cladding and every foundation "
+         "on the bare cabin in turn -- which menu moves the money, and by how much",
+    derives=("two_v_demo.cabin_styles",),
+    pages=(
+        _p("opener", "Change one thing", "The bare cabin as the fixed point.", words=260),
+        _p("table", "The frame", "Eight materials, each in its own section.", words=360),
+        _p("table", "The panels", "Fifteen skins.", words=300),
+        _p("table", "Cladding and foundation", "Over the skin, and under the floor.", words=320),
+        _p("text", "Where to spend", "The menus ranked by what they swing.", words=300),
+    ))
+
+CH_STY_GRID = Chapter(
+    number=77, ref="stygrid", strand="reference",
+    title="Every Skin on Every Frame",
+    deck="The permutations in full: every panel on every frame material, every "
+         "cladding on every foundation, each a priced rebuild of the cabin -- and "
+         "how many buildings the menus multiply to",
+    derives=("two_v_demo.cabin_styles", "two_v_demo.creator_facts"),
+    pages=(
+        _p("opener", "Every combination, priced", "How to read the two tables.", words=240),
+        _p("table", "Panel on frame", "One hundred and twenty cabins.", words=260),
+        _p("table", "Cladding on foundation", "Sixty-three more.", words=220),
+        _p("text", "How many domes that is", "The menus multiplied, and the inert settings.", words=300),
+    ))
+
+CH_STY_PRICES = Chapter(
+    number=78, ref="styprices", strand="reference",
+    title="The Price List, Item by Item",
+    deck="Every unit price the Creator uses, as declared -- frame, panels, cladding, "
+         "foundations, fixings, wire and pipe -- and every piece of equipment it can "
+         "put on the floor, with each design's fit-out priced as a package",
+    derives=("materials", "workshop", "two_v_demo.cabin_styles"),
+    pages=(
+        _p("opener", "Declared, not measured", "Whose numbers these are.", words=220),
+        _p("table", "The shell", "Frame, panels, cladding, foundations, fixings.", words=300),
+        _p("table", "Wire, pipe and walls", "The rates the fit-out uses.", words=200),
+        _p("table", "Everything on the floor", "Equipment by category; the fit-out packages.", words=360),
+    ))
+
+PART_STYLE = Part(
+    number=14, title="Style It",
+    epigraph="The frame is forty hours. Everything you will look at for the next "
+             "forty years goes on after it.",
+    promise="The cabin's frame dressed every way the Dome Creator can dress it -- "
+            "twelve styles rendered, every menu swept, every skin on every frame, "
+            "and every item on the price list -- each one a priced rebuild of the "
+            "same dome.",
+    chapters=(CH_STY_CABIN, CH_STY_TWELVE, CH_STY_MENUS, CH_STY_GRID, CH_STY_PRICES))
+
+
 PART_TOOLS = Part(
-    number=14, title="The Tools",
+    number=15, title="The Tools",
     epigraph="Every number in this book came out of a program about a second "
              "before it reached the page. Here are the programs.",
     promise="What ships with this book: the solver, the worlds, the cost "
@@ -2153,7 +2243,7 @@ PART_STEMCELL = Part(
 PARTS: tuple[Part, ...] = (PART_RIGHT, PART_MATHS, PART_STICK, PART_PANEL,
                            PART_SKIN, PART_WATER, PART_FLOOR, PART_ECON, PART_NETWORK, PART_SHAPES,
                            PART_CATALOGUE, PART_STEMCELL, PART_VARIATIONS,
-                           PART_TOOLS)
+                           PART_STYLE, PART_TOOLS)
 
 BOOK = Book(title=TITLE, subtitle=SUBTITLE, front=FRONT, parts=PARTS,
             back=BACK)

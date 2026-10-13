@@ -1,5 +1,5 @@
 ---
-chapter: 76
+chapter: 81
 title: What Each World Shows You
 strand: reference
 status: draft
@@ -7,7 +7,7 @@ target: 1080
 updated: 2026-09-25
 ---
 
-# 76. What Each World Shows You
+# 81. What Each World Shows You
 
 One picture from every three-dimensional environment that ships with this
 book, what it is for, and what to do once you are in it.

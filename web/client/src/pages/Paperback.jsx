@@ -1,4 +1,4 @@
-// The paperback: coming to Amazon. Until there is an Amazon link, the page
+// The paperback: DeepSeek's 3 Trees book, coming to Amazon. Until there is an Amazon link, the page
 // gathers a launch list; with one, it is a Buy on Amazon button.
 
 import { Link } from 'react-router-dom';
@@ -18,19 +18,20 @@ export default function Paperback() {
       <section className="sales-hero">
         <div>
           <p className="eyebrow">{book?.amazonUrl ? 'On Amazon' : 'Coming to Amazon'} · paperback</p>
-          <h1>From a standing tree to a dry, raised shell.</h1>
+          <h1>{n ? `${n.trees} trees. One chainsaw. A ${n.diameterFt}-foot geodesic cabin.` : 'Trees, one chainsaw, and a geodesic cabin.'}</h1>
           <p className="lead">
             <b>{paperback ? fullTitle(paperback.title, paperback.subtitle) : book ? fullTitle(book.title, book.subtitle) : ''}</b>
-            {paperback?.author ? `, by ${paperback.author}` : ''}. A timber cabin framed from trees you split yourself:
-            what has to be right, the geometry from one number, the stick, the panel, the skin, the seam, the ground,
-            and what all of it costs -- every length, angle and price computed from the geometry.
+            {book?.author ? `, by ${book.author}` : ''}. The whole method in print, start to finish -- felling, splitting,
+            the jig, the panels, raising the shell -- then why it scales, and everything it grows into. Every length,
+            angle and dollar in it is computed by the project's own open model.
           </p>
           {n && (
             <ul className="stats">
-              <li><b>{n.frameHours} h</b> of frame work</li>
-              <li><b>{n.members}</b> members in two lengths</li>
-              <li><b>{n.panels}</b> panels, one jig</li>
-              <li><b>{n.diameterFt} ft</b> across, <b>{n.floorSqft}</b> sq ft</li>
+              <li><b>{n.days}</b> days, tree to shell</li>
+              <li><b>{n.strutsPerTree}</b> struts from one tree</li>
+              <li><b>{n.members}</b> members, <b>{n.panels}</b> panels</li>
+              <li><b>{n.floorSqft}</b> sq ft of floor</li>
+              <li><b>${n.sawUsd}</b> chainsaw</li>
             </ul>
           )}
         </div>
@@ -71,19 +72,16 @@ export default function Paperback() {
         <div className="panel">
           <h3>A book that shows its working</h3>
           <p className="muted">
-            Every figure in it -- the {n ? `${n.members} members` : 'members'}, the cut lengths, the hours, the
-            {n ? ` $${n.frameUsd} frame` : ' frame'} and the {n ? `$${n.shellUsd}` : ''} it costs to build the whole
-            dome -- is produced by the project's open software when the book is built. Nothing is typed in, so nothing
-            goes quietly stale.
+            Every figure in it -- the {n ? `${n.members} members` : 'members'}, the cut lengths, the days and the
+            dollars -- is produced by the project's open software when the book is built. Nothing is typed in, so
+            nothing goes quietly stale.
           </p>
         </div>
         <div className="panel">
-          <h3>And says where the savings are not</h3>
+          <h3>Build it day by day</h3>
           <p className="muted">
-            Most of the saving is building it yourself -- the margin and the labour anyone keeps who builds their own
-            house. The dome's own shape is a real saving and a small one
-            {n?.unchangedPct ? `, and ${n.unchangedPct} percent of what a house costs does not care what shape it is at all` : ''}.
-            The book prints those numbers too.
+            The build in the order it happens, from the saw on day zero to a closed shell, then why the same nine
+            processes work at any size, and the variations the frame can become.
           </p>
         </div>
       </section>
@@ -92,10 +90,10 @@ export default function Paperback() {
         <section className="closing">
           <h2>Want the long version now?</h2>
           <p className="lead">
-            The digital edition, <b>{paid.subtitle}</b>, is the whole build day by day plus how it scales -- sold only
-            on this site, {price(paid.priceCents, paid.currency)}.
+            The complete edition, <b>{fullTitle(paid.title, paid.subtitle)}</b>, is the 40-hour frame plus every way to
+            finish it, priced -- sold only on this site, {price(paid.priceCents, paid.currency)}.
           </p>
-          <Link className="button primary big" to={`/${paid.page || 'buy'}`}>See the digital edition</Link>
+          <Link className="button primary big" to={`/${paid.page || 'buy'}`}>See the complete edition</Link>
         </section>
       )}
     </>

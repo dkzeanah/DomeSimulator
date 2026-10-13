@@ -422,6 +422,25 @@ PRESETS: tuple[RenderPreset, ...] = (
            "joists, every span and pier checked, seven patterns and five "
            "materials compared. Every figure from infill.facts."),
 
+    _video("cabin_styles", "cabin_styles", "the-40-hour-cabin-styled.mp4",
+           "THE 40 HOUR CABIN, STYLED TWELVE WAYS. The book's own dome built in "
+           "the Dome Creator at its own size, bare and then dressed in the "
+           "finishes of each of the Creator's twelve designs, each priced, "
+           "weighed and timed by the Creator's model. Every figure from "
+           "cabin_styles."),
+
+    RenderPreset(
+        key="cabin_styles_stills",
+        label="the cabin styled -- one still per chapter",
+        summary="A still from each chapter of the styled-cabin film, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_styles",
+            "action": "shots",
+            "shots": chapter_shots("cabin_styles"),
+        },
+    ),
+
     RenderPreset(
         key="cabin_every_piece_stills",
         label="every piece, numbered -- one still per chapter",

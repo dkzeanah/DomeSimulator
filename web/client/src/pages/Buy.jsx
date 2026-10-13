@@ -1,4 +1,6 @@
-// The sales page for the digital edition, sold here.
+// The sales page for the complete edition, sold here: the 40-hour frame plus
+// every way to style the dome, priced. (The Amazon paperback is a different
+// book -- see Paperback.jsx.)
 
 import { Link, useSearchParams } from 'react-router-dom';
 import BuyBox from '../components/BuyBox.jsx';
@@ -12,7 +14,12 @@ export default function Buy() {
   const digital = facts?.books?.digital;
   const n = digital?.numbers;
   const amount = book ? price(book.priceCents, book.currency) : '';
-  const [build, scale, variations] = digital?.parts || [];
+  const parts = digital?.parts || [];
+  const styleAt = parts.findIndex((p) => p.title === 'Style It');
+  const frameParts = styleAt > 0 ? parts.slice(0, styleAt) : [];
+  const style = styleAt >= 0 ? parts[styleAt] : null;
+  const tools = parts.find((p) => p.title === 'The Tools');
+  const frameChapters = frameParts.reduce((sum, p) => sum + p.chapters.length, 0);
 
   return (
     <>
@@ -21,20 +28,21 @@ export default function Buy() {
       )}
       <section className="sales-hero">
         <div>
-          <p className="eyebrow">The digital edition · PDF · sold only here</p>
-          <h1>{n ? `${n.trees} trees. One chainsaw. A ${n.diameterFt}-foot geodesic cabin.` : 'Trees, one chainsaw, and a geodesic cabin.'}</h1>
+          <p className="eyebrow">The complete edition · PDF · sold only here</p>
+          <h1>The 40-hour frame, and every way to finish it -- priced.</h1>
           <p className="lead">
-            <b>{book ? fullTitle(book.title, book.subtitle) : ''}</b> is the whole method, start to finish -- felling,
-            splitting, the jig, the panels, raising the shell -- and then everything it grows into. Every length,
-            angle, hour and dollar in it is computed by the project's own open model, not guessed.
+            <b>{book ? fullTitle(book.title, book.subtitle) : ''}</b> takes a geodesic cabin from standing trees to a
+            dry, raised shell -- split-log members, one jig, every length and angle -- and then dresses that same frame
+            every way the project's Dome Creator can: finishes rendered and priced, every material and panel swept,
+            every item on the floor on one price list. Every figure is computed by the project's own open software.
           </p>
           {n && (
             <ul className="stats">
-              <li><b>{n.days}</b> days, tree to shell</li>
-              <li><b>{n.strutsPerTree}</b> struts from one tree</li>
+              <li><b>{n.frameHours} h</b> of frame work</li>
               <li><b>{n.members}</b> members, <b>{n.panels}</b> panels</li>
-              <li><b>{n.floorSqft}</b> sq ft of floor</li>
-              <li><b>${n.sawUsd}</b> chainsaw</li>
+              <li><b>{n.styles}</b> finishes rendered, <b>${n.styleLowUsd}</b> to <b>${n.styleHighUsd}</b></li>
+              <li><b>{n.combos}</b> frame-and-panel combinations priced</li>
+              <li><b>{n.items}</b> fit-out items on one price list</li>
             </ul>
           )}
         </div>
@@ -52,37 +60,37 @@ export default function Buy() {
 
       <section>
         <p className="eyebrow">What you get</p>
-        <h2>Three books in one</h2>
+        <h2>The frame, the finish, and the tools behind them</h2>
         <div className="cards">
-          {build && (
+          {frameParts.length > 0 && (
             <div className="card">
-              <h3>{build.title}</h3>
-              <p className="muted">{build.chapters.length} chapters</p>
+              <h3>The 40-hour frame</h3>
+              <p className="muted">{frameParts.length} Parts · {frameChapters} chapters</p>
               <p>
-                The build, day by day: the saw on Day Zero, felling, bucking, ripping, the jig, the panels, raising the
-                shell. Then closing it in, doors and windows, weather, finishing,
-                heat and power -- and what the author would do differently.
+                What has to be right, the geometry from one number, the tree and the split, the panel and its jig,
+                the skin, the seam, the floor and the ground, what it costs and what it is worth -- and the
+                variations, from hubs to a dome hung in the trees.
               </p>
             </div>
           )}
-          {scale && (
+          {style && (
             <div className="card">
-              <h3>{scale.title}</h3>
-              <p className="muted">{scale.chapters.length} chapters</p>
+              <h3>{style.title}</h3>
+              <p className="muted">{style.chapters.length} chapters</p>
               <p>
-                Why the parts list does not grow with the house: the same nine processes at any size, what an hour at
-                the log is worth, where the fuel goes, why a round house needs less skin, and the pad you keep when you
-                move.
+                The same frame in the Dome Creator: dressed in twelve finishes and rendered, every frame material,
+                panel, cladding and foundation swept, every skin on every frame priced, and every item you could put
+                on the floor on one list.
               </p>
             </div>
           )}
-          {variations && (
+          {tools && (
             <div className="card">
-              <h3>{variations.title}</h3>
-              <p className="muted">{variations.chapters.length} chapters</p>
+              <h3>{tools.title}</h3>
+              <p className="muted">{tools.chapters.length} chapters</p>
               <p>
-                Everything else the frame can become: hats you stack for warmth, the floating dome, the boat-hull
-                shell, hubs or no hubs, zomes, the seam that does four jobs, and the module catalogue.
+                The software that wrote the book and how to drive it: the solver, the 3-D worlds, the cutting
+                calculator that numbers every piece and sets up every saw cut, and every part priced.
               </p>
             </div>
           )}
@@ -138,9 +146,9 @@ export default function Buy() {
         <details className="faq">
           <summary>Is this the same as the paperback?</summary>
           <p>
-            No. They are two books from the same project. This digital edition is the long one: the full day-by-day
-            build, why it scales, and the variations. The paperback, <i>The 40 Hour Cabin</i>, is a tighter print book
-            coming to Amazon -- <Link to="/paperback">see it here</Link>. The free sample is from the paperback.
+            No. They are two books from the same project. This complete edition is the frame and every way to finish
+            it, priced, and it is sold only here. The paperback on Amazon is the trees-and-chainsaw build, day by day
+            -- <Link to="/paperback">see it here</Link>. The free sample is cut from this complete edition.
           </p>
         </details>
         <details className="faq">
@@ -166,14 +174,14 @@ export default function Buy() {
         <details className="faq">
           <summary>Can I read some of it first?</summary>
           <p>
-            Yes -- <Link to="/sample">the free sample</Link> is the opening chapters of the paperback, exactly as printed.
+            Yes -- <Link to="/sample">the free sample</Link> is the opening chapters of this complete edition, exactly as built.
           </p>
         </details>
       </section>
 
       {book && (
         <section className="closing">
-          <h2>Start with the trees you have.</h2>
+          <h2>Frame it in forty hours. Finish it your way.</h2>
           <p className="lead">{amount}, once. Every future edition included.</p>
           <BuyBox book={book} compact />
         </section>

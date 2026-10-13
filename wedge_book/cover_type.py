@@ -1,8 +1,12 @@
 """The cover's lettering, set over the rendered scene.
 
 The layout follows the painted cover the author chose: a heavy slab title in
-forest green with a geodesic sphere for the O, WEDGE METHOD in wood, the
-subtitle between rules, and the author on a board at the foot. The sphere is
+forest green with a geodesic sphere for its last O, the second line in wood,
+the subtitle between rules, and the author on a board at the foot. Since
+2026-10-12 the title is THE 40 HOUR / CABIN and the subtitle COMPLETE EDITION:
+the old GEODESIC DOME / WEDGE METHOD is the Amazon paperback's title now.
+:func:`reletter_painted` sets the same lettering over the author's painted
+cover, after filling the old title out of its sky. The sphere is
 drawn from the real 2V mesh seen from above -- the same drawing as the site's
 logo -- so even the letter O is the book's own dome.
 
@@ -10,7 +14,8 @@ Everything is placed inside KDP's safe area: 0.3 in inside the trim, where
 the trim is 0.125 in inside the top, bottom and outer edges of this front
 panel. Its left edge is the spine fold, which has no bleed.
 
-    py -3.12 -m wedge_book.cover_type      # scene.png -> cover-front.png
+    py -3.12 -m wedge_book.cover_type      # scene.png -> cover-front.png,
+                                           # and the painted cover re-lettered
 """
 
 from __future__ import annotations
@@ -34,8 +39,17 @@ WOOD_DARK, WOOD_LIGHT = (92, 52, 22), (150, 96, 46)
 INK = (24, 22, 20)
 CREAM = (246, 234, 206)
 
-SUBTITLE_WORDS = outline.SUBTITLE.upper()     # THE 40 HOUR CABIN
-TITLE_TOP, TITLE_BOTTOM = "GEODESIC DOME", "WEDGE METHOD"
+SUBTITLE_WORDS = outline.SUBTITLE.upper()     # COMPLETE EDITION
+TITLE_TOP, TITLE_BOTTOM = "THE 40 HOUR", "CABIN"
+REFERENCE_W = 2588
+"""The rendered front's width; every spacing below is in its pixels and is
+scaled for art of another size."""
+PAINTED = outline.ROOT / "Book-cover-final4.png"
+PAINTED_OUT = cover_scene.OUT_DIR / "painted-front.png"
+PAINTED_BAND = (40, 396)
+"""Rows of the painted art (1024 x 1536) that hold its old lettering:
+GEODESIC DOME, WEDGE METHOD and the ribbon under them (which ends at row 352),
+measured off the art, with room below it for the fill to fade out."""
 
 
 def geodesic_badge(size: int) -> Image.Image:
@@ -103,6 +117,68 @@ def fit_font(path: str, text: str, width: int, start: int = 400) -> ImageFont.Fr
     return ImageFont.truetype(path, size)
 
 
+def title_block(img: Image.Image, left: int, right: int, top: int) -> tuple[Image.Image, int]:
+    """THE 40 HOUR / CABIN / COMPLETE EDITION, set between ``left`` and
+    ``right`` from ``top`` down. Returns the image and the block's bottom."""
+    W = img.width
+    k = W / REFERENCE_W
+    width = right - left
+    cx = (left + right) / 2
+
+    # Line one, its last O a sphere.
+    font = fit_font(FONT_HEAVY, TITLE_TOP, width)
+    split = TITLE_TOP.rfind("O")
+    before, after = TITLE_TOP[:split], TITLE_TOP[split + 1:]
+    cap = font.getbbox("D")
+    cap_h = cap[3] - cap[1]
+    o_w = font.getlength("O")
+    total = font.getlength(before) + o_w + font.getlength(after)
+    x0 = cx - total / 2
+    y0 = top + 20 * k - cap[1]
+    mask = _text_mask(img.size, before, font, (x0, y0))
+    mask2 = _text_mask(img.size, after, font, (x0 + font.getlength(before) + o_w, y0))
+    mask = Image.fromarray(np.maximum(np.asarray(mask), np.asarray(mask2)))
+    img = _shadowed(img, mask, Image.new("RGB", img.size, GREEN), max(2, round(5 * k)), (238, 226, 196),
+                    max(4, round(14 * k)))
+    badge_size = int(cap_h * 1.04)
+    badge = geodesic_badge(badge_size)
+    bx = int(x0 + font.getlength(before) + (o_w - badge_size) / 2)
+    by = int(top + 20 * k + (cap_h - badge_size) / 2)
+    ring = Image.new("L", img.size, 0)
+    r = max(2, round(5 * k))
+    ImageDraw.Draw(ring).ellipse((bx - r, by - r, bx + badge_size + r, by + badge_size + r), fill=255)
+    img = Image.composite(Image.new("RGB", img.size, (238, 226, 196)), img, ring)
+    img.paste(badge, (bx, by), badge)
+    line1_bottom = top + 20 * k + cap_h
+
+    # Line two, in wood -- a short word, so held to a size beside line one.
+    font2 = fit_font(FONT_HEAVY, TITLE_BOTTOM, int(width * 0.86))
+    while font2.getbbox("W")[3] - font2.getbbox("W")[1] > cap_h * 1.35 and font2.size > 20:
+        font2 = ImageFont.truetype(FONT_HEAVY, font2.size - 4)
+    cap2 = font2.getbbox("W")
+    y2 = line1_bottom + 40 * k - cap2[1]
+    x2 = cx - font2.getlength(TITLE_BOTTOM) / 2
+    mask = _text_mask(img.size, TITLE_BOTTOM, font2, (x2, y2))
+    img = _shadowed(img, mask, wood_fill(img.size), max(2, round(4 * k)), (240, 228, 200), max(4, round(12 * k)))
+    line2_bottom = line1_bottom + 40 * k + (cap2[3] - cap2[1])
+
+    # The subtitle, between rules.
+    font3 = ImageFont.truetype(FONT_BOLD, int(cap_h * 0.54))
+    sub_w = font3.getlength(SUBTITLE_WORDS)
+    cap3 = font3.getbbox("T")
+    y3 = line2_bottom + 46 * k - cap3[1]
+    mask = _text_mask(img.size, SUBTITLE_WORDS, font3, (cx - sub_w / 2, y3))
+    img = _shadowed(img, mask, Image.new("RGB", img.size, INK), max(1, round(3 * k)), (246, 232, 204),
+                    max(3, round(8 * k)))
+    rule_y = line2_bottom + 46 * k + (cap3[3] - cap3[1]) / 2
+    draw = ImageDraw.Draw(img)
+    gap, length = 36 * k, min(260 * k, (width - sub_w) / 2 - 60 * k)
+    for sign in (-1, 1):
+        start = cx + sign * (sub_w / 2 + gap)
+        draw.line((start, rule_y, start + sign * length, rule_y), fill=INK, width=max(2, round(6 * k)))
+    return img, int(line2_bottom + 46 * k + (cap3[3] - cap3[1]))
+
+
 def compose(scene: Image.Image) -> Image.Image:
     img = scene.convert("RGB")
     W, H = img.size
@@ -110,52 +186,9 @@ def compose(scene: Image.Image) -> Image.Image:
     top, bottom = BLEED + SAFE, H - BLEED - SAFE
     width = right - left
     cx = (left + right) / 2
-
-    # GEODESIC DOME, the O as a sphere.
+    img, _end = title_block(img, left, right, top)
     font = fit_font(FONT_HEAVY, TITLE_TOP, width)
-    before, after = "GEODESIC D", "ME"
-    cap = font.getbbox("D")
-    cap_h = cap[3] - cap[1]
-    o_w = font.getlength("O")
-    total = font.getlength(before) + o_w + font.getlength(after)
-    x0 = cx - total / 2
-    y0 = top + 20 - cap[1]
-    mask = _text_mask(img.size, before, font, (x0, y0))
-    mask2 = _text_mask(img.size, after, font, (x0 + font.getlength(before) + o_w, y0))
-    mask = Image.fromarray(np.maximum(np.asarray(mask), np.asarray(mask2)))
-    img = _shadowed(img, mask, Image.new("RGB", img.size, GREEN), 5, (238, 226, 196), 14)
-    badge_size = int(cap_h * 1.04)
-    badge = geodesic_badge(badge_size)
-    bx = int(x0 + font.getlength(before) + (o_w - badge_size) / 2)
-    by = int(top + 20 + (cap_h - badge_size) / 2)
-    ring = Image.new("L", img.size, 0)
-    ImageDraw.Draw(ring).ellipse((bx - 5, by - 5, bx + badge_size + 5, by + badge_size + 5), fill=255)
-    img = Image.composite(Image.new("RGB", img.size, (238, 226, 196)), img, ring)
-    img.paste(badge, (bx, by), badge)
-    line1_bottom = top + 20 + cap_h
-
-    # WEDGE METHOD, in wood.
-    font2 = fit_font(FONT_HEAVY, TITLE_BOTTOM, int(width * 0.86))
-    cap2 = font2.getbbox("W")
-    y2 = line1_bottom + 40 - cap2[1]
-    x2 = cx - font2.getlength(TITLE_BOTTOM) / 2
-    mask = _text_mask(img.size, TITLE_BOTTOM, font2, (x2, y2))
-    img = _shadowed(img, mask, wood_fill(img.size), 4, (240, 228, 200), 12)
-    line2_bottom = line1_bottom + 40 + (cap2[3] - cap2[1])
-
-    # THE 40 HOUR CABIN, between rules.
-    font3 = ImageFont.truetype(FONT_BOLD, int(cap_h * 0.54))
-    sub_w = font3.getlength(SUBTITLE_WORDS)
-    cap3 = font3.getbbox("T")
-    y3 = line2_bottom + 46 - cap3[1]
-    mask = _text_mask(img.size, SUBTITLE_WORDS, font3, (cx - sub_w / 2, y3))
-    img = _shadowed(img, mask, Image.new("RGB", img.size, INK), 3, (246, 232, 204), 8)
-    rule_y = line2_bottom + 46 + (cap3[3] - cap3[1]) / 2
-    draw = ImageDraw.Draw(img)
-    gap, length = 36, min(260, (width - sub_w) / 2 - 60)
-    for sign in (-1, 1):
-        start = cx + sign * (sub_w / 2 + gap)
-        draw.line((start, rule_y, start + sign * length, rule_y), fill=INK, width=6)
+    cap_h = font.getbbox("D")[3] - font.getbbox("D")[1]
 
     # The author, on a board.
     font4 = ImageFont.truetype(FONT_BOLD, int(cap_h * 0.62))
@@ -185,11 +218,65 @@ def compose(scene: Image.Image) -> Image.Image:
     return img
 
 
+def _diffuse(band: np.ndarray, top_row: np.ndarray, bottom_row: np.ndarray, steps: int) -> np.ndarray:
+    """Relax ``band`` toward the smooth surface that meets its top and bottom
+    rows: each pass, every pixel becomes the mean of its four neighbours."""
+    for _ in range(steps):
+        padded = np.concatenate([top_row[None], band, bottom_row[None]], axis=0)
+        avg = (padded[:-2] + padded[2:] + np.roll(band, 1, axis=1) + np.roll(band, -1, axis=1)) / 4.0
+        avg[:, 0] = (padded[:-2, 0] + padded[2:, 0] + band[:, 1] * 2) / 4.0
+        avg[:, -1] = (padded[:-2, -1] + padded[2:, -1] + band[:, -2] * 2) / 4.0
+        band = avg
+    return band
+
+
+def _fill_band(art: Image.Image, top: int, bottom: int) -> Image.Image:
+    """The old lettering painted out: the band is filled with the smooth
+    surface that meets the painting above and below it -- worked out at an
+    eighth of the size so it can settle across the whole band, then refined
+    at full size -- and given back a little grain so it does not read flat.
+    The author's file is never written to."""
+    px = np.asarray(art.convert("RGB")).astype(np.float32)
+    above, below = px[top - 1], px[bottom + 1]
+    h, w = bottom - top + 1, px.shape[1]
+    f = 8
+    small_h, small_w = max(2, h // f), max(2, w // f)
+    sa = np.asarray(Image.fromarray(above[None].astype(np.uint8)).resize((small_w, 1), Image.BILINEAR))[0]
+    sb = np.asarray(Image.fromarray(below[None].astype(np.uint8)).resize((small_w, 1), Image.BILINEAR))[0]
+    t = np.linspace(0.0, 1.0, small_h)[:, None, None]
+    small = sa[None].astype(np.float32) * (1 - t) + sb[None].astype(np.float32) * t
+    small = _diffuse(small, sa.astype(np.float32), sb.astype(np.float32), 3000)
+    band = np.asarray(Image.fromarray(np.clip(small, 0, 255).astype(np.uint8)).resize((w, h), Image.BICUBIC))
+    band = _diffuse(band.astype(np.float32), above, below, 300)
+    rng = np.random.default_rng(12)
+    band += rng.normal(0.0, 2.0, band.shape).astype(np.float32)
+    px[top:bottom + 1] = band
+    filled = Image.fromarray(np.clip(px, 0, 255).astype(np.uint8))
+    mask = Image.new("L", art.size, 0)
+    # The lower edge fades over a wider strip, so trees at the sides grow back
+    # out of the fill instead of starting at a line.
+    ImageDraw.Draw(mask).rectangle((0, top, art.width, bottom - 10), fill=255)
+    return Image.composite(filled, art.convert("RGB"), mask.filter(ImageFilter.GaussianBlur(8)))
+
+
+def reletter_painted(src: Path = PAINTED, out: Path = PAINTED_OUT) -> Path:
+    """The author's painted cover with the current title, as a new file."""
+    art = Image.open(src).convert("RGB")
+    top, bottom = PAINTED_BAND
+    img = _fill_band(art, top, bottom)
+    margin = round(art.width * 0.05)
+    img, _end = title_block(img, margin, art.width - margin, top - round(art.width * 0.012))
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out)
+    return out
+
+
 def main() -> int:
     scene = Image.open(cover_scene.OUT_DIR / "scene.png")
     out = cover_scene.OUT_DIR / "cover-front.png"
     compose(scene).save(out)
     print(out)
+    print(reletter_painted())
     return 0
 
 

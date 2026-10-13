@@ -17,13 +17,13 @@ export default function Home() {
 
   const sample = offered(books, 'free');
   const pages = facts?.books?.sample?.pages;
-  const n = facts?.books?.paperback?.numbers;
+  const n = facts?.books?.digital?.numbers;
   const dome = facts?.dome;
   return (
     <>
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Geodesic Dome Wedge Method</p>
+          <p className="eyebrow">The 40 Hour Cabin</p>
           <h1>Frame a house from trees you split yourself.</h1>
           <p className="lead">
             A geodesic cabin whose frame is split from logs with a chainsaw -- no mill, no planer, no lumber yard. Every
@@ -40,7 +40,7 @@ export default function Home() {
             </ul>
           )}
           <p className="row hero-links">
-            <Link to="/buy" className="button ghost">The digital edition</Link>
+            <Link to="/buy" className="button ghost">The complete edition</Link>
             <Link to="/paperback" className="button ghost">The paperback</Link>
           </p>
         </div>
@@ -52,7 +52,7 @@ export default function Home() {
               <h2>Read the opening chapters free</h2>
               <p className="muted">
                 What has to be right, what you are allowed to get wrong, and the cut the whole method rests on -- exactly
-                as the paperback prints them.
+                as the complete edition prints them.
               </p>
               <BookGate book={sample} cta="Send me the free sample" after={<Upsell books={books} facts={facts} />} />
             </>

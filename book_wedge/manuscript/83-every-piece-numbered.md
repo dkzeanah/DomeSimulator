@@ -1,5 +1,5 @@
 ---
-chapter: 78
+chapter: 83
 title: Every Piece, Numbered
 strand: howto
 status: draft
@@ -7,7 +7,7 @@ target: 4400
 updated: 2026-10-12
 ---
 
-# 78. Every Piece, Numbered
+# 83. Every Piece, Numbered
 
 Two things in this building are made of a great many small pieces of wood,
 and both are where a builder loses days. One is the inside of a triangle,

@@ -18,6 +18,7 @@ from .lesson_seam_climate import CABIN_SEAM_CLIMATE_LESSON
 from .lesson_cell_wall import CABIN_CELL_WALL_LESSON
 from .lesson_sky_web import SKY_WEB_LESSON
 from .lesson_every_piece import EVERY_PIECE_LESSON
+from .lesson_cabin_styles import CABIN_STYLES_LESSON
 from .lesson_cuts import CUTS_LESSON
 from .lesson_dome_park import DOME_PARK_LESSON
 from .lesson_bring_your_own_dome import BYOD_LESSON
@@ -78,7 +79,7 @@ LESSONS: dict[str, Lesson] = {
                    CABIN_LINSEED_OIL_LESSON,
                    CABIN_SEAM_CLIMATE_LESSON, CABIN_PANEL_METHOD_LESSON,
                    CABIN_SHOP_LESSON, CABIN_CELL_WALL_LESSON,
-                   SKY_WEB_LESSON, EVERY_PIECE_LESSON)
+                   SKY_WEB_LESSON, EVERY_PIECE_LESSON, CABIN_STYLES_LESSON)
 }
 
 # Every earlier film, re-staged in the Cabin World (two_v_demo/cabin_stage.py):

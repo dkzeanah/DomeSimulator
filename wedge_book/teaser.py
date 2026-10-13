@@ -252,10 +252,11 @@ def offer_page(where: dict) -> str:
         digital = f"""
   <div class="offer">
     <span class="price">{e(where['price'])}</span>
-    <h2>Read the digital edition today</h2>
+    <h2>Read the complete edition today</h2>
     <p><b>{e(paid['title'])}{((' — ' if ':' in paid['subtitle'] else ': ') + e(paid['subtitle'])) if paid.get('subtitle') else ''}</b>
-    -- the long version: the whole build day by day, why it scales, and every variation
-    the project has worked out. A PDF, sold only on the website, with every future
+    -- the rest of this book: the 40-hour frame from tree to raised shell, then every way
+    to finish it -- twelve styles rendered, every material and panel priced, every item
+    on the floor on one list. A PDF, sold only on the website, with every future
     edition included.</p>
     <p class="url"><a href="{e(where['url'])}/{e(paid.get('page') or 'book')}">{e(where['host'])}/{e(paid.get('page') or 'book')}</a></p>
   </div>"""
@@ -266,7 +267,8 @@ def offer_page(where: dict) -> str:
         kdp = f"""
   <div class="offer">
     <h2>The paperback</h2>
-    <p><b>{e(outline.TITLE)}: {e(outline.SUBTITLE)}</b> -- this book, in print. {e(status)}</p>
+    <p><b>{e(amazon['title'])}{((' — ' if ':' in amazon['subtitle'] else ': ') + e(amazon['subtitle'])) if amazon.get('subtitle') else ''}</b>
+    -- the project's other book: three trees, one chainsaw, the build day by day. {e(status)}</p>
     <p class="url"><a href="{amazon.get('amazonUrl') or where['url'] + '/' + (amazon.get('page') or 'paperback')}">{e(where['host'])}/{e(amazon.get('page') or 'paperback')}</a></p>
   </div>"""
     return f"""
@@ -275,7 +277,8 @@ def offer_page(where: dict) -> str:
   <h1>Where to get the rest</h1>
   <p>You have read the part of the book that says what has to be right. The rest is
   how to make it right: the geometry from one number, the stick, the panel, the skin,
-  the seam, the ground it stands on, and what all of it costs, line by line.</p>
+  the seam, the ground it stands on, what all of it costs, line by line -- and every
+  way to style the finished dome, priced.</p>
   {digital}
   {kdp}
   <p class="foot">{e(outline.TITLE)}: {e(outline.SUBTITLE)} &middot; Copyright &copy;

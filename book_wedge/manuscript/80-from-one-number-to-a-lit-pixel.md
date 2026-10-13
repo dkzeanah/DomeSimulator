@@ -1,5 +1,5 @@
 ---
-chapter: 75
+chapter: 80
 title: From One Number to a Lit Pixel
 strand: explain
 status: draft
@@ -7,7 +7,7 @@ target: 2560
 updated: 2026-10-05
 ---
 
-# 75. From One Number to a Lit Pixel
+# 80. From One Number to a Lit Pixel
 
 <!-- concept: scratch/open -->
 <!-- concept: scratch/pipeline -->

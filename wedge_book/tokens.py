@@ -357,6 +357,7 @@ def _table() -> dict[str, Token]:
     _ring_tokens(add)
     _web_tokens(add)
     _ep_tokens(add)
+    _sty_tokens(add)
     _clock_tokens(add)
     _borrowed_tokens(add)
     _park_tokens(add)
@@ -1744,6 +1745,166 @@ def _md_table(head, rows) -> str:
     cells = [tuple(str(c) for c in head)] + [tuple(str(c) for c in r) for r in rows]
     w = [max(len(r[i]) for r in cells) for i in range(len(head))]
     return "\n".join("  ".join(c.ljust(w[i]) for i, c in enumerate(r)).rstrip() for r in cells)
+
+
+def _sty_tokens(add) -> None:
+    """``sty``: the cabin styled every way the Dome Creator can style it, from
+    :func:`two_v_demo.cabin_styles.facts` -- one Creator rebuild per row."""
+    from two_v_demo import cabin_styles as cs
+
+    f = cs.facts()
+    pl, b = f["price_list"], f["base"]
+    LB = cs.LB
+
+    def n(v, d=0):
+        return lambda: f"{v:,.{d}f}"
+
+    def usd(v):
+        return f"${v:,.0f}"
+
+    def by(rows, label):
+        return next(r for r in rows if r["label"] == label)
+
+    # -- the cabin in the Creator ------------------------------------------
+    add("sty.diameter", "the cabin's diameter, in the Creator, ft", n(f["diameter_ft"], 2))
+    add("sty.radius_m", "the cabin's sphere radius, m", n(f["radius_m"], 2))
+    add("sty.floor", "the Creator's floor area for the cabin, sq ft", n(f["floor_sqft"]))
+    add("sty.shell", "the Creator's shell area for the cabin, sq ft", n(f["surface_sqft"]))
+    add("sty.struts", "struts in the Creator's cabin", n(f["struts"]))
+    add("sty.panels", "panels in the Creator's cabin", n(f["panels"]))
+    add("sty.base_frame_mat", "the bare cabin's frame material", lambda: f["base_parts"]["frame_material"])
+    add("sty.base_shape", "the bare cabin's strut shape", lambda: f["base_parts"]["strut_shape"])
+    add("sty.base_panel", "the bare cabin's panels", lambda: f["base_parts"]["default_panel"])
+    add("sty.base_layer", "the bare cabin's cladding",
+        lambda: ", ".join(x for x in f["base_parts"]["layers"] if x != "None") or "none")
+    add("sty.base_foundation", "the bare cabin's foundation", lambda: f["base_parts"]["foundation"])
+    add("sty.bare_total", "the bare cabin, priced by the Creator, $", n(b["total"]))
+    add("sty.bare_frame", "the Creator's frame line for the cabin, $", n(b["frame"]))
+    add("sty.bare_panels", "the Creator's panel line, $", n(b["panels"]))
+    add("sty.bare_cladding", "the Creator's cladding line, $", n(b["cladding"]))
+    add("sty.bare_foundation", "the Creator's foundation line, $", n(b["foundation"]))
+    add("sty.bare_hours", "the Creator's hours for the bare cabin", n(b["hours"]))
+    add("sty.bare_lb", "the bare cabin's weight, lb", n(b["weight_kg"] * LB))
+    add("sty.frame_lb", "the Creator's frame weight, lb", n(b["frame_kg"] * LB))
+    # -- twelve styles ------------------------------------------------------
+    st = sorted(f["styles"], key=lambda r: r["total"])
+    add("sty.styles", "the cabin in each design's finish",
+        lambda: _md_table(("Style", "Panels", "Cladding", "Foundation", "Total", "Weight", "Hours"),
+                          [(r["label"], r["panel_name"], ", ".join(r["layer_names"]) or "-", r["foundation_name"],
+                            usd(r["total"]), f"{r['weight_kg'] * LB:,.0f} lb", f"{r['hours']:.0f}") for r in st]))
+    add("sty.style_lines", "each style, line by line",
+        lambda: _md_table(("Style", "Frame", "Panels", "Cladding", "Foundation", "Total"),
+                          [(r["label"], usd(r["frame"]), usd(r["panels"]), usd(r["cladding"]), usd(r["foundation"]),
+                            usd(r["total"])) for r in st]))
+    add("sty.cheap_style", "the cheapest style", lambda: st[0]["label"])
+    add("sty.cheap_total", "the cheapest style, $", n(st[0]["total"]))
+    add("sty.dear_style", "the dearest style", lambda: st[-1]["label"])
+    add("sty.dear_total", "the dearest style, $", n(st[-1]["total"]))
+    add("sty.style_ratio", "dearest style over cheapest", n(st[-1]["total"] / st[0]["total"], 1))
+    add("sty.tree_found", "the treehouse platform under the cabin, $",
+        n(by(f["styles"], "Treehouse Canopy Dome")["foundation"]))
+    # -- one menu at a time ---------------------------------------------------
+    def sweep(key, title, line):
+        rows = sorted(f[key], key=lambda r: r["total"])
+        add(f"sty.{key}", f"the cabin, {title}",
+            lambda: _md_table((title.title(), "Its line", "Weight", "Cabin total"),
+                              [(r["label"], usd(r[line]), f"{r['weight_kg'] * LB:,.0f} lb", usd(r["total"]))
+                               for r in rows]))
+        add(f"sty.{key}_lo", f"cheapest {title}", lambda: rows[0]["label"])
+        add(f"sty.{key}_lo_usd", f"the cabin at the cheapest {title}, $", n(rows[0]["total"]))
+        add(f"sty.{key}_hi", f"dearest {title}", lambda: rows[-1]["label"])
+        add(f"sty.{key}_hi_usd", f"the cabin at the dearest {title}, $", n(rows[-1]["total"]))
+        add(f"sty.{key}_span", f"what the {title} menu swings, $", n(rows[-1]["total"] - rows[0]["total"]))
+    sweep("by_frame", "frame material", "frame")
+    fr_rows = sorted(f["by_frame"], key=lambda r: r["total"])
+    add("sty.by_frame", "the cabin, each frame material in its own section",
+        lambda: _md_table(("Frame material", "Made as", "Width", "Taken from", "Frame line", "Frame weight",
+                           "Cabin total"),
+                          [(r["label"], r["shape"], f"{r['width_cm']:g} cm", r["source"], usd(r["frame"]),
+                            f"{r['frame_kg'] * LB:,.0f} lb", usd(r["total"])) for r in fr_rows]))
+    sweep("by_panel", "panel", "panels")
+    sweep("by_layer", "cladding", "cladding")
+    sweep("by_foundation", "foundation", "foundation")
+    spans = sorted(((t, max(r["total"] for r in f[k]) - min(r["total"] for r in f[k]))
+                    for k, t in (("by_frame", "the frame material"), ("by_panel", "the panels"),
+                                 ("by_layer", "the cladding"), ("by_foundation", "the foundation"))),
+                   key=lambda x: -x[1])
+    add("sty.ranking", "the menus, ranked by what each swings on its own",
+        lambda: ", ".join(f"{t} (${v:,.0f})" for t, v in spans[:-1]) + f" and {spans[-1][0]} (${spans[-1][1]:,.0f})")
+
+    def lead(r):
+        return max(("frame", "panels", "cladding", "foundation"), key=lambda k: r[k])
+    leads = [lead(r) for r in f["styles"]]
+    for k in ("frame", "panels", "cladding", "foundation"):
+        add(f"sty.lead_{k}", f"styles whose biggest line is the {k}", n(leads.count(k)))
+    # -- every skin on every frame --------------------------------------------
+    fp = f["frame_panel"]
+    short = {"Galvanized Steel": "Galv", "Structural Steel": "Steel", "Rebar Steel": "Rebar",
+             "Aluminum": "Alum", "Timber (SPF)": "Timber", "Whole Tree Trunk": "Trunk", "PVC Pipe": "PVC",
+             "Bamboo": "Bamboo"}
+    add("sty.grid", "the cabin, every panel on every frame material, $",
+        lambda: _md_table(("Panel \\ frame",) + tuple(short.get(x, x) for x in fp["frames"]),
+                          [(pa,) + tuple(f"{fp['cost'][f'{fr}|{pa}']:,.0f}" for fr in fp["frames"])
+                           for pa in fp["panels"]]))
+    cells = sorted(fp["cost"].items(), key=lambda kv: kv[1])
+    add("sty.grid_cells", "combinations in the frame x panel table", n(len(cells)))
+    add("sty.grid_lo", "the cheapest frame and panel",
+        lambda: " with ".join(reversed(cells[0][0].split("|"))))
+    add("sty.grid_lo_usd", "the cheapest frame and panel, $", n(cells[0][1]))
+    add("sty.grid_hi", "the dearest frame and panel", lambda: " with ".join(reversed(cells[-1][0].split("|"))))
+    add("sty.grid_hi_usd", "the dearest frame and panel, $", n(cells[-1][1]))
+    lf = f["layer_foundation"]
+    add("sty.grid2", "the cabin, every cladding on every foundation, $",
+        lambda: _md_table(("Cladding \\ foundation",) + tuple(lf["foundations"]),
+                          [(la,) + tuple(f"{lf['cost'][f'{la}|{fo}']:,.0f}" for fo in lf["foundations"])
+                           for la in lf["layers"]]))
+    c = f["counts"]
+    add("sty.shells", "shells the Creator's menus multiply to", n(c["shells"]))
+    add("sty.distinct", "distinct shells, inert settings removed", n(c["distinct"]))
+    add("sty.fitouts", "fit-outs the room menus multiply to", n(c["fitouts"]))
+    add("sty.dials", "dial settings", n(c["dials"]))
+    # -- the price list -------------------------------------------------------
+    add("sty.list_frame", "frame materials, as declared",
+        lambda: _md_table(("Frame material", "Density", "Price", "A hub"),
+                          [(r["name"], f"{r['density']:,.0f} kg/m3", f"${r['per_kg']:.2f}/kg", f"${r['hub']:.2f}")
+                           for r in pl["frame"]]))
+    add("sty.list_panels", "panel types, as declared",
+        lambda: _md_table(("Panel", "Price", "Weight", "Note"),
+                          [(r["name"], f"${r['per_m2']:.2f}/m2 (${r['per_m2'] / 10.7639:.2f}/sq ft)",
+                            f"{r['kg_m2']:g} kg/m2",
+                            "window" if r["window"] else (f"{r['watts_m2']:.0f} W/m2" if r["watts_m2"] else ""))
+                           for r in pl["panels"]]))
+    add("sty.list_layers", "cladding layers, as declared",
+        lambda: _md_table(("Cladding", "Price", "Thickness"),
+                          [(r["name"], f"${r['per_m2']:.2f}/m2 (${r['per_m2'] / 10.7639:.2f}/sq ft)",
+                            f"{r['thick_mm']:.0f} mm") for r in pl["layers"]]))
+    add("sty.list_foundations", "foundations, as declared",
+        lambda: _md_table(("Foundation", "Price", "Weight"),
+                          [(r["name"], f"${r['per_m2']:.2f}/m2 (${r['per_m2'] / 10.7639:.2f}/sq ft)",
+                            f"{r['kg_m2']:,.0f} kg/m2") for r in pl["foundations"]]))
+    add("sty.list_parts", "panel fixings, as declared",
+        lambda: _md_table(("Part", "Each", "Minutes to fit"),
+                          [(r["name"], f"${r['cost']:.2f}", f"{r['minutes']:g}") for r in pl["components"]]))
+    rt = pl["rates"]
+    add("sty.wire", "wire, $ a metre", n(rt["wire_m"], 2))
+    add("sty.pex", "PEX, $ a metre", n(rt["pex_m"], 2))
+    add("sty.drain", "drain, $ a metre", n(rt["drain_m"], 2))
+    add("sty.rough", "rough-in per fixture, $", n(rt["fixture_rough"]))
+    add("sty.screw", "a screw, $", n(rt["screw"], 2))
+    props = sorted(pl["props"], key=lambda r: (r["category"], r["name"]))
+    add("sty.items", "every piece of equipment the Creator stocks",
+        lambda: _md_table(("Category", "Item", "Price", "Weight", "Power"),
+                          [(r["category"], r["name"], usd(r["cost"]), f"{r['kg'] * LB:,.0f} lb",
+                            f"{r['watts']:,.0f} W" if r["watts"] else "-") for r in props]))
+    add("sty.item_count", "items in the Creator's equipment list", n(len(props)))
+    add("sty.item_cats", "categories they fall in", n(len({r["category"] for r in props})))
+    pk = sorted(f["packages"], key=lambda r: r["cost"])
+    add("sty.packages", "each design's fit-out, priced",
+        lambda: _md_table(("Fit-out of", "Items", "Price", "Weight", "Power"),
+                          [(r["name"], str(r["items"]), usd(r["cost"]), f"{r['kg'] * LB:,.0f} lb",
+                            f"{r['watts']:,.0f} W") for r in pk]))
+    add("sty.rooms", "what a floor section can be assigned to", lambda: ", ".join(pl["rooms"]).lower())
+    add("sty.room_count", "room types", n(len(pl["rooms"])))
 
 
 def _ep_tokens(add) -> None:

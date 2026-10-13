@@ -115,60 +115,70 @@ def _contents(book) -> list[dict]:
 def books() -> dict:
     """What the sales pages say about each book: contents, size and the
     headline figures, every one read from the book's own token resolver --
-    the same values the books print."""
-    from two_v_demo import book as digital_book, book_tokens as digital_tokens
-    from wedge_book import outline as paper_outline, paper, teaser, tokens as paper_tokens
+    the same values the books print.
 
-    def d(name: str) -> str:
-        return digital_tokens.resolve("{{" + name + "}}")
+    Roles, as decided 2026-10-12: "digital" is the book sold here, Claude's
+    complete edition (wedge_book); "paperback" is the Amazon book, DeepSeek's
+    3 Trees (two_v_demo.book); the free sample is cut from the complete edition.
+    """
+    from two_v_demo import book as amazon_book, book_tokens as amazon_tokens
+    from wedge_book import outline as cabin_outline, paper, teaser, tokens as cabin_tokens
 
-    def w(name: str) -> str:
-        return paper_tokens.resolve("{{" + name + "}}")
+    def a(name: str) -> str:
+        return amazon_tokens.resolve("{{" + name + "}}")
 
-    digital = digital_book.BOOK
-    paper_book = paper_outline.BOOK
+    def c(name: str) -> str:
+        return cabin_tokens.resolve("{{" + name + "}}")
+
+    cabin = cabin_outline.BOOK
+    amazon = amazon_book.BOOK
     return {
         "digital": {
-            "title": digital_book.TITLE,
-            "subtitle": digital_book.SUBTITLE,
-            "parts": _contents(digital),
-            "chapters": sum(len(p.chapters) for p in digital.parts),
-            "figures": sum(len(c.figures) for p in digital.parts for c in p.chapters),
-            "pages": _pages(_newest_pdf("2-trees")),
+            "title": cabin_outline.TITLE,
+            "subtitle": cabin_outline.SUBTITLE,
+            "author": cabin_outline.AUTHOR,
+            "parts": _contents(cabin),
+            "chapters": sum(len(p.chapters) for p in cabin.parts),
+            "figures": len(paper.used_keys()),
+            "pages": _pages(_newest_pdf(cabin_outline.STEM)),
             "numbers": {
-                "trees": d("dome.trees"), "diameterFt": d("dome.diameter_ft"),
-                "floorSqft": d("dome.floor_sqft"), "members": d("frame.members"),
-                "panels": d("frame.panels"), "frameHours": d("hr.total"),
-                "days": d("work.days"), "sawUsd": d("saw.price_usd"),
-                "strutsPerTree": d("tree.struts_per_tree"),
+                "members": c("dome.members"), "panels": c("dome.panels"),
+                "floorSqft": c("dome.floor_sqft"), "diameterFt": c("dome.diameter_ft"),
+                "frameHours": c("hr.total"), "labourHours": c("money.labour_hours"),
+                "frameUsd": c("money.frame"), "shellUsd": c("money.cost"),
+                "perSqftUsd": c("money.per_sqft"),
+                "unchangedPct": c("stack.unchanged_pct"),
+                "styles": "12", "styleLowUsd": c("sty.cheap_total"), "styleHighUsd": c("sty.dear_total"),
+                "shells": c("sty.shells"), "items": c("sty.item_count"),
+                "combos": c("sty.grid_cells"),
             },
         },
         "paperback": {
-            "title": paper_outline.TITLE,
-            "subtitle": paper_outline.SUBTITLE,
-            "author": paper_outline.AUTHOR,
-            "parts": _contents(paper_book),
-            "chapters": sum(len(p.chapters) for p in paper_book.parts),
-            "figures": len(paper.used_keys()),
-            "pages": _pages(_newest_pdf(paper_outline.STEM)),
+            "title": amazon_book.TITLE,
+            "subtitle": amazon_book.SUBTITLE,
+            "parts": _contents(amazon),
+            "chapters": sum(len(p.chapters) for p in amazon.parts),
+            "figures": sum(len(ch.figures) for p in amazon.parts for ch in p.chapters),
+            "pages": _pages(_newest_pdf("2-trees")),
             "numbers": {
-                "members": w("dome.members"), "panels": w("dome.panels"),
-                "floorSqft": w("dome.floor_sqft"), "diameterFt": w("dome.diameter_ft"),
-                "frameHours": w("hr.total"), "labourHours": w("money.labour_hours"),
-                "frameUsd": w("money.frame"), "shellUsd": w("money.cost"),
-                "perSqftUsd": w("money.per_sqft"),
-                "unchangedPct": w("stack.unchanged_pct"),
+                # Its frame hours are left off on purpose: its build counts a
+                # different, larger dome, and that figure beside a "40 Hour"
+                # title would read as a contradiction.
+                "trees": a("dome.trees"), "diameterFt": a("dome.diameter_ft"),
+                "floorSqft": a("dome.floor_sqft"), "members": a("frame.members"),
+                "panels": a("frame.panels"), "days": a("work.days"),
+                "sawUsd": a("saw.price_usd"), "strutsPerTree": a("tree.struts_per_tree"),
             },
         },
         "sample": {
             "pages": _pages(teaser.latest()),
             "front": list(teaser.FRONT),
-            "chapters": [{"number": c.number, "title": c.title} for c in teaser.SAMPLE],
-            "ofChapters": sum(len(p.chapters) for p in paper_book.parts),
+            "chapters": [{"number": ch.number, "title": ch.title} for ch in teaser.SAMPLE],
+            "ofChapters": sum(len(p.chapters) for p in cabin.parts),
         },
         "sources": {
-            "digital": "two_v_demo.book.BOOK and two_v_demo.book_tokens",
-            "paperback": "wedge_book.outline.BOOK, wedge_book.tokens, wedge_book.paper.used_keys()",
+            "digital": "wedge_book.outline.BOOK, wedge_book.tokens, wedge_book.paper.used_keys()",
+            "paperback": "two_v_demo.book.BOOK and two_v_demo.book_tokens",
             "sample": "wedge_book.teaser",
             "pages": "page count of the newest -vN PDF in deliverables/book",
         },

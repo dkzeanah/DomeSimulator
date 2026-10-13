@@ -318,6 +318,13 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "runs, a hard vacuum is fifteen tonnes a panel, soil holds on a "
                 "tenth of the dome, and an address on every cell is 680 valves.",
                 compose=True),
+    Deliverable("cabin_styles", "the-40-hour-cabin-styled.mp4",
+                "The 40-hour cabin's dome built in the Dome Creator at its own "
+                "size -- two-frequency, 120 struts, 40 panels -- bare, then "
+                "dressed in the skin, colours and foundation of each of the "
+                "Creator's twelve designs, each priced, weighed and timed by the "
+                "Creator's own model on the Cabin World's hilltop.",
+                compose=True),
     Deliverable("cabin_every_piece", "every-piece-numbered.mp4",
                 "The Triangle Infill calculator, filmed. One of the dome's "
                 "triangles filled with wedges split from a log, each piece "

@@ -23,8 +23,8 @@ export default function Books() {
     <section>
       <h1>The books</h1>
       <p className="lead">
-        Start with the free sample. Then the whole thing two ways: the digital edition, sold here, or the paperback,
-        coming to Amazon.
+        Start with the free sample. Then the complete edition -- the frame and every way to finish it -- sold here,
+        or the trees-and-chainsaw paperback, coming to Amazon.
       </p>
       {error && <p className="error">{error}</p>}
       {!books && !error && <p className="muted">Loading…</p>}

@@ -1,13 +1,13 @@
 {
   "_note": "Books on the site. 'file' is the base name in BOOKS_DIR (default ../deliverables/book); the site always serves its highest -vN version, so publishing a new edition needs no change here. Slugs: lowercase letters, digits and dashes only. 'offer' is how a book is offered: free (the PDF for an email), paid (sold here at priceCents, in cents), amazon (sold on Amazon -- set amazonUrl when it is live; until then the page runs a waitlist), none (kept, not shown). 'page' is the site path of the book's own sales page; 'facts' names its section in server/src/generated/facts.json.",
-  "_author_note": "Decided 2026-10-03: the paperback on Amazon is Claude's book (wedge_book/, 'Geodesic Dome Wedge Method: The 40 Hour Cabin'); the digital book sold here is DeepSeek's (two_v_demo/book.py, '... The 40 Hour Cabin: 3 Trees'). The author will choose later which to keep and merge them to remove duplicate lessons -- do not merge them, retitle one to match the other, or drop either. 'the-wedge-method' is the earlier edition of the paperback's text; it is kept, not shown, so it does not undersell the paperback.",
+  "_author_note": "Decided 2026-10-12 (supersedes 2026-10-03): the book sold here is Claude's (wedge_book/, 'The 40 Hour Cabin: Complete Edition') -- the frame plus every way to style the dome, priced -- with its free sample cut from it; the paperback on Amazon is DeepSeek's (two_v_demo/book.py, 'Geodesic Dome Wedge Method: The 40 Hour Cabin: 3 Trees'). 'the-wedge-method' is an earlier edition; it is kept, not shown.",
   "books": [
     {
       "slug": "sample",
       "title": "The Free Sample",
-      "subtitle": "Geodesic Dome Wedge Method: The 40 Hour Cabin",
+      "subtitle": "The 40 Hour Cabin: Complete Edition",
       "author": "Donovan Zeanah",
-      "blurb": "The opening of the paperback, exactly as printed: what has to be right, what you are allowed to get wrong, and the cut the method is built on.",
+      "blurb": "The opening of the complete edition, exactly as built: what has to be right, what you are allowed to get wrong, and the cut the method is built on.",
       "file": "the-40-hour-cabin-sample.pdf",
       "offer": "free",
       "page": "sample",
@@ -16,31 +16,31 @@
       "cover": "/covers/the-40-hour-cabin.jpg"
     },
     {
+      "slug": "the-40-hour-cabin",
+      "title": "The 40 Hour Cabin",
+      "subtitle": "Complete Edition",
+      "author": "Donovan Zeanah",
+      "blurb": "The complete edition: the 40-hour frame from standing tree to raised shell, then every way to style it -- twelve finishes rendered, every material and panel priced, every item on the floor -- every figure computed by the project's own software.",
+      "file": "the-40-hour-cabin.pdf",
+      "offer": "paid",
+      "page": "buy",
+      "facts": "digital",
+      "cover": "/covers/the-40-hour-cabin.jpg",
+      "priceCents": 2000,
+      "currency": "usd"
+    },
+    {
       "slug": "2-trees",
       "title": "Geodesic Dome Wedge Method",
       "subtitle": "The 40 Hour Cabin: 3 Trees",
       "author": "Donovan Zeanah",
-      "blurb": "The digital edition: the whole build day by day, why it scales, and every variation -- from the trees and one chainsaw to a geodesic cabin.",
+      "blurb": "The paperback: three trees, one chainsaw, and a geodesic cabin -- the whole build day by day, why it scales, and the variations.",
       "file": "2-trees.pdf",
-      "offer": "paid",
-      "priceCents": 2000,
-      "currency": "usd",
-      "page": "buy",
-      "facts": "digital",
-      "cover": "/covers/2-trees.jpg"
-    },
-    {
-      "slug": "the-40-hour-cabin",
-      "title": "Geodesic Dome Wedge Method",
-      "subtitle": "The 40 Hour Cabin",
-      "author": "Donovan Zeanah",
-      "blurb": "The paperback: from standing tree to a dry, raised shell, with every length, angle and price computed from the geometry.",
-      "file": "the-40-hour-cabin.pdf",
       "offer": "amazon",
-      "amazonUrl": "",
       "page": "paperback",
       "facts": "paperback",
-      "cover": "/covers/the-40-hour-cabin.jpg"
+      "cover": "/covers/2-trees.jpg",
+      "amazonUrl": ""
     },
     {
       "slug": "the-wedge-method",
