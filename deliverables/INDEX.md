@@ -1,9 +1,13 @@
 # The library
 
-553 outputs of 379 concepts, 24.59 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+557 outputs of 381 concepts, 24.69 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
 
 | # | output | iteration | made | kind | size |
 |---|---|---|---|---|---|
+| 0558 | [closing-the-triangle](0558-closing-the-triangle/closing-the-triangle.mp4) | v1 | 2026-10-14 | video | 96.2 MB |
+| 0557 | [cabin_triangle_fill-stills](0557-cabin_triangle_fill-stills-v3/cabin_triangle_fill_0004.00s.png) | v3 | 2026-10-14 | image | 2.0 MB |
+| 0556 | [cabin_triangle_fill-stills](0556-cabin_triangle_fill-stills-v2/cabin_triangle_fill_0004.00s.png) | v2 | 2026-10-14 | image | 1.9 MB |
+| 0555 | [cabin_triangle_fill-stills](0555-cabin_triangle_fill-stills/cabin_triangle_fill_0004.00s.png) | v1 | 2026-10-14 | image | 2.8 MB |
 | 0554 | [concept-wedge-coverage](0554-concept-wedge-coverage/concept-wedge-coverage.mp4) | v1 | 2026-10-14 | video | 96.8 MB |
 | 0553 | [concept_wedge_coverage-stills](0553-concept_wedge_coverage-stills/cabin_concept_wedge_coverage_0014.00s.png) | v1 | 2026-10-14 | image | 1.9 MB |
 | 0552 | [the-40-hour-cabin](0552-the-40-hour-cabin-v22/the-40-hour-cabin-v22.pdf) | v22 | 2026-10-14 | document | 74.4 MB |

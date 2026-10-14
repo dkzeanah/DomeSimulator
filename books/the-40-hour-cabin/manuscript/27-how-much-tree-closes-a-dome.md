@@ -68,6 +68,29 @@ opening and physical pieces; its measured pitch can check an area estimate
 for that layout, but cannot validate a different inward-pointing pair.
 :::
 
+## Correction: lay it, don't divide it
+
+The figures above divide the open area by *(2 minus the overlap)* times the
+wedge's **face** width. That is the wrong width. With the pair's points facing
+each other down the triangle, what a pair reaches downward is set by the
+wedge's **depth** -- {{fill.depth_in}} inches against a face of
+{{fill.face_in}} -- and dividing an area also misses the last strip at every
+triangle's base, which a real panel has to close.
+
+So this book now counts it the other way: every pair is laid, course by
+course from each triangle's top corner, each wedge as long as the triangle is
+wide where it lies (the film *Closing the Triangle* shows it). One isosceles
+triangle takes {{fill.iso_nested}} pairs nested, {{fill.iso_bowtie}} as
+bowties. The whole dome:
+
+```text
+nested:  {{fill.nested_wedges}} wedges, {{fill.nested_ft}} ft of infill; {{fill.nested_total}} ft with the frame, {{fill.nested_trees}} pines
+bowtie:  {{fill.bowtie_wedges}} wedges, {{fill.bowtie_ft}} ft of infill; {{fill.bowtie_total}} ft with the frame, {{fill.bowtie_trees}} pines
+```
+
+The first count was close at the nested end and too low at the bowtie end. The
+laid count is the one to plan with.
+
 ## What the overlap is for
 
 Overlap can be a design variable: sliding unchanged wedges changes contact

@@ -352,6 +352,12 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "method beside it, the buildings wedges suit and the crews that "
                 "could build them.",
                 compose=True),
+    Deliverable("cabin_triangle_fill", "closing-the-triangle.mp4",
+                "Filling a dome triangle with pairs of wedges, shown: one wedge end-on, a pair "
+                "sliding from nested to bowtie with its reach measured, a true-size triangle "
+                "filled course by course both ways, the whole dome and the trees, and the "
+                "correction to the first count. Every figure from triangle_fill.",
+                compose=True),
     Deliverable("cabin_promo", "the-house-that-was-a-tree.mp4",
                 "The promo: the project's whole case in about ninety seconds, made for a phone -- "
                 "hook, open loop, the papercuts as the villain, the turn, the golden-ratio floor, "

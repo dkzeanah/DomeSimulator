@@ -451,6 +451,19 @@ PRESETS: tuple[RenderPreset, ...] = (
            "for every cut. Every figure from square_book and wedge_zome.",
            compose_segments=True),
 
+    _video("cabin_triangle_fill", "cabin_triangle_fill", "closing-the-triangle.mp4",
+           "CLOSING THE TRIANGLE. Pairs of wedges, points in, nested to bowtie, filling a "
+           "true-size dome triangle course by course; every pair laid, not estimated.",
+           compose_segments=True),
+
+    RenderPreset(
+        key="cabin_triangle_fill_stills",
+        label="closing-the-triangle stills",
+        summary="One still per chapter of Closing the Triangle, to look at before the render.",
+        fields={"lesson": "cabin_triangle_fill", "action": "shots",
+                "shots": chapter_shots("cabin_triangle_fill"), "no_narration": True},
+    ),
+
     _video("cabin_promo", "cabin_promo", "the-house-that-was-a-tree.mp4",
            "THE HOUSE THAT WAS A TREE. The promo: the whole case in ninety seconds, phone first. "
            "Every figure computed; carries its own close, so no spliced outro."),

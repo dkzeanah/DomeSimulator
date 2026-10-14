@@ -475,7 +475,7 @@
    "status": "review",
    "priority": "normal",
    "owner": "Claude (Opus 5.5)",
-   "updated": "2026-10-14T10:42:34-05:00",
+   "updated": "2026-10-14T10:58:05-05:00",
    "outputs": [
     "deliverables/0554-concept-wedge-coverage/concept-wedge-coverage-vertical.mp4"
    ],
@@ -494,6 +494,11 @@
      "at": "2026-10-14T10:42:34-05:00",
      "by": "Claude (Opus 5.5)",
      "text": "-> review: Rendered in the owner's voice x1.5: landscape, phone cut, release with 7 thumbnails. Ready for the owner's review."
+    },
+    {
+     "at": "2026-10-14T10:58:05-05:00",
+     "by": "Claude (Opus 5.5)",
+     "text": "SUPERSEDED by cabin_triangle_fill (Closing the Triangle): the owner found this card film shows nothing -- no pairs, no bowtie, no filled triangle. Its figures also came from the first count (area / face width); the laid count (two_v_demo.triangle_fill) corrects them."
     }
    ],
    "originals": {}

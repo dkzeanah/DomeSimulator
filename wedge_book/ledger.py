@@ -115,6 +115,7 @@ FILMS: tuple[FilmPlan, ...] = (
     FilmPlan("why_build", "teach", "economics"),
     FilmPlan("pine_value", "teach", "economics"),
     FilmPlan("cabin_staple", "teach", "economics"),
+    FilmPlan("cabin_triangle_fill", "teach", "panel"),
     FilmPlan("cabin_promo", "scaffold", "economics",
              note="the promo: every chapter is told in full by the films and chapters it draws on"),
     FilmPlan("dome_park", "teach", "network", True),

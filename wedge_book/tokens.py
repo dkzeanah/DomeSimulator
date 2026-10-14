@@ -367,6 +367,7 @@ def _table() -> dict[str, Token]:
     _staple_tokens(add)
     _foundation_tokens(add)
     _coverage_tokens(add)
+    _fill_tokens(add)
     _methodology_tokens(add)
     _core_build_tokens(add)
     _franken_tokens(add)
@@ -1715,6 +1716,35 @@ def _methodology_tokens(add) -> None:
     for name, value in token_values().items():
         add(name, "core wedge methodology: " + name.split(".", 1)[1],
             lambda value=value: value)
+
+
+def _fill_tokens(add) -> None:
+    """``fill``: every pair laid in every triangle, course by course -- the count that corrects
+    the first one (:mod:`two_v_demo.triangle_fill`)."""
+    from two_v_demo import triangle_fill as tf
+
+    def g(path, fmt):
+        def get():
+            v = tf.facts()
+            for k in path.split("."):
+                v = v[k]
+            return fmt.format(v)
+        return get
+
+    for name, path, fmt, describe in (
+            ("nested_ft", "nested.infill_ft", "{:,.0f}", "infill laid nested, ft"),
+            ("bowtie_ft", "bowtie.infill_ft", "{:,.0f}", "infill laid as bowties, ft"),
+            ("nested_wedges", "nested.infill_wedges", "{:,}", "wedges laid nested"),
+            ("bowtie_wedges", "bowtie.infill_wedges", "{:,}", "wedges laid as bowties"),
+            ("nested_total", "nested.total_ft", "{:,.0f}", "frame and infill nested, ft"),
+            ("bowtie_total", "bowtie.total_ft", "{:,.0f}", "frame and infill as bowties, ft"),
+            ("nested_trees", "nested.trees", "{:.1f}", "pines, nested"),
+            ("bowtie_trees", "bowtie.trees", "{:.1f}", "pines, bowties"),
+            ("depth_in", "depth_in", "{:.2f}", "a 12 in log's wedge depth, in"),
+            ("face_in", "face_in", "{:.2f}", "its face, in"),
+            ("iso_nested", "iso_nested.courses", "{}", "pairs in one isosceles triangle, nested"),
+            ("iso_bowtie", "iso_bowtie.courses", "{}", "pairs in one isosceles triangle, bowties")):
+        add(f"fill.{name}", describe, g(path, fmt))
 
 
 def _coverage_tokens(add) -> None:
