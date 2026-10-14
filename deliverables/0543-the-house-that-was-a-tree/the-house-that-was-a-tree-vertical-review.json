@@ -1,0 +1,129 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T14:57:36.927592+00:00",
+  "lesson": "cabin_promo",
+  "title": "The House That Was a Tree",
+  "chapters": [
+    {
+      "slug": "hook",
+      "title": "This was a tree",
+      "narration": [
+        "This was a tree. Now it's a house. And it cost less than a used car: $12,036."
+      ],
+      "start": 0.0,
+      "end": 7.964458333333333
+    },
+    {
+      "slug": "loop",
+      "title": "The cheapest part",
+      "narration": [
+        "Stay to the end, because the strangest number in it is the trees. They were the cheapest part."
+      ],
+      "start": 7.964458333333333,
+      "end": 14.928166666666666
+    },
+    {
+      "slug": "papercuts",
+      "title": "The papercuts",
+      "narration": [
+        "A new house sells for $665,299. $178,746 of that is fees and margins. Not one board. Not one hour on the house."
+      ],
+      "start": 14.928166666666666,
+      "end": 27.770375
+    },
+    {
+      "slug": "interest",
+      "title": "The biggest cut",
+      "narration": [
+        "Borrow $100,000 and you pay back $227,544. The interest alone would build more than 10 of these."
+      ],
+      "start": 27.770375,
+      "end": 37.549708333333335
+    },
+    {
+      "slug": "hands",
+      "title": "Fifteen hands",
+      "narration": [
+        "Every stud in that house went through 15 sets of hands. Every one of them took a cut."
+      ],
+      "start": 37.549708333333335,
+      "end": 44.744875
+    },
+    {
+      "slug": "turn",
+      "title": "So I cut them out",
+      "narration": [
+        "So I cut them out. One chainsaw. One log. Eight wedges, and nobody measures an angle."
+      ],
+      "start": 44.744875,
+      "end": 51.76825
+    },
+    {
+      "slug": "three",
+      "title": "Two lengths",
+      "narration": [
+        "120 members in two lengths. One jig. Forty flat panels, built on the grass and lifted into a dome."
+      ],
+      "start": 51.76825,
+      "end": 59.85125
+    },
+    {
+      "slug": "golden",
+      "title": "Even the floor",
+      "narration": [
+        "Even the floor is free geometry. Cut a twenty foot log at 148.3 inches and what's left is 91.7: the golden ratio. Five logs make a pentagon."
+      ],
+      "start": 59.85125,
+      "end": 71.04025
+    },
+    {
+      "slug": "bill",
+      "title": "The whole bill",
+      "narration": [
+        "The whole bill is 9 lines, from one seller. $12,036, with the margin printed on it."
+      ],
+      "start": 71.04025,
+      "end": 78.42025
+    },
+    {
+      "slug": "trees",
+      "title": "The trees",
+      "narration": [
+        "And the trees? The frame and every wall closed in wood: 4 to 7 pines."
+      ],
+      "start": 78.42025,
+      "end": 84.42025
+    },
+    {
+      "slug": "honest",
+      "title": "Not yet",
+      "narration": [
+        "Is it engineered yet? No. That's the first thing the money buys. Everything else is open: every number you just heard is computed in code anyone can check."
+      ],
+      "start": 84.42025,
+      "end": 94.280875
+    },
+    {
+      "slug": "who",
+      "title": "Who it's for",
+      "narration": [
+        "It isn't for everyone. It's for the eighteen-year-old, the veteran, the mother who's done paying for someone else's papercuts. Follow the build."
+      ],
+      "start": 94.280875,
+      "end": 104.48354166666667
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\0543-the-house-that-was-a-tree\\the-house-that-was-a-tree-myvoice-x1.5\\narration-plan.json",
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+0%",
+    "voice_pitch": "+0Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

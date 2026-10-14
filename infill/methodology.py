@@ -183,6 +183,11 @@ def token_values() -> dict[str, str]:
         "| Assumed overlap | Continuous pair pitch in | Infill wedge ft | Infill trunk ft | Frame plus infill trunk ft | Whole tree equivalents |",
         "| --- | --- | --- | --- | --- | --- |",
         *(f"| {100*r['overlap']:.0f}% | {r['pair_pitch_in']:.2f} | {r['infill_ft']:,.1f} | {r['infill_trunk_ft']:,.1f} | {r['raw_trunk_ft']:,.1f} | {r['whole_tree_equivalents']} |" for r in f["rows"])])
+    values["wm.section_table"] = "\n".join([
+        "| Opposed-point engagement | Envelope depth in | Slant contact in | Assumed cell void |",
+        "| --- | --- | --- | --- |",
+        *(f"| {100*r['engagement']:.0f}% | {r['span_in']:.2f} | {r['contact_in']:.2f} | {100*r['void_fraction']:.1f}% |" for r in f["pair_sections"])])
+    values["wm.section_height_in"] = f"{f['pair_sections'][0]['height_in']:.3f}"
     for key in ("phi", "side_in", "diagonal_in", "long_in", "short_in", "interior_ft", "all_ft", "interior_deg", "turn_deg", "miter_deg", "butt_deg", "diagonal_deg", "diagonal_butt_deg"):
         values["wm.pent_" + key] = f"{g[key]:,.3f}" if key == "phi" else f"{g[key]:,.2f}"
     values["wm.pent_logs"] = str(g["ideal_stock_logs"])
@@ -198,7 +203,9 @@ def report() -> str:
             f"nominal edges {f['nominal_frame_ft']:.2f} ft; solver cut-stock {f['finished_frame_ft']:.2f} ft\n"
             f"gross frame blanks {f['gross_frame_ft']:.2f} ft; raw trunk reserve {f['frame_trunk_ft']:.2f} ft\n"
             f"gross area {f['area_sqft']:.2f} sq ft; assumed opening {f['opening_sqft']:.2f} sq ft\n\n"
-            + t["wm.pair_table"] + "\n\nBounds require continuous projected coverage: neither bowtie span nor point contact proves it.\n")
+            + t["wm.pair_table"] + "\n\nSEPARATE OPPOSED-POINT CHORD-TRIANGLE EXPERIMENT\n"
+            + t["wm.section_table"]
+            + "\n\nBounds require continuous projected coverage: neither bowtie span nor point contact proves it.\n")
 
 
 def validate_methodology() -> None:

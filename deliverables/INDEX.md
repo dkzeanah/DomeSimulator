@@ -1,11 +1,25 @@
 # The library
 
-539 outputs of 374 concepts, 24.10 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+553 outputs of 379 concepts, 24.59 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
 
 | # | output | iteration | made | kind | size |
 |---|---|---|---|---|---|
+| 0554 | [concept-wedge-coverage](0554-concept-wedge-coverage/concept-wedge-coverage.mp4) | v1 | 2026-10-14 | video | 96.8 MB |
+| 0553 | [concept_wedge_coverage-stills](0553-concept_wedge_coverage-stills/cabin_concept_wedge_coverage_0014.00s.png) | v1 | 2026-10-14 | image | 1.9 MB |
+| 0552 | [the-40-hour-cabin](0552-the-40-hour-cabin-v22/the-40-hour-cabin-v22.pdf) | v22 | 2026-10-14 | document | 74.4 MB |
+| 0551 | [two-trees-methodology](0551-two-trees-methodology-v4/2-trees.pdf) | v4 | 2026-10-14 | document | 10.7 MB |
+| 0550 | [the-40-hour-cabin](0550-the-40-hour-cabin-v21/the-40-hour-cabin-v21.pdf) | v21 | 2026-10-14 | document | 74.4 MB |
+| 0549 | [two-trees-methodology](0549-two-trees-methodology-v3/2-trees.pdf) | v3 | 2026-10-14 | document | 10.7 MB |
+| 0548 | [square-on-demand](0548-square-on-demand-v3/square-on-demand-v3.pdf) | v3 | 2026-10-14 | document | 0.7 MB |
+| 0547 | [the-40-hour-cabin](0547-the-40-hour-cabin-v20/the-40-hour-cabin-v20.pdf) | v20 | 2026-10-14 | document | 74.4 MB |
+| 0546 | [two-trees-methodology](0546-two-trees-methodology-v2/2-trees.pdf) | v2 | 2026-10-14 | document | 10.7 MB |
+| 0545 | [square-on-demand](0545-square-on-demand-v2/square-on-demand-v2.pdf) | v2 | 2026-10-14 | document | 0.7 MB |
+| 0544 | [two-trees-methodology](0544-two-trees-methodology/2-trees.pdf) | v1 | 2026-10-14 | document | 1.9 MB |
+| 0543 | [the-house-that-was-a-tree](0543-the-house-that-was-a-tree/the-house-that-was-a-tree.mp4) | v1 | 2026-10-14 | video | 105.0 MB |
+| 0542 | [cabin_promo-stills](0542-cabin_promo-stills/cabin_promo_0003.00s.png) | v1 | 2026-10-14 | image | 2.8 MB |
+| 0541 | [cabin_every_piece-stills](0541-cabin_every_piece-stills-v2/cabin_every_piece_0124.62s.png) | v2 | 2026-10-14 | image | 1.0 MB |
 | 0539 | [cabin_every_piece-stills](0539-cabin_every_piece-stills/cabin_every_piece_0015.00s.png) | v1 | 2026-10-14 | image | 8.5 MB |
-| 0538 | [the-staple-house-teaser](0538-the-staple-house-teaser/the-staple-house-teaser.mp4) | v1 | 2026-10-14 | video | 27.4 MB |
+| 0538 | [the-staple-house-teaser](0538-the-staple-house-teaser/the-staple-house-teaser.mp4) | v1 | 2026-10-14 | video | 54.2 MB |
 | 0537 | [cabin_staple-teaser](0537-cabin_staple-teaser) | v1 | 2026-10-14 | folder | 0.0 MB |
 | 0536 | [dome-zome-foundation-cut-list](0536-dome-zome-foundation-cut-list-v2/dome-zome-foundation-cut-list-v2.csv) | v2 | 2026-10-14 | data | 0.0 MB |
 | 0535 | [dome-zome-foundation-cut-list](0535-dome-zome-foundation-cut-list/dome-zome-foundation-cut-list.csv) | v1 | 2026-10-14 | data | 0.0 MB |

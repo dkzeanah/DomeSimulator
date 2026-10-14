@@ -352,6 +352,12 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "method beside it, the buildings wedges suit and the crews that "
                 "could build them.",
                 compose=True),
+    Deliverable("cabin_promo", "the-house-that-was-a-tree.mp4",
+                "The promo: the project's whole case in about ninety seconds, made for a phone -- "
+                "hook, open loop, the papercuts as the villain, the turn, the golden-ratio floor, "
+                "the one-sheet bill, the trees, the weakest point said out loud, and who it is for. "
+                "Every figure from staple_facts and wedge_coverage_facts.",
+                compose=False),
     Deliverable("cabin_staple", "the-staple-house.mp4",
                 "The dome as housing's staple, in the Cabin World and the owner's voice: "
                 "his McDouble analogy spoken as his, the survey house's papercuts counted "

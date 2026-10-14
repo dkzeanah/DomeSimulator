@@ -201,7 +201,7 @@ def _engine_html(figure_dir: Path | None = None) -> str:
     document, _ = book_export.book_html(
         root=outline.MANUSCRIPT_DIR, book=outline.BOOK, embed_images=False,
         strict=True, contents=False, figure_dir=figure_dir or outline.FIGURE_DIR,
-        tokens=tokens.resolve)
+        tokens=tokens.export_resolver())
     return document
 
 

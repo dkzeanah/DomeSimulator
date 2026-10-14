@@ -108,3 +108,8 @@ existing infill film now declares this model before its footage, coverage and
 tree-budget worksheets, and explains the pentagon stock identity alongside the
 solver's actual foundation. Inspect its stills before making a new film through
 `py -3.12 -m film make cabin_every_piece`.
+
+For the completed worksheets and their geometry, use
+`py -3.12 -m film stills cabin_every_piece --chapters method_inputs,frame_footage,pair_budget,tree_budget,pentagon_math --at 0.95`.
+The still command claims a fresh numbered output folder; earlier previews remain
+available alongside it.

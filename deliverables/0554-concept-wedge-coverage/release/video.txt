@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\0554-concept-wedge-coverage\concept-wedge-coverage.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\0554-concept-wedge-coverage\concept-wedge-coverage-vertical.mp4

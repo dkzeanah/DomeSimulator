@@ -99,7 +99,7 @@ def foundation() -> list[Piece]:
             continue
         ref = bp.ref
         name = getattr(ref, "label", "") or getattr(ref, "name", "") or f"{bp.group} {k + 1}"
-        colour = LOG if bp.group == "frame" else (PIER if "pier" in bp.kind.lower() or bp.group == "pier" else STAR)
+        colour = {"frame": LOG, "pier": PIER}.get(bp.kind, STAR)
         meta = {"group": bp.group, "material": bp.material}
         if hasattr(ref, "a") and hasattr(ref, "length"):
             meta.update(centreline_in=round(float(ref.length), 2),

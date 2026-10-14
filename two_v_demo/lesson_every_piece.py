@@ -479,7 +479,7 @@ SCENES = {
 MATH = ("declared", "loads", "method_inputs", "frame_footage", "pair_budget", "tree_budget", "pentagon_math")
 
 
-def beside_worksheet(shot):
+def beside_worksheet(shot, portion: float = 0.40):
     """Slide the camera right so the subject sits left of a math chapter's worksheet."""
     def moved(p: float):
         eye, target, fov = shot(p)
@@ -489,7 +489,7 @@ def beside_worksheet(shot):
         f /= d
         right = np.cross(f, [0.0, 0.0, 1.0])
         right /= np.linalg.norm(right)
-        k = 0.40 * d * math.tan(math.radians(fov) / 2) * 16 / 9
+        k = portion * d * math.tan(math.radians(fov) / 2) * 16 / 9
         return eye + right * k, target + right * k, fov
     return moved
 
@@ -537,11 +537,11 @@ def _moves() -> dict:
     }
     for key in ("method_inputs", "frame_footage", "pair_budget", "tree_budget"):
         table[key] = shots.orbit(panel, 3.8, 2.8, 75, 20, 46)
-    table["pentagon_math"] = shots.orbit(floor, 12.0, 8.0, -80, 25, 50)
+    table["pentagon_math"] = shots.orbit(floor, 1.0, 18.0, -90, 8, 50)
     out = {}
     for slug, shot in table.items():
         if slug in MATH:
-            shot = beside_worksheet(shot)
+            shot = beside_worksheet(shot, 0.30 if slug == "pentagon_math" else 0.40)
         out[slug] = cabin_stage.clear_view(shot, cabin_stage.safe)
     return out
 

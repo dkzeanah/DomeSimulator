@@ -17,9 +17,9 @@ The model, in four steps:
    open area to close.
 3. **The wedge.** A log of diameter d split eight ways gives wedges with a face (the
    chord) of ``d sin 22.5 deg`` and a depth of ``d/2 cos 22.5 deg``.
-4. **Closing a triangle with pairs**, points facing inward. A pair covers between two
-   faces (``p = 0``, the pair touching only at the points -- a bowtie) and one face
-   (``p = 1``, fully nested along the slants): ``(2 - p) x face``. So one face of infill
+4. **Conditional continuous coverage**, not a consequence of a bowtie's span.
+   Assume an installed pair pitch between two chords (``p = 0``) and one chord
+   (``p = 1``): ``(2 - p) x face``. So one face of infill
    takes ``2 x area / ((2 - p) x face)`` of wedge, from the least (``p = 0``) to the
    most (``p = 1``).
 
@@ -103,12 +103,16 @@ def open_area_ft2(d_in: float) -> float:
 
 
 def pair_cover_in(d_in: float, p: float) -> float:
+    """Assumed continuous installed pitch; not opposed-point envelope span."""
+    if not 0 <= p <= 1:
+        raise ValueError("assumed overlap must be between zero and one")
     return (2 - p) * wedge(d_in)["face_in"]
 
 
 def infill_ft(d_in: float, p: float) -> float:
-    """One face of infill, closed with pairs at overlap ``p``: feet of wedge."""
-    return 2 * open_area_ft2(d_in) * 12 / pair_cover_in(d_in, p)
+    """One face's conditional estimate, using the shared coverage calculation."""
+    from infill.methodology import coverage_length
+    return coverage_length(open_area_ft2(d_in), pair_cover_in(d_in, p))
 
 
 def frame_trunk_ft() -> float:
@@ -122,15 +126,14 @@ def row(d_in: float, p: float) -> dict:
     total = dome()["frame_nominal_ft"] + inf
     trunk = inf / WEDGES_PER_SECTION + frame_trunk_ft()
     return {"d_in": d_in, "p": p, "pair_cover_in": pair_cover_in(d_in, p), "infill_ft": inf,
-            "total_ft": total, "trunk_ft": trunk, "trees": math.ceil(total / (TREE_FT * WEDGES_PER_SECTION))}
+            "total_ft": total, "trunk_ft": trunk, "trees": math.ceil(trunk / TREE_FT)}
 
 
 def pentagon() -> dict:
-    phi = (1 + 5 ** 0.5) / 2
-    side = 240.0
-    diag = phi * side
-    return {"pentagon_long_in": diag - side, "pentagon_short_in": diag - 2 * (diag - side),
-            "butt_cut_off_square_deg": 108.0 - 90.0, "diagonal_cut_off_square_deg": 90.0 - 108.0 / 3}
+    from infill.methodology import pentagon as shared_pentagon
+    p = shared_pentagon()
+    return {"pentagon_long_in": p["long_in"], "pentagon_short_in": p["short_in"],
+            "butt_cut_off_square_deg": p["butt_deg"], "diagonal_cut_off_square_deg": p["diagonal_butt_deg"]}
 
 
 def calculator_check() -> dict:
@@ -186,7 +189,7 @@ def steps_infill() -> list[str]:
     out = [f"{f['iso_faces']} isosceles + {f['eq_faces']} equilateral faces: {f['area_ft2']:.1f} sq ft.",
            f"A 12 in log split 8 ways: face {f['face_in_12']:.3f} in, depth {f['depth_in_12']:.3f} in.",
            f"Open after the frame's strip: {f['open_area_ft2_12']:.1f} sq ft.",
-           "Pairs, points in: a pair covers (2 - overlap) x one face."]
+           "ASSUMED continuous pair pitch = (2 - overlap) x chord; measure the installed profile."]
     for r in f["overlaps"]:
         out.append(f"  overlap {r['p']:.0%}: {r['pair_cover_in']:.2f} in a pair -> {r['infill_ft']:,.0f} ft infill, "
                    f"{r['total_ft']:,.0f} ft with the frame, {r['trees']} trees of {TREE_FT:.0f} ft")

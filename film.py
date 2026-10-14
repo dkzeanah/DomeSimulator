@@ -202,12 +202,26 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
     return code
 
 
-def stills(lesson: str) -> int:
+def stills(lesson: str, *, stages: tuple[str, ...] = (), at: float = 0.5) -> int:
     import render_presets as rp
     import medialib
     preset = rp.PRESET_BY_KEY.get(f"{lesson}_stills")
     fields = dict(preset.applied()) if preset else {**preset_fields(lesson), "action": "shots",
                                                      "shots": rp.chapter_shots(lesson), "no_narration": True}
+    if not 0 <= at < 1:
+        raise SystemExit("--at must lie between zero and one, with one excluded")
+    if stages or at != 0.5:
+        _, chs = chapters(lesson, bool(fields.get("compose_segments", False)))
+        wanted = set(stages)
+        missing = wanted - {ch.slug for ch in chs}
+        if missing:
+            raise SystemExit(f"unknown chapter slugs: {', '.join(sorted(missing))}")
+        clock, times = 0.0, []
+        for ch in chs:
+            if not wanted or ch.slug in wanted:
+                times.append(f"{clock + ch.duration * at:.2f}")
+            clock += ch.duration
+        fields["shots"] = ",".join(times)
     folder = medialib.new_folder(f"{lesson}-stills")
     fields["shots_output_dir"] = str(folder)
     print(f"stills for {lesson} into {folder.relative_to(ROOT)}")
@@ -261,7 +275,10 @@ def main(argv: list[str] | None = None) -> int:
         seg.add_argument("--no-segments", dest="segments", action="store_false")
         p.add_argument("--fps", type=int)
         p.add_argument("--size")
-    sub.add_parser("stills").add_argument("lesson")
+    st = sub.add_parser("stills")
+    st.add_argument("lesson")
+    st.add_argument("--chapters", default="", help="comma-separated chapter slugs; default is every chapter")
+    st.add_argument("--at", type=float, default=0.5, help="progress within each chapter, from zero up to one")
     t = sub.add_parser("teaser")
     t.add_argument("lesson")
     t.add_argument("--voice", default="")
@@ -276,7 +293,7 @@ def main(argv: list[str] | None = None) -> int:
                     dry_run=a.cmd == "show")
     if a.cmd == "teaser":
         return teaser(a.lesson, a.voice, a.pace)
-    return stills(a.lesson)
+    return stills(a.lesson, stages=tuple(s.strip() for s in a.chapters.split(",") if s.strip()), at=a.at)
 
 
 if __name__ == "__main__":

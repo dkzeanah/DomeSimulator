@@ -640,10 +640,9 @@ CH_OPENINGS = Chapter(
 CH_COVERAGE = Chapter(
     number=27, ref="coverage", strand="explain",
     title="How Much Tree Closes a Dome",
-    deck="The frame's wedge, and closing all forty triangles with pairs of wedges points in: "
-         "the overlap is a dial from bowtie to nested, four trees to seven -- the owner's "
-         "ChatGPT session, every figure re-derived from the solver and checked",
-    derives=("two_v_demo.wedge_coverage_facts",),
+      deck="Separate frame blanks from infill, count both wedges, and measure continuous "
+           "coverage: a conditional stock budget from the owner's paired-wedge idea",
+      derives=("infill.methodology", "two_v_demo.wedge_coverage_facts"),
     pages=(
         _p("opener", "How much tree closes a dome", "The frame is not the whole of the wood.", words=220),
         _p("worked", "The frame", "Members, nominal and as cut.", words=320),

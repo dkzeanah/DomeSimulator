@@ -5,9 +5,9 @@
   "title": "Hexagonal Dome Masterclass",
   "source": "two_v_demo/lesson_hex.py",
   "originals": [
-   "deliverables/2026-08-23/hex-dome-masterclass/hex-dome-masterclass.mp4",
-   "deliverables/2026-09-12/hex-dome-masterclass-teaser/hex-dome-masterclass-teaser-vertical.mp4",
-   "deliverables/2026-09-12/hex-dome-masterclass-teaser/hex-dome-masterclass-teaser.mp4"
+   "deliverables/0028-hex-dome-masterclass/hex-dome-masterclass.mp4",
+   "deliverables/0082-hex-dome-masterclass-teaser/hex-dome-masterclass-teaser-vertical.mp4",
+   "deliverables/0082-hex-dome-masterclass-teaser/hex-dome-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "Hexagonal domes: one strut length, twelve pentagons, and what frequency costs.",
@@ -289,9 +289,9 @@
   "title": "Zome Construction Masterclass",
   "source": "two_v_demo/lesson_zome.py",
   "originals": [
-   "deliverables/2026-08-23/zome-construction-masterclass/zome-construction-masterclass.mp4",
-   "deliverables/2026-09-12/zome-construction-masterclass-teaser/zome-construction-masterclass-teaser-vertical.mp4",
-   "deliverables/2026-09-12/zome-construction-masterclass-teaser/zome-construction-masterclass-teaser.mp4"
+   "deliverables/0029-zome-construction-masterclass/zome-construction-masterclass.mp4",
+   "deliverables/0083-zome-construction-masterclass-teaser/zome-construction-masterclass-teaser-vertical.mp4",
+   "deliverables/0083-zome-construction-masterclass-teaser/zome-construction-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "Zomes: flat parallelogram panels, one strut length, a point on top.",
@@ -558,8 +558,8 @@
   "title": "2V Dome Construction Masterclass",
   "source": "two_v_demo/lesson_build.py",
   "originals": [
-   "deliverables/2026-09-12/dome-construction-masterclass-teaser/dome-construction-masterclass-teaser-vertical.mp4",
-   "deliverables/2026-09-12/dome-construction-masterclass-teaser/dome-construction-masterclass-teaser.mp4"
+   "deliverables/0081-dome-construction-masterclass-teaser/dome-construction-masterclass-teaser-vertical.mp4",
+   "deliverables/0081-dome-construction-masterclass-teaser/dome-construction-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "The 46-chapter construction lesson, geometry through to the franken-dome.",
@@ -1135,9 +1135,9 @@
   "title": "Assembly Line Energy Masterclass",
   "source": "two_v_demo/lesson_line.py",
   "originals": [
-   "deliverables/2026-08-23/assembly-line-energy-masterclass/assembly-line-energy-masterclass.mp4",
-   "deliverables/2026-09-12/assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser-vertical.mp4",
-   "deliverables/2026-09-12/assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser.mp4"
+   "deliverables/0031-assembly-line-energy-masterclass/assembly-line-energy-masterclass.mp4",
+   "deliverables/0084-assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser-vertical.mp4",
+   "deliverables/0084-assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "What building one dome costs the two people who build it.",
@@ -1446,9 +1446,9 @@
   "title": "The Compound Cut, Both Machines",
   "source": "two_v_demo/lesson_cuts.py",
   "originals": [
-   "deliverables/2026-08-25/hubless-compound-cut/hubless-compound-cut.mp4",
-   "deliverables/2026-09-12/hubless-compound-cut-teaser/hubless-compound-cut-teaser-vertical.mp4",
-   "deliverables/2026-09-12/hubless-compound-cut-teaser/hubless-compound-cut-teaser.mp4"
+   "deliverables/0033-hubless-compound-cut/hubless-compound-cut.mp4",
+   "deliverables/0085-hubless-compound-cut-teaser/hubless-compound-cut-teaser-vertical.mp4",
+   "deliverables/0085-hubless-compound-cut-teaser/hubless-compound-cut-teaser.mp4"
   ],
   "releases": [],
   "note": "The compound cut on both machines, with the jig between.",
@@ -1686,9 +1686,9 @@
   "title": "The Franken-Dome",
   "source": "two_v_demo/lesson_franken.py",
   "originals": [
-   "deliverables/2026-08-26/frankendome-build/frankendome-build-v2.mp4",
-   "deliverables/2026-09-12/frankendome-build-v2-teaser/frankendome-build-v2-teaser-vertical.mp4",
-   "deliverables/2026-09-12/frankendome-build-v2-teaser/frankendome-build-v2-teaser.mp4"
+   "deliverables/0040-frankendome-build-v2/frankendome-build-v2.mp4",
+   "deliverables/0086-frankendome-build-v2-teaser-v2/frankendome-build-v2-teaser-vertical.mp4",
+   "deliverables/0086-frankendome-build-v2-teaser-v2/frankendome-build-v2-teaser.mp4"
   ],
   "releases": [],
   "note": "Mixed stock, folded brackets, slack and settling, plus hubless strut coding, the floor deck and the commercial case. The 13-chapter frankendome-build.mp4 beside it is archival: the lesson has since grown to 21 chapters and that file can no longer be reproduced from this code.",
@@ -1981,9 +1981,9 @@
   "title": "Frankendome",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/2026-08-25/frankendome-montage/frankendome-montage.mp4",
-   "deliverables/2026-09-12/frankendome-montage-teaser/frankendome-montage-teaser-vertical.mp4",
-   "deliverables/2026-09-12/frankendome-montage-teaser/frankendome-montage-teaser.mp4"
+   "deliverables/0032-frankendome-montage/frankendome-montage.mp4",
+   "deliverables/0087-frankendome-montage-teaser/frankendome-montage-teaser-vertical.mp4",
+   "deliverables/0087-frankendome-montage-teaser/frankendome-montage-teaser.mp4"
   ],
   "releases": [],
   "note": "The montage, version one. Raw label placement, as shipped.",
@@ -2374,9 +2374,9 @@
   "title": "Frankendome, Version Two",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/2026-08-25/frankendome-montage/frankendome-montage-v2.mp4",
-   "deliverables/2026-09-12/frankendome-montage-v2-teaser/frankendome-montage-v2-teaser-vertical.mp4",
-   "deliverables/2026-09-12/frankendome-montage-v2-teaser/frankendome-montage-v2-teaser.mp4"
+   "deliverables/0035-frankendome-montage-v2/frankendome-montage-v2.mp4",
+   "deliverables/0088-frankendome-montage-v2-teaser-v2/frankendome-montage-v2-teaser-vertical.mp4",
+   "deliverables/0088-frankendome-montage-v2-teaser-v2/frankendome-montage-v2-teaser.mp4"
   ],
   "releases": [],
   "note": "Version two: the asides. Raw label placement, as shipped.",
@@ -2807,9 +2807,9 @@
   "title": "Frankendome, Version Three",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/2026-08-25/frankendome-montage/frankendome-montage-v3.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v3-teaser/frankendome-montage-v3-teaser-vertical.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v3-teaser/frankendome-montage-v3-teaser.mp4"
+   "deliverables/0036-frankendome-montage-v3/frankendome-montage-v3.mp4",
+   "deliverables/0089-frankendome-montage-v3-teaser-v3/frankendome-montage-v3-teaser-vertical.mp4",
+   "deliverables/0089-frankendome-montage-v3-teaser-v3/frankendome-montage-v3-teaser.mp4"
   ],
   "releases": [],
   "note": "Version three: the reason, and legible labels.",
@@ -3296,9 +3296,9 @@
   "title": "Frankendome, Version Four",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/2026-08-25/frankendome-montage/frankendome-montage-v4.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v4-teaser/frankendome-montage-v4-teaser-vertical.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v4-teaser/frankendome-montage-v4-teaser.mp4"
+   "deliverables/0037-frankendome-montage-v4/frankendome-montage-v4.mp4",
+   "deliverables/0090-frankendome-montage-v4-teaser-v4/frankendome-montage-v4-teaser-vertical.mp4",
+   "deliverables/0090-frankendome-montage-v4-teaser-v4/frankendome-montage-v4-teaser.mp4"
   ],
   "releases": [],
   "note": "Version four: the brand segments, the party sting and the shared contact outro.",
@@ -3793,9 +3793,9 @@
   "title": "Frankendome, Version Five",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/2026-08-25/frankendome-montage/frankendome-montage-v5.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v5-teaser/frankendome-montage-v5-teaser-vertical.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v5-teaser/frankendome-montage-v5-teaser.mp4"
+   "deliverables/0038-frankendome-montage-v5/frankendome-montage-v5.mp4",
+   "deliverables/0091-frankendome-montage-v5-teaser-v5/frankendome-montage-v5-teaser-vertical.mp4",
+   "deliverables/0091-frankendome-montage-v5-teaser-v5/frankendome-montage-v5-teaser.mp4"
   ],
   "releases": [],
   "note": "Version five: no girlfriend remark, and the plain frankendome in place of the party sting.",
@@ -4290,9 +4290,9 @@
   "title": "Frankendome, Version Six",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/2026-08-25/frankendome-montage/frankendome-montage-v6.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v6-teaser/frankendome-montage-v6-teaser-vertical.mp4",
-   "deliverables/2026-09-13/frankendome-montage-v6-teaser/frankendome-montage-v6-teaser.mp4"
+   "deliverables/0039-frankendome-montage-v6/frankendome-montage-v6.mp4",
+   "deliverables/0092-frankendome-montage-v6-teaser-v6/frankendome-montage-v6-teaser-vertical.mp4",
+   "deliverables/0092-frankendome-montage-v6-teaser-v6/frankendome-montage-v6-teaser.mp4"
   ],
   "releases": [],
   "note": "Version six: themed shells, the four product lines, a faster cadence and a synthesised beat under it.",
@@ -4819,9 +4819,9 @@
   "title": "Build A Dome: The Campaign",
   "source": "two_v_demo/lesson_kickstarter.py",
   "originals": [
-   "deliverables/2026-08-29/dome-kickstarter/dome-kickstarter.mp4",
-   "deliverables/2026-09-13/dome-kickstarter-teaser/dome-kickstarter-teaser-vertical.mp4",
-   "deliverables/2026-09-13/dome-kickstarter-teaser/dome-kickstarter-teaser.mp4"
+   "deliverables/0041-dome-kickstarter/dome-kickstarter.mp4",
+   "deliverables/0093-dome-kickstarter-teaser/dome-kickstarter-teaser-vertical.mp4",
+   "deliverables/0093-dome-kickstarter-teaser/dome-kickstarter-teaser.mp4"
   ],
   "releases": [],
   "note": "The campaign film: why a dome, what one costs to the dollar, and what a hundred thousand dollars buys.",
@@ -5008,9 +5008,9 @@
   "title": "Build A Dome: The Campaign, Version Two",
   "source": "two_v_demo/lesson_kickstarter_v2.py",
   "originals": [
-   "deliverables/2026-08-29/dome-kickstarter/dome-kickstarter-v2.mp4",
-   "deliverables/2026-09-13/dome-kickstarter-v2-teaser/dome-kickstarter-v2-teaser-vertical.mp4",
-   "deliverables/2026-09-13/dome-kickstarter-v2-teaser/dome-kickstarter-v2-teaser.mp4"
+   "deliverables/0042-dome-kickstarter-v2/dome-kickstarter-v2.mp4",
+   "deliverables/0094-dome-kickstarter-v2-teaser-v2/dome-kickstarter-v2-teaser-vertical.mp4",
+   "deliverables/0094-dome-kickstarter-v2-teaser-v2/dome-kickstarter-v2-teaser.mp4"
   ],
   "releases": [],
   "note": "The campaign film with the pony wall, the overhanging brim and its catchment, running cost at 17 cents a kilowatt hour, radiative cooling paint, and the ten points.",
@@ -5235,9 +5235,9 @@
   "title": "THE VANCE NETWORK: the complete mini-series",
   "source": "two_v_demo/lesson_drama.py",
   "originals": [
-   "deliverables/2026-09-01/the-vance-network-mini-series/the-vance-network-mini-series.mp4",
-   "deliverables/2026-09-13/the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser-vertical.mp4",
-   "deliverables/2026-09-13/the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser.mp4"
+   "deliverables/0051-the-vance-network-mini-series/the-vance-network-mini-series.mp4",
+   "deliverables/0101-the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser-vertical.mp4",
+   "deliverables/0101-the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser.mp4"
   ],
   "releases": [],
   "note": "The whole mini-series in one file: six vertical episodes, an arc where every cliffhanger is answered by the next episode's hook, and a finale that leaves one thread open. Same engine as the single episode, playing six directors back to back.",
@@ -5468,9 +5468,9 @@
   "title": "EP_DOME_001: The High Council Dome",
   "source": "two_v_demo/lesson_drama.py",
   "originals": [
-   "deliverables/2026-09-01/ep-dome-001-high-council/ep-dome-001-high-council.mp4",
-   "deliverables/2026-09-13/ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser-vertical.mp4",
-   "deliverables/2026-09-13/ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser.mp4"
+   "deliverables/0049-ep-dome-001-high-council/ep-dome-001-high-council.mp4",
+   "deliverables/0100-ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser-vertical.mp4",
+   "deliverables/0100-ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser.mp4"
   ],
   "releases": [],
   "note": "The first micro-drama out of the narrative module: a 60-second vertical episode staged inside the dome, with the blocking, the proximity rings, the rig actions and every camera move computed by the drama director from a script JSON. Rendered 1080x1920 -- the 9:16 framing is the point, and a landscape render would discard it.",
@@ -5541,8 +5541,8 @@
   "title": "The Dome House Lookbook",
   "source": "two_v_demo/lesson_lookbook.py",
   "originals": [
-   "deliverables/2026-09-13/dome-house-lookbook-teaser/dome-house-lookbook-teaser-vertical.mp4",
-   "deliverables/2026-09-13/dome-house-lookbook-teaser/dome-house-lookbook-teaser.mp4"
+   "deliverables/0102-dome-house-lookbook-teaser/dome-house-lookbook-teaser-vertical.mp4",
+   "deliverables/0102-dome-house-lookbook-teaser/dome-house-lookbook-teaser.mp4"
   ],
   "releases": [],
   "note": "The interiors film: two furnished domes, a cast of eight built out of the same skeleton the lifting lesson uses, hair modelled as strands, a wardrobe lofted from the body's own cross-section, and the composer refusing a fitting pod because the shell has come down to meet it.",
@@ -5681,9 +5681,9 @@
   "title": "Eight Cuts to a House: A Dome Straight From the Tree",
   "source": "two_v_demo/lesson_wedge.py",
   "originals": [
-   "deliverables/2026-09-01/eight-cuts-to-a-house/eight-cuts-to-a-house.mp4",
-   "deliverables/2026-09-13/eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser-vertical.mp4",
-   "deliverables/2026-09-13/eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser.mp4"
+   "deliverables/0050-eight-cuts-to-a-house/eight-cuts-to-a-house.mp4",
+   "deliverables/0099-eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser-vertical.mp4",
+   "deliverables/0099-eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser.mp4"
   ],
   "releases": [],
   "note": "The dome built straight from the tree: raw log sectors as structural members, forty independent pinwheel frames with no mitres anywhere, and gasketed seams instead of shared struts. Its math screens compute the trunk's board feet, pack 2x4s into the same sections honestly, cost the kerf, measure the joint and size the dome from the strut length the tree gives.",
@@ -6174,8 +6174,8 @@
   "title": "From Scratch: Every Calculation Behind a Dome on Screen",
   "source": "two_v_demo/lesson_scratch.py",
   "originals": [
-   "deliverables/2026-09-13/dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser-vertical.mp4",
-   "deliverables/2026-09-13/dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser.mp4"
+   "deliverables/0098-dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser-vertical.mp4",
+   "deliverables/0098-dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser.mp4"
   ],
   "releases": [],
   "note": "From scratch, for somebody who has never written code: every calculation between one irrational number and a lit pixel. The shape (phi, subdivision, projection, two chord factors, a cut list) and then the picture (tubes, normals, the vertex buffer, the camera, the view and projection matrices, the divide by w, the viewport, the depth buffer, culling and the lighting sum), with 18 math screens deriving every figure on camera.",
@@ -6961,8 +6961,8 @@
   "title": "The Dome Simulator Master Presentation",
   "source": "two_v_demo/lesson_master.py",
   "originals": [
-   "deliverables/2026-09-13/domesim-master-presentation-teaser/domesim-master-presentation-teaser-vertical.mp4",
-   "deliverables/2026-09-13/domesim-master-presentation-teaser/domesim-master-presentation-teaser.mp4"
+   "deliverables/0095-domesim-master-presentation-teaser/domesim-master-presentation-teaser-vertical.mp4",
+   "deliverables/0095-domesim-master-presentation-teaser/domesim-master-presentation-teaser.mp4"
   ],
   "releases": [],
   "note": "The master presentation: the toolchain tour, the whole construction masterclass, the frankendome, the priced starter home and the factory case -- with math screens that derive every figure on camera. Its segments (whoami, the party sting) are composed inside the lesson module, so this render must not compose them again.",
@@ -8216,9 +8216,9 @@
   "title": "Every Dome In The World",
   "source": "two_v_demo/lesson_world.py",
   "originals": [
-   "deliverables/2026-08-29/every-dome-in-the-world/every-dome-in-the-world.mp4",
-   "deliverables/2026-09-13/every-dome-in-the-world-teaser/every-dome-in-the-world-teaser-vertical.mp4",
-   "deliverables/2026-09-13/every-dome-in-the-world-teaser/every-dome-in-the-world-teaser.mp4"
+   "deliverables/0045-every-dome-in-the-world/every-dome-in-the-world.mp4",
+   "deliverables/0096-every-dome-in-the-world-teaser/every-dome-in-the-world-teaser-vertical.mp4",
+   "deliverables/0096-every-dome-in-the-world-teaser/every-dome-in-the-world-teaser.mp4"
   ],
   "releases": [],
   "note": "All twelve Dome Creator presets, each rebuilt live from the simulator's own modules and rendered at true relative scale, with math screens for the frequency ladder, hub versus hubless, price per square foot, envelope efficiency and scale.",
@@ -8543,9 +8543,9 @@
   "title": "10 Dome Builds — The Accountable Master Cut",
   "source": "two_v_demo/lesson_world_chatgpt.py",
   "originals": [
-   "deliverables/2026-08-29/ten-dome-builds-master-20260829-135242-chatgpt/ten-dome-builds-master-20260829-135242-chatgpt.mp4",
-   "deliverables/2026-09-13/ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser-vertical.mp4",
-   "deliverables/2026-09-13/ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser.mp4"
+   "deliverables/0047-ten-dome-builds-master-20260829-135242-chatgpt/ten-dome-builds-master-20260829-135242-chatgpt.mp4",
+   "deliverables/0097-ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser-vertical.mp4",
+   "deliverables/0097-ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser.mp4"
   ],
   "releases": [],
   "note": "A unique ChatGPT master cut: ten real Dome Creator presets, Dome Forge and Assembly Line context, plus a per-build material breakdown, construction-event labor breakdown and modeled direct-sale price.",
@@ -8877,8 +8877,8 @@
   "title": "Why Wedges: A Dome That Does Not Need a Sawmill",
   "source": "two_v_demo/lesson_wedge_why.py",
   "originals": [
-   "deliverables/2026-09-13/why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser-vertical.mp4",
-   "deliverables/2026-09-13/why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser.mp4"
+   "deliverables/0103-why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser-vertical.mp4",
+   "deliverables/0103-why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser.mp4"
   ],
   "releases": [],
   "note": "The combined cut. Where the method came from (the frankendome and its V brackets), what it is (borrowing the mechanism chapters and three math screens from `wedge` so the two films cannot disagree), and what it is worth -- from two timed cutting sessions that agree with a geometric prediction to 12%, a wedge valued two independent ways that land 1% apart, the store-bought overheads nobody counts, and a structural claim stated as a crossover diameter rather than a verdict.",
@@ -9745,11 +9745,11 @@
   "title": "Two Trees, All at Once",
   "source": "two_v_demo/lesson_harvest.py",
   "originals": [
-   "deliverables/2026-09-11/two-trees-all-at-once/two-trees-all-at-once-v2.mp4",
-   "deliverables/2026-09-11/two-trees-all-at-once/two-trees-all-at-once-v3.mp4",
-   "deliverables/2026-09-11/two-trees-all-at-once/two-trees-all-at-once.mp4",
-   "deliverables/2026-09-13/two-trees-all-at-once-teaser/two-trees-all-at-once-teaser-vertical.mp4",
-   "deliverables/2026-09-13/two-trees-all-at-once-teaser/two-trees-all-at-once-teaser.mp4"
+   "deliverables/0064-two-trees-all-at-once/two-trees-all-at-once.mp4",
+   "deliverables/0065-two-trees-all-at-once-v2/two-trees-all-at-once-v2.mp4",
+   "deliverables/0069-two-trees-all-at-once-v3/two-trees-all-at-once-v3.mp4",
+   "deliverables/0104-two-trees-all-at-once-teaser/two-trees-all-at-once-teaser-vertical.mp4",
+   "deliverables/0104-two-trees-all-at-once-teaser/two-trees-all-at-once-teaser.mp4"
   ],
   "releases": [],
   "note": "Registered by the project agent repair step: the harvest lesson was in the registry without a deliverable entry.",
@@ -10023,11 +10023,11 @@
   "title": "The $20 Pine",
   "source": "two_v_demo/lesson_pine_value.py",
   "originals": [
-   "deliverables/2026-09-12/the-20-dollar-pine-teaser/the-20-dollar-pine-teaser-v2.mp4",
-   "deliverables/2026-09-12/the-20-dollar-pine-teaser/the-20-dollar-pine-teaser-vertical-v2.mp4",
-   "deliverables/2026-09-12/the-20-dollar-pine-teaser/the-20-dollar-pine-teaser-vertical.mp4",
-   "deliverables/2026-09-12/the-20-dollar-pine-teaser/the-20-dollar-pine-teaser.mp4",
-   "deliverables/2026-09-12/the-20-dollar-pine/the-20-dollar-pine.mp4"
+   "deliverables/0071-the-20-dollar-pine/the-20-dollar-pine.mp4",
+   "deliverables/0079-the-20-dollar-pine-teaser/the-20-dollar-pine-teaser-vertical.mp4",
+   "deliverables/0079-the-20-dollar-pine-teaser/the-20-dollar-pine-teaser.mp4",
+   "deliverables/0106-the-20-dollar-pine-teaser-v2/the-20-dollar-pine-teaser-v2.mp4",
+   "deliverables/0106-the-20-dollar-pine-teaser-v2/the-20-dollar-pine-teaser-vertical-v2.mp4"
   ],
   "releases": [],
   "note": "Registered by the project agent repair step: the pine_value lesson was in the registry without a deliverable entry.",
@@ -10301,9 +10301,9 @@
   "title": "Why Build This Way",
   "source": "two_v_demo/lesson_why_build.py",
   "originals": [
-   "deliverables/2026-09-12/why-build-this-way/why-build-this-way.mp4",
-   "deliverables/2026-09-13/why-build-this-way-teaser/why-build-this-way-teaser-vertical.mp4",
-   "deliverables/2026-09-13/why-build-this-way-teaser/why-build-this-way-teaser.mp4"
+   "deliverables/0068-why-build-this-way/why-build-this-way.mp4",
+   "deliverables/0105-why-build-this-way-teaser/why-build-this-way-teaser-vertical.mp4",
+   "deliverables/0105-why-build-this-way-teaser/why-build-this-way-teaser.mp4"
   ],
   "releases": [],
   "note": "Registered by the project agent repair step: the why_build lesson was in the registry without a deliverable entry.",
@@ -10549,7 +10549,7 @@
   "title": "All Domes",
   "source": "two_v_demo/lesson_all_domes.py",
   "originals": [
-   "deliverables/2026-09-15/all-domes-every-permutation/all-domes-every-permutation-vertical.mp4"
+   "deliverables/0108-all-domes-every-permutation/all-domes-every-permutation-vertical.mp4"
   ],
   "releases": [],
   "note": "The Dome Creator's whole catalogue drawn by the Creator's own renderer -- grain, glass, mirrors, foundations and the fit-out inside -- one dome built step by step in the tool's own construction order, then every menu swept one setting at a time, eight random draws, and the permutation count.",
@@ -10950,8 +10950,8 @@
   "title": "The Twenty Dollar Pine, Part Two",
   "source": "two_v_demo/lesson_pvtwo.py",
   "originals": [
-   "deliverables/2026-09-13/pvtwo-masterclass-teaser/pvtwo-masterclass-teaser-vertical.mp4",
-   "deliverables/2026-09-13/pvtwo-masterclass-teaser/pvtwo-masterclass-teaser.mp4"
+   "deliverables/0107-pvtwo-masterclass-teaser/pvtwo-masterclass-teaser-vertical.mp4",
+   "deliverables/0107-pvtwo-masterclass-teaser/pvtwo-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "Generated by the project agent film recipe: The Twenty Dollar Pine, Part Two.",
@@ -11509,7 +11509,7 @@
   "source": "two_v_demo/lesson_byod_deepseek.py",
   "originals": [],
   "releases": [
-   "deliverables/2026-09-17/attempt-v1-deepseek/releases/attempt-v1-deepseek"
+   "deliverables/0115-attempt-v1-deepseek/release"
   ],
   "note": "Bring Your Own Dome cut to the author's marked-up transcript: the assumptions lecture, the foundation-share section, the R-value payback figure and the utility-resale line are out; a pad built step by step, the deck materials, the pad catalogue, the line between the two people's money and the host's feature branches are in; and the iris was redrawn as a mechanism whose aperture is solved from the size it claims rather than drawn at a convenient radius.",
   "family": "Bring Your Own Dome",
@@ -12050,7 +12050,7 @@
   "title": "Bring Your Own Dome (snarky)",
   "source": "two_v_demo/lesson_byod_styled.py",
   "originals": [
-   "deliverables/2026-09-17/byod-styled/byod_snarky/smoke-test-0001/attempt-v1-byod_snarky.mp4"
+   "deliverables/0116-byod-styled/byod_snarky/smoke-test-0001/attempt-v1-byod_snarky.mp4"
   ],
   "releases": [],
   "note": "Bring Your Own Dome in the social register: handheld camera that leans in when the character speaks, a little faster, vignetted, and the pink cyber jelly on thirteen cues, taking the tone of each passage it stands in. Same script, same numbers, same claims as the deepseek cut.",
@@ -13097,8 +13097,8 @@
   "source": "two_v_demo/lesson_dome_park.py",
   "originals": [],
   "releases": [
-   "deliverables/2026-09-16/dome-park-bring-your-own-home/releases/dome-park-bring-your-own-home-v2",
-   "deliverables/2026-09-16/dome-park-bring-your-own-home/releases/dome-park-bring-your-own-home-v3"
+   "deliverables/0110-dome-park-bring-your-own-home-v2/release",
+   "deliverables/0111-dome-park-bring-your-own-home-v3/release"
   ],
   "note": "The Kickstarter cut. An RV park for domes: what a pad is, built one step at a time; what it costs a host and what it returns; the measured hinge -- a dome's foundation is 8% to 63% of its build cost and on a pad the tenant never buys it; four ways to have a roof priced on one basis, and the month at which bringing your own home starts winning; one hardware set across three sizes; and a shell that comes off so the R-value can keep going up for as long as you own the house.",
   "family": "",
@@ -13547,16 +13547,16 @@
   "title": "A house you can take apart",
   "source": "two_v_demo/lesson_seed_pitch.py",
   "originals": [
-   "deliverables/2026-09-23/seed_pitch-teaser/seed_pitch-teaser-v3.mp4",
-   "deliverables/2026-09-23/seed_pitch-teaser/seed_pitch-teaser.mp4"
+   "deliverables/0124-seed_pitch-teaser-v3/seed_pitch-teaser-v3.mp4",
+   "deliverables/0208-seed_pitch-teaser/seed_pitch-teaser.mp4"
   ],
   "releases": [
-   "deliverables/2026-09-20/stem-cell-dome-campaign/releases/stem-cell-dome-campaign",
-   "deliverables/2026-09-20/stem-cell-dome-campaign/releases/stem-cell-dome-campaign-v2",
-   "deliverables/2026-09-20/stem-cell-dome-campaign/releases/stem-cell-dome-campaign-v3",
-   "deliverables/2026-09-20/stem-cell-dome-campaign/releases/stem-cell-dome-campaign-v4",
-   "deliverables/2026-09-20/stem-cell-dome-campaign/releases/stem-cell-dome-campaign-v6",
-   "deliverables/2026-09-20/stem-cell-dome-campaign/releases/stem-cell-dome-campaign-v7"
+   "deliverables/0117-stem-cell-dome-campaign/release",
+   "deliverables/0118-stem-cell-dome-campaign-v2/release",
+   "deliverables/0122-stem-cell-dome-campaign-v3/release",
+   "deliverables/0123-stem-cell-dome-campaign-v4/release",
+   "deliverables/0146-stem-cell-dome-campaign-v6/release",
+   "deliverables/0178-stem-cell-dome-campaign-v7/release"
   ],
   "note": "The campaign cut for the stem-cell dome. A 277 sq ft tiny house that comes apart: a frame split out of the buyer's own trees with no mitre in it anywhere, a boat-hull shell priced off four named laminate systems at a supplier's published rates, a utility core that unbolts and moves to the next dome, and a pad that belongs to the landowner and is kept out of the dome's price. Ends on the three things it says against itself: not insulated as standard, eighty percent more wood than a shared-strut frame, and a price list that is an assumption.",
   "family": "Stem cell dome",
@@ -14552,20 +14552,20 @@
   "title": "A house you can take apart",
   "source": "two_v_demo/lesson_pitch_hero.py",
   "originals": [
-   "deliverables/2026-09-23/pitch_hero-teaser/pitch_hero-teaser-v2.mp4",
-   "deliverables/2026-09-23/pitch_hero-teaser/pitch_hero-teaser-v3.mp4",
-   "deliverables/2026-09-23/pitch_hero-teaser/pitch_hero-teaser.mp4",
-   "deliverables/2026-09-23/stem-cell-hero-cut/stem-cell-hero-cut-v2.mp4",
-   "deliverables/2026-09-23/stem-cell-hero-cut/stem-cell-hero-cut-v3.mp4",
-   "deliverables/2026-09-23/stem-cell-hero-cut/stem-cell-hero-cut-vertical-v2.mp4",
-   "deliverables/2026-09-23/stem-cell-hero-cut/stem-cell-hero-cut-vertical-v3.mp4",
-   "deliverables/2026-09-23/stem-cell-hero-cut/stem-cell-hero-cut-vertical.mp4",
-   "deliverables/2026-09-23/stem-cell-hero-cut/stem-cell-hero-cut.mp4"
+   "deliverables/0198-stem-cell-hero-cut/stem-cell-hero-cut-vertical.mp4",
+   "deliverables/0198-stem-cell-hero-cut/stem-cell-hero-cut.mp4",
+   "deliverables/0201-pitch_hero-teaser/pitch_hero-teaser.mp4",
+   "deliverables/0203-stem-cell-hero-cut-v2/stem-cell-hero-cut-v2.mp4",
+   "deliverables/0203-stem-cell-hero-cut-v2/stem-cell-hero-cut-vertical-v2.mp4",
+   "deliverables/0206-pitch_hero-teaser-v2/pitch_hero-teaser-v2.mp4",
+   "deliverables/0227-stem-cell-hero-cut-v3/stem-cell-hero-cut-v3.mp4",
+   "deliverables/0227-stem-cell-hero-cut-v3/stem-cell-hero-cut-vertical-v3.mp4",
+   "deliverables/0230-pitch_hero-teaser-v3/pitch_hero-teaser-v3.mp4"
   ],
   "releases": [
-   "deliverables/2026-09-23/stem-cell-hero-cut/releases/stem-cell-hero-cut",
-   "deliverables/2026-09-23/stem-cell-hero-cut/releases/stem-cell-hero-cut-v2",
-   "deliverables/2026-09-23/stem-cell-hero-cut/releases/stem-cell-hero-cut-v3"
+   "deliverables/0198-stem-cell-hero-cut/release",
+   "deliverables/0203-stem-cell-hero-cut-v2/release",
+   "deliverables/0227-stem-cell-hero-cut-v3/release"
   ],
   "note": "A hundred seconds for the top of the Kickstarter page. Not an extract of the campaign film -- a separate cut, because an extract inherits the long film's pacing and a backer gives a campaign video about fifteen seconds. Your own trees; one waterproof layer over as many warm ones as you like, which is how a sailor dresses; twelve thousand dollars with the whole invoice shown and the profit named; and the three kinds of people it needs to work at all. Every scene is the campaign film's own painter, so the short cut and the long one cannot show different buildings.",
   "family": "Stem cell dome",
@@ -14765,12 +14765,12 @@
   "title": "Build one utility core",
   "source": "two_v_demo/lesson_module_build.py",
   "originals": [
-   "deliverables/2026-09-23/module_build-teaser/module_build-teaser.mp4",
-   "deliverables/2026-09-23/stem-cell-utility-core-build/stem-cell-utility-core-build-vertical.mp4",
-   "deliverables/2026-09-23/stem-cell-utility-core-build/stem-cell-utility-core-build.mp4"
+   "deliverables/0125-stem-cell-utility-core-build/stem-cell-utility-core-build-vertical.mp4",
+   "deliverables/0125-stem-cell-utility-core-build/stem-cell-utility-core-build.mp4",
+   "deliverables/0126-module_build-teaser/module_build-teaser.mp4"
   ],
   "releases": [
-   "deliverables/2026-09-23/stem-cell-utility-core-build/releases/stem-cell-utility-core-build"
+   "deliverables/0125-stem-cell-utility-core-build/release"
   ],
   "note": "The shop-floor cut: building one utility core, in the order you would actually build one. Fourteen steps, five stages, nine tools and twenty-three material lines, all generated from column_build.py's process sheet so the film cannot show a step the sheet does not have. Wet before dry, heavy before fragile, nothing buried -- and the two places you do not get a second chance: the crimp gauge and the pressure test. 7.2 hours practised, 17.2 for a first build, which is the number nobody quotes.",
   "family": "Stem cell dome",
@@ -15179,13 +15179,115 @@
   "target_file": "deliverables/masterclass/cabin-concept-example-molecular-sieve-fridge.mp4"
  },
  {
+  "key": "concept_wedge_coverage",
+  "kind": "lesson",
+  "title": "How Much Tree Closes a Dome",
+  "source": "",
+  "originals": [],
+  "releases": [],
+  "note": "Concept film from Wedge strut footage and triangle infill for the 2V wedge dome: How Much Tree Closes a Dome",
+  "family": "",
+  "superseded_by": "",
+  "family_note": "",
+  "fit": "",
+  "voice_rate": "",
+  "audio_bed": "",
+  "style": "teaching",
+  "chapters": [
+   {
+    "number": "01",
+    "title": "How Much Tree Closes a Dome",
+    "promise": "One dome, every triangle closed with wedges: four trees, or seven, and you choose which.",
+    "narration": "The dome's frame is 120 wedge members: 678 feet of wedge, cut from one log after another. Close every triangle with more wedges, laid in pairs with their points facing in, and the pairs can nest tight or open into a bowtie. Nested, a pair covers one wedge face; opened, two. That one choice moves the whole dome between 1,796 and 2,913 feet of wedge.",
+    "equations": [],
+    "bullets": []
+   },
+   {
+    "number": "02",
+    "title": "The numbers we are working from",
+    "promise": "Where every figure in this film comes from.",
+    "narration": "Before anything is worked out, here is everything this film rests on: 5 numbers, 1 standard, 4 estimate. A claimed number is what the source said and has not been measured here. Every figure after this is arithmetic on these and on the dome's own computed numbers.",
+    "equations": [
+     "log diameter = 12 in  (estimate)",
+     "wedges per log section = 8  (standard)",
+     "one usable pine = 60 ft  (estimate)",
+     "overlap, fully nested = 1  (estimate)",
+     "overlap, bowtie = 0  (estimate)"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "03",
+    "title": "The frame",
+    "promise": "A tree and a half.",
+    "narration": "A 12 inch log split 8 ways gives wedges with a face 4.59 inches wide. The frame takes 120 of them, 678 feet of wedge, and one 60 foot pine gives 480 feet.",
+    "equations": [
+     "a wedge's face = 4.59 in",
+     "the frame's wedge = 678 ft",
+     "wedge in one tree = 480 ft"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "04",
+    "title": "Closing the triangles",
+    "promise": "Pairs, points in.",
+    "narration": "The triangles leave 428 square feet to close after the frame. Lay the wedges in pairs, points facing in. Nested tight, a pair covers one face; opened to a bowtie, two.",
+    "equations": [
+     "open sqft 12in (this dome) = 428 sq ft"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "05",
+    "title": "Your choice of trees",
+    "promise": "The overlap is the dial.",
+    "narration": "Bowtie pairs close the dome with 1,117 feet of infill; nested pairs take 2,235. Frame and all, that is 1,796 to 2,913 feet: 3.7 to 6.1 trees, before taper and kerf.",
+    "equations": [
+     "infill, bowtie pairs = 1,117 ft",
+     "infill, nested pairs = 2,235 ft",
+     "trees, least = 3.7",
+     "trees, most = 6.1"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "06",
+    "title": "Where it fits the dome",
+    "promise": "In the dome, this is the the tree, the log, the rip, yield and value.",
+    "narration": "This is the whole timber bill of the wedge dome closed in wood: 1,796 to 2,913 feet of wedge against a frame of 678.",
+    "equations": [
+     "frame and infill, least = 1,796 ft",
+     "frame and infill, most = 2,913 ft",
+     "the frame's wedge = 678 ft"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "07",
+    "title": "What it will not do",
+    "promise": "The number that does not help.",
+    "narration": "A bowtie touches only at its points: the 1,117 foot figure is a floor, not a weather-tight joint. And the area method runs about six per cent above the real pieces the Triangle Infill calculator cuts, because a triangle's corners take short pieces.",
+    "equations": [
+     "infill, bowtie pairs = 1,117 ft"
+    ],
+    "bullets": []
+   }
+  ],
+  "number_modules": [],
+  "graph_nodes": [],
+  "target_key": "cabin_concept_wedge_coverage",
+  "target_module": "two_v_demo/lesson_cabin_concept_wedge_coverage.py",
+  "target_file": "deliverables/masterclass/cabin-concept-wedge-coverage.mp4"
+ },
+ {
   "key": "2v",
   "kind": "lesson",
   "title": "2V Geodesic Masterclass",
   "source": "two_v_demo/lessons.py",
   "originals": [
-   "deliverables/2026-09-12/2v-teaser/2v-teaser-vertical.mp4",
-   "deliverables/2026-09-12/2v-teaser/2v-teaser.mp4"
+   "deliverables/0080-2v-teaser/2v-teaser-vertical.mp4",
+   "deliverables/0080-2v-teaser/2v-teaser.mp4"
   ],
   "releases": [],
   "note": "",
@@ -15455,12 +15557,12 @@
   "title": "The seam does four jobs",
   "source": "two_v_demo/lesson_seam.py",
   "originals": [
-   "deliverables/2026-09-25/seam-teaser/seam-teaser.mp4",
-   "deliverables/2026-09-25/the-seam-does-four-jobs/the-seam-does-four-jobs-vertical.mp4",
-   "deliverables/2026-09-25/the-seam-does-four-jobs/the-seam-does-four-jobs.mp4"
+   "deliverables/0242-the-seam-does-four-jobs/the-seam-does-four-jobs-vertical.mp4",
+   "deliverables/0242-the-seam-does-four-jobs/the-seam-does-four-jobs.mp4",
+   "deliverables/0245-seam-teaser/seam-teaser.mp4"
   ],
   "releases": [
-   "deliverables/2026-09-25/the-seam-does-four-jobs/releases/the-seam-does-four-jobs"
+   "deliverables/0242-the-seam-does-four-jobs/release"
   ],
   "note": "",
   "family": "",
@@ -15663,9 +15765,9 @@
   "key": "tree_value",
   "kind": "slideshow",
   "title": "The many values of one tree",
-  "source": "deliverables/2026-09-12/tree-value-video/build/content.py",
+  "source": "deliverables/0073-tree-value-video/build/content.py",
   "originals": [
-   "deliverables/2026-09-12/tree-value-video/output/The-many-values-of-one-tree.mp4"
+   "deliverables/0073-tree-value-video/output/The-many-values-of-one-tree.mp4"
   ],
   "releases": [],
   "note": "A narrated slideshow built outside the masterclass renderer (build/assemble.py, build.mjs).",
@@ -16053,10 +16155,10 @@
   "key": "launcher_trailer",
   "kind": "slideshow",
   "title": "Dome Simulator trailer",
-  "source": "deliverables/2026-08-16/launcher_trailer/build_launcher_trailer.py",
+  "source": "deliverables/0021-launcher_trailer/build_launcher_trailer.py",
   "originals": [
-   "deliverables/2026-08-16/launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer.mp4",
-   "deliverables/2026-08-16/launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer_narrated.mp4"
+   "deliverables/0021-launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer.mp4",
+   "deliverables/0021-launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer_narrated.mp4"
   ],
   "releases": [],
   "note": "A silent montage with burned-in titles over the project's renders.",

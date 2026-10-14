@@ -124,6 +124,22 @@ triangles changes contact and voids without changing their wood area. Its
 envelope span is not the coverage pitch. An air cavity is not, by itself, an
 insulation rating or a structural connection.
 
+For the separate opposed-point experiment, replace the curved backs with
+ideal straight chords and state the cell being measured. Its triangular
+height is {{wm.section_height_in}} inches. If e is the slant engagement,
+the envelope depth is height times (two minus e), the contact is radius
+times e, and the assumed periodic cell's solid fraction is one divided by
+(two minus e). Its void fraction is what remains:
+
+{{wm.section_table}}
+
+Those are envelope-depth and contact figures, not face-coverage pitches.
+The two triangles retain their wood area throughout. A near-bowtie needs
+its fixing, bridging and sealing worked out; the table cannot declare it
+a panel that carries a load. Nor does this opposed-point experiment solve
+the owner's two-points-inward proposal. The installed orientation and the
+continuous face must be checked together before choosing an infill pitch.
+
 ## Reserve raw trunk, then add the infill
 
 The ideal uniform {{wm.trunk_ft}} foot usable trunk supplies

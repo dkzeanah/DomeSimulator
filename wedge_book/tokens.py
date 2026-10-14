@@ -1023,14 +1023,14 @@ def tokens() -> dict[str, Token]:
     return _table()
 
 
-def resolve(text: str, strict: bool = True) -> str:
+def resolve(text: str, strict: bool = True, *, table: dict[str, Token] | None = None) -> str:
     """Fill every ``{{group.name}}`` in ``text``.
 
     ``strict`` raises on an unknown token, which is what an export wants. The
     writing desk passes ``strict=False`` so a half-written page still renders
     with the typo visible in it.
     """
-    table = tokens()
+    table = tokens() if table is None else table
 
     def swap(match: re.Match) -> str:
         name = match.group(1)
@@ -1054,6 +1054,12 @@ def resolve(text: str, strict: bool = True) -> str:
         return value
 
     return TOKEN.sub(swap, text)
+
+
+def export_resolver():
+    """Fresh values per export, reusing its token catalogue across chapters."""
+    from functools import partial
+    return partial(resolve, table=tokens())
 
 
 def unknown_tokens(text: str) -> tuple[str, ...]:
@@ -1729,7 +1735,7 @@ def _coverage_tokens(add) -> None:
             ("area_ft2", "{:,.1f}", "the 40 triangles' area, sq ft"),
             ("face_in_12", "{:.2f}", "a 12 in log's wedge face, in"), ("depth_in_12", "{:.2f}", "its depth, in"),
             ("open_area_ft2_12", "{:,.1f}", "open area after the frame's strip, sq ft"),
-            ("infill_min_ft_12", "{:,.0f}", "infill, bowtie pairs, ft"), ("infill_max_ft_12", "{:,.0f}", "infill, nested pairs, ft"),
+            ("infill_min_ft_12", "{:,.0f}", "infill at widest assumed continuous pitch, ft"), ("infill_max_ft_12", "{:,.0f}", "infill at narrowest assumed continuous pitch, ft"),
             ("total_min_ft_12", "{:,.0f}", "frame and infill, least, ft"), ("total_max_ft_12", "{:,.0f}", "frame and infill, most, ft"),
             ("trees_min_12", "{:.0f}", "60 ft trees, least"), ("trees_max_12", "{:.0f}", "60 ft trees, most"),
             ("trunk_min_ft_12", "{:,.0f}", "trunk, least, ft"), ("trunk_max_ft_12", "{:,.0f}", "trunk, most, ft"),

@@ -22,7 +22,7 @@ def html(strict: bool = True) -> book_export.BuildReport:
     return book_export.export_html(
         root=outline.MANUSCRIPT_DIR, out_dir=outline.EXPORT_DIR,
         book=outline.BOOK, strict=strict, stem=outline.STEM,
-        figure_dir=outline.FIGURE_DIR, tokens=tokens.resolve)
+        figure_dir=outline.FIGURE_DIR, tokens=tokens.export_resolver())
 
 
 def pdf(strict: bool = True,
@@ -31,14 +31,14 @@ def pdf(strict: bool = True,
         root=outline.MANUSCRIPT_DIR, out_dir=outline.EXPORT_DIR,
         book=outline.BOOK, strict=strict, backend=backend,
         stem=outline.STEM, figure_dir=outline.FIGURE_DIR,
-        tokens=tokens.resolve)
+        tokens=tokens.export_resolver())
 
 
 def document(strict: bool = True) -> tuple[str, book_export.BuildReport]:
     return book_export.book_html(
         root=outline.MANUSCRIPT_DIR, book=outline.BOOK,
         embed_images=False, strict=strict,
-        figure_dir=outline.FIGURE_DIR, tokens=tokens.resolve)
+        figure_dir=outline.FIGURE_DIR, tokens=tokens.export_resolver())
 
 
 def written() -> tuple[int, int]:

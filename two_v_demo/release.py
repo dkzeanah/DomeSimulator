@@ -119,6 +119,10 @@ HASHTAG_BANK: dict[str, tuple[str, ...]] = {
         "#geodesicdome", "#domehome", "#cabinbuild", "#tinyhome", "#interiordesign",
         "#buildyourowncabin", "#offgrid", "#homedesign", "#diy",
     ),
+    "cabin_promo": (
+        "#tinyhome", "#offgrid", "#affordablehousing", "#geodesicdome", "#chainsaw",
+        "#woodworking", "#buildyourown", "#goldenratio", "#homestead", "#veterans", "#diy",
+    ),
     "cabin_staple": (
         "#affordablehousing", "#tinyhome", "#firsthome", "#geodesicdome", "#domehome",
         "#housingcrisis", "#buildyourowncabin", "#offgrid", "#familyproject",

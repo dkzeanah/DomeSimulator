@@ -451,6 +451,18 @@ PRESETS: tuple[RenderPreset, ...] = (
            "for every cut. Every figure from square_book and wedge_zome.",
            compose_segments=True),
 
+    _video("cabin_promo", "cabin_promo", "the-house-that-was-a-tree.mp4",
+           "THE HOUSE THAT WAS A TREE. The promo: the whole case in ninety seconds, phone first. "
+           "Every figure computed; carries its own close, so no spliced outro."),
+
+    RenderPreset(
+        key="cabin_promo_stills",
+        label="the-house-that-was-a-tree stills",
+        summary="One still per chapter of the promo, to look at before the render.",
+        fields={"lesson": "cabin_promo", "action": "shots", "shots": chapter_shots("cabin_promo"),
+                "no_narration": True},
+    ),
+
     _video("cabin_staple", "cabin_staple", "the-staple-house.mp4",
            "THE STAPLE HOUSE. The dome as housing's staple -- cheap, fast, known, "
            "the same every time -- and the papercuts it leaves out, counted on both "

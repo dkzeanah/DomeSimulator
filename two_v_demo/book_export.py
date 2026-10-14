@@ -124,14 +124,26 @@ def latest_figure(key: str, directory: Path | None = None) -> Path | None:
     from .book_figures import FIGURE_DIR
 
     directory = directory or FIGURE_DIR
-    if not directory.is_dir():
-        return None
+    if "deliverables" in directory.parts:
+        import medialib
+        directory = medialib.locate(directory)
     candidates: list[Path] = []
     for suffix in FIGURE_SUFFIXES:
         exact = directory / f"{key}{suffix}"
         if exact.exists():
             candidates.append(exact)
         candidates.extend(directory.glob(f"{key}-v*{suffix}"))
+    # The numbered library keeps older figure addresses usable after migration.
+    # Resolve through it instead of treating an absent legacy folder as absent art.
+    if not candidates and (directory == FIGURE_DIR or "deliverables" in directory.parts):
+        import medialib
+        for suffix in FIGURE_SUFFIXES:
+            resolved = medialib.locate(directory / f"{key}{suffix}")
+            if resolved.is_file():
+                candidates.append(resolved)
+            newest = medialib.latest(key, suffix)
+            if newest is not None:
+                candidates.append(newest)
     if not candidates:
         return None
     # Newest by version number where there is one, else by write time.
@@ -328,14 +340,14 @@ def _markdown_to_html(text: str) -> str:
     """Markdown to HTML, with the extensions a book actually uses."""
     import markdown
     return markdown.markdown(
-        text, extensions=["tables", "sane_lists", "smarty"],
+        text, extensions=["tables", "fenced_code", "sane_lists", "smarty"],
         output_format="html5")
 
 
 def _resolve_images(text: str, embed: bool,
                     found: list[str], missing: list[str],
                     index: dict | None = None,
-                    figure_dir: Path | None = None) -> str:
+                    figure_dir: Path | None = None, *, show_slots: bool = False) -> str:
     """Point every image link at the newest render, or drop it silently.
 
     ``index`` and ``figure_dir`` belong to the book being built. They default
@@ -355,13 +367,10 @@ def _resolve_images(text: str, embed: bool,
         key = figure_key_from_src(match.group("src"))
         path = latest_figure(key, figure_dir)
         spec = (index if index is not None else figure_index(BOOK)).get(key)
-        if path is None and spec is not None \
+        if show_slots and path is None and spec is not None \
                 and spec.source == "illustration_slot":
-            # A commissioned illustration not yet delivered: the Amazon
-            # book prints a captioned slot so the page plan is visible
-            # in a proof, and the picture itself drops in under the same
-            # key once it exists -- the caption stays, marked as an
-            # illustration rather than a photograph.
+            # Keep the page plan visible in an explicit working proof.
+            # Reader exports omit undelivered illustrations like other missing art.
             caption = html_escape.escape(alt)
             return (f'<figure class="illustration-slot">'
                     f'<div class="slot-box">Illustration &middot; '
@@ -535,11 +544,14 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
     live_diagrams: list[str] = []
     written = 0
     index = figure_index(book)
+    resolve = tokens if tokens is not None else book_tokens.resolve
 
     def images(body: str) -> str:
-        drawn = _mermaid_blocks(body, embed_images, live_diagrams)
+        # Generated Markdown tables and worked sums must be expanded before
+        # Markdown is parsed; late expansion prints their source on the page.
+        drawn = _mermaid_blocks(resolve(body, strict=strict), embed_images, live_diagrams)
         return _boxes(_resolve_images(drawn, embed_images, found, missing,
-                                      index, figure_dir))
+                                      index, figure_dir, show_slots=include_unwritten))
 
     # The cover is the front of the book, so it is assembled first and
     # placed outside the reading column: full width, no page furniture, and
@@ -678,7 +690,6 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         + (_mermaid_runtime() if live_diagrams else "")
         + "</body></html>")
 
-    resolve = tokens if tokens is not None else book_tokens.resolve
     document = resolve(document, strict=strict)
 
     report = BuildReport(
@@ -707,9 +718,8 @@ def export_html(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
                                  strict=strict, figure_dir=figure_dir,
                                  tokens=tokens)
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"{stem}.html"
-    if path.exists():
-        path = next_version_path(path)
+    path = next_version_path(out_dir / f"{stem}.html")
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(document, encoding="utf-8")
     return BuildReport(path=path, chapters_written=report.chapters_written,
                        chapters_total=report.chapters_total,
@@ -869,9 +879,8 @@ def export_pdf(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
     # embedded as base64 is enormous; PyMuPDF wants them as files it can
     # find in its archive. Either way, do not embed for PDF.
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"{stem}.pdf"
-    if path.exists():
-        path = next_version_path(path)
+    path = next_version_path(out_dir / f"{stem}.pdf")
+    path.parent.mkdir(parents=True, exist_ok=True)
 
     chrome = _chrome_path()
     if backend == "auto":
