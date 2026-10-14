@@ -198,7 +198,9 @@ function Library() {
               <b>{fullTitle(o.book.title, o.book.subtitle)}</b>
               <span className="muted small"> · {price(o.amountCents, o.currency)} · {new Date(o.paidAt).toLocaleDateString()}</span>
             </span>
-            <a className="button primary" href={o.downloadUrl}>Download</a>
+            {o.downloadUrl
+              ? <a className="button primary" href={o.downloadUrl}>Download</a>
+              : <span className="muted small">{o.bookingNote || 'Booked'}</span>}
           </div>
         ))
       )}

@@ -150,7 +150,7 @@ Leave `export` blank the first time. Stills are minutes; an export is hours.
 
 * Invent a number, or round one into a caption.
 * Write engine code. Writes are confined to `project_agent/`, `exports/`,
-  `presentations/`, `book/manuscript/` and new `two_v_demo/lesson_*.py` /
+  `presentations/`, `books/two-trees/manuscript/` and new `two_v_demo/lesson_*.py` /
   `*_facts.py` files — plus the three registration files, under backup and
   rollback.
 * Read or write anything outside the repository.

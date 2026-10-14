@@ -165,6 +165,16 @@ def _videos() -> list[Path]:
             for entry in os.scandir(d):
                 if entry.is_file() and entry.name.endswith(".mp4") and not entry.name.startswith("."):
                     found.append(Path(entry.path))
+    # The dated library (medialib): each item's folder, and one or two levels into a
+    # project item (byod/final/cut-*/), never into a release or a voice cache.
+    import medialib
+    for item in medialib.items():
+        for pattern in ("*.mp4", "*/*.mp4", "*/*/*.mp4"):
+            for p in item.folder.glob(pattern):
+                inner = p.relative_to(item.folder).parts[:-1]
+                if p.name.startswith(".") or "releases" in inner or any("-voice" in d for d in inner):
+                    continue
+                found.append(p)
     return found
 
 
@@ -184,14 +194,16 @@ def _owner_map(stems: dict[str, list[str]], videos: list[Path]) -> dict[str, lis
 
 
 def _releases(stems: list[str]) -> list[str]:
-    base = ROOT / RELEASES
-    if not base.is_dir():
-        return []
+    import medialib
+    bases = [ROOT / RELEASES] + [d / "releases" for s in stems for d in [medialib.item_dir(medialib.slug_of(s))] if d]
     out = []
-    for entry in os.scandir(base):
-        if entry.is_dir() and any(re.match(rf"^{re.escape(s)}(-v\d+)?$", entry.name) for s in stems):
-            out.append(_rel(Path(entry.path)))
-    return sorted(out)
+    for base in bases:
+        if not base.is_dir():
+            continue
+        for entry in os.scandir(base):
+            if entry.is_dir() and any(re.match(rf"^{re.escape(s)}(-v\d+)?$", entry.name) for s in stems):
+                out.append(_rel(Path(entry.path)))
+    return sorted(set(out))
 
 
 def number_modules(source: Path) -> list[str]:
@@ -373,7 +385,8 @@ def presentation_items(videos: list[Path]) -> list[Item]:
 
 def slideshow_items() -> list[Item]:
     items = []
-    tree = ROOT / "deliverables" / "tree-value-video"
+    import medialib
+    tree = medialib.item_dir("tree-value-video") or ROOT / "deliverables" / "tree-value-video"
     content = tree / "build" / "content.py"
     if content.is_file():
         import contextlib
@@ -400,7 +413,7 @@ def slideshow_items() -> list[Item]:
                  "(build/assemble.py, build.mjs).",
             family="The $20 pine", fit=FIT["tree_value"], chapters=chapters,
             target_key=tkey, target_module=tmod, target_file=tfile))
-    trailer = ROOT / "deliverables" / "launcher_trailer"
+    trailer = medialib.item_dir("launcher_trailer") or ROOT / "deliverables" / "launcher_trailer"
     manifests = sorted(trailer.glob("render_*/video_manifest.json"))
     if manifests:
         manifest = json.loads(manifests[-1].read_text(encoding="utf-8"))

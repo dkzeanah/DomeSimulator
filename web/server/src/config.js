@@ -43,6 +43,9 @@ export const config = {
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean),
   booksDir: env.BOOKS_DIR || path.join(REPO_ROOT, 'deliverables', 'book'),
+  // The dated library (medialib.py): deliverables/YYYY-MM-DD/<item>/, every version
+  // of an item in its one folder. Books are looked for here when booksDir has none.
+  libraryDir: env.LIBRARY_DIR || path.join(REPO_ROOT, 'deliverables'),
   booksConfig: env.BOOKS_CONFIG || path.join(WEB_ROOT, 'books.config.json'),
   siteConfig: path.join(WEB_ROOT, 'site.config.json'),
   youtubeChannelId: env.YOUTUBE_CHANNEL_ID || '',

@@ -73,7 +73,7 @@ def area_of(path: str) -> str:
         return "scene"
     if "/two_v_demo/" in p:
         return "model"
-    if "/wedge_book/" in p or "/book_wedge/" in p or "/book/" in p:
+    if "/wedge_book/" in p or "/books/the-40-hour-cabin/" in p or "/book/" in p or "/books/" in p:
         return "book"
     if "/intelligence/" in p or "/.claude/" in p or "/project_agent/" in p:
         return "tooling"

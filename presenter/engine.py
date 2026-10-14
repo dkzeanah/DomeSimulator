@@ -720,9 +720,10 @@ class PresenterApp:
         self.dist_scale = 1.0
 
     def screenshot(self, path=None):
-        self.output_dir.mkdir(parents=True, exist_ok=True)
         if path is None:
-            path = self.output_dir / f"frame_{int(time.time() * 1000)}.png"
+            import medialib
+            path = medialib.route(self.output_dir / "frames" / f"frame_{int(time.time() * 1000)}.png")
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
         raw = self.capture_rgb()
         image = self.pygame.image.fromstring(raw, self.size, "RGB")
         image = self.pygame.transform.flip(image, False, True)
@@ -789,6 +790,10 @@ class PresenterApp:
                     f"{', '.join(OVERLAY_LEVELS)}")
             self.overlay_level = overlay
         path = Path(path)
+        # Output is append-only and lives in the dated library: an old-style
+        # deliverables/presenter/x.mp4 goes to its item folder as a new version.
+        import medialib
+        path = medialib.route(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         ffmpeg_exe = resolve_executable("ffmpeg", ffmpeg)
         fps = fps or self.pres.fps

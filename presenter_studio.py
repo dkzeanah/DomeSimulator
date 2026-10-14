@@ -404,8 +404,8 @@ def main() -> int:
     if cfg.get("action") == "shots" and cfg.get("shots"):
         app = PresenterApp(pres, headless=True, size=size or (1600, 900))
         app.overlay_level = overlay
-        out = Path("deliverables/presenter")
-        out.mkdir(exist_ok=True)
+        out = Path("two_v_demo_output/presenter")      # check stills are working files, not output
+        out.mkdir(parents=True, exist_ok=True)
         for value in str(cfg["shots"]).split(","):
             if not value.strip():
                 continue

@@ -12,8 +12,14 @@ import { config } from '../config.js';
 export function loadCatalogue(file = config.booksConfig) {
   if (!fs.existsSync(file)) return [];
   const books = JSON.parse(fs.readFileSync(file, 'utf8')).books || [];
-  return books.filter((b) => b.slug && b.file);
+  return books.filter((b) => b.slug && (b.file || isSession(b)));
 }
+
+/**
+ * A session is sold like a book but is time, not a file: a one-on-one design
+ * session. It has no PDF; after payment the order shows its bookingNote.
+ */
+export const isSession = (book) => book?.kind === 'session';
 
 /** "the-wedge-method.pdf" -> the highest of it, -v2, -v3 ... that exists. */
 export function latestVersion(dir, fileName) {
@@ -35,8 +41,25 @@ export function latestVersion(dir, fileName) {
   return best ? { name: best, version: bestVersion, path: path.join(dir, best) } : null;
 }
 
-export function resolveBook(book, dir = config.booksDir) {
-  const found = latestVersion(dir, book.file);
+/**
+ * The same file in the dated library: deliverables/<YYYY-MM-DD>/<item>/, where the
+ * item is the file's base name without its -vN. Every version lives in that one folder.
+ */
+export function latestInLibrary(libraryDir, fileName) {
+  if (!libraryDir || !fs.existsSync(libraryDir)) return null;
+  const ext = path.extname(fileName);
+  const base = path.basename(fileName, ext).replace(/-v\d+$/, '');
+  const days = fs.readdirSync(libraryDir).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort();
+  for (const day of days) {
+    const folder = path.join(libraryDir, day, base);
+    if (fs.existsSync(folder)) return latestVersion(folder, fileName);
+  }
+  return null;
+}
+
+export function resolveBook(book, dir = config.booksDir, libraryDir = config.libraryDir) {
+  if (!book.file) return null;
+  const found = latestVersion(dir, book.file) || latestInLibrary(libraryDir, book.file);
   if (!found) return null;
   const { size, mtime } = fs.statSync(found.path);
   return { ...found, size, updatedAt: mtime.toISOString() };
@@ -64,7 +87,7 @@ export function publicBooks(dir = config.booksDir, file = config.booksConfig) {
   return loadCatalogue(file)
     .filter((book) => offerOf(book) !== 'none')
     .map((book) => {
-      const found = resolveBook(book, dir);
+      const found = resolveBook(book, dir, dir === config.booksDir ? config.libraryDir : null);
       const offer = offerOf(book);
       const price = priceOf(book);
       return {
@@ -81,7 +104,9 @@ export function publicBooks(dir = config.booksDir, file = config.booksConfig) {
         priceCents: price ? price.cents : null,
         currency: price ? price.currency : null,
         amazonUrl: offer === 'amazon' ? book.amazonUrl || '' : '',
-        available: Boolean(found),
+        kind: isSession(book) ? 'session' : 'book',
+        includes: Array.isArray(book.includes) ? book.includes : [],
+        available: isSession(book) ? Boolean(price) : Boolean(found),
         edition: found ? found.version : null,
         sizeMb: found ? Math.round((found.size / 1048576) * 10) / 10 : null,
         updatedAt: found ? found.updatedAt : null,

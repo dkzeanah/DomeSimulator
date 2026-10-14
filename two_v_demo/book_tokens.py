@@ -17,7 +17,7 @@ Using them
 ----------
 In a chapter file, write the token in double braces::
 
-    Two trees give {{dome.struts_available}} struts for a frame that needs
+    Three trees give {{dome.struts_available}} struts for a frame that needs
     {{frame.members}}.
 
 Every token, its current value and a one-line description are listed in the
@@ -30,6 +30,7 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass
+from datetime import date
 from functools import lru_cache
 from typing import Callable
 
@@ -438,20 +439,33 @@ def power_facts() -> dict:
 
 @lru_cache(maxsize=1)
 def water_facts() -> dict:
-    """What the plates make, against what the roof catches."""
+    """What the plates make, against what *this book's* roof catches.
+
+    The companion module runs its water comparison on its own reference
+    dome, which is smaller than this book's; a figure quoted beside "on
+    this building's roof" must be this building's. The plate physics stay
+    the shared module's (the same ten modules, the same humid-day ring),
+    while the roof and catchment areas are computed here from the book's
+    own solved hemisphere -- the same discipline :func:`filter_facts`
+    already applies to the wall-as-filter figure.
+    """
     from wedge_book import systems
 
     water = systems.water_comparison()
+    plan_sqft = bm.tree_first().floor_sqft
+    roof_sqft = filter_facts()["skin_sqft"]
+    gallons_per_inch = plan_sqft / 12.0 * systems.GAL_PER_CUFT
     return {
-        "roof_sqft": water["roof_sqft"],
-        "plan_sqft": water["plan_sqft"],
-        "gal_per_in": water["gallons_per_inch"],
+        "roof_sqft": roof_sqft,
+        "plan_sqft": plan_sqft,
+        "gal_per_in": gallons_per_inch,
         "watts": water["peltier_watts"],
         "kwh_day": water["peltier_kwh_per_day"],
         "litres_day": water["peltier_litres_per_day"],
         "gal_day": water["peltier_gallons_per_day"],
-        "gal_year": water["peltier_gallons_per_year"],
-        "rain_in": water["rain_inches_equal_to_a_year"],
+        "gal_year": water["peltier_gallons_per_day"] * 365.0,
+        "rain_in": (water["peltier_gallons_per_day"] * 365.0
+                    / gallons_per_inch),
         "kwh_per_litre": water["kwh_per_litre"],
     }
 
@@ -1994,6 +2008,21 @@ def _build() -> tuple[Token, ...]:
               lambda: str(len(bm.MILL_ROUTE))),
         Token("route.wedge_steps", "operations from tree to member in frame",
               lambda: str(len(bm.WEDGE_ROUTE))),
+        Token("route.shared_steps",
+              "operations both routes must perform",
+              lambda: str(_route_counts()[0])),
+        Token("route.mill_only_steps",
+              "operations only the mill route performs",
+              lambda: str(_route_counts()[1])),
+        Token("route.wedge_only_steps",
+              "operations only the wedge route performs",
+              lambda: str(_route_counts()[2])),
+        Token("route.mill_only_names",
+              "the mill-only operations, in order",
+              lambda: ", ".join(_route_counts()[3])),
+        Token("route.wedge_only_names",
+              "the wedge-only operations, in order",
+              lambda: ", ".join(_route_counts()[4])),
 
         # -- the seams, which turn out to take only two angles ----------
         Token("seam.half_sector_deg",
@@ -2036,7 +2065,7 @@ def _build() -> tuple[Token, ...]:
               lambda: str(len(dome.member_classes))),
         Token("dome.trees", "trees the book's dome is cut from",
               lambda: str(dome.trees)),
-        Token("dome.struts_available", "struts two trees give",
+        Token("dome.struts_available", "struts the three trees give",
               lambda: str(dome.struts_available)),
         Token("dome.spare_struts", "struts left over",
               lambda: str(dome.spare_struts)),
@@ -2162,11 +2191,46 @@ def _build() -> tuple[Token, ...]:
         *_chapter_tokens(),
 
         # -- the book itself -------------------------------------------
+        Token("book.title", "the book's title", lambda: _BOOK().title),
+        Token("book.subtitle", "the book's subtitle", lambda: _BOOK().subtitle),
+        Token("book.tagline", "the one-line claim on the title page",
+              lambda: _BOOK().tagline),
+        Token("book.author", "the author's name on the title page",
+              lambda: "Donovan Zeanah"),
+        Token("book.repo",
+              "where the codebase and the Complete Edition live",
+              lambda: "github.com/dkzeanah/DomeSimulator"),
+        Token("book.built", "the day this copy was typeset",
+              lambda: date.today().isoformat()),
         Token("book.chapters", "chapters in this book",
               _chapter_count),
         Token("book.parts", "parts in this book", _part_count),
         Token("book.figures", "figures in this book", _figure_count),
+        Token("book.story", "story chapters in this book",
+              _strand_count("story")),
+        Token("book.howto", "howto chapters in this book",
+              _strand_count("howto")),
+        Token("book.explain", "explain chapters in this book",
+              _strand_count("explain")),
+        Token("book.reference", "reference chapters in this book",
+              _strand_count("reference")),
     )
+
+
+def _route_counts() -> tuple[int, int, int, list[str], list[str]]:
+    """The two processing routes, compared by shared and unique steps.
+
+    Read from :mod:`book_math`'s own lists so a chapter cannot quote a
+    count the diagram does not draw.
+    """
+    mill = {short for short, _full in bm.MILL_ROUTE}
+    wedge = {short for short, _full in bm.WEDGE_ROUTE}
+    shared = sorted(mill & wedge,
+                    key=lambda s: [x for x, _ in bm.MILL_ROUTE].index(s))
+    mill_only = [short for short, _full in bm.MILL_ROUTE if short not in wedge]
+    wedge_only = [short for short, _full in bm.WEDGE_ROUTE if short not in mill]
+    return (len(shared), len(mill_only), len(wedge_only),
+            mill_only, wedge_only)
 
 
 def _pct(fraction: float, places: int = 1) -> str:
@@ -2337,14 +2401,14 @@ def _pine_tokens() -> list[Token]:
 
 
 def book_floor_sqft() -> float:
-    """The floor of *this book's* dome, which is the one two trees make.
+    """The floor of *this book's* dome, which is the one three trees make.
 
     :mod:`dome_advantage` defaults to ``dome_costing.FLOOR_SQFT``, a round
     314 chosen for a campaign video.  The book's dome is the one the first
-    chapter cut out of two pines, and it is 365.  Quoting the video's floor
-    in a book that has said 365 for fifty chapters would be exactly the
-    drift tokens exist to stop, so every ``skin.*`` figure and the envelope
-    plots all call this.
+    chapter solved out of three pines, and it is 365.  Quoting the video's
+    floor in a book that has said 365 for fifty chapters would be exactly
+    the drift tokens exist to stop, so every ``skin.*`` figure and the
+    envelope plots all call this.
     """
     return math.pi * (bm.tree_first().radius_in / 12.0) ** 2
 
@@ -3545,6 +3609,21 @@ def _part_count() -> str:
 def _figure_count() -> str:
     from .book import BOOK
     return str(len(BOOK.figures))
+
+
+def _BOOK():
+    from .book import BOOK
+    return BOOK
+
+
+def _strand_count(strand: str) -> Callable[[], str]:
+    """Chapters of one strand, counted from the outline so the orientation
+    page's promises cannot drift from the contents list."""
+    from .book import BOOK
+
+    def compute() -> str:
+        return str(len([ch for ch in BOOK.chapters if ch.strand == strand]))
+    return compute
 
 
 _TOKENS: tuple[Token, ...] | None = None

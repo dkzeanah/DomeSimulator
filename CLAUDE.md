@@ -17,7 +17,25 @@ Do not add a "force" flag to defeat it; if an old cut is genuinely worthless, de
 is a separate, deliberate act.
 
 The same applies to anything under `deliverables/`. Do not reuse a filename that already
-exists.
+exists; a rebuilt folder (a release) goes beside the first as `-v2`.
+
+## One library, one way to make a film, one place for pictures
+
+* **Everything made goes in `deliverables/`, by date** -- `deliverables/<YYYY-MM-DD>/<item>/`,
+  one folder per item with every version, phone cut, caption file and release inside
+  (`medialib.py`; `deliverables/INDEX.md` and `index.html` list it all). The old kind
+  folders (`deliverables/book`, `deliverables/masterclass`, `exports`...) are gone; a path
+  like `deliverables/book/x.pdf` is now an *address* that `next_version_path` and
+  `medialib.route` send to the item's folder. To read an output, use
+  `medialib.latest(slug, ".pdf")` or `medialib.locate(old_path)`, never a glob of a kind
+  folder. `deliverables/_moves/` records where every old file went.
+* **Every film is made with `py -3.12 -m film make <lesson>`** (`show` first to see what
+  it will do; `--voice mine --pace 1.5` for the owner's voice; `stills`, `teaser`). Do not
+  write a new staged script per film.
+* **Images and clips live in `assets/`, named for what they show** (`assetlib.py`,
+  `assets/catalogue.json`). Never name a file after the tool that made it; the catalogue's
+  `origin` field records that (publishers ask). Find one by name:
+  `assetlib.image("wedge-method-cover", 4)`.
 
 ## Reuse what this repository already builds
 

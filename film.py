@@ -1,0 +1,265 @@
+"""Make a film: one command, one way, for every film in the project.
+
+    py -3.12 -m film list                              # every film that can be made
+    py -3.12 -m film show cabin_wedge_beyond           # what a make would do, and where it lands
+    py -3.12 -m film make cabin_wedge_beyond           # narrated, landscape + phone cut, release, teaser
+    py -3.12 -m film make cabin_wedge_beyond --voice mine --pace 1.5
+    py -3.12 -m film stills cabin_wedge_beyond         # one still per chapter, to look at first
+    py -3.12 -m film teaser cabin_wedge_beyond --voice mine --pace 1.5
+
+Before this there were four ways to make a film -- the launcher's Masterclass tab,
+staged per-film scripts (narrate / plan / render, written out by hand each time),
+``segmented_render.py``, and ``two_v_demo.teasers`` -- and outputs landed in five
+folders. They all end in the same renderer (``MasterclassApp.export_video``), so this
+command is that renderer's one front door:
+
+1. the film's render preset (``render_presets``), so a make reproduces what shipped;
+2. the voice: the house voice, any neural voice by name, or ``mine`` -- the owner's
+   own voice (``local_voice_studio.my_voice``), at any pace, the clips sped with pitch
+   kept and each of the film's chapters fitted to its faster speech, while spliced-in
+   segments (call to action, outro) keep the length their music was made for;
+3. the standard export: resumable chunks, the landscape cut, the phone cut beside it,
+   the release folder, the teaser (CLAUDE.md: every render is a release);
+4. everything filed in the dated library (``medialib``): one folder per film, every
+   version and its phone cut, captions and release inside.
+
+The owner's-voice clips and plan are kept in the film's own folder as
+``<film>-myvoice-x<pace>/``, so the release can read the plan's chapter timings and
+the next version of the film reuses every clip already spoken.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+WORK = ROOT / "two_v_demo_output"
+
+
+def preset_fields(lesson: str) -> dict:
+    """The film's render preset, house defaults filled in."""
+    import render_presets as rp
+    from two_v_demo.deliverables import DELIVERABLE_BY_LESSON
+
+    preset = rp.PRESET_BY_KEY.get(lesson)
+    if preset is None or preset.fields.get("action") != "export_video":
+        item = DELIVERABLE_BY_LESSON.get(lesson)
+        if item is None:
+            raise SystemExit(f"{lesson!r} is not a registered film; `py -3.12 -m film list` names them")
+        preset = rp._video(lesson, lesson, item.filename, item.note)
+    return dict(preset.applied())
+
+
+def chapters(lesson: str, compose_segments: bool):
+    from two_v_demo.lesson_registry import get_lesson
+
+    film = get_lesson(lesson)
+    if compose_segments:
+        from two_v_demo.segments import compose
+        film = compose(film)
+    return film, tuple(film.chapters)
+
+
+def target(fields: dict) -> Path:
+    import medialib
+    return medialib.locate(ROOT / fields["export_video"])
+
+
+# ---------------------------------------------------------------------------
+# The owner's voice, at a pace
+
+
+def narrate_mine(lesson: str, compose_segments: bool, pace: float, beside: Path, beside_stem: str,
+                 progress=print) -> Path:
+    """Speak the film in the owner's voice, then fit it at ``pace``; returns the plan."""
+    from local_voice_studio import my_voice as mv
+    from two_v_demo.audio import spoken_chapter_text
+
+    _, chs = chapters(lesson, compose_segments)
+    # Beside the cut, as <stem>-myvoice-x<pace>/: the release finds the plan there for its
+    # chapter timestamps, and the clips are reused by the next version of the film.
+    work = beside / f"{beside_stem}-myvoice-x{pace:g}"
+    raw = work / "raw"
+    raw.mkdir(parents=True, exist_ok=True)
+    script = {"lesson": lesson, "chapters": [
+        {"title": c.title, "duration": float(c.duration), "text": spoken_chapter_text(i, chs, True)}
+        for i, c in enumerate(chs)]}
+    (raw / "script.json").write_text(json.dumps(script, indent=1), encoding="utf-8")
+    python = str(mv.VENV_PYTHON) if mv.VENV_PYTHON.is_file() else sys.executable
+    progress(f"narrating {len(chs)} chapters in your voice (clips already spoken are kept)")
+    code = subprocess.run([python, "-m", "local_voice_studio.my_voice", "narrate",
+                           "--script", str(raw / "script.json"), "--out", str(raw)], cwd=str(ROOT)).returncode
+    if code != 0:
+        raise SystemExit("narrating in your voice failed; see the lines above")
+    return fit_pace(lesson, compose_segments, pace, work, progress)
+
+
+def fit_pace(lesson: str, compose_segments: bool, pace: float, work: Path, progress=print) -> Path:
+    import soundfile as sf
+
+    from two_v_demo.audio import SPEECH_DELAY, TAIL_PADDING, _build_mixed_track, resolve_executable
+    from two_v_demo.lesson_registry import get_lesson
+
+    ffmpeg = resolve_executable("ffmpeg")
+    _, chs = chapters(lesson, compose_segments)
+    ours = {c.slug for c in get_lesson(lesson).chapters}
+    raw = work / "raw"
+    raw_plan = json.loads((raw / "narration-plan.json").read_text(encoding="utf-8"))
+    clips, speech, durations = [], [], []
+    for i, (c, name) in enumerate(zip(chs, raw_plan["clips"])):
+        src, dst = raw / name, work / f"chapter_{i + 1:03d}.wav"
+        speed = ["-af", f"atempo={pace}"] if pace != 1 else []
+        subprocess.run([ffmpeg, "-y", "-v", "error", "-i", str(src), *speed, "-c:a", "pcm_s16le", str(dst)],
+                       check=True)
+        info = sf.info(str(dst))
+        s = info.frames / info.samplerate
+        fitted = SPEECH_DELAY + s + TAIL_PADDING
+        # The film's own chapters move at the voice's pace; a spliced-in segment keeps
+        # the length its music and picture were made for.
+        durations.append(max(6.0, fitted) if c.slug in ours else max(float(c.duration), fitted))
+        clips.append(dst)
+        speech.append(s)
+    starts, t = [], 0.0
+    for d in durations:
+        starts.append(t)
+        t += d
+    track = work / "narration.m4a"
+    _build_mixed_track(clips, starts, t, track, ffmpeg, progress)
+    plan = work / "narration-plan.json"
+    plan.write_text(json.dumps({
+        "schema": 1, "synthetic_voice": True, "lesson": lesson,
+        "voice_profile": f"{raw_plan.get('voice_profile', 'my voice')} at x{pace:g}",
+        "model": raw_plan.get("model", ""), "chapter_count": len(chs),
+        "chapter_starts": starts, "chapter_durations": durations, "speech_durations": speech,
+        "speech_delay": SPEECH_DELAY, "track": track.name, "clips": [p.name for p in clips]}, indent=1),
+        encoding="utf-8")
+    progress(f"pace x{pace:g}: {len(chs)} chapters, {t / 60:.1f} min "
+             f"(written timing {sum(c.duration for c in chs) / 60:.1f} min)")
+    return plan
+
+
+# ---------------------------------------------------------------------------
+
+
+def run_ticket(fields: dict) -> int:
+    import launcher_common as lc
+    lc.write_config("two_v_masterclass", fields)
+    return subprocess.run([sys.executable, "two_v_masterclass.py"], cwd=str(ROOT)).returncode
+
+
+def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: bool = False,
+         teaser: bool = True, segments: bool | None = None, fps: int | None = None,
+         size: str | None = None, dry_run: bool = False) -> int:
+    fields = preset_fields(lesson)
+    if segments is not None:
+        fields["compose_segments"] = segments
+    if fps:
+        fields["fps"] = str(fps)
+    if size:
+        fields["size"] = size
+    fields["orientation"] = "landscape" if landscape_only else "both"
+    fields["teaser"] = teaser
+    mine = voice == "mine"
+    if voice and not mine:
+        fields["voice"] = voice
+    if pace != 1.0 and not mine:
+        raise SystemExit("--pace is for --voice mine; a neural voice takes its rate in the preset (voice_rate)")
+    where = target(fields)
+    print(f"{lesson}: {fields['export_video']}")
+    print(f"  files into {where.parent.relative_to(ROOT)}  (a new version beside any there)")
+    print(f"  voice {'mine at x%g' % pace if mine else fields['voice']}; "
+          f"{'landscape only' if landscape_only else 'landscape + phone cut'}; "
+          f"segments {'on' if fields.get('compose_segments') else 'off'}; teaser {'on' if teaser else 'off'}")
+    if dry_run:
+        return 0
+    if mine:
+        where.parent.mkdir(parents=True, exist_ok=True)
+        fields["local_narration_plan"] = str(narrate_mine(lesson, bool(fields.get("compose_segments")), pace,
+                                                          where.parent, where.stem))
+    code = run_ticket(fields)
+    import medialib
+    medialib.write_index()
+    if code == 0:
+        print(f"done; the film's folder: {medialib.locate(ROOT / fields['export_video']).parent.relative_to(ROOT)}")
+    return code
+
+
+def stills(lesson: str) -> int:
+    import render_presets as rp
+    preset = rp.PRESET_BY_KEY.get(f"{lesson}_stills")
+    fields = dict(preset.applied()) if preset else {**preset_fields(lesson), "action": "shots",
+                                                     "shots": rp.chapter_shots(lesson), "no_narration": True}
+    print(f"stills for {lesson} into {WORK.relative_to(ROOT) / lesson}")
+    return run_ticket(fields)
+
+
+def teaser(lesson: str, voice: str = "", pace: float = 1.0) -> int:
+    """The film's teaser, both shapes. ``voice="mine"`` narrates it in the owner's voice
+    (also the way round the house voice's online service when it refuses)."""
+    from two_v_demo import teasers
+    if voice != "mine":
+        return teasers.export(lesson)
+    key = teasers.PREFIX + lesson
+    fields = {"action": "export_video", "lesson": key, "export_video": str(teasers.output_path(lesson)),
+              "orientation": "both", "fps": "30", "size": "1920x1080", "teaser": False}
+    where = target(fields)
+    where.parent.mkdir(parents=True, exist_ok=True)
+    print(f"{key}: into {where.parent.relative_to(ROOT)}, voice mine at x{pace:g}")
+    fields["local_narration_plan"] = str(narrate_mine(key, False, pace, where.parent, where.stem))
+    code = run_ticket(fields)
+    import medialib
+    medialib.write_index()
+    return code
+
+
+def list_films() -> None:
+    import render_presets as rp
+    from two_v_demo.deliverables import DELIVERABLES
+    import medialib
+    for item in DELIVERABLES:
+        found = medialib.latest(medialib.slug_of(item.filename), ".mp4")
+        state = f"made, newest {found.name}" if found else "not made yet"
+        tag = "" if item.lesson in rp.PRESET_BY_KEY else "  (no preset; uses the registry)"
+        print(f"{item.lesson:34s} {state}{tag}")
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(prog="film", description="Make a film, one way, into the library.")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("list")
+    for name in ("show", "make"):
+        p = sub.add_parser(name)
+        p.add_argument("lesson")
+        p.add_argument("--voice", default="", help="'mine', or a neural voice name; default: the preset's")
+        p.add_argument("--pace", type=float, default=1.0, help="with --voice mine: 1.5 speaks 1.5x faster")
+        p.add_argument("--landscape-only", action="store_true")
+        p.add_argument("--no-teaser", action="store_true")
+        seg = p.add_mutually_exclusive_group()
+        seg.add_argument("--segments", dest="segments", action="store_true", default=None)
+        seg.add_argument("--no-segments", dest="segments", action="store_false")
+        p.add_argument("--fps", type=int)
+        p.add_argument("--size")
+    sub.add_parser("stills").add_argument("lesson")
+    t = sub.add_parser("teaser")
+    t.add_argument("lesson")
+    t.add_argument("--voice", default="")
+    t.add_argument("--pace", type=float, default=1.0)
+    a = ap.parse_args(argv)
+    if a.cmd == "list":
+        list_films()
+        return 0
+    if a.cmd in ("show", "make"):
+        return make(a.lesson, voice=a.voice, pace=a.pace, landscape_only=a.landscape_only,
+                    teaser=not a.no_teaser, segments=a.segments, fps=a.fps, size=a.size,
+                    dry_run=a.cmd == "show")
+    if a.cmd == "teaser":
+        return teaser(a.lesson, a.voice, a.pace)
+    return stills(a.lesson)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

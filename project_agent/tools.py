@@ -318,7 +318,7 @@ def _t_render_stills(args: dict) -> dict:
                 cfg["demo"] = str(demo)
         result = _spawn("presenter_studio.py", "presenter", cfg,
                         timeout=1200, label=run_tag)
-        expected = [config.REPO_ROOT / "deliverables" / "presenter" /
+        expected = [config.REPO_ROOT / "two_v_demo_output" / "presenter" /
                     f"shot_{float(t):07.1f}s.png" for t in times]
     elif backend == "dome_forge":
         # In-process capture: the repo's own shots CLI replaces the app's
@@ -444,7 +444,7 @@ def _t_export_book(args: dict) -> dict:
     strict = bool(args.get("strict", True))
     try:
         from two_v_demo.book_app import run_headless
-        code = run_headless(action, Path("book/manuscript"),
+        code = run_headless(action, Path("books/two-trees/manuscript"),
                             Path("deliverables/book"), strict=strict)
         return {"ok": code == 0, "action": action, "returncode": code,
                 "out_dir": "deliverables/book"}
@@ -470,7 +470,7 @@ _WRITE_ALLOWLIST = (
     ("project_agent", None),
     ("exports", None),
     ("presentations", None),
-    ("book", "manuscript"),
+    ("books", "two-trees/manuscript"),
 )
 
 
@@ -489,7 +489,8 @@ def _t_write_file(args: dict) -> dict:
     parts = rel.parts
     allowed = False
     for prefix, sub in _WRITE_ALLOWLIST:
-        if parts[:1] == (prefix,) and (sub is None or parts[1:2] == (sub,)):
+        depth = sub.count("/") + 1 if sub else 0
+        if parts[:1] == (prefix,) and (sub is None or "/".join(parts[1:1 + depth]) == sub):
             allowed = True
             break
     if not allowed and parts[:1] == ("two_v_demo",):
@@ -499,7 +500,7 @@ def _t_write_file(args: dict) -> dict:
     if not allowed:
         return {"ok": False,
                 "error": f"write denied for {rel}: allowlist is project_agent/, "
-                         "exports/, presentations/, book/manuscript/, and "
+                         "exports/, presentations/, books/two-trees/manuscript/, and "
                          "two_v_demo/lesson_*.py or two_v_demo/*_facts.py"}
     resolved.parent.mkdir(parents=True, exist_ok=True)
     resolved.write_text(content, encoding="utf-8")
@@ -816,7 +817,7 @@ TOOLS: dict[str, dict] = {
     "write_file": {
         "call": _t_write_file,
         "description": ("Write an authoring file. Allowlist: project_agent/, "
-                        "exports/, presentations/, book/manuscript/, "
+                        "exports/, presentations/, books/two-trees/manuscript/, "
                         "two_v_demo/lesson_*.py, two_v_demo/*_facts.py."),
         "schema": _schema("write_file", "Write an authoring file.",
                           {"path": _prop("string", "Relative path."),

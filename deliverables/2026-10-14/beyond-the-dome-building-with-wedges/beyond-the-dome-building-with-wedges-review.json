@@ -1,0 +1,262 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T07:48:52.453053+00:00",
+  "lesson": "cabin_wedge_beyond",
+  "title": "Beyond the Dome: Building With Wedges",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "Beyond the dome",
+      "narration": [
+        "The dome on this hill is framed from 120 wedges split from logs with one chainsaw. This film is about everything else those wedges can build. A zome, framed from the same pile. Square posts, made from wedges on demand. A roof whose pitch is already in the log. An octagon, a set of joints, and a seam that carries water. And it starts where every wedge does: with a log."
+      ],
+      "start": 0.0,
+      "end": 22.933125
+    },
+    {
+      "slug": "split",
+      "title": "Why wedges",
+      "narration": [
+        "A log split through its centre, halved, halved again and halved once more, gives 8 wedges of exactly 45.0 degrees, and nobody measures an angle. The saw takes only its kerf: 89 percent of a 12 inch log is kept as members. And because every flat face runs through the heart, wedges move least as they dry: pine shrinks 7.4 percent around its rings and 4.8 across them, and a radial face sits square across the rings."
+      ],
+      "start": 22.933125,
+      "end": 48.848625
+    },
+    {
+      "slug": "measured",
+      "title": "The wedge, measured",
+      "narration": [
+        "Know the stick you have. An eighth of the reference log has two flat faces meeting at the pith at 45.0 degrees. Trim its curved back flat and the back is 4.59 inches wide, 5.54 inches from the point, with corners of 67.5 degrees. Those angles never change with the size of the log. Only the split changes them."
+      ],
+      "start": 48.848625,
+      "end": 70.21933333333334
+    },
+    {
+      "slug": "square",
+      "title": "Square on demand",
+      "narration": [
+        "Now take two. Turn one end for end and lay it against the other, slant to slant. What you hold looks like a two by four pushed sideways, with corners of 67.5 and 112.5 degrees. Plane it square to its long face and the board inside it is the radius times the cosine of the point angle, by the radius times the sine. For an eighth, those are the same number. The pair planes to a square, 3.87 inches on a side. It costs wood: it keeps 53 percent of the log, against 89 for the wedges as they are. So you square only what needs it. Square, on demand."
+      ],
+      "start": 70.21933333333334,
+      "end": 105.29683333333334
+    },
+    {
+      "slug": "back",
+      "title": "Back to back",
+      "narration": [
+        "Put two wedges together on their backs instead. Quarters, back to back, are already a square, 5.62 inches on a side, with nothing to plane: the heaviest square the method makes, and the one for posts. Two eighths back to back make a diamond, a poor board but the right shape for a ridge, a rail that sheds water both ways, or a spline."
+      ],
+      "start": 105.29683333333334,
+      "end": 125.5785
+    },
+    {
+      "slug": "finer",
+      "title": "Split finer, get boards",
+      "narration": [
+        "The thinner the wedge, the closer a pair is to a board, because a pair keeps the cosine of its point angle when it is planed. But every split is another saw cut. On the reference log the two balance at 16 ways: pairs plane to boards 4.81 by 1.92 inches and keep 65 percent of the log. Quarter the butt for posts, split the middle 8 ways for frames, and take the top 16 ways for boards."
+      ],
+      "start": 125.5785,
+      "end": 151.13029166666666
+    },
+    {
+      "slug": "shim",
+      "title": "Shims from the same log",
+      "narration": [
+        "Where a wedge has to meet the square world for a short way, shim it there and leave it a wedge everywhere else. Lying on its back, an eighth's face stands at 67.5 degrees. A plumb face needs 22.5 more, which is half the point, which is exactly a wedge from a log split 16 ways. The shims come from the same log. Halve one more time."
+      ],
+      "start": 151.13029166666666,
+      "end": 171.383625
+    },
+    {
+      "slug": "pitch",
+      "title": "The skew is a roof pitch",
+      "narration": [
+        "Keep the skew where the building already slopes. A pair of eighths laid flat has faces at 22.5 degrees, a rise of 5.0 in twelve: an ordinary roof. Use pairs as rafters and the sheathing seats flat with no bevel cut. Twelfths give 3.2 in twelve, a low shed roof; quarters 12 in twelve, a steep one. Choose the split for the roof you want."
+      ],
+      "start": 171.383625,
+      "end": 193.41308333333333
+    },
+    {
+      "slug": "octagon",
+      "title": "The octagon is in the log",
+      "narration": [
+        "An eighth's point is the angle at the centre of an octagon. Eight wedge joists meet at the middle of a round deck with no angle measured, and the corners round the rim are the 135 degrees an octagon needs. Gazebos, round decks, yurt floors and tables are the log, put back together flat."
+      ],
+      "start": 193.41308333333333,
+      "end": 212.98008333333334
+    },
+    {
+      "slug": "joints",
+      "title": "Joints wedges make easy",
+      "narration": [
+        "Wedge lumber has flat faces at known angles, and each is the start of a joint. Two pairs laid slant to slant and offset make a scarf, a long member from short wedges. A wedge's point, set down over a square plate, is a bird's mouth already cut. A butterfly key let in across a glued pair stitches it. None of them needs a square face to start from: the joint line is the reference."
+      ],
+      "start": 212.98008333333334,
+      "end": 236.30545833333335
+    },
+    {
+      "slug": "pinwheel",
+      "title": "The pinwheel",
+      "narration": [
+        "The dome's joint, and the zome's. Where sticks meet at a corner, none of them runs into it. Each reaches the corner ahead of it, and its tail butts the side of the stick behind, round the corner like the blades of a pinwheel. Nothing meets at a point, so nothing has to be cut to a compound angle there. Here it frames one zome panel, flat on its jig."
+      ],
+      "start": 236.30545833333335,
+      "end": 254.90858333333335
+    },
+    {
+      "slug": "seam",
+      "title": "The seam is a channel",
+      "narration": [
+        "Square lumber laid side by side closes up. Wedges on their backs open a V, the full length of the member, of exactly the wedge's point, 45.0 degrees. Capped, it is a gutter that cannot overflow sideways, a cable run you can open, a way to breathe a wall. Big services go in the building's core; the seams take water, wire and air."
+      ],
+      "start": 254.90858333333335,
+      "end": 278.4497083333334
+    },
+    {
+      "slug": "mill",
+      "title": "Against the mill",
+      "narration": [
+        "Here is the method measured against a sawmill, on the reference log. Split, the log keeps 89 percent. With the backs trimmed, 80. Split 16 ways and paired into boards, 65. The project's sawmill simulator, packing two by fours, keeps 57. And eighths paired and planed square keep only 53, less than the mill. That is the number that argues back, and it is why the title says on demand."
+      ],
+      "start": 278.4497083333334,
+      "end": 305.4854166666667
+    },
+    {
+      "slug": "zome",
+      "title": "A zome from the same pile",
+      "narration": [
+        "Now a whole building that is not a dome. A zome: 36 rhombus panels in 4 rows twisting round a point, 13.8 feet across and 8.7 feet tall, every panel side 35.4 inches. It is the same zome the Complete Edition works through, framed here from the dome's own wedges: eighths of a 12 inch log."
+      ],
+      "start": 305.4854166666667,
+      "end": 325.5905416666667
+    },
+    {
+      "slug": "backout",
+      "title": "Wedges, back out",
+      "narration": [
+        "Every panel is four wedge sticks in a pinwheel, framed flat, with the wedge's back on the outside and its point toward the room. A wedge's sides lean 22.5 degrees away from square, so where two panels fold together their backs close tight along the outside seam, and the inside opens into a V of 17.2 to 30.8 degrees: the wedge's point less the fold. Every fold of this zome, up to 27.8 degrees, is less than an eighth's point, so nothing collides and nothing needs a block. The weather side is closed. The inside is a channel."
+      ],
+      "start": 325.5905416666667,
+      "end": 358.74820833333337
+    },
+    {
+      "slug": "cuts",
+      "title": "One bevel for every cut",
+      "narration": [
+        "And this is the part a builder will like. Solve every stick's two end cuts in three dimensions, and every end of every stick in the zome takes the same bevel: 22.5 degrees, half the wedge's point. Set it once. Only the mitre changes, once per row: 57.9 / 27.3 / 1.0 / 15.6 degrees, and the two stick types in a row are mirror images. 144 sticks, 8 types."
+      ],
+      "start": 358.74820833333337,
+      "end": 384.34150000000005
+    },
+    {
+      "slug": "jig",
+      "title": "A panel on the jig",
+      "narration": [
+        "Each row has its own jig: stops screwed to a sheet at the row's rhombus, full size. Row three's sharp corner is 89.0 degrees, nearly square; the crown's is 32.1. Lay four sticks in, back down, glue and screw each butt in the thick part, and the panel comes off true. Nine times a row, four rows."
+      ],
+      "start": 384.34150000000005,
+      "end": 406.0554166666667
+    },
+    {
+      "slug": "square_method",
+      "title": "The other way: square sticks",
+      "narration": [
+        "There is a second way, the one the Complete Edition describes: square sticks, two wedges paired and planed 3.87 inches square. Square-edged panels meet on their inside edges and open a V outside, which a wedge block fills. A block's point is three hundred and sixty degrees divided by its split, so each fold wants a log split that many ways: 25 / 19 / 15 / 13. It works, and it takes 18 log sections against 9."
+      ],
+      "start": 406.0554166666667,
+      "end": 431.9394166666667
+    },
+    {
+      "slug": "takes",
+      "title": "What it takes",
+      "narration": [
+        "Framed the wedge way, the zome's 144 sticks come 2 from each wedge of the dome's own 72 inch sections: 72 wedges, 9 sections of log. The dome on this hill takes 15. And every one of the zome's 63 inside seams is a channel before anybody runs a wire."
+      ],
+      "start": 431.9394166666667,
+      "end": 449.72304166666675
+    },
+    {
+      "slug": "meet",
+      "title": "Meeting the square world",
+      "narration": [
+        "A zome's rim zigzags: 18 corners, 9 of them 20.8 inches above the rest. Stand a post under each high corner, quarters back to back, 5.62 inches square. Set a sill ring under the low ones. Where a door frame or a square wall meets a wedge, shim it there. The wedge stays a wedge; only the joints learn to be square."
+      ],
+      "start": 449.72304166666675,
+      "end": 471.4658333333334
+    },
+    {
+      "slug": "buildings",
+      "title": "Buildings that suit wedges",
+      "narration": [
+        "Some buildings want boards. The ones made of triangles, slopes, octagons and posts want wedges. A shed with pair rafters at the log's own pitch. An A-frame. A gazebo on an octagon of wedge joists. A zome. The pattern is the same in every one: square the pieces that meet the level world, and leave everything triangulated, sloped or radial as wedges."
+      ],
+      "start": 471.4658333333334,
+      "end": 493.6653750000001
+    },
+    {
+      "slug": "vets",
+      "title": "Built by veterans",
+      "narration": [
+        "This method was written by a veteran. On one night in January 2024, 32,882 veterans had no home of their own, 13,851 of them unsheltered, by HUD's count. A building that is a system, maintained on a schedule, with parts you swap in the field and a crew that builds together, fits the way a lot of veterans already work. It is designed to sit beside HUD-VASH, SSVF, VA Grant and Per Diem, and to be built and kept by veterans."
+      ],
+      "start": 493.6653750000001,
+      "end": 523.5689583333334
+    },
+    {
+      "slug": "safety",
+      "title": "Safety at the log",
+      "narration": [
+        "All of it starts with a chainsaw in a log, the most dangerous part of the work. Never alone at the log. Full protective gear. The log cradled for the first cut. A chain filed for ripping. Every split made with the saw, never with an axe or a maul. And none of these buildings is rated by this film: an engineer checks anything that carries people, snow or wind before anyone lives in it."
+      ],
+      "start": 523.5689583333334,
+      "end": 547.1369166666667
+    },
+    {
+      "slug": "close",
+      "title": "Split everything. Square on demand.",
+      "narration": [
+        "Split everything, and square only what needs it. The book is called Square on Demand, and the zome you have just watched go up is a tool you can walk round: every stick, every cut, every jig, from the same software that solves the dome."
+      ],
+      "start": 547.1369166666667,
+      "end": 561.9360833333334
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 561.9360833333334,
+      "end": 575.307
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 575.307,
+      "end": 590.91125
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\masterclass\\beyond-the-dome-building-with-wedges-myvoice-x1.5\\narration-plan.json",
+    "orientation": "landscape",
+    "compose_segments": true,
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "-3%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

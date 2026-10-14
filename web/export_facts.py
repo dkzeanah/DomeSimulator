@@ -90,7 +90,10 @@ def _newest_pdf(stem: str) -> Path | None:
     import re
 
     best, best_v = None, -1
-    for path in BOOK_DIR.glob(f"{stem}*.pdf"):
+    import sys
+    sys.path.insert(0, str(HERE.parent))
+    import medialib
+    for path in medialib.locate(BOOK_DIR / f"{stem}.pdf").parent.glob(f"{stem}*.pdf"):
         m = re.fullmatch(rf"{re.escape(stem)}(?:-v(\d+))?\.pdf", path.name)
         if m and (v := int(m.group(1) or 1)) > best_v:
             best, best_v = path, v
@@ -119,7 +122,8 @@ def books() -> dict:
 
     Roles, as decided 2026-10-12: "digital" is the book sold here, Claude's
     complete edition (wedge_book); "paperback" is the Amazon book, DeepSeek's
-    3 Trees (two_v_demo.book); the free sample is cut from the complete edition.
+    2V Geodesic Dome Wedge Method (two_v_demo.book), cut to Part 1 plus the
+    four shell chapters.
     """
     from two_v_demo import book as amazon_book, book_tokens as amazon_tokens
     from wedge_book import outline as cabin_outline, paper, teaser, tokens as cabin_tokens

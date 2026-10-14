@@ -1,0 +1,28 @@
+{
+  "outputs": {
+    "pdf": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\pitch\\domesim-you-take-investor-pitch.pdf",
+    "editable_text": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\pitch\\domesim-you-take-investor-pitch.md"
+  },
+  "label": "you-take by Codex",
+  "word_count": 534,
+  "body_font_pt": 11.0,
+  "flow_height_pt": 680.0,
+  "page_count": 2,
+  "prior_numbers_page_preserved": true,
+  "user_objective": "Humble livable starting infrastructure for veterans, single mothers, craftsmen, college students and bachelors; RV ownership template; cumulative benefits of stripped-down, repeatable modular design; strong credible scale and resilience case.",
+  "sources": [
+    "CLAUDE.md",
+    "README.md",
+    "seed_model.py",
+    "park_model.py",
+    "docs/dome-park-brief.md",
+    "books/the-40-hour-cabin/manuscript/03-build-it-so-you-can-change-your-mind.md",
+    "books/the-40-hour-cabin/manuscript/45-why-a-network-beats-a-park.md",
+    "books/the-40-hour-cabin/manuscript/48-a-house-that-moves-and-grows.md",
+    "books/the-40-hour-cabin/manuscript/50-who-this-is-for.md",
+    "books/the-40-hour-cabin/manuscript/63-sink-the-money-into-the-part-that-moves.md",
+    "books/the-40-hour-cabin/manuscript/65-fifteen-buildings-from-one-body.md",
+    "books/square-on-demand/manuscript/13-built-by-veterans.md"
+  ],
+  "claim_scope": "The first page is a proposed product and investment thesis. It does not promise success, demonstrated all-in affordability, legal RV status, qualified transport, existing host partners or operating alternative-use markets. Universal refers to a defined compatible product family. Numbers remain the previous independently checked model snapshot."
+}

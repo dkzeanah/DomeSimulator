@@ -364,6 +364,7 @@ def _table() -> dict[str, Token]:
     _shape_tokens(add)
     _catalogue_tokens(add)
     _kick_tokens(add)
+    _staple_tokens(add)
     _core_build_tokens(add)
     _franken_tokens(add)
     _hub_tokens(add)
@@ -1697,6 +1698,44 @@ def _kick_tokens(add) -> None:
         v(lambda: paint.solar_delta_f + paint.radiative_delta_f))
     add("kick.paint_usd", "what the paint saves a year on an insulated shell, dollars", v(lambda: paint.annual_saving))
     add("kick.paint_thin_usd", "and on a thin wall, dollars", v(lambda: thin.annual_saving))
+
+
+def _staple_tokens(add) -> None:
+    """``staple``: the staple house -- the papercuts of a new house against the dome's
+    one invoice, from :mod:`two_v_demo.staple_facts`."""
+    from two_v_demo import staple_facts as sf
+
+    # Lazy: the facts read the numbers page, which itself resolves this table's tokens,
+    # so nothing may be computed while the table is being built.
+    money = lambda key: (lambda: f"{sf.facts()[key]:,.0f}")
+    for key, describe in (("papercuts", "the survey house's fee and margin lines, $"),
+                          ("fee_total", "its fee lines, $"), ("margin_total", "its margin lines, $"),
+                          ("survey_price", "the survey house's price, $"), ("survey_lot", "its land, $"),
+                          ("interest", "interest on the numbers page's loan, $"),
+                          ("loan", "the loan, $"), ("loan_total", "paid back in all, $"),
+                          ("dome_price", "the stem cell's price, $"), ("dome_margin", "its printed margin, $"),
+                          ("dome_standing", "standing on its pad, $"), ("site_same", "the same floor, site-built, $"),
+                          ("mhs_same", "the same floor, manufactured, $"),
+                          ("mhs_gap", "what a manufactured home of the same floor costs beyond the dome, $")):
+        add(f"staple.{key}", describe, money(key))
+    for key, describe, fmt in (("papercut_lines", "how many fee and margin lines", "{:.0f}"),
+                               ("fee_lines", "fee lines", "{:.0f}"), ("margin_lines", "margin lines", "{:.0f}"),
+                               ("building_lines", "separately priced lines of the building", "{:.0f}"),
+                               ("hands", "sets of hands in one stud", "{:.0f}"),
+                               ("papercut_pct", "the papercuts as a share of the price, %", "{:.0f}"),
+                               ("papercut_domes", "the papercuts, in stem cells", "{:.0f}"),
+                               ("interest_domes", "the interest, in stem cells", "{:.1f}"),
+                               ("interest_pct_of_loan", "interest as a share of the loan, %", "{:.0f}"),
+                               ("loan_rate", "the loan's rate, %", "{:g}"), ("loan_years", "its years", "{:.0f}"),
+                               ("dome_lines", "lines on the stem cell's invoice", "{:.0f}"),
+                               ("dome_margin_pct", "its margin, %", "{:.0f}"),
+                               ("dome_floor", "its floor, sq ft", "{:.0f}"),
+                               ("dome_vs_site_pct", "the dome as a share of site-built, %", "{:.0f}"),
+                               ("dome_vs_mhs_pct", "the dome as a share of manufactured, %", "{:.0f}")):
+        add(f"staple.{key}", describe, (lambda k, fm: (lambda: fm.format(sf.facts()[k])))(key, fmt))
+    add("staple.worked_papercuts", "the papercuts, worked", lambda: chr(10).join(sf.steps_papercuts()))
+    add("staple.worked_interest", "the interest, worked", lambda: chr(10).join(sf.steps_interest()))
+    add("staple.worked_invoice", "the staple's invoice, worked", lambda: chr(10).join(sf.steps_staple()))
 
 
 def _clock_tokens(add) -> None:

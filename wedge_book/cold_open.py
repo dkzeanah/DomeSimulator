@@ -39,7 +39,7 @@ HOLD_GRAIN = 1.6    # s on the end grain, drifting in
 CRANE = 6.4         # s rising to the reveal
 HOLD_REVEAL = 3.0   # s on the dome, the title fading up
 OUT_DIR = outline.ROOT / "deliverables" / "teasers"
-STILLS_DIR = outline.ROOT / "book_wedge" / "cover" / "cold-open-stills"
+STILLS_DIR = outline.ROOT / "books/the-40-hour-cabin" / "cover" / "cold-open-stills"
 STEM = "the-40-hour-cabin-cold-open"
 
 

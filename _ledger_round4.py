@@ -2,7 +2,7 @@
 import pathlib
 import re
 
-ledger = pathlib.Path('book/concept-ledger.md')
+ledger = pathlib.Path('books/two-trees/concept-ledger.md')
 out = []
 closed = []
 

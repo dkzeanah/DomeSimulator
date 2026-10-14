@@ -13,7 +13,7 @@ order), and reads the manuscript to say whether the concept is
 * **missing** -- neither.
 
 Filling the book a Part at a time is then mechanical: open the Part in
-``book_wedge/ledger.md``, write each missing concept up in the chapter it
+``books/the-40-hour-cabin/ledger.md``, write each missing concept up in the chapter it
 belongs to, put the marker in, add its plate to :mod:`wedge_book.plates`, and
 re-run this. Nothing here is typed twice: titles, promises and narration are
 the films' own, read live from the registry.
@@ -114,11 +114,13 @@ FILMS: tuple[FilmPlan, ...] = (
     FilmPlan("cabin_cell_wall", "teach", "seam"),
     FilmPlan("why_build", "teach", "economics"),
     FilmPlan("pine_value", "teach", "economics"),
+    FilmPlan("cabin_staple", "teach", "economics"),
     FilmPlan("dome_park", "teach", "network", True),
     FilmPlan("byod", "teach", "network", True),
     FilmPlan("hex", "teach", "shapes"),
     FilmPlan("zome", "teach", "shapes"),
     FilmPlan("cabin_panel_method", "teach", "shapes"),
+    FilmPlan("cabin_wedge_beyond", "teach", "shapes", True),
     FilmPlan("cabin_shop", "scaffold", "tools"),
     FilmPlan("world", "teach", "catalogue"),
     FilmPlan("world_chatgpt", "teach", "catalogue", True),

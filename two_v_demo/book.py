@@ -1,4 +1,4 @@
-"""*Geodesic Dome Wedge Method* -- *The 40 Hour Cabin: 3 Trees* -- the whole book, as a structure.
+"""*The 40 Hour Cabin: 2V Geodesic Dome Wedge Method* -- the Amazon paperback -- the whole book, as a structure.
 
 This module is the outline: every part, every chapter, every page, in order,
 with what each one is for, roughly how long it runs, which figures sit on it,
@@ -40,7 +40,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
-BOOK_DIR = ROOT / "book"
+BOOK_DIR = ROOT / "books" / "two-trees"
 MANUSCRIPT_DIR = BOOK_DIR / "manuscript"
 EXPORT_DIR = ROOT / "deliverables" / "book"
 
@@ -48,8 +48,8 @@ WORDS_PER_PAGE = 340
 """Words on a set page at this trim and type size. Used only to turn word
 targets into a believable page count; nothing depends on it being exact."""
 
-TITLE = "Geodesic Dome Wedge Method"
-SUBTITLE = "The 40 Hour Cabin: 3 Trees"
+TITLE = "The 40 Hour Cabin"
+SUBTITLE = "2V Geodesic Dome Wedge Method"
 TAGLINE = ("One small chainsaw, three trees, forty hours or less: "
            "a geodesic wedge cabin, winched up between the trees, "
            "skinned and floored in any order")
@@ -351,6 +351,7 @@ SHOT = "lesson_still"           # a frame from one of the films
 PLOT = "book_plot"              # a chart drawn from book_math
 DIAG = "book_diagram"           # a labelled line drawing from geometry
 PHOTO = "photo_slot"            # a photograph the author supplies
+ILLUS = "illustration_slot"     # a commissioned illustration, captioned
 HAT = "hat_stack"               # the dome stacking hats: frame, quilt, cap
 MAST = "mast_floor"             # the mast, the floor, and the floating rig
 
@@ -360,18 +361,9 @@ MAST = "mast_floor"             # the mast, the floor, and the floating rig
 # ======================================================================
 
 FRONT: tuple[Matter, ...] = (
-    Matter("cover", "Cover", (
-        _p("plate", "The cover",
-           "The book's cover, the author's own artwork, full page and "
-           "uncaptioned: the frame on the pad at sunset, the split rounds in "
-           "the foreground, and the title as it was designed.", words=30,
-           beats=(
-               "Supplied artwork, not a rendered figure -- the one picture in "
-               "this book that is not computed.",
-               "The exporter prints it as a cover page rather than as an "
-               "illustration, and the manuscript points at the file directly.",
-           )),
-    )),
+    # The cover is gone from the interior. KDP uploads the re-lettered
+    # painting (`books/the-40-hour-cabin/cover/painted-front.png`) as the cover, and the
+    # interior starts on the half-title, the way a print interior should.
     Matter("title", "Title pages", (
         _p("plate", "Half-title", "The title alone, on a field of bark.",
            figures=(_f("front-bark", "", PHOTO, full_page=True,
@@ -380,8 +372,13 @@ FRONT: tuple[Matter, ...] = (
         _p("plate", "Frontispiece",
            "The finished frame against sky, so the reader knows on page two "
            "what the book is for.",
-           figures=(_f("front-frame", "The frame, day fourteen.", SHOT,
-                       full_page=True, lesson="wedge", second=425.0),),),
+           figures=(_f("front-frame-illus",
+                       "Illustration. The frame, day fourteen: forty "
+                       "panels of split wedges standing.",
+                       ILLUS, full_page=True,
+                       note="Prompt 10 in illustration-prompts.md. Check: "
+                            "five triangles at the top, no metal hubs, "
+                            "bark on the outside faces."),),),
         _p("text", "Title page", "Title, subtitle, author, imprint.",
            words=40),
         _p("text", "Copyright and colophon",
@@ -523,11 +520,13 @@ PART_I = Part(
                 _p("plate", "The frankendome standing",
                    "One full page of the lumpy frame, so the reader sees the "
                    "before.",
-                   figures=(_f("franken-standing",
-                               "The frankendome: it stood, and no two "
-                               "members matched.", SHOT, full_page=True,
-                               lesson="franken", second=53.02,
-                               note="The plate in the book is the Cabin World re-render premise frame (cabin_franken_0014.00s.png, placed manually); the classic cut archive has no premise frame, so the spec points at its earliest archived still and a future re-render should prefer the cabin remake."),)),
+                   figures=(_f("franken-standing-illus",
+                               "Illustration. The frankendome: it stood, "
+                               "and no two members matched.",
+                               ILLUS, full_page=True,
+                               note="Prompt 4 in illustration-prompts.md. "
+                                    "Check: bent sheet-metal brackets, no "
+                                    "hubs, recognisably lumpy."),)),
                 _p("text", "The ten-piece pentagon",
                    "The one part of the frankendome that was genuinely "
                    "better, and carried forward.", words=750),
@@ -1432,11 +1431,15 @@ PART_IV = Part(
                                plot="worked_seams"),)),
                 _p("plate", "The dome this describes",
                    "Full page render of exactly the dome the tables specify.",
-                   figures=(_f("worked-render",
+                   figures=(_f("worked-render-illus",
+                               "Illustration. The worked dome: "
                                "{{dome.diameter_ft}} feet across, "
                                "{{dome.floor_sqft}} square feet of floor.",
-                               SHOT, full_page=True, lesson="wedge",
-                               second=973.0),),),
+                               ILLUS, full_page=True,
+                               note="Prompt 16 in "
+                                    "illustration-prompts.md. Check: five "
+                                    "triangles at the top, no metal hubs, "
+                                    "bark on the outside faces."),),),
             ),
             derives=("book_math.book_math_report", "book_math.tree_first"),
         
@@ -1656,10 +1659,14 @@ PART_V = Part(
                    "The last panel, and why it is the hardest.", words=650),
                 _p("plate", "Standing",
                    "Full page. The frame complete.",
-                   figures=(_f("standing-frame",
-                               "Day fourteen. {{frame.members}} members, "
-                               "{{dome.trees}} trees.", SHOT, full_page=True,
-                               lesson="wedge", second=842.5),),),
+                   figures=(_f("standing-frame-illus",
+                               "Illustration. Day fourteen: "
+                               "{{frame.members}} members, {{dome.trees}} "
+                               "trees, raised between the trees.",
+                               ILLUS, full_page=True,
+                               note="Prompt 9 in illustration-prompts.md. "
+                                    "Check: temporary props, the dome "
+                                    "half-raised, no metal hubs."),),),
                 _p("text", "What was not done",
                    "Honest inventory of what a standing frame is not: not a "
                    "shell, not a home, not finished.", words=600),
@@ -1816,12 +1823,14 @@ PART_VI = Part(
                 _p("plate", "Panel drawing, type one",
                    "A full-page flat drawing, exported from the simulator.",
                    figures=(_f("panel-1",
-                               "Panel type one, flat, full size.", PANEL,
+                               "Panel type one, printed reduced; the vector "
+                               "file is full size.", PANEL,
                                full_page=True, panel_index=0),),),
                 _p("plate", "Panel drawing, type two",
                    "The second distinct panel.",
                    figures=(_f("panel-2",
-                               "Panel type two, flat, full size.", PANEL,
+                               "Panel type two, printed reduced; the vector "
+                               "file is full size.", PANEL,
                                full_page=True, panel_index=1),),),
                 _p("text", "Reading a panel drawing",
                    "What every line on the drawing is.", words=650),
@@ -1957,11 +1966,13 @@ PART_VII = Part(
                    "The honest chapter about domes and rain.", words=400),
                 _p("text", "Every seam is a potential leak",
                    "{{frame.seams}} of them. Say the number.", words=750,
-                   figures=(_f("weather-channel",
-                               "One channel, many jobs -- a frame of the "
-                               "seam-climate film.", SHOT,
-                               lesson="cabin_seam_climate",
-                               second=17.29),)),
+                   figures=(_f("weather-channel-illus",
+                               "Illustration. One channel, many jobs: the "
+                               "seam as a rain path.",
+                               ILLUS,
+                               note="Prompt 17 in illustration-prompts.md. "
+                                    "Check: water running *downward* over "
+                                    "every joint."),)),
                 _p("text", "Shedding, not sealing",
                    "The principle that actually works on a compound "
                    "surface.", words=800),
@@ -2067,10 +2078,13 @@ PART_VII = Part(
                 _p("text", "Insulating between wedges",
                    "The cavity a wedge frame gives you, and what fits in "
                    "it.", words=850,
-                   figures=(_f("warmer-still",
-                               "It gets warmer every winter -- a frame of "
-                               "the seed-pitch film.", SHOT,
-                               lesson="seed_pitch", second=441.48),)),
+                   figures=(_f("warmer-still-illus",
+                               "Illustration. It gets warmer every winter: "
+                               "the quilt between the wedges.",
+                               ILLUS,
+                               note="Prompt 18 in illustration-prompts.md. "
+                                    "Check: quilted fabric between split-log "
+                                    "members, no metal hubs."),)),
                 _p("text", "Running services in a frame with no studs",
                    "Where the wires and pipes go.", words=750),
                 _p("text", "Heating a round volume",
@@ -4000,7 +4014,51 @@ PART_FUTURE = Part(
     ),
 )
 
-PARTS: tuple[Part, ...] = (PART_BUILD, PART_SCALE, PART_FUTURE)
+# ----------------------------------------------------------------------
+# The Amazon paperback cut (per the 12 October 2026 proofread)
+# ----------------------------------------------------------------------
+# The proofread's verdict on this book was to sell Part 1 plus the four
+# shell chapters of Part 2 -- the skin economy, the pony wall, the brim
+# and the shell ladder -- and to leave everything else to the Complete
+# Edition, which already covers the network, the iris, the campaign,
+# the product pricing, the CNC shop and the software documentation.
+#
+# The cut is made here rather than by deleting the outline above: the
+# parked parts stay in this module as data, their manuscript files stay
+# on disk, and the Amazon book is a *view* over the same chapters with
+# the four kept Part 2 chapters renumbered continuously after Part 1.
+# Prose never sees the difference, because it refers to chapters by
+# ``{{ch.<ref>}}`` rather than by number.
+
+_AMAZON_SCALE_REFS = ("less_skin", "pony_wall", "brim_gutter", "shell_ladder")
+
+AMAZON_SCALE_CHAPTERS: tuple[Chapter, ...] = tuple(
+    replace(chapter, number=52 + index)
+    for index, chapter in enumerate(
+        ch for ch in PART_SCALE.chapters if ch.ref in _AMAZON_SCALE_REFS))
+
+PART_SCALE_AMAZON = Part(
+    number=2,
+    title=PART_SCALE.title,
+    epigraph=PART_SCALE.epigraph,
+    promise="Four chapters on the shell itself: why a dome skins cheaper "
+            "than a box at the same floor, what a pony wall buys at the "
+            "edge, how the brim throws water clear and catches it in one "
+            "move, and how the shell gets warmer one affordable layer at "
+            "a time. Everything else this project makes -- the network, "
+            "the pads, the manufactured systems -- lives in the Complete "
+            "Edition on the site.",
+    chapters=AMAZON_SCALE_CHAPTERS,
+)
+
+#: Everything the Amazon cut leaves out, kept as data so the parked
+#: chapters and their manuscript files remain findable and diffable.
+PARKED_PARTS: tuple[Part, ...] = (PART_SCALE, PART_FUTURE)
+PARKED_CHAPTERS: tuple[Chapter, ...] = tuple(
+    chapter for chapter in PART_SCALE.chapters + PART_FUTURE.chapters
+    if chapter.ref not in _AMAZON_SCALE_REFS)
+
+PARTS: tuple[Part, ...] = (PART_BUILD, PART_SCALE_AMAZON)
 
 
 # ======================================================================
@@ -4026,76 +4084,20 @@ BACK: tuple[Matter, ...] = (
            figures=(_f("back-constants", "Declared inputs.", PLOT,
                        plot="declared_constants"),)),
     )),
-    Matter("pixels", "From Number to Pixel", (
-        _p("text", "A strut is not a line",
-           "A graphics card draws triangles, so every member in every film is "
-           "a tube of flat sides and triangles, built by two cross products "
-           "-- and the whole reason the films can show a member at all.",
-           words=700),
-        _p("text", "One frame, counted",
-           "Ten floats a vertex, forty bytes, eleven thousand seven hundred "
-           "vertices, three thousand nine hundred triangles, four hundred and "
-           "fifty-seven kilobytes: the dome the card actually receives, "
-           "rebuilt and re-uploaded thirty times a second.", words=800,
-           figures=(_f("pixel-budget",
-                       "One frame, counted off the renderer's own buffer.",
-                       PLOT, plot="pixel_budget"),)),
-        _p("text", "The camera is a matrix",
-           "There is no camera on a graphics card. Yaw, pitch and distance "
-           "place an eye; a view matrix moves the world to that eye; a "
-           "projection matrix arranges the divide by depth that makes "
-           "distance real.", words=900),
-        _p("text", "Why the lighting is three dot products",
-           "Diffuse, specular and rim, each one dot product, because "
-           "{{pixel.pixels}} pixels at {{pixel.fps}} frames a second is up to "
-           "{{pixel.runs_s}} million shader runs a second and there is no "
-           "budget left for anything clever.", words=800),
-        _p("text", "Nothing is stored",
-           "Every scene is a pure function of its chapter and its progress, "
-           "so the same second of film renders identically on any machine, "
-           "every time -- which is what makes a film's numbers checkable by "
-           "anybody who can run the code.", words=620),
-    )),
-    Matter("composer", "The Composer", (
-        _p("text", "A placement rule, not a drawing",
-           "The tool that furnishes a dome accepts or refuses a piece by "
-           "geometry: held green where it fits the shell, red where it does "
-           "not. Nothing in the catalogue carries a list of legal spots; the "
-           "building decides.", words=700),
-        _p("text", "The cast, and the rules it obeys",
-           "Eight people, each with her own skin, hair and stance, and a "
-           "loader that refuses a cast where two share a tone or a hair "
-           "style. Hair is geometry rather than colour: each strand leaves "
-           "the scalp along its growth direction, hands over to gravity a "
-           "head radius later, and carries a wave or a helix by style.",
-           words=760),
-        _p("text", "Landmarks, not measurements",
-           "Hair lengths and hems name places on a body -- mid thigh, knee, "
-           "waist, floor -- so one wardrobe fits a cast of any height, and an "
-           "outfit is a list of pieces lofted through the body's own "
-           "cross-section rather than a fixed model.", words=700),
-        _p("text", "What the dome refuses",
-           "A fitting pod two point two metres tall stands under eight metres "
-           "of headroom at the middle of a thirteen-metre dome, and the shell "
-           "comes down to meet it before you have walked halfway out. The "
-           "refusal is the same one the building makes to a wardrobe: "
-           "headroom is a function of where you stand.", words=680),
-    )),
     Matter("glossary", "Glossary", (
         _p("text", "Glossary",
            "Every term the book uses that a reader may not have.",
            words=1400),
     )),
-    Matter("software", "The Software in This Book", (
-        _p("text", "What generated these numbers",
-           "Name every module, what it computes, and how to run it.",
-           words=900),
-        _p("steps", "Reproducing every figure in this book",
-           "The actual commands, so a reader can regenerate the lot.",
-           words=600),
-        _p("text", "The launcher",
-           "How to open any of it without touching a command line.",
-           words=500),
+    # The old software documentation and the graphics-programming appendix
+    # ("From Number to Pixel", "The Composer") are gone from the Amazon
+    # book: they are developer documentation, and they now live in the
+    # Complete Edition and the codebase sold on the site. The one-page
+    # pointer that replaces them is written in ``back/software.md``.
+    Matter("software", "Where the Tools Live", (
+        _p("text", "The tools, on the site",
+           "One page: the Complete Edition, the codebase and the design "
+           "session, with the address.", words=400),
     )),
     Matter("index", "Index and Colophon", (
         _p("text", "Index", "Generated from the manuscript.", words=0),
@@ -4243,7 +4245,7 @@ def validate_book() -> None:
                 f"chapter {chapter.number} prints numbers but derives none"
 
     # Every renderer named by a figure is one book_figures implements.
-    known = {DOME, JIG, PANEL, SHOT, PLOT, DIAG, PHOTO, HAT, MAST}
+    known = {DOME, JIG, PANEL, SHOT, PLOT, DIAG, PHOTO, ILLUS, HAT, MAST}
     for fig in book.figures:
         assert fig.source in known, (fig.key, fig.source)
 
@@ -4422,7 +4424,7 @@ def validate_everything() -> None:
     book_figures.validate_figures()
     book_manuscript.validate_manuscript()
     book_export.validate_export()
-    print("--- Geodesic Dome Wedge Method: every check passed")
+    print(f"--- {TITLE}: {SUBTITLE}: every check passed")
 
 
 if __name__ == "__main__":

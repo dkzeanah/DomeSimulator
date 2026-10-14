@@ -119,6 +119,16 @@ HASHTAG_BANK: dict[str, tuple[str, ...]] = {
         "#geodesicdome", "#domehome", "#cabinbuild", "#tinyhome", "#interiordesign",
         "#buildyourowncabin", "#offgrid", "#homedesign", "#diy",
     ),
+    "cabin_staple": (
+        "#affordablehousing", "#tinyhome", "#firsthome", "#geodesicdome", "#domehome",
+        "#housingcrisis", "#buildyourowncabin", "#offgrid", "#familyproject",
+        "#veterans", "#diy",
+    ),
+    "cabin_wedge_beyond": (
+        "#zome", "#woodworking", "#chainsawmilling", "#timberframe", "#joinery",
+        "#geodesicdome", "#buildyourowncabin", "#offgrid", "#veterans",
+        "#tinyhome", "#diy",
+    ),
     "cabin_every_piece": (
         "#geodesicdome", "#woodworking", "#mitresaw", "#chainsawmilling",
         "#cutlist", "#deckbuilding", "#floorframing", "#logbuilding",
@@ -146,7 +156,15 @@ sensible default instead of nothing."""
 # ----------------------------------------------------------------------
 
 def _plan_path(video: Path) -> Path:
-    return video.with_name(f"{video.stem}-narration-plan.json")
+    """The narration plan the cut was rendered with: beside it, or -- for a cut in the
+    owner's voice -- in its ``<stem>-myvoice*`` folder beside it."""
+    direct = video.with_name(f"{video.stem}-narration-plan.json")
+    if direct.is_file():
+        return direct
+    for folder in sorted(video.parent.glob(f"{video.stem}-myvoice*")):
+        if (folder / "narration-plan.json").is_file():
+            return folder / "narration-plan.json"
+    return direct
 
 
 def chapter_marks(lesson, video: Path) -> list[tuple[float, str, str]]:
@@ -437,8 +455,10 @@ def latest_cut(lesson_key: str, root: Path = OUTPUT_DIR) -> Path:
     item = DELIVERABLE_BY_LESSON.get(lesson_key)
     if item is None:
         raise ValueError(f"{lesson_key!r} has no deliverable entry")
-    base = root / item.filename
+    import medialib
+    base = medialib.locate(root / item.filename)
     stem, suffix = base.stem, base.suffix
+    root = base.parent
     found = sorted(root.glob(f"{stem}*{suffix}"),
                    key=lambda p: p.stat().st_mtime if p.is_file() else 0)
     found = [p for p in found if not p.name.startswith(".")]
@@ -455,7 +475,8 @@ def newest_version(path: Path) -> Path:
     shares the requested stem is the one that just finished. Phone cuts and
     hidden temporaries are not candidates.
     """
-    path = Path(path)
+    import medialib
+    path = medialib.locate(Path(path))
     if not path.parent.is_dir():
         return path
     found = [item for item in path.parent.glob(f"{path.stem}*{path.suffix}")
@@ -506,7 +527,11 @@ def build_release(lesson_key: str, video: Path | None = None,
     """
     lesson = get_lesson(lesson_key)
     cut = video or latest_cut(lesson_key)
-    folder = root / cut.stem
+    import medialib
+    # A cut in the library keeps its release in its own item folder.
+    folder = medialib.release_dir(cut) if medialib.is_library_path(cut) else root / cut.stem
+    if folder.is_dir() and any(folder.iterdir()):
+        folder = medialib.free(folder)         # a rebuilt release sits beside the first: -v2
     folder.mkdir(parents=True, exist_ok=True)
 
     marks = chapter_marks(lesson, cut)

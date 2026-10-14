@@ -5,12 +5,12 @@ The book has three homes and they are deliberately different shapes.
 * **The JSON project** (``wedge_method_book_app/*.wedgebook.json``) is what the
   Tkinter app opens and saves. It is the app's own format and this module does
   not change it; it reads it and writes it back.
-* **The database** (``book_wedge/wedge_book.sqlite3``) is the queryable copy.
+* **The database** (``books/the-40-hour-cabin/wedge_book.sqlite3``) is the queryable copy.
   It answers the questions a folder tree cannot: which sections are empty, how
   many words are in Part III, which figures a chapter still owes. It is
   committed, because a book's state is project history and not a build
   artefact.
-* **The folder tree** (``book_wedge/``) is the writing surface. One folder per
+* **The folder tree** (``books/the-40-hour-cabin/``) is the writing surface. One folder per
   part, one folder per chapter, one Markdown file per section. It is what a
   person edits, what git diffs read sensibly, and what the PDF is built from.
 
@@ -34,7 +34,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PROJECT_JSON = ROOT / "wedge_method_book_app" / "the_wedge_method.wedgebook.json"
-BOOK_DIR = ROOT / "book_wedge"
+BOOK_DIR = ROOT / "books/the-40-hour-cabin"
 DB_PATH = BOOK_DIR / "wedge_book.sqlite3"
 
 CREDIT = ("Generated with code @ "

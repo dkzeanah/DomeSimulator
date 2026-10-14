@@ -441,6 +441,44 @@ PRESETS: tuple[RenderPreset, ...] = (
         },
     ),
 
+    _video("cabin_wedge_beyond", "cabin_wedge_beyond", "beyond-the-dome-building-with-wedges.mp4",
+           "BEYOND THE DOME: BUILDING WITH WEDGES. Square on demand from two "
+           "wedges, quarters for posts, finer splits for boards, shims, the skew "
+           "as a roof pitch, the octagon, joints, the seam channel, the mill "
+           "comparison -- and a zome framed from the dome's own wedges, one bevel "
+           "for every cut. Every figure from square_book and wedge_zome.",
+           compose_segments=True),
+
+    _video("cabin_staple", "cabin_staple", "the-staple-house.mp4",
+           "THE STAPLE HOUSE. The dome as housing's staple -- cheap, fast, known, "
+           "the same every time -- and the papercuts it leaves out, counted on both "
+           "bills, with the caveat kept. Every figure from staple_facts.",
+           compose_segments=True),
+
+    RenderPreset(
+        key="cabin_staple_stills",
+        label="the-staple-house stills",
+        summary="One still per chapter of The Staple House, to look at before the render.",
+        fields={
+            "lesson": "cabin_staple",
+            "action": "shots",
+            "shots": chapter_shots("cabin_staple"),
+            "no_narration": True,
+        },
+    ),
+
+    RenderPreset(
+        key="cabin_wedge_beyond_stills",
+        label="beyond the dome -- one still per chapter",
+        summary="A still from each chapter of the wedge-building film, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_wedge_beyond",
+            "action": "shots",
+            "shots": chapter_shots("cabin_wedge_beyond"),
+        },
+    ),
+
     RenderPreset(
         key="cabin_every_piece_stills",
         label="every piece, numbered -- one still per chapter",

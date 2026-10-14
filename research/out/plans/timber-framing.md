@@ -78,6 +78,6 @@
 
 ## Where the material already is
 
-- `book_wedge/manuscript/03-build-it-so-you-can-change-your-mind.md`
+- `books/the-40-hour-cabin/manuscript/03-build-it-so-you-can-change-your-mind.md`
 
 *Craft notes are guidance, not measured statistics. Numbers in lines and titles come from the model's exported facts.*

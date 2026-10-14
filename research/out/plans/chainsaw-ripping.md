@@ -79,6 +79,6 @@
 ## Where the material already is
 
 - `wedge_book/systems.py`
-- `book_wedge/manuscript/09-stop-squaring-start-splitting.md`
+- `books/the-40-hour-cabin/manuscript/09-stop-squaring-start-splitting.md`
 
 *Craft notes are guidance, not measured statistics. Numbers in lines and titles come from the model's exported facts.*

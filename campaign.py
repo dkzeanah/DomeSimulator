@@ -109,7 +109,24 @@ def numbers() -> dict:
         "staple_pad": pad_deck.deck("blocks").cost,
         "cavity_limit": soft_shell.cavity_limit(),
         "growth_7": soft_shell.growth_fraction(7),
+        "staple": _staple(),
     }
+
+
+def _staple() -> dict:
+    from two_v_demo import staple_facts
+    return staple_facts.facts()
+
+
+#: The owner's analogy, in his words (lightly cut). It is his, and it is marked
+#: as his where it appears; the arithmetic under it is the model's.
+STAPLE_WORDS = (
+    "The dome is a McDouble: cheap, fast, reliable, economic, consistent, known "
+    "everywhere -- the staple the whole menu stands on. An eighteen-year-old does not "
+    "need his first home to be a five-course meal. A filling, honest, everyday one gets "
+    "him through the day and lets him save for the rest. Without that staple, most "
+    "people never get into the housing market at all, and the thousand small cuts "
+    "belong to somebody who is not you. With it, there is a baseline.")
 
 
 def page() -> str:
@@ -138,6 +155,36 @@ def page() -> str:
     add("## Why a house should be dressed like a sailor")
     add("")
     add(ARCTIC)
+    add("")
+    add("---")
+    add("")
+
+    # -- the staple house --------------------------------------------
+    st = n["staple"]
+    add("## The McDouble of housing")
+    add("")
+    add("In the owner's words:")
+    add("")
+    add("> " + STAPLE_WORDS)
+    add("")
+    add(f"Here is what he means by the small cuts. By the builders' own survey, a new "
+        f"house sells for {_usd(st['survey_price'])}. {st['papercut_lines']} lines of it are "
+        f"permits, fees, financing, overhead, marketing, commission and profit -- "
+        f"{_usd(st['papercuts'])}, {st['papercut_pct']:.0f}% of the price, and not one of "
+        f"them is a board or an hour of work on the house. Borrow {_usd(st['loan'])} to buy "
+        f"one at {st['loan_rate']:g}% for {st['loan_years']:.0f} years and the interest alone "
+        f"is {_usd(st['interest'])}.")
+    add("")
+    add(f"This dome's bill is {st['dome_lines']} lines from one seller, and adds to "
+        f"**{_usd(stack.price)}**. The margin is on it -- {_usd(stack.margin)} -- where you "
+        f"can see it. That is the whole idea: the first rung of housing built to be a staple, "
+        f"not a project. Known, the same every time, built by a family -- about "
+        f"{st['labour_hours']:.0f} hours of work, the raising itself one weekend's lifting -- and "
+        f"added to for a lifetime, with nobody in the middle taking a cut you cannot see.")
+    add("")
+    add(f"*Not like for like:* the survey house is many times the floor and comes with "
+        f"{_usd(st['survey_lot'])} of land. The dome is {st['dome_floor']:.0f} square feet on a pad. "
+        f"The comparison is of the two bills' shape, not a claim that one replaces the other.")
     add("")
     add("---")
     add("")
@@ -374,8 +421,9 @@ def page() -> str:
 
 
 def write(path: Path | None = None) -> Path:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = Path(path) if path else OUT_DIR / "campaign-page.md"
+    from two_v_demo.deliverables import next_version_path
+    path = next_version_path(Path(path) if path else OUT_DIR / "campaign-page.md")
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(page(), encoding="utf-8")
     return path
 
@@ -413,12 +461,19 @@ def validate_campaign() -> None:
     known |= {_usd(line.usd) for line in kickstarter.goal_lines()}
     known |= {_usd(t.pledge) for t in kickstarter.tiers()}
     known |= {_cents(stack.per_sqft)}
+    st = n["staple"]
+    known |= {_usd(st[k]) for k in ("survey_price", "papercuts", "loan", "interest", "survey_lot")}
     # The pattern must not end on a comma, or "$12,036, and you can check"
     # is read as the figure "$12,036," and nothing matches it.
     for found in set(re.findall(r"\$\d[\d,]*\d(?:\.\d\d)?|\$\d", text)):
         assert found in known, (
             f"the page quotes {found}, which is not a figure the model "
             f"produces -- it has been typed in or has gone stale")
+
+    # The staple house: the owner's analogy, marked as his, with the papercuts counted.
+    assert "## The McDouble of housing" in text and "In the owner's words" in text and STAPLE_WORDS in text
+    assert "Not like for like" in text, "the staple comparison must keep its caveat"
+    assert "over a weekend" not in text, "the build is not a weekend; only the raising is"
 
     # The story is present and is the owner's.
     assert "Arctic" in text and "pumpkin suit" in text

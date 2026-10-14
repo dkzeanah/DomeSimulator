@@ -1,6 +1,6 @@
 """The paperback cover: back, spine and front as one KDP-ready PDF.
 
-The front is the author's illustration (``Book_Cover.jpg`` at the repository
+The front is the author's illustration (``assets/images/covers/the-40-hour-cabin-timberframe-cover.jpg``, was ``Book_Cover.jpg`` at the repository
 root). Three things are done to it and nothing else:
 
 * **the top line is re-lettered.** The art was painted when the book was
@@ -41,10 +41,12 @@ from . import outline, print_edition, tokens
 ARTS = {
     # Rendered from the model by wedge_book.cover_scene + cover_type: the
     # solver's own dome, at exactly the front panel's size and 300 DPI.
-    "rendered": (outline.ROOT / "book_wedge" / "cover" / "cover-front.png", False),
-    "final": (outline.ROOT / "Book_Cover_final.png", False),     # 1792 x 2368, painted
-    "final_small": (outline.ROOT / "Book-Cover-Final.png", False),  # 1087 x 1447, superseded
-    "first": (outline.ROOT / "Book_Cover.jpg", True),              # old title, re-lettered
+    "rendered": (outline.ROOT / "books/the-40-hour-cabin" / "cover" / "cover-front.png", False),
+    # The painted covers, by their names in assets/ (assetlib; was Book_Cover_final.png,
+    # Book-Cover-Final.png and Book_Cover.jpg in the project folder).
+    "final": (outline.ROOT / "assets/images/covers/wedge-method-cover-v4.png", False),   # 1792 x 2368, painted
+    "final_small": (outline.ROOT / "assets/images/covers/wedge-method-cover-v2.png", False),  # 1087 x 1447, superseded
+    "first": (outline.ROOT / "assets/images/covers/the-40-hour-cabin-timberframe-cover.jpg", True),  # old title
 }
 ART, RELETTER = ARTS["rendered"]
 DPI = 300
@@ -443,7 +445,9 @@ def web_images(front: Image.Image) -> list[Path]:
 
 def latest_cover() -> Path | None:
     import re
-    found = [p for p in outline.EXPORT_DIR.glob(f"{outline.STEM}-cover*.pdf")
+    import medialib
+    folder = medialib.locate(outline.EXPORT_DIR / f"{outline.STEM}-cover.pdf").parent
+    found = [p for p in folder.glob(f"{outline.STEM}-cover*.pdf")
              if re.fullmatch(rf"{re.escape(outline.STEM)}-cover(-v\d+)?\.pdf", p.name)]
     return max(found, key=lambda p: p.stat().st_mtime) if found else None
 

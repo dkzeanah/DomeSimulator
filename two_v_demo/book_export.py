@@ -42,12 +42,12 @@ import re
 import shutil
 import subprocess
 from dataclasses import dataclass
-from datetime import date
 from pathlib import Path
 
 from . import book_manuscript as manuscript
 from . import book_tokens
-from .book import (BOOK, EXPORT_DIR, MANUSCRIPT_DIR, Book, figure_index)
+from .book import (BOOK, EXPORT_DIR, MANUSCRIPT_DIR, Book, Matter,
+                   figure_index)
 
 
 FIGURE_SUFFIXES = (".png", ".svg", ".jpg")
@@ -246,12 +246,26 @@ aside.box-clock .box-label { color: #2f6b4a; }
 nav.toc { margin: 2rem 0 4rem; font: .92rem/1.6 "Segoe UI", sans-serif; }
 nav.toc h2 { font-size: 1.1rem; }
 nav.toc ol { list-style: none; margin: 0; padding: 0; }
-nav.toc .toc-part { margin: 1.3rem 0 .35rem; font-weight: 700; }
+nav.toc .toc-part { margin: 1.3rem 0 .35rem; font-weight: 700;
+                     display: flex; }
+nav.toc .toc-part .pg { margin-left: auto; min-width: 2.2rem;
+                         text-align: right; font-weight: 400; }
 nav.toc a { color: var(--ink); text-decoration: none;
             display: flex; gap: .5rem; padding: .12rem 0; }
 nav.toc a:hover { color: var(--accent); text-decoration: underline; }
 nav.toc .num { color: var(--muted); min-width: 1.8rem; }
-nav.toc .strand { margin-left: auto; color: var(--muted); font-size: .78rem; }
+nav.toc .strand { margin-left: auto; color: var(--muted); font-size: .7rem;
+                  letter-spacing: .12em; text-transform: uppercase; }
+nav.toc .toc-legend { font-size: .8rem; color: var(--muted);
+                       margin: .4rem 0 1.2rem; }
+nav.toc .pg { min-width: 2.2rem; text-align: right; color: var(--muted);
+              margin-left: .8rem; }
+
+figure.illustration-slot { margin: 2rem 0; page-break-inside: avoid; }
+figure.illustration-slot .slot-box { border: 1px dashed var(--rule);
+  background: #f7f4ee; min-height: 9rem; display: flex; align-items: center;
+  justify-content: center; font: .8rem/1.5 "Segoe UI", sans-serif;
+  color: var(--muted); padding: 1rem; }
 
 @media print {
   body { background: #fff; font-size: 11pt; }
@@ -259,8 +273,29 @@ nav.toc .strand { margin-left: auto; color: var(--muted); font-size: .78rem; }
   nav.toc a { color: #000; }
   h1, h2, h3 { page-break-after: avoid; }
   figure, img, table { page-break-inside: avoid; }
+  nav.toc { page-break-after: always; }
+  section.matter-title { page-break-after: always; }
+  section.matter-orientation { page-break-after: avoid; }
+  section.matter-software { page-break-after: avoid; }
 }
-@page { size: letter; margin: 22mm 20mm; }
+/* The print interior: numbered pages and a gutter. Chrome honours the
+   page margin boxes; the PyMuPDF fallback simply ignores them. The
+   contents page's numbers come from a two-pass render -- Chrome cannot
+   resolve target-counter(), so the first pass drops an invisible marker
+   beside every chapter and part, the pages are read back, and the second
+   pass prints real numbers into the contents list. */
+@page { size: letter; margin: 20mm 18mm 22mm; }
+@page :left {
+  margin-left: 24mm; margin-right: 18mm;
+  @bottom-center { content: counter(page);
+                   font: 9pt "Segoe UI", sans-serif; color: #6b6359; }
+}
+@page :right {
+  margin-left: 18mm; margin-right: 24mm;
+  @bottom-center { content: counter(page);
+                   font: 9pt "Segoe UI", sans-serif; color: #6b6359; }
+}
+span.pgmark { color: transparent; font-size: 5pt; position: absolute; }
 """
 
 
@@ -319,10 +354,22 @@ def _resolve_images(text: str, embed: bool,
         alt = match.group("alt")
         key = figure_key_from_src(match.group("src"))
         path = latest_figure(key, figure_dir)
+        spec = (index if index is not None else figure_index(BOOK)).get(key)
+        if path is None and spec is not None \
+                and spec.source == "illustration_slot":
+            # A commissioned illustration not yet delivered: the Amazon
+            # book prints a captioned slot so the page plan is visible
+            # in a proof, and the picture itself drops in under the same
+            # key once it exists -- the caption stays, marked as an
+            # illustration rather than a photograph.
+            caption = html_escape.escape(alt)
+            return (f'<figure class="illustration-slot">'
+                    f'<div class="slot-box">Illustration &middot; '
+                    f"{caption}</div>"
+                    f"<figcaption>{caption}</figcaption></figure>")
         if path is None:
             missing.append(key)
             return ""
-        spec = (index if index is not None else figure_index(BOOK)).get(key)
         if spec is not None and spec.source == "photo_slot":
             # A photograph slot is a shot the author still has to take.
             missing.append(key)
@@ -437,7 +484,13 @@ def _mermaid_runtime() -> str:
 
 
 def _strip_leading_heading(body: str, title: str) -> str:
-    """Drop the chapter's own H1, since the template already prints one."""
+    """Drop the chapter's own H1, since the template already prints one.
+
+    The scaffold also repeats the chapter title as the first section
+    heading, so a chapter whose file starts with ``# 9. Title`` /
+    ``## Title`` would otherwise print the title twice on its opening
+    page. Both are stripped here; the template's H1 and deck are what
+    the reader sees."""
     lines = body.splitlines()
     while lines and not lines[0].strip():
         lines.pop(0)
@@ -448,6 +501,13 @@ def _strip_leading_heading(body: str, title: str) -> str:
             lines.pop(0)
         if lines and lines[0].startswith("*") and lines[0].endswith("*"):
             lines.pop(0)
+    # The repeated title as the first section heading.
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    if lines and lines[0].startswith("## "):
+        heading = lines[0][3:].strip().lower()
+        if heading == title.lower():
+            lines.pop(0)
     return "\n".join(lines)
 
 
@@ -456,7 +516,9 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
               include_unwritten: bool = False,
               contents: bool = True,
               figure_dir: Path | None = None,
-              tokens=None) -> tuple[str, BuildReport]:
+              tokens=None,
+              page_map: dict[str, int] | None = None,
+              page_markers: bool = False) -> tuple[str, BuildReport]:
     """The whole book as one HTML document.
 
     This is the single source the reader, the HTML export and the PDF all
@@ -491,18 +553,7 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
             cover_html = ('<section class="cover">'
                           f"{_markdown_to_html(images(cover_text))}</section>")
 
-    parts: list[str] = [
-        '<div class="wrap">',
-        f'<div class="book-title">{html_escape.escape(book.title)}</div>',
-        f'<div class="book-sub">{html_escape.escape(book.subtitle)}</div>',
-    ]
-    if book.tagline:
-        parts.append(f'<p class="book-tagline">'
-                     f"{html_escape.escape(book.tagline)}</p>")
-    parts.append(
-        f'<p class="built">Built {date.today().isoformat()}. Every figure '
-        "in this book was computed at build time from the geometry in the "
-        "DomeSim project.</p>")
+    parts: list[str] = ['<div class="wrap">']
 
     # The contents list names only what the book actually contains: a
     # reader who follows a link must always land on a written chapter.
@@ -512,33 +563,54 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
         chapter for chapter in book.chapters
         if manuscript.read_chapter(chapter, root).is_started]
 
-    if contents:
-        parts.append('<nav class="toc"><h2>Contents</h2><ol>')
+    def toc_html() -> str:
+        out = ['<nav class="toc"><h2>Contents</h2>',
+               '<p class="toc-legend">Reading tracks: '
+               '<strong>story</strong> what happened &middot; '
+               '<strong>howto</strong> the manual &middot; '
+               '<strong>explain</strong> why it works &middot; '
+               '<strong>reference</strong> the tables.</p><ol>']
         for part in book.parts:
             listed = [chapter for chapter in part.chapters
                       if chapter in written_chapters]
             if not listed and not include_unwritten:
                 continue
-            parts.append(
+            part_page = (page_map or {}).get(f"part{part.number}", "")
+            out.append(
                 f'<li class="toc-part">Part {part.number} &middot; '
-                f"{html_escape.escape(part.title)}</li>")
+                f"{html_escape.escape(part.title)}"
+                f'<span class="pg">{part_page}</span></li>')
             for chapter in listed:
-                parts.append(
+                chapter_page = (page_map or {}).get(f"ch{chapter.number}", "")
+                out.append(
                     f'<li><a href="#ch{chapter.number}">'
                     f'<span class="num">{chapter.number}</span>'
                     f"<span>{html_escape.escape(chapter.title)}</span>"
-                    f'<span class="strand">{chapter.strand}</span></a></li>')
-        parts.append("</ol></nav>")
+                    f'<span class="strand">{chapter.strand}</span>'
+                    f'<span class="pg">{chapter_page}</span></a></li>')
+        out.append("</ol></nav>")
+        return "\n".join(out)
 
+    def matter_html(matter: Matter, where: str) -> str:
+        text = manuscript._matter_markdown(matter, where, root)
+        if not text.strip() and not include_unwritten:
+            return ""
+        return (f'<section class="matter matter-{matter.key}">'
+                f"{_markdown_to_html(images(text))}"
+                "</section>")
+
+    # The title pages come first -- the Amazon interior has no cover page,
+    # and a contents page before a title page is a screen-document habit,
+    # not a book. Then the contents, then the orientation pages.
     for matter in book.front:
         if matter.key == "cover":
-            continue          # already assembled, above the reading column
-        text = manuscript._matter_markdown(matter, "front", root)
-        if not text.strip() and not include_unwritten:
-            continue
-        parts.append(_markdown_to_html(
-            images(text)))
-        parts.append("<hr>")
+            continue          # gone from the interior; uploaded separately
+        if matter.key == "title":
+            parts.append(matter_html(matter, "front"))
+            if contents:
+                parts.append(toc_html())
+        else:
+            parts.append(matter_html(matter, "front"))
 
     for part in book.parts:
         included = [chapter for chapter in part.chapters
@@ -552,7 +624,9 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
             f'<p class="part-epigraph">&ldquo;'
             f"{html_escape.escape(part.epigraph)}&rdquo;</p>"
             f'<p class="part-promise">{html_escape.escape(part.promise)}</p>'
-            f"</section>")
+            + (f'<span class="pgmark">pgx-part{part.number}</span>'
+               if page_markers else "")
+            + "</section>")
         for chapter in part.chapters:
             item = manuscript.read_chapter(chapter, root)
             body = _strip_leading_heading(item.body, chapter.title)
@@ -566,7 +640,9 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
                 f'<div class="chapter-eyebrow">Chapter {chapter.number}'
                 f" &middot; {html_escape.escape(chapter.strand)}</div>"
                 f"<h1>{html_escape.escape(chapter.title)}</h1>"
-                f'<p class="deck">{html_escape.escape(chapter.deck)}</p>')
+                f'<p class="deck">{html_escape.escape(chapter.deck)}</p>'
+                + (f'<span class="pgmark">pgx-ch{chapter.number}</span>'
+                   if page_markers else ""))
             if has_prose:
                 # The scaffold's page-plan comments are for the desk, not
                 # the reader; a published copy carries prose only.
@@ -580,20 +656,22 @@ def book_html(root: Path = MANUSCRIPT_DIR, book: Book = BOOK,
             parts.append("</article>")
 
     for matter in book.back:
-        text = manuscript._matter_markdown(matter, "back", root)
-        if not text.strip() and not include_unwritten:
-            continue
-        parts.append("<hr>")
-        parts.append(_markdown_to_html(
-            images(text)))
+        section = matter_html(matter, "back")
+        if section:
+            parts.append(section)
 
     parts.append("</div>")
 
+    full_title = (f"{book.title}: {book.subtitle}" if book.subtitle
+                  else book.title)
     document = (
         "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
         "<meta name=\"viewport\" content=\"width=device-width,"
         "initial-scale=1\">"
-        f"<title>{html_escape.escape(book.title)}</title>"
+        "<meta name=\"author\" content=\"Donovan Zeanah\">"
+        "<meta name=\"description\" content=\""
+        f"{html_escape.escape(book.tagline or '')}\">"
+        f"<title>{html_escape.escape(full_title)}</title>"
         f"<style>{BOOK_CSS}</style></head><body>"
         + cover_html
         + "\n".join(parts)
@@ -674,6 +752,30 @@ def _chrome_path() -> str | None:
     return None
 
 
+def _stamp_pdf_metadata(path: Path, book: Book) -> None:
+    """Set the PDF's title and author, which Chrome does not carry over
+    from the HTML's own meta tags. KDP matches the author on the file to
+    the author on the listing, so the interior must say the same name as
+    the store page."""
+    import os
+    import fitz
+
+    full_title = (f"{book.title}: {book.subtitle}" if book.subtitle
+                  else book.title)
+    document = fitz.open(str(path))
+    document.set_metadata({
+        "title": full_title,
+        "author": "Donovan Zeanah",
+        "subject": book.tagline,
+        "creator": "DomeSim two_v_demo.book_export",
+        "producer": "DomeSim two_v_demo.book_export",
+    })
+    scratch = path.with_name(path.name + ".meta.tmp")
+    document.save(str(scratch), garbage=4, deflate=True)
+    document.close()
+    os.replace(scratch, path)
+
+
 def _pdf_via_chrome(document: str, path: Path, chrome: str) -> None:
     """Print the HTML with a real browser engine.
 
@@ -732,6 +834,26 @@ def _pdf_via_pymupdf(document: str, path: Path,
     writer.close()
 
 
+def _read_page_markers(pdf: Path) -> dict[str, int]:
+    """Which PDF page each invisible ``pgx-*`` marker landed on.
+
+    Chrome cannot resolve ``target-counter()``, so the contents list gets
+    its page numbers the honest way: a first pass prints an invisible
+    marker beside every chapter and part, this reads them back, and the
+    second pass sets the numbers for real. Page 1 is the first sheet of
+    the PDF, which is what Chrome's own ``counter(page)`` prints.
+    """
+    import fitz
+    document = fitz.open(str(pdf))
+    page_map: dict[str, int] = {}
+    marker = re.compile(r"pgx-(part\d+|ch\d+)")
+    for index in range(len(document)):
+        for match in marker.findall(document[index].get_text()):
+            page_map.setdefault(match, index + 1)
+    document.close()
+    return page_map
+
+
 def export_pdf(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
                book: Book = BOOK, strict: bool = True,
                backend: str = "auto", stem: str = "2-trees",
@@ -746,10 +868,6 @@ def export_pdf(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
     # Chrome reads images from disk perfectly well and a 60-figure book
     # embedded as base64 is enormous; PyMuPDF wants them as files it can
     # find in its archive. Either way, do not embed for PDF.
-    document, report = book_html(root, book, embed_images=False,
-                                 strict=strict, figure_dir=figure_dir,
-                                 tokens=tokens)
-
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{stem}.pdf"
     if path.exists():
@@ -765,9 +883,30 @@ def export_pdf(root: Path = MANUSCRIPT_DIR, out_dir: Path = EXPORT_DIR,
                 "no Chrome or Edge found to print with. Use backend "
                 "'pymupdf', or export HTML and print it from your own "
                 "browser with Ctrl+P.")
+        # Pass one: markers beside every chapter and part, read back into
+        # page numbers. Pass two prints the contents list with real
+        # numbers beside each title.
+        import tempfile
+        with tempfile.TemporaryDirectory() as scratch:
+            scratch = Path(scratch)
+            pass1, _ = book_html(root, book, embed_images=False,
+                                 strict=strict, figure_dir=figure_dir,
+                                 tokens=tokens, page_markers=True)
+            first = scratch / "pass1.pdf"
+            _pdf_via_chrome(pass1, first, chrome)
+            page_map = _read_page_markers(first)
+        document, report = book_html(root, book, embed_images=False,
+                                     strict=strict, figure_dir=figure_dir,
+                                     tokens=tokens, page_map=page_map)
         _pdf_via_chrome(document, path, chrome)
-        used = f"Chrome ({Path(chrome).name})"
+        _stamp_pdf_metadata(path, book)
+        used = f"Chrome ({Path(chrome).name}), "
+        used += (f"contents page-numbered ({len(page_map)} entries)"
+                 if page_map else "contents without page numbers")
     elif backend == "pymupdf":
+        document, report = book_html(root, book, embed_images=False,
+                                     strict=strict, figure_dir=figure_dir,
+                                     tokens=tokens)
         _pdf_via_pymupdf(document, path, figure_dir)
         used = "PyMuPDF"
     else:

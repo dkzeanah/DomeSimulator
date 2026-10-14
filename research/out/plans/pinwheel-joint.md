@@ -75,6 +75,6 @@
 ## Where the material already is
 
 - `geodesic_raw_wedge_dome_dihedral.py`
-- `book_wedge/manuscript/12-nothing-meets-at-the-corner.md`
+- `books/the-40-hour-cabin/manuscript/12-nothing-meets-at-the-corner.md`
 
 *Craft notes are guidance, not measured statistics. Numbers in lines and titles come from the model's exported facts.*

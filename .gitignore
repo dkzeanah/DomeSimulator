@@ -94,3 +94,14 @@ my_voice/
 # Worked figures, cached by source hash (infill/facts.py); rebuilt on demand.
 infill/.cache/
 two_v_demo/.cache/
+# The dated library (medialib): working folders that stay local
+*-myvoice*/
+deliverables/**/.*-chunks-*/
+deliverables/*/launcher_trailer/render_*/
+deliverables/_moves/old-*
+# Other people's documents, kept for reference only (never published from here)
+assets/reference/
+# The composer's working state
+books/*/.history/
+books/.pdf-notes/
+wedge_zome/settings.json

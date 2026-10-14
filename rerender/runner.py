@@ -101,7 +101,9 @@ def outputs(item) -> list[str]:
         vertical = newest.with_name(f"{newest.stem}-vertical.mp4")
         if vertical.is_file():
             found.append(vertical)
-        release = ROOT / "deliverables" / "releases" / newest.stem
+        import medialib
+        release = (medialib.release_dir(newest) if medialib.is_library_path(newest)
+                   else ROOT / "deliverables" / "releases" / newest.stem)
         if release.is_dir():
             found.append(release)
     return [p.relative_to(ROOT).as_posix() for p in found]

@@ -1,0 +1,84 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T10:43:49.223614+00:00",
+  "lesson": "teaser_cabin_wedge_beyond",
+  "title": "Beyond the Dome: Building With Wedges: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "DOMESIM",
+      "narration": [
+        "The same wedges, other buildings."
+      ],
+      "start": 0.0,
+      "end": 6.0
+    },
+    {
+      "slug": "back",
+      "title": "Back to back",
+      "narration": [
+        "Quarters make a post."
+      ],
+      "start": 6.0,
+      "end": 12.0
+    },
+    {
+      "slug": "joints",
+      "title": "Joints wedges make easy",
+      "narration": [
+        "Lap, bird's mouth, key."
+      ],
+      "start": 12.0,
+      "end": 18.0
+    },
+    {
+      "slug": "jig",
+      "title": "A panel on the jig",
+      "narration": [
+        "Built flat, at waist height."
+      ],
+      "start": 18.0,
+      "end": 24.0
+    },
+    {
+      "slug": "vets",
+      "title": "Built by veterans",
+      "narration": [
+        "A system, a crew, a village."
+      ],
+      "start": 24.0,
+      "end": 30.0
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 30.0,
+      "end": 36.906666666666666
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 36.906666666666666,
+      "end": 43.132083333333334
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\2026-10-14\\beyond-the-dome-building-with-wedges-teaser\\beyond-the-dome-building-with-wedges-teaser-myvoice-x1.5\\narration-plan.json",
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

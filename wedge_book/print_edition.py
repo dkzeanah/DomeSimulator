@@ -55,6 +55,13 @@ TRIM_IN = (8.5, 11.0)
 GUTTER_IN = 0.875
 #: Outside, top and bottom. KDP's minimum without bleed is 0.25 in.
 OUTSIDE_IN = 0.6
+#: The body type, points. Also the proof that the book printed at true size:
+#: Chrome shrinks every page of a document when anything in it is wider than
+#: the text block, and the body type is where that shows.
+BODY_PT = 10.5
+#: A cell this long in a column of figures is a sentence, not a figure, and
+#: is allowed to wrap.
+NUMERIC_CELL_MAX = 24
 TOP_IN = 0.75
 BOTTOM_IN = 0.85
 #: Figures are 1600 px wide renders. At 300 DPI that is 5.33 in, which is the
@@ -92,7 +99,7 @@ PRINT_CSS = f"""
 @page blank {{ @bottom-center {{ content: none; }} }}
 
 html, body {{ background: #fff; }}
-body {{ font: 10.5pt/1.55 Georgia, "Times New Roman", serif; color: #111;
+body {{ font: {BODY_PT}pt/1.55 Georgia, "Times New Roman", serif; color: #111;
         hyphens: auto; -webkit-hyphens: auto; }}
 p {{ text-align: justify; orphans: 3; widows: 3; }}
 .wrap {{ max-width: none; padding: 0; }}
@@ -288,7 +295,11 @@ def table_from_text(block: str) -> str | None:
     numeric_col[0] = False
 
     def td(value: str, c: int, tag: str = "td") -> str:
-        cls = ' class="num"' if numeric_col[c] else ""
+        # A figure never wraps; a sentence must. A long cell in a column of
+        # figures is a sentence that ran into its number, and set unwrapped it
+        # widens the page -- and Chrome then shrinks the entire book to fit.
+        numeric = numeric_col[c] and len(value) <= NUMERIC_CELL_MAX
+        cls = ' class="num"' if numeric else ""
         return f"<{tag}{cls}>{html_escape.escape(value)}</{tag}>"
 
     out = [f'<table class="bill{" long" if len(table_rows) > 30 else ""}">']
@@ -434,9 +445,9 @@ def cap_figures(document: str) -> str:
 #: The painted cover art, printed as the title page. It is 1024 x 1536 px, so
 #: at this page's text-block height it prints near 165 DPI -- under KDP's
 #: 300 DPI recommendation; a larger export of the same art is the fix.
-# The author's painted cover, re-lettered with the current title by
-# wedge_book.cover_type.reletter_painted (the original file is never touched).
-TITLE_ART = outline.ROOT / "book_wedge" / "cover" / "painted-front.png"
+# The Complete Edition's front: the rendered cover (wedge_book.cover_type).
+# The author's painting is the Amazon paperback's cover, not this book's.
+TITLE_ART = outline.ROOT / "books/the-40-hour-cabin" / "cover" / "cover-front.png"
 
 
 def title_page() -> str:
@@ -712,7 +723,9 @@ def finish(source: Path, out: Path) -> None:
 # ----------------------------------------------------------------------
 
 def latest() -> Path | None:
-    candidates = sorted(outline.EXPORT_DIR.glob(f"{outline.STEM}*.pdf"),
+    import medialib
+    folder = medialib.locate(outline.EXPORT_DIR / f"{outline.STEM}.pdf").parent
+    candidates = sorted(folder.glob(f"{outline.STEM}*.pdf"),
                         key=lambda p: p.stat().st_mtime)
     candidates = [p for p in candidates if re.fullmatch(
         rf"{re.escape(outline.STEM)}(-v\d+)?\.pdf", p.name)]
@@ -727,6 +740,28 @@ def _is_part_opener(text: str) -> bool:
     return bool(lines) and re.fullmatch(r"PART\d+", re.sub(r"\s", "", lines[0]).upper()) is not None
 
 
+def body_size(doc) -> float:
+    """The type size most of a printed PDF is set in, points."""
+    from collections import Counter
+
+    sizes: Counter = Counter()
+    for page in doc:
+        for block in page.get_text("dict")["blocks"]:
+            for line in block.get("lines", []):
+                for span in line["spans"]:
+                    sizes[round(span["size"], 2)] += len(span["text"].strip())
+    return sizes.most_common(1)[0][0] if sizes else 0.0
+
+
+def scale_problem(doc, body_pt: float = BODY_PT) -> str | None:
+    """A sentence if the book did not print at true size, else None."""
+    printed = body_size(doc)
+    if abs(printed - body_pt) <= 0.25:
+        return None
+    return (f"body text prints at {printed:.2f} pt, not {body_pt} pt: something is wider than "
+            f"the text block and Chrome shrank every page to {100 * printed / body_pt:.0f}%")
+
+
 def validate_print_edition(path: Path | None = None) -> dict:
     """The finished interior, checked against KDP and against itself."""
     import pymupdf
@@ -736,6 +771,9 @@ def validate_print_edition(path: Path | None = None) -> dict:
     doc = pymupdf.open(path)
     report = {"file": path.name, "pages": len(doc)}
     problems = []
+    shrunk = scale_problem(doc)
+    if shrunk:
+        problems.append(shrunk)
 
     sizes = {(round(p.rect.width / 72, 3), round(p.rect.height / 72, 3)) for p in doc}
     if sizes != {TRIM_IN}:

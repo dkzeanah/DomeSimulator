@@ -21,7 +21,7 @@ any code:
   PDF), a PDF built directly, or the Markdown source. None of them ever
   overwrite an earlier build.
 
-The manuscript is plain Markdown files under ``book/manuscript/``, one per
+The manuscript is plain Markdown files under ``books/two-trees/manuscript/``, one per
 chapter. This window is a convenience over those files, never a container for
 them: close it and the book is still on disk, openable in any editor.
 """
@@ -179,7 +179,7 @@ def main() -> int:
         anchor="w", padx=12)
     ttk.Label(
         win,
-        text=("Each chapter is a plain Markdown file under book/manuscript/. "
+        text=("Each chapter is a plain Markdown file under books/two-trees/manuscript/. "
               "Write here or in any editor — this window just makes it "
               "easier. Numbers are never typed: put a token in the text from "
               "the Numbers tab and the book fills it in with the real figure "

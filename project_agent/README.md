@@ -13,7 +13,7 @@ becomes a written question in a ledger.
 * What the underlying tools can do: `../docs/agent-utilization-guide.md`
 
 Engine code is never written by the agent. Its writes are confined to
-`project_agent/`, `exports/`, `presentations/`, `book/manuscript/`, and new
+`project_agent/`, `exports/`, `presentations/`, `books/two-trees/manuscript/`, and new
 `two_v_demo/lesson_*.py` / `*_facts.py` files. The one exception is lesson
 registration, which edits three known files under backup, validation and
 rollback (see below).

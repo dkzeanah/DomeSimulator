@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book Composer</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark">&#9650;</span> Book Composer</div>
+  <nav class="tabs" id="tabs">
+    <button data-tab="shelf" class="on">Shelf</button>
+    <button data-tab="weave">Weave</button>
+    <button data-tab="graph">Graph</button>
+    <button data-tab="pages">Pages</button>
+    <button data-tab="paths">Paths</button>
+    <button data-tab="reader">Reader</button>
+    <button data-tab="print">Print</button>
+  </nav>
+  <div class="status"><span id="bookname">no book open</span>
+    <button id="save" class="primary" disabled title="Ctrl+S">Save</button></div>
+</header>
+
+<main>
+  <!-- SHELF -->
+  <section id="tab-shelf" class="tab on">
+    <div class="intro">
+      <h1>Your books</h1>
+      <p>Every book in the project is on this shelf. The ones already written keep their own
+        builder (shown underneath each), and their newest printed copy opens in the <b>Reader</b>.
+        New books are made here: pick a kind, name the <b>threads</b> (the ideas, characters or
+        subjects that run through the whole book), and the composer lays out the <b>levels</b>
+        each thread climbs -- from a story, to the theory, to a working template, to steps, to
+        something a family does together.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <h2>Made in the composer</h2>
+        <div id="looms" class="cards"></div>
+        <h2>Start a new book</h2>
+        <form id="newbook" class="form">
+          <label>Title <input name="title" required placeholder="Pip and the Fallen Tree"></label>
+          <label>Kind <select name="kind" id="kinds"></select></label>
+          <label>Threads <input name="threads" placeholder="The tree, The split, The triangle">
+            <small>Separate them with commas. You can add, rename or remove them later.</small></label>
+          <label>Author <input name="author" placeholder="Your name"></label>
+          <div class="row"><button class="primary" type="submit">Create the book</button>
+            <button type="button" id="import-master">Open the Master Edition as a loom</button></div>
+        </form>
+      </div>
+      <div>
+        <h2>Already on the shelf</h2>
+        <div id="shelf" class="cards"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEAVE -->
+  <section id="tab-weave" class="tab">
+    <div class="split">
+      <div class="pane-main">
+        <div class="bar"><h2>The weave</h2>
+          <span class="hint">Across: the threads. Down: the levels. Click a square to write it;
+            click a heading to rename it or set its gate.</span>
+          <span class="grow"></span>
+          <button id="add-thread">+ thread</button><button id="add-level">+ level</button></div>
+        <div id="grid" class="grid-wrap"></div>
+      </div>
+      <aside class="pane-side" id="editor"><p class="empty">Pick a square to write it.</p></aside>
+    </div>
+  </section>
+
+  <!-- GRAPH -->
+  <section id="tab-graph" class="tab">
+    <div class="bar"><h2>The graph</h2>
+      <span class="hint">Each dot is a chapter; lines are how chapters relate. Drag dots to arrange them.
+        To link two, press <b>Link</b>, click the first, then the second.</span>
+      <span class="grow"></span>
+      <select id="link-kind"></select><button id="link-mode">Link</button>
+      <button id="graph-grid">Lay out as the loom</button><button id="graph-spread">Spread out</button></div>
+    <div class="legend" id="legend"></div>
+    <svg id="graph" class="graph"></svg>
+  </section>
+
+  <!-- PAGES -->
+  <section id="tab-pages" class="tab">
+    <div class="split">
+      <div class="pane-main">
+        <div class="bar"><h2 id="page-title">The page</h2>
+          <span class="hint">Pictures and text boxes are placed on the chapter's page. Drag to move,
+            drag the corner to size. Pick one to set its caption.</span><span class="grow"></span>
+          <button id="add-text">+ text box</button></div>
+        <div class="page-wrap"><div id="page" class="page"><div class="page-head" id="page-head"></div>
+          <div class="stage" id="stage"></div><div class="page-body" id="page-body"></div></div></div>
+      </div>
+      <aside class="pane-side">
+        <div id="frame-props"></div>
+        <h3>Pictures</h3>
+        <input id="asset-filter" placeholder="Find a picture (cover, dome, log...)">
+        <div id="assets" class="assets"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PATHS -->
+  <section id="tab-paths" class="tab">
+    <div class="split">
+      <div class="pane-main">
+        <div class="bar"><h2>Reading paths</h2>
+          <span class="hint">A path is one reader's way through the book ("Twelve bedtimes",
+            "Check the maths"). Pick a path, then click squares to add them in order.</span>
+          <span class="grow"></span><button id="add-path">+ path</button></div>
+        <div id="path-list" class="chips-row"></div>
+        <div id="path-grid" class="grid-wrap small"></div>
+      </div>
+      <aside class="pane-side" id="path-detail"><p class="empty">Pick or make a path.</p></aside>
+    </div>
+  </section>
+
+  <!-- READER -->
+  <section id="tab-reader" class="tab">
+    <div class="split">
+      <aside class="pane-side left">
+        <input id="pdf-filter" placeholder="Find a PDF">
+        <div id="pdfs" class="pdfs"></div>
+      </aside>
+      <div class="pane-main">
+        <div class="bar"><h2 id="pdf-title">Reader</h2><span class="grow"></span>
+          <button id="pdf-prev">&larr;</button><span id="pdf-pos"></span><button id="pdf-next">&rarr;</button>
+          <button id="pdf-zoom">Zoom</button><button id="pdf-place" title="Put this page into the open book">Place in book</button></div>
+        <div class="reader"><img id="pdf-img" alt=""><div class="notes">
+          <h3>Notes on this page</h3><div id="pdf-notes"></div>
+          <textarea id="pdf-note" placeholder="Write a note about this page"></textarea>
+          <button id="pdf-add-note">Add note</button></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINT -->
+  <section id="tab-print" class="tab">
+    <div class="bar"><h2>Print</h2>
+      <span class="hint">The same book prints in different weaves. Pick one, look at it, then print a
+        new numbered PDF into the library (old copies are never overwritten).</span>
+      <span class="grow"></span><select id="order"></select><button id="preview">Preview</button>
+      <button id="export" class="primary">Print to PDF</button></div>
+    <p id="export-result" class="result"></p>
+    <iframe id="preview-frame" class="preview" title="Preview"></iframe>
+  </section>
+</main>
+<div id="toast" class="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

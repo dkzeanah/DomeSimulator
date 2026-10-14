@@ -2496,7 +2496,8 @@ def _export_both(cfg: dict) -> int:
     """
     script = Path(__file__).resolve().parent.parent / "two_v_masterclass.py"
     target = Path(cfg["export_video"])
-    folder = target.parent
+    import medialib
+    folder = medialib.locate(target).parent        # the item's folder in the library
     # The children render; this parent builds the one release folder and cuts
     # the one teaser once both cuts exist. Neither child is allowed either,
     # or a "both" export produces three teasers and two release folders.
@@ -2509,6 +2510,7 @@ def _export_both(cfg: dict) -> int:
     code = subprocess.call([sys.executable, str(script)])
     if code != 0:
         return code
+    folder = medialib.locate(target).parent
     written = sorted(set(folder.glob(f"{target.stem}*.mp4")) - before,
                      key=lambda item: item.stat().st_mtime)
     landscape = written[-1] if written else target

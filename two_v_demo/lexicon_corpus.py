@@ -381,7 +381,8 @@ def read_listings() -> tuple[list[Entry], dict[str, str]]:
     """Video descriptions: only the part meant for the public, below the rule."""
     entries: list[Entry] = []
     titles: dict[str, str] = {}
-    for path in sorted((ROOT / "deliverables" / "masterclass").glob("*-youtube.md")):
+    import medialib
+    for path in medialib.legacy_glob("*-youtube.md"):
         raw = path.read_text(encoding="utf-8", errors="replace").replace("\r\n", "\n")
         public = raw.split("\n---\n", 1)[1] if "\n---\n" in raw else raw
         work = path.stem
@@ -407,7 +408,9 @@ def read_trailer() -> tuple[list[Entry], dict[str, str]]:
     """The launcher trailer's spoken lines, if its render manifest recorded them."""
     entries: list[Entry] = []
     titles: dict[str, str] = {}
-    for path in sorted((ROOT / "deliverables" / "launcher_trailer").rglob(
+    import medialib
+    trailer = medialib.item_dir("launcher_trailer") or ROOT / "deliverables" / "launcher_trailer"
+    for path in sorted(trailer.rglob(
             "video_manifest.json")):
         try:
             data = json.loads(path.read_text(encoding="utf-8", errors="replace"))

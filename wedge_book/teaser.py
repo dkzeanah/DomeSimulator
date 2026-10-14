@@ -38,7 +38,7 @@ FRONT = ("Forty Hours",)
 SAMPLE = (outline.CH_LUMPY, outline.CH_SILENT_KILLER, outline.CH_HOTSWAP, outline.CH_SPLIT)
 
 STEM = f"{outline.STEM}-sample"
-COVER_ART = outline.ROOT / "book_wedge" / "cover" / "cover-front.png"
+COVER_ART = outline.ROOT / "books/the-40-hour-cabin" / "cover" / "cover-front.png"
 WEB = outline.ROOT / "web"
 
 #: The headline figures on the "what this is" page, each a live token.
@@ -256,8 +256,9 @@ def offer_page(where: dict) -> str:
     <p><b>{e(paid['title'])}{((' — ' if ':' in paid['subtitle'] else ': ') + e(paid['subtitle'])) if paid.get('subtitle') else ''}</b>
     -- the rest of this book: the 40-hour frame from tree to raised shell, then every way
     to finish it -- twelve styles rendered, every material and panel priced, every item
-    on the floor on one list. A PDF, sold only on the website, with every future
-    edition included.</p>
+    on the floor on one list -- with the codebase that computed all of it. A PDF, sold
+    only on the website, with every future edition included, and a one-on-one design
+    session with the author available beside it.</p>
     <p class="url"><a href="{e(where['url'])}/{e(paid.get('page') or 'book')}">{e(where['host'])}/{e(paid.get('page') or 'book')}</a></p>
   </div>"""
     kdp = ""
@@ -268,7 +269,7 @@ def offer_page(where: dict) -> str:
   <div class="offer">
     <h2>The paperback</h2>
     <p><b>{e(amazon['title'])}{((' — ' if ':' in amazon['subtitle'] else ': ') + e(amazon['subtitle'])) if amazon.get('subtitle') else ''}</b>
-    -- the project's other book: three trees, one chainsaw, the build day by day. {e(status)}</p>
+    -- the paperback: three trees, one chainsaw, the build day by day. {e(status)}</p>
     <p class="url"><a href="{amazon.get('amazonUrl') or where['url'] + '/' + (amazon.get('page') or 'paperback')}">{e(where['host'])}/{e(amazon.get('page') or 'paperback')}</a></p>
   </div>"""
     return f"""
@@ -341,7 +342,8 @@ def build(source: Path | None = None) -> Path:
 
 
 def latest() -> Path | None:
-    candidates = [p for p in outline.EXPORT_DIR.glob(f"{STEM}*.pdf")
+    import medialib
+    candidates = [p for p in medialib.locate(outline.EXPORT_DIR / f"{STEM}.pdf").parent.glob(f"{STEM}*.pdf")
                   if re.fullmatch(rf"{re.escape(STEM)}(-v\d+)?\.pdf", p.name)]
     return max(candidates, key=lambda p: p.stat().st_mtime) if candidates else None
 
