@@ -11,6 +11,24 @@ pulled along their length and the stick's section does not matter. The dome
 books frame a cabin from {{dome.members}} wedges, split {{cut.splits}} ways,
 joined in pinwheels. Nothing is squared.
 
+## The wedge can fill the triangle too
+
+Framing and infill need separate stock ledgers. In the shared nominal
+{{wm.long_in}} inch chord example, the frame reserves
+{{wm.gross_frame_ft}} wedge feet in uncut blanks. The inward-pointing
+paired-infill idea then needs a measured continuous face pitch, with both
+wedges counted. The stated planning model gives
+{{wm.least_infill_ft}} to {{wm.most_infill_ft}} additional wedge feet;
+its framing inset and pair pitch are assumptions, not a solved cut list.
+
+Changing overlap can change contact and cavities, but not the wood already
+in two pieces. A bowtie span is not continuous facing. The opposed-point
+section experiment, the tool's alternating-point flip-flop, and two points
+both toward the interior must not be treated as interchangeable layouts.
+Use the actual infill profile and stock solver before committing a woodpile.
+The full derivation is in the Complete Edition's Every Piece, Numbered chapter
+and `infill.methodology`, which the book and the film share.
+
 ## Zomes
 
 A zome is a dome made of rhombus panels in rows, a spiral rather than a

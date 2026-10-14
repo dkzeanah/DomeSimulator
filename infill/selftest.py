@@ -9,6 +9,9 @@ def run() -> int:
     print("frame ok")
     validate_section()
     print("section ok")
+    from .methodology import validate_methodology
+    validate_methodology()
+    print("core methodology: nominal lengths, pair coverage and trunk reserve ok")
     validate_patterns()
     print("patterns ok")
     from .solids import validate_solids

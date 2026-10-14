@@ -54,11 +54,12 @@ test('the newest edition wins, and a gap in versions does not matter', () => {
   assert.equal(latestVersion(dir, 'other.pdf'), null);
 });
 
-test('a book is found in the dated library when its old folder has none', () => {
+test('a book is found in the numbered library when its old folder has none', () => {
   const lib = fs.mkdtempSync(path.join(os.tmpdir(), 'domenet-lib-'));
-  const item = path.join(lib, '2026-10-14', 'book');
-  fs.mkdirSync(item, { recursive: true });
-  for (const name of ['book.pdf', 'book-v3.pdf', 'book-cover.pdf']) fs.writeFileSync(path.join(item, name), 'x');
+  for (const [folder, name] of [['0001-book', 'book.pdf'], ['0007-book-v3', 'book-v3.pdf'], ['0002-book-cover', 'book-cover.pdf']]) {
+    fs.mkdirSync(path.join(lib, folder), { recursive: true });
+    fs.writeFileSync(path.join(lib, folder, name), 'x');
+  }
   assert.equal(latestInLibrary(lib, 'book.pdf').name, 'book-v3.pdf');
   assert.equal(latestInLibrary(lib, 'other.pdf'), null);
   const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'domenet-old-'));

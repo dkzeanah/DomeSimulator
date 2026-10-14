@@ -365,6 +365,9 @@ def _table() -> dict[str, Token]:
     _catalogue_tokens(add)
     _kick_tokens(add)
     _staple_tokens(add)
+    _foundation_tokens(add)
+    _coverage_tokens(add)
+    _methodology_tokens(add)
     _core_build_tokens(add)
     _franken_tokens(add)
     _hub_tokens(add)
@@ -1698,6 +1701,106 @@ def _kick_tokens(add) -> None:
         v(lambda: paint.solar_delta_f + paint.radiative_delta_f))
     add("kick.paint_usd", "what the paint saves a year on an insulated shell, dollars", v(lambda: paint.annual_saving))
     add("kick.paint_thin_usd", "and on a thin wall, dollars", v(lambda: thin.annual_saving))
+
+
+def _methodology_tokens(add) -> None:
+    """Core methodology values shared unchanged with the films and other books."""
+    from infill.methodology import token_values
+    for name, value in token_values().items():
+        add(name, "core wedge methodology: " + name.split(".", 1)[1],
+            lambda value=value: value)
+
+
+def _coverage_tokens(add) -> None:
+    """``cov``: how much wedge a whole dome takes -- the frame, and closing every triangle with
+    pairs of wedges -- from :mod:`two_v_demo.wedge_coverage_facts` (lazy: it reads the solver)."""
+    from two_v_demo import wedge_coverage_facts as wc
+
+    def f(key, fmt):
+        return lambda: fmt.format(wc.facts()[key])
+
+    for key, fmt, describe in (
+            ("long_in", "{:.2f}", "the long strut, in"), ("short_in", "{:.2f}", "the short strut, in"),
+            ("members", "{:.0f}", "wedge members in the frame"), ("unique_edges", "{:.0f}", "unique edges"),
+            ("iso_faces", "{:.0f}", "isosceles faces"), ("eq_faces", "{:.0f}", "equilateral faces"),
+            ("frame_nominal_ft", "{:,.1f}", "the frame's wedge, nominal, ft"),
+            ("frame_cut_ft", "{:,.1f}", "the frame's wedge as the solver cuts it, ft"),
+            ("frame_saving_ft", "{:.1f}", "what the pinwheel cuts take off the frame, ft"),
+            ("area_ft2", "{:,.1f}", "the 40 triangles' area, sq ft"),
+            ("face_in_12", "{:.2f}", "a 12 in log's wedge face, in"), ("depth_in_12", "{:.2f}", "its depth, in"),
+            ("open_area_ft2_12", "{:,.1f}", "open area after the frame's strip, sq ft"),
+            ("infill_min_ft_12", "{:,.0f}", "infill, bowtie pairs, ft"), ("infill_max_ft_12", "{:,.0f}", "infill, nested pairs, ft"),
+            ("total_min_ft_12", "{:,.0f}", "frame and infill, least, ft"), ("total_max_ft_12", "{:,.0f}", "frame and infill, most, ft"),
+            ("trees_min_12", "{:.0f}", "60 ft trees, least"), ("trees_max_12", "{:.0f}", "60 ft trees, most"),
+            ("trunk_min_ft_12", "{:,.0f}", "trunk, least, ft"), ("trunk_max_ft_12", "{:,.0f}", "trunk, most, ft"),
+            ("frame_trunk_ft", "{:.0f}", "trunk for the frame alone, ft"), ("solver_log_in", "{:.0f}", "the simulator's log, in")):
+        add(f"cov.{key.replace('_ft2', '').replace('_12', '')}", describe, f(key, fmt))
+    add("cov.solver_min", "frame and infill with the simulator's log, least, ft",
+        lambda: f"{wc.facts()['solver_lo']['total_ft']:,.0f}")
+    add("cov.solver_max", "frame and infill with the simulator's log, most, ft",
+        lambda: f"{wc.facts()['solver_hi']['total_ft']:,.0f}")
+    add("cov.solver_trees_max", "60 ft trees with the simulator's log, most",
+        lambda: f"{wc.facts()['solver_hi']['trees']}")
+    add("cov.checked", "the session's figures that agree with the solver",
+        lambda: f"{sum(ok for *_x, ok in wc.verification())} of {len(wc.verification())}")
+    add("cov.calc_excess", "how far the area method runs above real pieces, %",
+        lambda: f"{wc.calculator_check()['excess_pct']:.0f}")
+    add("cov.table", "the overlap table",
+        lambda: chr(10).join(wc.steps_infill()[4:]))
+    add("cov.frame_steps", "the frame, worked", lambda: chr(10).join(wc.steps_frame()))
+
+
+def _foundation_tokens(add) -> None:
+    """``found`` and ``world``: the pentagonal foundation of half trunks and its star, from
+    :func:`world3d.structures.foundation_facts` (which reads :mod:`infill.base`), and the
+    counts of the one 3-D world that holds the foundation, the dome and the zome."""
+    def f(key, fmt="{:.2f}"):
+        return lambda: fmt.format(_found()[key])
+
+    for key, describe, fmt in (
+            ("side_in", "the pentagon's side, in", "{:.0f}"), ("diagonal_in", "its diagonal, in", "{:.1f}"),
+            ("phi", "the golden ratio", "{:.3f}"), ("long_centre_in", "a long star piece, centreline, in", "{:.1f}"),
+            ("short_centre_in", "a short star piece, centreline, in", "{:.1f}"),
+            ("long_cut_in", "a long star piece, as cut, in", "{:.1f}"),
+            ("short_cut_in", "a short star piece, as cut, in", "{:.1f}"),
+            ("spare_in", "what one 20 ft log has left after one long and one short, in", "{:.1f}"),
+            ("long_count", "long star pieces", "{:.0f}"), ("short_count", "short star pieces", "{:.0f}"),
+            ("frame_count", "half trunks in the frame", "{:.0f}"), ("top_in", "the floor's top above grade, in", "{:.0f}"),
+            ("interior_deg", "the pentagon's corner, degrees", "{:.0f}"),
+            ("star_point_deg", "a star point, degrees", "{:.0f}")):
+        add(f"found.{key.replace('_in', '').replace('_deg', '')}", describe, f(key, fmt))
+    add("found.side_ft", "the pentagon's side, ft", lambda: f"{_found()['side_in'] / 12:.0f}")
+    add("found.star_pieces", "star pieces in all", lambda: f"{_found()['long_count'] + _found()['short_count']}")
+    add("found.all_pieces", "frame and star pieces in all",
+        lambda: f"{_found()['long_count'] + _found()['short_count'] + _found()['frame_count']}")
+    add("found.star_logs", "logs the star takes: one per long piece", lambda: f"{_found()['long_count']}")
+    add("found.logs", "logs in the whole foundation", lambda: f"{_found()['long_count'] + _found()['frame_count']}")
+    add("found.offcut", "what is left of a log after one long piece, in",
+        lambda: f"{_found()['side_in'] - _found()['long_cut_in']:.1f}")
+    add("found.long_minus_cut", "how much the frame's face takes off a long piece, in",
+        lambda: f"{_found()['long_centre_in'] - _found()['long_cut_in']:.1f}")
+
+    def w(key):
+        return lambda: str(_world_counts()[key])
+    for key, describe in (("dome", "dome members in the world"), ("zome", "zome sticks in the world"),
+                          ("foundation", "foundation pieces in the world"), ("layers", "layers in the world's panel")):
+        add(f"world.{key}", describe, w(key))
+
+
+_FOUND: dict = {}
+
+
+def _found() -> dict:
+    if not _FOUND:
+        from world3d import structures as ws
+        _FOUND.update(ws.foundation_facts())
+    return _FOUND
+
+
+def _world_counts() -> dict:
+    from world3d import structures as ws
+    return {"dome": len(ws.dome_model().members), "zome": sum(len(p.sticks) for p in ws.zome_model().panels),
+            "foundation": len(ws.foundation()), "layers": len(ws.LAYERS)}
 
 
 def _staple_tokens(add) -> None:

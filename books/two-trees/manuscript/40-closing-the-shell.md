@@ -30,6 +30,29 @@ exists for a reason and each one asks the frame for something
 different, and the builder who knows all four picks the right one
 instead of the first one.
 
+## Filling the opening with wedges
+
+Wood infill belongs in the wedge method's stock plan. State the face that
+must close, the orientation of each wedge, and the continuous coverage of a
+pair. Two wedges can occupy one strip; count both pieces. A bowtie's span
+can include a gap, so its span cannot be substituted for face coverage.
+
+The shared example uses a {{wm.long_in}} inch nominal long chord and a
+{{wm.log_in}} inch log split {{wm.splits}} ways. Its half-chord-width
+framing inset is an assumption, leaving {{wm.opening_sqft}} square feet
+to fill. Under the stated continuous-pair-pitch model, infill ranges from
+{{wm.least_infill_ft}} to {{wm.most_infill_ft}} wedge feet. The endpoints
+are planning bounds, not proof of seating or weather closure.
+
+Reserve the {{wm.gross_frame_ft}} feet of uncut frame blanks separately
+from the {{wm.finished_frame_ft}} feet of solver cut-stock. With a uniform
+{{wm.trunk_ft}} foot usable trunk, framing plus that conditional infill
+takes {{wm.least_raw_trunk_ft}} to {{wm.most_raw_trunk_ft}} trunk feet.
+These are ideal equivalents before kerf, taper, defects and course-cut waste.
+The Triangle Infill calculator supplies the real tray, piece shapes and
+stock allocation. An opposed-point cavity experiment and the calculator's
+alternating-point fill are different arrangements from two points both inward.
+
 ## Sheathing a triangle
 
 The craft problem the rectangle-building world never has: every

@@ -1967,6 +1967,8 @@ def main() -> int:
         "and, for square sticks, the templates for splitting the wedge blocks. It is saved in the "
         "library (the deliverables folder, under the date it was first made, as wedge-zome-wedge), "
         "a new numbered folder each time.")).pack(anchor="w")
+    launch_button(zome_head, "Open the whole world: foundation, dome and zome, with their jigs (layers, cut, add, delete)",
+                  lambda: run_module("world3d", [], "DomeSim world"))
     launch_button(zome_head, "Open the 3-D zome world",
                   lambda: run_module("wedge_zome.app", [], "Wedge Zome 3-D"))
     launch_button(zome_head, "Make the cut package",
@@ -3041,7 +3043,7 @@ def main() -> int:
         expected = 22
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 32
+        expected_buttons = 33
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks
@@ -3053,6 +3055,10 @@ def main() -> int:
         from wedge_zome import geometry as wedge_zome_geometry
         wedge_zome_geometry.validate()
         print("SMOKETEST OK: Wedge Zome geometry solves and its seams close")
+
+        from world3d import pieces as world_pieces
+        world_pieces.validate_pieces()
+        print("SMOKETEST OK: the world's pieces cut, measure and snap")
 
         import medialib
         medialib.selftest()

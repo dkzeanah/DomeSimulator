@@ -27,6 +27,22 @@ anyone, forever.
 
 ## 1. What you deliver
 
+### Core wedge construction topics
+
+For pentagon stock identities, framing footage, paired wedge infill, or tree
+requirements, first read `docs/wedge-building-methodology.md`. Import
+`infill.methodology` and reuse `infill.base`, `infill.section`, and
+`two_v_demo.infill_scene` for the actual geometry. The existing
+`cabin_every_piece` film teaches these through `method_inputs`,
+`frame_footage`, `pair_budget`, `tree_budget`, and `pentagon_math`.
+
+Never confuse nominal chord footage with physical cut-stock or the uncut blank
+reserve. State continuous face pitch before estimating one-face infill, count
+both wedges in a pair, and label the half-width inset and projected-overlap
+range as planning assumptions. An opposed-point bowtie's envelope and voids
+do not establish same-inward-point seating, weather closure, strength or
+insulation. The books and lexicon share the live `wm.*` token table.
+
 Exactly two files, plus two small edits.
 
 ```

@@ -195,14 +195,10 @@ def _owner_map(stems: dict[str, list[str]], videos: list[Path]) -> dict[str, lis
 
 def _releases(stems: list[str]) -> list[str]:
     import medialib
-    bases = [ROOT / RELEASES] + [d / "releases" for s in stems for d in [medialib.item_dir(medialib.slug_of(s))] if d]
     out = []
-    for base in bases:
-        if not base.is_dir():
-            continue
-        for entry in os.scandir(base):
-            if entry.is_dir() and any(re.match(rf"^{re.escape(s)}(-v\d+)?$", entry.name) for s in stems):
-                out.append(_rel(Path(entry.path)))
+    for slug in {medialib.slug_of(s) for s in stems}:
+        for o in medialib.outputs(slug):
+            out += [_rel(r) for r in o.folder.glob("release*") if r.is_dir()]
     return sorted(set(out))
 
 

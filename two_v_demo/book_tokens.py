@@ -2173,6 +2173,7 @@ def _build() -> tuple[Token, ...]:
         *_domology_tokens(),
         *_part3_tokens(),
         *_seed_tokens(),
+        *_methodology_tokens(),
 
         # -- build choices ---------------------------------------------
         Token("jig.head_overfit_in", "stock deliberately left long",
@@ -3463,6 +3464,13 @@ def _seam_groups() -> tuple[tuple[float, int], ...]:
             counts[angle] = counts.get(angle, 0) + 1
         _SEAM_GROUPS = tuple(sorted(counts.items()))
     return _SEAM_GROUPS
+
+
+def _methodology_tokens() -> list[Token]:
+    """The same methodology figures the Complete and Master editions read."""
+    from infill.methodology import token_values
+    return [Token(name, "core wedge methodology: " + name.split(".", 1)[1],
+                  lambda value=value: value) for name, value in token_values().items()]
 
 
 def _seed_tokens() -> list[Token]:

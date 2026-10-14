@@ -42,19 +42,22 @@ export function latestVersion(dir, fileName) {
 }
 
 /**
- * The same file in the dated library: deliverables/<YYYY-MM-DD>/<item>/, where the
- * item is the file's base name without its -vN. Every version lives in that one folder.
+ * The same file in the numbered library: deliverables/<NNNN>-<base>[-vN]/, one folder
+ * per iteration of the book. The highest version across them wins.
  */
 export function latestInLibrary(libraryDir, fileName) {
   if (!libraryDir || !fs.existsSync(libraryDir)) return null;
   const ext = path.extname(fileName);
   const base = path.basename(fileName, ext).replace(/-v\d+$/, '');
-  const days = fs.readdirSync(libraryDir).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort();
-  for (const day of days) {
-    const folder = path.join(libraryDir, day, base);
-    if (fs.existsSync(folder)) return latestVersion(folder, fileName);
+  const esc = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const folder = new RegExp(`^\\d{4,}-${esc}(?:-v\\d+)?$`);
+  let best = null;
+  for (const name of fs.readdirSync(libraryDir)) {
+    if (!folder.test(name)) continue;
+    const found = latestVersion(path.join(libraryDir, name), fileName);
+    if (found && (!best || found.version > best.version)) best = found;
   }
-  return null;
+  return best;
 }
 
 export function resolveBook(book, dir = config.booksDir, libraryDir = config.libraryDir) {

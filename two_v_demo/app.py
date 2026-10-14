@@ -2028,8 +2028,9 @@ class MasterclassApp:
             path = output_dir / (
                 f"{self.lesson.snapshot_prefix}_{target:07.2f}s.png"
             )
-            paths.append(self.save_screenshot(path))
-            print(f"saved {path}")
+            saved = self.save_screenshot(path)
+            paths.append(saved)
+            print(f"saved {saved}")
         return paths
 
     @property
@@ -2569,8 +2570,7 @@ def _render_teaser(cfg: dict, lesson_key: str) -> None:
     if not cfg.get("teaser", True):
         return
     try:
-        target = Path(OUTPUT_DIR) / f"{lesson_key}-teaser.mp4"
-        target.parent.mkdir(parents=True, exist_ok=True)
+        target = Path(OUTPUT_DIR) / f"{lesson_key}-teaser.mp4"     # an address: the library files it
         script = Path(__file__).resolve().parent.parent / "two_v_masterclass.py"
         ticket = {key: value for key, value in cfg.items()
                   if key in ("fps", "render_fps", "video_encoder",
@@ -3026,7 +3026,7 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
         except ValueError as exc:
             print(f"shots values must be seconds: {exc}")
             return 2
-        app.render_shots(times, Path("two_v_demo_output") / lesson.key)
+        app.render_shots(times, Path(cfg.get("shots_output_dir") or Path("two_v_demo_output") / lesson.key))
         app.pygame.quit()
         return 0
     if action == "export_video" and cfg.get("export_video"):

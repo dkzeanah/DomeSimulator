@@ -44,6 +44,27 @@ The reference build trims to the small end, because the first dome is not the
 place to be clever. Once you have built one, the oriented method is worth the
 saving.
 
+FRAME AND INFILL ARE TWO STOCK LEDGERS
+
+A wedge can be a frame member or one of the strips that closes its triangle.
+Plan both before splitting the woodpile. Count the uncut frame blanks first,
+then the infill, then assign reusable offcuts to named courses. Do not harvest
+only the shorter finished frame length and spend its trimming allowance twice.
+
+For paired infill, say which way each point faces and which face must close.
+The quantity depends on continuous installed coverage, with both pieces in
+the pair counted. Sliding an opposed-point pair changes its contact and voids
+without changing the wood already in it; a bowtie's span is not its coverage.
+Two points both toward the dome interior and an alternating-point flip-flop
+are different arrangements and need their own seating checks.
+
+The shared derivation and conditional stock table are in
+`docs/wedge-building-methodology.md` and `infill.methodology`. The Complete
+Edition explains them in Every Piece, Numbered. Its harvesting equivalents
+assume uniform usable trunk, not the height or guaranteed yield of a standing
+pine. Kerf, taper, defects, course ends and fitting waste belong in the final
+stock allocation.
+
 WHAT COMES OFF
 
 The head end. Where the member meets a vertex, material has to come off to

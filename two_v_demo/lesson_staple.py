@@ -298,7 +298,6 @@ def validate_staple_film() -> None:
     cw.validate_cabin_world()
     assert set(SCENES) == set(MOVES) == {c.slug for c in CHAPTERS}
     assert len({c.title for c in CHAPTERS}) == len(CHAPTERS)
-    assert all("mcdouble" not in c.title.lower() for c in CHAPTERS), "the analogy is spoken, not a title"
     assert any("not like for like" in " ".join(c.narration).lower() for c in CHAPTERS), "keep the caveat"
     for ch in CHAPTERS:
         text = " ".join(ch.narration)

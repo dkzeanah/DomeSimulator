@@ -456,15 +456,11 @@ def latest_cut(lesson_key: str, root: Path = OUTPUT_DIR) -> Path:
     if item is None:
         raise ValueError(f"{lesson_key!r} has no deliverable entry")
     import medialib
-    base = medialib.locate(root / item.filename)
-    stem, suffix = base.stem, base.suffix
-    root = base.parent
-    found = sorted(root.glob(f"{stem}*{suffix}"),
-                   key=lambda p: p.stat().st_mtime if p.is_file() else 0)
-    found = [p for p in found if not p.name.startswith(".")]
-    if not found:
-        raise FileNotFoundError(f"no rendered cut for {lesson_key!r} in {root}")
-    return found[-1]
+    name = Path(item.filename)
+    found = medialib.latest(medialib.slug_of(name.name), name.suffix)
+    if found is None:
+        raise FileNotFoundError(f"no rendered cut for {lesson_key!r} in the library")
+    return found
 
 
 def newest_version(path: Path) -> Path:
@@ -531,7 +527,7 @@ def build_release(lesson_key: str, video: Path | None = None,
     # A cut in the library keeps its release in its own item folder.
     folder = medialib.release_dir(cut) if medialib.is_library_path(cut) else root / cut.stem
     if folder.is_dir() and any(folder.iterdir()):
-        folder = medialib.free(folder)         # a rebuilt release sits beside the first: -v2
+        folder = medialib.free(folder)         # a rebuilt release sits beside the first: release-v2
     folder.mkdir(parents=True, exist_ok=True)
 
     marks = chapter_marks(lesson, cut)

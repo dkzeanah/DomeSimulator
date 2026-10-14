@@ -445,8 +445,7 @@ def output_path(key: str) -> Path:
 def export(key: str, orientation: str = "both", fps: int = 30) -> int:
     """Narrate and render one teaser, both shapes by default, via the normal export."""
     import launcher_common as lc
-    target = output_path(key)
-    target.parent.mkdir(parents=True, exist_ok=True)
+    target = output_path(key)          # an address: the library files it (medialib.route)
     lc.write_config("two_v_masterclass", {
         "action": "export_video", "lesson": PREFIX + key, "export_video": str(target),
         "orientation": orientation, "fps": fps,

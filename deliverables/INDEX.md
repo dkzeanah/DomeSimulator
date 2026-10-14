@@ -1,551 +1,545 @@
 # The library
 
-Everything the project has made: 367 items over 39 days, 23.84 GB. One folder per item, every version of it inside, filed under the day it was first made. Rebuilt by `py -3.12 -m medialib`.
-
-
-## 2026-10-14
-
-- **asset-prompts** (text, 0.0 MB) -- [asset-prompts.md](2026-10-14/asset-prompts/asset-prompts.md)
-- **beyond-the-dome-building-with-wedges** (video, 413.7 MB) -- [beyond-the-dome-building-with-wedges.mp4](2026-10-14/beyond-the-dome-building-with-wedges/beyond-the-dome-building-with-wedges.mp4)
-- **beyond-the-dome-building-with-wedges-teaser** (video, 42.2 MB) -- [beyond-the-dome-building-with-wedges-teaser.mp4](2026-10-14/beyond-the-dome-building-with-wedges-teaser/beyond-the-dome-building-with-wedges-teaser.mp4)
-- **cabin_wedge_beyond-teaser** (folder, 0.0 MB) -- [cabin_wedge_beyond-teaser](2026-10-14/cabin_wedge_beyond-teaser)
-- **domesim-code-house-investor-summary** (document, 3 versions, 0.0 MB) -- [domesim-code-house-investor-summary-v3.pdf](2026-10-14/domesim-code-house-investor-summary/domesim-code-house-investor-summary-v3.pdf)
-- **domesim-project-summary** (document, 2 versions, 0.2 MB) -- [domesim-project-summary-v2.pdf](2026-10-14/domesim-project-summary/domesim-project-summary-v2.pdf)
-- **domesim-summary-pack** (document, 2 versions, 0.3 MB) -- [domesim-summary-pack-v2.pdf](2026-10-14/domesim-summary-pack/domesim-summary-pack-v2.pdf)
-- **domesim-you-take-investor-pitch** (document, 0.0 MB) -- [domesim-you-take-investor-pitch.pdf](2026-10-14/domesim-you-take-investor-pitch/domesim-you-take-investor-pitch.pdf)
-- **investor-overview** (text, 0.0 MB) -- [investor-overview.md](2026-10-14/investor-overview/investor-overview.md)
-- **master-edition-loom-bedtime** (document, 4.5 MB) -- [master-edition-loom-bedtime.pdf](2026-10-14/master-edition-loom-bedtime/master-edition-loom-bedtime.pdf)
-- **numbers-page** (text, 0.0 MB) -- [numbers-page.md](2026-10-14/numbers-page/numbers-page.md)
-- **one-pager-deepseek** (text, 0.0 MB) -- [one-pager-deepseek.md](2026-10-14/one-pager-deepseek/one-pager-deepseek.md)
-- **outreach-emails** (text, 0.0 MB) -- [outreach-emails.md](2026-10-14/outreach-emails/outreach-emails.md)
-- **reward-tiers** (text, 0.0 MB) -- [reward-tiers.md](2026-10-14/reward-tiers/reward-tiers.md)
-- **the-40-hour-cabin-numbers** (document, 2 versions, 0.8 MB) -- [the-40-hour-cabin-numbers-v2.pdf](2026-10-14/the-40-hour-cabin-numbers/the-40-hour-cabin-numbers-v2.pdf)
-- **the-40-hour-cabin-the-case** (document, 0.5 MB) -- [the-40-hour-cabin-the-case.pdf](2026-10-14/the-40-hour-cabin-the-case/the-40-hour-cabin-the-case.pdf)
-- **wedge-zome-square** (document, 0.2 MB) -- [wedge-zome-square](2026-10-14/wedge-zome-square)
-- **wedge-zome-wedge** (document, 2 versions, 0.3 MB) -- [wedge-zome-wedge](2026-10-14/wedge-zome-wedge)
-- **zome-zoomer-title-page** (document, 2.1 MB) -- [zome-zoomer-title-page.pdf](2026-10-14/zome-zoomer-title-page/zome-zoomer-title-page.pdf)
-- *new version:* **dome_accessibility_20260816_082305_167_1d3f14** -- 1 versions, filed under [2026-08-16](2026-08-16/dome_accessibility_20260816_082305_167_1d3f14)
-- *new version:* **2-trees** -- 49 versions, filed under [2026-09-08](2026-09-08/2-trees)
-- *new version:* **tree-value-video** -- 1 versions, filed under [2026-09-12](2026-09-12/tree-value-video)
-- *new version:* **dome-park-bring-your-own-home** -- 3 versions, filed under [2026-09-16](2026-09-16/dome-park-bring-your-own-home)
-- *new version:* **attempt-v1-deepseek** -- 1 versions, filed under [2026-09-17](2026-09-17/attempt-v1-deepseek)
-- *new version:* **stem-cell-dome-campaign** -- 7 versions, filed under [2026-09-20](2026-09-20/stem-cell-dome-campaign)
-- *new version:* **stem-cell-hero-cut** -- 3 versions, filed under [2026-09-23](2026-09-23/stem-cell-hero-cut)
-- *new version:* **stem-cell-utility-core-build** -- 1 versions, filed under [2026-09-23](2026-09-23/stem-cell-utility-core-build)
-- *new version:* **the-seam-does-four-jobs** -- 1 versions, filed under [2026-09-25](2026-09-25/the-seam-does-four-jobs)
-- *new version:* **the-40-hour-cabin-cold-open** -- 2 versions, filed under [2026-09-27](2026-09-27/the-40-hour-cabin-cold-open)
-- *new version:* **cabin-2v-geodesic-masterclass** -- 1 versions, filed under [2026-09-28](2026-09-28/cabin-2v-geodesic-masterclass)
-- *new version:* **cabin-dome-house-lookbook** -- 1 versions, filed under [2026-09-28](2026-09-28/cabin-dome-house-lookbook)
-- *new version:* **cabin-stem-cell-hero-cut** -- 1 versions, filed under [2026-09-28](2026-09-28/cabin-stem-cell-hero-cut)
-- *new version:* **cabin-the-seam-does-four-jobs** -- 1 versions, filed under [2026-09-28](2026-09-28/cabin-the-seam-does-four-jobs)
-- *new version:* **cabin-the-vance-network-mini-series** -- 1 versions, filed under [2026-09-28](2026-09-28/cabin-the-vance-network-mini-series)
-- *new version:* **the-wedge-dome-explained** -- 1 versions, filed under [2026-09-28](2026-09-28/the-wedge-dome-explained)
-- *new version:* **cabin-stem-cell-utility-core-build** -- 2 versions, filed under [2026-09-29](2026-09-29/cabin-stem-cell-utility-core-build)
-- *new version:* **cabin-two-trees-all-at-once** -- 1 versions, filed under [2026-09-29](2026-09-29/cabin-two-trees-all-at-once)
-- *new version:* **linseed-oil-for-a-dome** -- 2 versions, filed under [2026-09-30](2026-09-30/linseed-oil-for-a-dome)
-- *new version:* **which-way-the-seam-breathes** -- 3 versions, filed under [2026-09-30](2026-09-30/which-way-the-seam-breathes)
-- *new version:* **the-panel-method-3v-dome** -- 2 versions, filed under [2026-10-03](2026-10-03/the-panel-method-3v-dome)
-- *new version:* **the-shop-the-campaign-buys** -- 1 versions, filed under [2026-10-03](2026-10-03/the-shop-the-campaign-buys)
-- *new version:* **the-cell-wall** -- 2 versions, filed under [2026-10-06](2026-10-06/the-cell-wall)
-- *new version:* **the-sky-web** -- 2 versions, filed under [2026-10-08](2026-10-08/the-sky-web)
-- *new version:* **every-piece-numbered** -- 1 versions, filed under [2026-10-12](2026-10-12/every-piece-numbered)
-- *new version:* **the-40-hour-cabin-pitch-pack** -- 4 versions, filed under [2026-10-13](2026-10-13/the-40-hour-cabin-pitch-pack)
-
-## 2026-10-13
-
-- **square-on-demand** (document, 0.7 MB) -- [square-on-demand.pdf](2026-10-13/square-on-demand/square-on-demand.pdf)
-- **the-40-hour-cabin-efficiency** (document, 0.4 MB) -- [the-40-hour-cabin-efficiency.pdf](2026-10-13/the-40-hour-cabin-efficiency/the-40-hour-cabin-efficiency.pdf)
-- **the-40-hour-cabin-master-edition** (document, 5 versions, 404.5 MB) -- [the-40-hour-cabin-master-edition-v5.pdf](2026-10-13/the-40-hour-cabin-master-edition/the-40-hour-cabin-master-edition-v5.pdf)
-- **the-40-hour-cabin-one-pager** (document, 2 versions, 1.5 MB) -- [the-40-hour-cabin-one-pager-v2.pdf](2026-10-13/the-40-hour-cabin-one-pager/the-40-hour-cabin-one-pager-v2.pdf)
-- **the-40-hour-cabin-pitch-pack** (document, 4 versions, 1.1 MB) -- [the-40-hour-cabin-pitch-pack-v4.pdf](2026-10-13/the-40-hour-cabin-pitch-pack/the-40-hour-cabin-pitch-pack-v4.pdf)
-- *new version:* **figures** -- 1 versions, filed under [2026-09-08](2026-09-08/figures)
-
-## 2026-10-12
-
-- **..the-sky-web-v2-seg01-silent-render-26564.ffmpeg** (folder, 2 versions, 0.2 MB) -- [..the-sky-web-v2-seg01-silent-render-26564.ffmpeg.log](2026-10-12/..the-sky-web-v2-seg01-silent-render-26564.ffmpeg/..the-sky-web-v2-seg01-silent-render-26564.ffmpeg.log)
-- **..the-sky-web-v2-seg02-silent-render-8368.ffmpeg** (folder, 2 versions, 0.3 MB) -- [..the-sky-web-v2-seg02-silent-render-8368.ffmpeg.log](2026-10-12/..the-sky-web-v2-seg02-silent-render-8368.ffmpeg/..the-sky-web-v2-seg02-silent-render-8368.ffmpeg.log)
-- **..the-sky-web-v2-seg03-silent-render-33604.ffmpeg** (folder, 2 versions, 0.2 MB) -- [..the-sky-web-v2-seg03-silent-render-33604.ffmpeg.log](2026-10-12/..the-sky-web-v2-seg03-silent-render-33604.ffmpeg/..the-sky-web-v2-seg03-silent-render-33604.ffmpeg.log)
-- **..the-sky-web-v2-seg04-silent-render-37264.ffmpeg** (folder, 2 versions, 0.2 MB) -- [..the-sky-web-v2-seg04-silent-render-37264.ffmpeg.log](2026-10-12/..the-sky-web-v2-seg04-silent-render-37264.ffmpeg/..the-sky-web-v2-seg04-silent-render-37264.ffmpeg.log)
-- **..the-sky-web-v2-seg05-silent-render-11816.ffmpeg** (folder, 2 versions, 0.3 MB) -- [..the-sky-web-v2-seg05-silent-render-11816.ffmpeg.log](2026-10-12/..the-sky-web-v2-seg05-silent-render-11816.ffmpeg/..the-sky-web-v2-seg05-silent-render-11816.ffmpeg.log)
-- **..the-sky-web-v2-seg06-silent-render-39532.ffmpeg** (folder, 2 versions, 0.2 MB) -- [..the-sky-web-v2-seg06-silent-render-39532.ffmpeg.log](2026-10-12/..the-sky-web-v2-seg06-silent-render-39532.ffmpeg/..the-sky-web-v2-seg06-silent-render-39532.ffmpeg.log)
-- **..the-sky-web-v2-seg07-silent-render-35028.ffmpeg** (folder, 2 versions, 0.2 MB) -- [..the-sky-web-v2-seg07-silent-render-35028.ffmpeg.log](2026-10-12/..the-sky-web-v2-seg07-silent-render-35028.ffmpeg/..the-sky-web-v2-seg07-silent-render-35028.ffmpeg.log)
-- **.every-piece-numbered-silent-render-24464.ffmpeg** (folder, 0.7 MB) -- [.every-piece-numbered-silent-render-24464.ffmpeg.log](2026-10-12/.every-piece-numbered-silent-render-24464.ffmpeg/.every-piece-numbered-silent-render-24464.ffmpeg.log)
-- **.every-piece-numbered-vertical-silent-render-25780.ffmpeg** (folder, 0.6 MB) -- [.every-piece-numbered-vertical-silent-render-25780.ffmpeg.log](2026-10-12/.every-piece-numbered-vertical-silent-render-25780.ffmpeg/.every-piece-numbered-vertical-silent-render-25780.ffmpeg.log)
-- **.the-sky-web-v2-seg01** (text, 2 versions, 0.0 MB) -- [.the-sky-web-v2-seg01-review.json](2026-10-12/.the-sky-web-v2-seg01/.the-sky-web-v2-seg01-review.json)
-- **.the-sky-web-v2-seg02** (text, 2 versions, 0.0 MB) -- [.the-sky-web-v2-seg02-review.json](2026-10-12/.the-sky-web-v2-seg02/.the-sky-web-v2-seg02-review.json)
-- **.the-sky-web-v2-seg03** (text, 2 versions, 0.0 MB) -- [.the-sky-web-v2-seg03-review.json](2026-10-12/.the-sky-web-v2-seg03/.the-sky-web-v2-seg03-review.json)
-- **.the-sky-web-v2-seg04** (text, 2 versions, 0.0 MB) -- [.the-sky-web-v2-seg04-review.json](2026-10-12/.the-sky-web-v2-seg04/.the-sky-web-v2-seg04-review.json)
-- **.the-sky-web-v2-seg05** (text, 2 versions, 0.0 MB) -- [.the-sky-web-v2-seg05-review.json](2026-10-12/.the-sky-web-v2-seg05/.the-sky-web-v2-seg05-review.json)
-- **.the-sky-web-v2-seg06** (text, 2 versions, 0.0 MB) -- [.the-sky-web-v2-seg06-review.json](2026-10-12/.the-sky-web-v2-seg06/.the-sky-web-v2-seg06-review.json)
-- **.the-sky-web-v2-seg07** (text, 2 versions, 0.0 MB) -- [.the-sky-web-v2-seg07-review.json](2026-10-12/.the-sky-web-v2-seg07/.the-sky-web-v2-seg07-review.json)
-- **2-trees-v42-proofread** (text, 42 versions, 0.0 MB) -- [2-trees-v42-proofread.md](2026-10-12/2-trees-v42-proofread/2-trees-v42-proofread.md)
-- **base-compare-half-half-2x8-piers** (text, 0.0 MB) -- [base-compare-half-half-2x8-piers.txt](2026-10-12/base-compare-half-half-2x8-piers/base-compare-half-half-2x8-piers.txt)
-- **cabin_every_piece-teaser** (folder, 0.0 MB) -- [cabin_every_piece-teaser](2026-10-12/cabin_every_piece-teaser)
-- **every-piece-numbered** (video, 490.7 MB) -- [every-piece-numbered.mp4](2026-10-12/every-piece-numbered/every-piece-numbered.mp4)
-- **fill-rounds-whole-dome** (data, 0.0 MB) -- [fill-rounds-whole-dome.csv](2026-10-12/fill-rounds-whole-dome/fill-rounds-whole-dome.csv)
-- **lss-cover-s16-rings-flipflop** (image, 0.0 MB) -- [lss-cover-s16-rings-flipflop.svg](2026-10-12/lss-cover-s16-rings-flipflop/lss-cover-s16-rings-flipflop.svg)
-- *new version:* **the-40-hour-cabin** -- 19 versions, filed under [2026-09-25](2026-09-25/the-40-hour-cabin)
-- *new version:* **the-40-hour-cabin-cover** -- 11 versions, filed under [2026-09-26](2026-09-26/the-40-hour-cabin-cover)
-- *new version:* **the-40-hour-cabin-sample** -- 5 versions, filed under [2026-10-03](2026-10-03/the-40-hour-cabin-sample)
-
-## 2026-10-11
-
-- **the-sky-web-v2-mixedvoice** (audio, 2 versions, 83.6 MB) -- [the-sky-web-v2-mixedvoice](2026-10-11/the-sky-web-v2-mixedvoice)
-- *new version:* **byod-styled** -- 1 versions, filed under [2026-09-17](2026-09-17/byod-styled)
-
-## 2026-10-08
-
-- **.cabin_sky_web-teaser-silent-render-23596.ffmpeg** (folder, 0.1 MB) -- [.cabin_sky_web-teaser-silent-render-23596.ffmpeg.log](2026-10-08/.cabin_sky_web-teaser-silent-render-23596.ffmpeg/.cabin_sky_web-teaser-silent-render-23596.ffmpeg.log)
-- **.the-sky-web-silent-render-20716.ffmpeg** (folder, 1.2 MB) -- [.the-sky-web-silent-render-20716.ffmpeg.log](2026-10-08/.the-sky-web-silent-render-20716.ffmpeg/.the-sky-web-silent-render-20716.ffmpeg.log)
-- **.the-sky-web-vertical-silent-render-22620.ffmpeg** (folder, 2.2 MB) -- [.the-sky-web-vertical-silent-render-22620.ffmpeg.log](2026-10-08/.the-sky-web-vertical-silent-render-22620.ffmpeg/.the-sky-web-vertical-silent-render-22620.ffmpeg.log)
-- **cabin_sky_web-teaser** (video, 21.0 MB) -- [cabin_sky_web-teaser.mp4](2026-10-08/cabin_sky_web-teaser/cabin_sky_web-teaser.mp4)
-- **the-sky-web** (video, 2 versions, 567.7 MB) -- [the-sky-web-v2.mp4](2026-10-08/the-sky-web/the-sky-web-v2.mp4)
-
-## 2026-10-07
-
-- **.cabin_cell_wall-teaser-v2-silent-render-12064.ffmpeg** (folder, 2 versions, 0.0 MB) -- [.cabin_cell_wall-teaser-v2-silent-render-12064.ffmpeg.log](2026-10-07/.cabin_cell_wall-teaser-v2-silent-render-12064.ffmpeg/.cabin_cell_wall-teaser-v2-silent-render-12064.ffmpeg.log)
-- **.the-cell-wall-vertical-v2-silent-render-29932.ffmpeg** (folder, 2 versions, 2.1 MB) -- [.the-cell-wall-vertical-v2-silent-render-29932.ffmpeg.log](2026-10-07/.the-cell-wall-vertical-v2-silent-render-29932.ffmpeg/.the-cell-wall-vertical-v2-silent-render-29932.ffmpeg.log)
-- *new version:* **cabin_cell_wall-teaser** -- 2 versions, filed under [2026-10-06](2026-10-06/cabin_cell_wall-teaser)
-
-## 2026-10-06
-
-- **.cabin_cell_wall-teaser-silent-render-4564.ffmpeg** (folder, 0.0 MB) -- [.cabin_cell_wall-teaser-silent-render-4564.ffmpeg.log](2026-10-06/.cabin_cell_wall-teaser-silent-render-4564.ffmpeg/.cabin_cell_wall-teaser-silent-render-4564.ffmpeg.log)
-- **.the-cell-wall-silent-render-1916.ffmpeg** (folder, 1.0 MB) -- [.the-cell-wall-silent-render-1916.ffmpeg.log](2026-10-06/.the-cell-wall-silent-render-1916.ffmpeg/.the-cell-wall-silent-render-1916.ffmpeg.log)
-- **.the-cell-wall-v2-silent-render-24348.ffmpeg** (folder, 2 versions, 1.7 MB) -- [.the-cell-wall-v2-silent-render-24348.ffmpeg.log](2026-10-06/.the-cell-wall-v2-silent-render-24348.ffmpeg/.the-cell-wall-v2-silent-render-24348.ffmpeg.log)
-- **.the-cell-wall-vertical-silent-render-19572.ffmpeg** (folder, 1.5 MB) -- [.the-cell-wall-vertical-silent-render-19572.ffmpeg.log](2026-10-06/.the-cell-wall-vertical-silent-render-19572.ffmpeg/.the-cell-wall-vertical-silent-render-19572.ffmpeg.log)
-- **cabin_cell_wall-teaser** (video, 2 versions, 41.8 MB) -- [cabin_cell_wall-teaser-v2.mp4](2026-10-06/cabin_cell_wall-teaser/cabin_cell_wall-teaser-v2.mp4)
-- **the-cell-wall** (audio, 2 versions, 88.3 MB) -- [the-cell-wall.srt](2026-10-06/the-cell-wall/the-cell-wall.srt)
-
-## 2026-10-04
-
-- **.cabin_seam_climate-teaser-v3-silent-render-36984.ffmpeg** (folder, 3 versions, 0.0 MB) -- [.cabin_seam_climate-teaser-v3-silent-render-36984.ffmpeg.log](2026-10-04/.cabin_seam_climate-teaser-v3-silent-render-36984.ffmpeg/.cabin_seam_climate-teaser-v3-silent-render-36984.ffmpeg.log)
-- **.which-way-the-seam-breathes-v3-silent-render-24680.ffmpeg** (folder, 3 versions, 1.2 MB) -- [.which-way-the-seam-breathes-v3-silent-render-24680.ffmpeg.log](2026-10-04/.which-way-the-seam-breathes-v3-silent-render-24680.ffmpeg/.which-way-the-seam-breathes-v3-silent-render-24680.ffmpeg.log)
-- **.which-way-the-seam-breathes-vertical-v3-silent-render-37284.ffmpeg** (folder, 3 versions, 1.4 MB) -- [.which-way-the-seam-breathes-vertical-v3-silent-render-37284.ffmpeg.log](2026-10-04/.which-way-the-seam-breathes-vertical-v3-silent-render-37284.ffmpeg/.which-way-the-seam-breathes-vertical-v3-silent-render-37284.ffmpeg.log)
-- **the-40-hour-cabin-metrics-2026-10-04** (data, 0.0 MB) -- [the-40-hour-cabin-metrics-2026-10-04.csv](2026-10-04/the-40-hour-cabin-metrics-2026-10-04/the-40-hour-cabin-metrics-2026-10-04.csv)
-- *new version:* **cabin_seam_climate-teaser** -- 3 versions, filed under [2026-09-30](2026-09-30/cabin_seam_climate-teaser)
-
-## 2026-10-03
-
-- **.cabin-the-vance-network-mini-series-silent-render-17960.ffmpeg** (folder, 0.8 MB) -- [.cabin-the-vance-network-mini-series-silent-render-17960.ffmpeg.log](2026-10-03/.cabin-the-vance-network-mini-series-silent-render-17960.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-17960.ffmpeg.log)
-- **.cabin-the-vance-network-mini-series-vertical-silent-render-41204.ffmpeg** (folder, 1.5 MB) -- [.cabin-the-vance-network-mini-series-vertical-silent-render-41204.ffmpeg.log](2026-10-03/.cabin-the-vance-network-mini-series-vertical-silent-render-41204.ffmpeg/.cabin-the-vance-network-mini-series-vertical-silent-render-41204.ffmpeg.log)
-- **.cabin_panel_method-teaser-silent-render-17624.ffmpeg** (folder, 0.0 MB) -- [.cabin_panel_method-teaser-silent-render-17624.ffmpeg.log](2026-10-03/.cabin_panel_method-teaser-silent-render-17624.ffmpeg/.cabin_panel_method-teaser-silent-render-17624.ffmpeg.log)
-- **.cabin_seam_climate-teaser-v2-silent-render-37664.ffmpeg** (folder, 2 versions, 0.0 MB) -- [.cabin_seam_climate-teaser-v2-silent-render-37664.ffmpeg.log](2026-10-03/.cabin_seam_climate-teaser-v2-silent-render-37664.ffmpeg/.cabin_seam_climate-teaser-v2-silent-render-37664.ffmpeg.log)
-- **.cabin_series-teaser-silent-render-1752.ffmpeg** (folder, 0.1 MB) -- [.cabin_series-teaser-silent-render-1752.ffmpeg.log](2026-10-03/.cabin_series-teaser-silent-render-1752.ffmpeg/.cabin_series-teaser-silent-render-1752.ffmpeg.log)
-- **.cabin_shop-teaser-silent-render-42716.ffmpeg** (folder, 0.1 MB) -- [.cabin_shop-teaser-silent-render-42716.ffmpeg.log](2026-10-03/.cabin_shop-teaser-silent-render-42716.ffmpeg/.cabin_shop-teaser-silent-render-42716.ffmpeg.log)
-- **.the-panel-method-3v-dome-silent-render-37036.ffmpeg** (folder, 0.9 MB) -- [.the-panel-method-3v-dome-silent-render-37036.ffmpeg.log](2026-10-03/.the-panel-method-3v-dome-silent-render-37036.ffmpeg/.the-panel-method-3v-dome-silent-render-37036.ffmpeg.log)
-- **.the-panel-method-3v-dome-v2-silent-render-10512.ffmpeg** (folder, 2 versions, 1.1 MB) -- [.the-panel-method-3v-dome-v2-silent-render-10512.ffmpeg.log](2026-10-03/.the-panel-method-3v-dome-v2-silent-render-10512.ffmpeg/.the-panel-method-3v-dome-v2-silent-render-10512.ffmpeg.log)
-- **.the-panel-method-3v-dome-vertical-silent-render-24092** (video, 152.8 MB) -- [.the-panel-method-3v-dome-vertical-silent-render-24092.mp4](2026-10-03/.the-panel-method-3v-dome-vertical-silent-render-24092/.the-panel-method-3v-dome-vertical-silent-render-24092.mp4)
-- **.the-panel-method-3v-dome-vertical-silent-render-24092.ffmpeg** (folder, 1.0 MB) -- [.the-panel-method-3v-dome-vertical-silent-render-24092.ffmpeg.log](2026-10-03/.the-panel-method-3v-dome-vertical-silent-render-24092.ffmpeg/.the-panel-method-3v-dome-vertical-silent-render-24092.ffmpeg.log)
-- **.the-panel-method-3v-dome-vertical-silent-render-39324.ffmpeg** (folder, 1.2 MB) -- [.the-panel-method-3v-dome-vertical-silent-render-39324.ffmpeg.log](2026-10-03/.the-panel-method-3v-dome-vertical-silent-render-39324.ffmpeg/.the-panel-method-3v-dome-vertical-silent-render-39324.ffmpeg.log)
-- **.the-shop-the-campaign-buys-silent-render-29180.ffmpeg** (folder, 0.8 MB) -- [.the-shop-the-campaign-buys-silent-render-29180.ffmpeg.log](2026-10-03/.the-shop-the-campaign-buys-silent-render-29180.ffmpeg/.the-shop-the-campaign-buys-silent-render-29180.ffmpeg.log)
-- **.the-shop-the-campaign-buys-vertical-silent-render-27180.ffmpeg** (folder, 1.5 MB) -- [.the-shop-the-campaign-buys-vertical-silent-render-27180.ffmpeg.log](2026-10-03/.the-shop-the-campaign-buys-vertical-silent-render-27180.ffmpeg/.the-shop-the-campaign-buys-vertical-silent-render-27180.ffmpeg.log)
-- **.which-way-the-seam-breathes-v2-silent-render-39108.ffmpeg** (folder, 2 versions, 0.9 MB) -- [.which-way-the-seam-breathes-v2-silent-render-39108.ffmpeg.log](2026-10-03/.which-way-the-seam-breathes-v2-silent-render-39108.ffmpeg/.which-way-the-seam-breathes-v2-silent-render-39108.ffmpeg.log)
-- **.which-way-the-seam-breathes-vertical-v2-silent-render-24772.ffmpeg** (folder, 2 versions, 1.1 MB) -- [.which-way-the-seam-breathes-vertical-v2-silent-render-24772.ffmpeg.log](2026-10-03/.which-way-the-seam-breathes-vertical-v2-silent-render-24772.ffmpeg/.which-way-the-seam-breathes-vertical-v2-silent-render-24772.ffmpeg.log)
-- **cabin_panel_method-teaser** (video, 14.5 MB) -- [cabin_panel_method-teaser.mp4](2026-10-03/cabin_panel_method-teaser/cabin_panel_method-teaser.mp4)
-- **cabin_series-teaser** (video, 12.4 MB) -- [cabin_series-teaser.mp4](2026-10-03/cabin_series-teaser/cabin_series-teaser.mp4)
-- **cabin_shop-teaser** (video, 13.6 MB) -- [cabin_shop-teaser.mp4](2026-10-03/cabin_shop-teaser/cabin_shop-teaser.mp4)
-- **the-40-hour-cabin-sample** (document, 5 versions, 20.9 MB) -- [the-40-hour-cabin-sample-v5.pdf](2026-10-03/the-40-hour-cabin-sample/the-40-hour-cabin-sample-v5.pdf)
-- **the-panel-method-3v-dome** (video, 2 versions, 700.4 MB) -- [the-panel-method-3v-dome-v2.mp4](2026-10-03/the-panel-method-3v-dome/the-panel-method-3v-dome-v2.mp4)
-- **the-shop-the-campaign-buys** (video, 265.3 MB) -- [the-shop-the-campaign-buys.mp4](2026-10-03/the-shop-the-campaign-buys/the-shop-the-campaign-buys.mp4)
-- **the-shop-the-money-buys** (text, 0.0 MB) -- [the-shop-the-money-buys.md](2026-10-03/the-shop-the-money-buys/the-shop-the-money-buys.md)
-
-## 2026-10-02
-
-- **.cabin-the-vance-network-mini-series-silent-render-21752** (video, 9.5 MB) -- [.cabin-the-vance-network-mini-series-silent-render-21752.mp4](2026-10-02/.cabin-the-vance-network-mini-series-silent-render-21752/.cabin-the-vance-network-mini-series-silent-render-21752.mp4)
-- **.cabin-the-vance-network-mini-series-silent-render-21752.ffmpeg** (folder, 0.4 MB) -- [.cabin-the-vance-network-mini-series-silent-render-21752.ffmpeg.log](2026-10-02/.cabin-the-vance-network-mini-series-silent-render-21752.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-21752.ffmpeg.log)
-- **.cabin-the-vance-network-mini-series-silent-render-23096** (video, 9.5 MB) -- [.cabin-the-vance-network-mini-series-silent-render-23096.mp4](2026-10-02/.cabin-the-vance-network-mini-series-silent-render-23096/.cabin-the-vance-network-mini-series-silent-render-23096.mp4)
-- **.cabin-the-vance-network-mini-series-silent-render-23096.ffmpeg** (folder, 0.4 MB) -- [.cabin-the-vance-network-mini-series-silent-render-23096.ffmpeg.log](2026-10-02/.cabin-the-vance-network-mini-series-silent-render-23096.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-23096.ffmpeg.log)
-- **.cabin-the-vance-network-mini-series-silent-render-35240** (video, 6.6 MB) -- [.cabin-the-vance-network-mini-series-silent-render-35240.mp4](2026-10-02/.cabin-the-vance-network-mini-series-silent-render-35240/.cabin-the-vance-network-mini-series-silent-render-35240.mp4)
-- **.cabin-the-vance-network-mini-series-silent-render-35240.ffmpeg** (folder, 0.4 MB) -- [.cabin-the-vance-network-mini-series-silent-render-35240.ffmpeg.log](2026-10-02/.cabin-the-vance-network-mini-series-silent-render-35240.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-35240.ffmpeg.log)
-- **diagrams** (image, 0.2 MB) -- [diagrams](2026-10-02/diagrams)
-
-## 2026-09-30
-
-- **.cabin-stem-cell-utility-core-build-v2-silent-render-9020.ffmpeg** (folder, 2 versions, 0.5 MB) -- [.cabin-stem-cell-utility-core-build-v2-silent-render-9020.ffmpeg.log](2026-09-30/.cabin-stem-cell-utility-core-build-v2-silent-render-9020.ffmpeg/.cabin-stem-cell-utility-core-build-v2-silent-render-9020.ffmpeg.log)
-- **.cabin-stem-cell-utility-core-build-vertical-v2-silent-render-21044.ffmpeg** (folder, 2 versions, 1.3 MB) -- [.cabin-stem-cell-utility-core-build-vertical-v2-silent-render-21044.ffmpeg.log](2026-09-30/.cabin-stem-cell-utility-core-build-vertical-v2-silent-render-21044.ffmpeg/.cabin-stem-cell-utility-core-build-vertical-v2-silent-render-21044.ffmpeg.log)
-- **.cabin-the-vance-network-mini-series-silent-render-36240** (video, 9.5 MB) -- [.cabin-the-vance-network-mini-series-silent-render-36240.mp4](2026-09-30/.cabin-the-vance-network-mini-series-silent-render-36240/.cabin-the-vance-network-mini-series-silent-render-36240.mp4)
-- **.cabin-the-vance-network-mini-series-silent-render-36240.ffmpeg** (folder, 0.3 MB) -- [.cabin-the-vance-network-mini-series-silent-render-36240.ffmpeg.log](2026-09-30/.cabin-the-vance-network-mini-series-silent-render-36240.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-36240.ffmpeg.log)
-- **.cabin-the-vance-network-mini-series-silent-render-38112** (video, 2.9 MB) -- [.cabin-the-vance-network-mini-series-silent-render-38112.mp4](2026-09-30/.cabin-the-vance-network-mini-series-silent-render-38112/.cabin-the-vance-network-mini-series-silent-render-38112.mp4)
-- **.cabin-the-vance-network-mini-series-silent-render-38112.ffmpeg** (folder, 0.1 MB) -- [.cabin-the-vance-network-mini-series-silent-render-38112.ffmpeg.log](2026-09-30/.cabin-the-vance-network-mini-series-silent-render-38112.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-38112.ffmpeg.log)
-- **.cabin_linseed_oil-teaser-silent-render-22404.ffmpeg** (folder, 0.1 MB) -- [.cabin_linseed_oil-teaser-silent-render-22404.ffmpeg.log](2026-09-30/.cabin_linseed_oil-teaser-silent-render-22404.ffmpeg/.cabin_linseed_oil-teaser-silent-render-22404.ffmpeg.log)
-- **.cabin_module_build-teaser-v2-silent-render-38448.ffmpeg** (folder, 2 versions, 0.1 MB) -- [.cabin_module_build-teaser-v2-silent-render-38448.ffmpeg.log](2026-09-30/.cabin_module_build-teaser-v2-silent-render-38448.ffmpeg/.cabin_module_build-teaser-v2-silent-render-38448.ffmpeg.log)
-- **.cabin_seam_climate-teaser-silent-render-10264.ffmpeg** (folder, 0.1 MB) -- [.cabin_seam_climate-teaser-silent-render-10264.ffmpeg.log](2026-09-30/.cabin_seam_climate-teaser-silent-render-10264.ffmpeg/.cabin_seam_climate-teaser-silent-render-10264.ffmpeg.log)
-- **.linseed-oil-for-a-dome-silent-render-16668.ffmpeg** (folder, 0.6 MB) -- [.linseed-oil-for-a-dome-silent-render-16668.ffmpeg.log](2026-09-30/.linseed-oil-for-a-dome-silent-render-16668.ffmpeg/.linseed-oil-for-a-dome-silent-render-16668.ffmpeg.log)
-- **.linseed-oil-for-a-dome-silent-render-9348** (video, 24.4 MB) -- [.linseed-oil-for-a-dome-silent-render-9348.mp4](2026-09-30/.linseed-oil-for-a-dome-silent-render-9348/.linseed-oil-for-a-dome-silent-render-9348.mp4)
-- **.linseed-oil-for-a-dome-silent-render-9348.ffmpeg** (folder, 0.1 MB) -- [.linseed-oil-for-a-dome-silent-render-9348.ffmpeg.log](2026-09-30/.linseed-oil-for-a-dome-silent-render-9348.ffmpeg/.linseed-oil-for-a-dome-silent-render-9348.ffmpeg.log)
-- **.linseed-oil-for-a-dome-v2-silent-render-14148.ffmpeg** (folder, 2 versions, 1.2 MB) -- [.linseed-oil-for-a-dome-v2-silent-render-14148.ffmpeg.log](2026-09-30/.linseed-oil-for-a-dome-v2-silent-render-14148.ffmpeg/.linseed-oil-for-a-dome-v2-silent-render-14148.ffmpeg.log)
-- **.linseed-oil-for-a-dome-vertical-silent-render-12296.ffmpeg** (folder, 1.0 MB) -- [.linseed-oil-for-a-dome-vertical-silent-render-12296.ffmpeg.log](2026-09-30/.linseed-oil-for-a-dome-vertical-silent-render-12296.ffmpeg/.linseed-oil-for-a-dome-vertical-silent-render-12296.ffmpeg.log)
-- **.linseed-oil-for-a-dome-vertical-silent-render-39628** (video, 15.0 MB) -- [.linseed-oil-for-a-dome-vertical-silent-render-39628.mp4](2026-09-30/.linseed-oil-for-a-dome-vertical-silent-render-39628/.linseed-oil-for-a-dome-vertical-silent-render-39628.mp4)
-- **.linseed-oil-for-a-dome-vertical-silent-render-39628.ffmpeg** (folder, 0.1 MB) -- [.linseed-oil-for-a-dome-vertical-silent-render-39628.ffmpeg.log](2026-09-30/.linseed-oil-for-a-dome-vertical-silent-render-39628.ffmpeg/.linseed-oil-for-a-dome-vertical-silent-render-39628.ffmpeg.log)
-- **.which-way-the-seam-breathes-silent-render-18424.ffmpeg** (folder, 1.3 MB) -- [.which-way-the-seam-breathes-silent-render-18424.ffmpeg.log](2026-09-30/.which-way-the-seam-breathes-silent-render-18424.ffmpeg/.which-way-the-seam-breathes-silent-render-18424.ffmpeg.log)
-- **.which-way-the-seam-breathes-silent-render-29956** (video, 76.8 MB) -- [.which-way-the-seam-breathes-silent-render-29956.mp4](2026-09-30/.which-way-the-seam-breathes-silent-render-29956/.which-way-the-seam-breathes-silent-render-29956.mp4)
-- **.which-way-the-seam-breathes-silent-render-29956.ffmpeg** (folder, 0.4 MB) -- [.which-way-the-seam-breathes-silent-render-29956.ffmpeg.log](2026-09-30/.which-way-the-seam-breathes-silent-render-29956.ffmpeg/.which-way-the-seam-breathes-silent-render-29956.ffmpeg.log)
-- **.which-way-the-seam-breathes-vertical-silent-render-22500.ffmpeg** (folder, 1.3 MB) -- [.which-way-the-seam-breathes-vertical-silent-render-22500.ffmpeg.log](2026-09-30/.which-way-the-seam-breathes-vertical-silent-render-22500.ffmpeg/.which-way-the-seam-breathes-vertical-silent-render-22500.ffmpeg.log)
-- **2v-72in-ring-levels** (image, 0.1 MB) -- [2v-72in-ring-levels.png](2026-09-30/2v-72in-ring-levels/2v-72in-ring-levels.png)
-- **cabin_linseed_oil-teaser** (video, 16.3 MB) -- [cabin_linseed_oil-teaser.mp4](2026-09-30/cabin_linseed_oil-teaser/cabin_linseed_oil-teaser.mp4)
-- **cabin_seam_climate-teaser** (video, 3 versions, 53.0 MB) -- [cabin_seam_climate-teaser-v3.mp4](2026-09-30/cabin_seam_climate-teaser/cabin_seam_climate-teaser-v3.mp4)
-- **linseed-oil-for-a-dome** (video, 2 versions, 504.5 MB) -- [linseed-oil-for-a-dome-v2.mp4](2026-09-30/linseed-oil-for-a-dome/linseed-oil-for-a-dome-v2.mp4)
-- **which-way-the-seam-breathes** (video, 3 versions, 643.0 MB) -- [which-way-the-seam-breathes.srt](2026-09-30/which-way-the-seam-breathes/which-way-the-seam-breathes.srt)
-- *new version:* **2-trees-outline** -- 10 versions, filed under [2026-09-08](2026-09-08/2-trees-outline)
-- *new version:* **the-wedge-method-kdp** -- 7 versions, filed under [2026-09-23](2026-09-23/the-wedge-method-kdp)
-- *new version:* **cabin_module_build-teaser** -- 2 versions, filed under [2026-09-29](2026-09-29/cabin_module_build-teaser)
-
-## 2026-09-29
-
-- **.cabin-dome-house-lookbook-silent-render-34612.ffmpeg** (folder, 2.9 MB) -- [.cabin-dome-house-lookbook-silent-render-34612.ffmpeg.log](2026-09-29/.cabin-dome-house-lookbook-silent-render-34612.ffmpeg/.cabin-dome-house-lookbook-silent-render-34612.ffmpeg.log)
-- **.cabin-dome-house-lookbook-vertical-silent-render-32656.ffmpeg** (folder, 3.5 MB) -- [.cabin-dome-house-lookbook-vertical-silent-render-32656.ffmpeg.log](2026-09-29/.cabin-dome-house-lookbook-vertical-silent-render-32656.ffmpeg/.cabin-dome-house-lookbook-vertical-silent-render-32656.ffmpeg.log)
-- **.cabin-stem-cell-utility-core-build-silent-render-2196.ffmpeg** (folder, 0.5 MB) -- [.cabin-stem-cell-utility-core-build-silent-render-2196.ffmpeg.log](2026-09-29/.cabin-stem-cell-utility-core-build-silent-render-2196.ffmpeg/.cabin-stem-cell-utility-core-build-silent-render-2196.ffmpeg.log)
-- **.cabin-stem-cell-utility-core-build-vertical-silent-render-432.ffmpeg** (folder, 1.3 MB) -- [.cabin-stem-cell-utility-core-build-vertical-silent-render-432.ffmpeg.log](2026-09-29/.cabin-stem-cell-utility-core-build-vertical-silent-render-432.ffmpeg/.cabin-stem-cell-utility-core-build-vertical-silent-render-432.ffmpeg.log)
-- **.cabin-two-trees-all-at-once-silent-render-38140.ffmpeg** (folder, 1.2 MB) -- [.cabin-two-trees-all-at-once-silent-render-38140.ffmpeg.log](2026-09-29/.cabin-two-trees-all-at-once-silent-render-38140.ffmpeg/.cabin-two-trees-all-at-once-silent-render-38140.ffmpeg.log)
-- **.cabin-two-trees-all-at-once-vertical-silent-render-31136.ffmpeg** (folder, 1.6 MB) -- [.cabin-two-trees-all-at-once-vertical-silent-render-31136.ffmpeg.log](2026-09-29/.cabin-two-trees-all-at-once-vertical-silent-render-31136.ffmpeg/.cabin-two-trees-all-at-once-vertical-silent-render-31136.ffmpeg.log)
-- **.cabin_harvest-teaser-silent-render-24588.ffmpeg** (folder, 0.1 MB) -- [.cabin_harvest-teaser-silent-render-24588.ffmpeg.log](2026-09-29/.cabin_harvest-teaser-silent-render-24588.ffmpeg/.cabin_harvest-teaser-silent-render-24588.ffmpeg.log)
-- **.cabin_look-teaser-silent-render-35564.ffmpeg** (folder, 0.3 MB) -- [.cabin_look-teaser-silent-render-35564.ffmpeg.log](2026-09-29/.cabin_look-teaser-silent-render-35564.ffmpeg/.cabin_look-teaser-silent-render-35564.ffmpeg.log)
-- **.cabin_module_build-teaser-silent-render-16292.ffmpeg** (folder, 0.0 MB) -- [.cabin_module_build-teaser-silent-render-16292.ffmpeg.log](2026-09-29/.cabin_module_build-teaser-silent-render-16292.ffmpeg/.cabin_module_build-teaser-silent-render-16292.ffmpeg.log)
-- **cabin-stem-cell-utility-core-build** (video, 2 versions, 531.6 MB) -- [cabin-stem-cell-utility-core-build-v2.mp4](2026-09-29/cabin-stem-cell-utility-core-build/cabin-stem-cell-utility-core-build-v2.mp4)
-- **cabin-two-trees-all-at-once** (video, 415.7 MB) -- [cabin-two-trees-all-at-once.mp4](2026-09-29/cabin-two-trees-all-at-once/cabin-two-trees-all-at-once.mp4)
-- **cabin_harvest-teaser** (video, 21.3 MB) -- [cabin_harvest-teaser.mp4](2026-09-29/cabin_harvest-teaser/cabin_harvest-teaser.mp4)
-- **cabin_look-teaser** (video, 26.1 MB) -- [cabin_look-teaser.mp4](2026-09-29/cabin_look-teaser/cabin_look-teaser.mp4)
-- **cabin_module_build-teaser** (video, 2 versions, 27.8 MB) -- [cabin_module_build-teaser-v2.mp4](2026-09-29/cabin_module_build-teaser/cabin_module_build-teaser-v2.mp4)
-
-## 2026-09-28
-
-- **.cabin-2v-geodesic-masterclass-silent-render-29708** (video, 0.9 MB) -- [.cabin-2v-geodesic-masterclass-silent-render-29708.mp4](2026-09-28/.cabin-2v-geodesic-masterclass-silent-render-29708/.cabin-2v-geodesic-masterclass-silent-render-29708.mp4)
-- **.cabin-2v-geodesic-masterclass-silent-render-29708.ffmpeg** (folder, 0.0 MB) -- [.cabin-2v-geodesic-masterclass-silent-render-29708.ffmpeg.log](2026-09-28/.cabin-2v-geodesic-masterclass-silent-render-29708.ffmpeg/.cabin-2v-geodesic-masterclass-silent-render-29708.ffmpeg.log)
-- **.cabin-2v-geodesic-masterclass-silent-render-38232.ffmpeg** (folder, 0.4 MB) -- [.cabin-2v-geodesic-masterclass-silent-render-38232.ffmpeg.log](2026-09-28/.cabin-2v-geodesic-masterclass-silent-render-38232.ffmpeg/.cabin-2v-geodesic-masterclass-silent-render-38232.ffmpeg.log)
-- **.cabin-2v-geodesic-masterclass-vertical-silent-render-34464.ffmpeg** (folder, 0.9 MB) -- [.cabin-2v-geodesic-masterclass-vertical-silent-render-34464.ffmpeg.log](2026-09-28/.cabin-2v-geodesic-masterclass-vertical-silent-render-34464.ffmpeg/.cabin-2v-geodesic-masterclass-vertical-silent-render-34464.ffmpeg.log)
-- **.cabin-stem-cell-hero-cut-silent-render-17816** (video, 64.0 MB) -- [.cabin-stem-cell-hero-cut-silent-render-17816.mp4](2026-09-28/.cabin-stem-cell-hero-cut-silent-render-17816/.cabin-stem-cell-hero-cut-silent-render-17816.mp4)
-- **.cabin-stem-cell-hero-cut-silent-render-17816.ffmpeg** (folder, 0.3 MB) -- [.cabin-stem-cell-hero-cut-silent-render-17816.ffmpeg.log](2026-09-28/.cabin-stem-cell-hero-cut-silent-render-17816.ffmpeg/.cabin-stem-cell-hero-cut-silent-render-17816.ffmpeg.log)
-- **.cabin-stem-cell-hero-cut-silent-render-36692.ffmpeg** (folder, 0.3 MB) -- [.cabin-stem-cell-hero-cut-silent-render-36692.ffmpeg.log](2026-09-28/.cabin-stem-cell-hero-cut-silent-render-36692.ffmpeg/.cabin-stem-cell-hero-cut-silent-render-36692.ffmpeg.log)
-- **.cabin-stem-cell-hero-cut-vertical-silent-render-31140.ffmpeg** (folder, 0.4 MB) -- [.cabin-stem-cell-hero-cut-vertical-silent-render-31140.ffmpeg.log](2026-09-28/.cabin-stem-cell-hero-cut-vertical-silent-render-31140.ffmpeg/.cabin-stem-cell-hero-cut-vertical-silent-render-31140.ffmpeg.log)
-- **.cabin-the-seam-does-four-jobs-silent-render-11536.ffmpeg** (folder, 0.5 MB) -- [.cabin-the-seam-does-four-jobs-silent-render-11536.ffmpeg.log](2026-09-28/.cabin-the-seam-does-four-jobs-silent-render-11536.ffmpeg/.cabin-the-seam-does-four-jobs-silent-render-11536.ffmpeg.log)
-- **.cabin-the-seam-does-four-jobs-vertical-silent-render-35740.ffmpeg** (folder, 0.6 MB) -- [.cabin-the-seam-does-four-jobs-vertical-silent-render-35740.ffmpeg.log](2026-09-28/.cabin-the-seam-does-four-jobs-vertical-silent-render-35740.ffmpeg/.cabin-the-seam-does-four-jobs-vertical-silent-render-35740.ffmpeg.log)
-- **.cabin-the-vance-network-mini-series-silent-render-29192** (video, 9.5 MB) -- [.cabin-the-vance-network-mini-series-silent-render-29192.mp4](2026-09-28/.cabin-the-vance-network-mini-series-silent-render-29192/.cabin-the-vance-network-mini-series-silent-render-29192.mp4)
-- **.cabin-the-vance-network-mini-series-silent-render-29192.ffmpeg** (folder, 0.2 MB) -- [.cabin-the-vance-network-mini-series-silent-render-29192.ffmpeg.log](2026-09-28/.cabin-the-vance-network-mini-series-silent-render-29192.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-29192.ffmpeg.log)
-- **.cabin_2v-teaser-silent-render-3556.ffmpeg** (folder, 0.1 MB) -- [.cabin_2v-teaser-silent-render-3556.ffmpeg.log](2026-09-28/.cabin_2v-teaser-silent-render-3556.ffmpeg/.cabin_2v-teaser-silent-render-3556.ffmpeg.log)
-- **.cabin_pitch_hero-teaser-silent-render-27052.ffmpeg** (folder, 0.0 MB) -- [.cabin_pitch_hero-teaser-silent-render-27052.ffmpeg.log](2026-09-28/.cabin_pitch_hero-teaser-silent-render-27052.ffmpeg/.cabin_pitch_hero-teaser-silent-render-27052.ffmpeg.log)
-- **.cabin_seam-teaser-silent-render-23776.ffmpeg** (folder, 0.1 MB) -- [.cabin_seam-teaser-silent-render-23776.ffmpeg.log](2026-09-28/.cabin_seam-teaser-silent-render-23776.ffmpeg/.cabin_seam-teaser-silent-render-23776.ffmpeg.log)
-- **.cabin_wedge_explained-teaser-silent-render-27680.ffmpeg** (folder, 0.1 MB) -- [.cabin_wedge_explained-teaser-silent-render-27680.ffmpeg.log](2026-09-28/.cabin_wedge_explained-teaser-silent-render-27680.ffmpeg/.cabin_wedge_explained-teaser-silent-render-27680.ffmpeg.log)
-- **.cabin_wedge_explained-teaser-v2-silent-render-26884.ffmpeg** (folder, 2 versions, 0.1 MB) -- [.cabin_wedge_explained-teaser-v2-silent-render-26884.ffmpeg.log](2026-09-28/.cabin_wedge_explained-teaser-v2-silent-render-26884.ffmpeg/.cabin_wedge_explained-teaser-v2-silent-render-26884.ffmpeg.log)
-- **.the-wedge-dome-explained-silent-render-13784.ffmpeg** (folder, 1.5 MB) -- [.the-wedge-dome-explained-silent-render-13784.ffmpeg.log](2026-09-28/.the-wedge-dome-explained-silent-render-13784.ffmpeg/.the-wedge-dome-explained-silent-render-13784.ffmpeg.log)
-- **.the-wedge-dome-explained-silent-render-29820** (video, 180.1 MB) -- [.the-wedge-dome-explained-silent-render-29820.mp4](2026-09-28/.the-wedge-dome-explained-silent-render-29820/.the-wedge-dome-explained-silent-render-29820.mp4)
-- **.the-wedge-dome-explained-silent-render-29820.ffmpeg** (folder, 0.5 MB) -- [.the-wedge-dome-explained-silent-render-29820.ffmpeg.log](2026-09-28/.the-wedge-dome-explained-silent-render-29820.ffmpeg/.the-wedge-dome-explained-silent-render-29820.ffmpeg.log)
-- **.the-wedge-dome-explained-vertical-silent-render-16300.ffmpeg** (folder, 2.3 MB) -- [.the-wedge-dome-explained-vertical-silent-render-16300.ffmpeg.log](2026-09-28/.the-wedge-dome-explained-vertical-silent-render-16300.ffmpeg/.the-wedge-dome-explained-vertical-silent-render-16300.ffmpeg.log)
-- **cabin-2v-geodesic-masterclass** (video, 255.9 MB) -- [cabin-2v-geodesic-masterclass.mp4](2026-09-28/cabin-2v-geodesic-masterclass/cabin-2v-geodesic-masterclass.mp4)
-- **cabin-dome-house-lookbook** (video, 319.6 MB) -- [cabin-dome-house-lookbook.mp4](2026-09-28/cabin-dome-house-lookbook/cabin-dome-house-lookbook.mp4)
-- **cabin-stem-cell-hero-cut** (video, 137.2 MB) -- [cabin-stem-cell-hero-cut.mp4](2026-09-28/cabin-stem-cell-hero-cut/cabin-stem-cell-hero-cut.mp4)
-- **cabin-the-seam-does-four-jobs** (video, 251.8 MB) -- [cabin-the-seam-does-four-jobs.mp4](2026-09-28/cabin-the-seam-does-four-jobs/cabin-the-seam-does-four-jobs.mp4)
-- **cabin-the-vance-network-mini-series** (video, 87.7 MB) -- [cabin-the-vance-network-mini-series.mp4](2026-09-28/cabin-the-vance-network-mini-series/cabin-the-vance-network-mini-series.mp4)
-- **cabin_2v-teaser** (video, 23.2 MB) -- [cabin_2v-teaser.mp4](2026-09-28/cabin_2v-teaser/cabin_2v-teaser.mp4)
-- **cabin_pitch_hero-teaser** (video, 21.2 MB) -- [cabin_pitch_hero-teaser.mp4](2026-09-28/cabin_pitch_hero-teaser/cabin_pitch_hero-teaser.mp4)
-- **cabin_seam-teaser** (video, 28.3 MB) -- [cabin_seam-teaser.mp4](2026-09-28/cabin_seam-teaser/cabin_seam-teaser.mp4)
-- **cabin_wedge_explained-teaser** (video, 2 versions, 32.3 MB) -- [cabin_wedge_explained-teaser-v2.mp4](2026-09-28/cabin_wedge_explained-teaser/cabin_wedge_explained-teaser-v2.mp4)
-- **concept-intake-pack** (archive, 2 versions, 0.0 MB) -- [concept-intake-pack-v2.zip](2026-09-28/concept-intake-pack/concept-intake-pack-v2.zip)
-- **the-40-hour-cabin-cold-open-score** (audio, 1.9 MB) -- [the-40-hour-cabin-cold-open-score.wav](2026-09-28/the-40-hour-cabin-cold-open-score/the-40-hour-cabin-cold-open-score.wav)
-- **the-wedge-dome-explained** (video, 391.9 MB) -- [the-wedge-dome-explained.mp4](2026-09-28/the-wedge-dome-explained/the-wedge-dome-explained.mp4)
-
-## 2026-09-27
-
-- **pinwheel-reference-corner** (image, 0.1 MB) -- [pinwheel-reference-corner.png](2026-09-27/pinwheel-reference-corner/pinwheel-reference-corner.png)
-- **pinwheel-reference-exploded** (image, 0.0 MB) -- [pinwheel-reference-exploded.png](2026-09-27/pinwheel-reference-exploded/pinwheel-reference-exploded.png)
-- **pinwheel-reference-frame** (image, 0.0 MB) -- [pinwheel-reference-frame.png](2026-09-27/pinwheel-reference-frame/pinwheel-reference-frame.png)
-- **pinwheel-reference-junction** (image, 0.0 MB) -- [pinwheel-reference-junction.png](2026-09-27/pinwheel-reference-junction/pinwheel-reference-junction.png)
-- **pinwheel-reference-sheet** (image, 1.8 MB) -- [pinwheel-reference-sheet.png](2026-09-27/pinwheel-reference-sheet/pinwheel-reference-sheet.png)
-- **seam-inside-reference-sheet** (image, 0.9 MB) -- [seam-inside-reference-sheet.png](2026-09-27/seam-inside-reference-sheet/seam-inside-reference-sheet.png)
-- **the-40-hour-cabin-cold-open** (video, 2 versions, 27.2 MB) -- [the-40-hour-cabin-cold-open-v2.mp4](2026-09-27/the-40-hour-cabin-cold-open/the-40-hour-cabin-cold-open-v2.mp4)
-- **the-40-hour-cabin-cover-prompt** (text, 0.0 MB) -- [the-40-hour-cabin-cover-prompt.md](2026-09-27/the-40-hour-cabin-cover-prompt/the-40-hour-cabin-cover-prompt.md)
-
-## 2026-09-26
-
-- **the-40-hour-cabin-cover** (document, 11 versions, 29.2 MB) -- [the-40-hour-cabin-cover-v11.pdf](2026-09-26/the-40-hour-cabin-cover/the-40-hour-cabin-cover-v11.pdf)
-
-## 2026-09-25
-
-- **.seam-teaser-silent-render-9988.ffmpeg** (folder, 0.1 MB) -- [.seam-teaser-silent-render-9988.ffmpeg.log](2026-09-25/.seam-teaser-silent-render-9988.ffmpeg/.seam-teaser-silent-render-9988.ffmpeg.log)
-- **.the-seam-does-four-jobs-silent-render-29000.ffmpeg** (folder, 0.2 MB) -- [.the-seam-does-four-jobs-silent-render-29000.ffmpeg.log](2026-09-25/.the-seam-does-four-jobs-silent-render-29000.ffmpeg/.the-seam-does-four-jobs-silent-render-29000.ffmpeg.log)
-- **.the-seam-does-four-jobs-vertical-silent-render-21644.ffmpeg** (folder, 0.3 MB) -- [.the-seam-does-four-jobs-vertical-silent-render-21644.ffmpeg.log](2026-09-25/.the-seam-does-four-jobs-vertical-silent-render-21644.ffmpeg/.the-seam-does-four-jobs-vertical-silent-render-21644.ffmpeg.log)
-- **gemini-hero-prompt** (text, 0.0 MB) -- [gemini-hero-prompt.md](2026-09-25/gemini-hero-prompt/gemini-hero-prompt.md)
-- **seam-teaser** (video, 24.3 MB) -- [seam-teaser.mp4](2026-09-25/seam-teaser/seam-teaser.mp4)
-- **stem-cell-campaign-prompts** (text, 4 versions, 2.5 MB) -- [stem-cell-campaign-prompts-v4.md](2026-09-25/stem-cell-campaign-prompts/stem-cell-campaign-prompts-v4.md)
-- **the-40-hour-cabin** (document, 19 versions, 1.08 GB) -- [the-40-hour-cabin-v19.pdf](2026-09-25/the-40-hour-cabin/the-40-hour-cabin-v19.pdf)
-- **the-seam-does-four-jobs** (video, 230.4 MB) -- [the-seam-does-four-jobs.mp4](2026-09-25/the-seam-does-four-jobs/the-seam-does-four-jobs.mp4)
-- **the-wedge-method** (document, 6 versions, 236.8 MB) -- [the-wedge-method-v6.pdf](2026-09-25/the-wedge-method/the-wedge-method-v6.pdf)
-
-## 2026-09-23
-
-- **..stem-cell-dome-campaign-v5-seg01-silent-render-38440.ffmpeg** (folder, 5 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v5-seg01-silent-render-38440.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v5-seg01-silent-render-38440.ffmpeg/..stem-cell-dome-campaign-v5-seg01-silent-render-38440.ffmpeg.log)
-- **..stem-cell-dome-campaign-v5-seg02-silent-render-34708.ffmpeg** (folder, 5 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v5-seg02-silent-render-34708.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v5-seg02-silent-render-34708.ffmpeg/..stem-cell-dome-campaign-v5-seg02-silent-render-34708.ffmpeg.log)
-- **..stem-cell-dome-campaign-v5-seg03-silent-render-11524.ffmpeg** (folder, 5 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v5-seg03-silent-render-11524.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v5-seg03-silent-render-11524.ffmpeg/..stem-cell-dome-campaign-v5-seg03-silent-render-11524.ffmpeg.log)
-- **..stem-cell-dome-campaign-v5-seg04-silent-render-22860.ffmpeg** (folder, 5 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v5-seg04-silent-render-22860.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v5-seg04-silent-render-22860.ffmpeg/..stem-cell-dome-campaign-v5-seg04-silent-render-22860.ffmpeg.log)
-- **..stem-cell-dome-campaign-v5-seg05-silent-render-37972.ffmpeg** (folder, 5 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v5-seg05-silent-render-37972.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v5-seg05-silent-render-37972.ffmpeg/..stem-cell-dome-campaign-v5-seg05-silent-render-37972.ffmpeg.log)
-- **..stem-cell-dome-campaign-v5-seg06-silent-render-7072.ffmpeg** (folder, 5 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v5-seg06-silent-render-7072.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v5-seg06-silent-render-7072.ffmpeg/..stem-cell-dome-campaign-v5-seg06-silent-render-7072.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-phone-seg01-silent-render-27792.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-phone-seg01-silent-render-27792.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-phone-seg01-silent-render-27792.ffmpeg/..stem-cell-dome-campaign-v6-phone-seg01-silent-render-27792.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-phone-seg02-silent-render-11084.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-phone-seg02-silent-render-11084.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-phone-seg02-silent-render-11084.ffmpeg/..stem-cell-dome-campaign-v6-phone-seg02-silent-render-11084.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-phone-seg03-silent-render-20808.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-phone-seg03-silent-render-20808.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-phone-seg03-silent-render-20808.ffmpeg/..stem-cell-dome-campaign-v6-phone-seg03-silent-render-20808.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-phone-seg04-silent-render-2468.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-phone-seg04-silent-render-2468.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-phone-seg04-silent-render-2468.ffmpeg/..stem-cell-dome-campaign-v6-phone-seg04-silent-render-2468.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-phone-seg05-silent-render-33436.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-phone-seg05-silent-render-33436.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-phone-seg05-silent-render-33436.ffmpeg/..stem-cell-dome-campaign-v6-phone-seg05-silent-render-33436.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-phone-seg06-silent-render-4608.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-phone-seg06-silent-render-4608.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-phone-seg06-silent-render-4608.ffmpeg/..stem-cell-dome-campaign-v6-phone-seg06-silent-render-4608.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-phone-seg07-silent-render-8404.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-phone-seg07-silent-render-8404.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-phone-seg07-silent-render-8404.ffmpeg/..stem-cell-dome-campaign-v6-phone-seg07-silent-render-8404.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-seg01-silent-render-28392.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-seg01-silent-render-28392.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-seg01-silent-render-28392.ffmpeg/..stem-cell-dome-campaign-v6-seg01-silent-render-28392.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-seg02-silent-render-14392.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-seg02-silent-render-14392.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-seg02-silent-render-14392.ffmpeg/..stem-cell-dome-campaign-v6-seg02-silent-render-14392.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-seg03-silent-render-11752.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-seg03-silent-render-11752.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-seg03-silent-render-11752.ffmpeg/..stem-cell-dome-campaign-v6-seg03-silent-render-11752.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-seg04-silent-render-3016.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-seg04-silent-render-3016.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-seg04-silent-render-3016.ffmpeg/..stem-cell-dome-campaign-v6-seg04-silent-render-3016.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-seg05-silent-render-15524.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-seg05-silent-render-15524.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-seg05-silent-render-15524.ffmpeg/..stem-cell-dome-campaign-v6-seg05-silent-render-15524.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-seg06-silent-render-37424.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-seg06-silent-render-37424.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-seg06-silent-render-37424.ffmpeg/..stem-cell-dome-campaign-v6-seg06-silent-render-37424.ffmpeg.log)
-- **..stem-cell-dome-campaign-v6-seg07-silent-render-30156.ffmpeg** (folder, 6 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v6-seg07-silent-render-30156.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v6-seg07-silent-render-30156.ffmpeg/..stem-cell-dome-campaign-v6-seg07-silent-render-30156.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg01-silent-render-35568.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg01-silent-render-35568.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg01-silent-render-35568.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg01-silent-render-35568.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg02-silent-render-13976.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg02-silent-render-13976.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg02-silent-render-13976.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg02-silent-render-13976.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg03-silent-render-23100.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg03-silent-render-23100.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg03-silent-render-23100.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg03-silent-render-23100.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg04-silent-render-21284.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg04-silent-render-21284.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg04-silent-render-21284.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg04-silent-render-21284.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg05-silent-render-16240.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg05-silent-render-16240.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg05-silent-render-16240.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg05-silent-render-16240.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg06-silent-render-39140.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg06-silent-render-39140.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg06-silent-render-39140.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg06-silent-render-39140.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg07-silent-render-9400.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg07-silent-render-9400.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg07-silent-render-9400.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg07-silent-render-9400.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-phone-seg08-silent-render-36132.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-phone-seg08-silent-render-36132.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-phone-seg08-silent-render-36132.ffmpeg/..stem-cell-dome-campaign-v7-phone-seg08-silent-render-36132.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg01-silent-render-33012.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg01-silent-render-33012.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg01-silent-render-33012.ffmpeg/..stem-cell-dome-campaign-v7-seg01-silent-render-33012.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg02-silent-render-39076.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg02-silent-render-39076.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg02-silent-render-39076.ffmpeg/..stem-cell-dome-campaign-v7-seg02-silent-render-39076.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg03-silent-render-15776.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg03-silent-render-15776.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg03-silent-render-15776.ffmpeg/..stem-cell-dome-campaign-v7-seg03-silent-render-15776.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg04-silent-render-39280.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg04-silent-render-39280.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg04-silent-render-39280.ffmpeg/..stem-cell-dome-campaign-v7-seg04-silent-render-39280.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg05-silent-render-22412.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg05-silent-render-22412.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg05-silent-render-22412.ffmpeg/..stem-cell-dome-campaign-v7-seg05-silent-render-22412.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg06-silent-render-28008.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg06-silent-render-28008.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg06-silent-render-28008.ffmpeg/..stem-cell-dome-campaign-v7-seg06-silent-render-28008.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg07-silent-render-29692.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg07-silent-render-29692.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg07-silent-render-29692.ffmpeg/..stem-cell-dome-campaign-v7-seg07-silent-render-29692.ffmpeg.log)
-- **..stem-cell-dome-campaign-v7-seg08-silent-render-7836.ffmpeg** (folder, 7 versions, 0.1 MB) -- [..stem-cell-dome-campaign-v7-seg08-silent-render-7836.ffmpeg.log](2026-09-23/..stem-cell-dome-campaign-v7-seg08-silent-render-7836.ffmpeg/..stem-cell-dome-campaign-v7-seg08-silent-render-7836.ffmpeg.log)
-- **.pitch_hero-teaser-silent-render-38892.ffmpeg** (folder, 0.0 MB) -- [.pitch_hero-teaser-silent-render-38892.ffmpeg.log](2026-09-23/.pitch_hero-teaser-silent-render-38892.ffmpeg/.pitch_hero-teaser-silent-render-38892.ffmpeg.log)
-- **.pitch_hero-teaser-v2-silent-render-22852.ffmpeg** (folder, 2 versions, 0.0 MB) -- [.pitch_hero-teaser-v2-silent-render-22852.ffmpeg.log](2026-09-23/.pitch_hero-teaser-v2-silent-render-22852.ffmpeg/.pitch_hero-teaser-v2-silent-render-22852.ffmpeg.log)
-- **.pitch_hero-teaser-v3-silent-render-19924.ffmpeg** (folder, 3 versions, 0.0 MB) -- [.pitch_hero-teaser-v3-silent-render-19924.ffmpeg.log](2026-09-23/.pitch_hero-teaser-v3-silent-render-19924.ffmpeg/.pitch_hero-teaser-v3-silent-render-19924.ffmpeg.log)
-- **.seed_pitch-teaser-silent-render-22236.ffmpeg** (folder, 0.1 MB) -- [.seed_pitch-teaser-silent-render-22236.ffmpeg.log](2026-09-23/.seed_pitch-teaser-silent-render-22236.ffmpeg/.seed_pitch-teaser-silent-render-22236.ffmpeg.log)
-- **.stem-cell-dome-campaign-v5-silent-render-9072.ffmpeg** (folder, 5 versions, 0.2 MB) -- [.stem-cell-dome-campaign-v5-silent-render-9072.ffmpeg.log](2026-09-23/.stem-cell-dome-campaign-v5-silent-render-9072.ffmpeg/.stem-cell-dome-campaign-v5-silent-render-9072.ffmpeg.log)
-- **.stem-cell-dome-campaign-v6-phone-seg01** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-phone-seg01.srt](2026-09-23/.stem-cell-dome-campaign-v6-phone-seg01/.stem-cell-dome-campaign-v6-phone-seg01.srt)
-- **.stem-cell-dome-campaign-v6-phone-seg02** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-phone-seg02.srt](2026-09-23/.stem-cell-dome-campaign-v6-phone-seg02/.stem-cell-dome-campaign-v6-phone-seg02.srt)
-- **.stem-cell-dome-campaign-v6-phone-seg03** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-phone-seg03.srt](2026-09-23/.stem-cell-dome-campaign-v6-phone-seg03/.stem-cell-dome-campaign-v6-phone-seg03.srt)
-- **.stem-cell-dome-campaign-v6-phone-seg04** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-phone-seg04.srt](2026-09-23/.stem-cell-dome-campaign-v6-phone-seg04/.stem-cell-dome-campaign-v6-phone-seg04.srt)
-- **.stem-cell-dome-campaign-v6-phone-seg05** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-phone-seg05.srt](2026-09-23/.stem-cell-dome-campaign-v6-phone-seg05/.stem-cell-dome-campaign-v6-phone-seg05.srt)
-- **.stem-cell-dome-campaign-v6-phone-seg06** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-phone-seg06.srt](2026-09-23/.stem-cell-dome-campaign-v6-phone-seg06/.stem-cell-dome-campaign-v6-phone-seg06.srt)
-- **.stem-cell-dome-campaign-v6-phone-seg07** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-phone-seg07.srt](2026-09-23/.stem-cell-dome-campaign-v6-phone-seg07/.stem-cell-dome-campaign-v6-phone-seg07.srt)
-- **.stem-cell-dome-campaign-v6-seg01** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-seg01.srt](2026-09-23/.stem-cell-dome-campaign-v6-seg01/.stem-cell-dome-campaign-v6-seg01.srt)
-- **.stem-cell-dome-campaign-v6-seg02** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-seg02.srt](2026-09-23/.stem-cell-dome-campaign-v6-seg02/.stem-cell-dome-campaign-v6-seg02.srt)
-- **.stem-cell-dome-campaign-v6-seg03** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-seg03.srt](2026-09-23/.stem-cell-dome-campaign-v6-seg03/.stem-cell-dome-campaign-v6-seg03.srt)
-- **.stem-cell-dome-campaign-v6-seg04** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-seg04.srt](2026-09-23/.stem-cell-dome-campaign-v6-seg04/.stem-cell-dome-campaign-v6-seg04.srt)
-- **.stem-cell-dome-campaign-v6-seg05** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-seg05.srt](2026-09-23/.stem-cell-dome-campaign-v6-seg05/.stem-cell-dome-campaign-v6-seg05.srt)
-- **.stem-cell-dome-campaign-v6-seg06** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-seg06.srt](2026-09-23/.stem-cell-dome-campaign-v6-seg06/.stem-cell-dome-campaign-v6-seg06.srt)
-- **.stem-cell-dome-campaign-v6-seg07** (text, 6 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v6-seg07.srt](2026-09-23/.stem-cell-dome-campaign-v6-seg07/.stem-cell-dome-campaign-v6-seg07.srt)
-- **.stem-cell-dome-campaign-v6-silent-render-9344** (video, 6 versions, 39.6 MB) -- [.stem-cell-dome-campaign-v6-silent-render-9344.mp4](2026-09-23/.stem-cell-dome-campaign-v6-silent-render-9344/.stem-cell-dome-campaign-v6-silent-render-9344.mp4)
-- **.stem-cell-dome-campaign-v6-silent-render-9344.ffmpeg** (folder, 6 versions, 0.0 MB) -- [.stem-cell-dome-campaign-v6-silent-render-9344.ffmpeg.log](2026-09-23/.stem-cell-dome-campaign-v6-silent-render-9344.ffmpeg/.stem-cell-dome-campaign-v6-silent-render-9344.ffmpeg.log)
-- **.stem-cell-dome-campaign-v7-phone-seg01** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg01-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg01/.stem-cell-dome-campaign-v7-phone-seg01-review.json)
-- **.stem-cell-dome-campaign-v7-phone-seg02** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg02-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg02/.stem-cell-dome-campaign-v7-phone-seg02-review.json)
-- **.stem-cell-dome-campaign-v7-phone-seg03** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg03-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg03/.stem-cell-dome-campaign-v7-phone-seg03-review.json)
-- **.stem-cell-dome-campaign-v7-phone-seg04** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg04-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg04/.stem-cell-dome-campaign-v7-phone-seg04-review.json)
-- **.stem-cell-dome-campaign-v7-phone-seg05** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg05-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg05/.stem-cell-dome-campaign-v7-phone-seg05-review.json)
-- **.stem-cell-dome-campaign-v7-phone-seg06** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg06-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg06/.stem-cell-dome-campaign-v7-phone-seg06-review.json)
-- **.stem-cell-dome-campaign-v7-phone-seg07** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg07-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg07/.stem-cell-dome-campaign-v7-phone-seg07-review.json)
-- **.stem-cell-dome-campaign-v7-phone-seg08** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-phone-seg08-review.json](2026-09-23/.stem-cell-dome-campaign-v7-phone-seg08/.stem-cell-dome-campaign-v7-phone-seg08-review.json)
-- **.stem-cell-dome-campaign-v7-seg01** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg01-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg01/.stem-cell-dome-campaign-v7-seg01-review.json)
-- **.stem-cell-dome-campaign-v7-seg02** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg02-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg02/.stem-cell-dome-campaign-v7-seg02-review.json)
-- **.stem-cell-dome-campaign-v7-seg03** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg03-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg03/.stem-cell-dome-campaign-v7-seg03-review.json)
-- **.stem-cell-dome-campaign-v7-seg04** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg04-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg04/.stem-cell-dome-campaign-v7-seg04-review.json)
-- **.stem-cell-dome-campaign-v7-seg05** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg05-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg05/.stem-cell-dome-campaign-v7-seg05-review.json)
-- **.stem-cell-dome-campaign-v7-seg06** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg06-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg06/.stem-cell-dome-campaign-v7-seg06-review.json)
-- **.stem-cell-dome-campaign-v7-seg07** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg07-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg07/.stem-cell-dome-campaign-v7-seg07-review.json)
-- **.stem-cell-dome-campaign-v7-seg08** (text, 7 versions, 0.1 MB) -- [.stem-cell-dome-campaign-v7-seg08-review.json](2026-09-23/.stem-cell-dome-campaign-v7-seg08/.stem-cell-dome-campaign-v7-seg08-review.json)
-- **.stem-cell-dome-campaign-v7-silent-render-38948** (video, 7 versions, 6.0 MB) -- [.stem-cell-dome-campaign-v7-silent-render-38948.mp4](2026-09-23/.stem-cell-dome-campaign-v7-silent-render-38948/.stem-cell-dome-campaign-v7-silent-render-38948.mp4)
-- **.stem-cell-dome-campaign-v7-silent-render-38948.ffmpeg** (folder, 7 versions, 0.0 MB) -- [.stem-cell-dome-campaign-v7-silent-render-38948.ffmpeg.log](2026-09-23/.stem-cell-dome-campaign-v7-silent-render-38948.ffmpeg/.stem-cell-dome-campaign-v7-silent-render-38948.ffmpeg.log)
-- **.stem-cell-hero-cut-silent-render-35688.ffmpeg** (folder, 0.0 MB) -- [.stem-cell-hero-cut-silent-render-35688.ffmpeg.log](2026-09-23/.stem-cell-hero-cut-silent-render-35688.ffmpeg/.stem-cell-hero-cut-silent-render-35688.ffmpeg.log)
-- **.stem-cell-hero-cut-v2-silent-render-34076.ffmpeg** (folder, 2 versions, 0.0 MB) -- [.stem-cell-hero-cut-v2-silent-render-34076.ffmpeg.log](2026-09-23/.stem-cell-hero-cut-v2-silent-render-34076.ffmpeg/.stem-cell-hero-cut-v2-silent-render-34076.ffmpeg.log)
-- **.stem-cell-hero-cut-v3-silent-render-25548.ffmpeg** (folder, 3 versions, 0.1 MB) -- [.stem-cell-hero-cut-v3-silent-render-25548.ffmpeg.log](2026-09-23/.stem-cell-hero-cut-v3-silent-render-25548.ffmpeg/.stem-cell-hero-cut-v3-silent-render-25548.ffmpeg.log)
-- **.stem-cell-hero-cut-vertical-silent-render-24804.ffmpeg** (folder, 0.1 MB) -- [.stem-cell-hero-cut-vertical-silent-render-24804.ffmpeg.log](2026-09-23/.stem-cell-hero-cut-vertical-silent-render-24804.ffmpeg/.stem-cell-hero-cut-vertical-silent-render-24804.ffmpeg.log)
-- **.stem-cell-hero-cut-vertical-v2-silent-render-9168.ffmpeg** (folder, 2 versions, 0.0 MB) -- [.stem-cell-hero-cut-vertical-v2-silent-render-9168.ffmpeg.log](2026-09-23/.stem-cell-hero-cut-vertical-v2-silent-render-9168.ffmpeg/.stem-cell-hero-cut-vertical-v2-silent-render-9168.ffmpeg.log)
-- **.stem-cell-hero-cut-vertical-v3-silent-render-3168.ffmpeg** (folder, 3 versions, 0.1 MB) -- [.stem-cell-hero-cut-vertical-v3-silent-render-3168.ffmpeg.log](2026-09-23/.stem-cell-hero-cut-vertical-v3-silent-render-3168.ffmpeg/.stem-cell-hero-cut-vertical-v3-silent-render-3168.ffmpeg.log)
-- **campaign-page** (text, 0.0 MB) -- [campaign-page.md](2026-09-23/campaign-page/campaign-page.md)
-- **module_build-teaser** (video, 14.7 MB) -- [module_build-teaser.mp4](2026-09-23/module_build-teaser/module_build-teaser.mp4)
-- **pitch_hero-teaser** (video, 3 versions, 76.0 MB) -- [pitch_hero-teaser-v3.mp4](2026-09-23/pitch_hero-teaser/pitch_hero-teaser-v3.mp4)
-- **seed_pitch-teaser** (video, 3 versions, 67.3 MB) -- [seed_pitch-teaser-v3.mp4](2026-09-23/seed_pitch-teaser/seed_pitch-teaser-v3.mp4)
-- **stem-cell-dome-campaign-v7-phone** (text, 7 versions, 0.1 MB) -- [stem-cell-dome-campaign-v7-phone.srt](2026-09-23/stem-cell-dome-campaign-v7-phone/stem-cell-dome-campaign-v7-phone.srt)
-- **stem-cell-hero-cut** (video, 3 versions, 419.8 MB) -- [stem-cell-hero-cut-v3.mp4](2026-09-23/stem-cell-hero-cut/stem-cell-hero-cut-v3.mp4)
-- **stem-cell-utility-core-build** (video, 297.8 MB) -- [stem-cell-utility-core-build.mp4](2026-09-23/stem-cell-utility-core-build/stem-cell-utility-core-build.mp4)
-- **the-wedge-method-kdp** (document, 7 versions, 115.8 MB) -- [the-wedge-method-kdp-v7.pdf](2026-09-23/the-wedge-method-kdp/the-wedge-method-kdp-v7.pdf)
-
-## 2026-09-20
-
-- **stem-cell-dome-campaign** (audio, 7 versions, 195.3 MB) -- [stem-cell-dome-campaign.srt](2026-09-20/stem-cell-dome-campaign/stem-cell-dome-campaign.srt)
-
-## 2026-09-17
-
-- **attempt-v1-deepseek** (folder, 2.1 MB) -- [attempt-v1-deepseek](2026-09-17/attempt-v1-deepseek)
-- **byod-styled** (video, 2.36 GB) -- [byod-styled](2026-09-17/byod-styled)
-- *new version:* **byod-deepseek** -- 1 versions, filed under [2026-09-16](2026-09-16/byod-deepseek)
-
-## 2026-09-16
-
-- **byod** (folder, 1.06 GB) -- [byod](2026-09-16/byod)
-- **byod-deepseek** (image, 1.23 GB) -- [mascot-moods.png](2026-09-16/byod-deepseek/mascot-moods.png)
-- **dome-park-bring-your-own-home** (audio, 3 versions, 90.0 MB) -- [dome-park-bring-your-own-home.srt](2026-09-16/dome-park-bring-your-own-home/dome-park-bring-your-own-home.srt)
-- **triangle-authoring-demo** (video, 0.7 MB) -- [triangle-authoring-demo.mp4](2026-09-16/triangle-authoring-demo/triangle-authoring-demo.mp4)
-
-## 2026-09-15
-
-- **all-domes-every-permutation** (video, 269.2 MB) -- [all-domes-every-permutation.srt](2026-09-15/all-domes-every-permutation/all-domes-every-permutation.srt)
-
-## 2026-09-13
-
-- **dome-from-scratch-geometry-to-pixels-teaser** (video, 39.5 MB) -- [dome-from-scratch-geometry-to-pixels-teaser.mp4](2026-09-13/dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser.mp4)
-- **dome-house-lookbook-teaser** (video, 39.6 MB) -- [dome-house-lookbook-teaser.mp4](2026-09-13/dome-house-lookbook-teaser/dome-house-lookbook-teaser.mp4)
-- **dome-kickstarter-teaser** (video, 28.9 MB) -- [dome-kickstarter-teaser.mp4](2026-09-13/dome-kickstarter-teaser/dome-kickstarter-teaser.mp4)
-- **dome-kickstarter-v2-teaser** (video, 2 versions, 29.2 MB) -- [dome-kickstarter-v2-teaser.mp4](2026-09-13/dome-kickstarter-v2-teaser/dome-kickstarter-v2-teaser.mp4)
-- **domesim-master-presentation-teaser** (video, 39.7 MB) -- [domesim-master-presentation-teaser.mp4](2026-09-13/domesim-master-presentation-teaser/domesim-master-presentation-teaser.mp4)
-- **eight-cuts-to-a-house-teaser** (video, 28.1 MB) -- [eight-cuts-to-a-house-teaser.mp4](2026-09-13/eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser.mp4)
-- **ep-dome-001-high-council-teaser** (video, 24.5 MB) -- [ep-dome-001-high-council-teaser.mp4](2026-09-13/ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser.mp4)
-- **every-dome-in-the-world-teaser** (video, 30.2 MB) -- [every-dome-in-the-world-teaser.mp4](2026-09-13/every-dome-in-the-world-teaser/every-dome-in-the-world-teaser.mp4)
-- **frankendome-montage-v3-teaser** (video, 3 versions, 27.6 MB) -- [frankendome-montage-v3-teaser.mp4](2026-09-13/frankendome-montage-v3-teaser/frankendome-montage-v3-teaser.mp4)
-- **frankendome-montage-v4-teaser** (video, 4 versions, 30.4 MB) -- [frankendome-montage-v4-teaser.mp4](2026-09-13/frankendome-montage-v4-teaser/frankendome-montage-v4-teaser.mp4)
-- **frankendome-montage-v5-teaser** (video, 5 versions, 30.4 MB) -- [frankendome-montage-v5-teaser.mp4](2026-09-13/frankendome-montage-v5-teaser/frankendome-montage-v5-teaser.mp4)
-- **frankendome-montage-v6-teaser** (video, 6 versions, 35.6 MB) -- [frankendome-montage-v6-teaser.mp4](2026-09-13/frankendome-montage-v6-teaser/frankendome-montage-v6-teaser.mp4)
-- **pvtwo-masterclass-teaser** (video, 31.9 MB) -- [pvtwo-masterclass-teaser.mp4](2026-09-13/pvtwo-masterclass-teaser/pvtwo-masterclass-teaser.mp4)
-- **ten-dome-builds-master-20260829-135242-chatgpt-teaser** (video, 33.8 MB) -- [ten-dome-builds-master-20260829-135242-chatgpt-teaser.mp4](2026-09-13/ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser.mp4)
-- **the-vance-network-mini-series-teaser** (video, 20.2 MB) -- [the-vance-network-mini-series-teaser.mp4](2026-09-13/the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser.mp4)
-- **two-trees-all-at-once-teaser** (video, 33.4 MB) -- [two-trees-all-at-once-teaser.mp4](2026-09-13/two-trees-all-at-once-teaser/two-trees-all-at-once-teaser.mp4)
-- **why-build-this-way-teaser** (video, 46.5 MB) -- [why-build-this-way-teaser.mp4](2026-09-13/why-build-this-way-teaser/why-build-this-way-teaser.mp4)
-- **why-wedges-no-sawmill-teaser** (video, 37.2 MB) -- [why-wedges-no-sawmill-teaser.mp4](2026-09-13/why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser.mp4)
-- *new version:* **frankendome-montage-v2-teaser** -- 2 versions, filed under [2026-09-12](2026-09-12/frankendome-montage-v2-teaser)
-- *new version:* **the-20-dollar-pine-teaser** -- 2 versions, filed under [2026-09-12](2026-09-12/the-20-dollar-pine-teaser)
-
-## 2026-09-12
-
-- **2v-teaser** (video, 48.5 MB) -- [2v-teaser.mp4](2026-09-12/2v-teaser/2v-teaser.mp4)
-- **assembly-line-energy-masterclass-teaser** (video, 34.3 MB) -- [assembly-line-energy-masterclass-teaser.mp4](2026-09-12/assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser.mp4)
-- **dome-construction-masterclass-teaser** (video, 42.6 MB) -- [dome-construction-masterclass-teaser.mp4](2026-09-12/dome-construction-masterclass-teaser/dome-construction-masterclass-teaser.mp4)
-- **domology-plates** (image, 2 versions, 24.3 MB) -- [zome-star.png](2026-09-12/domology-plates/zome-star.png)
-- **frankendome-build-v2-teaser** (video, 2 versions, 35.9 MB) -- [frankendome-build-v2-teaser.mp4](2026-09-12/frankendome-build-v2-teaser/frankendome-build-v2-teaser.mp4)
-- **frankendome-montage-teaser** (video, 30.1 MB) -- [frankendome-montage-teaser.mp4](2026-09-12/frankendome-montage-teaser/frankendome-montage-teaser.mp4)
-- **frankendome-montage-v2-teaser** (video, 2 versions, 29.5 MB) -- [frankendome-montage-v2-teaser.mp4](2026-09-12/frankendome-montage-v2-teaser/frankendome-montage-v2-teaser.mp4)
-- **hex-dome-masterclass-teaser** (video, 34.5 MB) -- [hex-dome-masterclass-teaser.mp4](2026-09-12/hex-dome-masterclass-teaser/hex-dome-masterclass-teaser.mp4)
-- **hubless-compound-cut-teaser** (video, 29.9 MB) -- [hubless-compound-cut-teaser.mp4](2026-09-12/hubless-compound-cut-teaser/hubless-compound-cut-teaser.mp4)
-- **pvtwo-check** (video, 2 versions, 6.6 MB) -- [pvtwo-check-v2.mp4](2026-09-12/pvtwo-check/pvtwo-check-v2.mp4)
-- **shot_00004.0s** (image, 0.1 MB) -- [shot_00004.0s.png](2026-09-12/shot_00004.0s/shot_00004.0s.png)
-- **shot_00020.0s** (image, 0.1 MB) -- [shot_00020.0s.png](2026-09-12/shot_00020.0s/shot_00020.0s.png)
-- **the-20-dollar-pine** (video, 134.6 MB) -- [the-20-dollar-pine.mp4](2026-09-12/the-20-dollar-pine/the-20-dollar-pine.mp4)
-- **the-20-dollar-pine-script** (text, 2 versions, 0.0 MB) -- [the-20-dollar-pine-script-v2.md](2026-09-12/the-20-dollar-pine-script/the-20-dollar-pine-script-v2.md)
-- **the-20-dollar-pine-teaser** (video, 2 versions, 72.3 MB) -- [the-20-dollar-pine-teaser-v2.mp4](2026-09-12/the-20-dollar-pine-teaser/the-20-dollar-pine-teaser-v2.mp4)
-- **tree-value-video** (video, 257.7 MB) -- [tree-value-video](2026-09-12/tree-value-video)
-- **why-build-this-way** (video, 261.0 MB) -- [why-build-this-way.mp4](2026-09-12/why-build-this-way/why-build-this-way.mp4)
-- **why-build-this-way-script** (text, 2 versions, 0.0 MB) -- [why-build-this-way-script-v2.md](2026-09-12/why-build-this-way-script/why-build-this-way-script-v2.md)
-- **zome-construction-masterclass-teaser** (video, 40.9 MB) -- [zome-construction-masterclass-teaser.mp4](2026-09-12/zome-construction-masterclass-teaser/zome-construction-masterclass-teaser.mp4)
-- *new version:* **two-trees-all-at-once** -- 3 versions, filed under [2026-09-11](2026-09-11/two-trees-all-at-once)
-
-## 2026-09-11
-
-- **two-trees-all-at-once** (video, 3 versions, 272.5 MB) -- [two-trees-all-at-once-v3.mp4](2026-09-11/two-trees-all-at-once/two-trees-all-at-once-v3.mp4)
-
-## 2026-09-08
-
-- **2-trees** (document, 49 versions, 2.07 GB) -- [2-trees-v45.pdf](2026-09-08/2-trees/2-trees-v45.pdf)
-- **2-trees-outline** (text, 10 versions, 0.3 MB) -- [2-trees-outline.txt](2026-09-08/2-trees-outline/2-trees-outline.txt)
-- **figures** (image, 57.7 MB) -- [figures](2026-09-08/figures)
-
-## 2026-09-05
-
-- **wedge** (image, 0.6 MB) -- [wedge-thumbnail.png](2026-09-05/wedge/wedge-thumbnail.png)
-- *new version:* **why-wedges-no-sawmill** -- 2 versions, filed under [2026-09-04](2026-09-04/why-wedges-no-sawmill)
-
-## 2026-09-04
-
-- **why-wedges-no-sawmill** (audio, 2 versions, 108.9 MB) -- [why-wedges-no-sawmill.srt](2026-09-04/why-wedges-no-sawmill/why-wedges-no-sawmill.srt)
-
-## 2026-09-01
-
-- **eight-cuts-to-a-house** (video, 250.6 MB) -- [eight-cuts-to-a-house.mp4](2026-09-01/eight-cuts-to-a-house/eight-cuts-to-a-house.mp4)
-- **ep-dome-001-high-council** (video, 3.7 MB) -- [ep-dome-001-high-council.mp4](2026-09-01/ep-dome-001-high-council/ep-dome-001-high-council.mp4)
-- **the-vance-network-mini-series** (video, 18.9 MB) -- [the-vance-network-mini-series.mp4](2026-09-01/the-vance-network-mini-series/the-vance-network-mini-series.mp4)
-- *new version:* **dome-from-scratch-geometry-to-pixels** -- 1 versions, filed under [2026-08-31](2026-08-31/dome-from-scratch-geometry-to-pixels)
-
-## 2026-08-31
-
-- **dome-from-scratch-geometry-to-pixels** (audio, 66.0 MB) -- [dome-from-scratch-geometry-to-pixels.srt](2026-08-31/dome-from-scratch-geometry-to-pixels/dome-from-scratch-geometry-to-pixels.srt)
-
-## 2026-08-29
-
-- **dome-kickstarter** (video, 2 versions, 244.8 MB) -- [dome-kickstarter-v2.mp4](2026-08-29/dome-kickstarter/dome-kickstarter-v2.mp4)
-- **domesim-master-presentation** (audio, 76.3 MB) -- [domesim-master-presentation.srt](2026-08-29/domesim-master-presentation/domesim-master-presentation.srt)
-- **domesim-master-presentation-report** (text, 0.0 MB) -- [domesim-master-presentation-report.txt](2026-08-29/domesim-master-presentation-report/domesim-master-presentation-report.txt)
-- **every-dome-in-the-world** (video, 147.8 MB) -- [every-dome-in-the-world.mp4](2026-08-29/every-dome-in-the-world/every-dome-in-the-world.mp4)
-- **ten-dome-builds-master-20260829-135242-chatgpt** (video, 249.4 MB) -- [ten-dome-builds-master-20260829-135242-chatgpt.mp4](2026-08-29/ten-dome-builds-master-20260829-135242-chatgpt/ten-dome-builds-master-20260829-135242-chatgpt.mp4)
-- **ten-dome-builds-master-20260829-135242-chatgpt-report** (text, 0.0 MB) -- [ten-dome-builds-master-20260829-135242-chatgpt-report.txt](2026-08-29/ten-dome-builds-master-20260829-135242-chatgpt-report/ten-dome-builds-master-20260829-135242-chatgpt-report.txt)
-- *new version:* **frankendome-montage** -- 6 versions, filed under [2026-08-25](2026-08-25/frankendome-montage)
-- *new version:* **frankendome-build** -- 2 versions, filed under [2026-08-26](2026-08-26/frankendome-build)
-
-## 2026-08-28
-
-- *new version:* **dome_case_bare_shell** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_bare_shell)
-- *new version:* **dome_case_benchmark** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_benchmark)
-- *new version:* **dome_case_energy** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_energy)
-- *new version:* **dome_case_financing** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_financing)
-- *new version:* **dome_case_manufacturing** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_manufacturing)
-- *new version:* **dome_case_market_fit** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_market_fit)
-- *new version:* **dome_case_more_room** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_more_room)
-- *new version:* **dome_case_resilience** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_resilience)
-- *new version:* **dome_case_triangles** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_triangles)
-- *new version:* **dome_case_utility_core** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_case_utility_core)
-- *new version:* **dome_housing_case** -- 1 versions, filed under [2026-08-01](2026-08-01/dome_housing_case)
-- *new version:* **presenter-all** -- 1 versions, filed under [2026-08-16](2026-08-16/presenter-all)
-- *new version:* **studio** -- 1 versions, filed under [2026-08-16](2026-08-16/studio)
-- *new version:* **wheelchair1** -- 1 versions, filed under [2026-08-16](2026-08-16/wheelchair1)
-
-## 2026-08-26
-
-- **frankendome-build** (video, 2 versions, 270.1 MB) -- [frankendome-build-v2.mp4](2026-08-26/frankendome-build/frankendome-build-v2.mp4)
-- *new version:* **hubless-compound-cut** -- 1 versions, filed under [2026-08-25](2026-08-25/hubless-compound-cut)
-
-## 2026-08-25
-
-- **frankendome-montage** (video, 6 versions, 1.39 GB) -- [frankendome-montage-v6.mp4](2026-08-25/frankendome-montage/frankendome-montage-v6.mp4)
-- **hubless-compound-cut** (video, 100.6 MB) -- [hubless-compound-cut.mp4](2026-08-25/hubless-compound-cut/hubless-compound-cut.mp4)
-- *new version:* **dome-construction-masterclass** -- 1 versions, filed under [2026-08-23](2026-08-23/dome-construction-masterclass)
-
-## 2026-08-23
-
-- **airflow** (data, 0.0 MB) -- [airflow.json](2026-08-23/airflow/airflow.json)
-- **assembly-line-energy-masterclass** (video, 166.2 MB) -- [assembly-line-energy-masterclass.mp4](2026-08-23/assembly-line-energy-masterclass/assembly-line-energy-masterclass.mp4)
-- **dome-construction-masterclass** (audio, 46.5 MB) -- [dome-construction-masterclass.srt](2026-08-23/dome-construction-masterclass/dome-construction-masterclass.srt)
-- **hex-dome-masterclass** (video, 186.3 MB) -- [hex-dome-masterclass.mp4](2026-08-23/hex-dome-masterclass/hex-dome-masterclass.mp4)
-- **housing_case** (data, 0.1 MB) -- [housing_case.json](2026-08-23/housing_case/housing_case.json)
-- **zome-construction-masterclass** (video, 170.0 MB) -- [zome-construction-masterclass.mp4](2026-08-23/zome-construction-masterclass/zome-construction-masterclass.mp4)
-
-## 2026-08-20
-
-- **caption_probe_20260820_183744** (image, 1.0 MB) -- [caption-zh.png](2026-08-20/caption_probe_20260820_183744/caption-zh.png)
-- **rap_demo** (audio, 20.0 MB) -- [vocal_dry.wav](2026-08-20/rap_demo/vocal_dry.wav)
-- **rap_studio_tab** (image, 0.2 MB) -- [rap_studio_tab.png](2026-08-20/rap_studio_tab/rap_studio_tab.png)
-- **voice_probe_20260820_183230** (audio, 3.9 MB) -- [zh-native.mp3](2026-08-20/voice_probe_20260820_183230/zh-native.mp3)
-
-## 2026-08-16
-
-- **.p1** (video, 7.6 MB) -- [.p1-silent.mp4](2026-08-16/.p1/.p1-silent.mp4)
-- **dome_accessibility_20260816_082305_167_1d3f14** (slides, 122.8 MB) -- [wheelchair_first_dome_living_20260816_082305_v005.pptx.inspect.ndjson](2026-08-16/dome_accessibility_20260816_082305_167_1d3f14/wheelchair_first_dome_living_20260816_082305_v005.pptx.inspect.ndjson)
-- **launcher_trailer** (video, 57.8 MB) -- [build_launcher_trailer.py](2026-08-16/launcher_trailer/build_launcher_trailer.py)
-- **p1** (audio, 4.1 MB) -- [p1.srt](2026-08-16/p1/p1.srt)
-- **presenter-all** (video, 4.9 MB) -- [airflow.srt](2026-08-16/presenter-all/airflow.srt)
-- **studio** (image, 0.6 MB) -- [studio](2026-08-16/studio)
-- **wheelchair1** (video, 62.3 MB) -- [wheelchair1.mp4](2026-08-16/wheelchair1/wheelchair1.mp4)
-
-## 2026-08-05
-
-- **testo** (video, 69.4 MB) -- [testo.mp4](2026-08-05/testo/testo.mp4)
-
-## 2026-08-01
-
-- **dome_case_bare_shell** (video, 10.0 MB) -- [dome_case_bare_shell.mp4](2026-08-01/dome_case_bare_shell/dome_case_bare_shell.mp4)
-- **dome_case_benchmark** (video, 18.0 MB) -- [dome_case_benchmark.mp4](2026-08-01/dome_case_benchmark/dome_case_benchmark.mp4)
-- **dome_case_energy** (video, 23.5 MB) -- [dome_case_energy.mp4](2026-08-01/dome_case_energy/dome_case_energy.mp4)
-- **dome_case_financing** (video, 17.5 MB) -- [dome_case_financing.mp4](2026-08-01/dome_case_financing/dome_case_financing.mp4)
-- **dome_case_manufacturing** (video, 35.5 MB) -- [dome_case_manufacturing.mp4](2026-08-01/dome_case_manufacturing/dome_case_manufacturing.mp4)
-- **dome_case_market_fit** (video, 21.9 MB) -- [dome_case_market_fit.mp4](2026-08-01/dome_case_market_fit/dome_case_market_fit.mp4)
-- **dome_case_more_room** (video, 9.4 MB) -- [dome_case_more_room.mp4](2026-08-01/dome_case_more_room/dome_case_more_room.mp4)
-- **dome_case_resilience** (video, 19.6 MB) -- [dome_case_resilience.mp4](2026-08-01/dome_case_resilience/dome_case_resilience.mp4)
-- **dome_case_triangles** (video, 15.2 MB) -- [dome_case_triangles.mp4](2026-08-01/dome_case_triangles/dome_case_triangles.mp4)
-- **dome_case_utility_core** (video, 24.2 MB) -- [dome_case_utility_core.mp4](2026-08-01/dome_case_utility_core/dome_case_utility_core.mp4)
-- **dome_housing_case** (video, 134.0 MB) -- [dome_housing_case.mp4](2026-08-01/dome_housing_case/dome_housing_case.mp4)
-
-## 2026-07-27
-
-- **2v-masterclass** (video, 104.6 MB) -- [2v-masterclass.mp4](2026-07-27/2v-masterclass/2v-masterclass.mp4)
-
-## 2026-07-26
-
-- **2v-masterclass-silent-backup** (video, 9.5 MB) -- [2v-masterclass-silent-backup.mp4](2026-07-26/2v-masterclass-silent-backup/2v-masterclass-silent-backup.mp4)
+539 outputs of 374 concepts, 24.10 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+
+| # | output | iteration | made | kind | size |
+|---|---|---|---|---|---|
+| 0539 | [cabin_every_piece-stills](0539-cabin_every_piece-stills/cabin_every_piece_0015.00s.png) | v1 | 2026-10-14 | image | 8.5 MB |
+| 0538 | [the-staple-house-teaser](0538-the-staple-house-teaser/the-staple-house-teaser.mp4) | v1 | 2026-10-14 | video | 27.4 MB |
+| 0537 | [cabin_staple-teaser](0537-cabin_staple-teaser) | v1 | 2026-10-14 | folder | 0.0 MB |
+| 0536 | [dome-zome-foundation-cut-list](0536-dome-zome-foundation-cut-list-v2/dome-zome-foundation-cut-list-v2.csv) | v2 | 2026-10-14 | data | 0.0 MB |
+| 0535 | [dome-zome-foundation-cut-list](0535-dome-zome-foundation-cut-list/dome-zome-foundation-cut-list.csv) | v1 | 2026-10-14 | data | 0.0 MB |
+| 0534 | [campaign-page](0534-campaign-page-v4/campaign-page-v4.md) | v4 | 2026-10-14 | text | 0.0 MB |
+| 0533 | [wedge-zome-bom-square](0533-wedge-zome-bom-square-v3/wedge-zome-bom-square-v3.csv) | v3 | 2026-10-14 | data | 0.0 MB |
+| 0532 | [wedge-zome-bom-square](0532-wedge-zome-bom-square-v2/wedge-zome-bom-square-v2.csv) | v2 | 2026-10-14 | data | 0.0 MB |
+| 0531 | [wedge-zome-bom-square](0531-wedge-zome-bom-square/wedge-zome-bom-square.csv) | v1 | 2026-10-14 | data | 0.0 MB |
+| 0530 | [wedge-zome-bom-wedge](0530-wedge-zome-bom-wedge/wedge-zome-bom-wedge.csv) | v1 | 2026-10-14 | data | 0.0 MB |
+| 0529 | [the-staple-house](0529-the-staple-house/the-staple-house.mp4) | v1 | 2026-10-14 | video | 215.1 MB |
+| 0528 | [campaign-page](0528-campaign-page-v3/campaign-page-v3.md) | v3 | 2026-10-14 | text | 0.0 MB |
+| 0527 | [campaign-page](0527-campaign-page-v2/campaign-page-v2.md) | v2 | 2026-10-14 | text | 0.0 MB |
+| 0526 | [master-edition-loom-bedtime](0526-master-edition-loom-bedtime/master-edition-loom-bedtime.pdf) | v1 | 2026-10-14 | document | 4.5 MB |
+| 0525 | [beyond-the-dome-building-with-wedges-teaser](0525-beyond-the-dome-building-with-wedges-teaser/beyond-the-dome-building-with-wedges-teaser.mp4) | v1 | 2026-10-14 | video | 42.2 MB |
+| 0524 | [cabin_wedge_beyond-teaser](0524-cabin_wedge_beyond-teaser) | v1 | 2026-10-14 | folder | 0.0 MB |
+| 0523 | [the-40-hour-cabin-pitch-pack](0523-the-40-hour-cabin-pitch-pack-v4/the-40-hour-cabin-pitch-pack-v4.pdf) | v4 | 2026-10-14 | document | 0.4 MB |
+| 0522 | [the-40-hour-cabin-the-case](0522-the-40-hour-cabin-the-case/the-40-hour-cabin-the-case.pdf) | v1 | 2026-10-14 | document | 0.5 MB |
+| 0521 | [domesim-you-take-investor-pitch](0521-domesim-you-take-investor-pitch/domesim-you-take-investor-pitch.pdf) | v1 | 2026-10-14 | document | 0.0 MB |
+| 0520 | [domesim-summary-pack](0520-domesim-summary-pack-v2/domesim-summary-pack-v2.pdf) | v2 | 2026-10-14 | document | 0.1 MB |
+| 0519 | [the-40-hour-cabin-pitch-pack](0519-the-40-hour-cabin-pitch-pack-v3/the-40-hour-cabin-pitch-pack-v3.pdf) | v3 | 2026-10-14 | document | 0.3 MB |
+| 0518 | [the-40-hour-cabin-numbers](0518-the-40-hour-cabin-numbers-v2/the-40-hour-cabin-numbers-v2.pdf) | v2 | 2026-10-14 | document | 0.4 MB |
+| 0517 | [domesim-summary-pack](0517-domesim-summary-pack/domesim-summary-pack.pdf) | v1 | 2026-10-14 | document | 0.1 MB |
+| 0516 | [the-40-hour-cabin-pitch-pack](0516-the-40-hour-cabin-pitch-pack-v2/the-40-hour-cabin-pitch-pack-v2.pdf) | v2 | 2026-10-14 | document | 0.3 MB |
+| 0515 | [the-40-hour-cabin-numbers](0515-the-40-hour-cabin-numbers/the-40-hour-cabin-numbers.pdf) | v1 | 2026-10-14 | document | 0.4 MB |
+| 0514 | [domesim-code-house-investor-summary](0514-domesim-code-house-investor-summary-v3/domesim-code-house-investor-summary-v3.pdf) | v3 | 2026-10-14 | document | 0.0 MB |
+| 0513 | [numbers-page](0513-numbers-page/numbers-page.md) | v1 | 2026-10-14 | text | 0.0 MB |
+| 0512 | [domesim-code-house-investor-summary](0512-domesim-code-house-investor-summary-v2/domesim-code-house-investor-summary-v2.pdf) | v2 | 2026-10-14 | document | 0.0 MB |
+| 0511 | [domesim-project-summary](0511-domesim-project-summary-v2/domesim-project-summary-v2.pdf) | v2 | 2026-10-14 | document | 0.1 MB |
+| 0510 | [domesim-code-house-investor-summary](0510-domesim-code-house-investor-summary/domesim-code-house-investor-summary.pdf) | v1 | 2026-10-14 | document | 0.0 MB |
+| 0509 | [domesim-project-summary](0509-domesim-project-summary/domesim-project-summary.pdf) | v1 | 2026-10-14 | document | 0.1 MB |
+| 0508 | [one-pager-deepseek](0508-one-pager-deepseek/one-pager-deepseek.md) | v1 | 2026-10-14 | text | 0.0 MB |
+| 0507 | [outreach-emails](0507-outreach-emails/outreach-emails.md) | v1 | 2026-10-14 | text | 0.0 MB |
+| 0506 | [asset-prompts](0506-asset-prompts/asset-prompts.md) | v1 | 2026-10-14 | text | 0.0 MB |
+| 0505 | [reward-tiers](0505-reward-tiers/reward-tiers.md) | v1 | 2026-10-14 | text | 0.0 MB |
+| 0504 | [zome-zoomer-title-page](0504-zome-zoomer-title-page/zome-zoomer-title-page.pdf) | v1 | 2026-10-14 | document | 2.1 MB |
+| 0503 | [investor-overview](0503-investor-overview/investor-overview.md) | v1 | 2026-10-14 | text | 0.0 MB |
+| 0502 | [beyond-the-dome-building-with-wedges](0502-beyond-the-dome-building-with-wedges/beyond-the-dome-building-with-wedges.mp4) | v1 | 2026-10-14 | video | 413.7 MB |
+| 0501 | [wedge-zome-wedge](0501-wedge-zome-wedge-v2) | v2 | 2026-10-14 | document | 0.1 MB |
+| 0500 | [2-trees](0500-2-trees-v49/2-trees-v49.md) | v49 | 2026-10-14 | text | 0.5 MB |
+| 0499 | [wedge-zome-square](0499-wedge-zome-square) | v1 | 2026-10-14 | document | 0.2 MB |
+| 0498 | [wedge-zome-wedge](0498-wedge-zome-wedge) | v1 | 2026-10-14 | document | 0.1 MB |
+| 0497 | [2-trees](0497-2-trees-v48/2-trees-v48.md) | v48 | 2026-10-13 | text | 0.5 MB |
+| 0496 | [the-40-hour-cabin-master-edition](0496-the-40-hour-cabin-master-edition-v5/the-40-hour-cabin-master-edition-v5.pdf) | v5 | 2026-10-13 | document | 81.0 MB |
+| 0495 | [square-on-demand](0495-square-on-demand/square-on-demand.pdf) | v1 | 2026-10-13 | document | 0.7 MB |
+| 0494 | [the-40-hour-cabin-pitch-pack](0494-the-40-hour-cabin-pitch-pack/the-40-hour-cabin-pitch-pack.pdf) | v1 | 2026-10-13 | document | 0.2 MB |
+| 0493 | [the-40-hour-cabin-efficiency](0493-the-40-hour-cabin-efficiency/the-40-hour-cabin-efficiency.pdf) | v1 | 2026-10-13 | document | 0.4 MB |
+| 0492 | [the-40-hour-cabin-one-pager](0492-the-40-hour-cabin-one-pager-v2/the-40-hour-cabin-one-pager-v2.pdf) | v2 | 2026-10-13 | document | 0.7 MB |
+| 0491 | [the-40-hour-cabin-master-edition](0491-the-40-hour-cabin-master-edition-v4/the-40-hour-cabin-master-edition-v4.pdf) | v4 | 2026-10-13 | document | 81.0 MB |
+| 0490 | [the-40-hour-cabin-master-edition](0490-the-40-hour-cabin-master-edition-v3/the-40-hour-cabin-master-edition-v3.pdf) | v3 | 2026-10-13 | document | 81.0 MB |
+| 0489 | [the-40-hour-cabin-one-pager](0489-the-40-hour-cabin-one-pager/the-40-hour-cabin-one-pager.pdf) | v1 | 2026-10-13 | document | 0.8 MB |
+| 0488 | [the-40-hour-cabin-master-edition](0488-the-40-hour-cabin-master-edition-v2/the-40-hour-cabin-master-edition-v2.pdf) | v2 | 2026-10-13 | document | 80.9 MB |
+| 0487 | [the-40-hour-cabin-master-edition](0487-the-40-hour-cabin-master-edition/the-40-hour-cabin-master-edition.pdf) | v1 | 2026-10-13 | document | 80.7 MB |
+| 0486 | [2-trees-v42-proofread](0486-2-trees-v42-proofread-v42/2-trees-v42-proofread.md) | v42 | 2026-10-12 | text | 0.0 MB |
+| 0485 | [the-40-hour-cabin-sample](0485-the-40-hour-cabin-sample-v5/the-40-hour-cabin-sample-v5.pdf) | v5 | 2026-10-12 | document | 4.2 MB |
+| 0484 | [the-40-hour-cabin](0484-the-40-hour-cabin-v19/the-40-hour-cabin-v19.pdf) | v19 | 2026-10-12 | document | 73.4 MB |
+| 0483 | [the-40-hour-cabin-cover](0483-the-40-hour-cabin-cover-v11/the-40-hour-cabin-cover-v11.pdf) | v11 | 2026-10-12 | document | 1.9 MB |
+| 0482 | [the-40-hour-cabin-sample](0482-the-40-hour-cabin-sample-v4/the-40-hour-cabin-sample-v4.pdf) | v4 | 2026-10-12 | document | 4.2 MB |
+| 0481 | [the-40-hour-cabin](0481-the-40-hour-cabin-v18/the-40-hour-cabin-v18.pdf) | v18 | 2026-10-12 | document | 75.3 MB |
+| 0480 | [the-40-hour-cabin-sample](0480-the-40-hour-cabin-sample-v3/the-40-hour-cabin-sample-v3.pdf) | v3 | 2026-10-12 | document | 4.2 MB |
+| 0479 | [the-40-hour-cabin](0479-the-40-hour-cabin-v17/the-40-hour-cabin-v17.pdf) | v17 | 2026-10-12 | document | 75.5 MB |
+| 0478 | [the-40-hour-cabin](0478-the-40-hour-cabin-v16/the-40-hour-cabin-v16.pdf) | v16 | 2026-10-12 | document | 69.8 MB |
+| 0477 | [cabin_every_piece-teaser](0477-cabin_every_piece-teaser) | v1 | 2026-10-14 | folder | 0.0 MB |
+| 0476 | [.every-piece-numbered-vertical-silent-render-25780.ffmpeg](0476-.every-piece-numbered-vertical-silent-render-25780.ffmpeg/.every-piece-numbered-vertical-silent-render-25780.ffmpeg.log) | v1 | 2026-10-12 | folder | 0.6 MB |
+| 0475 | [.every-piece-numbered-silent-render-24464.ffmpeg](0475-.every-piece-numbered-silent-render-24464.ffmpeg/.every-piece-numbered-silent-render-24464.ffmpeg.log) | v1 | 2026-10-12 | folder | 0.7 MB |
+| 0474 | [every-piece-numbered](0474-every-piece-numbered/every-piece-numbered.mp4) | v1 | 2026-10-12 | video | 490.7 MB |
+| 0473 | [the-40-hour-cabin](0473-the-40-hour-cabin-v15/the-40-hour-cabin-v15.pdf) | v15 | 2026-10-12 | document | 66.7 MB |
+| 0472 | [the-40-hour-cabin](0472-the-40-hour-cabin-v14/the-40-hour-cabin-v14.pdf) | v14 | 2026-10-12 | document | 66.7 MB |
+| 0471 | [the-40-hour-cabin](0471-the-40-hour-cabin-v13/the-40-hour-cabin-v13.pdf) | v13 | 2026-10-12 | document | 66.7 MB |
+| 0470 | [base-compare-half-half-2x8-piers](0470-base-compare-half-half-2x8-piers/base-compare-half-half-2x8-piers.txt) | v1 | 2026-10-12 | text | 0.0 MB |
+| 0469 | [fill-rounds-whole-dome](0469-fill-rounds-whole-dome/fill-rounds-whole-dome.csv) | v1 | 2026-10-12 | data | 0.0 MB |
+| 0468 | [lss-cover-s16-rings-flipflop](0468-lss-cover-s16-rings-flipflop/lss-cover-s16-rings-flipflop.svg) | v1 | 2026-10-12 | image | 0.0 MB |
+| 0467 | [the-sky-web](0467-the-sky-web-v2/the-sky-web-v2.mp4) | v2 | 2026-10-12 | video | 545.9 MB |
+| 0466 | [.the-sky-web-v2-seg07](0466-.the-sky-web-v2-seg07-v2/.the-sky-web-v2-seg07-narration.md) | v2 | 2026-10-12 | text | 0.0 MB |
+| 0465 | [..the-sky-web-v2-seg07-silent-render-35028.ffmpeg](0465-..the-sky-web-v2-seg07-silent-render-35028.ffmpeg-v2/..the-sky-web-v2-seg07-silent-render-35028.ffmpeg.log) | v2 | 2026-10-12 | folder | 0.2 MB |
+| 0464 | [.the-sky-web-v2-seg06](0464-.the-sky-web-v2-seg06-v2/.the-sky-web-v2-seg06-narration.md) | v2 | 2026-10-12 | text | 0.0 MB |
+| 0463 | [..the-sky-web-v2-seg06-silent-render-39532.ffmpeg](0463-..the-sky-web-v2-seg06-silent-render-39532.ffmpeg-v2/..the-sky-web-v2-seg06-silent-render-39532.ffmpeg.log) | v2 | 2026-10-12 | folder | 0.2 MB |
+| 0462 | [.the-sky-web-v2-seg05](0462-.the-sky-web-v2-seg05-v2/.the-sky-web-v2-seg05-narration.md) | v2 | 2026-10-12 | text | 0.0 MB |
+| 0461 | [..the-sky-web-v2-seg05-silent-render-11816.ffmpeg](0461-..the-sky-web-v2-seg05-silent-render-11816.ffmpeg-v2/..the-sky-web-v2-seg05-silent-render-11816.ffmpeg.log) | v2 | 2026-10-12 | folder | 0.3 MB |
+| 0460 | [.the-sky-web-v2-seg04](0460-.the-sky-web-v2-seg04-v2/.the-sky-web-v2-seg04-narration.md) | v2 | 2026-10-12 | text | 0.0 MB |
+| 0459 | [..the-sky-web-v2-seg04-silent-render-37264.ffmpeg](0459-..the-sky-web-v2-seg04-silent-render-37264.ffmpeg-v2/..the-sky-web-v2-seg04-silent-render-37264.ffmpeg.log) | v2 | 2026-10-12 | folder | 0.2 MB |
+| 0458 | [.the-sky-web-v2-seg03](0458-.the-sky-web-v2-seg03-v2/.the-sky-web-v2-seg03-narration.md) | v2 | 2026-10-12 | text | 0.0 MB |
+| 0457 | [..the-sky-web-v2-seg03-silent-render-33604.ffmpeg](0457-..the-sky-web-v2-seg03-silent-render-33604.ffmpeg-v2/..the-sky-web-v2-seg03-silent-render-33604.ffmpeg.log) | v2 | 2026-10-12 | folder | 0.2 MB |
+| 0456 | [.the-sky-web-v2-seg02](0456-.the-sky-web-v2-seg02-v2/.the-sky-web-v2-seg02-narration.md) | v2 | 2026-10-12 | text | 0.0 MB |
+| 0455 | [..the-sky-web-v2-seg02-silent-render-8368.ffmpeg](0455-..the-sky-web-v2-seg02-silent-render-8368.ffmpeg-v2/..the-sky-web-v2-seg02-silent-render-8368.ffmpeg.log) | v2 | 2026-10-12 | folder | 0.3 MB |
+| 0454 | [.the-sky-web-v2-seg01](0454-.the-sky-web-v2-seg01-v2/.the-sky-web-v2-seg01-narration.md) | v2 | 2026-10-12 | text | 0.0 MB |
+| 0453 | [..the-sky-web-v2-seg01-silent-render-26564.ffmpeg](0453-..the-sky-web-v2-seg01-silent-render-26564.ffmpeg-v2/..the-sky-web-v2-seg01-silent-render-26564.ffmpeg.log) | v2 | 2026-10-12 | folder | 0.2 MB |
+| 0452 | [the-sky-web-v2-mixedvoice](0452-the-sky-web-v2-mixedvoice-v2) | v2 | 2026-10-14 | audio | 83.6 MB |
+| 0451 | [the-40-hour-cabin](0451-the-40-hour-cabin-v12/the-40-hour-cabin-v12.pdf) | v12 | 2026-10-11 | document | 64.6 MB |
+| 0450 | [.cabin_sky_web-teaser-silent-render-23596.ffmpeg](0450-.cabin_sky_web-teaser-silent-render-23596.ffmpeg/.cabin_sky_web-teaser-silent-render-23596.ffmpeg.log) | v1 | 2026-10-08 | folder | 0.1 MB |
+| 0449 | [cabin_sky_web-teaser](0449-cabin_sky_web-teaser/cabin_sky_web-teaser.mp4) | v1 | 2026-10-08 | video | 21.0 MB |
+| 0448 | [.the-sky-web-vertical-silent-render-22620.ffmpeg](0448-.the-sky-web-vertical-silent-render-22620.ffmpeg/.the-sky-web-vertical-silent-render-22620.ffmpeg.log) | v1 | 2026-10-08 | folder | 2.2 MB |
+| 0447 | [.the-sky-web-silent-render-20716.ffmpeg](0447-.the-sky-web-silent-render-20716.ffmpeg/.the-sky-web-silent-render-20716.ffmpeg.log) | v1 | 2026-10-08 | folder | 1.2 MB |
+| 0446 | [the-40-hour-cabin](0446-the-40-hour-cabin-v11/the-40-hour-cabin-v11.pdf) | v11 | 2026-10-08 | document | 63.8 MB |
+| 0445 | [the-sky-web](0445-the-sky-web/the-sky-web-narration-plan.json) | v1 | 2026-10-08 | audio | 21.8 MB |
+| 0444 | [.cabin_cell_wall-teaser-v2-silent-render-12064.ffmpeg](0444-.cabin_cell_wall-teaser-v2-silent-render-12064.ffmpeg-v2/.cabin_cell_wall-teaser-v2-silent-render-12064.ffmpeg.log) | v2 | 2026-10-07 | folder | 0.0 MB |
+| 0443 | [cabin_cell_wall-teaser](0443-cabin_cell_wall-teaser-v2/cabin_cell_wall-teaser-v2.mp4) | v2 | 2026-10-07 | video | 19.9 MB |
+| 0442 | [.the-cell-wall-vertical-v2-silent-render-29932.ffmpeg](0442-.the-cell-wall-vertical-v2-silent-render-29932.ffmpeg-v2/.the-cell-wall-vertical-v2-silent-render-29932.ffmpeg.log) | v2 | 2026-10-07 | folder | 2.1 MB |
+| 0441 | [.the-cell-wall-v2-silent-render-24348.ffmpeg](0441-.the-cell-wall-v2-silent-render-24348.ffmpeg-v2/.the-cell-wall-v2-silent-render-24348.ffmpeg.log) | v2 | 2026-10-06 | folder | 1.7 MB |
+| 0440 | [the-cell-wall](0440-the-cell-wall-v2/the-cell-wall-v2-narration-plan.json) | v2 | 2026-10-06 | audio | 50.8 MB |
+| 0439 | [.cabin_cell_wall-teaser-silent-render-4564.ffmpeg](0439-.cabin_cell_wall-teaser-silent-render-4564.ffmpeg/.cabin_cell_wall-teaser-silent-render-4564.ffmpeg.log) | v1 | 2026-10-06 | folder | 0.0 MB |
+| 0438 | [cabin_cell_wall-teaser](0438-cabin_cell_wall-teaser/cabin_cell_wall-teaser.mp4) | v1 | 2026-10-06 | video | 21.9 MB |
+| 0437 | [.the-cell-wall-vertical-silent-render-19572.ffmpeg](0437-.the-cell-wall-vertical-silent-render-19572.ffmpeg/.the-cell-wall-vertical-silent-render-19572.ffmpeg.log) | v1 | 2026-10-06 | folder | 1.5 MB |
+| 0436 | [.the-cell-wall-silent-render-1916.ffmpeg](0436-.the-cell-wall-silent-render-1916.ffmpeg/.the-cell-wall-silent-render-1916.ffmpeg.log) | v1 | 2026-10-06 | folder | 1.0 MB |
+| 0435 | [the-cell-wall](0435-the-cell-wall/the-cell-wall-narration-plan.json) | v1 | 2026-10-06 | audio | 37.5 MB |
+| 0434 | [the-40-hour-cabin](0434-the-40-hour-cabin-v10/the-40-hour-cabin-v10.pdf) | v10 | 2026-10-05 | document | 62.8 MB |
+| 0433 | [.cabin_seam_climate-teaser-v3-silent-render-36984.ffmpeg](0433-.cabin_seam_climate-teaser-v3-silent-render-36984.ffmpeg-v3/.cabin_seam_climate-teaser-v3-silent-render-36984.ffmpeg.log) | v3 | 2026-10-04 | folder | 0.0 MB |
+| 0432 | [cabin_seam_climate-teaser](0432-cabin_seam_climate-teaser-v3/cabin_seam_climate-teaser-v3.mp4) | v3 | 2026-10-04 | video | 15.8 MB |
+| 0431 | [.which-way-the-seam-breathes-vertical-v3-silent-render-37284.ffmpeg](0431-.which-way-the-seam-breathes-vertical-v3-silent-render-37284.ffmpeg-v3/.which-way-the-seam-breathes-vertical-v3-silent-render-37284.ffmpeg.log) | v3 | 2026-10-04 | folder | 1.4 MB |
+| 0430 | [.which-way-the-seam-breathes-v3-silent-render-24680.ffmpeg](0430-.which-way-the-seam-breathes-v3-silent-render-24680.ffmpeg-v3/.which-way-the-seam-breathes-v3-silent-render-24680.ffmpeg.log) | v3 | 2026-10-04 | folder | 1.2 MB |
+| 0429 | [the-40-hour-cabin-metrics-2026-10-04](0429-the-40-hour-cabin-metrics-2026-10-04/the-40-hour-cabin-metrics-2026-10-04.csv) | v1 | 2026-10-04 | data | 0.0 MB |
+| 0428 | [which-way-the-seam-breathes](0428-which-way-the-seam-breathes-v3/which-way-the-seam-breathes-v3-narration-plan.json) | v3 | 2026-10-04 | audio | 34.7 MB |
+| 0427 | [.cabin_seam_climate-teaser-v2-silent-render-37664.ffmpeg](0427-.cabin_seam_climate-teaser-v2-silent-render-37664.ffmpeg-v2/.cabin_seam_climate-teaser-v2-silent-render-37664.ffmpeg.log) | v2 | 2026-10-03 | folder | 0.0 MB |
+| 0426 | [cabin_seam_climate-teaser](0426-cabin_seam_climate-teaser-v2/cabin_seam_climate-teaser-v2.mp4) | v2 | 2026-10-03 | video | 18.7 MB |
+| 0425 | [.which-way-the-seam-breathes-vertical-v2-silent-render-24772.ffmpeg](0425-.which-way-the-seam-breathes-vertical-v2-silent-render-24772.ffmpeg-v2/.which-way-the-seam-breathes-vertical-v2-silent-render-24772.ffmpeg.log) | v2 | 2026-10-03 | folder | 1.1 MB |
+| 0424 | [.which-way-the-seam-breathes-v2-silent-render-39108.ffmpeg](0424-.which-way-the-seam-breathes-v2-silent-render-39108.ffmpeg-v2/.which-way-the-seam-breathes-v2-silent-render-39108.ffmpeg.log) | v2 | 2026-10-03 | folder | 0.9 MB |
+| 0423 | [which-way-the-seam-breathes](0423-which-way-the-seam-breathes-v2/which-way-the-seam-breathes-v2-narration-plan.json) | v2 | 2026-10-03 | video | 357.4 MB |
+| 0422 | [.cabin_panel_method-teaser-silent-render-17624.ffmpeg](0422-.cabin_panel_method-teaser-silent-render-17624.ffmpeg/.cabin_panel_method-teaser-silent-render-17624.ffmpeg.log) | v1 | 2026-10-03 | folder | 0.0 MB |
+| 0421 | [cabin_panel_method-teaser](0421-cabin_panel_method-teaser/cabin_panel_method-teaser.mp4) | v1 | 2026-10-03 | video | 14.5 MB |
+| 0420 | [.the-panel-method-3v-dome-vertical-silent-render-39324.ffmpeg](0420-.the-panel-method-3v-dome-vertical-silent-render-39324.ffmpeg/.the-panel-method-3v-dome-vertical-silent-render-39324.ffmpeg.log) | v1 | 2026-10-03 | folder | 1.2 MB |
+| 0419 | [.the-panel-method-3v-dome-v2-silent-render-10512.ffmpeg](0419-.the-panel-method-3v-dome-v2-silent-render-10512.ffmpeg-v2/.the-panel-method-3v-dome-v2-silent-render-10512.ffmpeg.log) | v2 | 2026-10-03 | folder | 1.1 MB |
+| 0418 | [the-panel-method-3v-dome](0418-the-panel-method-3v-dome-v2/the-panel-method-3v-dome-v2.mp4) | v2 | 2026-10-03 | video | 263.5 MB |
+| 0417 | [.cabin_shop-teaser-silent-render-42716.ffmpeg](0417-.cabin_shop-teaser-silent-render-42716.ffmpeg/.cabin_shop-teaser-silent-render-42716.ffmpeg.log) | v1 | 2026-10-03 | folder | 0.1 MB |
+| 0416 | [cabin_shop-teaser](0416-cabin_shop-teaser/cabin_shop-teaser.mp4) | v1 | 2026-10-03 | video | 13.6 MB |
+| 0415 | [.the-shop-the-campaign-buys-vertical-silent-render-27180.ffmpeg](0415-.the-shop-the-campaign-buys-vertical-silent-render-27180.ffmpeg/.the-shop-the-campaign-buys-vertical-silent-render-27180.ffmpeg.log) | v1 | 2026-10-03 | folder | 1.5 MB |
+| 0414 | [2-trees](0414-2-trees-v47/2-trees-v47.html) | v47 | 2026-10-03 | page | 16.0 MB |
+| 0413 | [2-trees](0413-2-trees-v46/2-trees-v46.html) | v46 | 2026-10-03 | page | 16.0 MB |
+| 0412 | [the-40-hour-cabin](0412-the-40-hour-cabin-v9/the-40-hour-cabin-v9.pdf) | v9 | 2026-10-03 | document | 45.0 MB |
+| 0411 | [.the-shop-the-campaign-buys-silent-render-29180.ffmpeg](0411-.the-shop-the-campaign-buys-silent-render-29180.ffmpeg/.the-shop-the-campaign-buys-silent-render-29180.ffmpeg.log) | v1 | 2026-10-03 | folder | 0.8 MB |
+| 0410 | [the-shop-the-campaign-buys](0410-the-shop-the-campaign-buys/the-shop-the-campaign-buys.mp4) | v1 | 2026-10-03 | video | 265.3 MB |
+| 0409 | [.the-panel-method-3v-dome-vertical-silent-render-24092.ffmpeg](0409-.the-panel-method-3v-dome-vertical-silent-render-24092.ffmpeg/.the-panel-method-3v-dome-vertical-silent-render-24092.ffmpeg.log) | v1 | 2026-10-03 | folder | 1.0 MB |
+| 0408 | [.the-panel-method-3v-dome-vertical-silent-render-24092](0408-.the-panel-method-3v-dome-vertical-silent-render-24092/.the-panel-method-3v-dome-vertical-silent-render-24092.mp4) | v1 | 2026-10-03 | video | 152.8 MB |
+| 0407 | [.the-panel-method-3v-dome-silent-render-37036.ffmpeg](0407-.the-panel-method-3v-dome-silent-render-37036.ffmpeg/.the-panel-method-3v-dome-silent-render-37036.ffmpeg.log) | v1 | 2026-10-03 | folder | 0.9 MB |
+| 0406 | [the-panel-method-3v-dome](0406-the-panel-method-3v-dome/the-panel-method-3v-dome.mp4) | v1 | 2026-10-03 | video | 436.9 MB |
+| 0405 | [2-trees](0405-2-trees-v45/2-trees-v45.pdf) | v45 | 2026-10-03 | document | 48.2 MB |
+| 0404 | [the-shop-the-money-buys](0404-the-shop-the-money-buys/the-shop-the-money-buys.md) | v1 | 2026-10-03 | text | 0.0 MB |
+| 0403 | [the-40-hour-cabin-sample](0403-the-40-hour-cabin-sample-v2/the-40-hour-cabin-sample-v2.pdf) | v2 | 2026-10-03 | document | 4.1 MB |
+| 0402 | [the-40-hour-cabin-sample](0402-the-40-hour-cabin-sample/the-40-hour-cabin-sample.pdf) | v1 | 2026-10-03 | document | 4.1 MB |
+| 0401 | [2-trees](0401-2-trees-v44/2-trees-v44.pdf) | v44 | 2026-10-03 | document | 48.8 MB |
+| 0400 | [the-40-hour-cabin](0400-the-40-hour-cabin-v8/the-40-hour-cabin-v8.pdf) | v8 | 2026-10-03 | document | 47.5 MB |
+| 0399 | [2-trees](0399-2-trees-v43/2-trees-v43.pdf) | v43 | 2026-10-03 | document | 48.6 MB |
+| 0398 | [2-trees](0398-2-trees-v42/2-trees-v42.pdf) | v42 | 2026-10-03 | document | 64.1 MB |
+| 0397 | [2-trees](0397-2-trees-v41/2-trees-v41.pdf) | v41 | 2026-10-03 | document | 63.2 MB |
+| 0396 | [2-trees](0396-2-trees-v40/2-trees-v40.pdf) | v40 | 2026-10-03 | document | 63.1 MB |
+| 0395 | [2-trees](0395-2-trees-v39/2-trees-v39.pdf) | v39 | 2026-10-03 | document | 62.4 MB |
+| 0394 | [2-trees](0394-2-trees-v38/2-trees-v38.pdf) | v38 | 2026-10-03 | document | 61.6 MB |
+| 0393 | [2-trees](0393-2-trees-v37/2-trees-v37.pdf) | v37 | 2026-10-03 | document | 61.6 MB |
+| 0392 | [2-trees](0392-2-trees-v36/2-trees-v36.pdf) | v36 | 2026-10-03 | document | 61.5 MB |
+| 0391 | [2-trees](0391-2-trees-v35/2-trees-v35.pdf) | v35 | 2026-10-03 | document | 61.5 MB |
+| 0390 | [2-trees](0390-2-trees-v34/2-trees-v34.pdf) | v34 | 2026-10-03 | document | 61.5 MB |
+| 0389 | [2-trees](0389-2-trees-v33/2-trees-v33.pdf) | v33 | 2026-10-03 | document | 60.8 MB |
+| 0388 | [2-trees](0388-2-trees-v32/2-trees-v32.pdf) | v32 | 2026-10-03 | document | 60.7 MB |
+| 0387 | [.cabin_series-teaser-silent-render-1752.ffmpeg](0387-.cabin_series-teaser-silent-render-1752.ffmpeg/.cabin_series-teaser-silent-render-1752.ffmpeg.log) | v1 | 2026-10-03 | folder | 0.1 MB |
+| 0386 | [cabin_series-teaser](0386-cabin_series-teaser/cabin_series-teaser.mp4) | v1 | 2026-10-03 | video | 12.4 MB |
+| 0385 | [.cabin-the-vance-network-mini-series-vertical-silent-render-41204.ffmpeg](0385-.cabin-the-vance-network-mini-series-vertical-silent-render-41204.ffmpeg/.cabin-the-vance-network-mini-series-vertical-silent-render-41204.ffmpeg.log) | v1 | 2026-10-03 | folder | 1.5 MB |
+| 0384 | [2-trees](0384-2-trees-v31/2-trees-v31.pdf) | v31 | 2026-10-03 | document | 60.6 MB |
+| 0383 | [2-trees](0383-2-trees-v30/2-trees-v30.pdf) | v30 | 2026-10-03 | document | 59.6 MB |
+| 0382 | [2-trees](0382-2-trees-v29/2-trees-v29.pdf) | v29 | 2026-10-03 | document | 57.3 MB |
+| 0381 | [.cabin-the-vance-network-mini-series-silent-render-17960.ffmpeg](0381-.cabin-the-vance-network-mini-series-silent-render-17960.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-17960.ffmpeg.log) | v1 | 2026-10-03 | folder | 0.8 MB |
+| 0380 | [2-trees](0380-2-trees-v28/2-trees-v28.pdf) | v28 | 2026-10-02 | document | 57.3 MB |
+| 0379 | [2-trees](0379-2-trees-v27/2-trees-v27.pdf) | v27 | 2026-10-02 | document | 56.8 MB |
+| 0378 | [2-trees](0378-2-trees-v26/2-trees-v26.pdf) | v26 | 2026-10-02 | document | 51.3 MB |
+| 0377 | [2-trees](0377-2-trees-v25/2-trees-v25.pdf) | v25 | 2026-10-02 | document | 51.3 MB |
+| 0376 | [2-trees](0376-2-trees-v24/2-trees-v24.pdf) | v24 | 2026-10-02 | document | 51.3 MB |
+| 0375 | [.cabin-the-vance-network-mini-series-silent-render-23096.ffmpeg](0375-.cabin-the-vance-network-mini-series-silent-render-23096.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-23096.ffmpeg.log) | v1 | 2026-10-02 | folder | 0.4 MB |
+| 0374 | [.cabin-the-vance-network-mini-series-silent-render-23096](0374-.cabin-the-vance-network-mini-series-silent-render-23096/.cabin-the-vance-network-mini-series-silent-render-23096.mp4) | v1 | 2026-10-02 | video | 9.5 MB |
+| 0373 | [2-trees](0373-2-trees-v23/2-trees-v23.pdf) | v23 | 2026-10-02 | document | 47.1 MB |
+| 0372 | [.cabin-the-vance-network-mini-series-silent-render-35240.ffmpeg](0372-.cabin-the-vance-network-mini-series-silent-render-35240.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-35240.ffmpeg.log) | v1 | 2026-10-02 | folder | 0.4 MB |
+| 0371 | [.cabin-the-vance-network-mini-series-silent-render-35240](0371-.cabin-the-vance-network-mini-series-silent-render-35240/.cabin-the-vance-network-mini-series-silent-render-35240.mp4) | v1 | 2026-10-02 | video | 6.6 MB |
+| 0370 | [2-trees](0370-2-trees-v22/2-trees-v22.pdf) | v22 | 2026-10-02 | document | 46.9 MB |
+| 0369 | [2-trees](0369-2-trees-v21/2-trees-v21.pdf) | v21 | 2026-10-02 | document | 46.8 MB |
+| 0368 | [.cabin-the-vance-network-mini-series-silent-render-21752.ffmpeg](0368-.cabin-the-vance-network-mini-series-silent-render-21752.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-21752.ffmpeg.log) | v1 | 2026-10-02 | folder | 0.4 MB |
+| 0367 | [.cabin-the-vance-network-mini-series-silent-render-21752](0367-.cabin-the-vance-network-mini-series-silent-render-21752/.cabin-the-vance-network-mini-series-silent-render-21752.mp4) | v1 | 2026-10-02 | video | 9.5 MB |
+| 0366 | [2-trees](0366-2-trees-v20/2-trees-v20.pdf) | v20 | 2026-10-02 | document | 46.3 MB |
+| 0365 | [diagrams](0365-diagrams) | v1 | 2026-10-14 | image | 0.2 MB |
+| 0364 | [.cabin_module_build-teaser-v2-silent-render-38448.ffmpeg](0364-.cabin_module_build-teaser-v2-silent-render-38448.ffmpeg-v2/.cabin_module_build-teaser-v2-silent-render-38448.ffmpeg.log) | v2 | 2026-09-30 | folder | 0.1 MB |
+| 0363 | [cabin_module_build-teaser](0363-cabin_module_build-teaser-v2/cabin_module_build-teaser-v2.mp4) | v2 | 2026-09-30 | video | 14.0 MB |
+| 0362 | [.cabin-stem-cell-utility-core-build-vertical-v2-silent-render-21044.ffmpeg](0362-.cabin-stem-cell-utility-core-build-vertical-v2-silent-render-21044.ffmpeg-v2/.cabin-stem-cell-utility-core-build-vertical-v2-silent-render-21044.ffmpeg.log) | v2 | 2026-09-30 | folder | 1.3 MB |
+| 0361 | [.cabin-stem-cell-utility-core-build-v2-silent-render-9020.ffmpeg](0361-.cabin-stem-cell-utility-core-build-v2-silent-render-9020.ffmpeg-v2/.cabin-stem-cell-utility-core-build-v2-silent-render-9020.ffmpeg.log) | v2 | 2026-09-30 | folder | 0.5 MB |
+| 0360 | [cabin-stem-cell-utility-core-build](0360-cabin-stem-cell-utility-core-build-v2/cabin-stem-cell-utility-core-build-v2.mp4) | v2 | 2026-09-30 | video | 273.2 MB |
+| 0359 | [.cabin-the-vance-network-mini-series-silent-render-36240.ffmpeg](0359-.cabin-the-vance-network-mini-series-silent-render-36240.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-36240.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.3 MB |
+| 0358 | [.cabin-the-vance-network-mini-series-silent-render-36240](0358-.cabin-the-vance-network-mini-series-silent-render-36240/.cabin-the-vance-network-mini-series-silent-render-36240.mp4) | v1 | 2026-09-30 | video | 9.5 MB |
+| 0357 | [2-trees](0357-2-trees-v19/2-trees-v19.pdf) | v19 | 2026-09-30 | document | 46.1 MB |
+| 0356 | [the-40-hour-cabin](0356-the-40-hour-cabin-v7/the-40-hour-cabin-v7.pdf) | v7 | 2026-09-30 | document | 39.3 MB |
+| 0355 | [.cabin_linseed_oil-teaser-silent-render-22404.ffmpeg](0355-.cabin_linseed_oil-teaser-silent-render-22404.ffmpeg/.cabin_linseed_oil-teaser-silent-render-22404.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.1 MB |
+| 0354 | [cabin_linseed_oil-teaser](0354-cabin_linseed_oil-teaser/cabin_linseed_oil-teaser.mp4) | v1 | 2026-09-30 | video | 16.3 MB |
+| 0353 | [.linseed-oil-for-a-dome-vertical-silent-render-12296.ffmpeg](0353-.linseed-oil-for-a-dome-vertical-silent-render-12296.ffmpeg/.linseed-oil-for-a-dome-vertical-silent-render-12296.ffmpeg.log) | v1 | 2026-09-30 | folder | 1.0 MB |
+| 0352 | [2-trees](0352-2-trees-v18/2-trees-v18.pdf) | v18 | 2026-09-30 | document | 46.0 MB |
+| 0351 | [2-trees](0351-2-trees-v17/2-trees-v17.pdf) | v17 | 2026-09-30 | document | 45.6 MB |
+| 0350 | [.linseed-oil-for-a-dome-v2-silent-render-14148.ffmpeg](0350-.linseed-oil-for-a-dome-v2-silent-render-14148.ffmpeg-v2/.linseed-oil-for-a-dome-v2-silent-render-14148.ffmpeg.log) | v2 | 2026-09-30 | folder | 1.2 MB |
+| 0349 | [2-trees](0349-2-trees-v16/2-trees-v16.pdf) | v16 | 2026-09-30 | document | 45.6 MB |
+| 0348 | [2-trees](0348-2-trees-v15/2-trees-v15.pdf) | v15 | 2026-09-30 | document | 45.5 MB |
+| 0347 | [2-trees](0347-2-trees-v14/2-trees-v14.pdf) | v14 | 2026-09-30 | document | 41.6 MB |
+| 0346 | [2-trees-outline](0346-2-trees-outline-v10/2-trees-outline-v10.txt) | v10 | 2026-09-30 | text | 0.0 MB |
+| 0345 | [2-trees](0345-2-trees-v13/2-trees-v13.pdf) | v13 | 2026-09-30 | document | 41.4 MB |
+| 0344 | [linseed-oil-for-a-dome](0344-linseed-oil-for-a-dome-v2/linseed-oil-for-a-dome-v2.mp4) | v2 | 2026-09-30 | video | 193.4 MB |
+| 0343 | [.linseed-oil-for-a-dome-vertical-silent-render-39628.ffmpeg](0343-.linseed-oil-for-a-dome-vertical-silent-render-39628.ffmpeg/.linseed-oil-for-a-dome-vertical-silent-render-39628.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.1 MB |
+| 0342 | [.linseed-oil-for-a-dome-vertical-silent-render-39628](0342-.linseed-oil-for-a-dome-vertical-silent-render-39628/.linseed-oil-for-a-dome-vertical-silent-render-39628.mp4) | v1 | 2026-09-30 | video | 15.0 MB |
+| 0341 | [.linseed-oil-for-a-dome-silent-render-16668.ffmpeg](0341-.linseed-oil-for-a-dome-silent-render-16668.ffmpeg/.linseed-oil-for-a-dome-silent-render-16668.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.6 MB |
+| 0340 | [.cabin-the-vance-network-mini-series-silent-render-38112.ffmpeg](0340-.cabin-the-vance-network-mini-series-silent-render-38112.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-38112.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.1 MB |
+| 0339 | [.linseed-oil-for-a-dome-silent-render-9348.ffmpeg](0339-.linseed-oil-for-a-dome-silent-render-9348.ffmpeg/.linseed-oil-for-a-dome-silent-render-9348.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.1 MB |
+| 0338 | [.linseed-oil-for-a-dome-silent-render-9348](0338-.linseed-oil-for-a-dome-silent-render-9348/.linseed-oil-for-a-dome-silent-render-9348.mp4) | v1 | 2026-09-30 | video | 24.4 MB |
+| 0337 | [.cabin-the-vance-network-mini-series-silent-render-38112](0337-.cabin-the-vance-network-mini-series-silent-render-38112/.cabin-the-vance-network-mini-series-silent-render-38112.mp4) | v1 | 2026-09-30 | video | 2.9 MB |
+| 0336 | [2v-72in-ring-levels](0336-2v-72in-ring-levels/2v-72in-ring-levels.png) | v1 | 2026-09-30 | image | 0.1 MB |
+| 0335 | [linseed-oil-for-a-dome](0335-linseed-oil-for-a-dome/linseed-oil-for-a-dome.mp4) | v1 | 2026-09-30 | video | 311.1 MB |
+| 0334 | [the-wedge-method-kdp](0334-the-wedge-method-kdp-v7/the-wedge-method-kdp-v7.pdf) | v7 | 2026-09-30 | document | 13.4 MB |
+| 0333 | [.cabin_seam_climate-teaser-silent-render-10264.ffmpeg](0333-.cabin_seam_climate-teaser-silent-render-10264.ffmpeg/.cabin_seam_climate-teaser-silent-render-10264.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.1 MB |
+| 0332 | [cabin_seam_climate-teaser](0332-cabin_seam_climate-teaser/cabin_seam_climate-teaser.mp4) | v1 | 2026-09-30 | video | 18.5 MB |
+| 0331 | [.which-way-the-seam-breathes-vertical-silent-render-22500.ffmpeg](0331-.which-way-the-seam-breathes-vertical-silent-render-22500.ffmpeg/.which-way-the-seam-breathes-vertical-silent-render-22500.ffmpeg.log) | v1 | 2026-09-30 | folder | 1.3 MB |
+| 0330 | [.which-way-the-seam-breathes-silent-render-18424.ffmpeg](0330-.which-way-the-seam-breathes-silent-render-18424.ffmpeg/.which-way-the-seam-breathes-silent-render-18424.ffmpeg.log) | v1 | 2026-09-30 | folder | 1.3 MB |
+| 0329 | [.which-way-the-seam-breathes-silent-render-29956.ffmpeg](0329-.which-way-the-seam-breathes-silent-render-29956.ffmpeg/.which-way-the-seam-breathes-silent-render-29956.ffmpeg.log) | v1 | 2026-09-30 | folder | 0.4 MB |
+| 0328 | [.which-way-the-seam-breathes-silent-render-29956](0328-.which-way-the-seam-breathes-silent-render-29956/.which-way-the-seam-breathes-silent-render-29956.mp4) | v1 | 2026-09-30 | video | 76.8 MB |
+| 0327 | [which-way-the-seam-breathes](0327-which-way-the-seam-breathes/which-way-the-seam-breathes-narration-plan.json) | v1 | 2026-09-30 | video | 250.9 MB |
+| 0326 | [.cabin_harvest-teaser-silent-render-24588.ffmpeg](0326-.cabin_harvest-teaser-silent-render-24588.ffmpeg/.cabin_harvest-teaser-silent-render-24588.ffmpeg.log) | v1 | 2026-09-29 | folder | 0.1 MB |
+| 0325 | [cabin_harvest-teaser](0325-cabin_harvest-teaser/cabin_harvest-teaser.mp4) | v1 | 2026-09-29 | video | 21.3 MB |
+| 0324 | [.cabin-two-trees-all-at-once-vertical-silent-render-31136.ffmpeg](0324-.cabin-two-trees-all-at-once-vertical-silent-render-31136.ffmpeg/.cabin-two-trees-all-at-once-vertical-silent-render-31136.ffmpeg.log) | v1 | 2026-09-29 | folder | 1.6 MB |
+| 0323 | [.cabin-two-trees-all-at-once-silent-render-38140.ffmpeg](0323-.cabin-two-trees-all-at-once-silent-render-38140.ffmpeg/.cabin-two-trees-all-at-once-silent-render-38140.ffmpeg.log) | v1 | 2026-09-29 | folder | 1.2 MB |
+| 0322 | [cabin-two-trees-all-at-once](0322-cabin-two-trees-all-at-once/cabin-two-trees-all-at-once.mp4) | v1 | 2026-09-29 | video | 415.7 MB |
+| 0321 | [.cabin_module_build-teaser-silent-render-16292.ffmpeg](0321-.cabin_module_build-teaser-silent-render-16292.ffmpeg/.cabin_module_build-teaser-silent-render-16292.ffmpeg.log) | v1 | 2026-09-29 | folder | 0.0 MB |
+| 0320 | [cabin_module_build-teaser](0320-cabin_module_build-teaser/cabin_module_build-teaser.mp4) | v1 | 2026-09-29 | video | 13.9 MB |
+| 0319 | [.cabin-stem-cell-utility-core-build-vertical-silent-render-432.ffmpeg](0319-.cabin-stem-cell-utility-core-build-vertical-silent-render-432.ffmpeg/.cabin-stem-cell-utility-core-build-vertical-silent-render-432.ffmpeg.log) | v1 | 2026-09-29 | folder | 1.3 MB |
+| 0318 | [.cabin-stem-cell-utility-core-build-silent-render-2196.ffmpeg](0318-.cabin-stem-cell-utility-core-build-silent-render-2196.ffmpeg/.cabin-stem-cell-utility-core-build-silent-render-2196.ffmpeg.log) | v1 | 2026-09-29 | folder | 0.5 MB |
+| 0317 | [cabin-stem-cell-utility-core-build](0317-cabin-stem-cell-utility-core-build/cabin-stem-cell-utility-core-build.mp4) | v1 | 2026-09-29 | video | 258.4 MB |
+| 0316 | [.cabin_look-teaser-silent-render-35564.ffmpeg](0316-.cabin_look-teaser-silent-render-35564.ffmpeg/.cabin_look-teaser-silent-render-35564.ffmpeg.log) | v1 | 2026-09-29 | folder | 0.3 MB |
+| 0315 | [cabin_look-teaser](0315-cabin_look-teaser/cabin_look-teaser.mp4) | v1 | 2026-09-29 | video | 26.1 MB |
+| 0314 | [.cabin-dome-house-lookbook-vertical-silent-render-32656.ffmpeg](0314-.cabin-dome-house-lookbook-vertical-silent-render-32656.ffmpeg/.cabin-dome-house-lookbook-vertical-silent-render-32656.ffmpeg.log) | v1 | 2026-09-29 | folder | 3.5 MB |
+| 0313 | [.cabin-dome-house-lookbook-silent-render-34612.ffmpeg](0313-.cabin-dome-house-lookbook-silent-render-34612.ffmpeg/.cabin-dome-house-lookbook-silent-render-34612.ffmpeg.log) | v1 | 2026-09-29 | folder | 2.9 MB |
+| 0312 | [cabin-dome-house-lookbook](0312-cabin-dome-house-lookbook/cabin-dome-house-lookbook.mp4) | v1 | 2026-09-28 | video | 319.6 MB |
+| 0311 | [.cabin_seam-teaser-silent-render-23776.ffmpeg](0311-.cabin_seam-teaser-silent-render-23776.ffmpeg/.cabin_seam-teaser-silent-render-23776.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.1 MB |
+| 0310 | [cabin_seam-teaser](0310-cabin_seam-teaser/cabin_seam-teaser.mp4) | v1 | 2026-09-28 | video | 28.3 MB |
+| 0309 | [.cabin-the-seam-does-four-jobs-vertical-silent-render-35740.ffmpeg](0309-.cabin-the-seam-does-four-jobs-vertical-silent-render-35740.ffmpeg/.cabin-the-seam-does-four-jobs-vertical-silent-render-35740.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.6 MB |
+| 0308 | [.cabin-the-seam-does-four-jobs-silent-render-11536.ffmpeg](0308-.cabin-the-seam-does-four-jobs-silent-render-11536.ffmpeg/.cabin-the-seam-does-four-jobs-silent-render-11536.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.5 MB |
+| 0307 | [cabin-the-seam-does-four-jobs](0307-cabin-the-seam-does-four-jobs/cabin-the-seam-does-four-jobs.mp4) | v1 | 2026-09-28 | video | 251.8 MB |
+| 0306 | [.cabin-the-vance-network-mini-series-silent-render-29192.ffmpeg](0306-.cabin-the-vance-network-mini-series-silent-render-29192.ffmpeg/.cabin-the-vance-network-mini-series-silent-render-29192.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.2 MB |
+| 0305 | [.cabin-the-vance-network-mini-series-silent-render-29192](0305-.cabin-the-vance-network-mini-series-silent-render-29192/.cabin-the-vance-network-mini-series-silent-render-29192.mp4) | v1 | 2026-09-28 | video | 9.5 MB |
+| 0304 | [cabin-the-vance-network-mini-series](0304-cabin-the-vance-network-mini-series/cabin-the-vance-network-mini-series.mp4) | v1 | 2026-10-02 | video | 87.7 MB |
+| 0303 | [.cabin_2v-teaser-silent-render-3556.ffmpeg](0303-.cabin_2v-teaser-silent-render-3556.ffmpeg/.cabin_2v-teaser-silent-render-3556.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.1 MB |
+| 0302 | [cabin_2v-teaser](0302-cabin_2v-teaser/cabin_2v-teaser.mp4) | v1 | 2026-09-28 | video | 23.2 MB |
+| 0301 | [.cabin-2v-geodesic-masterclass-vertical-silent-render-34464.ffmpeg](0301-.cabin-2v-geodesic-masterclass-vertical-silent-render-34464.ffmpeg/.cabin-2v-geodesic-masterclass-vertical-silent-render-34464.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.9 MB |
+| 0300 | [.cabin-2v-geodesic-masterclass-silent-render-38232.ffmpeg](0300-.cabin-2v-geodesic-masterclass-silent-render-38232.ffmpeg/.cabin-2v-geodesic-masterclass-silent-render-38232.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.4 MB |
+| 0299 | [.cabin_pitch_hero-teaser-silent-render-27052.ffmpeg](0299-.cabin_pitch_hero-teaser-silent-render-27052.ffmpeg/.cabin_pitch_hero-teaser-silent-render-27052.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.0 MB |
+| 0298 | [cabin_pitch_hero-teaser](0298-cabin_pitch_hero-teaser/cabin_pitch_hero-teaser.mp4) | v1 | 2026-09-28 | video | 21.2 MB |
+| 0297 | [.cabin-stem-cell-hero-cut-vertical-silent-render-31140.ffmpeg](0297-.cabin-stem-cell-hero-cut-vertical-silent-render-31140.ffmpeg/.cabin-stem-cell-hero-cut-vertical-silent-render-31140.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.4 MB |
+| 0296 | [.cabin-stem-cell-hero-cut-silent-render-36692.ffmpeg](0296-.cabin-stem-cell-hero-cut-silent-render-36692.ffmpeg/.cabin-stem-cell-hero-cut-silent-render-36692.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.3 MB |
+| 0295 | [.cabin-2v-geodesic-masterclass-silent-render-29708.ffmpeg](0295-.cabin-2v-geodesic-masterclass-silent-render-29708.ffmpeg/.cabin-2v-geodesic-masterclass-silent-render-29708.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.0 MB |
+| 0294 | [.cabin-2v-geodesic-masterclass-silent-render-29708](0294-.cabin-2v-geodesic-masterclass-silent-render-29708/.cabin-2v-geodesic-masterclass-silent-render-29708.mp4) | v1 | 2026-09-28 | video | 0.9 MB |
+| 0293 | [cabin-2v-geodesic-masterclass](0293-cabin-2v-geodesic-masterclass/cabin-2v-geodesic-masterclass.mp4) | v1 | 2026-09-28 | video | 255.9 MB |
+| 0292 | [.cabin-stem-cell-hero-cut-silent-render-17816.ffmpeg](0292-.cabin-stem-cell-hero-cut-silent-render-17816.ffmpeg/.cabin-stem-cell-hero-cut-silent-render-17816.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.3 MB |
+| 0291 | [.cabin-stem-cell-hero-cut-silent-render-17816](0291-.cabin-stem-cell-hero-cut-silent-render-17816/.cabin-stem-cell-hero-cut-silent-render-17816.mp4) | v1 | 2026-09-28 | video | 64.0 MB |
+| 0290 | [concept-intake-pack](0290-concept-intake-pack-v2/concept-intake-pack-v2.zip) | v2 | 2026-09-28 | archive | 0.0 MB |
+| 0289 | [concept-intake-pack](0289-concept-intake-pack/concept-intake-pack.zip) | v1 | 2026-09-28 | archive | 0.0 MB |
+| 0288 | [cabin-stem-cell-hero-cut](0288-cabin-stem-cell-hero-cut/cabin-stem-cell-hero-cut.mp4) | v1 | 2026-09-28 | video | 137.2 MB |
+| 0287 | [.cabin_wedge_explained-teaser-v2-silent-render-26884.ffmpeg](0287-.cabin_wedge_explained-teaser-v2-silent-render-26884.ffmpeg-v2/.cabin_wedge_explained-teaser-v2-silent-render-26884.ffmpeg.log) | v2 | 2026-09-28 | folder | 0.1 MB |
+| 0286 | [cabin_wedge_explained-teaser](0286-cabin_wedge_explained-teaser-v2/cabin_wedge_explained-teaser-v2.mp4) | v2 | 2026-09-28 | video | 15.3 MB |
+| 0285 | [.cabin_wedge_explained-teaser-silent-render-27680.ffmpeg](0285-.cabin_wedge_explained-teaser-silent-render-27680.ffmpeg/.cabin_wedge_explained-teaser-silent-render-27680.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.1 MB |
+| 0284 | [cabin_wedge_explained-teaser](0284-cabin_wedge_explained-teaser/cabin_wedge_explained-teaser.mp4) | v1 | 2026-09-28 | video | 16.9 MB |
+| 0283 | [.the-wedge-dome-explained-vertical-silent-render-16300.ffmpeg](0283-.the-wedge-dome-explained-vertical-silent-render-16300.ffmpeg/.the-wedge-dome-explained-vertical-silent-render-16300.ffmpeg.log) | v1 | 2026-09-28 | folder | 2.3 MB |
+| 0282 | [.the-wedge-dome-explained-silent-render-13784.ffmpeg](0282-.the-wedge-dome-explained-silent-render-13784.ffmpeg/.the-wedge-dome-explained-silent-render-13784.ffmpeg.log) | v1 | 2026-09-28 | folder | 1.5 MB |
+| 0281 | [.the-wedge-dome-explained-silent-render-29820.ffmpeg](0281-.the-wedge-dome-explained-silent-render-29820.ffmpeg/.the-wedge-dome-explained-silent-render-29820.ffmpeg.log) | v1 | 2026-09-28 | folder | 0.5 MB |
+| 0280 | [.the-wedge-dome-explained-silent-render-29820](0280-.the-wedge-dome-explained-silent-render-29820/.the-wedge-dome-explained-silent-render-29820.mp4) | v1 | 2026-09-28 | video | 180.1 MB |
+| 0279 | [the-wedge-dome-explained](0279-the-wedge-dome-explained/the-wedge-dome-explained.mp4) | v1 | 2026-09-28 | video | 391.9 MB |
+| 0278 | [the-40-hour-cabin-cold-open](0278-the-40-hour-cabin-cold-open-v2/the-40-hour-cabin-cold-open-v2.mp4) | v2 | 2026-09-28 | video | 15.2 MB |
+| 0277 | [the-40-hour-cabin-cold-open-score](0277-the-40-hour-cabin-cold-open-score/the-40-hour-cabin-cold-open-score.wav) | v1 | 2026-09-28 | audio | 1.9 MB |
+| 0276 | [the-40-hour-cabin-cold-open](0276-the-40-hour-cabin-cold-open/the-40-hour-cabin-cold-open.mp4) | v1 | 2026-09-27 | video | 12.0 MB |
+| 0275 | [the-40-hour-cabin](0275-the-40-hour-cabin-v6/the-40-hour-cabin-v6.pdf) | v6 | 2026-09-27 | document | 31.9 MB |
+| 0274 | [the-40-hour-cabin-cover](0274-the-40-hour-cabin-cover-v10/the-40-hour-cabin-cover-v10.pdf) | v10 | 2026-09-27 | document | 1.9 MB |
+| 0273 | [the-40-hour-cabin-cover](0273-the-40-hour-cabin-cover-v9/the-40-hour-cabin-cover-v9.pdf) | v9 | 2026-09-27 | document | 1.9 MB |
+| 0272 | [the-40-hour-cabin-cover](0272-the-40-hour-cabin-cover-v8/the-40-hour-cabin-cover-v8.pdf) | v8 | 2026-09-27 | document | 1.9 MB |
+| 0271 | [seam-inside-reference-sheet](0271-seam-inside-reference-sheet/seam-inside-reference-sheet.png) | v1 | 2026-09-27 | image | 0.9 MB |
+| 0270 | [pinwheel-reference-junction](0270-pinwheel-reference-junction/pinwheel-reference-junction.png) | v1 | 2026-09-27 | image | 0.0 MB |
+| 0269 | [pinwheel-reference-frame](0269-pinwheel-reference-frame/pinwheel-reference-frame.png) | v1 | 2026-09-27 | image | 0.0 MB |
+| 0268 | [pinwheel-reference-corner](0268-pinwheel-reference-corner/pinwheel-reference-corner.png) | v1 | 2026-09-27 | image | 0.1 MB |
+| 0267 | [pinwheel-reference-exploded](0267-pinwheel-reference-exploded/pinwheel-reference-exploded.png) | v1 | 2026-09-27 | image | 0.0 MB |
+| 0266 | [pinwheel-reference-sheet](0266-pinwheel-reference-sheet/pinwheel-reference-sheet.png) | v1 | 2026-09-27 | image | 1.8 MB |
+| 0265 | [the-40-hour-cabin-cover-prompt](0265-the-40-hour-cabin-cover-prompt/the-40-hour-cabin-cover-prompt.md) | v1 | 2026-09-27 | text | 0.0 MB |
+| 0264 | [the-wedge-method-kdp](0264-the-wedge-method-kdp-v6/the-wedge-method-kdp-v6.pdf) | v6 | 2026-09-26 | document | 16.4 MB |
+| 0263 | [the-40-hour-cabin-cover](0263-the-40-hour-cabin-cover-v7/the-40-hour-cabin-cover-v7.pdf) | v7 | 2026-09-26 | document | 3.4 MB |
+| 0262 | [the-40-hour-cabin](0262-the-40-hour-cabin-v5/the-40-hour-cabin-v5.pdf) | v5 | 2026-09-26 | document | 31.9 MB |
+| 0261 | [the-40-hour-cabin-cover](0261-the-40-hour-cabin-cover-v6/the-40-hour-cabin-cover-v6.pdf) | v6 | 2026-09-26 | document | 3.4 MB |
+| 0260 | [the-40-hour-cabin-cover](0260-the-40-hour-cabin-cover-v5/the-40-hour-cabin-cover-v5.pdf) | v5 | 2026-09-26 | document | 3.2 MB |
+| 0259 | [the-40-hour-cabin-cover](0259-the-40-hour-cabin-cover-v4/the-40-hour-cabin-cover-v4.pdf) | v4 | 2026-09-26 | document | 3.2 MB |
+| 0258 | [the-40-hour-cabin-cover](0258-the-40-hour-cabin-cover-v3/the-40-hour-cabin-cover-v3.pdf) | v3 | 2026-09-26 | document | 3.3 MB |
+| 0257 | [the-wedge-method-kdp](0257-the-wedge-method-kdp-v5/the-wedge-method-kdp-v5.pdf) | v5 | 2026-09-26 | document | 16.4 MB |
+| 0256 | [the-40-hour-cabin-cover](0256-the-40-hour-cabin-cover-v2/the-40-hour-cabin-cover-v2.pdf) | v2 | 2026-09-26 | document | 2.6 MB |
+| 0255 | [the-40-hour-cabin-cover](0255-the-40-hour-cabin-cover/the-40-hour-cabin-cover.pdf) | v1 | 2026-09-26 | document | 2.5 MB |
+| 0254 | [the-40-hour-cabin](0254-the-40-hour-cabin-v4/the-40-hour-cabin-v4.pdf) | v4 | 2026-09-26 | document | 32.4 MB |
+| 0253 | [the-40-hour-cabin](0253-the-40-hour-cabin-v3/the-40-hour-cabin-v3.pdf) | v3 | 2026-09-26 | document | 32.4 MB |
+| 0252 | [the-40-hour-cabin](0252-the-40-hour-cabin-v2/the-40-hour-cabin-v2.pdf) | v2 | 2026-09-26 | document | 32.4 MB |
+| 0251 | [stem-cell-campaign-prompts](0251-stem-cell-campaign-prompts-v4/stem-cell-campaign-prompts-v4.md) | v4 | 2026-09-25 | text | 0.9 MB |
+| 0250 | [stem-cell-campaign-prompts](0250-stem-cell-campaign-prompts-v3/stem-cell-campaign-prompts-v3.md) | v3 | 2026-09-25 | text | 0.7 MB |
+| 0249 | [stem-cell-campaign-prompts](0249-stem-cell-campaign-prompts-v2/stem-cell-campaign-prompts-v2.md) | v2 | 2026-09-25 | text | 0.7 MB |
+| 0248 | [stem-cell-campaign-prompts](0248-stem-cell-campaign-prompts/stem-cell-campaign-prompts.md) | v1 | 2026-09-25 | text | 0.2 MB |
+| 0247 | [gemini-hero-prompt](0247-gemini-hero-prompt/gemini-hero-prompt.md) | v1 | 2026-09-25 | text | 0.0 MB |
+| 0246 | [.seam-teaser-silent-render-9988.ffmpeg](0246-.seam-teaser-silent-render-9988.ffmpeg/.seam-teaser-silent-render-9988.ffmpeg.log) | v1 | 2026-09-25 | folder | 0.1 MB |
+| 0245 | [seam-teaser](0245-seam-teaser/seam-teaser.mp4) | v1 | 2026-09-25 | video | 24.3 MB |
+| 0244 | [.the-seam-does-four-jobs-vertical-silent-render-21644.ffmpeg](0244-.the-seam-does-four-jobs-vertical-silent-render-21644.ffmpeg/.the-seam-does-four-jobs-vertical-silent-render-21644.ffmpeg.log) | v1 | 2026-09-25 | folder | 0.3 MB |
+| 0243 | [.the-seam-does-four-jobs-silent-render-29000.ffmpeg](0243-.the-seam-does-four-jobs-silent-render-29000.ffmpeg/.the-seam-does-four-jobs-silent-render-29000.ffmpeg.log) | v1 | 2026-09-25 | folder | 0.2 MB |
+| 0242 | [the-seam-does-four-jobs](0242-the-seam-does-four-jobs/the-seam-does-four-jobs.mp4) | v1 | 2026-09-25 | video | 230.4 MB |
+| 0241 | [the-40-hour-cabin](0241-the-40-hour-cabin/the-40-hour-cabin.pdf) | v1 | 2026-09-25 | document | 101.9 MB |
+| 0240 | [the-wedge-method](0240-the-wedge-method-v6/the-wedge-method-v6.pdf) | v6 | 2026-09-25 | document | 30.6 MB |
+| 0239 | [the-wedge-method](0239-the-wedge-method-v5/the-wedge-method-v5.pdf) | v5 | 2026-09-25 | document | 78.0 MB |
+| 0238 | [the-wedge-method](0238-the-wedge-method-v4/the-wedge-method-v4.pdf) | v4 | 2026-09-25 | document | 61.6 MB |
+| 0237 | [the-wedge-method](0237-the-wedge-method-v3/the-wedge-method-v3.pdf) | v3 | 2026-09-25 | document | 28.9 MB |
+| 0236 | [the-wedge-method](0236-the-wedge-method-v2/the-wedge-method-v2.pdf) | v2 | 2026-09-25 | document | 18.8 MB |
+| 0235 | [the-wedge-method](0235-the-wedge-method/the-wedge-method.pdf) | v1 | 2026-09-25 | document | 18.8 MB |
+| 0234 | [the-wedge-method-kdp](0234-the-wedge-method-kdp-v4/the-wedge-method-kdp-v4.pdf) | v4 | 2026-09-25 | document | 23.0 MB |
+| 0233 | [the-wedge-method-kdp](0233-the-wedge-method-kdp-v3/the-wedge-method-kdp-v3.pdf) | v3 | 2026-09-25 | document | 23.0 MB |
+| 0232 | [the-wedge-method-kdp](0232-the-wedge-method-kdp-v2/the-wedge-method-kdp-v2.pdf) | v2 | 2026-09-25 | document | 23.1 MB |
+| 0231 | [.pitch_hero-teaser-v3-silent-render-19924.ffmpeg](0231-.pitch_hero-teaser-v3-silent-render-19924.ffmpeg-v3/.pitch_hero-teaser-v3-silent-render-19924.ffmpeg.log) | v3 | 2026-09-23 | folder | 0.0 MB |
+| 0230 | [pitch_hero-teaser](0230-pitch_hero-teaser-v3/pitch_hero-teaser-v3.mp4) | v3 | 2026-09-23 | video | 25.2 MB |
+| 0229 | [.stem-cell-hero-cut-vertical-v3-silent-render-3168.ffmpeg](0229-.stem-cell-hero-cut-vertical-v3-silent-render-3168.ffmpeg-v3/.stem-cell-hero-cut-vertical-v3-silent-render-3168.ffmpeg.log) | v3 | 2026-09-23 | folder | 0.1 MB |
+| 0228 | [.stem-cell-hero-cut-v3-silent-render-25548.ffmpeg](0228-.stem-cell-hero-cut-v3-silent-render-25548.ffmpeg-v3/.stem-cell-hero-cut-v3-silent-render-25548.ffmpeg.log) | v3 | 2026-09-23 | folder | 0.1 MB |
+| 0227 | [stem-cell-hero-cut](0227-stem-cell-hero-cut-v3/stem-cell-hero-cut-v3.mp4) | v3 | 2026-09-23 | video | 176.6 MB |
+| 0226 | [stem-cell-dome-campaign-v7-phone](0226-stem-cell-dome-campaign-v7-phone-v7/stem-cell-dome-campaign-v7-phone-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0225 | [.stem-cell-dome-campaign-v7-phone-seg08](0225-.stem-cell-dome-campaign-v7-phone-seg08-v7/.stem-cell-dome-campaign-v7-phone-seg08-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0224 | [..stem-cell-dome-campaign-v7-phone-seg08-silent-render-36132.ffmpeg](0224-..stem-cell-dome-campaign-v7-phone-seg08-silent-render-36132.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg08-silent-render-36132.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0223 | [.stem-cell-dome-campaign-v7-phone-seg07](0223-.stem-cell-dome-campaign-v7-phone-seg07-v7/.stem-cell-dome-campaign-v7-phone-seg07-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0222 | [..stem-cell-dome-campaign-v7-phone-seg07-silent-render-9400.ffmpeg](0222-..stem-cell-dome-campaign-v7-phone-seg07-silent-render-9400.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg07-silent-render-9400.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0221 | [.stem-cell-dome-campaign-v7-phone-seg06](0221-.stem-cell-dome-campaign-v7-phone-seg06-v7/.stem-cell-dome-campaign-v7-phone-seg06-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0220 | [..stem-cell-dome-campaign-v7-phone-seg06-silent-render-39140.ffmpeg](0220-..stem-cell-dome-campaign-v7-phone-seg06-silent-render-39140.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg06-silent-render-39140.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0219 | [.stem-cell-dome-campaign-v7-phone-seg05](0219-.stem-cell-dome-campaign-v7-phone-seg05-v7/.stem-cell-dome-campaign-v7-phone-seg05-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0218 | [..stem-cell-dome-campaign-v7-phone-seg05-silent-render-16240.ffmpeg](0218-..stem-cell-dome-campaign-v7-phone-seg05-silent-render-16240.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg05-silent-render-16240.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0217 | [.stem-cell-dome-campaign-v7-phone-seg04](0217-.stem-cell-dome-campaign-v7-phone-seg04-v7/.stem-cell-dome-campaign-v7-phone-seg04-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0216 | [..stem-cell-dome-campaign-v7-phone-seg04-silent-render-21284.ffmpeg](0216-..stem-cell-dome-campaign-v7-phone-seg04-silent-render-21284.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg04-silent-render-21284.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0215 | [.stem-cell-dome-campaign-v7-phone-seg03](0215-.stem-cell-dome-campaign-v7-phone-seg03-v7/.stem-cell-dome-campaign-v7-phone-seg03-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0214 | [..stem-cell-dome-campaign-v7-phone-seg03-silent-render-23100.ffmpeg](0214-..stem-cell-dome-campaign-v7-phone-seg03-silent-render-23100.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg03-silent-render-23100.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0213 | [.stem-cell-dome-campaign-v7-phone-seg02](0213-.stem-cell-dome-campaign-v7-phone-seg02-v7/.stem-cell-dome-campaign-v7-phone-seg02-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0212 | [..stem-cell-dome-campaign-v7-phone-seg02-silent-render-13976.ffmpeg](0212-..stem-cell-dome-campaign-v7-phone-seg02-silent-render-13976.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg02-silent-render-13976.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0211 | [.stem-cell-dome-campaign-v7-phone-seg01](0211-.stem-cell-dome-campaign-v7-phone-seg01-v7/.stem-cell-dome-campaign-v7-phone-seg01-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0210 | [..stem-cell-dome-campaign-v7-phone-seg01-silent-render-35568.ffmpeg](0210-..stem-cell-dome-campaign-v7-phone-seg01-silent-render-35568.ffmpeg-v7/..stem-cell-dome-campaign-v7-phone-seg01-silent-render-35568.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0209 | [.seed_pitch-teaser-silent-render-22236.ffmpeg](0209-.seed_pitch-teaser-silent-render-22236.ffmpeg/.seed_pitch-teaser-silent-render-22236.ffmpeg.log) | v1 | 2026-09-23 | folder | 0.1 MB |
+| 0208 | [seed_pitch-teaser](0208-seed_pitch-teaser/seed_pitch-teaser.mp4) | v1 | 2026-09-23 | video | 34.0 MB |
+| 0207 | [.pitch_hero-teaser-v2-silent-render-22852.ffmpeg](0207-.pitch_hero-teaser-v2-silent-render-22852.ffmpeg-v2/.pitch_hero-teaser-v2-silent-render-22852.ffmpeg.log) | v2 | 2026-09-23 | folder | 0.0 MB |
+| 0206 | [pitch_hero-teaser](0206-pitch_hero-teaser-v2/pitch_hero-teaser-v2.mp4) | v2 | 2026-09-23 | video | 25.2 MB |
+| 0205 | [.stem-cell-hero-cut-vertical-v2-silent-render-9168.ffmpeg](0205-.stem-cell-hero-cut-vertical-v2-silent-render-9168.ffmpeg-v2/.stem-cell-hero-cut-vertical-v2-silent-render-9168.ffmpeg.log) | v2 | 2026-09-23 | folder | 0.0 MB |
+| 0204 | [.stem-cell-hero-cut-v2-silent-render-34076.ffmpeg](0204-.stem-cell-hero-cut-v2-silent-render-34076.ffmpeg-v2/.stem-cell-hero-cut-v2-silent-render-34076.ffmpeg.log) | v2 | 2026-09-23 | folder | 0.0 MB |
+| 0203 | [stem-cell-hero-cut](0203-stem-cell-hero-cut-v2/stem-cell-hero-cut-v2.mp4) | v2 | 2026-09-23 | video | 117.8 MB |
+| 0202 | [.pitch_hero-teaser-silent-render-38892.ffmpeg](0202-.pitch_hero-teaser-silent-render-38892.ffmpeg/.pitch_hero-teaser-silent-render-38892.ffmpeg.log) | v1 | 2026-09-23 | folder | 0.0 MB |
+| 0201 | [pitch_hero-teaser](0201-pitch_hero-teaser/pitch_hero-teaser.mp4) | v1 | 2026-09-23 | video | 25.5 MB |
+| 0200 | [.stem-cell-hero-cut-vertical-silent-render-24804.ffmpeg](0200-.stem-cell-hero-cut-vertical-silent-render-24804.ffmpeg/.stem-cell-hero-cut-vertical-silent-render-24804.ffmpeg.log) | v1 | 2026-09-23 | folder | 0.1 MB |
+| 0199 | [.stem-cell-hero-cut-silent-render-35688.ffmpeg](0199-.stem-cell-hero-cut-silent-render-35688.ffmpeg/.stem-cell-hero-cut-silent-render-35688.ffmpeg.log) | v1 | 2026-09-23 | folder | 0.0 MB |
+| 0198 | [stem-cell-hero-cut](0198-stem-cell-hero-cut/stem-cell-hero-cut.mp4) | v1 | 2026-09-23 | video | 125.4 MB |
+| 0197 | [.stem-cell-dome-campaign-v7-seg08](0197-.stem-cell-dome-campaign-v7-seg08-v7/.stem-cell-dome-campaign-v7-seg08-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0196 | [..stem-cell-dome-campaign-v7-seg08-silent-render-7836.ffmpeg](0196-..stem-cell-dome-campaign-v7-seg08-silent-render-7836.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg08-silent-render-7836.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0195 | [.stem-cell-dome-campaign-v7-seg07](0195-.stem-cell-dome-campaign-v7-seg07-v7/.stem-cell-dome-campaign-v7-seg07-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0194 | [..stem-cell-dome-campaign-v7-seg07-silent-render-29692.ffmpeg](0194-..stem-cell-dome-campaign-v7-seg07-silent-render-29692.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg07-silent-render-29692.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0193 | [.stem-cell-dome-campaign-v7-seg06](0193-.stem-cell-dome-campaign-v7-seg06-v7/.stem-cell-dome-campaign-v7-seg06-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0192 | [..stem-cell-dome-campaign-v7-seg06-silent-render-28008.ffmpeg](0192-..stem-cell-dome-campaign-v7-seg06-silent-render-28008.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg06-silent-render-28008.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0191 | [.stem-cell-dome-campaign-v7-seg05](0191-.stem-cell-dome-campaign-v7-seg05-v7/.stem-cell-dome-campaign-v7-seg05-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0190 | [..stem-cell-dome-campaign-v7-seg05-silent-render-22412.ffmpeg](0190-..stem-cell-dome-campaign-v7-seg05-silent-render-22412.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg05-silent-render-22412.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0189 | [.stem-cell-dome-campaign-v7-seg04](0189-.stem-cell-dome-campaign-v7-seg04-v7/.stem-cell-dome-campaign-v7-seg04-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0188 | [..stem-cell-dome-campaign-v7-seg04-silent-render-39280.ffmpeg](0188-..stem-cell-dome-campaign-v7-seg04-silent-render-39280.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg04-silent-render-39280.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0187 | [.stem-cell-dome-campaign-v7-seg03](0187-.stem-cell-dome-campaign-v7-seg03-v7/.stem-cell-dome-campaign-v7-seg03-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0186 | [..stem-cell-dome-campaign-v7-seg03-silent-render-15776.ffmpeg](0186-..stem-cell-dome-campaign-v7-seg03-silent-render-15776.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg03-silent-render-15776.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0185 | [.stem-cell-dome-campaign-v7-seg02](0185-.stem-cell-dome-campaign-v7-seg02-v7/.stem-cell-dome-campaign-v7-seg02-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0184 | [..stem-cell-dome-campaign-v7-seg02-silent-render-39076.ffmpeg](0184-..stem-cell-dome-campaign-v7-seg02-silent-render-39076.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg02-silent-render-39076.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0183 | [.stem-cell-dome-campaign-v7-seg01](0183-.stem-cell-dome-campaign-v7-seg01-v7/.stem-cell-dome-campaign-v7-seg01-narration.md) | v7 | 2026-09-23 | text | 0.1 MB |
+| 0182 | [..stem-cell-dome-campaign-v7-seg01-silent-render-33012.ffmpeg](0182-..stem-cell-dome-campaign-v7-seg01-silent-render-33012.ffmpeg-v7/..stem-cell-dome-campaign-v7-seg01-silent-render-33012.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.1 MB |
+| 0181 | [campaign-page](0181-campaign-page/campaign-page.md) | v1 | 2026-09-23 | text | 0.0 MB |
+| 0180 | [.stem-cell-dome-campaign-v7-silent-render-38948.ffmpeg](0180-.stem-cell-dome-campaign-v7-silent-render-38948.ffmpeg-v7/.stem-cell-dome-campaign-v7-silent-render-38948.ffmpeg.log) | v7 | 2026-09-23 | folder | 0.0 MB |
+| 0179 | [.stem-cell-dome-campaign-v7-silent-render-38948](0179-.stem-cell-dome-campaign-v7-silent-render-38948-v7/.stem-cell-dome-campaign-v7-silent-render-38948.mp4) | v7 | 2026-09-23 | video | 6.0 MB |
+| 0178 | [stem-cell-dome-campaign](0178-stem-cell-dome-campaign-v7/stem-cell-dome-campaign-v7-narration-plan.json) | v7 | 2026-09-23 | audio | 47.6 MB |
+| 0177 | [.stem-cell-dome-campaign-v6-phone-seg07](0177-.stem-cell-dome-campaign-v6-phone-seg07-v6/.stem-cell-dome-campaign-v6-phone-seg07-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0176 | [..stem-cell-dome-campaign-v6-phone-seg07-silent-render-8404.ffmpeg](0176-..stem-cell-dome-campaign-v6-phone-seg07-silent-render-8404.ffmpeg-v6/..stem-cell-dome-campaign-v6-phone-seg07-silent-render-8404.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0175 | [.stem-cell-dome-campaign-v6-phone-seg06](0175-.stem-cell-dome-campaign-v6-phone-seg06-v6/.stem-cell-dome-campaign-v6-phone-seg06-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0174 | [..stem-cell-dome-campaign-v6-phone-seg06-silent-render-4608.ffmpeg](0174-..stem-cell-dome-campaign-v6-phone-seg06-silent-render-4608.ffmpeg-v6/..stem-cell-dome-campaign-v6-phone-seg06-silent-render-4608.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0173 | [.stem-cell-dome-campaign-v6-phone-seg05](0173-.stem-cell-dome-campaign-v6-phone-seg05-v6/.stem-cell-dome-campaign-v6-phone-seg05-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0172 | [..stem-cell-dome-campaign-v6-phone-seg05-silent-render-33436.ffmpeg](0172-..stem-cell-dome-campaign-v6-phone-seg05-silent-render-33436.ffmpeg-v6/..stem-cell-dome-campaign-v6-phone-seg05-silent-render-33436.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0171 | [.stem-cell-dome-campaign-v6-phone-seg04](0171-.stem-cell-dome-campaign-v6-phone-seg04-v6/.stem-cell-dome-campaign-v6-phone-seg04-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0170 | [..stem-cell-dome-campaign-v6-phone-seg04-silent-render-2468.ffmpeg](0170-..stem-cell-dome-campaign-v6-phone-seg04-silent-render-2468.ffmpeg-v6/..stem-cell-dome-campaign-v6-phone-seg04-silent-render-2468.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0169 | [.stem-cell-dome-campaign-v6-phone-seg03](0169-.stem-cell-dome-campaign-v6-phone-seg03-v6/.stem-cell-dome-campaign-v6-phone-seg03-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0168 | [..stem-cell-dome-campaign-v6-phone-seg03-silent-render-20808.ffmpeg](0168-..stem-cell-dome-campaign-v6-phone-seg03-silent-render-20808.ffmpeg-v6/..stem-cell-dome-campaign-v6-phone-seg03-silent-render-20808.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0167 | [.stem-cell-dome-campaign-v6-phone-seg02](0167-.stem-cell-dome-campaign-v6-phone-seg02-v6/.stem-cell-dome-campaign-v6-phone-seg02-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0166 | [..stem-cell-dome-campaign-v6-phone-seg02-silent-render-11084.ffmpeg](0166-..stem-cell-dome-campaign-v6-phone-seg02-silent-render-11084.ffmpeg-v6/..stem-cell-dome-campaign-v6-phone-seg02-silent-render-11084.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0165 | [.stem-cell-dome-campaign-v6-phone-seg01](0165-.stem-cell-dome-campaign-v6-phone-seg01-v6/.stem-cell-dome-campaign-v6-phone-seg01-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0164 | [..stem-cell-dome-campaign-v6-phone-seg01-silent-render-27792.ffmpeg](0164-..stem-cell-dome-campaign-v6-phone-seg01-silent-render-27792.ffmpeg-v6/..stem-cell-dome-campaign-v6-phone-seg01-silent-render-27792.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0163 | [.stem-cell-dome-campaign-v6-seg07](0163-.stem-cell-dome-campaign-v6-seg07-v6/.stem-cell-dome-campaign-v6-seg07-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0162 | [..stem-cell-dome-campaign-v6-seg07-silent-render-30156.ffmpeg](0162-..stem-cell-dome-campaign-v6-seg07-silent-render-30156.ffmpeg-v6/..stem-cell-dome-campaign-v6-seg07-silent-render-30156.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0161 | [the-wedge-method-kdp](0161-the-wedge-method-kdp/the-wedge-method-kdp.pdf) | v1 | 2026-09-23 | document | 0.6 MB |
+| 0160 | [.stem-cell-dome-campaign-v6-seg06](0160-.stem-cell-dome-campaign-v6-seg06-v6/.stem-cell-dome-campaign-v6-seg06-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0159 | [..stem-cell-dome-campaign-v6-seg06-silent-render-37424.ffmpeg](0159-..stem-cell-dome-campaign-v6-seg06-silent-render-37424.ffmpeg-v6/..stem-cell-dome-campaign-v6-seg06-silent-render-37424.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0158 | [.stem-cell-dome-campaign-v6-seg05](0158-.stem-cell-dome-campaign-v6-seg05-v6/.stem-cell-dome-campaign-v6-seg05-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0157 | [..stem-cell-dome-campaign-v6-seg05-silent-render-15524.ffmpeg](0157-..stem-cell-dome-campaign-v6-seg05-silent-render-15524.ffmpeg-v6/..stem-cell-dome-campaign-v6-seg05-silent-render-15524.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0156 | [.stem-cell-dome-campaign-v6-seg04](0156-.stem-cell-dome-campaign-v6-seg04-v6/.stem-cell-dome-campaign-v6-seg04-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0155 | [..stem-cell-dome-campaign-v6-seg04-silent-render-3016.ffmpeg](0155-..stem-cell-dome-campaign-v6-seg04-silent-render-3016.ffmpeg-v6/..stem-cell-dome-campaign-v6-seg04-silent-render-3016.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0154 | [.stem-cell-dome-campaign-v6-seg03](0154-.stem-cell-dome-campaign-v6-seg03-v6/.stem-cell-dome-campaign-v6-seg03-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0153 | [..stem-cell-dome-campaign-v6-seg03-silent-render-11752.ffmpeg](0153-..stem-cell-dome-campaign-v6-seg03-silent-render-11752.ffmpeg-v6/..stem-cell-dome-campaign-v6-seg03-silent-render-11752.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0152 | [.stem-cell-dome-campaign-v6-seg02](0152-.stem-cell-dome-campaign-v6-seg02-v6/.stem-cell-dome-campaign-v6-seg02-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0151 | [..stem-cell-dome-campaign-v6-seg02-silent-render-14392.ffmpeg](0151-..stem-cell-dome-campaign-v6-seg02-silent-render-14392.ffmpeg-v6/..stem-cell-dome-campaign-v6-seg02-silent-render-14392.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0150 | [.stem-cell-dome-campaign-v6-seg01](0150-.stem-cell-dome-campaign-v6-seg01-v6/.stem-cell-dome-campaign-v6-seg01-narration.md) | v6 | 2026-09-23 | text | 0.1 MB |
+| 0149 | [..stem-cell-dome-campaign-v6-seg01-silent-render-28392.ffmpeg](0149-..stem-cell-dome-campaign-v6-seg01-silent-render-28392.ffmpeg-v6/..stem-cell-dome-campaign-v6-seg01-silent-render-28392.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.1 MB |
+| 0148 | [.stem-cell-dome-campaign-v6-silent-render-9344](0148-.stem-cell-dome-campaign-v6-silent-render-9344-v6/.stem-cell-dome-campaign-v6-silent-render-9344.mp4) | v6 | 2026-09-23 | video | 39.6 MB |
+| 0147 | [.stem-cell-dome-campaign-v6-silent-render-9344.ffmpeg](0147-.stem-cell-dome-campaign-v6-silent-render-9344.ffmpeg-v6/.stem-cell-dome-campaign-v6-silent-render-9344.ffmpeg.log) | v6 | 2026-09-23 | folder | 0.0 MB |
+| 0146 | [stem-cell-dome-campaign](0146-stem-cell-dome-campaign-v6/stem-cell-dome-campaign-v6-narration-plan.json) | v6 | 2026-09-23 | audio | 40.5 MB |
+| 0145 | [2-trees-outline](0145-2-trees-outline-v9/2-trees-outline-v9.txt) | v9 | 2026-09-23 | text | 0.0 MB |
+| 0144 | [2-trees](0144-2-trees-v12/2-trees-v12.pdf) | v12 | 2026-09-23 | document | 26.7 MB |
+| 0143 | [..stem-cell-dome-campaign-v5-seg06-silent-render-7072.ffmpeg](0143-..stem-cell-dome-campaign-v5-seg06-silent-render-7072.ffmpeg-v5/..stem-cell-dome-campaign-v5-seg06-silent-render-7072.ffmpeg.log) | v5 | 2026-09-23 | folder | 0.1 MB |
+| 0142 | [..stem-cell-dome-campaign-v5-seg05-silent-render-37972.ffmpeg](0142-..stem-cell-dome-campaign-v5-seg05-silent-render-37972.ffmpeg-v5/..stem-cell-dome-campaign-v5-seg05-silent-render-37972.ffmpeg.log) | v5 | 2026-09-23 | folder | 0.1 MB |
+| 0141 | [..stem-cell-dome-campaign-v5-seg04-silent-render-22860.ffmpeg](0141-..stem-cell-dome-campaign-v5-seg04-silent-render-22860.ffmpeg-v5/..stem-cell-dome-campaign-v5-seg04-silent-render-22860.ffmpeg.log) | v5 | 2026-09-23 | folder | 0.1 MB |
+| 0140 | [..stem-cell-dome-campaign-v5-seg03-silent-render-11524.ffmpeg](0140-..stem-cell-dome-campaign-v5-seg03-silent-render-11524.ffmpeg-v5/..stem-cell-dome-campaign-v5-seg03-silent-render-11524.ffmpeg.log) | v5 | 2026-09-23 | folder | 0.1 MB |
+| 0139 | [..stem-cell-dome-campaign-v5-seg02-silent-render-34708.ffmpeg](0139-..stem-cell-dome-campaign-v5-seg02-silent-render-34708.ffmpeg-v5/..stem-cell-dome-campaign-v5-seg02-silent-render-34708.ffmpeg.log) | v5 | 2026-09-23 | folder | 0.1 MB |
+| 0138 | [..stem-cell-dome-campaign-v5-seg01-silent-render-38440.ffmpeg](0138-..stem-cell-dome-campaign-v5-seg01-silent-render-38440.ffmpeg-v5/..stem-cell-dome-campaign-v5-seg01-silent-render-38440.ffmpeg.log) | v5 | 2026-09-23 | folder | 0.1 MB |
+| 0137 | [.stem-cell-dome-campaign-v5-silent-render-9072.ffmpeg](0137-.stem-cell-dome-campaign-v5-silent-render-9072.ffmpeg-v5/.stem-cell-dome-campaign-v5-silent-render-9072.ffmpeg.log) | v5 | 2026-09-23 | folder | 0.2 MB |
+| 0136 | [stem-cell-dome-campaign](0136-stem-cell-dome-campaign-v5/stem-cell-dome-campaign-v5-narration-plan.json) | v5 | 2026-09-23 | audio | 34.9 MB |
+| 0135 | [2-trees-outline](0135-2-trees-outline-v8/2-trees-outline-v8.txt) | v8 | 2026-09-23 | text | 0.0 MB |
+| 0134 | [2-trees](0134-2-trees-v11/2-trees-v11.pdf) | v11 | 2026-09-23 | document | 26.7 MB |
+| 0133 | [stem-cell-utility-core-build](0133-stem-cell-utility-core-build-v2) | v2 | 2026-10-14 | folder | 1.9 MB |
+| 0132 | [2-trees-outline](0132-2-trees-outline-v7/2-trees-outline-v7.txt) | v7 | 2026-09-23 | text | 0.0 MB |
+| 0131 | [2-trees](0131-2-trees-v10/2-trees-v10.pdf) | v10 | 2026-09-23 | document | 23.1 MB |
+| 0130 | [2-trees-outline](0130-2-trees-outline-v6/2-trees-outline-v6.txt) | v6 | 2026-09-23 | text | 0.0 MB |
+| 0129 | [2-trees](0129-2-trees-v9/2-trees-v9.pdf) | v9 | 2026-09-23 | document | 22.8 MB |
+| 0128 | [2-trees-outline](0128-2-trees-outline-v5/2-trees-outline-v5.txt) | v5 | 2026-09-23 | text | 0.0 MB |
+| 0127 | [2-trees](0127-2-trees-v8/2-trees-v8.pdf) | v8 | 2026-09-23 | document | 12.8 MB |
+| 0126 | [module_build-teaser](0126-module_build-teaser/module_build-teaser.mp4) | v1 | 2026-09-23 | video | 14.7 MB |
+| 0125 | [stem-cell-utility-core-build](0125-stem-cell-utility-core-build/stem-cell-utility-core-build.mp4) | v1 | 2026-09-23 | video | 295.8 MB |
+| 0124 | [seed_pitch-teaser](0124-seed_pitch-teaser-v3/seed_pitch-teaser-v3.mp4) | v3 | 2026-09-23 | video | 33.4 MB |
+| 0123 | [stem-cell-dome-campaign](0123-stem-cell-dome-campaign-v4/stem-cell-dome-campaign-v4-narration-plan.json) | v4 | 2026-09-23 | audio | 36.7 MB |
+| 0122 | [stem-cell-dome-campaign](0122-stem-cell-dome-campaign-v3) | v3 | 2026-10-14 | folder | 20.8 MB |
+| 0121 | [2-trees-outline](0121-2-trees-outline-v4/2-trees-outline-v4.txt) | v4 | 2026-09-21 | text | 0.0 MB |
+| 0120 | [2-trees](0120-2-trees-v7/2-trees-v7.pdf) | v7 | 2026-09-21 | document | 12.0 MB |
+| 0119 | [2-trees](0119-2-trees-v6/2-trees-v6.pdf) | v6 | 2026-09-21 | document | 22.5 MB |
+| 0118 | [stem-cell-dome-campaign](0118-stem-cell-dome-campaign-v2) | v2 | 2026-10-14 | folder | 6.2 MB |
+| 0117 | [stem-cell-dome-campaign](0117-stem-cell-dome-campaign/stem-cell-dome-campaign-narration.md) | v1 | 2026-09-20 | text | 8.7 MB |
+| 0116 | [byod-styled](0116-byod-styled) | v1 | 2026-10-14 | video | 2.36 GB |
+| 0115 | [attempt-v1-deepseek](0115-attempt-v1-deepseek) | v1 | 2026-10-14 | folder | 2.1 MB |
+| 0114 | [byod-deepseek](0114-byod-deepseek/mascot-3d.png) | v1 | 2026-09-17 | video | 1.23 GB |
+| 0113 | [byod](0113-byod) | v1 | 2026-10-14 | video | 1.06 GB |
+| 0112 | [triangle-authoring-demo](0112-triangle-authoring-demo/triangle-authoring-demo.mp4) | v1 | 2026-09-16 | video | 0.7 MB |
+| 0111 | [dome-park-bring-your-own-home](0111-dome-park-bring-your-own-home-v3/dome-park-bring-your-own-home-v3-narration-plan.json) | v3 | 2026-09-16 | audio | 33.4 MB |
+| 0110 | [dome-park-bring-your-own-home](0110-dome-park-bring-your-own-home-v2/dome-park-bring-your-own-home-v2-narration-plan.json) | v2 | 2026-09-16 | audio | 31.1 MB |
+| 0109 | [dome-park-bring-your-own-home](0109-dome-park-bring-your-own-home/dome-park-bring-your-own-home-narration-plan.json) | v1 | 2026-09-16 | audio | 25.5 MB |
+| 0108 | [all-domes-every-permutation](0108-all-domes-every-permutation/all-domes-every-permutation-narration-plan.json) | v1 | 2026-09-15 | video | 269.2 MB |
+| 0107 | [pvtwo-masterclass-teaser](0107-pvtwo-masterclass-teaser/pvtwo-masterclass-teaser.mp4) | v1 | 2026-09-13 | video | 31.9 MB |
+| 0106 | [the-20-dollar-pine-teaser](0106-the-20-dollar-pine-teaser-v2/the-20-dollar-pine-teaser-v2.mp4) | v2 | 2026-09-13 | video | 36.1 MB |
+| 0105 | [why-build-this-way-teaser](0105-why-build-this-way-teaser/why-build-this-way-teaser.mp4) | v1 | 2026-09-13 | video | 46.5 MB |
+| 0104 | [two-trees-all-at-once-teaser](0104-two-trees-all-at-once-teaser/two-trees-all-at-once-teaser.mp4) | v1 | 2026-09-13 | video | 33.4 MB |
+| 0103 | [why-wedges-no-sawmill-teaser](0103-why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser.mp4) | v1 | 2026-09-13 | video | 37.2 MB |
+| 0102 | [dome-house-lookbook-teaser](0102-dome-house-lookbook-teaser/dome-house-lookbook-teaser.mp4) | v1 | 2026-09-13 | video | 39.6 MB |
+| 0101 | [the-vance-network-mini-series-teaser](0101-the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser.mp4) | v1 | 2026-09-13 | video | 20.2 MB |
+| 0100 | [ep-dome-001-high-council-teaser](0100-ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser.mp4) | v1 | 2026-09-13 | video | 24.5 MB |
+| 0099 | [eight-cuts-to-a-house-teaser](0099-eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser.mp4) | v1 | 2026-09-13 | video | 28.1 MB |
+| 0098 | [dome-from-scratch-geometry-to-pixels-teaser](0098-dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser.mp4) | v1 | 2026-09-13 | video | 39.5 MB |
+| 0097 | [ten-dome-builds-master-20260829-135242-chatgpt-teaser](0097-ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser.mp4) | v1 | 2026-09-13 | video | 33.8 MB |
+| 0096 | [every-dome-in-the-world-teaser](0096-every-dome-in-the-world-teaser/every-dome-in-the-world-teaser.mp4) | v1 | 2026-09-13 | video | 30.2 MB |
+| 0095 | [domesim-master-presentation-teaser](0095-domesim-master-presentation-teaser/domesim-master-presentation-teaser.mp4) | v1 | 2026-09-13 | video | 39.7 MB |
+| 0094 | [dome-kickstarter-v2-teaser](0094-dome-kickstarter-v2-teaser-v2/dome-kickstarter-v2-teaser.mp4) | v2 | 2026-09-13 | video | 29.2 MB |
+| 0093 | [dome-kickstarter-teaser](0093-dome-kickstarter-teaser/dome-kickstarter-teaser.mp4) | v1 | 2026-09-13 | video | 28.9 MB |
+| 0092 | [frankendome-montage-v6-teaser](0092-frankendome-montage-v6-teaser-v6/frankendome-montage-v6-teaser.mp4) | v6 | 2026-09-13 | video | 35.6 MB |
+| 0091 | [frankendome-montage-v5-teaser](0091-frankendome-montage-v5-teaser-v5/frankendome-montage-v5-teaser.mp4) | v5 | 2026-09-13 | video | 30.4 MB |
+| 0090 | [frankendome-montage-v4-teaser](0090-frankendome-montage-v4-teaser-v4/frankendome-montage-v4-teaser.mp4) | v4 | 2026-09-13 | video | 30.4 MB |
+| 0089 | [frankendome-montage-v3-teaser](0089-frankendome-montage-v3-teaser-v3/frankendome-montage-v3-teaser.mp4) | v3 | 2026-09-13 | video | 27.6 MB |
+| 0088 | [frankendome-montage-v2-teaser](0088-frankendome-montage-v2-teaser-v2/frankendome-montage-v2-teaser.mp4) | v2 | 2026-09-12 | video | 29.5 MB |
+| 0087 | [frankendome-montage-teaser](0087-frankendome-montage-teaser/frankendome-montage-teaser.mp4) | v1 | 2026-09-12 | video | 30.1 MB |
+| 0086 | [frankendome-build-v2-teaser](0086-frankendome-build-v2-teaser-v2/frankendome-build-v2-teaser.mp4) | v2 | 2026-09-12 | video | 35.9 MB |
+| 0085 | [hubless-compound-cut-teaser](0085-hubless-compound-cut-teaser/hubless-compound-cut-teaser.mp4) | v1 | 2026-09-12 | video | 29.9 MB |
+| 0084 | [assembly-line-energy-masterclass-teaser](0084-assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser.mp4) | v1 | 2026-09-12 | video | 34.3 MB |
+| 0083 | [zome-construction-masterclass-teaser](0083-zome-construction-masterclass-teaser/zome-construction-masterclass-teaser.mp4) | v1 | 2026-09-12 | video | 40.9 MB |
+| 0082 | [hex-dome-masterclass-teaser](0082-hex-dome-masterclass-teaser/hex-dome-masterclass-teaser.mp4) | v1 | 2026-09-12 | video | 34.5 MB |
+| 0081 | [dome-construction-masterclass-teaser](0081-dome-construction-masterclass-teaser/dome-construction-masterclass-teaser.mp4) | v1 | 2026-09-12 | video | 42.6 MB |
+| 0080 | [2v-teaser](0080-2v-teaser/2v-teaser.mp4) | v1 | 2026-09-12 | video | 48.5 MB |
+| 0079 | [the-20-dollar-pine-teaser](0079-the-20-dollar-pine-teaser/the-20-dollar-pine-teaser.mp4) | v1 | 2026-09-12 | video | 36.1 MB |
+| 0078 | [domology-plates](0078-domology-plates/apex.png) | v1 | 2026-09-12 | image | 24.3 MB |
+| 0077 | [shot_00020.0s](0077-shot_00020.0s/shot_00020.0s.png) | v1 | 2026-09-12 | image | 0.1 MB |
+| 0076 | [shot_00004.0s](0076-shot_00004.0s/shot_00004.0s.png) | v1 | 2026-09-12 | image | 0.1 MB |
+| 0075 | [pvtwo-check](0075-pvtwo-check-v2/pvtwo-check-v2.mp4) | v2 | 2026-09-12 | video | 3.3 MB |
+| 0074 | [pvtwo-check](0074-pvtwo-check/pvtwo-check.mp4) | v1 | 2026-09-12 | video | 3.3 MB |
+| 0073 | [tree-value-video](0073-tree-value-video) | v1 | 2026-10-14 | video | 257.7 MB |
+| 0072 | [the-20-dollar-pine-script](0072-the-20-dollar-pine-script-v2/the-20-dollar-pine-script-v2.md) | v2 | 2026-09-12 | text | 0.0 MB |
+| 0071 | [the-20-dollar-pine](0071-the-20-dollar-pine/the-20-dollar-pine.mp4) | v1 | 2026-09-12 | video | 134.6 MB |
+| 0070 | [the-20-dollar-pine-script](0070-the-20-dollar-pine-script/the-20-dollar-pine-script.md) | v1 | 2026-09-12 | text | 0.0 MB |
+| 0069 | [two-trees-all-at-once](0069-two-trees-all-at-once-v3/two-trees-all-at-once-v3.mp4) | v3 | 2026-09-12 | video | 190.6 MB |
+| 0068 | [why-build-this-way](0068-why-build-this-way/why-build-this-way.mp4) | v1 | 2026-09-12 | video | 261.0 MB |
+| 0067 | [why-build-this-way-script](0067-why-build-this-way-script-v2/why-build-this-way-script-v2.md) | v2 | 2026-09-12 | text | 0.0 MB |
+| 0066 | [why-build-this-way-script](0066-why-build-this-way-script/why-build-this-way-script.md) | v1 | 2026-09-12 | text | 0.0 MB |
+| 0065 | [two-trees-all-at-once](0065-two-trees-all-at-once-v2/two-trees-all-at-once-v2.mp4) | v2 | 2026-09-12 | video | 40.7 MB |
+| 0064 | [two-trees-all-at-once](0064-two-trees-all-at-once/two-trees-all-at-once.mp4) | v1 | 2026-09-11 | video | 41.2 MB |
+| 0063 | [2-trees-outline](0063-2-trees-outline-v3/2-trees-outline-v3.txt) | v3 | 2026-09-10 | text | 0.0 MB |
+| 0062 | [2-trees](0062-2-trees-v5/2-trees-v5.pdf) | v5 | 2026-09-08 | document | 22.4 MB |
+| 0061 | [2-trees](0061-2-trees-v4/2-trees-v4.pdf) | v4 | 2026-09-08 | document | 22.4 MB |
+| 0060 | [2-trees-outline](0060-2-trees-outline-v2/2-trees-outline-v2.txt) | v2 | 2026-09-08 | text | 0.0 MB |
+| 0059 | [2-trees](0059-2-trees-v3/2-trees-v3.pdf) | v3 | 2026-09-08 | document | 26.2 MB |
+| 0058 | [2-trees-outline](0058-2-trees-outline/2-trees-outline.txt) | v1 | 2026-09-08 | text | 0.0 MB |
+| 0057 | [2-trees](0057-2-trees-v2/2-trees-v2.pdf) | v2 | 2026-09-08 | document | 23.6 MB |
+| 0056 | [2-trees](0056-2-trees/2-trees.pdf) | v1 | 2026-09-08 | document | 23.6 MB |
+| 0055 | [figures](0055-figures) | v1 | 2026-10-14 | image | 57.7 MB |
+| 0054 | [why-wedges-no-sawmill](0054-why-wedges-no-sawmill-v2/why-wedges-no-sawmill-v2-narration.m4a) | v2 | 2026-09-05 | audio | 52.4 MB |
+| 0053 | [wedge](0053-wedge/wedge-thumbnail.png) | v1 | 2026-09-05 | image | 0.6 MB |
+| 0052 | [why-wedges-no-sawmill](0052-why-wedges-no-sawmill/why-wedges-no-sawmill-narration.m4a) | v1 | 2026-09-04 | audio | 56.5 MB |
+| 0051 | [the-vance-network-mini-series](0051-the-vance-network-mini-series/the-vance-network-mini-series.mp4) | v1 | 2026-09-01 | video | 18.9 MB |
+| 0050 | [eight-cuts-to-a-house](0050-eight-cuts-to-a-house/eight-cuts-to-a-house.mp4) | v1 | 2026-09-01 | video | 250.6 MB |
+| 0049 | [ep-dome-001-high-council](0049-ep-dome-001-high-council/ep-dome-001-high-council.mp4) | v1 | 2026-09-01 | video | 3.7 MB |
+| 0048 | [dome-from-scratch-geometry-to-pixels](0048-dome-from-scratch-geometry-to-pixels/dome-from-scratch-geometry-to-pixels-narration.m4a) | v1 | 2026-08-31 | audio | 66.0 MB |
+| 0047 | [ten-dome-builds-master-20260829-135242-chatgpt](0047-ten-dome-builds-master-20260829-135242-chatgpt/ten-dome-builds-master-20260829-135242-chatgpt.mp4) | v1 | 2026-08-29 | video | 249.4 MB |
+| 0046 | [ten-dome-builds-master-20260829-135242-chatgpt-report](0046-ten-dome-builds-master-20260829-135242-chatgpt-report/ten-dome-builds-master-20260829-135242-chatgpt-report.txt) | v1 | 2026-08-29 | text | 0.0 MB |
+| 0045 | [every-dome-in-the-world](0045-every-dome-in-the-world/every-dome-in-the-world.mp4) | v1 | 2026-08-29 | video | 147.8 MB |
+| 0044 | [domesim-master-presentation-report](0044-domesim-master-presentation-report/domesim-master-presentation-report.txt) | v1 | 2026-08-29 | text | 0.0 MB |
+| 0043 | [domesim-master-presentation](0043-domesim-master-presentation/domesim-master-presentation-narration.m4a) | v1 | 2026-08-29 | audio | 76.3 MB |
+| 0042 | [dome-kickstarter](0042-dome-kickstarter-v2/dome-kickstarter-v2.mp4) | v2 | 2026-08-29 | video | 140.5 MB |
+| 0041 | [dome-kickstarter](0041-dome-kickstarter/dome-kickstarter.mp4) | v1 | 2026-08-29 | video | 104.3 MB |
+| 0040 | [frankendome-build](0040-frankendome-build-v2/frankendome-build-v2.mp4) | v2 | 2026-08-29 | video | 169.7 MB |
+| 0039 | [frankendome-montage](0039-frankendome-montage-v6/frankendome-montage-v6.mp4) | v6 | 2026-08-29 | video | 255.7 MB |
+| 0038 | [frankendome-montage](0038-frankendome-montage-v5/frankendome-montage-v5.mp4) | v5 | 2026-08-26 | video | 245.8 MB |
+| 0037 | [frankendome-montage](0037-frankendome-montage-v4/frankendome-montage-v4.mp4) | v4 | 2026-08-26 | video | 247.2 MB |
+| 0036 | [frankendome-montage](0036-frankendome-montage-v3/frankendome-montage-v3.mp4) | v3 | 2026-08-26 | video | 241.2 MB |
+| 0035 | [frankendome-montage](0035-frankendome-montage-v2/frankendome-montage-v2.mp4) | v2 | 2026-08-26 | video | 207.5 MB |
+| 0034 | [frankendome-build](0034-frankendome-build/frankendome-build.mp4) | v1 | 2026-08-26 | video | 100.4 MB |
+| 0033 | [hubless-compound-cut](0033-hubless-compound-cut/hubless-compound-cut.mp4) | v1 | 2026-08-26 | video | 100.6 MB |
+| 0032 | [frankendome-montage](0032-frankendome-montage/frankendome-montage.mp4) | v1 | 2026-08-26 | video | 190.4 MB |
+| 0031 | [assembly-line-energy-masterclass](0031-assembly-line-energy-masterclass/assembly-line-energy-masterclass.mp4) | v1 | 2026-08-23 | video | 166.2 MB |
+| 0030 | [dome-construction-masterclass](0030-dome-construction-masterclass/dome-construction-masterclass-narration.m4a) | v1 | 2026-08-25 | audio | 46.5 MB |
+| 0029 | [zome-construction-masterclass](0029-zome-construction-masterclass/zome-construction-masterclass.mp4) | v1 | 2026-08-23 | video | 170.0 MB |
+| 0028 | [hex-dome-masterclass](0028-hex-dome-masterclass/hex-dome-masterclass.mp4) | v1 | 2026-08-23 | video | 186.3 MB |
+| 0027 | [housing_case](0027-housing_case/housing_case.json) | v1 | 2026-08-23 | data | 0.1 MB |
+| 0026 | [airflow](0026-airflow/airflow.json) | v1 | 2026-08-23 | data | 0.0 MB |
+| 0025 | [rap_demo](0025-rap_demo/A_before_raw_on_beat.mp3) | v1 | 2026-08-20 | audio | 20.0 MB |
+| 0024 | [rap_studio_tab](0024-rap_studio_tab/rap_studio_tab.png) | v1 | 2026-08-20 | image | 0.2 MB |
+| 0023 | [caption_probe_20260820_183744](0023-caption_probe_20260820_183744/caption-de.png) | v1 | 2026-08-20 | image | 1.0 MB |
+| 0022 | [voice_probe_20260820_183230](0022-voice_probe_20260820_183230/de-house.mp3) | v1 | 2026-08-20 | audio | 3.9 MB |
+| 0021 | [launcher_trailer](0021-launcher_trailer/add_narration.py) | v1 | 2026-08-16 | video | 57.8 MB |
+| 0020 | [wheelchair1](0020-wheelchair1/wheelchair1.mp4) | v1 | 2026-08-16 | video | 62.3 MB |
+| 0019 | [presenter-all](0019-presenter-all/.airflow-silent.mp4) | v1 | 2026-08-16 | video | 4.9 MB |
+| 0018 | [dome_accessibility_20260816_082305_167_1d3f14](0018-dome_accessibility_20260816_082305_167_1d3f14/generation_playbook_20260816_082305_v001.md) | v1 | 2026-08-16 | slides | 122.8 MB |
+| 0017 | [studio](0017-studio) | v1 | 2026-10-14 | image | 0.6 MB |
+| 0016 | [.p1](0016-.p1/.p1-silent.mp4) | v1 | 2026-08-16 | video | 7.6 MB |
+| 0015 | [p1](0015-p1/p1-narration.m4a) | v1 | 2026-08-16 | audio | 4.1 MB |
+| 0014 | [testo](0014-testo/testo.mp4) | v1 | 2026-08-05 | video | 69.4 MB |
+| 0013 | [dome_case_market_fit](0013-dome_case_market_fit/dome_case_market_fit.mp4) | v1 | 2026-08-01 | video | 21.9 MB |
+| 0012 | [dome_case_utility_core](0012-dome_case_utility_core/dome_case_utility_core.mp4) | v1 | 2026-08-01 | video | 24.2 MB |
+| 0011 | [dome_case_financing](0011-dome_case_financing/dome_case_financing.mp4) | v1 | 2026-08-01 | video | 17.5 MB |
+| 0010 | [dome_case_resilience](0010-dome_case_resilience/dome_case_resilience.mp4) | v1 | 2026-08-01 | video | 19.6 MB |
+| 0009 | [dome_case_energy](0009-dome_case_energy/dome_case_energy.mp4) | v1 | 2026-08-01 | video | 23.5 MB |
+| 0008 | [dome_case_benchmark](0008-dome_case_benchmark/dome_case_benchmark.mp4) | v1 | 2026-08-01 | video | 18.0 MB |
+| 0007 | [dome_case_triangles](0007-dome_case_triangles/dome_case_triangles.mp4) | v1 | 2026-08-01 | video | 15.2 MB |
+| 0006 | [dome_case_more_room](0006-dome_case_more_room/dome_case_more_room.mp4) | v1 | 2026-08-01 | video | 9.4 MB |
+| 0005 | [dome_case_bare_shell](0005-dome_case_bare_shell/dome_case_bare_shell.mp4) | v1 | 2026-08-01 | video | 10.0 MB |
+| 0004 | [dome_case_manufacturing](0004-dome_case_manufacturing/dome_case_manufacturing.mp4) | v1 | 2026-08-01 | video | 35.5 MB |
+| 0003 | [dome_housing_case](0003-dome_housing_case/dome_housing_case.mp4) | v1 | 2026-08-01 | video | 134.0 MB |
+| 0002 | [2v-masterclass](0002-2v-masterclass/2v-masterclass.mp4) | v1 | 2026-07-27 | video | 104.6 MB |
+| 0001 | [2v-masterclass-silent-backup](0001-2v-masterclass-silent-backup/2v-masterclass-silent-backup.mp4) | v1 | 2026-07-26 | video | 9.5 MB |

@@ -30,6 +30,50 @@ def _c(key, name, domain, claim, explain, terms, figures=(), caveat="", taught=(
 
 
 CONCEPTS: tuple[Concept, ...] = (
+    _c("wedge_infill_coverage", "Measure coverage before counting infill", "method",
+       """A pair's continuous face pitch, not its bowtie span, controls the
+       wedge footage required to fill a panel.""",
+       """The nominal reference has {{wm.opening_sqft}} square feet of assumed
+       clear opening. Dividing this area by a stated pair pitch, with both
+       wedges counted, gives a conditional material range. Opposed-point
+       section experiments and all-points-inward seating are different layouts.""",
+       ("coverage pitch", "wedge", "panel"),
+       figures=("wm.chord_in", "wm.opening_sqft", "wm.least_infill_ft", "wm.most_infill_ft"),
+       caveat="""The range assumes continuous coverage. Kerf, taper, defects,
+       end cuts, seals and fasteners still require the actual layout and trials;
+       a void fraction is not an insulation or strength rating.""",
+       taught=("film:cabin_every_piece/pair_budget",),
+       recipe=("scene:cabin_every_piece/pair_budget", "callout:{{wm.pair_table}}",
+               "type:SPAN IS NOT COVERAGE")),
+    _c("gross_before_finished", "Reserve blanks before counting finished timber", "wood",
+       """A harvesting budget reserves the uncut frame blanks, not just the
+       shorter members that remain after fitting.""",
+       """The reference needs {{wm.members}} panel-owned members and reserves
+       {{wm.gross_frame_ft}} feet of wedge blanks. Those require
+       {{wm.frame_trunk_ft}} feet of uniform usable trunk before infill is added.
+       The nominal chords and the solver's physical cuts are different totals.""",
+       ("blank reserve", "trunk", "offcut", "member"),
+       figures=("wm.nominal_frame_ft", "wm.finished_frame_ft", "wm.gross_frame_ft", "wm.frame_trunk_ft"),
+       caveat="""Tree equivalents assume uniform diameter and no cutting loss;
+       reclaimed frame offcuts need a cutting plan before they can reduce the
+       additional infill stock.""",
+       taught=("film:cabin_every_piece/frame_footage", "film:cabin_every_piece/tree_budget"),
+       recipe=("scene:cabin_every_piece/frame_footage", "scene:cabin_every_piece/tree_budget",
+               "tally:{{wm.gross_frame_ft}} wedge ft / {{wm.splits}} = {{wm.frame_trunk_ft}} trunk ft")),
+    _c("pentagon_complementary_stock", "The star's lengths complement the perimeter stock", "geometry",
+       """A regular pentagon's long and short star segments sum to one
+       perimeter side.""",
+       """The existing floor polygon gives a diagonal-to-side ratio of
+       {{wm.pent_phi}}. A diagonal splits into long, short and long; one long
+       plus one short uses a side-length blank in the ideal centreline drawing.
+       Actual pinwheel seating and saw kerf change the marks on the wood.""",
+       ("golden ratio", "pinwheel", "offcut"),
+       figures=("wm.pent_side_in", "wm.pent_long_in", "wm.pent_short_in", "wm.pent_diagonal_in"),
+       caveat="""Plan-view butt and mitre angles refer to different joints;
+       none substitutes for a solved compound cut in a thick wedge.""",
+       taught=("film:cabin_every_piece/pentagon_math",),
+       recipe=("scene:cabin_every_piece/pentagon_math",
+               "tally:{{wm.pent_long_in}} + {{wm.pent_short_in}} = {{wm.pent_side_in}} in")),
     # ============================================================ geometry
     _c("golden_ratio_not_struts", "Phi places the corners, not the struts",
        "geometry",

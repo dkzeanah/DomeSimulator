@@ -25,6 +25,7 @@ import math
 import numpy as np
 
 from infill.facts import by, facts
+from infill import methodology as method
 
 from . import cabin_stage
 from . import cabin_world as cw
@@ -42,6 +43,8 @@ RED = (255, 140, 120)
 F = facts()
 B = F["base"]
 W = F["wedge"]
+MF = method.reference()
+PG = method.pentagon()
 WEDGE = ("w8", "parallel", "flipflop", "fill")
 PERMS = [(p["key"], p["arr"], p["lay_key"], p["mode"]) for p in F["perms"]]
 PC = np.array([cabin_stage.CENTRE[0], cabin_stage.CENTRE[1], cabin_stage.HEIGHT])
@@ -417,6 +420,37 @@ def p_honest(app, opaque, transparent, p):
     _label(app, np.array([0.0, 0.0, z + 0.6]), f"WOOD {B['fb_psi']:.0f} psi: A GUESS, NOT A GRADE", RED)
 
 
+def p_method_inputs(app, opaque, transparent, p):
+    _world(app)
+    _frame(app)
+    _label(app, PC + [0, 0, 0.85], "PLANNING ASSUMPTIONS, NOT A CUT LIST", AMBER)
+
+
+def p_frame_footage(app, opaque, transparent, p):
+    _world(app)
+    _frame(app)
+    _label(app, PC + [0, 0, 0.85], "CHORDS / ACTUAL CUTS / UNCUT BLANKS", AMBER)
+
+
+def p_pair_budget(app, opaque, transparent, p):
+    _world(app)
+    _frame(app)
+    _pieces(app, WEDGE)
+    _label(app, PC + [0, 0, 0.85], "SOLVED FLIP-FLOP EXAMPLE; TEST INWARD-POINT PAIRS SEPARATELY", AMBER)
+
+
+def p_tree_budget(app, opaque, transparent, p):
+    _world(app)
+    _frame(app)
+    _label(app, PC + [0, 0, 0.85], "TREE EQUIVALENTS ASSUME UNIFORM USABLE TRUNK", AMBER)
+
+
+def p_pentagon_math(app, opaque, transparent, p):
+    _floor(app)
+    _base(app, "star", roles=("frame", "primary"))
+    _label(app, cw.landmarks().deck_centre + [0, 0, 0.7], "IDEAL PLAN LENGTHS; REAL CUTS STOP AT FACES", AMBER)
+
+
 def p_close(app, opaque, transparent, p):
     _floor(app, dome=True)
     _base(app)
@@ -432,6 +466,9 @@ SCENES = {
     "joists": p_joists, "joist_saw": p_joist_saw, "loads": p_loads, "piers": p_piers, "patterns": p_patterns,
     "extremes": p_extremes, "gravel": p_gravel, "materials": p_materials, "dome": p_dome, "honest": p_honest,
     "close": p_close,
+    "method_inputs": p_method_inputs, "frame_footage": p_frame_footage,
+    "pair_budget": p_pair_budget, "tree_budget": p_tree_budget,
+    "pentagon_math": p_pentagon_math,
 }
 
 
@@ -439,7 +476,7 @@ SCENES = {
 # Cameras
 # ----------------------------------------------------------------------
 
-MATH = ("declared", "loads")
+MATH = ("declared", "loads", "method_inputs", "frame_footage", "pair_budget", "tree_budget", "pentagon_math")
 
 
 def beside_worksheet(shot):
@@ -498,6 +535,9 @@ def _moves() -> dict:
         "close": shots.crane_reveal(m.dome_centre + [0, 0, 1.0], hero + [0.4, 3.0, 0.0], hero + [1.2, -2.5, 4.0],
                                     46, 54, look_start=floor),
     }
+    for key in ("method_inputs", "frame_footage", "pair_budget", "tree_budget"):
+        table[key] = shots.orbit(panel, 3.8, 2.8, 75, 20, 46)
+    table["pentagon_math"] = shots.orbit(floor, 12.0, 8.0, -80, 25, 50)
     out = {}
     for slug, shot in table.items():
         if slug in MATH:
@@ -660,7 +700,7 @@ def _chapters() -> tuple[Chapter, ...]:
          f"corner. But on its own it leaves the floor in big triangles. The widest gap a deck board would have to "
          f"cross is {star['deck_gap_in']:.0f} inches, and a two by six deck may cross {B['deck_allow_in']:.0f}. "
          f"The star alone fails.",
-         [f"diagonal = 1.618 x side, cut in three", f"deck gap {star['deck_gap_in']:.1f} in > "
+         [f"diagonal = {PG['phi']:.6f} x side, cut in three", f"deck gap {star['deck_gap_in']:.1f} in > "
           f"{B['deck_allow_in']:.0f} in allowed"]),
         (16, "joists", "Joists between the points", "Every gap inside a deck board's reach.",
          f"So every space between the points is filled with joists, {B['joist_name']}, {B['spacing_in']:.0f} "
@@ -743,7 +783,72 @@ def _chapters() -> tuple[Chapter, ...]:
          f"stacked by your saw.",
          [f"triangle: {W['pieces']} pieces", f"floor: {B['members']} members, {B['piers']} piers"]),
     ]
-    return tuple(_ch(*row) for row in rows)
+    least, most = MF["rows"][0], MF["rows"][-1]
+    rows[3:3] = [
+        (0, "method_inputs", "The stock budget has assumptions", "State the example before using it.",
+         f"Before estimating a wooden face, state the example. The planning reference takes the long chord as "
+         f"{MF['long_in']:.0f} inches, not the finished stick. Its log is {MF['log_in']:.0f} inches across, split "
+         f"{MF['splits']} ways, with {MF['trunk_ft']:.0f} feet of uniform usable trunk. The frame allowance is "
+         f"one {MF['blank_in']:.0f} inch blank per member. For the opening estimate, we assume the frame occupies "
+         "half the outer chord width inward from each edge. The actual tray opening is solved separately. "
+         "Pair coverage, kerf, taper, defects and sealing still need a measured layout.",
+         [f"nominal long chord {MF['long_in']:.0f} in; NOT the tool's maximum finished member",
+          f"uniform log {MF['log_in']:.0f} in, {MF['splits']} splits, usable trunk {MF['trunk_ft']:.0f} ft",
+          f"frame blank {MF['blank_in']:.0f} in; frame inset ASSUMED {MF['inset_in']:.3f} in",
+          "pair pitch (2-p)w assumes continuous coverage; p is projected overlap",
+          "kerf / taper / defects / end cuts / seals / packing loss NOT included"], "math"),
+        (0, "frame_footage", "Three different timber totals", "A drawing, a cut, and the blank it came from.",
+         f"Every panel owns its three members: {MF['members']} members for {MF['shared_edges']} shared geometric "
+         f"edges. In the nominal-chord example their edge lengths total {MF['nominal_frame_ft']:.2f} feet. "
+         f"The live solver's physical cut-stock total is {MF['finished_frame_ft']:.2f}, because the joints stop "
+         f"at faces. But buying a blank for every member reserves {MF['gross_frame_ft']:.0f} feet of wedge stock. "
+         "These are three different ledgers. A shorter finished member leaves an offcut; it does not make "
+         "the original blank shorter. Reuse that offcut only when the cutting plan gives it a job.",
+         [f"reference chords {MF['long_in']:.3f} / {MF['short_in']:.3f} in",
+          f"panel-owned nominal edges = {MF['nominal_frame_ft']:.2f} wedge ft",
+          f"solver cut-stock = {MF['finished_frame_ft']:.2f} wedge ft",
+          f"{MF['members']} blanks x {MF['blank_in']/12:g} ft = {MF['gross_frame_ft']:.0f} wedge ft"], "math"),
+        (0, "pair_budget", "Pair span is not face coverage", "An overlap range, with its condition attached.",
+         f"The outer chord of an eighth of this log is {MF['chord_in']:.3f} inches. Under the stated "
+         f"half-width inset, the clear area estimate is {MF['opening_sqft']:.2f} square feet. If a pair "
+         "continuously covers two chord widths, it uses the least timber in this model. If two wedges cover "
+         "only one width, the timber doubles. That is an assumed face-pitch range, not proof that sliding "
+         "a bowtie closes the face. The alternating-point infill pictured here is solved by the tool. "
+         "Two points both inward are another seating problem. An opposed-point section experiment has "
+         "another orientation again. Sliding changes void and contact, not the wood already in the pair.",
+         ["w = diameter x sin(pi / splits)", "assumed pair pitch = (2-p)w",
+          "infill wedge ft = 2 x clear sq ft x 12 / continuous pair pitch",
+          f"conditional range {least['infill_ft']:,.1f} to {most['infill_ft']:,.1f} wedge ft",
+          "bowtie span / void fraction do NOT prove coverage, strength or R-value"], "math"),
+        (0, "tree_budget", "Count raw trunk before finished timber", "Reserve the frame first, then add infill.",
+         f"A uniform usable trunk of {MF['trunk_ft']:.0f} feet gives {MF['rounds_per_tree']} six-foot rounds "
+         f"and {MF['wedges_per_tree']} wedges in the ideal model. Reserve {MF['frame_trunk_ft']:.0f} feet "
+         "of raw trunk for the framing blanks, then add the infill wedge footage divided by the splits. "
+         f"The conditional range is {least['raw_trunk_ft']:.1f} to {most['raw_trunk_ft']:.1f} feet of usable "
+         f"trunk: {least['whole_tree_equivalents']} to {most['whole_tree_equivalents']} whole reference-tree "
+         "equivalents. These are uniform-diameter equivalents, not guaranteed standing trees. A real pine "
+         "tapers, cuts consume wood, and short triangle courses need a packing plan.",
+         [f"ideal tree yield = {MF['trunk_ft']:.0f} x {MF['splits']} = {MF['tree_wedge_ft']:.0f} wedge ft",
+          f"frame reserve = {MF['gross_frame_ft']:.0f} / {MF['splits']} = {MF['frame_trunk_ft']:.0f} trunk ft",
+          f"frame + infill = {least['raw_trunk_ft']:.1f} to {most['raw_trunk_ft']:.1f} trunk ft",
+          f"ceil(trunk / {MF['trunk_ft']:.0f}) = {least['whole_tree_equivalents']} to {most['whole_tree_equivalents']} equivalents"], "math"),
+    ]
+    idx = next(i for i, row in enumerate(rows) if row[1] == "star")
+    rows[idx:idx] = [(0, "pentagon_math", "The star divides the stock", "Golden-ratio lengths, before the saw.",
+        f"The floor's regular pentagon has a diagonal {PG['phi']:.6f} times its side. A diagonal crosses "
+        "two others and splits into long, short and long. One long plus one short is exactly a perimeter "
+        "side in the centreline drawing. That gives complementary stock, but not zero saw waste. The "
+        "actual pieces stop at other members' faces and the saw consumes a kerf. Also distinguish the "
+        f"corner's {PG['interior_deg']:.0f} degree included angle from a symmetrical "
+        f"{PG['miter_deg']:.0f} degree mitre, a nominal {PG['butt_deg']:.0f} degree perimeter side-face butt, "
+        f"and a {PG['diagonal_butt_deg']:.0f} degree diagonal-to-side butt. Those are plan angles for "
+        "different joints, not bevel settings through a wedge.",
+        [f"D = phi S = {PG['diagonal_in']:.2f} in",
+         f"L = D-S = {PG['long_in']:.2f} in; C = D-2L = {PG['short_in']:.2f} in",
+         f"L+C = {PG['side_in']:.2f} in; 2L+C = {PG['diagonal_in']:.2f} in",
+         f"star {PG['long_count']} long + {PG['short_count']} short; perimeter {PG['perimeter_count']} sides",
+         f"plan cuts: mitre {PG['miter_deg']:.0f}, side butt {PG['butt_deg']:.0f}, diagonal butt {PG['diagonal_butt_deg']:.0f} deg"], "math")]
+    return tuple(_ch(i, *row[1:]) for i, row in enumerate(rows, 1))
 
 
 CHAPTERS = _chapters()
@@ -754,6 +859,7 @@ CHAPTERS = _chapters()
 # ----------------------------------------------------------------------
 
 def validate_every_piece_film() -> None:
+    method.validate_methodology()
     isc.validate_infill_scene()
     cw.validate_cabin_world()
     assert set(SCENES) == set(MOVES) == {c.slug for c in CHAPTERS}
@@ -791,6 +897,9 @@ def validate_every_piece_film() -> None:
                 assert all(isinstance(c, int) and 0 <= c <= 255 for c in item.color), slug
     # The claims the narration makes, held against the facts.
     by_slug = {c.slug: c.narration[0] for c in CHAPTERS}
+    assert "not proof" in by_slug["pair_budget"] and "both inward" in by_slug["pair_budget"]
+    assert "raw trunk" in by_slug["tree_budget"] and "not guaranteed" in by_slug["tree_budget"]
+    assert "plan angles" in by_slug["pentagon_math"]
     star, beams, fan = by(F["patterns"], "star"), by(F["patterns"], "beams"), by(F["patterns"], "fan")
     assert not star["deck_ok"] and "fails" in by_slug["star"]
     assert B["deck_gap_in"] <= B["deck_allow_in"] and "inside the" in by_slug["joists"]
@@ -815,7 +924,7 @@ def validate_every_piece_film() -> None:
 def report() -> str:
     from infill import base as bs
     from infill.constants import table
-    return table() + "\n\n" + "\n".join(bs.constants_table())
+    return table() + "\n\n" + "\n".join(bs.constants_table()) + "\n\n" + method.report()
 
 
 EVERY_PIECE_LESSON = Lesson(

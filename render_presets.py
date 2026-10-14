@@ -420,7 +420,9 @@ PRESETS: tuple[RenderPreset, ...] = (
            "on the mitre saw with its offcut, ten ways to fill it, then the "
            "floor under the dome from five 20 ft half trunks -- a star, "
            "joists, every span and pier checked, seven patterns and five "
-           "materials compared. Every figure from infill.facts."),
+           "materials compared. Includes the core stock ledger, conditional "
+           "pair-coverage range, raw-trunk reserve and pentagon stock identities. "
+           "Every figure from infill.facts and infill.methodology."),
 
     _video("cabin_styles", "cabin_styles", "the-40-hour-cabin-styled.mp4",
            "THE 40 HOUR CABIN, STYLED TWELVE WAYS. The book's own dome built in "

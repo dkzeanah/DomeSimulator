@@ -226,7 +226,7 @@ def export(method: str = "wedge", model=None) -> Path:
     m = model or g.build(method)
     method = m.method
     out = _next_dir(f"wedge-zome-{method}")
-    out.mkdir(parents=True)
+    out.mkdir(parents=True, exist_ok=True)
     md = how_to(method, m)
     (out / "how-to.md").write_text(md, encoding="utf-8")
     body = book_export._markdown_to_html(md)

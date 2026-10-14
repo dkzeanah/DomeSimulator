@@ -65,8 +65,20 @@ def chapters(lesson: str, compose_segments: bool):
 
 
 def target(fields: dict) -> Path:
+    """Where the cut would go: the newest iteration's folder (for ``show``)."""
     import medialib
     return medialib.locate(ROOT / fields["export_video"])
+
+
+def claim(fields: dict) -> Path:
+    """Make the next iteration's numbered folder and point the render at a file inside it,
+    so the cut, the phone cut, the voice and the release all land in that one folder."""
+    import medialib
+    name = Path(fields["export_video"]).name
+    folder, version = medialib.new_output(medialib.slug_of(name))
+    path = folder / medialib.versioned(name, version)
+    fields["export_video"] = str(path)
+    return path
 
 
 # ---------------------------------------------------------------------------
@@ -170,12 +182,14 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
         raise SystemExit("--pace is for --voice mine; a neural voice takes its rate in the preset (voice_rate)")
     where = target(fields)
     print(f"{lesson}: {fields['export_video']}")
-    print(f"  files into {where.parent.relative_to(ROOT)}  (a new version beside any there)")
+    print(f"  a new numbered output, after {where.parent.name if where.parent.exists() else 'none yet'}")
     print(f"  voice {'mine at x%g' % pace if mine else fields['voice']}; "
           f"{'landscape only' if landscape_only else 'landscape + phone cut'}; "
           f"segments {'on' if fields.get('compose_segments') else 'off'}; teaser {'on' if teaser else 'off'}")
     if dry_run:
         return 0
+    where = claim(fields)
+    print(f"  into {where.relative_to(ROOT)}")
     if mine:
         where.parent.mkdir(parents=True, exist_ok=True)
         fields["local_narration_plan"] = str(narrate_mine(lesson, bool(fields.get("compose_segments")), pace,
@@ -184,17 +198,22 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
     import medialib
     medialib.write_index()
     if code == 0:
-        print(f"done; the film's folder: {medialib.locate(ROOT / fields['export_video']).parent.relative_to(ROOT)}")
+        print(f"done; the film's folder: {Path(fields['export_video']).parent.relative_to(ROOT)}")
     return code
 
 
 def stills(lesson: str) -> int:
     import render_presets as rp
+    import medialib
     preset = rp.PRESET_BY_KEY.get(f"{lesson}_stills")
     fields = dict(preset.applied()) if preset else {**preset_fields(lesson), "action": "shots",
                                                      "shots": rp.chapter_shots(lesson), "no_narration": True}
-    print(f"stills for {lesson} into {WORK.relative_to(ROOT) / lesson}")
-    return run_ticket(fields)
+    folder = medialib.new_folder(f"{lesson}-stills")
+    fields["shots_output_dir"] = str(folder)
+    print(f"stills for {lesson} into {folder.relative_to(ROOT)}")
+    code = run_ticket(fields)
+    medialib.write_index()
+    return code
 
 
 def teaser(lesson: str, voice: str = "", pace: float = 1.0) -> int:
@@ -206,8 +225,7 @@ def teaser(lesson: str, voice: str = "", pace: float = 1.0) -> int:
     key = teasers.PREFIX + lesson
     fields = {"action": "export_video", "lesson": key, "export_video": str(teasers.output_path(lesson)),
               "orientation": "both", "fps": "30", "size": "1920x1080", "teaser": False}
-    where = target(fields)
-    where.parent.mkdir(parents=True, exist_ok=True)
+    where = claim(fields)
     print(f"{key}: into {where.parent.relative_to(ROOT)}, voice mine at x{pace:g}")
     fields["local_narration_plan"] = str(narrate_mine(key, False, pace, where.parent, where.stem))
     code = run_ticket(fields)

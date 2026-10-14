@@ -329,7 +329,9 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "Creator's own model on the Cabin World's hilltop.",
                 compose=True),
     Deliverable("cabin_every_piece", "every-piece-numbered.mp4",
-                "The Triangle Infill calculator, filmed. One of the dome's "
+                "The Triangle Infill calculator and core wedge stock methodology, "
+                "filmed: nominal versus cut versus blank footage, conditional "
+                "paired coverage, raw-trunk equivalents and pentagon identities. One of the dome's "
                 "triangles filled with wedges split from a log, each piece "
                 "numbered, its lengths along every edge, and both cuts set up on "
                 "the mitre saw -- which face down, what against the fence, the "

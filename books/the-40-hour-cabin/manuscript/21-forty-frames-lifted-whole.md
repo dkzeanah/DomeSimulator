@@ -29,6 +29,26 @@ every joint between panels is a lap between two flat sides.
 
 ![Forty frames, built flat, lifted whole.](plate-forty-frames.png)
 
+## Count the stock before closing the panel
+
+The wedge method can close a frame with wood from the same tree. That makes
+infill part of the material plan, not an afterthought once the frame is raised.
+Keep three counts: the drawing's chords, the solver's actual cut lengths, and
+the uncut blanks reserved at the woodpile. In the nominal
+{{wm.long_in}} inch chord example, the panel edges total
+{{wm.nominal_frame_ft}} feet, while the physical frame's cut-stock is
+{{wm.finished_frame_ft}} feet. Reserving one {{wm.blank_in}} inch blank for
+each member takes {{wm.gross_frame_ft}} feet of wedge stock. The difference
+is offcut stock to allocate, not timber that never had to be harvested.
+
+Then decide what face the infill must close. Two wedges forming a strip must
+be counted as two pieces, and the relevant width is the strip's continuous
+coverage on that face. A nesting pair's overall span can include empty space.
+The worked coverage and raw-trunk ledger are in Chapter {{ch.everypiece}};
+its area estimate is labelled as an assumption, and the cutting calculator
+still decides the individual pieces. This is how a finished panel can be
+planned on the bench before it is lifted.
+
 ## A panel that cannot fall through
 
 <!-- concept: why/keystone -->
