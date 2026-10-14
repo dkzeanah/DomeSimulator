@@ -15,6 +15,7 @@ The two things it cannot do for you are said plainly when it reaches them: switc
 
 from __future__ import annotations
 
+import getpass
 import json
 import re
 import secrets
@@ -137,15 +138,22 @@ def site_and_secrets() -> None:
     if "ADMIN_EMAILS" not in have:
         git_email = subprocess.run(["git", "config", "user.email"], capture_output=True, text=True).stdout.strip()
         put("ADMIN_EMAILS", ask("Email that gets the Admin page", git_email))
-    print("\nOptional now, or later by running this again (leave blank to skip):")
-    for name, hint in (("RESEND_API_KEY", "Resend API key, so the sample is also emailed"),
-                       ("MAIL_FROM", "From address, e.g. Zeanah Lab <hello@zeanahlab.com>"),
-                       ("STRIPE_SECRET_KEY", "Stripe secret key, to take payments"),
-                       ("STRIPE_WEBHOOK_SECRET", "Stripe webhook signing secret")):
+    print("\nOptional keys. Each one says what it starts with; press Enter alone to skip it.")
+    print("What you paste stays hidden, and a key with the wrong beginning is refused.\n")
+    for name, hint, prefixes in (
+            ("RESEND_API_KEY", "RESEND key (from resend.com), starts with re_", ("re_",)),
+            ("MAIL_FROM", "FROM address for emails, e.g. Zeanah Lab <hello@zeanahlab.com>", None),
+            ("STRIPE_SECRET_KEY", "STRIPE secret or restricted key, starts with sk_live_ / rk_live_ (or sk_test_ / rk_test_)",
+             ("sk_live_", "rk_live_", "sk_test_", "rk_test_")),
+            ("STRIPE_WEBHOOK_SECRET", "STRIPE WEBHOOK signing secret, starts with whsec_", ("whsec_",))):
         if name in have:
-            print(f"  {name} already set.")
+            print(f"  {name}: already set (to change it: npx wrangler pages secret delete {name} --project-name {PROJECT}, then run this again).")
             continue
-        v = ask(f"  {hint}")
+        while True:
+            v = (getpass.getpass(f"  {hint}\n  > ") if prefixes else ask(f"  {hint}\n  >")).strip()
+            if not v or not prefixes or v.startswith(prefixes):
+                break
+            print(f"  That starts with '{v[:6]}...', not {' or '.join(prefixes)} -- it belongs in a different box. Try again, or press Enter to skip.")
         if v:
             put(name, v)
 
@@ -158,6 +166,14 @@ def publish() -> None:
     subprocess.run(["npm.cmd" if sys.platform == "win32" else "npm", "run", "build"], cwd=SITE, check=True)
     run("pages", "deploy", "dist", "--project-name", PROJECT, "--branch", "main", "--commit-dirty=true", capture=False, check=True)
     say("6. The address")
+    import urllib.request
+    try:
+        live = urllib.request.urlopen("https://www.zeanahlab.com/api/shop", timeout=15).status == 200
+    except Exception:
+        live = False
+    if live:
+        print("www.zeanahlab.com is already serving the site.")
+        return
     print("Last step, two clicks: in the page that opens, choose 'Set up a custom domain', type www.zeanahlab.com, confirm.")
     print("Cloudflare already runs zeanahlab.com, so it adds the record itself. Do the same for zeanahlab.com.")
     webbrowser.open(f"https://dash.cloudflare.com/?to=/:account/pages/view/{PROJECT}/domains")
