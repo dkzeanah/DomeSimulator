@@ -44,13 +44,35 @@ def run(*args: str, capture: bool = True, stdin: str | None = None, check: bool 
     return r
 
 
+def drain() -> None:
+    """Throw away keys already waiting. A paste on Windows can carry an extra Enter, which the
+    next question would otherwise read as its answer -- skipping a box or saying "no"."""
+    if sys.platform == "win32":
+        import msvcrt
+        import time
+        time.sleep(0.15)
+        while msvcrt.kbhit():
+            msvcrt.getwch()
+
+
 def ask(prompt: str, default: str = "") -> str:
+    drain()
     got = input(f"{prompt}{f' [{default}]' if default else ''}: ").strip()
     return got or default
 
 
+def secret(prompt: str) -> str:
+    drain()
+    return getpass.getpass(prompt).strip()
+
+
 def yes(prompt: str) -> bool:
-    return input(f"{prompt} [y/N]: ").strip().lower() in ("y", "yes")
+    drain()
+    while True:
+        got = input(f"{prompt} Type y or n, then Enter: ").strip().lower()
+        if got in ("y", "yes", "n", "no"):
+            return got in ("y", "yes")
+        print("  Please type y or n.")
 
 
 # ---------------------------------------------------------------- the steps
@@ -99,7 +121,8 @@ def book_store() -> None:
         out = r.stdout + r.stderr
         if r.returncode == 0 and BUCKET in out:
             print("Exists.")
-            break
+            print("The books are not uploaded again on a rerun; after a new edition: npm run books:remote")
+            return
         if r.returncode == 0:
             c = run("r2", "bucket", "create", BUCKET)
             if c.returncode == 0:
@@ -150,9 +173,16 @@ def site_and_secrets() -> None:
             print(f"  {name}: already set (to change it: npx wrangler pages secret delete {name} --project-name {PROJECT}, then run this again).")
             continue
         while True:
-            v = (getpass.getpass(f"  {hint}\n  > ") if prefixes else ask(f"  {hint}\n  >")).strip()
-            if not v or not prefixes or v.startswith(prefixes):
+            v = secret(f"  {hint}\n  > ") if prefixes else ask(f"  {hint}\n  >")
+            if not v:
                 break
+            if prefixes and v.startswith(prefixes):
+                break
+            if not prefixes and "@" in v and not v.startswith(("sk_", "rk_", "pk_", "whsec_", "re_")):
+                break
+            if not prefixes:
+                print("  That is not an email address (it looks like a key) -- nothing was saved. Try again, or press Enter to skip.")
+                continue
             print(f"  That starts with '{v[:6]}...', not {' or '.join(prefixes)} -- it belongs in a different box. Try again, or press Enter to skip.")
         if v:
             put(name, v)
