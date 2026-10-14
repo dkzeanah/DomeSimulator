@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\0569-closing-the-triangle-teaser\closing-the-triangle-teaser.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\0569-closing-the-triangle-teaser\closing-the-triangle-teaser-vertical.mp4

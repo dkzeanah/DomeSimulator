@@ -1,9 +1,11 @@
 # The library
 
-566 outputs of 382 concepts, 24.96 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+568 outputs of 383 concepts, 25.38 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
 
 | # | output | iteration | made | kind | size |
 |---|---|---|---|---|---|
+| 0569 | [closing-the-triangle-teaser](0569-closing-the-triangle-teaser/closing-the-triangle-teaser.mp4) | v1 | 2026-10-14 | video | 53.5 MB |
+| 0568 | [closing-the-triangle](0568-closing-the-triangle-v3/closing-the-triangle-v3.mp4) | v3 | 2026-10-14 | video | 366.0 MB |
 | 0567 | [cabin_triangle_fill-stills](0567-cabin_triangle_fill-stills-v10/cabin_triangle_fill_0360.88s.png) | v10 | 2026-10-14 | image | 0.6 MB |
 | 0566 | [cabin_triangle_fill-teaser](0566-cabin_triangle_fill-teaser) | v1 | 2026-10-14 | folder | 0.0 MB |
 | 0565 | [closing-the-triangle](0565-closing-the-triangle-v2/closing-the-triangle-v2.mp4) | v2 | 2026-10-14 | video | 257.6 MB |
