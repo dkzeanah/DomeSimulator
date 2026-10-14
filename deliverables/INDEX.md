@@ -1,9 +1,18 @@
 # The library
 
-557 outputs of 381 concepts, 24.69 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+566 outputs of 382 concepts, 24.96 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
 
 | # | output | iteration | made | kind | size |
 |---|---|---|---|---|---|
+| 0567 | [cabin_triangle_fill-stills](0567-cabin_triangle_fill-stills-v10/cabin_triangle_fill_0360.88s.png) | v10 | 2026-10-14 | image | 0.6 MB |
+| 0566 | [cabin_triangle_fill-teaser](0566-cabin_triangle_fill-teaser) | v1 | 2026-10-14 | folder | 0.0 MB |
+| 0565 | [closing-the-triangle](0565-closing-the-triangle-v2/closing-the-triangle-v2.mp4) | v2 | 2026-10-14 | video | 257.6 MB |
+| 0564 | [cabin_triangle_fill-stills](0564-cabin_triangle_fill-stills-v9/cabin_triangle_fill_0326.76s.png) | v9 | 2026-10-14 | image | 0.3 MB |
+| 0563 | [cabin_triangle_fill-stills](0563-cabin_triangle_fill-stills-v8/cabin_triangle_fill_0326.76s.png) | v8 | 2026-10-14 | image | 0.3 MB |
+| 0562 | [cabin_triangle_fill-stills](0562-cabin_triangle_fill-stills-v7/cabin_triangle_fill_0143.56s.png) | v7 | 2026-10-14 | image | 0.8 MB |
+| 0561 | [cabin_triangle_fill-stills](0561-cabin_triangle_fill-stills-v6/cabin_triangle_fill_0143.56s.png) | v6 | 2026-10-14 | image | 0.8 MB |
+| 0560 | [cabin_triangle_fill-stills](0560-cabin_triangle_fill-stills-v5/cabin_triangle_fill_0007.28s.png) | v5 | 2026-10-14 | image | 5.6 MB |
+| 0559 | [cabin_triangle_fill-stills](0559-cabin_triangle_fill-stills-v4/cabin_triangle_fill_0035.84s.png) | v4 | 2026-10-14 | image | 0.6 MB |
 | 0558 | [closing-the-triangle](0558-closing-the-triangle/closing-the-triangle.mp4) | v1 | 2026-10-14 | video | 96.2 MB |
 | 0557 | [cabin_triangle_fill-stills](0557-cabin_triangle_fill-stills-v3/cabin_triangle_fill_0004.00s.png) | v3 | 2026-10-14 | image | 2.0 MB |
 | 0556 | [cabin_triangle_fill-stills](0556-cabin_triangle_fill-stills-v2/cabin_triangle_fill_0004.00s.png) | v2 | 2026-10-14 | image | 1.9 MB |

@@ -16,12 +16,19 @@ base at that pitch, each wedge as long as the triangle is wide where it lies, in
 strip where the frame's own wedges sit. The dome's triangles are the solver's. So the
 footage is counted, wedge by wedge -- not an area divided by a width.
 
-This corrects the first count (:mod:`two_v_demo.wedge_coverage_facts`, from the owner's
-ChatGPT session): that one divided the open area by ``(2 - p) x`` the wedge's **face**
-width. With the points facing each other down the triangle, the pair's downward reach is
-set by the wedge's **depth**, which for an eighth of a log is longer than its face. Laid
-pair by pair -- with the short pairs near each top corner and the closing pair at each
-base -- the first count lands a few percent high when nested and runs low as a bowtie.
+**Which layout this is.** The two wedges lie with their points facing each other *down*
+the triangle, so each pair's faces bear on the next pair's faces, course on course, and
+what shows on the panel is the slants. That is the opposed-point arrangement of
+:func:`infill.methodology.pair_section`, whose section this module uses. In it the
+course pitch is the pair's reach, ``(2 - p) x depth``. The first count
+(:mod:`two_v_demo.wedge_coverage_facts`) assumed a different layout -- the **face**
+showing, so the pitch is ``(2 - p) x face`` -- and :mod:`infill.methodology` keeps that one
+as its labelled planning assumption. Neither is a measured coverage: these are ideal
+counts with no kerf, taper or course-end waste, and a bowtie touching only at its points
+closes the opening along a line, which proves neither a seal nor strength.
+
+The frame is the methodology's reserve of full blanks
+(:func:`infill.methodology.reference`), not the shorter nominal footage.
 
 Coordinates in a triangle: ``u`` across (along the base), ``v`` down from the top corner.
 """
@@ -33,16 +40,17 @@ from dataclasses import dataclass
 from functools import lru_cache
 
 SPLITS = 8
-TREE_FT = 60.0
 #: The log the method's worked example uses: a choice of what to show.
 LOG_IN = 12.0
 
 
 def wedge(d_in: float = LOG_IN) -> dict:
-    """An eighth of a log: its face (the chord), its depth (face to point), its slant."""
-    half = math.pi / SPLITS
-    return {"face_in": d_in * math.sin(half), "depth_in": d_in / 2 * math.cos(half), "slant_in": d_in / 2,
-            "area_in2": 0.5 * d_in * math.sin(half) * d_in / 2 * math.cos(half)}
+    """An eighth of a log: its face (the chord), its depth (face to point), its slant --
+    from the methodology's own section."""
+    from infill.methodology import pair_section
+    s = pair_section(d_in, SPLITS, 1.0)
+    return {"face_in": s["chord_in"], "depth_in": s["height_in"], "slant_in": d_in / 2,
+            "area_in2": s["wood_area_in2"] / 2}
 
 
 def pair(p: float, d_in: float = LOG_IN) -> dict:
@@ -52,14 +60,15 @@ def pair(p: float, d_in: float = LOG_IN) -> dict:
     down = 0 and its point at down = depth; wedge B's face is at ``down = (2 - p) depth``,
     its point at ``(1 - p) depth``, shifted ``p x face/2`` through the panel -- which is
     exactly a slide along A's slant."""
-    w = wedge(d_in)
+    from infill.methodology import pair_section
+    w, sec = wedge(d_in), pair_section(d_in, SPLITS, p)
     h, f = w["depth_in"], w["face_in"]
-    span = (2 - p) * h
+    span = sec["span_in"]
     a = [(0.0, -f / 2), (0.0, f / 2), (h, 0.0)]
     shift = p * f / 2
     b = [(span, shift - f / 2), (span, shift + f / 2), (span - h, shift)]
-    return {"a": a, "b": b, "span_in": span, "thick_in": f + shift, "solid": 1 / (2 - p),
-            "contact_in": p * w["slant_in"], "p": p}
+    return {"a": a, "b": b, "span_in": span, "thick_in": f + shift, "solid": sec["solid_fraction"],
+            "contact_in": sec["contact_in"], "p": p}
 
 
 @dataclass
@@ -108,27 +117,29 @@ def triangle(base_in: float, side_in: float, p: float, d_in: float = LOG_IN) -> 
 
 @lru_cache(maxsize=1)
 def dome_faces() -> list[tuple[float, float, int]]:
-    """The solver's triangle types: (base, equal side, how many)."""
-    from two_v_demo import wedge_coverage_facts as wc
-    d = wc.dome()
-    long_in, short_in = d["long_in"], d["short_in"]
-    return [(long_in, short_in, d["iso_faces"]), (long_in, long_in, d["eq_faces"])]
+    """The solver's triangle types: (base, equal side, how many), from the methodology's
+    reference dome (the raw-wedge solver through seed_model)."""
+    from infill.methodology import reference
+    r = reference(72.0, LOG_IN)
+    return [(r["long_in"], r["short_in"], r["isosceles_panels"]), (r["long_in"], r["long_in"], r["equilateral_panels"])]
 
 
 def dome(p: float, d_in: float = LOG_IN) -> dict:
     """The whole dome's infill at overlap ``p``, laid triangle by triangle."""
-    from two_v_demo import wedge_coverage_facts as wc
+    from infill.methodology import reference
     ft = wedges = 0
     for base, side, n in dome_faces():
         t = triangle(base, side, p, d_in)
         ft += n * t["wedge_ft"]
         wedges += n * t["wedges"]
-    frame = wc.dome()["frame_nominal_ft"]
+    r = reference(72.0, d_in)
+    frame = r["gross_frame_ft"]                      # full blanks reserved, not the nominal footage
     total = frame + ft
-    per_tree = TREE_FT * SPLITS
-    return {"p": p, "infill_ft": ft, "infill_wedges": wedges, "total_ft": total,
+    per_tree = r["trunk_ft"] * r["splits"]
+    return {"p": p, "infill_ft": ft, "infill_wedges": wedges, "frame_ft": frame, "total_ft": total,
             "trees": total / per_tree, "whole_trees": math.ceil(total / per_tree),
-            "pair_span_in": pair(p, d_in)["span_in"], "solid": pair(p, d_in)["solid"]}
+            "pair_span_in": pair(p, d_in)["span_in"], "solid": pair(p, d_in)["solid"],
+            "trunk_ft": r["trunk_ft"], "splits": r["splits"], "blank_in": r["blank_in"], "members": r["members"]}
 
 
 @lru_cache(maxsize=1)

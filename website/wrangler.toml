@@ -1,0 +1,25 @@
+# zeanahlab.com on Cloudflare Pages. Static site in dist/, the API in functions/.
+# Secrets (never in this file): SESSION_SECRET, ADMIN_EMAILS, RESEND_API_KEY, MAIL_FROM,
+# STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET -- see SETUP.md. Locally they live in .dev.vars.
+
+name = "zeanahlab"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-06-01"
+
+[vars]
+PUBLIC_URL = "https://www.zeanahlab.com"
+
+# The database: subscribers, accounts, orders, the pad network, backers, plaques, salvage,
+# and every member's own life account. `database_id` comes from
+# `npx wrangler d1 create zeanahlab` (SETUP.md step 3).
+[[d1_databases]]
+binding = "DB"
+database_name = "zeanahlab"
+database_id = "234c083c-f869-4093-80f0-101e803d84da"
+migrations_dir = "migrations"
+
+# The book PDFs. The complete edition is ~74 MB, over Pages' 25 MB file limit, and
+# the sample must sit behind the email gate -- so both live in R2, served by the API.
+[[r2_buckets]]
+binding = "BOOKS"
+bucket_name = "zeanahlab-books"

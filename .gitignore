@@ -105,3 +105,10 @@ assets/reference/
 books/*/.history/
 books/.pdf-notes/
 wedge_zome/settings.json
+
+# zeanahlab.com: the owner's private brief never goes to GitHub
+website/private/
+website/node_modules/
+website/dist/
+website/.wrangler/
+website/.dev.vars

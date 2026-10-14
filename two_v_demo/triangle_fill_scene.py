@@ -73,21 +73,41 @@ def wedge_close(length_m: float = 0.9) -> TriangleBatch:
     return b
 
 
-def pair_close(p: float, length_m: float = 0.9) -> tuple[TriangleBatch, TriangleBatch]:
+def pair_close(p: float, length_m: float = 0.9, offset=(0.0, 0.0, 0.0)) -> tuple[TriangleBatch, TriangleBatch]:
     """The pair at overlap ``p``, end-on; and the air inside it (the bowtie's empty middle)."""
     b, air = TriangleBatch(), TriangleBatch()
     pr = tf.pair(p)
+    at = CLOSE + np.asarray(offset, float)
     down, across, along = np.array([0, 0, -1.0]), np.array([0, 1.0, 0]), np.array([1.0, 0, 0])
     for sec, col in ((pr["a"], A_COL), (pr["b"], B_COL)):
-        w = _section_to_world(CLOSE, down, across, sec, BIG)
+        w = _section_to_world(at, down, across, sec, BIG)
         _prism(b, [q - along * length_m / 2 for q in w], [q + along * length_m / 2 for q in w], col)
     if p < 0.999:                                   # the empty middle, as a pale block
         f = tf.wedge()["face_in"]
         h = pr["span_in"]
         box = [(0.0, -f / 2), (0.0, f / 2 + p * f / 2), (h, f / 2 + p * f / 2), (h, -f / 2)]
-        w = _section_to_world(CLOSE + along * (length_m / 2 + 0.002), down, across, box, BIG)
+        w = _section_to_world(at + along * (length_m / 2 + 0.002), down, across, box, BIG)
         _prism(air, w, [q + along * 0.004 for q in w], GAP)
     return b, air
+
+
+def faces_out_close(count: int = 2, length_m: float = 0.9, offset=(0.0, 0.0, 0.0)) -> TriangleBatch:
+    """The other layout, end-on at the same scale: wedges with their **faces** in the panel's
+    surface, edge to edge down the triangle, points turned in -- each covering its own face
+    width. The first count's model counts this way."""
+    b = TriangleBatch()
+    at = CLOSE + np.asarray(offset, float)
+    down, inward, along = np.array([0, 0, -1.0]), np.array([0, 1.0, 0]), np.array([1.0, 0, 0])
+    w = tf.wedge()
+    f = w["face_in"]
+    for k in range(count):
+        # the section's (depth, across) becomes (inward, down): the face lies in the surface
+        sec = [(0.0, -f / 2), (0.0, f / 2), (w["depth_in"], 0.0)]
+        o = at + down * ((k + 0.5) * f * IN * BIG)
+        pts = [o + inward * (d * IN * BIG) + down * (a * IN * BIG) for d, a in sec]
+        _prism(b, [q - along * length_m / 2 for q in pts], [q + along * length_m / 2 for q in pts],
+               A_COL if k % 2 == 0 else B_COL)
+    return b
 
 
 def close_points(p: float) -> dict:
@@ -164,6 +184,7 @@ def validate_triangle_fill_scene() -> None:
     for p in (0.0, 0.5, 1.0):
         b, air = pair_close(p)
         assert len(b.vertices) and np.all(np.isfinite(np.asarray(b.vertices, float)))
+    assert len(faces_out_close().vertices)
     base, side, _n = tf.dome_faces()[0]
     t, info = triangle(base, side, 1.0)
     assert info["shown"] == info["courses"] and len(t.vertices)

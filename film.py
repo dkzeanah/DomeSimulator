@@ -174,8 +174,11 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
     if size:
         fields["size"] = size
     fields["orientation"] = "landscape" if landscape_only else "both"
-    fields["teaser"] = teaser
     mine = voice == "mine"
+    # The renderer's own teaser speaks in the house (online) voice, which can be refused (403)
+    # and is not the owner's anyway; with --voice mine the teaser is made after the film, in
+    # the owner's voice, by teaser() below.
+    fields["teaser"] = teaser and not mine
     if voice and not mine:
         fields["voice"] = voice
     if pace != 1.0 and not mine:
@@ -199,6 +202,10 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
     medialib.write_index()
     if code == 0:
         print(f"done; the film's folder: {Path(fields['export_video']).parent.relative_to(ROOT)}")
+        if teaser and mine:
+            print("now the teaser, in your voice")
+            if teaser_code := globals()["teaser"](lesson, "mine", pace):
+                print(f"teaser not built (exit {teaser_code}); retry: py -3.12 -m film teaser {lesson} --voice mine --pace {pace:g}")
     return code
 
 

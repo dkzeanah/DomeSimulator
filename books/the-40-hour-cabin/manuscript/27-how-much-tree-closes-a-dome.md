@@ -68,28 +68,53 @@ opening and physical pieces; its measured pitch can check an area estimate
 for that layout, but cannot validate a different inward-pointing pair.
 :::
 
-## Correction: lay it, don't divide it
+## Two layouts, two counts
 
 The figures above divide the open area by *(2 minus the overlap)* times the
-wedge's **face** width. That is the wrong width. With the pair's points facing
-each other down the triangle, what a pair reaches downward is set by the
-wedge's **depth** -- {{fill.depth_in}} inches against a face of
-{{fill.face_in}} -- and dividing an area also misses the last strip at every
-triangle's base, which a real panel has to close.
+wedge's **face** width. That fits one layout: faces out in the panel's
+surface, points turned in, each wedge covering its own face. It is the
+methodology's labelled planning assumption, not a mistake.
 
-So this book now counts it the other way: every pair is laid, course by
-course from each triangle's top corner, each wedge as long as the triangle is
-wide where it lies (the film *Closing the Triangle* shows it). One isosceles
-triangle takes {{fill.iso_nested}} pairs nested, {{fill.iso_bowtie}} as
-bowties. The whole dome:
+The pairs in *Closing the Triangle* sit the other way. Their points face each
+other down the triangle, so each pair's faces bear on the next pair's and the
+slants are what shows. In that layout what a pair reaches downward is set by
+the wedge's **depth** -- {{fill.depth_in}} inches against a face of
+{{fill.face_in}} -- and counting it means laying every pair, course by course
+from each triangle's top corner, each wedge as long as the triangle is wide
+where it lies, with one more pair to close the strip at the base. One
+isosceles triangle takes {{fill.iso_nested}} pairs nested,
+{{fill.iso_bowtie}} as bowties. The whole dome, with the frame counted as
+{{wm.members}} full {{wm.blank_in}} inch blanks:
 
 ```text
 nested:  {{fill.nested_wedges}} wedges, {{fill.nested_ft}} ft of infill; {{fill.nested_total}} ft with the frame, {{fill.nested_trees}} pines
 bowtie:  {{fill.bowtie_wedges}} wedges, {{fill.bowtie_ft}} ft of infill; {{fill.bowtie_total}} ft with the frame, {{fill.bowtie_trees}} pines
 ```
 
-The first count was close at the nested end and too low at the bowtie end. The
-laid count is the one to plan with.
+Against the faces-out count the laid one lands close at the nested end and
+higher at the bowtie end. Both are ideal counts: no kerf, taper or course-end
+waste, and a bowtie that touches only at its points closes the opening along a
+line, which proves neither a seal nor strength. Pick the layout, build a
+sample, and measure it before either number becomes a cut list.
+
+## The whole dome, every way
+
+Counting one triangle is not seeing a dome. *Closing the Triangle* fills all
+{{idome.panels}} triangles of the Triangle Infill tool's dome
+({{idome.across_ft}} feet across) and shows it finished, every piece cut to
+the opening's walls and planed flush with the {{idome.thick_in}} inch frame.
+Planing a nested pair flush takes {{idome.planed_nested}} of its wood; a
+bowtie loses {{idome.planed_bowtie}}. Then the same dome wears every other
+way the tool knows to fill or cover a triangle with eighth-log wedges --
+{{idome.ways}} in all, counted from the pieces themselves:
+
+{{idome.table}}
+
+Nothing shows through any of them. *Solid* is how much of the frame's
+thickness is wood; *left open* is the plug each ring pattern leaves at a
+triangle's centre, cut separately. This is a bigger dome than the reference
+above -- 72 inches is its longest finished member, not its chord -- so its
+feet are not the reference's feet.
 
 ## What the overlap is for
 

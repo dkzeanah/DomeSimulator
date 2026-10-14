@@ -1,0 +1,1174 @@
+{
+  "_generated_by": "website/scripts/export_facts.py from web/export_facts.build(), seed_model and web/books.config.json -- do not edit",
+  "dome": {
+    "acrossFt": 19.42,
+    "tallFt": 9.71,
+    "floorSqft": 277.0,
+    "bays": 40,
+    "members": 120,
+    "vertices": 26,
+    "baseSides": 10
+  },
+  "price": {
+    "stemCell": 12036,
+    "costToBuild": 10030,
+    "profit": 2006,
+    "marginOnCost": 0.2,
+    "perSqft": 43.45
+  },
+  "wood": {
+    "wedgeVsMilled": 1.95,
+    "treesVsMitred": 0.921
+  },
+  "quilt": {
+    "shirtsPerLayer": 132
+  },
+  "goal": {
+    "total": 110000,
+    "lines": [
+      {
+        "key": "test_platform",
+        "usd": 4200.0,
+        "what": "A full test platform and one standing dome",
+        "why": "A serviced pad and a complete 19.4-foot dome on it, built and left up through a full year of weather. Everything in this project is solved and almost none of it is measured. A dome that has stood through one winter is worth more than any amount of arithmetic"
+      },
+      {
+        "key": "instrumentation",
+        "usd": 1850.0,
+        "what": "Sensors in the wall, logging for a year",
+        "why": "Temperature and humidity at each layer of the cap stack, inside and out, logged continuously. This is what turns the moisture question from a design argument into a measurement -- and it is the number the campaign has promised to publish whichever way it comes out"
+      },
+      {
+        "key": "hub_rnd",
+        "usd": 9500.0,
+        "what": "Utility hub: three iterations to a design that ships",
+        "why": "The centre column is the one part that has to be right, because it carries every service and it is the part an owner cannot make. Three builds: one to find what breaks, one to fix it, one to prove the fix. Tooling, fittings, test rig and the parts thrown away"
+      },
+      {
+        "key": "cnc_router",
+        "usd": 14500.0,
+        "what": "CNC router, 4x8 bed",
+        "why": "Panel prototyping. No panel of this dome fits a 4-foot sheet, so every panel is a cut somebody has to get right forty times. A router with a 4x8 bed cuts a panel set in an afternoon and cuts the same set again next year"
+      },
+      {
+        "key": "cnc_plasma",
+        "usd": 11800.0,
+        "what": "CNC plasma table",
+        "why": "Steel: hub rings, floor spokes, mast flanges, threaded-insert carriers, the brackets a composite member needs moulded into it. Plasma rather than laser because the work is plate steel and plate steel is what plasma is for"
+      },
+      {
+        "key": "laser_cutter",
+        "usd": 8900.0,
+        "what": "Laser cutter, for gaskets and templates",
+        "why": "Spline gaskets, seam seals, panel templates, insert jigs. The parts that are thin, flat, and have to be identical a hundred and twenty times. It is also the fastest way to make the fixture that holds a member for its compound butt cut"
+      },
+      {
+        "key": "strut_tooling",
+        "usd": 18000.0,
+        "what": "Tooling to mould a strut with its hardware in it",
+        "why": "The largest single line and the one that changes the product. A moulded or printed member arrives with its screw holes, its threaded inserts and its spline ridge already in it -- so the hardware set that joins two members is standard, reusable, and comes off with a driver. Pattern, mould and the first run of members"
+      },
+      {
+        "key": "composite_rnd",
+        "usd": 12500.0,
+        "what": "Composite triangle: steel core, moulded shell",
+        "why": "A member with a steel core for the strength, a moulded plastic body around it, metal inserts where hardware lands and a spline ridge where the seal sits. Materials, three rounds of samples, and destructive testing, because the point of a core is the number it survives to"
+      },
+      {
+        "key": "automation",
+        "usd": 7600.0,
+        "what": "Automated processing for the repetitive work",
+        "why": "Feed, index, cut, repeat. One dome is 120 members, 160 threaded inserts and 40 panels, and all of it is the same operation done many times. This is the difference between making one dome and being able to make the second one"
+      },
+      {
+        "key": "quilt_seed",
+        "usd": 5000.0,
+        "what": "Seeding the quilt network",
+        "why": "Sewing machines, shipping, and paying the first quilters for the first layers. Insulation in this building is a waste stream and somebody's evening, and the network has to exist before the first dome needs it"
+      },
+      {
+        "key": "engineering",
+        "usd": 6800.0,
+        "what": "An engineer, for the things that carry people",
+        "why": "The frame's wind and snow loads, the mast, and the hoist rating for the floating rig. This project prices those parts and refuses to rate them, and that refusal has a cost attached. It is on this list so nobody has to wonder whether it got skipped"
+      },
+      {
+        "key": "fulfilment",
+        "usd": 9350.0,
+        "what": "Making and shipping what backers are owed",
+        "why": "Kits, plans, hardware sets and freight for the reward tiers. Budgeted at cost rather than at the tier price, because a campaign that funds its tooling out of its shipping budget delivers neither"
+      }
+    ]
+  },
+  "tiers": [
+    {
+      "key": "plans",
+      "label": "The drawings and the numbers",
+      "pledge": 35.0,
+      "why": "Every table in the book, the cut list for any diameter, and the solver that made them. It is a download; the two dollars is card fees and hosting"
+    },
+    {
+      "key": "quilter",
+      "label": "Quilter's kit",
+      "pledge": 95.0,
+      "why": "Pattern, thread, the binding, and the layer specification -- how big, how thick, how to close the edge. Sew a layer for your own dome, or sew one for somebody else's and get paid for it"
+    },
+    {
+      "key": "hardware",
+      "label": "One bay's hardware set",
+      "pledge": 180.0,
+      "why": "Four threaded inserts, the flange screws, the spline gasket and the seam key for one triangle. The smallest piece of the building that is a real object rather than a drawing"
+    },
+    {
+      "key": "cap",
+      "label": "A shower cap for your dome",
+      "pledge": 1450.0,
+      "why": "The rain-slick outer cap, made to the reference diameter, hemmed with grommets and strapping. The only watertight layer in the building, and the one you cannot sew at home"
+    },
+    {
+      "key": "core",
+      "label": "The utility hub",
+      "pledge": 2400.0,
+      "why": "The centre column, assembled and tested: pad port, water manifold, drain stack, sub-panel, riser and seal cap. The part an owner cannot make and the part the goal exists to get right"
+    },
+    {
+      "key": "kit_notrees",
+      "label": "Dome kit, frame included",
+      "pledge": 19800.0,
+      "why": "Everything, including the timber, for somebody with no trees. The expensive version, honestly priced: you are paying for somebody else's 45 percent recovery"
+    },
+    {
+      "key": "kit_trees",
+      "label": "Dome kit, bring your own trees",
+      "pledge": 11400.0,
+      "why": "Everything except the frame. You fell, split and cut the members from your own land -- which is the whole argument -- and we send the rest"
+    },
+    {
+      "key": "pad",
+      "label": "Pad host's pack",
+      "pledge": 640.0,
+      "why": "The platform drawings at five foundation types, the service-port spec, the rim latch pattern, and the host's costing sheet. For somebody with land who wants a dome to be able to land on it"
+    }
+  ],
+  "fitouts": [
+    {
+      "key": "stem_cell",
+      "label": "Stem cell",
+      "shape": "hemisphere",
+      "blurb": "The bare standard article: frame, floor, shell, panels, column, seal cap and one blank utility panel. Everything else is built on top of this."
+    },
+    {
+      "key": "home",
+      "label": "Home seed",
+      "shape": "hemisphere",
+      "blurb": "A starter domicile: wash, cook, drain and see out. The camera ring sits on the seal cap and the screen inside shows what it sees."
+    },
+    {
+      "key": "food",
+      "label": "Food seed",
+      "shape": "hemisphere",
+      "blurb": "Food-truck service in a fixed shell: a hatch to the outside, a hood, three bays of sink and a cold box."
+    },
+    {
+      "key": "advertiser",
+      "label": "Advertiser seed",
+      "shape": "hemisphere",
+      "blurb": "Every one of the 40 triangles is a lit advert facing out. Park it beside a highway and the shell is the product."
+    },
+    {
+      "key": "storage",
+      "label": "Cold storage seed",
+      "shape": "hemisphere",
+      "blurb": "A conditioned storage building: a shutter to load through, racking, and the dehumidifier that makes the difference between a shed and a store."
+    },
+    {
+      "key": "bunker",
+      "label": "Bunker seed",
+      "shape": "buried",
+      "blurb": "The same dome, buried. The liner and collar keep the ground out; the apex riser is the only thing above grade, which is exactly what the interface boundary was for."
+    },
+    {
+      "key": "treehouse",
+      "label": "Treehouse seed",
+      "shape": "treed",
+      "blurb": "A pad in a tree instead of on the ground. Same dome, same port, and the services come up the trunk."
+    },
+    {
+      "key": "sauna",
+      "label": "Sauna seed",
+      "shape": "hemisphere",
+      "blurb": "The same frame, lined and sealed. Blank bays hold the heat in and one louvre lets it out when you are done."
+    },
+    {
+      "key": "gym",
+      "label": "Gym seed",
+      "shape": "hemisphere",
+      "blurb": "A second building for the thing that does not fit in the house. Mirrors on the low bays, deadening on the rest, and a door wide enough to get a rack through."
+    },
+    {
+      "key": "guest",
+      "label": "Guest house seed",
+      "shape": "hemisphere",
+      "blurb": "Somewhere for people to stay that is not your sofa. The home fit-out at a smaller module count, on a pad at the other end of the property."
+    },
+    {
+      "key": "workshop",
+      "label": "Workshop seed",
+      "shape": "hemisphere",
+      "blurb": "Light, air and power, and nothing precious about the floor. Skylights do the work a strip light would, because on a dome the upper ring IS the roof."
+    },
+    {
+      "key": "garage",
+      "label": "Garage seed",
+      "shape": "hemisphere",
+      "blurb": "One wide opening instead of three base bays, and a roll-up door across it. The frame does not care -- the ring above the opening is already carrying itself."
+    },
+    {
+      "key": "studio",
+      "label": "Studio seed",
+      "shape": "hemisphere",
+      "blurb": "The room that is not in the house: a study, a den, a place to make a noise in. Acoustic bays and one good window."
+    },
+    {
+      "key": "nursery",
+      "label": "Nursery seed",
+      "shape": "hemisphere",
+      "blurb": "A room that attaches to the house rather than replacing it, and then becomes something else when it is grown out of. Which is the whole argument in one building."
+    },
+    {
+      "key": "jacuzzi",
+      "label": "Jacuzzi seed",
+      "shape": "inverted",
+      "blurb": "The dome turned over and used as the vessel. The shell becomes the tub and the frame becomes its cradle."
+    }
+  ],
+  "panels": [
+    {
+      "key": "blank",
+      "label": "Blank panel",
+      "usd": 0.0,
+      "note": "the standard bay, closed. What every dome ships with."
+    },
+    {
+      "key": "window",
+      "label": "Window panel",
+      "usd": 210.0,
+      "note": "a fixed triangular light. The shape is the frame's, so there is no header and no trimming out"
+    },
+    {
+      "key": "vent_window",
+      "label": "Opening window",
+      "usd": 340.0,
+      "note": "the same light on a hinge, with a screen behind it"
+    },
+    {
+      "key": "door",
+      "label": "Door panel",
+      "usd": 620.0,
+      "note": "a bay cut to a door and its frame, at the base ring where the wall is nearly upright"
+    },
+    {
+      "key": "bay_door",
+      "label": "Open-bay door",
+      "usd": 1480.0,
+      "note": "three base bays taken out and replaced by one wide opening with a roll-up door: what turns a dome into a garage"
+    },
+    {
+      "key": "skylight",
+      "label": "Skylight panel",
+      "usd": 395.0,
+      "note": "a light in the upper ring, which on a dome is most of the roof"
+    },
+    {
+      "key": "louvre",
+      "label": "Louvre panel",
+      "usd": 260.0,
+      "note": "fixed slats and a screen: how a workshop or a gym gets air without a fan"
+    },
+    {
+      "key": "exhaust",
+      "label": "Exhaust panel",
+      "usd": 290.0,
+      "note": "a blanked bay with a fan and a backdraft damper in it"
+    },
+    {
+      "key": "solar",
+      "label": "Solar panel bay",
+      "usd": 330.0,
+      "note": "rails and a triangular cell array on the sunward face. Square cells waste the corners today; triangular cells are the fix and they are not on the shelf yet"
+    },
+    {
+      "key": "stove_flue",
+      "label": "Flue panel",
+      "usd": 180.0,
+      "note": "a blanked bay with a lined penetration for the stove pipe"
+    },
+    {
+      "key": "acoustic",
+      "label": "Acoustic panel",
+      "usd": 240.0,
+      "note": "mass-loaded and absorbent, for the bays a gym or a studio wants deadened"
+    },
+    {
+      "key": "mirror",
+      "label": "Mirror panel",
+      "usd": 275.0,
+      "note": "a full-height mirror in the bay. Cheap in a gym, and a dome is already the shape that wants one"
+    },
+    {
+      "key": "serving",
+      "label": "Serving hatch",
+      "usd": 780.0,
+      "note": "a counter-height opening with an awning"
+    }
+  ],
+  "sources": {
+    "dome": "seed_model.seed_geometry()",
+    "price": "kickstarter.cost_stack()",
+    "wood": "seed_model.harvest(), seed_model.trees_against_mitred()",
+    "quilt": "kickstarter.quilt_economics()",
+    "goal": "kickstarter.goal_lines()",
+    "tiers": "kickstarter.tiers()",
+    "fitouts": "seed_model.fitouts()",
+    "panels": "seed_model.PANELS",
+    "plaques": "seed_model.seed_geometry().faces -- one plaque per panel of the stem cell",
+    "books": "web/books.config.json"
+  },
+  "plaques": {
+    "slots": 40,
+    "source": "seed_model.seed_geometry().faces -- one plaque per panel of the stem cell"
+  },
+  "books": [
+    {
+      "slug": "sample",
+      "title": "The Free Sample",
+      "subtitle": "The 40 Hour Cabin: Complete Edition",
+      "author": "Donovan Zeanah",
+      "blurb": "The opening of the complete edition, exactly as built: what has to be right, what you are allowed to get wrong, and the cut the method is built on.",
+      "offer": "free",
+      "file": "the-40-hour-cabin-sample.pdf"
+    },
+    {
+      "slug": "the-40-hour-cabin",
+      "title": "The 40 Hour Cabin",
+      "subtitle": "Complete Edition",
+      "author": "Donovan Zeanah",
+      "blurb": "The complete edition: the 40-hour frame from standing tree to raised shell, then every way to style it -- twelve finishes rendered, every material and panel priced, every item on the floor -- with the codebase that computed all of it.",
+      "offer": "paid",
+      "priceCents": 2000,
+      "currency": "usd",
+      "includes": [
+        "The complete book, every figure computed by the project's own software",
+        "The codebase: the Dome Creator, the Triangle Infill calculator, the raw-wedge solver and every tool behind the book",
+        "Every future edition of the book"
+      ],
+      "codebaseUrl": "https://github.com/dkzeanah/DomeSimulator",
+      "file": "the-40-hour-cabin.pdf"
+    },
+    {
+      "slug": "design-session",
+      "title": "One-on-one design session",
+      "subtitle": "Your dome, designed with the author",
+      "author": "Donovan Zeanah",
+      "blurb": "A one-on-one session with the author, designing your dome with the project's own tools.",
+      "offer": "paid",
+      "priceCents": 5000,
+      "currency": "usd",
+      "includes": [
+        "Your dome designed with the Dome Creator, the solver and the calculators behind the book",
+        "Booked by email after you pay"
+      ],
+      "kind": "session",
+      "bookingNote": "Donovan will email you at the address you paid with to set a time for your session."
+    },
+    {
+      "slug": "2-trees",
+      "title": "The 40 Hour Cabin",
+      "subtitle": "2V Geodesic Dome Wedge Method",
+      "author": "Donovan Zeanah",
+      "blurb": "The paperback: three trees, one chainsaw, and a geodesic cabin — the whole build day by day, plus four chapters on the shell: less skin, the pony wall, the brim and the ladder.",
+      "offer": "amazon",
+      "amazonUrl": "",
+      "file": "2-trees.pdf"
+    }
+  ],
+  "bookFacts": {
+    "digital": {
+      "title": "The 40 Hour Cabin",
+      "subtitle": "Complete Edition",
+      "author": "Donovan Zeanah",
+      "parts": [
+        {
+          "number": 1,
+          "title": "What Actually Has to Be Right",
+          "chapters": [
+            {
+              "number": 1,
+              "title": "Your Skull Is Not Symmetrical Either"
+            },
+            {
+              "number": 2,
+              "title": "Water Is the Silent Killer"
+            },
+            {
+              "number": 3,
+              "title": "Build It So You Can Change Your Mind"
+            },
+            {
+              "number": 4,
+              "title": "A House With a Parts List"
+            },
+            {
+              "number": 5,
+              "title": "Why I Built the Ugly One"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "The Geometry, From Scratch",
+          "chapters": [
+            {
+              "number": 6,
+              "title": "Why It Is Triangles"
+            },
+            {
+              "number": 7,
+              "title": "Twelve Points From One Number"
+            },
+            {
+              "number": 8,
+              "title": "Halve Every Edge, Then Push It Out"
+            },
+            {
+              "number": 9,
+              "title": "Two Lengths, Four Ways"
+            },
+            {
+              "number": 10,
+              "title": "Half a Sphere Is a Building"
+            },
+            {
+              "number": 11,
+              "title": "Choosing a Size, At Last"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "title": "The Stick",
+          "chapters": [
+            {
+              "number": 12,
+              "title": "The Woodpile Is Standing Up"
+            },
+            {
+              "number": 13,
+              "title": "Stop Squaring. Start Splitting."
+            },
+            {
+              "number": 14,
+              "title": "What the Saw Actually Does"
+            },
+            {
+              "number": 15,
+              "title": "One Eighth of a Tree, Used as a Stick"
+            },
+            {
+              "number": 16,
+              "title": "Two Lengths, and Neither Is the Chord"
+            },
+            {
+              "number": 17,
+              "title": "Green Wood Moves, and a Split Moves Least"
+            },
+            {
+              "number": 18,
+              "title": "Char the Outside, Oil It, and Leave the Faces Bare"
+            },
+            {
+              "number": 19,
+              "title": "Linseed Oil, Where It Belongs"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "title": "The Panel",
+          "chapters": [
+            {
+              "number": 20,
+              "title": "Nothing Meets at the Corner"
+            },
+            {
+              "number": 21,
+              "title": "Forty Frames, Lifted Whole"
+            },
+            {
+              "number": 22,
+              "title": "Nine Processes, Whatever Size You Build"
+            },
+            {
+              "number": 23,
+              "title": "What the Work Costs the Body"
+            },
+            {
+              "number": 24,
+              "title": "One Flat Board, Forty Identical Panels"
+            },
+            {
+              "number": 25,
+              "title": "If Your Sticks Are Rectangles"
+            },
+            {
+              "number": 26,
+              "title": "Doors, Windows, and What Not to Cut"
+            },
+            {
+              "number": 27,
+              "title": "How Much Tree Closes a Dome"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "title": "The Skin",
+          "chapters": [
+            {
+              "number": 28,
+              "title": "Raising It"
+            },
+            {
+              "number": 29,
+              "title": "One Watertight Layer, and Only One"
+            },
+            {
+              "number": 30,
+              "title": "The Seam Does Four Jobs"
+            },
+            {
+              "number": 31,
+              "title": "A Dome Is a Head, and It Wears Hats"
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "title": "The Seam at Work",
+          "chapters": [
+            {
+              "number": 32,
+              "title": "What Fits in the Channel"
+            },
+            {
+              "number": 33,
+              "title": "Compare Dew Points, Not Humidity"
+            },
+            {
+              "number": 34,
+              "title": "Four Levels, and the Ring That Cannot Drain"
+            },
+            {
+              "number": 35,
+              "title": "A Cap With No Holes Still Breathes"
+            },
+            {
+              "number": 36,
+              "title": "The Desiccant Belongs in a Drawer"
+            },
+            {
+              "number": 37,
+              "title": "Metal in the Seam"
+            },
+            {
+              "number": 38,
+              "title": "Ten Plates, Round the Clock"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "title": "The Floor and the Ground",
+          "chapters": [
+            {
+              "number": 39,
+              "title": "The Floor Is the Other Thing to Get Right"
+            },
+            {
+              "number": 40,
+              "title": "The Pentagon From Five Logs"
+            },
+            {
+              "number": 41,
+              "title": "One World, Three Structures"
+            },
+            {
+              "number": 42,
+              "title": "A Pad, Not a Plot"
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "title": "What It Costs and What It Is Worth",
+          "chapters": [
+            {
+              "number": 43,
+              "title": "A Twenty-Dollar Pine Is Not a Twenty-Dollar Pine"
+            },
+            {
+              "number": 44,
+              "title": "Fifteen Sets of Hands"
+            },
+            {
+              "number": 45,
+              "title": "How Much Shelter Does an Hour Buy"
+            },
+            {
+              "number": 46,
+              "title": "Where a House's Money Goes"
+            },
+            {
+              "number": 47,
+              "title": "What It Costs, Line by Line"
+            },
+            {
+              "number": 48,
+              "title": "The Staple House"
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "title": "The Network",
+          "chapters": [
+            {
+              "number": 49,
+              "title": "Why a Network Beats a Park"
+            },
+            {
+              "number": 50,
+              "title": "What a Pad Actually Is"
+            },
+            {
+              "number": 51,
+              "title": "What a Host Earns, Line by Line"
+            },
+            {
+              "number": 52,
+              "title": "A House That Moves, and Grows"
+            },
+            {
+              "number": 53,
+              "title": "The Pad Turns, and the Site Shares"
+            },
+            {
+              "number": 54,
+              "title": "Who This Is For"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "title": "Other Shapes",
+          "chapters": [
+            {
+              "number": 55,
+              "title": "A Zome Is Not a Piece of a Sphere"
+            },
+            {
+              "number": 56,
+              "title": "Building a Zome, Ring by Ring"
+            },
+            {
+              "number": 57,
+              "title": "A Zome Without a Bevel"
+            },
+            {
+              "number": 58,
+              "title": "Exactly Twelve Pentagons, Always"
+            },
+            {
+              "number": 59,
+              "title": "Three Frequency, Five Eighths"
+            },
+            {
+              "number": 60,
+              "title": "A Panel on a Jig"
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "title": "The Catalogue",
+          "chapters": [
+            {
+              "number": 61,
+              "title": "Every Other Way of Doing It"
+            },
+            {
+              "number": 62,
+              "title": "Hubs, or No Hubs"
+            },
+            {
+              "number": 63,
+              "title": "Twelve Buildings, One Tool"
+            },
+            {
+              "number": 64,
+              "title": "The Twelve, One at a Time"
+            },
+            {
+              "number": 65,
+              "title": "What Every Choice Costs"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "title": "The Stem Cell",
+          "chapters": [
+            {
+              "number": 66,
+              "title": "Why We Call It a Stem Cell"
+            },
+            {
+              "number": 67,
+              "title": "Sink the Money Into the Part That Moves"
+            },
+            {
+              "number": 68,
+              "title": "Build One Utility Core"
+            },
+            {
+              "number": 69,
+              "title": "Fifteen Buildings From One Body"
+            },
+            {
+              "number": 70,
+              "title": "Ten Reasons This Shape"
+            },
+            {
+              "number": 71,
+              "title": "The Standard Article, and What the Money Is For"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "title": "Variations",
+          "chapters": [
+            {
+              "number": 72,
+              "title": "If You Build It on Hubs"
+            },
+            {
+              "number": 73,
+              "title": "The Frankendome"
+            },
+            {
+              "number": 74,
+              "title": "The Evil Dome Empire"
+            },
+            {
+              "number": 75,
+              "title": "So a Mother Could Raise Her Child"
+            },
+            {
+              "number": 76,
+              "title": "Hang It Between Two Trees"
+            },
+            {
+              "number": 77,
+              "title": "Build It in the Air"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "title": "Style It",
+          "chapters": [
+            {
+              "number": 78,
+              "title": "The Cabin in the Creator"
+            },
+            {
+              "number": 79,
+              "title": "Twelve Ways to Dress One Frame"
+            },
+            {
+              "number": 80,
+              "title": "One Menu at a Time"
+            },
+            {
+              "number": 81,
+              "title": "Every Skin on Every Frame"
+            },
+            {
+              "number": 82,
+              "title": "The Price List, Item by Item"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "title": "The Tools",
+          "chapters": [
+            {
+              "number": 83,
+              "title": "The Software That Wrote This Book"
+            },
+            {
+              "number": 84,
+              "title": "From One Number to a Lit Pixel"
+            },
+            {
+              "number": 85,
+              "title": "What Each World Shows You"
+            },
+            {
+              "number": 86,
+              "title": "Every Part, Priced"
+            },
+            {
+              "number": 87,
+              "title": "Every Piece, Numbered"
+            }
+          ]
+        }
+      ],
+      "chapters": 87,
+      "figures": 286,
+      "pages": 478,
+      "numbers": {
+        "members": "120",
+        "panels": "40",
+        "floorSqft": "277",
+        "diameterFt": "19.42",
+        "frameHours": "37.5",
+        "labourHours": "67",
+        "frameUsd": "692",
+        "shellUsd": "10,030",
+        "perSqftUsd": "43.45",
+        "unchangedPct": "37",
+        "styles": "12",
+        "styleLowUsd": "1,116",
+        "styleHighUsd": "11,842",
+        "shells": "32,105,299,968",
+        "items": "39",
+        "combos": "120"
+      }
+    },
+    "paperback": {
+      "title": "The 40 Hour Cabin",
+      "subtitle": "2V Geodesic Dome Wedge Method",
+      "parts": [
+        {
+          "number": 1,
+          "title": "How to Build One",
+          "chapters": [
+            {
+              "number": 1,
+              "title": "The Tree That Was Already Down"
+            },
+            {
+              "number": 2,
+              "title": "Fifteen Middlemen"
+            },
+            {
+              "number": 3,
+              "title": "The Frankendome"
+            },
+            {
+              "number": 4,
+              "title": "The V-Bracket Afternoon"
+            },
+            {
+              "number": 5,
+              "title": "The Cut That Changed It"
+            },
+            {
+              "number": 6,
+              "title": "Triangles Do Not Care What Shape Your Stick Is"
+            },
+            {
+              "number": 7,
+              "title": "Not a Worse Two-by-Four"
+            },
+            {
+              "number": 8,
+              "title": "Forty Panels, One Hundred and Twenty Members"
+            },
+            {
+              "number": 9,
+              "title": "Two Lengths, Not Forty"
+            },
+            {
+              "number": 10,
+              "title": "Compression, Tension, and One Eighth of a Tree"
+            },
+            {
+              "number": 11,
+              "title": "What a Dome Costs You"
+            },
+            {
+              "number": 12,
+              "title": "Split Like a Cake"
+            },
+            {
+              "number": 13,
+              "title": "Eighty-Seven Percent"
+            },
+            {
+              "number": 14,
+              "title": "Four Ways Up"
+            },
+            {
+              "number": 15,
+              "title": "The Pinwheel"
+            },
+            {
+              "number": 16,
+              "title": "The Seam and Its Key"
+            },
+            {
+              "number": 17,
+              "title": "Let the Connector Hold the Angle"
+            },
+            {
+              "number": 18,
+              "title": "Why Every Panel Keeps Its Own Edge"
+            },
+            {
+              "number": 19,
+              "title": "Bends, Knots and Small Units"
+            },
+            {
+              "number": 20,
+              "title": "Which Way Round Are You Working?"
+            },
+            {
+              "number": 21,
+              "title": "Method A: From the Dome You Want"
+            },
+            {
+              "number": 22,
+              "title": "Method B: From the Tree You Have"
+            },
+            {
+              "number": 23,
+              "title": "The Round Trip"
+            },
+            {
+              "number": 24,
+              "title": "The Worked Build"
+            },
+            {
+              "number": 25,
+              "title": "When the Numbers Say No"
+            },
+            {
+              "number": 26,
+              "title": "Day Zero: The Saw"
+            },
+            {
+              "number": 27,
+              "title": "Days One and Two: Felling"
+            },
+            {
+              "number": 28,
+              "title": "Days Three and Four: Bucking"
+            },
+            {
+              "number": 29,
+              "title": "Days Five to Eight: Ripping"
+            },
+            {
+              "number": 30,
+              "title": "Day Nine: The Jig"
+            },
+            {
+              "number": 31,
+              "title": "Days Ten to Twelve: Forty Panels"
+            },
+            {
+              "number": 32,
+              "title": "Days Thirteen and Fourteen: Raising"
+            },
+            {
+              "number": 33,
+              "title": "One Bench, Forty Panels"
+            },
+            {
+              "number": 34,
+              "title": "The Butt Cut"
+            },
+            {
+              "number": 35,
+              "title": "The Head Overfit"
+            },
+            {
+              "number": 36,
+              "title": "Flush-Cutting in Place"
+            },
+            {
+              "number": 37,
+              "title": "Panel Drawings"
+            },
+            {
+              "number": 38,
+              "title": "Where Error Goes"
+            },
+            {
+              "number": 39,
+              "title": "The Footing and the Ring"
+            },
+            {
+              "number": 40,
+              "title": "Closing the Shell"
+            },
+            {
+              "number": 41,
+              "title": "Doors, Windows and the Rim"
+            },
+            {
+              "number": 42,
+              "title": "Weather and Water"
+            },
+            {
+              "number": 43,
+              "title": "Finishing the Wood"
+            },
+            {
+              "number": 44,
+              "title": "Inside a Round Room"
+            },
+            {
+              "number": 45,
+              "title": "Heat, Power and the Small Systems"
+            },
+            {
+              "number": 46,
+              "title": "The Money, Both Ways"
+            },
+            {
+              "number": 47,
+              "title": "The Hours"
+            },
+            {
+              "number": 48,
+              "title": "Bigger, Smaller, Other Frequencies"
+            },
+            {
+              "number": 49,
+              "title": "Other Species, Other Sections"
+            },
+            {
+              "number": 50,
+              "title": "Building With Other People"
+            },
+            {
+              "number": 51,
+              "title": "What I Would Do Differently"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Why It Scales",
+          "chapters": [
+            {
+              "number": 52,
+              "title": "Less Skin for the Same Floor"
+            },
+            {
+              "number": 53,
+              "title": "The Cheapest Square Footage in the Building"
+            },
+            {
+              "number": 54,
+              "title": "The Roof Is Already a Gutter"
+            },
+            {
+              "number": 55,
+              "title": "A House That Gets Warmer Every Winter"
+            }
+          ]
+        }
+      ],
+      "chapters": 55,
+      "figures": 69,
+      "pages": null,
+      "numbers": {
+        "trees": "3",
+        "diameterFt": "21.6",
+        "floorSqft": "365",
+        "members": "120",
+        "panels": "40",
+        "days": "14",
+        "sawUsd": "199",
+        "strutsPerTree": "64"
+      }
+    },
+    "sample": {
+      "pages": 20,
+      "front": [
+        "Forty Hours"
+      ],
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Your Skull Is Not Symmetrical Either"
+        },
+        {
+          "number": 2,
+          "title": "Water Is the Silent Killer"
+        },
+        {
+          "number": 3,
+          "title": "Build It So You Can Change Your Mind"
+        },
+        {
+          "number": 13,
+          "title": "Stop Squaring. Start Splitting."
+        }
+      ],
+      "ofChapters": 87
+    },
+    "sources": {
+      "digital": "wedge_book.outline.BOOK, wedge_book.tokens, wedge_book.paper.used_keys()",
+      "paperback": "two_v_demo.book.BOOK and two_v_demo.book_tokens",
+      "sample": "wedge_book.teaser",
+      "pages": "page count of the newest -vN PDF in deliverables/book"
+    }
+  },
+  "site": {
+    "name": "Zeanah Lab",
+    "url": "https://zeanahlab.com",
+    "tagline": "Stem-cell domes, split from a log. Free book, films and the dome network.",
+    "kickstarterUrl": "",
+    "youtubeChannelUrl": "",
+    "links": [
+      {
+        "label": "Instagram @DonovanZeanah",
+        "url": "https://www.instagram.com/DonovanZeanah/",
+        "icon": "instagram"
+      },
+      {
+        "label": "TikTok @shortcircuitr5",
+        "url": "https://www.tiktok.com/@shortcircuitr5",
+        "icon": "tiktok"
+      },
+      {
+        "label": "Facebook",
+        "url": "https://www.facebook.com/zeanah",
+        "icon": "facebook"
+      },
+      {
+        "label": "The code, open on GitHub",
+        "url": "https://github.com/dkzeanah/DomeSimulator",
+        "icon": "github"
+      }
+    ]
+  }
+}

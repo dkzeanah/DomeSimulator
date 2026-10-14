@@ -368,6 +368,7 @@ def _table() -> dict[str, Token]:
     _foundation_tokens(add)
     _coverage_tokens(add)
     _fill_tokens(add)
+    _idome_tokens(add)
     _methodology_tokens(add)
     _core_build_tokens(add)
     _franken_tokens(add)
@@ -1745,6 +1746,34 @@ def _fill_tokens(add) -> None:
             ("iso_nested", "iso_nested.courses", "{}", "pairs in one isosceles triangle, nested"),
             ("iso_bowtie", "iso_bowtie.courses", "{}", "pairs in one isosceles triangle, bowties")):
         add(f"fill.{name}", describe, g(path, fmt))
+
+
+def _idome_tokens(add) -> None:
+    """``idome``: the Triangle Infill tool's whole dome, every triangle filled, in every way
+    (:mod:`two_v_demo.infill_dome`, the film's own function)."""
+
+    def table():
+        from two_v_demo import infill_dome as idm
+        rows = ["| Fill | Pieces | Feet of stock | Solid | Left open, sq ft |", "| --- | ---: | ---: | ---: | ---: |"]
+        for v in idm.PAIRS + idm.pattern_variants("fill") + idm.pattern_variants("cover"):
+            f = idm.facts(v.key)
+            name = ("covered: " if v.mode == "cover" else "") + f["title"]
+            rows.append(f"| {name} | {f['pieces']:,} | {f['feet']:,.0f} | {f['solid']:.0%} | {f['left_sqft']:.1f} |")
+        return chr(10).join(rows)
+
+    def one(fn):
+        def get():
+            from two_v_demo import infill_dome as idm
+            return fn(idm)
+        return get
+
+    add("idome.table", "every fill and cover on the whole dome", table)
+    add("idome.across_ft", "the tool's dome, across, ft", one(lambda m: f"{2 * m.radius_in() / 12:.1f}"))
+    add("idome.panels", "triangles in the dome", one(lambda m: str(len(m.seats()))))
+    add("idome.thick_in", "frame thickness, in", one(lambda m: f"{m.spec().thickness_in:.2f}"))
+    add("idome.planed_nested", "planed off a nested pair", one(lambda m: f"{m.planed_off(1.0):.0%}"))
+    add("idome.planed_bowtie", "planed off a bowtie pair", one(lambda m: f"{m.planed_off(0.0):.0%}"))
+    add("idome.ways", "fills and covers shown", one(lambda m: str(len(m.variants()))))
 
 
 def _coverage_tokens(add) -> None:

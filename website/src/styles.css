@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+/* A temple, not a store: night stone, sunset gold, structure lines. One palette, two
+   themes; every colour is a token. */
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-stone-950: #0d1117;
+  --color-gold: #e8b45a;
+  --color-ember: #e07a3c;
+  --color-sky: #7cc4f0;
+  --color-leaf: #6fdc9b;
+}
+
+:root {
+  --bg: #0d1117;
+  --panel: #151b24;
+  --panel-2: #1c2430;
+  --line: #2b3646;
+  --ink: #ece6da;
+  --muted: #9aa4b2;
+  --accent: #e8b45a;
+  --accent-ink: #1a1206;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f6f1e7;
+    --panel: #fffaf0;
+    --panel-2: #f0e8d8;
+    --line: #d9ccb4;
+    --ink: #1d1a15;
+    --muted: #5d5649;
+    --accent: #a8641a;
+    --accent-ink: #fffaf0;
+  }
+}
+
+html, body { background: var(--bg); color: var(--ink); }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, .display { font-family: var(--font-display); letter-spacing: 0.01em; }
+
+@layer components {
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.panel-2 { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; }
+.muted { color: var(--muted); }
+.accent { color: var(--accent); }
+.btn { background: var(--accent); color: var(--accent-ink); font-weight: 600; border-radius: 10px; padding: 0.7rem 1.1rem; display: inline-block; }
+.btn:disabled { opacity: 0.5; }
+.btn-ghost { border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 1.1rem; display: inline-block; }
+.field { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0.65rem 0.8rem; width: 100%; color: var(--ink); }
+.field:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.tri { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* the level-up: a bar that fills when a real number moves */
+.xp-track { height: 10px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--line); overflow: hidden; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--color-ember), var(--accent)); transition: width 700ms cubic-bezier(.2,.8,.2,1); }
+}
+
+@keyframes rise { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+.toast { animation: rise 300ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .xp-fill, .toast { transition: none; animation: none; } }

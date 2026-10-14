@@ -1,0 +1,44 @@
+{
+  "name": "zeanahlab",
+  "private": true,
+  "version": "0.1.0",
+  "description": "zeanahlab.com -- the dome project's interface: the book, the list, accounts that own their numbers, the pad network, backers and founder plaques. Cloudflare Pages + D1 + R2.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "facts": "py -3.12 scripts/export_facts.py",
+    "facts:check": "py -3.12 scripts/export_facts.py --check",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p functions/tsconfig.json --noEmit",
+    "build": "npm run typecheck && vite build",
+    "db:local": "wrangler d1 migrations apply zeanahlab --local",
+    "db:remote": "wrangler d1 migrations apply zeanahlab --remote",
+    "books:local": "py -3.12 scripts/upload_books.py --local",
+    "books:remote": "py -3.12 scripts/upload_books.py --remote",
+    "preview": "vite build && wrangler pages dev dist --port 8788",
+    "serve": "wrangler pages dev dist --port 8788 --ip 127.0.0.1",
+    "setup": "py -3.12 scripts/cloudflare_setup.py",
+    "db:model": "py -3.12 scripts/model_db.py",
+    "snippets": "py -3.12 scripts/sample_snippets.py"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261006.1",
+    "@tailwindcss/vite": "^4.1.8",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.0",
+    "tailwindcss": "^4.1.8",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "wrangler": "^4.20.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true,
+    "workerd@1.20261012.1": true
+  }
+}

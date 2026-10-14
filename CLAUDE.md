@@ -37,6 +37,13 @@ exists; a rebuilt folder (a release) goes beside the first as `-v2`.
 * **The 3-D world is `py -3.12 -m world3d`**: the foundation, the dome and the zome, their
   jigs and skins, built by their own solvers; edits are an operation log replayed on top.
   Add new structures there, not in another single-purpose window.
+* **zeanahlab.com is `website/`** (Vite + React + TS + Tailwind on Cloudflare Pages, Pages
+  Functions, D1, R2; `website/SETUP.md` is the runbook). It ports `web/`'s list, sample gate,
+  accounts, shop and network, adds pads with their numbers, backers, founder plaques,
+  salvage and each member's own life account (the book *Snowball*'s `snowball.py`, per
+  member). Its numbers come only from `npm run facts` (`scripts/export_facts.py`, which reads
+  `web/export_facts.py` and `seed_model`). The owner's strategy brief is in
+  `website/private/`, which is gitignored and must never be committed.
 * **Images and clips live in `assets/`, named for what they show** (`assetlib.py`,
   `assets/catalogue.json`). Never name a file after the tool that made it; the catalogue's
   `origin` field records that (publishers ask). Find one by name:
