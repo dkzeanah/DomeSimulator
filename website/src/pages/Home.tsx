@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useMeta } from "../lib/meta";
 import { LivePanel, useStats } from "../components/Live";
 import SampleForm from "../components/SampleForm";
 import { JoinQuest, Panel } from "../components/ui";
@@ -13,6 +14,7 @@ const FILLS = [
 ] as const;
 
 export default function Home() {
+  useMeta("Zeanah Lab", `Build a ${facts.dome.acrossFt}-foot geodesic dome cabin from split logs in ${cabin.numbers.frameHours} hours of frame work. The 40 Hour Cabin, a free sample, every cost computed, and the pad network.`, "/");
   const stats = useStats();
   const d = facts.dome;
   return (

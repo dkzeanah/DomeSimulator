@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /account
+Disallow: /thanks/
+Disallow: /checkout/
+
+Sitemap: https://www.zeanahlab.com/sitemap.xml

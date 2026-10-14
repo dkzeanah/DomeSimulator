@@ -1,8 +1,10 @@
 import SampleForm from "../components/SampleForm";
+import { useMeta } from "../lib/meta";
 import { JoinQuest, Panel } from "../components/ui";
 import { cabin, sample } from "../lib/facts";
 
 export default function Sample() {
+  useMeta("Free sample: The 40 Hour Cabin", `The first ${sample.pages} pages of The 40 Hour Cabin, free: how to build a geodesic dome cabin from split logs, exactly as printed.`, "/sample");
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 grid gap-6 md:grid-cols-[1fr_1fr]">
       <div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useMeta } from "../lib/meta";
 import { ErrorLine, Fraction, Panel } from "../components/ui";
 import { useStats } from "../components/Live";
 import { api, money, usd } from "../lib/api";
@@ -47,6 +48,7 @@ function PlaqueWall({ plaques }: { plaques: Plaque[] }) {
 }
 
 export default function Back() {
+  useMeta("Back the build: founder plaques", `Back the first standing, instrumented geodesic dome: campaign tiers priced by the cost model, and ${facts.plaques.slots} founder plaques, one per panel.`, "/back");
   const stats = useStats();
   const [plaques, setPlaques] = useState<Plaque[]>([]);
   const [backers, setBackers] = useState<Backer[]>([]);

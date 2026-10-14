@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useMeta } from "../lib/meta";
 import { useSearchParams } from "react-router-dom";
 import Shelf from "../components/Shelf";
 import { Panel, Stat } from "../components/ui";
@@ -7,6 +8,7 @@ import { book, cabin, facts } from "../lib/facts";
 import { useSession } from "../lib/session";
 
 export default function Book() {
+  useMeta("The 40 Hour Cabin: geodesic dome build manual", `${cabin.pages} pages, ${cabin.figures} computed figures: build a ${cabin.numbers.diameterFt}-foot geodesic dome from split logs, the whole shell for $${cabin.numbers.shellUsd}. Digital, hand-bound triangular edition, and paperback.`, "/book");
   const { mark } = useSession();
   const [params] = useSearchParams();
   useEffect(() => { mark("read"); }, [mark]);

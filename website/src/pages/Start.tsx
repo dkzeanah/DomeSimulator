@@ -3,6 +3,7 @@
 // the bar at the top moves only when the visitor really takes the step.
 
 import { useState } from "react";
+import { useMeta } from "../lib/meta";
 import { Link } from "react-router-dom";
 import SampleForm from "../components/SampleForm";
 import Shelf from "../components/Shelf";
@@ -15,6 +16,7 @@ import pages from "../generated/sample-pages.json";
 const STAGES = ["Look inside", "Read the opening", "Own the book", "Put your name on it"];
 
 export default function Start() {
+  useMeta("Free pages: The 40 Hour Cabin", `Look inside The 40 Hour Cabin: real pages from the ${cabin.pages}-page build manual, then the first ${sample.pages} pages free for your email.`, "/start");
   const { steps } = useSession();
   const [big, setBig] = useState<string | null>(null);
   const [readNow, setReadNow] = useState(false);

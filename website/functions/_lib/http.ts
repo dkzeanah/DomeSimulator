@@ -13,6 +13,8 @@ export interface Env {
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
   TEST_CHECKOUT?: string; // "1" locally: a stand-in for Stripe's page. Never set in production.
+  STRIPE_TAX?: string; // "1": Stripe Tax on every checkout (set up Tax in Stripe first)
+  STRIPE_INVOICES?: string; // "1": Stripe makes and emails an invoice for every purchase
 }
 
 export interface User {

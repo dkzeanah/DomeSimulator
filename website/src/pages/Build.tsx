@@ -1,9 +1,11 @@
 import { LivePanel, useStats } from "../components/Live";
+import { useMeta } from "../lib/meta";
 import { Fraction, Panel, Stat } from "../components/ui";
 import { usd } from "../lib/api";
 import { facts } from "../lib/facts";
 
 export default function Build() {
+  useMeta("The stem-cell dome, inspected", `The ${facts.dome.acrossFt}-foot stem-cell dome: ${facts.dome.members} wedge members, ${facts.dome.bays} panels, its fit-outs and panel options, and what every dollar of the build goal is for.`, "/build");
   const stats = useStats();
   const d = facts.dome;
   const pledged = stats ? stats.pledgedCents / 100 : 0;

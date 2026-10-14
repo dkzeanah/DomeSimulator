@@ -73,6 +73,13 @@ export function createCheckoutSession(env: Env, o: { ref: string; name: string; 
     mode: "payment",
     // a physical product: Stripe's page asks for the address, limited to where it ships
     shipping_address_collection: o.shipTo?.length ? { allowed_countries: Object.fromEntries(o.shipTo.map((c, i) => [i, c])) } : undefined,
+    // Stripe Tax works out sales tax from the buyer's address. Off until the owner has set the
+    // business address and registrations in Stripe (Tax -> Settings), then STRIPE_TAX=1.
+    automatic_tax: env.STRIPE_TAX === "1" ? { enabled: true } : undefined,
+    billing_address_collection: env.STRIPE_TAX === "1" ? "required" : undefined,
+    // A real invoice (PDF, numbered) for every purchase, emailed by Stripe: STRIPE_INVOICES=1.
+    // Stripe charges a small fee per invoice, so it is off unless chosen.
+    invoice_creation: env.STRIPE_INVOICES === "1" ? { enabled: true } : undefined,
     line_items: { 0: { quantity: 1, price_data: { currency: o.currency, unit_amount: o.cents, product_data: { name: o.name, description: o.description } } } },
     customer_email: o.email || undefined,
     client_reference_id: o.ref,

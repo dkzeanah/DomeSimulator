@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useMeta } from "../lib/meta";
 import { Link } from "react-router-dom";
 import { ErrorLine, Panel } from "../components/ui";
 import { api, money } from "../lib/api";
@@ -8,6 +9,7 @@ interface Row { display_name: string; hours: number; cents: number; loads: numbe
 interface Mine { material: string; quantity: number; unit: string; hours: number; replacement_cents: number; created_at: string }
 
 export default function Recyclers() {
+  useMeta("Recyclers: salvage, counted", "Reclaimed timber, sheet goods and fabric for small dome builds, logged with the hours it took and what it would have cost new.", "/recyclers");
   const { me, notify } = useSession();
   const [board, setBoard] = useState<Row[]>([]);
   const [mine, setMine] = useState<Mine[]>([]);

@@ -2,6 +2,7 @@
 // Every figure is read from facts; the letters' bracketed fields are for the sender.
 
 import { useEffect, useState } from "react";
+import { useMeta } from "../lib/meta";
 import { NavLink, Route, Routes } from "react-router-dom";
 import { Panel } from "../components/ui";
 import { usd } from "../lib/api";
@@ -164,6 +165,7 @@ function Outreach() {
 }
 
 export default function Kit() {
+  useMeta("Press kit and letters", "The dome project on one page: cheat sheet, campaign outline, presentation, and letter templates for veterans organizations, landowners, press and recyclers.", "/kit");
   const tab = ({ isActive }: { isActive: boolean }) => (isActive ? "accent font-semibold" : "muted");
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 grid gap-6">

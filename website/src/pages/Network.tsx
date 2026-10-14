@@ -2,6 +2,7 @@
 // host's own, worked out the same way for every pad, so they can be compared on one page.
 
 import { useEffect, useState } from "react";
+import { useMeta } from "../lib/meta";
 import { Link } from "react-router-dom";
 import { ErrorLine, Panel } from "../components/ui";
 import { api, money } from "../lib/api";
@@ -111,6 +112,7 @@ function AddListing({ kinds, onSaved }: { kinds: Kind[]; onSaved: () => void }) 
 }
 
 export default function Network() {
+  useMeta("Dome pad network", "Find a serviced pad for a small dome home, or list your land. Every pad shows its nightly rate, how often it is let and what a season costs.", "/network");
   const { me } = useSession();
   const [kinds, setKinds] = useState<Kind[]>([]);
   const [kind, setKind] = useState("");

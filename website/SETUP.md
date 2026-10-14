@@ -20,10 +20,11 @@ asks for the optional email and payment keys (leave blank to skip); and it asks 
 publishes. Run it again any time -- finished steps are skipped. *Wrangler*, which you will
 see named, is just Cloudflare's own command-line tool; the script drives it for you.
 
-Done already (2026-10-14): signed in, the database made (`wrangler.toml` holds its id) with
-every table and the catalogue, the site project made, `SESSION_SECRET` and `ADMIN_EMAILS`
-set. Still yours: switch R2 on, then run `npm run setup` once more to upload the books and
-publish.
+Done (2026-10-14): the database, the book store (both PDFs uploaded), the site project and its
+two required secrets, the first publish, and the address: www.zeanahlab.com and zeanahlab.com
+now point at the site (they were `A 47.231.197.101`, which no longer answered; the mail
+records were left alone). Still open: the Resend and Stripe keys (`npm run setup` asks for
+them) and the two GitHub secrets for automatic publishing (step 9).
 
 The steps below are what the script does, by hand.
 
