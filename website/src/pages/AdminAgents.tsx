@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import AdminNav from "../components/AdminNav";
 import { ErrorLine, Panel } from "../components/ui";
 import { api, n } from "../lib/api";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
 
 interface Key { id: number; name: string; prefix: string; scopes: string; rate_per_min: number; created_at: string; expires_at: string | null; last_used_at: string | null; revoked_at: string | null; calls: number }
 interface Call { ts: string; method: string; path: string; status: number; note: string | null; name: string | null }
@@ -23,8 +23,8 @@ export default function AdminAgents() {
   const [msg, setMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const load = useCallback(() => api<Data>("/admin/agents").then(setD).catch((e) => setError(e.message)), []);
-  useEffect(() => { if (me?.role === "admin") void load(); }, [me, load]);
-  if (me?.role !== "admin") return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
+  useEffect(() => { if (isStaff(me)) void load(); }, [me, load]);
+  if (!isStaff(me)) return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
   if (!d) return <div className="mx-auto max-w-xl px-4 py-10 muted">{error || "Loading..."}</div>;
   const act = async (fn: () => Promise<unknown>, done: string) => { setError(null); setMsg(null); try { await fn(); setMsg(done); await load(); } catch (e) { setError((e as Error).message); } };
   const pending = d.proposals.filter((p) => p.status === "pending");
@@ -58,7 +58,7 @@ export default function AdminAgents() {
       </Panel>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-        <Panel title="Make a key">
+        {me?.role !== "admin" ? <Panel title="Make a key"><p className="muted text-sm">Only the owner makes and revokes agent keys. You can see every key, every call, and decide proposals.</p></Panel> : <Panel title="Make a key">
           <form className="grid gap-3 text-sm" onSubmit={(e) => {
             e.preventDefault();
             void act(async () => {
@@ -90,7 +90,7 @@ export default function AdminAgents() {
               <p className="muted">Give the agent this, and tell it to start with:<br /><code className="text-xs break-all">GET {base}/api/agent/tools</code><br />with the header <code className="text-xs">Authorization: Bearer &lt;key&gt;</code>. That page lists exactly what this key may do, with inputs, so an LLM can use them as tools.</p>
             </div>
           )}
-        </Panel>
+        </Panel>}
 
         <Panel title={`Keys: ${d.keys.filter((k) => !k.revoked_at).length} live`}>
           {!d.keys.length && <p className="muted text-sm">No keys yet.</p>}
@@ -100,7 +100,7 @@ export default function AdminAgents() {
                 <div className="flex flex-wrap gap-2 items-baseline justify-between">
                   <span><b>{k.name}</b> <code className="text-xs muted">zl_{k.prefix}_...</code></span>
                   {k.revoked_at ? <span className="muted">revoked {day(k.revoked_at)}</span>
-                    : <button className="btn-ghost !py-1 !px-2" onClick={() => { if (confirm(`Revoke "${k.name}"? Anything using it stops at once.`)) void act(() => api(`/admin/agents/${k.id}/revoke`, { body: {} }), "Revoked."); }}>Revoke</button>}
+                    : me?.role !== "admin" ? null : <button className="btn-ghost !py-1 !px-2" onClick={() => { if (confirm(`Revoke "${k.name}"? Anything using it stops at once.`)) void act(() => api(`/admin/agents/${k.id}/revoke`, { body: {} }), "Revoked."); }}>Revoke</button>}
                 </div>
                 <div className="flex flex-wrap gap-1">{(JSON.parse(k.scopes) as string[]).map((s) => <code key={s} className="text-xs rounded px-1.5" style={{ border: "1px solid var(--line)" }}>{s}</code>)}</div>
                 <span className="muted text-xs">{n(k.calls)} calls, last {day(k.last_used_at)}; {k.rate_per_min}/min; expires {k.expires_at ? day(k.expires_at) : "never"}</span>

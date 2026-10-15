@@ -4,7 +4,7 @@
 // suspend or restore it, sign it out everywhere, make a reset link, delete it -- each act
 // written to the audit log.
 
-import { currentSessionHash, normaliseEmail, publicUser, requireAdmin, requireUser, roleFor, startSession } from "./auth";
+import { currentSessionHash, normaliseEmail, publicUser, requireAdmin, requireOwner, requireUser, roleFor, startSession } from "./auth";
 import { hashPassword, randomToken, sha256Hex } from "./crypto";
 import { Ctx, HttpError, User, body, email, honeypot, json, nowIso, text } from "./http";
 import { enqueue, site } from "./mail";
@@ -169,13 +169,21 @@ async function target(ctx: Ctx) {
   return u;
 }
 
+/** A manager acts on members; only the owner acts on a manager or the owner's own account. */
+function mayActOn(ctx: Ctx, t: User) {
+  const me = requireAdmin(ctx);
+  const staff = roleFor(ctx.env, t.email, t.role) !== "member";
+  if (me.role !== "admin" && staff && t.id !== me.id) throw new HttpError(403, "Only the owner can change a manager's or the owner's account.");
+  return me;
+}
+
 api.get("/admin/users/:id", async (ctx) => {
   requireAdmin(ctx);
   const u = await target(ctx);
   const db = ctx.env.DB;
   const sub = await db.prepare("SELECT id, status, marketing_consent, first_source, first_campaign, created_at, confirmed_at FROM subscribers WHERE email = ?").bind(u.email).first<{ id: number }>();
   return json({
-    user: { ...publicUser(u), status: u.status, suspendedReason: u.suspended_reason, adminNote: u.admin_note, lastSeenAt: u.last_seen_at, emailVerifiedAt: u.email_verified_at, isAdmin: roleFor(ctx.env, u.email) === "admin" },
+    user: { ...publicUser(u), role: roleFor(ctx.env, u.email, u.role), status: u.status, suspendedReason: u.suspended_reason, adminNote: u.admin_note, lastSeenAt: u.last_seen_at, emailVerifiedAt: u.email_verified_at, isAdmin: roleFor(ctx.env, u.email) === "admin" },
     list: sub ? { ...sub, tags: (await db.prepare("SELECT tag FROM subscriber_tags WHERE subscriber_id = ?").bind(sub.id).all<{ tag: string }>()).results.map((t) => t.tag) } : null,
     sessions: (await db.prepare(`SELECT ${SESSION_COLS} FROM sessions WHERE user_id = ? AND expires_at > ? ORDER BY COALESCE(last_seen_at, created_at) DESC`).bind(u.id, nowIso()).all()).results,
     orders: (await db.prepare("SELECT ref, book_slug product, amount_cents, status, fulfillment, created_at, paid_at FROM orders WHERE user_id = ? OR email = ? ORDER BY id DESC LIMIT 50").bind(u.id, u.email).all()).results,
@@ -186,8 +194,9 @@ api.get("/admin/users/:id", async (ctx) => {
 });
 
 api.patch("/admin/users/:id", async (ctx) => {
-  const me = requireAdmin(ctx);
+  requireAdmin(ctx);
   const u = await target(ctx);
+  const me = mayActOn(ctx, u);
   const b = await body(ctx);
   const changes: Record<string, unknown> = {};
   if ("status" in b) {
@@ -212,6 +221,7 @@ api.patch("/admin/users/:id", async (ctx) => {
 api.post("/admin/users/:id/signout", async (ctx) => {
   requireAdmin(ctx);
   const u = await target(ctx);
+  mayActOn(ctx, u);
   const r = await ctx.env.DB.prepare("DELETE FROM sessions WHERE user_id = ?").bind(u.id).run();
   await audit(ctx, "user.signout_everywhere", `user:${u.id}`, { ended: r.meta.changes });
   return json({ ok: true, ended: r.meta.changes });
@@ -221,13 +231,14 @@ api.post("/admin/users/:id/signout", async (ctx) => {
 api.post("/admin/users/:id/reset-link", async (ctx) => {
   requireAdmin(ctx);
   const u = await target(ctx);
+  mayActOn(ctx, u);
   const r = await sendReset(ctx, u, 24);
   await audit(ctx, "user.reset_link", `user:${u.id}`, { queued: r.queued });
   return json({ link: r.link, queued: r.queued, note: "Works once, for 24 hours. Send it only to the account's owner." });
 });
 
 api.delete("/admin/users/:id", async (ctx) => {
-  const me = requireAdmin(ctx);
+  const me = requireOwner(ctx);
   const u = await target(ctx);
   const b = await body(ctx);
   if (normaliseEmail(String(b.confirm || "")) !== u.email) throw new HttpError(400, "Type the account's email address to confirm.");
@@ -236,4 +247,20 @@ api.delete("/admin/users/:id", async (ctx) => {
   await ctx.env.DB.prepare("DELETE FROM users WHERE id = ?").bind(u.id).run();
   await audit(ctx, "user.delete", `user:${u.id}`, { email: u.email });
   return json({ ok: true });
+});
+
+/** The owner promotes a member to manager, or a manager back to member. A manager can open every
+ *  admin page and do the day's work -- orders, backers, the list, campaigns, automations,
+ *  members, approving agents' proposals -- but cannot make managers, make or revoke agent keys,
+ *  delete accounts, or change another manager's or the owner's account. */
+api.post("/admin/users/:id/role", async (ctx) => {
+  requireOwner(ctx);
+  const u = await target(ctx);
+  const role = String((await body(ctx)).role || "");
+  if (!["manager", "member"].includes(role)) throw new HttpError(400, "role is manager or member.");
+  if (roleFor(ctx.env, u.email) === "admin") throw new HttpError(400, "The owner's role comes from ADMIN_EMAILS, not from here.");
+  if (u.status === "suspended" && role === "manager") throw new HttpError(400, "Restore the account first.");
+  await ctx.env.DB.prepare("UPDATE users SET role = ?, updated_at = ? WHERE id = ?").bind(role, nowIso(), u.id).run();
+  await audit(ctx, role === "manager" ? "user.promote_manager" : "user.demote_member", `user:${u.id}`, { email: u.email });
+  return json({ ok: true, role });
 });

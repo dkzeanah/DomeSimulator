@@ -6,11 +6,11 @@ import { useCallback, useEffect, useState } from "react";
 import AdminNav from "../components/AdminNav";
 import { ErrorLine, Panel } from "../components/ui";
 import { api, money, n } from "../lib/api";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
 
 interface Row { id: number; email: string; display_name: string; role: string; status: string; created_at: string; last_seen_at: string | null; email_verified_at: string | null; orders: number; spent_cents: number; listings: number; sessions: number; list_status: string | null; city: string | null; country: string | null }
 interface Detail {
-  user: { id: number; email: string; displayName: string; status: string; suspendedReason: string | null; adminNote: string | null; lastSeenAt: string | null; emailVerifiedAt: string | null; isAdmin: boolean; createdAt: string; city: string; region: string; country: string; publicProfile: boolean };
+  user: { id: number; email: string; displayName: string; role: string; status: string; suspendedReason: string | null; adminNote: string | null; lastSeenAt: string | null; emailVerifiedAt: string | null; isAdmin: boolean; createdAt: string; city: string; region: string; country: string; publicProfile: boolean };
   list: { status: string; marketing_consent: number; first_source: string | null; first_campaign: string | null; tags: string[] } | null;
   sessions: { id: string; created_at: string; last_seen_at: string | null; user_agent: string | null; country: string | null }[];
   orders: { ref: string; product: string; amount_cents: number; status: string; fulfillment: string | null; created_at: string }[];
@@ -21,7 +21,7 @@ interface Detail {
 
 const when = (s: string | null) => (s ? s.slice(0, 16).replace("T", " ") : "--");
 
-function Member({ id, onChanged }: { id: number; onChanged: () => void }) {
+function Member({ id, onChanged, owner }: { id: number; onChanged: () => void; owner: boolean }) {
   const [d, setD] = useState<Detail | null>(null);
   const [note, setNote] = useState("");
   const [reason, setReason] = useState("");
@@ -32,18 +32,29 @@ function Member({ id, onChanged }: { id: number; onChanged: () => void }) {
   useEffect(() => { void load(); }, [load]);
   if (!d) return <p className="muted text-sm">{error || "Loading..."}</p>;
   const u = d.user;
+  const hands = owner || u.role === "member";   // a manager acts on members only
   const act = async (fn: () => Promise<unknown>, done: string) => { setError(null); setMsg(null); try { await fn(); setMsg(done); await load(); onChanged(); } catch (e) { setError((e as Error).message); } };
   return (
     <div className="grid gap-4 text-sm">
       <div>
-        <h3 className="text-2xl font-semibold">{u.displayName} {u.isAdmin && <span className="accent text-sm">admin</span>}</h3>
+        <h3 className="text-2xl font-semibold">{u.displayName} {u.isAdmin ? <span className="accent text-sm">owner</span> : u.role === "manager" && <span className="accent text-sm">manager</span>}</h3>
         <p className="muted">{u.email} -- joined {when(u.createdAt)}, last seen {when(u.lastSeenAt)} -- email {u.emailVerifiedAt ? "confirmed" : "not confirmed"}</p>
         <p className="muted">{[u.city, u.region, u.country].filter(Boolean).join(", ") || "no place given"}; profile {u.publicProfile ? "public" : "private"}</p>
         {u.status === "suspended" && <p style={{ color: "var(--color-ember)" }}>Suspended{u.suspendedReason ? `: ${u.suspendedReason}` : ""}</p>}
       </div>
       {msg && <p className="accent">{msg}</p>}
       <ErrorLine error={error} />
-      <div className="flex flex-wrap gap-2">
+      {owner && !u.isAdmin && (
+        <div className="panel-2 p-3 flex flex-wrap gap-3 items-center">
+          {u.role === "manager"
+            ? <><span>Manager: can open every admin page and do the day's work, but cannot make managers, make agent keys, delete accounts, or change another manager's account.</span>
+                <button className="btn-ghost !py-1.5" onClick={() => act(() => api(`/admin/users/${id}/role`, { body: { role: "member" } }), "Now a member.")}>Make a member again</button></>
+            : <><span className="muted">Give this person the admin pages, short of making managers, agent keys and deleting accounts.</span>
+                <button className="btn-ghost !py-1.5" onClick={() => { if (confirm(`Make ${u.email} a manager?`)) void act(() => api(`/admin/users/${id}/role`, { body: { role: "manager" } }), "Now a manager."); }}>Make a manager</button></>}
+        </div>
+      )}
+      {!hands && <p className="muted">Only the owner can change a manager's account.</p>}
+      {hands && <div className="flex flex-wrap gap-2">
         {u.status === "suspended"
           ? <button className="btn-ghost !py-1.5" onClick={() => act(() => api(`/admin/users/${id}`, { method: "PATCH", body: { status: "active" } }), "Restored.")}>Restore the account</button>
           : !u.isAdmin && <span className="flex gap-2"><input className="field !w-56" placeholder="Reason (they will see it)" value={reason} onChange={(e) => setReason(e.target.value)} />
@@ -51,7 +62,7 @@ function Member({ id, onChanged }: { id: number; onChanged: () => void }) {
         <button className="btn-ghost !py-1.5" onClick={() => act(() => api(`/admin/users/${id}/signout`, { body: {} }), "Signed out everywhere.")}>Sign out everywhere</button>
         <button className="btn-ghost !py-1.5" onClick={() => act(async () => setLink((await api<{ link: string }>(`/admin/users/${id}/reset-link`, { body: {} })).link), "Reset link made (and queued by email).")}>Make a reset link</button>
         <button className="btn-ghost !py-1.5" onClick={() => act(() => api(`/admin/users/${id}`, { method: "PATCH", body: { emailVerified: !u.emailVerifiedAt } }), "Changed.")}>{u.emailVerifiedAt ? "Mark email unconfirmed" : "Mark email confirmed"}</button>
-      </div>
+      </div>}
       {link && <div className="panel-2 p-3"><b>Reset link</b> (works once, 24 hours; send it only to {u.email}):<br /><code className="break-all select-all text-xs">{link}</code></div>}
       <label className="grid gap-1">Your note (never shown to them)
         <textarea className="field" rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
@@ -65,7 +76,7 @@ function Member({ id, onChanged }: { id: number; onChanged: () => void }) {
         <div><b>Recent sign-ins</b>{d.logins.slice(0, 8).map((l, i) => <p key={i} className="muted">{when(l.ts)} {l.ok ? "ok" : "wrong password"}</p>)}{!d.logins.length && <p className="muted">none recorded</p>}</div>
         <div><b>History</b>{d.audit.map((a, i) => <p key={i} className="muted">{when(a.ts)} {a.action} by {a.actor_name || a.actor_kind}</p>)}{!d.audit.length && <p className="muted">nothing</p>}</div>
       </div>
-      {!u.isAdmin && (
+      {owner && !u.isAdmin && (
         <details className="panel-2 p-3">
           <summary className="cursor-pointer" style={{ color: "var(--color-ember)" }}>Delete this account</summary>
           <form className="grid gap-2 mt-2" onSubmit={(e) => { e.preventDefault(); const c = (e.currentTarget.elements.namedItem("confirm") as HTMLInputElement).value; void act(() => api(`/admin/users/${id}`, { method: "DELETE", body: { confirm: c } }), "Deleted."); }}>
@@ -89,8 +100,8 @@ export default function AdminUsers() {
   const [error, setError] = useState<string | null>(null);
   const load = useCallback(() => api<{ users: Row[]; counts: { status: string; n: number }[]; active7: number }>(`/admin/users?q=${encodeURIComponent(q)}&status=${status}`)
     .then((r) => { setRows(r.users); setMeta(r); }).catch((e) => setError(e.message)), [q, status]);
-  useEffect(() => { if (me?.role === "admin") { const t = setTimeout(() => void load(), 250); return () => clearTimeout(t); } }, [me, load]);
-  if (me?.role !== "admin") return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
+  useEffect(() => { if (isStaff(me)) { const t = setTimeout(() => void load(), 250); return () => clearTimeout(t); } }, [me, load]);
+  if (!isStaff(me)) return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
   const total = meta.counts.reduce((s, c) => s + c.n, 0);
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 grid gap-6">
@@ -113,11 +124,11 @@ export default function AdminUsers() {
             <div key={r.id} className="panel-2 p-3 text-sm">
               <button className="w-full text-left flex flex-wrap gap-x-4 gap-y-1 items-baseline" onClick={() => setOpen(open === r.id ? null : r.id)} aria-expanded={open === r.id}>
                 <b>{r.display_name}</b><span className="muted">{r.email}</span>
-                {r.role === "admin" && <span className="accent text-xs">admin</span>}
+                {r.role === "admin" && <span className="accent text-xs">owner</span>}{r.role === "manager" && <span className="accent text-xs">manager</span>}
                 {r.status === "suspended" && <span className="text-xs" style={{ color: "var(--color-ember)" }}>suspended</span>}
                 <span className="muted text-xs ml-auto">{r.orders ? `${r.orders} orders, ${money(r.spent_cents)}; ` : ""}{r.listings ? `${r.listings} listings; ` : ""}{r.sessions} devices; seen {when(r.last_seen_at)}</span>
               </button>
-              {open === r.id && <div className="mt-4 pt-4" style={{ borderTop: "1px solid var(--line)" }}><Member id={r.id} onChanged={() => void load()} /></div>}
+              {open === r.id && <div className="mt-4 pt-4" style={{ borderTop: "1px solid var(--line)" }}><Member id={r.id} owner={me?.role === "admin"} onChanged={() => void load()} /></div>}
             </div>
           ))}
           {rows && !rows.length && <p className="muted text-sm">No accounts match.</p>}

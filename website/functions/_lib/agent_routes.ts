@@ -4,7 +4,7 @@
 
 import { SCOPES, TOOLS, agentAuth, makeKey } from "./agent";
 import { report } from "./analytics";
-import { requireAdmin } from "./auth";
+import { requireAdmin, requireOwner } from "./auth";
 import { Ctx, HttpError, body, json, nowIso, num, text } from "./http";
 import { queueCampaign } from "./mail";
 import { audit, emit } from "./ops";
@@ -150,7 +150,7 @@ api.get("/admin/agents", async (ctx) => {
 });
 
 api.post("/admin/agents", async (ctx) => {
-  const u = requireAdmin(ctx);
+  const u = requireOwner(ctx);
   const b = await body(ctx);
   const scopes = (Array.isArray(b.scopes) ? b.scopes.map(String) : []).filter((s) => s in SCOPES);
   if (!scopes.length) throw new HttpError(400, "Tick at least one scope.");
@@ -164,7 +164,7 @@ api.post("/admin/agents", async (ctx) => {
 });
 
 api.post("/admin/agents/:id/revoke", async (ctx) => {
-  requireAdmin(ctx);
+  requireOwner(ctx);
   await ctx.env.DB.prepare("UPDATE api_keys SET revoked_at = COALESCE(revoked_at, ?) WHERE id = ?").bind(nowIso(), Number(ctx.params.id)).run();
   await audit(ctx, "agent_key.revoke", `key:${ctx.params.id}`);
   return json({ ok: true });

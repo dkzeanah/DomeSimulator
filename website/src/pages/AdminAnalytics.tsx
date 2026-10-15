@@ -7,7 +7,7 @@ import AdminNav from "../components/AdminNav";
 import { useEffect, useState } from "react";
 import { Panel, Stat } from "../components/ui";
 import { api, money, n } from "../lib/api";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
 
 interface Report {
   days: number;
@@ -75,8 +75,8 @@ export default function AdminAnalytics() {
   const [days, setDays] = useState(30);
   const [r, setR] = useState<Report | null>(null);
   const [error, setError] = useState<string | null>(null);
-  useEffect(() => { if (me?.role === "admin") api<Report>(`/admin/analytics?days=${days}`).then(setR).catch((e) => setError(e.message)); }, [me, days]);
-  if (me?.role !== "admin") return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
+  useEffect(() => { if (isStaff(me)) api<Report>(`/admin/analytics?days=${days}`).then(setR).catch((e) => setError(e.message)); }, [me, days]);
+  if (!isStaff(me)) return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
   if (error) return <div className="mx-auto max-w-xl px-4 py-10">{error}</div>;
   if (!r) return <div className="mx-auto max-w-xl px-4 py-10 muted">Counting...</div>;
   const f = r.funnel;

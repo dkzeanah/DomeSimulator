@@ -12,9 +12,12 @@ export function normaliseEmail(e: string) {
   return String(e || "").trim().toLowerCase();
 }
 
-export function roleFor(env: Env, email: string): "admin" | "member" {
+/** The owner (admin) is whoever ADMIN_EMAILS names, and nobody else. A manager is promoted by
+ *  the owner and kept in the database; the address list can never be overridden from inside. */
+export function roleFor(env: Env, email: string, current?: string | null): "admin" | "manager" | "member" {
   const admins = String(env.ADMIN_EMAILS || "").split(",").map(normaliseEmail).filter(Boolean);
-  return admins.includes(normaliseEmail(email)) ? "admin" : "member";
+  if (admins.includes(normaliseEmail(email))) return "admin";
+  return current === "manager" ? "manager" : "member";
 }
 
 function cookie(ctx: Ctx, value: string, maxAgeSec: number) {
@@ -98,7 +101,7 @@ export async function loadUser(ctx: Ctx): Promise<User | null> {
       ctx.env.DB.prepare("UPDATE users SET last_seen_at = ? WHERE id = ?").bind(nowIso(), row.id),
     ]);
   }
-  const role = roleFor(ctx.env, row.email);
+  const role = roleFor(ctx.env, row.email, row.role);
   if (role !== row.role) {
     await ctx.env.DB.prepare("UPDATE users SET role = ? WHERE id = ?").bind(role, row.id).run();
     row.role = role;
@@ -111,9 +114,17 @@ export function requireUser(ctx: Ctx): User {
   return ctx.user;
 }
 
+/** The owner or a manager: every admin page and most of what they do. */
 export function requireAdmin(ctx: Ctx): User {
   const u = requireUser(ctx);
-  if (u.role !== "admin") throw new HttpError(403, "Admins only.");
+  if (u.role !== "admin" && u.role !== "manager") throw new HttpError(403, "Admins only.");
+  return u;
+}
+
+/** The owner alone: making managers, agent keys, deleting accounts. */
+export function requireOwner(ctx: Ctx): User {
+  const u = requireUser(ctx);
+  if (u.role !== "admin") throw new HttpError(403, "Only the owner can do this.");
   return u;
 }
 

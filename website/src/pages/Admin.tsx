@@ -7,7 +7,7 @@ import { ErrorLine, Panel } from "../components/ui";
 import { api, money } from "../lib/api";
 import { useCatalogue } from "../lib/catalogue";
 import { facts } from "../lib/facts";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
 
 interface Sub { email: string; name: string | null; marketing_consent: number; source: string; created_at: string; unsubscribed_at: string | null }
 
@@ -24,8 +24,8 @@ export default function Admin() {
     api<{ subscribers: Sub[]; offers: typeof offers }>("/admin/subscribers").then((r) => { setSubs(r.subscribers); setOffers(r.offers); }).catch((e) => setError(e.message));
     api<{ backers: typeof backers }>("/admin/backers").then((r) => setBackers(r.backers)).catch(() => undefined);
   };
-  useEffect(() => { if (me?.role === "admin") load(); }, [me]);
-  if (me?.role !== "admin") return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
+  useEffect(() => { if (isStaff(me)) load(); }, [me]);
+  if (!isStaff(me)) return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
   const act = async (fn: () => Promise<unknown>, done: string) => { setError(null); try { await fn(); setMsg(done); load(); } catch (e) { setError((e as Error).message); } };
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 grid gap-6">

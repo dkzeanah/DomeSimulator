@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import AdminNav from "../components/AdminNav";
 import { ErrorLine, Panel } from "../components/ui";
 import { api, n } from "../lib/api";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
 
 interface Automation { id: number; name: string; description: string | null; trigger: string; conditions: string; actions: string; delay_minutes: number; active: number; runs: number; last_run_at: string | null; created_by: string | null }
 interface Job { id: number; label: string; status: string; attempts: number; run_at: string; finished_at: string | null; result: string | null; error: string | null; event: string | null }
@@ -107,8 +107,8 @@ export default function AdminOps() {
   const [msg, setMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const load = useCallback(() => api<Data>("/admin/ops").then(setD).catch((e) => setError(e.message)), []);
-  useEffect(() => { if (me?.role === "admin") void load(); }, [me, load]);
-  if (me?.role !== "admin") return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
+  useEffect(() => { if (isStaff(me)) void load(); }, [me, load]);
+  if (!isStaff(me)) return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
   if (!d) return <div className="mx-auto max-w-xl px-4 py-10 muted">{error || "Loading..."}</div>;
   const act = async (label: string, fn: () => Promise<unknown>, done: string) => {
     setError(null); setMsg(null); setBusy(label);

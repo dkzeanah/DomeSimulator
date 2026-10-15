@@ -352,7 +352,7 @@ function Profile() {
       </Panel>
       <Panel title="Sign out">
         <button className="btn-ghost" onClick={async () => { await api("/logout", { body: {} }); setMe(null); await refresh(); }}>Sign out of this device</button>
-        {me!.role === "admin" && <p className="mt-4"><Link className="underline" to="/admin">Admin</Link></p>}
+        {(me!.role === "admin" || me!.role === "manager") && <p className="mt-4"><Link className="underline" to="/admin">Admin</Link></p>}
       </Panel>
     </div>
   );

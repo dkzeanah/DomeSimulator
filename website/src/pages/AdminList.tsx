@@ -5,7 +5,7 @@ import AdminNav from "../components/AdminNav";
 import { useCallback, useEffect, useState } from "react";
 import { ErrorLine, Panel } from "../components/ui";
 import { api, n } from "../lib/api";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
 
 interface Sub { id: number; email: string; name: string | null; status: string; marketing_consent: number; source: string; first_source: string | null; first_campaign: string | null; created_at: string; confirmed_at: string | null; tags: string | null }
 interface Campaign { id: number; name: string; identity: string; subject: string; body: string; segment: string; status: string; queued_count: number; sent: number; opened: number; clicked: number; created_at: string }
@@ -46,8 +46,8 @@ export default function AdminList() {
   const [msg, setMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const load = useCallback(() => api<Data>("/admin/list").then(setD).catch((e) => setError(e.message)), []);
-  useEffect(() => { if (me?.role === "admin") void load(); }, [me, load]);
-  if (me?.role !== "admin") return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
+  useEffect(() => { if (isStaff(me)) void load(); }, [me, load]);
+  if (!isStaff(me)) return <div className="mx-auto max-w-xl px-4 py-10 muted">Admins only.</div>;
   if (!d) return <div className="mx-auto max-w-xl px-4 py-10 muted">{error || "Loading..."}</div>;
   const act = async (fn: () => Promise<unknown>, done: string) => { setError(null); setMsg(null); try { await fn(); setMsg(done); await load(); } catch (e) { setError((e as Error).message); } };
   const shown = d.subscribers.filter((s) => filter === "all" || s.status === filter);

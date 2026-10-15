@@ -6,6 +6,9 @@ import { api } from "./api";
 
 export interface Me { id: number; email: string; displayName: string; role: string; bio: string; city: string; region: string; country: string; publicProfile: boolean; emailVerified?: boolean }
 
+/** The owner (admin) or a manager: may open the admin pages. */
+export const isStaff = (me: Me | null) => me?.role === "admin" || me?.role === "manager";
+
 export const JOIN_STEPS = [
   { key: "read", label: "Read what the book proves", unlock: "the free sample" },
   { key: "sample", label: "Get the free sample", unlock: "an account of your own" },
