@@ -15,6 +15,8 @@ export interface Env {
   STRIPE_INVOICES?: string; // "1": Stripe makes and emails an invoice for every purchase
   MAILER_TOKEN?: string; // the owner's mail program presents this to collect the queue
   MAIL_POSTAL_ADDRESS?: string; // required by law in marketing email; marketing is refused without it
+  OPS_TOKEN?: string; // the zeanahlab-ops Worker presents this to run the clock
+  AI?: Ai; // Workers AI (the [ai] binding)
 }
 
 export interface User {
@@ -29,6 +31,9 @@ export interface User {
   country: string | null;
   public_profile: number;
   created_at: string;
+  status?: string;
+  last_seen_at?: string | null;
+  email_verified_at?: string | null;
 }
 
 export interface Ctx {
@@ -39,6 +44,8 @@ export interface Ctx {
   user: User | null;
   /** cookies to set on the way out */
   setCookies: string[];
+  /** keep working after the response has gone (Pages' waitUntil) */
+  waitUntil?: (p: Promise<unknown>) => void;
 }
 
 export class HttpError extends Error {

@@ -22,6 +22,11 @@ const Unsubscribe = lazy(() => import("./pages/Mailbox").then((m) => ({ default:
 const Privacy = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Privacy })));
 const AdminList = lazy(() => import("./pages/AdminList"));
 const AdminAnalytics = lazy(() => import("./pages/AdminAnalytics"));
+const AdminUsers = lazy(() => import("./pages/AdminUsers"));
+const AdminOps = lazy(() => import("./pages/AdminOps"));
+const AdminAgents = lazy(() => import("./pages/AdminAgents"));
+const Reset = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Reset })));
+const Verify = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Verify })));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 createRoot(document.getElementById("root")!).render(
@@ -46,6 +51,11 @@ createRoot(document.getElementById("root")!).render(
               <Route path="admin" element={<Admin />} />
               <Route path="admin/list" element={<AdminList />} />
               <Route path="admin/analytics" element={<AdminAnalytics />} />
+              <Route path="admin/users" element={<AdminUsers />} />
+              <Route path="admin/ops" element={<AdminOps />} />
+              <Route path="admin/agents" element={<AdminAgents />} />
+              <Route path="reset" element={<Reset />} />
+              <Route path="verify" element={<Verify />} />
               <Route path="confirm" element={<Confirm />} />
               <Route path="unsubscribe" element={<Unsubscribe />} />
               <Route path="privacy" element={<Privacy />} />

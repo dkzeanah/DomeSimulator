@@ -1,6 +1,7 @@
 // The owner's list and email: who is on it and how they arrived, tags, campaigns (compose,
 // test to yourself, queue to a segment), the follow-up sequences, and the sending identities.
 
+import AdminNav from "../components/AdminNav";
 import { useCallback, useEffect, useState } from "react";
 import { ErrorLine, Panel } from "../components/ui";
 import { api, n } from "../lib/api";
@@ -59,6 +60,7 @@ export default function AdminList() {
         <p className="text-xs uppercase tracking-[0.2em] accent font-semibold">Your own list, your own mail</p>
         <h1 className="text-4xl font-bold">The list and email</h1>
       </div>
+      <AdminNav />
       {msg && <p className="accent">{msg}</p>}
       <ErrorLine error={error} />
       {(!d.mailerSet || !d.postalAddressSet) && (

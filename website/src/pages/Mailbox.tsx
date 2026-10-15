@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ErrorLine, Panel } from "../components/ui";
 import { api } from "../lib/api";
+import { useSession, type Me } from "../lib/session";
 import { useMeta } from "../lib/meta";
 
 export function Confirm() {
@@ -78,6 +79,50 @@ export function Privacy() {
           Cards are taken on Stripe's own page; card numbers never reach this site. Account passwords are stored only as a salted hash.
           To delete your account and everything tied to it, use the Profile page, or email donovan@zeanahlab.com.
         </p>
+      </Panel>
+    </div>
+  );
+}
+
+export function Reset() {
+  useMeta("Choose a new password", "Reset your Zeanah Lab password.", "/reset");
+  const [q] = useSearchParams();
+  const { setMe } = useSession();
+  const [pw, setPw] = useState("");
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <div className="mx-auto max-w-xl px-4 py-14">
+      <Panel title={done ? "Password changed" : "Choose a new password"}>
+        {done ? <><p className="muted">You are signed in. Every other device was signed out.</p><Link className="btn mt-4" to="/account">Your account</Link></> : (
+          <form className="grid gap-2" onSubmit={async (e) => {
+            e.preventDefault(); setError(null);
+            try { const r = await api<{ user: Me }>("/password/reset", { body: { t: q.get("t") || "", password: pw } }); setMe(r.user); setDone(true); } catch (err) { setError((err as Error).message); }
+          }}>
+            <input className="field" type="password" required minLength={10} autoComplete="new-password" placeholder="New password (10 characters or more)" value={pw} onChange={(e) => setPw(e.target.value)} />
+            <button className="btn justify-self-start">Save it</button>
+            <ErrorLine error={error} />
+          </form>
+        )}
+      </Panel>
+    </div>
+  );
+}
+
+export function Verify() {
+  useMeta("Confirm your email", "Confirm your Zeanah Lab account's email.", "/verify");
+  const [q] = useSearchParams();
+  const { refresh } = useSession();
+  const [state, setState] = useState<"working" | "done" | "error">("working");
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    api("/verify", { body: { t: q.get("t") || "" } }).then(() => { setState("done"); void refresh(); }).catch((e) => { setError(e.message); setState("error"); });
+  }, [q, refresh]);
+  return (
+    <div className="mx-auto max-w-xl px-4 py-14">
+      <Panel title={state === "done" ? "Email confirmed" : state === "error" ? "That link did not work" : "Confirming..."}>
+        <ErrorLine error={error} />
+        <Link className="btn mt-4" to="/account">Your account</Link>
       </Panel>
     </div>
   );

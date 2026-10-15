@@ -141,14 +141,19 @@ domain**, type `www.zeanahlab.com`, and confirm. Cloudflare adds the DNS record 
 because it already runs the domain. Do the same for `zeanahlab.com` (or add a redirect
 rule from the bare domain to `www`).
 
-## 7. Email: your own list, your own mail server
+## 7. Email: your own list, sent by Cloudflare
 
-No email company is involved. The site keeps the list, the campaigns, the follow-up
-sequences and every message in its own database, in a queue. Your own mail program, on a
-rented server with a static address, collects the queue every minute with `MAILER_TOKEN`
-(setup makes it and keeps a copy in `website/private/mailer-token.txt`), signs each
-message with zeanahlab.com's own key, delivers it, and reports back. Until that server
-runs, messages wait in the queue -- nothing is lost.
+The site keeps the list, the campaigns, the follow-up sequences and every message in its
+own database, in a queue. Once a minute the **zeanahlab-ops** Worker (step 10) collects the
+queue with `MAILER_TOKEN` (copy in `website/private/mailer-token.txt`) and sends each message
+through **Cloudflare Email Sending** from zeanahlab.com -- part of Workers Paid: 3,000 emails
+a month included, then $0.35 per 1,000 (Cloudflare's price list). No rented server. Until
+sending is switched on, messages wait in the queue -- nothing is lost.
+
+Switch it on once: Cloudflare dashboard -> **Compute -> Email Service -> Email Sending ->
+Onboard Domain** -> zeanahlab.com -> Done. It adds its own records under `cf-bounce` and a
+DMARC record. Add `dkzeanah@gmail.com` as a verified destination address (Email Routing ->
+Destination addresses) so the archive copy of each message is free and uncounted.
 
 - **owner@zeanahlab.com** sends the site's automatic mail; **donovan@zeanahlab.com** sends
   your updates; both copy every message to your Gmail.
@@ -156,11 +161,10 @@ runs, messages wait in the queue -- nothing is lost.
   update has a one-click unsubscribe; an address that leaves is never mailed again.
 - The law (CAN-SPAM) requires a postal address in marketing email. `npm run setup` asks for
   it (`MAIL_POSTAL_ADDRESS`); a P.O. box is fine. Until it is set, updates are held back;
-  sample links and receipts still go.
+  sample links, receipts and password resets still go.
 - **Admin -> The list and email**: subscribers and where each came from, tags, campaigns
-  (write, send a test to yourself, queue to a segment), and the sequences (read them, edit
-  them, switch them on). **Admin -> Analytics**: visitors, the funnel, sources and what each
-  earned, the list's growth, and how each address's mail is read -- all counted by the site.
+  (write, send a test to yourself, queue to a segment), and the sequences. **Admin ->
+  Analytics**: visitors, the funnel, sources and what each earned, the list's growth.
 - Tag every link you post so Analytics can credit it:
   `https://www.zeanahlab.com/start?utm_source=instagram&utm_campaign=closing-the-triangle`
 
@@ -186,12 +190,48 @@ Until the Stripe key is set, the shop says "opens soon" instead of taking money.
 In GitHub: **Settings → Secrets and variables → Actions**, add
 
 - `CLOUDFLARE_API_TOKEN` -- make one in Cloudflare (**My Profile → API Tokens → Create
-  Token**) with *Cloudflare Pages: Edit* and *D1: Edit*.
+  Token** → *Custom token*) with Account: *Cloudflare Pages: Edit*, *D1: Edit*, *Workers
+  Scripts: Edit*, *Workers R2 Storage: Edit*. Paste it with
+  `gh secret set CLOUDFLARE_API_TOKEN --repo dkzeanah/DomeSimulator`.
 - `CLOUDFLARE_ACCOUNT_ID` -- shown on the right of the Cloudflare dashboard home.
 
 From then on, every change to `website/` merged into `main` is built, the database updated
 and the site published (`.github/workflows/website.yml`). A pull request only builds, so a
 broken page never goes live.
+
+## 10. The clock, automations, members and agents (Workers Paid)
+
+Pages cannot run on a schedule, so a small Worker, **zeanahlab-ops** (`ops/`), does it:
+once a minute it asks the site to run what is due and delivers the mail queue.
+
+```bash
+npx wrangler deploy -c ops/wrangler.toml
+```
+
+Its two secrets are the site's: `OPS_TOKEN` (copy in `website/private/ops-token.txt`) and
+`MAILER_TOKEN`. Cloudflare will not attach the once-a-minute schedule until the account has
+a workers.dev subdomain: open **Workers & Pages** in the dashboard once and it is made.
+
+- **Admin -> Automations**: when THIS happens (a sale, a confirmation, a new listing, an
+  agent's proposal, Monday morning), do THESE (a notice, an email to you, a tag, a sequence,
+  a signed webhook, the numbers report, a Workers AI listing check or update draft). Every
+  run is in the job log; a failed run retries three times, then tells you. The notices are
+  your inbox on the site. *Ask about your numbers* answers only from counted figures and
+  shows them beside the answer.
+- **Admin -> Members**: find any account; see its devices, orders, listings and history;
+  suspend or restore it, sign it out everywhere, make a password-reset link, delete it.
+  Members have *Account -> Security and data*: devices, password, email confirmation, a
+  download of everything the site holds about them, and deleting the account. Eight wrong
+  passwords for one address in fifteen minutes and the door waits.
+- **Admin -> Agents and keys**: give an LLM or script its own key with only the scopes you
+  tick, an expiry and a per-minute limit. It starts at `GET /api/agent/tools` (with
+  `Authorization: Bearer <key>`), which lists what it may do as tools. Sending mail, changing
+  a price or hiding a listing is never done by an agent: it becomes a proposal you approve.
+  Every call is logged; every change by anyone is in the audit log.
+- Workers AI runs on Cloudflare's own GPUs; each call is logged (Automations -> Workers AI).
+  Testing it on this computer (`npm run preview`) also needs the workers.dev subdomain.
+- Health check (secrets by kind, never by value; Stripe and AI answer or not):
+  `curl -H "Authorization: Bearer <OPS_TOKEN>" https://www.zeanahlab.com/api/ops/health`
 
 ## Everyday jobs
 

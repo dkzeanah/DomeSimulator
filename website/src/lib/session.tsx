@@ -4,7 +4,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { api } from "./api";
 
-export interface Me { id: number; email: string; displayName: string; role: string; bio: string; city: string; region: string; country: string; publicProfile: boolean }
+export interface Me { id: number; email: string; displayName: string; role: string; bio: string; city: string; region: string; country: string; publicProfile: boolean; emailVerified?: boolean }
 
 export const JOIN_STEPS = [
   { key: "read", label: "Read what the book proves", unlock: "the free sample" },

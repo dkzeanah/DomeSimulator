@@ -12,6 +12,71 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 0 row(s) in the model.
 
+## agent_proposals
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| key_id | INTEGER | yes |  | -> api_keys.id |
+| action | TEXT |  |  |  |
+| payload | TEXT |  |  |  |
+| reason | TEXT | yes |  |  |
+| status | TEXT |  | 'pending' |  |
+| result | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+| decided_at | TEXT | yes |  |  |
+| decided_by | INTEGER | yes |  | -> users.id |
+
+0 row(s) in the model.
+
+## ai_runs
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| purpose | TEXT |  |  |  |
+| model | TEXT |  |  |  |
+| input_chars | INTEGER |  |  |  |
+| output_chars | INTEGER |  | 0 |  |
+| ms | INTEGER |  |  |  |
+| ok | INTEGER |  |  |  |
+| error | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
+## api_calls
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| key_id | INTEGER | yes |  | -> api_keys.id |
+| ts | TEXT |  |  |  |
+| method | TEXT |  |  |  |
+| path | TEXT |  |  |  |
+| status | INTEGER |  |  |  |
+| note | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
+## api_keys
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| name | TEXT |  |  |  |
+| prefix | TEXT |  |  |  |
+| key_hash | TEXT |  |  |  |
+| scopes | TEXT |  |  |  |
+| rate_per_min | INTEGER |  | 30 |  |
+| created_by | INTEGER | yes |  | -> users.id |
+| created_at | TEXT |  |  |  |
+| expires_at | TEXT | yes |  |  |
+| last_used_at | TEXT | yes |  |  |
+| revoked_at | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
 ## assets
 
 | column | type | null | default | key |
@@ -22,6 +87,41 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | value | REAL |  | 0 |  |
 
 0 row(s) in the model.
+
+## audit_log
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| ts | TEXT |  |  |  |
+| actor_kind | TEXT |  |  |  |
+| actor_id | INTEGER | yes |  |  |
+| actor_name | TEXT | yes |  |  |
+| action | TEXT |  |  |  |
+| target | TEXT | yes |  |  |
+| detail | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
+## automations
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| name | TEXT |  |  |  |
+| description | TEXT | yes |  |  |
+| trigger | TEXT |  |  |  |
+| conditions | TEXT |  | '{}' |  |
+| actions | TEXT |  |  |  |
+| delay_minutes | INTEGER |  | 0 |  |
+| active | INTEGER |  | 0 |  |
+| runs | INTEGER |  | 0 |  |
+| last_run_at | TEXT | yes |  |  |
+| created_by | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+| updated_at | TEXT |  |  |  |
+
+7 row(s) in the model.
 
 ## backers
 
@@ -127,6 +227,25 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 2 row(s) in the model.
 
+## jobs
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| automation_id | INTEGER | yes |  | -> automations.id |
+| event_id | INTEGER | yes |  | -> ops_events.id |
+| label | TEXT |  |  |  |
+| status | TEXT |  | 'queued' |  |
+| attempts | INTEGER |  | 0 |  |
+| run_at | TEXT |  |  |  |
+| started_at | TEXT | yes |  |  |
+| finished_at | TEXT | yes |  |  |
+| result | TEXT | yes |  |  |
+| error | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
 ## listings
 
 | column | type | null | default | key |
@@ -152,6 +271,18 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | visible | INTEGER |  | 1 |  |
 | created_at | TEXT |  |  |  |
 | updated_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
+## login_attempts
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| email | TEXT |  |  |  |
+| ip_hash | TEXT | yes |  |  |
+| ok | INTEGER |  |  |  |
+| ts | TEXT |  |  |  |
 
 0 row(s) in the model.
 
@@ -189,6 +320,31 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | cash_per_hour | REAL |  | 0 |  |
 | cost_per_hour | REAL |  | 0 |  |
 | notes | TEXT |  | '' |  |
+
+0 row(s) in the model.
+
+## notices
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| level | TEXT |  | 'info' |  |
+| title | TEXT |  |  |  |
+| body | TEXT | yes |  |  |
+| link | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+| read_at | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
+## ops_events
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| type | TEXT |  |  |  |
+| data | TEXT |  |  |  |
+| created_at | TEXT |  |  |  |
 
 0 row(s) in the model.
 
@@ -365,6 +521,19 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | user_id | INTEGER |  |  | -> users.id |
 | created_at | TEXT |  |  |  |
 | expires_at | TEXT |  |  |  |
+| last_seen_at | TEXT | yes |  |  |
+| user_agent | TEXT | yes |  |  |
+| country | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
+## settings
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| key | TEXT | yes |  | PK |
+| value | TEXT |  |  |  |
+| updated_at | TEXT |  |  |  |
 
 0 row(s) in the model.
 
@@ -433,6 +602,19 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 0 row(s) in the model.
 
+## user_tokens
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| token_hash | TEXT | yes |  | PK |
+| user_id | INTEGER |  |  | -> users.id |
+| purpose | TEXT |  |  |  |
+| created_at | TEXT |  |  |  |
+| expires_at | TEXT |  |  |  |
+| used_at | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
 ## users
 
 | column | type | null | default | key |
@@ -449,6 +631,11 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | public_profile | INTEGER |  | 0 |  |
 | created_at | TEXT |  |  |  |
 | updated_at | TEXT |  |  |  |
+| status | TEXT |  | 'active' |  |
+| suspended_reason | TEXT | yes |  |  |
+| last_seen_at | TEXT | yes |  |  |
+| email_verified_at | TEXT | yes |  |  |
+| admin_note | TEXT | yes |  |  |
 
 0 row(s) in the model.
 

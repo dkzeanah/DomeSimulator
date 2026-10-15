@@ -2,12 +2,13 @@
 
 import facts from "../../src/generated/facts.json";
 import { LifeAccount } from "./account";
-import { downloadToken, endSession, normaliseEmail, publicUser, readDownloadToken, requireAdmin, requireUser, roleFor, startSession } from "./auth";
+import { downloadToken, endSession, loginGate, normaliseEmail, recordLogin, publicUser, readDownloadToken, requireAdmin, requireUser, roleFor, startSession } from "./auth";
 import { checkPassword, hashPassword, randomToken, sameString, sha256Hex } from "./crypto";
 import { Ctx, HttpError, Router, User, body, email, honeypot, json, nowIso, num, text } from "./http";
 import { checkoutMode, createCheckoutSession, retrieveCheckoutSession, verifyStripeSignature } from "./services";
 import { convert, firstTouch, recordVisit, report, visitorOf } from "./analytics";
 import { checkClick, enqueue, enroll, queueCampaign, queueConfirm, queueSample, readSubscriberToken, suppress, tick } from "./mail";
+import { emit } from "./ops";
 
 const api = new Router();
 export default api;
@@ -77,6 +78,7 @@ async function upsertSubscriber(ctx: Ctx, o: { email: string; name?: string | nu
   await event(ctx, "subscriber", "Someone joined the list");
   const row = (await db.prepare("SELECT id, email, name, marketing_consent, status FROM subscribers WHERE id = ?").bind(r!.id).first<SubRow>())!;
   if (o.consent) await queueConfirm(ctx, row);
+  await emit(ctx, "subscriber.created", { subscriberId: row.id, source: t?.source || o.source, form: o.source, campaign: t?.campaign ?? "", consent: o.consent ? "yes" : "no" });
   return { id: r!.id, created: true, row };
 }
 
@@ -163,7 +165,10 @@ api.post("/unsubscribe", async (ctx) => {
   const id = typeof b.t === "string" ? await readSubscriberToken(ctx.env, "unsub", b.t) : null;
   const row = id ? await ctx.env.DB.prepare("SELECT email FROM subscribers WHERE id = ?").bind(id).first<{ email: string }>() : null;
   const addr = row?.email || (b.email ? email(b) : null);
-  if (addr) await suppress(ctx, addr, "unsubscribed");
+  if (addr) {
+    await suppress(ctx, addr, "unsubscribed");
+    await emit(ctx, "subscriber.left", { subscriberId: id ?? "" });
+  }
   return json({ ok: true });
 });
 
@@ -171,7 +176,10 @@ api.post("/unsubscribe", async (ctx) => {
 api.post("/u/:token", async (ctx) => {
   const id = await readSubscriberToken(ctx.env, "unsub", ctx.params.token);
   const row = id ? await ctx.env.DB.prepare("SELECT email FROM subscribers WHERE id = ?").bind(id).first<{ email: string }>() : null;
-  if (row) await suppress(ctx, row.email, "unsubscribed");
+  if (row) {
+    await suppress(ctx, row.email, "unsubscribed");
+    await emit(ctx, "subscriber.left", { subscriberId: id });
+  }
   return json({ ok: true });
 });
 
@@ -186,6 +194,8 @@ api.post("/confirm", async (ctx) => {
   await ctx.env.DB.prepare("DELETE FROM suppressions WHERE email = ? AND reason = 'unsubscribed'").bind(row.email).run();
   await ctx.env.DB.prepare("UPDATE subscribers SET status = 'confirmed', confirmed_at = COALESCE(confirmed_at, ?), marketing_consent = 1, unsubscribed_at = NULL WHERE id = ?").bind(nowIso(), id).run();
   await convert(ctx, "confirm", String(id));
+  const src = await ctx.env.DB.prepare("SELECT COALESCE(first_source, source) s FROM subscribers WHERE id = ?").bind(id).first<{ s: string | null }>();
+  await emit(ctx, "subscriber.confirmed", { subscriberId: id, source: src?.s ?? "" });
   return json({ ok: true });
 });
 
@@ -264,9 +274,11 @@ api.post("/signup", async (ctx) => {
   if (await db.prepare("SELECT id FROM users WHERE email = ?").bind(e).first()) throw new HttpError(409, "That email already has an account. Sign in instead.");
   const r = await db.prepare("INSERT INTO users(email, password_hash, display_name, role, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?) RETURNING id")
     .bind(e, await hashPassword(password), name, roleFor(ctx.env, e), nowIso(), nowIso()).first<{ id: number }>();
-  await upsertSubscriber(ctx, { email: e, name, consent: b.marketingConsent === true, source: "signup" });
+  const sub = await upsertSubscriber(ctx, { email: e, name, consent: b.marketingConsent === true, source: "signup" });
   await event(ctx, "member", "A new member joined");  // names stay private unless chosen public
   await convert(ctx, "signup");
+  const first = await db.prepare("SELECT COALESCE(first_source, source) s FROM subscribers WHERE id = ?").bind(sub.id).first<{ s: string | null }>();
+  await emit(ctx, "member.joined", { userId: r!.id, subscriberId: sub.id, source: first?.s ?? "" });
   await startSession(ctx, r!.id);
   return json({ user: publicUser(await db.prepare("SELECT * FROM users WHERE id = ?").bind(r!.id).first<User>()) }, 201, ctx);
 });
@@ -278,9 +290,12 @@ api.post("/login", async (ctx) => {
   const b = await body(ctx);
   const e = email(b);
   const password = text(b, "password", { min: 1, max: 200, required: true })!;
-  const u = await ctx.env.DB.prepare("SELECT * FROM users WHERE email = ?").bind(e).first<User>();
+  await loginGate(ctx, e);
+  const u = await ctx.env.DB.prepare("SELECT * FROM users WHERE email = ?").bind(e).first<User & { suspended_reason: string | null }>();
   const ok = await checkPassword(password, u?.password_hash || DUMMY);
+  await recordLogin(ctx, e, Boolean(u && ok));
   if (!u || !ok) throw new HttpError(401, "Email or password is not right.");
+  if (u.status === "suspended") throw new HttpError(403, `This account is suspended${u.suspended_reason ? `: ${u.suspended_reason}` : ""}. Write to owner@zeanahlab.com.`);
   await startSession(ctx, u.id);
   return json({ user: publicUser(u) }, 200, ctx);
 });
@@ -534,6 +549,7 @@ api.post("/network", async (ctx) => {
   const r = await ctx.env.DB.prepare(`INSERT INTO listings(${cols.join(", ")}, user_id, created_at, updated_at) VALUES(${cols.map(() => "?").join(", ")}, ?, ?, ?) RETURNING id`)
     .bind(...Object.values(f), u.id, nowIso(), nowIso()).first<{ id: number }>();
   await convert(ctx, "listing", String(f.kind));
+  await emit(ctx, "listing.created", { listingId: r!.id, kind: String(f.kind), title: String(f.title) });
   await event(ctx, f.kind === "pad_host" ? "pad" : "listing", f.kind === "pad_host" ? `A pad joined the network: ${f.title}` : `New on the network: ${f.title}`);
   const row = await ctx.env.DB.prepare("SELECT listings.*, users.display_name FROM listings JOIN users ON users.id = listings.user_id WHERE listings.id = ?").bind(r!.id).first<ListingRow>();
   return json({ listing: toListing(row!, u) }, 201);
@@ -666,6 +682,11 @@ async function markPaid(ctx: Ctx, o: OrderRow, session?: Record<string, any> | n
     await convert(ctx, "purchase", o.book_slug, o.amount_cents, o.visitor_id);
     await enroll(ctx, sub.id, "purchase");
     const p = await product(ctx, o.book_slug);
+    const src = await ctx.env.DB.prepare("SELECT COALESCE(first_source, source) s FROM subscribers WHERE id = ?").bind(sub.id).first<{ s: string | null }>();
+    await emit(ctx, "order.paid", {
+      ref: o.ref, product: o.book_slug, title: p?.title || o.book_slug, price: o.price_key, amount_cents: o.amount_cents,
+      amount: `$${(o.amount_cents / 100).toFixed(o.amount_cents % 100 ? 2 : 0)}`, subscriberId: sub.id, source: src?.s || "direct",
+    });
     await event(ctx, "sale", p?.kind === "service" ? "A design session was booked"
       : p?.kind === "physical" ? `A ${p.subtitle || p.title} was ordered` : `A copy of ${p?.title || "the book"} was bought`);
   }

@@ -39,6 +39,7 @@ function Auth() {
             {mode === "up" ? "I already have an account" : "I need an account"}
           </button>
         </form>
+        {mode === "in" && <Forgot email={f.email} />}
       </Panel>
       <div className="grid gap-6 content-start">
         <Panel kicker="What an account is for" title="Own your numbers">
@@ -51,6 +52,27 @@ function Auth() {
         <JoinQuest />
       </div>
     </div>
+  );
+}
+
+function Forgot({ email }: { email: string }) {
+  const [open, setOpen] = useState(false);
+  const [mail, setMail] = useState(email);
+  const [trap, setTrap] = useState("");
+  const [note, setNote] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  if (!open) return <button type="button" className="text-sm underline underline-offset-4 mt-3" onClick={() => { setMail(email); setOpen(true); }}>I forgot my password</button>;
+  return (
+    <form className="grid gap-2 text-sm mt-4 relative" onSubmit={async (e) => {
+      e.preventDefault(); setError(null);
+      try { setNote((await api<{ note: string }>("/password/forgot", { body: { email: mail, website: trap } })).note); } catch (err) { setError((err as Error).message); }
+    }}>
+      <label className="grid gap-1">Your account's email<input className="field" type="email" required value={mail} onChange={(e) => setMail(e.target.value)} /></label>
+      <Honeypot value={trap} onChange={setTrap} />
+      <button className="btn-ghost justify-self-start">Send me a reset link</button>
+      {note && <p className="accent">{note}</p>}
+      <ErrorLine error={error} />
+    </form>
   );
 }
 
@@ -248,6 +270,59 @@ function Life() {
   );
 }
 
+// ---------------------------------------------------------------- security and your data
+
+interface Sess { id: string; created_at: string; last_seen_at: string | null; user_agent: string | null; country: string | null; current: boolean }
+
+function Security() {
+  const { me, setMe, refresh } = useSession();
+  const [sessions, setSessions] = useState<Sess[]>([]);
+  const [pw, setPw] = useState({ currentPassword: "", newPassword: "" });
+  const [del, setDel] = useState("");
+  const [msg, setMsg] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const load = useCallback(() => api<{ sessions: Sess[] }>("/me/sessions").then((r) => setSessions(r.sessions)).catch((e) => setError(e.message)), []);
+  useEffect(() => { void load(); }, [load]);
+  const act = async (fn: () => Promise<unknown>, done: string) => { setError(null); setMsg(null); try { await fn(); setMsg(done); await load(); } catch (e) { setError((e as Error).message); } };
+  const when = (s: string | null) => (s ? new Date(s).toLocaleString() : "--");
+  return (
+    <div className="grid gap-6 lg:grid-cols-2">
+      {msg && <p className="accent lg:col-span-2">{msg}</p>}
+      <div className="lg:col-span-2"><ErrorLine error={error} /></div>
+      <Panel title="Where you are signed in">
+        <div className="grid gap-2 text-sm">
+          {sessions.map((s) => (
+            <div key={s.id} className="panel-2 p-3 flex flex-wrap gap-2 justify-between items-center">
+              <span><b>{s.user_agent || "A device"}</b>{s.country ? `, ${s.country}` : ""} {s.current && <span className="accent">(this one)</span>}<br /><span className="muted text-xs">signed in {when(s.created_at)}; last used {when(s.last_seen_at)}</span></span>
+              {!s.current && <button className="btn-ghost !py-1" onClick={() => act(() => api(`/me/sessions/${s.id}`, { method: "DELETE" }), "That device is signed out.")}>Sign it out</button>}
+            </div>
+          ))}
+          {sessions.length > 1 && <button className="btn-ghost justify-self-start" onClick={() => act(() => api("/me/sessions/others", { body: {} }), "Every other device is signed out.")}>Sign out everywhere else</button>}
+        </div>
+      </Panel>
+      <Panel title="Password and email">
+        <form className="grid gap-2 text-sm" onSubmit={(e) => { e.preventDefault(); void act(async () => { const r = await api<{ user: Me }>("/me", { method: "PATCH", body: pw }); setMe(r.user); setPw({ currentPassword: "", newPassword: "" }); }, "Password changed. Your other devices are signed out."); }}>
+          <input className="field" type="password" required autoComplete="current-password" placeholder="Current password" value={pw.currentPassword} onChange={(e) => setPw({ ...pw, currentPassword: e.target.value })} />
+          <input className="field" type="password" required minLength={10} autoComplete="new-password" placeholder="New password (10 characters or more)" value={pw.newPassword} onChange={(e) => setPw({ ...pw, newPassword: e.target.value })} />
+          <button className="btn justify-self-start">Change password</button>
+        </form>
+        <p className="text-sm mt-5">{me!.email}: {me!.emailVerified ? <span className="accent">confirmed</span> : <>not confirmed yet. <button className="underline" onClick={() => act(() => api("/me/verify", { body: {} }), "A confirmation link is on its way.")}>Send me a link</button></>}</p>
+      </Panel>
+      <Panel title="Your data">
+        <p className="text-sm muted mb-3">Everything this site keeps about you -- account, list entry, mail sent to you, orders, listings, life account, devices -- in one file.</p>
+        <a className="btn-ghost" href="/api/me/export" download>Download my data</a>
+      </Panel>
+      <Panel title="Delete my account">
+        <form className="grid gap-2 text-sm" onSubmit={(e) => { e.preventDefault(); if (!confirm("Delete your account for good?")) return; void act(async () => { await api("/me", { method: "DELETE", body: { password: del } }); setMe(null); await refresh(); }, "Your account is deleted."); }}>
+          <p className="muted">Removes your account, listings and life account, and stops all updates. Receipts for past orders are kept, as the law requires, without your account.</p>
+          <input className="field" type="password" required placeholder="Your password, to confirm" value={del} onChange={(e) => setDel(e.target.value)} />
+          <button className="btn-ghost justify-self-start" style={{ color: "var(--color-ember)" }}>Delete my account</button>
+        </form>
+      </Panel>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------- profile
 
 function Profile() {
@@ -296,12 +371,14 @@ export default function Account() {
           <NavLink end to="/account" className={tab}>Standing</NavLink>
           <NavLink to="/account/life" className={tab}>Life account</NavLink>
           <NavLink to="/account/profile" className={tab}>Profile</NavLink>
+          <NavLink to="/account/security" className={tab}>Security and data</NavLink>
         </nav>
       </div>
       <Routes>
         <Route index element={<div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]"><Standing /><JoinQuest /></div>} />
         <Route path="life" element={<Life />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="security" element={<Security />} />
       </Routes>
     </div>
   );

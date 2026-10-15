@@ -31,11 +31,49 @@ function readCookie(request: Request, name: string): string | null {
   return null;
 }
 
+/** "Chrome on Windows" -- enough for a member to tell their own devices apart, no more. */
+export function deviceName(ua: string | null) {
+  const u = ua || "";
+  const browser = /Edg\//.test(u) ? "Edge" : /Firefox\//.test(u) ? "Firefox" : /Chrome\//.test(u) ? "Chrome" : /Safari\//.test(u) ? "Safari" : "A browser";
+  const os = /iPhone|iPad/.test(u) ? "iPhone/iPad" : /Android/.test(u) ? "Android" : /Windows/.test(u) ? "Windows" : /Mac OS X/.test(u) ? "Mac" : /Linux/.test(u) ? "Linux" : "an unknown system";
+  return `${browser} on ${os}`;
+}
+
 export async function startSession(ctx: Ctx, userId: number) {
   const token = randomToken();
-  await ctx.env.DB.prepare("INSERT INTO sessions(token_hash, user_id, created_at, expires_at) VALUES(?, ?, ?, ?)")
-    .bind(await sha256Hex(token), userId, nowIso(), nowIso(SESSION_DAYS * 86_400_000)).run();
+  const country = (ctx.request as Request & { cf?: { country?: string } }).cf?.country ?? null;
+  await ctx.env.DB.prepare("INSERT INTO sessions(token_hash, user_id, created_at, expires_at, last_seen_at, user_agent, country) VALUES(?, ?, ?, ?, ?, ?, ?)")
+    .bind(await sha256Hex(token), userId, nowIso(), nowIso(SESSION_DAYS * 86_400_000), nowIso(), deviceName(ctx.request.headers.get("User-Agent")), country).run();
+  await ctx.env.DB.prepare("UPDATE users SET last_seen_at = ? WHERE id = ?").bind(nowIso(), userId).run();
   ctx.setCookies.push(cookie(ctx, token, SESSION_DAYS * 86_400));
+}
+
+/** The hash of this request's session token, which names the session in lists. */
+export async function currentSessionHash(ctx: Ctx) {
+  const token = readCookie(ctx.request, COOKIE);
+  return token ? sha256Hex(token) : null;
+}
+
+// ---------------------------------------------------------------- the brake on guessing
+
+const WINDOW_MS = 15 * 60_000;
+
+async function ipHash(ctx: Ctx) {
+  const ip = ctx.request.headers.get("CF-Connecting-IP");
+  return ip ? (await sha256Hex(`${ctx.env.SESSION_SECRET || ""}|${ip}`)).slice(0, 32) : null;
+}
+
+/** Eight misses for one address, or thirty from one network, in fifteen minutes: wait. */
+export async function loginGate(ctx: Ctx, email: string) {
+  const since = nowIso(-WINDOW_MS);
+  const ip = await ipHash(ctx);
+  const byEmail = (await ctx.env.DB.prepare("SELECT COUNT(*) n FROM login_attempts WHERE email = ? AND ok = 0 AND ts >= ?").bind(email, since).first<{ n: number }>())!.n;
+  const byIp = ip ? (await ctx.env.DB.prepare("SELECT COUNT(*) n FROM login_attempts WHERE ip_hash = ? AND ok = 0 AND ts >= ?").bind(ip, since).first<{ n: number }>())!.n : 0;
+  if (byEmail >= 8 || byIp >= 30) throw new HttpError(429, "Too many tries. Wait fifteen minutes, or reset your password.");
+}
+
+export async function recordLogin(ctx: Ctx, email: string, ok: boolean) {
+  await ctx.env.DB.prepare("INSERT INTO login_attempts(email, ip_hash, ok, ts) VALUES(?, ?, ?, ?)").bind(email, await ipHash(ctx), ok ? 1 : 0, nowIso()).run();
 }
 
 export async function endSession(ctx: Ctx) {
@@ -48,10 +86,18 @@ export async function endSession(ctx: Ctx) {
 export async function loadUser(ctx: Ctx): Promise<User | null> {
   const token = readCookie(ctx.request, COOKIE);
   if (!token) return null;
+  const hash = await sha256Hex(token);
   const row = await ctx.env.DB.prepare(
-    "SELECT users.* FROM sessions JOIN users ON users.id = sessions.user_id WHERE sessions.token_hash = ? AND sessions.expires_at > ?",
-  ).bind(await sha256Hex(token), nowIso()).first<User>();
-  if (!row) return null;
+    "SELECT users.*, sessions.last_seen_at session_seen FROM sessions JOIN users ON users.id = sessions.user_id WHERE sessions.token_hash = ? AND sessions.expires_at > ?",
+  ).bind(hash, nowIso()).first<User & { session_seen: string | null }>();
+  if (!row || row.status === "suspended") return null;
+  // last seen, written at most every ten minutes rather than on every request
+  if (!row.session_seen || Date.parse(row.session_seen) < Date.now() - 10 * 60_000) {
+    await ctx.env.DB.batch([
+      ctx.env.DB.prepare("UPDATE sessions SET last_seen_at = ? WHERE token_hash = ?").bind(nowIso(), hash),
+      ctx.env.DB.prepare("UPDATE users SET last_seen_at = ? WHERE id = ?").bind(nowIso(), row.id),
+    ]);
+  }
   const role = roleFor(ctx.env, row.email);
   if (role !== row.role) {
     await ctx.env.DB.prepare("UPDATE users SET role = ? WHERE id = ?").bind(role, row.id).run();
@@ -77,7 +123,7 @@ export function publicUser(u: User | null) {
   return {
     id: u.id, email: u.email, displayName: u.display_name, role: u.role,
     bio: u.bio || "", city: u.city || "", region: u.region || "", country: u.country || "",
-    publicProfile: Boolean(u.public_profile), createdAt: u.created_at,
+    publicProfile: Boolean(u.public_profile), createdAt: u.created_at, emailVerified: Boolean(u.email_verified_at),
   };
 }
 

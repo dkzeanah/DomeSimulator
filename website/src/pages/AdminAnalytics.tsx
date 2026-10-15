@@ -3,6 +3,7 @@
 // is read. One accent colour per chart (every chart is a single measure); hover any bar for
 // its value; every chart has its table.
 
+import AdminNav from "../components/AdminNav";
 import { useEffect, useState } from "react";
 import { Panel, Stat } from "../components/ui";
 import { api, money, n } from "../lib/api";
@@ -93,6 +94,7 @@ export default function AdminAnalytics() {
           {[7, 30, 90].map((d) => <button key={d} className={d === days ? "btn !py-1.5" : "btn-ghost !py-1.5"} onClick={() => setDays(d)}>{d} days</button>)}
         </div>
       </div>
+      <AdminNav />
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         <Stat value={n(r.totals.visitors)} label="visitors" />

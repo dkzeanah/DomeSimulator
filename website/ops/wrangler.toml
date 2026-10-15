@@ -1,0 +1,27 @@
+# zeanahlab-ops: the site's clock and mail program. Pages Functions cannot run on a schedule,
+# so once a minute this Worker knocks on /api/ops/clock (OPS_TOKEN), then collects the outbox
+# (MAILER_TOKEN) and delivers it through Cloudflare Email Sending from zeanahlab.com.
+# All the deciding happens in the site's own code (functions/_lib/ops.ts, mail.ts).
+#
+#   npx wrangler deploy -c ops/wrangler.toml
+#   npx wrangler secret put OPS_TOKEN -c ops/wrangler.toml       (the same value the site has)
+#   npx wrangler secret put MAILER_TOKEN -c ops/wrangler.toml    (website/private/mailer-token.txt)
+
+name = "zeanahlab-ops"
+main = "index.ts"
+compatibility_date = "2025-06-01"
+workers_dev = false
+
+[triggers]
+crons = ["* * * * *"]
+
+[vars]
+SITE = "https://www.zeanahlab.com"
+
+# Cloudflare Email Sending (Workers Paid). zeanahlab.com must be onboarded once in the
+# dashboard: Compute > Email Service > Email Sending > Onboard Domain.
+[[send_email]]
+name = "EMAIL"
+
+[observability]
+enabled = true

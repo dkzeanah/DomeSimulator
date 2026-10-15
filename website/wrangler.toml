@@ -1,6 +1,6 @@
 # zeanahlab.com on Cloudflare Pages. Static site in dist/, the API in functions/.
-# Secrets (never in this file): SESSION_SECRET, ADMIN_EMAILS, RESEND_API_KEY, MAIL_FROM,
-# STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET -- see SETUP.md. Locally they live in .dev.vars.
+# Secrets (never in this file): SESSION_SECRET, ADMIN_EMAILS, STRIPE_SECRET_KEY,
+# STRIPE_WEBHOOK_SECRET, MAILER_TOKEN, MAIL_POSTAL_ADDRESS, OPS_TOKEN -- see SETUP.md. Locally they live in .dev.vars.
 
 name = "zeanahlab"
 pages_build_output_dir = "dist"
@@ -23,3 +23,9 @@ migrations_dir = "migrations"
 [[r2_buckets]]
 binding = "BOOKS"
 bucket_name = "zeanahlab-books"
+
+# Workers AI (Workers Paid): reads new listings for spam, writes the Monday report's short
+# reading and update drafts, answers the owner's questions from counted numbers. Runs on
+# Cloudflare's own GPUs; every call is logged in ai_runs. functions/_lib/ai.ts.
+[ai]
+binding = "AI"
