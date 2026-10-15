@@ -23,7 +23,7 @@ see named, is just Cloudflare's own command-line tool; the script drives it for 
 Done (2026-10-14): the database, the book store (both PDFs uploaded), the site project and its
 two required secrets, the first publish, and the address: www.zeanahlab.com and zeanahlab.com
 now point at the site (they were `A 47.231.197.101`, which no longer answered; the mail
-records were left alone). Still open: the Resend and Stripe keys (`npm run setup` asks for
+records were left alone). Still open: the postal address for marketing email and the mail server (`npm run setup` asks for
 them) and the two GitHub secrets for automatic publishing (step 9).
 
 The steps below are what the script does, by hand.
@@ -35,7 +35,7 @@ The steps below are what the script does, by hand.
 | The pages and pictures | Cloudflare Pages | fast everywhere, free |
 | Emails, accounts, orders, pads, backers, plaques | Cloudflare D1 (a database) | free tier, backed up by Cloudflare |
 | The book PDFs | Cloudflare R2 (file storage) | the full book is 74 MB, too big for Pages; the sample has to stay behind the email form |
-| Sending the sample by email | Resend | free for the first 3,000 emails a month |
+| Email: the list, campaigns, the queue | D1, on this site | your own mail program on a rented server delivers it |
 | Taking card payments | Stripe | the card never touches this site |
 | The numbers on every page | `src/generated/facts.json` | written by `npm run facts` from the project's own models -- never typed |
 
@@ -141,24 +141,28 @@ domain**, type `www.zeanahlab.com`, and confirm. Cloudflare adds the DNS record 
 because it already runs the domain. Do the same for `zeanahlab.com` (or add a redirect
 rule from the bare domain to `www`).
 
-## 7. Email (so the sample arrives in people's inboxes)
+## 7. Email: your own list, your own mail server
 
-1. Make a free account at resend.com and add the domain `zeanahlab.com`.
-2. Resend shows three or four DNS records. Add them in Cloudflare (**zeanahlab.com → DNS**),
-   or use Resend's one-click Cloudflare button.
-3. Make an API key in Resend, then:
+No email company is involved. The site keeps the list, the campaigns, the follow-up
+sequences and every message in its own database, in a queue. Your own mail program, on a
+rented server with a static address, collects the queue every minute with `MAILER_TOKEN`
+(setup makes it and keeps a copy in `website/private/mailer-token.txt`), signs each
+message with zeanahlab.com's own key, delivers it, and reports back. Until that server
+runs, messages wait in the queue -- nothing is lost.
 
-```bash
-npx wrangler pages secret put RESEND_API_KEY --project-name zeanahlab
-```
-
-```bash
-npx wrangler pages secret put MAIL_FROM --project-name zeanahlab
-```
-
-For `MAIL_FROM` type something like `Zeanah Lab <hello@zeanahlab.com>`. Until these two are
-set the sample form still works -- people get the download link on the page -- it just does
-not also email it.
+- **owner@zeanahlab.com** sends the site's automatic mail; **donovan@zeanahlab.com** sends
+  your updates; both copy every message to your Gmail.
+- Updates go only to people who ticked the box *and* clicked the confirmation link. Every
+  update has a one-click unsubscribe; an address that leaves is never mailed again.
+- The law (CAN-SPAM) requires a postal address in marketing email. `npm run setup` asks for
+  it (`MAIL_POSTAL_ADDRESS`); a P.O. box is fine. Until it is set, updates are held back;
+  sample links and receipts still go.
+- **Admin -> The list and email**: subscribers and where each came from, tags, campaigns
+  (write, send a test to yourself, queue to a segment), and the sequences (read them, edit
+  them, switch them on). **Admin -> Analytics**: visitors, the funnel, sources and what each
+  earned, the list's growth, and how each address's mail is read -- all counted by the site.
+- Tag every link you post so Analytics can credit it:
+  `https://www.zeanahlab.com/start?utm_source=instagram&utm_campaign=closing-the-triangle`
 
 ## 8. Taking payments
 

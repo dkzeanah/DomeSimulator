@@ -1,39 +1,9 @@
-// The two outside services: Resend for email, Stripe for card payments. Both spoken to
-// over plain HTTPS, no SDKs. Either may be unconfigured; then the site says so honestly
-// instead of pretending (no email is "sent", the shop says it opens soon).
+// Stripe, for card payments, spoken to over plain HTTPS, no SDK. Unconfigured, the shop says it
+// opens soon. Email is not a service here: it is the site's own queue (mail.ts) and the owner's
+// own mail program.
 
 import { hmacHex, sameString } from "./crypto";
 import { Env, HttpError } from "./http";
-
-// ---------------------------------------------------------------- email (Resend)
-
-export function mailReady(env: Env) {
-  return Boolean(env.RESEND_API_KEY && env.MAIL_FROM);
-}
-
-/** Send one email. Returns false (and sends nothing) when mail is not configured. */
-export async function sendMail(env: Env, to: string, subject: string, html: string, textBody: string): Promise<boolean> {
-  if (!mailReady(env)) return false;
-  const r = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: env.MAIL_FROM, to: [to], subject, html, text: textBody }),
-  });
-  return r.ok;
-}
-
-const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
-
-/** The one letter the list sends on its own: here is what you asked for. */
-export function sampleLetter(site: string, downloadUrl: string, hours: number) {
-  const link = `${site}${downloadUrl}`;
-  return {
-    subject: "Your sample of The 40 Hour Cabin",
-    text: `Here is the sample you asked for:\n${link}\n\nThe link works for ${hours} hours. If it runs out, ask again on ${site}/sample.\n\nZeanah Lab`,
-    html: `<p>Here is the sample you asked for:</p><p><a href="${esc(link)}">Download the sample (PDF)</a></p>`
-      + `<p>The link works for ${hours} hours. If it runs out, ask again on <a href="${esc(site)}/sample">the sample page</a>.</p><p>Zeanah Lab</p>`,
-  };
-}
 
 // ---------------------------------------------------------------- payments (Stripe)
 

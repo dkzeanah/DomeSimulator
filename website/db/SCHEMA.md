@@ -37,6 +37,36 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 0 row(s) in the model.
 
+## campaigns
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| name | TEXT |  |  |  |
+| identity | TEXT |  |  | -> identities.key |
+| subject | TEXT |  |  |  |
+| body | TEXT |  |  |  |
+| segment | TEXT |  | '{}' |  |
+| status | TEXT |  | 'draft' |  |
+| queued_count | INTEGER |  | 0 |  |
+| created_at | TEXT |  |  |  |
+| queued_at | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
+## conversions
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| ts | TEXT |  |  |  |
+| visitor_id | TEXT | yes |  |  |
+| kind | TEXT |  |  |  |
+| ref | TEXT | yes |  |  |
+| value_cents | INTEGER |  | 0 |  |
+
+0 row(s) in the model.
+
 ## downloads
 
 | column | type | null | default | key |
@@ -46,6 +76,30 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | user_id | INTEGER | yes |  | -> users.id |
 | book_slug | TEXT |  |  |  |
 | created_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
+## email_events
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| outbox_id | INTEGER | yes |  | -> outbox.id |
+| kind | TEXT |  |  |  |
+| detail | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
+## enrollments
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| subscriber_id | INTEGER |  |  | PK |
+| sequence | TEXT |  |  | PK |
+| enrolled_at | TEXT |  |  |  |
+| next_step | INTEGER |  | 0 |  |
+| status | TEXT |  | 'active' |  |
 
 0 row(s) in the model.
 
@@ -59,6 +113,19 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | created_at | TEXT |  |  |  |
 
 0 row(s) in the model.
+
+## identities
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| key | TEXT | yes |  | PK |
+| from_name | TEXT |  |  |  |
+| from_email | TEXT |  |  |  |
+| reply_to | TEXT | yes |  |  |
+| archive_bcc | TEXT | yes |  |  |
+| purpose | TEXT |  |  |  |
+
+2 row(s) in the model.
 
 ## listings
 
@@ -149,6 +216,32 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | ship_name | TEXT | yes |  |  |
 | ship_address | TEXT | yes |  |  |
 | fulfillment | TEXT | yes |  |  |
+| visitor_id | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
+## outbox
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| subscriber_id | INTEGER | yes |  | -> subscribers.id |
+| to_email | TEXT |  |  |  |
+| identity | TEXT |  |  | -> identities.key |
+| kind | TEXT |  |  |  |
+| campaign_id | INTEGER | yes |  | -> campaigns.id |
+| sequence | TEXT | yes |  |  |
+| step | INTEGER | yes |  |  |
+| subject | TEXT |  |  |  |
+| html | TEXT |  |  |  |
+| text | TEXT |  |  |  |
+| status | TEXT |  | 'queued' |  |
+| attempts | INTEGER |  | 0 |  |
+| lease_until | TEXT | yes |  |  |
+| message_id | TEXT | yes |  |  |
+| error | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+| sent_at | TEXT | yes |  |  |
 
 0 row(s) in the model.
 
@@ -240,6 +333,30 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 0 row(s) in the model.
 
+## sequence_steps
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| sequence | TEXT |  |  | PK |
+| step | INTEGER |  |  | PK |
+| delay_hours | REAL |  |  |  |
+| identity | TEXT |  |  | -> identities.key |
+| subject | TEXT |  |  |  |
+| body | TEXT |  |  |  |
+
+2 row(s) in the model.
+
+## sequences
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| key | TEXT | yes |  | PK |
+| name | TEXT |  |  |  |
+| trigger | TEXT |  |  |  |
+| active | INTEGER |  | 0 |  |
+
+1 row(s) in the model.
+
 ## sessions
 
 | column | type | null | default | key |
@@ -274,6 +391,16 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 0 row(s) in the model.
 
+## subscriber_tags
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| subscriber_id | INTEGER |  |  | PK |
+| tag | TEXT |  |  | PK |
+| created_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
 ## subscribers
 
 | column | type | null | default | key |
@@ -285,6 +412,24 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | source | TEXT | yes |  |  |
 | created_at | TEXT |  |  |  |
 | unsubscribed_at | TEXT | yes |  |  |
+| status | TEXT |  | 'unconfirmed' |  |
+| confirmed_at | TEXT | yes |  |  |
+| visitor_id | TEXT | yes |  |  |
+| first_source | TEXT | yes |  |  |
+| first_medium | TEXT | yes |  |  |
+| first_campaign | TEXT | yes |  |  |
+| first_referrer | TEXT | yes |  |  |
+| first_landing | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
+## suppressions
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| email | TEXT | yes |  | PK |
+| reason | TEXT |  |  |  |
+| created_at | TEXT |  |  |  |
 
 0 row(s) in the model.
 
@@ -304,6 +449,25 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | public_profile | INTEGER |  | 0 |  |
 | created_at | TEXT |  |  |  |
 | updated_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
+## visits
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| ts | TEXT |  |  |  |
+| visitor_id | TEXT | yes |  |  |
+| session_id | TEXT | yes |  |  |
+| path | TEXT |  |  |  |
+| referrer_host | TEXT | yes |  |  |
+| utm_source | TEXT | yes |  |  |
+| utm_medium | TEXT | yes |  |  |
+| utm_campaign | TEXT | yes |  |  |
+| utm_content | TEXT | yes |  |  |
+| country | TEXT | yes |  |  |
+| device | TEXT | yes |  |  |
 
 0 row(s) in the model.
 

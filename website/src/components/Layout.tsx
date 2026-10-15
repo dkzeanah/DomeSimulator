@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { trackView } from "../lib/track";
 import { useSession } from "../lib/session";
 import { Toast } from "./ui";
 
@@ -15,6 +16,9 @@ const NAV = [
 export default function Layout() {
   const { me } = useSession();
   const [open, setOpen] = useState(false);
+  const loc = useLocation();
+  // one page view per page shown, to the site's own counter
+  useEffect(() => { trackView(loc.pathname); }, [loc.pathname]);
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-40 border-b" style={{ borderColor: "var(--line)", background: "color-mix(in srgb, var(--bg) 88%, transparent)", backdropFilter: "blur(8px)" }}>
@@ -47,6 +51,7 @@ export default function Layout() {
           <p>Every number on this site is computed by the project's own open code, or counted from real records.</p>
           <p className="flex gap-4">
             <Link to="/recyclers">Recyclers</Link>
+            <Link to="/privacy">Privacy</Link>
             <Link to="/kit">Press &amp; letters</Link>
             <a href="https://github.com/dkzeanah/DomeSimulator">The code</a>
           </p>

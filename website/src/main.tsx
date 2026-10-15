@@ -17,6 +17,11 @@ const Account = lazy(() => import("./pages/Account"));
 const Recyclers = lazy(() => import("./pages/Recyclers"));
 const Thanks = lazy(() => import("./pages/Thanks"));
 const Admin = lazy(() => import("./pages/Admin"));
+const Confirm = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Confirm })));
+const Unsubscribe = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Unsubscribe })));
+const Privacy = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Privacy })));
+const AdminList = lazy(() => import("./pages/AdminList"));
+const AdminAnalytics = lazy(() => import("./pages/AdminAnalytics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 createRoot(document.getElementById("root")!).render(
@@ -39,6 +44,11 @@ createRoot(document.getElementById("root")!).render(
               <Route path="thanks/:ref" element={<Thanks />} />
               <Route path="checkout/test/:ref" element={<Thanks test />} />
               <Route path="admin" element={<Admin />} />
+              <Route path="admin/list" element={<AdminList />} />
+              <Route path="admin/analytics" element={<AdminAnalytics />} />
+              <Route path="confirm" element={<Confirm />} />
+              <Route path="unsubscribe" element={<Unsubscribe />} />
+              <Route path="privacy" element={<Privacy />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

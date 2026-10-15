@@ -161,11 +161,27 @@ def site_and_secrets() -> None:
     if "ADMIN_EMAILS" not in have:
         git_email = subprocess.run(["git", "config", "user.email"], capture_output=True, text=True).stdout.strip()
         put("ADMIN_EMAILS", ask("Email that gets the Admin page", git_email))
-    print("\nOptional keys. Each one says what it starts with; press Enter alone to skip it.")
-    print("What you paste stays hidden, and a key with the wrong beginning is refused.\n")
+    # The owner's own mail program collects the queue with this token. Made here; a copy is kept
+    # in website/private/ (never committed) for setting up the mail server.
+    if "MAILER_TOKEN" not in have:
+        token = secrets.token_urlsafe(40)
+        put("MAILER_TOKEN", token)
+        (SITE / "private").mkdir(exist_ok=True)
+        (SITE / "private" / "mailer-token.txt").write_text(token + "\n", encoding="utf-8")
+        print("  (a copy is in website/private/mailer-token.txt for the mail server)")
+    if "MAIL_POSTAL_ADDRESS" not in have:
+        print("\nThe law (CAN-SPAM) requires a postal address in every marketing email; a P.O. box is fine.")
+        print("Updates and campaigns are not sent until it is set; receipts and sample links still go.")
+        while True:
+            v = ask("  Postal address, one line (Enter to skip for now)\n  >")
+            if not v or (any(ch.isdigit() for ch in v) and not v.startswith(("sk_", "rk_", "pk_", "whsec_"))):
+                break
+            print("  That does not look like a postal address -- nothing was saved. Try again, or press Enter.")
+        if v:
+            put("MAIL_POSTAL_ADDRESS", v)
+    print("\nStripe keys. Each says what it starts with; press Enter alone to skip.")
+    print("What you paste stays hidden, and a key meant for another box is refused.\n")
     for name, hint, prefixes in (
-            ("RESEND_API_KEY", "RESEND key (from resend.com), starts with re_", ("re_",)),
-            ("MAIL_FROM", "FROM address for emails, e.g. Zeanah Lab <hello@zeanahlab.com>", None),
             ("STRIPE_SECRET_KEY", "STRIPE secret or restricted key, starts with sk_live_ / rk_live_ (or sk_test_ / rk_test_)",
              ("sk_live_", "rk_live_", "sk_test_", "rk_test_")),
             ("STRIPE_WEBHOOK_SECRET", "STRIPE WEBHOOK signing secret, starts with whsec_", ("whsec_",))):
@@ -173,16 +189,9 @@ def site_and_secrets() -> None:
             print(f"  {name}: already set (to change it: npx wrangler pages secret delete {name} --project-name {PROJECT}, then run this again).")
             continue
         while True:
-            v = secret(f"  {hint}\n  > ") if prefixes else ask(f"  {hint}\n  >")
-            if not v:
+            v = secret(f"  {hint}\n  > ")
+            if not v or v.startswith(prefixes):
                 break
-            if prefixes and v.startswith(prefixes):
-                break
-            if not prefixes and "@" in v and not v.startswith(("sk_", "rk_", "pk_", "whsec_", "re_")):
-                break
-            if not prefixes:
-                print("  That is not an email address (it looks like a key) -- nothing was saved. Try again, or press Enter to skip.")
-                continue
             print(f"  That starts with '{v[:6]}...', not {' or '.join(prefixes)} -- it belongs in a different box. Try again, or press Enter to skip.")
         if v:
             put(name, v)

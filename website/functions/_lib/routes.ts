@@ -5,7 +5,9 @@ import { LifeAccount } from "./account";
 import { downloadToken, endSession, normaliseEmail, publicUser, readDownloadToken, requireAdmin, requireUser, roleFor, startSession } from "./auth";
 import { checkPassword, hashPassword, randomToken, sameString, sha256Hex } from "./crypto";
 import { Ctx, HttpError, Router, User, body, email, honeypot, json, nowIso, num, text } from "./http";
-import { checkoutMode, createCheckoutSession, mailReady, retrieveCheckoutSession, sampleLetter, sendMail, verifyStripeSignature } from "./services";
+import { checkoutMode, createCheckoutSession, retrieveCheckoutSession, verifyStripeSignature } from "./services";
+import { convert, firstTouch, recordVisit, report, visitorOf } from "./analytics";
+import { checkClick, enqueue, enroll, queueCampaign, queueConfirm, queueSample, readSubscriberToken, suppress, tick } from "./mail";
 
 const api = new Router();
 export default api;
@@ -45,19 +47,37 @@ async function event(ctx: Ctx, kind: string, label: string) {
 }
 
 /** Add or refresh a subscriber. Consent only ever moves by the person's own choice. */
+interface SubRow { id: number; email: string; name: string | null; marketing_consent: number; status: string }
+
+/** Add or refresh a subscriber. Consent only ever moves by the person's own choice; asking for
+ *  updates queues the double opt-in letter, and nothing marketing goes out until it is clicked.
+ *  A new subscriber keeps where they first came from (first-party analytics). */
 async function upsertSubscriber(ctx: Ctx, o: { email: string; name?: string | null; consent?: boolean; source: string }) {
   const db = ctx.env.DB;
   const e = normaliseEmail(o.email);
-  const existing = await db.prepare("SELECT id, name FROM subscribers WHERE email = ?").bind(e).first<{ id: number; name: string | null }>();
+  const existing = await db.prepare("SELECT id, email, name, marketing_consent, status FROM subscribers WHERE email = ?").bind(e).first<SubRow>();
   if (existing) {
     if (o.name && !existing.name) await db.prepare("UPDATE subscribers SET name = ? WHERE id = ?").bind(o.name, existing.id).run();
-    if (o.consent) await db.prepare("UPDATE subscribers SET marketing_consent = 1, unsubscribed_at = NULL WHERE id = ?").bind(existing.id).run();
-    return { id: existing.id, created: false };
+    // asking again after leaving is a fresh request: it re-enters as unconfirmed and must re-confirm
+    if (o.consent && !existing.marketing_consent && !(await db.prepare("SELECT 1 FROM suppressions WHERE email = ? AND reason IN ('bounced', 'complained')").bind(e).first())) {
+      await db.prepare("DELETE FROM suppressions WHERE email = ? AND reason = 'unsubscribed'").bind(e).run();
+      await db.prepare("UPDATE subscribers SET marketing_consent = 1, status = CASE WHEN status = 'confirmed' THEN 'confirmed' ELSE 'unconfirmed' END, unsubscribed_at = NULL WHERE id = ?").bind(existing.id).run();
+      const fresh = (await db.prepare("SELECT id, email, name, marketing_consent, status FROM subscribers WHERE id = ?").bind(existing.id).first<SubRow>())!;
+      if (fresh.status !== "confirmed") await queueConfirm(ctx, fresh);
+      return { id: existing.id, created: false, row: fresh };
+    }
+    return { id: existing.id, created: false, row: existing };
   }
-  const r = await db.prepare("INSERT INTO subscribers(email, name, marketing_consent, source, created_at) VALUES(?, ?, ?, ?, ?) RETURNING id")
-    .bind(e, o.name || null, o.consent ? 1 : 0, o.source, nowIso()).first<{ id: number }>();
+  const t = await firstTouch(ctx);
+  const r = await db.prepare(
+    "INSERT INTO subscribers(email, name, marketing_consent, source, created_at, status, visitor_id, first_source, first_medium, first_campaign, first_referrer, first_landing) "
+    + "VALUES(?, ?, ?, ?, ?, 'unconfirmed', ?, ?, ?, ?, ?, ?) RETURNING id",
+  ).bind(e, o.name || null, o.consent ? 1 : 0, o.source, nowIso(), t?.visitor_id ?? null, t?.source ?? null, t?.medium ?? null, t?.campaign ?? null, t?.referrer ?? null, t?.landing ?? null)
+    .first<{ id: number }>();
   await event(ctx, "subscriber", "Someone joined the list");
-  return { id: r!.id, created: true };
+  const row = (await db.prepare("SELECT id, email, name, marketing_consent, status FROM subscribers WHERE id = ?").bind(r!.id).first<SubRow>())!;
+  if (o.consent) await queueConfirm(ctx, row);
+  return { id: r!.id, created: true, row };
 }
 
 async function recordSignup(ctx: Ctx, subscriberId: number, kind: string, slug: string) {
@@ -115,7 +135,9 @@ api.post("/subscribe", async (ctx) => {
   const s = await upsertSubscriber(ctx, { email: e, name: text(b, "name", { max: 120 }), consent: b.marketingConsent === true, source });
   const kind = source === "backer" || source === "founder" ? source : "list";
   await recordSignup(ctx, s.id, kind, source);
-  return json({ ok: true, new: s.created }, 201);
+  await convert(ctx, "subscribe", source);
+  if (b.marketingConsent === true) await enroll(ctx, s.id, kind === "list" ? "subscribe" : kind);
+  return json({ ok: true, new: s.created, confirm: b.marketingConsent === true && s.row.status !== "confirmed" }, 201);
 });
 
 api.post("/leads", async (ctx) => {
@@ -128,15 +150,73 @@ api.post("/leads", async (ctx) => {
   await recordSignup(ctx, s.id, "sample", book.slug);
   const hours = 72;
   const downloadUrl = `/api/books/${encodeURIComponent(book.slug)}/download?token=${await downloadToken(ctx.env, book.slug, s.id, hours)}`;
-  const letter = sampleLetter(site(ctx), downloadUrl, hours);
-  const emailed = await sendMail(ctx.env, e, letter.subject, letter.html, letter.text);
-  return json({ downloadUrl, expiresInHours: hours, emailed }, 201);
+  // the same link by email too, through the owner's own mail program (queued until it runs)
+  const queued = await queueSample(ctx, s.row, downloadUrl, hours);
+  await convert(ctx, "sample", book.slug);
+  if (b.marketingConsent === true) await enroll(ctx, s.id, "sample");
+  return json({ downloadUrl, expiresInHours: hours, emailed: Boolean(queued.id && ctx.env.MAILER_TOKEN), confirm: b.marketingConsent === true && s.row.status !== "confirmed" }, 201);
 });
 
 api.post("/unsubscribe", async (ctx) => {
   const b = await body(ctx);
-  await ctx.env.DB.prepare("UPDATE subscribers SET marketing_consent = 0, unsubscribed_at = ? WHERE email = ?").bind(nowIso(), email(b)).run();
-  return json({ ok: true }); // the same answer whether or not the address was on the list
+  // from a message's link (signed token) or by typing the address -- same answer either way
+  const id = typeof b.t === "string" ? await readSubscriberToken(ctx.env, "unsub", b.t) : null;
+  const row = id ? await ctx.env.DB.prepare("SELECT email FROM subscribers WHERE id = ?").bind(id).first<{ email: string }>() : null;
+  const addr = row?.email || (b.email ? email(b) : null);
+  if (addr) await suppress(ctx, addr, "unsubscribed");
+  return json({ ok: true });
+});
+
+/** One-click unsubscribe (RFC 8058): mail clients POST here from the List-Unsubscribe header. */
+api.post("/u/:token", async (ctx) => {
+  const id = await readSubscriberToken(ctx.env, "unsub", ctx.params.token);
+  const row = id ? await ctx.env.DB.prepare("SELECT email FROM subscribers WHERE id = ?").bind(id).first<{ email: string }>() : null;
+  if (row) await suppress(ctx, row.email, "unsubscribed");
+  return json({ ok: true });
+});
+
+/** The double opt-in link. */
+api.post("/confirm", async (ctx) => {
+  const b = await body(ctx);
+  const id = await readSubscriberToken(ctx.env, "confirm", String(b.t || ""));
+  if (!id) throw new HttpError(400, "That confirmation link is not valid. Ask again from the site.");
+  const row = await ctx.env.DB.prepare("SELECT email, status FROM subscribers WHERE id = ?").bind(id).first<{ email: string; status: string }>();
+  if (!row) throw new HttpError(404, "That address is no longer on the list.");
+  if (["bounced", "complained"].includes(row.status)) throw new HttpError(409, "That address cannot be mailed.");
+  await ctx.env.DB.prepare("DELETE FROM suppressions WHERE email = ? AND reason = 'unsubscribed'").bind(row.email).run();
+  await ctx.env.DB.prepare("UPDATE subscribers SET status = 'confirmed', confirmed_at = COALESCE(confirmed_at, ?), marketing_consent = 1, unsubscribed_at = NULL WHERE id = ?").bind(nowIso(), id).run();
+  await convert(ctx, "confirm", String(id));
+  return json({ ok: true });
+});
+
+// ================================================================ first-party analytics
+
+/** A page view, sent by the page itself (navigator.sendBeacon). */
+api.post("/a", async (ctx) => {
+  let b: Record<string, unknown> = {};
+  try { b = JSON.parse(await ctx.request.text()); } catch { /* an empty beacon still counts the request */ }
+  const utm = (b.utm && typeof b.utm === "object" ? b.utm : {}) as Record<string, string>;
+  await recordVisit(ctx, { path: String(b.path || "/"), referrer: typeof b.ref === "string" ? b.ref : undefined, utm });
+  return json({ ok: true }, 200, ctx);
+});
+
+/** An email was opened (a lower bound: many readers block images). */
+api.get("/t/o/:file", async (ctx) => {
+  const id = Number(String(ctx.params.file).replace(/\.gif$/, ""));
+  if (Number.isFinite(id) && id > 0) {
+    await ctx.env.DB.prepare("INSERT INTO email_events(outbox_id, kind, created_at) SELECT id, 'open', ? FROM outbox WHERE id = ?").bind(nowIso(), id).run();
+  }
+  const gif = Uint8Array.from(atob("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"), (c) => c.charCodeAt(0));
+  return new Response(gif, { headers: { "Content-Type": "image/gif", "Cache-Control": "no-store" } });
+});
+
+/** A link in an email was clicked: counted, then sent on. Only links the site signed. */
+api.get("/t/c/:id", async (ctx) => {
+  const id = Number(ctx.params.id);
+  const u = ctx.url.searchParams.get("u") || "";
+  if (!u.startsWith("http") || !(await checkClick(ctx.env, id, u, ctx.url.searchParams.get("s") || ""))) throw new HttpError(400, "That link is not valid.");
+  await ctx.env.DB.prepare("INSERT INTO email_events(outbox_id, kind, detail, created_at) VALUES(?, 'click', ?, ?)").bind(id, u.slice(0, 300), nowIso()).run();
+  return Response.redirect(u, 302);
 });
 
 async function streamBook(ctx: Ctx, book: Product, record: { subscriberId: number | null }) {
@@ -186,6 +266,7 @@ api.post("/signup", async (ctx) => {
     .bind(e, await hashPassword(password), name, roleFor(ctx.env, e), nowIso(), nowIso()).first<{ id: number }>();
   await upsertSubscriber(ctx, { email: e, name, consent: b.marketingConsent === true, source: "signup" });
   await event(ctx, "member", "A new member joined");  // names stay private unless chosen public
+  await convert(ctx, "signup");
   await startSession(ctx, r!.id);
   return json({ user: publicUser(await db.prepare("SELECT * FROM users WHERE id = ?").bind(r!.id).first<User>()) }, 201, ctx);
 });
@@ -452,6 +533,7 @@ api.post("/network", async (ctx) => {
   const cols = Object.keys(f);
   const r = await ctx.env.DB.prepare(`INSERT INTO listings(${cols.join(", ")}, user_id, created_at, updated_at) VALUES(${cols.map(() => "?").join(", ")}, ?, ?, ?) RETURNING id`)
     .bind(...Object.values(f), u.id, nowIso(), nowIso()).first<{ id: number }>();
+  await convert(ctx, "listing", String(f.kind));
   await event(ctx, f.kind === "pad_host" ? "pad" : "listing", f.kind === "pad_host" ? `A pad joined the network: ${f.title}` : `New on the network: ${f.title}`);
   const row = await ctx.env.DB.prepare("SELECT listings.*, users.display_name FROM listings JOIN users ON users.id = listings.user_id WHERE listings.id = ?").bind(r!.id).first<ListingRow>();
   return json({ listing: toListing(row!, u) }, 201);
@@ -514,7 +596,7 @@ api.get("/salvage", async (ctx) => {
 
 api.get("/catalogue", async (ctx) => json({ products: await catalogue(ctx) }));
 
-api.get("/shop", (ctx) => json({ mode: checkoutMode(ctx.env), mail: mailReady(ctx.env) }));
+api.get("/shop", (ctx) => json({ mode: checkoutMode(ctx.env), mail: Boolean(ctx.env.MAILER_TOKEN) }));
 
 api.post("/checkout", async (ctx) => {
   const b = await body(ctx);
@@ -536,10 +618,11 @@ api.post("/checkout", async (ctx) => {
   const ref = randomToken(9), key = randomToken(24);
   const physical = prod.kind === "physical";
   const r = await ctx.env.DB.prepare(
-    "INSERT INTO orders(ref, key_hash, book_slug, amount_cents, currency, email, user_id, provider, marketing_consent, price_key, honor_note, fulfillment, created_at) "
-    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+    "INSERT INTO orders(ref, key_hash, book_slug, amount_cents, currency, email, user_id, provider, marketing_consent, price_key, honor_note, fulfillment, created_at, visitor_id) "
+    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
   ).bind(ref, await sha256Hex(key), prod.slug, pr.amount_cents, pr.currency, e, ctx.user?.id ?? null, mode, b.marketingConsent === true ? 1 : 0,
-    pr.key, honorNote, physical ? "waiting" : null, nowIso()).first<{ id: number }>();
+    pr.key, honorNote, physical ? "waiting" : null, nowIso(), visitorOf(ctx)).first<{ id: number }>();
+  await convert(ctx, "checkout", prod.slug, pr.amount_cents);
   const thanks = `/thanks/${ref}?key=${encodeURIComponent(key)}`;
   if (mode === "test") return json({ url: `/checkout/test/${ref}?key=${encodeURIComponent(key)}`, test: true }, 201);
   const session = await createCheckoutSession(ctx.env, {
@@ -558,6 +641,7 @@ interface OrderRow {
   id: number; ref: string; key_hash: string; book_slug: string; amount_cents: number; currency: string; email: string | null; user_id: number | null;
   subscriber_id: number | null; status: string; provider: string; provider_session: string | null; marketing_consent: number; created_at: string; paid_at: string | null;
   price_key: string | null; honor_note: string | null; ship_name: string | null; ship_address: string | null; fulfillment: string | null;
+  visitor_id: string | null;
 }
 
 async function loadOrder(ctx: Ctx) {
@@ -579,6 +663,8 @@ async function markPaid(ctx: Ctx, o: OrderRow, session?: Record<string, any> | n
   ).bind(nowIso(), buyer || o.email, sub?.id ?? null, ship?.name ?? null, ship?.address ? JSON.stringify(ship.address) : null, o.id).run();
   if (res.meta.changes && sub) {
     await recordSignup(ctx, sub.id, "purchase", o.book_slug);
+    await convert(ctx, "purchase", o.book_slug, o.amount_cents, o.visitor_id);
+    await enroll(ctx, sub.id, "purchase");
     const p = await product(ctx, o.book_slug);
     await event(ctx, "sale", p?.kind === "service" ? "A design session was booked"
       : p?.kind === "physical" ? `A ${p.subtitle || p.title} was ordered` : `A copy of ${p?.title || "the book"} was bought`);
@@ -665,6 +751,7 @@ api.post("/admin/backers", async (ctx) => {
   const r = await ctx.env.DB.prepare("INSERT INTO backers(user_id, display_name, tier, pledge_cents, public, created_at) VALUES(?, ?, ?, ?, ?, ?) RETURNING id")
     .bind(user?.id ?? null, name, tier, Math.round(num(b, "pledge", { min: 0, max: 1e7, required: true })! * 100), b.public === false ? 0 : 1, nowIso()).first<{ id: number }>();
   await event(ctx, "backer", b.public === false ? "A new backer joined the build" : `${name} backed the build`);
+  await convert(ctx, "backer", tier, Math.round(num(b, "pledge", { min: 0, max: 1e7, required: true })! * 100), null);
   return json({ id: r!.id }, 201);
 });
 
@@ -733,4 +820,142 @@ api.patch("/admin/orders/:ref", async (ctx) => {
 api.get("/admin/backers", async (ctx) => {
   requireAdmin(ctx);
   return json({ backers: (await ctx.env.DB.prepare("SELECT * FROM backers ORDER BY id DESC").all()).results });
+});
+
+// ================================================================ the owner's mail program
+// The rented server's program calls these with MAILER_TOKEN. It collects a batch (each message
+// leased for ten minutes), delivers it with the identity's DKIM key, and reports each result.
+
+function mailer(ctx: Ctx) {
+  const t = ctx.request.headers.get("Authorization")?.replace(/^Bearer /, "") || "";
+  if (!ctx.env.MAILER_TOKEN || !sameString(t, ctx.env.MAILER_TOKEN)) throw new HttpError(401, "Not the mail program.");
+}
+
+api.get("/mailer/outbox", async (ctx) => {
+  mailer(ctx);
+  const queuedBySequences = await tick(ctx);
+  const limit = Math.min(200, Number(ctx.url.searchParams.get("limit") || 50));
+  const now = nowIso(), lease = nowIso(10 * 60_000);
+  const rows = (await ctx.env.DB.prepare(
+    `SELECT o.id, o.to_email, o.kind, o.subject, o.html, o.text, o.subscriber_id, i.from_name, i.from_email, i.reply_to, i.archive_bcc, i.key identity
+     FROM outbox o JOIN identities i ON i.key = o.identity
+     WHERE (o.status = 'queued' OR (o.status = 'sending' AND o.lease_until < ?)) AND o.attempts < 6
+     ORDER BY CASE o.kind WHEN 'confirm' THEN 0 WHEN 'transactional' THEN 1 ELSE 2 END, o.id LIMIT ?`,
+  ).bind(now, limit).all<Record<string, any>>()).results;
+  const base = (ctx.env.PUBLIC_URL || ctx.url.origin).replace(/\/$/, "");
+  const out = [];
+  for (const r of rows) {
+    await ctx.env.DB.prepare("UPDATE outbox SET status = 'sending', lease_until = ?, attempts = attempts + 1 WHERE id = ?").bind(lease, r.id).run();
+    const marketing = r.kind === "campaign" || r.kind === "sequence";
+    const unsub = marketing && r.subscriber_id ? await import("./mail").then((m) => m.subscriberToken(ctx.env, "unsub", r.subscriber_id)) : null;
+    out.push({
+      id: r.id, identity: r.identity, to: r.to_email, subject: r.subject, html: r.html, text: r.text,
+      from: `${r.from_name} <${r.from_email}>`, replyTo: r.reply_to, archiveBcc: r.archive_bcc,
+      headers: unsub ? { "List-Unsubscribe": `<${base}/api/u/${unsub}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" } : {},
+    });
+  }
+  return json({ messages: out, queuedBySequences });
+});
+
+api.post("/mailer/report", async (ctx) => {
+  mailer(ctx);
+  const b = await body(ctx);
+  const results = Array.isArray(b.results) ? b.results.slice(0, 500) : [];
+  for (const r of results as Record<string, any>[]) {
+    const id = Number(r.id), status = String(r.status);
+    if (!["sent", "failed", "bounced", "complained", "retry"].includes(status)) continue;
+    const row = await ctx.env.DB.prepare("SELECT to_email FROM outbox WHERE id = ?").bind(id).first<{ to_email: string }>();
+    if (!row) continue;
+    if (status === "retry") {
+      await ctx.env.DB.prepare("UPDATE outbox SET status = 'queued', lease_until = NULL, error = ? WHERE id = ?").bind(String(r.error || "").slice(0, 300), id).run();
+      continue;
+    }
+    await ctx.env.DB.prepare("UPDATE outbox SET status = ?, message_id = COALESCE(?, message_id), error = ?, sent_at = CASE WHEN ? = 'sent' THEN ? ELSE sent_at END WHERE id = ?")
+      .bind(status === "complained" ? "sent" : status, r.messageId ? String(r.messageId).slice(0, 200) : null, r.error ? String(r.error).slice(0, 300) : null, status, nowIso(), id).run();
+    if (status === "bounced" || status === "complained") {
+      await ctx.env.DB.prepare("INSERT INTO email_events(outbox_id, kind, detail, created_at) VALUES(?, ?, ?, ?)").bind(id, status === "bounced" ? "bounce" : "complaint", String(r.error || "").slice(0, 300), nowIso()).run();
+      await suppress(ctx, row.to_email, status);
+    }
+  }
+  return json({ ok: true, recorded: results.length });
+});
+
+// ================================================================ admin: the list, campaigns, sequences, analytics
+
+api.get("/admin/list", async (ctx) => {
+  requireAdmin(ctx);
+  const db = ctx.env.DB;
+  const subs = (await db.prepare(
+    `SELECT s.id, s.email, s.name, s.status, s.marketing_consent, s.source, s.first_source, s.first_campaign, s.created_at, s.confirmed_at,
+            (SELECT GROUP_CONCAT(tag, ',') FROM subscriber_tags t WHERE t.subscriber_id = s.id) tags
+     FROM subscribers s ORDER BY s.id DESC LIMIT 500`,
+  ).all()).results;
+  const campaigns = (await db.prepare(
+    `SELECT c.*, (SELECT COUNT(*) FROM outbox o WHERE o.campaign_id = c.id AND o.status = 'sent') sent,
+            (SELECT COUNT(DISTINCT e.outbox_id) FROM email_events e JOIN outbox o ON o.id = e.outbox_id WHERE o.campaign_id = c.id AND e.kind = 'open') opened,
+            (SELECT COUNT(DISTINCT e.outbox_id) FROM email_events e JOIN outbox o ON o.id = e.outbox_id WHERE o.campaign_id = c.id AND e.kind = 'click') clicked
+     FROM campaigns c ORDER BY c.id DESC`,
+  ).all()).results;
+  const sequences = (await db.prepare("SELECT q.*, (SELECT COUNT(*) FROM enrollments e WHERE e.sequence = q.key AND e.status = 'active') active_runs FROM sequences q").all()).results;
+  const steps = (await db.prepare("SELECT * FROM sequence_steps ORDER BY sequence, step").all()).results;
+  const identities = (await db.prepare("SELECT * FROM identities").all()).results;
+  const outbox = (await db.prepare("SELECT status, kind, COUNT(*) n FROM outbox GROUP BY status, kind").all()).results;
+  return json({ subscribers: subs, campaigns, sequences, steps, identities, outbox, postalAddressSet: Boolean(ctx.env.MAIL_POSTAL_ADDRESS), mailerSet: Boolean(ctx.env.MAILER_TOKEN) });
+});
+
+api.post("/admin/tags", async (ctx) => {
+  requireAdmin(ctx);
+  const b = await body(ctx);
+  const tag = text(b, "tag", { min: 1, max: 40, required: true })!.toLowerCase();
+  const ids = (Array.isArray(b.ids) ? b.ids : []).map(Number).filter((n) => Number.isFinite(n)).slice(0, 500);
+  for (const id of ids) {
+    if (b.remove === true) await ctx.env.DB.prepare("DELETE FROM subscriber_tags WHERE subscriber_id = ? AND tag = ?").bind(id, tag).run();
+    else await ctx.env.DB.prepare("INSERT INTO subscriber_tags(subscriber_id, tag, created_at) VALUES(?, ?, ?) ON CONFLICT DO NOTHING").bind(id, tag, nowIso()).run();
+  }
+  return json({ ok: true, count: ids.length });
+});
+
+api.post("/admin/campaigns", async (ctx) => {
+  requireAdmin(ctx);
+  const b = await body(ctx);
+  const identity = text(b, "identity", { max: 20, required: true })!;
+  if (!(await ctx.env.DB.prepare("SELECT 1 FROM identities WHERE key = ?").bind(identity).first())) throw new HttpError(400, "No such identity.");
+  const seg = { tags: Array.isArray(b.tags) ? b.tags.map(String).slice(0, 10) : [], source: text(b, "source", { max: 80 }) || undefined };
+  const r = await ctx.env.DB.prepare("INSERT INTO campaigns(name, identity, subject, body, segment, created_at) VALUES(?, ?, ?, ?, ?, ?) RETURNING id")
+    .bind(text(b, "name", { min: 1, max: 80, required: true }), identity, text(b, "subject", { min: 1, max: 160, required: true }),
+      text(b, "body", { min: 1, max: 20000, required: true }), JSON.stringify(seg), nowIso()).first<{ id: number }>();
+  return json({ id: r!.id }, 201);
+});
+
+api.post("/admin/campaigns/:id/queue", async (ctx) => {
+  requireAdmin(ctx);
+  return json({ queued: await queueCampaign(ctx, Number(ctx.params.id)) });
+});
+
+/** Send a draft to the admin alone, ignoring the segment -- to read it as a reader will. */
+api.post("/admin/campaigns/:id/test", async (ctx) => {
+  const u = requireAdmin(ctx);
+  const c = await ctx.env.DB.prepare("SELECT * FROM campaigns WHERE id = ?").bind(Number(ctx.params.id)).first<{ id: number; identity: string; subject: string; body: string }>();
+  if (!c) throw new HttpError(404, "No such campaign.");
+  const s = await upsertSubscriber(ctx, { email: u.email, name: u.display_name, source: "admin" });
+  const r = await enqueue(ctx, { sub: { ...s.row, marketing_consent: 1, status: "confirmed" }, identity: c.identity, kind: "transactional", subject: `[test] ${c.subject}`, body: c.body });
+  return json({ queued: Boolean(r.id), why: r.why || null });
+});
+
+api.patch("/admin/sequences/:key", async (ctx) => {
+  requireAdmin(ctx);
+  const b = await body(ctx);
+  if ("active" in b) await ctx.env.DB.prepare("UPDATE sequences SET active = ? WHERE key = ?").bind(b.active === true ? 1 : 0, ctx.params.key).run();
+  if (b.step !== undefined) {
+    const step = num(b, "step", { min: 0, max: 50, required: true })!;
+    await ctx.env.DB.prepare("UPDATE sequence_steps SET subject = COALESCE(?, subject), body = COALESCE(?, body), delay_hours = COALESCE(?, delay_hours) WHERE sequence = ? AND step = ?")
+      .bind(text(b, "subject", { max: 160 }), text(b, "body", { max: 20000 }), num(b, "delayHours", { min: 0, max: 24 * 365 }), ctx.params.key, step).run();
+  }
+  return json({ ok: true });
+});
+
+api.get("/admin/analytics", async (ctx) => {
+  requireAdmin(ctx);
+  const days = Math.min(365, Math.max(1, Number(ctx.url.searchParams.get("days") || 30)));
+  return json(await report(ctx, days));
 });

@@ -13,7 +13,10 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
   const ctx: Ctx = { request, env, url, params: hit.params, user: null, setCookies: [] };
   try {
     // A state-changing request must come from this site's own pages.
-    if (!["GET", "HEAD"].includes(request.method) && path !== "/stripe/webhook") {
+    // Routes that other machines call are proved by a signature or token instead of the
+    // origin: Stripe's webhook, the one-click unsubscribe a mail app POSTs, the mail program.
+    const machine = path === "/stripe/webhook" || path.startsWith("/u/") || path.startsWith("/mailer/");
+    if (!["GET", "HEAD"].includes(request.method) && !machine) {
       const origin = request.headers.get("Origin");
       if (origin && origin !== url.origin) throw new HttpError(403, "Requests must come from this site.");
     }

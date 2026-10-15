@@ -29,6 +29,7 @@ export default function Admin() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 grid gap-6">
       <h1 className="text-4xl font-bold">Admin</h1>
+      <nav className="flex gap-4 text-sm"><a className="btn-ghost" href="/admin/analytics">Analytics</a><a className="btn-ghost" href="/admin/list">The list and email</a></nav>
       {msg && <p className="accent">{msg}</p>}
       <ErrorLine error={error} />
       <div className="grid gap-6 lg:grid-cols-2">
