@@ -1,6 +1,6 @@
 {
   "_note": "Books on the site. 'file' is the base name in BOOKS_DIR (default ../deliverables/book); the site always serves its highest -vN version, so publishing a new edition needs no change here. Slugs: lowercase letters, digits and dashes only. 'offer' is how a book is offered: free (the PDF for an email), paid (sold here at priceCents, in cents), amazon (sold on Amazon -- set amazonUrl when it is live; until then the page runs a waitlist), none (kept, not shown). 'page' is the site path of the book's own sales page; 'facts' names its section in server/src/generated/facts.json.",
-  "_author_note": "Decided 2026-10-12 (supersedes 2026-10-03): the book sold here is Claude's (wedge_book/, 'The 40 Hour Cabin: Complete Edition') -- the frame plus every way to style the dome, priced -- with its free sample cut from it; the paperback on Amazon is DeepSeek's (two_v_demo/book.py, 'Geodesic Dome Wedge Method: The 40 Hour Cabin: 3 Trees'). 'the-wedge-method' is an earlier edition; it is kept, not shown.",
+  "_author_note": "Decided 2026-10-12: sold here -- Claude's 'The 40 Hour Cabin: Complete Edition' (wedge_book/), $20, the book plus the codebase, with its free sample cut from it; and a $50 one-on-one design session (kind 'session', no file). On Amazon -- DeepSeek's 'The 40 Hour Cabin: 2V Geodesic Dome Wedge Method' (two_v_demo/book.py), whose cover is the author's painting re-lettered by wedge_book.cover_type. 'the-wedge-method' is an earlier edition; kept, not shown.",
   "books": [
     {
       "slug": "sample",
@@ -20,21 +20,44 @@
       "title": "The 40 Hour Cabin",
       "subtitle": "Complete Edition",
       "author": "Donovan Zeanah",
-      "blurb": "The complete edition: the 40-hour frame from standing tree to raised shell, then every way to style it -- twelve finishes rendered, every material and panel priced, every item on the floor -- every figure computed by the project's own software.",
+      "blurb": "The complete edition: the 40-hour frame from standing tree to raised shell, then every way to style it -- twelve finishes rendered, every material and panel priced, every item on the floor -- with the codebase that computed all of it.",
       "file": "the-40-hour-cabin.pdf",
       "offer": "paid",
       "page": "buy",
       "facts": "digital",
       "cover": "/covers/the-40-hour-cabin.jpg",
       "priceCents": 2000,
-      "currency": "usd"
+      "currency": "usd",
+      "includes": [
+        "The complete book, every figure computed by the project's own software",
+        "The codebase: the Dome Creator, the Triangle Infill calculator, the raw-wedge solver and every tool behind the book",
+        "Every future edition of the book"
+      ],
+      "codebaseUrl": "https://github.com/dkzeanah/DomeSimulator"
+    },
+    {
+      "slug": "design-session",
+      "title": "One-on-one design session",
+      "subtitle": "Your dome, designed with the author",
+      "author": "Donovan Zeanah",
+      "kind": "session",
+      "offer": "paid",
+      "priceCents": 5000,
+      "currency": "usd",
+      "page": "buy",
+      "blurb": "A one-on-one session with the author, designing your dome with the project's own tools.",
+      "includes": [
+        "Your dome designed with the Dome Creator, the solver and the calculators behind the book",
+        "Booked by email after you pay"
+      ],
+      "bookingNote": "Donovan will email you at the address you paid with to set a time for your session."
     },
     {
       "slug": "2-trees",
-      "title": "Geodesic Dome Wedge Method",
-      "subtitle": "The 40 Hour Cabin: 3 Trees",
+      "title": "The 40 Hour Cabin",
+      "subtitle": "2V Geodesic Dome Wedge Method",
       "author": "Donovan Zeanah",
-      "blurb": "The paperback: three trees, one chainsaw, and a geodesic cabin -- the whole build day by day, why it scales, and the variations.",
+      "blurb": "The paperback: three trees, one chainsaw, and a geodesic cabin — the whole build day by day, plus four chapters on the shell: less skin, the pony wall, the brim and the ladder.",
       "file": "2-trees.pdf",
       "offer": "amazon",
       "page": "paperback",

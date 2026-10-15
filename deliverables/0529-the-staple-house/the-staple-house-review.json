@@ -1,0 +1,163 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T12:46:22.945271+00:00",
+  "lesson": "cabin_staple",
+  "title": "The Staple House",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "The staple house",
+      "narration": [
+        "When people ask me what this dome is, I don't say shelter. I say it's a McDouble. Cheap, fast, reliable, consistent, known everywhere. Not the five-course meal. The staple the whole menu stands on."
+      ],
+      "start": 0.0,
+      "end": 13.401833333333334
+    },
+    {
+      "slug": "staple",
+      "title": "What a staple is",
+      "narration": [
+        "A staple isn't the best thing on the menu. It's the thing that's always there, always the same, priced so nobody thinks twice, and known so well nobody reads the ingredients to trust it. Its job is that everybody who walks in walks out fed."
+      ],
+      "start": 13.401833333333334,
+      "end": 29.584291666666665
+    },
+    {
+      "slug": "first",
+      "title": "A first home, not a last one",
+      "narration": [
+        "An eighteen-year-old doesn't need his first home to be a five-course meal. He needs one that's honest and filling and gets him through, so he can save for the rest. Without that staple, most people never get into the housing market at all."
+      ],
+      "start": 29.584291666666665,
+      "end": 43.357875
+    },
+    {
+      "slug": "papercuts",
+      "title": "The papercuts",
+      "narration": [
+        "Here's what I mean by papercuts. By the home builders' own survey, a new house sells for $665,299. 10 lines of that are things like building permit fees, impact fee, water and sewer fees, financing, overhead, marketing, commission and profit. Together, $178,746."
+      ],
+      "start": 43.357875,
+      "end": 63.39933333333333
+    },
+    {
+      "slug": "share",
+      "title": "None of it is the house",
+      "narration": [
+        "That's 27 percent of the price, and not one line of it is a board, a nail or an hour of work on the house itself. Each one has a reason. None of them is the house. That's 15 of these domes."
+      ],
+      "start": 63.39933333333333,
+      "end": 76.35025
+    },
+    {
+      "slug": "hands",
+      "title": "Fifteen sets of hands",
+      "narration": [
+        "Under all that, the building itself is 32 separately priced trades, and every stud in its frame has passed through 15 sets of hands between the tree and the wall. Every one of them took a margin. A thousand small cuts, and they belong to somebody who isn't you."
+      ],
+      "start": 76.35025,
+      "end": 92.45825
+    },
+    {
+      "slug": "interest",
+      "title": "The biggest papercut",
+      "narration": [
+        "And then the loan. Borrow $100,000 at 6.5 percent for 30 years and the interest alone is $127,544. More than you borrowed. That's 10.6 of these domes, paid a month at a time, so it never looks like a cut."
+      ],
+      "start": 92.45825,
+      "end": 108.52975
+    },
+    {
+      "slug": "bill",
+      "title": "The staple's bill",
+      "narration": [
+        "Now the staple. The stem cell's whole bill is 9 lines from one seller, and it adds to $12,036. The margin's on it, $2,006, 20 percent, where you can see it and argue with it. A staple's allowed to make money. It's not allowed to hide where the money goes."
+      ],
+      "start": 108.52975,
+      "end": 126.93245833333334
+    },
+    {
+      "slug": "side",
+      "title": "Side by side",
+      "narration": [
+        "Put the two bills side by side at the same scale. On the left, only the papercuts. On the right, the staple's whole bill, frame, shell, services, labour, overhead and margin. Every line of it is shorter than the tallest papercut."
+      ],
+      "start": 126.93245833333334,
+      "end": 140.65375
+    },
+    {
+      "slug": "caveat",
+      "title": "Not like for like",
+      "narration": [
+        "That's not like for like, and I won't pretend it is. The survey house is many times the floor and comes with $91,057 of land. The dome is 277 square feet on a pad. A family that needs four bedrooms needs the bigger house. What I'm comparing is the shape of the bills: how many hands, how many lines that aren't the building."
+      ],
+      "start": 140.65375,
+      "end": 161.48341666666667
+    },
+    {
+      "slug": "baseline",
+      "title": "A baseline",
+      "narration": [
+        "Here's the hope. When a dry, serviced, movable building costs $12,036, a $23,993 manufactured home of the same floor has to say what the other $11,957 buys, and a $60,107 site-built one has to say it again. Some of it buys real things. Some of it is papercuts. A staple on the menu is how you find out which. That's a hope, not a measurement. Not enough of these exist yet to move anything."
+      ],
+      "start": 161.48341666666667,
+      "end": 188.97645833333334
+    },
+    {
+      "slug": "family",
+      "title": "A family event",
+      "narration": [
+        "A house bought the usual way is a transaction with a long row of people you never meet. This one's a family event. Felling, splitting, a jig on the grass, forty panels, a weekend of lifting. The kids learn the triangle. Every part's on one list and every cut's in one book, and you add to it a panel at a time for a lifetime, instead of paying for it a month at a time."
+      ],
+      "start": 188.97645833333334,
+      "end": 210.86929166666667
+    },
+    {
+      "slug": "close",
+      "title": "The first rung",
+      "narration": [
+        "A staple doesn't end the menu. It's what makes the menu possible. Everything else in the book is optional: the panels, the fit-outs, the bigger frames. The staple underneath isn't. Build the first rung like a staple, and a lot more people get to climb."
+      ],
+      "start": 210.86929166666667,
+      "end": 225.828
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 225.828,
+      "end": 240.371375
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 240.371375,
+      "end": 256.50379166666664
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\2026-10-14\\the-staple-house\\the-staple-house-myvoice-x1.5\\narration-plan.json",
+    "orientation": "landscape",
+    "compose_segments": true,
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+0%",
+    "voice_pitch": "+0Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

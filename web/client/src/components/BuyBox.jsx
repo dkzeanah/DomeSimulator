@@ -10,7 +10,7 @@ import { api } from '../api.js';
 import { useSession } from '../App.jsx';
 import { price } from '../shop.js';
 
-export default function BuyBox({ book, compact = false }) {
+export default function BuyBox({ book, compact = false, label = 'Buy the complete edition' }) {
   const { user } = useSession();
   const [mode, setMode] = useState(undefined);
   const [email, setEmail] = useState('');
@@ -65,13 +65,13 @@ export default function BuyBox({ book, compact = false }) {
         Also send me build updates and the paperback's launch. Unsubscribe any time.
       </label>
       <button className="button primary big" disabled={state.busy || mode === undefined}>
-        {state.busy ? 'Opening checkout…' : `Buy the digital edition · ${amount}`}
+        {state.busy ? 'Opening checkout…' : `${label} · ${amount}`}
       </button>
       {state.error && <p className="error">{state.error}</p>}
       <p className="muted small">
         {mode === 'test'
           ? 'Test checkout: this server has no Stripe key yet, so no card is asked for and no money moves.'
-          : 'Card details go to Stripe on its own secure page, never to this site. You come straight back to your download.'}
+          : `Card details go to Stripe on its own secure page, never to this site. You come straight back to ${book.kind === 'session' ? 'your booking details' : 'your download'}.`}
       </p>
     </form>
   );

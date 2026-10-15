@@ -1,0 +1,252 @@
+{
+  "schema": 1,
+  "slug": "wedge-coverage",
+  "status": "ready",
+  "title": "How Much Tree Closes a Dome",
+  "hook": "One dome, every triangle closed with wedges: four trees, or seven, and you choose which.",
+  "brand": "DomeSim concepts",
+  "source": {
+    "url": "ChatGPT session (the owner's), October 2026",
+    "title": "Wedge strut footage and triangle infill for the 2V wedge dome",
+    "channel": "ChatGPT, worked with the owner",
+    "transcript_file": "the owner's chat; every figure re-derived and checked in two_v_demo/wedge_coverage_facts.py (22 of 22 agree with the dome solver)",
+    "retrieved": "2026-10-14",
+    "note": "Not a video: a worked analysis. Its numbers are recomputed from the dome's own geometry here; the card only sets the choices the analysis made."
+  },
+  "summary": "The dome's frame is {dome_members} wedge members: {frame_ft} feet of wedge, cut from one log after another. Close every triangle with more wedges, laid in pairs with their points facing in, and the pairs can nest tight or open into a bowtie. Nested, a pair covers one wedge face; opened, two. That one choice moves the whole dome between {total_min_ft} and {total_max_ft} feet of wedge.",
+  "numbers": [
+    {
+      "name": "log_in",
+      "label": "log diameter",
+      "value": 12,
+      "unit": "in",
+      "kind": "estimate",
+      "source": "the owner's working assumption in the ChatGPT session (a chat, not a video, so no timestamp): the owner's working assumption in the session: a 12 in pine",
+      "why": "sets the wedge's face",
+      "format": ".0f"
+    },
+    {
+      "name": "splits",
+      "label": "wedges per log section",
+      "value": 8,
+      "unit": "",
+      "kind": "standard",
+      "source": "the wedge method: halved three times",
+      "why": "the 45 degree wedge",
+      "format": ".0f"
+    },
+    {
+      "name": "tree_ft",
+      "label": "one usable pine",
+      "value": 60,
+      "unit": "ft",
+      "kind": "estimate",
+      "source": "the owner's working assumption in the ChatGPT session (a chat, not a video, so no timestamp): the owner, in the session: 'given a 60 foot tree, that's 10 chunks x 8 wedges'",
+      "why": "what a tree is",
+      "format": ".0f"
+    },
+    {
+      "name": "overlap_tight",
+      "label": "overlap, fully nested",
+      "value": 1,
+      "unit": "",
+      "kind": "estimate",
+      "source": "the session's model: the pair's slants in full contact",
+      "why": "the most wood",
+      "format": ".0f"
+    },
+    {
+      "name": "overlap_open",
+      "label": "overlap, bowtie",
+      "value": 0,
+      "unit": "",
+      "kind": "estimate",
+      "source": "the session's model: points touching only",
+      "why": "the least wood; a real joint needs some overlap",
+      "format": ".0f"
+    }
+  ],
+  "figures": [
+    {
+      "name": "face_in",
+      "label": "a wedge's face",
+      "expr": "log_in * sqrt(2 - sqrt(2)) / 2",
+      "unit": "in",
+      "format": ".2f"
+    },
+    {
+      "name": "frame_ft",
+      "label": "the frame's wedge",
+      "expr": "dome_frame_wedge_ft",
+      "unit": "ft",
+      "format": ",.0f"
+    },
+    {
+      "name": "infill_min_ft",
+      "label": "infill, bowtie pairs",
+      "expr": "2 * dome_open_sqft_12in * 12 / ((2 - overlap_open) * face_in)",
+      "unit": "ft",
+      "format": ",.0f"
+    },
+    {
+      "name": "infill_max_ft",
+      "label": "infill, nested pairs",
+      "expr": "2 * dome_open_sqft_12in * 12 / ((2 - overlap_tight) * face_in)",
+      "unit": "ft",
+      "format": ",.0f"
+    },
+    {
+      "name": "total_min_ft",
+      "label": "frame and infill, least",
+      "expr": "frame_ft + infill_min_ft",
+      "unit": "ft",
+      "format": ",.0f"
+    },
+    {
+      "name": "total_max_ft",
+      "label": "frame and infill, most",
+      "expr": "frame_ft + infill_max_ft",
+      "unit": "ft",
+      "format": ",.0f"
+    },
+    {
+      "name": "tree_wedge_ft",
+      "label": "wedge in one tree",
+      "expr": "tree_ft * splits",
+      "unit": "ft",
+      "format": ",.0f"
+    },
+    {
+      "name": "trees_min",
+      "label": "trees, least",
+      "expr": "total_min_ft / tree_wedge_ft",
+      "unit": "",
+      "format": ".1f"
+    },
+    {
+      "name": "trees_max",
+      "label": "trees, most",
+      "expr": "total_max_ft / tree_wedge_ft",
+      "unit": "",
+      "format": ".1f"
+    }
+  ],
+  "shapes": [
+    {
+      "type": "box",
+      "at": [
+        -3,
+        0,
+        0.6
+      ],
+      "size": [
+        0.6,
+        6,
+        1.2
+      ],
+      "label": "nested pair",
+      "id": "nested",
+      "color": "amber"
+    },
+    {
+      "type": "box",
+      "at": [
+        3,
+        0,
+        0.6
+      ],
+      "size": [
+        1.2,
+        6,
+        1.2
+      ],
+      "label": "bowtie pair",
+      "id": "bowtie",
+      "color": "wood"
+    },
+    {
+      "type": "cylinder",
+      "at": [
+        0,
+        -4,
+        0.8
+      ],
+      "to": [
+        0,
+        4,
+        0.8
+      ],
+      "radius": 0.8,
+      "label": "the log",
+      "id": "log",
+      "color": "wood"
+    }
+  ],
+  "beats": [
+    {
+      "title": "The frame",
+      "promise": "A tree and a half.",
+      "narration": "A {log_in} inch log split {splits} ways gives wedges with a face {face_in} inches wide. The frame takes {dome_members} of them, {frame_ft} feet of wedge, and one {tree_ft} foot pine gives {tree_wedge_ft} feet.",
+      "show": [
+        "log"
+      ],
+      "figures": [
+        "face_in",
+        "frame_ft",
+        "tree_wedge_ft"
+      ]
+    },
+    {
+      "title": "Closing the triangles",
+      "promise": "Pairs, points in.",
+      "narration": "The triangles leave {dome_open_sqft_12in} square feet to close after the frame. Lay the wedges in pairs, points facing in. Nested tight, a pair covers one face; opened to a bowtie, two.",
+      "show": [
+        "nested",
+        "bowtie"
+      ],
+      "figures": [
+        "dome_open_sqft_12in"
+      ]
+    },
+    {
+      "title": "Your choice of trees",
+      "promise": "The overlap is the dial.",
+      "narration": "Bowtie pairs close the dome with {infill_min_ft} feet of infill; nested pairs take {infill_max_ft}. Frame and all, that is {total_min_ft} to {total_max_ft} feet: {trees_min} to {trees_max} trees, before taper and kerf.",
+      "show": [
+        "nested",
+        "bowtie",
+        "log"
+      ],
+      "figures": [
+        "infill_min_ft",
+        "infill_max_ft",
+        "trees_min",
+        "trees_max"
+      ]
+    }
+  ],
+  "dome_fit": {
+    "slot": "timber",
+    "narration": "This is the whole timber bill of the wedge dome closed in wood: {total_min_ft} to {total_max_ft} feet of wedge against a frame of {frame_ft}.",
+    "figures": [
+      "total_min_ft",
+      "total_max_ft",
+      "frame_ft"
+    ]
+  },
+  "limits": [
+    {
+      "narration": "A bowtie touches only at its points: the {infill_min_ft} foot figure is a floor, not a weather-tight joint. And the area method runs about six per cent above the real pieces the Triangle Infill calculator cuts, because a triangle's corners take short pieces.",
+      "figures": [
+        "infill_min_ft"
+      ]
+    }
+  ],
+  "hashtags": [
+    "#geodesicdome",
+    "#chainsawmilling",
+    "#woodworking",
+    "#logbuilding",
+    "#offgrid"
+  ]
+}

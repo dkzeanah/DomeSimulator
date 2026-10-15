@@ -338,7 +338,7 @@ dome and its twelve-step jig.
 * **World**: `DomeWorldApp` — `U` cycles orientations, `4` head
   long/flush, `7`/`8` allowance, `9`/`0` walk the jig's twelve steps,
   `L` flies to dynamically-computed jig stations (whole jig + corner
-  joints), `F12` screenshots to `exports/dome_screenshot.png`, `E`
+  joints), `F12` screenshots into the library (`wedge-dome-screenshot`, a new version each time), `E`
   exports OBJ/config. **Raster stills are not headless** — the world
   needs a live GL window; for pixels without GL, export
   `build_world_meshes(model)` (CPU mesh batches) to OBJ.
@@ -428,7 +428,7 @@ entire cast/body/hair/wardrobe stack.
 | **Dome Creator** | env `DOME_SMOKE=<n>` + `DOME_SHOT_DIR=<dir>` smoke test only — no stills action | `<dir>/smoke_<fff>.png` |
 | **Assembly Line** | ticket `assembly_line` `{action:"shots", shots:"74,97", shot_speed:6, shot_panel:"throughput", seed:42}` or `AssemblyLineApp(headless=True, seed=42).render_shots(times, dir)`; live `K` snapshot | `shots/shot_<t>s.png`; `snapshots/dome_<ts>.png` |
 | **Dome Composer** | ticket `dome_composer` `{action:"shots", shots_dir:...}` → `ComposerApp(..., hidden=True).turntable(dir, frames=4)` | 4 PNGs `{scene}_{i:02d}.png` |
-| **Raw wedge** | no headless stills — `F12` interactive screenshot, `E` exports OBJ/config; solver SVG/OBJ exporters need no GL | `exports/dome_screenshot.png`, `fabrication_package/` |
+| **Raw wedge** | no headless stills — `F12` interactive screenshot, `E` exports OBJ/config; solver SVG/OBJ exporters need no GL | library items `wedge-dome-screenshot`, `wedge-dome-export` (`py -3.12 -m medialib find wedge-dome`) |
 | **Book figures** | `book_figures.py` 7 renderers at 300 dpi (matplotlib; no GL needed except `lesson_still`) | `deliverables/book/figures/*.png`, `*.svg` |
 | **Codex book scenes** | `two_trees_codex.scene_stills.render_scene_still(scene, out, progress=0.85, overlay='original')` | stills + `scene_recipe` provenance |
 | **Frames from finished MP4s** | `two_trees_codex/video_frames.py` `contact_sheet(results, path)` (ffmpeg + PIL) | JPG contact sheet |
@@ -493,7 +493,7 @@ forces `-v2/-v3`; never overwrite a finished render.
 ### 6.3 Books
 
 **Book Studio** (`book_studio.py` → `two_v_demo/book_app.py`,
-manuscript in `book/manuscript/`):
+manuscript in `books/two-trees/manuscript/`):
 
 * Writing = plain Markdown chapters using `{{token}}` live figures
   (145 of them from `book_tokens.py`); a misspelt token stops the export.
@@ -566,7 +566,7 @@ manuscript in `book/manuscript/`):
 | A persuasive / explainer film | one `build() -> Presentation` module | `docs/programmatic-video-guide.md` §4 template, the object-catalog dump, the focus-target list |
 | A campaign/montage | a lesson with `style="hype"` + segments | `lesson_hype.py` reference |
 | A narrative drama | a script JSON for the drama director | `two_v_demo/drama_script.py` |
-| A book | `book/manuscript/*.md` with `{{tokens}}` (or Codex pages + scene recipes) | `book/README.md`, the Numbers token list |
+| A book | `books/two-trees/manuscript/*.md` with `{{tokens}}` (or Codex pages + scene recipes) | `books/two-trees/README.md`, the Numbers token list |
 | Stills only | ticket files or direct `PresenterApp`/`DomeForgeApp` calls | §5 table |
 
 ### 8.2 The non-negotiable rules to state in the prompt
@@ -759,7 +759,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    MS[book/manuscript<br/>Markdown with {{tokens}}] --> TK[book_tokens<br/>145 live figures]
+    MS[books/two-trees/manuscript<br/>Markdown with {{tokens}}] --> TK[book_tokens<br/>145 live figures]
     MATH[book_math<br/>both sizing methods] --> TK
     MATH --> PLOTS[book_plots<br/>tables + charts]
     DIAG[book_diagrams<br/>line drawings] --> EXP

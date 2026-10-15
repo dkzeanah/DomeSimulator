@@ -5,9 +5,9 @@
   "title": "Hexagonal Dome Masterclass",
   "source": "two_v_demo/lesson_hex.py",
   "originals": [
-   "deliverables/masterclass/hex-dome-masterclass.mp4",
-   "deliverables/teasers/hex-dome-masterclass-teaser-vertical.mp4",
-   "deliverables/teasers/hex-dome-masterclass-teaser.mp4"
+   "deliverables/0028-hex-dome-masterclass/hex-dome-masterclass.mp4",
+   "deliverables/0082-hex-dome-masterclass-teaser/hex-dome-masterclass-teaser-vertical.mp4",
+   "deliverables/0082-hex-dome-masterclass-teaser/hex-dome-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "Hexagonal domes: one strut length, twelve pentagons, and what frequency costs.",
@@ -289,9 +289,9 @@
   "title": "Zome Construction Masterclass",
   "source": "two_v_demo/lesson_zome.py",
   "originals": [
-   "deliverables/masterclass/zome-construction-masterclass.mp4",
-   "deliverables/teasers/zome-construction-masterclass-teaser-vertical.mp4",
-   "deliverables/teasers/zome-construction-masterclass-teaser.mp4"
+   "deliverables/0029-zome-construction-masterclass/zome-construction-masterclass.mp4",
+   "deliverables/0083-zome-construction-masterclass-teaser/zome-construction-masterclass-teaser-vertical.mp4",
+   "deliverables/0083-zome-construction-masterclass-teaser/zome-construction-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "Zomes: flat parallelogram panels, one strut length, a point on top.",
@@ -558,8 +558,8 @@
   "title": "2V Dome Construction Masterclass",
   "source": "two_v_demo/lesson_build.py",
   "originals": [
-   "deliverables/teasers/dome-construction-masterclass-teaser-vertical.mp4",
-   "deliverables/teasers/dome-construction-masterclass-teaser.mp4"
+   "deliverables/0081-dome-construction-masterclass-teaser/dome-construction-masterclass-teaser-vertical.mp4",
+   "deliverables/0081-dome-construction-masterclass-teaser/dome-construction-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "The 46-chapter construction lesson, geometry through to the franken-dome.",
@@ -1135,9 +1135,9 @@
   "title": "Assembly Line Energy Masterclass",
   "source": "two_v_demo/lesson_line.py",
   "originals": [
-   "deliverables/masterclass/assembly-line-energy-masterclass.mp4",
-   "deliverables/teasers/assembly-line-energy-masterclass-teaser-vertical.mp4",
-   "deliverables/teasers/assembly-line-energy-masterclass-teaser.mp4"
+   "deliverables/0031-assembly-line-energy-masterclass/assembly-line-energy-masterclass.mp4",
+   "deliverables/0084-assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser-vertical.mp4",
+   "deliverables/0084-assembly-line-energy-masterclass-teaser/assembly-line-energy-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "What building one dome costs the two people who build it.",
@@ -1446,9 +1446,9 @@
   "title": "The Compound Cut, Both Machines",
   "source": "two_v_demo/lesson_cuts.py",
   "originals": [
-   "deliverables/masterclass/hubless-compound-cut.mp4",
-   "deliverables/teasers/hubless-compound-cut-teaser-vertical.mp4",
-   "deliverables/teasers/hubless-compound-cut-teaser.mp4"
+   "deliverables/0033-hubless-compound-cut/hubless-compound-cut.mp4",
+   "deliverables/0085-hubless-compound-cut-teaser/hubless-compound-cut-teaser-vertical.mp4",
+   "deliverables/0085-hubless-compound-cut-teaser/hubless-compound-cut-teaser.mp4"
   ],
   "releases": [],
   "note": "The compound cut on both machines, with the jig between.",
@@ -1686,9 +1686,9 @@
   "title": "The Franken-Dome",
   "source": "two_v_demo/lesson_franken.py",
   "originals": [
-   "deliverables/masterclass/frankendome-build-v2.mp4",
-   "deliverables/teasers/frankendome-build-v2-teaser-vertical.mp4",
-   "deliverables/teasers/frankendome-build-v2-teaser.mp4"
+   "deliverables/0040-frankendome-build-v2/frankendome-build-v2.mp4",
+   "deliverables/0086-frankendome-build-v2-teaser-v2/frankendome-build-v2-teaser-vertical.mp4",
+   "deliverables/0086-frankendome-build-v2-teaser-v2/frankendome-build-v2-teaser.mp4"
   ],
   "releases": [],
   "note": "Mixed stock, folded brackets, slack and settling, plus hubless strut coding, the floor deck and the commercial case. The 13-chapter frankendome-build.mp4 beside it is archival: the lesson has since grown to 21 chapters and that file can no longer be reproduced from this code.",
@@ -1981,9 +1981,9 @@
   "title": "Frankendome",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/masterclass/frankendome-montage.mp4",
-   "deliverables/teasers/frankendome-montage-teaser-vertical.mp4",
-   "deliverables/teasers/frankendome-montage-teaser.mp4"
+   "deliverables/0032-frankendome-montage/frankendome-montage.mp4",
+   "deliverables/0087-frankendome-montage-teaser/frankendome-montage-teaser-vertical.mp4",
+   "deliverables/0087-frankendome-montage-teaser/frankendome-montage-teaser.mp4"
   ],
   "releases": [],
   "note": "The montage, version one. Raw label placement, as shipped.",
@@ -2374,9 +2374,9 @@
   "title": "Frankendome, Version Two",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/masterclass/frankendome-montage-v2.mp4",
-   "deliverables/teasers/frankendome-montage-v2-teaser-vertical.mp4",
-   "deliverables/teasers/frankendome-montage-v2-teaser.mp4"
+   "deliverables/0035-frankendome-montage-v2/frankendome-montage-v2.mp4",
+   "deliverables/0088-frankendome-montage-v2-teaser-v2/frankendome-montage-v2-teaser-vertical.mp4",
+   "deliverables/0088-frankendome-montage-v2-teaser-v2/frankendome-montage-v2-teaser.mp4"
   ],
   "releases": [],
   "note": "Version two: the asides. Raw label placement, as shipped.",
@@ -2807,9 +2807,9 @@
   "title": "Frankendome, Version Three",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/masterclass/frankendome-montage-v3.mp4",
-   "deliverables/teasers/frankendome-montage-v3-teaser-vertical.mp4",
-   "deliverables/teasers/frankendome-montage-v3-teaser.mp4"
+   "deliverables/0036-frankendome-montage-v3/frankendome-montage-v3.mp4",
+   "deliverables/0089-frankendome-montage-v3-teaser-v3/frankendome-montage-v3-teaser-vertical.mp4",
+   "deliverables/0089-frankendome-montage-v3-teaser-v3/frankendome-montage-v3-teaser.mp4"
   ],
   "releases": [],
   "note": "Version three: the reason, and legible labels.",
@@ -3296,9 +3296,9 @@
   "title": "Frankendome, Version Four",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/masterclass/frankendome-montage-v4.mp4",
-   "deliverables/teasers/frankendome-montage-v4-teaser-vertical.mp4",
-   "deliverables/teasers/frankendome-montage-v4-teaser.mp4"
+   "deliverables/0037-frankendome-montage-v4/frankendome-montage-v4.mp4",
+   "deliverables/0090-frankendome-montage-v4-teaser-v4/frankendome-montage-v4-teaser-vertical.mp4",
+   "deliverables/0090-frankendome-montage-v4-teaser-v4/frankendome-montage-v4-teaser.mp4"
   ],
   "releases": [],
   "note": "Version four: the brand segments, the party sting and the shared contact outro.",
@@ -3793,9 +3793,9 @@
   "title": "Frankendome, Version Five",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/masterclass/frankendome-montage-v5.mp4",
-   "deliverables/teasers/frankendome-montage-v5-teaser-vertical.mp4",
-   "deliverables/teasers/frankendome-montage-v5-teaser.mp4"
+   "deliverables/0038-frankendome-montage-v5/frankendome-montage-v5.mp4",
+   "deliverables/0091-frankendome-montage-v5-teaser-v5/frankendome-montage-v5-teaser-vertical.mp4",
+   "deliverables/0091-frankendome-montage-v5-teaser-v5/frankendome-montage-v5-teaser.mp4"
   ],
   "releases": [],
   "note": "Version five: no girlfriend remark, and the plain frankendome in place of the party sting.",
@@ -4290,9 +4290,9 @@
   "title": "Frankendome, Version Six",
   "source": "two_v_demo/lesson_hype.py",
   "originals": [
-   "deliverables/masterclass/frankendome-montage-v6.mp4",
-   "deliverables/teasers/frankendome-montage-v6-teaser-vertical.mp4",
-   "deliverables/teasers/frankendome-montage-v6-teaser.mp4"
+   "deliverables/0039-frankendome-montage-v6/frankendome-montage-v6.mp4",
+   "deliverables/0092-frankendome-montage-v6-teaser-v6/frankendome-montage-v6-teaser-vertical.mp4",
+   "deliverables/0092-frankendome-montage-v6-teaser-v6/frankendome-montage-v6-teaser.mp4"
   ],
   "releases": [],
   "note": "Version six: themed shells, the four product lines, a faster cadence and a synthesised beat under it.",
@@ -4819,9 +4819,9 @@
   "title": "Build A Dome: The Campaign",
   "source": "two_v_demo/lesson_kickstarter.py",
   "originals": [
-   "deliverables/masterclass/dome-kickstarter.mp4",
-   "deliverables/teasers/dome-kickstarter-teaser-vertical.mp4",
-   "deliverables/teasers/dome-kickstarter-teaser.mp4"
+   "deliverables/0041-dome-kickstarter/dome-kickstarter.mp4",
+   "deliverables/0093-dome-kickstarter-teaser/dome-kickstarter-teaser-vertical.mp4",
+   "deliverables/0093-dome-kickstarter-teaser/dome-kickstarter-teaser.mp4"
   ],
   "releases": [],
   "note": "The campaign film: why a dome, what one costs to the dollar, and what a hundred thousand dollars buys.",
@@ -5008,9 +5008,9 @@
   "title": "Build A Dome: The Campaign, Version Two",
   "source": "two_v_demo/lesson_kickstarter_v2.py",
   "originals": [
-   "deliverables/masterclass/dome-kickstarter-v2.mp4",
-   "deliverables/teasers/dome-kickstarter-v2-teaser-vertical.mp4",
-   "deliverables/teasers/dome-kickstarter-v2-teaser.mp4"
+   "deliverables/0042-dome-kickstarter-v2/dome-kickstarter-v2.mp4",
+   "deliverables/0094-dome-kickstarter-v2-teaser-v2/dome-kickstarter-v2-teaser-vertical.mp4",
+   "deliverables/0094-dome-kickstarter-v2-teaser-v2/dome-kickstarter-v2-teaser.mp4"
   ],
   "releases": [],
   "note": "The campaign film with the pony wall, the overhanging brim and its catchment, running cost at 17 cents a kilowatt hour, radiative cooling paint, and the ten points.",
@@ -5235,9 +5235,9 @@
   "title": "THE VANCE NETWORK: the complete mini-series",
   "source": "two_v_demo/lesson_drama.py",
   "originals": [
-   "deliverables/masterclass/the-vance-network-mini-series.mp4",
-   "deliverables/teasers/the-vance-network-mini-series-teaser-vertical.mp4",
-   "deliverables/teasers/the-vance-network-mini-series-teaser.mp4"
+   "deliverables/0051-the-vance-network-mini-series/the-vance-network-mini-series.mp4",
+   "deliverables/0101-the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser-vertical.mp4",
+   "deliverables/0101-the-vance-network-mini-series-teaser/the-vance-network-mini-series-teaser.mp4"
   ],
   "releases": [],
   "note": "The whole mini-series in one file: six vertical episodes, an arc where every cliffhanger is answered by the next episode's hook, and a finale that leaves one thread open. Same engine as the single episode, playing six directors back to back.",
@@ -5468,9 +5468,9 @@
   "title": "EP_DOME_001: The High Council Dome",
   "source": "two_v_demo/lesson_drama.py",
   "originals": [
-   "deliverables/masterclass/ep-dome-001-high-council.mp4",
-   "deliverables/teasers/ep-dome-001-high-council-teaser-vertical.mp4",
-   "deliverables/teasers/ep-dome-001-high-council-teaser.mp4"
+   "deliverables/0049-ep-dome-001-high-council/ep-dome-001-high-council.mp4",
+   "deliverables/0100-ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser-vertical.mp4",
+   "deliverables/0100-ep-dome-001-high-council-teaser/ep-dome-001-high-council-teaser.mp4"
   ],
   "releases": [],
   "note": "The first micro-drama out of the narrative module: a 60-second vertical episode staged inside the dome, with the blocking, the proximity rings, the rig actions and every camera move computed by the drama director from a script JSON. Rendered 1080x1920 -- the 9:16 framing is the point, and a landscape render would discard it.",
@@ -5541,8 +5541,8 @@
   "title": "The Dome House Lookbook",
   "source": "two_v_demo/lesson_lookbook.py",
   "originals": [
-   "deliverables/teasers/dome-house-lookbook-teaser-vertical.mp4",
-   "deliverables/teasers/dome-house-lookbook-teaser.mp4"
+   "deliverables/0102-dome-house-lookbook-teaser/dome-house-lookbook-teaser-vertical.mp4",
+   "deliverables/0102-dome-house-lookbook-teaser/dome-house-lookbook-teaser.mp4"
   ],
   "releases": [],
   "note": "The interiors film: two furnished domes, a cast of eight built out of the same skeleton the lifting lesson uses, hair modelled as strands, a wardrobe lofted from the body's own cross-section, and the composer refusing a fitting pod because the shell has come down to meet it.",
@@ -5681,9 +5681,9 @@
   "title": "Eight Cuts to a House: A Dome Straight From the Tree",
   "source": "two_v_demo/lesson_wedge.py",
   "originals": [
-   "deliverables/masterclass/eight-cuts-to-a-house.mp4",
-   "deliverables/teasers/eight-cuts-to-a-house-teaser-vertical.mp4",
-   "deliverables/teasers/eight-cuts-to-a-house-teaser.mp4"
+   "deliverables/0050-eight-cuts-to-a-house/eight-cuts-to-a-house.mp4",
+   "deliverables/0099-eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser-vertical.mp4",
+   "deliverables/0099-eight-cuts-to-a-house-teaser/eight-cuts-to-a-house-teaser.mp4"
   ],
   "releases": [],
   "note": "The dome built straight from the tree: raw log sectors as structural members, forty independent pinwheel frames with no mitres anywhere, and gasketed seams instead of shared struts. Its math screens compute the trunk's board feet, pack 2x4s into the same sections honestly, cost the kerf, measure the joint and size the dome from the strut length the tree gives.",
@@ -6174,8 +6174,8 @@
   "title": "From Scratch: Every Calculation Behind a Dome on Screen",
   "source": "two_v_demo/lesson_scratch.py",
   "originals": [
-   "deliverables/teasers/dome-from-scratch-geometry-to-pixels-teaser-vertical.mp4",
-   "deliverables/teasers/dome-from-scratch-geometry-to-pixels-teaser.mp4"
+   "deliverables/0098-dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser-vertical.mp4",
+   "deliverables/0098-dome-from-scratch-geometry-to-pixels-teaser/dome-from-scratch-geometry-to-pixels-teaser.mp4"
   ],
   "releases": [],
   "note": "From scratch, for somebody who has never written code: every calculation between one irrational number and a lit pixel. The shape (phi, subdivision, projection, two chord factors, a cut list) and then the picture (tubes, normals, the vertex buffer, the camera, the view and projection matrices, the divide by w, the viewport, the depth buffer, culling and the lighting sum), with 18 math screens deriving every figure on camera.",
@@ -6961,8 +6961,8 @@
   "title": "The Dome Simulator Master Presentation",
   "source": "two_v_demo/lesson_master.py",
   "originals": [
-   "deliverables/teasers/domesim-master-presentation-teaser-vertical.mp4",
-   "deliverables/teasers/domesim-master-presentation-teaser.mp4"
+   "deliverables/0095-domesim-master-presentation-teaser/domesim-master-presentation-teaser-vertical.mp4",
+   "deliverables/0095-domesim-master-presentation-teaser/domesim-master-presentation-teaser.mp4"
   ],
   "releases": [],
   "note": "The master presentation: the toolchain tour, the whole construction masterclass, the frankendome, the priced starter home and the factory case -- with math screens that derive every figure on camera. Its segments (whoami, the party sting) are composed inside the lesson module, so this render must not compose them again.",
@@ -8216,9 +8216,9 @@
   "title": "Every Dome In The World",
   "source": "two_v_demo/lesson_world.py",
   "originals": [
-   "deliverables/masterclass/every-dome-in-the-world.mp4",
-   "deliverables/teasers/every-dome-in-the-world-teaser-vertical.mp4",
-   "deliverables/teasers/every-dome-in-the-world-teaser.mp4"
+   "deliverables/0045-every-dome-in-the-world/every-dome-in-the-world.mp4",
+   "deliverables/0096-every-dome-in-the-world-teaser/every-dome-in-the-world-teaser-vertical.mp4",
+   "deliverables/0096-every-dome-in-the-world-teaser/every-dome-in-the-world-teaser.mp4"
   ],
   "releases": [],
   "note": "All twelve Dome Creator presets, each rebuilt live from the simulator's own modules and rendered at true relative scale, with math screens for the frequency ladder, hub versus hubless, price per square foot, envelope efficiency and scale.",
@@ -8543,9 +8543,9 @@
   "title": "10 Dome Builds — The Accountable Master Cut",
   "source": "two_v_demo/lesson_world_chatgpt.py",
   "originals": [
-   "deliverables/masterclass/ten-dome-builds-master-20260829-135242-chatgpt.mp4",
-   "deliverables/teasers/ten-dome-builds-master-20260829-135242-chatgpt-teaser-vertical.mp4",
-   "deliverables/teasers/ten-dome-builds-master-20260829-135242-chatgpt-teaser.mp4"
+   "deliverables/0047-ten-dome-builds-master-20260829-135242-chatgpt/ten-dome-builds-master-20260829-135242-chatgpt.mp4",
+   "deliverables/0097-ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser-vertical.mp4",
+   "deliverables/0097-ten-dome-builds-master-20260829-135242-chatgpt-teaser/ten-dome-builds-master-20260829-135242-chatgpt-teaser.mp4"
   ],
   "releases": [],
   "note": "A unique ChatGPT master cut: ten real Dome Creator presets, Dome Forge and Assembly Line context, plus a per-build material breakdown, construction-event labor breakdown and modeled direct-sale price.",
@@ -8877,8 +8877,8 @@
   "title": "Why Wedges: A Dome That Does Not Need a Sawmill",
   "source": "two_v_demo/lesson_wedge_why.py",
   "originals": [
-   "deliverables/teasers/why-wedges-no-sawmill-teaser-vertical.mp4",
-   "deliverables/teasers/why-wedges-no-sawmill-teaser.mp4"
+   "deliverables/0103-why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser-vertical.mp4",
+   "deliverables/0103-why-wedges-no-sawmill-teaser/why-wedges-no-sawmill-teaser.mp4"
   ],
   "releases": [],
   "note": "The combined cut. Where the method came from (the frankendome and its V brackets), what it is (borrowing the mechanism chapters and three math screens from `wedge` so the two films cannot disagree), and what it is worth -- from two timed cutting sessions that agree with a geometric prediction to 12%, a wedge valued two independent ways that land 1% apart, the store-bought overheads nobody counts, and a structural claim stated as a crossover diameter rather than a verdict.",
@@ -9745,11 +9745,11 @@
   "title": "Two Trees, All at Once",
   "source": "two_v_demo/lesson_harvest.py",
   "originals": [
-   "deliverables/teasers/two-trees-all-at-once-teaser-vertical.mp4",
-   "deliverables/teasers/two-trees-all-at-once-teaser.mp4",
-   "exports/harvest/two-trees-all-at-once-v2.mp4",
-   "exports/harvest/two-trees-all-at-once-v3.mp4",
-   "exports/harvest/two-trees-all-at-once.mp4"
+   "deliverables/0064-two-trees-all-at-once/two-trees-all-at-once.mp4",
+   "deliverables/0065-two-trees-all-at-once-v2/two-trees-all-at-once-v2.mp4",
+   "deliverables/0069-two-trees-all-at-once-v3/two-trees-all-at-once-v3.mp4",
+   "deliverables/0104-two-trees-all-at-once-teaser/two-trees-all-at-once-teaser-vertical.mp4",
+   "deliverables/0104-two-trees-all-at-once-teaser/two-trees-all-at-once-teaser.mp4"
   ],
   "releases": [],
   "note": "Registered by the project agent repair step: the harvest lesson was in the registry without a deliverable entry.",
@@ -9821,8 +9821,8 @@
     "narration": "Before the days and the fuel, here is what those figures rest on. The fuel rate was measured, in one timed sitting with the tanks counted. The ripping hours come from the cutting rate, which was also measured. The day plan is a decision, not a result. And the size of the saw's tank is an estimate, because the listings disagree and nobody has checked this saw, so the fuel comes out as a range.",
     "equations": [
      "MEASURED   fuel while ripping: 2 tanks an hour, one timed sitting",
-     "MEASURED   cutting rate: 30 struts in a 6-hour afternoon",
-     "DERIVED    ripping time: 120 struts at 5.0 an hour = 24 hours",
+     "MEASURED   cutting rate: 30 struts in a 4-hour afternoon",
+     "DERIVED    ripping time: 120 struts at 7.5 an hour = 16 hours",
      "DECIDED    the plan: felling days 1-2, bucking days 3-4, ripping days 5-8",
      "ESTIMATED  the saw's tank: 0.28 to 0.37 L; the listings disagree",
      "NOT METERED  fuel for felling and bucking: left out, not guessed",
@@ -9834,7 +9834,7 @@
     "number": "06",
     "title": "What it took",
     "promise": "8 days of saw work, and a few gallons.",
-    "narration": "The whole harvest takes 8 days: 2 of felling, 2 of bucking, and 4 of ripping. Ripping is the part that was timed with the fuel written down: 2 tanks an hour, for 24 hours. That is 48 tanks, and at 0.28 to 0.37 litres a tank, somewhere between 3.6 and 4.7 US gallons. Felling and bucking were never metered, so they are not in that number.",
+    "narration": "The whole harvest takes 8 days: 2 of felling, 2 of bucking, and 4 of ripping. Ripping is the part that was timed with the fuel written down: 2 tanks an hour, for 16 hours. That is 32 tanks, and at 0.28 to 0.37 litres a tank, somewhere between 2.4 and 3.1 US gallons. Felling and bucking were never metered, so they are not in that number.",
     "equations": [],
     "bullets": [
      "{{work.harvest_days}} days -- {{work.felling_days}} felling · {{work.bucking_days}} bucking · {{work.ripping_days}} ripping",
@@ -9939,7 +9939,7 @@
     "number": "12",
     "title": "What the fortnight is worth",
     "promise": "Two weeks of one person, against buying the frame.",
-    "narration": "Now the frame this film has been building. Framing is 16.6 percent of what it costs to build a new house, which is 10.7 percent of its price. For 300 square feet, bought at the national rate with the builder's share, the frame costs 9,798 dollars. The fortnight spends 497 dollars: the saw, the fuel, the hardware, and the two trees at what a timber buyer would pay for them standing. That keeps 9,301 dollars, for 80 hours of hands-on work. 116 dollars an hour. Against a manufactured home's cheaper rate it is 59. A carpenter's median wage is 29.12 an hour, and a typical worker takes home 19.69, so buying that frame would cost 498 hours of ordinary pay.",
+    "narration": "Now the frame this film has been building. Framing is 16.6 percent of what it costs to build a new house, which is 10.7 percent of its price. For 300 square feet, bought at the national rate with the builder's share, the frame costs 9,798 dollars. The fortnight spends 492 dollars: the saw, the fuel, the hardware, and the two trees at what a timber buyer would pay for them standing. That keeps 9,306 dollars, for 80 hours of hands-on work. 116 dollars an hour. Against a manufactured home's cheaper rate it is 59. A carpenter's median wage is 29.12 an hour, and a typical worker takes home 19.69, so buying that frame would cost 498 hours of ordinary pay.",
     "equations": [],
     "bullets": [
      "the frame, bought or built",
@@ -9961,13 +9961,13 @@
     "equations": [
      "Site work: buy $4,973 · dome $3,708 · 64 h of pay",
      "Foundations: buy $6,801 · dome $1,816 · 253 h of pay",
-     "Framing: buy $10,788 · dome $845 · 505 h of pay",
+     "Framing: buy $10,788 · dome $841 · 505 h of pay",
      "Exterior: buy $8,741 · dome $3,788 · 251 h of pay",
      "Pipes, wires, HVAC: buy $12,511 · dome $3,759 · 444 h of pay",
      "Interior: buy $15,714 · dome $7,420 · 421 h of pay",
      "Yard, driveway: buy $4,212 · dome $1,771 · 124 h of pay",
      "Other: buy $1,343 · dome $631 · 36 h of pay",
-     "All: buy $65,082, dome way $23,738, if every hour of the work is yours"
+     "All: buy $65,082, dome way $23,733, if every hour of the work is yours"
     ],
     "bullets": []
    },
@@ -9991,7 +9991,7 @@
     "number": "15",
     "title": "What this does not show",
     "promise": "The half of the sum that does not flatter the dome.",
-    "narration": "And what it does not show. 37 percent of what a house costs to build does not care about its shape: fees, windows, cabinets, appliances, floors, the driveway. Only the frame's hours were measured; the rest of that labor is weeks more of somebody's time, and wiring, plumbing and gas usually need a licensed trade and an inspection. A triangle is harder to finish than a flat wall, and the dome's laminate skin is its most expensive material. Against a manufactured home the gap is small: 300 square feet at a trailer's average price is 25,986 dollars, and the dome way pays 16,444 for the same parts, before your hours. And the biggest saving here, the builder's share and the labor, belongs to anyone who builds their own house, whatever its shape.",
+    "narration": "And what it does not show. 37 percent of what a house costs to build does not care about its shape: fees, windows, cabinets, appliances, floors, the driveway. Only the frame's hours were measured; the rest of that labor is weeks more of somebody's time, and wiring, plumbing and gas usually need a licensed trade and an inspection. A triangle is harder to finish than a flat wall, and the dome's laminate skin is its most expensive material. Against a manufactured home the gap is small: 300 square feet at a trailer's average price is 25,986 dollars, and the dome way pays 16,439 for the same parts, before your hours. And the biggest saving here, the builder's share and the labor, belongs to anyone who builds their own house, whatever its shape.",
     "equations": [],
     "bullets": [
      "{{stack.unchanged_pct}}% of the building cost the shape can't touch",
@@ -10023,11 +10023,11 @@
   "title": "The $20 Pine",
   "source": "two_v_demo/lesson_pine_value.py",
   "originals": [
-   "deliverables/teasers/the-20-dollar-pine-teaser-v2.mp4",
-   "deliverables/teasers/the-20-dollar-pine-teaser-vertical-v2.mp4",
-   "deliverables/teasers/the-20-dollar-pine-teaser-vertical.mp4",
-   "deliverables/teasers/the-20-dollar-pine-teaser.mp4",
-   "exports/pine_value/the-20-dollar-pine.mp4"
+   "deliverables/0071-the-20-dollar-pine/the-20-dollar-pine.mp4",
+   "deliverables/0079-the-20-dollar-pine-teaser/the-20-dollar-pine-teaser-vertical.mp4",
+   "deliverables/0079-the-20-dollar-pine-teaser/the-20-dollar-pine-teaser.mp4",
+   "deliverables/0106-the-20-dollar-pine-teaser-v2/the-20-dollar-pine-teaser-v2.mp4",
+   "deliverables/0106-the-20-dollar-pine-teaser-v2/the-20-dollar-pine-teaser-vertical-v2.mp4"
   ],
   "releases": [],
   "note": "Registered by the project agent repair step: the pine_value lesson was in the registry without a deliverable entry.",
@@ -10218,7 +10218,7 @@
     "number": "13",
     "title": "What the tree is worth to me",
     "promise": "What it replaces, less what it costs me to make it do so.",
-    "narration": "So here is the valuation that matters to a builder. A tree is worth to me what it can replace, less the cash it costs to process, less what my own hours could have earned instead. This tree replaces 2,400 dollars of framing. Its share of the work is 40 hours, and at 25 dollars an hour take-home, that is 1,000 dollars of my time. Its share of the cash is half the shell's 800, 400 dollars. That leaves 1,000 dollars. A pine that sells for 24 dollars standing is worth 1,000 to the person who builds with it, after paying for their own time. With the fortnight's actual receipts of 497 dollars, it is 1,152.",
+    "narration": "So here is the valuation that matters to a builder. A tree is worth to me what it can replace, less the cash it costs to process, less what my own hours could have earned instead. This tree replaces 2,400 dollars of framing. Its share of the work is 40 hours, and at 25 dollars an hour take-home, that is 1,000 dollars of my time. Its share of the cash is half the shell's 800, 400 dollars. That leaves 1,000 dollars. A pine that sells for 24 dollars standing is worth 1,000 to the person who builds with it, after paying for their own time. With the fortnight's actual receipts of 492 dollars, it is 1,154.",
     "equations": [],
     "bullets": [
      "value to me",
@@ -10301,9 +10301,9 @@
   "title": "Why Build This Way",
   "source": "two_v_demo/lesson_why_build.py",
   "originals": [
-   "deliverables/teasers/why-build-this-way-teaser-vertical.mp4",
-   "deliverables/teasers/why-build-this-way-teaser.mp4",
-   "exports/why_build/why-build-this-way.mp4"
+   "deliverables/0068-why-build-this-way/why-build-this-way.mp4",
+   "deliverables/0105-why-build-this-way-teaser/why-build-this-way-teaser-vertical.mp4",
+   "deliverables/0105-why-build-this-way-teaser/why-build-this-way-teaser.mp4"
   ],
   "releases": [],
   "note": "Registered by the project agent repair step: the why_build lesson was in the registry without a deliverable entry.",
@@ -10549,7 +10549,7 @@
   "title": "All Domes",
   "source": "two_v_demo/lesson_all_domes.py",
   "originals": [
-   "deliverables/masterclass/all-domes-every-permutation-vertical.mp4"
+   "deliverables/0108-all-domes-every-permutation/all-domes-every-permutation-vertical.mp4"
   ],
   "releases": [],
   "note": "The Dome Creator's whole catalogue drawn by the Creator's own renderer -- grain, glass, mirrors, foundations and the fit-out inside -- one dome built step by step in the tool's own construction order, then every menu swept one setting at a time, eight random draws, and the permutation count.",
@@ -10950,8 +10950,8 @@
   "title": "The Twenty Dollar Pine, Part Two",
   "source": "two_v_demo/lesson_pvtwo.py",
   "originals": [
-   "deliverables/teasers/pvtwo-masterclass-teaser-vertical.mp4",
-   "deliverables/teasers/pvtwo-masterclass-teaser.mp4"
+   "deliverables/0107-pvtwo-masterclass-teaser/pvtwo-masterclass-teaser-vertical.mp4",
+   "deliverables/0107-pvtwo-masterclass-teaser/pvtwo-masterclass-teaser.mp4"
   ],
   "releases": [],
   "note": "Generated by the project agent film recipe: The Twenty Dollar Pine, Part Two.",
@@ -11509,7 +11509,7 @@
   "source": "two_v_demo/lesson_byod_deepseek.py",
   "originals": [],
   "releases": [
-   "deliverables/releases/attempt-v1-deepseek"
+   "deliverables/0115-attempt-v1-deepseek/release"
   ],
   "note": "Bring Your Own Dome cut to the author's marked-up transcript: the assumptions lecture, the foundation-share section, the R-value payback figure and the utility-resale line are out; a pad built step by step, the deck materials, the pad catalogue, the line between the two people's money and the host's feature branches are in; and the iris was redrawn as a mechanism whose aperture is solved from the size it claims rather than drawn at a convenient radius.",
   "family": "Bring Your Own Dome",
@@ -12049,7 +12049,9 @@
   "kind": "lesson",
   "title": "Bring Your Own Dome (snarky)",
   "source": "two_v_demo/lesson_byod_styled.py",
-  "originals": [],
+  "originals": [
+   "deliverables/0116-byod-styled/byod_snarky/smoke-test-0001/attempt-v1-byod_snarky.mp4"
+  ],
   "releases": [],
   "note": "Bring Your Own Dome in the social register: handheld camera that leans in when the character speaks, a little faster, vignetted, and the pink cyber jelly on thirteen cues, taking the tone of each passage it stands in. Same script, same numbers, same claims as the deepseek cut.",
   "family": "Bring Your Own Dome",
@@ -13095,8 +13097,8 @@
   "source": "two_v_demo/lesson_dome_park.py",
   "originals": [],
   "releases": [
-   "deliverables/releases/dome-park-bring-your-own-home-v2",
-   "deliverables/releases/dome-park-bring-your-own-home-v3"
+   "deliverables/0110-dome-park-bring-your-own-home-v2/release",
+   "deliverables/0111-dome-park-bring-your-own-home-v3/release"
   ],
   "note": "The Kickstarter cut. An RV park for domes: what a pad is, built one step at a time; what it costs a host and what it returns; the measured hinge -- a dome's foundation is 8% to 63% of its build cost and on a pad the tenant never buys it; four ways to have a roof priced on one basis, and the month at which bringing your own home starts winning; one hardware set across three sizes; and a shell that comes off so the R-value can keep going up for as long as you own the house.",
   "family": "",
@@ -13545,16 +13547,16 @@
   "title": "A house you can take apart",
   "source": "two_v_demo/lesson_seed_pitch.py",
   "originals": [
-   "deliverables/teasers/seed_pitch-teaser-v3.mp4",
-   "deliverables/teasers/seed_pitch-teaser.mp4"
+   "deliverables/0124-seed_pitch-teaser-v3/seed_pitch-teaser-v3.mp4",
+   "deliverables/0208-seed_pitch-teaser/seed_pitch-teaser.mp4"
   ],
   "releases": [
-   "deliverables/releases/stem-cell-dome-campaign",
-   "deliverables/releases/stem-cell-dome-campaign-v2",
-   "deliverables/releases/stem-cell-dome-campaign-v3",
-   "deliverables/releases/stem-cell-dome-campaign-v4",
-   "deliverables/releases/stem-cell-dome-campaign-v6",
-   "deliverables/releases/stem-cell-dome-campaign-v7"
+   "deliverables/0117-stem-cell-dome-campaign/release",
+   "deliverables/0118-stem-cell-dome-campaign-v2/release",
+   "deliverables/0122-stem-cell-dome-campaign-v3/release",
+   "deliverables/0123-stem-cell-dome-campaign-v4/release",
+   "deliverables/0146-stem-cell-dome-campaign-v6/release",
+   "deliverables/0178-stem-cell-dome-campaign-v7/release"
   ],
   "note": "The campaign cut for the stem-cell dome. A 277 sq ft tiny house that comes apart: a frame split out of the buyer's own trees with no mitre in it anywhere, a boat-hull shell priced off four named laminate systems at a supplier's published rates, a utility core that unbolts and moves to the next dome, and a pad that belongs to the landowner and is kept out of the dome's price. Ends on the three things it says against itself: not insulated as standard, eighty percent more wood than a shared-strut frame, and a price list that is an assumption.",
   "family": "Stem cell dome",
@@ -14550,20 +14552,20 @@
   "title": "A house you can take apart",
   "source": "two_v_demo/lesson_pitch_hero.py",
   "originals": [
-   "deliverables/masterclass/stem-cell-hero-cut-v2.mp4",
-   "deliverables/masterclass/stem-cell-hero-cut-v3.mp4",
-   "deliverables/masterclass/stem-cell-hero-cut-vertical-v2.mp4",
-   "deliverables/masterclass/stem-cell-hero-cut-vertical-v3.mp4",
-   "deliverables/masterclass/stem-cell-hero-cut-vertical.mp4",
-   "deliverables/masterclass/stem-cell-hero-cut.mp4",
-   "deliverables/teasers/pitch_hero-teaser-v2.mp4",
-   "deliverables/teasers/pitch_hero-teaser-v3.mp4",
-   "deliverables/teasers/pitch_hero-teaser.mp4"
+   "deliverables/0198-stem-cell-hero-cut/stem-cell-hero-cut-vertical.mp4",
+   "deliverables/0198-stem-cell-hero-cut/stem-cell-hero-cut.mp4",
+   "deliverables/0201-pitch_hero-teaser/pitch_hero-teaser.mp4",
+   "deliverables/0203-stem-cell-hero-cut-v2/stem-cell-hero-cut-v2.mp4",
+   "deliverables/0203-stem-cell-hero-cut-v2/stem-cell-hero-cut-vertical-v2.mp4",
+   "deliverables/0206-pitch_hero-teaser-v2/pitch_hero-teaser-v2.mp4",
+   "deliverables/0227-stem-cell-hero-cut-v3/stem-cell-hero-cut-v3.mp4",
+   "deliverables/0227-stem-cell-hero-cut-v3/stem-cell-hero-cut-vertical-v3.mp4",
+   "deliverables/0230-pitch_hero-teaser-v3/pitch_hero-teaser-v3.mp4"
   ],
   "releases": [
-   "deliverables/releases/stem-cell-hero-cut",
-   "deliverables/releases/stem-cell-hero-cut-v2",
-   "deliverables/releases/stem-cell-hero-cut-v3"
+   "deliverables/0198-stem-cell-hero-cut/release",
+   "deliverables/0203-stem-cell-hero-cut-v2/release",
+   "deliverables/0227-stem-cell-hero-cut-v3/release"
   ],
   "note": "A hundred seconds for the top of the Kickstarter page. Not an extract of the campaign film -- a separate cut, because an extract inherits the long film's pacing and a backer gives a campaign video about fifteen seconds. Your own trees; one waterproof layer over as many warm ones as you like, which is how a sailor dresses; twelve thousand dollars with the whole invoice shown and the profit named; and the three kinds of people it needs to work at all. Every scene is the campaign film's own painter, so the short cut and the long one cannot show different buildings.",
   "family": "Stem cell dome",
@@ -14763,12 +14765,12 @@
   "title": "Build one utility core",
   "source": "two_v_demo/lesson_module_build.py",
   "originals": [
-   "deliverables/masterclass/stem-cell-utility-core-build-vertical.mp4",
-   "deliverables/masterclass/stem-cell-utility-core-build.mp4",
-   "deliverables/teasers/module_build-teaser.mp4"
+   "deliverables/0125-stem-cell-utility-core-build/stem-cell-utility-core-build-vertical.mp4",
+   "deliverables/0125-stem-cell-utility-core-build/stem-cell-utility-core-build.mp4",
+   "deliverables/0126-module_build-teaser/module_build-teaser.mp4"
   ],
   "releases": [
-   "deliverables/releases/stem-cell-utility-core-build"
+   "deliverables/0125-stem-cell-utility-core-build/release"
   ],
   "note": "The shop-floor cut: building one utility core, in the order you would actually build one. Fourteen steps, five stages, nine tools and twenty-three material lines, all generated from column_build.py's process sheet so the film cannot show a step the sheet does not have. Wet before dry, heavy before fragile, nothing buried -- and the two places you do not get a second chance: the crimp gauge and the pressure test. 7.2 hours practised, 17.2 for a first build, which is the number nobody quotes.",
   "family": "Stem cell dome",
@@ -15177,13 +15179,115 @@
   "target_file": "deliverables/masterclass/cabin-concept-example-molecular-sieve-fridge.mp4"
  },
  {
+  "key": "concept_wedge_coverage",
+  "kind": "lesson",
+  "title": "How Much Tree Closes a Dome",
+  "source": "",
+  "originals": [],
+  "releases": [],
+  "note": "Concept film from Wedge strut footage and triangle infill for the 2V wedge dome: How Much Tree Closes a Dome",
+  "family": "",
+  "superseded_by": "",
+  "family_note": "",
+  "fit": "",
+  "voice_rate": "",
+  "audio_bed": "",
+  "style": "teaching",
+  "chapters": [
+   {
+    "number": "01",
+    "title": "How Much Tree Closes a Dome",
+    "promise": "One dome, every triangle closed with wedges: four trees, or seven, and you choose which.",
+    "narration": "The dome's frame is 120 wedge members: 678 feet of wedge, cut from one log after another. Close every triangle with more wedges, laid in pairs with their points facing in, and the pairs can nest tight or open into a bowtie. Nested, a pair covers one wedge face; opened, two. That one choice moves the whole dome between 1,796 and 2,913 feet of wedge.",
+    "equations": [],
+    "bullets": []
+   },
+   {
+    "number": "02",
+    "title": "The numbers we are working from",
+    "promise": "Where every figure in this film comes from.",
+    "narration": "Before anything is worked out, here is everything this film rests on: 5 numbers, 1 standard, 4 estimate. A claimed number is what the source said and has not been measured here. Every figure after this is arithmetic on these and on the dome's own computed numbers.",
+    "equations": [
+     "log diameter = 12 in  (estimate)",
+     "wedges per log section = 8  (standard)",
+     "one usable pine = 60 ft  (estimate)",
+     "overlap, fully nested = 1  (estimate)",
+     "overlap, bowtie = 0  (estimate)"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "03",
+    "title": "The frame",
+    "promise": "A tree and a half.",
+    "narration": "A 12 inch log split 8 ways gives wedges with a face 4.59 inches wide. The frame takes 120 of them, 678 feet of wedge, and one 60 foot pine gives 480 feet.",
+    "equations": [
+     "a wedge's face = 4.59 in",
+     "the frame's wedge = 678 ft",
+     "wedge in one tree = 480 ft"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "04",
+    "title": "Closing the triangles",
+    "promise": "Pairs, points in.",
+    "narration": "The triangles leave 428 square feet to close after the frame. Lay the wedges in pairs, points facing in. Nested tight, a pair covers one face; opened to a bowtie, two.",
+    "equations": [
+     "open sqft 12in (this dome) = 428 sq ft"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "05",
+    "title": "Your choice of trees",
+    "promise": "The overlap is the dial.",
+    "narration": "Bowtie pairs close the dome with 1,117 feet of infill; nested pairs take 2,235. Frame and all, that is 1,796 to 2,913 feet: 3.7 to 6.1 trees, before taper and kerf.",
+    "equations": [
+     "infill, bowtie pairs = 1,117 ft",
+     "infill, nested pairs = 2,235 ft",
+     "trees, least = 3.7",
+     "trees, most = 6.1"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "06",
+    "title": "Where it fits the dome",
+    "promise": "In the dome, this is the the tree, the log, the rip, yield and value.",
+    "narration": "This is the whole timber bill of the wedge dome closed in wood: 1,796 to 2,913 feet of wedge against a frame of 678.",
+    "equations": [
+     "frame and infill, least = 1,796 ft",
+     "frame and infill, most = 2,913 ft",
+     "the frame's wedge = 678 ft"
+    ],
+    "bullets": []
+   },
+   {
+    "number": "07",
+    "title": "What it will not do",
+    "promise": "The number that does not help.",
+    "narration": "A bowtie touches only at its points: the 1,117 foot figure is a floor, not a weather-tight joint. And the area method runs about six per cent above the real pieces the Triangle Infill calculator cuts, because a triangle's corners take short pieces.",
+    "equations": [
+     "infill, bowtie pairs = 1,117 ft"
+    ],
+    "bullets": []
+   }
+  ],
+  "number_modules": [],
+  "graph_nodes": [],
+  "target_key": "cabin_concept_wedge_coverage",
+  "target_module": "two_v_demo/lesson_cabin_concept_wedge_coverage.py",
+  "target_file": "deliverables/masterclass/cabin-concept-wedge-coverage.mp4"
+ },
+ {
   "key": "2v",
   "kind": "lesson",
   "title": "2V Geodesic Masterclass",
   "source": "two_v_demo/lessons.py",
   "originals": [
-   "deliverables/teasers/2v-teaser-vertical.mp4",
-   "deliverables/teasers/2v-teaser.mp4"
+   "deliverables/0080-2v-teaser/2v-teaser-vertical.mp4",
+   "deliverables/0080-2v-teaser/2v-teaser.mp4"
   ],
   "releases": [],
   "note": "",
@@ -15453,12 +15557,12 @@
   "title": "The seam does four jobs",
   "source": "two_v_demo/lesson_seam.py",
   "originals": [
-   "deliverables/teasers/seam-teaser.mp4",
-   "deliverables/the-seam-does-four-jobs-vertical.mp4",
-   "deliverables/the-seam-does-four-jobs.mp4"
+   "deliverables/0242-the-seam-does-four-jobs/the-seam-does-four-jobs-vertical.mp4",
+   "deliverables/0242-the-seam-does-four-jobs/the-seam-does-four-jobs.mp4",
+   "deliverables/0245-seam-teaser/seam-teaser.mp4"
   ],
   "releases": [
-   "deliverables/releases/the-seam-does-four-jobs"
+   "deliverables/0242-the-seam-does-four-jobs/release"
   ],
   "note": "",
   "family": "",
@@ -15658,1040 +15762,12 @@
   "target_file": "deliverables/masterclass/cabin-the-seam-does-four-jobs.mp4"
  },
  {
-  "key": "presenter_dome_case_bare_shell",
-  "kind": "presentation",
-  "title": "The Bare-Shell Number",
-  "source": "presentations/dome_case_bare_shell.py",
-  "originals": [
-   "deliverables/presenter/dome_case_bare_shell.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 2 of 10: the bare-shell number (the shed tier).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "The cleanest possible test",
-    "promise": "Strip away every finish. What's left is just the shape. / Same 3,840 cubic feet enclosed, two different shapes",
-    "narration": "Before any argument about kitchens or mechanicals, here is the cleanest possible test: two bare shells, no finishes at all, priced from identical materials at identical rates. A shed sells storage space, so the two buildings are matched on one thing only: enclosed volume. The only variable left is the shape. Twenty four by sixteen feet, ten foot walls, on the left. A dome sized to enclose that exact same volume, on the right. Same materials. Same crew rate. Different geometry.",
-    "equations": [],
-    "bullets": [
-     "WHY A BARE SHELL",
-     "No kitchens, no fixtures, no mechanicals to blur the comparison",
-     "A shed sells storage space, so match the two on enclosed volume",
-     "Same lumber rate, same skin rate, same labor rate for both",
-     "THE SETUP"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "What the identical materials actually cost",
-    "promise": "24% less to build, same materials, same labor rate / 55% less framing lumber to enclose the same space / 26% less exterior skin for the same enclosed volume",
-    "narration": "The box costs $12,426. The dome costs $9,444. That is 24 percent less, and not one material rate changed between the two numbers — only the geometry did. Framing tells the same story from the lumber side: 55 percent less linear footage of frame to enclose the identical volume. Fewer members, less labor cutting and setting them. And the skin: 26 percent less exterior sheet metal to wrap the same enclosed volume. Less material bought, less material installed.",
-    "equations": [],
-    "bullets": [
-     "THE BUILD COST",
-     "24% cheaper, and nothing about the rates changed — only the shape did",
-     "WHERE THE SAVINGS COME FROM: FRAMING",
-     "WHERE THE SAVINGS COME FROM: SKIN"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "The reason is a sphere, not a sales pitch",
-    "promise": "A sphere encloses more volume per square foot of skin than a box does — that's just geometry / This is the bare-shell number — the finished-home number is smaller, and that's the honest one too",
-    "narration": "There is no trick here. A sphere is the shape that minimizes surface area for a given enclosed volume — a mathematical fact, not a sales pitch. A box's flat faces and sharp corners simply need more material to wrap the same amount of space. A 2V dome is an approximation of that sphere, close enough to inherit most of the advantage. One honest caveat before the close: this number is for a bare shell on purpose. Add back a kitchen, a bathroom, and mechanical systems for a finished home, and this percentage shrinks a lot — that's a separate argument in this same series, and it's worth watching before you quote this number for a finished house. For storage, a workshop, or anything that sells bare enclosed volume, though, this number is the real one.",
-    "equations": [],
-    "bullets": [
-     "THE ACTUAL REASON",
-     "A box's corners and flat faces waste surface area relative to the volume inside",
-     "A sphere is the shape that minimizes surface area for a given volume",
-     "Less surface area needing framing and skin is a mathematical fact, not a sales pitch",
-     "ONE HONEST CAVEAT",
-     "This test strips out kitchens, baths, and mechanicals on purpose",
-     "Add those back for a finished home and the price gap shrinks a lot",
-     "That's a different argument in this same ten-part series — watch it before you quote this number for a finished house"
-    ]
-   }
-  ],
-  "number_modules": [
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_bare_shell",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_bare_shell.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-bare-shell.mp4"
- },
- {
-  "key": "presenter_dome_case_benchmark",
-  "kind": "presentation",
-  "title": "Beating the Manufactured Home",
-  "source": "presentations/dome_case_benchmark.py",
-  "originals": [
-   "deliverables/presenter/dome_case_benchmark.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 5 of 10: beating the manufactured home (the real benchmark).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "The competitor that actually matters",
-    "promise": "Not a comparison to a custom house — a comparison to the existing manufactured home industry",
-    "narration": "Comparing a dome to a bespoke stick-built custom house is an easy win and not a very useful one. The competitor that actually matters is the manufactured home industry — it already has a market, buyers, and lenders who understand it. This project sets its own benchmark for that industry, states the assumption plainly, and checks a representative dome against it — in the open, not behind a marketing number.",
-    "equations": [],
-    "bullets": [
-     "WHY THIS BENCHMARK",
-     "Manufactured homes already have a market, buyers, and lenders",
-     "If a dome can't beat that industry's own numbers, the pitch is weaker than it sounds",
-     "This project sets its own benchmark and checks against it, in the open"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "The three numbers that matter to a buyer",
-    "promise": "19% lower price / 57% fewer labor hours / 50% fewer build days",
-    "narration": "Price first: $128,000 for the benchmark, $104,020 for the representative dome — 19 percent lower. Labor second: 640 hours for the benchmark against 273 for the dome — 57 percent fewer hours of paid work to build one. And time: 34 days for the benchmark, 17 for the dome — 50 percent fewer days between a signed contract and a finished shell.",
-    "equations": [],
-    "bullets": [
-     "PRICE",
-     "LABOR",
-     "TIME"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "How one factory hits these numbers",
-    "promise": "About 82 domes a year from one pipelined line / Break-even in about 44 units",
-    "narration": "These aren't wishful numbers — they come from a station-by-station model of one production line, framing as the bottleneck, turning out roughly 82 domes a year. At that rate, the line covers its own annual fixed overhead in a few weeks of production and recovers its full capital cost in about 44 units — the kind of number that gets a factory built in the first place.",
-    "equations": [],
-    "bullets": [
-     "THE FACTORY MATH",
-     "THE BREAK-EVEN"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "Assumptions you can check, not a number to trust blind",
-    "promise": "Every input is stated — disagree with one and the arithmetic still shows its work",
-    "narration": "Every number behind this comparison — wage rates, station timings, the benchmark price itself — is a stated assumption in this project's own code, not a hidden constant. Change one and the percentages move, openly. That is the actual claim: not that this beats a manufactured home by magic, but that it beats this project's own honestly stated assumptions about one. This is one part of a ten part case for 2V geodesic domes in the housing market.",
-    "equations": [],
-    "bullets": [
-     "STATED, NOT HIDDEN",
-     "Wage rates, station timings, and the benchmark price are this project's own assumptions",
-     "Change any one of them and the percentages move — the model is not hiding that",
-     "Part of a ten-part case for 2V geodesic domes in the housing market"
-    ]
-   }
-  ],
-  "number_modules": [
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_benchmark",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_benchmark.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-benchmark.mp4"
- },
- {
-  "key": "presenter_dome_case_energy",
-  "kind": "presentation",
-  "title": "The Off-Grid Case",
-  "source": "presentations/dome_case_energy.py",
-  "originals": [
-   "deliverables/presenter/dome_case_energy.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 6 of 10: the off-grid case (energy and solar).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "Why off-grid matters to this pitch",
-    "promise": "A dome that runs on its own power is a different sale in a rural or disaster market",
-    "narration": "Off-grid capability changes what market a housing product can sell into. A rural site, a disaster response deployment, a remote off-grid residence — none of those care about a grid connection they don't have. The shape has exactly one real, provable advantage in this argument. Everything past that has to be hedged carefully, and this presentation hedges it.",
-    "equations": [],
-    "bullets": [
-     "WHY THIS ARGUMENT MATTERS",
-     "Off-grid capability opens rural, remote, and disaster-response markets a grid-tied product can't reach",
-     "The geometry has one real, provable advantage here",
-     "The rest has to be hedged, and this presentation hedges it"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "The one real geometric fact",
-    "promise": "More enclosed volume per square foot of skin — real, and just geometry / This project's own insulation model: R-41 effective, one representative build",
-    "narration": "A sphere encloses more volume per square foot of skin than a box does — the same fact that drives the cost comparisons elsewhere in this series. Less exterior skin area means less area for heat to cross, in either direction. That much is geometry, not a promise about how the finished building actually performs. This project's own insulation model, for one representative build, lands at roughly an R-41 effective value — computed from the actual insulation elements this dome's catalog includes, not assumed.",
-    "equations": [],
-    "bullets": [
-     "THE PROVABLE PART",
-     "A sphere minimizes surface area for a given enclosed volume",
-     "Less exterior skin means less area for heat to cross",
-     "This part is a mathematical fact, not a performance promise",
-     "ONE MODELED BUILD",
-     "Computed from this dome's own insulation element count",
-     "One representative build, not a universal claim"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "What's actually modeled on the roof",
-    "promise": "Panels placed only on faces the geometry says face the sun / 24 kWh modeled daily surplus over a 14 kWh/day load",
-    "narration": "20 panels, placed only on the faces this dome's own geometry says face the sun, model out to a 6.8 kilowatt array generating roughly 38 kilowatt hours on a representative day. Against a modeled 14 kilowatt hour daily load, that leaves a modeled surplus of about 24 kilowatt hours a day, banked against a battery sized for 20 kilowatt hours. Low operating demand, computed rather than asserted.",
-    "equations": [],
-    "bullets": [
-     "THE MODELED SOLAR ARRAY",
-     "THE MODELED SURPLUS"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "The claim that doesn't survive contact with reality",
-    "promise": "\"Every dome uses 30-50% less energy\" is a claim this project will not make / Real geometry, real modeled numbers, one claim deliberately left out",
-    "narration": "A 2024 simulation study of geodesic tourist accommodations found fifty two percent lower cooling energy. That is one study, one building, one climate — not a universal law about domes. Anyone who tells you every dome uses thirty to fifty percent less energy, regardless of climate or how it's built, is overselling the shape. HVAC design, climate, and airtightness still decide the real number, every time. Real geometry, real modeled solar numbers, and one claim deliberately left off the list. That is the honest version of the off-grid case — part of a ten part argument for 2V geodesic domes in the housing market.",
-    "equations": [],
-    "bullets": [
-     "WHAT THE EVIDENCE DOESN'T SAY",
-     "One study, one building, one climate — not a universal law",
-     "HVAC design, climate, and airtightness still decide the real number, every time",
-     "This project's real numbers are hedged on purpose",
-     "THE HONEST OFF-GRID CASE",
-     "Less skin per volume: geometric fact",
-     "Solar surplus: computed by this project's own model",
-     "Universal energy savings: a claim this project refuses to make"
-    ]
-   }
-  ],
-  "number_modules": [
-   "al_build.py",
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_energy",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_energy.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-energy.mp4"
- },
- {
-  "key": "presenter_dome_case_financing",
-  "kind": "presentation",
-  "title": "Financing, Already Modeled",
-  "source": "presentations/dome_case_financing.py",
-  "originals": [
-   "deliverables/presenter/dome_case_financing.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 8 of 10: financing, already modeled.",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "The requirement that kills more pitches than engineering does",
-    "promise": "A buyer needs a lender before they need an argument about geometry",
-    "narration": "A structurally perfect dome with no lender willing to write a loan against it doesn't sell. Standardized financing is on this project's own list of things that must be solved before any of this scales. So here is the answer, computed rather than promised: the same buy-here-pay-here math this project's sales office actually uses.",
-    "equations": [],
-    "bullets": [
-     "WHY FINANCING IS THE HARD PART",
-     "A structurally perfect dome with no lender behind it doesn't sell",
-     "presentation.txt lists standardized financing as one of the things that must be solved before this scales",
-     "This project answers it with a computed number, not a promise"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "The actual computation, one dome",
-    "promise": "$104,020 at 11.9% APR over 60 months / $2,078 a month, computed, not guessed",
-    "narration": "One representative home dome, $104,020. 10 percent down, 11.9 percent APR, 60 month term — the same terms this project's own sales office quotes in the interactive simulator. Run through standard amortization math, that comes to $2,078 a month. Not a marketing figure — the same amortization formula runs identically for every dome this software prices, every time.",
-    "equations": [],
-    "bullets": [
-     "THE TERMS",
-     "THE MONTHLY PAYMENT",
-     "Standard amortization math over principal, rate, and term",
-     "The same formula runs for every dome this software prices"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "The same math, every product size",
-    "promise": "Financing scales with the product, not the other way around",
-    "narration": "The same formula runs for every product tier this software sells, from a storage shed to a turnkey off-grid home — a different price, the identical math, every time. That consistency is the actual point: a lender doesn't have to trust a new formula for every size of dome that rolls off the line.",
-    "equations": [],
-    "bullets": [
-     "FOUR TIERS, FOUR COMPUTED PAYMENTS"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "The lending world already has a door open",
-    "promise": "Fannie Mae's own selling guide already allows dome-secured loans / Financing solved the way everything else in this series is solved: computed, checkable, not promised",
-    "narration": "Fannie Mae's own selling guide already allows geodesic-dome-secured loans, provided the appraiser has enough information to value it. That's not a legal wall — it's a paperwork gap: comparables, engineer-stamped plans, repeat regional models. Financing, solved the way everything else in this series is solved: a real formula, run consistently, checkable by anyone who reads the code. This is one part of a ten part case for 2V geodesic domes in the housing market.",
-    "equations": [],
-    "bullets": [
-     "THE DOOR THAT'S ALREADY OPEN",
-     "Fannie Mae's Selling Guide explicitly allows geodesic-dome-secured loans when the appraiser has enough information",
-     "The work is making sure appraisers have that information — comparables, engineer-stamped plans, repeat regional models",
-     "Not a legal obstacle. A paperwork one, already being solved",
-     "THE ACTUAL ANSWER",
-     "A real amortization formula, run the same way for every product tier",
-     "A lending pathway that already exists and needs paperwork, not permission",
-     "Part of a ten-part case for 2V geodesic domes in the housing market"
-    ]
-   }
-  ],
-  "number_modules": [
-   "al_build.py",
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_financing",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_financing.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-financing.mp4"
- },
- {
-  "key": "presenter_dome_case_manufacturing",
-  "kind": "presentation",
-  "title": "The Standardized Product",
-  "source": "presentations/dome_case_manufacturing.py",
-  "originals": [
-   "deliverables/presenter/dome_case_manufacturing.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 1 of 10: the standardized-product / manufacturing case.",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "Not a custom house shaped like a dome",
-    "promise": "The strongest case for a 2V dome is not architecture — it's manufacturing / Minimal geometry, factory repetition, rapid assembly, low operating demand, resilience engineering, standardized financing",
-    "narration": "Set aside the aesthetics for a moment. The strongest version of this pitch is not architectural — it's industrial. A custom house that happens to be shaped like a dome is a hard, expensive sell, one at a time, from scratch. A standardized product, engineered once and built the same way every time, is a completely different pitch. This project's own simulator treats a 2V dome as the second thing, not the first. Six things have to be true at once for that pitch to work: minimal geometry, factory repetition, rapid assembly, low operating demand, resilience engineering, and standardized financing. The next few minutes check this project's own numbers against every one of those six, one at a time.",
-    "equations": [],
-    "bullets": [
-     "THE CORE DISTINCTION",
-     "A custom house shaped like a dome is a hard sell, one at a time",
-     "A standardized product, built the same way every time, is a different pitch entirely",
-     "This project's simulator treats it as the second one",
-     "THE SIX-PART DEFINITION",
-     "Minimal geometry — two strut lengths, two triangle shapes",
-     "Factory repetition — the same jig, every unit",
-     "Rapid assembly, low operating demand, resilience engineering",
-     "Standardized financing — priced and underwritten the same way every time"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "Checking the six, one pair at a time",
-    "promise": "Minimal geometry + factory repetition: 2 strut lengths, 2 triangle shapes, one jig / Rapid assembly + low operating demand: single-flow build time and a solar surplus / Resilience engineering + standardized financing: hedged, and computed",
-    "narration": "Minimal geometry and factory repetition are really the same fact seen twice. Sixty five struts, two lengths. Forty panels, two shapes. Every one of them comes off the same two jigs, color coded, flat packable. That is not a simplification for the camera. It is the actual geometry this project's simulator computes, every time, for every dome it builds. Rapid assembly and low operating demand are the other pair. This project's own station timings add up to about 273 labor hours to move one dome through every station, start to finish. And once it's standing, the modeled solar array generates more than the modeled daily load uses — low operating demand isn't a slogan here, it's a subtracted number. Resilience engineering is real but modest: a triangulated shell spreads load through more paths than a stud wall does. That is as far as this project will take the claim — not disaster proof, just structurally different. Standardized financing means the same math every time: this representative dome, at eleven point nine percent APR, comes to a computed monthly payment, not a promised one.",
-    "equations": [],
-    "bullets": [
-     "1 & 2 — GEOMETRY, REPETITION",
-     "Every panel and strut comes off the same two jigs",
-     "Color-coded parts, flat-pack shipping",
-     "3 & 4 — ASSEMBLY, OPERATING DEMAND",
-     "5 & 6 — RESILIENCE, FINANCING"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "The arithmetic a lender actually asks for",
-    "promise": "One pipelined line: about 82 domes a year / Vs. a conventional manufactured home: 19% less price, 50% fewer build days",
-    "narration": "The same simulator that draws the struts runs the factory math too. One pipelined line, framing as the bottleneck station, turns out roughly 82 domes a year. Against a two point four million dollar line cost, that line recovers its own capital in about 44 units — arithmetic a lender checks, not a pitch deck adjective. Set against this project's own conventional manufactured home benchmark, the representative dome prices 19 percent lower and models 50 percent fewer build days. Those are stated assumptions, not a claim dressed up as a fact — check them, disagree with one, the arithmetic still shows its work.",
-    "equations": [],
-    "bullets": [
-     "ONE PRODUCTION LINE, MODELED",
-     "VS. A CONVENTIONAL MANUFACTURED HOME",
-     "57% fewer labor hours too",
-     "This project's own assumptions, stated plainly enough to disagree with"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "Real evidence, honestly scoped",
-    "promise": "Federal modular-construction data, not a dome-specific guarantee / Six requirements, checked against real numbers, out loud",
-    "narration": "One caveat, stated on purpose. Federal research finds modular construction broadly compresses schedules twenty to fifty percent and cuts costs up to twenty percent. That is real evidence about modular construction as a category. It is not a guarantee specific to this shape, and this project is not going to blur that line to make the pitch sound stronger than it is. Minimal geometry, factory repetition, rapid assembly, low operating demand, resilience engineering, standardized financing — six requirements, checked one at a time against numbers this project's own software computes. This is one part of a ten part case for 2V geodesic domes in the housing market. The manufacturing case is the one that holds up best under its own weight.",
-    "equations": [],
-    "bullets": [
-     "WHAT THE EVIDENCE ACTUALLY SAYS",
-     "DOE: modular construction broadly compresses schedules 20-50% and cuts costs up to 20%",
-     "That is evidence about modular construction in general",
-     "Not a guarantee for this specific shape — this project won't blur that line",
-     "THE CASE, IN ONE LINE",
-     "Not a custom house — a standardized product",
-     "Six requirements, six real numbers, computed by the same simulator",
-     "Part of a ten-part case for 2V geodesic domes in the housing market"
-    ]
-   }
-  ],
-  "number_modules": [
-   "al_build.py",
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_manufacturing",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_manufacturing.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-manufacturing.mp4"
- },
- {
-  "key": "presenter_dome_case_market_fit",
-  "kind": "presentation",
-  "title": "Where This Actually Wins",
-  "source": "presentations/dome_case_market_fit.py",
-  "originals": [
-   "deliverables/presenter/dome_case_market_fit.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 10 of 10: where this actually wins (honest market fit).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "Not the answer for dense urban housing — and that's fine",
-    "promise": "\"Domes are the answer for dense urban housing\" is a claim this project will not make",
-    "narration": "Nine arguments in this series were about what this shape does well. This last one is about the discipline of saying, just as specifically, where it doesn't apply. Domes are not the answer for dense urban housing, and this project isn't going to pretend otherwise.",
-    "equations": [],
-    "bullets": [
-     "THE CLAIM THIS SERIES REFUSES",
-     "A 2V dome is not suited to high-rises or dense urban parcels",
-     "Nine arguments in this series were about what the shape does well",
-     "This one is about the discipline of saying where it doesn't apply"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "Where the case actually holds",
-    "promise": "Starter homes, ADUs, rural and off-grid, disaster-resistant low-rise / Not suited to high-rises or one-off custom architecture",
-    "narration": "Starter homes. Accessory dwelling units. Rural housing, off-grid residences, disaster-resistant low-rise construction, remote sites where shipping a flat-pack shell beats trucking in lumber. Workforce and veteran cottage communities. Hospitality-funded development that needs units built fast and cheap. Every one of those is a market where the nine other arguments in this series actually apply without much friction. And not suited to high-rise or dense urban parcels — the geometry doesn't stack the way a building on a shared party wall needs to. Not suited to one-off custom architecture either, because the entire case in this series rests on standardization. Ask for a shape a factory jig can't repeat, and you've asked for the one thing this product isn't.",
-    "equations": [],
-    "bullets": [
-     "GENUINELY SUITED TO",
-     "Starter homes and workforce housing",
-     "Accessory dwelling units",
-     "Rural housing and off-grid residences",
-     "Disaster-resistant low-rise construction",
-     "Remote sites where a flat-pack shell beats trucking in lumber",
-     "Workforce and veteran cottage communities, hospitality-funded development",
-     "NOT SUITED TO",
-     "High-rise or dense urban parcels — the geometry doesn't stack",
-     "One-off custom architecture — the whole case rests on standardization",
-     "Anywhere the buyer wants a shape a factory jig can't repeat"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "Three sizes, not one dome scaled up forever",
-    "promise": "D20 studio to D36 family size — three products, not one dome stretched thin / Bigger family homes connect shells together — they don't just scale one dome up",
-    "narration": "The product line comes in three sizes: a twenty foot studio and ADU size, a thirty foot one-bedroom starter size, and a thirty six foot two-bedroom family size. It stops there on purpose. Buckling risk and panel handling both get worse as diameter grows, and a bigger dome needs its own jigs — which breaks the standardization argument this whole series is built on. A larger family home connects multiple shells together instead of inflating one dome past where the geometry stays honest.",
-    "equations": [],
-    "bullets": [
-     "THE ACTUAL PRODUCT SIZES",
-     "WHY IT STOPS AT D36",
-     "Buckling risk and panel handling both get worse as diameter grows",
-     "A larger family home should connect multiple shells, not just inflate one bigger dome",
-     "The standardization argument breaks if every size needs a new panel jig"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "Ten arguments, one honest bottom line",
-    "promise": "A narrower claim than 'domes will replace housing' — and one this project can actually defend",
-    "narration": "Nine arguments about manufacturing, cost, rigidity, resilience, energy, the curved-wall objection, and financing. One tenth argument drawing the actual boundary around where all of it applies. That is a narrower claim than 'domes will replace housing' — and it's one this project can defend, line by line, with its own numbers. Every figure across all ten of these presentations came from the same software, computed the same way, every time. That consistency is the actual argument.",
-    "equations": [],
-    "bullets": [
-     "THE BOTTOM LINE, TEN ARGUMENTS IN",
-     "Manufacturing, cost, rigidity, resilience, energy, financing, and the curved-wall objection — nine real, hedged arguments",
-     "This tenth argument draws the actual boundary around where they apply",
-     "Every number in all ten came from the same software, computed the same way, every time"
-    ]
-   }
-  ],
-  "number_modules": [
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_market_fit",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_market_fit.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-market-fit.mp4"
- },
- {
-  "key": "presenter_dome_case_more_room",
-  "kind": "presentation",
-  "title": "More Room, Same Money",
-  "source": "presentations/dome_case_more_room.py",
-  "originals": [
-   "deliverables/presenter/dome_case_more_room.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 3 of 10: more room, same money (the home tier).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "A harder test, on purpose",
-    "promise": "Same 640 sq ft floor, both fully finished this time",
-    "narration": "The bare-shell test was the easy win. This one is deliberately harder: both buildings fully finished, kitchen, bath, mechanicals, matched on six hundred forty square feet of floor because a house sells living space, not enclosed volume. If the dome's advantage is going to survive anywhere, it has to survive here, where a lot of the cost has nothing to do with the shape of the walls.",
-    "equations": [],
-    "bullets": [
-     "THE HARDER TEST",
-     "Kitchen, bath, and mechanicals in both buildings this time",
-     "Matched on floor area, because a house sells living space",
-     "This is deliberately the test that makes the shape's job hardest"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "The smaller number is the trustworthy one",
-    "promise": "Only 2.7% cheaper — not the 24% you'd expect from round one / Kitchens, baths, and mechanicals cost the same no matter what shape the walls are",
-    "narration": "Stick built house: $87,378. Dome house: $84,983. Only 2.7 percent cheaper — a fraction of the bare-shell savings. That smaller number is the one worth trusting precisely because it's smaller. A number that stayed at twenty four percent after adding a kitchen and bath would be the one to distrust. A finished home's price is dominated by fit-out, not framing. A kitchen costs the same whether it sits against a straight wall or a curved one. Shape only moves the needle on the shell, and the shell is a shrinking share of the total once the fit-out goes in.",
-    "equations": [],
-    "bullets": [
-     "THE HONEST PRICE",
-     "WHY IT SHRINKS",
-     "A finished home's cost is dominated by fit-out, not framing",
-     "Cabinets, plumbing fixtures, HVAC — identical cost in a box or a dome",
-     "Shape only affects the shell, and the shell is a shrinking share of the total"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "The number worth remembering",
-    "promise": "28% less framing lumber for the identical floor area / Same footprint, about the same money — 40% more enclosed volume",
-    "narration": "The framing number didn't shrink nearly as much: 28 percent less lumber for the identical floor area. Less material, less labor cutting and setting it, even after the price gap narrowed. Here is the number worth remembering instead of price. For the same footprint and almost the same money, the dome encloses 40 percent more volume, because a hemisphere captures the space a flat ceiling simply throws away.",
-    "equations": [],
-    "bullets": [
-     "STILL TRUE: LESS FRAMING",
-     "WHERE THE HOME TIER ACTUALLY WINS",
-     "A hemisphere captures the volume a flat ceiling throws away",
-     "For the same footprint and almost the same money"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "The honest pitch",
-    "promise": "Not 'cheaper' — 'more room for the same money'",
-    "narration": "So here is the actual pitch for a finished home, stated the honest way: not that domes are dramatically cheaper, because the numbers just showed you they usually are not. It's that the same money buys measurably more room. That is a pitch this project can defend with its own numbers in both directions, which is worth more than a bigger number it couldn't.",
-    "equations": [],
-    "bullets": [
-     "THE ACTUAL PITCH FOR A FINISHED HOME",
-     "Not that domes are dramatically cheaper — they usually are not, finished",
-     "That the same money buys measurably more livable space",
-     "A pitch this project can defend with its own numbers, both directions"
-    ]
-   }
-  ],
-  "number_modules": [
-   "al_build.py",
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_more_room",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_more_room.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-more-room.mp4"
- },
- {
-  "key": "presenter_dome_case_resilience",
-  "kind": "presentation",
-  "title": "What the Shape Earns You",
-  "source": "presentations/dome_case_resilience.py",
-  "originals": [
-   "deliverables/presenter/dome_case_resilience.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 7 of 10: what the shape earns you (structural resilience).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "Resilience is a financial argument, not just a survival one",
-    "promise": "U.S. GAO: insurance premiums run about 58% higher in high-wind-risk areas",
-    "narration": "Resilience is not only about surviving a storm. The U.S. Government Accountability Office finds insurance premiums run roughly fifty eight percent higher in high wind risk areas — a cost that shows up every year, storm or no storm. That is the financial version of this argument, and it's the one that actually matters to a buyer's monthly payment.",
-    "equations": [],
-    "bullets": [
-     "WHY THIS ARGUMENT MATTERS",
-     "Resilience isn't just about surviving a storm",
-     "It's about what an insurer and an appraiser charge before the storm ever arrives"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "What the geometry actually does",
-    "promise": "No single flat face for wind to concentrate on / Load spreads through a triangulated lattice, not into a handful of studs",
-    "narration": "A curved, continuous shell has no single flat wall for wind pressure to concentrate on the way it does against a box's corners. Air sheds around the curve more evenly. That is a real aerodynamic property of the shape. It is not a claim about what happens in any specific storm. The same is true for lateral load moving through the frame. Sixty five struts share the work through many redundant paths, where a conventional stud wall concentrates the same load into far fewer members. More paths for load to travel through is a structural property. It is still not a survival guarantee for any specific event.",
-    "equations": [],
-    "bullets": [
-     "WIND",
-     "A curved, continuous shell has no single flat wall for pressure to concentrate on",
-     "Wind moving around a dome sheds more evenly than around sharp corners",
-     "A real aerodynamic property — not a claim about outcomes in any specific storm",
-     "SEISMIC",
-     "Sixty five struts share load through many redundant paths",
-     "A stud wall concentrates load into far fewer members",
-     "More paths for load to travel is a structural property, not a survival guarantee"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "What this project will not say about any of it",
-    "promise": "Four specific claims this project refuses to make about resilience / The real path to lower insurance: an engineer-stamped design, not a hopeful adjective",
-    "narration": "A dome is not disaster proof. Not all wind pushes a dome downward — under the wrong conditions a roof shape can still generate uplift. A dome can absolutely be lifted if the engineering doesn't account for that. And the structure does not automatically qualify for insurance just because it's a dome. Every one of those is a real claim someone could make about this shape, and every one of them is false. FEMA's own research finds that code adoption measurably reduces disaster losses — which means the path to a lower premium runs through an engineer-stamped design for the actual hazard package at the site, sold as a tested code-above system, not an exception to code. Insurers price engineering. They don't price an adjective.",
-    "equations": [],
-    "bullets": [
-     "CLAIMS THIS PROJECT WILL NOT MAKE",
-     "“A dome is disaster-proof.”",
-     "“All wind pushes a dome downward.”",
-     "“A dome cannot be lifted.”",
-     "“The structure automatically qualifies for insurance.”",
-     "WHAT ACTUALLY LOWERS THE PREMIUM",
-     "An engineer-stamped design for the actual hazard package at the site",
-     "FEMA: code adoption measurably reduces disaster losses — sold as a tested code-above system, not an exception to code",
-     "Insurers price engineering, not shape alone"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "The honest version of a strong argument",
-    "promise": "Genuinely different structural properties — sold as exactly that, and nothing more",
-    "narration": "The shape genuinely does earn structural advantages — real load paths, real aerodynamics. Sold as exactly that, with the specific overclaims named and refused, this is the version of the resilience argument that survives contact with an underwriter. This is one part of a ten part case for 2V geodesic domes in the housing market.",
-    "equations": [],
-    "bullets": [
-     "WHAT THE SHAPE ACTUALLY EARNS YOU",
-     "Real aerodynamic and load-path advantages, honestly described",
-     "A real, GAO-documented cost for getting resilience wrong",
-     "Part of a ten-part case for 2V geodesic domes in the housing market"
-    ]
-   }
-  ],
-  "number_modules": [
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_resilience",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_resilience.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-resilience.mp4"
- },
- {
-  "key": "presenter_dome_case_triangles",
-  "kind": "presentation",
-  "title": "Why Triangles Don't Rack",
-  "source": "presentations/dome_case_triangles.py",
-  "originals": [
-   "deliverables/presenter/dome_case_triangles.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 4 of 10: why triangles don't rack (structural rigidity).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "Why triangles, and not squares or hexagons",
-    "promise": "Every geodesic dome panel is a triangle. That's not an aesthetic choice.",
-    "narration": "Squares tile a wall just fine. Hexagons tile a honeycomb. So why does every geodesic dome insist on triangles for its skin? Not for looks — the answer is entirely mechanical. It comes down to one property: what happens when you push a shape sideways, not down.",
-    "equations": [],
-    "bullets": [
-     "THE QUESTION",
-     "Squares tile a wall. Hexagons tile a honeycomb. Why does a dome insist on triangles?",
-     "The answer is mechanical, not decorative",
-     "It comes down to one property: what happens when you push a shape sideways"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "A square has a hinge it doesn't know about",
-    "promise": "Four hinged corners means four degrees of freedom the frame doesn't want / Four sides fix four lengths — but a quadrilateral needs five numbers to pin its shape down",
-    "narration": "A square built from four rigid members and four pinned corners is not actually rigid. Push sideways and it leans into a parallelogram — every side length stays exactly the same, only the corner angles change. That's the hinge a square doesn't know it has. Four corners, four independent angles, and nothing in the geometry stops any of them from moving. Here's the count that explains it. Four side lengths pin down four numbers. But a quadrilateral's shape needs five numbers fully specified before it's locked. One constraint short means one degree of freedom left over — and that's exactly the racking motion.",
-    "equations": [],
-    "bullets": [
-     "THE PROBLEM WITH FOUR CORNERS",
-     "A square's four corners can each rotate independently",
-     "Push sideways and the whole frame leans into a parallelogram",
-     "The side lengths never changed — only the angles did",
-     "THE COUNTING ARGUMENT"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "One diagonal changes the count",
-    "promise": "Add the fifth length — the racking has nowhere left to go / A triangle starts fully determined — three lengths, three numbers, exactly",
-    "narration": "Add one diagonal member and the count balances: five lengths for five numbers. The square is now two triangles sharing an edge, and there is no leftover freedom for the shape to rack into. That diagonal didn't reinforce the square. It replaced it with something structurally different. A triangle never had the problem in the first place. Three side lengths, three numbers needed, an exact match. There was never a spare degree of freedom for it to move into.",
-    "equations": [],
-    "bullets": [
-     "THE FIX",
-     "One diagonal adds exactly the fifth length the count was missing",
-     "The square becomes two triangles sharing an edge",
-     "Zero degrees of freedom left — the shape is fully determined",
-     "WHY A TRIANGLE NEVER NEEDED THE FIX"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "Forty of them, curving in every direction",
-    "promise": "A 2V dome's skin is 40 triangles — already braced, in every direction / One mechanical fact, forty times, in a curved shell",
-    "narration": "A two V dome's skin is forty of those triangles, in two sizes, curving in every direction at once. It isn't bracing bolted onto a spherical building after the fact. Triangulation is the building. Every panel already has its fifth length, so there is nowhere in the whole shell for a racking motion to hide. One mechanical fact — a triangle can't rack — applied forty times, curved into a shell. That is the entire structural argument, and it doesn't depend on what the struts are made of. This is one part of a ten part case for 2V geodesic domes in the housing market.",
-    "equations": [],
-    "bullets": [
-     "THE REAL GEOMETRY",
-     "Not bracing added to a spherical building",
-     "Triangulation is the building",
-     "THE ARGUMENT, IN ONE LINE",
-     "A triangle can't rack — a fact of counting, not material",
-     "A dome is nothing but triangles",
-     "Part of a ten-part case for 2V geodesic domes in the housing market"
-    ]
-   }
-  ],
-  "number_modules": [
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_triangles",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_triangles.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-triangles.mp4"
- },
- {
-  "key": "presenter_dome_case_utility_core",
-  "kind": "presentation",
-  "title": "The Curved-Wall Answer",
-  "source": "presentations/dome_case_utility_core.py",
-  "originals": [
-   "deliverables/presenter/dome_case_utility_core.mp4"
-  ],
-  "releases": [],
-  "note": "Argument 9 of 10: the curved-wall answer (the utility core).",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "The objection that comes up first, every time",
-    "promise": "\"Where does the plumbing go in a round room?\"",
-    "narration": "Before cost, before resilience, this is the objection that actually stops most curved-wall pitches: cabinets, plumbing runs, and large windows all want straight lines and flat planes. A dome has to earn the right to ignore that, not assume it away.",
-    "equations": [],
-    "bullets": [
-     "THE OBJECTION",
-     "Cabinets, plumbing runs, and large windows all want straight lines and flat planes",
-     "A dome has to earn the right to ignore that, not assume it away",
-     "This is the objection that ends most curved-wall pitches before the numbers even come up"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "Concentrate the straight lines in one place",
-    "promise": "One straight core, floor to apex, carrying water and power / Standardized triangular openings, not one-off curved glass",
-    "narration": "The answer is not to fight the curve everywhere. It's to concentrate the straight lines into one place: a utility column running floor to apex, carrying water on one side and power on the other. Kitchen and bath cabinetry mounts against that column, not against the curved shell. Other designs solve the same problem with a rectangular utility core built against one wall — different shape, identical principle. Large custom windows get the identical treatment: standardize the opening instead of custom-cutting curved glass. A glazed triangular panel swaps in for a structural one, using the same forty-panel geometry already on the shell.",
-    "equations": [],
-    "bullets": [
-     "THIS PROJECT'S ANSWER",
-     "A utility column runs floor to apex, carrying water on one side and power on the other",
-     "Kitchen and bath cabinetry mount against it, not against the curved shell",
-     "Other designs use a rectangular utility core against one wall — different shape, same principle",
-     "THE SAME PRINCIPLE, FOR WINDOWS",
-     "Large custom windows are solved the same way — standardize the opening shape",
-     "Triangular panels swap for glazed triangular panels, no one-off curved glass required"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "The rest of the list solves the same way",
-    "promise": "Leaks: gasketed joints and testing, not an assumption about the shape / Fire, code, and insurance unfamiliarity: paperwork and materials, not the shape",
-    "narration": "Leaks get solved the way this hatch solves them: a raised coaming, a locking wheel, a gasket, tested — not an assumption that a curved surface sheds water better on its own. Fire rating comes from noncombustible cladding, the same as any code compliant building. Code and appraisal unfamiliarity get solved with pre-approved plans and an engineer-stamped design, arranged before the first sale rather than argued about during it.",
-    "equations": [],
-    "bullets": [
-     "LEAKS",
-     "Solved with a gasketed, tested detail at every penetration",
-     "This hatch is exactly that detail: raised coaming, locking wheel, gasket",
-     "Not an assumption that curved surfaces shed water better on their own",
-     "FIRE, CODE, INSURANCE",
-     "Fire rating: noncombustible cladding, same as any code-compliant structure",
-     "Code and appraisal unfamiliarity: pre-approved plans, engineer-stamped design",
-     "Insurance: lenders and appraisers lined up before the first sale, not after"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "Every hard objection has a detail, not a hope",
-    "promise": "One core, one hatch detail, one paperwork checklist — that's the whole answer",
-    "narration": "Every objection on this list gets a specific detail, not a hope that the shape makes the problem disappear. That discipline — a real answer for every real objection — is what makes the rest of this case worth believing. This is one part of a ten part case for 2V geodesic domes in the housing market.",
-    "equations": [],
-    "bullets": [
-     "WHAT MUST BE SOLVED — SOLVED",
-     "Curved cabinetry and plumbing → a utility core",
-     "Custom windows → standardized triangular openings",
-     "Leaks, fire, code, insurance → details and paperwork, arranged in advance",
-     "Part of a ten-part case for 2V geodesic domes in the housing market"
-    ]
-   }
-  ],
-  "number_modules": [
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_case_utility_core",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_case_utility_core.py",
-  "target_file": "deliverables/masterclass/cabin-dome-case-utility-core.mp4"
- },
- {
-  "key": "presenter_dome_housing_case",
-  "kind": "presentation",
-  "title": "The 2V Housing Case",
-  "source": "presentations/dome_housing_case.py",
-  "originals": [
-   "deliverables/presenter/dome_housing_case.mp4"
-  ],
-  "releases": [],
-  "note": "The 2V housing case, converged from three independent LLM arguments and",
-  "family": "The dome case (presenter)",
-  "superseded_by": "",
-  "family_note": "",
-  "fit": "",
-  "voice_rate": "",
-  "audio_bed": "",
-  "style": "",
-  "chapters": [
-   {
-    "number": "1",
-    "title": "The math nobody likes",
-    "promise": "22.7 million U.S. renter households are cost-burdened right now / One proposed answer: a 2V geodesic dome — modeled, priced, and built on screen by real code",
-    "narration": "Before any dome, the numbers. Harvard's Joint Center for Housing Studies counts twenty two point seven million cost burdened renter households in the United States right now, twelve point one million of them spending over half of what they earn on rent alone. HUD backed research puts the national housing unit deficit somewhere between three point eight and five and a half million units. That is the gap this video is actually about. This is one proposed answer: a two V geodesic dome. Not a rendering somebody drew to look convincing — every shape, every strut, every dollar figure in this video was generated by one Python toolset, running on the presenter's own machine. That toolset is also the product. By the end you will have seen the argument for the dome and the software that builds, prices, and explains it.",
-    "equations": [],
-    "bullets": [
-     "THE STARTING NUMBERS",
-     "WHAT THIS VIDEO IS",
-     "An argument for 2V geodesic domes in that gap",
-     "...and a demonstration of the software that models them",
-     "Every number and camera move you see is computed live, not decorated"
-    ]
-   },
-   {
-    "number": "2",
-    "title": "What a 2V dome actually is",
-    "promise": "Two strut lengths, repeated 65 times, build the whole shell / The two strut lengths are NOT the golden ratio — the math says so / A square racks under sideways load — a triangle can't / Add one diagonal — the square becomes two triangles, and the racking stops",
-    "narration": "Zoom in and the whole shell is only two parts repeated. Thirty short struts, cyan here, and thirty five long struts, amber, meeting at twenty six hub vertices. Two lengths. Not twenty, not two hundred — two. That is the entire structural parts list for a two V dome, and it is exactly what the simulator's own geometry engine computes, not a marketing simplification. You will sometimes hear that a two V dome's two strut lengths follow the golden ratio. They do not, and this project would rather show you the arithmetic than repeat the claim. Short is zero point five four six five three three of the radius. Long is zero point six one eight zero three four. Divide them and you get one point one three zero eight two six. The golden ratio is one point six one eight. Different number. This project's own teaching tool has made that exact correction since before this video existed. Here is the structural reason forty of a dome's panels are triangles and not squares. Push sideways on an unbraced square frame and it racks — the corners hinge and the whole shape leans. A triangle cannot do that. Fix all three side lengths and the shape is completely determined. There is no hinge left to give. Add one diagonal member and the square becomes two triangles. The racking disappears — because you didn't reinforce the square, you replaced it. A geodesic dome's skin is forty of those triangles, already assembled, curving in every direction at once. It is not bracing added to a building. Triangulation is the building.",
-    "equations": [],
-    "bullets": [
-     "THE PARTS LIST",
-     "NOT THE GOLDEN RATIO",
-     "The golden ratio is 1.618034",
-     "1.130826 is not that number",
-     "Computed live by the same code, every time",
-     "WHY TRIANGLES",
-     "A square's corners are hinges — push sideways and it collapses into a parallelogram",
-     "A triangle has no spare hinge — its side lengths lock its shape completely",
-     "THE FIX IS THE WHOLE POINT",
-     "One diagonal turns a racking square into two rigid triangles",
-     "A 2V dome's skin is 40 of exactly that shape, already braced, in every direction"
-    ]
-   },
-   {
-    "number": "3",
-    "title": "Watching the simulator build one",
-    "promise": "Stage 1-6 of 15: floor, frame, utility column, water, power, rough fixtures / Stage 7-12 of 15: insulation, sheetrock, OSB, water barrier, shingles, fiberglass / Stage 13 of 15: a watertight deck hatch / Stage 14 of 15: kitchen, bed, and bath fit out around the utility column / Stage 15 of 15 — solar — then the finished shell lifts as one piece",
-    "narration": "The simulator builds every dome in the same order, station by station. Floor first, then the sixty five strut frame you just watched come together. Immediately after the frame, a utility column rises from the floor to the apex, carrying water on one side and power on the other — stages four and five. Rough plumbing and electrical fixtures get stubbed out from that same column at stage six, before anything closes up. This is this project's specific answer to the oldest objection to curved rooms: where do the straight-line things go? Other designs solve it with a rectangular utility core built against one wall. Different shape, same idea — put the plumbing and the cabinetry where straight lines belong, and let the dome do only what domes are good at, which is enclosing space. Then the shell claddings up, one layer at a time, in the exact order the simulator's own stage list uses: insulation, interior sheetrock, structural sheathing, a water barrier, shingles, and a fiberglass finish coat. Six layers, one shape. Every one of them has to wrap a curved surface instead of a flat one, which is a real fabrication difference from stick framing — and part of why the panel-and-jig approach later in this video matters so much. Stage thirteen: a watertight hatch, built the way a boat hatch is built. A raised coaming so water has to climb before it can reach the door, and a locking wheel that seats the door against a gasket instead of trusting a simple latch. Stage fourteen, the interior fit out follows the column: kitchen cabinetry tight against it, bed and bath on the rest of the floor plan. Nothing here waits on a custom curved cabinet — every straight fixture sits against the one straight core in the room. Stage fifteen, the last one: solar, placed only on the faces the dome's own geometry says face the sun — the same face data that drove the golden ratio correction earlier in this video is what decides where a panel is allowed to go. Then, after all fifteen stages, the entire finished shell lifts as one piece from a ring at the apex. In this project's assembly line simulator, that crane sets the dome down on a sun tracking turntable. It is a manufactured product, handled like one, start to finish.",
-    "equations": [],
-    "bullets": [
-     "BUILD SEQUENCE — STAGES 1-6",
-     "floor — the deck the shell sits on",
-     "frame — 65 struts, 26 hubs",
-     "column — water (4) and power (5) run floor to apex in one core",
-     "fixtures (6) — rough plumbing and electrical stubbed out before the walls close",
-     "BUILD SEQUENCE — STAGES 7-12, THE CLADDING STACK",
-     "insulation (7) — first layer over the bare frame",
-     "sheetrock (8) — interior wall finish",
-     "osb (9) — structural sheathing",
-     "wrap (10) — the water barrier",
-     "shingles (11) — the weather skin",
-     "fiberglass (12) — the finish coat",
-     "THE HATCH",
-     "Raised coaming keeps water out before the door does",
-     "Locking wheel seats the door against a gasket, not just a latch",
-     "Same detail family as a boat hatch, because the objection is the same",
-     "INTERIOR FIT-OUT",
-     "Kitchen cabinetry against the utility column",
-     "Bed and bath on the remaining floor plan",
-     "Every fixture keyed to the one column that carries its supply lines",
-     "THE LAST STAGE, AND THE LIFT",
-     "Panels placed only on faces the geometry says face the sun",
-     "An apex crane anchor lifts the finished shell in one piece"
-    ]
-   },
-   {
-    "number": "4",
-    "title": "Round one: the bare shell",
-    "promise": "Same 3,840 cubic feet, same materials, same labor rate — 24% less to build",
-    "narration": "Round one is the simplest possible test: a bare shell, no finishes, sized so both buildings enclose exactly the same three thousand eight hundred forty cubic feet. Same lumber rate, same skin rate, same labor rate for both — the only variable is the shape. The box costs twelve thousand four hundred twenty six dollars. The dome costs nine thousand four hundred forty four — 24 percent less, using 55 percent less framing and 26 percent less exterior skin to enclose the identical space.",
-    "equations": [],
-    "bullets": [
-     "BARE SHELL, MATCHED VOLUME"
-    ]
-   },
-   {
-    "number": "5",
-    "title": "Round two: the finished home — the honest number",
-    "promise": "Same 640 sq ft floor, fully finished — only 2.7% cheaper, and that's the honest number / Same footprint, same budget — 40% more usable volume inside the dome",
-    "narration": "Round two is harder on the dome, on purpose. Same six hundred forty square foot floor, but now both buildings are fully finished — kitchen, bath, mechanicals, the works. The dome is only 2.7 percent cheaper here, not twenty four percent. That smaller number is the trustworthy one. A finished home's cost is dominated by kitchens, bathrooms and mechanical systems that cost the same no matter what shape the walls are, so shape alone was never going to rewrite the whole budget. The number worth remembering from this round is not the price. It's the volume. For the same footprint and almost the same money, the dome encloses forty percent more space, because a hemisphere captures the volume a flat ceiling throws away. That is this project's actual pitch for a finished home: not that domes are dramatically cheaper — the numbers on screen just showed you they usually are not — but that the same money buys measurably more room.",
-    "equations": [],
-    "bullets": [
-     "FINISHED HOME, MATCHED FLOOR AREA",
-     "WHERE THE HOME TIER ACTUALLY WINS",
-     "28% less framing lumber for the same floor area",
-     "40% more enclosed volume for the same footprint and about the same money",
-     "The honest pitch: not 'cheaper' — 'more room for the same money'"
-    ]
-   },
-   {
-    "number": "6",
-    "title": "What the shape earns you — and what it doesn't",
-    "promise": "A curved, triangulated shell distributes wind load more evenly than flat walls / More enclosed volume per square foot of skin — real, but site- and system-dependent",
-    "narration": "Wind and seismic load spread through this shape differently than through a box. There is no single flat wall for pressure to concentrate on, and load moving through a triangulated lattice has far more paths to travel than load moving through a stud wall. That is a genuine structural property of the geometry. It is also exactly as far as this project is willing to take the claim. A sphere encloses more volume per square foot of skin than a box does, and less skin means less area for heat to cross — that part is just geometry. This project's own insulation model lands at roughly an R-41 effective value for a representative build. A 2024 simulation study of geodesic tourist accommodations found fifty two percent lower cooling energy — that is one specific study of one specific building, not a universal law. Anyone who tells you every dome uses thirty to fifty percent less energy, regardless of climate or how it's built, is overselling the shape.",
-    "equations": [],
-    "bullets": [
-     "THE HEDGED STRUCTURAL CASE",
-     "No single flat face for wind to concentrate on",
-     "Load spreads through a triangulated lattice instead of into a few studs",
-     "A real structural property — not a claim that any dome is disaster-proof",
-     "THE HEDGED ENERGY CASE",
-     "Less exterior skin per enclosed volume is a real geometric fact",
-     "\"Every dome uses 30-50% less energy\" is not — HVAC design, climate and airtightness still decide the real number"
-    ]
-   },
-   {
-    "number": "7",
-    "title": "A standardized product, not a custom house",
-    "promise": "2 strut lengths, 2 triangle shapes, 40 panels — the entire bill of materials / One production line, modeled: about 82 domes a year, break-even under 19 units / Against a real manufactured-home benchmark: 19% less price, 57% fewer labor hours",
-    "narration": "This is chatgpt's own framing from the source material behind this video, and it's the right one: a 2V dome is not a custom house shaped like a dome. It is a standardized product — minimal geometry, factory repetition, rapid assembly. Two strut lengths. Two triangle shapes: thirty of one, ten of the other. Every part in a jig, every part color coded, the whole shell flat packable. Federal research on modular construction broadly finds schedules compressed twenty to fifty percent and costs cut up to twenty percent — that is evidence about modular construction in general, not a guarantee for this specific shape, and this project is not going to blur that line. The same simulator that draws the struts also runs the factory math. One pipelined production line, modeled station by station with the framing stage as the bottleneck, turns out roughly eighty two domes a year. At that rate, the line covers its own annual fixed overhead in about nineteen units and recovers its full capital cost in about forty four — the kind of arithmetic a lender, not a marketer, actually asks for. Set a representative dome from this simulator against this project's own conventional manufactured home benchmark and it prices 19 percent lower, uses 57 percent fewer labor hours, and models 50 percent fewer build days. Those are this project's own assumptions, stated plainly so you can disagree with any one of them — not a claim dressed up as a fact.",
-    "equations": [],
-    "bullets": [
-     "THE MANUFACTURING CASE",
-     "Two strut lengths: 30 short, 35 long",
-     "Two triangle shapes: 30 isosceles (long-short-short), 10 equilateral (long-long-long)",
-     "Jig-based production, color-coded parts, flat-pack shipping",
-     "THE FACTORY MATH",
-     "VS. A CONVENTIONAL MANUFACTURED HOME"
-    ]
-   },
-   {
-    "number": "8",
-    "title": "Solving the hard objections",
-    "promise": "The curved-wall objection has a straight-line answer / Leaks, fire, and code get solved by details and paperwork, not by the shape",
-    "narration": "A serious version of this pitch does not pretend the curved wall is free. Cabinets, plumbing runs and large custom windows all want straight lines and flat planes, and a dome has to earn the right to ignore that. The answer is not to fight the curve everywhere — it's to concentrate the straight lines into one place, this utility core, and let standardized triangular openings handle windows instead of one-off curved glass. And no, a light shell does not mean you skip an engineered foundation. Leaks get solved the way this hatch solves them: gasketed joints, a rainscreen, and real testing — not an assumption that curved surfaces shed water better. Fire rating comes from noncombustible cladding, the same as any code compliant building. And the unglamorous stuff — appraisal, insurance, code officials who have never seen this shape — gets solved with paperwork done in advance: engineer-stamped designs, pre-approved plans, lenders and appraisers already lined up. Fannie Mae's own selling guide already allows dome-secured loans when the appraiser has enough information. The work is making sure they do.",
-    "equations": [],
-    "bullets": [
-     "WHAT MUST BE SOLVED — AND HOW",
-     "MORE OF THE SAME LIST"
-    ]
-   },
-   {
-    "number": "9",
-    "title": "Claims this project will not make",
-    "promise": "What this project will not tell you — on purpose / Where the case is actually strong: starter homes, ADUs, rural and off-grid, disaster-resistant low-rise",
-    "narration": "Before the close, the claims this project deliberately will not make, because overclaiming is what gets a new building type laughed out of a lender's office. A dome is not disaster proof. It does not always cost less than a normal house — you just watched the honest, smaller number for a finished home. The strut relationship is not the golden ratio. Natural airflow does not eliminate the need for real HVAC design. A kit is not automatically legal because an owner assembled it. And this shape is not the answer for dense urban housing — it never claimed to be. Here is where the case actually holds: starter homes, rural housing, accessory dwelling units, workforce and veteran cottage communities, disaster resistant low-rise construction, and remote or off-grid sites where shipping a flat-pack shell beats trucking in lumber. That is a narrower claim than 'domes will replace housing.' It is also one this project can actually defend, line by line, with its own numbers.",
-    "equations": [],
-    "bullets": [
-     "CLAIMS THIS PROJECT WILL NOT MAKE",
-     "“A dome is disaster-proof.”",
-     "“A dome always costs less than a normal house.”",
-     "“The strut relationship is the golden ratio.”",
-     "“Natural circulation eliminates the need for HVAC.”",
-     "“A kit is automatically legal because the owner assembles it.”",
-     "“Domes are the answer for dense urban housing.”",
-     "THE BOTTOM LINE",
-     "Not suited to high-rises or one-off custom architecture",
-     "Genuinely suited to starter homes, rural housing, ADUs, workforce and veteran communities",
-     "...and disaster-resistant low-rise, remote construction, and hospitality-funded development"
-    ]
-   },
-   {
-    "number": "10",
-    "title": "Three sizes, real financing, one toolkit",
-    "promise": "Four real product tiers, priced by the same engine that built this video / A representative home dome: $104,020, 10% down, 11.9% APR / The argument and the toolkit are the same product",
-    "narration": "Four product tiers, and every price on this panel comes from the same pricing function running inside the interactive simulator: a turnkey off-grid dome home, a storage shed, a greenhouse, and a welded steel-plate storm shelter. None of that is invented for this video. It is the actual configuration table the software ships with. Standardized financing is on this project's own list of things that must be solved before any of this scales, so here is a real answer: this representative home dome, ten percent down, eleven point nine percent APR over sixty months, comes to about two thousand seventy eight dollars a month. That number exists because the software computes it the same way it computes everything else in this video — not because it sounds good. Every model, every number, every camera move in this video came out of the same codebase: a dome designer, a factory simulator, a comparison engine, a local voice studio, and this presenter engine, which just spent the last several minutes building its own sales pitch out of nothing but a text script. That is the actual product. The argument for the dome was never separate from the software that proves it — they shipped together, and you just watched them work.",
-    "equations": [],
-    "bullets": [
-     "THE ACTUAL PRODUCT LINE",
-     "FINANCING, ALREADY MODELED",
-     "Standardized financing is one of this project's own \"what must be solved\" items",
-     "This is what a workable answer looks like, computed, not promised",
-     "WHAT YOU ARE ACTUALLY GETTING",
-     "A dome designer and cost engine",
-     "An interactive assembly-line factory simulator",
-     "A shed-vs-dome, house-vs-dome comparison tool",
-     "A local voice studio for narration you own",
-     "This presenter engine — the one that just built this entire video"
-    ]
-   }
-  ],
-  "number_modules": [
-   "al_build.py",
-   "presentations/_numbers.py"
-  ],
-  "graph_nodes": [],
-  "target_key": "cabin_presenter_dome_housing_case",
-  "target_module": "two_v_demo/lesson_cabin_presenter_dome_housing_case.py",
-  "target_file": "deliverables/masterclass/cabin-dome-housing-case.mp4"
- },
- {
   "key": "tree_value",
   "kind": "slideshow",
   "title": "The many values of one tree",
-  "source": "deliverables/tree-value-video/build/content.py",
+  "source": "deliverables/0073-tree-value-video/build/content.py",
   "originals": [
-   "deliverables/tree-value-video/output/The-many-values-of-one-tree.mp4"
+   "deliverables/0073-tree-value-video/output/The-many-values-of-one-tree.mp4"
   ],
   "releases": [],
   "note": "A narrated slideshow built outside the masterclass renderer (build/assemble.py, build.mjs).",
@@ -17079,10 +16155,10 @@
   "key": "launcher_trailer",
   "kind": "slideshow",
   "title": "Dome Simulator trailer",
-  "source": "deliverables/launcher_trailer/build_launcher_trailer.py",
+  "source": "deliverables/0021-launcher_trailer/build_launcher_trailer.py",
   "originals": [
-   "deliverables/launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer.mp4",
-   "deliverables/launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer_narrated.mp4"
+   "deliverables/0021-launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer.mp4",
+   "deliverables/0021-launcher_trailer/render_20260816_215522_291_872a3a/dome_simulator_trailer_narrated.mp4"
   ],
   "releases": [],
   "note": "A silent montage with burned-in titles over the project's renders.",

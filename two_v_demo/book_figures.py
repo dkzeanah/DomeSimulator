@@ -666,7 +666,14 @@ def render_panel_svg(figure: Figure, path_key: str | None = None) -> Path:
     This one stays vector: a panel drawing is something the reader prints at
     full size and lays a stick on, so rasterising it would be actively
     harmful. Returns the SVG path.
+
+    The solver writes its own internal names on the drawing
+    (``WOOD_P001_E0``, ``POINT_DOME_IN``); a book plate is dressed up
+    afterwards -- member ids become plain member numbers, orientation
+    codes become words, and the page is widened so no label is clipped --
+    but the geometry underneath is untouched.
     """
+    import re as _re
     from . import raw_wedge_bridge as bridge
 
     sim = bridge.simulator()
@@ -677,6 +684,26 @@ def render_panel_svg(figure: Figure, path_key: str | None = None) -> Path:
     if path.exists():
         path = next_version(path)
     sim.export_panel_jig_svg(model, index, path)
+    text = path.read_text(encoding="utf-8")
+    text = _re.sub(r"WOOD_P\d+_E(\d+)\s+", r"member \1 &middot; ", text)
+    text = text.replace("finished=", "finished ").replace(
+        "jigblank=", "&middot; blank ")
+    for code, word in (("POINT_DOME_IN", "POINT IN"),
+                       ("POINT_DOME_OUT", "POINT OUT"),
+                       ("POINT_PANEL_IN", "PANEL IN"),
+                       ("POINT_PANEL_OUT", "PANEL OUT")):
+        text = text.replace(code, word)
+    # Give the longest member label room: widen the page to the right
+    # rather than letting a label run off the edge.
+    def _widen(match: _re.Match) -> str:
+        value = float(match.group(1))
+        return f'{match.group(0).split("=")[0]}="{value + 96.0:.1f}"'
+    text = _re.sub(r'width="([\d.]+)"', _widen, text, count=1)
+    text = _re.sub(r'viewBox="0 0 ([\d.]+) ([\d.]+)"',
+                   lambda m: f'viewBox="0 0 {float(m.group(1)) + 96.0:.1f} '
+                             f'{m.group(2)}"',
+                   text, count=1)
+    path.write_text(text, encoding="utf-8")
     return path
 
 
@@ -780,6 +807,35 @@ def render_photo_slot(figure: Figure, path_key: str | None = None) -> Path:
     return save(fig, path_key or figure.key)
 
 
+def render_illustration_slot(figure: Figure,
+                             path_key: str | None = None) -> Path:
+    """A placeholder card for a commissioned illustration not yet drawn.
+
+    The export prints these as captioned slots (``illustration_slot`` in
+    :mod:`book_export`); this renderer is the studio-side twin, so a proof
+    rendered at the desk shows the same plan at the same size.
+    """
+    height = PAGE_H_IN if figure.full_page else HALF_H_IN
+    fig = new_figure(PAGE_W_IN, height)
+    axes = fig.add_axes([0, 0, 1, 1])
+    axes.set_axis_off()
+    axes.add_patch(_dashed_box())
+    axes.text(0.5, 0.60, "ILLUSTRATION", ha="center", va="center",
+              fontsize=13, weight="bold", color=STYLE.muted,
+              family="sans-serif")
+    caption = figure.caption or "(no caption yet)"
+    axes.text(0.5, 0.50, _wrap(caption, 44), ha="center", va="top",
+              fontsize=9, color=STYLE.ink)
+    if figure.note:
+        axes.text(0.5, 0.30, _wrap(figure.note, 52), ha="center", va="top",
+                  fontsize=7.5, color=STYLE.muted, style="italic")
+    axes.text(0.5, 0.06, figure.key, ha="center", va="bottom",
+              fontsize=7, color=STYLE.rule, family="monospace")
+    axes.set_xlim(0, 1)
+    axes.set_ylim(0, 1)
+    return save(fig, path_key or figure.key)
+
+
 def _dashed_box():
     from matplotlib.patches import Rectangle
     return Rectangle((0.04, 0.04), 0.92, 0.92, fill=False,
@@ -810,6 +866,7 @@ RENDERERS = {
     "book_plot": render_plot,
     "book_diagram": render_diagram,
     "photo_slot": render_photo_slot,
+    "illustration_slot": render_illustration_slot,
     "hat_stack": render_hat_stack,
     "mast_floor": render_mast_floor,
 }
@@ -1014,9 +1071,14 @@ def validate_figures() -> None:
                 missing.append(f"diagram {name!r} (figure {key})")
     assert not missing, "unimplemented figures: " + "; ".join(missing)
 
-    # Every renderer implemented is one the book actually uses. An orphan
-    # renderer is code nobody will ever look at again.
-    used = {figure.source for figure in index.values()}
+    # Every renderer implemented is one the book or its parked chapters
+    # actually use. An orphan renderer is code nobody will ever look at
+    # again; the Amazon cut parks chapters whose figures still need their
+    # renderers, so the parked outline counts too.
+    from .book import PARKED_CHAPTERS
+    parked_sources = {figure.source for chapter in PARKED_CHAPTERS
+                      for figure in chapter.figures}
+    used = {figure.source for figure in index.values()} | parked_sources
     orphans = set(RENDERERS) - used
     assert not orphans, f"renderers nothing uses: {sorted(orphans)}"
 

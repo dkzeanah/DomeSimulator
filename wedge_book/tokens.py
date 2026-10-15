@@ -364,6 +364,12 @@ def _table() -> dict[str, Token]:
     _shape_tokens(add)
     _catalogue_tokens(add)
     _kick_tokens(add)
+    _staple_tokens(add)
+    _foundation_tokens(add)
+    _coverage_tokens(add)
+    _fill_tokens(add)
+    _idome_tokens(add)
+    _methodology_tokens(add)
     _core_build_tokens(add)
     _franken_tokens(add)
     _hub_tokens(add)
@@ -1019,14 +1025,14 @@ def tokens() -> dict[str, Token]:
     return _table()
 
 
-def resolve(text: str, strict: bool = True) -> str:
+def resolve(text: str, strict: bool = True, *, table: dict[str, Token] | None = None) -> str:
     """Fill every ``{{group.name}}`` in ``text``.
 
     ``strict`` raises on an unknown token, which is what an export wants. The
     writing desk passes ``strict=False`` so a half-written page still renders
     with the typo visible in it.
     """
-    table = tokens()
+    table = tokens() if table is None else table
 
     def swap(match: re.Match) -> str:
         name = match.group(1)
@@ -1050,6 +1056,12 @@ def resolve(text: str, strict: bool = True) -> str:
         return value
 
     return TOKEN.sub(swap, text)
+
+
+def export_resolver():
+    """Fresh values per export, reusing its token catalogue across chapters."""
+    from functools import partial
+    return partial(resolve, table=tokens())
 
 
 def unknown_tokens(text: str) -> tuple[str, ...]:
@@ -1697,6 +1709,201 @@ def _kick_tokens(add) -> None:
         v(lambda: paint.solar_delta_f + paint.radiative_delta_f))
     add("kick.paint_usd", "what the paint saves a year on an insulated shell, dollars", v(lambda: paint.annual_saving))
     add("kick.paint_thin_usd", "and on a thin wall, dollars", v(lambda: thin.annual_saving))
+
+
+def _methodology_tokens(add) -> None:
+    """Core methodology values shared unchanged with the films and other books."""
+    from infill.methodology import token_values
+    for name, value in token_values().items():
+        add(name, "core wedge methodology: " + name.split(".", 1)[1],
+            lambda value=value: value)
+
+
+def _fill_tokens(add) -> None:
+    """``fill``: every pair laid in every triangle, course by course -- the count that corrects
+    the first one (:mod:`two_v_demo.triangle_fill`)."""
+    from two_v_demo import triangle_fill as tf
+
+    def g(path, fmt):
+        def get():
+            v = tf.facts()
+            for k in path.split("."):
+                v = v[k]
+            return fmt.format(v)
+        return get
+
+    for name, path, fmt, describe in (
+            ("nested_ft", "nested.infill_ft", "{:,.0f}", "infill laid nested, ft"),
+            ("bowtie_ft", "bowtie.infill_ft", "{:,.0f}", "infill laid as bowties, ft"),
+            ("nested_wedges", "nested.infill_wedges", "{:,}", "wedges laid nested"),
+            ("bowtie_wedges", "bowtie.infill_wedges", "{:,}", "wedges laid as bowties"),
+            ("nested_total", "nested.total_ft", "{:,.0f}", "frame and infill nested, ft"),
+            ("bowtie_total", "bowtie.total_ft", "{:,.0f}", "frame and infill as bowties, ft"),
+            ("nested_trees", "nested.trees", "{:.1f}", "pines, nested"),
+            ("bowtie_trees", "bowtie.trees", "{:.1f}", "pines, bowties"),
+            ("depth_in", "depth_in", "{:.2f}", "a 12 in log's wedge depth, in"),
+            ("face_in", "face_in", "{:.2f}", "its face, in"),
+            ("iso_nested", "iso_nested.courses", "{}", "pairs in one isosceles triangle, nested"),
+            ("iso_bowtie", "iso_bowtie.courses", "{}", "pairs in one isosceles triangle, bowties")):
+        add(f"fill.{name}", describe, g(path, fmt))
+
+
+def _idome_tokens(add) -> None:
+    """``idome``: the Triangle Infill tool's whole dome, every triangle filled, in every way
+    (:mod:`two_v_demo.infill_dome`, the film's own function)."""
+
+    def table():
+        from two_v_demo import infill_dome as idm
+        rows = ["| Fill | Pieces | Feet of stock | Solid | Left open, sq ft |", "| --- | ---: | ---: | ---: | ---: |"]
+        for v in idm.PAIRS + idm.pattern_variants("fill") + idm.pattern_variants("cover"):
+            f = idm.facts(v.key)
+            name = ("covered: " if v.mode == "cover" else "") + f["title"]
+            rows.append(f"| {name} | {f['pieces']:,} | {f['feet']:,.0f} | {f['solid']:.0%} | {f['left_sqft']:.1f} |")
+        return chr(10).join(rows)
+
+    def one(fn):
+        def get():
+            from two_v_demo import infill_dome as idm
+            return fn(idm)
+        return get
+
+    add("idome.table", "every fill and cover on the whole dome", table)
+    add("idome.across_ft", "the tool's dome, across, ft", one(lambda m: f"{2 * m.radius_in() / 12:.1f}"))
+    add("idome.panels", "triangles in the dome", one(lambda m: str(len(m.seats()))))
+    add("idome.thick_in", "frame thickness, in", one(lambda m: f"{m.spec().thickness_in:.2f}"))
+    add("idome.planed_nested", "planed off a nested pair", one(lambda m: f"{m.planed_off(1.0):.0%}"))
+    add("idome.planed_bowtie", "planed off a bowtie pair", one(lambda m: f"{m.planed_off(0.0):.0%}"))
+    add("idome.ways", "fills and covers shown", one(lambda m: str(len(m.variants()))))
+
+
+def _coverage_tokens(add) -> None:
+    """``cov``: how much wedge a whole dome takes -- the frame, and closing every triangle with
+    pairs of wedges -- from :mod:`two_v_demo.wedge_coverage_facts` (lazy: it reads the solver)."""
+    from two_v_demo import wedge_coverage_facts as wc
+
+    def f(key, fmt):
+        return lambda: fmt.format(wc.facts()[key])
+
+    for key, fmt, describe in (
+            ("long_in", "{:.2f}", "the long strut, in"), ("short_in", "{:.2f}", "the short strut, in"),
+            ("members", "{:.0f}", "wedge members in the frame"), ("unique_edges", "{:.0f}", "unique edges"),
+            ("iso_faces", "{:.0f}", "isosceles faces"), ("eq_faces", "{:.0f}", "equilateral faces"),
+            ("frame_nominal_ft", "{:,.1f}", "the frame's wedge, nominal, ft"),
+            ("frame_cut_ft", "{:,.1f}", "the frame's wedge as the solver cuts it, ft"),
+            ("frame_saving_ft", "{:.1f}", "what the pinwheel cuts take off the frame, ft"),
+            ("area_ft2", "{:,.1f}", "the 40 triangles' area, sq ft"),
+            ("face_in_12", "{:.2f}", "a 12 in log's wedge face, in"), ("depth_in_12", "{:.2f}", "its depth, in"),
+            ("open_area_ft2_12", "{:,.1f}", "open area after the frame's strip, sq ft"),
+            ("infill_min_ft_12", "{:,.0f}", "infill at widest assumed continuous pitch, ft"), ("infill_max_ft_12", "{:,.0f}", "infill at narrowest assumed continuous pitch, ft"),
+            ("total_min_ft_12", "{:,.0f}", "frame and infill, least, ft"), ("total_max_ft_12", "{:,.0f}", "frame and infill, most, ft"),
+            ("trees_min_12", "{:.0f}", "60 ft trees, least"), ("trees_max_12", "{:.0f}", "60 ft trees, most"),
+            ("trunk_min_ft_12", "{:,.0f}", "trunk, least, ft"), ("trunk_max_ft_12", "{:,.0f}", "trunk, most, ft"),
+            ("frame_trunk_ft", "{:.0f}", "trunk for the frame alone, ft"), ("solver_log_in", "{:.0f}", "the simulator's log, in")):
+        add(f"cov.{key.replace('_ft2', '').replace('_12', '')}", describe, f(key, fmt))
+    add("cov.solver_min", "frame and infill with the simulator's log, least, ft",
+        lambda: f"{wc.facts()['solver_lo']['total_ft']:,.0f}")
+    add("cov.solver_max", "frame and infill with the simulator's log, most, ft",
+        lambda: f"{wc.facts()['solver_hi']['total_ft']:,.0f}")
+    add("cov.solver_trees_max", "60 ft trees with the simulator's log, most",
+        lambda: f"{wc.facts()['solver_hi']['trees']}")
+    add("cov.checked", "the session's figures that agree with the solver",
+        lambda: f"{sum(ok for *_x, ok in wc.verification())} of {len(wc.verification())}")
+    add("cov.calc_excess", "how far the area method runs above real pieces, %",
+        lambda: f"{wc.calculator_check()['excess_pct']:.0f}")
+    add("cov.table", "the overlap table",
+        lambda: chr(10).join(wc.steps_infill()[4:]))
+    add("cov.frame_steps", "the frame, worked", lambda: chr(10).join(wc.steps_frame()))
+
+
+def _foundation_tokens(add) -> None:
+    """``found`` and ``world``: the pentagonal foundation of half trunks and its star, from
+    :func:`world3d.structures.foundation_facts` (which reads :mod:`infill.base`), and the
+    counts of the one 3-D world that holds the foundation, the dome and the zome."""
+    def f(key, fmt="{:.2f}"):
+        return lambda: fmt.format(_found()[key])
+
+    for key, describe, fmt in (
+            ("side_in", "the pentagon's side, in", "{:.0f}"), ("diagonal_in", "its diagonal, in", "{:.1f}"),
+            ("phi", "the golden ratio", "{:.3f}"), ("long_centre_in", "a long star piece, centreline, in", "{:.1f}"),
+            ("short_centre_in", "a short star piece, centreline, in", "{:.1f}"),
+            ("long_cut_in", "a long star piece, as cut, in", "{:.1f}"),
+            ("short_cut_in", "a short star piece, as cut, in", "{:.1f}"),
+            ("spare_in", "what one 20 ft log has left after one long and one short, in", "{:.1f}"),
+            ("long_count", "long star pieces", "{:.0f}"), ("short_count", "short star pieces", "{:.0f}"),
+            ("frame_count", "half trunks in the frame", "{:.0f}"), ("top_in", "the floor's top above grade, in", "{:.0f}"),
+            ("interior_deg", "the pentagon's corner, degrees", "{:.0f}"),
+            ("star_point_deg", "a star point, degrees", "{:.0f}")):
+        add(f"found.{key.replace('_in', '').replace('_deg', '')}", describe, f(key, fmt))
+    add("found.side_ft", "the pentagon's side, ft", lambda: f"{_found()['side_in'] / 12:.0f}")
+    add("found.star_pieces", "star pieces in all", lambda: f"{_found()['long_count'] + _found()['short_count']}")
+    add("found.all_pieces", "frame and star pieces in all",
+        lambda: f"{_found()['long_count'] + _found()['short_count'] + _found()['frame_count']}")
+    add("found.star_logs", "logs the star takes: one per long piece", lambda: f"{_found()['long_count']}")
+    add("found.logs", "logs in the whole foundation", lambda: f"{_found()['long_count'] + _found()['frame_count']}")
+    add("found.offcut", "what is left of a log after one long piece, in",
+        lambda: f"{_found()['side_in'] - _found()['long_cut_in']:.1f}")
+    add("found.long_minus_cut", "how much the frame's face takes off a long piece, in",
+        lambda: f"{_found()['long_centre_in'] - _found()['long_cut_in']:.1f}")
+
+    def w(key):
+        return lambda: str(_world_counts()[key])
+    for key, describe in (("dome", "dome members in the world"), ("zome", "zome sticks in the world"),
+                          ("foundation", "foundation pieces in the world"), ("layers", "layers in the world's panel")):
+        add(f"world.{key}", describe, w(key))
+
+
+_FOUND: dict = {}
+
+
+def _found() -> dict:
+    if not _FOUND:
+        from world3d import structures as ws
+        _FOUND.update(ws.foundation_facts())
+    return _FOUND
+
+
+def _world_counts() -> dict:
+    from world3d import structures as ws
+    return {"dome": len(ws.dome_model().members), "zome": sum(len(p.sticks) for p in ws.zome_model().panels),
+            "foundation": len(ws.foundation()), "layers": len(ws.LAYERS)}
+
+
+def _staple_tokens(add) -> None:
+    """``staple``: the staple house -- the papercuts of a new house against the dome's
+    one invoice, from :mod:`two_v_demo.staple_facts`."""
+    from two_v_demo import staple_facts as sf
+
+    # Lazy: the facts read the numbers page, which itself resolves this table's tokens,
+    # so nothing may be computed while the table is being built.
+    money = lambda key: (lambda: f"{sf.facts()[key]:,.0f}")
+    for key, describe in (("papercuts", "the survey house's fee and margin lines, $"),
+                          ("fee_total", "its fee lines, $"), ("margin_total", "its margin lines, $"),
+                          ("survey_price", "the survey house's price, $"), ("survey_lot", "its land, $"),
+                          ("interest", "interest on the numbers page's loan, $"),
+                          ("loan", "the loan, $"), ("loan_total", "paid back in all, $"),
+                          ("dome_price", "the stem cell's price, $"), ("dome_margin", "its printed margin, $"),
+                          ("dome_standing", "standing on its pad, $"), ("site_same", "the same floor, site-built, $"),
+                          ("mhs_same", "the same floor, manufactured, $"),
+                          ("mhs_gap", "what a manufactured home of the same floor costs beyond the dome, $")):
+        add(f"staple.{key}", describe, money(key))
+    for key, describe, fmt in (("papercut_lines", "how many fee and margin lines", "{:.0f}"),
+                               ("fee_lines", "fee lines", "{:.0f}"), ("margin_lines", "margin lines", "{:.0f}"),
+                               ("building_lines", "separately priced lines of the building", "{:.0f}"),
+                               ("hands", "sets of hands in one stud", "{:.0f}"),
+                               ("papercut_pct", "the papercuts as a share of the price, %", "{:.0f}"),
+                               ("papercut_domes", "the papercuts, in stem cells", "{:.0f}"),
+                               ("interest_domes", "the interest, in stem cells", "{:.1f}"),
+                               ("interest_pct_of_loan", "interest as a share of the loan, %", "{:.0f}"),
+                               ("loan_rate", "the loan's rate, %", "{:g}"), ("loan_years", "its years", "{:.0f}"),
+                               ("dome_lines", "lines on the stem cell's invoice", "{:.0f}"),
+                               ("dome_margin_pct", "its margin, %", "{:.0f}"),
+                               ("dome_floor", "its floor, sq ft", "{:.0f}"),
+                               ("dome_vs_site_pct", "the dome as a share of site-built, %", "{:.0f}"),
+                               ("dome_vs_mhs_pct", "the dome as a share of manufactured, %", "{:.0f}")):
+        add(f"staple.{key}", describe, (lambda k, fm: (lambda: fm.format(sf.facts()[k])))(key, fmt))
+    add("staple.worked_papercuts", "the papercuts, worked", lambda: chr(10).join(sf.steps_papercuts()))
+    add("staple.worked_interest", "the interest, worked", lambda: chr(10).join(sf.steps_interest()))
+    add("staple.worked_invoice", "the staple's invoice, worked", lambda: chr(10).join(sf.steps_staple()))
 
 
 def _clock_tokens(add) -> None:

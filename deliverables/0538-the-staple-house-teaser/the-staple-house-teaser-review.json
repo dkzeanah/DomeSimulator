@@ -1,0 +1,84 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T13:53:32.621864+00:00",
+  "lesson": "teaser_cabin_staple",
+  "title": "The Staple House: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "DOMESIM",
+      "narration": [
+        "What a dome should be."
+      ],
+      "start": 0.0,
+      "end": 6.0
+    },
+    {
+      "slug": "first",
+      "title": "A first home, not a last one",
+      "narration": [
+        "The eighteen-year-old."
+      ],
+      "start": 6.0,
+      "end": 12.0
+    },
+    {
+      "slug": "hands",
+      "title": "Fifteen sets of hands",
+      "narration": [
+        "Every stud's road to the wall."
+      ],
+      "start": 12.0,
+      "end": 18.0
+    },
+    {
+      "slug": "side",
+      "title": "Side by side",
+      "narration": [
+        "One scale, both bills."
+      ],
+      "start": 18.0,
+      "end": 24.0
+    },
+    {
+      "slug": "family",
+      "title": "A family event",
+      "narration": [
+        "Known, and added to for life."
+      ],
+      "start": 24.0,
+      "end": 30.0
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 30.0,
+      "end": 37.741791666666664
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 37.741791666666664,
+      "end": 44.059041666666666
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\0538-the-staple-house-teaser\\the-staple-house-teaser-myvoice-x1.5\\narration-plan.json",
+    "orientation": "landscape",
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T16:33:26.736985+00:00",
+  "lesson": "cabin_triangle_fill",
+  "title": "Closing the Triangle",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "Closing the triangle",
+      "narration": [
+        "The frame is done: three wedges round every triangle. Now close the middle, with the same wedges."
+      ],
+      "start": 0.0,
+      "end": 7.00425
+    },
+    {
+      "slug": "wedge",
+      "title": "One wedge",
+      "narration": [
+        "Here is one wedge, end on, three times life size. Its face is 4.59 inches wide. From the face to the point it is 5.54 inches deep. Deeper than it is wide."
+      ],
+      "start": 7.00425,
+      "end": 19.729041666666667
+    },
+    {
+      "slug": "pair",
+      "title": "A pair, points in",
+      "narration": [
+        "Now a pair. Turn the second one over so the points face each other, and lay the slants together. That's a solid block, and it reaches one depth down the triangle: 5.54 inches."
+      ],
+      "start": 19.729041666666667,
+      "end": 31.675041666666665
+    },
+    {
+      "slug": "slide",
+      "title": "Slide it to a bowtie",
+      "narration": [
+        "Slide one along the other's slant. The pair reaches further down, and opens in the middle. At the end only the points touch: a bowtie. It reaches 11.1 inches, and it's half air."
+      ],
+      "start": 31.675041666666665,
+      "end": 43.87383333333333
+    },
+    {
+      "slug": "nested",
+      "title": "Filled nested",
+      "narration": [
+        "Fill a triangle from its top corner down, nested. Each pair is as long as the triangle is wide where it lies. 9 pairs close it: 18 wedges, 51 feet."
+      ],
+      "start": 43.87383333333333,
+      "end": 55.278625
+    },
+    {
+      "slug": "bowtie",
+      "title": "Filled bowtie",
+      "narration": [
+        "The same triangle with bowtie pairs. Each one reaches twice as far, so 5 pairs close it: 10 wedges, 31 feet."
+      ],
+      "start": 55.278625,
+      "end": 64.86133333333333
+    },
+    {
+      "slug": "side",
+      "title": "Side by side",
+      "narration": [
+        "Side by side: the same opening, 51 feet of wedge nested, 31 as bowties."
+      ],
+      "start": 64.86133333333333,
+      "end": 71.43975
+    },
+    {
+      "slug": "dome",
+      "title": "Every triangle",
+      "narration": [
+        "Every triangle in the dome, laid the same way. Nested: 760 wedges, 2,166 feet. Bowtie: 420 wedges, 1,292 feet."
+      ],
+      "start": 71.43975,
+      "end": 83.99616666666667
+    },
+    {
+      "slug": "trees",
+      "title": "In trees",
+      "narration": [
+        "With the frame, the whole dome is 1,970 to 2,845 feet of wedge: 4.1 to 5.9 sixty foot pines of a foot across."
+      ],
+      "start": 83.99616666666667,
+      "end": 94.49958333333333
+    },
+    {
+      "slug": "correction",
+      "title": "What the first count got wrong",
+      "narration": [
+        "The first count divided the open area by the wedge's face width. Laying every pair, nested comes to 2,166 feet, not 2,235, and bowtie to 1,292, not 1,117. Lay it, don't divide it."
+      ],
+      "start": 94.49958333333333,
+      "end": 112.72229166666668
+    },
+    {
+      "slug": "dial",
+      "title": "The dial",
+      "narration": [
+        "The overlap is a dial. Nest them tight at the corners, where the loads gather. Open them in the middle, where a cavity holds insulation. A bowtie touching at its points alone doesn't keep the weather out, so test the joint before you trust the least number."
+      ],
+      "start": 112.72229166666668,
+      "end": 128.52283333333335
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 128.52283333333335,
+      "end": 143.39795833333335
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 143.39795833333335,
+      "end": 160.3910416666667
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\0558-closing-the-triangle\\closing-the-triangle-myvoice-x1.5\\narration-plan.json",
+    "orientation": "portrait",
+    "compose_segments": true,
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+0%",
+    "voice_pitch": "+0Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

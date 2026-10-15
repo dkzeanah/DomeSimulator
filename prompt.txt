@@ -4,3 +4,79 @@ $1500 per 1000 b oard feet lumber price as commodity
 compare the board feet gained for wedging wood compared to loss of standard milling of trunks boardfeet
 
 'weaker stick in bending' remove
+/
+'tanks of gas' remove this / metered saw usage
+
+
+
+
+py -3.12 -m project_agent sync      # build/refresh the knowledge base
+py -3.12 -m project_agent demo      # watch the whole chain prove itself
+py -3.12 -m project_agent           # chat REPL: agent> prompt
+
+
+
+https://youtu.be/1GHLEHCPM5s
+dome creator dome permutations
+
+
+produce film key=all_domes export=deliverables/masterclass/all-domes-every-permutation.mp4 size=1920x1080 fps=30 compose_segments=1 orientation=both voice_rate=+0% voice_pitch=+0Hz voice_volume=+0%
+
+
+
+
+
+
+you said new visual language is code you or i write. can you create a comprehensive account of all that is usable currently? say i wanted to create new things visually in code, how do i do this? its modular enough for me to do easily?
+
+
+
+create a section in local voice studio tab that allows me to render audio from a typed in text prompt using the voice the presentational videos are using. Say i copied the transcript of a youtube video, pasted it in. should output the audio file of it reading the transcript / and play it realtime in the gui. this way I can generate custom audio clips or add statements that can be used over existing dome footage, etc. ( not the local crude/voices ). a full tester - recorder, filelist, save-able, text input, etc all in the gui window for live testing.
+
+id also like the 'project-agent' to understand the codebase of everything so it could answer questions about how to do  certain things.
+how to add video elements? how many classes present total? how to change presenter voice and available choices, etc.
+
+id like to get the agent to where it COULD produce the film, and author it. possible to give it all of the already 'authored' language and how it works, so that it may learn from that and seek to 'duplicate' that pattern moving forward? how to make it where it could understand how to author video? or know the process good enough to have ollama produce output code that I can manually insert.
+
+qwen2.5-coder:7b deepseek-rl:7b qwen3-vl:4b granite3.2-vision:2b qwen3.5:4b embeddinggemma llama3.1 - these are ollama models i have access to. under the project-agent tab of the launcher, write a comprehensive 'knowledge of how to render / author new video elements' that I can manually paste into one of these ollama tools, have it give me the code i need to put into a new file somewhere ( stated in instructions to llm, read back when instructing in code comment), and usage details on how to use it, how to manually export a video with only it, etc. so i can manually see the process and how it works / how an llm (you) currently produces it.
+
+have each video render generate a youtube/facebook/x/instagram description / hashtag list paired with the video. produce also a thumbnail for each section within the video of its most 'active' renderings, points where the scene is most full, render that. every new video render should have the normal video output, the phone version video output, a description output, a folder with thumbnails output (so i can choose a thumbnail when I upload it to certain platforms).
+
+
+all-domes-every-permutation-vertical displays the first 3 or 12, but then keeps showing the labels for subsequent domes coming on screen, however, they are all blocked / not showing the dome, just a blue space same as background. can we make all 12 'carousel' one after the other taking up 1 place in the screen at any one time. make this fix in the vertical 'decision engine' to do it this way and moving forward for similar things.
+
+
+
+start working toward a dome-park ( like a trailer park), in a similar environment as 'dome creator'. make this into its own tool and into a video presentation meant to explain idea, persuade of benefits, and something i will upload to kickstarter.com, so develop the tool and video with that in mind. below are some narrative points / arguments to be made. a new tab (dome_park) which includes large 'pads' that fit a range of domes, and provide it with electrical and water hookup similar to an r.v. park. I envision homeowners / landowners creating these and allowing short-longterm leasing of the space for dome owners, eventually becoming a robust and full network.
+fit for the nomad. someone who needs to travel for work. wants to explore living in a new city, needs a change of scenery - pack up your home and move to a new pad location.
+no looking for dedicated buildings to rent, contracts to tie yourself to, not necessary to pay high premium costs that are associated with 'short-term' stays at or on a location.
+
+bring-your-own-home. People who host pads get paid, aren't burdened with home renovating from less that credulous renters destroying their asset. dome owners aren't beholden to a dedicated location / competition from pad owners provide great alternative options, price comparing, etc.
+
+think of it as something longer stay than a hotel/motel, longer more substantial than an air bnb.
+
+add in as points all of the cons of hosting an Airbnb / rental home that has to do with owning the infrastructure ( and how the 'pad' / 'dome' model allows for mutual benefit on both parties. the host doesnt worry about his stuff being ruined. The dome owner doesnt have to spend his money on renting something thats fundamentally never his and never will be. bring your own dome model means your more likely to take care of your stuff, and upgrades you make to your location directly influence you in the future timeframe. You can make edits to your house, with no consequence. 
+
+pad owners simply build circular decks, concrete pads, wooden 'acceptors' of a dome that - latches to the side / bottom of an existing dome. the pad provides the floor. within the pad, built into the floor, is electrical and water running centrally to a dome. pad owners essentially can sell their energy to tenants, water to tenants, based on a local meter of the resoivoire / battery bank, when/if applicable.
+
+some pads could include extras / different featuresets of stuff, for example, some might include built-in fridge, utility column (plumbing - toilet ,sink, showerhead, outlets, drain), 
+homeowner collects rental fee/portion of total energy and water bill w small 1-2cent markup maybe for managing the clericals of this endeavor.
+
+
+some dome pad locations could provide a central 'bathroom' / 'showerhouse' outhouse so thats one less thing dome owners need not worry about, but have known ways of mitigation / a system with that in mind.
+
+
+
+one thing I would do it have my dome pads built on rotational bases. every dome I would have them accept solar panels on its exterior, and solar track for optimum solar capture - which is used to take off of utility prices to the consumer of that space proportionally, etc.
+
+
+so a pad is essentially the foundation, the water and plumbing hookups, electrical hookups / extra amenities per hosts.
+owners need not worry about infrastructure degradation, dome owners need not worry about renting something that will never be theirs. both benefit greatly.
+I forsee a large, diverse network of these 2 types of people and their working relationship. I think this will be bigger than Airbnb. and that's why I'm bringing it to kickstarter.
+
+
+the domes I envision are modular, interchangeable panels, robust skeleton framework that does multiple things, fit on rotational / mechanical foundations, hang from cabling/trees, and are a 'lifetime' upgradable investment / a home that transforms over time, can be expanded and upgraded over time / bit by bit as necessary. a house that is built with growth in mind.
+
+thats why i think '1 hardware SET' could be the expensive part to this system, because it could be used in both a cheap dome, or a bigger more robust medium level dome, or even a large, exquisite dome. you pay for the part that remains throughout the iterations of the home most effectively.
+
+the domes I have in mind come with removable 'shells', allow for adding of layers over time (going on the top of the dome like a hat), and having the shell put back on. Say I add layers of quilted together recycled tshirts / recycled fabric ( which is a MASSIVE SOURCE OF WASTE ). well, 7 layers of quilted t-shirt layers, and i guarantee you, you will not think it to be a rudimentary concepts. When I was a sailor, I had to stand lookout on the front,back, and sides of the ship - outside the skin of the ship. When we went into the artic circle, and I dont have to tell you, it was cold. There was only one way to stay warm. layers ontop of layers ontop of layers, and then we would have a 'pumpkin suit' to go on top of all of that (wind breaking, 'water-tight' laye) - looked like the Michelin man, or bf Goodrich mascot. a marshmellow looking fatty with rolls, basically. I like that this concept can apply and integrate into my own dome - I can forever be increasing the r-value over time. why should it remain a stagnant number decided at construction-time? with a dome, it does not have to be, and its actually advantageous not to in this regard.

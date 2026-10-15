@@ -5,7 +5,7 @@ import { price, useBooks } from '../shop.js';
 const ACTION = {
   paid: (b) => (
     <Link className="button primary" to={`/${b.page || 'buy'}`}>
-      Buy the digital edition · {price(b.priceCents, b.currency)}
+      Buy the complete edition · {price(b.priceCents, b.currency)}
     </Link>
   ),
   amazon: (b) =>
@@ -29,7 +29,7 @@ export default function Books() {
       {error && <p className="error">{error}</p>}
       {!books && !error && <p className="muted">Loading…</p>}
       <div className="books">
-        {books?.map((book) => (
+        {books?.filter((book) => book.kind !== 'session').map((book) => (
           <article key={book.slug} className={`book ${book.featured ? 'featured' : ''}`}>
             <div className="book-head">
               {book.cover && <img className="book-cover" src={book.cover} alt={`Cover of ${book.title}`} width="720" height="931" loading="lazy" />}

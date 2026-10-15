@@ -55,7 +55,8 @@ def status() -> str:
             lines.append(f"    ch{chapter:>2}  {key:<38} {title[:30]}")
     else:
         lines.append(f"  all {len(figures.catalogue())} figures rendered")
-    pdf = ROOT / "deliverables" / "book" / "the-wedge-method-kdp.pdf"
+    import medialib
+    pdf = medialib.locate(ROOT / "deliverables" / "book" / "the-wedge-method-kdp.pdf")
     lines.append("")
     if pdf.is_file():
         lines.append(f"  KDP interior: {pdf.name}, "

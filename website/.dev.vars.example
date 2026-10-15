@@ -1,0 +1,16 @@
+# Copy to .dev.vars for `npm run preview` (wrangler pages dev). .dev.vars is gitignored.
+# In production these are set as encrypted secrets in the Cloudflare dashboard (SETUP.md).
+
+# 32+ random characters. Generate: node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+SESSION_SECRET=change-me-to-at-least-32-random-characters
+# Who gets the Admin page (comma-separated)
+ADMIN_EMAILS=you@example.com
+# Local stand-in for Stripe's checkout page. Never set this in production.
+TEST_CHECKOUT=1
+# Optional locally: real email through Resend
+# RESEND_API_KEY=
+# MAIL_FROM=Zeanah Lab <hello@zeanahlab.com>
+# Optional locally: Stripe test-mode keys
+# STRIPE_SECRET_KEY=
+# STRIPE_WEBHOOK_SECRET=
+PUBLIC_URL=http://127.0.0.1:8788

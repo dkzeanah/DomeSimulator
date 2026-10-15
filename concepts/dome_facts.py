@@ -26,6 +26,8 @@ def dome_facts() -> dict[str, tuple[float, str, str]]:
     tight = min(cf.seam_types(), key=lambda t: t.gap_deg)
     room = cf.room(tight)
     clock = systems.build_clock()
+    from two_v_demo import wedge_coverage_facts
+    cov = wedge_coverage_facts.facts()
     return {
         "dome_radius_ft": (g.radius_in / 12.0, "ft", "seed_world.geometry().radius_in"),
         "dome_floor_sqft": (g.floor_circle_sqft, "sq ft", "seed_world.geometry().floor_circle_sqft"),
@@ -45,6 +47,14 @@ def dome_facts() -> dict[str, tuple[float, str, str]]:
         "dome_rain_gal_per_inch": (water["gallons_per_inch"], "gal",
                                    "systems.water_comparison()['gallons_per_inch']"),
         "dome_work_hours": (clock["week"], "h", "systems.build_clock()['week']"),
+        # the wedge-coverage model (two_v_demo.wedge_coverage_facts): the frame and its faces
+        "dome_strut_long_in": (cov["long_in"], "in", "wedge_coverage_facts: the solver's long strut"),
+        "dome_strut_short_in": (cov["short_in"], "in", "wedge_coverage_facts: the solver's short strut"),
+        "dome_frame_wedge_ft": (cov["frame_nominal_ft"], "ft", "wedge_coverage_facts: 120 members, nominal"),
+        "dome_frame_cut_ft": (cov["frame_cut_ft"], "ft", "wedge_coverage_facts: 120 members as the solver cuts them"),
+        "dome_face_sqft": (cov["area_ft2"], "sq ft", "wedge_coverage_facts: the 40 triangles"),
+        "dome_open_sqft_12in": (cov["open_area_ft2_12"], "sq ft",
+                                "wedge_coverage_facts: the triangles less the frame's strip, 12 in log"),
     }
 
 

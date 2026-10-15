@@ -690,7 +690,9 @@ def facts() -> dict:
 
 def constants_table() -> str:
     width = max(len(k) for k in CONSTANTS)
-    return "\n".join(f"{k:<{width}}  {c.value:>7g} {c.unit:<10} {c.why}" for k, c in CONSTANTS.items())
+    # Two spaces before the reason, always: a unit that fills its column
+    # ("directions") must not run into the sentence after it.
+    return "\n".join(f"{k:<{width}}  {c.value:>7g} {c.unit:<10}  {c.why}" for k, c in CONSTANTS.items())
 
 
 # ----------------------------------------------------------------------

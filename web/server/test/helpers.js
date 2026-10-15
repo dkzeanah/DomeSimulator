@@ -18,7 +18,8 @@ fs.writeFileSync(path.join(books, 'books.json'), JSON.stringify({
   books: [
     { slug: 'test-book', title: 'Test Book', file: 'test-book.pdf', featured: true },
     { slug: 'missing-book', title: 'Not Printed Yet', file: 'nope.pdf' },
-    { slug: 'paid-book', title: 'Paid Book', file: 'paid-book.pdf', offer: 'paid', priceCents: 2000, currency: 'usd', page: 'buy' },
+    { slug: 'paid-book', title: 'Paid Book', file: 'paid-book.pdf', offer: 'paid', priceCents: 2000, currency: 'usd', page: 'buy', codebaseUrl: 'https://example.com/code' },
+    { slug: 'design-session', title: 'One-on-one design session', kind: 'session', offer: 'paid', priceCents: 5000, currency: 'usd', page: 'buy', bookingNote: 'We will email you to book it.' },
     { slug: 'kdp-book', title: 'Print Book', file: 'kdp-book.pdf', offer: 'amazon' },
     { slug: 'hidden-book', title: 'Hidden Book', file: 'test-book.pdf', offer: 'none' },
   ],

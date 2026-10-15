@@ -13,7 +13,7 @@ import { z } from 'zod';
 import { config } from '../config.js';
 import { iso, nowIso } from '../db.js';
 import { normaliseEmail, requireUser } from '../lib/auth.js';
-import { loadCatalogue, offerOf, priceOf, resolveBook } from '../lib/books.js';
+import { isSession, loadCatalogue, offerOf, priceOf, resolveBook } from '../lib/books.js';
 import { httpError, parse, route } from '../lib/http.js';
 import { createCheckoutSession, retrieveCheckoutSession, verifyStripeSignature } from '../lib/payments.js';
 import { recordSignup, sendPdf, upsertSubscriber } from './leads.js';
@@ -61,9 +61,14 @@ function publicOrder(order, book, key) {
     createdAt: iso(order.created_at),
     paidAt: iso(order.paid_at),
     book: book
-      ? { slug: book.slug, title: book.title, subtitle: book.subtitle || '', cover: book.cover || '' }
-      : { slug: order.book_slug, title: order.book_slug, subtitle: '', cover: '' },
-    downloadUrl: paid ? `/api/orders/${order.ref}/download${query}` : null,
+      ? { slug: book.slug, title: book.title, subtitle: book.subtitle || '', cover: book.cover || '',
+          kind: isSession(book) ? 'session' : 'book' }
+      : { slug: order.book_slug, title: order.book_slug, subtitle: '', cover: '', kind: 'book' },
+    downloadUrl: paid && !isSession(book) ? `/api/orders/${order.ref}/download${query}` : null,
+    // What comes with a paid order besides the PDF: the codebase link for the
+    // complete edition, the booking note for a session.
+    codebaseUrl: paid && book?.codebaseUrl ? book.codebaseUrl : '',
+    bookingNote: paid && isSession(book) ? book.bookingNote || '' : '',
     test: order.provider === 'test',
   };
 }
@@ -104,7 +109,7 @@ export function storeRoutes(db) {
     const body = parse(checkoutSchema, req.body);
     const book = findBook(body.book);
     const price = book && priceOf(book);
-    if (!price || !resolveBook(book)) throw httpError(404, 'That book is not for sale right now.');
+    if (!price || (!isSession(book) && !resolveBook(book))) throw httpError(404, 'That book is not for sale right now.');
     const mode = checkoutMode();
     if (!mode) throw httpError(503, 'The shop opens soon. Leave your email on the sample page and you will hear first.');
 
@@ -174,6 +179,7 @@ export function storeRoutes(db) {
     const { order } = await loadOrder(req);
     if (order.status !== 'paid') throw httpError(402, 'This order has not been paid yet.');
     const book = findBook(order.book_slug);
+    if (isSession(book)) throw httpError(404, 'A design session has no download; its order page says how to book it.');
     const file = book && resolveBook(book);
     if (!file) throw httpError(404, 'The book file is missing. Please get in touch and it will be sent to you.');
     if (req.method === 'GET') {

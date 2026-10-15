@@ -1,4 +1,4 @@
-"""The arithmetic behind *Geodesic Dome Wedge Method* -- *The 40 Hour Cabin: 3 Trees*.
+"""The arithmetic behind *The 40 Hour Cabin: 2V Geodesic Dome Wedge Method*.
 
 Every number the book prints comes from here, and everything here comes from
 geometry that already exists in this repository -- :mod:`wedge_geometry` for
@@ -82,10 +82,13 @@ DECLARED: tuple[Declared, ...] = (
     Declared("build_days", 14.0, "days", "decided",
              "The fortnight the story covers: fell to standing frame."),
     Declared("cutting_afternoon_struts", 30.0, "struts", "measured",
-             "Struts ripped in one six-hour afternoon once the method was "
-             "settled. One observation, not an average."),
-    Declared("cutting_afternoon_hours", 6.0, "hours", "measured",
-             "Length of that afternoon."),
+             "Struts ripped in one measured session at the log, once the "
+             "method was settled. One observation, not an average -- the "
+             "same session the companion book's forty-hour clock prints."),
+    Declared("cutting_afternoon_hours", 4.0, "hours", "measured",
+             "Length of that session. Kept equal to the companion clock's "
+             "measured session so this book and the Complete Edition cannot "
+             "quote two different ripping rates."),
     Declared("gasket_thickness_in", 0.75, "in", "decided",
              "Key, spline or hose between neighbouring panels. A build "
              "choice: change it and every member length moves."),
@@ -658,7 +661,7 @@ BOOK_TREE = TreeCutPlan(
     section_length_ft=6.0,
 )
 """The tree the book is written around: eight six-foot sections, sixty-four
-struts. Two of them is 128 struts for a frame that needs 120."""
+struts. Three of them is 192 struts for a frame that needs 120."""
 
 
 @dataclass(frozen=True)

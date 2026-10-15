@@ -2,7 +2,7 @@
 
 The outline in :mod:`book` says what the book *should* contain.  This module
 is about what has actually been written: one Markdown file per chapter under
-``book/manuscript/``, each with a small front-matter block recording its
+``books/two-trees/manuscript/``, each with a small front-matter block recording its
 status, plus the machinery to scaffold missing files, count what is done, and
 export the lot with every live number filled in.
 

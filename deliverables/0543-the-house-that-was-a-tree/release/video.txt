@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\0543-the-house-that-was-a-tree\the-house-that-was-a-tree.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\0543-the-house-that-was-a-tree\the-house-that-was-a-tree-vertical.mp4

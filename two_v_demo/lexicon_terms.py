@@ -23,6 +23,17 @@ def _t(key, name, category, define, aliases=(), visual="", icon="", figures=(),
 
 
 TERMS: tuple[Term, ...] = (
+    _t("coverage pitch", "Continuous coverage pitch", "geometry",
+       """The distance a repeated pair advances across a panel while covering
+       the required face continuously. It is measured on the installed profile,
+       not inferred from the pair's overall span.""",
+       scene="cabin_every_piece:pair_budget", see=("wedge", "panel")),
+    _t("blank reserve", "Frame blank reserve", "wood",
+       """The uncut stock reserved before a member is shortened or fitted.
+       The reference reserves {{wm.gross_frame_ft}} feet of wedge blanks;
+       finished framing and reusable offcuts are accounted separately.""",
+       figures=("wm.gross_frame_ft", "wm.frame_trunk_ft"),
+       scene="cabin_every_piece:frame_footage", see=("offcut", "trunk")),
     # ------------------------------------------------------------ the tree
     _t("tree", "Tree", "wood",
        """A standing pine: the raw material of the whole method. The book's tree

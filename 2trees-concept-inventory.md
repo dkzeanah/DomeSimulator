@@ -227,14 +227,14 @@ Key plates by subject (full list in `domology/plates.py`):
 - **`deliverables/figures/`** — `2v-72in-ring-levels.png`.
 
 ### C.5 Hero images / covers / key diagrams (repo root)
-- **Book covers:** `Book_Cover.jpg`, `Book_Cover_final.png`, `Book-Cover-Final(-2/3/4).png`, `book-cover-asyma.png`, `Book-Cover-Final2.png`.
-- **Campaign art:** `Frankendome-kickstarter.png`, `FrankenDomeCover.jpg`.
-- **Key diagrams:** `channel.png` (the channel/seam), `rings-render.png`, `2v_dome_joinery_options_guide.png` (joinery options guide), `dome1.png`, `seam.png`, `wedges-edges.png`.
-- **AI cover candidates:** 12 `Gemini_Generated_Image_*.jpg`, 8 `ChatGPT Image *.png`, 1 Codex image, 1 `Gemini_Generated_Image.jpeg` (dated 2026-09-20→27).
+- **Book covers:** `assets/images/covers/the-40-hour-cabin-timberframe-cover.jpg`, `assets/images/covers/wedge-method-cover-v4.png`, `assets/images/covers/wedge-method-cover-v*.png`, `assets/images/covers/wedge-method-cover-v9.png`, `assets/images/covers/wedge-method-cover-v3.png`.
+- **Campaign art:** `assets/images/promo/frankendome-interior-cutaway.png`, `assets/images/promo/frankendome-party-banner-v2.jpg`.
+- **Key diagrams:** `assets/images/infographics/seam-module-channel.png` (the channel/seam), `assets/images/diagrams/2v-hemisphere-ring-heights.png`, `assets/images/diagrams/2v-dome-joinery-options.png` (joinery options guide), `assets/images/photos/dome-model-photo.png`, `assets/images/diagrams/seam-key-cross-section.png`, `assets/images/diagrams/wedge-pair-edge-arrangements.png`.
+- **Cover candidates and art:** now in `assets/images/` under descriptive names; `py -3.12 -m assetlib` lists them with where each came from.
 
 ### C.6 Videos (for a "films that go with each chapter" appendix)
 - **~225 `.mp4` total.** Masterclass (`masterclass/`) = **76 finished films** (landscape + phone cuts); `teasers/` = **78 short teasers**; `presenter/` = **13 `dome_case_*` clips**; `launcher_trailer/` = 2; `byod(+deepseek/styled)/` = **10 "bring your own dome" exports**; `tree-value-video/` = 1 main + 26 chapter clips.
-- **Root exports:** `2v-masterclass.mp4`, `testo.mp4`, `ks-gemini.mp4`, `Stem_cell_dome_campaign_i.mp4` (+dup), `Create_a_highly_detailed_anima.mp4`, `2v-masterclass-silent-backup.mp4`.
+- **Root exports:** `2v-masterclass.mp4`, `testo.mp4`, `assets/video/clips/utility-core-column-interior.mp4`, `assets/video/clips/brick-dome-crane-lift.mp4` (+dup), `assets/video/clips/chainsaw-mill-rig-exploded.mp4`, `2v-masterclass-silent-backup.mp4`.
 - **`deliverables/` root:** `the-seam-does-four-jobs.mp4` (+ `-vertical`), `.m4a`, `.srt`.
 
 ---

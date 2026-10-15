@@ -1,0 +1,35 @@
+{
+  "_generated_by": "scripts/sample_snippets.py from the-40-hour-cabin-sample-v5.pdf",
+  "pages": [
+    {
+      "src": "/img/sample/sample-page-01.jpg",
+      "page": 1,
+      "caption": "The cover"
+    },
+    {
+      "src": "/img/sample/sample-page-02.jpg",
+      "page": 2,
+      "caption": "What the book is, in its own numbers"
+    },
+    {
+      "src": "/img/sample/sample-page-05.jpg",
+      "page": 5,
+      "caption": "Chapter 1: Your Skull Is Not Symmetrical Either"
+    },
+    {
+      "src": "/img/sample/sample-page-09.jpg",
+      "page": 9,
+      "caption": "Chapter 2: Water Is the Silent Killer"
+    },
+    {
+      "src": "/img/sample/sample-page-15.jpg",
+      "page": 15,
+      "caption": "Chapter 13: Stop Squaring. Start Splitting."
+    },
+    {
+      "src": "/img/sample/sample-page-19.jpg",
+      "page": 19,
+      "caption": "The whole book: every part and chapter"
+    }
+  ]
+}

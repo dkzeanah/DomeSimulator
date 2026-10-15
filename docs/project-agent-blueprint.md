@@ -121,7 +121,7 @@ tokens, not a fine-tune.
 Each tool is a small Python function the agent's runtime exposes as a
 function-calling schema. Writes are confined to **authoring paths only**
 (`two_v_demo/<key>_facts.py`, `lesson_<key>.py`, `presentations/`,
-`book/manuscript/`, `exports/`, a new `project_agent/` package); the
+`books/two-trees/manuscript/`, `exports/`, a new `project_agent/` package); the
 engine code is read-only, and rendered output stays append-only because
 the repo enforces it (`next_version_path`).
 

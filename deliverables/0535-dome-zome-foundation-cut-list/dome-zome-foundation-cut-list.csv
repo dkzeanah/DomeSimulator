@@ -1,0 +1,299 @@
+layer,piece,name,length_in,width_in,depth_in,board_feet
+foundation,F01,Frame side 1,240.0,12.0,6.0,91.22
+foundation,F02,Frame side 2,240.0,12.0,6.0,91.22
+foundation,F03.a.a.a.a,Frame side 3 (a) (a) (a) (a),60.01,12.0,6.1,22.32
+foundation,F03.a.a.a.b.b,Frame side 3 (a) (a) (a) (b) (b),12.0,6.0,0.24,0.09
+foundation,F03.a.a.b,Frame side 3 (a) (a) (b),42.0,12.0,6.0,16.31
+foundation,F03.a.b.b,Frame side 3 (a) (b) (b),12.0,6.0,6.0,2.33
+foundation,F03.b,Frame side 3 (b),90.0,12.0,6.07,33.96
+foundation,F04,Frame side 4,240.0,12.0,6.0,91.22
+foundation,F05,Frame side 5,240.0,12.0,6.0,91.22
+foundation,F06,Star 1,141.28,12.0,6.48,53.14
+foundation,F07,Star 2,91.67,12.0,6.0,34.56
+foundation,F08,Star 3,141.28,12.0,6.48,53.14
+foundation,F09,Star 4,141.28,12.0,6.46,53.14
+foundation,F10,Star 5,91.67,12.0,6.02,34.56
+foundation,F11,Star 6,141.28,12.0,6.48,53.14
+foundation,F12,Star 7,141.28,12.0,6.48,53.14
+foundation,F13,Star 8,91.67,12.0,6.0,34.56
+foundation,F14,Star 9,141.28,12.0,6.48,53.14
+foundation,F15,Star 10,141.28,12.0,6.48,53.14
+foundation,F16,Star 11,91.67,12.0,6.0,34.56
+foundation,F17,Star 12,141.28,12.0,6.48,53.14
+foundation,F18,Star 13,141.28,12.0,6.48,53.14
+foundation,F19,Star 14,91.67,12.0,6.02,34.56
+foundation,F20,Star 15,141.28,12.0,6.46,53.14
+foundation,F21,Pier 1 21,12.0,12.0,6.0,4.64
+foundation,F22,Pier 2 22,12.0,12.0,6.0,4.64
+foundation,F23,Pier 3 23,12.0,12.0,6.0,4.64
+foundation,F24,Pier 4 24,12.0,12.0,6.0,4.64
+foundation,F25,Pier 5 25,12.0,12.0,6.0,4.64
+foundation,F26,Pier 6 26,12.0,12.0,6.0,4.64
+foundation,F27,Pier 7 27,12.0,12.0,6.0,4.64
+foundation,F28,Pier 8 28,12.0,12.0,6.0,4.64
+foundation,F29,Pier 9 29,12.0,12.0,6.0,4.64
+foundation,F30,Pier 10 30,12.0,12.0,6.0,4.64
+dome,D001,member WOOD_P001_E0 (B),62.27,4.17,3.07,0.27
+dome,D002,member WOOD_P001_E1 (A),70.79,4.17,3.06,0.63
+dome,D003,member WOOD_P001_E2 (B),63.01,4.17,3.07,0.04
+dome,D004,member WOOD_P002_E0 (A),70.79,4.16,3.06,0.06
+dome,D005,member WOOD_P002_E1 (B),63.01,4.17,3.07,0.5
+dome,D006,member WOOD_P002_E2 (B),62.27,4.17,3.07,0.23
+dome,D007,member WOOD_P003_E0 (B),63.01,4.17,3.07,0.01
+dome,D008,member WOOD_P003_E1 (B),62.27,4.17,3.07,0.71
+dome,D009,member WOOD_P003_E2 (A),70.79,4.16,3.06,0.06
+dome,D010,member WOOD_P004_E0 (A),70.71,4.16,3.06,0.26
+dome,D011,member WOOD_P004_E1 (A),70.71,4.16,3.06,0.29
+dome,D012,member WOOD_P004_E2 (A),70.71,4.16,3.06,0.29
+dome,D013,member WOOD_P005_E0 (B),62.27,4.17,3.07,0.27
+dome,D014,member WOOD_P005_E1 (A),70.79,4.17,3.06,0.63
+dome,D015,member WOOD_P005_E2 (B),63.01,4.17,3.07,0.04
+dome,D016,member WOOD_P006_E0 (A),70.79,4.16,3.06,0.06
+dome,D017,member WOOD_P006_E1 (B),63.01,4.17,3.07,0.5
+dome,D018,member WOOD_P006_E2 (B),62.27,4.17,3.07,0.23
+dome,D019,member WOOD_P007_E0 (B),63.01,4.17,3.07,0.01
+dome,D020,member WOOD_P007_E1 (B),62.27,4.17,3.07,0.71
+dome,D021,member WOOD_P007_E2 (A),70.79,4.16,3.06,0.06
+dome,D022,member WOOD_P008_E0 (A),70.71,4.16,3.06,0.26
+dome,D023,member WOOD_P008_E1 (A),70.71,4.16,3.06,0.29
+dome,D024,member WOOD_P008_E2 (A),70.71,4.16,3.06,0.29
+dome,D025,member WOOD_P009_E0 (B),62.27,4.17,3.07,0.27
+dome,D026,member WOOD_P009_E1 (A),70.79,4.17,3.06,0.63
+dome,D027,member WOOD_P009_E2 (B),63.01,4.17,3.07,0.04
+dome,D028,member WOOD_P010_E0 (A),70.79,4.16,3.06,0.06
+dome,D029,member WOOD_P010_E1 (B),63.01,4.17,3.07,0.5
+dome,D030,member WOOD_P010_E2 (B),62.27,4.17,3.07,0.23
+dome,D031,member WOOD_P011_E0 (B),63.01,4.17,3.07,0.01
+dome,D032,member WOOD_P011_E1 (B),62.27,4.17,3.07,0.71
+dome,D033,member WOOD_P011_E2 (A),70.79,4.16,3.06,0.06
+dome,D034,member WOOD_P012_E0 (A),70.71,4.16,3.06,0.26
+dome,D035,member WOOD_P012_E1 (A),70.71,4.16,3.06,0.29
+dome,D036,member WOOD_P012_E2 (A),70.71,4.16,3.06,0.29
+dome,D037,member WOOD_P013_E0 (B),62.27,4.17,3.07,0.27
+dome,D038,member WOOD_P013_E1 (A),70.79,4.17,3.06,0.63
+dome,D039,member WOOD_P013_E2 (B),63.01,4.17,3.07,0.04
+dome,D040,member WOOD_P014_E0 (A),70.79,4.16,3.06,0.06
+dome,D041,member WOOD_P014_E1 (B),63.01,4.17,3.07,0.5
+dome,D042,member WOOD_P014_E2 (B),62.27,4.17,3.07,0.23
+dome,D043,member WOOD_P015_E0 (B),63.01,4.17,3.07,0.01
+dome,D044,member WOOD_P015_E1 (B),62.27,4.17,3.07,0.71
+dome,D045,member WOOD_P015_E2 (A),70.79,4.16,3.06,0.06
+dome,D046,member WOOD_P016_E0 (A),70.71,4.16,3.06,0.26
+dome,D047,member WOOD_P016_E1 (A),70.71,4.16,3.06,0.29
+dome,D048,member WOOD_P016_E2 (A),70.71,4.16,3.06,0.29
+dome,D049,member WOOD_P017_E0 (B),62.27,4.17,3.07,0.27
+dome,D050,member WOOD_P017_E1 (A),70.79,4.17,3.06,0.63
+dome,D051,member WOOD_P017_E2 (B),63.01,4.17,3.07,0.04
+dome,D052,member WOOD_P018_E0 (A),70.79,4.16,3.06,0.06
+dome,D053,member WOOD_P018_E1 (B),63.01,4.17,3.07,0.5
+dome,D054,member WOOD_P018_E2 (B),62.27,4.17,3.07,0.23
+dome,D055,member WOOD_P019_E0 (B),63.01,4.17,3.07,0.01
+dome,D056,member WOOD_P019_E1 (B),62.27,4.17,3.07,0.71
+dome,D057,member WOOD_P019_E2 (A),70.79,4.16,3.06,0.06
+dome,D058,member WOOD_P020_E0 (A),70.71,4.16,3.06,0.26
+dome,D059,member WOOD_P020_E1 (A),70.71,4.16,3.06,0.29
+dome,D060,member WOOD_P020_E2 (A),70.71,4.16,3.06,0.29
+dome,D061,member WOOD_P021_E0 (B),62.27,4.17,3.07,0.31
+dome,D062,member WOOD_P021_E1 (A),70.79,4.17,3.06,0.53
+dome,D063,member WOOD_P021_E2 (B),63.01,4.17,3.07,0.27
+dome,D064,member WOOD_P022_E0 (B),63.01,4.16,3.07,0.52
+dome,D065,member WOOD_P022_E1 (B),62.27,4.17,3.07,0.48
+dome,D066,member WOOD_P022_E2 (A),70.79,4.17,3.06,0.53
+dome,D067,member WOOD_P023_E0 (A),70.71,4.16,3.06,0.35
+dome,D068,member WOOD_P023_E1 (A),70.03,4.16,3.06,0.34
+dome,D069,member WOOD_P023_E2 (A),70.03,4.16,3.06,0.57
+dome,D070,member WOOD_P024_E0 (B),61.56,4.17,3.07,0.15
+dome,D071,member WOOD_P024_E1 (A),69.99,4.17,3.06,0.93
+dome,D072,member WOOD_P024_E2 (B),63.01,4.16,3.07,0.36
+dome,D073,member WOOD_P025_E0 (B),62.27,4.17,3.07,0.31
+dome,D074,member WOOD_P025_E1 (A),70.79,4.17,3.06,0.53
+dome,D075,member WOOD_P025_E2 (B),63.01,4.17,3.07,0.27
+dome,D076,member WOOD_P026_E0 (B),63.01,4.16,3.07,0.52
+dome,D077,member WOOD_P026_E1 (B),62.27,4.17,3.07,0.48
+dome,D078,member WOOD_P026_E2 (A),70.79,4.17,3.06,0.53
+dome,D079,member WOOD_P027_E0 (A),70.71,4.16,3.06,0.35
+dome,D080,member WOOD_P027_E1 (A),70.03,4.16,3.06,0.34
+dome,D081,member WOOD_P027_E2 (A),70.03,4.16,3.06,0.57
+dome,D082,member WOOD_P028_E0 (B),61.56,4.17,3.07,0.15
+dome,D083,member WOOD_P028_E1 (A),69.99,4.17,3.06,0.93
+dome,D084,member WOOD_P028_E2 (B),63.01,4.16,3.07,0.36
+dome,D085,member WOOD_P029_E0 (B),62.27,4.17,3.07,0.31
+dome,D086,member WOOD_P029_E1 (A),70.79,4.17,3.06,0.53
+dome,D087,member WOOD_P029_E2 (B),63.01,4.17,3.07,0.27
+dome,D088,member WOOD_P030_E0 (B),63.01,4.16,3.07,0.52
+dome,D089,member WOOD_P030_E1 (B),62.27,4.17,3.07,0.48
+dome,D090,member WOOD_P030_E2 (A),70.79,4.17,3.06,0.53
+dome,D091,member WOOD_P031_E0 (A),70.71,4.16,3.06,0.35
+dome,D092,member WOOD_P031_E1 (A),70.03,4.16,3.06,0.34
+dome,D093,member WOOD_P031_E2 (A),70.03,4.16,3.06,0.57
+dome,D094,member WOOD_P032_E0 (B),61.56,4.17,3.07,0.15
+dome,D095,member WOOD_P032_E1 (A),69.99,4.17,3.06,0.93
+dome,D096,member WOOD_P032_E2 (B),63.01,4.16,3.07,0.36
+dome,D097,member WOOD_P033_E0 (B),62.27,4.17,3.07,0.31
+dome,D098,member WOOD_P033_E1 (A),70.79,4.17,3.06,0.53
+dome,D099,member WOOD_P033_E2 (B),63.01,4.17,3.07,0.27
+dome,D100,member WOOD_P034_E0 (B),63.01,4.16,3.07,0.52
+dome,D101,member WOOD_P034_E1 (B),62.27,4.17,3.07,0.48
+dome,D102,member WOOD_P034_E2 (A),70.79,4.17,3.06,0.53
+dome,D103,member WOOD_P035_E0 (A),70.71,4.16,3.06,0.35
+dome,D104,member WOOD_P035_E1 (A),70.03,4.16,3.06,0.34
+dome,D105,member WOOD_P035_E2 (A),70.03,4.16,3.06,0.57
+dome,D106,member WOOD_P036_E0 (B),61.56,4.17,3.07,0.15
+dome,D107,member WOOD_P036_E1 (A),69.99,4.17,3.06,0.93
+dome,D108,member WOOD_P036_E2 (B),63.01,4.16,3.07,0.36
+dome,D109,member WOOD_P037_E0 (B),62.27,4.17,3.07,0.31
+dome,D110,member WOOD_P037_E1 (A),70.79,4.17,3.06,0.53
+dome,D111,member WOOD_P037_E2 (B),63.01,4.17,3.07,0.27
+dome,D112,member WOOD_P038_E0 (B),63.01,4.16,3.07,0.52
+dome,D113,member WOOD_P038_E1 (B),62.27,4.17,3.07,0.48
+dome,D114,member WOOD_P038_E2 (A),70.79,4.17,3.06,0.53
+dome,D115,member WOOD_P039_E0 (A),70.71,4.16,3.06,0.35
+dome,D116,member WOOD_P039_E1 (A),70.03,4.16,3.06,0.34
+dome,D117,member WOOD_P039_E2 (A),70.03,4.16,3.06,0.57
+dome,D118,member WOOD_P040_E0 (B),61.56,4.17,3.07,0.15
+dome,D119,member WOOD_P040_E1 (A),69.99,4.17,3.06,0.93
+dome,D120,member WOOD_P040_E2 (B),63.01,4.16,3.07,0.36
+zome,Z01A,row 1 panel 1 stick 1,34.97,5.93,4.86,2.14
+zome,Z01B,row 1 panel 1 stick 2,34.97,5.93,4.86,2.14
+zome,Z01C,row 1 panel 1 stick 3,34.97,5.93,4.86,2.14
+zome,Z01D,row 1 panel 1 stick 4,34.97,5.93,4.86,2.14
+zome,Z02A,row 2 panel 2 stick 1,34.19,5.59,4.52,2.39
+zome,Z02B,row 2 panel 2 stick 2,34.19,5.59,4.52,2.39
+zome,Z02C,row 2 panel 2 stick 3,34.19,5.59,4.52,2.39
+zome,Z02D,row 2 panel 2 stick 4,34.19,5.59,4.52,2.39
+zome,Z03A,row 3 panel 3 stick 1,33.37,5.52,4.33,2.44
+zome,Z03B,row 3 panel 3 stick 2,33.37,5.52,4.33,2.44
+zome,Z03C,row 3 panel 3 stick 3,33.37,5.52,4.33,2.44
+zome,Z03D,row 3 panel 3 stick 4,33.37,5.52,4.33,2.44
+zome,Z04A,row 4 panel 4 stick 1,33.86,5.55,4.43,2.42
+zome,Z04B,row 4 panel 4 stick 2,33.86,5.55,4.43,2.42
+zome,Z04C,row 4 panel 4 stick 3,33.86,5.55,4.43,2.42
+zome,Z04D,row 4 panel 4 stick 4,33.86,5.55,4.43,2.42
+zome,Z05A,row 4 panel 5 stick 1,33.86,5.55,4.43,2.42
+zome,Z05B,row 4 panel 5 stick 2,33.86,5.55,4.43,2.42
+zome,Z05C,row 4 panel 5 stick 3,33.86,5.55,4.43,2.42
+zome,Z05D,row 4 panel 5 stick 4,33.86,5.55,4.43,2.42
+zome,Z06A,row 3 panel 6 stick 1,33.37,5.52,4.33,2.44
+zome,Z06B,row 3 panel 6 stick 2,33.37,5.52,4.33,2.44
+zome,Z06C,row 3 panel 6 stick 3,33.37,5.52,4.33,2.44
+zome,Z06D,row 3 panel 6 stick 4,33.37,5.52,4.33,2.44
+zome,Z07A,row 2 panel 7 stick 1,34.19,5.59,4.52,2.39
+zome,Z07B,row 2 panel 7 stick 2,34.19,5.59,4.52,2.39
+zome,Z07C,row 2 panel 7 stick 3,34.19,5.59,4.52,2.39
+zome,Z07D,row 2 panel 7 stick 4,34.19,5.59,4.52,2.39
+zome,Z08A,row 1 panel 8 stick 1,34.97,5.93,4.86,2.14
+zome,Z08B,row 1 panel 8 stick 2,34.97,5.93,4.86,2.14
+zome,Z08C,row 1 panel 8 stick 3,34.97,5.93,4.86,2.14
+zome,Z08D,row 1 panel 8 stick 4,34.97,5.93,4.86,2.14
+zome,Z09A,row 1 panel 9 stick 1,34.97,5.93,4.86,2.14
+zome,Z09B,row 1 panel 9 stick 2,34.97,5.93,4.86,2.14
+zome,Z09C,row 1 panel 9 stick 3,34.97,5.93,4.86,2.14
+zome,Z09D,row 1 panel 9 stick 4,34.97,5.93,4.86,2.14
+zome,Z10A,row 2 panel 10 stick 1,34.19,5.59,4.52,2.39
+zome,Z10B,row 2 panel 10 stick 2,34.19,5.59,4.52,2.39
+zome,Z10C,row 2 panel 10 stick 3,34.19,5.59,4.52,2.39
+zome,Z10D,row 2 panel 10 stick 4,34.19,5.59,4.52,2.39
+zome,Z11A,row 3 panel 11 stick 1,33.37,5.52,4.33,2.44
+zome,Z11B,row 3 panel 11 stick 2,33.37,5.52,4.33,2.44
+zome,Z11C,row 3 panel 11 stick 3,33.37,5.52,4.33,2.44
+zome,Z11D,row 3 panel 11 stick 4,33.37,5.52,4.33,2.44
+zome,Z12A,row 4 panel 12 stick 1,33.86,5.55,4.43,2.42
+zome,Z12B,row 4 panel 12 stick 2,33.86,5.55,4.43,2.42
+zome,Z12C,row 4 panel 12 stick 3,33.86,5.55,4.43,2.42
+zome,Z12D,row 4 panel 12 stick 4,33.86,5.55,4.43,2.42
+zome,Z13A,row 4 panel 13 stick 1,33.86,5.55,4.43,2.42
+zome,Z13B,row 4 panel 13 stick 2,33.86,5.55,4.43,2.42
+zome,Z13C,row 4 panel 13 stick 3,33.86,5.55,4.43,2.42
+zome,Z13D,row 4 panel 13 stick 4,33.86,5.55,4.43,2.42
+zome,Z14A,row 3 panel 14 stick 1,33.37,5.52,4.33,2.44
+zome,Z14B,row 3 panel 14 stick 2,33.37,5.52,4.33,2.44
+zome,Z14C,row 3 panel 14 stick 3,33.37,5.52,4.33,2.44
+zome,Z14D,row 3 panel 14 stick 4,33.37,5.52,4.33,2.44
+zome,Z15A,row 2 panel 15 stick 1,34.19,5.59,4.52,2.39
+zome,Z15B,row 2 panel 15 stick 2,34.19,5.59,4.52,2.39
+zome,Z15C,row 2 panel 15 stick 3,34.19,5.59,4.52,2.39
+zome,Z15D,row 2 panel 15 stick 4,34.19,5.59,4.52,2.39
+zome,Z16A,row 1 panel 16 stick 1,34.97,5.93,4.86,2.14
+zome,Z16B,row 1 panel 16 stick 2,34.97,5.93,4.86,2.14
+zome,Z16C,row 1 panel 16 stick 3,34.97,5.93,4.86,2.14
+zome,Z16D,row 1 panel 16 stick 4,34.97,5.93,4.86,2.14
+zome,Z17A,row 2 panel 17 stick 1,34.19,5.59,4.52,2.39
+zome,Z17B,row 2 panel 17 stick 2,34.19,5.59,4.52,2.39
+zome,Z17C,row 2 panel 17 stick 3,34.19,5.59,4.52,2.39
+zome,Z17D,row 2 panel 17 stick 4,34.19,5.59,4.52,2.39
+zome,Z18A,row 3 panel 18 stick 1,33.37,5.52,4.33,2.44
+zome,Z18B,row 3 panel 18 stick 2,33.37,5.52,4.33,2.44
+zome,Z18C,row 3 panel 18 stick 3,33.37,5.52,4.33,2.44
+zome,Z18D,row 3 panel 18 stick 4,33.37,5.52,4.33,2.44
+zome,Z19A,row 4 panel 19 stick 1,33.86,5.55,4.43,2.42
+zome,Z19B,row 4 panel 19 stick 2,33.86,5.55,4.43,2.42
+zome,Z19C,row 4 panel 19 stick 3,33.86,5.55,4.43,2.42
+zome,Z19D,row 4 panel 19 stick 4,33.86,5.55,4.43,2.42
+zome,Z20A,row 4 panel 20 stick 1,33.86,5.55,4.43,2.42
+zome,Z20B,row 4 panel 20 stick 2,33.86,5.55,4.43,2.42
+zome,Z20C,row 4 panel 20 stick 3,33.86,5.55,4.43,2.42
+zome,Z20D,row 4 panel 20 stick 4,33.86,5.55,4.43,2.42
+zome,Z21A,row 3 panel 21 stick 1,33.37,5.52,4.33,2.44
+zome,Z21B,row 3 panel 21 stick 2,33.37,5.52,4.33,2.44
+zome,Z21C,row 3 panel 21 stick 3,33.37,5.52,4.33,2.44
+zome,Z21D,row 3 panel 21 stick 4,33.37,5.52,4.33,2.44
+zome,Z22A,row 1 panel 22 stick 1,34.97,5.93,4.86,2.14
+zome,Z22B,row 1 panel 22 stick 2,34.97,5.93,4.86,2.14
+zome,Z22C,row 1 panel 22 stick 3,34.97,5.93,4.86,2.14
+zome,Z22D,row 1 panel 22 stick 4,34.97,5.93,4.86,2.14
+zome,Z23A,row 2 panel 23 stick 1,34.19,5.59,4.52,2.39
+zome,Z23B,row 2 panel 23 stick 2,34.19,5.59,4.52,2.39
+zome,Z23C,row 2 panel 23 stick 3,34.19,5.59,4.52,2.39
+zome,Z23D,row 2 panel 23 stick 4,34.19,5.59,4.52,2.39
+zome,Z24A,row 3 panel 24 stick 1,33.37,5.52,4.33,2.44
+zome,Z24B,row 3 panel 24 stick 2,33.37,5.52,4.33,2.44
+zome,Z24C,row 3 panel 24 stick 3,33.37,5.52,4.33,2.44
+zome,Z24D,row 3 panel 24 stick 4,33.37,5.52,4.33,2.44
+zome,Z25A,row 4 panel 25 stick 1,33.86,5.55,4.43,2.42
+zome,Z25B,row 4 panel 25 stick 2,33.86,5.55,4.43,2.42
+zome,Z25C,row 4 panel 25 stick 3,33.86,5.55,4.43,2.42
+zome,Z25D,row 4 panel 25 stick 4,33.86,5.55,4.43,2.42
+zome,Z26A,row 4 panel 26 stick 1,33.86,5.55,4.43,2.42
+zome,Z26B,row 4 panel 26 stick 2,33.86,5.55,4.43,2.42
+zome,Z26C,row 4 panel 26 stick 3,33.86,5.55,4.43,2.42
+zome,Z26D,row 4 panel 26 stick 4,33.86,5.55,4.43,2.42
+zome,Z27A,row 1 panel 27 stick 1,34.97,5.93,4.86,2.14
+zome,Z27B,row 1 panel 27 stick 2,34.97,5.93,4.86,2.14
+zome,Z27C,row 1 panel 27 stick 3,34.97,5.93,4.86,2.14
+zome,Z27D,row 1 panel 27 stick 4,34.97,5.93,4.86,2.14
+zome,Z28A,row 2 panel 28 stick 1,34.19,5.59,4.52,2.39
+zome,Z28B,row 2 panel 28 stick 2,34.19,5.59,4.52,2.39
+zome,Z28C,row 2 panel 28 stick 3,34.19,5.59,4.52,2.39
+zome,Z28D,row 2 panel 28 stick 4,34.19,5.59,4.52,2.39
+zome,Z29A,row 3 panel 29 stick 1,33.37,5.52,4.33,2.44
+zome,Z29B,row 3 panel 29 stick 2,33.37,5.52,4.33,2.44
+zome,Z29C,row 3 panel 29 stick 3,33.37,5.52,4.33,2.44
+zome,Z29D,row 3 panel 29 stick 4,33.37,5.52,4.33,2.44
+zome,Z30A,row 4 panel 30 stick 1,33.86,5.55,4.43,2.42
+zome,Z30B,row 4 panel 30 stick 2,33.86,5.55,4.43,2.42
+zome,Z30C,row 4 panel 30 stick 3,33.86,5.55,4.43,2.42
+zome,Z30D,row 4 panel 30 stick 4,33.86,5.55,4.43,2.42
+zome,Z31A,row 1 panel 31 stick 1,34.97,5.93,4.86,2.14
+zome,Z31B,row 1 panel 31 stick 2,34.97,5.93,4.86,2.14
+zome,Z31C,row 1 panel 31 stick 3,34.97,5.93,4.86,2.14
+zome,Z31D,row 1 panel 31 stick 4,34.97,5.93,4.86,2.14
+zome,Z32A,row 2 panel 32 stick 1,34.19,5.59,4.52,2.39
+zome,Z32B,row 2 panel 32 stick 2,34.19,5.59,4.52,2.39
+zome,Z32C,row 2 panel 32 stick 3,34.19,5.59,4.52,2.39
+zome,Z32D,row 2 panel 32 stick 4,34.19,5.59,4.52,2.39
+zome,Z33A,row 3 panel 33 stick 1,33.37,5.52,4.33,2.44
+zome,Z33B,row 3 panel 33 stick 2,33.37,5.52,4.33,2.44
+zome,Z33C,row 3 panel 33 stick 3,33.37,5.52,4.33,2.44
+zome,Z33D,row 3 panel 33 stick 4,33.37,5.52,4.33,2.44
+zome,Z34A,row 1 panel 34 stick 1,34.97,5.93,4.86,2.14
+zome,Z34B,row 1 panel 34 stick 2,34.97,5.93,4.86,2.14
+zome,Z34C,row 1 panel 34 stick 3,34.97,5.93,4.86,2.14
+zome,Z34D,row 1 panel 34 stick 4,34.97,5.93,4.86,2.14
+zome,Z35A,row 2 panel 35 stick 1,34.19,5.59,4.52,2.39
+zome,Z35B,row 2 panel 35 stick 2,34.19,5.59,4.52,2.39
+zome,Z35C,row 2 panel 35 stick 3,34.19,5.59,4.52,2.39
+zome,Z35D,row 2 panel 35 stick 4,34.19,5.59,4.52,2.39
+zome,Z36A,row 1 panel 36 stick 1,34.97,5.93,4.86,2.14
+zome,Z36B,row 1 panel 36 stick 2,34.97,5.93,4.86,2.14
+zome,Z36C,row 1 panel 36 stick 3,34.97,5.93,4.86,2.14
+zome,Z36D,row 1 panel 36 stick 4,34.97,5.93,4.86,2.14

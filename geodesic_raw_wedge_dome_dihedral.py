@@ -4564,31 +4564,42 @@ THE TWO ENDS ARE NOT THE SAME OPERATION
         self._refresh_hud(force=True)
 
     def export_all(self) -> None:
-        EXPORT_DIR.mkdir(exist_ok=True)
+        # Each export is its own numbered folder in the dated library (medialib):
+        # wedge-dome-export, then -v2, -v3 ... never written over the last one.
+        try:
+            import medialib
+            out = medialib.new_folder("wedge-dome-export")
+        except ImportError:                      # the file run on its own, outside the repo
+            out = EXPORT_DIR
+            out.mkdir(exist_ok=True)
         export_config = replace(self.config, panel_explode_in=0.0)
         export_model = build_physical_model(export_config)
         export_world = build_world_meshes(export_model)
 
-        export_bom(export_model, EXPORT_DIR / "dome_bom.csv")
+        export_bom(export_model, out / "dome_bom.csv")
         for name in ("wood", "head_overfit", "rigid", "hose", "nodes", "skins"):
             data = export_world.get(name)
             if isinstance(data, MeshData) and len(data.indices):
-                export_mesh_obj(data, EXPORT_DIR / f"{name}.obj", name)
+                export_mesh_obj(data, out / f"{name}.obj", name)
         for name in ("jig_wood", "jig_hangoff", "jig_head_overfit", "jig_fixture"):
             data = self.jig_cpu.get(name)
             if isinstance(data, MeshData) and len(data.indices):
-                export_mesh_obj(data, EXPORT_DIR / f"selected_{name}_P{self.jig_panel + 1:03d}.obj", name)
-        export_config.save(EXPORT_DIR / "dome_config.json")
-        export_fabrication_package(export_model, EXPORT_DIR / "fabrication_package")
-        print(f"Exported ASSEMBLED dome + fabrication package to: {EXPORT_DIR}")
+                export_mesh_obj(data, out / f"selected_{name}_P{self.jig_panel + 1:03d}.obj", name)
+        export_config.save(out / "dome_config.json")
+        export_fabrication_package(export_model, out / "fabrication_package")
+        print(f"Exported ASSEMBLED dome + fabrication package to: {out}")
         if self.config.panel_explode_in > 0.0:
             print("Note: panel explosion is visualization-only and was reset to 0 for exports.")
 
     def save_screenshot(self) -> None:
-        EXPORT_DIR.mkdir(exist_ok=True)
         raw = self.ctx.screen.read(components=3, alignment=1)
         image = pygame.image.fromstring(raw, (self.width, self.height), "RGB", True)
-        path = EXPORT_DIR / "dome_screenshot.png"
+        try:
+            import medialib
+            path = medialib.new_path("wedge-dome-screenshot.png")
+        except ImportError:
+            EXPORT_DIR.mkdir(exist_ok=True)
+            path = EXPORT_DIR / "dome_screenshot.png"
         pygame.image.save(image, path)
         print(f"Saved screenshot: {path}")
 

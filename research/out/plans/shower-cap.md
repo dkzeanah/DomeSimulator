@@ -79,6 +79,6 @@
 ## Where the material already is
 
 - `soft_shell.py`
-- `book_wedge/manuscript/19-a-dome-is-a-head-and-it-wears-hats.md`
+- `books/the-40-hour-cabin/manuscript/19-a-dome-is-a-head-and-it-wears-hats.md`
 
 *Craft notes are guidance, not measured statistics. Numbers in lines and titles come from the model's exported facts.*

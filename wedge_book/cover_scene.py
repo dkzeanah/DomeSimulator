@@ -44,7 +44,7 @@ from two_v_demo.render_kit import (SCENE_FRAGMENT_SHADER, SCENE_VERTEX_SHADER,
 
 from . import outline, print_edition
 
-OUT_DIR = outline.ROOT / "book_wedge" / "cover"
+OUT_DIR = outline.ROOT / "books/the-40-hour-cabin" / "cover"
 IN = 0.0254  # metres per inch
 
 # The front cover with bleed, at 300 DPI.

@@ -784,8 +784,8 @@
       }
     },
     "paperback": {
-      "title": "Geodesic Dome Wedge Method",
-      "subtitle": "The 40 Hour Cabin: 3 Trees",
+      "title": "The 40 Hour Cabin",
+      "subtitle": "2V Geodesic Dome Wedge Method",
       "parts": [
         {
           "number": 1,
@@ -1003,175 +1003,25 @@
           "chapters": [
             {
               "number": 52,
-              "title": "The List That Does Not Grow"
-            },
-            {
-              "number": 53,
-              "title": "Nine Processes at Any Size"
-            },
-            {
-              "number": 54,
-              "title": "What an Hour at the Log Is Worth"
-            },
-            {
-              "number": 55,
-              "title": "The Six Values of One Pine"
-            },
-            {
-              "number": 56,
-              "title": "Where the Fuel Actually Goes"
-            },
-            {
-              "number": 57,
               "title": "Less Skin for the Same Floor"
             },
             {
-              "number": 58,
+              "number": 53,
               "title": "The Cheapest Square Footage in the Building"
             },
             {
-              "number": 59,
+              "number": 54,
               "title": "The Roof Is Already a Gutter"
             },
             {
-              "number": 60,
+              "number": 55,
               "title": "A House That Gets Warmer Every Winter"
-            },
-            {
-              "number": 61,
-              "title": "The Quilt Network"
-            },
-            {
-              "number": 62,
-              "title": "One Hardware Set, Three Sizes"
-            },
-            {
-              "number": 63,
-              "title": "Buy for the Next Two Steps"
-            },
-            {
-              "number": 64,
-              "title": "The Ground Is What You Cannot Take With You"
-            },
-            {
-              "number": 65,
-              "title": "A Pad, Not a Plot"
-            },
-            {
-              "number": 66,
-              "title": "Turning the House Toward the Sun, Until It Stops Being Worth It"
-            },
-            {
-              "number": 67,
-              "title": "One Pad, Every Dome Size"
-            },
-            {
-              "number": 68,
-              "title": "Why a Network Beats a Park"
-            },
-            {
-              "number": 69,
-              "title": "What Would Have to Be True"
-            }
-          ]
-        },
-        {
-          "number": 3,
-          "title": "Variations and Future Systems",
-          "chapters": [
-            {
-              "number": 70,
-              "title": "The Dome That Stacks Hats"
-            },
-            {
-              "number": 71,
-              "title": "The Mast and the Floor"
-            },
-            {
-              "number": 72,
-              "title": "The Floating Dome"
-            },
-            {
-              "number": 73,
-              "title": "Seven Ways to Make a Wedge"
-            },
-            {
-              "number": 74,
-              "title": "Every Other Way of Doing It"
-            },
-            {
-              "number": 75,
-              "title": "Hubs, or No Hubs"
-            },
-            {
-              "number": 76,
-              "title": "A Zome Is Not a Piece of a Sphere"
-            },
-            {
-              "number": 77,
-              "title": "Exactly Twelve Pentagons, Always"
-            },
-            {
-              "number": 78,
-              "title": "Why We Call It a Stem Cell"
-            },
-            {
-              "number": 79,
-              "title": "Sink the Money Into the Part That Moves"
-            },
-            {
-              "number": 80,
-              "title": "The Boat-Hull Shell"
-            },
-            {
-              "number": 81,
-              "title": "Fifteen Buildings From One Body"
-            },
-            {
-              "number": 82,
-              "title": "The Seam That Does Four Jobs"
-            },
-            {
-              "number": 83,
-              "title": "Compare Dew Points, Not Humidity"
-            },
-            {
-              "number": 84,
-              "title": "The House as a Product"
-            },
-            {
-              "number": 85,
-              "title": "What the Campaign Is For"
-            },
-            {
-              "number": 86,
-              "title": "The Module Catalogue"
-            },
-            {
-              "number": 87,
-              "title": "Sixteen Billion Shells"
-            },
-            {
-              "number": 88,
-              "title": "The Tried and True Dome"
-            },
-            {
-              "number": 89,
-              "title": "The Non-Beveled Method"
-            },
-            {
-              "number": 90,
-              "title": "One Sheet, Forty Panels"
-            },
-            {
-              "number": 91,
-              "title": "The Shop the Campaign Buys"
             }
           ]
         }
       ],
-      "chapters": 91,
-      "figures": 113,
+      "chapters": 55,
+      "figures": 69,
       "pages": 442,
       "numbers": {
         "trees": "3",

@@ -3,10 +3,11 @@
 The layout follows the painted cover the author chose: a heavy slab title in
 forest green with a geodesic sphere for its last O, the second line in wood,
 the subtitle between rules, and the author on a board at the foot. Since
-2026-10-12 the title is THE 40 HOUR / CABIN and the subtitle COMPLETE EDITION:
-the old GEODESIC DOME / WEDGE METHOD is the Amazon paperback's title now.
-:func:`reletter_painted` sets the same lettering over the author's painted
-cover, after filling the old title out of its sky. The sphere is
+2026-10-12 this rendered front is the Complete Edition's -- THE 40 HOUR /
+CABIN / COMPLETE EDITION, sold on the site -- and the author's painted cover
+is the Amazon paperback's: :func:`reletter_painted` fills its old lettering
+out of the sky and sets THE 40 HOUR / CABIN / 2V GEODESIC DOME WEDGE METHOD,
+the title of :mod:`two_v_demo.book`, in the same style. The sphere is
 drawn from the real 2V mesh seen from above -- the same drawing as the site's
 logo -- so even the letter O is the book's own dome.
 
@@ -44,7 +45,7 @@ TITLE_TOP, TITLE_BOTTOM = "THE 40 HOUR", "CABIN"
 REFERENCE_W = 2588
 """The rendered front's width; every spacing below is in its pixels and is
 scaled for art of another size."""
-PAINTED = outline.ROOT / "Book-cover-final4.png"
+PAINTED = outline.ROOT / "assets/images/covers/wedge-method-cover-v10.png"   # was Book-cover-final4.png
 PAINTED_OUT = cover_scene.OUT_DIR / "painted-front.png"
 PAINTED_BAND = (40, 396)
 """Rows of the painted art (1024 x 1536) that hold its old lettering:
@@ -117,9 +118,10 @@ def fit_font(path: str, text: str, width: int, start: int = 400) -> ImageFont.Fr
     return ImageFont.truetype(path, size)
 
 
-def title_block(img: Image.Image, left: int, right: int, top: int) -> tuple[Image.Image, int]:
-    """THE 40 HOUR / CABIN / COMPLETE EDITION, set between ``left`` and
-    ``right`` from ``top`` down. Returns the image and the block's bottom."""
+def title_block(img: Image.Image, left: int, right: int, top: int,
+                subtitle: str = SUBTITLE_WORDS) -> tuple[Image.Image, int]:
+    """THE 40 HOUR / CABIN / ``subtitle``, set between ``left`` and ``right``
+    from ``top`` down. Returns the image and the block's bottom."""
     W = img.width
     k = W / REFERENCE_W
     width = right - left
@@ -164,10 +166,12 @@ def title_block(img: Image.Image, left: int, right: int, top: int) -> tuple[Imag
 
     # The subtitle, between rules.
     font3 = ImageFont.truetype(FONT_BOLD, int(cap_h * 0.54))
-    sub_w = font3.getlength(SUBTITLE_WORDS)
+    while font3.getlength(subtitle) > width * 0.80 and font3.size > 10:
+        font3 = ImageFont.truetype(FONT_BOLD, font3.size - 2)   # a long subtitle, held inside the rules
+    sub_w = font3.getlength(subtitle)
     cap3 = font3.getbbox("T")
     y3 = line2_bottom + 46 * k - cap3[1]
-    mask = _text_mask(img.size, SUBTITLE_WORDS, font3, (cx - sub_w / 2, y3))
+    mask = _text_mask(img.size, subtitle, font3, (cx - sub_w / 2, y3))
     img = _shadowed(img, mask, Image.new("RGB", img.size, INK), max(1, round(3 * k)), (246, 232, 204),
                     max(3, round(8 * k)))
     rule_y = line2_bottom + 46 * k + (cap3[3] - cap3[1]) / 2
@@ -179,14 +183,17 @@ def title_block(img: Image.Image, left: int, right: int, top: int) -> tuple[Imag
     return img, int(line2_bottom + 46 * k + (cap3[3] - cap3[1]))
 
 
-def compose(scene: Image.Image) -> Image.Image:
+def compose(scene: Image.Image, subtitle: str = SUBTITLE_WORDS) -> Image.Image:
+    """The rendered front, lettered. ``subtitle`` defaults to this book's;
+    the Master Edition (:mod:`master_book`) letters the same scene with its
+    own."""
     img = scene.convert("RGB")
     W, H = img.size
     left, right = SAFE, W - BLEED - SAFE          # spine fold on the left
     top, bottom = BLEED + SAFE, H - BLEED - SAFE
     width = right - left
     cx = (left + right) / 2
-    img, _end = title_block(img, left, right, top)
+    img, _end = title_block(img, left, right, top, subtitle=subtitle)
     font = fit_font(FONT_HEAVY, TITLE_TOP, width)
     cap_h = font.getbbox("D")[3] - font.getbbox("D")[1]
 
@@ -260,14 +267,20 @@ def _fill_band(art: Image.Image, top: int, bottom: int) -> Image.Image:
 
 
 def reletter_painted(src: Path = PAINTED, out: Path = PAINTED_OUT) -> Path:
-    """The author's painted cover with the current title, as a new file."""
+    """The author's painted cover, lettered as the Amazon paperback, as a new
+    file; also the site's cover image for that book."""
     art = Image.open(src).convert("RGB")
     top, bottom = PAINTED_BAND
     img = _fill_band(art, top, bottom)
     margin = round(art.width * 0.05)
-    img, _end = title_block(img, margin, art.width - margin, top - round(art.width * 0.012))
+    from two_v_demo import book as amazon_book
+    img, _end = title_block(img, margin, art.width - margin, top - round(art.width * 0.012),
+                            subtitle=amazon_book.SUBTITLE.upper())
     out.parent.mkdir(parents=True, exist_ok=True)
     img.save(out)
+    site = outline.ROOT / "web" / "client" / "public" / "covers" / "2-trees.jpg"
+    if site.parent.is_dir():
+        img.resize((720, round(720 * img.height / img.width)), Image.LANCZOS).save(site, quality=90)
     return out
 
 

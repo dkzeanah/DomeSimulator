@@ -1,0 +1,84 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T15:42:02.267450+00:00",
+  "lesson": "concept_wedge_coverage",
+  "title": "How Much Tree Closes a Dome",
+  "chapters": [
+    {
+      "slug": "what",
+      "title": "How Much Tree Closes a Dome",
+      "narration": [
+        "The dome's frame is 120 wedge members: 678 feet of wedge, cut from one log after another. Close every triangle with more wedges, laid in pairs with their points facing in, and the pairs can nest tight or open into a bowtie. Nested, a pair covers one wedge face; opened, two. That one choice moves the whole dome between 1,796 and 2,913 feet of wedge."
+      ],
+      "start": 0.0,
+      "end": 30.10354166666667
+    },
+    {
+      "slug": "numbers",
+      "title": "The numbers we are working from",
+      "narration": [
+        "Before anything is worked out, here is everything this film rests on: 5 numbers, 1 standard, 4 estimate. A claimed number is what the source said and has not been measured here. Every figure after this is arithmetic on these and on the dome's own computed numbers."
+      ],
+      "start": 30.10354166666667,
+      "end": 46.838750000000005
+    },
+    {
+      "slug": "beat1",
+      "title": "The frame",
+      "narration": [
+        "A 12 inch log split 8 ways gives wedges with a face 4.59 inches wide. The frame takes 120 of them, 678 feet of wedge, and one 60 foot pine gives 480 feet."
+      ],
+      "start": 46.838750000000005,
+      "end": 59.72729166666667
+    },
+    {
+      "slug": "beat2",
+      "title": "Closing the triangles",
+      "narration": [
+        "The triangles leave 428 square feet to close after the frame. Lay the wedges in pairs, points facing in. Nested tight, a pair covers one face; opened to a bowtie, two."
+      ],
+      "start": 59.72729166666667,
+      "end": 72.60633333333334
+    },
+    {
+      "slug": "beat3",
+      "title": "Your choice of trees",
+      "narration": [
+        "Bowtie pairs close the dome with 1,117 feet of infill; nested pairs take 2,235. Frame and all, that is 1,796 to 2,913 feet: 3.7 to 6.1 trees, before taper and kerf."
+      ],
+      "start": 72.60633333333334,
+      "end": 89.49316666666667
+    },
+    {
+      "slug": "fit",
+      "title": "Where it fits the dome",
+      "narration": [
+        "This is the whole timber bill of the wedge dome closed in wood: 1,796 to 2,913 feet of wedge against a frame of 678."
+      ],
+      "start": 89.49316666666667,
+      "end": 102.56591666666667
+    },
+    {
+      "slug": "limits",
+      "title": "What it will not do",
+      "narration": [
+        "A bowtie touches only at its points: the 1,117 foot figure is a floor, not a weather-tight joint. And the area method runs about six per cent above the real pieces the Triangle Infill calculator cuts, because a triangle's corners take short pieces."
+      ],
+      "start": 102.56591666666667,
+      "end": 118.49883333333334
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\0554-concept-wedge-coverage\\concept-wedge-coverage-myvoice-x1.5\\narration-plan.json",
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+0%",
+    "voice_pitch": "+0Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

@@ -470,6 +470,38 @@
      1789183925
     ]
    }
+  },
+  "concept_wedge_coverage": {
+   "status": "review",
+   "priority": "normal",
+   "owner": "Claude (Opus 5.5)",
+   "updated": "2026-10-14T10:58:05-05:00",
+   "outputs": [
+    "deliverables/0554-concept-wedge-coverage/concept-wedge-coverage-vertical.mp4"
+   ],
+   "log": [
+    {
+     "at": "2026-10-14T10:00:58-05:00",
+     "by": "Claude (Opus 5.5)",
+     "text": "claimed"
+    },
+    {
+     "at": "2026-10-14T10:10:35-05:00",
+     "by": "Claude (Opus 5.5)",
+     "text": "Filmed straight from the concept card with film make (voice mine x1.5): stills checked (0553), render in progress. The card figures are recomputed by two_v_demo.wedge_coverage_facts, 22/22 checked against the solver."
+    },
+    {
+     "at": "2026-10-14T10:42:34-05:00",
+     "by": "Claude (Opus 5.5)",
+     "text": "-> review: Rendered in the owner's voice x1.5: landscape, phone cut, release with 7 thumbnails. Ready for the owner's review."
+    },
+    {
+     "at": "2026-10-14T10:58:05-05:00",
+     "by": "Claude (Opus 5.5)",
+     "text": "SUPERSEDED by cabin_triangle_fill (Closing the Triangle): the owner found this card film shows nothing -- no pairs, no bowtie, no filled triangle. Its figures also came from the first count (area / face width); the laid count (two_v_demo.triangle_fill) corrects them."
+    }
+   ],
+   "originals": {}
   }
  }
 }

@@ -1,0 +1,1424 @@
+{
+  "outputs": {
+    "pdf": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\pitch\\domesim-code-house-investor-summary-v3.pdf",
+    "editable_text": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\pitch\\domesim-code-house-investor-summary-v3.md",
+    "numbers_pdf_for_QA": "C:\\Users\\Don\\Desktop\\DomeSim\\tmp\\pdfs\\code-house-numbers-20261014-a.pdf"
+  },
+  "recomputed_date": "2026-10-14",
+  "loaded_overrides": {},
+  "configuration": {
+    "fitout": "stem_cell",
+    "shell": "soft",
+    "frame_stock": "customer_trees",
+    "quilt_layers": 0,
+    "optional_groups": [
+      "polyps",
+      "modules",
+      "panels"
+    ]
+  },
+  "geometry": {
+    "diameter_ft": 19.416407864998735,
+    "floor_decagon_sqft": 276.9915183457727,
+    "panels": 40,
+    "members": 120
+  },
+  "unit": {
+    "materials": 6337.230762187781,
+    "labor_hours": 67.295032254964,
+    "labor": 1884.260903138992,
+    "direct": 8221.491665326772,
+    "overhead": 1479.8684997588189,
+    "warranty": 328.8596666130709,
+    "built": 10030.219831698661,
+    "price": 12036.263798038393,
+    "spread": 2006.043966339732,
+    "price_margin": 0.16666666666666663,
+    "pad": 6240.151359312624,
+    "freight": 1250.0,
+    "placement": 19526.415157351017
+  },
+  "campaign": {
+    "lines": {
+      "test_platform": 4200.0,
+      "instrumentation": 1850.0,
+      "hub_rnd": 9500.0,
+      "cnc_router": 14500.0,
+      "cnc_plasma": 11800.0,
+      "laser_cutter": 8900.0,
+      "strut_tooling": 18000.0,
+      "composite_rnd": 12500.0,
+      "automation": 7600.0,
+      "quilt_seed": 5000.0,
+      "engineering": 6800.0,
+      "fulfilment": 9350.0
+    },
+    "grouped": [
+      [
+        "Production tooling",
+        60800.0
+      ],
+      [
+        "Validation and R&D",
+        34850.0
+      ],
+      [
+        "Quilts and fulfillment",
+        14350.0
+      ]
+    ],
+    "goal": 110000.0,
+    "modeled_base_prototype": 16270.371191011285,
+    "potential_gap": 12070.371191011285,
+    "conditional_reconciled_goal": 122070.37119101129
+  },
+  "sensitivity": [
+    {
+      "change": 0.0,
+      "cost": 10030.219831698661,
+      "spread": 2006.043966339732,
+      "price_margin": 0.16666666666666663
+    },
+    {
+      "change": 0.1,
+      "cost": 11033.241814868528,
+      "spread": 1003.021983169865,
+      "price_margin": 0.08333333333333325
+    },
+    {
+      "change": 0.2,
+      "cost": 12036.263798038393,
+      "spread": 0.0,
+      "price_margin": 0.0
+    }
+  ],
+  "labor_target": {
+    "reduction": 0.2,
+    "hours_saved": 13.459006450992801,
+    "fully_loaded_cost_saved": 459.75966036591404
+  },
+  "model_constants": {
+    "seed": [
+      [
+        "resin_gp_polyester_usd_per_gal",
+        26.6,
+        "USD/gal",
+        "hull laminate: US Composites 816 general-purpose boatyard polyester, $133.00 per 5-gallon pail, catalysed. The cheapest resin anybody builds a hull out of"
+      ],
+      [
+        "resin_marine_polyester_usd_per_gal",
+        37.6,
+        "USD/gal",
+        "hull laminate: US Composites 435 premium marine-grade polyester, $188.00 per 5-gallon pail"
+      ],
+      [
+        "resin_vinylester_usd_per_gal",
+        61.7,
+        "USD/gal",
+        "hull laminate: US Composites 700 vinyl ester, $308.50 per 5-gallon pail. Bought for water resistance, not for strength"
+      ],
+      [
+        "resin_epoxy_usd_per_gal",
+        79.9,
+        "USD/gal",
+        "hull laminate: US Composites 635 thin epoxy with 556 hardener, 20-gallon kit at $1,598.00. A gallon kit is $97.50; a shop buying by the drum is not paying that"
+      ],
+      [
+        "resin_lb_per_gal",
+        9.1,
+        "lb/gal",
+        "hull laminate: density of catalysed laminating resin, polyester and epoxy alike to within a few percent"
+      ],
+      [
+        "gelcoat_usd_per_gal",
+        54.6,
+        "USD/gal",
+        "hull laminate: US Composites white gelcoat, $273.00 per 5-gallon pail"
+      ],
+      [
+        "gelcoat_sqft_per_gal",
+        45.0,
+        "sq ft/gal",
+        "hull laminate: one gallon of gelcoat at 18 mil wet, which is what a weather face wants"
+      ],
+      [
+        "fabric_1708_usd_per_sqft",
+        0.736,
+        "USD/sq ft",
+        "hull laminate: US Composites 1708 biaxial, $9.20 per yard of 50-inch roll over 12.5 sq ft"
+      ],
+      [
+        "fabric_1708_oz_per_sqft",
+        2.689,
+        "oz/sq ft",
+        "hull laminate: 17 oz/sq yd stitched biaxial plus 0.8 oz/sq ft mat backing: 17/9 + 0.8. The mat is specified per square FOOT and the biaxial per square YARD"
+      ],
+      [
+        "fabric_csm15_usd_per_sqft",
+        0.32,
+        "USD/sq ft",
+        "hull laminate: US Composites 1-1/2 oz chopped strand mat, $4.00 per yard of 50-inch roll"
+      ],
+      [
+        "fabric_csm15_oz_per_sqft",
+        1.5,
+        "oz/sq ft",
+        "hull laminate: 1-1/2 oz mat, by definition: ounces per square foot"
+      ],
+      [
+        "fabric_csm075_usd_per_sqft",
+        0.236,
+        "USD/sq ft",
+        "hull laminate: US Composites 3/4 oz chopped strand mat, $2.95 per yard of 50-inch roll"
+      ],
+      [
+        "fabric_csm075_oz_per_sqft",
+        0.75,
+        "oz/sq ft",
+        "hull laminate: 3/4 oz mat, by definition"
+      ],
+      [
+        "fabric_cloth6_usd_per_sqft",
+        0.58,
+        "USD/sq ft",
+        "hull laminate: US Composites 6 oz cloth, $7.25 per yard of 50-inch roll"
+      ],
+      [
+        "fabric_cloth6_oz_per_sqft",
+        0.667,
+        "oz/sq ft",
+        "hull laminate: 6 oz/sq yd plain weave: 6/9. This is the cloth every plywood boat is sheathed in"
+      ],
+      [
+        "fabric_cloth10_usd_per_sqft",
+        0.7,
+        "USD/sq ft",
+        "hull laminate: US Composites 10 oz cloth, $8.75 per yard of 50-inch roll"
+      ],
+      [
+        "fabric_cloth10_oz_per_sqft",
+        1.111,
+        "oz/sq ft",
+        "hull laminate: 10 oz/sq yd: 10/9"
+      ],
+      [
+        "ratio_stitched",
+        1.15,
+        "lb resin per lb glass",
+        "hull laminate: hand layup over stitched biaxial. Two published rules of thumb -- about 30 oz of resin per 50-inch yard of 1708, and 1.5 to 2 lb per ten square feet -- bracket 0.89 to 1.19; suppliers quote 1:1 to 1.4:1. This sits in the middle of the two. Vacuum bagging would beat it and hand layup will not"
+      ],
+      [
+        "ratio_mat",
+        2.5,
+        "lb resin per lb glass",
+        "hull laminate: chopped strand mat, which drinks far more than any woven fabric. This is why a mat-heavy schedule is heavy and resin-hungry"
+      ],
+      [
+        "ratio_cloth",
+        1.6,
+        "lb resin per lb glass",
+        "hull laminate: light plain-weave cloth over a porous wood substrate, which takes more than the cloth alone would"
+      ],
+      [
+        "seal_coat_lb_per_sqft",
+        0.075,
+        "lb/sq ft",
+        "hull laminate: the first coat straight onto bare sheet, before any glass goes on. It is drunk by the wood and it is not optional"
+      ],
+      [
+        "layup_waste_fraction",
+        0.15,
+        "fraction",
+        "hull laminate: offcuts, overlaps at every seam, and resin left in the pot. A compound-curved shell wastes more fabric than a flat panel"
+      ],
+      [
+        "consumables_usd_per_sqft",
+        0.14,
+        "USD/sq ft",
+        "hull laminate: rollers, brushes, squeegees, tape, mixing pots, acetone and gloves, over the laminated area"
+      ],
+      [
+        "osb_half_4x8",
+        15.0,
+        "USD per sheet",
+        "borrowed from two_v_demo.dome_costing: 1/2 in OSB, 4x8, 32 sq ft."
+      ],
+      [
+        "r_osb_half",
+        0.62,
+        "hr sq ft F/BTU",
+        "borrowed from two_v_demo.dome_performance: 1/2 in OSB sheathing."
+      ],
+      [
+        "r_air_films",
+        0.85,
+        "hr sq ft F/BTU",
+        "borrowed from two_v_demo.dome_performance: Interior plus exterior surface films."
+      ],
+      [
+        "ac_seer",
+        14.0,
+        "BTU/Wh",
+        "borrowed from two_v_demo.dome_performance: A basic modern split system, minimum US federal standard."
+      ],
+      [
+        "btu_per_kwh",
+        3412.0,
+        "BTU/kWh",
+        "borrowed from two_v_demo.dome_performance: Definition."
+      ],
+      [
+        "power_price",
+        0.17,
+        "USD/kWh",
+        "borrowed from two_v_demo.dome_performance: The rate this model is asked to use."
+      ],
+      [
+        "lumber_board_usd",
+        14.0,
+        "USD per 2x6x12",
+        "measured: a 2x6x12 on the shelf at Lowes. Every timber figure in this model is scaled off this one price, because it is the one price the owner can walk in and check"
+      ],
+      [
+        "lumber_struts_per_board",
+        4.0,
+        "struts per board",
+        "measured: one 2x6x12 rips and crosscuts into four 2x3x6 struts. The arithmetic is 1.5 x 5.5 x 144 into four of 1.5 x 2.5 x 72, with the kerf as the difference"
+      ],
+      [
+        "strut_thickness_in",
+        1.5,
+        "in",
+        "actual thickness of a nominal 2x, which is not two inches"
+      ],
+      [
+        "strut_width_in",
+        2.5,
+        "in",
+        "actual width of a nominal 3x, which is not three inches"
+      ],
+      [
+        "strut_length_in",
+        72.0,
+        "in",
+        "six feet: the same longest member the whole product line is built on"
+      ],
+      [
+        "frame_waste_fraction",
+        0.12,
+        "fraction",
+        "assumption: sweep, checks and short offcuts that never become a member"
+      ],
+      [
+        "frame_fastener_usd_per_member",
+        1.6,
+        "USD per member",
+        "assumption: the structural screws and glue at one pinwheel joint"
+      ],
+      [
+        "seam_key_usd_each",
+        2.2,
+        "USD per seam",
+        "assumption: one tapered seam key, cut from the same stock"
+      ],
+      [
+        "seam_hose_usd_per_ft",
+        1.4,
+        "USD/ft",
+        "assumption: compressible EPDM tube in the seam instead of a timber key, bought by the foot. What a building meant to come apart and go back together wants: a gasket that recovers, rather than a key that was made to fit one particular seam"
+      ],
+      [
+        "floor_port_usd",
+        340.0,
+        "USD",
+        "assumption: the collar, gasket and cover where the pad's power, water and drain come up through the middle of the floor"
+      ],
+      [
+        "moisture_barrier_usd_per_sqft",
+        0.55,
+        "USD/sq ft",
+        "assumption: sheet barrier and tape under the floor"
+      ],
+      [
+        "underfloor_storage_usd",
+        420.0,
+        "USD",
+        "assumption: hatches and framing for the space between the floor and the blocked-up deck"
+      ],
+      [
+        "water_tank_usd_per_gal",
+        1.35,
+        "USD/gal",
+        "assumption: potable polyethylene tank, bought by capacity"
+      ],
+      [
+        "water_tank_gal",
+        120.0,
+        "gal",
+        "the owner's stated under-floor tank: a week for two people"
+      ],
+      [
+        "blocking_usd_per_point",
+        14.0,
+        "USD per pier",
+        "assumption: one precast block, pad and shim stack"
+      ],
+      [
+        "blocking_spacing_ft",
+        4.0,
+        "ft",
+        "assumption: pier spacing under the rim and the mid beams"
+      ],
+      [
+        "shell_standoff_in",
+        0.5,
+        "in",
+        "assumption: clearance between the pop-in panels and the inside of the shell, so the shell lands on the frame and not on the panels"
+      ],
+      [
+        "shell_skirt_in",
+        9.0,
+        "in",
+        "assumption: depth of the rim band that drops past the floor line and carries the latches"
+      ],
+      [
+        "shell_core_thickness_in",
+        0.4375,
+        "in",
+        "assumption: 7/16 in OSB, the sheathing the laminate is built on"
+      ],
+      [
+        "shell_core_lb_per_sqft",
+        1.45,
+        "lb/sq ft",
+        "assumption: 7/16 in OSB at about 40 lb per cubic foot"
+      ],
+      [
+        "shell_sheet_width_in",
+        48.0,
+        "in",
+        "assumption: sheet stock width. A four-foot sheet is the cheap one; whether a dome panel fits on it is computed, not assumed"
+      ],
+      [
+        "shell_sheet_length_in",
+        96.0,
+        "in",
+        "assumption: sheet stock length"
+      ],
+      [
+        "shell_core_waste_fraction",
+        0.22,
+        "fraction",
+        "assumption: what is thrown away cutting curved triangles out of rectangles"
+      ],
+      [
+        "rim_latch_usd_each",
+        9.5,
+        "USD each",
+        "assumption: one over-centre wire-bail latch and its keeper, the kind that seals a preserving jar"
+      ],
+      [
+        "rim_latch_spacing_ft",
+        2.5,
+        "ft",
+        "the owner's stated latch pitch around the rim"
+      ],
+      [
+        "rim_gasket_usd_per_ft",
+        2.1,
+        "USD/ft",
+        "assumption: closed-cell rim gasket between the shell and the pad"
+      ],
+      [
+        "lift_ring_usd",
+        260.0,
+        "USD",
+        "assumption: the apex lifting ring, bridle plate and four rigging points laminated into the shell"
+      ],
+      [
+        "shell_halves",
+        4.0,
+        "pieces",
+        "the owner's stated shell: slices, not one monocoque. Four of them fit a trailer and two people can carry one; eight is the version one person can. They snap to each other down an S-lip seam and then snap to the pad, so the joint seals by shape rather than by sealant"
+      ],
+      [
+        "shell_slice_lip_usd_per_ft",
+        6.8,
+        "USD/ft",
+        "assumption: the moulded S-lip down a slice seam -- the interlocking return that makes two pieces behave like one skin, plus its gasket"
+      ],
+      [
+        "shell_joint_usd_per_ft",
+        18.5,
+        "USD/ft",
+        "assumption: the joint down the middle of a split shell -- moulded lap, compression gasket, and over-centre latches at a close pitch. It is the one seam that has to shed water by shape rather than by sealant, so it is not cheap"
+      ],
+      [
+        "seam_duct_usd_per_ft",
+        1.9,
+        "USD/ft",
+        "assumption: closing the outside of the seam channel into a duct -- cap strip, end fittings and the clips that hold it"
+      ],
+      [
+        "duct_fan_usd",
+        165.0,
+        "USD each",
+        "assumption: one small in-line fan and its controller, driving the seam network either way"
+      ],
+      [
+        "duct_fans",
+        2.0,
+        "fans",
+        "the owner's stated arrangement: one pushing, one pulling, so the network runs in either direction"
+      ],
+      [
+        "duct_port_usd_each",
+        6.5,
+        "USD each",
+        "assumption: one through-hole fitting where a seam duct meets a vertex or a panel bay"
+      ],
+      [
+        "catchment_usd",
+        240.0,
+        "USD",
+        "assumption: the manifold, filter and downpipe that take what the seam channels collect into the pad's tank"
+      ],
+      [
+        "rain_in_per_year",
+        40.0,
+        "in/year",
+        "borrowed in spirit from two_v_demo.dome_performance: US average annual precipitation. Substitute your own"
+      ],
+      [
+        "solar_panel_watts",
+        800.0,
+        "W",
+        "the owner's stated array: four to eight hundred watts, on the sunward side of the dome or up a mast beside it. Eight hundred is the top of that and the one costed here"
+      ],
+      [
+        "solar_usd_per_watt_diy",
+        0.95,
+        "USD/W",
+        "assumption: panels, rails, charge controller and wiring, fitted by the owner. Lower than the park model's installed rate because nobody is being paid to climb the dome"
+      ],
+      [
+        "battery_kwh",
+        10.0,
+        "kWh",
+        "the owner's stated bank, read as usable kilowatt hours. Ten is about three ordinary days in this dome. NOTE: the brief said 3000, which at kilowatt hours is two hundred Powerwalls and $1.2m of cells -- almost certainly 3000 watt-hours or a 3000 watt inverter was meant. The figure is here so the scale of the two readings is visible"
+      ],
+      [
+        "battery_usd_per_kwh",
+        410.0,
+        "USD/kWh",
+        "assumption: LiFePO4 cells with a BMS, bought as a rack unit"
+      ],
+      [
+        "inverter_watts",
+        3000.0,
+        "W",
+        "the owner's stated inverter: three thousand watts continuous"
+      ],
+      [
+        "inverter_usd_per_kw",
+        210.0,
+        "USD/kW",
+        "assumption: a low-frequency hybrid inverter-charger"
+      ],
+      [
+        "solar_derate",
+        0.78,
+        "fraction",
+        "assumption: what actually reaches the battery after temperature, wiring, controller and dirt"
+      ],
+      [
+        "paint_usd_per_sqft",
+        1.35,
+        "USD/sq ft",
+        "assumption: two coats of a barium-sulphate radiative cooling formulation on the shell's weather face"
+      ],
+      [
+        "catch_efficiency",
+        0.72,
+        "fraction",
+        "assumption: what a channel network actually delivers to the tank after wetting, splash and first-flush loss. Lower than a solid roof with a gutter, because this is a seam and not a gutter"
+      ],
+      [
+        "hardware_size_steps",
+        3.0,
+        "dome sizes",
+        "the owner's stated rule: the triangle joining hardware is made to fit this dome and the next two sizes up, so it is carried forward rather than replaced"
+      ],
+      [
+        "hardware_oversize_fraction",
+        0.35,
+        "fraction",
+        "assumption: what making one hardware set fit three sizes costs over making it fit one"
+      ],
+      [
+        "bladder_fabric_usd_per_sqft",
+        0.85,
+        "USD/sq ft",
+        "assumption: coated fabric for the insulation bladder, both faces"
+      ],
+      [
+        "bladder_zip_usd_each",
+        3.4,
+        "USD each",
+        "assumption: one long zip and its flap per triangle, so a bladder can be opened and refilled"
+      ],
+      [
+        "bladder_labour_min_each",
+        22.0,
+        "minutes each",
+        "assumption: cutting and sewing one ravioli bladder to a panel's shape"
+      ],
+      [
+        "insulation_usd_per_cuft",
+        1.1,
+        "USD/cu ft",
+        "assumption: loose-fill cellulose blown into the bladder"
+      ],
+      [
+        "insulation_r_per_in",
+        3.5,
+        "hr sq ft F/BTU per in",
+        "assumption: settled loose-fill cellulose"
+      ],
+      [
+        "insulation_lb_per_cuft",
+        2.2,
+        "lb/cu ft",
+        "assumption: settled density of the same fill"
+      ],
+      [
+        "hard_panel_usd_per_sqft",
+        2.4,
+        "USD/sq ft",
+        "assumption: one pop-in panel -- corrugated or solid poly sheet -- cut to the triangle. Two of these go in every bay, one against the inside lip and one from the outside, with the cavity between them"
+      ],
+      [
+        "panel_bays_panels",
+        2.0,
+        "panels per bay",
+        "the owner's stated bay: an inner panel onto the wedge's lip, a cavity, and an outer panel compression-fitted from outside. Ship it at one and the bay is open to the inside until the owner closes it"
+      ],
+      [
+        "panel_lip_in",
+        0.75,
+        "in",
+        "the owner's stated lip: how far the wedge's inward face stands proud of the panel seat, which is what the inner panel sits on and what makes the whole bay a compression fit rather than a fastened one"
+      ],
+      [
+        "inject_fill_usd_per_cuft",
+        0.0,
+        "USD/cu ft",
+        "left at zero: the standard article ships the cavity EMPTY, as a ventilated void. Filling it is a choice made later, and what it costs depends on what goes in"
+      ],
+      [
+        "hard_panel_gasket_usd_per_ft",
+        0.7,
+        "USD/ft",
+        "assumption: the compression gasket around a pop-in panel's edge"
+      ],
+      [
+        "column_housing_usd",
+        380.0,
+        "USD",
+        "assumption: the metal column itself -- folded shell, base flange, access doors and the apex penetration sleeve"
+      ],
+      [
+        "column_manifold_usd",
+        240.0,
+        "USD",
+        "assumption: hot and cold manifold, shutoffs and the pressure-tested rise from the pad port"
+      ],
+      [
+        "column_drain_usd",
+        165.0,
+        "USD",
+        "assumption: the drain stack, trap and floor-port tie-in"
+      ],
+      [
+        "column_electrical_usd",
+        310.0,
+        "USD",
+        "assumption: a small sub-panel, breakers, GFCI and the outlet ring on the column"
+      ],
+      [
+        "column_riser_usd_per_ft",
+        11.0,
+        "USD/ft",
+        "assumption: conduit, PEX pair and drain carried in one chase, priced by the foot of rise"
+      ],
+      [
+        "seal_cap_usd",
+        195.0,
+        "USD",
+        "assumption: the gasketed apex cap -- moulded cap, compression gasket, backing ring and the bolts that make it removable but not casual"
+      ],
+      [
+        "exterior_routing_usd_per_ft",
+        6.4,
+        "USD/ft",
+        "assumption: service line run down the outside of the shell from the seal cap to a panel, clipped and UV-sleeved"
+      ],
+      [
+        "polyp_frame_usd",
+        210.0,
+        "USD each",
+        "assumption: the panel's own frame, back and weather lid, sized to stand outside the dome's footprint"
+      ],
+      [
+        "polyp_service_usd",
+        95.0,
+        "USD each",
+        "assumption: the quick-connect water, drain and power tails that make a panel a socket rather than a box"
+      ],
+      [
+        "polyp_wall_port_usd",
+        88.0,
+        "USD each",
+        "assumption: the gasketed pass-through where a polyp reaches back through the shell to the inside"
+      ],
+      [
+        "mast_steel_core_usd_per_ft",
+        18.0,
+        "USD/ft",
+        "assumption: 2.5 in schedule-40 steel pipe, the core that carries the whole structure when it is hoisted. Metal where the strength is"
+      ],
+      [
+        "mast_wood_clad_usd_per_ft",
+        6.0,
+        "USD/ft",
+        "assumption: the mast's timber cladding -- softwood boxed around the steel core, because everything else in the room is wood and a bare steel pipe reads as scaffolding"
+      ],
+      [
+        "mast_apex_ring_usd",
+        240.0,
+        "USD",
+        "assumption: the forged lifting ring that lands on top of the mast at the apex, under the seal cap -- the hoist point for the whole building. Sized by an engineer for the lifted weight; priced here as the fitting it is"
+      ],
+      [
+        "mast_base_flange_usd",
+        95.0,
+        "USD",
+        "assumption: the base plate that lands the mast on the service port, bolted through the pad's deck framing"
+      ],
+      [
+        "mast_hours",
+        5.0,
+        "hours",
+        "assumption: cutting, welding and cladding one mast, apex ring and flange"
+      ],
+      [
+        "floor_hub_usd",
+        310.0,
+        "USD",
+        "assumption: the steel hub ring that clamps the mast and takes ten radial floor spokes -- the metal heart of an otherwise wooden floor"
+      ],
+      [
+        "floor_spokes_usd_each",
+        34.0,
+        "USD each",
+        "assumption: one radial steel spoke from the hub to a base vertex, bracketed to the ring -- metal where the strength is"
+      ],
+      [
+        "floor_deck_usd_per_sqft",
+        3.1,
+        "USD/sq ft",
+        "assumption: pressure-treated deck boards over the spokes, owner-installed. The floor is the upgrade, bought after the dome"
+      ],
+      [
+        "floor_rail_usd_per_ft",
+        6.5,
+        "USD/ft",
+        "assumption: the low edge rail around the deck, one board high, so a floor ten feet up is not a ledge"
+      ],
+      [
+        "floor_hours",
+        9.0,
+        "hours",
+        "assumption: hanging the hub, running the spokes, laying the boards and the rail"
+      ],
+      [
+        "hoist_winch_usd",
+        640.0,
+        "USD",
+        "assumption: a brake winch and block, priced as the tool. Its rating is the engineer's number, not the model's -- this model does not rate lifting gear"
+      ],
+      [
+        "suspension_cable_usd_per_ft",
+        1.85,
+        "USD/ft",
+        "assumption: galvanized steel cable, three legs from the apex hanger to the trees"
+      ],
+      [
+        "suspension_hanger_usd",
+        260.0,
+        "USD",
+        "assumption: the forged hanger that rides on the mast's apex ring and takes the three cables -- what turns the hoist point into a hang point"
+      ],
+      [
+        "tree_saddle_usd_each",
+        145.0,
+        "USD each",
+        "assumption: a tree-hugger sling and shackle per leg -- no holes in the tree, which is the whole point"
+      ],
+      [
+        "rigging_hours",
+        8.0,
+        "hours",
+        "assumption: two people, half a day, to set three slings, three cables and the winch"
+      ],
+      [
+        "suspension_span_ft",
+        28.0,
+        "ft",
+        "assumption: the cable span the floating rig is priced on -- apex to tree, on average. Longer spans buy more cable and the same rig"
+      ],
+      [
+        "pine_green_lb_per_cuft",
+        38.0,
+        "lb/cu ft",
+        "borrowed: published density of green southern pine. Used once, to put a weight on the frame so the floating chapter can say what is being lifted -- the lifted whole is the engineer's number"
+      ],
+      [
+        "ac_usd_per_kbtu",
+        78.0,
+        "USD per 1000 BTU/h",
+        "assumption: a small inverter mini-split, installed cost per unit of capacity. Not what this dome ships with -- see the window unit below -- but kept so the two can be compared"
+      ],
+      [
+        "ac_window_usd_per_kbtu",
+        30.0,
+        "USD per 1000 BTU/h",
+        "assumption: a window or through-wall unit, which is what a 277 sq ft floor with a computed 3,700 BTU/h load actually needs. A mini-split on this envelope is equipment bought for the brochure"
+      ],
+      [
+        "ac_design_delta_f",
+        20.0,
+        "F",
+        "assumption: 95 F outside against 75 F inside, the cooling design day"
+      ],
+      [
+        "ac_internal_gain_btu",
+        1200.0,
+        "BTU/h",
+        "assumption: two people, lights and a fridge"
+      ],
+      [
+        "ac_solar_gain_btu_per_sqft",
+        2.6,
+        "BTU/h per sq ft of shell",
+        "assumption: what a light-coloured sunlit shell drives inward at the design hour"
+      ],
+      [
+        "ac_sizes_kbtu",
+        6.0,
+        "1000 BTU/h",
+        "assumption: capacity comes in steps this big, so the computed load is rounded up to one"
+      ],
+      [
+        "light_fan_usd",
+        165.0,
+        "USD",
+        "assumption: the central DC ceiling fan and light fixture"
+      ],
+      [
+        "lighting_circuit_usd",
+        140.0,
+        "USD",
+        "assumption: the ring of fittings, switches and cable that feeds it"
+      ],
+      [
+        "wood_stove_usd",
+        640.0,
+        "USD",
+        "assumption: the little all-metal stove dome -- rolled shell, flat cooktop, door, grate and flue collar, made in-house"
+      ],
+      [
+        "flue_usd_per_ft",
+        46.0,
+        "USD/ft",
+        "assumption: insulated flue pipe, by the foot, through the shell"
+      ],
+      [
+        "stove_shield_usd",
+        120.0,
+        "USD",
+        "assumption: the heat shield and the hearth pad under it"
+      ],
+      [
+        "labour_usd_per_hour",
+        28.0,
+        "USD/hour",
+        "the owner's stated shop rate, loaded"
+      ],
+      [
+        "frame_min_per_member",
+        12.0,
+        "minutes per member",
+        "assumption: split one wedge off a log on site, butt cut, head cut, drill and fix it on the jig. Higher than the nine minutes a shop takes with prepared stock, because milling from the customer's own standing timber is real work and it has to land somewhere"
+      ],
+      [
+        "panel_min_each",
+        14.0,
+        "minutes per panel",
+        "assumption: squaring up, gluing and pulling one triangle together once its three members exist"
+      ],
+      [
+        "shell_min_per_sqft",
+        3.4,
+        "minutes per sq ft",
+        "assumption: cut, fit, tape, laminate and fair one square foot of shell, averaged over the whole job"
+      ],
+      [
+        "column_hours",
+        6.5,
+        "hours",
+        "assumption: building, plumbing and wiring one utility column"
+      ],
+      [
+        "polyp_hours_each",
+        2.2,
+        "hours",
+        "assumption: building and connecting one utility panel"
+      ],
+      [
+        "assembly_hours",
+        9.0,
+        "hours",
+        "assumption: standing the dome, setting the shell and commissioning the services, in the yard, before it is taken apart to ship"
+      ],
+      [
+        "shop_overhead_fraction",
+        0.18,
+        "fraction of cost",
+        "the owner's stated overhead: rent, power, tooling and the hours that are not on any one dome"
+      ],
+      [
+        "warranty_reserve_fraction",
+        0.04,
+        "fraction of cost",
+        "the owner's stated reserve against a shell that leaks or a column that has to come back"
+      ],
+      [
+        "maker_markup_fraction",
+        0.2,
+        "fraction of cost",
+        "the owner's profit, marked up on cost: price = cost x 1.20. Note which convention this is. A 20 percent MARGIN would be cost / 0.80, which is a 25 percent markup and a different number; the campaign says markup, on camera, because it is the one a backer can check with a calculator"
+      ],
+      [
+        "gross_margin_fraction",
+        0.35,
+        "fraction of price",
+        "retained for the reports that quote a trade margin. It no longer sets the price -- maker_markup_fraction does -- so changing this moves no quote"
+      ],
+      [
+        "freight_usd",
+        1250.0,
+        "USD",
+        "assumption: one flat-packed dome on a trailer, regional"
+      ],
+      [
+        "core_service_life_years",
+        25.0,
+        "years",
+        "assumption: how long a utility core lasts before it is worn out rather than merely outgrown"
+      ],
+      [
+        "core_move_usd",
+        260.0,
+        "USD per move",
+        "assumption: unbolting a core, capping the lines, crating it and commissioning it again in the next dome"
+      ],
+      [
+        "sales_tax_fraction",
+        0.0,
+        "fraction of price",
+        "left at zero: it is the buyer's jurisdiction, not a manufacturing cost"
+      ]
+    ],
+    "soft_shell": [
+      [
+        "membrane_usd_per_sqft",
+        0.34,
+        "USD/sq ft",
+        "assumption: vapour-permeable building wrap, the grade sold in 9-ft rolls for house sheathing. NOT a poly sheet -- it has to let vapour out, or the quilt over it is a moisture trap and the building rots from the inside. One piece, lapped, no seams over the dome"
+      ],
+      [
+        "membrane_perms",
+        10.0,
+        "US perms",
+        "assumption: the permeance of that wrap. Anything under 1 perm is a vapour barrier and would put this layer back in the trap it exists to avoid. Stated so a substitute can be checked against it"
+      ],
+      [
+        "membrane_life_years",
+        12.0,
+        "years",
+        "assumption: how long that wrap lasts under it, protected from UV by everything stacked on top of it. Exposed it would be a third of that"
+      ],
+      [
+        "cap_vent_gap_in",
+        0.75,
+        "in",
+        "assumption: the drained, vented gap between the quilt and the cap, held open by the strapping. Without it the cap lies on the quilt and the breather has nowhere to breathe to"
+      ],
+      [
+        "cap_panel_min_each",
+        11.0,
+        "minutes each",
+        "assumption: hanging one outer wood panel on its four threaded inserts, working from outside. Measured against the insert-setting time in fitout_wet, which is the same operation from the other side"
+      ],
+      [
+        "cap_breather_min_per_sqft",
+        0.55,
+        "minutes/sq ft",
+        "assumption: lapping and taping the breather over the panels. It is housewrap over a faceted surface, which is slower than a wall and faster than a boat"
+      ],
+      [
+        "cap_strap_hours",
+        3.5,
+        "hours",
+        "assumption: pulling the cap over, hemming it to the rim and tensioning ten ratchet straps to their ground anchors. Two people"
+      ],
+      [
+        "cap_usd_per_sqft",
+        1.45,
+        "USD/sq ft",
+        "assumption: coated ripstop with a UV-stable face -- the rain-slick outer. Bought as a made cover with a hem and grommets"
+      ],
+      [
+        "cap_life_years",
+        8.0,
+        "years",
+        "assumption: how long the outer cap lasts before UV takes it. It is the sacrificial layer and it is meant to be replaced"
+      ],
+      [
+        "cap_seam_usd_per_ft",
+        1.9,
+        "USD/ft",
+        "assumption: welded seam on the made cover, per running foot of seam"
+      ],
+      [
+        "tiedown_usd_each",
+        26.0,
+        "USD each",
+        "assumption: a webbing strap, ratchet and ground anchor at each base vertex. A fabric cap has no stiffness of its own, so uplift is carried here rather than by the shell"
+      ],
+      [
+        "layer_thickness_in",
+        1.25,
+        "in",
+        "measured: how thick one quilted layer of recycled fabric compresses to under a strapped cap. It is what makes the next cap bigger"
+      ],
+      [
+        "blanket_quilt_usd_per_layer",
+        50.0,
+        "USD/layer",
+        "assumption: one quilted layer made of thrift-store blankets and recycled clothing -- the fabric is a waste stream, and the owner does the quilting. What a $50 layer buys, and the reason the soft shell is the first choice before the yard-priced quilt"
+      ],
+      [
+        "outer_panel_usd_per_sqft",
+        2.4,
+        "USD/sq ft",
+        "borrowed: seed_model's hard_panel_usd_per_sqft. The panel that used to compression-fit from outside becomes the weather barrier, screwed through into the frame"
+      ],
+      [
+        "panel_insert_usd_each",
+        1.35,
+        "USD each",
+        "assumption: a threaded insert set into the wedge face, four per bay, that a panel screw pulls against. What makes the panel removable without chewing the wood out"
+      ],
+      [
+        "panel_inserts_per_bay",
+        4.0,
+        "each",
+        "assumption: four fixings per triangular panel, one near each corner and one at the middle of the longest edge"
+      ]
+    ]
+  },
+  "quote_groups": [
+    {
+      "key": "frame",
+      "label": "Wedge-cut frame",
+      "side": "dome",
+      "cost": 692.0458840112778,
+      "lines": [
+        {
+          "label": "wedges: the buyer's own trees, 1.5 of them, 120 members",
+          "quantity": 120.0,
+          "unit": "members",
+          "unit_cost": 0.0,
+          "source": "customer supplied",
+          "cost": 0.0
+        },
+        {
+          "label": "joining hardware, sized for this dome and 2 sizes up",
+          "quantity": 120.0,
+          "unit": "joints",
+          "unit_cost": 2.16,
+          "source": "frame_fastener_usd_per_member",
+          "cost": 259.20000000000005
+        },
+        {
+          "label": "seam hose, 55 seams",
+          "quantity": 309.17563143662704,
+          "unit": "ft",
+          "unit_cost": 1.4,
+          "source": "seam_hose_usd_per_ft",
+          "cost": 432.84588401127786
+        }
+      ]
+    },
+    {
+      "key": "cap",
+      "label": "Shower-cap shell",
+      "side": "dome",
+      "cost": 3264.547124026557,
+      "lines": [
+        {
+          "label": "outer wood panels, one per bay",
+          "quantity": 549.7524880909723,
+          "unit": "sq ft",
+          "unit_cost": 2.4,
+          "source": "soft_shell.outer_panel_usd_per_sqft",
+          "cost": 1319.4059714183334
+        },
+        {
+          "label": "threaded inserts in the wedge faces",
+          "quantity": 160.0,
+          "unit": "each",
+          "unit_cost": 1.35,
+          "source": "soft_shell.panel_insert_usd_each",
+          "cost": 216.0
+        },
+        {
+          "label": "breather over the panels (vapour-permeable)",
+          "quantity": 592.1853369051636,
+          "unit": "sq ft",
+          "unit_cost": 0.34,
+          "source": "soft_shell.membrane_usd_per_sqft",
+          "cost": 201.34301454775564
+        },
+        {
+          "label": "rain-slick outer cap",
+          "quantity": 592.1853369051636,
+          "unit": "sq ft",
+          "unit_cost": 1.45,
+          "source": "soft_shell.cap_usd_per_sqft",
+          "cost": 858.6687385124872
+        },
+        {
+          "label": "welded seams on the cap",
+          "quantity": 215.33126291998988,
+          "unit": "ft",
+          "unit_cost": 1.9,
+          "source": "soft_shell.cap_seam_usd_per_ft",
+          "cost": 409.12939954798077
+        },
+        {
+          "label": "strap, ratchet and ground anchor per base vertex",
+          "quantity": 10.0,
+          "unit": "each",
+          "unit_cost": 26.0,
+          "source": "soft_shell.tiedown_usd_each",
+          "cost": 260.0
+        }
+      ]
+    },
+    {
+      "key": "column",
+      "label": "Utility column and seal cap",
+      "side": "dome",
+      "cost": 1405.040243257493,
+      "lines": [
+        {
+          "label": "column housing and apex sleeve",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 380.0,
+          "source": "column_housing_usd",
+          "cost": 380.0
+        },
+        {
+          "label": "water manifold and rise from the pad",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 240.0,
+          "source": "column_manifold_usd",
+          "cost": 240.0
+        },
+        {
+          "label": "drain stack and floor-port tie-in",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 165.0,
+          "source": "column_drain_usd",
+          "cost": 165.0
+        },
+        {
+          "label": "sub-panel, breakers and outlet ring",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 310.0,
+          "source": "column_electrical_usd",
+          "cost": 310.0
+        },
+        {
+          "label": "service chase, floor to apex, 10.5 ft",
+          "quantity": 10.458203932499368,
+          "unit": "ft",
+          "unit_cost": 11.0,
+          "source": "column_riser_usd_per_ft",
+          "cost": 115.04024325749305
+        },
+        {
+          "label": "gasketed seal cap over the apex penetration",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 195.0,
+          "source": "seal_cap_usd",
+          "cost": 195.0
+        }
+      ]
+    },
+    {
+      "key": "services",
+      "label": "Light, fan and cooling",
+      "side": "dome",
+      "cost": 485.0,
+      "lines": [
+        {
+          "label": "window unit, 6k BTU/h (3,365 BTU/h computed)",
+          "quantity": 6.0,
+          "unit": "1000 BTU/h",
+          "unit_cost": 30.0,
+          "source": "ac_window_usd_per_kbtu",
+          "cost": 180.0
+        },
+        {
+          "label": "central light and ceiling fan",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 165.0,
+          "source": "light_fan_usd",
+          "cost": 165.0
+        },
+        {
+          "label": "lighting circuit and fittings",
+          "quantity": 1.0,
+          "unit": "set",
+          "unit_cost": 140.0,
+          "source": "lighting_circuit_usd",
+          "cost": 140.0
+        }
+      ]
+    },
+    {
+      "key": "polyps",
+      "label": "Utility panels",
+      "side": "dome",
+      "cost": 490.597510892453,
+      "lines": [
+        {
+          "label": "panel frame and weather lid",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 210.0,
+          "source": "polyp_frame_usd",
+          "cost": 210.0
+        },
+        {
+          "label": "quick-connect service tails",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 95.0,
+          "source": "polyp_service_usd",
+          "cost": 95.0
+        },
+        {
+          "label": "gasketed pass-through to the inside",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 88.0,
+          "source": "polyp_wall_port_usd",
+          "cost": 88.0
+        },
+        {
+          "label": "exterior routing from the seal cap",
+          "quantity": 15.249611076945776,
+          "unit": "ft",
+          "unit_cost": 6.4,
+          "source": "exterior_routing_usd_per_ft",
+          "cost": 97.59751089245297
+        }
+      ]
+    },
+    {
+      "key": "panels",
+      "label": "Snap-in panels",
+      "side": "dome",
+      "cost": 0.0,
+      "lines": [
+        {
+          "label": "blank bays",
+          "quantity": 40.0,
+          "unit": "bays",
+          "unit_cost": 0.0,
+          "source": "panel:blank",
+          "cost": 0.0
+        }
+      ]
+    },
+    {
+      "key": "labour",
+      "label": "Build labour",
+      "side": "dome",
+      "cost": 1884.260903138992,
+      "lines": [
+        {
+          "label": "mill and fit 120 wedge members from 1.5 trees",
+          "quantity": 24.0,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 672.0
+        },
+        {
+          "label": "assemble 40 panels",
+          "quantity": 9.333333333333334,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 261.33333333333337
+        },
+        {
+          "label": "hang 40 outer panels on their inserts",
+          "quantity": 7.333333333333333,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 205.33333333333331
+        },
+        {
+          "label": "lap and tape 592 sq ft of breather",
+          "quantity": 5.428365588297334,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 151.99423647232535
+        },
+        {
+          "label": "pull the cap over and strap it down",
+          "quantity": 3.5,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 98.0
+        },
+        {
+          "label": "build and plumb the utility core",
+          "quantity": 6.5,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 182.0
+        },
+        {
+          "label": "build 1 utility panels",
+          "quantity": 2.2,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 61.60000000000001
+        },
+        {
+          "label": "stand, fit out and commission",
+          "quantity": 9.0,
+          "unit": "hours",
+          "unit_cost": 28.0,
+          "source": "labour_usd_per_hour",
+          "cost": 252.0
+        }
+      ]
+    },
+    {
+      "key": "pad",
+      "label": "The pad, built by the host",
+      "side": "pad",
+      "cost": 6240.151359312624,
+      "lines": [
+        {
+          "label": "framed deck on piers, sealed, 369 sq ft (116 boards)",
+          "quantity": 1.0,
+          "unit": "platform",
+          "unit_cost": 2915.806024222449,
+          "source": "pad_deck",
+          "cost": 2915.806024222449
+        },
+        {
+          "label": "moisture barrier",
+          "quantity": 276.9915183457727,
+          "unit": "sq ft",
+          "unit_cost": 0.55,
+          "source": "moisture_barrier_usd_per_sqft",
+          "cost": 152.345335090175
+        },
+        {
+          "label": "service port up through the deck",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 340.0,
+          "source": "floor_port_usd",
+          "cost": 340.0
+        },
+        {
+          "label": "water tank, 120 gal",
+          "quantity": 120.0,
+          "unit": "gal",
+          "unit_cost": 1.35,
+          "source": "water_tank_usd_per_gal",
+          "cost": 162.0
+        },
+        {
+          "label": "under-floor storage",
+          "quantity": 1.0,
+          "unit": "set",
+          "unit_cost": 420.0,
+          "source": "underfloor_storage_usd",
+          "cost": 420.0
+        },
+        {
+          "label": "share of one hub panel, 1 of 4",
+          "quantity": 1.0,
+          "unit": "share",
+          "unit_cost": 600.0,
+          "source": "park_model",
+          "cost": 600.0
+        },
+        {
+          "label": "spur from the hub",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 450.0,
+          "source": "park_model",
+          "cost": 450.0
+        },
+        {
+          "label": "permits",
+          "quantity": 1.0,
+          "unit": "each",
+          "unit_cost": 1200.0,
+          "source": "park_model",
+          "cost": 1200.0
+        }
+      ]
+    }
+  ],
+  "font_size": 9.8,
+  "flow_height": 661.396,
+  "page_count": 2,
+  "original_page_preserved": true
+}

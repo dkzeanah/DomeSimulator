@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\2026-10-14\the-staple-house\the-staple-house.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\2026-10-14\the-staple-house\the-staple-house-vertical.mp4

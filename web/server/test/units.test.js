@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { boundingBox, haversineKm } from '../src/lib/geo.js';
-import { latestVersion } from '../src/lib/books.js';
+import { latestVersion, latestInLibrary, resolveBook } from '../src/lib/books.js';
 import { embedUrl, parseMediaUrl } from '../src/lib/media.js';
 import { parseFeed } from '../src/lib/youtube.js';
 
@@ -52,6 +52,18 @@ test('the newest edition wins, and a gap in versions does not matter', () => {
   assert.equal(latestVersion(dir, 'book.pdf').name, 'book-v7.pdf');
   assert.equal(latestVersion(dir, 'book-kdp.pdf').name, 'book-kdp-v9.pdf');
   assert.equal(latestVersion(dir, 'other.pdf'), null);
+});
+
+test('a book is found in the numbered library when its old folder has none', () => {
+  const lib = fs.mkdtempSync(path.join(os.tmpdir(), 'domenet-lib-'));
+  for (const [folder, name] of [['0001-book', 'book.pdf'], ['0007-book-v3', 'book-v3.pdf'], ['0002-book-cover', 'book-cover.pdf']]) {
+    fs.mkdirSync(path.join(lib, folder), { recursive: true });
+    fs.writeFileSync(path.join(lib, folder, name), 'x');
+  }
+  assert.equal(latestInLibrary(lib, 'book.pdf').name, 'book-v3.pdf');
+  assert.equal(latestInLibrary(lib, 'other.pdf'), null);
+  const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'domenet-old-'));
+  assert.equal(resolveBook({ file: 'book.pdf' }, empty, lib).name, 'book-v3.pdf');
 });
 
 test('the YouTube feed parser reads ids, titles and shorts', () => {

@@ -1584,8 +1584,8 @@ def main() -> int:
     intro(body,
          "The book: The 40 Hour Cabin -- Complete Edition, by Donovan "
          "Zeanah: the frame, and every way to style it, priced (sold on the "
-         "site; the Amazon paperback is the separate 3 Trees book). Its own "
-         "editor, outline and figures. The text lives as Markdown in book_wedge/, every "
+         "site; the Amazon paperback is the separate 2V Geodesic Dome Wedge Method book). Its own "
+         "editor, outline and figures. The text lives as Markdown in books/the-40-hour-cabin/, every "
          "number in it is computed, and the figures are the raw-wedge solver "
          "run with the settings that make each idea visible. The KDP upload "
          "set -- print interior, light print figures, cover art and the "
@@ -1602,7 +1602,7 @@ def main() -> int:
         "open_editor": "open the Tkinter book editor. This is where you "
                        "write: pick a section, type into it, and use "
                        "Write Next Section to get a brief for a model.",
-        "sync_from_tree": "you edited the Markdown files in book_wedge/. "
+        "sync_from_tree": "you edited the Markdown files in books/the-40-hour-cabin/. "
                           "Pull that text back into the editor's project "
                           "file and the database. This is the safe "
                           "direction and the default.",
@@ -1612,7 +1612,7 @@ def main() -> int:
                              "it when the app is the newer copy.",
         "render_figures": "run the raw-wedge solver over the whole "
                           "figure list and write the PNGs into "
-                          "book_wedge/figures/. Needs a display; takes a "
+                          "books/the-40-hour-cabin/figures/. Needs a display; takes a "
                           "couple of minutes.",
         "paper_figures": "re-render every figure the book prints on a light "
                          "page, without the films' captions. Long: it "
@@ -1948,6 +1948,87 @@ def main() -> int:
         anchor="w")
     launch_button(infill_head, "Open the 3-D cutting tool",
                   lambda: run_module("infill.app3d", [], "Triangle Infill 3-D"))
+
+    # ------------------------------------------------------------------
+    # Wedge Zome: a zome framed from the dome's own wedges, in 3-D.
+    zome_tab = tab("Wedge Zome")
+    zome_head = ttk.Frame(zome_tab)
+    zome_head.pack(fill="x", padx=8, pady=8)
+    ttk.Label(zome_head, wraplength=900, justify="left", text=(
+        "A zome -- rows of diamond-shaped panels twisting up to a point, a garden-studio size -- framed from the same wedges "
+        "that frame the dome, in a 3-D world you can walk round.\n\n"
+        "Click any stick to measure it: its size, its three lengths in inches and feet, both end cuts and "
+        "how many come from one wedge. A six-foot person stands in the scene for scale (press 6, then move "
+        "it with the arrow keys or right-click to put it down); the ground has a grid in feet and the jig "
+        "table has rulers. Switch between wedge sticks and square sticks with M, step through the seams "
+        "with [ and ], pull the panels apart with X, and build a panel on the jig a stick at a time with "
+        "9 and 0. F1 in the window lists every key.\n\n"
+        "The cut package is the shop's copy: a how-to, the cut list, a full-size jig drawing for each row "
+        "and, for square sticks, the templates for splitting the wedge blocks. It is saved in the "
+        "library (the deliverables folder, under the date it was first made, as wedge-zome-wedge), "
+        "a new numbered folder each time.")).pack(anchor="w")
+    launch_button(zome_head, "Open the whole world: foundation, dome and zome, with their jigs (layers, cut, add, delete)",
+                  lambda: run_module("world3d", [], "DomeSim world"))
+    launch_button(zome_head, "Open the 3-D zome world",
+                  lambda: run_module("wedge_zome.app", [], "Wedge Zome 3-D"))
+    launch_button(zome_head, "Make the cut package",
+                  lambda: run_module("wedge_zome.fabrication", [], "Wedge Zome cut package"))
+
+    # ------------------------------------------------------------------
+    # Library & Books: everything made, the book composer, and making a film.
+    lib_tab = tab("Library & Books")
+    lib_head = ttk.Frame(lib_tab)
+    lib_head.pack(fill="x", padx=8, pady=8)
+    ttk.Label(lib_head, wraplength=900, justify="left", text=(
+        "Everything this project makes -- films, phone cuts, books, PDFs, kits, stills -- goes into one "
+        "library: the deliverables folder, one folder per day, one folder per thing inside it, with every "
+        "version of that thing kept together. Nothing is ever written over. The index lists it all, newest "
+        "first, and you can filter it by name.\n\n"
+        "The Book Composer opens in your browser (it runs on this computer only). It shows every book on "
+        "the shelf, reads any PDF in the library with notes on each page, and makes new books -- layered "
+        "books, children's picture books, coloring books, construction-kit manuals -- as threads (ideas or "
+        "characters) woven through levels (story, theory, template, steps, family activity), each level "
+        "unlocked by a gate. Pictures are placed on the page by dragging; the same book prints down each "
+        "level, up each thread, or along any reading path.")).pack(anchor="w")
+
+    def open_library() -> None:
+        append_log("--- rebuilding and opening the library index")
+        if smoketest:
+            launched.append(("Library index", "browser", {"path": "deliverables/index.html"}))
+            return
+        import medialib
+        import webbrowser
+        md, page = medialib.write_index()
+        webbrowser.open(page.resolve().as_uri())
+
+    launch_button(lib_head, "Open the Book Composer",
+                  lambda: run_module("books.composer", [], "Book Composer"))
+    launch_button(lib_head, "Open the library index", open_library)
+    launch_button(lib_head, "File new pictures into assets (named, catalogued)",
+                  lambda: run_module("assetlib", ["adopt", "--go"], "Asset library"))
+    film_row = ttk.Frame(lib_head)
+    film_row.pack(fill="x", pady=(14, 0))
+    ttk.Label(film_row, text="Make a film:").pack(side="left")
+    from two_v_demo.deliverables import DELIVERABLES as _films
+    film_lesson = ttk.Combobox(film_row, values=[d.lesson for d in _films], width=30, state="readonly")
+    film_lesson.set(_films[-1].lesson)
+    film_lesson.pack(side="left", padx=6)
+    film_voice = ttk.Combobox(film_row, values=["house voice", "my voice"], width=12, state="readonly")
+    film_voice.set("my voice")
+    film_voice.pack(side="left", padx=6)
+    ttk.Label(film_row, text="pace").pack(side="left")
+    film_pace = ttk.Combobox(film_row, values=["1.0", "1.25", "1.5"], width=5, state="readonly")
+    film_pace.set("1.5")
+    film_pace.pack(side="left", padx=6)
+
+    def make_film() -> None:
+        args = ["make", film_lesson.get()]
+        if film_voice.get() == "my voice":
+            args += ["--voice", "mine", "--pace", film_pace.get()]
+        run_module("film", args, f"Film: {film_lesson.get()}")
+
+    launch_button(lib_head, "Make the film (landscape, phone cut, release, teaser -- about 90 minutes)",
+                  make_film)
 
     t, body, foot = scrollable_tab("Beat Studio")
     intro(body,
@@ -2835,8 +2916,9 @@ def main() -> int:
 
     t, body, foot = scrollable_tab("Book: 40 Hour Cabin")
     intro(body,
-         "The whole project, written down as a book — \"Geodesic Dome "
-         "Wedge Method\", subtitled \"The 40 Hour Cabin: 3 Trees\". "
+         "The Amazon paperback — \"The 40 Hour Cabin\", subtitled "
+         "\"2V Geodesic Dome Wedge Method\": Part One, the whole build, "
+         "day by day, and Part Two, the four shell chapters. "
          "One small chainsaw, three trees, forty hours "
          "or less of hands-on work, a hundred and twenty wedge struts and "
          "a geodesic cabin winched up between the trees, told "
@@ -2906,10 +2988,10 @@ def main() -> int:
     section(body, "Where the writing lives")
     book_manuscript_dir = PathRow(
         body, "Manuscript folder", "", mode="dir",
-        placeholder="leave blank for book/manuscript/")
+        placeholder="leave blank for books/two-trees/manuscript/")
     book_manuscript_dir.pack(fill="x", pady=3)
     note(body, "One plain Markdown file per chapter. Blank uses the "
-               "project's own book/manuscript/ folder. Point this "
+               "project's own books/two-trees/manuscript/ folder. Point this "
                "somewhere else to work on a copy without touching the "
                "real manuscript. These are ordinary files: you can open "
                "them in any editor, and they outlive this program.")
@@ -2958,10 +3040,10 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 20
+        expected = 22
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 26
+        expected_buttons = 33
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks
@@ -2969,6 +3051,20 @@ def main() -> int:
         from infill import app3d as infill_3d
         infill_3d.validate_meshes()
         print("SMOKETEST OK: Triangle Infill 3-D pieces and recipes build")
+
+        from wedge_zome import geometry as wedge_zome_geometry
+        wedge_zome_geometry.validate()
+        print("SMOKETEST OK: Wedge Zome geometry solves and its seams close")
+
+        from world3d import pieces as world_pieces
+        world_pieces.validate_pieces()
+        print("SMOKETEST OK: the world's pieces cut, measure and snap")
+
+        import medialib
+        medialib.selftest()
+        from books.composer import loom as composer_loom
+        composer_loom.selftest()
+        print("SMOKETEST OK: the library files and finds by date; the composer weaves and prints")
 
         notebook.select(voice_tab)
         root.update()

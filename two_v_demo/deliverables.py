@@ -54,7 +54,10 @@ class Deliverable:
     """Extra segments by key, beyond the automatic ones."""
 
     def path(self, root: Path = OUTPUT_DIR) -> Path:
-        return root / self.filename
+        # The old kind folder is an address now; the file lives in its item's folder
+        # in the dated library (medialib).
+        import medialib
+        return medialib.locate(root / self.filename)
 
     @property
     def voice_cache_glob(self) -> str:
@@ -326,7 +329,9 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "Creator's own model on the Cabin World's hilltop.",
                 compose=True),
     Deliverable("cabin_every_piece", "every-piece-numbered.mp4",
-                "The Triangle Infill calculator, filmed. One of the dome's "
+                "The Triangle Infill calculator and core wedge stock methodology, "
+                "filmed: nominal versus cut versus blank footage, conditional "
+                "paired coverage, raw-trunk equivalents and pentagon identities. One of the dome's "
                 "triangles filled with wedges split from a log, each piece "
                 "numbered, its lengths along every edge, and both cuts set up on "
                 "the mitre saw -- which face down, what against the fence, the "
@@ -336,6 +341,35 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "36 degree corner, a star that fails its deck alone, joists that "
                 "fix it, every span and pier checked, seven ways to frame it and "
                 "five materials compared, and the wood strength named as a guess.",
+                compose=True),
+    Deliverable("cabin_wedge_beyond", "beyond-the-dome-building-with-wedges.mp4",
+                "The wedge method beyond the dome, in the Cabin World: what a split "
+                "gives, two wedges made into a square on demand, quarters back to "
+                "back, finer splits that pair into boards, shims from the same log, "
+                "the skew as a roof pitch, the octagon in the log, joints, the seam "
+                "as a channel and the honest comparison with the mill -- then a zome "
+                "framed from the dome's own wedges, every cut on screen, the square "
+                "method beside it, the buildings wedges suit and the crews that "
+                "could build them.",
+                compose=True),
+    Deliverable("cabin_triangle_fill", "closing-the-triangle.mp4",
+                "Filling a dome triangle with pairs of wedges, shown: one wedge end-on, a pair "
+                "sliding from nested to bowtie with its reach measured, a true-size triangle "
+                "filled course by course both ways, the whole dome and the trees, and the "
+                "correction to the first count. Every figure from triangle_fill.",
+                compose=True),
+    Deliverable("cabin_promo", "the-house-that-was-a-tree.mp4",
+                "The promo: the project's whole case in about ninety seconds, made for a phone -- "
+                "hook, open loop, the papercuts as the villain, the turn, the golden-ratio floor, "
+                "the one-sheet bill, the trees, the weakest point said out loud, and who it is for. "
+                "Every figure from staple_facts and wedge_coverage_facts.",
+                compose=False),
+    Deliverable("cabin_staple", "the-staple-house.mp4",
+                "The dome as housing's staple, in the Cabin World and the owner's voice: "
+                "his McDouble analogy spoken as his, the survey house's papercuts counted "
+                "line by line (fees, margins, fifteen hands, the loan's interest) against "
+                "the stem cell's nine-line bill, the honest not-like-for-like caveat, and "
+                "the family build. Every figure from two_v_demo.staple_facts.",
                 compose=True),
     Deliverable("cabin_sky_web", "the-sky-web.mp4",
                 "Building the dome in the air, with the trees. Two wire ropes cross "
@@ -405,7 +439,7 @@ def missing_voice_caches(root: Path = OUTPUT_DIR) -> tuple[Deliverable, ...]:
     """Deliverables whose cached speech is absent, so would re-synthesize."""
     return tuple(
         item for item in DELIVERABLES
-        if not any(root.glob(item.voice_cache_glob))
+        if not any(item.path(root).parent.glob(item.voice_cache_glob))
     )
 
 
@@ -509,7 +543,14 @@ def next_version_path(path: Path) -> Path:
     The companion files a render writes -- narration, subtitles, the voice cache -- are
     derived from the returned stem, so a versioned render keeps its own set and does not
     tread on the previous one's.
+
+    A path in one of the old output folders (``deliverables/book``, ``exports``...) is
+    answered by :mod:`medialib`: the item's own folder in the dated library, under the
+    next version that has never existed there.
     """
+    import medialib
+    if medialib.is_legacy_path(path):
+        return medialib.route(path)
     if not path.exists():
         return path
     stem = path.stem

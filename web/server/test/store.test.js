@@ -197,3 +197,40 @@ describe('the Amazon waitlist', () => {
     assert.equal((await ctx.request().get('/api/admin/signups.csv')).status, 401);
   });
 });
+
+describe('a design session: sold like a book, delivered as time', () => {
+  test('it is listed, priced and bought with no file, and its order books it instead of downloading', async () => {
+    const { body } = await ctx.request().get('/api/books');
+    const session = body.books.find((b) => b.slug === 'design-session');
+    assert.equal(session.kind, 'session');
+    assert.equal(session.priceCents, 5000);
+    assert.equal(session.available, true);
+
+    const agent = ctx.request();
+    const res = await agent.post('/api/checkout').send({ book: 'design-session', email: 'client@example.com' });
+    assert.equal(res.status, 201, JSON.stringify(res.body));
+    const url = new URL(res.body.url, 'http://x');
+    const ref = url.pathname.split('/').pop();
+    const key = url.searchParams.get('key');
+    const paid = await agent.post(`/api/orders/${ref}/test-pay`).send({ key });
+    assert.equal(paid.status, 200, JSON.stringify(paid.body));
+    assert.equal(paid.body.order.status, 'paid');
+    assert.equal(paid.body.order.amountCents, 5000);
+    assert.equal(paid.body.order.book.kind, 'session');
+    assert.equal(paid.body.order.downloadUrl, null);
+    assert.equal(paid.body.order.bookingNote, 'We will email you to book it.');
+    const dl = await agent.get(`/api/orders/${ref}/download?key=${encodeURIComponent(key)}`);
+    assert.equal(dl.status, 404);
+  });
+
+  test("the complete edition's paid order carries its codebase link", async () => {
+    const agent = ctx.request();
+    const res = await agent.post('/api/checkout').send({ book: 'paid-book', email: 'reader@example.com' });
+    const url = new URL(res.body.url, 'http://x');
+    const ref = url.pathname.split('/').pop();
+    const key = url.searchParams.get('key');
+    const paid = await agent.post(`/api/orders/${ref}/test-pay`).send({ key });
+    assert.equal(paid.body.order.codebaseUrl, 'https://example.com/code');
+    assert.ok(paid.body.order.downloadUrl);
+  });
+});

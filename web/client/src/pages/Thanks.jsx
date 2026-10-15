@@ -63,15 +63,34 @@ export default function Thanks() {
     <section className="narrow thanks">
       {order.book.cover && <img className="book-cover small-cover" src={order.book.cover} alt="" width="720" height="931" />}
       <p className="eyebrow">{paid ? 'Paid' : 'Confirming payment'}{order.test ? ' · test order' : ''}</p>
-      <h1>{paid ? 'Thank you. The book is yours.' : 'Almost there…'}</h1>
+      <h1>{paid ? (order.book.kind === 'session' ? 'Thank you. Your design session is paid for.' : 'Thank you. The book is yours.') : 'Almost there…'}</h1>
       <p className="lead">
         <b>{fullTitle(order.book.title, order.book.subtitle)}</b>
         {' · '}
         {price(order.amountCents, order.currency)}
       </p>
-      {paid ? (
+      {paid && order.book.kind === 'session' ? (
+        <div className="panel receipt">
+          <h3>Booking your session</h3>
+          <p>{order.bookingNote}</p>
+          <p className="muted">
+            Keep this page{order.email ? ` (paid with ${order.email})` : ''}: its address is your receipt.
+          </p>
+        </div>
+      ) : paid ? (
         <>
           <a className="button primary big" href={order.downloadUrl}>Download the PDF</a>
+          {order.codebaseUrl && (
+            <div className="panel receipt">
+              <h3>The codebase</h3>
+              <p className="muted">
+                Every tool, solver and film that made this book is in the repository -- the Dome Creator, the Triangle
+                Infill calculator, the raw-wedge solver and the launcher that opens them all. Its README says how to
+                install and run it.
+              </p>
+              <a className="button" href={order.codebaseUrl} target="_blank" rel="noreferrer">Open the codebase</a>
+            </div>
+          )}
           <div className="panel receipt">
             <h3>Keep this page</h3>
             <p className="muted">

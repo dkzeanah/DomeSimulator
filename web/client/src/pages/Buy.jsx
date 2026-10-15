@@ -4,13 +4,14 @@
 
 import { Link, useSearchParams } from 'react-router-dom';
 import BuyBox from '../components/BuyBox.jsx';
-import { chapterCount, fullTitle, offered, price, useBooks, useFacts } from '../shop.js';
+import { chapterCount, fullTitle, offered, price, sessionOffer, useBooks, useFacts } from '../shop.js';
 
 export default function Buy() {
   const { books, error } = useBooks();
   const facts = useFacts();
   const [params] = useSearchParams();
   const book = offered(books, 'paid');
+  const session = sessionOffer(books);
   const digital = facts?.books?.digital;
   const n = digital?.numbers;
   const amount = book ? price(book.priceCents, book.currency) : '';
@@ -54,9 +55,32 @@ export default function Buy() {
               {digital.chapters} chapters · {digital.figures} figures{digital.pages ? ` · ${digital.pages} pages` : ''}
             </p>
           )}
+          {book?.includes?.length > 0 && (
+            <ul className="checklist small">
+              {book.includes.map((line) => <li key={line}>{line}</li>)}
+            </ul>
+          )}
           <BuyBox book={book} />
         </div>
       </section>
+
+      {session && (
+        <section className="split">
+          <div>
+            <p className="eyebrow">Add-on · {price(session.priceCents, session.currency)}</p>
+            <h2>{session.title}</h2>
+            <p className="lead">{session.blurb}</p>
+            {session.includes?.length > 0 && (
+              <ul className="checklist">
+                {session.includes.map((line) => <li key={line}>{line}</li>)}
+              </ul>
+            )}
+          </div>
+          <div className="panel">
+            <BuyBox book={session} label="Book a design session" />
+          </div>
+        </section>
+      )}
 
       <section>
         <p className="eyebrow">What you get</p>

@@ -43,6 +43,9 @@ export const config = {
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean),
   booksDir: env.BOOKS_DIR || path.join(REPO_ROOT, 'deliverables', 'book'),
+  // The numbered library (medialib.py): deliverables/<NNNN>-<item>[-vN]/, one folder per
+  // iteration. Books are looked for here when booksDir has none.
+  libraryDir: env.LIBRARY_DIR || path.join(REPO_ROOT, 'deliverables'),
   booksConfig: env.BOOKS_CONFIG || path.join(WEB_ROOT, 'books.config.json'),
   siteConfig: path.join(WEB_ROOT, 'site.config.json'),
   youtubeChannelId: env.YOUTUBE_CHANNEL_ID || '',

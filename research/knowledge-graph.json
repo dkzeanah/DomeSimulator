@@ -251,7 +251,7 @@
    ],
    "files": [
     "geodesic_raw_wedge_dome_dihedral.py",
-    "book_wedge/manuscript/12-nothing-meets-at-the-corner.md"
+    "books/the-40-hour-cabin/manuscript/12-nothing-meets-at-the-corner.md"
    ],
    "order": 10,
    "status": "seed",
@@ -269,7 +269,7 @@
    ],
    "files": [
     "jig_focus_world.py",
-    "book_wedge/manuscript/14-one-flat-board-forty-identical-panels.md"
+    "books/the-40-hour-cabin/manuscript/14-one-flat-board-forty-identical-panels.md"
    ],
    "order": 11,
    "status": "seed",
@@ -305,7 +305,7 @@
    ],
    "files": [
     "seed_model.py",
-    "book_wedge/manuscript/18-the-seam-does-four-jobs.md"
+    "books/the-40-hour-cabin/manuscript/18-the-seam-does-four-jobs.md"
    ],
    "order": 13,
    "status": "seed",
@@ -375,7 +375,7 @@
    ],
    "files": [
     "wedge_book/systems.py",
-    "book_wedge/manuscript/09-stop-squaring-start-splitting.md"
+    "books/the-40-hour-cabin/manuscript/09-stop-squaring-start-splitting.md"
    ],
    "order": 17,
    "status": "seed",
@@ -445,7 +445,7 @@
     "traditional timber frame joinery"
    ],
    "files": [
-    "book_wedge/manuscript/03-build-it-so-you-can-change-your-mind.md"
+    "books/the-40-hour-cabin/manuscript/03-build-it-so-you-can-change-your-mind.md"
    ],
    "order": 21,
    "status": "seed",
@@ -480,7 +480,7 @@
    ],
    "files": [
     "wedge_book/systems.py",
-    "book_wedge/manuscript/front/title.md"
+    "books/the-40-hour-cabin/manuscript/front/title.md"
    ],
    "order": 23,
    "status": "seed",
@@ -516,7 +516,7 @@
    ],
    "files": [
     "soft_shell.py",
-    "book_wedge/manuscript/19-a-dome-is-a-head-and-it-wears-hats.md"
+    "books/the-40-hour-cabin/manuscript/19-a-dome-is-a-head-and-it-wears-hats.md"
    ],
    "order": 25,
    "status": "seed",
@@ -552,7 +552,7 @@
    ],
    "files": [
     "soft_shell.py",
-    "book_wedge/manuscript/02-water-is-the-silent-killer.md"
+    "books/the-40-hour-cabin/manuscript/02-water-is-the-silent-killer.md"
    ],
    "order": 27,
    "status": "seed",
@@ -692,7 +692,7 @@
    ],
    "files": [
     "seed_model.py",
-    "book_wedge/manuscript/18-the-seam-does-four-jobs.md"
+    "books/the-40-hour-cabin/manuscript/18-the-seam-does-four-jobs.md"
    ],
    "order": 35,
    "status": "seed",
@@ -780,7 +780,7 @@
    ],
    "files": [
     "web/server/src/routes/network.js",
-    "book_wedge/manuscript/22-why-a-network-beats-a-park.md"
+    "books/the-40-hour-cabin/manuscript/22-why-a-network-beats-a-park.md"
    ],
    "order": 40,
    "status": "seed",
@@ -797,7 +797,7 @@
     "tiny house legal"
    ],
    "files": [
-    "book_wedge/manuscript/front/title.md"
+    "books/the-40-hour-cabin/manuscript/front/title.md"
    ],
    "order": 41,
    "status": "seed",
@@ -835,7 +835,7 @@
    ],
    "files": [
     "seed_model.py",
-    "book_wedge/manuscript/30-fifteen-buildings-from-one-body.md"
+    "books/the-40-hour-cabin/manuscript/30-fifteen-buildings-from-one-body.md"
    ],
    "order": 43,
    "status": "seed",
@@ -956,7 +956,7 @@
    ],
    "files": [
     "wedge_book/systems.py",
-    "book_wedge/manuscript/front/title.md"
+    "books/the-40-hour-cabin/manuscript/front/title.md"
    ],
    "order": 50,
    "status": "seed",
@@ -1027,7 +1027,7 @@
     "are domes strong"
    ],
    "files": [
-    "book_wedge/manuscript/front/title.md"
+    "books/the-40-hour-cabin/manuscript/front/title.md"
    ],
    "order": 54,
    "status": "seed",
@@ -1044,7 +1044,7 @@
     "why domes are strong"
    ],
    "files": [
-    "book_wedge/manuscript/04-why-it-is-triangles.md"
+    "books/the-40-hour-cabin/manuscript/04-why-it-is-triangles.md"
    ],
    "order": 55,
    "status": "seed",
@@ -1062,7 +1062,7 @@
    ],
    "files": [
     "seed_model.py",
-    "book_wedge/manuscript/31-hang-it-between-two-trees.md"
+    "books/the-40-hour-cabin/manuscript/31-hang-it-between-two-trees.md"
    ],
    "order": 56,
    "status": "seed",
@@ -1078,7 +1078,7 @@
     "tolerance in construction"
    ],
    "files": [
-    "book_wedge/manuscript/01-your-skull-is-not-symmetrical-either.md"
+    "books/the-40-hour-cabin/manuscript/01-your-skull-is-not-symmetrical-either.md"
    ],
    "order": 57,
    "status": "seed",

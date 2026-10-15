@@ -14,6 +14,7 @@ shared -- :func:`table` -- so every table in the book looks the same.
 from __future__ import annotations
 
 import math
+import textwrap
 from pathlib import Path
 
 from . import book_math as bm
@@ -135,12 +136,29 @@ def table(title: str, headers: tuple[str, ...],
             positions.append(starts[index] + widths[index])
 
     def draw_row(values, weight="normal", colour=STYLE.ink, size=8.0):
+        lines = 1
         for index, (value, kind) in enumerate(zip(values, align)):
             x = positions[index]
-            axes.text(x, y, str(value), fontsize=size, weight=weight,
+            text = str(value)
+            axes.text(x, y, text, fontsize=size, weight=weight,
                       va="top", color=colour,
                       ha="left" if kind == "l" else "right",
                       family="monospace" if kind == "r" else "sans-serif")
+            lines = max(lines, text.count("\n") + 1)
+        return lines
+
+    # Cells that run wider than their measured column are wrapped to it
+    # rather than left to collide with the next column, and a wrapped cell
+    # pays for every line it uses when the next row's position is set --
+    # a two-line cell followed by a one-line row is where the old renderer
+    # printed one row on top of another.
+    def wrap_cell(text: str, column: int) -> str:
+        budget = max(12, int(widths[column] * 120))
+        return "\n".join(textwrap.wrap(str(text), budget))
+
+    wrapped = tuple(tuple(wrap_cell(cell, index)
+                          for index, cell in enumerate(row))
+                    for row in rows)
 
     draw_row(headers, weight="bold", size=size)
     y -= line_height * 0.55
@@ -148,15 +166,15 @@ def table(title: str, headers: tuple[str, ...],
     y -= line_height * 0.45
 
     split_at = body_rows - footer_rows
-    for index, row in enumerate(rows):
+    for index, row in enumerate(wrapped):
         if footer_rows and index == split_at:
             y += line_height * 0.12
             axes.plot([0.0, 1.0], [y, y], color=STYLE.rule, linewidth=0.6)
             y -= line_height * 0.30
-        draw_row(row, size=size,
-                 weight="bold" if index >= split_at and footer_rows else
-                 "normal")
-        y -= line_height
+        lines = draw_row(row, size=size,
+                         weight="bold" if index >= split_at and footer_rows
+                         else "normal")
+        y -= line_height * lines
 
     y -= line_height * 0.2
     axes.plot([0.0, 1.0], [y, y], color=STYLE.rule, linewidth=0.6)
@@ -654,11 +672,14 @@ def plot_ripping_rhythm(figure: Figure):
 
 def plot_jig_stages(figure: Figure):
     """The twelve jig stages, named by the simulator itself."""
+    import re as _re
     from . import raw_wedge_bridge as bridge
     stages = bridge.jig_stages()
     rows = tuple(
-        (str(index + 1), str(stage[1] if len(stage) > 1 else stage[0]),
-         _wrap(str(stage[2] if len(stage) > 2 else ""), 44))
+        (str(index + 1),
+         _re.sub(r"^\d+\.\s*", "",
+                 str(stage[1] if len(stage) > 1 else stage[0])),
+         str(stage[2] if len(stage) > 2 else ""))
         for index, stage in enumerate(stages))
     return table(
         "The twelve stages of the jig",
@@ -678,11 +699,10 @@ def plot_butt_setups(figure: Figure):
     rows = []
     for index, setup in enumerate(setups[:24], start=1):
         values = [str(setup.get(name, "")) for name in
-                  ("members", "bevel_deg", "mitre_deg")]
+                  ("count", "bevel_deg", "mitre_deg")]
         rows.append((str(index), *(
             f"{float(v):.2f}" if _isnum(v) else (v or "-") for v in values)))
-    rows.append(("", f"{len(setups)} setups",
-                 f"{bm.MEMBERS_IN_FRAME} members", ""))
+    rows.append(("", f"{bm.MEMBERS_IN_FRAME} members", "", ""))
     return table(
         "Distinct butt-cut setups in the whole dome",
         ("#", "members", "bevel deg", "mitre deg"),

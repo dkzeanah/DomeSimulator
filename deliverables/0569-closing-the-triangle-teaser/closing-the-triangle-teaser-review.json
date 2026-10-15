@@ -1,0 +1,84 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-14T22:00:08.316059+00:00",
+  "lesson": "teaser_cabin_triangle_fill",
+  "title": "Closing the Triangle: the teaser",
+  "chapters": [
+    {
+      "slug": "open",
+      "title": "DOMESIM",
+      "narration": [
+        "The same wedges, again."
+      ],
+      "start": 0.0,
+      "end": 6.0
+    },
+    {
+      "slug": "slide",
+      "title": "Slide it to a bowtie",
+      "narration": [
+        "Twice the reach, half the wood."
+      ],
+      "start": 6.0,
+      "end": 12.0
+    },
+    {
+      "slug": "dome_dial",
+      "title": "Dial it in each triangle",
+      "narration": [
+        "Solid at the corners."
+      ],
+      "start": 12.0,
+      "end": 18.0
+    },
+    {
+      "slug": "parallel",
+      "title": "Parallel",
+      "narration": [
+        "Along one edge."
+      ],
+      "start": 18.0,
+      "end": 24.0
+    },
+    {
+      "slug": "cover_chevron",
+      "title": "Covered, chevron",
+      "narration": [
+        "And the louvered cover."
+      ],
+      "start": 24.0,
+      "end": 30.0
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 30.0,
+      "end": 37.800625
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 37.800625,
+      "end": 43.800625
+    }
+  ],
+  "render_config": {
+    "local_narration_plan": "C:\\Users\\Don\\Desktop\\DomeSim\\deliverables\\0569-closing-the-triangle-teaser\\closing-the-triangle-teaser-myvoice-x1.5\\narration-plan.json",
+    "orientation": "landscape",
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

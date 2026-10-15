@@ -1,0 +1,16 @@
+part,count,section,length_in,cut_ends
+R1A,18,square 4.57,26.83,mitre 57.9 bevel 0.0
+R1B,18,square 4.57,26.83,mitre -57.9 bevel 0.0
+R2A,18,square 4.57,30.28,mitre 27.3 bevel 0.0
+R2B,18,square 4.57,30.28,mitre -27.3 bevel -0.0
+R3A,18,square 4.57,30.85,mitre 1.0 bevel 0.0
+R3B,18,square 4.57,30.85,mitre -1.0 bevel 0.0
+R4A,18,square 4.57,30.68,mitre -15.6 bevel -0.0
+R4B,18,square 4.57,30.68,mitre 15.6 bevel 0.0
+rim post,9,square 6.62,24.33,square
+"block, 25-way split",18,wedge 14.2 deg,35.43,square
+"block, 19-way split",18,wedge 19.3 deg,35.43,square
+"block, 15-way split",9,wedge 24.2 deg,35.43,square
+"block, 13-way split",18,wedge 27.8 deg,35.43,square
+wedges,144,72 in,,"log 14.0 in, 8 ways"
+log sections,18,14.0 in,72,

@@ -24,8 +24,11 @@ export function useFacts() {
   return facts;
 }
 
-/** The book offered a given way: 'free', 'paid' or 'amazon'. */
-export const offered = (books, offer) => books?.find((b) => b.offer === offer) || null;
+/** The book offered a given way: 'free', 'paid' or 'amazon'. Sessions are not books. */
+export const offered = (books, offer) => books?.find((b) => b.offer === offer && b.kind !== 'session') || null;
+
+/** The one-on-one design session, if the catalogue sells one. */
+export const sessionOffer = (books) => books?.find((b) => b.kind === 'session' && b.offer === 'paid') || null;
 
 /** 2000, 'usd' -> "$20"; cents shown only when there are any. */
 export function price(cents, currency = 'usd') {

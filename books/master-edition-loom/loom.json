@@ -1,0 +1,2209 @@
+{
+ "schema": 1,
+ "title": "The 40 Hour Cabin: Master Edition (loom)",
+ "subtitle": "Master Edition",
+ "author": "Donovan Zeanah",
+ "kind": "layered",
+ "created": "2026-10-14T05:16:43",
+ "page": {
+  "size": "8.5in 11in",
+  "margin": "0.6in",
+  "body_pt": 11
+ },
+ "threads": [
+  {
+   "key": "tree",
+   "name": "The Tree",
+   "idea": "Wood that is already standing",
+   "color": "#b0601e"
+  },
+  {
+   "key": "split",
+   "name": "The Split",
+   "idea": "Eight from one",
+   "color": "#2f5d7c"
+  },
+  {
+   "key": "triangle",
+   "name": "The Triangle",
+   "idea": "The shape that will not wobble",
+   "color": "#5b7f3a"
+  },
+  {
+   "key": "dome",
+   "name": "The Dome",
+   "idea": "A ball of triangles, cut in half",
+   "color": "#8a4f9e"
+  },
+  {
+   "key": "joint",
+   "name": "The Joint",
+   "idea": "Nothing meets at the corner",
+   "color": "#c2410c"
+  },
+  {
+   "key": "panel",
+   "name": "The Panel",
+   "idea": "Build it flat, forty times",
+   "color": "#0f766e"
+  },
+  {
+   "key": "raise",
+   "name": "The Raising",
+   "idea": "Up it goes",
+   "color": "#a16207"
+  },
+  {
+   "key": "skin",
+   "name": "The Skin",
+   "idea": "Keep the weather out",
+   "color": "#be185d"
+  },
+  {
+   "key": "ground",
+   "name": "The Ground",
+   "idea": "Where it stands",
+   "color": "#4d7c0f"
+  },
+  {
+   "key": "uses",
+   "name": "The Uses",
+   "idea": "One body, many buildings",
+   "color": "#1d4ed8"
+  },
+  {
+   "key": "count",
+   "name": "The Count",
+   "idea": "Hours, dollars, and what we know",
+   "color": "#9f1239"
+  },
+  {
+   "key": "care",
+   "name": "Taking Care",
+   "idea": "Who holds the saw",
+   "color": "#475569"
+  }
+ ],
+ "levels": [
+  {
+   "key": "wonder",
+   "name": "Read It Together",
+   "verb": "Wonder",
+   "promise": "Tell the whole story of a house made from a tree: where the wood comes from, why triangles, how it goes up, and what it can become.",
+   "who": "A grown-up reading aloud with a child of four or more -- or anyone who wants the whole idea in twenty minutes.",
+   "time": "About ten minutes a chapter: twelve bedtimes.",
+   "need": "This book, and things already in the house.",
+   "gate": {
+    "title": "Twelve bedtimes",
+    "done_when": "Every chapter of this rung has been read aloud and every “Try it together” has been tried.",
+    "key": ""
+   },
+   "milestones": [
+    {
+     "key": "m-walk",
+     "title": "The wonder walk",
+     "who": "Everyone",
+     "time": "An afternoon",
+     "need": "Shoes",
+     "done_when": "You have found three triangles holding something up in your house, and one fallen tree outside, and said why each one matters."
+    },
+    {
+     "key": "m-twelve",
+     "title": "Twelve bedtimes",
+     "who": "A grown-up and a child",
+     "time": "Twelve evenings",
+     "need": "This rung",
+     "done_when": "Every chapter of this rung has been read aloud and every “Try it together” has been tried."
+    }
+   ]
+  },
+  {
+   "key": "understand",
+   "name": "Make It Small",
+   "verb": "Understand",
+   "promise": "Build the whole idea at kitchen-table size, and understand why each part is the way it is.",
+   "who": "Children of eight or more with a grown-up, and any beginner who learns with their hands.",
+   "time": "An hour or two a chapter; a long weekend for the whole rung.",
+   "need": "Paper, scissors, tape, straws, a ruler, string -- and an adult for anything sharp.",
+   "gate": {
+    "title": "Eight from one",
+    "done_when": "Something round has been cut into eight equal wedges by halving it three times, and nothing was thrown away.",
+    "key": ""
+   },
+   "milestones": [
+    {
+     "key": "m-paper",
+     "title": "The paper dome",
+     "who": "A child with a grown-up",
+     "time": "Two hours",
+     "need": "The two template pages, scissors, tape",
+     "done_when": "All forty triangles are taped into one dome that stands on the table by itself, and you can point to a five-way corner and a six-way corner."
+    },
+    {
+     "key": "m-straw",
+     "title": "The straw dome",
+     "who": "A family",
+     "time": "An afternoon",
+     "need": "Straws cut to two lengths, pipe cleaners or tape",
+     "done_when": "The straw dome stands, every straw is one of the two lengths, and pushing on it does not fold it."
+    },
+    {
+     "key": "m-eight",
+     "title": "Eight from one",
+     "who": "Everyone",
+     "time": "One snack",
+     "need": "Something round to share",
+     "done_when": "Something round has been cut into eight equal wedges by halving it three times, and nothing was thrown away."
+    }
+   ]
+  },
+  {
+   "key": "plan",
+   "name": "Plan It",
+   "verb": "Plan",
+   "promise": "Turn your own trees, your own ground and your own purpose into a one-page plan: a size, a cut list, a calendar, a budget and a safety plan.",
+   "who": "Teenagers and adults deciding whether, what and how big to build.",
+   "time": "An evening a chapter; a month of evenings for a real plan.",
+   "need": "A tape measure, a notebook, a calculator, and somebody to argue with.",
+   "gate": {
+    "title": "The one-page plan",
+    "done_when": "All twelve worksheets are filled in, and somebody who was not in the room can read the plan and say what you are building, how big, by when, for how much and how safely.",
+    "key": ""
+   },
+   "milestones": [
+    {
+     "key": "m-tree",
+     "title": "Measure a real tree",
+     "who": "A teenager or adult",
+     "time": "An hour outdoors",
+     "need": "A tape, string, a notebook",
+     "done_when": "You have the butt, the top and the straight length of a real trunk, and the number of struts it would give."
+    },
+    {
+     "key": "m-plan",
+     "title": "The one-page plan",
+     "who": "The family together",
+     "time": "A month of evenings",
+     "need": "The twelve worksheets in this rung",
+     "done_when": "All twelve worksheets are filled in, and somebody who was not in the room can read the plan and say what you are building, how big, by when, for how much and how safely."
+    }
+   ]
+  },
+  {
+   "key": "build",
+   "name": "Build It",
+   "verb": "Build",
+   "promise": "Raise a real frame from your own trees, and close it against the weather.",
+   "who": "Adults with tools, training and help -- never alone at the saw.",
+   "time": "A fortnight of part days for the frame; a season for the rest.",
+   "need": "The plan from rung three, a chainsaw and its safety gear, a jig, and the two volumes behind these cards.",
+   "gate": {
+    "title": "Weathertight",
+    "done_when": "A night of rain leaves the inside dry.",
+    "key": ""
+   },
+   "milestones": [
+    {
+     "key": "m-panel",
+     "title": "One true panel",
+     "who": "The builder",
+     "time": "A day",
+     "need": "A jig and three members",
+     "done_when": "A full-size panel comes off the jig and matches its drawing within a pencil line."
+    },
+    {
+     "key": "m-frame",
+     "title": "The frame stands",
+     "who": "The builder and a helper",
+     "time": "A fortnight",
+     "need": "Forty panels, props, the keys",
+     "done_when": "Forty panels stand closed as one frame with nothing holding them but each other."
+    },
+    {
+     "key": "m-dry",
+     "title": "Weathertight",
+     "who": "The family",
+     "time": "A season",
+     "need": "One watertight layer",
+     "done_when": "A night of rain leaves the inside dry."
+    }
+   ]
+  },
+  {
+   "key": "design",
+   "name": "Make It Yours",
+   "verb": "Design",
+   "promise": "Design and price your own building on the same frame -- or decide, with the numbers up, that a different frame suits you better.",
+   "who": "Anyone who has understood the reference build and wants a different one: another size, another skin, another use.",
+   "time": "As long as you like. This rung is a catalogue, not a schedule.",
+   "need": "The price lists and catalogues in Volume A, and an idea.",
+   "gate": {
+    "title": "Show it",
+    "done_when": "Somebody else can look at your design and tell you what it is for.",
+    "key": ""
+   },
+   "milestones": [
+    {
+     "key": "m-design",
+     "title": "A costed design of your own",
+     "who": "A family or a maker",
+     "time": "A few evenings",
+     "need": "The catalogues and price lists",
+     "done_when": "Your design has a size, a skin, a ground, a use and a price built line by line from the book's own tables."
+    },
+    {
+     "key": "m-show",
+     "title": "Show it",
+     "who": "Anyone",
+     "time": "An evening",
+     "need": "A drawing, a model or a render",
+     "done_when": "Somebody else can look at your design and tell you what it is for."
+    }
+   ]
+  },
+  {
+   "key": "experiment",
+   "name": "Push It Further",
+   "verb": "Experiment",
+   "promise": "Run one of the open experiments this project names, and publish the result so the next family starts from it.",
+   "who": "Builders, makers, students and engineers who want to find out what nobody has measured yet.",
+   "time": "A season or a year -- an experiment is finished when its result is published, whichever way it came out.",
+   "need": "Something built, a notebook, and the honesty to print the number that does not help.",
+   "gate": {
+    "title": "Teach it",
+    "done_when": "Somebody you taught has built one panel, or read rung one aloud to somebody else.",
+    "key": ""
+   },
+   "milestones": [
+    {
+     "key": "m-experiment",
+     "title": "One experiment, published",
+     "who": "A builder or a class",
+     "time": "A season",
+     "need": "A built thing and a logbook",
+     "done_when": "Your measurement, your method and your conclusion are written down where somebody else can repeat them."
+    },
+    {
+     "key": "m-teach",
+     "title": "Teach it",
+     "who": "Anyone who has climbed this far",
+     "time": "An afternoon",
+     "need": "A friend and this book",
+     "done_when": "Somebody you taught has built one panel, or read rung one aloud to somebody else."
+    }
+   ]
+  }
+ ],
+ "cells": {
+  "wonder/tree": {
+   "title": "The Tree That Fell Down",
+   "deck": "A storm, a pine on the ground, and a question nobody had asked",
+   "body": "One night there was a big storm.\n\nThe wind pushed and pushed on a tall pine tree at the edge of the woods. The\ntree bent, and swayed, and creaked. And in the morning, when the sun came up,\nthe tree was lying down on the ground.\n\nIts roots were sticking up in the air, still holding on to the dirt. Its top\nwas lost in the bushes. And in between was the trunk: long, and straight, and\nround, like the biggest pencil you have ever seen.\n\nMost people who walk past a fallen tree see a problem. *It's in the way. It\nwill rot. Somebody should cut it up for firewood.*\n\nBut the builder in this story looked at the tree and asked a different\nquestion.\n\n*What if this tree could become a house?*\n\nThat sounds silly at first. Houses are made of boards from the store, aren't\nthey? Flat, square boards, all the same.\n\nBut here is a secret about boards. Every board in the store started out as a\nround tree, just like this one. Somebody cut the tree down. Somebody dragged it\nout of the woods. A truck carried it to a mill. Big saws cut it into squares,\nand a lot of the round tree was cut away and thrown on a pile. Then the boards\nwere dried, and smoothed, and sorted, and loaded on another truck, and carried\nto a store, and stacked on a shelf, and sold.\n\nThat is a lot of hands, and a lot of trucks, and a lot of waiting, before a\nsingle board reaches the house.\n\nAnd this tree was already here. Right where the house could be.\n\nSo the builder made a plan: no mill, no truck, no store. Just the tree, a\nsmall saw, a lot of careful thinking -- and a lot of help from the shape of\nthe tree itself.\n\nThe rest of this book is that plan.\n\n:::box do \"Try it together\"\nGo for a walk and look for a fallen tree or a big fallen branch. When you\nfind one:\n\n1. Find where it is straight, and where it starts to bend or branch.\n2. Wrap a piece of string around the fattest straight part, and mark the\n   string with your finger. That is how fat the tree is *all the way round*.\n3. Walk along it and count your steps from the fat end to where the straight\n   part stops.\n\nTake the string home. You will use it again on rung two.\n:::\n\n:::box why \"For the grown-up\"\nThe method in this book builds a cabin frame from trees split on the spot with\none chainsaw. The reference dome is {{dome.diameter_ft}} feet across with\n{{dome.floor_sqft}} square feet of floor, framed from {{dome.members}} wooden\nmembers. What matters about a tree at this stage is only three things: how\nfat it is at the bottom, how fat at the top of the straight part, and how long\nthat straight part is. Everything else in the plan is worked out from those.\n:::\n\n:::box wonder \"Wonder question\"\nHow many different people do you think touch a board before it gets to the\nstore?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/01-tree.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/split": {
+   "title": "Cut It Like a Cake",
+   "deck": "Half, half again, and half once more -- and every piece the same",
+   "body": "First, the builder cut the long trunk into shorter pieces, each one about as\nlong as a grown-up is tall. Each piece was a fat round log, like a giant spool\nof thread.\n\nThen came the clever part.\n\nHave you ever cut a birthday cake? You cut it right down the middle, and you\nhave two halves. You cut each half down the middle, and you have four. You cut\neach of those down the middle, and you have **eight** pieces.\n\nAnd here is the magic: all eight pieces are the same shape. You did not have\nto measure anything. You did not have to be careful about the angle. The cake\nwas round, so cutting it in half, and half again, and half again, gives eight\npieces that match -- because the cake did the measuring for you.\n\nThe builder did exactly that to each round log, with a chainsaw, carefully, in\nlong straight cuts down its length.\n\nHalf. Half again. Half again.\n\nEight sticks came out of every log. Each one was shaped like a long slice of\ncake: pointy at the middle of the log, and round on the back where the bark\nis. A stick shaped like that is called a **wedge**.\n\nMost builders would never do this. They would cut the round log into square\nboards. But try to cut a square out of a circle, and look at what is left: four\nrounded corners of perfectly good wood, thrown away.\n\nThe cake cut throws almost nothing away. Every slice is used.\n\n:::box do \"Try it together\"\nYou need two things that are round -- two oranges, two round slices of bread,\nor a round cake (the best one, because you get to eat it after).\n\n1. Cut the first one in half, then each half in half, then each quarter in\n   half. Count the pieces. Are they the same?\n2. Now try to cut the biggest *square* you can out of the second one. Put the\n   leftover pieces in a pile.\n3. Which way wasted less?\n:::\n\n:::box why \"For the grown-up\"\nThe trunk is cut into sections, and each section is ripped lengthwise with a\nchainsaw through its centre: once to halve it, twice to quarter it, four times\nto make {{cut.splits}} sectors of {{cut.sector}} degrees each. No angle is ever\nmeasured; the round log supplies the symmetry. Split this way, a trunk keeps\nabout {{pine.wedge_pct}} per cent of its wood as usable members; sawn into\ntwo-by-fours, the same log keeps about {{pine.sawn_model_pct}} per cent. The cuts\nare made with the saw -- never with a maul or a splitting wedge -- and only by\nan adult in full safety gear.\n:::\n\n:::box wonder \"Wonder question\"\nWhy do all eight pieces come out the same, even though nobody measured them?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/02-split.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/triangle": {
+   "title": "The Shape That Will Not Wobble",
+   "deck": "Push a square and it leans; push a triangle and it holds",
+   "body": "The wedges were not perfect. Some were a little bent. Some had a knot, or a\nbump, or one side a little fatter than the other. A tree is not a factory.\n\nA worried builder might say: *How can I build a house out of sticks that are\nnot perfect?*\n\nThe answer is a shape. The **triangle**.\n\nHere is how to see it. Make a square out of four sticks, with a loose pin at\neach corner. Now push the top corner sideways. What happens? The square leans\nover. It squashes into a diamond, and then it falls flat. Nothing broke -- the\nsticks are still the same length -- but the square could not hold its shape.\n\nNow make a triangle out of three sticks, with a loose pin at each corner. Push\nit. Push it harder.\n\nIt will not lean.\n\nA triangle cannot change its shape unless one of its sticks gets longer or\nshorter. And a stick does not want to get longer or shorter. So the triangle\nholds.\n\nThat is why bridges, and swings, and roofs are full of triangles. And that is\nwhy the builder's house is made of nothing *but* triangles. When every part of\na building is a triangle, the building holds its shape all by itself -- even if\nthe sticks are a little bent, or a little bumpy.\n\nThe builder liked to say it like this: *your head is not perfectly even on\nboth sides either, and it still protects your brain just fine.*\n\nThe sticks are allowed to be a little bit wrong. The triangles make them\nstrong.\n\n:::box do \"Try it together\"\nCut seven strips of cardboard or stiff paper, all about the same length, and\nmake a hole near each end. Join four into a square and three into a triangle,\nwith paper fasteners (or a pencil poked through) at the corners.\n\nPush each one sideways. Which one wobbles? Now add one more strip across the\nsquare, corner to corner. What happened to the wobble?\n:::\n\n:::box why \"For the grown-up\"\nA square frame is a mechanism: its corners turn and it racks over. A triangle\nis fixed by the lengths of its three sides, so a frame made only of triangles\ncarries loads along its members -- push and pull, end to end -- rather than by\nbending them. That is what lets a split log with a bow, a knot or an uneven\nsection be a structural member here. The two parts that do have to be right are\nthe skin, because water gets in, and the ground, because everything sits on\nit. Later rungs return to both.\n:::\n\n:::box wonder \"Wonder question\"\nHow many triangles can you find holding something up, in your house or on your\nstreet?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/03-triangle.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/dome": {
+   "title": "A Ball Made of Triangles",
+   "deck": "Twenty triangles make a ball, a few more make it round, and half of it is a house",
+   "body": "If triangles are so strong, how do you make a whole house out of them?\n\nStart with a ball.\n\nTake twenty triangles, all exactly the same, and fit them together edge to\nedge. They fold up into a shape like a big jewel, or a twenty-sided game die.\nIt is almost a ball -- but it is a bit too pointy. You could not live in a\njewel.\n\nSo the builder did something clever. Each big triangle was cut into four\nsmaller triangles, like cutting a sandwich into four. Then every new corner was\npushed out, just a little, until it touched the skin of a perfect ball.\n\nNow the shape is much rounder. It is made of eighty small triangles, and it\nlooks like a ball made of glass panes.\n\nAnd then the builder cut the ball in half -- right around its middle, like an\negg cup.\n\nHalf a ball sits flat on the ground. It has a floor. It has a roof that comes\nall the way down to be its walls. That is a house: a **dome**.\n\nThis dome has {{dome.panels}} triangles. Count them in the picture if you\nlike. And here is the best part: there are only *two* kinds.\n\n* {{dome.aaa}} of them have all three sides the same length.\n* {{dome.bab}} of them have one long side and two sides that are a little\n  shorter.\n\nSo in the whole house there are only two lengths of stick: a long one and a\nslightly shorter one. If you can cut two lengths, you can build the whole thing.\n\n:::box do \"Try it together\"\nFind something in your house made of flat shapes put together into a round\none: a soccer ball, a lampshade, a wooden toy. Count the shapes. Are any of them\nthe same?\n\nIf you have a soccer ball, look for the five-sided patches. There are always\ntwelve of them, on every soccer ball in the world. Rung six tells you why.\n:::\n\n:::box why \"For the grown-up\"\nThe shape is a two-frequency (\"2V\") geodesic hemisphere. It begins as an\nicosahedron, the twenty-faced solid; every edge is halved, the midpoints are\npushed out onto the sphere, and the sphere is cut at its equator. The result\nhas {{dome.panels}} panels, {{dome.vertices}} corners and only two edge lengths,\nin the ratio {{mb.ratio}} to one. The reference dome is {{dome.diameter_ft}}\nfeet across and {{dome.height_ft}} feet tall at the centre.\n:::\n\n:::box wonder \"Wonder question\"\nWhy did the builder cut the ball in half, instead of living inside a whole one?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/04-dome.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/joint": {
+   "title": "Holding Hands Around the Corner",
+   "deck": "Three sticks, no knot in the middle, and a corner left empty on purpose",
+   "body": "Now the builder had a pile of wedges in two lengths, and a plan for a ball of\ntriangles. But how do you hold three sticks together at a corner?\n\nMany dome builders use a metal star at every corner. All the sticks run into\nthe star, and bolts hold them there. It works -- but only if every stick is\nexactly the same, exactly straight and exactly the right length. Remember the\nwedges? They are *not* exactly anything. A metal star would not fit them.\n\nSo the builder did something surprising. At the corners of these triangles,\n**the sticks do not meet at all.**\n\nHere is how. Hold three pencils in a triangle. Instead of making their ends\ntouch in the corners, slide each pencil along a little, so that the end of one\npencil rests on the *side* of the next one. The end of the first rests on the\nside of the second. The end of the second rests on the side of the third. The\nend of the third rests on the side of the first.\n\nThey go round and round, like children holding hands in a circle where each\none holds the next one's elbow. Or like the blades of a pinwheel. And right in\nthe corner, where you would expect the sticks to meet, there is... nothing.\nJust air.\n\nBecause each stick only has to rest on a flat side, it does not need to be\nperfect. A side is a big place to land.\n\nAnd every triangle has its *own* three sticks. Where two triangles sit next to\neach other, two sticks lie side by side, with a thin strip of wood called a\n**key** pressed between them, like the filling in a sandwich.\n\n:::box do \"Try it together\"\nTake three craft sticks, pencils or straws. Lay them on the table in a\ntriangle so that the end of each one rests on the side of the next, going round\nin the same direction. Now try going round the other way. Do you get the same\ntriangle, or its mirror image?\n:::\n\n:::box why \"For the grown-up\"\nThis is the pinwheel joint, and the frame is hubless: each member's butt end\nlands on the flat sawn side of its neighbour, and no two ends ever meet. Every\npanel owns all three of its members, which is why a dome of {{dome.panels}}\npanels has {{dome.members}} members rather than one per edge, and why two\nmembers and a key sit in each of the {{dome.seams}} seams. The butt end carries\nthe frame's one compound cut, made against a fixed setting; the other end is\nleft long and sawn off flush once the panel is together.\n:::\n\n:::box wonder \"Wonder question\"\nWhy would leaving the corner empty make the building easier to make?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/05-joint.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/panel": {
+   "title": "Forty Triangles on a Table",
+   "deck": "Build every piece flat, on one table, the same way every time",
+   "body": "Imagine trying to build a ball of triangles up in the air, on a wobbly ladder,\nholding three long sticks at once and a drill in your teeth.\n\nThe builder did not want to do that. So the triangles were built somewhere\nmuch nicer: flat on a table, on the ground.\n\nThe table was special. Before any wood went on it, the builder screwed little\nblocks onto it in exactly the right places -- blocks to hold the first stick,\nblocks to hold the second, blocks to hold the third, and a straight edge to\nguide the saw. A table like that is called a **jig**.\n\nWith a jig, nobody needs to measure anything twice. You put the first stick\nagainst its blocks. You put the second stick against its blocks. You put the\nthird stick against its blocks. You fasten them together. You saw the long\nends off along the guide. And off the table comes a triangle -- exactly like\nthe last one, and exactly like the next one.\n\nThen you do it again. And again. Forty times.\n\nMaking the same thing over and over sounds boring. But it is the secret of how\none person can build a house. The first triangle takes a while, because you are\nlearning. By the fourth one, your hands know what to do. By the fortieth, you\ncould almost do it with your eyes closed (please don't).\n\nAnd because each triangle is finished on the ground, it can be checked, and\nfixed, and even painted, before it ever goes up.\n\n:::box do \"Try it together\"\nDraw one triangle on a piece of cardboard. Push a pin into the cardboard at\neach corner, just outside the lines. Now lay a sheet of paper on the\ncardboard, and trace a triangle using the pins as your guide -- then another\nsheet, and another.\n\nLay all your paper triangles on top of each other. Are they the same? Now try\ndrawing three triangles *without* the pins and compare.\n:::\n\n:::box why \"For the grown-up\"\nThe jig is one flat board that holds every member against fixed stops, so the\nposition of each stick -- not a tape measure -- decides the panel's shape.\nThe dome needs {{dome.aaa}} panels of one shape and {{dome.bab}} of the other,\nso the jig is set up twice. Repeatability beats accuracy when you need forty\nof something: a jig that is slightly off builds forty panels that still agree\nwith each other, and agreeing is what makes the dome close.\n:::\n\n:::box wonder \"Wonder question\"\nWhat is something you have done so many times that your hands know how to do\nit without you thinking?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/06-panel.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/raise": {
+   "title": "Up, Up, Up",
+   "deck": "The bottom ring first, then the next, then the very top",
+   "body": "Forty triangles were stacked up and ready. Now it was time to make them into a\nhouse.\n\nYou cannot start at the top. The top has nothing to stand on. So the builder\nstarted at the bottom.\n\nFirst the bottom ring: the triangles that touch the ground, all the way round\nin a circle. Then the next ring of triangles, leaning in, resting on the first.\nThen the next. Every ring gets a little smaller, leaning in a little more,\nlike the rings of a beehive.\n\nWhile the rings are leaning, they want to fall inward. So the builder held\nthem up with long sticks pushed against them from inside, called **props**.\nA triangle goes up -- a prop goes under it. Another goes up -- another prop.\n\nAnd then, at the very top, the last few triangles close the hole in the roof.\n\nHere is the wonderful part. The moment the top is closed, every triangle is\nholding up every other triangle. Push on one, and it pushes on its neighbours,\nand they push on theirs, all the way round and all the way down. The dome holds\nitself. One by one, the props come out, and nothing falls.\n\nThe builder of this book did something even more daring. Instead of building\non the ground, the builder strung strong ropes between big living trees, like a\ngiant spider web in the air, and lifted each triangle up into the web with a\nwinch -- a machine that winds a rope around a drum. The triangles were joined\ntogether up in the air, and the whole dome hung between the trees, like a\nlantern.\n\n:::box do \"Try it together\"\nStand up some books in a ring on the floor, leaning a little inward. Do they\nfall? Now lean a second ring on top of the first. What did you need to keep\nthem from falling? Those are your props.\n:::\n\n:::box why \"For the grown-up\"\nA dome goes up course by course from the base ring, propped from inside until\nthe crown closes; once it closes the shell carries itself and the props come\nout. The author's own method builds in the air instead: a web of wire rope\nbetween living trees, a {{web.winch_lb}}-pound 12-volt winch, and each triangle\nlifted flat in a harness and joined in place. Raising anything heavy is\ngrown-up work, and nobody -- ever -- stands under a load that is hanging.\n:::\n\n:::box wonder \"Wonder question\"\nWhy does a dome hold itself up once the very top is closed, but not before?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/07-raise.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/skin": {
+   "title": "A Coat for the Rain",
+   "deck": "One coat that keeps the water out, and soft warm layers underneath",
+   "body": "The dome was standing. But if you stood inside it, you could look up through\nevery triangle and see the sky. The wind blew straight through. And when it\nrained -- splash.\n\nA house needs a coat.\n\nWater is sneaky. It runs downhill, it creeps into cracks, and if it gets inside\nwood and stays there, it makes the wood soft and rotten. A house can be strong,\nand straight, and beautiful, and still be ruined by a little water that got in\nand never got out. So the builder thought about water more carefully than\nanything else.\n\nThe answer was one coat that keeps out every drop of rain. Just one. Like a\nraincoat, or a shower cap pulled down over the whole dome. Everything else\ngoes *under* the coat, where it stays dry.\n\nAnd under the raincoat? Warm, soft layers -- like the quilts on a bed. The\nbuilder's quilts can be sewn from old clothes, the ones too worn out to wear.\nEach layer makes the house a bit warmer. When winter comes, add another\nquilt. The next winter, add another. A house that gets warmer every winter,\nlike a person putting on one more hat.\n\nThere is one more sneaky kind of water: the kind that comes from inside. When\nit is warm in the house and cold outside, your breath makes tiny drops on the\ncold walls, just like on a cold window. So the builder left the house a way to\nbreathe, and a place for that water to drip out.\n\n:::box do \"Try it together\"\nTake two pieces of paper and a tray. On the first, lay three strips of paper\nside by side with their edges just touching, and tape them. On the second, lay\nthree strips *overlapping* like roof shingles, the top one over the middle one\nover the bottom one. Tilt each like a roof and sprinkle water from the top.\nWhich one lets water through to the tray?\n:::\n\n:::box why \"For the grown-up\"\nThe skin, not the frame, is the part of a dome that has to be right, because\nwater is what ruins wooden buildings. This design uses exactly one watertight\nlayer -- a cap over the whole shell -- with insulation underneath it. The\ninsulation is quilted from recycled clothing: about {{tt_quilt.shirts_per_layer}}\nt-shirts a layer, each layer adding R-{{tt_quilt.r_per_layer}}, added one winter\nat a time. Moisture from inside is handled on purpose, by letting the shell\nbreathe and draining water at the rim.\n:::\n\n:::box wonder \"Wonder question\"\nWhere does the water on the inside of a cold window come from?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/08-skin.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/ground": {
+   "title": "A Good Place to Stand",
+   "deck": "A house is only as steady as the ground under its ring",
+   "body": "Have you ever sat at a table with one short leg? Every time you lean on it, it\nwobbles. Clunk. Clunk.\n\nA dome is a little like that table. All of its weight comes down through its\nbottom ring: a circle of {{dome.base_sides}} corners sitting on the ground. If\nthe ground under one corner is lower than the others, or soft, or sinks when\nit rains, the whole dome leans a little -- and a dome that leans a little at\nthe bottom leans more at the top.\n\nSo the builder said: *the frame is allowed to be a little bit wrong. The ground\nis not.*\n\nThe ground under the ring has to be level, all the way round. And it has to be\nstrong enough not to sink. There are lots of ways to make good ground: a ring\nof flat stones, a bed of packed gravel, a wooden deck on short posts, or a\nconcrete floor. The builder checks the ring by measuring straight across it,\ncorner to corner, in several directions. If every measurement is the same,\nthe ring is round. If one is different, the ring is telling you where it is\nwrong, while it is still easy to fix.\n\nAnd here is an idea that is bigger than one house. What if one family owned a\ngood flat piece of ground with water and electricity ready, and another family\nbrought their dome and set it down there? The ground stays; the dome can move\non someday. The builder calls that ground a **pad**.\n\n:::box do \"Try it together\"\nMake a ring of ten paper cups or toy blocks on a pillow, and set a plate on top.\nNow do the same on a flat table. Push gently on each plate. Which one rocks?\n\nThen measure across your table ring with a string in three different\ndirections. Are the three the same?\n:::\n\n:::box why \"For the grown-up\"\nThe base ring is the one place in the method where error does not get absorbed\n-- it accumulates, because every course above stands on whatever circle the\nring actually is. That is why the ring is checked across opposite corners when\nit is set and again as the first courses go on. Footings range from gravel to\na slab; the options and their costs are on rung three. A pad is serviced ground\nbuilt once and shared or rented, so the dome on it can be moved.\n:::\n\n:::box wonder \"Wonder question\"\nWhat is the steadiest thing you have ever stood on, and why was it steady?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/09-ground.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/uses": {
+   "title": "What Will It Be?",
+   "deck": "The same round frame can be a bedroom, a workshop, a greenhouse or a sauna",
+   "body": "Here is a riddle. What is round, made of triangles, and can be a bedroom, a\nworkshop, a greenhouse, a sauna, a garage, a studio, a gym and a cold room for\nkeeping food?\n\nThe answer: the same dome.\n\nEvery triangle in the dome is an opening. What you put *in* the opening decides\nwhat the building is. Put windows in, and it is full of light. Put a door in,\nand you can walk through. Put clear panels in the top, and plants can grow\ninside. Put a little chimney through one, and you can have a wood stove. Put\nin solid, warm panels, and it is a cosy bedroom.\n\nSo the builder thinks of the bare frame like a seed, or like a baby cell in\nyour body that has not decided yet whether it will be skin, or bone, or brain.\nScientists call a cell like that a **stem cell**. The frame is the stem cell.\nThe panels decide what it grows into.\n\nAnd if you change your mind? Take a panel out and put a different one in. The\ngreenhouse can become a bedroom. The bedroom can become a workshop. The frame\ndoes not mind. It stays exactly the same.\n\nThere is one more piece the builder treats as special: a column right in the\nmiddle of the floor that carries water, power and drains. It is the most\nexpensive part, so it is built to unbolt and move with the family to the next\ndome, the way you would take your favourite chair when you move house.\n\n:::box do \"Try it together\"\nDraw a big circle on a piece of paper. That is your dome's floor. Decide what\nyour dome is for, and draw what goes inside it. Then turn the paper over, draw\nanother circle, and make the same dome into something completely different.\n:::\n\n:::box why \"For the grown-up\"\nThe \"stem cell\" is the project's name for the bare frame, skin, core and one\nblank panel, with the building's purpose deferred to the panels hung in its\nforty openings. The catalogue prices {{seed.count}} fit-outs on the same body,\nfrom {{seed.cheapest_usd}} dollars for the bare article to {{seed.dearest_usd}}\ndollars for the most fitted. Many of them are utility buildings -- storage, a\nworkshop, a greenhouse, a studio -- which is usually where a family's first\ndome earns its keep.\n:::\n\n:::box wonder \"Wonder question\"\nIf you could have one round room all to yourself, what would it be for?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/10-uses.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/count": {
+   "title": "Counting the Hours",
+   "deck": "How long a house takes, and why counting honestly matters",
+   "body": "How long does it take to build a house?\n\nFor most houses, the answer is: a long time, a lot of people and a lot of money.\nThe builder of this book wanted to know exactly how long *this* house would\ntake, so they counted.\n\nThey counted the hours of cutting wedges at the log: about {{hr.split}} hours.\nThey counted cutting the ends of the sticks, and building the triangles on the\njig, and lifting them up into a dome. And then -- because the first time you\nbuild anything, things go wrong -- they added extra hours just for mistakes.\n\nAll together the frame came to about {{clock.total}} hours. A grown-up's\nworking week is {{clock.week}} hours. So the frame of the house fits inside one\nweek of work. That is why this book is called *The 40 Hour Cabin*.\n\nBut the builder was careful to say what the forty hours do *not* include:\ncutting down the trees, putting the coat on, the floor, the door, the windows.\nThose come after, and they take longer. All of it together is about\n{{money.labour_hours}} hours of building.\n\nThe builder was also careful about something else. Some of those numbers were\n*measured* -- timed with a clock while the work was really done. Others were\n*guesses*, good guesses, but guesses. In this book, every number says which kind\nit is. Because a number that pretends to be measured when it was guessed is a\nkind of fib, and you cannot build a house on fibs.\n\n:::box do \"Try it together\"\nGet a clock or a timer. Time how long it takes to cut out and tape together\n{{mb.timed}} paper triangles. Now work out how long forty would take: forty is\n{{mb.timed_times}} lots of {{mb.timed}}. Was your guess before you started close\nto the real answer?\n:::\n\n:::box why \"For the grown-up\"\nThe forty-hour clock covers the frame, from wedges to standing:\n{{clock.split_h}} hours of splitting at the measured rate of\n{{hr.split_session}} wedges per {{hr.session}}-hour session, then cutting,\npanels and raising as estimates, plus the owner's own error allowance of\n{{clock.error_h}} hours. Felling, the skin, the floor and the openings are not\non that clock; the whole build is about {{money.labour_hours}} hours. Measured\nand estimated figures are labelled as such everywhere in this book.\n:::\n\n:::box wonder \"Wonder question\"\nWhy does it matter whether a number was measured or guessed?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/11-count.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "wonder/care": {
+   "title": "Grown-Up Jobs and Helper Jobs",
+   "deck": "The saw is a grown-up's job; the counting, sorting and painting are yours",
+   "body": "Building a house is a team job. And on every good team, everybody has the right\njob.\n\nSome jobs are grown-up jobs. The chainsaw is a grown-up job: it is sharp, and\nfast, and very loud, and it does not care whose leg is in the way. Cutting\ndown a tree is a grown-up job too, and even grown-ups who have done it a\nhundred times are careful every single time. Climbing ladders, lifting heavy\ntriangles, working with electricity and water pipes -- all grown-up jobs.\n\nWhen a grown-up uses the chainsaw, they wear special clothes. A hard hat with a\nscreen over the face. Ear protectors, because the saw is loud enough to hurt\nyour ears. Thick gloves. Strong boots. And special trousers called **chaps**,\nfull of tough threads that can stop a chain if it ever touches them.\n\nAnd there is one rule the builder never, ever breaks: **nobody uses the saw\nalone.** There is always somebody else there -- standing well back, watching,\nready to help.\n\nSo what can a helper do? Lots!\n\nA helper can count the sticks and sort them into piles by length. A helper\ncan mark each stick with a crayon so everybody knows which pile it belongs to.\nA helper can hold the end of the measuring tape. A helper can draw the plans,\ntime the work and write down the numbers. A helper can build the paper models\nthat show everybody what the real house will look like. A helper can help oil\nthe wood -- with gloves on. And a helper can ask the best questions of all.\n\nThe most important job on any team is the one that keeps everybody safe.\n\n:::box do \"Try it together\"\nMake two lists on one piece of paper. On one side, write \"Grown-up jobs\". On\nthe other, \"Helper jobs\". Go through the twelve chapters of this rung and put\nevery job you can think of on one list or the other. Is there anything you are\nnot sure about? Ask!\n:::\n\n:::box why \"For the grown-up\"\nChildren stay well outside any felling zone -- at least two tree-lengths from a\ntree being cut -- and away from a running saw. Chainsaw work needs a helmet with\na visor, hearing protection, gloves, boots and chainsaw chaps, and a second\nperson present every time. Oily rags from finishing can catch fire by\nthemselves: they go straight into a metal tin of water. Before anyone sleeps\nin a building made this way, an engineer and the local building department\nmust have seen it. Rung three turns all of this into a written plan.\n:::\n\n:::box wonder \"Wonder question\"\nWhat is the bravest thing a person can say on a building site? (Hint: it is\n\"wait\".)\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung1/12-care.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/tree": {
+   "title": "Measure a Tree",
+   "deck": "Three numbers -- the fat end, the thin end and the straight length -- and a string to find them",
+   "body": "A builder planning a house from a tree needs to know only three things about\nthe tree. Not its age, not its species, not what a timber buyer would pay for\nit. Just these:\n\n1. **How fat it is at the bottom** of the straight part (the *butt*).\n2. **How fat it is at the top** of the straight part, where the first big\n   branch starts.\n3. **How long the straight part is**, from the butt to the first big branch or\n   bend.\n\nThe fat bottom matters because a fatter log gives fatter sticks. The thin top\nmatters because the sticks from the top of the tree will be the thinnest ones\nin the pile. And the length matters because the trunk is cut into pieces of\none length -- about as long as one person can carry -- and the number of pieces\ndecides how many sticks the tree can give.\n\nThe picture shows a worked example, the tree measured in Volume B: fat at the\nbottom, thinner at the top, and long enough to cut into eight pieces of the\nsame length.\n\nHow do you measure how fat a tree is? You cannot put a ruler across the middle\nof a trunk. But you can put a string *around* it, and a little bit of maths\ndoes the rest.\n\n:::box do \"Make it\"\n**You need:** a long piece of string, a tape measure, a marker or chalk, a\nnotebook, and a calculator.\n\n1. Find a fallen tree or log (or a standing tree, for practice). Find where\n   the straight part starts and stops. Chalk a line at each end.\n2. Wrap the string around the trunk at the bottom chalk line, pull it snug and\n   pinch it where it meets itself. Measure the string to your pinch. Write it\n   down: that is the distance *around*.\n3. Do the same at the top chalk line.\n4. Divide each distance around by **3.14**. The answers are the two\n   *diameters* -- how fat the trunk is straight through.\n5. Measure the straight part from chalk line to chalk line.\n6. Now count: how many six-foot pieces fit in the straight part? (Throw away\n   the leftover -- a short piece is firewood.) Each piece will give eight\n   sticks. How many sticks does your tree give?\n:::\n\n:::box why \"Why it works\"\nThe distance around a circle is always about 3.14 times the distance across\nit -- that number is called *pi*, and it is the same for every circle in the\nworld. So a string tells you the diameter without cutting anything. The\nreference trunk in Volume A is {{cut.trunk}} inches across; a string around\nit would measure {{mb.trunk_around_in}} inches. The cabin needs\n{{dome.members}} sticks, and every six-foot section gives eight, so a planner\nworks out the number of trees from these three measurements alone -- that\nsum is the first worksheet on rung three.\n:::\n\n:::box done \"You've got it when\"\nYou have written down the bottom diameter, the top diameter and the straight\nlength of one real trunk, and you can say how many sticks it would give.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/01-tree.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/split": {
+   "title": "Eight From One",
+   "deck": "Halve something round three times, then try to cut squares out of it, and count what is left over",
+   "body": "On rung one, a cake showed why cutting a round log in half three times gives\neight matching pieces. This chapter checks it two ways -- by folding, which\nneeds no knife at all, and by trying the alternative, which is to cut squares\nout of a circle and see what is lost.\n\nThe real cut is made with a chainsaw, by an adult, along the whole length of a\nsix-foot log: once through the middle to make two halves, then each half\nthrough the middle to make quarters, then each quarter to make eighths. The\npicture shows the order. It is the order that matters, because after the first\ncut every piece has a flat side to sit on, and a piece that sits still is a\npiece a saw can cut safely.\n\nEvery cut runs through the very centre of the log -- the *pith*, the small dark\ndot where the tree started growing. Because every cut goes through the centre,\nevery piece ends up with a point at the centre and a curved back of bark. The\nlog is round, so every piece is the same.\n\n:::box do \"Make it\"\n**You need:** three paper circles (trace round a plate), scissors, a ruler, and\na protractor if you have one.\n\n1. **Fold it.** Fold the first circle exactly in half. Fold it in half again.\n   And again. Unfold it. Count the triangle-shaped pieces between the creases.\n   Use a protractor to measure the point of one piece.\n2. **Cut it.** Cut the second circle along its creases into eight wedges.\n   Stack them. Do they match?\n3. **Try squares.** On the third circle, draw the biggest square you can fit\n   inside it, with its corners touching the edge. Cut the square out. Now put\n   the four leftover curved pieces next to your eight wedges from step two.\n   Which pile of *useful* pieces is bigger?\n:::\n\n:::box why \"Why it works\"\nHalving a circle three times divides it into {{cut.splits}} equal sectors of\n{{cut.sector}} degrees, and nobody has to measure an angle: folding (or\nsawing) through the middle is the measurement. A square inside a circle\nwastes its four curved sides -- and a mill cutting rectangular boards out of a\nround log wastes those sides too, plus the sawdust of many more cuts. Split\ninto wedges, a trunk keeps about {{pine.wedge_pct}} per cent of its wood;\nsawn into two-by-fours, about {{pine.sawn_model_pct}} per cent. The real log is\ncut lengthwise with a chainsaw, by an adult wearing full safety gear, with a\nsecond person present -- never with an axe, a maul or a splitting wedge.\n:::\n\n:::box done \"You've got it when\"\nYou can explain, without a picture, why three halvings give eight equal pieces\n-- and why a square wastes wood that a wedge keeps.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/02-split.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/triangle": {
+   "title": "The Wobble Test",
+   "deck": "Paper strips and paper fasteners prove the oldest rule in building",
+   "body": "On rung one a triangle held and a square fell over. Here is the test done\nproperly, with one more experiment added at the end -- the one that shows how\nfar a triangle forgives a stick that is not straight.\n\nThe picture shows what you are about to see. Push the top of a rectangle\nsideways and it *racks*: the corners turn and it leans over, even though\nevery stick stays the same length. A rectangle can only stand up if something\nelse holds its corners square -- a sheet nailed across it, or a stick running\ncorner to corner. That corner-to-corner stick turns the rectangle into two\ntriangles, and *that* is what holds it.\n\nA triangle has nothing to turn. Its three corners are fixed by the lengths of\nits three sides. For the triangle to change shape, a side would have to get\nlonger or shorter, and wood is very bad at changing length when you push or\npull it from the ends. That is the whole secret of a dome, and the reason a\ndome needs no walls to brace it.\n\n:::box do \"Make it\"\n**You need:** eight strips of card about 15 cm long and 2 cm wide, a hole punch,\nand paper fasteners (split pins).\n\n1. Punch a hole near each end of every strip.\n2. Join four strips into a square and three into a triangle, one fastener in\n   each corner, loose enough to turn.\n3. Lay both flat and push one corner sideways. Watch the square fold.\n4. Add the eighth strip across the square, corner to corner. Push again.\n5. **The forgiving test.** Make a second triangle, but bend one strip into a\n   gentle curve before you fasten it. Push. Now make a third with one strip\n   bent into a deep curve. Push that one.\n:::\n\n:::box why \"Why it works\"\nA shape made of hinged sides holds only if its side lengths fix its angles.\nThree sides do; four or more do not. Load on a triangulated frame therefore\nruns *along* its members, as push and pull, which is the direction wood is\nstrongest. That is why a gently bowed stick still works in this frame -- the\ntriangle holds it in line -- and also why the forgiveness has a limit: a stick\nbowed so far that it bends further when pushed lets the triangle squash. Volume\nB grades every wedge for exactly that before it goes on the jig.\n:::\n\n:::box done \"You've got it when\"\nYou can say why the square needed the extra strip and the triangle did not,\nand which of your bent triangles a builder would reject.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/03-triangle.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/dome": {
+   "title": "Build the Paper Dome",
+   "deck": "Forty paper triangles in two shapes, cut from the template and taped into the dome itself",
+   "body": "This is the biggest project on this rung, and it is the dome itself: the same\n{{dome.panels}} triangles as the real cabin, in the same two shapes, put\ntogether in the same pattern, at one-{{mb.paper_scale}}th of the size. The\ntemplate is at the end of this chapter, on two pages.\n\nLook at the picture first. The real dome's edges come in two lengths, coloured\ntwo ways. The long edge and the short edge are in the ratio {{mb.ratio}} to\none -- close enough to look the same, different enough that a triangle built\nwith the wrong one will not fit.\n\nThere are two kinds of triangle:\n\n* **{{mb.paper_equi}} equal-sided triangles**, every side long;\n* **{{mb.paper_iso}} short-sided triangles**, with one long side and two\n  shorter ones.\n\nThe short-sided triangles always come in groups of five, with their short\nsides together and their points meeting at one corner, like the petals of a\nflower. Each group of five is a **cap**. There are {{mb.paper_caps}} caps: one\non top, and five round it. The ten equal-sided triangles fill the gaps between\nthe caps.\n\nWhen you cut out a cap you will find something interesting. Five triangle\npoints laid flat side by side do not quite go all the way round: they add up\nto {{mb.paper_five_deg}} degrees, not the 360 degrees of a full turn. There is\na thin slice missing -- {{mb.paper_gap_deg}} degrees of it. When you close that\ngap with tape, the cap stops lying flat and bulges up into a shallow point.\n**That missing slice is what makes the dome curve.** Every round thing made of\nflat pieces gets its roundness exactly that way.\n\n:::box do \"Make it\"\n**You need:** the two template pages (print them at **100 per cent / actual\nsize** -- the check bar must measure 50 mm), scissors, clear tape, and a ruler.\nFor a dome {{mb.paper_double_cm}} cm across instead of {{mb.paper_diameter_cm}}\ncm, enlarge both pages to 200 per cent.\n\n1. Cut out the six caps along their solid outlines. Crease the dashed lines.\n2. Close each cap: bring the two edges of its gap together and tape them. Each\n   cap now bulges up like a very flat tent.\n3. Cut out the ten equal-sided triangles.\n4. Put one cap on the table, point up. That is the top. Tape an equal-sided\n   triangle to each of its five bottom edges.\n5. Between each pair of those triangles is a gap. Fit a cap into each gap,\n   point up, and tape its two upper edges to the triangles on either side.\n6. Between each pair of those five caps is one last gap at the bottom. Fit an\n   equal-sided triangle into each, point up, one side along the table, and tape\n   it to the caps beside it.\n7. Stand it up. The bottom edge is a ring of ten long sides. Press gently on\n   the top.\n:::\n\n:::box why \"Why it works\"\nThe dome is a two-frequency geodesic hemisphere: an icosahedron with each edge\nhalved and the new corners pushed out onto a sphere, then cut at the equator.\nIts {{mb.corners}} corners are of three kinds -- {{mb.five_way}} where five\ntriangles meet (the tops of your caps), {{mb.six_way}} inside corners where six\nmeet, and {{mb.rim_corners}} round the bottom ring -- and its {{mb.edges}} edges\nof two lengths: {{mb.long_edges}} long and {{mb.short_edges}} short. The real\ncabin is the same object {{dome.diameter_ft}} feet across. Notice one more\nthing: your paper triangles each have their own three edges, and the tape\nbetween them is a seam. The real dome is built exactly that way, which is the\nsubject of the next chapter.\n:::\n\n:::box done \"You've got it when\"\nYour paper dome stands by itself, and you can point to a five-way corner, a\nsix-way corner and the ten-sided ring at the bottom.\n:::\n\n[[template:paper-dome]]\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/04-dome.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/joint": {
+   "title": "Craft-Stick Pinwheels",
+   "deck": "Three sticks, each end resting on the next one's side, and the corner left empty",
+   "body": "Most domes are held together at their corners by a *hub*: a metal star with a\nsocket for every stick. A hub only works when every stick arrives at exactly\nthe same angle and is exactly the right length. A pile of split logs never\ndoes.\n\nSo the wedge dome has no hubs. At each corner of a triangle, the end of one\nstick rests on the *side* of the next, and that one's end rests on the side of\nthe next, round and round like a pinwheel. The corner itself is empty. The\npicture is a corner of the real frame, where five triangles meet and nothing\ntouches anything at the point.\n\nThis chapter builds both kinds of corner, and then does the test that shows why\nthe pinwheel wins with rough wood.\n\n:::box do \"Make it\"\n**You need:** about ten craft sticks, white glue (a grown-up can use a glue gun\ninstead), a few balls of modelling clay, and a pencil.\n\n1. **The pinwheel.** Lay three sticks on the table in a triangle so that the end\n   of each one rests on the side of the next, all going round the same way.\n   Glue the three overlaps. That is one panel.\n2. **The mirror.** Make a second pinwheel going round the *other* way. Lay it on\n   the first. Do they match? (Builders pick one direction and use it for every\n   panel, or the seams do not line up.)\n3. **The seam.** Lay two pinwheel panels edge to edge, with a thin strip of\n   card standing between the two sticks that touch. That strip is the *key*,\n   and the pair of sticks with the key between them is a *seam*.\n4. **The hub.** Push the ends of three sticks into one ball of clay so they\n   meet at a point, making a triangle with a clay ball at each corner.\n5. **The test.** Snap a little off the end of one stick in each triangle so it\n   is shorter than the others. Try to rebuild both. Which one still closes?\n:::\n\n:::box why \"Why it works\"\nIn the pinwheel, a stick that is a little short simply slides along the side of\nits neighbour and lands a little further in, and the panel still closes. The\nerror goes into the overlap instead of into the corner. On the real frame each\nmember's resting end -- the *butt* -- gets one careful compound cut. The other\nend -- the *head* -- is left deliberately long and sawn off flush once the\npanel is assembled, so the length is decided by the panel, not by a tape\nmeasure. Because every panel has its own three members, the dome has\n{{dome.members}} members for {{mb.edges}} edges, and each of its {{dome.seams}}\nseams is two members with a key between them.\n:::\n\n:::box done \"You've got it when\"\nYou have built two pinwheel panels and a seam, and you can say why the\npinwheel closed with a short stick when the hub did not.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/05-joint.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/panel": {
+   "title": "A Jig From a Box",
+   "deck": "Pins in cardboard make every triangle the same, and a ruler cannot",
+   "body": "The real panels are built on a **jig**: one flat board with blocks screwed to\nit that hold each stick in its place, and a straight edge the saw runs along.\nThe picture shows one, labelled. Once the blocks are set, nobody measures\nanything again -- the blocks do the measuring, the same way every time.\n\nWhy go to the trouble? Because forty triangles that are each *almost* right\nwill not close into a dome. Every small difference adds up as the rings go on,\nand the last triangle will not fit the hole that is left for it. Forty\ntriangles that are *the same* -- even if they are all the same slightly-wrong\nsize -- close perfectly, because they all agree with each other.\n\nThat is the most surprising idea in building: **making things the same matters\nmore than making each one perfect.**\n\n:::box do \"Make it\"\n**You need:** the side of a cardboard box, a dozen pushpins, a ruler, a pencil,\nand paper strips or straws cut to the paper dome's two lengths:\n{{mb.paper_long_mm}} mm and {{mb.paper_short_mm}} mm.\n\n1. **Freehand first.** Without the jig, build five short-sided triangles from\n   your strips, using the ruler to place them. Tape each one.\n2. **Make the jig.** Draw one short-sided triangle carefully on the cardboard.\n   Push two pins just outside each corner, so a strip laid along a side is held\n   by the pins.\n3. **Jig run.** Build five more triangles by laying strips against the pins,\n   taping, and lifting each finished triangle off.\n4. **Compare.** Measure all three sides of all ten triangles. Write them in a\n   table. Which group of five is more alike?\n5. **The second shape.** The equal-sided triangles need their own jig. Make it.\n:::\n\n:::box why \"Why it works\"\nA jig turns a measurement made once into a position held forever. The real jig\nholds each wedge by its two flat sawn faces, never by its bumpy bark, and it\ngoes through twelve stages for every panel, from the bare bench to the finished\ntriangle lifted off. The dome needs {{dome.aaa}} equal-sided panels and\n{{dome.bab}} short-sided ones, so the real jig is set up twice, just like yours.\n:::\n\n:::box done \"You've got it when\"\nYour measurements show the jig triangles agreeing with each other better than\nthe freehand ones, and you can say why agreeing matters more than being exact.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/06-panel.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/raise": {
+   "title": "Raise It Ring by Ring",
+   "deck": "The straw dome goes up from the bottom, one ring at a time, with props",
+   "body": "The paper dome was taped together in your hands. A real dome is far too heavy\nfor that: it goes up from the ground, ring by ring, and leans on props until the\ntop is closed. The straw dome is how you feel that happen.\n\nThe straw dome is built the *other* way from the real one. In a straw dome,\neach straw is one edge, shared by the two triangles on either side of it -- so\nit needs only {{mb.edges}} straws, where the real frame needs {{dome.members}}\nmembers. That is how most domes in the world are built, with hubs. Build it, and\nyou will understand both the hub dome and the reason the wedge dome does not do\nit that way.\n\nThe picture shows the real frame's first ring standing on its own, before\nanything is above it.\n\n:::box do \"Make it\"\n**You need:** {{mb.straw_long_count}} straws cut to {{mb.straw_long_cm}} cm (the\nlong ones) and {{mb.straw_short_count}} cut to {{mb.straw_short_cm}} cm (trim\n{{mb.straw_trim_cm}} cm off a long one), pipe cleaners cut into short pieces, a\nfew pencils for props, and your paper dome as a map.\n\n1. **Joints.** Every corner is a little bundle of pipe-cleaner pieces twisted\n   together, one piece poked into the end of each straw that meets there.\n   There are {{mb.corners}} corners.\n2. **The bottom ring.** Join ten long straws into a ring on the table.\n3. **Ring by ring.** Copy your paper dome: every long edge is a long straw,\n   every short edge a short one. Build upward from the ring one row of\n   triangles at a time, going all the way round before you start the next row.\n4. **Props.** When a row leans in and wants to fall, hold it up from inside with\n   a pencil standing on the table. Count your props.\n5. **Close the top.** The last five short straws meet at the top corner.\n6. **Take the props out**, one at a time. Push gently on the dome.\n:::\n\n:::box why \"Why it works\"\nA dome only carries itself once it is closed: until then each ring leans on the\none below and the leaning has to be held. Once the top closes, every triangle\npushes on its neighbours all the way round and down, and the props can come\nout. The real frame goes up the same way, in courses -- the first course of\n{{ring.first}} panels, the second of {{ring.second}}, then the {{ring.cap}}\nround the top -- or, in the author's own method, is joined in the air on a web\nof rope between living trees. Your straw dome is {{mb.straw_diameter_cm}} cm\nacross and {{mb.straw_height_cm}} cm tall.\n:::\n\n:::box done \"You've got it when\"\nYour straw dome stands with every prop removed, and you can say why it needed\nprops before the top was closed and none after.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/07-raise.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/skin": {
+   "title": "The Raincoat Test",
+   "deck": "A spray bottle shows why roofs overlap instead of trying to seal",
+   "body": "The frame is the part you are allowed to get wrong. The skin is not. A dome has\n{{dome.seams}} seams, and every one is a place water could get in, and wood\nthat stays wet rots. So the skin is planned more carefully than anything else,\naround two ideas you can test on the table.\n\n**Shed, don't seal.** A seal tries to stop water by being perfect, and nothing\noutdoors stays perfect: wood shrinks and swells, tape lifts, and the first gap\nlets water in. A roof that *sheds* does not try to stop water at all. It hands\nthe water downhill, each layer overlapping the one below it, so the water is\nalways on top and always moving away.\n\n**Water from the inside.** Warm air holds more water than cold air. When warm,\ndamp air from inside a house touches something cold, it drops some of its water\non it -- the way a cold glass gets wet on a summer day. That is *condensation*,\nand it is why the inside of a dome has to be planned too, not just the outside.\n\nThe picture shows the dome dressed for winter: soft layers inside, one\nwatertight cap over them all.\n\n:::box do \"Make it\"\n**You need:** card or paper, wax paper, tape, a spray bottle of water, a tray, a\nglass jar, ice and water.\n\n1. **Seal or shed.** Make two little roofs from four strips of card each. On the\n   first, butt the strips edge to edge and tape the joins. On the second, lay\n   them overlapping like shingles, each strip over the one below. Tilt both on\n   the tray and spray from above. Look underneath.\n2. **One raincoat.** Cover your paper dome with a single piece of wax paper,\n   pleated round it like a shower cap. Spray it. Is the paper under it dry?\n3. **Water from nowhere.** Fill the jar with ice and water and leave it on the\n   counter for ten minutes. Where did the water on the outside come from?\n:::\n\n:::box why \"Why it works\"\nThe cabin's design has exactly one watertight layer, the cap, with everything\nelse under it where it stays dry. Under the cap go quilted layers sewn from\nrecycled clothing, each adding R-{{tt_quilt.r_per_layer}} of warmth, added one\nwinter at a time. The water on your jar came out of the air: the jar was colder\nthan the air's *dew point*, the temperature at which it has to let water go.\nVolume A spends a whole part on keeping the dome's seams above the dew point, or\ndeliberately catching the water where it is welcome.\n:::\n\n:::box done \"You've got it when\"\nYou can say which roof kept the tray dry and why, and where the water on the jar\ncame from.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/08-skin.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/ground": {
+   "title": "The Wobbly Table Test",
+   "deck": "A dome on a bumpy floor, and the measurement that finds it",
+   "body": "A dome stands on its bottom ring: {{mb.rim_edges}} edges and {{mb.rim_corners}}\ncorners touching the ground in a circle, as the picture shows from above. All\nthe weight of the building comes down through those ten corners.\n\nThat ring is the one place where a small mistake grows instead of\ndisappearing. A frame absorbs a short stick or a crooked one, because the\ntriangles share the error between them. But if the ring is not level, or not\nround, every ring above it is built on a tilted or squashed circle, and the\nerror is carried all the way to the top. A corner a little low at the bottom\nmeans a top a lot off at the apex.\n\nThe good news is that the ring is easy to check, with nothing but a string.\n\n:::box do \"Make it\"\n**You need:** your paper or straw dome, a flat board or tray, a coin, a ruler and\na piece of string.\n\n1. **Level.** Stand the dome on the flat board. Measure from the board to the\n   top point with the ruler.\n2. **Low corner.** Slide a coin under one bottom corner. Measure the top again.\n   How far did the top move compared with the thickness of the coin?\n3. **Round.** Take the coin out. Stretch the string across the ring from one\n   bottom corner to the corner exactly opposite, and mark it. Do the same for\n   the other four opposite pairs. Are all five the same?\n4. **Squash it.** Press the ring gently so it becomes a little oval, and measure\n   the five pairs again. Which numbers changed?\n:::\n\n:::box why \"Why it works\"\nA circle has the same width in every direction, so five equal measurements\nacross a ten-sided ring prove it is round, and one odd measurement points\nstraight at the corner that is wrong. The real builder makes this check when\nthe ring is first set, again after the first course, and again before the top\ncloses -- because the ring is the one error the frame cannot forgive. On real\nground, the ring stands on gravel, a deck, piers or a slab, and it is strapped\ndown: wind blowing over a dome tries to lift it, like a wing.\n:::\n\n:::box done \"You've got it when\"\nYou can find a low or squashed corner on your dome using only the string, and\nsay why the ring is checked three times on the real build.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/09-ground.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/uses": {
+   "title": "Draw Your Round Room",
+   "deck": "Rings of headroom on a paper floor, and where the bed goes",
+   "body": "A round room is not a square room with curved walls. It changes where you can\nstand, where the furniture goes, and what the room is good for. Before anybody\nbuilds a dome, it is worth drawing one -- because the answers are measurable,\nand they surprise people.\n\nThe biggest surprise is headroom. The roof of a dome comes all the way down to\nthe floor at the edge. In the middle you can stand up easily; near the wall you\ncannot. Of the reference dome's {{mb.floor_circle_sqft}} square feet of floor\ncircle, only {{mb.stand_sqft}} -- about {{mb.stand_pct}} per cent -- has\n{{mb.head_ft}} feet or more of ceiling over it. The rest is a low ring round the\nwall.\n\nThat low ring is not wasted. It is exactly the right height for the things that\ndo not need you to stand: beds, benches, low shelves, a desk with a window. A\nwell-planned round room puts the low things in the ring and keeps the tall,\nopen middle for walking, cooking and the table. The picture shows a dome\nfurnished that way.\n\n:::box do \"Make it\"\n**You need:** a big sheet of paper, a pencil tied to a piece of string, a ruler,\ncoloured pencils, and card for furniture.\n\n1. **The floor.** At one centimetre to the foot, draw a circle {{mb.plan_cm}} cm\n   across. That is the reference dome's floor.\n2. **Standing room.** From the same centre, draw a second circle\n   {{mb.plan_stand_cm}} cm across. Inside it, a grown-up can stand up straight.\n   Shade the ring between the two circles.\n3. **Furniture.** Cut out a bed, a table, a stove, a desk and some shelves from\n   card, to the same scale (a bed is about 3 by 6.5 feet: 3 by 6.5 cm).\n4. **Place them.** Low things in the shaded ring, tall things and walking space\n   in the middle.\n5. **Choose a purpose.** Make a second plan for a completely different use -- a\n   workshop, a greenhouse, a studio.\n:::\n\n:::box why \"Why it works\"\nA hemisphere's ceiling height drops from its full height at the centre to\nnothing at the wall, so a fixed headroom draws a smaller circle inside the\nfloor. Two fixes exist and both are priced in the volumes: a short straight\nwall under the rim lifts the whole dome and pushes the standing circle outward\n(a *pony wall*), and furnishing the ring with low built-ins turns it from dead\nfloor into storage. Because the frame does not care what the room is for, the\nsame plan can be redrawn for any use.\n:::\n\n:::box done \"You've got it when\"\nYou have two plans for the same dome with different uses, and the bed is in the\nring in both.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/10-uses.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/count": {
+   "title": "Time It and Count It",
+   "deck": "Make five paper triangles against a clock, then work out forty",
+   "body": "On rung one the builder counted the hours. This chapter counts the way a builder\ncounts -- by measuring a little and working out a lot -- and then looks at the\nmost important question to ask about any number: *was it measured, or guessed?*\n\nHere is the real forty-hour clock from Volume A. Read the last column: it says\nhow each number was found.\n\n    {{clock.table}}\n\nSplitting is **measured**: the owner timed real sessions at the log. Cutting,\nbuilding panels and raising are **estimates**: careful, reasoned, but not yet\ntimed on a real build. The last line is the owner's own **allowance** for the\nmistakes every first build makes. A book that hid the difference would look\nmore certain and be less true.\n\n:::box do \"Make it\"\n**You need:** a timer, paper, scissors, tape, a notebook, and your paper-dome\njig from chapter six.\n\n1. **Measure.** Time yourself making {{mb.timed}} triangles on the jig. Write\n   down the time for *each* triangle separately.\n2. **Work it out.** The dome needs forty. Forty is {{mb.timed_times}} lots\n   of {{mb.timed}}. Multiply your total. Write it down and label it *estimate*.\n3. **Learning curve.** Look at your five separate times. Was the first one the\n   slowest? Draw a little bar chart of the five.\n4. **Measure again.** Now actually make the next five, and time them. Was your\n   estimate high or low?\n5. **Label everything.** Go back through your notebook and write *measured* or\n   *estimated* next to every number.\n:::\n\n:::box why \"Why it works\"\nMost of a build's time is repetition, and repetition gets faster: the first\npanel off a jig is a rehearsal and the fourth is usually the first good one. An\nestimate made from the first few is therefore usually high -- unless it forgets\nthe learning time, the tired afternoon or the rain day, which is what the\nallowance is for. The forty hours cover the frame; the whole build, with the\nskin, floor and openings, is about {{money.labour_hours}} hours, and the books\nkeep both numbers in view.\n:::\n\n:::box done \"You've got it when\"\nEvery number in your notebook is labelled measured or estimated, and you can\nsay which kind the real clock's splitting time is.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/11-count.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "understand/care": {
+   "title": "The Job Sorting Game",
+   "deck": "Cards, gear and the one rule that has no exceptions",
+   "body": "On rung one, jobs were sorted into grown-up jobs and helper jobs. This chapter\nturns that into a game a family can play before any real work starts -- and\nends with the one rule on a building site that has no exceptions.\n\nReal builders do this. Before a crew starts a job, they talk through who does\nwhat, what can go wrong, and what everybody does if it does. It is called a\n*safety briefing*, and the best ones are short, clear and taken seriously by\neverybody, including the youngest person on site.\n\n:::box do \"Make it\"\n**You need:** twenty index cards and a pen.\n\n1. **Write the jobs.** One job per card: felling a tree, cutting a log to\n   length, ripping wedges with the saw, carrying a wedge, sorting wedges by\n   length, marking wedges with crayon, setting up the jig, screwing a panel,\n   sawing the long ends off, oiling wood, lifting a panel, climbing a ladder,\n   holding the tape, checking the ring with a string, wiring a light, timing\n   the work, drawing the plan, building a model, making lunch, taking photos.\n2. **Sort them** into three piles: *trained grown-up only*, *grown-up with a\n   helper*, *helper*.\n3. **Gear check.** For every card in the first pile, write on the back what the\n   person must wear. (Chainsaw work: helmet with a face screen, ear protection,\n   gloves, sturdy boots and chainsaw chaps.)\n4. **The stop word.** Choose one word that anybody -- anybody at all -- can\n   shout to stop all work instantly. Practise it. Everybody freezes, saws go\n   off, nobody moves until the person who called it says why.\n5. **The rule with no exceptions.** Write it on its own card: *Nobody uses the\n   saw alone.*\n:::\n\n:::box why \"Why it works\"\nMost accidents happen in the gap between what one person assumed and another\nperson did. Sorting the jobs out loud closes that gap before the work starts.\nThe stop word gives the smallest person on site the biggest power: to stop\neverything when something looks wrong. On the real build, children stay at\nleast two tree-lengths away from any tree being felled and well clear of a\nrunning saw, and the volumes add the rules for felling, ladders, lifting and\nthe trades that only licensed people do.\n:::\n\n:::box done \"You've got it when\"\nEverybody in the family can say the stop word, the rule with no exceptions, and\nwhich pile their own jobs are in.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung2/12-care.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/tree": {
+   "title": "Your Trees, Measured",
+   "deck": "From three numbers on a real trunk to the struts it gives and the dome it can make",
+   "body": "**What you are deciding:** whether the trees you have can make a frame, and how\nmany of them it takes.\n\n## The reference answer\n\nVolume B works its plan from one measured tree: {{tt_tree.butt_diameter_in}}\ninches across at the butt, {{tt_tree.top_diameter_in}} inches at the top of the\nstraight part, and {{tt_tree.usable_length_ft}} feet of usable trunk between.\n\nFrom those three numbers, everything follows:\n\n* the trunk is cut into sections of {{tt_tree.section_length_ft}} feet -- the\n  longest piece one person can carry and set alone -- which makes\n  {{tt_tree.sections}} sections;\n* each section is ripped into {{cut.splits}} wedges, so one tree gives\n  {{tt_tree.struts_per_tree}} struts;\n* the frame needs {{dome.members}} members, so it consumes\n  {{tt_dome.trees_strictly_needed}} trees -- and the plan fells\n  {{tt_dome.trees}}, because a pile always has rejects: a wedge with a crack\n  down its point, a knot at its bearing end, a bow too deep to straighten.\n\nThe same tree holds {{tt_tree.solid_bf}} board feet of solid wood; split, it\nkeeps {{tt_tree.wedge_bf}} of them as members -- {{tt_tree.recovery_pct}} per\ncent -- and loses {{tt_tree.kerf_bf}} board feet to the saw's cut.\n\n## Thin trees and bent trees\n\nA tree is not ruled out by being bent. A bend costs you the section it falls in,\nnot the tree: cut either side of it, burn the kink, and keep going. That is the\ngreat advantage of short pieces.\n\nA tree *is* ruled out by being too thin. The wedge has to carry as much wood as\nthe board it replaces. Volume B's strut has {{tt_log.member_area}} square inches\nof section against a dressed two-by-four's {{tt_board.dressed_in2}}; a much\nthinner tree would make sticks that lose that comparison, and then the honest\nanswer is to buy boards.\n\n:::box do \"Worksheet 1: my trees\"\n| | Tree 1 | Tree 2 | Tree 3 |\n|---|---|---|---|\n| Butt diameter (in) | [[blank]] | [[blank]] | [[blank]] |\n| Top diameter (in) | [[blank]] | [[blank]] | [[blank]] |\n| Straight length (ft) | [[blank]] | [[blank]] | [[blank]] |\n| Sections (length ÷ section, rounded down) | [[blank]] | [[blank]] | [[blank]] |\n| Struts (sections × {{cut.splits}}) | [[blank]] | [[blank]] | [[blank]] |\n\n**Struts I have, all trees together:** [[blank]] · **Struts the frame needs, with\nspares:** [[blank]] · **Measured by:** [[blank]] **on:** [[blank]]\n:::\n\n:::box why \"Why\"\nThe diameter at the middle of the trunk sets how wide the sticks are, and stick\nwidth is the one thing that changes the cut list for a given dome (chapter five).\nThe length sets how many sections, and the section length sets the dome's size\n(chapter four). Nothing else about the tree enters the arithmetic -- which is why\nthe method can use storm-fallen and low-grade trees a mill would never pay for.\n:::\n\n:::box watch \"Watch out\"\nMeasure only the straight run: the flared butt and the crown above the first big\nbranch are firewood. Use the middle diameter, not the butt, when you size sticks;\nthe butt flatters you. And plan spares -- a pile with no rejects allowed is a\nplan that assumes every stick is perfect, and no pile is.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/01-tree.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/split": {
+   "title": "The Splitting Plan",
+   "deck": "Sections, sectors, sessions and fuel: the part of the work that is measured, not guessed",
+   "body": "**What you are deciding:** how many days at the log, how much fuel, and how the\nsaw work will be staffed.\n\n## The reference answer\n\nThis is the one part of the build that is **measured**. The owner timed real\nsessions at the log: {{hr.split_session}} wedges in a {{hr.session}}-hour\nsession. The reference frame is split from {{parts.sections}} log sections into\n{{dome.members}} wedges, so the splitting takes {{hr.split}} hours.\n\nThe saw drank {{rip.tanks_hour}} tanks of fuel an hour while ripping (also\nmeasured), which is {{rip.tanks}} tanks for all of it -- about {{rip.gal_lo}}\nto {{rip.gal_hi}} US gallons. The calendar the paperback teaches gives the saw\n{{rip.days}} days in all: {{rip.days_felling}} of felling,\n{{rip.days_bucking}} of bucking the trunks to length and {{rip.days_ripping}} of\nripping.\n\nWhy split instead of saw into boards? The picture shows the same log converted\nboth ways. Packed with rectangles, a round log loses its curved sides; split\ninto eighths, it loses only the thin lines of the saw's cut. Volume B's tree\nkeeps {{tt_tree.recovery_pct}} per cent of its wood split, against about\n{{tt_tree.sawn_recovery_pct}} per cent sawn into two-by-fours.\n\n## How the cutting goes\n\nEach section is cut lengthwise three times over: once through the centre to\nhalve it, then each half, then each quarter -- seven straight cuts, all through\nthe pith. The first cut is the only one where the log can roll, so the log sits\nin a cradle; after that, every piece has a flat face to sit on. The wedges go\nstraight onto spacer sticks, bark up, to dry.\n\n:::box do \"Worksheet 2: my splitting plan\"\n| | Mine | Reference |\n|---|---|---|\n| Sections to rip | [[blank]] | {{parts.sections}} |\n| Wedges (sections × {{cut.splits}}) | [[blank]] | {{dome.members}} |\n| My rate, wedges per session (measure it!) | [[blank]] | {{hr.split_session}} |\n| Sessions (wedges ÷ rate) | [[blank]] | -- |\n| Hours at the log | [[blank]] | {{hr.split}} |\n| Tanks of fuel (hours × tanks per hour) | [[blank]] | {{rip.tanks}} |\n\n**The second person at the log, every session:** [[blank]]\n:::\n\n:::box why \"Why\"\nHalving needs no measured angle, so the saw does the geometry. A chain filed for\nripping cuts along the grain far faster than a crosscut chain, and a sharp chain\nkeeps the cut narrow -- a dull one widens it and eats the recovery. Splitting is\nthe largest single block of the frame's hours, which is why it is the one the\nowner measured first.\n:::\n\n:::box watch \"Watch out\"\nNever alone at the log. Keep bar oil full: ripping buries the bar for minutes at\na time. File the chain at every fuel stop whether it asks or not. Aim every cut\nthrough the pith -- a wedge whose point misses the centre has a soft, split-prone\nedge exactly where it bears. And the split is a saw cut, always: this method does\nnot use axes, mauls or splitting wedges.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/02-split.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/triangle": {
+   "title": "What Must Be Right, and What May Be Rough",
+   "deck": "The frame forgives; the skin and the ground do not -- so plan the care where it counts",
+   "body": "**What you are deciding:** where to spend your care, your money and your\nchecking -- because they are not equally needed everywhere.\n\n## The reference answer\n\nThe project's whole argument fits in one sentence from Volume A: *the frame is\nthe part you are allowed to get wrong; the skin and the ground are not.*\n\nThe frame forgives because it is made of triangles. Loads run along the members,\nso a bowed or knotty stick still does its job, and the method gives every small\nerror somewhere harmless to go:\n\n* a stick a little long or short -- the head is cut long and sawn off flush once\n  the panel is together, so the panel decides the length;\n* a butt end cut a degree off -- the screws pull it onto its neighbour's flat\n  face;\n* a seam a little wide or narrow -- the key and gasket take it up, shared across\n  {{dome.seams}} seams.\n\nTwo places do not forgive.\n\n**The skin**, because water that gets in stays in and rots the frame, however\ngood the frame is. That is chapter eight.\n\n**The ground ring**, because its error does not get absorbed -- it grows. A\nstrut error of {{geo.ring_err}} inches in the base ring moves the ring's\ndiameter by {{geo.ring_d_err}} inches: the ring multiplies it\nby {{geo.ring_gain}}. That is chapter nine.\n\n:::box do \"Worksheet 3: where my care goes\"\n| | What I will check | How | When | Who |\n|---|---|---|---|---|\n| The ring is round and level | [[blank]] | [[blank]] | [[blank]] | [[blank]] |\n| Every wedge is graded | [[blank]] | [[blank]] | [[blank]] | [[blank]] |\n| One watertight layer, unbroken | [[blank]] | [[blank]] | [[blank]] | [[blank]] |\n| The inside can breathe and drain | [[blank]] | [[blank]] | [[blank]] | [[blank]] |\n| The frame is strapped down | [[blank]] | [[blank]] | [[blank]] | [[blank]] |\n:::\n\n:::box why \"Why\"\nA triangulated shell resolves its loads axially, so asymmetry in it is absorbed\nrather than amplified -- the lumpy frame in the picture stood. What it cannot do\nis keep water out or correct the circle it stands on. Spending precision where\nit pays and tolerance where the tree varies is the method's whole economy.\n:::\n\n:::box watch \"Watch out\"\n\"May be rough\" does not mean \"may be rotten\". Volume B grades every wedge in four\npasses before it reaches the jig: the bend, the knot in the middle third, the knot\nat the bearing end, and a crack down the pith. A wedge that fails goes to\nblocking, not to the frame.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/03-triangle.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/dome": {
+   "title": "Choose Your Size",
+   "deck": "One number decides the building, and the two books chose it two different ways",
+   "body": "**What you are deciding:** the dome's size -- one number, from which everything\nelse follows.\n\n## The reference answers, and why there are two\n\nBoth books build a two-frequency hemisphere with {{dome.panels}} panels and\n{{dome.members}} members. Both start from six feet, the longest stick one person\ncan carry and set alone. And they arrive at different sizes, because they apply\nthe six feet to different things.\n\n**Volume A** takes six feet as the **long chord** -- the edge of the triangle,\ncorner to corner -- because that is what the owner's real members measure:\n{{cut.a_chord}} inches long, {{cut.b_chord}} inches short. That gives a sphere of\nradius {{dome.radius_in}} inches: a dome {{dome.diameter_ft}} feet across and\n{{dome.height_ft}} feet tall, with {{dome.floor_sqft}} square feet of floor\ninside its ten-sided ring.\n\n**Volume B** takes six feet as the **longest piece you cut** -- the member\nitself. Because of the pinwheel, a member is always a little shorter than the\nedge it spans, so a six-foot member spans a longer edge, and the dome comes out\nbigger: {{tt_dome.diameter_ft}} feet across, {{tt_dome.height_ft}} feet tall,\n{{tt_dome.floor_sqft}} square feet counted as a full circle.\n\nNeither is wrong. They are two honest ways of saying \"six feet\". Pick one\nconvention for your plan and never mix them.\n\n## Standing room\n\nFloor is not the same as room. Of Volume A's {{mb.floor_circle_sqft}} square\nfeet of floor circle, {{mb.stand_sqft}} -- about {{mb.stand_pct}} per cent --\nhas {{mb.head_ft}} feet or more over it; the rest is the low ring round the\nwall, which is where beds, benches and storage belong.\n\n## Bigger and smaller\n\nThe parts list does not change with size: a {{flat.small_ft}}-foot dome and a\n{{flat.big_ft}}-foot dome both have {{dome.members}} members and\n{{dome.panels}} panels, and the bigger one has {{flat.ratio}} times the floor.\nWhat grows is the length of each stick, and the stick is limited by what one\nperson can lift. Past that, a bigger dome needs either a crew or a higher\nfrequency -- more, shorter sticks.\n\n:::box do \"Worksheet 4: my size\"\n| | Mine | Volume A | Volume B |\n|---|---|---|---|\n| Longest stick I can carry and set | [[blank]] | {{cut.a_chord}} in, as the chord | {{tt_dome.longest_member_in}} in, as the cut |\n| Is that the chord or the cut member? | [[blank]] | chord | member |\n| Long chord (in) | [[blank]] | {{cut.a_chord}} | -- |\n| Sphere radius (long chord ÷ {{cut.a_factor}}) | [[blank]] | {{dome.radius_in}} in | {{tt_dome.radius_in}} in |\n| Across (radius × 2 ÷ 12, ft) | [[blank]] | {{dome.diameter_ft}} | {{tt_dome.diameter_ft}} |\n| Height at the centre (ft) | [[blank]] | {{dome.height_ft}} | {{tt_dome.height_ft}} |\n:::\n\n:::box why \"Why\"\nEvery edge of the dome is a fixed fraction of the sphere's radius -- the long one\n{{cut.a_factor}}, the short one {{cut.b_factor}} -- so one length fixes them all.\nThe pinwheel then takes a bite off each member that depends on the stick's\nwidth, not on the dome's size; that bite is why \"six feet\" means two different\ndomes. The volumes print both calculations and close the loop between them.\n:::\n\n:::box watch \"Watch out\"\nDecide the convention first and write it at the top of your plan. Check your size\nagainst the stick you can actually lift, green and wet. And remember the\nheadroom: a hemisphere's usable floor is much smaller than its floor area.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/04-dome.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/joint": {
+   "title": "Your Cut List",
+   "deck": "Two chords, two cut lengths, three saw settings and two keys",
+   "body": "**What you are deciding:** the cut list -- every length, every angle, every key --\nbefore a single member is cut.\n\n## The reference answer\n\nVolume A's frame, solved by the project's simulator:\n\n* **Two chords.** The long edge is {{cut.a_chord}} inches, the short\n  {{cut.b_chord}} inches.\n* **Two cut lengths.** A member stops short of the corner so its end can land on\n  its neighbour's side. That *bite* depends on the stick's width\n  ({{cut.width}} inches across the bark face, {{cut.depth}} inches deep from point\n  to bark): {{cut.a_bite}} inches off a long member and {{cut.b_bite}} inches off\n  a short one. So the long members are cut to {{cut.a_cut}} inches and the short\n  ones to {{cut.b_cut}} inches -- {{parts.long_members}} of each length.\n* **One compound cut.** The butt end of every member is cut once, to land flat on\n  its neighbour: a bevel of {{cut.bevel}} degrees and one of only {{cut.mitres}}\n  mitre settings for all {{dome.members}} members. The other end is left long and\n  sawn flush on the jig.\n* **Two keys.** The dome's {{dome.seams}} seams fold at only two angles:\n  {{seam.fold_a}} degrees ({{tt_seam.count_a}} seams) and {{seam.fold_b}} degrees\n  ({{tt_seam.count_b}} seams). Each takes its own key, {{seam.key_a}} and\n  {{seam.key_b}} inches across at the base.\n\nThe picture shows where those joints sit in the frame.\n\n:::box do \"Worksheet 5: my cut list\"\n| | Long | Short |\n|---|---|---|\n| Chord (radius × factor, in) | [[blank]] | [[blank]] |\n| Bite for my stick width (in) | [[blank]] | [[blank]] |\n| Cut length (chord − bite, in) | [[blank]] | [[blank]] |\n| How many | [[blank]] | [[blank]] |\n| Colour I will mark them | [[blank]] | [[blank]] |\n\n**Saw setups I will make, in order:** [[blank]] · **Key profiles:** [[blank]]\n:::\n\n:::box why \"Why\"\nOnly two edge lengths exist because the dome is an icosahedron subdivided once:\nevery edge is either half an original edge or a line between two midpoints. The\ncut lengths differ from the chords by the pinwheel's bite, which is set by how\nwide the stick is -- a fatter log means a bigger bite and shorter members for the\nsame dome. The fold angle plus the gap the key fills always adds up to the\n{{cut.sector}}-degree wedge the tree was split into, which is why two keys close\nthe whole dome.\n:::\n\n:::box watch \"Watch out\"\nNever cut a member to its chord: it will be too long by the bite, forty times\nover. Keep the two lengths in separate, marked stacks. The short-sided panels\nhave a left and a right side that differ by about two inches over five feet --\npick them from their stacks in order, never by eye. And the volumes print more\nthan one cut list; the comparison page at the back says which is which.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/05-joint.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/panel": {
+   "title": "Plan the Jig and the Panel Run",
+   "deck": "One bench, twelve stages, forty panels in two shapes",
+   "body": "**What you are deciding:** how the forty panels get made -- the bench, the jig, the\norder, the marking, and how long it takes.\n\n## The reference answer\n\nOne flat bench, set up twice: once for the {{dome.aaa}} equal-sided panels and\nonce for the {{dome.bab}} short-sided ones. The jig holds each member by its two\nflat sawn faces against fixed stops, guides the saw for the butt cut and the\nflush cut, and takes each panel through twelve stages from bare bench to finished\ntriangle. The picture is the jig the simulator models.\n\nThe forty-hour clock gives this part of the work two estimated lines:\n{{clock.cut_h}} hours for cutting both ends and drilling, and {{clock.panels_h}}\nhours for bolting members into panels on the jig. Both are **estimates** -- reasoned\nfrom the owner's process, not yet timed on a full run -- and the clock's error\nallowance exists partly because of them.\n\nPlan for the learning curve. The first panel off a new jig is a rehearsal, the\nsecond is nearly right, and the fourth is usually the first good one. The\npractice panels are not waste: they become test pieces, and the spare struts in\nthe pile pay for them.\n\n:::box do \"Worksheet 6: my panel run\"\n| | My plan |\n|---|---|\n| Bench size and where it stands (flat, level, under cover) | [[blank]] |\n| Setup 1: equal-sided panels, how many | [[blank]] |\n| Setup 2: short-sided panels, how many | [[blank]] |\n| Marking scheme (colour per length, side per stripe) | [[blank]] |\n| Practice panels allowed for | [[blank]] |\n| Panels per day I expect | [[blank]] |\n| Days for the run | [[blank]] |\n| Where finished panels are stacked, dry | [[blank]] |\n:::\n\n:::box why \"Why\"\nForty panels that agree with each other close into a dome; forty panels that are\neach nearly right do not, because their small differences add up round the\nrings. A jig makes agreement automatic: the position is measured once, when the\nstops are set, and never again.\n:::\n\n:::box watch \"Watch out\"\nThe bench must be flat -- a twist in the bench is a twist in every panel. Locate\nevery member from its sawn faces, never its bark. Check the first panel against\nits drawing before you build the second. Pick one pinwheel direction and use it\nfor every panel.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/06-panel.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/raise": {
+   "title": "Choose How It Goes Up",
+   "deck": "On blocks and props, or in the air between trees -- and who holds what",
+   "body": "**What you are deciding:** how forty panels become one standing frame, and who\nholds what while it happens.\n\n## Two reference answers\n\n**On the ground, course by course.** The panels go up on level blocks, bottom\nring first: a first course of {{ring.first}} panels ({{ring.first_up}} standing\non the floor ring and {{ring.first_down}} inverted between them), then a second\nof {{ring.second}}, then the {{ring.cap}} round the top. Each course leans on the\none below and on props from inside until the top closes; then the shell carries\nitself. The clock estimates {{clock.raise_h}} hours for lifting the panels into a\nshell.\n\n**In the air, between living trees.** This is the owner's own plan, and Volume A\ngives it a chapter. An X of wire rope is stretched between four trees about\n{{web.square_m}} metres apart, tied about {{web.tie1_m}} metres up, with a spiral\nover the footprint. A {{web.winch_lb}}-pound 12-volt winch lifts each triangle\nflat in a three-leg harness; the triangles are joined in the air and the finished\ndome is left hanging. The owner has **weighed** the real struts at\n{{web.strut_lo}} to {{web.strut_hi}} kilograms each, so a triangle weighs\n{{web.tri_lo}} to {{web.tri_hi}} kilograms -- and the winch is rated\n{{web.winch_x}} times the heaviest one.\n\nThe numbers that argue against it are printed too. Today's winch lifts about\n{{web.now_pct}} per cent of the whole dome, so a one-piece lift needs the\nplanned {{web.up_lo}} to {{web.up_hi}} times bigger winch. The whole frame weighs\n{{web.frame_lo}} to {{web.frame_hi}} kilograms. And an unguyed tree's margin is\n{{web.tree1}} at the design sag but only {{web.tree1_taut}} if the web is pulled\ntighter -- below one, the tree fails -- so the trees are guyed back to others.\n\n:::box do \"Worksheet 7: how mine goes up\"\n| | My plan |\n|---|---|\n| Method: ground course-by-course, or air | [[blank]] |\n| Crew on the day, by name | [[blank]] |\n| Props: how many, how long, from what | [[blank]] |\n| Lifting gear and its rating | [[blank]] |\n| Anchor trees, guying, who rated them | [[blank]] |\n| Weather window, and the day we stop | [[blank]] |\n| Where nobody stands while anything is lifted | [[blank]] |\n:::\n\n:::box why \"Why\"\nA dome is a mechanism until it closes and a structure afterwards: before the top\npanels go in, each course needs to be held; after, every triangle holds every\nother. Lifting finished panels instead of loose sticks is what makes one person's\nraising possible at all.\n:::\n\n:::box watch \"Watch out\"\nNever stand under anything that is hanging -- a triangle, a dome, or the rope that\nholds them. Rigging, anchor trees and winches carry real loads that no book can\nrate; that is an engineer's job and an arborist's. Raise in calm weather only:\na half-closed dome is a sail.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/07-raise.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/skin": {
+   "title": "Choose the First Coat",
+   "deck": "One watertight layer now, warm layers when the winters ask",
+   "body": "**What you are deciding:** the first coat -- what keeps the water out now -- and how\nthe building gets warmer over the years.\n\n## The reference answer\n\n**One watertight layer, and only one.** The standard article's skin is a\nrain-slick cap over the whole shell -- the \"shower cap\" -- priced at\n{{money.cap}} dollars. Everything else goes under it, where it stays dry.\n\n**Warmth one winter at a time.** Under the cap go quilted layers sewn from\nrecycled clothing: about {{tt_quilt.shirts_per_layer}} t-shirts a layer, each\nadding R-{{tt_quilt.r_per_layer}}, at {{tt_quilt.usd_per_layer}} dollars a layer\nthrough the quilt network the project proposes. Three layers make\nR-{{tt_quilt.stacked_r}}. The picture shows how the heating bill falls layer by\nlayer -- the first layer pays back fastest, and each one after buys a little less.\n\n**A harder shell later, if ever.** The same dome with a laminated hull instead of\nthe cap lists at {{money.hard_price}} dollars. The cap is the standard; the hull\nis the upgrade, and nothing about the frame changes between them.\n\n**The wood's own finish.** Volume A chars and oils the outside bark faces and\nkeeps oil off the faces a seal or gasket must stick to. Its estimate for the\nframe is {{lin.allow_gal}} gallons of linseed oil and {{lin.labour_h}} hours of\nhand work.\n\n:::box do \"Worksheet 8: my first coat\"\n| | My plan |\n|---|---|\n| The one watertight layer | [[blank]] |\n| How it is fastened down at the rim | [[blank]] |\n| Quilt layers before the first winter | [[blank]] |\n| Where moisture from inside goes | [[blank]] |\n| Where water drains at the rim | [[blank]] |\n| Finish on the wood, and where it is kept off | [[blank]] |\n| Budget for the skin | [[blank]] |\n:::\n\n:::box why \"Why\"\nWater is the silent killer of wooden buildings, and a shell with {{dome.seams}}\nseams has {{dome.seams}} places to lose that fight. One continuous watertight\nlayer outside everything else means there is only one surface to keep perfect.\nInside, warm damp air condenses on anything colder than its dew point, so the\nshell is planned to breathe and to drain at the rim rather than to be sealed.\n:::\n\n:::box watch \"Watch out\"\nNever seal the inside face airtight against the frame; give the water a path.\nKeep oil off any surface a tape, sealant or gasket must stick to. And oily rags\ncan catch fire by themselves -- they go straight into a lidded metal tin of\nwater, outside, the same day.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/08-skin.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/ground": {
+   "title": "Choose the Ground",
+   "deck": "Gravel, deck, piers, slab or a pad somebody else owns",
+   "body": "**What you are deciding:** what the dome stands on -- or hangs from -- and how the\nring is kept round, level and tied down.\n\n## The reference answer\n\nVolume A prices the grounds a dome can stand on. For the standard article: a\ncompacted gravel base, {{money.gravel}} dollars; a framed deck on piers,\n{{money.deck}}; a full concrete slab, {{money.slab}}. Across the Dome Creator's\nfoundation menu the cabin's whole price swings by {{sty.by_foundation_span}}\ndollars, from {{sty.by_foundation_lo_usd}} on {{sty.by_foundation_lo}} to\n{{sty.by_foundation_hi_usd}} on a {{sty.by_foundation_hi}}. The picture lines\nthe options up.\n\nThe cheapest ground is ground somebody else already built. The project proposes\n**pads**: serviced platforms a host builds once and rents, so the dome on top can\nleave. On a pad, the platform -- {{money.pad}} dollars of it for the standard\narticle -- is the host's bill, not the dome owner's.\n\nTwo upgrades at the edge are worth planning from the start. A short straight\n**pony wall** under the rim lifts the dome and turns the low ring into standing\nroom: on Volume B's {{tt_pony.floor}}-square-foot reference floor, a three-foot\nwall costs {{tt_pony.cost_3}} dollars and buys back {{tt_pony.gain_3}} square feet,\ntaking the usable share from {{tt_pony.pct_0}} to {{tt_pony.pct_3}} per cent. And\na **brim** at the rim throws rain clear of the base and can catch it in a tank.\n\n:::box do \"Worksheet 9: my ground\"\n| | My plan |\n|---|---|\n| Ground: gravel, deck, piers, slab, pad, or hung | [[blank]] |\n| Cost | [[blank]] |\n| How the ring is set out (centre stake, string) | [[blank]] |\n| The three ring checks: when, by whom | [[blank]] |\n| How the ring is tied down against wind | [[blank]] |\n| Drainage away from the ring | [[blank]] |\n| Pony wall? Height | [[blank]] |\n| Who checks the footing for my soil and frost | [[blank]] |\n:::\n\n:::box why \"Why\"\nA dome puts its weight on a circle, not a floor, so the footing belongs under the\nring -- concrete across the middle carries no frame at all. The ring is the one\nplace error accumulates instead of being absorbed. And wind over a dome lifts it\nlike a wing, so the ring has to be tied down, not just set down.\n:::\n\n:::box watch \"Watch out\"\nNever skip the hold-downs. Footing depth, frost and soil bearing are site\nquestions for somebody who can read your ground. And if you hang the dome\ninstead, the trees and rigging are your foundation -- see chapter seven, and\ntreat them with the same seriousness.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/09-ground.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/uses": {
+   "title": "Choose What It Is For",
+   "deck": "Fifteen buildings from one body, priced, and the utility buildings that pay for themselves",
+   "body": "**What you are deciding:** what the building is for -- which, on this frame, is a\ndecision about panels, not about structure.\n\n## The reference answer\n\nThe project's product line starts from the **stem cell**: the bare frame, its\nskin, the utility core in the middle and one blank panel. Everything a building\nis *for* -- windows, doors, a skylight, a stove flue, benches, a sink, a rack of\nshelves -- is a set of panels and modules added to that body. Volume A prices\n{{seed.count}} named fit-outs on the same frame:\n\n    {{seed.table}}\n\nLook at how many of them are **utility buildings**: cold storage, a workshop, a\ngarage, a studio, a sauna, a growing room. For most families the first dome is\nnot the house. It is the building that makes the house work better -- the dry\nworkshop, the root cellar above ground, the greenhouse that grows food in March\n-- and it earns its keep while the family learns the method on something that\ndoes not have to be slept in.\n\nStyle is a separate decision. The Dome Creator dresses the same cabin twelve\nways; the dearest style costs {{sty.style_ratio}} times the cheapest, and the menus\nthat move the price most are, in order: {{sty.ranking}}.\n\n:::box do \"Worksheet 10: what mine is for\"\n| | My plan |\n|---|---|\n| First purpose | [[blank]] |\n| Second purpose, five years on | [[blank]] |\n| Panels it needs: windows, door, skylight, louvre, flue | [[blank]] |\n| Modules it needs: water, drain, power, heat | [[blank]] |\n| The fit-out above closest to mine, and its price | [[blank]] |\n| Does it need a permit as a dwelling, or as an accessory building? | [[blank]] |\n:::\n\n:::box why \"Why\"\nBecause every panel is a separate framed triangle, the building's purpose lives\nin its forty openings, not in its walls. A frame that has not decided what it is\ncan be re-decided later for the price of new panels -- which is what makes it a\nstem cell rather than a shed. The core carries the services and is built to\nunbolt and move to the next dome.\n:::\n\n:::box watch \"Watch out\"\nAnything with water needs a drain beside it. Power-hungry modules -- a sauna\nheater above all -- change what the electrical panel and any battery bank have\nto be. And the line between a shed and a dwelling is a legal one: ask your\nbuilding department which side your plan is on before you build it.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/10-uses.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/count": {
+   "title": "Your Clock and Your Budget",
+   "deck": "The forty-hour clock, the whole build's hours, and the invoice line by line",
+   "body": "**What you are deciding:** how many hours and how many dollars -- and which of\nthose numbers are real yet.\n\n## The reference answer: hours\n\nThe title's forty hours are the frame, from wedges to standing, counted stage by\nstage in Volume A:\n\n    {{clock.table}}\n\nFelling, the skin, the floor, doors and windows are not on that clock. The whole\nbuild is about {{money.labour_hours}} hours of labour. The paperback counts its\nforty hours differently -- erection alone, with splitting added on top -- and the\ncomparison page at the back of this book sets the two clocks side by side.\n\n## The reference answer: dollars\n\nThe standard article -- the stem-cell dome as a product, built by somebody else\nat a wage and sold with a stated margin -- is invoiced line by line:\n\n    {{kick.w_invoice}}\n\nIt costs {{money.cost}} dollars to make, carries a markup of {{money.profit}}\ndollars, and lists at {{money.price}} dollars: {{money.per_sqft}} dollars a square\nfoot of floor, on ground priced separately. The frame -- the part this method is\nabout -- is the smallest line: {{money.frame}} dollars. Building it yourself\nremoves the labour line and the markup; it does not remove the cap, the core or\nthe panels.\n\n:::box do \"Worksheet 11: my clock and my budget\"\n| Stage | My hours | Measured or estimated? | My dollars |\n|---|---|---|---|\n| Felling and bucking | [[blank]] | [[blank]] | [[blank]] |\n| Splitting | [[blank]] | [[blank]] | [[blank]] |\n| Cutting, panels, raising | [[blank]] | [[blank]] | [[blank]] |\n| The skin | [[blank]] | [[blank]] | [[blank]] |\n| The ground | [[blank]] | [[blank]] | [[blank]] |\n| The core and the panels | [[blank]] | [[blank]] | [[blank]] |\n| Allowance for getting it wrong | [[blank]] | declared | [[blank]] |\n| **Total** | [[blank]] | | [[blank]] |\n:::\n\n:::box why \"Why\"\nA plan that does not say which of its numbers are measured is a plan nobody can\ncheck, including you. And money you avoid spending is real but it is not income:\nit only counts if you were going to buy the thing anyway. The volumes keep that\ndistinction on every page.\n:::\n\n:::box watch \"Watch out\"\nPrices go stale; check every one locally before you rely on it. Log your real\nhours and real receipts as you go -- the next family's plan starts from them.\nDo not leave the allowance out because the work feels easy on paper.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/11-count.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "plan/care": {
+   "title": "Your Safety Plan",
+   "deck": "Who signs off, who holds the saw, who stands where, and what is never done alone",
+   "body": "**What you are deciding:** who signs off, who does which job, what everybody\nwears, and what is never done alone. This worksheet is the one that gets signed.\n\n## The reference answer\n\nBoth volumes open the same way: *this book is not engineering.* It prices loads\nand does not rate them. Snow, wind, the ground under the ring, the rigging that\nlifts a dome and the trees it hangs from are a licensed engineer's numbers; the\npermit, the setbacks and whether a building may be slept in are the building\ndepartment's; electrical and plumbing connections are licensed trades'. The plan\nreaches all three before the first tree is cut.\n\nAt the log: a helmet with a mesh visor, ear protection, gloves, boots and\nchainsaw chaps on every cut, and a second person present for every session.\nFelling uses a planned notch, a hinge left whole, a cleared escape route, and\neveryone else at least two tree-lengths away -- the picture shows why the hinge is\nthe whole art. On the ladder and at the lift: three points of contact, a spotter,\nand nobody, ever, under a hanging load. Any lift heavier than\n{{en.two_person_kg}} kilograms is a two-person lift.\n\n:::box do \"Worksheet 12: our safety plan\"\n| | Name / answer | Signed |\n|---|---|---|\n| Engineer who reviewed the design | [[blank]] | [[blank]] |\n| Building department contact and permit | [[blank]] | [[blank]] |\n| Electrician and plumber | [[blank]] | [[blank]] |\n| Who is trained on the saw | [[blank]] | [[blank]] |\n| The second person at every saw session | [[blank]] | [[blank]] |\n| Our stop word | [[blank]] | everyone |\n| First-aid kit and who knows how to use it | [[blank]] | [[blank]] |\n| Address to give an ambulance | [[blank]] | |\n| Where children are while the saw runs | [[blank]] | [[blank]] |\n:::\n\n:::box why \"Why\"\nThe method's honesty about what it does not know is what makes it safe to try:\nevery place a figure becomes a load, the book stops and names who decides. A plan\nthat has those names on it is a plan you can stand behind.\n:::\n\n:::box watch \"Watch out\"\nFatigue causes more accidents than ignorance; the clock's allowance for getting\nit wrong is also a rest allowance -- use it. Stop the work in wind, in rain on\nladders, and whenever anybody calls the stop word.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung3/12-care.md",
+   "refs": {
+    "complete_edition": [],
+    "paperback": []
+   }
+  },
+  "build/tree": {
+   "title": "Fell and Buck",
+   "deck": "Put the trees on the ground and cut them to the one length",
+   "body": "The trees come down: felled with a planned notch and hinge, limbed, and bucked\ninto sections of one length, cutting out the bends and the flare. This is the\nmost dangerous work in the whole build, and the books do not soften it.\n\n:::box do \"Before you start\"\nYour safety plan from rung three is signed. The fall line of every tree is\nchosen from its lean, the wind and the landing ground, and an escape route is\ncleared for each. The second person knows their job is to watch the crown and\nstay out of the fall. Your section length is decided and cut into a story pole.\n:::\n\n:::box done \"Done when\"\nEvery section is cut, counted twice, stacked off the ground, and the count\nmatches the struts your plan needs plus spares.\n:::\n\n:::box check \"For checkers\"\nRead the felling and limbing procedures in Volume B against your own training. Is\nevery instruction about the notch, the hinge, the back cut and a log under tension\ncorrect for the cases a first-time feller will meet?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/01-tree.md",
+   "refs": {
+    "complete_edition": [
+     "tree",
+     "green"
+    ],
+    "paperback": [
+     "days_one_and_two_felling",
+     "days_three_and_four_bucking",
+     "small_units"
+    ]
+   }
+  },
+  "build/split": {
+   "title": "Rip the Wedges",
+   "deck": "The saw, the three passes and the stacked pile",
+   "body": "The sections become wedges: each one cradled, ripped through the pith three\ntimes over with the chainsaw, and the eight wedges stacked bark-up on spacers to\ndry. This is the measured part of the clock, so time yourself and keep the log.\n\n:::box do \"Before you start\"\nA ripping chain, filed; bar oil and mixed fuel; a cradle that stops the round\nfrom rolling; spacer sticks and a dry place for the stack. The saw's setup and\nsafety page in Volume B has been read by everybody who will be at the log.\n:::\n\n:::box done \"Done when\"\nThe pile holds every member the frame needs plus spares, graded in four passes --\nbend, knot, bearing end, pith -- and your own rate, in wedges per session, is\nwritten down.\n:::\n\n:::box check \"For checkers\"\nIs the claim that a small consumer saw can rip six-foot green sections, at the\nmeasured rate, believable to someone who runs saws for a living?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/02-split.md",
+   "refs": {
+    "complete_edition": [
+     "split",
+     "saw",
+     "member"
+    ],
+    "paperback": [
+     "day_zero_the_saw",
+     "split",
+     "days_five_to_eight_ripping",
+     "orientations"
+    ]
+   }
+  },
+  "build/triangle": {
+   "title": "Trust the Frame",
+   "deck": "Why the frame forgives a rough stick, from the forces up",
+   "body": "Before the frame goes up, understand why it will stand: why a rough wedge is a\ngood strut, what it gives up as a beam, and where the frame forgives and where it\ndoes not. These chapters are the argument the whole method rests on.\n\n:::box do \"Before you start\"\nRung two's wobble test, built and pushed. Rung three's worksheet on where your\ncare goes, filled in.\n:::\n\n:::box done \"Done when\"\nYou can explain to somebody else why the wedge loses to a two-by-four as a beam\nand wins as a strut, and why that is the right comparison for a dome.\n:::\n\n:::box check \"For checkers\"\nVolume B compares the wedge with a two-by-four on area, stiffness and bending\nstrength, and prints the column the wedge loses. Is the comparison fair, and is\nits conclusion -- that a dome loads its members mostly along their length --\nstated with the right caution?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/03-triangle.md",
+   "refs": {
+    "complete_edition": [
+     "lumpy",
+     "triangles"
+    ],
+    "paperback": [
+     "triangles",
+     "versus_board",
+     "forces"
+    ]
+   }
+  },
+  "build/dome": {
+   "title": "Solve Your Dome",
+   "deck": "Size it from the dome you want or the tree you have, and check it both ways",
+   "body": "Size the dome for real: from the dome you want, from the tree you have, or both\n-- then run the round trip that proves the two calculations agree before\nanything is cut.\n\n:::box do \"Before you start\"\nRung three's worksheets one and four, filled in, with the convention -- chord or\ncut member -- written at the top.\n:::\n\n:::box done \"Done when\"\nYour radius, your longest member and your tree count agree in both directions,\nand you know which of the books' two domes yours is closer to.\n:::\n\n:::box check \"For checkers\"\nThe two volumes size their domes from \"six feet\" in two different ways and get\ntwo different domes. Read the comparison page at the back of this book. Is the\ndifference explained clearly enough that a builder could not mix the two up?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/04-dome.md",
+   "refs": {
+    "complete_edition": [
+     "hemisphere",
+     "size",
+     "two_lengths"
+    ],
+    "paperback": [
+     "which_way",
+     "method_a",
+     "method_b",
+     "round_trip",
+     "worked_build",
+     "numbers_say_no"
+    ]
+   }
+  },
+  "build/joint": {
+   "title": "Cut the Joints",
+   "deck": "The pinwheel, the butt cut, the long head and the key",
+   "body": "Cut the joints: the one compound cut at the butt, the head left deliberately long,\nthe flush cut that makes the panel true, and the key in every seam. This is where\nthe tolerance of the whole method lives.\n\n:::box do \"Before you start\"\nThe cut list from rung three, worksheet five. A saw setup for each distinct butt\ncut, proved on one offcut before the class is cut. Key stock for both profiles.\n:::\n\n:::box done \"Done when\"\nEvery member is cut to its class, marked, and stacked by class, and a test butt\ncut sits flat on its neighbour's face with no rocking.\n:::\n\n:::box check \"For checkers\"\nThe volumes describe the butt cut, the head overfit and the keys in several\nplaces. Do they agree with each other -- on the overfit allowance, on whether\nthe build uses one key profile or two, and on when the keys go in?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/05-joint.md",
+   "refs": {
+    "complete_edition": [
+     "pinwheel"
+    ],
+    "paperback": [
+     "pinwheel",
+     "seams",
+     "connector",
+     "butt_cut",
+     "head_overfit",
+     "flush_cutting_in_place",
+     "where_error_goes"
+    ]
+   }
+  },
+  "build/panel": {
+   "title": "Run the Jig",
+   "deck": "One flat board, forty identical panels",
+   "body": "Build the jig, then run it: forty panels in two shapes, each located against the\nsame stops, screwed, flush-cut, checked against its drawing and stacked.\n\n:::box do \"Before you start\"\nA flat bench, set up for the first shape. The marking scheme decided. The panel\ndrawings printed for checking. Spares counted for the practice panels.\n:::\n\n:::box done \"Done when\"\nForty panels are stacked by shape, each one checked against its drawing, and\nthe jig's practice panels are kept as test pieces.\n:::\n\n:::box check \"For checkers\"\nThe jig chapters say \"one bench, forty panels\" while the dome has two panel\nshapes. Is it clear how one bench builds both, and how the short-sided panels'\nleft and right sides are kept from being swapped?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/06-panel.md",
+   "refs": {
+    "complete_edition": [
+     "frames",
+     "jig",
+     "everypiece"
+    ],
+    "paperback": [
+     "own_edge",
+     "the_jig",
+     "days_ten_to_twelve_forty_panels",
+     "jig_reference",
+     "panel_drawings"
+    ]
+   }
+  },
+  "build/raise": {
+   "title": "Raise It",
+   "deck": "Bottom ring first, props until the top closes",
+   "body": "Raise it: the bottom ring set and checked, each course keyed and screwed as it\ngoes, props under every leaning panel until the top closes, and then the props\nout.\n\n:::box do \"Before you start\"\nRung three's worksheet seven: the method chosen, the crew named, the props cut,\nthe weather watched, and the place nobody stands while anything is lifted.\n:::\n\n:::box done \"Done when\"\nThe frame stands closed with no props, and the ring measures round across every\nopposite pair of corners.\n:::\n\n:::box check \"For checkers\"\nIf the dome is to be hung from trees, the rigging, the trees and the winch carry\nreal loads. Do the volumes say clearly enough that those loads are an engineer's\nand an arborist's to rate, and that nobody stands under a hanging load?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/07-raise.md",
+   "refs": {
+    "complete_edition": [
+     "raise"
+    ],
+    "paperback": [
+     "days_thirteen_and_fourteen_raising"
+    ]
+   }
+  },
+  "build/skin": {
+   "title": "Close the Shell",
+   "deck": "One watertight layer, the seams, the water, the finish",
+   "body": "Close the shell: one watertight layer over everything, every seam lapped so water\nruns downhill over it, the rim drained, the inside allowed to breathe, and the\nwood finished where a finish belongs.\n\n:::box do \"Before you start\"\nRung three's worksheet eight. The rag station set up before any oil is opened. A\ndry spell long enough to get the watertight layer on.\n:::\n\n:::box done \"Done when\"\nA night of hard rain leaves the inside dry, and you know where the water from\nthe inside goes.\n:::\n\n:::box check \"For checkers\"\nThe books say the skin is the part that must be right. Is the advice on sheet\ngoods, seams and condensation specific enough to be followed, and does it agree\nbetween the two volumes -- for instance, on which faces of the wood are oiled?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/08-skin.md",
+   "refs": {
+    "complete_edition": [
+     "skin",
+     "one_layer",
+     "finish",
+     "linseed"
+    ],
+    "paperback": [
+     "closing_the_shell",
+     "weather_and_water",
+     "finishing"
+    ]
+   }
+  },
+  "build/ground": {
+   "title": "Set the Ground",
+   "deck": "The floor, the ring and what it all stands on",
+   "body": "Set the ground: the circle staked from a fixed centre, the ten points set level,\nthe footing under the ring rather than the middle, the hold-downs in, and the\nfloor built to stand on.\n\n:::box do \"Before you start\"\nRung three's worksheet nine. Your footing reviewed by somebody who knows your soil\nand frost depth.\n:::\n\n:::box done \"Done when\"\nThe five diameters across the ring agree, the ten points share one level, and\nevery base point is tied down.\n:::\n\n:::box check \"For checkers\"\nThe volumes describe the build's frame as standing on blocks, on a ring, and\nhanging from trees, in different places. Is it clear which is the reference\nbuild and which are options?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/09-ground.md",
+   "refs": {
+    "complete_edition": [
+     "floor",
+     "pad"
+    ],
+    "paperback": [
+     "the_footing_and_the_ring"
+    ]
+   }
+  },
+  "build/uses": {
+   "title": "Make It Livable",
+   "deck": "Doors, windows, services and a round room to live in",
+   "body": "Make it livable: the openings cut without breaking the triangles, the round room\nfurnished the way its headroom wants, and the services -- power, water, heat --\nrun through the column and the seams.\n\n:::box do \"Before you start\"\nRung three's worksheet ten. The electrician and plumber on your safety plan\nbooked for their parts.\n:::\n\n:::box done \"Done when\"\nSomebody can sleep, cook or work in it -- whatever it is for -- warm, dry and\nlegally.\n:::\n\n:::box check \"For checkers\"\nA doorway at the rim of a dome is a triangle. Do the volumes say clearly how\ntall it is and how a full-height door is made, whether by a riser wall or\nanother way?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/10-uses.md",
+   "refs": {
+    "complete_edition": [
+     "openings",
+     "core_build"
+    ],
+    "paperback": [
+     "openings",
+     "round_room",
+     "heat_power_and_the_small_systems"
+    ]
+   }
+  },
+  "build/count": {
+   "title": "Log Every Hour",
+   "deck": "What the build cost in money, hours and the body",
+   "body": "Log every hour and every receipt while you build -- not afterwards. The books'\nown counts are partly estimates; a real build's log is the measurement that\nturns them into facts.\n\n:::box do \"Before you start\"\nA notebook at the work, and the stages from rung three's worksheet eleven written\nat the top of its pages.\n:::\n\n:::box done \"Done when\"\nYour build has a log with every stage's hours and every receipt, each one\nlabelled measured.\n:::\n\n:::box check \"For checkers\"\nThe two volumes count their forty hours differently, and both report whole-build\nhours elsewhere. Read the comparison page and the hours chapters together. Could\na reader come away with the wrong idea of how long the whole build takes?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/11-count.md",
+   "refs": {
+    "complete_edition": [
+     "nine",
+     "body",
+     "priced"
+    ],
+    "paperback": [
+     "money",
+     "the_hours"
+    ]
+   }
+  },
+  "build/care": {
+   "title": "The Rules at the Log",
+   "deck": "Chainsaw, felling, ladders, lifts and trades",
+   "body": "The rules at the log, on the ladder and at the lift -- gathered from both volumes\ninto one reading. Read these before the saw starts, and read them again on the\nmorning of every felling day.\n\n:::box do \"Before you start\"\nRung three's worksheet twelve, signed by everybody who will be on site.\n:::\n\n:::box done \"Done when\"\nEvery person on site has read these chapters and can say the stop word and the\nnever-alone rule.\n:::\n\n:::box check \"For checkers\"\nIs there any instruction anywhere in either volume that you would not want a\nfirst-time builder to follow exactly as written? Mark it.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung4/12-care.md",
+   "refs": {
+    "complete_edition": [
+     "front:engineer"
+    ],
+    "paperback": [
+     "day_zero_the_saw",
+     "days_one_and_two_felling",
+     "building_with_other_people"
+    ]
+   }
+  },
+  "design/tree": {
+   "title": "Other Trees, Other Sticks",
+   "deck": "What changes with the species, the trunk and the market",
+   "body": "The method was never pine's; it was the sector's. Other species split, dry and\nlast differently, an oval trunk splits by area rather than by angle, and a tree's\nvalue depends entirely on what you ask it to be.\n\n:::box do \"Design exercise\"\nList the species that grow within a short drive of you. For each, find whether it\nsplits straight, whether it resists rot in the ground, and how fast it dries. Pick\nthe one you would build from, and say why.\n:::\n\n:::box check \"For checkers\"\nIs the advice on other species cautious enough about rot-prone wood near the\nground and about spiral grain?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/01-tree.md",
+   "refs": {
+    "complete_edition": [
+     "tree_worth"
+    ],
+    "paperback": [
+     "other_species_other_sections",
+     "small_units"
+    ]
+   }
+  },
+  "design/split": {
+   "title": "Other Sections",
+   "deck": "When your sticks are rectangles, tubes or bought",
+   "body": "The solid split wedge is the reference member, not the only one. Rectangular\nsticks, bought lumber and the whole catalogue of frame materials and sections are\npriced on the same dome, so you can see exactly what the wedge buys and what it\ngives up.\n\n:::box do \"Design exercise\"\nPrice the reference frame twice: once in split wedges from your own trees, once\nin bought rectangular lumber. What does the difference pay for, and what does it\ncost you in hours?\n:::\n\n:::box check \"For checkers\"\nDo the books keep the wedge's real advantage -- wood kept from your own trees --\nseparate from its disadvantages as a beam, every time they compare it?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/02-split.md",
+   "refs": {
+    "complete_edition": [
+     "rectangles",
+     "alternatives"
+    ],
+    "paperback": [
+     "versus_board"
+    ]
+   }
+  },
+  "design/triangle": {
+   "title": "Hubs or No Hubs",
+   "deck": "The trade this method answers, and when the other side wins",
+   "body": "Every dome builder chooses between hubs and no hubs. A hub makes every corner the\nsame factory part and needs identical struts; the pinwheel needs no connector and\ncosts extra wood. Both are good systems for different builders.\n\n:::box do \"Design exercise\"\nDecide which system suits you, from three questions: who cuts the wood, who\nassembles it, and whether the dome will ever be taken apart. Write your three\nanswers and your choice.\n:::\n\n:::box check \"For checkers\"\nIs the extra wood the hubless frame uses -- every panel owning all three of its\nmembers -- stated plainly wherever the method's savings are claimed?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/03-triangle.md",
+   "refs": {
+    "complete_edition": [
+     "framing",
+     "hubbed"
+    ],
+    "paperback": [
+     "forty_panels_one_hundred_and_twenty_members"
+    ]
+   }
+  },
+  "design/dome": {
+   "title": "Other Shapes and Sizes",
+   "deck": "Frequencies, zomes, hexagons and the 3V panel dome",
+   "body": "Change the shape: a different size, a higher frequency with more and shorter\nmembers, a zome whose panels are flat by construction, a hexagon dome with one\nstrut length, or the popular three-frequency panel dome most bought plans build.\n\n:::box do \"Design exercise\"\nChoose the floor you need. Find the smallest shape in these chapters that gives it\nwith sticks one person can still carry. Write down its panel count and its\nlongest stick.\n:::\n\n:::box check \"For checkers\"\nCheck one geometric claim in these chapters yourself -- the count of pentagons, the\ntwo lengths, the zome's flat panels -- and mark whether it holds.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/04-dome.md",
+   "refs": {
+    "complete_edition": [
+     "size",
+     "zome",
+     "zome_build",
+     "hex",
+     "panel_geo"
+    ],
+    "paperback": [
+     "frequencies"
+    ]
+   }
+  },
+  "design/joint": {
+   "title": "The Seam as a Service Channel",
+   "deck": "Water and wire in the gap the key leaves",
+   "body": "The gap a key leaves between two members is a channel that runs through every\nseam of the dome, and it can carry water lines, wire and sensor cable -- though\nnot a round air duct without growing the dome.\n\n:::box do \"Design exercise\"\nList the services your building needs. Which ones fit in the channel, and which\nneed the central column? Mark where the one place not to drill is.\n:::\n\n:::box check \"For checkers\"\nIs it clear which services the channel is meant for, and that no pressure fitting\nis ever buried in a seam?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/05-joint.md",
+   "refs": {
+    "complete_edition": [
+     "seam_module",
+     "channel",
+     "metal"
+    ],
+    "paperback": [
+     "connector"
+    ]
+   }
+  },
+  "design/panel": {
+   "title": "Panels With a Purpose",
+   "deck": "Doors, windows and panels that do a job",
+   "body": "Panels decide what the building does. A doorway is a whole panel left out and\nframed; a window replaces part of a panel and re-triangulates around the glass; a\npanel can be a skylight, a louvre, a flue or a shelf.\n\n:::box do \"Design exercise\"\nTake your plan from rung three. Mark which of the forty triangles are windows,\nwhich is the door, which is the flue and which stay blank. Count the special\npanels.\n:::\n\n:::box check \"For checkers\"\nDoes every opening the books propose keep every load path triangulated?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/06-panel.md",
+   "refs": {
+    "complete_edition": [
+     "openings",
+     "zome_flat",
+     "panel_jig"
+    ],
+    "paperback": [
+     "openings"
+    ]
+   }
+  },
+  "design/raise": {
+   "title": "Hang It",
+   "deck": "The owner's way: build it in the air between living trees",
+   "body": "The owner's way of building is in the air: a web of wire rope between living\ntrees, a battery winch, each triangle lifted flat and joined in place, and the\nfinished dome left hanging where the trees hold it.\n\n:::box do \"Design exercise\"\nWalk your land and find four trees that could form a square of about the size\nthe volumes use. Measure their trunks and note their species and health. Would you\ntrust them -- and who would you ask?\n:::\n\n:::box check \"For checkers\"\nThe sky web is the owner's plan, partly tested. Are its measured parts -- the\nweighed struts, the winch -- kept clearly apart from its modelled parts and its\nopen questions?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/07-raise.md",
+   "refs": {
+    "complete_edition": [
+     "floating",
+     "skyweb"
+    ],
+    "paperback": []
+   }
+  },
+  "design/skin": {
+   "title": "Style It",
+   "deck": "Twelve styles, every skin, every cladding, priced",
+   "body": "Style it: the same frame dressed every way the Dome Creator can dress it --\ntwelve styles rendered, every panel material on every frame material, every\ncladding on every ground -- each one a priced rebuild of the same dome.\n\n:::box do \"Design exercise\"\nPick the style closest to what you want. Then change one menu at a time -- the\npanel, the cladding, the ground -- and write down how the price moves. Which menu\nmatters most for your design?\n:::\n\n:::box check \"For checkers\"\nThe price tables are rebuilt by software. Pick any three prices and check whether\nthe materials they assume are realistic where you live.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/08-skin.md",
+   "refs": {
+    "complete_edition": [
+     "hats",
+     "stycabin",
+     "stytwelve",
+     "stymenus",
+     "stygrid"
+    ],
+    "paperback": [
+     "less_skin",
+     "shell_ladder"
+    ]
+   }
+  },
+  "design/ground": {
+   "title": "Pads and Platforms",
+   "deck": "Ground you build once and lend to the next dome",
+   "body": "Ground you build once and lend to the next dome: the pad, what it costs, what a\nhost earns from it, and the pony wall and brim that fix what a bare dome gets\nwrong at its edge.\n\n:::box do \"Design exercise\"\nPrice your ground two ways: as a pad you own, and as a pad you rent. Over ten\nyears, which is cheaper for you, and what would change your mind?\n:::\n\n:::box check \"For checkers\"\nThe pad's payback depends on how often it is rented, which no model can know. Is\nthat assumption stated wherever a payback is quoted?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/09-ground.md",
+   "refs": {
+    "complete_edition": [
+     "pad",
+     "pad_kit"
+    ],
+    "paperback": [
+     "pony_wall",
+     "brim_gutter"
+    ]
+   }
+  },
+  "design/uses": {
+   "title": "Fifteen Buildings From One Body",
+   "deck": "The stem cell, its core and its catalogue",
+   "body": "The stem cell's whole catalogue: the undifferentiated body, the utility core\nthat outlives it, fifteen buildings from one frame, and the Dome Creator's twelve\nfinished designs -- the place to find the building that is yours.\n\n:::box do \"Design exercise\"\nChoose one utility building -- storage, a workshop, a greenhouse, a studio -- and\none home. Price both from the catalogue. Which would you build first, and why?\n:::\n\n:::box check \"For checkers\"\nIs it clear which fit-outs are priced from real quotes and which from declared\nestimates?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/10-uses.md",
+   "refs": {
+    "complete_edition": [
+     "stemcell",
+     "core",
+     "seeds",
+     "creator",
+     "twelve",
+     "choices"
+    ],
+    "paperback": [
+     "round_room"
+    ]
+   }
+  },
+  "design/count": {
+   "title": "Price It Item by Item",
+   "deck": "Every line, every item, every package",
+   "body": "Price it item by item: every equipment item, every package, every part with its\nminutes to fit, the standard article's invoice, and where a house's money goes\nwhatever shape it is.\n\n:::box do \"Design exercise\"\nBuild the price of your own design line by line from these tables, and mark every\nline measured, estimated or declared. Then add the hours.\n:::\n\n:::box check \"For checkers\"\nThe volumes quote several prices for \"the frame\" and \"the building\", from\ndifferent models and sizes. Is it clear which one applies to which question?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/11-count.md",
+   "refs": {
+    "complete_edition": [
+     "styprices",
+     "bom",
+     "article",
+     "house_money"
+    ],
+    "paperback": [
+     "money"
+    ]
+   }
+  },
+  "design/care": {
+   "title": "Design It Safe",
+   "deck": "What a design must hand to an engineer, and how",
+   "body": "Designing safe is mostly knowing what to hand to whom: what an engineer needs to\nsee, what the building department needs to read, and how to build so that a\npart can be changed later without weakening the rest.\n\n:::box do \"Design exercise\"\nWrite the one page you would send an engineer about your design: its size, its\nframe, its skin, its ground, its loads, and the questions you need answered.\n:::\n\n:::box check \"For checkers\"\nIf you are an engineer: what would you need to see that the books do not yet\nprovide?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung5/12-care.md",
+   "refs": {
+    "complete_edition": [
+     "front:engineer",
+     "hotswap"
+    ],
+    "paperback": [
+     "building_with_other_people"
+    ]
+   }
+  },
+  "experiment/tree": {
+   "title": "Weigh Your Own Wood",
+   "deck": "What a tree is worth, measured on your own trees",
+   "body": "**The open question:** what is a tree on *your* land actually worth to *you*, on\neach rung of the value ladder -- standing, as firewood, sawn, split, as a\nbuilding?\n\n:::box do \"An experiment you can run\"\nPick one tree you could fell. Measure it as on rung two. Weigh one green section\n(a bathroom scale and some arithmetic will do), split it, and weigh the wedges as\nthey dry over a month. Price the same volume as firewood and as lumber at your\nlocal yard. Write down every number with its source.\n:::\n\n:::box check \"For checkers\"\nThe value ladder multiplies a tree's stump price many times over. Is it clear on\nevery rung that a substitution value is not income?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/01-tree.md",
+   "refs": {
+    "complete_edition": [
+     "tree_worth",
+     "hands"
+    ],
+    "paperback": [
+     "recovery"
+    ]
+   }
+  },
+  "experiment/split": {
+   "title": "Time Your Own Split",
+   "deck": "Your rate at the log, and what an hour there buys",
+   "body": "**The open question:** is the measured splitting rate typical -- and what is an\nhour at the log really worth against an hour's wage?\n\n:::box do \"An experiment you can run\"\nTime ten full splitting sessions, with the same saw and the same chain filing\nroutine, and log the wedges from each, the fuel used and how you felt at the end.\nPlot your rate against session number. Then compute your own rate's value against\nbought lumber, exactly as the hour chapter does.\n:::\n\n:::box check \"For checkers\"\nIs the measured rate described with enough detail -- saw, chain, log size, session\nlength -- for somebody else to repeat it?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/02-split.md",
+   "refs": {
+    "complete_edition": [
+     "hour",
+     "body"
+    ],
+    "paperback": [
+     "recovery",
+     "the_hours"
+    ]
+   }
+  },
+  "experiment/triangle": {
+   "title": "What the Ugly One Taught",
+   "deck": "The frame that should not have stood, and why it did",
+   "body": "**The open question:** how rough can the frame be before it stops forgiving? The\nFrankendome -- built from mismatched salvage with no two members alike -- stood\nfor months, and it is the project's evidence and its warning at once.\n\n:::box do \"An experiment you can run\"\nUnder an engineer's guidance, build two test panels: one from your best-graded\nwedges and one from wedges you would normally reject. Load each the same way, the\nsame small amount, and measure how much it moves. Never load anything to failure\nnear a person, and never test a panel anyone will build into a home.\n:::\n\n:::box check \"For checkers\"\nDo the stories of the earlier domes draw the right lesson -- that triangles forgive,\nbut that forgiveness is not a structural rating?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/03-triangle.md",
+   "refs": {
+    "complete_edition": [
+     "ugly",
+     "franken"
+    ],
+    "paperback": [
+     "the_frankendome",
+     "the_v_bracket_afternoon"
+    ]
+   }
+  },
+  "experiment/dome": {
+   "title": "Check the Geometry Yourself",
+   "deck": "Derive the two lengths four ways and close the round trip",
+   "body": "**The open question:** can you derive every number in the dome yourself, and does\nit agree with the software that printed it?\n\n:::box do \"An experiment you can run\"\nFrom the twelve corners of an icosahedron, derive the two chord factors by hand --\nthe volumes show four independent routes. Then take the paper dome from rung two,\nmeasure its edges, and compute the radius they imply. How close is the paper to\nthe arithmetic? For the brave: run the project's own software and compare.\n:::\n\n:::box check \"For checkers\"\nMathematicians and engineers: check one derivation in these chapters end to end,\nand mark any step that is asserted rather than shown.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/04-dome.md",
+   "refs": {
+    "complete_edition": [
+     "phi",
+     "subdivide",
+     "four_ways"
+    ],
+    "paperback": [
+     "round_trip"
+    ]
+   }
+  },
+  "experiment/joint": {
+   "title": "Run the Seam Climate",
+   "deck": "Dew points, levels, drawers and plates -- the experiment in the gap",
+   "body": "**The open question:** can the seams of a dome manage its own moisture -- sorting\nair by dew point, draining at the rim, keeping wood dry -- with a small controller,\na fan, desiccant drawers and cold plates?\n\n:::box do \"An experiment you can run\"\nFit two cheap temperature-and-humidity loggers: one in a seam channel, one in the\nroom. Log through a season. Compute the dew point of each from its readings, and\nmark every day the seam's surface fell below the room's dew point. That is the\ncondition the whole seam-climate system exists to prevent.\n:::\n\n:::box check \"For checkers\"\nThe seam-climate chapters are modelled, not measured. Are their caveats -- what has\nnot been built -- as prominent as their arithmetic?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/05-joint.md",
+   "refs": {
+    "complete_edition": [
+     "dewpoint",
+     "levels",
+     "breathe",
+     "desiccant",
+     "ring"
+    ],
+    "paperback": []
+   }
+  },
+  "experiment/panel": {
+   "title": "Count Every Piece",
+   "deck": "The software that numbers every piece and draws every picture",
+   "body": "**The open question:** how far can software carry a hand-built method -- numbering\nevery piece, drawing every cut, rendering every picture -- and where must a person\nstill decide?\n\n:::box do \"An experiment you can run\"\nNumber every member of your build as the every-piece chapter does, mark the\nnumbers on the wood, and record where each one ended up in the frame. Afterwards,\ncompare the software's plan with what actually happened, and list every place they\ndiffered and why.\n:::\n\n:::box check \"For checkers\"\nIs it clear to a non-programmer what the software does, what it needs, and that a\nbuild does not require running it?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/06-panel.md",
+   "refs": {
+    "complete_edition": [
+     "tooling",
+     "worlds",
+     "screen",
+     "everypiece"
+    ],
+    "paperback": []
+   }
+  },
+  "experiment/raise": {
+   "title": "The Sky Web",
+   "deck": "The winch, the web and the owner's weighed struts",
+   "body": "**The open question:** can a whole dome be built and lived in up in the trees --\nthe web, the winch, the lashings, the skin -- and what do living trees do under\nthat load over years?\n\n:::box do \"An experiment you can run\"\nWith an arborist and an engineer: instrument the anchor trees of a sky web with\nsimple tilt gauges, log their movement through wind and seasons, and weigh every\nstrut as it goes up. Record every lift's time. Publish the log, including the\nlifts that went wrong.\n:::\n\n:::box check \"For checkers\"\nArborists especially: what do the sky-web chapters not yet consider about the\nanchor trees' health, roots and long-term response?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/07-raise.md",
+   "refs": {
+    "complete_edition": [
+     "skyweb",
+     "floating"
+    ],
+    "paperback": []
+   }
+  },
+  "experiment/skin": {
+   "title": "Log a Winter",
+   "deck": "The measurement this whole project is waiting for",
+   "body": "**The open question -- the most important one in this book:** what does a skinned\ndome actually do through a winter? How warm, how dry, how much heat does it take,\nand does the moisture plan work?\n\n:::box do \"An experiment you can run\"\nLog a winter. Temperature and humidity outside, in the room, and at every layer of\nthe skin; the heat put in each day; every quilt layer added and when. Note every\nmorning of condensation and where it was. The project's own costed plan names this\nexact measurement as its first priority, and promises to publish it whichever way\nit comes out.\n:::\n\n:::box check \"For checkers\"\nEvery energy figure in both volumes is modelled. Is that said everywhere an energy\nfigure is quoted?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/08-skin.md",
+   "refs": {
+    "complete_edition": [
+     "ring",
+     "breathe"
+    ],
+    "paperback": [
+     "shell_ladder"
+    ]
+   }
+  },
+  "experiment/ground": {
+   "title": "The Pad Network",
+   "deck": "Hosts, tenants, resale -- proposed, priced, not yet built",
+   "body": "**The open question:** could a network of serviced pads let a family own a building\nwithout owning land -- and would a used dome hold its value when it moves?\n\n:::box do \"An experiment you can run\"\nSurvey your area: who has a level, serviced piece of ground they would rent to a\ndome? What would they charge? What would your local building department say about\na movable dwelling on it? Write down what you find and where the books' assumptions\nwere right or wrong.\n:::\n\n:::box check \"For checkers\"\nThe network is the least-built idea in the project. Is it presented as a proposal\neverywhere it appears?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/09-ground.md",
+   "refs": {
+    "complete_edition": [
+     "network",
+     "host",
+     "tenant",
+     "turns"
+    ],
+    "paperback": []
+   }
+  },
+  "experiment/uses": {
+   "title": "Who It Is For",
+   "deck": "A home people can afford to start with -- and why this author cares",
+   "body": "**The open question:** who is this for, really -- and what would a small home you\nowned, could improve as you went, and could take with you have meant to somebody\nstarting out? The author's own answer, and Buckminster Fuller's, are in these\nchapters.\n\n:::box do \"An experiment you can run\"\nAsk three people who might need a building like this -- a young family, a single\nparent, somebody starting a business -- what they would use one for first, and\nwhat would stop them. Write down their words, not yours. Compare them with the\ncatalogue.\n:::\n\n:::box check \"For checkers\"\nDoes the book make its case for who it is for without over-promising what a dome\ncan do for a family?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/10-uses.md",
+   "refs": {
+    "complete_edition": [
+     "why_me",
+     "fuller",
+     "empire"
+    ],
+    "paperback": []
+   }
+  },
+  "experiment/count": {
+   "title": "Publish Your Numbers",
+   "deck": "Real hours, real receipts, and the corrections",
+   "body": "**The open question:** what does a real build cost, start to finish, in hours and in\nmoney -- measured, not estimated -- and where were the books wrong?\n\n:::box do \"An experiment you can run\"\nPublish your build's log: every stage's hours, every receipt, every rejected wedge,\nevery rain day. Then write the chapter the paperback ends with -- what you would do\ndifferently -- and send it to the author. The next edition is built from logs like\nyours.\n:::\n\n:::box check \"For checkers\"\nFind one number in either volume you think is wrong and say why. Corrections are\nprinted in this project, not hidden.\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/11-count.md",
+   "refs": {
+    "complete_edition": [
+     "hour",
+     "house_money"
+    ],
+    "paperback": [
+     "the_hours",
+     "what_i_would_do_differently"
+    ]
+   }
+  },
+  "experiment/care": {
+   "title": "Report the Near Misses",
+   "deck": "Testing safely, and writing down what nearly went wrong",
+   "body": "**The open question:** what nearly went wrong? Safety improves fastest when the near\nmisses are written down, not just the accidents.\n\n:::box do \"An experiment you can run\"\nKeep a near-miss log for your whole build: date, what happened, what nearly\nhappened, why, and what you changed. Share it with the author and with the next\nfamily. Every rule in rung four's safety card was once somebody's near miss.\n:::\n\n:::box check \"For checkers\"\nWhat is the most dangerous moment in the whole method, in your judgement -- and\ndoes the book treat it as the most dangerous?\n:::\n",
+   "frames": [],
+   "status": "done",
+   "source": "books/master-edition/manuscript/rung6/12-care.md",
+   "refs": {
+    "complete_edition": [
+     "front:engineer"
+    ],
+    "paperback": [
+     "what_i_would_do_differently"
+    ]
+   }
+  }
+ },
+ "links": [
+  {
+   "from": "understand/tree",
+   "to": "wonder/tree",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/tree",
+   "to": "understand/tree",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/tree",
+   "to": "plan/tree",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/tree",
+   "to": "build/tree",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/tree",
+   "to": "design/tree",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/split",
+   "to": "wonder/split",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/split",
+   "to": "understand/split",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/split",
+   "to": "plan/split",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/split",
+   "to": "build/split",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/split",
+   "to": "design/split",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/triangle",
+   "to": "wonder/triangle",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/triangle",
+   "to": "understand/triangle",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/triangle",
+   "to": "plan/triangle",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/triangle",
+   "to": "build/triangle",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/triangle",
+   "to": "design/triangle",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/dome",
+   "to": "wonder/dome",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/dome",
+   "to": "understand/dome",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/dome",
+   "to": "plan/dome",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/dome",
+   "to": "build/dome",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/dome",
+   "to": "design/dome",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/joint",
+   "to": "wonder/joint",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/joint",
+   "to": "understand/joint",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/joint",
+   "to": "plan/joint",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/joint",
+   "to": "build/joint",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/joint",
+   "to": "design/joint",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/panel",
+   "to": "wonder/panel",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/panel",
+   "to": "understand/panel",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/panel",
+   "to": "plan/panel",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/panel",
+   "to": "build/panel",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/panel",
+   "to": "design/panel",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/raise",
+   "to": "wonder/raise",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/raise",
+   "to": "understand/raise",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/raise",
+   "to": "plan/raise",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/raise",
+   "to": "build/raise",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/raise",
+   "to": "design/raise",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/skin",
+   "to": "wonder/skin",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/skin",
+   "to": "understand/skin",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/skin",
+   "to": "plan/skin",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/skin",
+   "to": "build/skin",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/skin",
+   "to": "design/skin",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/ground",
+   "to": "wonder/ground",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/ground",
+   "to": "understand/ground",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/ground",
+   "to": "plan/ground",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/ground",
+   "to": "build/ground",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/ground",
+   "to": "design/ground",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/uses",
+   "to": "wonder/uses",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/uses",
+   "to": "understand/uses",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/uses",
+   "to": "plan/uses",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/uses",
+   "to": "build/uses",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/uses",
+   "to": "design/uses",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/count",
+   "to": "wonder/count",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/count",
+   "to": "understand/count",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/count",
+   "to": "plan/count",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/count",
+   "to": "build/count",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/count",
+   "to": "design/count",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "understand/care",
+   "to": "wonder/care",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "plan/care",
+   "to": "understand/care",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "build/care",
+   "to": "plan/care",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "design/care",
+   "to": "build/care",
+   "kind": "builds-on",
+   "note": ""
+  },
+  {
+   "from": "experiment/care",
+   "to": "design/care",
+   "kind": "builds-on",
+   "note": ""
+  }
+ ],
+ "paths": [
+  {
+   "key": "bedtime",
+   "title": "Twelve bedtimes",
+   "who": "A grown-up and a child, one chapter a night",
+   "stops": [
+    "wonder/tree",
+    "wonder/split",
+    "wonder/triangle",
+    "wonder/dome",
+    "wonder/joint",
+    "wonder/panel",
+    "wonder/raise",
+    "wonder/skin",
+    "wonder/ground",
+    "wonder/uses",
+    "wonder/count",
+    "wonder/care"
+   ],
+   "outside_stops": []
+  },
+  {
+   "key": "weekend",
+   "title": "A weekend of models",
+   "who": "A family with paper, straws and tape",
+   "stops": [
+    "understand/split",
+    "understand/triangle",
+    "understand/dome",
+    "understand/joint",
+    "understand/panel",
+    "understand/raise",
+    "understand/skin"
+   ],
+   "outside_stops": []
+  },
+  {
+   "key": "tree",
+   "title": "We have a tree",
+   "who": "Somebody with standing timber, wondering what it could become",
+   "stops": [
+    "wonder/tree",
+    "understand/tree",
+    "plan/tree",
+    "plan/split",
+    "plan/dome",
+    "plan/joint",
+    "plan/count",
+    "build/tree",
+    "build/split"
+   ],
+   "outside_stops": [
+    "b:method_b"
+   ]
+  },
+  {
+   "key": "purpose",
+   "title": "We need a building for something",
+   "who": "A family that knows what it needs and not yet how",
+   "stops": [
+    "wonder/uses",
+    "understand/uses",
+    "plan/uses",
+    "plan/ground",
+    "plan/count",
+    "design/uses",
+    "design/count"
+   ],
+   "outside_stops": [
+    "a:seeds"
+   ]
+  },
+  {
+   "key": "funder",
+   "title": "Is this worth backing?",
+   "who": "A grant panel, a lender or a partner with fifteen minutes",
+   "stops": [
+    "wonder/uses",
+    "plan/count",
+    "plan/care",
+    "experiment/uses",
+    "experiment/count"
+   ],
+   "outside_stops": [
+    "letter",
+    "two-domes",
+    "a:why_me",
+    "a:fuller"
+   ]
+  },
+  {
+   "key": "veterans",
+   "title": "Veterans, and the crews that build with them",
+   "who": "A veteran, a crew leader, or a program that houses veterans",
+   "stops": [
+    "plan/care",
+    "build/tree",
+    "build/split",
+    "build/panel",
+    "build/raise",
+    "build/care",
+    "design/uses",
+    "design/ground",
+    "experiment/ground"
+   ],
+   "outside_stops": [
+    "letter",
+    "a:why_me"
+   ]
+  },
+  {
+   "key": "engineer",
+   "title": "Check the maths",
+   "who": "An engineer, a teacher or a sceptic",
+   "stops": [
+    "plan/dome",
+    "plan/joint",
+    "experiment/dome",
+    "experiment/joint"
+   ],
+   "outside_stops": [
+    "a:subdivide",
+    "a:four_ways",
+    "b:round_trip",
+    "two-domes"
+   ]
+  },
+  {
+   "key": "safety",
+   "title": "Safety first",
+   "who": "Anyone about to pick up a tool",
+   "stops": [
+    "wonder/care",
+    "understand/care",
+    "plan/care",
+    "build/care",
+    "design/care",
+    "experiment/care"
+   ],
+   "outside_stops": [
+    "a:front:engineer"
+   ]
+  },
+  {
+   "key": "checker",
+   "title": "A proof-reader's hour",
+   "who": "A friend asked to check the work",
+   "stops": [
+    "wonder/tree",
+    "understand/dome",
+    "plan/dome",
+    "plan/count"
+   ],
+   "outside_stops": [
+    "letter",
+    "how",
+    "two-domes",
+    "what-to-check",
+    "feedback"
+   ]
+  }
+ ],
+ "notes": [],
+ "source": "master_book.outline (imported; the engine's own build still prints the Master Edition)",
+ "saved": "2026-10-14T05:18:14",
+ "layout": {
+  "graph": {
+   "wonder/tree": {
+    "x": 164.79166666666666,
+    "y": 58.58333333333333
+   },
+   "wonder/split": {
+    "x": 214.375,
+    "y": 58.58333333333333
+   },
+   "wonder/triangle": {
+    "x": 263.95833333333337,
+    "y": 58.58333333333333
+   },
+   "wonder/dome": {
+    "x": 313.5416666666667,
+    "y": 58.58333333333333
+   },
+   "wonder/joint": {
+    "x": 363.125,
+    "y": 58.58333333333333
+   },
+   "wonder/panel": {
+    "x": 412.70833333333337,
+    "y": 58.58333333333333
+   },
+   "wonder/raise": {
+    "x": 462.2916666666667,
+    "y": 58.58333333333333
+   },
+   "wonder/skin": {
+    "x": 511.875,
+    "y": 58.58333333333333
+   },
+   "wonder/ground": {
+    "x": 561.4583333333334,
+    "y": 58.58333333333333
+   },
+   "wonder/uses": {
+    "x": 611.0416666666667,
+    "y": 58.58333333333333
+   },
+   "wonder/count": {
+    "x": 660.625,
+    "y": 58.58333333333333
+   },
+   "wonder/care": {
+    "x": 710.2083333333334,
+    "y": 58.58333333333333
+   },
+   "understand/tree": {
+    "x": 164.79166666666666,
+    "y": 95.75
+   },
+   "understand/split": {
+    "x": 214.375,
+    "y": 95.75
+   },
+   "understand/triangle": {
+    "x": 263.95833333333337,
+    "y": 95.75
+   },
+   "understand/dome": {
+    "x": 313.5416666666667,
+    "y": 95.75
+   },
+   "understand/joint": {
+    "x": 363.125,
+    "y": 95.75
+   },
+   "understand/panel": {
+    "x": 412.70833333333337,
+    "y": 95.75
+   },
+   "understand/raise": {
+    "x": 462.2916666666667,
+    "y": 95.75
+   },
+   "understand/skin": {
+    "x": 511.875,
+    "y": 95.75
+   },
+   "understand/ground": {
+    "x": 561.4583333333334,
+    "y": 95.75
+   },
+   "understand/uses": {
+    "x": 611.0416666666667,
+    "y": 95.75
+   },
+   "understand/count": {
+    "x": 660.625,
+    "y": 95.75
+   },
+   "understand/care": {
+    "x": 710.2083333333334,
+    "y": 95.75
+   },
+   "plan/tree": {
+    "x": 164.79166666666666,
+    "y": 132.91666666666666
+   },
+   "plan/split": {
+    "x": 214.375,
+    "y": 132.91666666666666
+   },
+   "plan/triangle": {
+    "x": 263.95833333333337,
+    "y": 132.91666666666666
+   },
+   "plan/dome": {
+    "x": 313.5416666666667,
+    "y": 132.91666666666666
+   },
+   "plan/joint": {
+    "x": 363.125,
+    "y": 132.91666666666666
+   },
+   "plan/panel": {
+    "x": 412.70833333333337,
+    "y": 132.91666666666666
+   },
+   "plan/raise": {
+    "x": 462.2916666666667,
+    "y": 132.91666666666666
+   },
+   "plan/skin": {
+    "x": 511.875,
+    "y": 132.91666666666666
+   },
+   "plan/ground": {
+    "x": 561.4583333333334,
+    "y": 132.91666666666666
+   },
+   "plan/uses": {
+    "x": 611.0416666666667,
+    "y": 132.91666666666666
+   },
+   "plan/count": {
+    "x": 660.625,
+    "y": 132.91666666666666
+   },
+   "plan/care": {
+    "x": 710.2083333333334,
+    "y": 132.91666666666666
+   },
+   "build/tree": {
+    "x": 164.79166666666666,
+    "y": 170.08333333333331
+   },
+   "build/split": {
+    "x": 214.375,
+    "y": 170.08333333333331
+   },
+   "build/triangle": {
+    "x": 263.95833333333337,
+    "y": 170.08333333333331
+   },
+   "build/dome": {
+    "x": 313.5416666666667,
+    "y": 170.08333333333331
+   },
+   "build/joint": {
+    "x": 363.125,
+    "y": 170.08333333333331
+   },
+   "build/panel": {
+    "x": 412.70833333333337,
+    "y": 170.08333333333331
+   },
+   "build/raise": {
+    "x": 462.2916666666667,
+    "y": 170.08333333333331
+   },
+   "build/skin": {
+    "x": 511.875,
+    "y": 170.08333333333331
+   },
+   "build/ground": {
+    "x": 561.4583333333334,
+    "y": 170.08333333333331
+   },
+   "build/uses": {
+    "x": 611.0416666666667,
+    "y": 170.08333333333331
+   },
+   "build/count": {
+    "x": 660.625,
+    "y": 170.08333333333331
+   },
+   "build/care": {
+    "x": 710.2083333333334,
+    "y": 170.08333333333331
+   },
+   "design/tree": {
+    "x": 164.79166666666666,
+    "y": 207.25
+   },
+   "design/split": {
+    "x": 214.375,
+    "y": 207.25
+   },
+   "design/triangle": {
+    "x": 263.95833333333337,
+    "y": 207.25
+   },
+   "design/dome": {
+    "x": 313.5416666666667,
+    "y": 207.25
+   },
+   "design/joint": {
+    "x": 363.125,
+    "y": 207.25
+   },
+   "design/panel": {
+    "x": 412.70833333333337,
+    "y": 207.25
+   },
+   "design/raise": {
+    "x": 462.2916666666667,
+    "y": 207.25
+   },
+   "design/skin": {
+    "x": 511.875,
+    "y": 207.25
+   },
+   "design/ground": {
+    "x": 561.4583333333334,
+    "y": 207.25
+   },
+   "design/uses": {
+    "x": 611.0416666666667,
+    "y": 207.25
+   },
+   "design/count": {
+    "x": 660.625,
+    "y": 207.25
+   },
+   "design/care": {
+    "x": 710.2083333333334,
+    "y": 207.25
+   },
+   "experiment/tree": {
+    "x": 164.79166666666666,
+    "y": 244.41666666666666
+   },
+   "experiment/split": {
+    "x": 214.375,
+    "y": 244.41666666666666
+   },
+   "experiment/triangle": {
+    "x": 263.95833333333337,
+    "y": 244.41666666666666
+   },
+   "experiment/dome": {
+    "x": 313.5416666666667,
+    "y": 244.41666666666666
+   },
+   "experiment/joint": {
+    "x": 363.125,
+    "y": 244.41666666666666
+   },
+   "experiment/panel": {
+    "x": 412.70833333333337,
+    "y": 244.41666666666666
+   },
+   "experiment/raise": {
+    "x": 462.2916666666667,
+    "y": 244.41666666666666
+   },
+   "experiment/skin": {
+    "x": 511.875,
+    "y": 244.41666666666666
+   },
+   "experiment/ground": {
+    "x": 561.4583333333334,
+    "y": 244.41666666666666
+   },
+   "experiment/uses": {
+    "x": 611.0416666666667,
+    "y": 244.41666666666666
+   },
+   "experiment/count": {
+    "x": 660.625,
+    "y": 244.41666666666666
+   },
+   "experiment/care": {
+    "x": 710.2083333333334,
+    "y": 244.41666666666666
+   }
+  }
+ }
+}

@@ -420,7 +420,9 @@ PRESETS: tuple[RenderPreset, ...] = (
            "on the mitre saw with its offcut, ten ways to fill it, then the "
            "floor under the dome from five 20 ft half trunks -- a star, "
            "joists, every span and pier checked, seven patterns and five "
-           "materials compared. Every figure from infill.facts."),
+           "materials compared. Includes the core stock ledger, conditional "
+           "pair-coverage range, raw-trunk reserve and pentagon stock identities. "
+           "Every figure from infill.facts and infill.methodology."),
 
     _video("cabin_styles", "cabin_styles", "the-40-hour-cabin-styled.mp4",
            "THE 40 HOUR CABIN, STYLED TWELVE WAYS. The book's own dome built in "
@@ -438,6 +440,69 @@ PRESETS: tuple[RenderPreset, ...] = (
             "lesson": "cabin_styles",
             "action": "shots",
             "shots": chapter_shots("cabin_styles"),
+        },
+    ),
+
+    _video("cabin_wedge_beyond", "cabin_wedge_beyond", "beyond-the-dome-building-with-wedges.mp4",
+           "BEYOND THE DOME: BUILDING WITH WEDGES. Square on demand from two "
+           "wedges, quarters for posts, finer splits for boards, shims, the skew "
+           "as a roof pitch, the octagon, joints, the seam channel, the mill "
+           "comparison -- and a zome framed from the dome's own wedges, one bevel "
+           "for every cut. Every figure from square_book and wedge_zome.",
+           compose_segments=True),
+
+    _video("cabin_triangle_fill", "cabin_triangle_fill", "closing-the-triangle.mp4",
+           "CLOSING THE TRIANGLE. Pairs of wedges, points in, nested to bowtie, filling a "
+           "true-size dome triangle course by course; every pair laid, not estimated.",
+           compose_segments=True),
+
+    RenderPreset(
+        key="cabin_triangle_fill_stills",
+        label="closing-the-triangle stills",
+        summary="One still per chapter of Closing the Triangle, to look at before the render.",
+        fields={"lesson": "cabin_triangle_fill", "action": "shots",
+                "shots": chapter_shots("cabin_triangle_fill"), "no_narration": True},
+    ),
+
+    _video("cabin_promo", "cabin_promo", "the-house-that-was-a-tree.mp4",
+           "THE HOUSE THAT WAS A TREE. The promo: the whole case in ninety seconds, phone first. "
+           "Every figure computed; carries its own close, so no spliced outro."),
+
+    RenderPreset(
+        key="cabin_promo_stills",
+        label="the-house-that-was-a-tree stills",
+        summary="One still per chapter of the promo, to look at before the render.",
+        fields={"lesson": "cabin_promo", "action": "shots", "shots": chapter_shots("cabin_promo"),
+                "no_narration": True},
+    ),
+
+    _video("cabin_staple", "cabin_staple", "the-staple-house.mp4",
+           "THE STAPLE HOUSE. The dome as housing's staple -- cheap, fast, known, "
+           "the same every time -- and the papercuts it leaves out, counted on both "
+           "bills, with the caveat kept. Every figure from staple_facts.",
+           compose_segments=True),
+
+    RenderPreset(
+        key="cabin_staple_stills",
+        label="the-staple-house stills",
+        summary="One still per chapter of The Staple House, to look at before the render.",
+        fields={
+            "lesson": "cabin_staple",
+            "action": "shots",
+            "shots": chapter_shots("cabin_staple"),
+            "no_narration": True,
+        },
+    ),
+
+    RenderPreset(
+        key="cabin_wedge_beyond_stills",
+        label="beyond the dome -- one still per chapter",
+        summary="A still from each chapter of the wedge-building film, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_wedge_beyond",
+            "action": "shots",
+            "shots": chapter_shots("cabin_wedge_beyond"),
         },
     ),
 

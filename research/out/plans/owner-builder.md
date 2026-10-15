@@ -79,6 +79,6 @@
 ## Where the material already is
 
 - `wedge_book/systems.py`
-- `book_wedge/manuscript/front/title.md`
+- `books/the-40-hour-cabin/manuscript/front/title.md`
 
 *Craft notes are guidance, not measured statistics. Numbers in lines and titles come from the model's exported facts.*
