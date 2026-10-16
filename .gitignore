@@ -114,6 +114,6 @@ website/dist/
 website/.wrangler/
 website/.dev.vars
 
-# Rendered PDFs stay local (books, plates, exports). Ones committed before
-# this rule stay tracked; new ones are never added.
+# PDFs stay local (books, plates, exports): none are tracked. Older ones
+# remain in history; the files themselves are on disk only.
 *.pdf
