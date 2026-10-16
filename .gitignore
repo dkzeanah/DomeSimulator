@@ -98,6 +98,7 @@ two_v_demo/.cache/
 *-myvoice*/
 deliverables/**/.*-chunks-*/
 deliverables/*/launcher_trailer/render_*/
+deliverables/*-launcher_trailer/render_*/
 deliverables/_moves/old-*
 # Other people's documents, kept for reference only (never published from here)
 assets/reference/
@@ -112,3 +113,7 @@ website/node_modules/
 website/dist/
 website/.wrangler/
 website/.dev.vars
+
+# Rendered PDFs stay local (books, plates, exports). Ones committed before
+# this rule stay tracked; new ones are never added.
+*.pdf
