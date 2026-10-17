@@ -399,6 +399,7 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | error | TEXT | yes |  |  |
 | created_at | TEXT |  |  |  |
 | sent_at | TEXT | yes |  |  |
+| dedupe_key | TEXT | yes |  |  |
 
 0 row(s) in the model.
 

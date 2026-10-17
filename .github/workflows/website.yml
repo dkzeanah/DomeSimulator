@@ -18,7 +18,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: website-${{ github.ref }}
+  # a pull request's build and the push to main never share a queue, so one cannot cancel the other
+  group: website-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
