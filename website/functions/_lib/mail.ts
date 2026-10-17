@@ -104,6 +104,7 @@ export async function mayMail(ctx: Ctx, s: Sub, kind: Kind): Promise<string | nu
 export async function enqueue(ctx: Ctx, o: {
   sub: Sub; identity: string; kind: Kind; subject: string; body: string;
   campaignId?: number | null; sequence?: string | null; step?: number | null; extraTokens?: Record<string, string>;
+  dedupeKey?: string;
 }): Promise<{ id: number | null; why?: string }> {
   const why = await mayMail(ctx, o.sub, o.kind);
   if (why) return { id: null, why };
@@ -112,8 +113,9 @@ export async function enqueue(ctx: Ctx, o: {
   let text = fill(o.body, t);
   const base = site(ctx.env, ctx);
   const r = await ctx.env.DB.prepare(
-    "INSERT INTO outbox(subscriber_id, to_email, identity, kind, campaign_id, sequence, step, subject, html, text, created_at) VALUES(?, ?, ?, ?, ?, ?, ?, ?, '', '', ?) RETURNING id",
-  ).bind(o.sub.id, o.sub.email, o.identity, o.kind, o.campaignId ?? null, o.sequence ?? null, o.step ?? null, subject, nowIso()).first<{ id: number }>();
+    "INSERT INTO outbox(subscriber_id, to_email, identity, kind, campaign_id, sequence, step, subject, html, text, created_at, dedupe_key) VALUES(?, ?, ?, ?, ?, ?, ?, ?, '', '', ?, ?) ON CONFLICT DO NOTHING RETURNING id",
+  ).bind(o.sub.id, o.sub.email, o.identity, o.kind, o.campaignId ?? null, o.sequence ?? null, o.step ?? null, subject, nowIso(), o.dedupeKey ?? null).first<{ id: number }>();
+  if (!r) return { id: null, why: "already queued" };
   const id = r!.id;
   if (MARKETING.includes(o.kind)) {
     const unsub = `${base}/unsubscribe?t=${await subscriberToken(ctx.env, "unsub", o.sub.id)}`;

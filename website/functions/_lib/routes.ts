@@ -10,6 +10,7 @@ import { convert, firstTouch, recordVisit, report, visitorOf } from "./analytics
 import { checkClick, enqueue, enroll, queueCampaign, queueConfirm, queueSample, readSubscriberToken, suppress, tick } from "./mail";
 import { emit } from "./ops";
 import { levelOfInvite, livePromo, redeemInvite } from "./studio";
+import { queueOrderReceipt, receiptKey } from "./fulfillment";
 
 const api = new Router();
 export default api;
@@ -365,7 +366,7 @@ api.get("/me/standing", async (ctx) => {
   const checks = {
     onTheList: Boolean(sub),
     readTheSample: await has("SELECT 1 FROM downloads WHERE book_slug = 'sample' AND (user_id = ? OR subscriber_id = ?)", u.id, sub?.id ?? -1),
-    ownsTheBook: await has("SELECT 1 FROM orders WHERE status = 'paid' AND book_slug = 'the-40-hour-cabin' AND (user_id = ? OR email = ?)", u.id, u.email),
+    ownsTheBook: await has("SELECT 1 FROM orders WHERE status = 'paid' AND book_slug IN (SELECT slug FROM products WHERE kind IN ('digital','physical')) AND (user_id = ? OR (email = ? AND ?))", u.id, u.email, u.email_verified_at ? 1 : 0),
     onTheNetwork: await has("SELECT 1 FROM listings WHERE user_id = ?", u.id),
     backer: await has("SELECT 1 FROM backers WHERE user_id = ?", u.id),
     founder: await has("SELECT 1 FROM plaques JOIN backers ON backers.id = plaques.backer_id WHERE backers.user_id = ?", u.id),
@@ -645,6 +646,9 @@ api.post("/checkout", async (ctx) => {
     throw new HttpError(404, "That is not for sale right now.");
   }
   if (pr.gated && !promo && ctx.user?.role !== "friend") throw new HttpError(403, "That price needs a promo code.");
+  if (prod.kind === "digital" && prod.status === "live" && (!prod.file_key || !ctx.env.BOOKS || !await ctx.env.BOOKS.head(prod.file_key))) {
+    throw new HttpError(503, "This book's download is temporarily unavailable. Please try again shortly; checkout has not started.");
+  }
   let honorNote: string | null = null;
   if (pr.honor) {
     honorNote = text(b, "honorNote", { min: 10, max: 600 });
@@ -687,14 +691,15 @@ interface OrderRow {
 async function loadOrder(ctx: Ctx) {
   const o = await ctx.env.DB.prepare("SELECT * FROM orders WHERE ref = ?").bind(ctx.params.ref).first<OrderRow>();
   const key = ctx.url.searchParams.get("key") || "";
-  const owner = ctx.user && o?.user_id === ctx.user.id;
-  if (!o || (!owner && !sameString(await sha256Hex(key), o.key_hash))) throw new HttpError(404, "No order matches that link. Check you copied all of it.");
+  const owner = ctx.user && o && (o.user_id === ctx.user.id || (!o.user_id && ctx.user.email_verified_at && normaliseEmail(o.email || "") === normaliseEmail(ctx.user.email)));
+  const validKey = o && key && (sameString(await sha256Hex(key), o.key_hash) || sameString(key, await receiptKey(ctx.env, o.ref)));
+  if (!o || (!owner && !validKey)) throw new HttpError(404, "No order matches that link. Check you copied all of it.");
   return { order: o, key };
 }
 
 /** Mark an order paid, once. Later calls change nothing. A physical order keeps its address. */
 async function markPaid(ctx: Ctx, o: OrderRow, session?: Record<string, any> | null) {
-  if (o.status === "paid") return o;
+  if (o.status === "paid") { await queueOrderReceipt(ctx, o); return o; }
   const buyer = normaliseEmail(session?.customer_details?.email || o.email || "");
   const sub = buyer ? await upsertSubscriber(ctx, { email: buyer, consent: Boolean(o.marketing_consent), source: o.book_slug }) : null;
   const ship = session?.collected_information?.shipping_details || session?.shipping_details || null;
@@ -715,7 +720,9 @@ async function markPaid(ctx: Ctx, o: OrderRow, session?: Record<string, any> | n
     await event(ctx, "sale", p?.kind === "service" ? "A design session was booked"
       : p?.kind === "physical" ? `A ${p.subtitle || p.title} was ordered` : `A copy of ${p?.title || "the book"} was bought`);
   }
-  return (await ctx.env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(o.id).first<OrderRow>())!;
+  const paidOrder = (await ctx.env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(o.id).first<OrderRow>())!;
+  await queueOrderReceipt(ctx, paidOrder);
+  return paidOrder;
 }
 
 async function publicOrder(ctx: Ctx, o: OrderRow, key: string) {
@@ -723,7 +730,8 @@ async function publicOrder(ctx: Ctx, o: OrderRow, key: string) {
   const x = extras(o.book_slug);
   const paid = o.status === "paid";
   // a digital pre-order has no file yet: its page says so, and the link appears when it goes live
-  const digital = p?.kind === "digital" && p.status === "live";
+  const digital = p?.kind === "digital" && p.status === "live" && p.file_key && ctx.env.BOOKS && Boolean(await ctx.env.BOOKS.head(p.file_key));
+  const delivery = await ctx.env.DB.prepare("SELECT status FROM outbox WHERE dedupe_key=?").bind(`order:${o.id}:download`).first<{ status: string }>();
   return {
     ref: o.ref, status: o.status, amountCents: o.amount_cents, currency: o.currency, email: o.email || "", paidAt: o.paid_at,
     book: { slug: o.book_slug, title: p?.title || o.book_slug, subtitle: p?.subtitle || "", kind: p?.kind || "digital" },
@@ -732,6 +740,7 @@ async function publicOrder(ctx: Ctx, o: OrderRow, key: string) {
     codebaseUrl: paid ? x?.codebaseUrl || "" : "",
     bookingNote: paid && p?.kind === "service" ? x?.bookingNote || "" : "",
     test: o.provider === "test",
+    owned: Boolean(ctx.user && o.user_id === ctx.user.id), emailDelivery: delivery?.status || null,
   };
 }
 
@@ -741,7 +750,32 @@ api.get("/orders/:ref", async (ctx) => {
     const s = await retrieveCheckoutSession(ctx.env, order.provider_session).catch(() => null);
     if (s?.payment_status === "paid") order = await markPaid(ctx, order, s);
   }
+  // This is the buyer's individual receipt, never a historical bulk mailing.
+  if (order.status === "paid") await queueOrderReceipt(ctx, order);
   return json({ order: await publicOrder(ctx, order, key) });
+});
+
+api.get("/me/orders", async (ctx) => {
+  const u = requireUser(ctx);
+  // An email typed at signup is not proof of inbox ownership. A receipt key can
+  // claim immediately; email-based recovery requires the existing verify flow.
+  if (u.email_verified_at) {
+    // orders keep the address as email() normalised it, so a plain comparison uses orders_email_paid
+    await ctx.env.DB.prepare("UPDATE orders SET user_id=? WHERE user_id IS NULL AND email=? AND status='paid'")
+      .bind(u.id, normaliseEmail(u.email)).run();
+  }
+  const rows = (await ctx.env.DB.prepare("SELECT * FROM orders WHERE user_id=? ORDER BY id DESC LIMIT 100").bind(u.id).all<OrderRow>()).results;
+  return json({ orders: await Promise.all(rows.map((o) => publicOrder(ctx, o, ""))) });
+});
+
+api.post("/orders/:ref/claim", async (ctx) => {
+  const u = requireUser(ctx), { order, key } = await loadOrder(ctx);
+  if (order.status !== "paid") throw new HttpError(409, "Finish payment before adding this purchase to My books.");
+  if (order.user_id && order.user_id !== u.id) throw new HttpError(409, "This order already belongs to another account.");
+  await ctx.env.DB.prepare("UPDATE orders SET user_id=? WHERE id=? AND user_id IS NULL").bind(u.id, order.id).run();
+  const claimed = (await ctx.env.DB.prepare("SELECT * FROM orders WHERE id=?").bind(order.id).first<OrderRow>())!;
+  if (claimed.user_id !== u.id) throw new HttpError(409, "This order already belongs to another account.");
+  return json({ order: await publicOrder(ctx, claimed, key) });
 });
 
 api.post("/orders/:ref/test-pay", async (ctx) => {
@@ -756,6 +790,7 @@ api.get("/orders/:ref/download", async (ctx) => {
   if (order.status !== "paid") throw new HttpError(402, "This order has not been paid yet.");
   const p = await product(ctx, order.book_slug);
   if (!p || p.kind !== "digital") throw new HttpError(404, "There is no file for this order.");
+  if (p.status !== "live") throw new HttpError(409, "This edition is not ready for download yet.");
   return streamBook(ctx, p, { subscriberId: order.subscriber_id });
 });
 
@@ -835,6 +870,10 @@ api.patch("/admin/products/:slug", async (ctx) => {
   if ("status" in b) {
     const st = String(b.status);
     if (!["live", "preorder", "waitlist", "hidden"].includes(st)) throw new HttpError(400, "status is live, preorder, waitlist or hidden.");
+    const current = await product(ctx,ctx.params.slug);
+    if (st === "live" && current?.kind === "digital" && (!current.file_key || !ctx.env.BOOKS || !await ctx.env.BOOKS.head(current.file_key))) {
+      throw new HttpError(409, "Upload this book's PDF before making it available to buy.");
+    }
     sets.push("status = ?"); vals.push(st);
   }
   if ("externalUrl" in b) { sets.push("external_url = ?"); vals.push(text(b, "externalUrl", { max: 500 })); }

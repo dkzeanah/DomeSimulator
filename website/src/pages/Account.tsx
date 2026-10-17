@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { Link, NavLink, Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 import { ErrorLine, Fraction, Honeypot, JoinQuest, Panel } from "../components/ui";
-import { api, usd } from "../lib/api";
+import { api, usd, money } from "../lib/api";
 import { useSession, type Me } from "../lib/session";
 import { MyDomePanel } from "./Domes";
 
@@ -95,7 +95,7 @@ function Forgot({ email }: { email: string }) {
 const STANDING: [string, string, string][] = [
   ["onTheList", "On the list", "/sample"],
   ["readTheSample", "Read the sample", "/sample"],
-  ["ownsTheBook", "Own the book", "/book"],
+  ["ownsTheBook", "Own a book", "/book"],
   ["onTheNetwork", "On the network", "/network"],
   ["salvaged", "Logged salvage", "/recyclers"],
   ["backer", "Backer", "/back"],
@@ -396,8 +396,42 @@ function Profile() {
   );
 }
 
+interface LibraryOrder {
+  ref: string; status: string; amountCents: number; currency: string; paidAt: string | null;
+  book: { title: string; kind: string }; downloadUrl: string | null; shipsNote: string | null;
+}
+
+function MyBooks() {
+  const { me } = useSession();
+  const [orders,setOrders] = useState<LibraryOrder[] | null>(null);
+  const [error,setError] = useState<string | null>(null);
+  useEffect(() => { api<{ orders: LibraryOrder[] }>("/me/orders").then((r) => setOrders(r.orders)).catch((e) => setError(e.message)); }, []);
+  return <Panel kicker="Your purchases" title="My books">
+    <p className="text-sm muted mb-4">Your paid books and receipts stay here, including purchases you save from a guest receipt link.</p>
+    {!me?.emailVerified && <p className="panel-2 p-3 text-sm mb-4">Bought before signing up? Open the private link in your receipt email to add that purchase here, or <Link className="underline" to="/account/security">verify your email</Link> to recover purchases made with the same address.</p>}
+    <ErrorLine error={error} />
+    {!orders && !error && <p>Loading your purchases...</p>}
+    {orders?.map((o) => <article key={o.ref} className="panel-2 p-4 mb-3 grid gap-2">
+      <h3 className="text-xl font-semibold">{o.book.title}</h3>
+      <p className="text-sm muted">{o.status === "paid" ? "Paid" : o.status} · {money(o.amountCents,o.currency)} · Order {o.ref}</p>
+      {o.downloadUrl && <a className="btn justify-self-start" href={o.downloadUrl}>Download the book (PDF)</a>}
+      {o.status === "paid" && o.book.kind === "digital" && !o.downloadUrl && <p className="text-sm">{o.shipsNote || "Your download is temporarily unavailable. Contact owner@zeanahlab.com with the order reference above."}</p>}
+      <Link className="underline text-sm" to={`/thanks/${encodeURIComponent(o.ref)}`}>View receipt</Link>
+    </article>)}
+    {orders?.length === 0 && <p>No purchases are saved here yet. <Link className="underline" to="/kids">Browse the children's book</Link>.</p>}
+  </Panel>;
+}
+
 export default function Account() {
   const { me } = useSession();
+  const [q] = useSearchParams(), navigate = useNavigate();
+  const [claimError,setClaimError] = useState<string | null>(null);
+  const receiptRef = q.get("order"), receiptKey = q.get("key");
+  useEffect(() => {
+    if (!me || !receiptRef || !receiptKey) return;
+    api(`/orders/${encodeURIComponent(receiptRef)}/claim?key=${encodeURIComponent(receiptKey)}`, { body: {} })
+      .then(() => navigate("/account/books",{ replace: true })).catch((e) => setClaimError(e.message));
+  }, [me?.id,receiptRef,receiptKey,navigate]);
   if (!me) return <Auth />;
   const tab = ({ isActive }: { isActive: boolean }) => (isActive ? "accent font-semibold" : "muted");
   return (
@@ -407,14 +441,17 @@ export default function Account() {
         <h1 className="text-4xl font-bold mt-1">{me.displayName}</h1>
         <nav className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-sm">
           <NavLink end to="/account" className={tab}>Standing</NavLink>
+          <NavLink to="/account/books" className={tab}>My books</NavLink>
           <NavLink to="/account/dome" className={tab}>My dome</NavLink>
           <NavLink to="/account/life" className={tab}>Life account</NavLink>
           <NavLink to="/account/profile" className={tab}>Profile</NavLink>
           <NavLink to="/account/security" className={tab}>Security and data</NavLink>
         </nav>
       </div>
+      <ErrorLine error={claimError} />
       <Routes>
-        <Route index element={<div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]"><Standing /><JoinQuest /></div>} />
+        <Route index element={<><MyBooks /><div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]"><Standing /><JoinQuest /></div></>} />
+        <Route path="books" element={<MyBooks />} />
         <Route path="dome" element={<MyDomePanel />} />
         <Route path="life" element={<Life />} />
         <Route path="profile" element={<Profile />} />
