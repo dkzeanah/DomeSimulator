@@ -33,6 +33,19 @@ export default function Buy({ product, cta }: { product: Product; cta?: string }
     catch (err) { setPromo(null); setPromoError((err as Error).message); }
   }
 
+  // The owner's free copy, through the same order, receipt, email and download as a sale.
+  async function ownerCopy() {
+    setBusy(true);
+    setError(null);
+    try {
+      const r = await api<{ url: string }>("/checkout", { body: { product: product.slug, ownerCopy: true } });
+      window.location.href = r.url;
+    } catch (err) {
+      setError((err as Error).message);
+      setBusy(false);
+    }
+  }
+
   async function buy(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -86,6 +99,12 @@ export default function Buy({ product, cta }: { product: Product; cta?: string }
         {busy ? "Opening checkout..." : `${cta || (product.status === "preorder" ? "Pre-order" : "Buy")}, ${money(price.amountCents, price.currency)}`}
       </button>
       {mode === "test" && <p className="text-xs muted">Test checkout: no card is charged.</p>}
+      {me?.role === "admin" && product.kind === "digital" && (
+        <div className="panel-2 p-3 grid gap-1.5">
+          <button type="button" className="btn-ghost" disabled={busy} onClick={() => void ownerCopy()}>Get my owner copy, free</button>
+          <p className="text-xs muted">Only you see this. It makes a real order at $0 -- receipt page, email to {me.email}, download, My books -- so you can check the whole path. It is not counted as a sale.</p>
+        </div>
+      )}
       <ErrorLine error={error} />
     </form>
   );

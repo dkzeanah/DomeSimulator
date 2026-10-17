@@ -8,7 +8,7 @@ import { Ctx, HttpError, Router, User, body, email, honeypot, json, nowIso, num,
 import { checkoutMode, createCheckoutSession, retrieveCheckoutSession, verifyStripeSignature } from "./services";
 import { convert, firstTouch, recordVisit, report, visitorOf } from "./analytics";
 import { checkClick, enqueue, enroll, queueCampaign, queueConfirm, queueSample, readSubscriberToken, suppress, tick } from "./mail";
-import { emit } from "./ops";
+import { audit, emit } from "./ops";
 import { levelOfInvite, livePromo, redeemInvite } from "./studio";
 import { queueOrderReceipt, receiptKey } from "./fulfillment";
 
@@ -101,7 +101,7 @@ api.get("/stats", async (ctx) => {
     one("SELECT COUNT(*) n FROM subscribers WHERE unsubscribed_at IS NULL"),
     one("SELECT COUNT(*) n FROM users"),
     one("SELECT COUNT(*) n FROM downloads WHERE book_slug = 'sample'"),
-    one("SELECT COUNT(*) n FROM orders WHERE status = 'paid' AND book_slug IN ('the-40-hour-cabin', 'triangular-book')"),
+    one("SELECT COUNT(*) n FROM orders WHERE status = 'paid' AND provider != 'owner' AND book_slug IN ('the-40-hour-cabin', 'triangular-book')"),
     one("SELECT COUNT(*) n FROM listings WHERE visible = 1 AND kind = 'pad_host'"),
     one("SELECT COUNT(*) n FROM listings WHERE visible = 1 AND kind = 'pad_host' AND pad_status = 'hosting'"),
     one("SELECT COUNT(*) n FROM listings WHERE visible = 1"),
@@ -654,18 +654,30 @@ api.post("/checkout", async (ctx) => {
     honorNote = text(b, "honorNote", { min: 10, max: 600 });
     if (!honorNote) throw new HttpError(400, "Please describe what you are giving -- this price runs on your word.");
   }
-  const mode = checkoutMode(ctx.env);
+  // The owner's copy: the same order, receipt page, email and download a buyer gets, at no
+  // charge, so the owner can check the whole path. Kept out of sales, conversions and sale notices.
+  const ownerCopy = b.ownerCopy === true;
+  if (ownerCopy) {
+    if (ctx.user?.role !== "admin") throw new HttpError(403, "Only the owner can take a copy without paying.");
+    if (prod.kind !== "digital") throw new HttpError(400, "An owner copy is for a digital book.");
+  }
+  const mode = ownerCopy ? "owner" : checkoutMode(ctx.env);
   if (!mode) throw new HttpError(503, "The shop opens soon. Leave your email on the sample page and you will hear first.");
-  const e = email(b);
+  const e = ownerCopy && !b.email ? normaliseEmail(ctx.user!.email) : email(b);
   const ref = randomToken(9), key = randomToken(24);
   const physical = prod.kind === "physical";
   const r = await ctx.env.DB.prepare(
     "INSERT INTO orders(ref, key_hash, book_slug, amount_cents, currency, email, user_id, provider, marketing_consent, price_key, honor_note, fulfillment, created_at, visitor_id, promo_code) "
     + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
-  ).bind(ref, await sha256Hex(key), prod.slug, pr.amount_cents, pr.currency, e, ctx.user?.id ?? null, mode, b.marketingConsent === true ? 1 : 0,
-    pr.key, honorNote, physical ? "waiting" : null, nowIso(), visitorOf(ctx), promo?.code ?? null).first<{ id: number }>();
-  await convert(ctx, "checkout", prod.slug, pr.amount_cents);
+  ).bind(ref, await sha256Hex(key), prod.slug, ownerCopy ? 0 : pr.amount_cents, pr.currency, e, ctx.user?.id ?? null, mode, b.marketingConsent === true ? 1 : 0,
+    ownerCopy ? "owner" : pr.key, honorNote, physical ? "waiting" : null, nowIso(), visitorOf(ctx), promo?.code ?? null).first<{ id: number }>();
   const thanks = `/thanks/${ref}?key=${encodeURIComponent(key)}`;
+  if (ownerCopy) {
+    await audit(ctx, "order.owner_copy", `order:${ref}`, { product: prod.slug });
+    await markPaid(ctx, (await ctx.env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(r!.id).first<OrderRow>())!);
+    return json({ url: thanks, test: false, ownerCopy: true }, 201);
+  }
+  await convert(ctx, "checkout", prod.slug, pr.amount_cents);
   if (mode === "test") return json({ url: `/checkout/test/${ref}?key=${encodeURIComponent(key)}`, test: true }, 201);
   const session = await createCheckoutSession(ctx.env, {
     ref, slug: prod.slug, cents: pr.amount_cents, currency: pr.currency, email: e,
@@ -707,7 +719,8 @@ async function markPaid(ctx: Ctx, o: OrderRow, session?: Record<string, any> | n
     "UPDATE orders SET status = 'paid', paid_at = ?, email = ?, subscriber_id = ?, ship_name = COALESCE(?, ship_name), ship_address = COALESCE(?, ship_address) WHERE id = ? AND status = 'pending'",
   ).bind(nowIso(), buyer || o.email, sub?.id ?? null, ship?.name ?? null, ship?.address ? JSON.stringify(ship.address) : null, o.id).run();
   if (res.meta.changes && o.promo_code) await ctx.env.DB.prepare("UPDATE promo_codes SET uses = uses + 1 WHERE code = ?").bind(o.promo_code).run();
-  if (res.meta.changes && sub) {
+  // an owner's copy is delivered like a sale but is not one: no sale notice, tag, sequence or count
+  if (res.meta.changes && sub && o.provider !== "owner") {
     await recordSignup(ctx, sub.id, "purchase", o.book_slug);
     await convert(ctx, "purchase", o.book_slug, o.amount_cents, o.visitor_id);
     await enroll(ctx, sub.id, "purchase");

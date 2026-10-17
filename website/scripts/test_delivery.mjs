@@ -105,6 +105,29 @@ try {
   await call('POST','/stripe/webhook',raw,'',header);
   check(sqlite.prepare('SELECT COUNT(*) n FROM outbox WHERE dedupe_key IS NOT NULL').get().n===2,'duplicate Stripe webhook does not send another book email');
   check((await call('POST','/stripe/webhook',raw,'',{'stripe-signature':'invalid'})).response.status===400,'unverified webhook cannot confirm payment');
+  // The owner's copy: the real order path at no charge, kept out of sales.
+  r=await call('POST','/checkout',{product:slug,ownerCopy:true},cookie);
+  check(r.response.status===403,'a member cannot take an owner copy');
+  sqlite.prepare("INSERT INTO users(email,password_hash,display_name,role,created_at,updated_at) VALUES('owner@example.test','x','Owner','member',datetime('now'),datetime('now'))").run();
+  env.ADMIN_EMAILS='owner@example.test';
+  const ownerId=sqlite.prepare("SELECT id FROM users WHERE email='owner@example.test'").get().id;
+  const token='owner-session-token';
+  const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+  sqlite.prepare("INSERT INTO sessions(token_hash,user_id,created_at,expires_at) VALUES(?,?,datetime('now'),'2999-01-01T00:00:00Z')").run(hash,ownerId);
+  const ownerCookie='zl_sid='+token;
+  const eventsBefore=sqlite.prepare("SELECT COUNT(*) n FROM ops_events WHERE type='order.paid'").get().n;
+  r=await call('POST','/checkout',{product:slug,ownerCopy:true},ownerCookie);
+  const ownerUrl=new URL((await r.data()).url,'https://fixture.test');
+  check(r.response.status===201 && ownerUrl.pathname.startsWith('/thanks/'),'the owner copy goes straight to its receipt page, no card');
+  const ownerRef=ownerUrl.pathname.split('/').at(-1), ownerKey=ownerUrl.searchParams.get('key');
+  const ownerOrder=sqlite.prepare('SELECT * FROM orders WHERE ref=?').get(ownerRef);
+  check(ownerOrder.status==='paid' && ownerOrder.amount_cents===0 && ownerOrder.provider==='owner' && ownerOrder.email==='owner@example.test','the owner copy is a paid $0 order to the owner address');
+  r=await call('GET',`/orders/${ownerRef}/download?key=${encodeURIComponent(ownerKey)}`);
+  check(r.response.status===200 && (await r.response.text()).startsWith('%PDF'),'the owner copy downloads through the same link a buyer gets');
+  check(sqlite.prepare("SELECT COUNT(*) n FROM outbox WHERE dedupe_key=?").get(`order:${ownerOrder.id}:download`).n===1,'the owner copy is emailed like a sale');
+  check(sqlite.prepare("SELECT COUNT(*) n FROM ops_events WHERE type='order.paid'").get().n===eventsBefore,'the owner copy raises no sale notice');
+  r=await call('GET','/me/orders',undefined,ownerCookie);
+  check((await r.data()).orders.some(o=>o.ref===ownerRef),'the owner copy is in My books for the owner');
   console.log(`RESULT: ${checks} checks passed`);
 } finally {
   sqlite.close();
