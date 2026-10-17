@@ -49,7 +49,7 @@ api.get("/agent/orders", async (ctx) => {
   await agentAuth(ctx, "orders:read");
   const limit = Math.min(500, Number(ctx.url.searchParams.get("limit") || 100));
   return json({ orders: (await ctx.env.DB.prepare(
-    "SELECT ref, book_slug product, price_key, amount_cents, currency, status, fulfillment, provider, created_at, paid_at FROM orders WHERE status = 'paid' ORDER BY id DESC LIMIT ?",
+    "SELECT ref, book_slug product, price_key, amount_cents, currency, status, fulfillment, provider, created_at, paid_at FROM orders WHERE status = 'paid' AND provider != 'owner' ORDER BY id DESC LIMIT ?",
   ).bind(limit).all()).results });
 });
 

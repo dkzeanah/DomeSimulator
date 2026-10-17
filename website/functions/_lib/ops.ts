@@ -218,8 +218,8 @@ export async function numbers(ctx: Ctx, days: number) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const r = (await report(ctx, days)) as unknown as Record<string, any[]> & { totals: { visitors: number; views: number }; funnel: { step: string; n: number }[] };
   const since = nowIso(-days * 86_400_000);
-  const sales = (await ctx.env.DB.prepare("SELECT COUNT(*) n, COALESCE(SUM(amount_cents), 0) c FROM orders WHERE status = 'paid' AND paid_at >= ?").bind(since).first<{ n: number; c: number }>())!;
-  const byProduct = (await ctx.env.DB.prepare("SELECT book_slug p, COUNT(*) n, SUM(amount_cents) c FROM orders WHERE status = 'paid' AND paid_at >= ? GROUP BY p").bind(since).all<{ p: string; n: number; c: number }>()).results;
+  const sales = (await ctx.env.DB.prepare("SELECT COUNT(*) n, COALESCE(SUM(amount_cents), 0) c FROM orders WHERE status = 'paid' AND provider != 'owner' AND paid_at >= ?").bind(since).first<{ n: number; c: number }>())!;
+  const byProduct = (await ctx.env.DB.prepare("SELECT book_slug p, COUNT(*) n, SUM(amount_cents) c FROM orders WHERE status = 'paid' AND provider != 'owner' AND paid_at >= ? GROUP BY p").bind(since).all<{ p: string; n: number; c: number }>()).results;
   const members = (await ctx.env.DB.prepare("SELECT COUNT(*) n FROM users WHERE created_at >= ?").bind(since).first<{ n: number }>())!.n;
   const listings = (await ctx.env.DB.prepare("SELECT COUNT(*) n FROM listings WHERE created_at >= ?").bind(since).first<{ n: number }>())!.n;
   const joined = r.listDaily.reduce((s: number, d) => s + Number(d.joined), 0);
