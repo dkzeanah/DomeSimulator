@@ -4,7 +4,7 @@
 
 The manuscript: one stanza per spread. Stanzas are separated by a blank line;
 zeanahlab.com's `/kids` page shows the first few (`website/scripts/export_facts.py`
-reads this file). The illustrated PDF is still to be made.
+reads this file). The illustrated PDF is built with `py -3.12 -m kids_book`.
 
 ---
 
