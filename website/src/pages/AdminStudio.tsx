@@ -10,12 +10,54 @@ import { api, money } from "../lib/api";
 import { useCatalogue } from "../lib/catalogue";
 import { isStaff, useSession } from "../lib/session";
 import { FOCI, type Focus } from "../lib/site";
+import { STATUS_LABEL, dueLabel, today, urgency, useBoard } from "../lib/projects";
+import { LinkLine } from "./AdminProjects";
 
 interface InviteCode { key: string; label: string; gives: string; code: string; shownUntil: string; worksUntil: string }
 interface Promo { code: string; product: string; price_key: string; max_uses: number | null; uses: number; active: number; note: string | null; created_at: string }
 interface Gated { product: string; key: string; label: string; amount_cents: number }
 
 const when = (iso: string) => new Date(iso).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+
+/** What needs doing now: overdue, due within a week, in progress or stuck. Tick to finish. */
+function WeekPanel({ onDone }: { onDone: (m: string) => void }) {
+  const { board, error, load, setError } = useBoard();
+  const week = (board?.tasks ?? []).filter((t) => t.status !== "done" && (t.status === "doing" || t.status === "blocked" || (t.dueDate && t.dueDate <= today(7))))
+    .sort((a, b) => (a.dueDate || "9999").localeCompare(b.dueDate || "9999"));
+  const name = (id: number) => board?.projects.find((p) => p.id === id)?.name || "";
+  const overdue = week.filter((t) => urgency(t) === "overdue").length;
+  return (
+    <Panel kicker="Projects" title="This week" className="lg:col-span-2">
+      {!board ? <p className="muted text-sm">{error || "Loading..."}</p> : !board.projects.length ? (
+        <p className="text-sm muted">No projects yet. <Link className="underline" to="/admin/projects">Make the first one</Link> and its tasks show up here.</p>
+      ) : (
+        <>
+          <p className="text-sm muted mb-3">
+            {week.length ? `${week.length} task${week.length === 1 ? "" : "s"} overdue, due in the next seven days, in progress or blocked${overdue ? ` -- ${overdue} overdue` : ""}.` : "Nothing due this week and nothing in progress."}
+          </p>
+          <ul className="grid gap-2 sm:grid-cols-2 text-sm">
+            {week.map((t) => (
+              <li key={t.id} className="panel-2 p-3 flex gap-3 items-start">
+                <input type="checkbox" className="mt-1" aria-label={`Mark "${t.title}" done`} onChange={async () => {
+                  setError(null);
+                  try { await api(`/admin/tasks/${t.id}`, { method: "PATCH", body: { status: "done" } }); await load(); onDone(`Done: ${t.title}`); } catch (e) { setError((e as Error).message); }
+                }} />
+                <div className="grid gap-0.5 min-w-0">
+                  <span className="font-semibold">{t.title}</span>
+                  <span className="text-xs muted">{name(t.projectId)} -- {STATUS_LABEL[t.status]}{t.dueDate ? ` -- ` : ""}
+                    {t.dueDate && <span style={{ color: urgency(t) === "overdue" ? "var(--color-ember)" : undefined }}>{dueLabel(t)}</span>}</span>
+                  <LinkLine link={t.link} />
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm mt-3"><Link className="underline" to="/admin/projects">The whole board</Link></p>
+          <ErrorLine error={error} />
+        </>
+      )}
+    </Panel>
+  );
+}
 
 function FocusPanel({ onDone }: { onDone: (m: string) => void }) {
   const [focus, setFocus] = useState<Focus | null>(null);
@@ -180,6 +222,7 @@ export default function AdminStudio() {
       </div>
       <AdminNav />
       <div className="grid gap-6 lg:grid-cols-2">
+        <WeekPanel onDone={done} />
         <FocusPanel onDone={done} />
         <LevelPanel owner={owner} onDone={done} />
         {owner ? <InvitePanel onDone={done} /> : <Panel title="Invite codes"><p className="text-sm muted">Only the owner sees the invite codes.</p></Panel>}

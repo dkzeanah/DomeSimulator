@@ -260,12 +260,19 @@ After `migrations/0008_studio.sql` is applied (`npm run db:remote`) and the site
   still works for one period after; *Roll now* kills a code at once. People type it in the
   invite box when they make an account, or later on their Profile tab.
 - **Give an account a level:** the same levels by hand, by email or username.
+- **Projects** (`/admin/projects`, after `migrations/0009_projects.sql`): your projects and
+  their tasks on one board -- to do, doing, blocked, done -- with due dates, notes, who has
+  it, and a link (a page here, a `deliverables/...` folder, or any https:// address). The
+  Studio's *This week* shows what is overdue, due in seven days, in progress or blocked.
+  Managers edit; only you delete a project. A task added or finished is an event
+  (`task.created`, `task.done`) automations can act on.
 - **Promo codes:** each unlocks one book's friend price ($5 for the $20 book, $1 for the $5
   kids' book). None exist until you make them here; the repository is public, so none are
   seeded.
-- **The kids' book** is a pre-order until its PDF is uploaded to the book store as
-  `my-own-home-my-own-dome.pdf`; then set it *live* on *Backers and orders*. Buyers' order
-  pages show the download from then on.
+- **The kids' book** is a pre-order until its PDF is in the book store. Build it with
+  `py -3.12 -m kids_book` (from the project folder), send it with `npm run books:remote`
+  (it goes up as `my-own-home-my-own-dome.pdf`), then set it *live* on *Backers and
+  orders*. Buyers' order pages show the download from then on.
 - **Dome classes** (`/domes`): every figure comes from `npm run facts`, which also writes
   `src/generated/dome-classes.json` (one class per whole inch of longest strut, solved by
   `seed_model`).

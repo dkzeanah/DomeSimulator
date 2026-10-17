@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 
 const PAGES: [string, string][] = [
   ["/admin/studio", "Studio"],
+  ["/admin/projects", "Projects"],
   ["/admin", "Backers and orders"],
   ["/admin/analytics", "Analytics"],
   ["/admin/list", "The list and email"],

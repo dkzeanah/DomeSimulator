@@ -32,6 +32,7 @@ const Card = lazy(() => import("./pages/Card"));
 const Domes = lazy(() => import("./pages/Domes"));
 const DomeClassPage = lazy(() => import("./pages/Domes").then((m) => ({ default: m.DomeClassPage })));
 const AdminStudio = lazy(() => import("./pages/AdminStudio"));
+const AdminProjects = lazy(() => import("./pages/AdminProjects"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 createRoot(document.getElementById("root")!).render(
@@ -60,6 +61,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="domes/:longIn" element={<DomeClassPage />} />
               <Route path="admin" element={<Admin />} />
               <Route path="admin/studio" element={<AdminStudio />} />
+              <Route path="admin/projects" element={<AdminProjects />} />
               <Route path="admin/list" element={<AdminList />} />
               <Route path="admin/analytics" element={<AdminAnalytics />} />
               <Route path="admin/users" element={<AdminUsers />} />

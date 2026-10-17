@@ -22,6 +22,8 @@ export const TRIGGERS: Record<string, string> = {
   "order.paid": "An order is paid. Fields: ref, product, price, amount, amount_cents, subscriberId, source.",
   "listing.created": "A network listing is added. Fields: listingId, kind, title.",
   "proposal.created": "An agent (or Workers AI) proposes an action for you to approve. Fields: proposalId, action, key, reason.",
+  "task.created": "A task is added on the projects board. Fields: taskId, project, title, due (YYYY-MM-DD or empty).",
+  "task.done": "A task on the projects board is marked done. Fields: taskId, project, title.",
   "schedule.hourly": "Every hour, on the hour.",
   "schedule.daily": "Every day at 13:00 UTC (morning in the US).",
   "schedule.weekly": "Mondays at 13:00 UTC.",

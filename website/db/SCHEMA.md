@@ -451,6 +451,21 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 6 row(s) in the model.
 
+## projects
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| name | TEXT |  |  |  |
+| description | TEXT |  | '' |  |
+| status | TEXT |  | 'active' |  |
+| colour | TEXT |  | 'gold' |  |
+| sort | INTEGER |  | 0 |  |
+| created_at | TEXT |  |  |  |
+| updated_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
 ## promo_codes
 
 | column | type | null | default | key |
@@ -616,6 +631,26 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | email | TEXT | yes |  | PK |
 | reason | TEXT |  |  |  |
 | created_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
+## tasks
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| project_id | INTEGER |  |  | -> projects.id |
+| title | TEXT |  |  |  |
+| status | TEXT |  | 'todo' |  |
+| due_date | TEXT | yes |  |  |
+| notes | TEXT |  | '' |  |
+| link | TEXT | yes |  |  |
+| assignee_id | INTEGER | yes |  | -> users.id |
+| sort | INTEGER |  | 0 |  |
+| created_by | INTEGER | yes |  | -> users.id |
+| created_at | TEXT |  |  |  |
+| updated_at | TEXT |  |  |  |
+| done_at | TEXT | yes |  |  |
 
 0 row(s) in the model.
 

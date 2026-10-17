@@ -8,6 +8,7 @@ import "../_lib/agent_routes";   // registers /api/agent/* and its admin control
 import "../_lib/ops_routes";     // automations, jobs, notices, the clock, the assistant
 import "../_lib/user_routes";    // password reset, sessions, data export, the owner's user controls
 import "../_lib/studio_routes";  // home focus, invite codes, promo codes, dome classes
+import "../_lib/project_routes"; // the owner's projects and tasks
 
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
