@@ -27,6 +27,42 @@ import export_facts as web_facts  # noqa: E402  (web/export_facts.py: the existi
 import seed_model  # noqa: E402
 
 OUT = SITE / "src" / "generated" / "facts.json"
+CLASSES_OUT = SITE / "src" / "generated" / "dome-classes.json"
+
+# The dome classes: a 2V wedge dome is fixed by one number, its longest strut. Two domes
+# with the same longest strut take the same panels, so members who own one are a class.
+# One class per whole inch, solved by the project's own solver at that length.
+CLASS_RANGE_IN = range(36, 145)
+
+
+def classes() -> dict:
+    return {
+        "_generated_by": "website/scripts/export_facts.py from seed_model.dome_class(long_in) -- do not edit",
+        "method": "2V hemisphere, wedge members split from a "
+                  f"{seed_model.SEED_TRUNK_DIAMETER_IN:.0f}-inch log, {seed_model.SEED_RADIAL_SPLITS} wedges per log",
+        "notes": {
+            "frameLb": "Frame alone, green pine: wood volume x "
+                       f"{seed_model.declared('pine_green_lb_per_cuft'):.0f} lb/cu ft "
+                       "(seed_model: pine_green_lb_per_cuft, a published density).",
+            "cost": "Frame cost from seed_model.frame_group: wedges priced as shelf timber by the cubic inch, "
+                    "joining hardware at an assumed rate per joint, seam hose by the foot.",
+            "hardware": "Hardware is modelled by cost, not weight, so its share is a share of the frame's cost.",
+        },
+        "classes": [seed_model.dome_class(n) for n in CLASS_RANGE_IN],
+    }
+
+
+KIDS_VERSE = ROOT / "books" / "my-own-home-my-own-dome" / "verse.md"
+KIDS_PREVIEW_STANZAS = 4
+
+
+def kids_book() -> dict:
+    """The children's book's title and opening stanzas, from its manuscript."""
+    text = KIDS_VERSE.read_text(encoding="utf-8")
+    title = text.splitlines()[0].lstrip("# ").strip()
+    verse = text.split("\n---\n", 1)[1]
+    stanzas = [s.strip() for s in verse.strip().split("\n\n") if s.strip()]
+    return {"title": title, "stanzaCount": len(stanzas), "preview": stanzas[:KIDS_PREVIEW_STANZAS]}
 
 
 def build() -> dict:
@@ -47,9 +83,11 @@ def build() -> dict:
         # contents, page counts and headline figures of each book, from the books' own
         # token resolvers -- the same values the books print (web/export_facts.books())
         "bookFacts": web_facts.books(),
-        "site": {k: site[k] for k in ("name", "url", "tagline", "kickstarterUrl", "youtubeChannelUrl", "links")
+        "site": {k: site[k] for k in ("name", "url", "tagline", "email", "kickstarterUrl", "youtubeChannelUrl", "links")
                  if k in site},
     })
+    facts["kidsBook"] = kids_book()
+    facts["sources"]["kidsBook"] = KIDS_VERSE.relative_to(ROOT).as_posix()
     facts["sources"]["plaques"] = facts["plaques"]["source"]
     facts["sources"]["books"] = "web/books.config.json"
     return facts
@@ -59,16 +97,19 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
-    text = json.dumps(build(), indent=2, ensure_ascii=False) + "\n"
+    outputs = {OUT: json.dumps(build(), indent=2, ensure_ascii=False) + "\n",
+               CLASSES_OUT: json.dumps(classes(), separators=(",", ":"), ensure_ascii=False) + "\n"}
     if a.check:
-        if not OUT.exists() or OUT.read_text(encoding="utf-8") != text:
-            print(f"{OUT} is stale: run py -3.12 scripts/export_facts.py")
-            return 1
-        print("facts.json is current")
-        return 0
+        stale = [p for p, text in outputs.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
+        for p in stale:
+            print(f"{p} is stale: run py -3.12 scripts/export_facts.py")
+        if not stale:
+            print("facts.json and dome-classes.json are current")
+        return 1 if stale else 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(text, encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)}")
+    for p, text in outputs.items():
+        p.write_text(text, encoding="utf-8")
+        print(f"wrote {p.relative_to(ROOT)}")
     return 0
 
 

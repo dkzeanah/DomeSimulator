@@ -54,6 +54,15 @@ function Card({ p }: { p: Product }) {
       </Panel>
     );
   }
+  if (p.slug !== bookFacts.slug) {
+    return (
+      <Panel kicker={p.status === "preorder" ? "Pre-order -- digital" : "Digital"} title={`${p.title}, ${money(lowest)}`}>
+        <p className="text-sm muted mb-3">{p.blurb}</p>
+        {p.status === "preorder" && p.shipsNote && <p className="text-xs muted mb-3">{p.shipsNote}</p>}
+        <Buy product={p} cta={p.status === "preorder" ? "Pre-order" : "Buy"} />
+      </Panel>
+    );
+  }
   return (
     <Panel kicker="Digital edition" title={money(lowest)}>
       <ul className="text-sm space-y-1.5 mb-4">{(bookFacts.includes || []).map((i) => <li key={i}>- {i}</li>)}</ul>

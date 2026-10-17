@@ -373,6 +373,7 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | ship_address | TEXT | yes |  |  |
 | fulfillment | TEXT | yes |  |  |
 | visitor_id | TEXT | yes |  |  |
+| promo_code | TEXT | yes |  |  |
 
 0 row(s) in the model.
 
@@ -426,8 +427,9 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | honor_prompt | TEXT | yes |  |  |
 | active | INTEGER |  | 1 |  |
 | sort | INTEGER |  | 0 |  |
+| gated | INTEGER |  | 0 |  |
 
-6 row(s) in the model.
+9 row(s) in the model.
 
 ## products
 
@@ -447,7 +449,37 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | created_at | TEXT |  |  |  |
 | updated_at | TEXT |  |  |  |
 
-5 row(s) in the model.
+6 row(s) in the model.
+
+## projects
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| name | TEXT |  |  |  |
+| description | TEXT |  | '' |  |
+| status | TEXT |  | 'active' |  |
+| colour | TEXT |  | 'gold' |  |
+| sort | INTEGER |  | 0 |  |
+| created_at | TEXT |  |  |  |
+| updated_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
+## promo_codes
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| code | TEXT | yes |  | PK |
+| product | TEXT |  |  | -> products.slug |
+| price_key | TEXT |  |  |  |
+| max_uses | INTEGER | yes |  |  |
+| uses | INTEGER |  | 0 |  |
+| active | INTEGER |  | 1 |  |
+| note | TEXT | yes |  |  |
+| created_at | TEXT |  |  |  |
+
+0 row(s) in the model.
 
 ## quest_requirements
 
@@ -535,7 +567,7 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | value | TEXT |  |  |  |
 | updated_at | TEXT |  |  |  |
 
-0 row(s) in the model.
+1 row(s) in the model.
 
 ## signups
 
@@ -602,6 +634,26 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 0 row(s) in the model.
 
+## tasks
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| project_id | INTEGER |  |  | -> projects.id |
+| title | TEXT |  |  |  |
+| status | TEXT |  | 'todo' |  |
+| due_date | TEXT | yes |  |  |
+| notes | TEXT |  | '' |  |
+| link | TEXT | yes |  |  |
+| assignee_id | INTEGER | yes |  | -> users.id |
+| sort | INTEGER |  | 0 |  |
+| created_by | INTEGER | yes |  | -> users.id |
+| created_at | TEXT |  |  |  |
+| updated_at | TEXT |  |  |  |
+| done_at | TEXT | yes |  |  |
+
+0 row(s) in the model.
+
 ## user_tokens
 
 | column | type | null | default | key |
@@ -636,6 +688,11 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | last_seen_at | TEXT | yes |  |  |
 | email_verified_at | TEXT | yes |  |  |
 | admin_note | TEXT | yes |  |  |
+| username | TEXT | yes |  |  |
+| joined_with | TEXT | yes |  |  |
+| dome_long_in | INTEGER | yes |  |  |
+| dome_status | TEXT | yes |  |  |
+| dome_note | TEXT | yes |  |  |
 
 0 row(s) in the model.
 
@@ -664,7 +721,10 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 | --- | --- | --- | --- | --- | --- |
 | sample | digital | live | free | $0.00 |  |
 | the-40-hour-cabin | digital | live | standard | $20.00 |  |
+| the-40-hour-cabin | digital | live | friend | $5.00 |  |
 | triangular-book | physical | preorder | standard | $50.00 |  |
 | triangular-book | physical | preorder | donation | $30.00 | yes |
 | design-session | service | live | standard | $50.00 |  |
 | 2-trees | amazon | waitlist | amazon | $12.99 |  |
+| my-own-home-my-own-dome | digital | preorder | standard | $5.00 |  |
+| my-own-home-my-own-dome | digital | preorder | friend | $1.00 |  |

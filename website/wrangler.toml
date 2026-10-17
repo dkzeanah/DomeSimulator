@@ -8,6 +8,9 @@ compatibility_date = "2025-06-01"
 
 [vars]
 PUBLIC_URL = "https://www.zeanahlab.com"
+# The owner's sign-in name. Not a secret: it only names the account ADMIN_EMAILS already makes
+# the owner, and no one else can take it.
+OWNER_USERNAME = "shortcircuiter"
 
 # The database: subscribers, accounts, orders, the pad network, backers, plaques, salvage,
 # and every member's own life account. `database_id` comes from

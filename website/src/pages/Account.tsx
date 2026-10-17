@@ -3,13 +3,14 @@ import { Link, NavLink, Route, Routes } from "react-router-dom";
 import { ErrorLine, Fraction, Honeypot, JoinQuest, Panel } from "../components/ui";
 import { api, usd } from "../lib/api";
 import { useSession, type Me } from "../lib/session";
+import { MyDomePanel } from "./Domes";
 
 // ---------------------------------------------------------------- sign in / up
 
 function Auth() {
   const { setMe, notify } = useSession();
   const [mode, setMode] = useState<"in" | "up">("up");
-  const [f, setF] = useState({ email: "", password: "", displayName: "", marketingConsent: false });
+  const [f, setF] = useState({ email: "", login: "", username: "", inviteCode: "", password: "", displayName: "", marketingConsent: false });
   const [trap, setTrap] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -18,7 +19,10 @@ function Auth() {
     setBusy(true);
     setError(null);
     try {
-      const r = await api<{ user: Me }>(mode === "up" ? "/signup" : "/login", { body: { ...f, website: trap } });
+      const payload = mode === "up"
+        ? { email: f.email, username: f.username, inviteCode: f.inviteCode, password: f.password, displayName: f.displayName, marketingConsent: f.marketingConsent }
+        : { login: f.login, password: f.password };
+      const r = await api<{ user: Me }>(mode === "up" ? "/signup" : "/login", { body: { ...payload, website: trap } });
       setMe(r.user);
       notify(mode === "up" ? "Account made" : "Signed in", mode === "up" ? "You can now: list yourself on the network and keep your own life account." : `Welcome back, ${r.user.displayName}.`);
     } catch (err) { setError((err as Error).message); } finally { setBusy(false); }
@@ -28,9 +32,19 @@ function Auth() {
       <Panel title={mode === "up" ? "Make an account" : "Sign in"}>
         <form onSubmit={submit} className="grid gap-3 text-sm relative">
           {mode === "up" && <label className="grid gap-1">Name shown to others<input className="field" required maxLength={80} value={f.displayName} onChange={(e) => setF({ ...f, displayName: e.target.value })} /></label>}
-          <label className="grid gap-1">Email<input className="field" type="email" required autoComplete="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} /></label>
+          {mode === "up"
+            ? <>
+              <label className="grid gap-1">Email<input className="field" type="email" required autoComplete="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} /></label>
+              <label className="grid gap-1">Username <span className="muted text-xs">Optional. Lets you sign in without typing your email.</span>
+                <input className="field" autoComplete="username" maxLength={30} value={f.username} onChange={(e) => setF({ ...f, username: e.target.value })} /></label>
+            </>
+            : <label className="grid gap-1">Email or username<input className="field" required autoComplete="username" value={f.login} onChange={(e) => setF({ ...f, login: e.target.value })} /></label>}
           <label className="grid gap-1">Password{mode === "up" && <span className="muted text-xs">At least 10 characters.</span>}
             <input className="field" type="password" required minLength={mode === "up" ? 10 : 1} autoComplete={mode === "up" ? "new-password" : "current-password"} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} /></label>
+          {mode === "up" && (
+            <label className="grid gap-1">Invite code <span className="muted text-xs">Only if you were given one. It sets what your account can do; leave it empty for a regular account.</span>
+              <input className="field font-mono tracking-widest uppercase" placeholder="XXXX-XXXX" maxLength={20} autoComplete="off" value={f.inviteCode} onChange={(e) => setF({ ...f, inviteCode: e.target.value })} /></label>
+          )}
           {mode === "up" && <label className="flex gap-2 items-start"><input type="checkbox" className="mt-1" checked={f.marketingConsent} onChange={(e) => setF({ ...f, marketingConsent: e.target.checked })} /><span className="muted">Send me build updates (optional).</span></label>}
           <Honeypot value={trap} onChange={setTrap} />
           <button className="btn" disabled={busy}>{busy ? "One moment..." : mode === "up" ? "Make my account" : "Sign in"}</button>
@@ -39,7 +53,7 @@ function Auth() {
             {mode === "up" ? "I already have an account" : "I need an account"}
           </button>
         </form>
-        {mode === "in" && <Forgot email={f.email} />}
+        {mode === "in" && <Forgot email={f.login.includes("@") ? f.login : ""} />}
       </Panel>
       <div className="grid gap-6 content-start">
         <Panel kicker="What an account is for" title="Own your numbers">
@@ -325,9 +339,30 @@ function Security() {
 
 // ---------------------------------------------------------------- profile
 
+const LEVEL_NAME: Record<string, string> = { member: "a member", friend: "a friend (friend prices on every book)", manager: "a manager (the admin pages)", admin: "the owner" };
+
+function Redeem() {
+  const { me, refresh, notify } = useSession();
+  const [code, setCode] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <Panel title="Invite code">
+      <p className="text-sm muted mb-3">Your account is {LEVEL_NAME[me!.role] || me!.role}. If you were given an invite code, enter it to change what your account can do.</p>
+      <form className="flex gap-2 flex-col sm:flex-row" onSubmit={async (e) => {
+        e.preventDefault(); setError(null);
+        try { const r = await api<{ level: string }>("/me/redeem", { body: { code } }); setCode(""); await refresh(); notify("Code accepted", `Your account is now ${LEVEL_NAME[r.level] || r.level}.`); } catch (err) { setError((err as Error).message); }
+      }}>
+        <input className="field font-mono tracking-widest uppercase" placeholder="XXXX-XXXX" required value={code} onChange={(e) => setCode(e.target.value)} />
+        <button className="btn-ghost whitespace-nowrap">Use code</button>
+      </form>
+      <ErrorLine error={error} />
+    </Panel>
+  );
+}
+
 function Profile() {
   const { me, setMe, refresh } = useSession();
-  const [f, setF] = useState({ displayName: me!.displayName, bio: me!.bio, city: me!.city, region: me!.region, country: me!.country, publicProfile: me!.publicProfile });
+  const [f, setF] = useState({ displayName: me!.displayName, username: me!.username, bio: me!.bio, city: me!.city, region: me!.region, country: me!.country, publicProfile: me!.publicProfile });
   const [msg, setMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   async function save(e: React.FormEvent) {
@@ -339,6 +374,8 @@ function Profile() {
       <Panel title="Profile">
         <form onSubmit={save} className="grid gap-2 text-sm">
           <input className="field" value={f.displayName} onChange={(e) => setF({ ...f, displayName: e.target.value })} placeholder="Name" />
+          <label className="grid gap-1"><span className="muted text-xs">Username, for signing in (optional)</span>
+            <input className="field" value={f.username} onChange={(e) => setF({ ...f, username: e.target.value })} placeholder="username" maxLength={30} /></label>
           <textarea className="field" rows={3} value={f.bio} onChange={(e) => setF({ ...f, bio: e.target.value })} placeholder="About you" />
           <div className="grid grid-cols-3 gap-2">
             <input className="field" value={f.city} onChange={(e) => setF({ ...f, city: e.target.value })} placeholder="City" />
@@ -350,6 +387,7 @@ function Profile() {
           <ErrorLine error={error} />
         </form>
       </Panel>
+      <Redeem />
       <Panel title="Sign out">
         <button className="btn-ghost" onClick={async () => { await api("/logout", { body: {} }); setMe(null); await refresh(); }}>Sign out of this device</button>
         {(me!.role === "admin" || me!.role === "manager") && <p className="mt-4"><Link className="underline" to="/admin">Admin</Link></p>}
@@ -367,8 +405,9 @@ export default function Account() {
       <div>
         <p className="text-xs uppercase tracking-[0.2em] accent font-semibold">Your account</p>
         <h1 className="text-4xl font-bold mt-1">{me.displayName}</h1>
-        <nav className="flex gap-5 mt-4 text-sm">
+        <nav className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-sm">
           <NavLink end to="/account" className={tab}>Standing</NavLink>
+          <NavLink to="/account/dome" className={tab}>My dome</NavLink>
           <NavLink to="/account/life" className={tab}>Life account</NavLink>
           <NavLink to="/account/profile" className={tab}>Profile</NavLink>
           <NavLink to="/account/security" className={tab}>Security and data</NavLink>
@@ -376,6 +415,7 @@ export default function Account() {
       </div>
       <Routes>
         <Route index element={<div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]"><Standing /><JoinQuest /></div>} />
+        <Route path="dome" element={<MyDomePanel />} />
         <Route path="life" element={<Life />} />
         <Route path="profile" element={<Profile />} />
         <Route path="security" element={<Security />} />

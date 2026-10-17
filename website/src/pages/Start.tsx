@@ -16,7 +16,7 @@ import pages from "../generated/sample-pages.json";
 const STAGES = ["Look inside", "Read the opening", "Own the book", "Put your name on it"];
 
 export default function Start() {
-  useMeta("Free pages: The 40 Hour Cabin", `Look inside The 40 Hour Cabin: real pages from the ${cabin.pages}-page build manual, then the first ${sample.pages} pages free for your email.`, "/start");
+  useMeta("Free pages: The 40 Hour Cabin", `Look inside The 40 Hour Cabin: real pages from the ${cabin.pages}-page build manual, then ${sample.pages} pages free for your email.`, "/start");
   const { steps } = useSession();
   const [big, setBig] = useState<string | null>(null);
   const [readNow, setReadNow] = useState(false);
@@ -26,7 +26,7 @@ export default function Start() {
     <div className="mx-auto max-w-6xl px-4 py-10 grid gap-8">
       <div className="grid gap-6 md:grid-cols-[1.2fr_1fr] items-center">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] accent font-semibold">Free, the first {sample.pages} pages</p>
+          <p className="text-xs uppercase tracking-[0.2em] accent font-semibold">Free, {sample.pages} pages</p>
           <h1 className="text-4xl sm:text-5xl font-bold mt-1 leading-tight">A cabin in {cabin.numbers.frameHours} hours of frame work. Every number shown.</h1>
           <p className="muted mt-3 text-lg">
             {cabin.title} is {cabin.pages} pages and {cabin.figures} figures, every one drawn and priced by code you can read.

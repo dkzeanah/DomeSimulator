@@ -1,9 +1,11 @@
 # The library
 
-568 outputs of 383 concepts, 25.38 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+570 outputs of 384 concepts, 25.38 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
 
 | # | output | iteration | made | kind | size |
 |---|---|---|---|---|---|
+| 0571 | [the-40-hour-cabin-sample](0571-the-40-hour-cabin-sample-v6/the-40-hour-cabin-sample-v6.pdf) | v6 | 2026-10-16 | document | 4.4 MB |
+| 0570 | [snowball-manuscript](0570-snowball-manuscript/snowball-manuscript.epub) | v1 | 2026-10-14 | book | 0.4 MB |
 | 0569 | [closing-the-triangle-teaser](0569-closing-the-triangle-teaser/closing-the-triangle-teaser.mp4) | v1 | 2026-10-14 | video | 53.5 MB |
 | 0568 | [closing-the-triangle](0568-closing-the-triangle-v3/closing-the-triangle-v3.mp4) | v3 | 2026-10-14 | video | 366.0 MB |
 | 0567 | [cabin_triangle_fill-stills](0567-cabin_triangle_fill-stills-v10/cabin_triangle_fill_0360.88s.png) | v10 | 2026-10-14 | image | 0.6 MB |

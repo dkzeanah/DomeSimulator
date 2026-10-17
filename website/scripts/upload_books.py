@@ -25,6 +25,11 @@ import medialib  # noqa: E402
 
 BUCKET = "zeanahlab-books"
 
+#: Books sold only on this site, which web/books.config.json (the older web/ app's
+#: catalogue) does not list: (R2 file name, the product's file_key in migrations/) ->
+#: the library stem whose newest PDF goes up.
+SITE_ONLY = {"my-own-home-my-own-dome.pdf": "my-own-home-my-own-dome"}
+
 
 def books() -> list[tuple[str, Path]]:
     cat = json.loads((ROOT / "web" / "books.config.json").read_text(encoding="utf-8"))
@@ -37,6 +42,12 @@ def books() -> list[tuple[str, Path]]:
                 print(f"  no PDF in the library for {stem}; skipped")
                 continue
             out.append((b["file"], pdf))
+    for key, stem in SITE_ONLY.items():
+        pdf = medialib.latest(stem, ".pdf")
+        if pdf is None:
+            print(f"  no PDF in the library for {stem}; skipped")
+            continue
+        out.append((key, pdf))
     return out
 
 

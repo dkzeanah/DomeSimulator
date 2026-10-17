@@ -27,6 +27,12 @@ const AdminOps = lazy(() => import("./pages/AdminOps"));
 const AdminAgents = lazy(() => import("./pages/AdminAgents"));
 const Reset = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Reset })));
 const Verify = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Verify })));
+const Kids = lazy(() => import("./pages/Kids"));
+const Card = lazy(() => import("./pages/Card"));
+const Domes = lazy(() => import("./pages/Domes"));
+const DomeClassPage = lazy(() => import("./pages/Domes").then((m) => ({ default: m.DomeClassPage })));
+const AdminStudio = lazy(() => import("./pages/AdminStudio"));
+const AdminProjects = lazy(() => import("./pages/AdminProjects"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 createRoot(document.getElementById("root")!).render(
@@ -48,7 +54,14 @@ createRoot(document.getElementById("root")!).render(
               <Route path="recyclers" element={<Recyclers />} />
               <Route path="thanks/:ref" element={<Thanks />} />
               <Route path="checkout/test/:ref" element={<Thanks test />} />
+              <Route path="kids" element={<Kids />} />
+              <Route path="card" element={<Card />} />
+              <Route path="links" element={<Card />} />
+              <Route path="domes" element={<Domes />} />
+              <Route path="domes/:longIn" element={<DomeClassPage />} />
               <Route path="admin" element={<Admin />} />
+              <Route path="admin/studio" element={<AdminStudio />} />
+              <Route path="admin/projects" element={<AdminProjects />} />
               <Route path="admin/list" element={<AdminList />} />
               <Route path="admin/analytics" element={<AdminAnalytics />} />
               <Route path="admin/users" element={<AdminUsers />} />

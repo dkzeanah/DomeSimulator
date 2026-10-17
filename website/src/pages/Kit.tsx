@@ -84,7 +84,7 @@ const SLIDES: { kicker: string; title: string; body: string; img?: string }[] = 
   { kicker: "The wood", title: `${facts.wood.wedgeVsMilled}x the wood from every log`, body: `Split into wedges instead of sawn into boards -- and ${Math.round(facts.wood.treesVsMitred * 100)}% of the trees a mitred dome takes.` },
   { kicker: "Finished any way", title: "Every triangle closed, cut flush", body: "Pairs, rings, chevrons, louvers, covers: each one built from the infill tool's own solids.", img: "dome-filled-rings-flipflop" },
   { kicker: "The network", title: "Pads with their numbers on", body: "Each pad shows its rate, how often it is let, and what a season costs -- the same arithmetic for every pad." },
-  { kicker: "The proof", title: `${cabin.pages} pages, ${cabin.figures} computed figures`, body: `The 40 Hour Cabin: the method, the tools and the costs. The first ${sample.pages} pages are free.` },
+  { kicker: "The proof", title: `${cabin.pages} pages, ${cabin.figures} computed figures`, body: `The 40 Hour Cabin: the method, the tools and the costs. ${sample.pages} pages of it are free.` },
   { kicker: "The ask", title: `${usd(facts.goal.total)} to stand one dome for a year`, body: "One standing, instrumented dome, the hub designed until it ships, and the tools to make the next ones." },
   { kicker: "Founders", title: `${facts.plaques.slots} panels, ${facts.plaques.slots} names`, body: "A founder's plaque is a panel of the building -- permanent, public, and load-bearing.", img: "dome-filled-louvers" },
 ];
