@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { api } from "../lib/api";
 import { trackView } from "../lib/track";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
 import { Toast } from "./ui";
 
 const NAV = [
@@ -14,9 +15,17 @@ const NAV = [
 ] as const;
 
 export default function Layout() {
-  const { me } = useSession();
+  const { me, setMe, notify } = useSession();
   const [open, setOpen] = useState(false);
   const loc = useLocation();
+  const go = useNavigate();
+  const signOut = async () => {
+    setOpen(false);
+    await api("/logout", { body: {} }).catch(() => undefined);
+    setMe(null);
+    notify("Signed out", "This device is signed out.");
+    go("/");
+  };
   // one page view per page shown, to the site's own counter
   useEffect(() => { trackView(loc.pathname); }, [loc.pathname]);
   return (
@@ -31,15 +40,18 @@ export default function Layout() {
             {NAV.map(([to, label]) => (
               <NavLink key={to} to={to} className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>{label}</NavLink>
             ))}
+            {me && isStaff(me) && <NavLink to="/admin/studio" className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>Studio</NavLink>}
             <NavLink to="/account" className="btn-ghost !py-1.5">{me ? me.displayName : "Sign in"}</NavLink>
+            {me && <button type="button" className="muted hover:text-[var(--ink)] text-sm" onClick={signOut}>Sign out</button>}
           </nav>
           <button className="md:hidden btn-ghost !py-1.5" aria-expanded={open} onClick={() => setOpen(!open)}>Menu</button>
         </div>
         {open && (
           <nav className="md:hidden border-t px-4 py-3 grid gap-3" style={{ borderColor: "var(--line)" }}>
-            {[...NAV, ["/account", me ? me.displayName : "Sign in"] as const].map(([to, label]) => (
+            {[...NAV, ...(me && isStaff(me) ? [["/admin/studio", "Studio"] as const] : []), ["/account", me ? me.displayName : "Sign in"] as const].map(([to, label]) => (
               <NavLink key={to} to={to} onClick={() => setOpen(false)}>{label}</NavLink>
             ))}
+            {me && <button type="button" className="text-left" onClick={signOut}>Sign out</button>}
           </nav>
         )}
       </header>
@@ -49,7 +61,10 @@ export default function Layout() {
       <footer className="border-t mt-16" style={{ borderColor: "var(--line)" }}>
         <div className="mx-auto max-w-6xl px-4 py-8 text-sm muted grid gap-2 sm:flex sm:justify-between">
           <p>Every number on this site is computed by the project's own open code, or counted from real records.</p>
-          <p className="flex gap-4">
+          <p className="flex flex-wrap gap-x-4 gap-y-1">
+            <Link to="/card">Contact</Link>
+            <Link to="/kids">Kids' book</Link>
+            <Link to="/domes">Dome classes</Link>
             <Link to="/recyclers">Recyclers</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/kit">Press &amp; letters</Link>

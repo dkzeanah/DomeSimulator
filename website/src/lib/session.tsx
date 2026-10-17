@@ -4,7 +4,8 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { api } from "./api";
 
-export interface Me { id: number; email: string; displayName: string; role: string; bio: string; city: string; region: string; country: string; publicProfile: boolean; emailVerified?: boolean }
+export interface MyDome { longIn: number; status: string; note: string }
+export interface Me { id: number; email: string; username: string; displayName: string; role: string; bio: string; city: string; region: string; country: string; publicProfile: boolean; emailVerified?: boolean; dome: MyDome | null }
 
 /** The owner (admin) or a manager: may open the admin pages. */
 export const isStaff = (me: Me | null) => me?.role === "admin" || me?.role === "manager";

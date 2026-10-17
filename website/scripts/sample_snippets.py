@@ -21,15 +21,33 @@ import medialib  # noqa: E402
 import pymupdf  # noqa: E402
 
 OUT = SITE / "public" / "img" / "sample"
-#: which pages (0-based) and what each shows -- chosen by looking at the sample
+#: which pages, and what each shows -- each found by the words it opens with, so a new
+#: edition of the sample (which can grow or shrink) still gives the right pages. None is
+#: the cover, which is a picture.
 PAGES = [
-    (0, "The cover"),
-    (1, "What the book is, in its own numbers"),
-    (4, "Chapter 1: Your Skull Is Not Symmetrical Either"),
-    (8, "Chapter 2: Water Is the Silent Killer"),
-    (14, "Chapter 13: Stop Squaring. Start Splitting."),
-    (18, "The whole book: every part and chapter"),
+    (None, "The cover"),
+    ("Free sample", "What the book is, in its own numbers"),
+    ("Your Skull Is Not Symmetrical Either", "Chapter 1: Your Skull Is Not Symmetrical Either"),
+    ("Water Is the Silent Killer", "Chapter 2: Water Is the Silent Killer"),
+    ("Stop Squaring. Start Splitting.", "Chapter 13: Stop Squaring. Start Splitting."),
+    ("A home you can account for", "A home you can account for: one number, the whole dome"),
 ]
+
+
+def _squash(text: str) -> str:
+    return "".join(ch for ch in text.lower() if ch.isalnum())
+
+
+def find_page(doc, opening: str | None) -> int | None:
+    """The first page whose first lines carry ``opening`` (letter-spacing ignored)."""
+    if opening is None:
+        return 0
+    want = _squash(opening)
+    for i, page in enumerate(doc):
+        head = _squash(" ".join(page.get_text().strip().splitlines()[:4]))
+        if want in head:
+            return i
+    return None
 
 
 def main() -> int:
@@ -40,8 +58,10 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     doc = pymupdf.open(pdf)
     index = []
-    for i, caption in PAGES:
-        if i >= doc.page_count:
+    for opening, caption in PAGES:
+        i = find_page(doc, opening)
+        if i is None:
+            print(f"  not in {pdf.name}: {caption}")
             continue
         pix = doc[i].get_pixmap(dpi=110)
         name = f"sample-page-{i + 1:02d}.jpg"

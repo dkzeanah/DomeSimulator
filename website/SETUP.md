@@ -244,3 +244,28 @@ a workers.dev subdomain: open **Workers & Pages** in the dashboard once and it i
 - **The list:** Admin page → *Download CSV*.
 - **Change the database:** add a new numbered file in `migrations/`; never edit one that has
   already run.
+
+## The studio (Admin -> Studio, `/admin/studio`)
+
+After `migrations/0008_studio.sql` is applied (`npm run db:remote`) and the site deployed:
+
+- **Signing in:** the owner is whoever `ADMIN_EMAILS` (a secret) names. That account can also
+  sign in with the username `OWNER_USERNAME` (`wrangler.toml`, `shortcircuiter`), which nobody
+  else can take. Any member may pick a username at sign-up or on their Profile tab.
+  *Sign out* is in the header.
+- **Lead with:** which part of the site the home page's banner is about (the book, the kids'
+  book, dome classes, the pad network). No redeploy.
+- **Invite codes** (owner only): one live code per level -- *friend* (friend prices on every
+  book) and *manager* (the admin pages). Each rolls on its own every 72 hours (changeable) and
+  still works for one period after; *Roll now* kills a code at once. People type it in the
+  invite box when they make an account, or later on their Profile tab.
+- **Give an account a level:** the same levels by hand, by email or username.
+- **Promo codes:** each unlocks one book's friend price ($5 for the $20 book, $1 for the $5
+  kids' book). None exist until you make them here; the repository is public, so none are
+  seeded.
+- **The kids' book** is a pre-order until its PDF is uploaded to the book store as
+  `my-own-home-my-own-dome.pdf`; then set it *live* on *Backers and orders*. Buyers' order
+  pages show the download from then on.
+- **Dome classes** (`/domes`): every figure comes from `npm run facts`, which also writes
+  `src/generated/dome-classes.json` (one class per whole inch of longest strut, solved by
+  `seed_model`).

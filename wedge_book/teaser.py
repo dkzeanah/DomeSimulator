@@ -3,11 +3,14 @@
 The sample is *cut from* the newest print edition (:mod:`wedge_book.print_edition`),
 never typeset separately, so a reader gets exactly the pages the paperback
 prints -- its folios, figures and tables -- and nothing in the sample can
-drift from the book. Around those pages it adds four of its own:
+drift from the book. Around those pages it adds five of its own:
 
 * the rendered cover (:mod:`wedge_book.cover_scene`'s ``cover-front.png``);
 * "what this is": the book's headline figures, read from :mod:`wedge_book.tokens`,
   and the sampled chapters with the book's page numbers;
+* "a home you can account for": one number, the longest strut, and the sheet
+  it gives at three sizes -- :func:`seed_model.dome_class`, the same sheet the
+  website's dome classes show;
 * the whole book's contents, from :mod:`wedge_book.outline`;
 * where to get it: the print edition (Amazon), and the digital edition sold on
   the website, at the price in ``web/books.config.json`` -- the same file the
@@ -190,6 +193,19 @@ p { margin: 0 0 .12in; }
 .offer h2 { margin-top: 0; }
 .offer .price { font: 700 22pt "Segoe UI", sans-serif; float: right; margin-left: .2in; }
 .offer .url, .offer .url a { font: 700 12pt "Segoe UI", sans-serif; color: #a5620c; text-decoration: none; }
+.account { padding: .7in .8in; font-size: 10pt; line-height: 1.45; }
+.account h1 { font-size: 23pt; }
+.account h2 { margin: .16in 0 .06in; font-size: 12.5pt; }
+.sheet { width: 100%; border-collapse: collapse; margin: .14in 0 .06in; font: 8.8pt/1.3 "Segoe UI", sans-serif; }
+.sheet th { text-align: right; font-weight: 700; padding: .04in .08in; border-bottom: 2px solid #111; vertical-align: bottom; }
+.sheet th span { font-weight: 400; color: #a5620c; font-size: 7.6pt; }
+.sheet td { text-align: right; padding: .035in .08in; border-bottom: .6px solid #ddd; font-variant-numeric: tabular-nums; vertical-align: top; }
+.sheet td:first-child { text-align: left; color: #333; }
+.sheet .book { background: #fbf1df; font-weight: 700; }
+.inputs { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr; gap: .18in; margin: .12in 0 .06in; font-size: 8pt; line-height: 1.35; }
+.inputs ul { margin: 0; padding-left: .14in; }
+.inputs li { margin-bottom: .03in; }
+.inputs .note { font-size: 8pt; }
 .foot { position: absolute; left: .85in; right: .85in; bottom: .6in; font-size: 8.5pt; color: #666; }
 """
 
@@ -223,6 +239,91 @@ def intro_page(doc, found: list[Span]) -> str:
   {len(SAMPLE)} of its {chapters} chapters. The page numbers are the book's own.</p>
   <ul class="inside">{rows}</ul>
   <p class="note">The full contents, and where to get the whole book, are at the end.</p>
+</section>"""
+
+
+#: The sizes the "account for" page compares: the book's dome, and one a third
+#: smaller and a third larger, so the reader sees every figure move with the strut.
+ACCOUNT_SCALES = (2 / 3, 1.0, 4 / 3)
+#: The declared inputs behind the sheet, shown beside it. Each one's note says
+#: whether it was measured, borrowed from a published source, or assumed.
+ACCOUNT_INPUTS = ("lumber_board_usd", "lumber_struts_per_board", "pine_green_lb_per_cuft",
+                  "frame_waste_fraction", "frame_fastener_usd_per_member",
+                  "hardware_oversize_fraction", "seam_hose_usd_per_ft")
+
+
+def account_page(where: dict) -> str:
+    """"A home you can account for": one number, the longest strut, and
+    everything that follows from it -- the same sheet the website's dome
+    classes show (``seed_model.dome_class``)."""
+    import seed_model
+
+    e = html_escape.escape
+    book_in = seed_model.SEED_LONG_EDGE_IN
+    sheets = [seed_model.dome_class(round(book_in * k)) for k in ACCOUNT_SCALES]
+    book = next(s for s in sheets if s["longIn"] == round(book_in))
+
+    def pct(part: float, whole: float) -> str:
+        return f"{part / whole * 100:.0f}%"
+
+    def panels(s: dict) -> str:
+        return "<br>".join(f"{p['count']} of {' x '.join(f'{x:g}' for x in p['sidesIn'])} in" for p in s["panels"])
+
+    rows = [
+        ("Longest strut", lambda s: f"{s['longIn']} in"),
+        ("Shortest strut", lambda s: f"{s['shortIn']:g} in"),
+        ("Across, and tall", lambda s: f"{s['diameterFt']:g} ft x {s['heightFt']:g} ft"),
+        ("Floor inside the base ring", lambda s: f"{s['floorSqft']:,.0f} sq ft"),
+        ("Panels it takes", panels),
+        ("Sheet width a panel needs", lambda s: f"{max(p['minWidthIn'] for p in s['panels']):g} in"),
+        ("Area to close", lambda s: f"{s['panelSqft']:,.0f} sq ft"),
+        ("Wood in the frame", lambda s: f"{s['woodCuft']:g} cu ft"),
+        ("Frame weight, green pine", lambda s: f"{s['frameLb']:,} lb"),
+        ("Frame cost", lambda s: f"${s['cost']['frame']:,.0f}"),
+        ("&nbsp;&nbsp;of it wood", lambda s: pct(s["cost"]["wood"], s["cost"]["frame"])),
+        ("&nbsp;&nbsp;of it joining hardware", lambda s: pct(s["cost"]["hardware"], s["cost"]["frame"])),
+        ("&nbsp;&nbsp;of it seam hose", lambda s: pct(s["cost"]["seams"], s["cost"]["frame"])),
+    ]
+    head = "".join(f'<th class="{"book" if s is book else ""}">{s["longIn"]}-inch{"<br><span>this book</span>" if s is book else ""}</th>'
+                   for s in sheets)
+    body = "".join(
+        "<tr><td>" + label + "</td>" + "".join(f'<td class="{"book" if s is book else ""}">{fn(s)}</td>' for s in sheets) + "</tr>"
+        for label, fn in rows)
+
+    def inputs(kind: str) -> str:
+        out = []
+        for name in ACCOUNT_INPUTS:
+            note = seed_model.note_of(name)
+            if note.split(":", 1)[0].strip() not in kind:
+                continue
+            what = note.split(":", 1)[1].split(".")[0].strip()
+            out.append(f"<li><b>{seed_model.declared(name):g} {e(seed_model.units_of(name))}</b> -- {e(what)}</li>")
+        return "".join(out)
+
+    return f"""
+<section class="page account">
+  <p class="eyebrow">The idea behind the book</p>
+  <h1>A home you can account for</h1>
+  <p>Ask what a house weighs and few owners could tell you. Ask how much of it is wood, how much is
+  hardware, what size its panels are, how much surface has to be closed against the
+  weather -- and the answer is a guess, if there is one. This dome can answer every one of
+  those, because it is fixed by a single number: <b>its longest strut</b>. Give the
+  project's solver that, and it works out the rest -- the same way, every time, for anyone.</p>
+  <table class="sheet"><thead><tr><th></th>{head}</tr></thead><tbody>{body}</tbody></table>
+  <h2>Same number, same panels</h2>
+  <p>Two domes with the same longest strut take the same panels, so their owners can trade
+  them, lend a jig, or tell each other what worked. On the website that is a <b>dome
+  class</b>: enter your strut and see your sheet, and the members who share it, at
+  <b>{e(where['host'])}/domes</b>. This book's dome is the {book['longIn']}-inch class.</p>
+  <div class="inputs">
+    <div><p class="eyebrow">Computed</p><p class="note">Every size, panel, area, wood volume and seam on this page,
+    solved from the strut by the same solver that cuts the parts -- with the log the wedges
+    are split from held at {seed_model.SEED_TRUNK_DIAMETER_IN:g} in across, which sets each wedge's section.</p></div>
+    <div><p class="eyebrow">Measured or published</p><ul>{inputs("measured borrowed")}</ul></div>
+    <div><p class="eyebrow">Assumed</p><ul>{inputs("assumption")}</ul></div>
+  </div>
+  <p class="note">The joining hardware is priced in this model, not weighed, so its share is a share of the
+  frame's cost, and the weight is the frame's wood alone. {e(outline.TITLE)} prices the whole dome line by line.</p>
 </section>"""
 
 
@@ -322,7 +423,7 @@ def build(source: Path | None = None) -> Path:
     scratch = Path(tempfile.mkdtemp(prefix="sample-"))
     front, back = scratch / "front.pdf", scratch / "back.pdf"
     book_export._pdf_via_chrome(_html(cover_page(), intro_page(book, found)), front, chrome)
-    book_export._pdf_via_chrome(_html(contents_page(found), offer_page(where)), back, chrome)
+    book_export._pdf_via_chrome(_html(account_page(where), contents_page(found), offer_page(where)), back, chrome)
 
     out_doc = pymupdf.open()
     out_doc.insert_pdf(pymupdf.open(front))
@@ -366,6 +467,8 @@ def validate(path: Path | None = None) -> dict:
     for chapter in SAMPLE:
         if _squash(chapter.title) not in text:
             problems.append(f"chapter {chapter.number} ({chapter.title}) is missing")
+    if "ahomeyoucanaccountfor" not in text:
+        problems.append("the 'A home you can account for' page is missing")
     if "wheretogettherest" not in _squash(doc[-1].get_text()):
         problems.append("the last page is not the offer")
     return {"file": path.name, "pages": len(doc), "problems": problems}

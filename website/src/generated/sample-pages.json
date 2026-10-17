@@ -1,5 +1,5 @@
 {
-  "_generated_by": "scripts/sample_snippets.py from the-40-hour-cabin-sample-v5.pdf",
+  "_generated_by": "scripts/sample_snippets.py from the-40-hour-cabin-sample-v6.pdf",
   "pages": [
     {
       "src": "/img/sample/sample-page-01.jpg",
@@ -17,19 +17,19 @@
       "caption": "Chapter 1: Your Skull Is Not Symmetrical Either"
     },
     {
-      "src": "/img/sample/sample-page-09.jpg",
-      "page": 9,
+      "src": "/img/sample/sample-page-10.jpg",
+      "page": 10,
       "caption": "Chapter 2: Water Is the Silent Killer"
     },
     {
-      "src": "/img/sample/sample-page-15.jpg",
-      "page": 15,
+      "src": "/img/sample/sample-page-17.jpg",
+      "page": 17,
       "caption": "Chapter 13: Stop Squaring. Start Splitting."
     },
     {
-      "src": "/img/sample/sample-page-19.jpg",
-      "page": 19,
-      "caption": "The whole book: every part and chapter"
+      "src": "/img/sample/sample-page-24.jpg",
+      "page": 24,
+      "caption": "A home you can account for: one number, the whole dome"
     }
   ]
 }

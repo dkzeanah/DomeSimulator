@@ -32,7 +32,7 @@ function Member({ id, onChanged, owner }: { id: number; onChanged: () => void; o
   useEffect(() => { void load(); }, [load]);
   if (!d) return <p className="muted text-sm">{error || "Loading..."}</p>;
   const u = d.user;
-  const hands = owner || u.role === "member";   // a manager acts on members only
+  const hands = owner || u.role === "member" || u.role === "friend";   // a manager acts on members and friends only
   const act = async (fn: () => Promise<unknown>, done: string) => { setError(null); setMsg(null); try { await fn(); setMsg(done); await load(); onChanged(); } catch (e) { setError((e as Error).message); } };
   return (
     <div className="grid gap-4 text-sm">
@@ -51,6 +51,12 @@ function Member({ id, onChanged, owner }: { id: number; onChanged: () => void; o
                 <button className="btn-ghost !py-1.5" onClick={() => act(() => api(`/admin/users/${id}/role`, { body: { role: "member" } }), "Now a member.")}>Make a member again</button></>
             : <><span className="muted">Give this person the admin pages, short of making managers, agent keys and deleting accounts.</span>
                 <button className="btn-ghost !py-1.5" onClick={() => { if (confirm(`Make ${u.email} a manager?`)) void act(() => api(`/admin/users/${id}/role`, { body: { role: "manager" } }), "Now a manager."); }}>Make a manager</button></>}
+        </div>
+      )}
+      {hands && !u.isAdmin && u.role !== "manager" && (
+        <div className="panel-2 p-3 flex flex-wrap gap-3 items-center">
+          <span className="muted">{u.role === "friend" ? "Friend: sees friend prices on every book." : "Member. A friend sees friend prices on every book."}</span>
+          <button className="btn-ghost !py-1.5" onClick={() => act(() => api(`/admin/users/${id}/role`, { body: { role: u.role === "friend" ? "member" : "friend" } }), u.role === "friend" ? "Now a member." : "Now a friend.")}>{u.role === "friend" ? "Make a member again" : "Make a friend"}</button>
         </div>
       )}
       {!hands && <p className="muted">Only the owner can change a manager's account.</p>}
@@ -124,7 +130,7 @@ export default function AdminUsers() {
             <div key={r.id} className="panel-2 p-3 text-sm">
               <button className="w-full text-left flex flex-wrap gap-x-4 gap-y-1 items-baseline" onClick={() => setOpen(open === r.id ? null : r.id)} aria-expanded={open === r.id}>
                 <b>{r.display_name}</b><span className="muted">{r.email}</span>
-                {r.role === "admin" && <span className="accent text-xs">owner</span>}{r.role === "manager" && <span className="accent text-xs">manager</span>}
+                {r.role === "admin" && <span className="accent text-xs">owner</span>}{r.role === "manager" && <span className="accent text-xs">manager</span>}{r.role === "friend" && <span className="accent text-xs">friend</span>}
                 {r.status === "suspended" && <span className="text-xs" style={{ color: "var(--color-ember)" }}>suspended</span>}
                 <span className="muted text-xs ml-auto">{r.orders ? `${r.orders} orders, ${money(r.spent_cents)}; ` : ""}{r.listings ? `${r.listings} listings; ` : ""}{r.sessions} devices; seen {when(r.last_seen_at)}</span>
               </button>

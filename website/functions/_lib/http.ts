@@ -8,6 +8,7 @@ export interface Env {
   PUBLIC_URL?: string;
   SESSION_SECRET?: string;
   ADMIN_EMAILS?: string;
+  OWNER_USERNAME?: string; // the owner's sign-in name, reserved for the ADMIN_EMAILS address (wrangler.toml)
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
   TEST_CHECKOUT?: string; // "1" locally: a stand-in for Stripe's page. Never set in production.
@@ -34,6 +35,11 @@ export interface User {
   status?: string;
   last_seen_at?: string | null;
   email_verified_at?: string | null;
+  username?: string | null;
+  joined_with?: string | null;
+  dome_long_in?: number | null;
+  dome_status?: string | null;
+  dome_note?: string | null;
 }
 
 export interface Ctx {

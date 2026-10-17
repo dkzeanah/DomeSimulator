@@ -1694,6 +1694,41 @@ def frame_weight_lb(geometry: SeedGeometry | None = None) -> float:
     return geometry.member_volume_cuft * declared("pine_green_lb_per_cuft")
 
 
+def dome_class(long_edge_in: float) -> dict:
+    """Everything one number gives you: a 2V wedge dome solved at this longest
+    strut, as plain figures.
+
+    The "home you can account for" sheet. Two domes with the same longest strut
+    take the same panels, so the website groups its members into classes by it
+    (``website/scripts/export_facts.py``) and the free sample prints the same
+    sheet (``wedge_book.teaser``). Both read it from here.
+
+    Hardware is priced, not weighed, in this model, so the wood/hardware split
+    is a split of the frame's cost; the weight is the frame's wood alone.
+    """
+    geo = seed_geometry(float(long_edge_in))
+    edge = {name: length for name, _count, length in geo.geodesic_edges}  # A long, B short
+    frame = frame_group(geo)
+    wood, hardware, *seams = frame.lines
+    r = lambda x, n=2: round(float(x), n)  # noqa: E731
+    return {
+        "longIn": round(long_edge_in) if float(long_edge_in).is_integer() else r(long_edge_in),
+        "shortIn": r(geo.short_edge_in),
+        "diameterFt": r(geo.diameter_ft), "heightFt": r(geo.height_ft),
+        "floorSqft": r(geo.floor_decagon_sqft, 1), "baseRingFt": r(geo.base_perimeter_ft),
+        "panelSqft": r(geo.panel_sqft, 1), "sphereSqft": r(geo.spherical_sqft, 1),
+        "panels": [{"name": f.name, "count": f.count, "sidesIn": [r(edge[c]) for c in f.name],
+                    "areaSqft": r(f.area_sqft), "minWidthIn": r(f.min_width_in, 1)} for f in geo.faces],
+        "members": [{"type": m.edge_type, "count": m.count, "stockIn": r(m.stock_length_in, 1)}
+                    for m in geo.members],
+        "memberCount": geo.member_count, "nodes": geo.vertex_count,
+        "seams": geo.seam_count, "seamFt": r(geo.seam_length_ft, 1),
+        "woodCuft": r(geo.member_volume_cuft), "frameLb": round(frame_weight_lb(geo)),
+        "cost": {"wood": r(wood.cost), "hardware": r(hardware.cost),
+                 "seams": r(sum(x.cost for x in seams)), "frame": r(frame.cost)},
+    }
+
+
 def floating_report(geometry: SeedGeometry | None = None) -> str:
     """The mast, the floor and the floating rig, priced as one upgrade
     path."""

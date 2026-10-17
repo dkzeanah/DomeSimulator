@@ -2,13 +2,14 @@
 
 import facts from "../../src/generated/facts.json";
 import { LifeAccount } from "./account";
-import { downloadToken, endSession, loginGate, normaliseEmail, recordLogin, publicUser, readDownloadToken, requireAdmin, requireUser, roleFor, startSession } from "./auth";
+import { checkUsername, downloadToken, endSession, findAccount, loginGate, normaliseEmail, recordLogin, publicUser, readDownloadToken, requireAdmin, requireUser, roleFor, startSession } from "./auth";
 import { checkPassword, hashPassword, randomToken, sameString, sha256Hex } from "./crypto";
 import { Ctx, HttpError, Router, User, body, email, honeypot, json, nowIso, num, text } from "./http";
 import { checkoutMode, createCheckoutSession, retrieveCheckoutSession, verifyStripeSignature } from "./services";
 import { convert, firstTouch, recordVisit, report, visitorOf } from "./analytics";
 import { checkClick, enqueue, enroll, queueCampaign, queueConfirm, queueSample, readSubscriberToken, suppress, tick } from "./mail";
 import { emit } from "./ops";
+import { levelOfInvite, livePromo, redeemInvite } from "./studio";
 
 const api = new Router();
 export default api;
@@ -21,7 +22,7 @@ export interface Product {
   slug: string; kind: "digital" | "physical" | "service" | "amazon"; title: string; subtitle: string; blurb: string;
   file_key: string | null; status: string; ships_note: string | null; ship_countries: string | null; external_url: string | null; sort: number;
 }
-export interface Price { product: string; key: string; label: string; amount_cents: number; currency: string; honor: number; honor_prompt: string | null; active: number; sort: number }
+export interface Price { product: string; key: string; label: string; amount_cents: number; currency: string; honor: number; honor_prompt: string | null; active: number; sort: number; gated: number }
 
 async function product(ctx: Ctx, slug: string) {
   return ctx.env.DB.prepare("SELECT * FROM products WHERE slug = ?").bind(slug).first<Product>();
@@ -32,13 +33,16 @@ async function price(ctx: Ctx, slug: string, key: string) {
 /** The few things a product carries that are not prices: the codebase link, the booking note. */
 const extras = (slug: string) => (facts.books as { slug: string; codebaseUrl?: string; bookingNote?: string }[]).find((b) => b.slug === slug);
 
+/** Everything shown for sale. A gated (friend) price is listed only to a member whose role is
+ *  friend; everyone else reaches it with a promo code at checkout. */
 export async function catalogue(ctx: Ctx) {
+  const friend = ctx.user?.role === "friend";
   const products = (await ctx.env.DB.prepare("SELECT * FROM products WHERE status != 'hidden' ORDER BY sort").all<Product>()).results;
-  const prices = (await ctx.env.DB.prepare("SELECT * FROM prices WHERE active = 1 ORDER BY sort").all<Price>()).results;
+  const prices = (await ctx.env.DB.prepare("SELECT * FROM prices WHERE active = 1 AND (gated = 0 OR ?) ORDER BY sort").bind(friend ? 1 : 0).all<Price>()).results;
   return products.map((p) => ({
     slug: p.slug, kind: p.kind, title: p.title, subtitle: p.subtitle, blurb: p.blurb, status: p.status,
     shipsNote: p.ships_note, shipCountries: (p.ship_countries || "").split(",").filter(Boolean), externalUrl: p.external_url,
-    prices: prices.filter((r) => r.product === p.slug).map((r) => ({ key: r.key, label: r.label, amountCents: r.amount_cents, currency: r.currency, honor: Boolean(r.honor), honorPrompt: r.honor_prompt })),
+    prices: prices.filter((r) => r.product === p.slug).map((r) => ({ key: r.key, label: r.label, amountCents: r.amount_cents, currency: r.currency, honor: Boolean(r.honor), honorPrompt: r.honor_prompt, gated: Boolean(r.gated) })),
   }));
 }
 const site = (ctx: Ctx) => (ctx.env.PUBLIC_URL || ctx.url.origin).replace(/\/$/, "");
@@ -272,8 +276,15 @@ api.post("/signup", async (ctx) => {
   const name = text(b, "displayName", { min: 1, max: 80, required: true })!;
   const db = ctx.env.DB;
   if (await db.prepare("SELECT id FROM users WHERE email = ?").bind(e).first()) throw new HttpError(409, "That email already has an account. Sign in instead.");
-  const r = await db.prepare("INSERT INTO users(email, password_hash, display_name, role, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?) RETURNING id")
-    .bind(e, await hashPassword(password), name, roleFor(ctx.env, e), nowIso(), nowIso()).first<{ id: number }>();
+  const wanted = text(b, "username", { max: 40 });
+  const username = wanted ? checkUsername(ctx.env, wanted, e) : null;
+  if (username && await db.prepare("SELECT 1 FROM users WHERE username = ?").bind(username).first()) throw new HttpError(409, "That username is taken.");
+  // an invite code is checked before the account exists, so a wrong one costs nothing
+  const invite = text(b, "inviteCode", { max: 40 });
+  if (invite && !(await levelOfInvite(ctx, invite))) throw new HttpError(400, "That invite code is not right, or it has rolled. Ask for the current one, or leave the box empty.");
+  const r = await db.prepare("INSERT INTO users(email, password_hash, display_name, role, username, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?, ?) RETURNING id")
+    .bind(e, await hashPassword(password), name, roleFor(ctx.env, e), username, nowIso(), nowIso()).first<{ id: number }>();
+  if (invite) await redeemInvite(ctx, (await db.prepare("SELECT * FROM users WHERE id = ?").bind(r!.id).first<User>())!, invite);
   const sub = await upsertSubscriber(ctx, { email: e, name, consent: b.marketingConsent === true, source: "signup" });
   await event(ctx, "member", "A new member joined");  // names stay private unless chosen public
   await convert(ctx, "signup");
@@ -286,15 +297,15 @@ api.post("/signup", async (ctx) => {
 // Compared against when the email is unknown, so a wrong email takes as long as a wrong password.
 const DUMMY = "pbkdf2$100000$c2FsdHNhbHRzYWx0c2FsdA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
+/** Sign in with an email or a username ("login"; "email" still works for older pages). */
 api.post("/login", async (ctx) => {
   const b = await body(ctx);
-  const e = email(b);
+  const { email: e, user: u } = await findAccount(ctx, text(b, "login", { max: 320 }) || text(b, "email", { max: 320 }) || "");
   const password = text(b, "password", { min: 1, max: 200, required: true })!;
   await loginGate(ctx, e);
-  const u = await ctx.env.DB.prepare("SELECT * FROM users WHERE email = ?").bind(e).first<User & { suspended_reason: string | null }>();
   const ok = await checkPassword(password, u?.password_hash || DUMMY);
   await recordLogin(ctx, e, Boolean(u && ok));
-  if (!u || !ok) throw new HttpError(401, "Email or password is not right.");
+  if (!u || !ok) throw new HttpError(401, "That email or username and password do not match.");
   if (u.status === "suspended") throw new HttpError(403, `This account is suspended${u.suspended_reason ? `: ${u.suspended_reason}` : ""}. Write to owner@zeanahlab.com.`);
   await startSession(ctx, u.id);
   return json({ user: publicUser(u) }, 200, ctx);
@@ -315,6 +326,12 @@ api.patch("/me", async (ctx) => {
     if (key in b) { sets.push(`${col} = ?`); vals.push(text(b, key, { max })); }
   }
   if ("publicProfile" in b) { sets.push("public_profile = ?"); vals.push(b.publicProfile === true ? 1 : 0); }
+  if ("username" in b) {
+    const wanted = text(b, "username", { max: 40 });
+    const name = wanted ? checkUsername(ctx.env, wanted, u.email) : null;
+    if (name && await ctx.env.DB.prepare("SELECT 1 FROM users WHERE username = ? AND id != ?").bind(name, u.id).first()) throw new HttpError(409, "That username is taken.");
+    sets.push("username = ?"); vals.push(name);
+  }
   if (b.newPassword) {
     const cur = text(b, "currentPassword", { max: 200 });
     if (!cur || !(await checkPassword(cur, u.password_hash))) throw new HttpError(400, "Your current password is needed to set a new one.");
@@ -619,10 +636,15 @@ api.post("/checkout", async (ctx) => {
   honeypot(b);
   const slug = text(b, "product", { max: 80 }) || text(b, "book", { max: 80, required: true })!;
   const prod = await product(ctx, slug);
-  const pr = prod ? await price(ctx, prod.slug, text(b, "price", { max: 40 }) || "standard") : null;
+  // a promo code chooses its own (friend) price; a friend may pick the friend price directly
+  const typedPromo = text(b, "promoCode", { max: 40 });
+  const promo = prod && typedPromo ? await livePromo(ctx, prod.slug, typedPromo) : null;
+  if (typedPromo && !promo) throw new HttpError(400, "That promo code is not valid for this book. Clear it to pay the full price.");
+  const pr = prod ? await price(ctx, prod.slug, promo?.price_key || text(b, "price", { max: 40 }) || "standard") : null;
   if (!prod || !pr || pr.amount_cents <= 0 || !["digital", "physical", "service"].includes(prod.kind) || !["live", "preorder"].includes(prod.status)) {
     throw new HttpError(404, "That is not for sale right now.");
   }
+  if (pr.gated && !promo && ctx.user?.role !== "friend") throw new HttpError(403, "That price needs a promo code.");
   let honorNote: string | null = null;
   if (pr.honor) {
     honorNote = text(b, "honorNote", { min: 10, max: 600 });
@@ -634,10 +656,10 @@ api.post("/checkout", async (ctx) => {
   const ref = randomToken(9), key = randomToken(24);
   const physical = prod.kind === "physical";
   const r = await ctx.env.DB.prepare(
-    "INSERT INTO orders(ref, key_hash, book_slug, amount_cents, currency, email, user_id, provider, marketing_consent, price_key, honor_note, fulfillment, created_at, visitor_id) "
-    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+    "INSERT INTO orders(ref, key_hash, book_slug, amount_cents, currency, email, user_id, provider, marketing_consent, price_key, honor_note, fulfillment, created_at, visitor_id, promo_code) "
+    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
   ).bind(ref, await sha256Hex(key), prod.slug, pr.amount_cents, pr.currency, e, ctx.user?.id ?? null, mode, b.marketingConsent === true ? 1 : 0,
-    pr.key, honorNote, physical ? "waiting" : null, nowIso(), visitorOf(ctx)).first<{ id: number }>();
+    pr.key, honorNote, physical ? "waiting" : null, nowIso(), visitorOf(ctx), promo?.code ?? null).first<{ id: number }>();
   await convert(ctx, "checkout", prod.slug, pr.amount_cents);
   const thanks = `/thanks/${ref}?key=${encodeURIComponent(key)}`;
   if (mode === "test") return json({ url: `/checkout/test/${ref}?key=${encodeURIComponent(key)}`, test: true }, 201);
@@ -645,7 +667,8 @@ api.post("/checkout", async (ctx) => {
     ref, slug: prod.slug, cents: pr.amount_cents, currency: pr.currency, email: e,
     name: `${prod.title}${prod.subtitle ? `: ${prod.subtitle}` : ""}${pr.key !== "standard" ? ` (${pr.label})` : ""}`,
     description: prod.kind === "service" ? "A one-on-one design session."
-      : physical ? (prod.ships_note || "A printed book.") : "Digital edition (PDF). Every future edition included.",
+      : physical ? (prod.ships_note || "A printed book.")
+      : prod.status === "preorder" ? (prod.ships_note || "Digital edition (PDF), delivered when finished.") : "Digital edition (PDF). Every future edition included.",
     shipTo: physical ? (prod.ship_countries || "US").split(",").map((c) => c.trim()).filter(Boolean) : undefined,
     successUrl: `${site(ctx)}${thanks}`, cancelUrl: `${site(ctx)}/book?cancelled=1`,
   });
@@ -658,6 +681,7 @@ interface OrderRow {
   subscriber_id: number | null; status: string; provider: string; provider_session: string | null; marketing_consent: number; created_at: string; paid_at: string | null;
   price_key: string | null; honor_note: string | null; ship_name: string | null; ship_address: string | null; fulfillment: string | null;
   visitor_id: string | null;
+  promo_code: string | null;
 }
 
 async function loadOrder(ctx: Ctx) {
@@ -677,6 +701,7 @@ async function markPaid(ctx: Ctx, o: OrderRow, session?: Record<string, any> | n
   const res = await ctx.env.DB.prepare(
     "UPDATE orders SET status = 'paid', paid_at = ?, email = ?, subscriber_id = ?, ship_name = COALESCE(?, ship_name), ship_address = COALESCE(?, ship_address) WHERE id = ? AND status = 'pending'",
   ).bind(nowIso(), buyer || o.email, sub?.id ?? null, ship?.name ?? null, ship?.address ? JSON.stringify(ship.address) : null, o.id).run();
+  if (res.meta.changes && o.promo_code) await ctx.env.DB.prepare("UPDATE promo_codes SET uses = uses + 1 WHERE code = ?").bind(o.promo_code).run();
   if (res.meta.changes && sub) {
     await recordSignup(ctx, sub.id, "purchase", o.book_slug);
     await convert(ctx, "purchase", o.book_slug, o.amount_cents, o.visitor_id);
@@ -697,11 +722,12 @@ async function publicOrder(ctx: Ctx, o: OrderRow, key: string) {
   const p = await product(ctx, o.book_slug);
   const x = extras(o.book_slug);
   const paid = o.status === "paid";
-  const digital = p?.kind === "digital";
+  // a digital pre-order has no file yet: its page says so, and the link appears when it goes live
+  const digital = p?.kind === "digital" && p.status === "live";
   return {
     ref: o.ref, status: o.status, amountCents: o.amount_cents, currency: o.currency, email: o.email || "", paidAt: o.paid_at,
     book: { slug: o.book_slug, title: p?.title || o.book_slug, subtitle: p?.subtitle || "", kind: p?.kind || "digital" },
-    priceKey: o.price_key, honorNote: o.honor_note, fulfillment: o.fulfillment, shipsNote: p?.kind === "physical" ? p.ships_note : null,
+    priceKey: o.price_key, honorNote: o.honor_note, fulfillment: o.fulfillment, shipsNote: p?.kind === "physical" || (p?.kind === "digital" && p.status === "preorder") ? p.ships_note : null,
     downloadUrl: paid && digital ? `/api/orders/${o.ref}/download${key ? `?key=${encodeURIComponent(key)}` : ""}` : null,
     codebaseUrl: paid ? x?.codebaseUrl || "" : "",
     bookingNote: paid && p?.kind === "service" ? x?.bookingNote || "" : "",

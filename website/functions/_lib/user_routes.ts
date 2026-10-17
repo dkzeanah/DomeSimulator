@@ -4,7 +4,7 @@
 // suspend or restore it, sign it out everywhere, make a reset link, delete it -- each act
 // written to the audit log.
 
-import { currentSessionHash, normaliseEmail, publicUser, requireAdmin, requireOwner, requireUser, roleFor, startSession } from "./auth";
+import { currentSessionHash, isStaffRole, normaliseEmail, publicUser, requireAdmin, requireOwner, requireUser, roleFor, startSession } from "./auth";
 import { hashPassword, randomToken, sha256Hex } from "./crypto";
 import { Ctx, HttpError, User, body, email, honeypot, json, nowIso, text } from "./http";
 import { enqueue, site } from "./mail";
@@ -149,15 +149,15 @@ api.get("/admin/users", async (ctx) => {
   const q = `%${(ctx.url.searchParams.get("q") || "").trim().toLowerCase()}%`;
   const status = ctx.url.searchParams.get("status") || "";
   const rows = (await ctx.env.DB.prepare(
-    `SELECT u.id, u.email, u.display_name, u.role, u.status, u.created_at, u.last_seen_at, u.email_verified_at, u.public_profile, u.city, u.region, u.country,
+    `SELECT u.id, u.email, u.username, u.display_name, u.role, u.joined_with, u.dome_long_in, u.status, u.created_at, u.last_seen_at, u.email_verified_at, u.public_profile, u.city, u.region, u.country,
        (SELECT COUNT(*) FROM orders o WHERE (o.user_id = u.id OR o.email = u.email) AND o.status = 'paid') orders,
        (SELECT COALESCE(SUM(amount_cents), 0) FROM orders o WHERE (o.user_id = u.id OR o.email = u.email) AND o.status = 'paid') spent_cents,
        (SELECT COUNT(*) FROM listings l WHERE l.user_id = u.id) listings,
        (SELECT COUNT(*) FROM sessions s WHERE s.user_id = u.id AND s.expires_at > ?) sessions,
        (SELECT s.status FROM subscribers s WHERE s.email = u.email) list_status
-     FROM users u WHERE (lower(u.email) LIKE ? OR lower(u.display_name) LIKE ?) AND (? = '' OR u.status = ?)
+     FROM users u WHERE (lower(u.email) LIKE ? OR lower(u.display_name) LIKE ? OR COALESCE(u.username, '') LIKE ?) AND (? = '' OR u.status = ?)
      ORDER BY COALESCE(u.last_seen_at, u.created_at) DESC LIMIT 500`,
-  ).bind(nowIso(), q, q, status, status).all()).results;
+  ).bind(nowIso(), q, q, q, status, status).all()).results;
   const counts = (await ctx.env.DB.prepare("SELECT status, COUNT(*) n FROM users GROUP BY status").all()).results;
   const active7 = (await ctx.env.DB.prepare("SELECT COUNT(*) n FROM users WHERE last_seen_at >= ?").bind(nowIso(-7 * 86_400_000)).first<{ n: number }>())!.n;
   return json({ users: rows, counts, active7 });
@@ -172,7 +172,7 @@ async function target(ctx: Ctx) {
 /** A manager acts on members; only the owner acts on a manager or the owner's own account. */
 function mayActOn(ctx: Ctx, t: User) {
   const me = requireAdmin(ctx);
-  const staff = roleFor(ctx.env, t.email, t.role) !== "member";
+  const staff = isStaffRole(roleFor(ctx.env, t.email, t.role));
   if (me.role !== "admin" && staff && t.id !== me.id) throw new HttpError(403, "Only the owner can change a manager's or the owner's account.");
   return me;
 }
@@ -249,18 +249,20 @@ api.delete("/admin/users/:id", async (ctx) => {
   return json({ ok: true });
 });
 
-/** The owner promotes a member to manager, or a manager back to member. A manager can open every
- *  admin page and do the day's work -- orders, backers, the list, campaigns, automations,
- *  members, approving agents' proposals -- but cannot make managers, make or revoke agent keys,
- *  delete accounts, or change another manager's or the owner's account. */
+/** The access level of an account: member, friend (sees friend prices) or manager. A manager can
+ *  open every admin page and do the day's work -- orders, backers, the list, campaigns,
+ *  automations, members, approving agents' proposals -- but cannot make managers, make or revoke
+ *  agent keys, delete accounts, or change another manager's or the owner's account. So the owner
+ *  alone makes or unmakes a manager; a manager may move a member between member and friend. */
 api.post("/admin/users/:id/role", async (ctx) => {
-  requireOwner(ctx);
   const u = await target(ctx);
+  mayActOn(ctx, u);
   const role = String((await body(ctx)).role || "");
-  if (!["manager", "member"].includes(role)) throw new HttpError(400, "role is manager or member.");
+  if (!["manager", "friend", "member"].includes(role)) throw new HttpError(400, "role is manager, friend or member.");
+  if (role === "manager" || u.role === "manager") requireOwner(ctx);
   if (roleFor(ctx.env, u.email) === "admin") throw new HttpError(400, "The owner's role comes from ADMIN_EMAILS, not from here.");
   if (u.status === "suspended" && role === "manager") throw new HttpError(400, "Restore the account first.");
   await ctx.env.DB.prepare("UPDATE users SET role = ?, updated_at = ? WHERE id = ?").bind(role, nowIso(), u.id).run();
-  await audit(ctx, role === "manager" ? "user.promote_manager" : "user.demote_member", `user:${u.id}`, { email: u.email });
+  await audit(ctx, `user.role_${role}`, `user:${u.id}`, { email: u.email, from: u.role });
   return json({ ok: true, role });
 });

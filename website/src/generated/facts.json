@@ -331,6 +331,7 @@
     "tiers": "kickstarter.tiers()",
     "fitouts": "seed_model.fitouts()",
     "panels": "seed_model.PANELS",
+    "kidsBook": "books/my-own-home-my-own-dome/verse.md",
     "plaques": "seed_model.seed_geometry().faces -- one plaque per panel of the stem cell",
     "books": "web/books.config.json"
   },
@@ -1111,7 +1112,7 @@
       }
     },
     "sample": {
-      "pages": 20,
+      "pages": 26,
       "front": [
         "Forty Hours"
       ],
@@ -1146,22 +1147,33 @@
     "name": "Zeanah Lab",
     "url": "https://zeanahlab.com",
     "tagline": "Stem-cell domes, split from a log. Free book, films and the dome network.",
+    "email": "owner@zeanahlab.com",
     "kickstarterUrl": "",
-    "youtubeChannelUrl": "",
+    "youtubeChannelUrl": "https://www.youtube.com/@donovanzeanah",
     "links": [
       {
-        "label": "Instagram @DonovanZeanah",
-        "url": "https://www.instagram.com/DonovanZeanah/",
-        "icon": "instagram"
+        "label": "YouTube @donovanzeanah",
+        "url": "https://www.youtube.com/@donovanzeanah",
+        "icon": "youtube"
       },
       {
-        "label": "TikTok @shortcircuitr5",
-        "url": "https://www.tiktok.com/@shortcircuitr5",
+        "label": "TikTok @shortcircuiter5",
+        "url": "https://www.tiktok.com/@shortcircuiter5",
         "icon": "tiktok"
       },
       {
-        "label": "Facebook",
-        "url": "https://www.facebook.com/zeanah",
+        "label": "Instagram @donovanzeanah",
+        "url": "https://www.instagram.com/donovanzeanah/",
+        "icon": "instagram"
+      },
+      {
+        "label": "Facebook: Donovan Zeanah",
+        "url": "https://www.facebook.com/donovan.zeanah.1",
+        "icon": "facebook"
+      },
+      {
+        "label": "Facebook: Zeanah",
+        "url": "https://www.facebook.com/Zeanah/",
         "icon": "facebook"
       },
       {
@@ -1169,6 +1181,16 @@
         "url": "https://github.com/dkzeanah/DomeSimulator",
         "icon": "github"
       }
+    ]
+  },
+  "kidsBook": {
+    "title": "My Own Home, My Own Dome",
+    "stanzaCount": 16,
+    "preview": [
+      "In a town full of boxes, all stacked up so tall,\nlived a girl named Pip Pine who said, \"Boxes? Not all!\nA box has four corners, and corners grow dust.\nI want a round home. A round home! I must!\"",
+      "\"A dome!\" Pip decided. \"A dome I will build,\nwith a roof like the sky when the sky is all filled\nwith the curve of the morning, the bend of the sun --\na home with no corners! Not one! Not a one!\"",
+      "So she marched past the lumber yard, stacked to the eaves\nwith boards wrapped in plastic and tags on their sleeves.\n\"No thank you,\" said Pip. \"I won't buy all my sticks.\nI will find them, and split them, and fit them like bricks.\"",
+      "At the edge of the forest a fallen pine lay,\njust as round as a barrel and long as a day.\n\"Hello, Mister Log,\" Pip said, tipping her hat.\n\"Would you like to be home? Would you, please, become that?\""
     ]
   }
 }

@@ -36,6 +36,7 @@ export default function Thanks({ test = false }: { test?: boolean }) {
             {order.downloadUrl && <a className="btn text-center" href={order.downloadUrl}>Download the book</a>}
             {order.codebaseUrl && <a className="btn-ghost text-center" href={order.codebaseUrl}>The codebase</a>}
             {order.bookingNote && <p>{order.bookingNote}</p>}
+            {order.book.kind === "digital" && !order.downloadUrl && order.shipsNote && <p className="panel-2 p-3 text-sm">{order.shipsNote}</p>}
             {order.book.kind === "physical" && (
               <div className="panel-2 p-3 text-sm grid gap-1">
                 <p><b>{order.book.subtitle || order.book.title}</b> -- {order.fulfillment === "shipped" ? "shipped" : order.fulfillment === "printed" ? "printed, shipping soon" : "waiting to be printed"}.</p>
