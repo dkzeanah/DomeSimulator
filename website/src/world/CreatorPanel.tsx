@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { DEFAULTS, T, design, type Config } from "./creator";
 import { STAGE_RADIUS_FT, drawDesign } from "./creatorView";
-import type { World } from "./engine";
+import type { ToolProps } from "./tools";
 
 const FT = 3.280839895;
 const usd = (x: number) => `$${Math.round(x).toLocaleString()}`;
@@ -37,7 +37,7 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
   return <div className="flex justify-between gap-2 py-0.5 border-b text-xs" style={{ borderColor: "var(--line)" }}><span className="muted">{k}</span><span className="num font-semibold text-right">{v}</span></div>;
 }
 
-export default function CreatorPanel({ world, colour }: { world: React.RefObject<World | null>; colour: string }) {
+export default function CreatorPanel({ world, colour }: ToolProps) {
   const [c, setC] = useState<Config>(() => ({ ...DEFAULTS }));
   const d = useMemo(() => design(c), [c]);
   const set = <K extends keyof Config>(k: K, v: Config[K]) => setC((x) => ({ ...x, [k]: v }));

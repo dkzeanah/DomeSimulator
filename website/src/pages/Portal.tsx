@@ -2,19 +2,19 @@
 // the solver's dome in the middle and a gateway to each tool round it; /portal/<tool> is that
 // tool's own space, with its own stage and control panel (the panels are built tool by tool).
 
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMeta } from "../lib/meta";
 import { World, hubGates, THREE, type Gate } from "../world/engine";
 import { SPACES, spaceByKey } from "../world/spaces";
-
-const CreatorPanel = lazy(() => import("../world/CreatorPanel"));
+import { TOOLS } from "../world/tools";
 
 const HUB_RADIUS = 27;
 
 export default function Portal() {
   const { space: key } = useParams();
   const space = spaceByKey(key);
+  const Tool = space ? TOOLS[space.key] : undefined;
   const go = useNavigate();
   const canvas = useRef<HTMLCanvasElement>(null);
   const labels = useRef<HTMLDivElement>(null);
@@ -80,10 +80,10 @@ export default function Portal() {
           onClick={() => setPanel(true)}>Controls</button>
       )}
       {space && panel && (
-        <aside className={`absolute right-3 top-[130px] sm:top-[170px] panel p-4 text-sm overflow-y-auto ${space.key === "dome-creator" ? "w-[min(340px,calc(100%-24px))]" : "w-[min(300px,calc(100%-24px))]"}`}
+        <aside className={`absolute right-3 top-[130px] sm:top-[170px] panel p-4 text-sm overflow-y-auto ${Tool ? "w-[min(340px,calc(100%-24px))]" : "w-[min(300px,calc(100%-24px))]"}`}
           style={{ background: "color-mix(in srgb, var(--panel) 92%, transparent)", maxHeight: "calc(100% - 190px)" }}>
-          {space.key === "dome-creator" ? (
-            <Suspense fallback={<p className="muted text-xs">Loading the Creator...</p>}><CreatorPanel world={world} colour={space.colour} /></Suspense>
+          {Tool ? (
+            <Suspense fallback={<p className="muted text-xs">Loading the tool...</p>}><Tool world={world} colour={space.colour} /></Suspense>
           ) : (
             <>
               <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: space.colour }}>Control panel</p>
