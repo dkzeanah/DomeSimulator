@@ -268,6 +268,7 @@ export class World {
   private drag: { x: number; y: number; moved: boolean; button: number } | null = null;
   private cleanup: (() => void)[] = [];
   private frameNo = 0;
+  private stage: THREE.Group | null = null;
 
   constructor(private canvas: HTMLCanvasElement, private opts: WorldOptions) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -337,10 +338,12 @@ export class World {
     this.scene.add(pedestal);
     const stage = new THREE.Group(); stage.position.y = 1.2;
     this.scene.add(stage);
+    this.stage = stage;
     const spin = (o: THREE.Object3D, speed: number) => this.extras.push((_t, dt) => { o.rotation.y += dt * speed; });
     switch (space.key) {
       case "dome-creator": {
-        const d = solverDome({ deck: false, glow: space.colour }); d.scale.setScalar(0.62); stage.add(d); spin(d, 0.25); break;
+        // the Creator panel puts the design here (setModel); the whole stage turns slowly
+        const d = solverDome({ deck: false, glow: space.colour }); d.scale.setScalar(0.62); stage.add(d); spin(stage, 0.12); break;
       }
       case "assembly-line": {
         const belt = new THREE.Mesh(new THREE.BoxGeometry(17, 0.6, 3), new THREE.MeshLambertMaterial({ color: "#3a3a3a" }));
@@ -440,6 +443,21 @@ export class World {
     });
     on(c, "wheel", (e: WheelEvent) => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 1.1 : 0.9); }, { passive: false });
     on(window, "resize", () => this.resize());
+  }
+
+  /** Put a tool's own model on the space's stage, replacing what stood there. */
+  setModel(obj: THREE.Object3D) {
+    if (!this.stage) return;
+    for (const child of [...this.stage.children]) {
+      this.stage.remove(child);
+      child.traverse((o) => {
+        const m = o as THREE.Mesh;
+        m.geometry?.dispose?.();
+        const mat = m.material as THREE.Material | THREE.Material[] | undefined;
+        if (Array.isArray(mat)) mat.forEach((x) => x.dispose()); else mat?.dispose?.();
+      });
+    }
+    this.stage.add(obj);
   }
 
   zoom(f: number) { this.dist = Math.min(80, Math.max(12, this.dist * f)); }

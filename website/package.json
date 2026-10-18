@@ -18,7 +18,8 @@
     "serve": "wrangler pages dev dist --port 8788 --ip 127.0.0.1",
     "setup": "py -3.12 scripts/cloudflare_setup.py",
     "db:model": "py -3.12 scripts/model_db.py",
-    "snippets": "py -3.12 scripts/sample_snippets.py"
+    "snippets": "py -3.12 scripts/sample_snippets.py",
+    "test:creator": "node scripts/test_creator.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",
