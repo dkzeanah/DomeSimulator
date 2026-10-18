@@ -593,10 +593,32 @@
   "copy_of": null,
   "prompt": null
  },
+ "pip-and-her-dome-at-sunset-v2": {
+  "name": "pip-and-her-dome-at-sunset",
+  "version": 2,
+  "file": "images/scenes/pip-and-her-dome-at-sunset-v2.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture cover, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
  "pip-and-her-saw-tape-level-and-lunch": {
   "name": "pip-and-her-saw-tape-level-and-lunch",
   "version": 1,
   "file": "images/scenes/pip-and-her-saw-tape-level-and-lunch.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 5, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
+ "pip-and-her-saw-tape-level-and-lunch-v2": {
+  "name": "pip-and-her-saw-tape-level-and-lunch",
+  "version": 2,
+  "file": "images/scenes/pip-and-her-saw-tape-level-and-lunch-v2.jpg",
   "category": "scenes",
   "note": "my-own-home-my-own-dome: picture 5, rendered in the Cabin World by kids_book.pictures.",
   "origin": "author",
@@ -615,10 +637,32 @@
   "copy_of": null,
   "prompt": null
  },
+ "pip-and-the-boy-with-a-fallen-panel-v2": {
+  "name": "pip-and-the-boy-with-a-fallen-panel",
+  "version": 2,
+  "file": "images/scenes/pip-and-the-boy-with-a-fallen-panel-v2.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 14, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
  "pip-and-the-last-triangles": {
   "name": "pip-and-the-last-triangles",
   "version": 1,
   "file": "images/scenes/pip-and-the-last-triangles.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 11, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
+ "pip-and-the-last-triangles-v2": {
+  "name": "pip-and-the-last-triangles",
+  "version": 2,
+  "file": "images/scenes/pip-and-the-last-triangles-v2.jpg",
   "category": "scenes",
   "note": "my-own-home-my-own-dome: picture 11, rendered in the Cabin World by kids_book.pictures.",
   "origin": "author",
@@ -637,10 +681,32 @@
   "copy_of": null,
   "prompt": null
  },
+ "pip-and-the-stack-of-wedges-v2": {
+  "name": "pip-and-the-stack-of-wedges",
+  "version": 2,
+  "file": "images/scenes/pip-and-the-stack-of-wedges-v2.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 7, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
  "pip-dreams-of-a-round-home": {
   "name": "pip-dreams-of-a-round-home",
   "version": 1,
   "file": "images/scenes/pip-dreams-of-a-round-home.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 2, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
+ "pip-dreams-of-a-round-home-v2": {
+  "name": "pip-dreams-of-a-round-home",
+  "version": 2,
+  "file": "images/scenes/pip-dreams-of-a-round-home-v2.jpg",
   "category": "scenes",
   "note": "my-own-home-my-own-dome: picture 2, rendered in the Cabin World by kids_book.pictures.",
   "origin": "author",
@@ -659,6 +725,17 @@
   "copy_of": null,
   "prompt": null
  },
+ "pip-in-the-town-of-boxes-v2": {
+  "name": "pip-in-the-town-of-boxes",
+  "version": 2,
+  "file": "images/scenes/pip-in-the-town-of-boxes-v2.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 1, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
  "pip-meets-the-fallen-pine": {
   "name": "pip-meets-the-fallen-pine",
   "version": 1,
@@ -670,10 +747,32 @@
   "copy_of": null,
   "prompt": null
  },
+ "pip-meets-the-fallen-pine-v2": {
+  "name": "pip-meets-the-fallen-pine",
+  "version": 2,
+  "file": "images/scenes/pip-meets-the-fallen-pine-v2.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 4, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
  "pip-walks-past-the-lumber-yard": {
   "name": "pip-walks-past-the-lumber-yard",
   "version": 1,
   "file": "images/scenes/pip-walks-past-the-lumber-yard.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 3, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
+ "pip-walks-past-the-lumber-yard-v2": {
+  "name": "pip-walks-past-the-lumber-yard",
+  "version": 2,
+  "file": "images/scenes/pip-walks-past-the-lumber-yard-v2.jpg",
   "category": "scenes",
   "note": "my-own-home-my-own-dome: picture 3, rendered in the Cabin World by kids_book.pictures.",
   "origin": "author",
@@ -934,10 +1033,32 @@
   "copy_of": null,
   "prompt": null
  },
+ "the-dome-club-trading-panels-v2": {
+  "name": "the-dome-club-trading-panels",
+  "version": 2,
+  "file": "images/scenes/the-dome-club-trading-panels-v2.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 15, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
  "the-dome-measured-across-and-tall": {
   "name": "the-dome-measured-across-and-tall",
   "version": 1,
   "file": "images/scenes/the-dome-measured-across-and-tall.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 9, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
+ "the-dome-measured-across-and-tall-v2": {
+  "name": "the-dome-measured-across-and-tall",
+  "version": 2,
+  "file": "images/scenes/the-dome-measured-across-and-tall-v2.jpg",
   "category": "scenes",
   "note": "my-own-home-my-own-dome: picture 9, rendered in the Cabin World by kids_book.pictures.",
   "origin": "author",
@@ -967,10 +1088,32 @@
   "copy_of": null,
   "prompt": null
  },
+ "the-longest-strut-in-chalk-v2": {
+  "name": "the-longest-strut-in-chalk",
+  "version": 2,
+  "file": "images/scenes/the-longest-strut-in-chalk-v2.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 8, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
  "the-neighbours-come-running": {
   "name": "the-neighbours-come-running",
   "version": 1,
   "file": "images/scenes/the-neighbours-come-running.jpg",
+  "category": "scenes",
+  "note": "my-own-home-my-own-dome: picture 12, rendered in the Cabin World by kids_book.pictures.",
+  "origin": "author",
+  "original": null,
+  "copy_of": null,
+  "prompt": null
+ },
+ "the-neighbours-come-running-v2": {
+  "name": "the-neighbours-come-running",
+  "version": 2,
+  "file": "images/scenes/the-neighbours-come-running-v2.jpg",
   "category": "scenes",
   "note": "my-own-home-my-own-dome: picture 12, rendered in the Cabin World by kids_book.pictures.",
   "origin": "author",
