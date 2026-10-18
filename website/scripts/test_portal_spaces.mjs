@@ -47,7 +47,36 @@ try {
       if (typeof want === "number") near(got[k], want, `cold ${k}`); else { assert.equal(got[k], want, `cold ${k}`); checks++; }
     }
   }
-  console.log(`PASS ${checks} checks: ${cases.decide.length} controller cases, ${cases.profiles.length} wall profiles, ${cases.checks.length} interlock sets, ${cases.cold.length} cold channels`);
+  // the assembly line: every sum, with the assumptions moved about
+  const al = join(temp, "assembly.mjs");
+  await build({ entryPoints: [join(site, "src/world/assembly.ts")], bundle: true, platform: "node", format: "esm", outfile: al, logLevel: "silent" });
+  const A = await import(pathToFileURL(al).href);
+  const data = JSON.parse(await readFile(join(site, "public/portal/assembly/lines.json"), "utf8"));
+  const deep = (got, want, what) => {
+    if (typeof want === "number") return near(got, want, what);
+    if (Array.isArray(want)) return want.forEach((w, i) => deep(got[i], w, `${what}[${i}]`));
+    if (want && typeof want === "object") return Object.keys(want).forEach((k) => deep(got[k], want[k], `${what}.${k}`));
+    assert.equal(got, want, what); checks++;
+  };
+  for (const [i, c] of (cases.assembly || []).entries()) {
+    const a = { ...data.assumptions, ...c.over };
+    const line = data.lines.find((l) => l.key === c.dtype && l.layout === c.layout);
+    assert.ok(line, `assembly ${i}: no ${c.dtype} ${c.layout}`);
+    const what = `assembly ${i} ${c.dtype} ${c.layout}`;
+    near(A.salePrice(line, c.layout, a), c.price, `${what} price`);
+    near(A.bhphMonthly(c.price, a), c.monthly, `${what} monthly`);
+    const econ = A.unitEconomics(line, c.layout, a);
+    deep(econ, c.econ, `${what} econ`);
+    const tp = A.throughput(line, data.stages, a);
+    deep(tp, c.throughput, `${what} throughput`);
+    assert.equal(tp.bottleneck.key, c.bottleneck, `${what} bottleneck`); checks++;
+    deep(tp.rows, c.rows, `${what} rows`);
+    deep(A.breakEven(econ.margin, a, econ.overhead), c.breakEven, `${what} break-even`);
+    deep(A.breakEven(econ.margin, a), c.breakEvenDefault, `${what} break-even (allocated)`);
+    deep(A.productValue(line, a), c.value, `${what} value`);
+    deep(A.scaleScenarios(tp.single_flow_per_year, econ.margin, econ.price, a), c.scale, `${what} scale`);
+  }
+  console.log(`PASS ${checks} checks: ${cases.decide.length} controller cases, ${cases.profiles.length} wall profiles, ${cases.checks.length} interlock sets, ${cases.cold.length} cold channels, ${(cases.assembly || []).length} assembly lines`);
 } finally {
   await rm(temp, { recursive: true, force: true });
 }

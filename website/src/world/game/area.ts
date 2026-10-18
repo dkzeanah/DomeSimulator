@@ -3,7 +3,7 @@
 // progress. The player lives in the Store; this runs while the area is open.
 
 import { Thing, World, type Pick } from "../engine";
-import { idle, logPileMesh, lootMesh, monsterMesh, npcMesh } from "../entities";
+import { housePortalMesh, idle, logPileMesh, lootMesh, monsterMesh, npcMesh } from "../entities";
 import {
   F, MONSTERS, NPCS, OBJECTS, QUESTS, SPAWNS, TALK, itemById, loreById, monsterById, npcById, questById,
   type Choice, type Line, type Monster,
@@ -16,6 +16,28 @@ const LEASH = 22;           // ft from home before a monster gives up
 const LOOT_TICKS = 150;     // 90 s on the ground
 
 export interface Option { label: string; target: string; colour?: string; run: () => void }
+/** RuneScape's chatbox menu ("Select an Option") and its text prompt ("Enter name:"). */
+export interface MenuDialog { title: string; options: { text: string; run: () => void }[] }
+export interface Prompt { ask: string; hint?: string; submit: (text: string) => void }
+/** Where the house portal sends you: Portal.tsx goes there. */
+export interface HouseTrip { to: "home" | "build" | "friend" | "leave" | "island"; name?: string }
+export const goHouse = (trip: HouseTrip) => window.dispatchEvent(new CustomEvent<HouseTrip>("portal-house", { detail: trip }));
+
+/** An area that brings its own people, objects and lesson (Wedge Island): the game asks it first. */
+export interface AreaScript {
+  /** Options for the script's own things; null for everything else. */
+  options(p: Pick): Option[] | null;
+  /** A conversation with one of the script's people has closed. */
+  dialogDone?(npc: string): void;
+  /** RuneScape's 0.6 s tick. */
+  tick?(): void;
+  /** The instruction box: what to do now. */
+  guide(): { title: string; text: string; step: number; of: number } | null;
+  /** Leave the lesson where it stands. */
+  skip?(): void;
+  dispose?(): void;
+}
+
 export interface Dialog { npc: string; name: string; lines: Line[]; at: number; question?: { ask: string; choices: Choice[] }; answered?: string }
 
 interface Mob { key: string; def: Monster; home: [number, number]; roam: number; hp: number; deadUntil: number; cool: number; angry: boolean; nextRoam: number }
@@ -26,6 +48,9 @@ const rnd = (a: number, b: number) => a + Math.floor(Math.random() * (b - a + 1)
 export class AreaGame {
   tick = 0;
   dialog: Dialog | null = null;
+  menu: MenuDialog | null = null;
+  script: AreaScript | null = null;
+  prompt: Prompt | null = null;
   fighting: string | null = null;
   private mobs = new Map<string, Mob>();
   private loot = new Map<string, Loot>();
@@ -40,8 +65,10 @@ export class AreaGame {
       this.world.addThing({ id: `npc:${n.id}`, kind: "npc", name: n.name }, npcMesh(n.colour, n.hair), n.at[0], n.at[1],
         { facing: Math.atan2(-n.at[0], -n.at[1]) + Math.PI, height: 5.6, animate: idle });
     }
-    for (const o of OBJECTS.filter((o) => o.area === area)) {
-      this.world.addThing({ id: `obj:${o.id}`, kind: "object", name: o.name }, logPileMesh(), o.at[0], o.at[1], { height: 3 });
+    for (const o of OBJECTS.filter((o) => o.area === area || (o.area === "house" && area.startsWith("house:")))) {
+      const portal = o.id === "houseportal" || o.id === "houseexit";
+      this.world.addThing({ id: `obj:${o.id}`, kind: "object", name: o.name }, portal ? housePortalMesh(o.id === "houseexit" ? "#e8b45a" : "#b07cff") : logPileMesh(),
+        o.at[0], o.at[1], { height: portal ? 12.5 : 3, facing: portal ? Math.atan2(-o.at[0], -o.at[1]) + Math.PI : 0, animate: portal ? idle : undefined });
     }
     SPAWNS.filter((s) => s.area === area).forEach((s, i) => {
       const def = monsterById(s.monster);
@@ -55,6 +82,7 @@ export class AreaGame {
   }
 
   dispose() {
+    this.script?.dispose?.();
     window.clearInterval(this.timer);
     window.removeEventListener("dome-creator-design", this.onCreator);
   }
@@ -85,6 +113,11 @@ export class AreaGame {
 
   // -------------------------------------------------------------- what a click offers
   options(p: Pick): Option[] {
+    const own = this.script?.options(p);
+    if (own) {
+      const walk = p.ground ? [{ label: "Walk here", target: "", run: () => { this.fighting = null; this.world.walkPoint(p.ground!.x, p.ground!.z); } }] : [];
+      return [...own, ...walk, { label: "Cancel", target: "", run: () => undefined }];
+    }
     const o: Option[] = [];
     const t = p.thing;
     if (t?.kind === "monster") {
@@ -95,7 +128,14 @@ export class AreaGame {
       const n = npcById(t.id.slice(4));
       o.push({ label: "Talk-to", target: n.name, colour: "#ffe24a", run: () => this.talk(n.id) });
     }
-    if (t?.kind === "object") o.push({ label: "Split", target: t.name, colour: "#3ad6ff", run: () => this.split(t.id) });
+    if (t?.id === "obj:houseportal") {
+      o.push({ label: "Enter", target: t.name, colour: "#3ad6ff", run: () => this.housePortal() });
+      o.push({ label: "Home", target: t.name, colour: "#3ad6ff", run: () => this.atPortal(t.id, () => goHouse({ to: "home" })) });
+      o.push({ label: "Build mode", target: t.name, colour: "#3ad6ff", run: () => this.atPortal(t.id, () => goHouse({ to: "build" })) });
+      o.push({ label: "Friend's house", target: t.name, colour: "#3ad6ff", run: () => this.atPortal(t.id, () => this.askFriend()) });
+    } else if (t?.id === "obj:houseexit") {
+      o.push({ label: "Enter", target: t.name, colour: "#3ad6ff", run: () => this.atPortal(t.id, () => goHouse({ to: "leave" })) });
+    } else if (t?.kind === "object") o.push({ label: "Split", target: t.name, colour: "#3ad6ff", run: () => this.split(t.id) });
     if (t?.kind === "loot") {
       const l = this.loot.get(t.id);
       for (const it of l?.items ?? []) {
@@ -121,6 +161,50 @@ export class AreaGame {
   click(p: Pick) {
     if (!p.thing && !p.gate && !p.part) { this.fighting = null; return; }
     this.options(p)[0]?.run();
+  }
+
+  // -------------------------------------------------------------- the house portal
+  /** Walk up to a portal, then do it. */
+  private atPortal(id: string, then: () => void) {
+    this.fighting = null;
+    this.world.walkNear(id, 5, then);
+  }
+
+  /** Enter: RuneScape's three choices, in the chatbox. */
+  housePortal() {
+    this.atPortal("obj:houseportal", () => {
+      this.menu = {
+        title: "Select an Option",
+        options: [
+          { text: "Go to your house.", run: () => goHouse({ to: "home" }) },
+          { text: "Go to your house (building mode).", run: () => goHouse({ to: "build" }) },
+          { text: "Go to a friend's house.", run: () => this.askFriend() },
+          { text: "Never mind.", run: () => undefined },
+        ],
+      };
+      this.changed();
+    });
+  }
+
+  askFriend() {
+    this.menu = null;
+    this.prompt = { ask: "Enter name:", hint: "A member's name, or 1 to 5 for the grand houses", submit: (name) => goHouse({ to: "friend", name }) };
+    this.changed();
+  }
+
+  choose(i: number) {
+    const m = this.menu;
+    if (!m || !m.options[i]) return;
+    this.menu = null;
+    this.changed();
+    m.options[i].run();
+  }
+
+  answerPrompt(text: string | null) {
+    const p = this.prompt;
+    this.prompt = null;
+    this.changed();
+    if (p && text && text.trim()) p.submit(text.trim());
   }
 
   // -------------------------------------------------------------- examine, talk, split, take
@@ -158,9 +242,9 @@ export class AreaGame {
   next() {
     const d = this.dialog;
     if (!d) return;
-    if (d.answered) { this.dialog = null; this.changed(); this.markers(); return; }
+    if (d.answered) { this.dialog = null; this.changed(); this.markers(); this.script?.dialogDone?.(d.npc); return; }
     if (d.at < d.lines.length - 1) d.at++;
-    else if (!d.question) this.dialog = null;
+    else if (!d.question) { this.dialog = null; this.script?.dialogDone?.(d.npc); }
     else d.at = d.lines.length;          // the question is showing
     this.changed();
   }
@@ -256,6 +340,7 @@ export class AreaGame {
 
   private step() {
     this.tick++;
+    this.script?.tick?.();
     const s = this.store, p = this.world.playerAt();
     // splitting the log pile
     if (this.splitting > 0 && --this.splitting === 0) {

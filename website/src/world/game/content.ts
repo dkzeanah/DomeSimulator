@@ -145,6 +145,11 @@ export const ITEMS: Item[] = [
   { id: "coffee", name: "Thermos of coffee", icon: "☕", examine: "Heals 10, and the afternoon.", heals: 10, value: 6 },
   { id: "mallet", name: "Mallet", icon: "\u{1f528}", examine: "Better than bare hands against a grub. +2 power.", power: 2, value: 15 },
   { id: "maul", name: "Splitting maul", icon: "\u{1fa93}", examine: "For logs, mostly. +5 power.", power: 5, value: 60 },
+  // Wedge Island's tools and what they make (src/world/game/island.ts)
+  { id: "chainsaw", name: "Chainsaw", icon: "\u{1fa9a}", examine: "Fells a pine and bucks it into sections. Never alone.", value: 80 },
+  { id: "section", name: "Log section", icon: "\u{1fab5}", examine: `A pine bucked to the long strut's length, ${F.longIn} in, about ${F.logIn} in across.`, value: 12 },
+  { id: "strutA", name: "A strut", icon: "\u{1f4cf}", examine: `A wedge cut for one of the ${F.strutsA} long edges (${F.longIn} in nominal).`, value: 10 },
+  { id: "strutB", name: "B strut", icon: "\u{1f4d0}", examine: `A wedge cut for one of the ${F.strutsB} short edges (${F.shortIn} in nominal).`, value: 9 },
   { id: "meter", name: "Moisture meter", icon: "\u{1f4df}", examine: "Finds the damp before it finds you. +3 power against the wet.", power: 3, value: 40 },
   ...LORE.map((l) => ({ id: `lore:${l.id}`, name: `Lore: ${l.title}`, icon: "\u{1f4dc}", examine: "A page of dome know-how. Read it.", lore: l.id, value: 0 })),
 ];
@@ -251,7 +256,24 @@ export const npcById = (id: string) => NPCS.find((n) => n.id === id)!;
 export const OBJECTS: { id: string; name: string; area: string; at: [number, number]; examine: string; options: string[] }[] = [
   { id: "logpile", name: "Log pile", area: "hub", at: [-19, 25], options: ["Split", "Examine"],
     examine: `Pine logs about ${F.logIn} inches across. Each one splits into ${F.wedgesPerLog} wedges.` },
+  // RuneScape's house portal: your house, your house in build mode, or anybody's by name
+  { id: "houseportal", name: "House portal", area: "hub", at: [-30, 30], options: ["Enter", "Home", "Build mode", "Friend's house", "Examine"],
+    examine: "The portal to the members' houses. Type a member's name, or 1 to 5 for the five grand houses." },
+  // and inside every house, the way back out
+  { id: "houseexit", name: "Portal", area: "house", at: [-20, 104], options: ["Enter", "Examine"],
+    examine: "The way back to the hilltop." },
 ];
+
+/** What a house can be built as: the starter dome, or one of the five grand houses (src/world/estates.ts). */
+export const HOUSE_STYLES: { key: string; name: string; blurb: string }[] = [
+  { key: "starter", name: "The starter dome", blurb: "One 2V dome on its deck, a path and a garden: where every member begins." },
+  { key: "1", name: "West Egg", blurb: "A great gold-crowned dome over a marble terrace, its wings, its fountain and its lanterns: the party house." },
+  { key: "2", name: "East Egg", blurb: "White domes in a crescent behind a colonnade, a lawn down to the water, and a green light at the end of the dock." },
+  { key: "3", name: "The Deco Palace", blurb: "A stepped ziggurat of terraces, a gold dome on top, sunbursts and searchlights." },
+  { key: "4", name: "The Conservatory", blurb: "Glass domes over a garden: a hedge maze, a gazebo and the palm house." },
+  { key: "5", name: "The Ballroom", blurb: "One vast ballroom dome lit from inside, a chandelier, a dance floor and fireworks over the lawn." },
+];
+export const houseStyle = (key: string | undefined) => HOUSE_STYLES.find((h) => h.key === key) ?? HOUSE_STYLES[0];
 
 /** Each teacher's words, by quest stage. Numbers come from F. */
 export const TALK: Record<string, (stage: number) => { lines: Line[]; question?: { ask: string; choices: Choice[] } }> = {

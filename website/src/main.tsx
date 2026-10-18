@@ -60,6 +60,8 @@ createRoot(document.getElementById("root")!).render(
               <Route path="media" element={<MediaPage />} />
               <Route path="portal" element={<Portal />} />
               <Route path="portal/:space" element={<Portal />} />
+              <Route path="portal/house/:owner" element={<Portal />} />
+              <Route path="portal/island" element={<Portal island />} />
               <Route path="card" element={<Card />} />
               <Route path="links" element={<Card />} />
               <Route path="domes" element={<Domes />} />

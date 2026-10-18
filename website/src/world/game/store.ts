@@ -2,7 +2,7 @@
 // the action bar and the game log. One store lives for the visit; each area's game (area.ts)
 // reads and changes it. Saved in the browser for everyone, and to the account for members.
 
-import { ITEMS, LORE, QUESTS, SKILLS, START_ITEMS, itemById, levelForXp, xpForLevel, type SkillKey } from "./content";
+import { HOUSE_STYLES, ITEMS, LORE, QUESTS, SKILLS, START_ITEMS, itemById, levelForXp, xpForLevel, type SkillKey } from "./content";
 
 export const INV_SIZE = 28;
 export const BAR_SIZE = 8;
@@ -19,6 +19,10 @@ export interface Save {
   badges: string[];
   bar: (string | null)[];
   kills: Record<string, number>;
+  /** How this member's house is built: a key of HOUSE_STYLES. */
+  house?: string;
+  /** Wedge Island, the tutorial: the step reached, a count within it, and whether it is done. */
+  tut?: { step: number; n: number; done?: boolean };
 }
 export interface LogLine { text: string; kind: "game" | "quest" | "loot" | "combat" | "chat" | "xp"; at: number; who?: string }
 
@@ -47,6 +51,8 @@ export function clean(s: Partial<Save> | null | undefined): Save {
     badges: [...new Set(s.badges || [])],
     bar: Array.from({ length: BAR_SIZE }, (_, i) => s.bar?.[i] ?? f.bar[i]),
     kills: { ...(s.kills || {}) },
+    house: HOUSE_STYLES.some((h) => h.key === s.house) ? s.house : undefined,
+    tut: s.tut && typeof s.tut.step === "number" ? { step: s.tut.step, n: Number(s.tut.n) || 0, done: Boolean(s.tut.done) } : undefined,
   };
 }
 
