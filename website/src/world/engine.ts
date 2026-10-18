@@ -11,6 +11,11 @@ import type { Space } from "./spaces";
 
 export interface Gate { key: string; name: string; colour: string; at: THREE.Vector2; facing: number; sub?: string }
 
+/** Something in the world a person can point at: a teacher, a monster, loot, an object. */
+export interface Thing { id: string; kind: "npc" | "monster" | "loot" | "object" | "dome" | "gate"; name: string; level?: number }
+/** What is under the pointer: a thing, a gateway, or the ground (or nothing), and where on screen. */
+export interface Pick { thing: Thing | null; gate: Gate | null; ground: { x: number; z: number } | null; x: number; y: number }
+
 export interface WorldOptions {
   kind: "hub" | "space";
   space?: Space;
@@ -20,6 +25,17 @@ export interface WorldOptions {
   minimap?: HTMLCanvasElement;
   onNear: (gate: Gate | null) => void;
   onEnter: (gate: Gate) => void;
+  /** Left click: the game decides the default action. Without it, a click just walks. */
+  onPick?: (p: Pick) => void;
+  /** Right click (or a long press on touch): the game opens its menu of options. */
+  onContext?: (p: Pick) => void;
+  /** The pointer moved over something (or off it): for the hover text. */
+  onHover?: (p: Pick | null) => void;
+}
+
+interface Ent {
+  thing: Thing; group: THREE.Group; x: number; z: number; tx: number; tz: number; speed: number; height: number;
+  bar: HTMLDivElement | null; frac: number | null; seed: number; animate?: (g: THREE.Group, t: number, seed: number) => void;
 }
 
 const WALK = 11;                 // ft per second
@@ -269,6 +285,11 @@ export class World {
   private cleanup: (() => void)[] = [];
   private frameNo = 0;
   private stage: THREE.Group | null = null;
+  private ents = new Map<string, Ent>();
+  private approach: { id: string | null; x: number; z: number; range: number; done: () => void } | null = null;
+  private splats: { el: HTMLDivElement; id: string; born: number }[] = [];
+  private hoverAt = 0;
+  private press: number | null = null;
 
   constructor(private canvas: HTMLCanvasElement, private opts: WorldOptions) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -293,7 +314,13 @@ export class World {
     this.scene.add(this.ground);
     trees(opts, this.scene);
     if (opts.kind === "hub") {
-      this.scene.add(solverDome());
+      this.domeGroup = solverDome();
+      // an invisible shell over the frame, so a click between struts still finds the dome
+      const shell = new THREE.Mesh(new THREE.SphereGeometry(mesh.radiusFt, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+        new THREE.MeshBasicMaterial({ visible: false, side: THREE.DoubleSide }));
+      shell.position.y = 2.2;
+      this.domeGroup.add(shell);
+      this.scene.add(this.domeGroup);
       const plaza = new THREE.Mesh(new THREE.CircleGeometry(15.5, 40), new THREE.MeshLambertMaterial({ color: "#9a8360" }));
       plaza.rotation.x = -Math.PI / 2; plaza.position.y = 0.02; plaza.receiveShadow = true;
       this.scene.add(plaza);
@@ -425,10 +452,27 @@ export class World {
     });
     on(window, "keyup", (e: KeyboardEvent) => this.keys.delete(e.key.toLowerCase()));
     on(window, "blur", () => this.keys.clear());
-    on(c, "contextmenu", (e: Event) => e.preventDefault());
-    on(c, "pointerdown", (e: PointerEvent) => { c.setPointerCapture(e.pointerId); this.drag = { x: e.clientX, y: e.clientY, moved: false, button: e.button }; });
+    on(c, "contextmenu", (e: MouseEvent) => {
+      e.preventDefault();
+      if (this.opts.onContext) this.opts.onContext(this.pick(e.clientX, e.clientY));
+    });
+    on(c, "pointerdown", (e: PointerEvent) => {
+      c.setPointerCapture(e.pointerId);
+      this.drag = { x: e.clientX, y: e.clientY, moved: false, button: e.button };
+      // a long press on a touch screen is a right click
+      if (e.pointerType === "touch" && this.opts.onContext) {
+        const x = e.clientX, y = e.clientY;
+        this.press = window.setTimeout(() => {
+          if (this.drag && !this.drag.moved) { this.drag = null; this.opts.onContext!(this.pick(x, y)); }
+        }, 520);
+      }
+    });
     on(c, "pointermove", (e: PointerEvent) => {
-      if (!this.drag) return;
+      if (!this.drag) {
+        const now = performance.now();
+        if (this.opts.onHover && now - this.hoverAt > 60) { this.hoverAt = now; this.opts.onHover(this.pick(e.clientX, e.clientY)); }
+        return;
+      }
       const dx = e.clientX - this.drag.x, dy = e.clientY - this.drag.y;
       if (!this.drag.moved && Math.hypot(dx, dy) < 6) return;
       this.drag.moved = true;
@@ -437,10 +481,16 @@ export class World {
       this.drag.x = e.clientX; this.drag.y = e.clientY;
     });
     on(c, "pointerup", (e: PointerEvent) => {
+      if (this.press) { window.clearTimeout(this.press); this.press = null; }
       const d = this.drag; this.drag = null;
       if (!d || d.moved || d.button !== 0) return;
-      this.walkTo(e.clientX, e.clientY);
+      if (this.opts.onPick) {
+        const p = this.pick(e.clientX, e.clientY);
+        if (!p.thing && !p.gate && p.ground) this.walkPoint(p.ground.x, p.ground.z);
+        this.opts.onPick(p);
+      } else this.walkTo(e.clientX, e.clientY);
     });
+    on(c, "pointerleave", () => this.opts.onHover?.(null));
     on(c, "wheel", (e: WheelEvent) => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 1.1 : 0.9); }, { passive: false });
     on(window, "resize", () => this.resize());
   }
@@ -459,6 +509,116 @@ export class World {
     }
     this.stage.add(obj);
   }
+
+  // -------------------------------------------------------------- things in the world
+  private ray(cx: number, cy: number) {
+    const r = this.canvas.getBoundingClientRect();
+    const ray = new THREE.Raycaster();
+    ray.setFromCamera(new THREE.Vector2(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1), this.camera);
+    return ray;
+  }
+
+  /** What is under a point of the screen: the nearest thing or gateway, and the ground. */
+  pick(cx: number, cy: number): Pick {
+    const ray = this.ray(cx, cy);
+    let best: { d: number; thing: Thing | null; gate: Gate | null } | null = null;
+    for (const e of this.ents.values()) {
+      const h = ray.intersectObject(e.group, true)[0];
+      if (h && (!best || h.distance < best.d)) best = { d: h.distance, thing: e.thing, gate: null };
+    }
+    for (const g of this.gates) {
+      if (!g.group.visible) continue;
+      const h = ray.intersectObject(g.group, true)[0];
+      if (h && (!best || h.distance < best.d)) best = { d: h.distance, thing: null, gate: g.gate };
+    }
+    // the dome's shell is big and see-through: it counts only when nothing else is under the pointer
+    if (this.domeGroup && !best) {
+      const h = ray.intersectObject(this.domeGroup, true)[0];
+      if (h) best = { d: h.distance, thing: { id: "dome", kind: "dome", name: "The plaza dome" }, gate: null };
+    }
+    const g = ray.intersectObject(this.ground)[0];
+    return { thing: best?.thing ?? null, gate: best?.gate ?? null, ground: g ? { x: g.point.x, z: g.point.z } : null, x: cx, y: cy };
+  }
+
+  addThing(thing: Thing, group: THREE.Group, x: number, z: number, o: { speed?: number; height?: number; facing?: number; animate?: Ent["animate"] } = {}) {
+    this.removeThing(thing.id);
+    group.position.set(x, groundHeight(this.opts.kind, x, z), z);
+    if (o.facing !== undefined) group.rotation.y = o.facing;
+    this.scene.add(group);
+    this.ents.set(thing.id, { thing, group, x, z, tx: x, tz: z, speed: o.speed ?? 4, height: o.height ?? 5, bar: null, frac: null, seed: Math.random() * 10, animate: o.animate });
+  }
+
+  removeThing(id: string) {
+    const e = this.ents.get(id);
+    if (!e) return;
+    this.scene.remove(e.group);
+    e.bar?.remove();
+    this.ents.delete(id);
+  }
+
+  hasThing(id: string) { return this.ents.has(id); }
+  thingAt(id: string) { const e = this.ents.get(id); return e ? { x: e.x, z: e.z } : null; }
+  thingObject(id: string) { return this.ents.get(id)?.group ?? null; }
+  /** Send a thing walking toward a point (monsters roaming, chasing). */
+  moveThing(id: string, x: number, z: number) { const e = this.ents.get(id); if (e) { e.tx = x; e.tz = z; } }
+  playerAt() { const p = this.player.group.position; return { x: p.x, z: p.z }; }
+
+  walkPoint(x: number, z: number) {
+    this.approach = null;
+    this.target = new THREE.Vector3(x, 0, z);
+    this.showMarker(this.target);
+  }
+
+  /** Walk until within `range` of a thing (or a point), then do `done`. */
+  walkNear(id: string | null, range: number, done: () => void, point?: { x: number; z: number }) {
+    const at = id ? this.thingAt(id) : point;
+    if (!at) return;
+    this.approach = { id, x: at.x, z: at.z, range, done };
+    this.target = new THREE.Vector3(at.x, 0, at.z);
+  }
+
+  stopWalking() { this.target = null; this.approach = null; }
+
+  /** Put the walker somewhere at once (respawning after a defeat). */
+  teleport(x: number, z: number) {
+    this.stopWalking();
+    this.player.group.position.set(x, groundHeight(this.opts.kind, x, z), z);
+  }
+
+  face(id: string) {
+    const e = this.ents.get(id), p = this.player.group.position;
+    if (e) this.player.group.rotation.y = Math.atan2(e.x - p.x, e.z - p.z);
+  }
+
+  /** A health bar over a thing (or the player): a fraction 0..1, or null to hide it. */
+  setBar(id: string, frac: number | null) {
+    if (id === "player") { this.playerFrac = frac; this.ensurePlayerBar(); return; }
+    const e = this.ents.get(id);
+    if (!e) return;
+    e.frac = frac;
+    if (frac === null) { e.bar?.remove(); e.bar = null; return; }
+    if (!e.bar) { e.bar = document.createElement("div"); e.bar.className = "world-bar"; e.bar.innerHTML = "<i></i>"; this.opts.labels.appendChild(e.bar); }
+    (e.bar.firstChild as HTMLElement).style.width = `${Math.max(0, Math.min(1, frac)) * 100}%`;
+  }
+
+  private playerFrac: number | null = null;
+  private playerBar: HTMLDivElement | null = null;
+  private ensurePlayerBar() {
+    if (this.playerFrac === null) { this.playerBar?.remove(); this.playerBar = null; return; }
+    if (!this.playerBar) { this.playerBar = document.createElement("div"); this.playerBar.className = "world-bar"; this.playerBar.innerHTML = "<i></i>"; this.opts.labels.appendChild(this.playerBar); }
+    (this.playerBar.firstChild as HTMLElement).style.width = `${Math.max(0, Math.min(1, this.playerFrac)) * 100}%`;
+  }
+
+  /** A hitsplat (or any short text) over a thing or the player. */
+  splat(id: string, text: string, kind: "hit" | "miss" | "heal" | "xp" = "hit") {
+    const el = document.createElement("div");
+    el.className = `world-splat ${kind}`;
+    el.textContent = text;
+    this.opts.labels.appendChild(el);
+    this.splats.push({ el, id, born: performance.now() });
+  }
+
+  private domeGroup: THREE.Group | null = null;
 
   zoom(f: number) { this.dist = Math.min(80, Math.max(12, this.dist * f)); }
   turn(rad: number) { this.yaw += rad; }
@@ -497,6 +657,7 @@ export class World {
     this.update(dt, t);
     this.renderer.render(this.scene, this.camera);
     this.place();
+    this.overlays();
     if (this.opts.minimap && this.frameNo % 4 === 0) this.drawMap();
     this.frameNo++;
   };
@@ -514,8 +675,22 @@ export class World {
     if (k.has("s")) move.sub(fwd);
     if (k.has("d")) move.add(right);
     if (k.has("a")) move.sub(right);
-    if (move.lengthSq() > 0) { this.target = null; this.marker.visible = false; }
-    else if (this.target) {
+    if (move.lengthSq() > 0) { this.target = null; this.approach = null; this.marker.visible = false; }
+    else if (this.approach) {
+      const a = this.approach;
+      const at = a.id ? this.thingAt(a.id) : { x: a.x, z: a.z };
+      if (!at) this.approach = null;
+      else {
+        if (Math.hypot(at.x - p.x, at.z - p.z) <= a.range) {
+          this.approach = null; this.target = null;
+          if (a.id) this.face(a.id);
+          a.done();
+        } else {
+          this.target = new THREE.Vector3(at.x, 0, at.z);
+          move.set(at.x - p.x, at.z - p.z);
+        }
+      }
+    } else if (this.target) {
       move.set(this.target.x - p.x, this.target.z - p.z);
       if (move.length() < 0.4) { this.target = null; move.set(0, 0); }
     }
@@ -575,6 +750,16 @@ export class World {
       g.group.visible = !between;
     }
     for (const f of this.extras) f(t, dt);
+    for (const e of this.ents.values()) {
+      const dx = e.tx - e.x, dz = e.tz - e.z, d = Math.hypot(dx, dz);
+      if (d > 0.05) {
+        const step = Math.min(d, e.speed * dt);
+        e.x += (dx / d) * step; e.z += (dz / d) * step;
+        e.group.rotation.y = Math.atan2(dx, dz);
+      }
+      e.group.position.set(e.x, groundHeight(this.opts.kind, e.x, e.z), e.z);
+      e.animate?.(e.group, t, e.seed);
+    }
     // near a gateway, and through it
     let near: Gate | null = null;
     for (const g of this.gates) {
@@ -601,6 +786,38 @@ export class World {
     }
   }
 
+  private overlays() {
+    const w = this.canvas.clientWidth, h = this.canvas.clientHeight, v = new THREE.Vector3();
+    const screen = (x: number, y: number, z: number) => {
+      v.set(x, y, z).project(this.camera);
+      return v.z < 1 ? { sx: (v.x * 0.5 + 0.5) * w, sy: (-v.y * 0.5 + 0.5) * h } : null;
+    };
+    for (const e of this.ents.values()) {
+      if (!e.bar) continue;
+      const s = screen(e.x, e.group.position.y + e.height + 0.8, e.z);
+      e.bar.style.display = s ? "" : "none";
+      if (s) e.bar.style.transform = `translate(-50%, -50%) translate(${s.sx}px, ${s.sy}px)`;
+    }
+    const pp = this.player.group.position;
+    if (this.playerBar) {
+      const s = screen(pp.x, pp.y + 6.6, pp.z);
+      this.playerBar.style.display = s ? "" : "none";
+      if (s) this.playerBar.style.transform = `translate(-50%, -50%) translate(${s.sx}px, ${s.sy}px)`;
+    }
+    const now = performance.now();
+    this.splats = this.splats.filter((sp) => {
+      const age = (now - sp.born) / 1000;
+      if (age > 1.1) { sp.el.remove(); return false; }
+      const at = sp.id === "player" ? { x: pp.x, y: pp.y + 4, z: pp.z } : (() => { const e = this.ents.get(sp.id); return e ? { x: e.x, y: e.group.position.y + e.height * 0.6, z: e.z } : null; })();
+      const s = at && screen(at.x, at.y, at.z);
+      if (!s) { sp.el.style.display = "none"; return true; }
+      sp.el.style.display = "";
+      sp.el.style.opacity = String(Math.min(1, 2.2 - age * 2));
+      sp.el.style.transform = `translate(-50%, -50%) translate(${s.sx}px, ${s.sy - age * 26}px)`;
+      return true;
+    });
+  }
+
   private drawMap() {
     const m = this.opts.minimap!, ctx = m.getContext("2d")!;
     const s = m.width, half = s / 2, scale = half / (this.opts.kind === "hub" ? 62 : 46);
@@ -622,6 +839,11 @@ export class World {
     for (const g of this.gates) {
       ctx.fillStyle = g.gate.colour; ctx.beginPath(); ctx.arc(g.gate.at.x * scale, g.gate.at.y * scale, 4.5, 0, Math.PI * 2); ctx.fill();
     }
+    for (const e of this.ents.values()) {
+      // RuneScape's dots: yellow for people, red for monsters, red-ringed for loot
+      ctx.fillStyle = e.thing.kind === "npc" ? "#ffe24a" : e.thing.kind === "monster" ? "#ff4a3a" : e.thing.kind === "loot" ? "#ff9a3a" : "#e8e0d0";
+      ctx.beginPath(); ctx.arc(e.x * scale, e.z * scale, e.thing.kind === "loot" ? 2 : 2.6, 0, Math.PI * 2); ctx.fill();
+    }
     ctx.restore();
     // the player, always in the middle, pointing where they face relative to the camera
     ctx.save(); ctx.translate(half, half); ctx.rotate(-(this.player.group.rotation.y - this.yaw) + Math.PI);
@@ -634,6 +856,10 @@ export class World {
     cancelAnimationFrame(this.raf);
     for (const f of this.cleanup) f();
     for (const g of this.gates) g.label.remove();
+    for (const e of this.ents.values()) e.bar?.remove();
+    for (const sp of this.splats) sp.el.remove();
+    this.playerBar?.remove();
+    if (this.press) window.clearTimeout(this.press);
     this.scene.traverse((o) => {
       const m = o as THREE.Mesh;
       m.geometry?.dispose?.();

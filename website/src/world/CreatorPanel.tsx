@@ -41,7 +41,11 @@ export default function CreatorPanel({ world, colour }: ToolProps) {
   const [c, setC] = useState<Config>(() => ({ ...DEFAULTS }));
   const d = useMemo(() => design(c), [c]);
   const set = <K extends keyof Config>(k: K, v: Config[K]) => setC((x) => ({ ...x, [k]: v }));
-  useEffect(() => { world.current?.setModel(drawDesign(d)); }, [d, world]);
+  useEffect(() => {
+    world.current?.setModel(drawDesign(d));
+    // the world's quests hear what the Creator shows (The Twenty Faces asks for a 3V dome)
+    window.dispatchEvent(new CustomEvent("dome-creator-design", { detail: { frequency: c.frequency } }));
+  }, [d, world]); // eslint-disable-line react-hooks/exhaustive-deps
   // the world is made after this panel mounts; draw again once it exists
   useEffect(() => { const t = window.setTimeout(() => world.current?.setModel(drawDesign(design(c))), 50); return () => window.clearTimeout(t); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const dials = T.dials as Record<string, { values: number[] }>;

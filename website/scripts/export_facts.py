@@ -59,6 +59,8 @@ def classes() -> dict:
         "_generated_by": "website/scripts/export_facts.py from seed_model.dome_class(long_in) -- do not edit",
         "method": "2V hemisphere, wedge members split from a "
                   f"{seed_model.SEED_TRUNK_DIAMETER_IN:.0f}-inch log, {seed_model.SEED_RADIAL_SPLITS} wedges per log",
+        "logIn": seed_model.SEED_TRUNK_DIAMETER_IN, "wedgesPerLog": seed_model.SEED_RADIAL_SPLITS,
+        "bookLongIn": seed_model.SEED_LONG_EDGE_IN,
         "notes": {
             "frameLb": "Frame alone, green pine: wood volume x "
                        f"{seed_model.declared('pine_green_lb_per_cuft'):.0f} lb/cu ft "

@@ -214,6 +214,31 @@ Written by `scripts/model_db.py` from `migrations/` -- do not edit. `model.sqlit
 
 0 row(s) in the model.
 
+## game_chat
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| id | INTEGER | yes |  | PK |
+| user_id | INTEGER | yes |  | -> users.id |
+| name | TEXT |  |  |  |
+| text | TEXT |  |  |  |
+| area | TEXT |  | 'public' |  |
+| created_at | TEXT |  |  |  |
+| removed_by | INTEGER | yes |  | -> users.id |
+
+0 row(s) in the model.
+
+## game_saves
+
+| column | type | null | default | key |
+| --- | --- | --- | --- | --- |
+| user_id | INTEGER | yes |  | PK |
+| data | TEXT |  |  |  |
+| total_level | INTEGER |  | 0 |  |
+| updated_at | TEXT |  |  |  |
+
+0 row(s) in the model.
+
 ## identities
 
 | column | type | null | default | key |

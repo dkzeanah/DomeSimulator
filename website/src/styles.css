@@ -68,3 +68,11 @@ h1, h2, h3, .display { font-family: var(--font-display); letter-spacing: 0.01em;
 .world-label b { display: block; font-size: 16px; color: var(--gate); }
 .world-label span { display: block; font-size: 11px; opacity: .85; }
 .world-label.near b { font-size: 19px; }
+.world-bar { position: absolute; left: 0; top: 0; width: 34px; height: 5px; background: #8a1a10; border: 1px solid #000; }
+.world-bar i { display: block; height: 100%; background: #3ac83a; }
+.world-splat { position: absolute; left: 0; top: 0; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; font: 700 13px/22px var(--font-sans);
+  text-align: center; color: #fff; text-shadow: 0 1px 0 #000; will-change: transform, opacity; pointer-events: none; }
+.world-splat.hit { background: #b8201a; box-shadow: 0 0 0 1px #000; }
+.world-splat.miss { background: #2a5ac8; box-shadow: 0 0 0 1px #000; }
+.world-splat.heal { background: #2a9a3a; box-shadow: 0 0 0 1px #000; }
+.world-splat.xp { background: transparent; color: #ffe24a; font-size: 12px; }

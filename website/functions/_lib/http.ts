@@ -134,6 +134,7 @@ export class Router {
   get(p: string, h: Handler) { return this.on("GET", p, h); }
   post(p: string, h: Handler) { return this.on("POST", p, h); }
   patch(p: string, h: Handler) { return this.on("PATCH", p, h); }
+  put(p: string, h: Handler) { return this.on("PUT", p, h); }
   delete(p: string, h: Handler) { return this.on("DELETE", p, h); }
 
   match(method: string, path: string): { handler: Handler; params: Record<string, string> } | null {
