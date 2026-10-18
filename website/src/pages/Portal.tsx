@@ -2,11 +2,13 @@
 // the solver's dome in the middle and a gateway to each tool round it; /portal/<tool> is that
 // tool's own space, with its own stage and control panel (the panels are built tool by tool).
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMeta } from "../lib/meta";
 import { World, hubGates, THREE, type Gate } from "../world/engine";
 import { SPACES, spaceByKey } from "../world/spaces";
+
+const CreatorPanel = lazy(() => import("../world/CreatorPanel"));
 
 const HUB_RADIUS = 27;
 
@@ -78,13 +80,20 @@ export default function Portal() {
           onClick={() => setPanel(true)}>Controls</button>
       )}
       {space && panel && (
-        <aside className="absolute right-3 top-[130px] sm:top-[170px] w-[min(300px,calc(100%-24px))] panel p-4 text-sm" style={{ background: "color-mix(in srgb, var(--panel) 90%, transparent)" }}>
-          <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: space.colour }}>Control panel</p>
-          <p className="font-semibold mt-1">Coming to this space</p>
-          <ul className="mt-2 space-y-1">
-            {space.controls.map((c) => <li key={c} className="flex gap-2"><span aria-hidden style={{ color: space.colour }}>&#9656;</span><span>{c}</span></li>)}
-          </ul>
-          <p className="text-xs muted mt-3">Ported from <code>{space.ports}</code>.</p>
+        <aside className={`absolute right-3 top-[130px] sm:top-[170px] panel p-4 text-sm overflow-y-auto ${space.key === "dome-creator" ? "w-[min(340px,calc(100%-24px))]" : "w-[min(300px,calc(100%-24px))]"}`}
+          style={{ background: "color-mix(in srgb, var(--panel) 92%, transparent)", maxHeight: "calc(100% - 190px)" }}>
+          {space.key === "dome-creator" ? (
+            <Suspense fallback={<p className="muted text-xs">Loading the Creator...</p>}><CreatorPanel world={world} colour={space.colour} /></Suspense>
+          ) : (
+            <>
+              <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: space.colour }}>Control panel</p>
+              <p className="font-semibold mt-1">Coming to this space</p>
+              <ul className="mt-2 space-y-1">
+                {space.controls.map((c) => <li key={c} className="flex gap-2"><span aria-hidden style={{ color: space.colour }}>&#9656;</span><span>{c}</span></li>)}
+              </ul>
+              <p className="text-xs muted mt-3">Ported from <code>{space.ports}</code>.</p>
+            </>
+          )}
           <div className="flex gap-2 mt-3">
             <Link className="btn-ghost !py-1.5 inline-block" to="/portal" state={{ from: space.key }}>Back to the hilltop</Link>
             <button className="btn-ghost !py-1.5 sm:hidden" onClick={() => setPanel(false)}>Fold</button>
