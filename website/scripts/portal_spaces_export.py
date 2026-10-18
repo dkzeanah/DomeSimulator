@@ -11,6 +11,14 @@
   weathers, and the dome's seam bands. The browser re-runs the small exact parts -- the dew point,
   the controller's three questions, the wall's temperature profile, the interlocks -- and
   scripts/test_portal_spaces.mjs checks them against the Python.
+* **Dome Assembly Line** is `al_build`: each product line's dome built element by element at its
+  stations (every element's mesh, material cost, labor and weight), and the editable assumptions
+  its unit economics, throughput and break-even are worked from. The browser re-runs those sums
+  (crew and wage change them) and scripts/test_portal_spaces.mjs checks them against `al_build`.
+* **Foundation & Pads** is `world3d.structures` (the pentagon of half trunks, its star, its piers,
+  its deck and its layout on the ground, as the solver builds them) and `pad_deck` (the platform a
+  seed dome stands on, priced board by board from the lumber receipt, five ways, over a range of
+  sizes).
 * **Masterclass Theatre** is every lesson the masterclass renderer can play
   (`two_v_demo.lesson_registry`), chapter by chapter: titles, promises, narration and the
   equations each film's own code computes.
@@ -213,6 +221,148 @@ def cell_wall() -> dict:
 
 
 # ----------------------------------------------------------------------
+# Dome Assembly Line
+# ----------------------------------------------------------------------
+
+AL_DIR = ROOT / "website" / "public" / "portal" / "assembly"
+
+
+def _al_spec(dtype: str, layout: str | None = None):
+    import al_build as A
+    t = A.DOME_TYPES[dtype]
+    return A.DomeSpec(serial=1, name=t.name, dtype=dtype, radius=round(sum(t.radius_range) / 2, 2),
+                      frequency=t.freq_choices[0], layout=layout or ("1-Bedroom" if dtype == "home" else "Studio"))
+
+
+def _al_line(dtype: str, layout: str | None = None) -> tuple[bytes, dict]:
+    """One product line's dome, element by element: its mesh, and what each element costs. A home
+    is built differently for each layout (its interior), so each layout is its own catalog."""
+    import al_build as A
+    spec = _al_spec(dtype, layout)
+    cat, _info = A.build_dome_catalog(spec)
+    verts = np.asarray(cat.b.vertices, dtype=np.float64).reshape(-1, 11)
+    opaque = np.asarray(cat.b.opaque, dtype=np.int64)
+    trans = np.asarray(cat.b.transparent, dtype=np.int64)
+    if len(verts) > 65535:
+        raise ValueError(f"{dtype}: {len(verts)} vertices will not index in uint16")
+    palette: list = []
+    col = _palette(verts[:, 6:9], palette)
+    scale = float(np.abs(verts[:, 0:3]).max()) / 32767.0
+    q = np.round(verts[:, 0:3] / scale).astype("<i2")
+    alpha = np.round(verts[:, 9] * 255).astype(np.uint8)
+    blob = q.tobytes() + col.tobytes() + alpha.tobytes()
+    blob += b"\0" * (len(blob) % 2)
+    blob += opaque.astype("<u2").tobytes() + trans.astype("<u2").tobytes()
+    elements = [{"stage": e.stage, "category": e.category, "label": e.label, "cost": e.material_cost,
+                 "labor": e.labor_min, "weight": e.weight, "o": [e.o0, e.o1], "t": [e.t0, e.t1],
+                 "at": [float(x) for x in e.centroid]} for e in cat.elements]
+    t = spec.type
+    return blob, {
+        "key": dtype, "name": t.name, "tagline": t.tagline, "stages": [st.key for st in spec.stages],
+        "radius": spec.radius, "frequency": spec.frequency, "layout": spec.layout, "floorArea": spec.floor_area,
+        "priceBase": t.price_base, "pricePerM2": t.price_per_m2, "elements": elements,
+        "mesh": {"file": f"/portal/assembly/{dtype}-{spec.layout.lower()}.bin", "vertices": int(len(verts)), "opaque": int(len(opaque)),
+                 "transparent": int(len(trans)), "scale": scale, "palette": [list(c) for c in palette]},
+    }
+
+
+def assembly_line() -> tuple[dict, dict[Path, bytes]]:
+    import al_build as A
+    files, lines = {}, []
+    for dtype in A.DOME_TYPE_LIST:
+        for layout in (A.LAYOUTS if dtype == "home" else [None]):
+            blob, head = _al_line(dtype, layout)
+            files[AL_DIR / f"{dtype}-{head['layout'].lower()}.bin"] = blob
+            lines.append(head)
+    return _trim({
+        "_generated_by": "website/scripts/portal_spaces_export.py from al_build -- do not edit",
+        "assumptions": A.ASSUMPTIONS,
+        "stages": [{"key": st.key, "title": st.title, "desc": st.desc, "colour": list(st.colour if hasattr(st, "colour") else st.color)}
+                   for st in A._STAGE_LIST],
+        "categoryLabel": A.CATEGORY_LABEL, "layouts": A.LAYOUTS,
+        "lines": lines,
+    }, 17), files
+
+
+def _al_fixtures(rnd) -> list[dict]:
+    """The line's sums with the assumptions moved about, and the Python's answers."""
+    import al_build as A
+    out = []
+    keep = dict(A.ASSUMPTIONS)
+    try:
+        for i in range(40):
+            dtype = A.DOME_TYPE_LIST[i % 4]
+            over = {} if i < 4 else {"burdened_wage_per_hour": round(rnd.uniform(20, 80), 2),
+                                     "overhead_per_labor_hour": round(rnd.uniform(5, 30), 2),
+                                     "workers_per_station": rnd.randint(1, 6),
+                                     "fixed_overhead_per_month": round(rnd.uniform(40_000, 150_000), 0),
+                                     "line_capex": round(rnd.uniform(1e6, 5e6), 0),
+                                     "bhph_apr": round(rnd.uniform(0.0, 0.2), 3)}
+            A.ASSUMPTIONS.clear(); A.ASSUMPTIONS.update(keep); A.ASSUMPTIONS.update(over)
+            spec = _al_spec(dtype, A.LAYOUTS[i % 3] if dtype == "home" else None)
+            cat, _ = A.build_dome_catalog(spec)
+            econ = A.unit_economics(cat, spec)
+            tp = A.throughput(cat)
+            out.append({"dtype": dtype, "layout": spec.layout, "over": over, "price": spec.sale_price,
+                        "monthly": spec.monthly_payment, "econ": econ,
+                        "throughput": {k: v for k, v in tp.items() if k not in ("rows", "bottleneck")},
+                        "bottleneck": tp["bottleneck"]["key"], "rows": tp["rows"],
+                        "breakEven": A.break_even(econ["margin"], econ["overhead"]),
+                        "breakEvenDefault": A.break_even(econ["margin"]),
+                        "value": A.product_value(cat, spec),
+                        "scale": A.scale_scenarios(tp["single_flow_per_year"], econ["margin"], econ["price"])})
+    finally:
+        A.ASSUMPTIONS.clear(); A.ASSUMPTIONS.update(keep)
+    return out
+
+
+# ----------------------------------------------------------------------
+# Foundation & Pads
+# ----------------------------------------------------------------------
+
+FOUNDATION_DIR = ROOT / "website" / "public" / "portal" / "foundation"
+
+
+def foundation() -> tuple[dict, dict[Path, bytes]]:
+    import pad_deck as pd
+    from infill.app3d import solid_tris
+    from world3d import structures as st
+
+    sets = {"foundation": st.foundation(), "deck": st.foundation_deck(), "jig": st.foundation_jig()}
+    chunks, heads = [], []
+    for layer, pieces in sets.items():
+        for p in pieces:
+            rows = solid_tris(p.solid, (*p.colour[:3], 1.0) if len(p.colour) >= 3 else (0.8, 0.6, 0.4, 1.0))
+            chunks.append(rows)
+            heads.append({"id": p.pid, "layer": layer, "name": p.name, "kind": p.kind,
+                          "meta": {k: v for k, v in p.meta.items() if k in ("group", "material", "centreline_in", "cut_in", "number")}})
+    blob, mesh, ranges = pack_rows(chunks, "pieces", "foundation")
+    for h, r in zip(heads, ranges):
+        h["v"] = r
+    # the jig is laid out to one side of the foundation in the 3-D world: say where, so it can be drawn in place
+    across = pd.pad_diameter_ft()
+    sizes = sorted({across} | {float(x) for x in range(12, 50, 2)})      # the seed dome's own size among them, exactly
+    decks = {}
+    for kind in pd.KINDS:
+        decks[kind] = [{"across": a, **_deck(pd.deck(kind, a))} for a in sizes]
+    return _trim({
+        "_generated_by": "website/scripts/portal_spaces_export.py from world3d.structures and pad_deck -- do not edit",
+        "pieces": heads, "mesh": mesh, "facts": st.foundation_facts(), "jigAt": [float(x) for x in st.FOUNDATION_JIG_AT],
+        "pad": {"across": across, "sizes": sizes, "kinds": list(pd.KINDS), "decks": decks,
+                "sequence": {k: [{"number": x.number, "label": x.label, "detail": x.detail, "cumulative": x.cumulative_usd}
+                                 for x in pd.build_sequence(k)] for k in pd.KINDS},
+                "board": {"usd": pd.board_usd(), "perFoot": pd.usd_per_linear_ft()}},
+    }, 17), {FOUNDATION_DIR / "pieces.bin": blob}
+
+
+def _deck(d) -> dict:
+    return {"key": d.key, "label": d.label, "cost": d.cost, "area": d.area_sqft, "perSqft": d.usd_per_sqft,
+            "boards": d.boards, "walkable": d.walkable, "note": d.note,
+            "lines": [{"label": l.label, "quantity": l.quantity, "unit": l.unit, "unitCost": l.unit_cost, "cost": l.cost, "source": l.source}
+                      for l in d.lines]}
+
+
+# ----------------------------------------------------------------------
 # Masterclass Theatre
 # ----------------------------------------------------------------------
 
@@ -273,7 +423,7 @@ def fixtures(n: int = 300, seed: int = 5) -> dict:
         t = rnd.choice([None, -5.0, 5.0])
         checks.append({"modes": modes, "t_out": t, "broken": cw.check_scenario(modes, t)})
     cold = [dict(cold=scl.cold_channel(t, rh), t=t, rh=rh) for t, rh in ((21.0, 0.55), (18.0, 0.7), (25.0, 0.4))]
-    return {"decide": decide, "profiles": profiles, "checks": checks, "cold": cold}
+    return {"decide": decide, "profiles": profiles, "checks": checks, "cold": cold, "assembly": _al_fixtures(rnd)}
 
 
 # ----------------------------------------------------------------------

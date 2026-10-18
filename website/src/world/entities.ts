@@ -112,11 +112,35 @@ export function logPileMesh() {
   return g;
 }
 
+/** RuneScape's house portal: a stone arch on a step, a swirl of light in it, and a little
+ *  dome of the same light on top. */
+export function housePortalMesh(colour = "#b07cff") {
+  const g = new THREE.Group();
+  const stone = lambert("#9a9384"), dark = lambert("#6a655a");
+  const step = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.8, 0.7, 8), dark); step.position.y = 0.35; g.add(step);
+  for (const x of [-3.1, 3.1]) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(1.3, 7.6, 1.3), stone); p.position.set(x, 4.5, 0); g.add(p);
+    const cap = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.5, 1.7), dark); cap.position.set(x, 8.5, 0); g.add(cap);
+  }
+  const arch = new THREE.Mesh(new THREE.TorusGeometry(3.1, 0.6, 6, 16, Math.PI), stone); arch.position.y = 8.3; g.add(arch);
+  const c = new THREE.Color(colour);
+  const glow = new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: 1.4, transparent: true, opacity: 0.8, side: THREE.DoubleSide, depthWrite: false });
+  const swirl = new THREE.Mesh(new THREE.CircleGeometry(2.5, 6, 0, Math.PI * 2), glow); swirl.position.y = 4.6; swirl.name = "swirl"; g.add(swirl);
+  const inner = new THREE.Mesh(new THREE.RingGeometry(0.8, 1.7, 6), new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0.45, side: THREE.DoubleSide, depthWrite: false }));
+  inner.position.set(0, 4.6, 0.02); inner.name = "swirl"; g.add(inner);
+  const top = new THREE.Mesh(new THREE.IcosahedronGeometry(1.1, 1), glow); top.position.y = 11.4; top.name = "marker2"; g.add(top);
+  const light = new THREE.PointLight(c, 20, 18, 1.6); light.position.set(0, 5, 1.5); g.add(light);
+  g.traverse((o) => { if ((o as THREE.Mesh).isMesh) (o as THREE.Mesh).castShadow = true; });
+  return g;
+}
+
 /** Animate what moves by itself: swarm motes jitter, gust rings turn, markers spin. */
 export function idle(g: THREE.Object3D, t: number, seed: number) {
   g.traverse((o) => {
     if (o.name === "mote") { o.position.y += Math.sin(t * 9 + o.id) * 0.01; o.position.x += Math.cos(t * 7 + o.id) * 0.01; }
     if (o.name === "ring") o.rotation.z = t * 2.5 + o.id;
     if (o.name === "marker") { o.rotation.y = t * 2; o.position.y = 6.1 + Math.sin(t * 2 + seed) * 0.15; }
+    if (o.name === "swirl") o.rotation.z = t * (o.id % 2 ? 1.6 : -2.3);
+    if (o.name === "marker2") { o.rotation.y = t; o.position.y = 11.4 + Math.sin(t * 1.5) * 0.25; }
   });
 }

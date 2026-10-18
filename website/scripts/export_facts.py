@@ -38,6 +38,8 @@ WEDGE_OUT = SITE / "src" / "generated" / "wedge-method.json"
 PANEL_OUT = SITE / "src" / "generated" / "panel-creator.json"
 CELL_OUT = SITE / "src" / "generated" / "cell-wall.json"
 LESSONS_OUT = SITE / "public" / "portal" / "masterclass.json"
+ASSEMBLY_OUT = SITE / "public" / "portal" / "assembly" / "lines.json"
+FOUNDATION_OUT = SITE / "src" / "generated" / "foundation.json"
 
 
 def dome_mesh() -> dict:
@@ -137,6 +139,12 @@ def main() -> int:
     outputs[PANEL_OUT] = json.dumps(panel, separators=(",", ":")) + "\n"
     outputs[CELL_OUT] = json.dumps(portal_spaces_export.cell_wall(), separators=(",", ":"), ensure_ascii=False) + "\n"
     outputs[LESSONS_OUT] = json.dumps(portal_spaces_export.masterclass(), separators=(",", ":"), ensure_ascii=False) + "\n"
+    line, line_files = portal_spaces_export.assembly_line()
+    blobs.update(line_files)
+    outputs[ASSEMBLY_OUT] = json.dumps(line, separators=(",", ":"), ensure_ascii=False) + "\n"
+    found, found_files = portal_spaces_export.foundation()
+    blobs.update(found_files)
+    outputs[FOUNDATION_OUT] = json.dumps(found, separators=(",", ":"), ensure_ascii=False) + "\n"
     if a.check:
         stale = [p for p, text in outputs.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
         stale += [p for p, blob in blobs.items() if not p.exists() or p.read_bytes() != blob]

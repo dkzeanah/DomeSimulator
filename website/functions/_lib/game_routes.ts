@@ -2,7 +2,7 @@
 // Chat: everyone reads; members write, one message every few seconds, 200 characters; staff
 // remove. The game itself runs in the browser (src/world/game/).
 
-import { isStaffRole, requireAdmin, requireUser } from "./auth";
+import { isStaffRole, normaliseUsername, requireAdmin, requireUser } from "./auth";
 import { HttpError, body, json, nowIso, text } from "./http";
 import { audit } from "./ops";
 import api from "./routes";
@@ -35,6 +35,20 @@ api.put("/game/save", async (ctx) => {
     "INSERT INTO game_saves(user_id, data, total_level, updated_at) VALUES(?, ?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET data = excluded.data, total_level = excluded.total_level, updated_at = excluded.updated_at",
   ).bind(u.id, data, total, nowIso()).run();
   return json({ ok: true, totalLevel: total });
+});
+
+// The house portal's "Friend's house": anybody's house, by username. Only what the house shows --
+// the member's name and how their house is built -- and never an email.
+api.get("/game/house/:name", async (ctx) => {
+  const u = normaliseUsername(decodeURIComponent(ctx.params.name || ""));
+  if (!/^[a-z0-9][a-z0-9._-]{2,29}$/.test(u)) throw new HttpError(404, "Nobody by that name has a house.");
+  const row = await ctx.env.DB.prepare(
+    "SELECT u.id, u.username, u.display_name, u.suspended_reason, s.data FROM users u LEFT JOIN game_saves s ON s.user_id = u.id WHERE u.username = ?",
+  ).bind(u).first<{ id: number; username: string; display_name: string; suspended_reason: string | null; data: string | null }>();
+  if (!row || row.suspended_reason) throw new HttpError(404, "Nobody by that name has a house.");
+  let style = "starter";
+  try { const h = row.data ? (JSON.parse(row.data) as { house?: unknown }).house : undefined; if (typeof h === "string" && /^(starter|[1-5])$/.test(h)) style = h; } catch { /* a bad save keeps the starter */ }
+  return json({ username: row.username, name: row.display_name || row.username, style, yours: ctx.user?.id === row.id });
 });
 
 api.get("/game/chat", async (ctx) => {

@@ -251,7 +251,24 @@ export const npcById = (id: string) => NPCS.find((n) => n.id === id)!;
 export const OBJECTS: { id: string; name: string; area: string; at: [number, number]; examine: string; options: string[] }[] = [
   { id: "logpile", name: "Log pile", area: "hub", at: [-19, 25], options: ["Split", "Examine"],
     examine: `Pine logs about ${F.logIn} inches across. Each one splits into ${F.wedgesPerLog} wedges.` },
+  // RuneScape's house portal: your house, your house in build mode, or anybody's by name
+  { id: "houseportal", name: "House portal", area: "hub", at: [-30, 30], options: ["Enter", "Home", "Build mode", "Friend's house", "Examine"],
+    examine: "The portal to the members' houses. Type a member's name, or 1 to 5 for the five grand houses." },
+  // and inside every house, the way back out
+  { id: "houseexit", name: "Portal", area: "house", at: [-20, 104], options: ["Enter", "Examine"],
+    examine: "The way back to the hilltop." },
 ];
+
+/** What a house can be built as: the starter dome, or one of the five grand houses (src/world/estates.ts). */
+export const HOUSE_STYLES: { key: string; name: string; blurb: string }[] = [
+  { key: "starter", name: "The starter dome", blurb: "One 2V dome on its deck, a path and a garden: where every member begins." },
+  { key: "1", name: "West Egg", blurb: "A great gold-crowned dome over a marble terrace, its wings, its fountain and its lanterns: the party house." },
+  { key: "2", name: "East Egg", blurb: "White domes in a crescent behind a colonnade, a lawn down to the water, and a green light at the end of the dock." },
+  { key: "3", name: "The Deco Palace", blurb: "A stepped ziggurat of terraces, a gold dome on top, sunbursts and searchlights." },
+  { key: "4", name: "The Conservatory", blurb: "Glass domes over a garden: a hedge maze, a gazebo and the palm house." },
+  { key: "5", name: "The Ballroom", blurb: "One vast ballroom dome lit from inside, a chandelier, a dance floor and fireworks over the lawn." },
+];
+export const houseStyle = (key: string | undefined) => HOUSE_STYLES.find((h) => h.key === key) ?? HOUSE_STYLES[0];
 
 /** Each teacher's words, by quest stage. Numbers come from F. */
 export const TALK: Record<string, (stage: number) => { lines: Line[]; question?: { ask: string; choices: Choice[] } }> = {

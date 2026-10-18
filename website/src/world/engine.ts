@@ -18,8 +18,13 @@ export interface Thing { id: string; kind: "npc" | "monster" | "loot" | "object"
 export interface Part { id: string; name: string; examine?: string }
 export interface Pick { thing: Thing | null; gate: Gate | null; part: Part | null; ground: { x: number; z: number } | null; x: number; y: number }
 
+export type Kind = "hub" | "space" | "house";
+/** Something the walker goes round: a circle on the ground, feet. */
+export interface Obstacle { x: number; z: number; r: number }
+
 export interface WorldOptions {
-  kind: "hub" | "space";
+  /** The hilltop, a tool's island, or a member's house: a wide flat estate. */
+  kind: Kind;
   space?: Space;
   gates: Gate[];
   spawn: { x: number; z: number; facing: number };
@@ -33,6 +38,8 @@ export interface WorldOptions {
   onContext?: (p: Pick) => void;
   /** The pointer moved over something (or off it): for the hover text. */
   onHover?: (p: Pick | null) => void;
+  /** Places nothing grows: kept clear of trees, [x, z, radius]. */
+  clear?: [number, number, number][];
 }
 
 interface Ent {
@@ -53,8 +60,12 @@ function noise(x: number, z: number) {
   return Math.sin(x * 0.071 + Math.sin(z * 0.053) * 1.7) * 0.5 + Math.sin(z * 0.093 - x * 0.031) * 0.35 + Math.sin((x + z) * 0.017) * 0.6;
 }
 
-export function groundHeight(kind: "hub" | "space", x: number, z: number) {
+/** How far a house's estate runs flat before the land falls away. */
+export const ESTATE_R = 128;
+
+export function groundHeight(kind: Kind, x: number, z: number) {
   const r = Math.hypot(x, z);
+  if (kind === "house") return r < ESTATE_R ? 0 : -(r - ESTATE_R) * (r - ESTATE_R) * 0.03;
   if (kind === "space") {
     // an island: flat to 44 ft, then falling away to a rim of rock
     return r < 44 ? 0 : -(r - 44) * (r - 44) * 0.05;
@@ -70,8 +81,8 @@ function distToSegment(px: number, pz: number, ax: number, az: number, bx: numbe
 }
 
 function terrain(opts: WorldOptions) {
-  const size = opts.kind === "hub" ? 360 : 140;
-  const seg = opts.kind === "hub" ? 180 : 90;
+  const size = opts.kind === "hub" ? 360 : opts.kind === "house" ? 330 : 140;
+  const seg = opts.kind === "hub" ? 180 : opts.kind === "house" ? 110 : 90;
   const geo = new THREE.PlaneGeometry(size, size, seg, seg);
   geo.rotateX(-Math.PI / 2);
   const pos = geo.attributes.position as THREE.BufferAttribute;
@@ -119,11 +130,12 @@ function sky(top: string, horizon: string) {
 function trees(opts: WorldOptions, scene: THREE.Scene) {
   const rnd = mulberry(7);
   const spots: [number, number, number][] = [];
-  const inner = opts.kind === "hub" ? 46 : 30, outer = opts.kind === "hub" ? 150 : 40;
-  for (let tries = 0; spots.length < (opts.kind === "hub" ? 150 : 22) && tries < 4000; tries++) {
+  const inner = opts.kind === "hub" ? 46 : opts.kind === "house" ? ESTATE_R + 4 : 30, outer = opts.kind === "hub" ? 150 : opts.kind === "house" ? ESTATE_R + 34 : 40;
+  for (let tries = 0; spots.length < (opts.kind === "hub" ? 150 : opts.kind === "house" ? 90 : 22) && tries < 4000; tries++) {
     const a = rnd() * Math.PI * 2, r = inner + Math.sqrt(rnd()) * (outer - inner);
     const x = Math.cos(a) * r, z = Math.sin(a) * r;
     if (opts.gates.some((g) => distToSegment(x, z, 0, 0, g.at.x * 3, g.at.y * 3) < 7 || Math.hypot(x - g.at.x, z - g.at.y) < 9)) continue;
+    if (opts.clear?.some(([cx, cz, cr]) => Math.hypot(x - cx, z - cz) < cr)) continue;
     // in a space, nothing grows on the side you arrive from, where the camera stands
     if (opts.kind === "space" && Math.abs(Math.atan2(x - opts.spawn.x, z - opts.spawn.z)) < 1.0) continue;
     spots.push([x, z, 14 + rnd() * 18]);
@@ -206,7 +218,7 @@ export function solverDome(opts: { deck?: boolean; colour?: string; glow?: strin
 // Gateways
 // ----------------------------------------------------------------------
 
-function gateway(gate: Gate, kind: "hub" | "space") {
+function gateway(gate: Gate, kind: Kind) {
   const g = new THREE.Group();
   const colour = new THREE.Color(gate.colour);
   const stone = new THREE.MeshLambertMaterial({ color: "#8a8478", flatShading: true });
@@ -292,6 +304,8 @@ export class World {
   private splats: { el: HTMLDivElement; id: string; born: number }[] = [];
   private hoverAt = 0;
   private press: number | null = null;
+  private obstacles: Obstacle[] = [];
+  private estate: THREE.Group | null = null;
 
   constructor(private canvas: HTMLCanvasElement, private opts: WorldOptions) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -301,7 +315,7 @@ export class World {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     const [top, horizon] = opts.space?.sky || ["#2a4a7a", "#e8a25a"];
     this.scene.add(sky(top, horizon));
-    this.scene.fog = new THREE.Fog(horizon, opts.kind === "hub" ? 120 : 70, opts.kind === "hub" ? 420 : 220);
+    this.scene.fog = new THREE.Fog(horizon, opts.kind === "hub" ? 120 : opts.kind === "house" ? 150 : 70, opts.kind === "hub" ? 420 : opts.kind === "house" ? 520 : 220);
 
     this.scene.add(new THREE.HemisphereLight("#cfe0ff", "#4a3a20", 1.4));
     const sun = new THREE.DirectionalLight("#ffd9a0", 2.6);
@@ -309,7 +323,8 @@ export class World {
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
     const sc = sun.shadow.camera as THREE.OrthographicCamera;
-    sc.left = sc.bottom = -70; sc.right = sc.top = 70; sc.far = 300;
+    const reach = opts.kind === "house" ? 125 : 70;
+    sc.left = sc.bottom = -reach; sc.right = sc.top = reach; sc.far = 340;
     this.scene.add(sun);
 
     this.ground = terrain(opts);
@@ -345,6 +360,8 @@ export class World {
     this.player.group.rotation.y = opts.spawn.facing;
     this.yaw = opts.spawn.facing + Math.PI;
     if (opts.kind === "space") this.dist = 26;
+    if (opts.kind === "house") this.dist = 40;
+    this.obstacles = opts.kind === "hub" ? [{ x: 0, z: 0, r: DOME_BLOCK }] : opts.kind === "space" ? [{ x: 0, z: 0, r: 10.5 }] : [];
     this.scene.add(this.player.group);
 
     this.marker = new THREE.Mesh(new THREE.RingGeometry(0.5, 0.9, 20), new THREE.MeshBasicMaterial({ color: "#ffe066", transparent: true, depthWrite: false }));
@@ -495,6 +512,15 @@ export class World {
     on(c, "pointerleave", () => this.opts.onHover?.(null));
     on(c, "wheel", (e: WheelEvent) => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 1.1 : 0.9); }, { passive: false });
     on(window, "resize", () => this.resize());
+  }
+
+  /** Build a house's estate: its buildings and grounds, what the walker goes round, and what moves. */
+  setEstate(group: THREE.Group, obstacles: Obstacle[], tick?: (t: number, dt: number) => void) {
+    if (this.estate) this.scene.remove(this.estate);
+    this.estate = group;
+    this.scene.add(group);
+    this.obstacles = obstacles;
+    if (tick) this.extras.push(tick);
   }
 
   /** Put a tool's own model on the space's stage, replacing what stood there. */
@@ -709,20 +735,21 @@ export class World {
     if (moving) {
       move.normalize().multiplyScalar(WALK * dt);
       let nx = p.x + move.x, nz = p.z + move.y;
-      // the dome (or a space's stage) stands in the middle: walk round it, the shorter way,
+      // the dome, a space's stage or a house's buildings: walk round each, the shorter way,
       // instead of stopping at its edge
-      const block = this.opts.kind === "hub" ? DOME_BLOCK : 10.5;
-      if (Math.hypot(nx, nz) < block) {
-        const r0 = Math.hypot(p.x, p.z) || 1, rx = p.x / r0, rz = p.z / r0;
+      for (const ob of this.obstacles) {
+        if (Math.hypot(nx - ob.x, nz - ob.z) >= ob.r) continue;
+        const dx = p.x - ob.x, dz = p.z - ob.z;
+        const r0 = Math.hypot(dx, dz) || 1, rx = dx / r0, rz = dz / r0;
         let tx = -rz, tz = rx;
         const aim = this.target ? new THREE.Vector2(this.target.x - p.x, this.target.z - p.z) : move;
         if (tx * aim.x + tz * aim.y < 0) { tx = -tx; tz = -tz; }
         const step = move.length();
         nx = p.x + tx * step; nz = p.z + tz * step;
-        const r = Math.hypot(nx, nz);
-        nx *= block / r; nz *= block / r;
+        const r = Math.hypot(nx - ob.x, nz - ob.z) || 1;
+        nx = ob.x + (nx - ob.x) * (ob.r / r); nz = ob.z + (nz - ob.z) * (ob.r / r);
       }
-      const lim = this.opts.kind === "hub" ? 70 : 42;
+      const lim = this.opts.kind === "hub" ? 70 : this.opts.kind === "house" ? ESTATE_R - 3 : 42;
       const rr = Math.hypot(nx, nz);
       if (rr > lim) { nx *= lim / rr; nz *= lim / rr; }
       this.player.group.rotation.y = Math.atan2(nx - p.x, nz - p.z);
@@ -831,7 +858,7 @@ export class World {
 
   private drawMap() {
     const m = this.opts.minimap!, ctx = m.getContext("2d")!;
-    const s = m.width, half = s / 2, scale = half / (this.opts.kind === "hub" ? 62 : 46);
+    const s = m.width, half = s / 2, scale = half / (this.opts.kind === "hub" ? 62 : this.opts.kind === "house" ? 90 : 46);
     ctx.clearRect(0, 0, s, s);
     ctx.save();
     ctx.beginPath(); ctx.arc(half, half, half - 2, 0, Math.PI * 2); ctx.clip();
@@ -846,6 +873,10 @@ export class World {
       ctx.strokeStyle = "rgba(140,115,80,0.9)"; ctx.lineWidth = 4 * scale;
       for (const g of this.gates) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(g.gate.at.x * scale, g.gate.at.y * scale); ctx.stroke(); }
       ctx.fillStyle = "#c8914e"; ctx.beginPath(); ctx.arc(0, 0, mesh.radiusFt * scale, 0, Math.PI * 2); ctx.fill();
+    }
+    if (this.opts.kind === "house") {
+      ctx.fillStyle = "rgba(240,232,214,0.85)";
+      for (const ob of this.obstacles) { ctx.beginPath(); ctx.arc(ob.x * scale, ob.z * scale, ob.r * scale, 0, Math.PI * 2); ctx.fill(); }
     }
     for (const g of this.gates) {
       ctx.fillStyle = g.gate.colour; ctx.beginPath(); ctx.arc(g.gate.at.x * scale, g.gate.at.y * scale, 4.5, 0, Math.PI * 2); ctx.fill();
