@@ -132,6 +132,11 @@ def handle(h, method: str):
         if p == "/api/studio/chapter/replace" and method == "POST":
             b = h._body()
             return h._json(MS.replace(b["book"], b["path"], b["find"], b["replace"]))
+        if p == "/api/studio/pictures" and method == "GET":
+            return h._json(MS.pictures(q["book"], q["path"]))
+        if p == "/api/studio/picture/swap" and method == "POST":
+            b = h._body()
+            return h._json(MS.swap_picture(b["book"], b["path"], int(b["index"]), b["asset"], b.get("alt")))
         if p == "/api/studio/build" and method == "POST":
             return h._json(MS.build(h._body()["book"]))
         if p == "/api/studio/build" and method == "GET":

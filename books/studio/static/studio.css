@@ -65,7 +65,27 @@ h4 { margin: 6px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing
 .rendered { flex: 1; overflow: auto; padding: 24px 10%; font: 15px/1.6 Georgia, serif }
 .ch { padding: 4px 6px; border-radius: 4px; cursor: pointer; font-size: 12px } .ch:hover { background: var(--panel2) } .ch.on { background: #4a3c22 }
 .ch small { display: block; color: var(--muted) }
-#rd-img { width: 100%; background: #fff; margin-top: 6px }
+#chapter-view { flex: 1; display: flex; flex-direction: column; min-height: 0 }
+#proof-view { flex: 1; display: flex; flex-direction: column; min-height: 0; background: #3b3c40; color: var(--text) }
+.pfbar { display: flex; gap: 6px; align-items: center; padding: 6px 10px; background: var(--panel); border-bottom: 1px solid var(--line) }
+.pfbar input { width: 64px }
+.pfscroll { flex: 1; overflow: auto; display: grid; justify-items: center; padding: 20px }
+.pfwrap { position: relative; box-shadow: 0 4px 24px #000a; cursor: crosshair; background: #fff; align-self: start }
+.pfwrap img { display: block; user-select: none }
+.pin { position: absolute; transform: translate(-50%, -100%); background: #e8b45a; color: #1a1206; font-weight: 700; font-size: 11px; border-radius: 10px 10px 10px 0;
+       padding: 1px 6px; box-shadow: 0 1px 4px #0008; cursor: pointer; white-space: nowrap }
+.pin.done { background: #6fdc9b } .pin.hot { outline: 2px solid #fff }
+.pfhint { margin: 0; padding: 4px 10px; background: var(--panel) }
+.seg { display: flex } .seg button { border-radius: 0 } .seg button:first-child { border-radius: 4px 0 0 4px } .seg button:last-child { border-radius: 0 4px 4px 0 }
+.note { border: 1px solid var(--line); border-radius: 6px; padding: 6px; display: grid; gap: 3px; font-size: 12px; cursor: pointer }
+.note.done { opacity: .55 } .note .nh { display: flex; gap: 6px; align-items: center } .note small { color: var(--muted) }
+.pic { display: grid; grid-template-columns: 90px 1fr; gap: 8px; align-items: center; border-bottom: 1px solid var(--line); padding: 6px 0; font-size: 12px }
+.pic img { width: 90px; height: 70px; object-fit: contain; background: #fff } .pic .none { width: 90px; height: 70px; display: grid; place-items: center; background: #444; color: var(--muted); font-size: 10px; text-align: center }
+.modal { position: fixed; inset: 0; background: #000a; display: grid; place-items: center; z-index: 90 }
+.mbox { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; width: min(820px, 94vw); display: grid; gap: 8px }
+.libgrid.big { grid-template-columns: repeat(5, 1fr); height: 420px }
 pre#bd-log { white-space: pre-wrap; font-size: 11px; background: #111; padding: 6px; max-height: 60vh; overflow: auto }
 .prop { border: 1px solid var(--line); border-radius: 6px; padding: 6px; display: grid; gap: 4px; font-size: 12px }
 .prop pre { white-space: pre-wrap; margin: 0; font-size: 11px; background: #111; padding: 4px; max-height: 120px; overflow: auto }
+
+main > section { min-width: 0 }

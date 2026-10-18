@@ -432,6 +432,10 @@ document.addEventListener("keydown", (e) => {
   const typing = e.target.closest("input, textarea, select, [contenteditable]");
   const mod = e.ctrlKey || e.metaKey;
   if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); S.mode === "ms" ? $("#ms-save").click() : $("#save").click(); return; }
+  if (S.mode === "ms" && !typing && !$("#proof-view").hidden) {
+    if (e.key === "PageDown" || e.key === "ArrowRight") { e.preventDefault(); $("#pf-next").click(); }
+    if (e.key === "PageUp" || e.key === "ArrowLeft") { e.preventDefault(); $("#pf-prev").click(); }
+  }
   if (S.mode !== "layout") return;
   if (S.editing && e.key === "Escape") { finishEdit(); return; }
   if (typing) return;
@@ -456,7 +460,7 @@ window.addEventListener("resize", () => { if (S.mode === "layout") draw(); });
 
 // ------------------------------------------------------------------ manuscript books
 async function openMs(key) {
-  S.ms = { ...S.ms, key, path: null, dirty: false, chat: [] };
+  S.ms = { ...S.ms, key, path: null, dirty: false, chat: [], pages: 0, notes: [] };
   const r = await api("/api/studio/chapters?book=" + key);
   S.ms.all = r.chapters; S.ms.pdf = r.latest; S.ms.n = 1;
   const b = S.books.manuscripts.find((x) => x.key === key);
@@ -466,7 +470,7 @@ async function openMs(key) {
   $("#ms-text").value = ""; $("#ms-text").disabled = true; $("#ms-save").disabled = true;
   $("#mschat").innerHTML = ""; $("#proposals").innerHTML = "";
   chatLine($("#mschat"), "agent", `I can read ${b.title}'s chapters and propose exact replacements. You apply each one.`);
-  chapters(); reader(); dirty(false); $("#status").textContent = "";
+  chapters(); showView("proof"); reader(); picsList(); dirty(false); $("#status").textContent = "";
 }
 function chapters() {
   const box = $("#chapters"); box.innerHTML = ""; const q = ($("#ms-filter").value || "").toLowerCase();
@@ -481,7 +485,7 @@ async function openChapter(path) {
   const r = await api(`/api/studio/chapter?book=${S.ms.key}&path=${encodeURIComponent(path)}`);
   S.ms.path = path; S.ms.text = r.text; S.ms.dirty = false;
   $("#ms-text").value = r.text; $("#ms-text").disabled = false; $("#ms-save").disabled = true;
-  $("#ms-title").textContent = path; chapters(); renderMd();
+  $("#ms-title").textContent = path; chapters(); renderMd(); showView("chapter"); picsList();
 }
 $("#ms-text").oninput = () => { S.ms.dirty = $("#ms-text").value !== S.ms.text; $("#ms-save").disabled = !S.ms.dirty; if (!$("#ms-rendered").hidden) renderMd(); };
 $("#ms-save").onclick = async () => {
@@ -497,17 +501,131 @@ function renderMd() {
     return `<p>${b.split("\n").map(inline).join("<br>")}</p>`;
   }).join("");
 }
+// ---- proofing: the newest PDF, big, with notes pinned where they belong
+S.ms.zoom = 1; S.ms.notes = [];
 async function reader() {
-  const img = $("#rd-img"), none = $("#rd-none");
-  if (!S.ms.pdf) { img.hidden = true; none.textContent = "No printed copy in the library yet: build one."; $("#rd-n").textContent = ""; return; }
-  if (!S.ms.pages) { try { S.ms.pages = (await api("/api/pdf/info?path=" + encodeURIComponent(S.ms.pdf))).pages; } catch { S.ms.pages = 0; } }
-  img.hidden = false; none.textContent = S.ms.pdf;
-  img.src = `/api/pdf/page?path=${encodeURIComponent(S.ms.pdf)}&n=${S.ms.n}&dpi=110`;
-  $("#rd-n").textContent = `page ${S.ms.n} of ${S.ms.pages}`;
+  if (!S.ms.pdf) { $("#pf-file").textContent = "No printed copy in the library yet: build one."; $("#pf-img").removeAttribute("src"); return; }
+  if (!S.ms.pages) {
+    try { S.ms.pages = (await api("/api/pdf/info?path=" + encodeURIComponent(S.ms.pdf))).pages; } catch { S.ms.pages = 0; }
+    try { S.ms.notes = await api("/api/pdf/notes?path=" + encodeURIComponent(S.ms.pdf)); } catch { S.ms.notes = []; }
+    notesList();
+  }
+  S.ms.n = Math.max(1, Math.min(S.ms.pages || 1, S.ms.n));
+  const img = $("#pf-img"), dpi = Math.round(Math.min(220, 96 * S.ms.zoom));
+  img.src = `/api/pdf/page?path=${encodeURIComponent(S.ms.pdf)}&n=${S.ms.n}&dpi=${dpi}`;
+  img.style.width = ""; img.onload = () => { img.style.width = img.naturalWidth * (96 * S.ms.zoom / dpi) + "px"; pins(); };
+  $("#pf-n").value = S.ms.n; $("#pf-of").textContent = S.ms.pages; $("#pf-file").textContent = S.ms.pdf;
 }
-$("#rd-prev").onclick = () => { S.ms.n = Math.max(1, S.ms.n - 1); reader(); };
-$("#rd-next").onclick = () => { S.ms.n = Math.min(S.ms.pages || 1, S.ms.n + 1); reader(); };
-$$("#mstabs button").forEach((b) => (b.onclick = () => { $$("#mstabs button").forEach((x) => x.classList.toggle("on", x === b)); $$("#ms-mode .rtab").forEach((t) => t.classList.toggle("on", t.id === "tab-" + b.dataset.tab)); }));
+function pins() {
+  $$(".pin", $("#pf-wrap")).forEach((p) => p.remove());
+  S.ms.notes.forEach((n, i) => {
+    if (n.page !== S.ms.n || n.x == null) return;
+    const p = document.createElement("div"); p.className = "pin" + (n.done ? " done" : ""); p.textContent = i + 1; p.title = n.text;
+    p.style.left = n.x * 100 + "%"; p.style.top = n.y * 100 + "%";
+    p.onclick = (e) => { e.stopPropagation(); rtabMs("notes"); const el = $(`.note[data-i="${i}"]`); el?.scrollIntoView({ block: "center" }); el?.classList.add("hot"); };
+    $("#pf-wrap").appendChild(p);
+  });
+}
+async function saveNotes() { await api("/api/pdf/notes", { body: { path: S.ms.pdf, notes: S.ms.notes } }); notesList(); pins(); }
+$("#pf-wrap").onclick = async (e) => {
+  if (!S.ms.pdf || e.target.classList.contains("pin")) return;
+  const r = $("#pf-img").getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+  const text = prompt(`A note on page ${S.ms.n}:`); if (!text || !text.trim()) return;
+  S.ms.notes.push({ page: S.ms.n, x: Math.round(x * 1000) / 1000, y: Math.round(y * 1000) / 1000, text: text.trim(), at: new Date().toISOString().slice(0, 16).replace("T", " "), done: false });
+  await saveNotes(); toast("Note pinned");
+};
+function notesList() {
+  const box = $("#notes"); box.innerHTML = ""; const open = $("#nt-open").checked;
+  const left = S.ms.notes.filter((n) => !n.done).length;
+  $("#nt-count").textContent = S.ms.notes.length ? `${S.ms.notes.length} notes, ${left} open` : "No notes yet";
+  S.ms.notes.map((n, i) => [n, i]).filter(([n]) => !open || !n.done).sort((a, b) => a[0].page - b[0].page).forEach(([n, i]) => {
+    const d = document.createElement("div"); d.className = "note" + (n.done ? " done" : ""); d.dataset.i = i;
+    d.innerHTML = `<div class="nh"><b>${i + 1}.</b><span class="grow">page ${n.page}</span><label class="toggle"><input type="checkbox" ${n.done ? "checked" : ""}> fixed</label><button title="Delete">&#10005;</button></div><div>${esc(n.text)}</div><small>${esc(n.at || "")}</small>`;
+    $("input", d).onclick = async (e) => { e.stopPropagation(); n.done = e.target.checked; await saveNotes(); };
+    $("button", d).onclick = async (e) => { e.stopPropagation(); if (!confirm("Delete this note?")) return; S.ms.notes.splice(i, 1); await saveNotes(); };
+    d.onclick = () => { showView("proof"); S.ms.n = n.page; reader(); };
+    box.appendChild(d);
+  });
+}
+$("#nt-open").onchange = notesList;
+$("#nt-export").onclick = () => {
+  const t = S.ms.notes.map((n, i) => `${i + 1}. p.${n.page}${n.done ? " (fixed)" : ""}: ${n.text}`).join("\n");
+  navigator.clipboard.writeText(t); toast("Copied the notes");
+};
+$("#nt-agent").onclick = () => {
+  const open = S.ms.notes.filter((n) => !n.done);
+  if (!open.length) return toast("No open notes");
+  rtabMs("msagent");
+  $("#msinstr").value = `Proofreading notes on the printed proof (${S.ms.pdf}). Each is a page of the PDF and what is wrong there. Find each passage in the chapters and propose an exact fix. Keep every {{token}}.\n` +
+    open.map((n) => `- page ${n.page}: ${n.text}`).join("\n");
+  $("#msinstr").focus();
+};
+$("#pf-prev").onclick = () => { S.ms.n--; reader(); };
+$("#pf-next").onclick = () => { S.ms.n++; reader(); };
+$("#pf-n").onchange = (e) => { S.ms.n = Number(e.target.value) || 1; reader(); };
+$("#pf-zin").onclick = () => { S.ms.zoom = Math.min(2.5, S.ms.zoom * 1.2); reader(); };
+$("#pf-zout").onclick = () => { S.ms.zoom = Math.max(0.4, S.ms.zoom / 1.2); reader(); };
+function showView(v) {
+  $("#proof-view").hidden = v !== "proof"; $("#chapter-view").hidden = v !== "chapter";
+  $("#v-proof").classList.toggle("on", v === "proof"); $("#v-chapter").classList.toggle("on", v === "chapter");
+  $("#ms-prev-wrap").hidden = v !== "chapter"; $("#ms-save").hidden = v !== "chapter";
+}
+$("#v-proof").onclick = () => showView("proof");
+$("#v-chapter").onclick = () => showView("chapter");
+function rtabMs(name) { $$("#mstabs button").forEach((x) => x.classList.toggle("on", x.dataset.tab === name)); $$("#ms-mode .rtab").forEach((t) => t.classList.toggle("on", t.id === "tab-" + name)); }
+
+// ---- the open chapter's pictures, and swapping one for a library picture
+async function picsList() {
+  const box = $("#pics"); box.innerHTML = "";
+  $("#pc-none").hidden = Boolean(S.ms.path);
+  if (!S.ms.path) return;
+  const pics = await api(`/api/studio/pictures?book=${S.ms.key}&path=${encodeURIComponent(S.ms.path)}`);
+  if (!pics.length) { box.innerHTML = '<p class="muted">This chapter has no pictures.</p>'; return; }
+  for (const p of pics) {
+    const d = document.createElement("div"); d.className = "pic";
+    d.innerHTML = `${p.file ? `<img src="/file/${esc(p.file)}">` : '<div class="none">not drawn yet: left out of the book</div>'}
+      <div><b>${esc(p.name)}</b><div class="muted">${esc(p.alt)}</div><div class="row"><button>Swap...</button></div></div>`;
+    $("button", d).onclick = () => pick(p);
+    box.appendChild(d);
+  }
+}
+let picking = null;
+async function pick(p) {
+  if (S.ms.dirty) return toast("Save the chapter first");
+  picking = p; $("#picker").hidden = false; $("#pk-was").textContent = `Now: ${p.name}. The new picture is filed in the book's figures folder (nothing is overwritten) and this link points at it.`;
+  pkGrid();
+}
+async function pkGrid() {
+  const items = await api("/api/studio/library?text=" + encodeURIComponent($("#pk-search").value || ""));
+  const g = $("#pk-grid"); g.innerHTML = "";
+  for (const e of items.filter((e) => /\.(png|svg|jpe?g)$/i.test(e.file))) {
+    const it = document.createElement("div"); it.className = "libitem"; it.title = `${e.name}\n${e.prompt || e.note || ""}`;
+    it.innerHTML = `<img src="/file/${esc(e.file)}" loading="lazy"><span>${esc(e.name)}</span>`;
+    it.onclick = () => swap(e.file);
+    g.appendChild(it);
+  }
+}
+$("#pk-search").oninput = () => { clearTimeout(pkGrid.t); pkGrid.t = setTimeout(pkGrid, 200); };
+$("#pk-close").onclick = () => { $("#picker").hidden = true; picking = null; };
+$("#pk-file").onchange = async (e) => {
+  const file = e.target.files[0]; if (!file || !picking) return;
+  const data = await new Promise((res) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(",")[1]); fr.readAsDataURL(file); });
+  try { const r = await api("/api/studio/library/upload", { body: { name: file.name.replace(/\.[^.]+$/, ""), data, ext: file.name.split(".").pop(), origin: "owner" } }); await swap(r.file); }
+  catch (er) { toast(er.message); }
+  e.target.value = "";
+};
+async function swap(asset) {
+  const p = picking; if (!p) return;
+  if (!confirm(`Show ${asset.split("/").pop()} in place of ${p.name}?`)) return;
+  try {
+    const r = await api("/api/studio/picture/swap", { body: { book: S.ms.key, path: S.ms.path, index: p.index, asset } });
+    $("#picker").hidden = true; picking = null;
+    toast(`Swapped. Filed ${r.filed.split("/").pop()}; the chapter now links it (previous copy kept). Build to see it in the PDF.`, 6000);
+    const keep = S.ms.path; S.ms.dirty = false; await openChapter(keep);
+  } catch (e) { toast(e.message, 6000); }
+}
+$$("#mstabs button").forEach((b) => (b.onclick = () => rtabMs(b.dataset.tab)));
 $("#bd-run").onclick = async () => {
   try { await api("/api/studio/build", { body: { book: S.ms.key } }); } catch (e) { return toast(e.message); }
   $("#bd-run").disabled = true;

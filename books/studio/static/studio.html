@@ -72,15 +72,30 @@
     <div id="chapters" class="pages"></div>
   </aside>
   <section class="msboard">
-    <div class="msbar"><b id="ms-title">Pick a chapter</b><span class="grow"></span>
-      <label class="toggle"><input type="checkbox" id="ms-preview"> Preview</label>
+    <div class="msbar"><span class="seg"><button id="v-proof" class="on">Proof the PDF</button><button id="v-chapter">Edit a chapter</button></span>
+      <b id="ms-title" class="grow">Pick a chapter</b>
+      <label class="toggle" id="ms-prev-wrap"><input type="checkbox" id="ms-preview"> Preview</label>
       <button id="ms-save" class="primary" disabled>Save</button></div>
-    <textarea id="ms-text" spellcheck="true" disabled></textarea>
-    <div id="ms-rendered" class="rendered" hidden></div>
+    <div id="chapter-view" hidden>
+      <textarea id="ms-text" spellcheck="true" disabled></textarea>
+      <div id="ms-rendered" class="rendered" hidden></div>
+    </div>
+    <div id="proof-view">
+      <div class="pfbar"><button id="pf-prev" title="Previous page (PageUp)">&larr;</button>
+        page <input id="pf-n" type="number" min="1" value="1"> of <span id="pf-of">?</span>
+        <button id="pf-next" title="Next page (PageDown)">&rarr;</button>
+        <button id="pf-zout" title="Smaller">&minus;</button><button id="pf-zin" title="Bigger">+</button>
+        <span class="grow"></span><span class="muted" id="pf-file"></span></div>
+      <div class="pfscroll"><div id="pf-wrap" class="pfwrap"><img id="pf-img" alt="A page of the proof" draggable="false"></div></div>
+      <p class="muted pfhint">Click anywhere on the page to pin a note there. Notes are kept with this PDF; tick them off in Notes as you fix them.</p>
+    </div>
   </section>
   <aside class="right">
-    <nav class="rtabs" id="mstabs"><button data-tab="reader" class="on">Reader</button><button data-tab="build">Build</button><button data-tab="msagent">Agent</button></nav>
-    <div class="rtab on" id="tab-reader"><div class="row"><button id="rd-prev">&larr;</button><span id="rd-n" class="muted"></span><button id="rd-next">&rarr;</button></div><img id="rd-img" alt="A page of the newest PDF"><p id="rd-none" class="muted"></p></div>
+    <nav class="rtabs" id="mstabs"><button data-tab="notes" class="on">Notes</button><button data-tab="pics">Pictures</button><button data-tab="build">Build</button><button data-tab="msagent">Agent</button></nav>
+    <div class="rtab on" id="tab-notes"><div class="row"><b id="nt-count" class="grow">No notes</b><label class="toggle"><input type="checkbox" id="nt-open"> Open only</label></div>
+      <div id="notes"></div>
+      <div class="row"><button id="nt-agent">Ask the agent to fix the open notes</button><button id="nt-export">Copy as a list</button></div></div>
+    <div class="rtab" id="tab-pics"><p id="pc-none" class="muted">Open a chapter (Edit a chapter) to see its pictures.</p><div id="pics"></div></div>
     <div class="rtab" id="tab-build"><p id="bd-cmd" class="muted"></p><button id="bd-run" class="primary">Build a new copy</button><pre id="bd-log"></pre></div>
     <div class="rtab" id="tab-msagent"><div id="mschat" class="chat"></div>
       <form id="msask"><textarea id="msinstr" rows="3" placeholder="'Tighten the second paragraph of this chapter', 'Fix any typos in chapter 12'..."></textarea>
@@ -89,6 +104,16 @@
   </aside>
 </main>
 
+<div id="picker" class="modal" hidden>
+  <div class="mbox">
+    <div class="row"><b class="grow" id="pk-title">Swap the picture</b><button id="pk-close">Close</button></div>
+    <p class="muted" id="pk-was"></p>
+    <input id="pk-search" placeholder="Find a picture in the library">
+    <div id="pk-grid" class="libgrid big"></div>
+    <div class="row"><label class="upload grow">Or a picture from this PC <input id="pk-file" type="file" accept=".svg,.png,.jpg"></label></div>
+    <p class="muted">New pictures can be drawn in a layout book's Library tab (DeepSeek, or Ask Claude), and appear here.</p>
+  </div>
+</div>
 <div id="toast" class="toast" hidden></div>
 <script src="/studio/static/studio.js"></script>
 </body>
