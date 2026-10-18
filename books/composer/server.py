@@ -30,6 +30,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from books.composer import loom as L  # noqa: E402
+from books.studio import routes as SR  # noqa: E402
 
 STATIC = HERE / "static"
 NOTES = ROOT / "books" / ".pdf-notes"
@@ -130,6 +131,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):  # noqa: N802
         u = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
+        if SR.handles(u.path):                         # the Book Studio (books.studio)
+            return SR.handle(self, "GET")
         try:
             if u.path in ("/", "/index.html"):
                 return self._file(STATIC / "index.html")
@@ -194,6 +197,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):  # noqa: N802
         u = urlparse(self.path)
+        if SR.handles(u.path):
+            return SR.handle(self, "POST")
         try:
             data = self._body()
             if u.path == "/api/loom":                      # a new book
@@ -238,6 +243,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._err(400, f"{type(e).__name__}: {e}")
 
     def do_PUT(self):  # noqa: N802
+        if SR.handles(urlparse(self.path).path):
+            return SR.handle(self, "PUT")
         m = re.fullmatch(r"/api/loom/([a-z0-9-]+)", urlparse(self.path).path)
         if not m:
             return self._err(404, "not found")

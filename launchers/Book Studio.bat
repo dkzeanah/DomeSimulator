@@ -1,6 +1,6 @@
 @echo off
-rem The desk where the wedge book is built.
+rem Lay out, illustrate and edit the books, with the DeepSeek agent.
 title DomeSim - Book Studio
 cd /d "%~dp0.."
-py -3.12 book_studio.py %*
+py -3.12 -m books.studio %*
 if errorlevel 1 pause

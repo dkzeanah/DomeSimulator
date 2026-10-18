@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book Studio</title>
+<link rel="stylesheet" href="/studio/static/studio.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark">&#9650;</span> Book Studio</div>
+  <select id="book" title="Switch book"></select>
+  <div class="tools" id="tools" role="toolbar" aria-label="Tools">
+    <button data-tool="select" class="on" title="Select and move (V)">&#8598;</button>
+    <button data-tool="text" title="Text frame (T)">T</button>
+    <button data-tool="image" title="Picture frame (F)">&#9635;</button>
+    <button data-tool="rect" title="Rectangle (M)">&#9645;</button>
+    <button data-tool="ellipse" title="Ellipse (L)">&#9711;</button>
+  </div>
+  <div class="zoom"><button id="zout" title="Zoom out (Ctrl -)">&minus;</button><span id="zval">100%</span><button id="zin" title="Zoom in (Ctrl +)">+</button><button id="zfit" title="Fit the page (Ctrl 0)">Fit</button></div>
+  <div class="hist"><button id="undo" title="Undo (Ctrl Z)">&#8630;</button><button id="redo" title="Redo (Ctrl Shift Z)">&#8631;</button></div>
+  <label class="toggle"><input type="checkbox" id="preview"> Preview</label>
+  <span class="grow"></span>
+  <span id="status" class="status"></span>
+  <button id="save" class="primary" title="Ctrl S" disabled>Save</button>
+  <button id="export" title="Print a new numbered PDF to the library">PDF</button>
+</header>
+
+<main id="layout-mode">
+  <aside class="left">
+    <div class="ph"><b>Pages</b><span class="grow"></span>
+      <button id="addpage" title="Add a page after this one">+</button><button id="duppage" title="Duplicate this page">&#10697;</button><button id="delpage" title="Delete this page">&#128465;</button></div>
+    <div id="pages" class="pages"></div>
+  </aside>
+  <section class="board" id="board">
+    <div class="paste" id="paste"><div class="page" id="page"></div></div>
+  </section>
+  <aside class="right">
+    <nav class="rtabs" id="rtabs">
+      <button data-tab="props" class="on">Properties</button><button data-tab="styles">Styles</button>
+      <button data-tab="library">Library</button><button data-tab="agent">Agent</button>
+    </nav>
+    <div class="rtab on" id="tab-props"><p class="empty">Select a frame, or draw one with a tool.</p></div>
+    <div class="rtab" id="tab-styles"></div>
+    <div class="rtab" id="tab-library">
+      <input id="libsearch" placeholder="Find a picture by name">
+      <div id="libgrid" class="libgrid"></div>
+      <details id="illustrate" open>
+        <summary><b>Illustrate from words</b></summary>
+        <label>Name <input id="ill-name" placeholder="pip-splits-the-log"></label>
+        <label>What it shows <textarea id="ill-desc" rows="4" placeholder="Pip swings a maul at a log on the splitting block; the log opens into eight wedges"></textarea></label>
+        <div class="row"><label>W <input id="ill-w" type="number" step="0.1" value="1"></label><label>H <input id="ill-h" type="number" step="0.1" value="1"></label>
+          <button id="ill-size" title="Use the selected frame's shape">From frame</button></div>
+        <div class="row"><button id="ill-deepseek" class="primary">DeepSeek: draw it</button><button id="ill-claude">Ask Claude</button></div>
+        <div id="ill-out"></div>
+        <details><summary>Paste an SVG</summary><textarea id="ill-svg" rows="5" placeholder="&lt;svg ...&gt;...&lt;/svg&gt;"></textarea><button id="ill-paste">File it</button></details>
+        <label class="upload">Or add a picture file <input id="ill-file" type="file" accept=".svg,.png,.jpg,.jpeg,.webp"></label>
+      </details>
+    </div>
+    <div class="rtab" id="tab-agent">
+      <div id="chat" class="chat"></div>
+      <form id="ask"><textarea id="instr" rows="3" placeholder="Tell the agent what to change: 'Make every verse 22pt and move it up a little', 'Add a page after 5 with Pip splitting the log', ..."></textarea>
+        <div class="row"><button class="primary" type="submit">Send</button><span id="agent-state" class="muted"></span></div></form>
+    </div>
+  </aside>
+</main>
+
+<main id="ms-mode" hidden>
+  <aside class="left">
+    <div class="ph"><b>Chapters</b><span class="grow"></span><span id="ms-count" class="muted"></span></div>
+    <input id="ms-filter" placeholder="Filter chapters">
+    <div id="chapters" class="pages"></div>
+  </aside>
+  <section class="msboard">
+    <div class="msbar"><b id="ms-title">Pick a chapter</b><span class="grow"></span>
+      <label class="toggle"><input type="checkbox" id="ms-preview"> Preview</label>
+      <button id="ms-save" class="primary" disabled>Save</button></div>
+    <textarea id="ms-text" spellcheck="true" disabled></textarea>
+    <div id="ms-rendered" class="rendered" hidden></div>
+  </section>
+  <aside class="right">
+    <nav class="rtabs" id="mstabs"><button data-tab="reader" class="on">Reader</button><button data-tab="build">Build</button><button data-tab="msagent">Agent</button></nav>
+    <div class="rtab on" id="tab-reader"><div class="row"><button id="rd-prev">&larr;</button><span id="rd-n" class="muted"></span><button id="rd-next">&rarr;</button></div><img id="rd-img" alt="A page of the newest PDF"><p id="rd-none" class="muted"></p></div>
+    <div class="rtab" id="tab-build"><p id="bd-cmd" class="muted"></p><button id="bd-run" class="primary">Build a new copy</button><pre id="bd-log"></pre></div>
+    <div class="rtab" id="tab-msagent"><div id="mschat" class="chat"></div>
+      <form id="msask"><textarea id="msinstr" rows="3" placeholder="'Tighten the second paragraph of this chapter', 'Fix any typos in chapter 12'..."></textarea>
+        <div class="row"><button class="primary" type="submit">Send</button><span id="msagent-state" class="muted"></span></div></form>
+      <div id="proposals"></div></div>
+  </aside>
+</main>
+
+<div id="toast" class="toast" hidden></div>
+<script src="/studio/static/studio.js"></script>
+</body>
+</html>
