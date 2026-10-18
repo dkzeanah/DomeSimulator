@@ -224,6 +224,10 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_demo()
     if mode in ("selftest", "check"):
         return cmd_selftest()
+    if mode == "eval":
+        # What the agent can do: plain-English jobs, judged on what it did.
+        from .evaluate import main as eval_main
+        return eval_main(args[1:])
     if mode == "authoring":
         # The paste-ready prompt that teaches a model to write a film.
         from .authoring import main as authoring_main
@@ -239,7 +243,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if result.get("ok") else 1
     if mode in ("chat", "repl"):
         return repl()
-    print("usage: python -m project_agent [chat|sync|selftest|demo|"
+    print("usage: python -m project_agent [chat|sync|selftest|eval [--quick]|demo|"
           "facts <id>|produce <recipe> key=... title=... source=...]")
     return 2
 

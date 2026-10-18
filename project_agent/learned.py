@@ -11,7 +11,12 @@ This module hands that learning to the agent:
 * :func:`summary` is the compact text put into the LLM planner's system
   prompt, so a planner such as DeepSeek plans the way the work is really done;
 * the ``learned`` tool (registered in :mod:`project_agent.tools`) lets the
-  agent, or the person chatting with it, ask for any part of it.
+  agent, or the person chatting with it, ask for any part of it;
+* the lessons (:mod:`intelligence.lessons`) -- the owner's standing rules,
+  every past request worked as an example, and what fixed each failure -- go in
+  too: the rules into the system prompt, and, for each new request, the most
+  similar past requests as worked examples (:func:`examples_for`, the
+  ``recall`` tool).
 
 Reading only: the agent never writes to the observer's database.
 """
@@ -63,11 +68,26 @@ def collect() -> dict:
             "failures": failures, "knowledge": knowledge}
 
 
+def _lessons() -> dict:
+    """The rules, recoveries and worked examples, read where the observer keeps them.
+
+    Never copied into ``kb/learned.json``: that file is in git and the repository is
+    public, while the examples are the owner's own requests word for word and the
+    rules include the assistant's private memory notes. ``.intelligence/`` is ignored."""
+    try:
+        from intelligence import lessons
+        taught = lessons.load()
+    except Exception:  # noqa: BLE001 - the agent works without lessons, just less well
+        return {"rules": [], "recoveries": [], "examples": []}
+    return {k: taught.get(k, []) for k in ("rules", "recoveries", "examples")}
+
+
 def sync() -> dict:
     """Re-derive the playbooks and copy the learning into the agent's KB."""
     try:
-        from intelligence import procedures
+        from intelligence import lessons, procedures
         procedures.run()
+        lessons.build()
     except Exception as exc:  # noqa: BLE001 - a broken observer must not break the agent
         data = collect()
         data["warning"] = f"playbooks not re-derived: {type(exc).__name__}: {exc}"
@@ -79,9 +99,8 @@ def sync() -> dict:
 
 
 def load() -> dict:
-    if LEARNED_PATH.exists():
-        return json.loads(LEARNED_PATH.read_text(encoding="utf-8"))
-    return collect()
+    data = json.loads(LEARNED_PATH.read_text(encoding="utf-8")) if LEARNED_PATH.exists() else collect()
+    return {**data, **_lessons()}
 
 
 def summary(data: dict | None = None, limit: int = 6) -> str:
@@ -95,7 +114,27 @@ def summary(data: dict | None = None, limit: int = 6) -> str:
         lines.append(f"- playbook '{b['name']}' ({b['status']}, {b['episodes']} episodes): {steps}")
     for f in data.get("failures", [])[:3]:
         lines.append(f"- tends to fail: {f['action']} x{f['times']} ({f['pattern'][:80]})")
+    rules = data.get("rules", [])
+    if rules:
+        lines.append("The owner's standing rules (they outrank any habit above):")
+        lines += [f"- {r['rule']}" for r in rules]
+    fixes = [r for r in data.get("recoveries", []) if r.get("fixed_by")][:3]
+    if fixes:
+        lines.append("Seen failing, and what fixed it:")
+        lines += [f"- {r['failed']} failed ({r['error'][:70]}); then: {r['fixed_by']}" for r in fixes]
     return "\n".join(lines)
+
+
+def examples_for(request: str, k: int = 3) -> str:
+    """The past requests most like this one, as worked examples for the planner.
+    Empty when nothing in the record is close."""
+    try:
+        from intelligence import lessons
+        found = lessons.recall(request, k, {"examples": load().get("examples", [])})
+    except Exception:  # noqa: BLE001
+        return ""
+    found = [e for e in found if e.get("score", 0) >= 3]
+    return lessons.as_prompt(found) if found else ""
 
 
 def query(kind: str = "all") -> dict:
@@ -107,6 +146,10 @@ def query(kind: str = "all") -> dict:
     if kind == "playbooks":
         from intelligence import procedures
         return {"ok": True, "text": procedures.text(data["playbooks"]), "playbooks": data["playbooks"]}
-    if kind in ("top_actions", "failures", "knowledge", "counts"):
-        return {"ok": True, kind: data[kind]}
+    if kind in ("top_actions", "failures", "knowledge", "counts", "rules", "recoveries"):
+        return {"ok": True, kind: data.get(kind, [])}
+    if kind == "examples":
+        ex = data.get("examples", [])
+        return {"ok": True, "count": len(ex),
+                "examples": [{"request": e["request"][:200], "steps": e["steps"][:8]} for e in ex[-20:]]}
     return {"ok": False, "error": f"unknown kind {kind!r}"}
