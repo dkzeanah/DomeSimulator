@@ -27,6 +27,7 @@ import export_facts as web_facts  # noqa: E402  (web/export_facts.py: the existi
 import seed_model  # noqa: E402
 import creator_export  # noqa: E402  (website/scripts/creator_export.py: the Dome Creator's tables)
 import portal_tools_export  # noqa: E402  (the 3D Wedge Method and 3D Zome spaces' tables and meshes)
+import portal_spaces_export  # noqa: E402  (the Panel Creator, Cell Wall and Masterclass spaces)
 
 OUT = SITE / "src" / "generated" / "facts.json"
 CLASSES_OUT = SITE / "src" / "generated" / "dome-classes.json"
@@ -34,6 +35,9 @@ MESH_OUT = SITE / "src" / "generated" / "dome-mesh.json"
 CREATOR_OUT = SITE / "src" / "generated" / "creator.json"
 ZOME_OUT = SITE / "src" / "generated" / "zome.json"
 WEDGE_OUT = SITE / "src" / "generated" / "wedge-method.json"
+PANEL_OUT = SITE / "src" / "generated" / "panel-creator.json"
+CELL_OUT = SITE / "src" / "generated" / "cell-wall.json"
+LESSONS_OUT = SITE / "public" / "portal" / "masterclass.json"
 
 
 def dome_mesh() -> dict:
@@ -128,6 +132,11 @@ def main() -> int:
                ZOME_OUT: json.dumps(portal_tools_export.zome_tables(), separators=(",", ":")) + "\n"}
     wedge, blobs = portal_tools_export.wedge_tables()
     outputs[WEDGE_OUT] = json.dumps(wedge, separators=(",", ":")) + "\n"
+    panel, panel_files = portal_spaces_export.panel_creator()
+    blobs.update(panel_files)
+    outputs[PANEL_OUT] = json.dumps(panel, separators=(",", ":")) + "\n"
+    outputs[CELL_OUT] = json.dumps(portal_spaces_export.cell_wall(), separators=(",", ":"), ensure_ascii=False) + "\n"
+    outputs[LESSONS_OUT] = json.dumps(portal_spaces_export.masterclass(), separators=(",", ":"), ensure_ascii=False) + "\n"
     if a.check:
         stale = [p for p, text in outputs.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
         stale += [p for p, blob in blobs.items() if not p.exists() or p.read_bytes() != blob]
@@ -138,6 +147,7 @@ def main() -> int:
         return 1 if stale else 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     for p, text in outputs.items():
+        p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text, encoding="utf-8")
         print(f"wrote {p.relative_to(ROOT)}")
     for p, blob in blobs.items():

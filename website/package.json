@@ -20,7 +20,8 @@
     "db:model": "py -3.12 scripts/model_db.py",
     "snippets": "py -3.12 scripts/sample_snippets.py",
     "test:creator": "node scripts/test_creator.mjs",
-    "test:tools": "node scripts/test_portal_tools.mjs"
+    "test:tools": "node scripts/test_portal_tools.mjs",
+    "test:spaces": "node scripts/test_portal_spaces.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

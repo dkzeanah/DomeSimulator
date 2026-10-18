@@ -12,4 +12,7 @@ export const TOOLS: Record<string, LazyExoticComponent<ComponentType<ToolProps>>
   "dome-creator": lazy(() => import("../CreatorPanel")),
   "wedge-method": lazy(() => import("../WedgePanel")),
   zome: lazy(() => import("../ZomePanel")),
+  "panel-creator": lazy(() => import("../PanelCreatorPanel")),
+  "cell-wall": lazy(() => import("../CellWallPanel")),
+  masterclass: lazy(() => import("../MasterclassPanel")),
 };
