@@ -293,13 +293,25 @@ def recipe_presenter(params: dict) -> dict:
 def _lesson_by_key(key: str):
     """Load a lesson by importing its module directly — the registry may
     have been imported (and cached) before a registration edit in this
-    process, so always go to the source module."""
+    process, so always go to the source module.
+
+    A lesson lives in ``two_v_demo/lesson_<key>.py`` as ``<KEY>_LESSON``, except the
+    first ones, which share ``two_v_demo/lessons.py`` (``2v`` is ``TWO_V_LESSON``
+    there); those are found by their ``key``."""
     import importlib
-    module = importlib.import_module(f"two_v_demo.lesson_{key}")
-    lesson = getattr(module, f"{key.upper()}_LESSON")
-    if lesson is None:
-        raise ValueError(f"unknown lesson {key!r}")
-    return lesson
+    try:
+        module = importlib.import_module(f"two_v_demo.lesson_{key}")
+        lesson = getattr(module, f"{key.upper()}_LESSON", None)
+        if lesson is not None:
+            return lesson
+    except ImportError:
+        pass
+    shared = importlib.import_module("two_v_demo.lessons")
+    for value in vars(shared).values():
+        if getattr(value, "key", None) == key and hasattr(value, "snapshot_prefix"):
+            return value
+    raise ValueError(f"unknown lesson {key!r}: no two_v_demo/lesson_{key}.py and no lesson "
+                     f"with that key in two_v_demo/lessons.py")
 
 
 def _chapter_times(key: str) -> list[str]:

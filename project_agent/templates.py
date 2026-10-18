@@ -42,8 +42,24 @@ PRESETS_PATH = config.REPO_ROOT / "render_presets.py"
 
 REGISTRY_IMPORT_ANCHOR = "from .lessons import TWO_V_LESSON, Lesson"
 REGISTRY_DICT_ANCHOR = "LESSONS: dict[str, Lesson] = {"
-DELIVERABLES_ANCHOR = "\n)\n\n\nDELIVERABLE_BY_LESSON"
-PRESETS_ANCHOR = "\n)\n\n\nPRESET_BY_KEY"
+#: Each list is found by its declaration, and a new entry goes just before the line that
+#: closes it. The first version anchored on "the close, then the lookup table", which broke the
+#: day each list gained a line appending generated entries (concept films, cabin presets)
+#: between the two.
+DELIVERABLES_DECL = "DELIVERABLES: tuple[Deliverable, ...] = ("
+PRESETS_DECL = "PRESETS: tuple[RenderPreset, ...] = ("
+DELIVERABLES_ANCHOR = DELIVERABLES_DECL   # kept for callers that print the anchor
+PRESETS_ANCHOR = PRESETS_DECL
+
+
+def _literal_close(text: str, decl: str) -> int | None:
+    """The index of the newline before the ``)`` that closes the tuple literal opened
+    by ``decl`` -- the first line holding only ``)`` after it -- or None."""
+    start = text.find(decl)
+    if start < 0:
+        return None
+    close = text.find("\n)\n", start)
+    return close if close >= 0 else None
 
 
 # ---------------------------------------------------------------------------
@@ -181,12 +197,12 @@ def preflight() -> dict:
               "the LESSONS dict comprehension's tuple of lesson objects")
     if DELIVERABLES_PATH.is_file():
         text = DELIVERABLES_PATH.read_text(encoding="utf-8")
-        check("deliverables tuple anchor", DELIVERABLES_ANCHOR in text,
-              DELIVERABLES_ANCHOR.strip())
+        check("deliverables tuple anchor", _literal_close(text, DELIVERABLES_DECL) is not None,
+              DELIVERABLES_DECL)
     if PRESETS_PATH.is_file():
         text = PRESETS_PATH.read_text(encoding="utf-8")
-        check("presets tuple anchor", PRESETS_ANCHOR in text,
-              PRESETS_ANCHOR.strip())
+        check("presets tuple anchor", _literal_close(text, PRESETS_DECL) is not None,
+              PRESETS_DECL)
         check("presets _video helper", "def _video(" in text, "_video(...)")
 
     return {"ok": all(c["ok"] for c in checks), "checks": checks}
@@ -374,28 +390,29 @@ def _insert_deliverable(deliverables_text: str, key: str, filename: str,
                         summary: str) -> str:
     if f'Deliverable("{key}"' in deliverables_text:
         return deliverables_text                          # already there
-    if DELIVERABLES_ANCHOR not in deliverables_text:
+    close = _literal_close(deliverables_text, DELIVERABLES_DECL)
+    if close is None:
         raise ValueError("deliverables tuple anchor not found")
     entry = (
         f'    Deliverable("{key}", "{filename}",\n'
         f'                "{summary}",\n'
-        "                compose=True),\n"
+        "                compose=True),"
     )
-    return deliverables_text.replace(
-        DELIVERABLES_ANCHOR, f"\n{entry})\n\n\nDELIVERABLE_BY_LESSON", 1)
+    return deliverables_text[:close] + "\n" + entry + deliverables_text[close:]
 
 
 def _insert_preset(presets_text: str, key: str, filename: str,
                    summary: str) -> str:
     if f'_video("{key}"' in presets_text:
         return presets_text                               # already there
-    if PRESETS_ANCHOR not in presets_text:
+    close = _literal_close(presets_text, PRESETS_DECL)
+    if close is None:
         raise ValueError("presets tuple anchor not found")
     entry = (
         f'    _video("{key}", "{key}", "{filename}",\n'
-        f'           "{summary}"),\n'
+        f'           "{summary}"),'
     )
-    return presets_text.replace(PRESETS_ANCHOR, f"\n{entry})\n\n\nPRESET_BY_KEY", 1)
+    return presets_text[:close] + "\n" + entry + presets_text[close:]
 
 
 def _quote_safe(text: str) -> str:

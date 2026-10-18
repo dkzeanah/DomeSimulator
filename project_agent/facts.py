@@ -40,6 +40,23 @@ def _add(spec: FactSpec) -> None:
     FACT_SPECS[spec.id] = spec
 
 
+# --- the stem cell and the dome classes ----------------------------------
+_add(FactSpec(
+    "seed.price",
+    "The stem cell's price, as the campaign and the website state it: build cost, margin, "
+    "price and price per square foot (kickstarter.cost_stack). The number to use whenever a "
+    "caption or a request mentions what the stem cell or the dome costs.",
+    "kickstarter", "cost_stack",
+    note="the website's facts.price.stemCell is round(cost_stack().price)"))
+_add(FactSpec(
+    "seed.dome_class",
+    "Everything one number gives: a 2V wedge dome solved at its longest strut -- size, panels, "
+    "frame weight, wood, the frame's cost and its wood/hardware/seam shares. The sheet the "
+    "website's dome classes and the free sample's 'A home you can account for' page show.",
+    "seed_model", "dome_class", {"long_edge_in": float},
+    note="the book's dome is long_edge_in = seed_model.SEED_LONG_EDGE_IN (72)"))
+
+
 # --- 2V geometry --------------------------------------------------------
 _add(FactSpec(
     "geometry.demo",

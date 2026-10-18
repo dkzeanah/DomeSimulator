@@ -275,11 +275,9 @@ def _t_render_stills(args: dict) -> dict:
     if backend == "masterclass":
         lesson_key = str(args.get("lesson", "2v"))
         try:
-            # Import the lesson module directly (never the cached registry).
-            import importlib
-            module = importlib.import_module(f"two_v_demo.lesson_{lesson_key}")
-            prefix = getattr(
-                module, f"{lesson_key.upper()}_LESSON").snapshot_prefix
+            # Import the lesson's own module directly (never the cached registry).
+            from .recipes import _lesson_by_key
+            prefix = _lesson_by_key(lesson_key).snapshot_prefix
         except Exception as exc:  # noqa: BLE001
             return {"ok": False, "error": f"cannot resolve lesson {lesson_key!r}: {exc}"}
         cfg = {"action": "shots", "lesson": lesson_key,
@@ -628,6 +626,25 @@ def _t_learned(args: dict) -> dict:
     return learned.query(kind)
 
 
+def _t_recall(args: dict) -> dict:
+    """How the owner's earlier requests most like this one were carried out."""
+    from intelligence import lessons
+    from . import learned
+    query = str(args.get("query") or "").strip()
+    if not query:
+        return {"ok": False, "error": "query is required: describe the job"}
+    try:
+        k = max(1, min(8, int(args.get("k") or 3)))
+    except (TypeError, ValueError):
+        k = 3
+    found = lessons.recall(query, k, {"examples": learned.load().get("examples", [])})
+    if not found:
+        return {"ok": True, "examples": [], "message": "nothing in the record is like that yet"}
+    return {"ok": True, "examples": [
+        {"request": e["request"][:300], "steps": e["steps"], "files_changed": e["files_changed"][:10],
+         "outcome": e["outcome"], "reported": e["result"][:300], "score": e["score"]} for e in found]}
+
+
 def _t_help(args: dict) -> dict:  # noqa: ARG001
     from . import recipes
     lines = []
@@ -919,8 +936,19 @@ TOOLS: dict[str, dict] = {
                           "Learned playbooks, statistics and failures from the observer.",
                           {"kind": _prop("string", "Which part.",
                                          enum=["all", "playbooks", "top_actions", "failures",
-                                               "knowledge", "counts", "sync"])},
+                                               "knowledge", "counts", "rules", "recoveries",
+                                               "examples", "sync"])},
                           []),
+    },
+    "recall": {
+        "call": _t_recall,
+        "description": ("The owner's past requests most like a job, and exactly how each was carried "
+                        "out: the steps, the files changed, the outcome and what was reported. Look "
+                        "here before planning anything the project has done before."),
+        "schema": _schema("recall", "Worked examples of similar past requests.",
+                          {"query": _prop("string", "The job, in plain words."),
+                           "k": _prop("integer", "How many examples (1-8, default 3).")},
+                          ["query"]),
     },
     "help": {
         "call": _t_help,

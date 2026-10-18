@@ -37,6 +37,13 @@ House rules (from the repository):
   source (use declare_constant). Never type a figure into a caption.
 - Unknown figures become ledger items (scan_claims, resolve), never
   silent guesses. Unsourceable claims are dropped and recorded.
+- A figure typed in a request is a claim to check, not a source. If the
+  model computes that quantity (query_facts: seed.price is the stem cell's
+  price, seed.dome_class a dome's whole sheet), use the computed number and
+  say the typed one disagrees. Never resolve a ledger item, or declare a
+  constant, to make a typed figure look sourced; a number that merely
+  matches some other line of the model (a sawmill that also costs it) is a
+  coincidence, not a source. Change the ledger only for the item asked about.
 - Render stills before exporting video and look at every one (view).
 - Verify every render by frame count (verify_render).
 - Rendered output is append-only; never overwrite an existing file.
@@ -55,6 +62,14 @@ follow the matching playbook's order of steps):
 Answer conversationally but act through tools. When the user asks for
 media, plan the minimal tool sequence and execute it. Report what was
 decided, what remains unresolved, and the files produced."""
+
+
+def say(text: str) -> None:
+    """Print to a console that may not speak UTF-8 (Windows cp1252): what it cannot
+    show becomes '?', instead of a UnicodeEncodeError ending the chat turn."""
+    import sys
+    enc = getattr(sys.stdout, "encoding", None) or "utf-8"
+    print(str(text).encode(enc, errors="replace").decode(enc, errors="replace"))
 
 
 @dataclass
@@ -155,6 +170,10 @@ def _parse_tool_calls(text: str) -> list[ToolCall]:
         return one("help", {})
     if low in ("ledger",):
         return one("list_items", {"kind": "ledger"})
+
+    match = re.match(r"^recall\s+(.+)$", t, re.I)
+    if match:
+        return one("recall", {"query": match.group(1)})
 
     match = re.match(r"^learned(?:\s+(\w+))?$", low)
     if match:
@@ -395,7 +414,7 @@ class LlmPlanner:
 
 def execute(calls: list[ToolCall]) -> list[ToolCall]:
     for call in calls:
-        print(f"  -> {call.name} {json.dumps(call.args, default=str)[:160]}")
+        say(f"  -> {call.name} {json.dumps(call.args, default=str)[:160]}")
         call.result = tools.dispatch(call.name, call.args)
         status = "ok" if call.result.get("ok") else "FAIL"
         detail = ""
@@ -404,7 +423,7 @@ def execute(calls: list[ToolCall]) -> list[ToolCall]:
             if call.result.get(key):
                 detail = f"  {key}: {str(call.result[key])[:300]}"
                 break
-        print(f"     [{status}] {detail}")
+        say(f"     [{status}] {detail}")
     return calls
 
 
@@ -413,8 +432,12 @@ def run_chat(user_text: str, run_id: str, planner=None) -> dict:
     ensure_dirs()
     planner = planner or (LlmPlanner() if config.llm_configured() else RulePlanner())
     if planner.name == "llm":
-        messages: list[dict] = [_system_message(), {"role": "user",
-                                                    "content": user_text}]
+        from . import learned
+        worked = learned.examples_for(user_text)
+        content = user_text if not worked else (
+            f"{user_text}\n\n(How the most similar past requests were done here -- "
+            f"follow what fits, ignore what does not:\n{worked})")
+        messages: list[dict] = [_system_message(), {"role": "user", "content": content}]
     else:
         messages = [{"role": "user", "content": user_text}]
 
@@ -426,12 +449,12 @@ def run_chat(user_text: str, run_id: str, planner=None) -> dict:
         except PlannerError as exc:
             # A planner that cannot reach its endpoint ends the turn with a
             # message; it must never take the REPL down with it.
-            print(f"  planner: {exc}")
+            say(f"  planner: {exc}")
             errors.append(str(exc))
             break
         said = getattr(planner, "last_text", "")
         if said:
-            print(f"  {said}")
+            say(f"  {said}")
         if not calls:
             break
         execute(calls)
@@ -474,5 +497,5 @@ def run_chat(user_text: str, run_id: str, planner=None) -> dict:
     manifest["manifest_path"] = str(run_dir / "manifest.json")
 
     if planner.name == "rule" and not all_calls and not errors:
-        print(planner.final_answer())
+        say(planner.final_answer())
     return manifest
