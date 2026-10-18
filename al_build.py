@@ -891,20 +891,21 @@ def _emit_shelterkit(cat, floor_r):
 
     def fr(f):
         return f * floor_r
-    cat.begin("shelter_kit", "Bench seating")
+    # The category is "shelter_kit" (CATEGORY_ECON's key); the station is
+    # "shelterkit" (the shelter line's stage). Each bench is its own element.
     for az in (200, 340):
+        cat.begin("shelter_kit", "Bench seating")
         cx, cy, _ = polar(az, fr(0.55))
         yaw = math.radians(az + 90)
         add_box(b, (cx, cy, FLOOR_TOP + 0.22), (1.2, 0.45, 0.44),
                 (0.45, 0.42, 0.40), mat_id=MAT_METAL, yaw=yaw)
-        cat.end("shelter_kit") if az == 340 else cat.begin(
-            "shelter_kit", "Bench seating")
+        cat.end("shelterkit")
     cat.begin("shelter_kit", "Air vent + supplies")
     b.cylinder((0, 0, FLOOR_TOP + 0.9), (0, 0, FLOOR_TOP + 1.6), 0.10, 8,
                (0.6, 0.62, 0.66), mat_id=MAT_METAL)
     add_box(b, (fr(0.3), fr(0.3), FLOOR_TOP + 0.2), (0.4, 0.4, 0.4),
             (0.8, 0.5, 0.2))
-    cat.end("shelter_kit")
+    cat.end("shelterkit")
 
 
 # ---------------------------------------------------------------------------
