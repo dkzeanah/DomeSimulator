@@ -32,7 +32,8 @@ FONT_HAND = "C:/Windows/Fonts/BOOKOSB.TTF"      # Bookman bold, for lettering in
 
 # The story's people. Pip wears a green hat, so she can tip it.
 PIP = dict(skin=(0.86, 0.64, 0.48, 1.0), hi_vis=(0.96, 0.74, 0.22, 1.0),
-           trousers=(0.70, 0.22, 0.17, 1.0), helmet=(0.20, 0.46, 0.30, 1.0))
+           trousers=(0.70, 0.22, 0.17, 1.0), helmet=(0.20, 0.46, 0.30, 1.0),
+           girl=dict(hair=(0.30, 0.13, 0.05, 1.0), dress=(0.86, 0.30, 0.24, 1.0)))
 BOY = dict(skin=(0.62, 0.43, 0.30, 1.0), hi_vis=(0.26, 0.47, 0.78, 1.0),
            trousers=(0.30, 0.30, 0.36, 1.0), helmet=(0.45, 0.30, 0.18, 1.0))
 NEIGHBOURS = (
@@ -54,14 +55,67 @@ def sheet() -> dict:
 # The story's geometry
 # ----------------------------------------------------------------------
 
+def frustum(batch: TriangleBatch, top, bottom, r_top: float, r_bottom: float, colour, sides: int = 14) -> None:
+    """An upright truncated cone, open at both ends: a skirt."""
+    top, bottom = np.asarray(top, float), np.asarray(bottom, float)
+    for i in range(sides):
+        a0, a1 = math.tau * i / sides, math.tau * (i + 1) / sides
+        d0, d1 = np.array([math.cos(a0), math.sin(a0), 0.0]), np.array([math.cos(a1), math.sin(a1), 0.0])
+        n = (d0 + d1) / np.linalg.norm(d0 + d1)
+        batch.quad(top + d0 * r_top, bottom + d0 * r_bottom, bottom + d1 * r_bottom, top + d1 * r_top, colour, n)
+
+
+def girl(batch: TriangleBatch, j: dict, facing_deg: float, hair, dress) -> None:
+    """What the films' figure lacks for Pip: a dress from the waist, and long hair --
+    a crown over the head, falling past the shoulders behind, with a lock framing each
+    side of the face. Drawn over the figure, sized from its own joints."""
+    fwd = np.array([math.cos(math.radians(facing_deg)), math.sin(math.radians(facing_deg)), 0.0])
+    up = np.array([0.0, 0.0, 1.0])
+    neck, top, chest, pelvis = (np.asarray(j[k], float) for k in ("neck", "head_top", "chest", "pelvis"))
+    head_c = (neck + top) * 0.5
+    head = float(np.linalg.norm(top - neck))
+    # the dress: a bodice over the chest, then a skirt flaring from the waist to just above the knee
+    knee = (np.asarray(j["l_knee"], float) + np.asarray(j["r_knee"], float)) * 0.5
+    shoulder_w = float(np.linalg.norm(np.asarray(j["l_shoulder"], float) - np.asarray(j["r_shoulder"], float)))
+    batch.cylinder(pelvis + up * 0.02, (chest + neck) * 0.5, shoulder_w * 0.40, dress, 12)
+    waist = pelvis + up * 0.04
+    hem = knee + up * (0.06 * head / 0.2)
+    frustum(batch, waist, hem, shoulder_w * 0.42, shoulder_w * 0.78, dress)
+    # hair: a crown just bigger than the head, set back a little
+    batch.sphere(head_c - fwd * head * 0.20 + up * head * 0.08, head * 0.50, hair, 6, 12)
+    # the long part, down the back to below the shoulder blades
+    back_top = head_c - fwd * head * 0.28
+    back_end = chest - fwd * shoulder_w * 0.30 - up * head * 0.55
+    batch.cylinder(back_top, back_end, head * 0.40, hair, 10)
+    batch.sphere(back_end, head * 0.40, hair, 4, 10)
+    # a lock beside each cheek, down to the shoulder
+    side = np.cross(up, fwd)
+    for key in ("l_shoulder", "r_shoulder"):
+        sh = np.asarray(j[key], float)
+        out = sh - neck
+        out = out / max(np.linalg.norm(out), 1e-6)
+        a = head_c + out * head * 0.42 + up * head * 0.10           # from the temple
+        mid = sh + fwd * head * 0.30 + up * head * 0.30 - out * head * 0.15   # over the front of the shoulder
+        end = mid - up * head * 0.85 + fwd * head * 0.05            # down onto the chest
+        batch.cylinder(a, mid, head * 0.20, hair, 8)
+        batch.sphere(mid, head * 0.20, hair, 4, 8)
+        batch.cylinder(mid, end, head * 0.18, hair, 8)
+        batch.sphere(end, head * 0.18, hair, 4, 8)
+    _ = side
+
+
 def person(at, facing_deg: float, look: dict, stature: float = CHILD_M, pose: str = "stand") -> TriangleBatch:
     """A figure standing at ``at`` (x, y on the ground or a z given), facing a compass angle."""
     batch = TriangleBatch()
     x, y = at[0], at[1]
     z = at[2] if len(at) > 2 else 0.0
+    look = dict(look)
+    extra = look.pop("girl", None)
     joints = figure.joint_positions(figure.POSES[pose], stature)
     placed = figure.place_figure(joints, (x, y, z), facing_deg)
     figure.draw_figure(batch, placed, **look)
+    if extra:
+        girl(batch, placed, facing_deg, **extra)
     return batch
 
 

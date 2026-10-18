@@ -12,6 +12,7 @@ const NAV = [
   ["/network", "Pads"],
   ["/back", "Back It"],
   ["/kit", "Kit"],
+  ["/media", "Media"],
 ] as const;
 
 export default function Layout() {

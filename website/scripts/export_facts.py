@@ -83,7 +83,7 @@ def build() -> dict:
         # contents, page counts and headline figures of each book, from the books' own
         # token resolvers -- the same values the books print (web/export_facts.books())
         "bookFacts": web_facts.books(),
-        "site": {k: site[k] for k in ("name", "url", "tagline", "email", "kickstarterUrl", "youtubeChannelUrl", "links")
+        "site": {k: site[k] for k in ("name", "url", "tagline", "email", "kickstarterUrl", "youtubeChannelUrl", "youtubeChannelId", "tiktokHandle", "links")
                  if k in site},
     })
     facts["kidsBook"] = kids_book()

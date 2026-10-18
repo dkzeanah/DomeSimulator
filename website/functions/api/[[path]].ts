@@ -9,6 +9,7 @@ import "../_lib/ops_routes";     // automations, jobs, notices, the clock, the a
 import "../_lib/user_routes";    // password reset, sessions, data export, the owner's user controls
 import "../_lib/studio_routes";  // home focus, invite codes, promo codes, dome classes
 import "../_lib/project_routes"; // the owner's projects and tasks
+import "../_lib/media";          // the Media page: the latest YouTube videos, cached
 
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
