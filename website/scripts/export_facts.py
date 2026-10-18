@@ -28,6 +28,23 @@ import seed_model  # noqa: E402
 
 OUT = SITE / "src" / "generated" / "facts.json"
 CLASSES_OUT = SITE / "src" / "generated" / "dome-classes.json"
+MESH_OUT = SITE / "src" / "generated" / "dome-mesh.json"
+
+
+def dome_mesh() -> dict:
+    """The book's dome as the raw-wedge solver builds it -- nodes, struts and triangles, in
+    feet -- so the website's 3-D world stands the solver's own dome, not a drawing of one."""
+    from two_v_demo import raw_wedge_bridge
+    long_in = float(seed_model.SEED_LONG_EDGE_IN)
+    topo = raw_wedge_bridge.simulator().build_2v_hemisphere(long_in)
+    ft = lambda v: [round(float(x) / 12.0, 4) for x in v]  # noqa: E731
+    return {
+        "_generated_by": "website/scripts/export_facts.py from raw_wedge_bridge.simulator().build_2v_hemisphere -- do not edit",
+        "longIn": long_in, "radiusFt": round(float(topo.sphere_radius_in) / 12.0, 4), "up": "z",
+        "vertices": [ft(v) for v in topo.vertices],
+        "edges": [[int(k[0]), int(k[1]), e.edge_type, bool(e.is_base)] for k, e in topo.edges.items()],
+        "faces": [[*map(int, f.vertices), f.face_type] for f in topo.faces],
+    }
 
 # The dome classes: a 2V wedge dome is fixed by one number, its longest strut. Two domes
 # with the same longest strut take the same panels, so members who own one are a class.
@@ -98,7 +115,8 @@ def main() -> int:
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
     outputs = {OUT: json.dumps(build(), indent=2, ensure_ascii=False) + "\n",
-               CLASSES_OUT: json.dumps(classes(), separators=(",", ":"), ensure_ascii=False) + "\n"}
+               CLASSES_OUT: json.dumps(classes(), separators=(",", ":"), ensure_ascii=False) + "\n",
+               MESH_OUT: json.dumps(dome_mesh(), separators=(",", ":")) + "\n"}
     if a.check:
         stale = [p for p, text in outputs.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
         for p in stale:

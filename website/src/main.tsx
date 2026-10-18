@@ -29,6 +29,7 @@ const Reset = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Res
 const Verify = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Verify })));
 const Kids = lazy(() => import("./pages/Kids"));
 const MediaPage = lazy(() => import("./pages/Media"));
+const Portal = lazy(() => import("./pages/Portal"));
 const Card = lazy(() => import("./pages/Card"));
 const Domes = lazy(() => import("./pages/Domes"));
 const DomeClassPage = lazy(() => import("./pages/Domes").then((m) => ({ default: m.DomeClassPage })));
@@ -57,6 +58,8 @@ createRoot(document.getElementById("root")!).render(
               <Route path="checkout/test/:ref" element={<Thanks test />} />
               <Route path="kids" element={<Kids />} />
               <Route path="media" element={<MediaPage />} />
+              <Route path="portal" element={<Portal />} />
+              <Route path="portal/:space" element={<Portal />} />
               <Route path="card" element={<Card />} />
               <Route path="links" element={<Card />} />
               <Route path="domes" element={<Domes />} />

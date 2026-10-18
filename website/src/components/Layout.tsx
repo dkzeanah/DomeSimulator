@@ -6,6 +6,7 @@ import { isStaff, useSession } from "../lib/session";
 import { Toast } from "./ui";
 
 const NAV = [
+  ["/portal", "Portal"],
   ["/start", "Free Pages"],
   ["/book", "The Book"],
   ["/build", "The Build"],
@@ -59,7 +60,7 @@ export default function Layout() {
       <main className="flex-1">
         <Outlet />
       </main>
-      <footer className="border-t mt-16" style={{ borderColor: "var(--line)" }}>
+      {!loc.pathname.startsWith("/portal") && <footer className="border-t mt-16" style={{ borderColor: "var(--line)" }}>
         <div className="mx-auto max-w-6xl px-4 py-8 text-sm muted grid gap-2 sm:flex sm:justify-between">
           <p>Every number on this site is computed by the project's own open code, or counted from real records.</p>
           <p className="flex flex-wrap gap-x-4 gap-y-1">
@@ -72,7 +73,7 @@ export default function Layout() {
             <a href="https://github.com/dkzeanah/DomeSimulator">The code</a>
           </p>
         </div>
-      </footer>
+      </footer>}
       <Toast />
     </div>
   );
