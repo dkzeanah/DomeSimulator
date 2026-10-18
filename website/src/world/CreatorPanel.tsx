@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { DEFAULTS, T, design, type Config } from "./creator";
 import { STAGE_RADIUS_FT, drawDesign } from "./creatorView";
-import type { World } from "./engine";
+import type { ToolProps } from "./tools";
 
 const FT = 3.280839895;
 const usd = (x: number) => `$${Math.round(x).toLocaleString()}`;
@@ -37,11 +37,15 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
   return <div className="flex justify-between gap-2 py-0.5 border-b text-xs" style={{ borderColor: "var(--line)" }}><span className="muted">{k}</span><span className="num font-semibold text-right">{v}</span></div>;
 }
 
-export default function CreatorPanel({ world, colour }: { world: React.RefObject<World | null>; colour: string }) {
+export default function CreatorPanel({ world, colour }: ToolProps) {
   const [c, setC] = useState<Config>(() => ({ ...DEFAULTS }));
   const d = useMemo(() => design(c), [c]);
   const set = <K extends keyof Config>(k: K, v: Config[K]) => setC((x) => ({ ...x, [k]: v }));
-  useEffect(() => { world.current?.setModel(drawDesign(d)); }, [d, world]);
+  useEffect(() => {
+    world.current?.setModel(drawDesign(d));
+    // the world's quests hear what the Creator shows (The Twenty Faces asks for a 3V dome)
+    window.dispatchEvent(new CustomEvent("dome-creator-design", { detail: { frequency: c.frequency } }));
+  }, [d, world]); // eslint-disable-line react-hooks/exhaustive-deps
   // the world is made after this panel mounts; draw again once it exists
   useEffect(() => { const t = window.setTimeout(() => world.current?.setModel(drawDesign(design(c))), 50); return () => window.clearTimeout(t); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const dials = T.dials as Record<string, { values: number[] }>;

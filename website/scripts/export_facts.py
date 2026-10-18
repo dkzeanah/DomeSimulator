@@ -26,11 +26,18 @@ sys.path.insert(0, str(ROOT / "web"))
 import export_facts as web_facts  # noqa: E402  (web/export_facts.py: the existing reader)
 import seed_model  # noqa: E402
 import creator_export  # noqa: E402  (website/scripts/creator_export.py: the Dome Creator's tables)
+import portal_tools_export  # noqa: E402  (the 3D Wedge Method and 3D Zome spaces' tables and meshes)
+import portal_spaces_export  # noqa: E402  (the Panel Creator, Cell Wall and Masterclass spaces)
 
 OUT = SITE / "src" / "generated" / "facts.json"
 CLASSES_OUT = SITE / "src" / "generated" / "dome-classes.json"
 MESH_OUT = SITE / "src" / "generated" / "dome-mesh.json"
 CREATOR_OUT = SITE / "src" / "generated" / "creator.json"
+ZOME_OUT = SITE / "src" / "generated" / "zome.json"
+WEDGE_OUT = SITE / "src" / "generated" / "wedge-method.json"
+PANEL_OUT = SITE / "src" / "generated" / "panel-creator.json"
+CELL_OUT = SITE / "src" / "generated" / "cell-wall.json"
+LESSONS_OUT = SITE / "public" / "portal" / "masterclass.json"
 
 
 def dome_mesh() -> dict:
@@ -59,6 +66,8 @@ def classes() -> dict:
         "_generated_by": "website/scripts/export_facts.py from seed_model.dome_class(long_in) -- do not edit",
         "method": "2V hemisphere, wedge members split from a "
                   f"{seed_model.SEED_TRUNK_DIAMETER_IN:.0f}-inch log, {seed_model.SEED_RADIAL_SPLITS} wedges per log",
+        "logIn": seed_model.SEED_TRUNK_DIAMETER_IN, "wedgesPerLog": seed_model.SEED_RADIAL_SPLITS,
+        "bookLongIn": seed_model.SEED_LONG_EDGE_IN,
         "notes": {
             "frameLb": "Frame alone, green pine: wood volume x "
                        f"{seed_model.declared('pine_green_lb_per_cuft'):.0f} lb/cu ft "
@@ -119,9 +128,18 @@ def main() -> int:
     outputs = {OUT: json.dumps(build(), indent=2, ensure_ascii=False) + "\n",
                CLASSES_OUT: json.dumps(classes(), separators=(",", ":"), ensure_ascii=False) + "\n",
                MESH_OUT: json.dumps(dome_mesh(), separators=(",", ":")) + "\n",
-               CREATOR_OUT: json.dumps(creator_export.tables(), separators=(",", ":")) + "\n"}
+               CREATOR_OUT: json.dumps(creator_export.tables(), separators=(",", ":")) + "\n",
+               ZOME_OUT: json.dumps(portal_tools_export.zome_tables(), separators=(",", ":")) + "\n"}
+    wedge, blobs = portal_tools_export.wedge_tables()
+    outputs[WEDGE_OUT] = json.dumps(wedge, separators=(",", ":")) + "\n"
+    panel, panel_files = portal_spaces_export.panel_creator()
+    blobs.update(panel_files)
+    outputs[PANEL_OUT] = json.dumps(panel, separators=(",", ":")) + "\n"
+    outputs[CELL_OUT] = json.dumps(portal_spaces_export.cell_wall(), separators=(",", ":"), ensure_ascii=False) + "\n"
+    outputs[LESSONS_OUT] = json.dumps(portal_spaces_export.masterclass(), separators=(",", ":"), ensure_ascii=False) + "\n"
     if a.check:
         stale = [p for p, text in outputs.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
+        stale += [p for p, blob in blobs.items() if not p.exists() or p.read_bytes() != blob]
         for p in stale:
             print(f"{p} is stale: run py -3.12 scripts/export_facts.py")
         if not stale:
@@ -129,7 +147,12 @@ def main() -> int:
         return 1 if stale else 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     for p, text in outputs.items():
+        p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text, encoding="utf-8")
+        print(f"wrote {p.relative_to(ROOT)}")
+    for p, blob in blobs.items():
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(blob)
         print(f"wrote {p.relative_to(ROOT)}")
     return 0
 
