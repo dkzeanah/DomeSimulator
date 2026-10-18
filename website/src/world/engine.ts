@@ -306,6 +306,9 @@ export class World {
   private press: number | null = null;
   private obstacles: Obstacle[] = [];
   private estate: THREE.Group | null = null;
+  private hintArrow: THREE.Mesh | null = null;
+  private hintId: string | null = null;
+  private hintHeight = 9;
 
   constructor(private canvas: HTMLCanvasElement, private opts: WorldOptions) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -514,6 +517,24 @@ export class World {
     on(window, "resize", () => this.resize());
   }
 
+  /** RuneScape's yellow hint arrow, bobbing over the thing to go to next (null hides it). */
+  setHint(id: string | null, height = 9) {
+    if (!this.hintArrow) {
+      const a = new THREE.Mesh(new THREE.ConeGeometry(1.1, 2.4, 4), new THREE.MeshBasicMaterial({ color: "#ffe24a" }));
+      a.rotation.x = Math.PI;                       // pointing down
+      a.visible = false;
+      this.scene.add(a);
+      this.hintArrow = a;
+      this.extras.push((t) => {
+        const id2 = this.hintId, at = id2 ? this.thingAt(id2) : null;
+        a.visible = Boolean(at);
+        if (at) { a.position.set(at.x, this.hintHeight + Math.sin(t * 4) * 0.6, at.z); a.rotation.y = t * 2; }
+      });
+    }
+    this.hintId = id;
+    this.hintHeight = height;
+  }
+
   /** Build a house's estate: its buildings and grounds, what the walker goes round, and what moves. */
   setEstate(group: THREE.Group, obstacles: Obstacle[], tick?: (t: number, dt: number) => void) {
     if (this.estate) this.scene.remove(this.estate);
@@ -610,6 +631,9 @@ export class World {
   walkNear(id: string | null, range: number, done: () => void, point?: { x: number; z: number }) {
     const at = id ? this.thingAt(id) : point;
     if (!at) return;
+    // already there: do it now, not a frame later
+    const p = this.player.group.position;
+    if (Math.hypot(at.x - p.x, at.z - p.z) <= range) { this.stopWalking(); if (id) this.face(id); done(); return; }
     this.approach = { id, x: at.x, z: at.z, range, done };
     this.target = new THREE.Vector3(at.x, 0, at.z);
   }

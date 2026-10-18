@@ -21,6 +21,8 @@ export interface Save {
   kills: Record<string, number>;
   /** How this member's house is built: a key of HOUSE_STYLES. */
   house?: string;
+  /** Wedge Island, the tutorial: the step reached, a count within it, and whether it is done. */
+  tut?: { step: number; n: number; done?: boolean };
 }
 export interface LogLine { text: string; kind: "game" | "quest" | "loot" | "combat" | "chat" | "xp"; at: number; who?: string }
 
@@ -50,6 +52,7 @@ export function clean(s: Partial<Save> | null | undefined): Save {
     bar: Array.from({ length: BAR_SIZE }, (_, i) => s.bar?.[i] ?? f.bar[i]),
     kills: { ...(s.kills || {}) },
     house: HOUSE_STYLES.some((h) => h.key === s.house) ? s.house : undefined,
+    tut: s.tut && typeof s.tut.step === "number" ? { step: s.tut.step, n: Number(s.tut.n) || 0, done: Boolean(s.tut.done) } : undefined,
   };
 }
 

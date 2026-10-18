@@ -145,6 +145,11 @@ export const ITEMS: Item[] = [
   { id: "coffee", name: "Thermos of coffee", icon: "☕", examine: "Heals 10, and the afternoon.", heals: 10, value: 6 },
   { id: "mallet", name: "Mallet", icon: "\u{1f528}", examine: "Better than bare hands against a grub. +2 power.", power: 2, value: 15 },
   { id: "maul", name: "Splitting maul", icon: "\u{1fa93}", examine: "For logs, mostly. +5 power.", power: 5, value: 60 },
+  // Wedge Island's tools and what they make (src/world/game/island.ts)
+  { id: "chainsaw", name: "Chainsaw", icon: "\u{1fa9a}", examine: "Fells a pine and bucks it into sections. Never alone.", value: 80 },
+  { id: "section", name: "Log section", icon: "\u{1fab5}", examine: `A pine bucked to the long strut's length, ${F.longIn} in, about ${F.logIn} in across.`, value: 12 },
+  { id: "strutA", name: "A strut", icon: "\u{1f4cf}", examine: `A wedge cut for one of the ${F.strutsA} long edges (${F.longIn} in nominal).`, value: 10 },
+  { id: "strutB", name: "B strut", icon: "\u{1f4d0}", examine: `A wedge cut for one of the ${F.strutsB} short edges (${F.shortIn} in nominal).`, value: 9 },
   { id: "meter", name: "Moisture meter", icon: "\u{1f4df}", examine: "Finds the damp before it finds you. +3 power against the wet.", power: 3, value: 40 },
   ...LORE.map((l) => ({ id: `lore:${l.id}`, name: `Lore: ${l.title}`, icon: "\u{1f4dc}", examine: "A page of dome know-how. Read it.", lore: l.id, value: 0 })),
 ];

@@ -24,17 +24,20 @@ const HUB_RADIUS = 27;
 let STORE: Store | null = null;
 const store = () => (STORE ??= new Store(loadLocal()));
 
-/** A member's progress lives on their account; a guest's in the browser, kept when they join. */
+/** A member's progress lives on their account; a guest's in the browser, kept when they join.
+ *  Says when the account's save has come back (a guest's is there from the start). */
+let accountLoaded = false;
 function useAccountSave(s: Store, signedIn: boolean) {
+  const [loaded, setLoaded] = useState(accountLoaded || !signedIn);
   useEffect(() => {
-    if (!signedIn) return;
+    if (!signedIn) { setLoaded(true); return; }
     let stop = false, timer = 0, lastSent = "";
     api<{ save: Save | null }>("/game/save").then(async (r) => {
       if (stop) return;
       if (r.save) { s.s = clean(r.save); s.emit(); }
-      else if (hasProgress(s.s)) await api("/game/save", { method: "PUT", body: { save: s.s } }).catch(() => undefined);
+      else if (hasProgress(s.s) || s.s.tut) await api("/game/save", { method: "PUT", body: { save: s.s } }).catch(() => undefined);
       lastSent = JSON.stringify(s.s);
-    }).catch(() => undefined);
+    }).catch(() => undefined).finally(() => { if (!stop) { accountLoaded = true; setLoaded(true); } });
     const off = s.subscribe(() => {
       window.clearTimeout(timer);
       timer = window.setTimeout(() => {
@@ -44,6 +47,7 @@ function useAccountSave(s: Store, signedIn: boolean) {
     });
     return () => { stop = true; off(); window.clearTimeout(timer); };
   }, [s, signedIn]);
+  return loaded;
 }
 
 /** Whose house this is and how it is built: one of the grand houses, or a member's. */
@@ -75,7 +79,7 @@ function useHouse(owner: string | undefined, me: { username: string } | null | u
   return { house: owner ? house : null, missing };
 }
 
-export default function Portal() {
+export default function Portal({ island = false }: { island?: boolean }) {
   const { space: key, owner } = useParams();
   const [params] = useSearchParams();
   const space = spaceByKey(key);
@@ -97,23 +101,38 @@ export default function Portal() {
   // the game's side panel (inventory, skills...) shares the right edge with the tool's panel
   const [sideOpen, setSideOpen] = useState(true);
   const s = store();
-  useAccountSave(s, Boolean(me));
+  const saveLoaded = useAccountSave(s, Boolean(me));
   const { house, missing } = useHouse(owner, me, s);
+  // Wedge Island's lesson and scenery load only when you go there
+  const [islandMod, setIslandMod] = useState<typeof import("../world/game/island") | null>(null);
+  useEffect(() => { if (island && !islandMod) void import("../world/game/island").then((m) => setIslandMod(m)); }, [island]); // eslint-disable-line react-hooks/exhaustive-deps
+  // a brand-new player starts on Wedge Island, the way RuneScape starts everyone on Tutorial Island
+  const fresh = !s.s.tut?.done && !hasProgress(s.s);
+  useEffect(() => {
+    if (!key && !owner && !island && saveLoaded && fresh && !(history.state?.usr as { from?: string } | null)?.from) go("/portal/island", { replace: true });
+  }, [key, owner, island, saveLoaded, fresh]); // eslint-disable-line react-hooks/exhaustive-deps
   const building = Boolean(house?.yours && params.has("build"));
-  useMeta(house ? `${house.title} -- Portal` : space ? `${space.name} -- Portal` : "Portal", space ? space.blurb : "A world of dome know-how: walk the hilltop, learn from teachers, fight what destroys buildings, and step through a gateway into each tool.", key ? `/portal/${key}` : "/portal");
+  useMeta(island ? "Wedge Island -- Portal" : house ? `${house.title} -- Portal` : space ? `${space.name} -- Portal` : "Portal", space ? space.blurb : "A world of dome know-how: walk the hilltop, learn from teachers, fight what destroys buildings, and step through a gateway into each tool.", key ? `/portal/${key}` : "/portal");
 
   useEffect(() => {
     if (!canvas.current || !labels.current) return;
     if (owner && !house) return;                       // a house waits until we know how it is built
+    if (island && !islandMod) return;                   // the island's lesson loads with it
+    if (!key && !owner && !island && saveLoaded && fresh && !(history.state?.usr as { from?: string } | null)?.from) return;   // off to the island instead
     setLeaving(null);
     setNear(null);
     setPick(null);
     const from = (history.state?.usr as { from?: string } | null)?.from;
     let gates: Gate[], spawn: { x: number; z: number; facing: number };
     const estate = house ? buildEstate(house.style, house.line) : null;
-    const houseSpace: Space | undefined = house && estate
-      ? { key: "house", name: house.title, blurb: house.line, ports: "", colour: "#b07cff", sky: estate.sky, ground: estate.ground, controls: [] } : undefined;
-    if (houseSpace) {
+    const houseSpace: Space | undefined = island && islandMod
+      ? { key: "island", name: "Wedge Island", blurb: "from trees to a dome", ports: "", colour: "#e8b45a", sky: islandMod.SKY, ground: islandMod.GROUND, controls: [] }
+      : house && estate
+        ? { key: "house", name: house.title, blurb: house.line, ports: "", colour: "#b07cff", sky: estate.sky, ground: estate.ground, controls: [] } : undefined;
+    if (island) {
+      gates = [];
+      spawn = { x: islandMod!.AT.spawn[0], z: islandMod!.AT.spawn[1], facing: Math.PI };
+    } else if (houseSpace) {
       gates = [];                                      // the way out is the portal by the gate
       spawn = { x: 0, z: 100, facing: Math.PI };
     } else if (space) {
@@ -145,17 +164,23 @@ export default function Portal() {
     });
     world.current = w;
     if (estate) w.setEstate(estate.group, estate.obstacles, estate.tick);
-    const g = new AreaGame(w, house ? `house:${house.owner}` : space?.key ?? "hub", s, () => bump((n) => n + 1));
+    const g = new AreaGame(w, island ? "island" : house ? `house:${house.owner}` : space?.key ?? "hub", s, () => bump((n) => n + 1));
+    if (island && islandMod) {
+      g.script = islandMod.createIsland(w, s, g, () => bump((n) => n + 1), () => {
+        setLeaving("the mainland");
+        window.setTimeout(() => go("/portal", { state: { from: "island" } }), 650);
+      }).script;
+    }
     game.current = g;
     // ?debug: the running world and game, for checking them from the browser's console
     if (new URLSearchParams(window.location.search).has("debug")) (window as unknown as { portal: unknown }).portal = { world: w, game: g, store: s };
-    const arrive = house ? `Welcome to ${house.title}, ${house.line}.` : space ? `You step into ${space.name}.` : null;
+    const arrive = island ? "You arrive on Wedge Island." : house ? `Welcome to ${house.title}, ${house.line}.` : space ? `You step into ${space.name}.` : null;
     if (!s.log.length) s.say(arrive ?? "Welcome to the Portal. Talk to Tutor Tess on the plaza to begin.", "game");
     else s.say(arrive ?? "You are back on the hilltop.");
     const home = () => (house ? w.walkPoint(0, 96) : space ? w.walkPoint(0, -30) : w.walkPoint(0, 17));
     window.addEventListener("portal-home", home);
     return () => { window.removeEventListener("portal-home", home); g.dispose(); game.current = null; w.dispose(); world.current = null; };
-  }, [key, owner, house?.style, house?.owner]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [key, owner, house?.style, house?.owner, island, islandMod, saveLoaded && fresh]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // the house portal's trips
   useEffect(() => {
@@ -166,6 +191,7 @@ export default function Portal() {
     const on = async (e: Event) => {
       const t = (e as CustomEvent<HouseTrip>).detail;
       if (t.to === "leave") return trip("/portal", { from: "house" });
+      if (t.to === "island") return trip("/portal/island");
       if (t.to === "home" || t.to === "build") {
         if (!me) { s.say("You need an account to own a house. Sign in, then come back to the portal.", "game"); return; }
         return trip(`/portal/house/${me.username}${t.to === "build" ? "?build=1" : ""}`);
@@ -221,8 +247,8 @@ export default function Portal() {
         </aside>
       )}
 
-      {/* where you are */}
-      <div className="absolute left-3 top-3 max-w-sm text-[#f4efe6] pointer-events-none">
+      {/* where you are (on the island the lesson's box stands here instead) */}
+      <div className="absolute left-3 top-3 max-w-sm text-[#f4efe6] pointer-events-none" style={{ display: island ? "none" : undefined }}>
         <p className="text-[10px] uppercase tracking-[0.25em] text-[#e8b45a] font-semibold">{house ? (building ? "Your house, build mode" : "A house") : space ? "A tool's space" : "Zeanah Lab"}</p>
         <h1 className="text-xl sm:text-2xl font-bold leading-tight" style={{ textShadow: "0 2px 8px rgba(0,0,0,.6)" }}>{house ? house.title : space ? space.name : "The Portal"}</h1>
         <p className="text-xs mt-0.5 opacity-90 max-sm:hidden" style={{ textShadow: "0 1px 6px rgba(0,0,0,.7)" }}>{house ? `${house.line[0].toUpperCase()}${house.line.slice(1)}. The portal by the gate takes you back.` : space ? space.blurb : "A world of dome know-how. Right-click anything."}</p>

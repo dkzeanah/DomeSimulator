@@ -136,6 +136,7 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
   }, [game, pick]);
 
   const hp = s.hp, max = store.maxHp();
+  const guide = game?.script?.guide() ?? null;
   const d = game?.dialog;
   const log = store.log;
   const lines = chatTab === "public" ? [] : log.filter((l) => chatTab === "all" || l.kind !== "chat");
@@ -144,9 +145,22 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
 
   return (
     <>
+      {/* the lesson's instruction box (Wedge Island), where the area's title would be */}
+      {guide && (
+        <div className="absolute left-3 top-3 w-[min(400px,calc(100%-24px))] p-3 text-[13px] shadow-xl" style={{ background: "#d8cba8", border: "2px solid #3a2e1e", color: "#1a1206", zIndex: 6 }}>
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="font-bold" style={{ color: "#7a1a10" }}>{guide.title}</p>
+            <span className="text-[10px] opacity-70 num">step {guide.step} of {guide.of}</span>
+          </div>
+          <p className="mt-1 leading-snug">{guide.text}</p>
+          <div className="h-1.5 mt-2" style={{ background: "rgba(0,0,0,.15)" }}><div className="h-1.5" style={{ width: `${(guide.step / guide.of) * 100}%`, background: "#7a1a10" }} /></div>
+          {game?.script?.skip && guide.step < guide.of && <button className="text-[11px] underline mt-1 opacity-70" onClick={() => game.script!.skip!()}>Skip the tutorial</button>}
+        </div>
+      )}
+
       {/* what a click would do */}
       {hover && (
-        <div className="absolute left-3 top-[104px] text-sm font-semibold pointer-events-none" style={{ textShadow: "0 1px 2px #000", color: "#fff" }}>
+        <div className={`absolute left-3 ${guide ? "top-[170px]" : "top-[104px]"} text-sm font-semibold pointer-events-none`} style={{ textShadow: "0 1px 2px #000", color: "#fff" }}>
           {hover.label} <span style={{ color: hover.colour || "#ffe24a" }}>{hover.target}</span>
           <span className="opacity-70 font-normal"> {pick && game && game.options(pick).length > 2 ? `/ ${game.options(pick).length - 2} more options` : ""}</span>
         </div>
@@ -332,6 +346,8 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
                 );
               })() : (
                 <ul className="grid gap-1">
+                  <li><button className="hover:underline" style={{ color: s.tut?.done ? "#3ac83a" : s.tut ? "#ffe24a" : "#ff6a5a" }}
+                    onClick={() => window.dispatchEvent(new CustomEvent("portal-house", { detail: { to: "island" } }))}>Wedge Island (the tutorial){s.tut?.done ? ": go back" : ""}</button></li>
                   {QUESTS.map((q) => {
                     const st = store.quest(q.id);
                     return <li key={q.id}><button className="hover:underline" style={{ color: st.done ? "#3ac83a" : st.stage > 0 ? "#ffe24a" : "#ff6a5a" }} onClick={() => setJournal(q.id)}>{q.name}</button></li>;

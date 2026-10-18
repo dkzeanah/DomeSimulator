@@ -20,8 +20,23 @@ export interface Option { label: string; target: string; colour?: string; run: (
 export interface MenuDialog { title: string; options: { text: string; run: () => void }[] }
 export interface Prompt { ask: string; hint?: string; submit: (text: string) => void }
 /** Where the house portal sends you: Portal.tsx goes there. */
-export interface HouseTrip { to: "home" | "build" | "friend" | "leave"; name?: string }
+export interface HouseTrip { to: "home" | "build" | "friend" | "leave" | "island"; name?: string }
 export const goHouse = (trip: HouseTrip) => window.dispatchEvent(new CustomEvent<HouseTrip>("portal-house", { detail: trip }));
+
+/** An area that brings its own people, objects and lesson (Wedge Island): the game asks it first. */
+export interface AreaScript {
+  /** Options for the script's own things; null for everything else. */
+  options(p: Pick): Option[] | null;
+  /** A conversation with one of the script's people has closed. */
+  dialogDone?(npc: string): void;
+  /** RuneScape's 0.6 s tick. */
+  tick?(): void;
+  /** The instruction box: what to do now. */
+  guide(): { title: string; text: string; step: number; of: number } | null;
+  /** Leave the lesson where it stands. */
+  skip?(): void;
+  dispose?(): void;
+}
 
 export interface Dialog { npc: string; name: string; lines: Line[]; at: number; question?: { ask: string; choices: Choice[] }; answered?: string }
 
@@ -34,6 +49,7 @@ export class AreaGame {
   tick = 0;
   dialog: Dialog | null = null;
   menu: MenuDialog | null = null;
+  script: AreaScript | null = null;
   prompt: Prompt | null = null;
   fighting: string | null = null;
   private mobs = new Map<string, Mob>();
@@ -66,6 +82,7 @@ export class AreaGame {
   }
 
   dispose() {
+    this.script?.dispose?.();
     window.clearInterval(this.timer);
     window.removeEventListener("dome-creator-design", this.onCreator);
   }
@@ -96,6 +113,11 @@ export class AreaGame {
 
   // -------------------------------------------------------------- what a click offers
   options(p: Pick): Option[] {
+    const own = this.script?.options(p);
+    if (own) {
+      const walk = p.ground ? [{ label: "Walk here", target: "", run: () => { this.fighting = null; this.world.walkPoint(p.ground!.x, p.ground!.z); } }] : [];
+      return [...own, ...walk, { label: "Cancel", target: "", run: () => undefined }];
+    }
     const o: Option[] = [];
     const t = p.thing;
     if (t?.kind === "monster") {
@@ -220,9 +242,9 @@ export class AreaGame {
   next() {
     const d = this.dialog;
     if (!d) return;
-    if (d.answered) { this.dialog = null; this.changed(); this.markers(); return; }
+    if (d.answered) { this.dialog = null; this.changed(); this.markers(); this.script?.dialogDone?.(d.npc); return; }
     if (d.at < d.lines.length - 1) d.at++;
-    else if (!d.question) this.dialog = null;
+    else if (!d.question) { this.dialog = null; this.script?.dialogDone?.(d.npc); }
     else d.at = d.lines.length;          // the question is showing
     this.changed();
   }
@@ -318,6 +340,7 @@ export class AreaGame {
 
   private step() {
     this.tick++;
+    this.script?.tick?.();
     const s = this.store, p = this.world.playerAt();
     // splitting the log pile
     if (this.splitting > 0 && --this.splitting === 0) {
