@@ -32,12 +32,17 @@ export const ACTIONS: Record<string, { label: string; icon: string; hint: string
 
 interface Menu { x: number; y: number; options: Option[] }
 
-export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn }: {
+export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn, folded, onSidePanel }: {
   store: Store; game: AreaGame | null; pick: Pick | null; menuAt: Pick | null; onMenuClosed: () => void; signedIn: boolean;
+  /** Start with the side panel folded (a tool's space, where the tool's own panel wants the room). */
+  folded?: boolean;
+  onSidePanel?: (open: boolean) => void;
 }) {
   const [, bump] = useState(0);
   useEffect(() => store.subscribe(() => bump((n) => n + 1)), [store]);
-  const [tab, setTab] = useState<Tab | null>(() => (typeof window !== "undefined" && window.innerWidth < 640 ? null : "inv"));
+  const [tab, setTab] = useState<Tab | null>(() => (folded || (typeof window !== "undefined" && window.innerWidth < 640) ? null : "inv"));
+  useEffect(() => { if (folded) setTab(null); }, [folded]);
+  useEffect(() => { onSidePanel?.(tab !== null); }, [tab]); // eslint-disable-line react-hooks/exhaustive-deps
   const [menu, setMenu] = useState<Menu | null>(null);
   const [chatTab, setChatTab] = useState<"all" | "game" | "public">("all");
   const [chatOpen, setChatOpen] = useState(() => typeof window === "undefined" || window.innerWidth >= 640);
@@ -120,7 +125,7 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn 
   const keyList = useKeyList();
 
   const hover = useMemo(() => {
-    if (!game || !pick || (!pick.thing && !pick.gate)) return null;
+    if (!game || !pick || (!pick.thing && !pick.gate && !pick.part)) return null;
     const o = game.options(pick)[0];
     return o && o.label !== "Cancel" ? o : null;
   }, [game, pick]);
@@ -215,7 +220,7 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn 
       </div>
 
       {/* hitpoints and the action bar */}
-      <div className="absolute bottom-3 max-[1180px]:bottom-[200px] left-1/2 -translate-x-1/2 flex items-end gap-2 max-sm:bottom-auto max-sm:top-[118px] max-sm:left-auto max-sm:right-3 max-sm:translate-x-0 max-sm:flex-col" style={{ zIndex: 6 }}>
+      <div className={`absolute bottom-3 max-[1180px]:bottom-[200px] left-1/2 -translate-x-1/2 ${folded ? "max-[1180px]:left-3 max-[1180px]:translate-x-0" : ""} flex items-end gap-2 max-sm:bottom-auto max-sm:top-[118px] max-sm:left-auto max-sm:right-3 max-sm:translate-x-0 max-sm:flex-col`} style={{ zIndex: 6 }}>
         <div className="w-12 h-12 rounded-full grid place-items-center text-sm font-bold shadow-lg" title="Hitpoints"
           style={{ background: `conic-gradient(#c82a1a ${(hp / max) * 360}deg, #3a1a14 0)`, border: "2px solid #000", color: "#fff", textShadow: "0 1px 1px #000" }}>
           {hp}

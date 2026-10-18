@@ -62,6 +62,8 @@ export default function Portal() {
   const [menuAt, setMenuAt] = useState<Pick | null>(null);
   // a phone has no room for the panel over the world: it folds to a button
   const [panel, setPanel] = useState(() => typeof window === "undefined" || window.innerWidth >= 640);
+  // the game's side panel (inventory, skills...) shares the right edge with the tool's panel
+  const [sideOpen, setSideOpen] = useState(true);
   const s = store();
   useAccountSave(s, Boolean(me));
   useMeta(space ? `${space.name} -- Portal` : "Portal", space ? space.blurb : "A world of dome know-how: walk the hilltop, learn from teachers, fight what destroys buildings, and step through a gateway into each tool.", key ? `/portal/${key}` : "/portal");
@@ -111,7 +113,7 @@ export default function Portal() {
 
   return (
     <div className="relative w-full overflow-hidden select-none" style={{ height: "calc(100dvh - 56px)", background: "#0d1117" }}>
-      <canvas ref={canvas} className="absolute inset-0 w-full h-full block touch-none" style={{ cursor: pick?.thing || pick?.gate ? "pointer" : "crosshair" }}
+      <canvas ref={canvas} className="absolute inset-0 w-full h-full block touch-none" style={{ cursor: pick?.thing || pick?.gate || pick?.part ? "pointer" : "crosshair" }}
         aria-label={space ? `${space.name}: a 3-D space` : "The portal hub: a 3-D world of the project's tools"} />
       <div ref={labels} className="absolute inset-0 pointer-events-none" aria-hidden />
 
@@ -139,7 +141,7 @@ export default function Portal() {
       )}
       {space && panel && (
         <aside className={`absolute right-3 top-[118px] sm:top-[156px] panel p-4 text-sm overflow-y-auto ${Tool ? "w-[min(340px,calc(100%-24px))]" : "w-[min(300px,calc(100%-24px))]"}`}
-          style={{ background: "color-mix(in srgb, var(--panel) 92%, transparent)", maxHeight: "calc(100% - 156px - 380px)", minHeight: 120, zIndex: 4 }}>
+          style={{ background: "color-mix(in srgb, var(--panel) 92%, transparent)", maxHeight: sideOpen ? "calc(100% - 156px - 380px)" : "calc(100% - 156px - 56px)", minHeight: 120, zIndex: 4 }}>
           {Tool ? (
             <Suspense fallback={<p className="muted text-xs">Loading the tool...</p>}><Tool world={world} colour={space.colour} /></Suspense>
           ) : (
@@ -166,7 +168,8 @@ export default function Portal() {
         </div>
       )}
 
-      <HUD store={s} game={game.current} pick={pick} menuAt={menuAt} onMenuClosed={() => setMenuAt(null)} signedIn={Boolean(me)} />
+      <HUD store={s} game={game.current} pick={pick} menuAt={menuAt} onMenuClosed={() => setMenuAt(null)} signedIn={Boolean(me)}
+        folded={Boolean(Tool && panel)} onSidePanel={setSideOpen} />
 
       {/* through the gateway */}
       <div className="absolute inset-0 grid place-items-center pointer-events-none transition-opacity duration-500"

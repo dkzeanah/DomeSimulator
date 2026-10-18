@@ -103,18 +103,23 @@ export class AreaGame {
         o.push({ label: "Take", target: `${item.name}${it.n > 1 ? ` (${it.n})` : ""}`, colour: "#ff9a3a", run: () => this.takeLoot(t.id, it.id) });
       }
     }
+    if (p.part && !t && !p.gate) {
+      const part = p.part;
+      o.push({ label: "Inspect", target: part.name, colour: "#3ad6ff", run: () => window.dispatchEvent(new CustomEvent("portal-part", { detail: part })) });
+      if (part.examine) o.push({ label: "Examine", target: part.name, colour: "#3ad6ff", run: () => this.store.say(part.examine!) });
+    }
     if (p.gate) o.push({ label: "Enter", target: p.gate.name, colour: p.gate.colour, run: () => this.world.walkPoint(p.gate!.at.x, p.gate!.at.y) });
-    if (p.ground && !t && !p.gate) o.push({ label: "Walk here", target: "", run: () => { this.fighting = null; this.world.walkPoint(p.ground!.x, p.ground!.z); } });
+    if (p.ground && !t && !p.gate && !p.part) o.push({ label: "Walk here", target: "", run: () => { this.fighting = null; this.world.walkPoint(p.ground!.x, p.ground!.z); } });
     if (t) o.push({ label: "Examine", target: t.kind === "monster" ? `${t.name} (level-${t.level})` : t.name, colour: "#3ad6ff", run: () => this.examine(t) });
     if (p.gate) o.push({ label: "Examine", target: p.gate.name, colour: "#3ad6ff", run: () => this.store.say(p.gate!.key === "hub" ? "The way back to the hilltop." : `The gateway to ${p.gate!.name}.`) });
-    if (p.ground && (t || p.gate)) o.push({ label: "Walk here", target: "", run: () => { this.fighting = null; this.world.walkPoint(p.ground!.x, p.ground!.z); } });
+    if (p.ground && (t || p.gate || p.part)) o.push({ label: "Walk here", target: "", run: () => { this.fighting = null; this.world.walkPoint(p.ground!.x, p.ground!.z); } });
     o.push({ label: "Cancel", target: "", run: () => undefined });
     return o;
   }
 
   /** A left click does the first option, as in RuneScape. Walking on open ground is the engine's. */
   click(p: Pick) {
-    if (!p.thing && !p.gate) { this.fighting = null; return; }
+    if (!p.thing && !p.gate && !p.part) { this.fighting = null; return; }
     this.options(p)[0]?.run();
   }
 

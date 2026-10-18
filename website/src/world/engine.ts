@@ -14,7 +14,9 @@ export interface Gate { key: string; name: string; colour: string; at: THREE.Vec
 /** Something in the world a person can point at: a teacher, a monster, loot, an object. */
 export interface Thing { id: string; kind: "npc" | "monster" | "loot" | "object" | "dome" | "gate"; name: string; level?: number }
 /** What is under the pointer: a thing, a gateway, or the ground (or nothing), and where on screen. */
-export interface Pick { thing: Thing | null; gate: Gate | null; ground: { x: number; z: number } | null; x: number; y: number }
+/** A piece of a tool's model on a space's stage (a stick, a seam key): the mesh carries it in userData.part. */
+export interface Part { id: string; name: string; examine?: string }
+export interface Pick { thing: Thing | null; gate: Gate | null; part: Part | null; ground: { x: number; z: number } | null; x: number; y: number }
 
 export interface WorldOptions {
   kind: "hub" | "space";
@@ -486,7 +488,7 @@ export class World {
       if (!d || d.moved || d.button !== 0) return;
       if (this.opts.onPick) {
         const p = this.pick(e.clientX, e.clientY);
-        if (!p.thing && !p.gate && p.ground) this.walkPoint(p.ground.x, p.ground.z);
+        if (!p.thing && !p.gate && !p.part && p.ground) this.walkPoint(p.ground.x, p.ground.z);
         this.opts.onPick(p);
       } else this.walkTo(e.clientX, e.clientY);
     });
@@ -531,13 +533,22 @@ export class World {
       const h = ray.intersectObject(g.group, true)[0];
       if (h && (!best || h.distance < best.d)) best = { d: h.distance, thing: null, gate: g.gate };
     }
+    // a piece of the tool's model on the stage
+    let part: Part | null = null;
+    if (this.stage && !best) {
+      for (const h of ray.intersectObject(this.stage, true)) {
+        let o: THREE.Object3D | null = h.object;
+        while (o && !o.userData.part) o = o.parent;
+        if (o && o.visible !== false) { part = o.userData.part as Part; break; }
+      }
+    }
     // the dome's shell is big and see-through: it counts only when nothing else is under the pointer
     if (this.domeGroup && !best) {
       const h = ray.intersectObject(this.domeGroup, true)[0];
       if (h) best = { d: h.distance, thing: { id: "dome", kind: "dome", name: "The plaza dome" }, gate: null };
     }
     const g = ray.intersectObject(this.ground)[0];
-    return { thing: best?.thing ?? null, gate: best?.gate ?? null, ground: g ? { x: g.point.x, z: g.point.z } : null, x: cx, y: cy };
+    return { thing: best?.thing ?? null, gate: best?.gate ?? null, part, ground: g ? { x: g.point.x, z: g.point.z } : null, x: cx, y: cy };
   }
 
   addThing(thing: Thing, group: THREE.Group, x: number, z: number, o: { speed?: number; height?: number; facing?: number; animate?: Ent["animate"] } = {}) {

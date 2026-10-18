@@ -10,4 +10,6 @@ export interface ToolProps { world: RefObject<World | null>; colour: string }
 
 export const TOOLS: Record<string, LazyExoticComponent<ComponentType<ToolProps>>> = {
   "dome-creator": lazy(() => import("../CreatorPanel")),
+  "wedge-method": lazy(() => import("../WedgePanel")),
+  zome: lazy(() => import("../ZomePanel")),
 };
