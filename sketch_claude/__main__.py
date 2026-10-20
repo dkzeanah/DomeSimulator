@@ -1,4 +1,5 @@
-"""py -3.12 -m sketch_claude {serve|plans|showcase|episode|selftest} -- see the package docstring."""
+"""py -3.12 -m sketch_claude {serve|plans|showcase|episode|storytime|selftest} -- see the package docstring
+(storytime: sketch_claude/storytime_render.py)."""
 
 from __future__ import annotations
 
@@ -69,10 +70,16 @@ def selftest() -> None:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="sketch_claude", description="Dome Sketch (sketch-claude): model a panel dome, draw its plans.")
-    ap.add_argument("command", nargs="?", default="serve", choices=("serve", "plans", "showcase", "episode", "selftest"))
+    ap.add_argument("command", nargs="?", default="serve", choices=("serve", "plans", "showcase", "episode", "storytime", "selftest"))
     ap.add_argument("--draft", action="store_true", help="episode: a rehearsal render, kept in tmp/ instead of the library")
     ap.add_argument("--episode", default="s01e01", help="episode: which one (sketch_claude/episodes/<id>.json)")
     ap.add_argument("--spec", default="{}", help="the dome as JSON (see model.Spec); defaults to the reference dome")
+    ap.add_argument("story", nargs="?", default="my-own-home", help="storytime: which bedtime story (its slug)")
+    ap.add_argument("--site", help="storytime: read the story the Story Studio published on this site, not the baked copy")
+    ap.add_argument("--pages", help="storytime: a run of pages, e.g. 0-3 (a rehearsal)")
+    ap.add_argument("--stills", action="store_true", help="storytime: one still per page instead of the film")
+    ap.add_argument("--no-phone", action="store_true", help="storytime: the landscape cut only")
+    ap.add_argument("--finish", help="storytime: add the missing phone cut and release to this deliverables folder")
     ap.add_argument("--port", type=int, default=8767)
     ap.add_argument("--no-browser", action="store_true")
     ap.add_argument("--page", default="", help="serve: open this page instead of the modeller (director)")
@@ -98,6 +105,20 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         for e in out.get("errors", []):
             print(f"warning: {e}", flush=True)
+        print(f"OUTPUT {out['folder']}", flush=True)
+        return 0
+    if a.command == "storytime":
+        from sketch_claude import storytime_render as ST
+        if a.stills:
+            out = ST.stills(a.story, a.site)
+            print(f"OUTPUT {out.relative_to(ROOT).as_posix()}", flush=True)
+            return 0
+        if a.finish:
+            out = ST.finish(Path(a.finish), a.story, a.site)
+            print(f"OUTPUT {out['folder']}", flush=True)
+            return 0
+        pages = tuple(int(x) for x in a.pages.split("-")) if a.pages else None
+        out = ST.render(a.story, a.site, pages=pages, draft=a.draft, phone=not a.no_phone)
         print(f"OUTPUT {out['folder']}", flush=True)
         return 0
     if a.command == "showcase":

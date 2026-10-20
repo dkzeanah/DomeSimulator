@@ -28,6 +28,8 @@ const AdminAgents = lazy(() => import("./pages/AdminAgents"));
 const Reset = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Reset })));
 const Verify = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Verify })));
 const Kids = lazy(() => import("./pages/Kids"));
+const AdminStories = lazy(() => import("./pages/AdminStories"));
+const StoryRender = lazy(() => import("./storytime/StoryRender"));
 const MediaPage = lazy(() => import("./pages/Media"));
 const Portal = lazy(() => import("./pages/Portal"));
 const Card = lazy(() => import("./pages/Card"));
@@ -43,6 +45,8 @@ createRoot(document.getElementById("root")!).render(
       <SessionProvider>
         <Suspense fallback={<div className="p-8 muted">Loading...</div>}>
           <Routes>
+            {/* the film renderer (sketch_claude storytime): bare, no site chrome */}
+            <Route path="storytime-render" element={<StoryRender />} />
             <Route element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="book" element={<Book />} />
@@ -57,6 +61,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="thanks/:ref" element={<Thanks />} />
               <Route path="checkout/test/:ref" element={<Thanks test />} />
               <Route path="kids" element={<Kids />} />
+              <Route path="kids/:story" element={<Kids />} />
               <Route path="media" element={<MediaPage />} />
               <Route path="portal" element={<Portal />} />
               <Route path="portal/:space" element={<Portal />} />
@@ -74,6 +79,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="admin/users" element={<AdminUsers />} />
               <Route path="admin/ops" element={<AdminOps />} />
               <Route path="admin/agents" element={<AdminAgents />} />
+              <Route path="admin/stories" element={<AdminStories />} />
               <Route path="reset" element={<Reset />} />
               <Route path="verify" element={<Verify />} />
               <Route path="confirm" element={<Confirm />} />

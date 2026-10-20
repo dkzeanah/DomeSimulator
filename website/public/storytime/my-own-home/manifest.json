@@ -1,15 +1,33 @@
 {
  "id": "my-own-home",
+ "slug": "my-own-home",
  "title": "My Own Home, My Own Dome",
  "series": "Dada's Stories",
+ "voice": {
+  "name": "en-US-JennyNeural",
+  "rate": "-12%",
+  "pitch": "+0Hz"
+ },
+ "figures": {
+  "longIn": 72,
+  "shortIn": 63.67,
+  "members": 120,
+  "triangles": 40,
+  "woodCuft": 65.22,
+  "frameLb": 2478,
+  "frameCost": 2465,
+  "hours": "37.5",
+  "diameterFt": 19.42,
+  "heightFt": 9.71
+ },
  "pages": [
   {
    "id": "intro-1",
    "kind": "intro",
    "scene": "stars",
-   "text": "Hello, Annika. Hello, Arama. Are you all cozy? Pull your blanket up, right up to your chin. There. Now look out the window, way up high, at all the twinkly stars. Do you see the brightest one? The one that blinks, like it's saying hello? Mama Kristine says that one is Dada's star.",
-   "audio": "/storytime/my-own-home/intro-1.mp3",
-   "key": "d196751fbcfe9f88",
+   "text": "Hello, Annika. Hello, Amara. Are you all cozy? Pull your blanket up, right up to your chin. There. Now look out the window, way up high, at all the twinkly stars. Do you see the brightest one? The one that blinks, like it's saying hello? Mama Kristine says that one is Dada's star.",
+   "key": "0eef87fd4fb2e25f",
+   "audio": "/storytime/my-own-home/0eef87fd4fb2e25f.mp3",
    "words": [
     [
      0.107,
@@ -25,1295 +43,655 @@
     ],
     [
      2.543,
-     3.111,
+     3.125,
      15,
      20
     ],
     [
-     3.324,
-     3.906,
+     3.31,
+     3.892,
      22,
      27
     ],
     [
-     4.886,
-     5.057,
+     4.872,
+     5.043,
      29,
      32
     ],
     [
-     5.071,
-     5.227,
+     5.057,
+     5.213,
      33,
      36
     ],
     [
-     5.241,
-     5.426,
+     5.227,
+     5.412,
      37,
      40
     ],
     [
-     5.44,
-     6.051,
+     5.426,
+     6.037,
      41,
      45
     ],
     [
-     7.031,
-     7.287,
+     7.017,
+     7.273,
      47,
      51
     ],
     [
-     7.301,
-     7.457,
+     7.287,
+     7.443,
      52,
      56
     ],
     [
-     7.472,
-     7.926,
+     7.457,
+     7.912,
      57,
      64
     ],
     [
-     7.94,
-     8.224,
+     7.926,
+     8.21,
      65,
      67
     ],
     [
-     8.438,
-     8.651,
+     8.423,
+     8.636,
      69,
      74
     ],
     [
-     8.665,
-     8.807,
+     8.651,
+     8.793,
      75,
      77
     ],
     [
-     8.821,
-     8.906,
+     8.807,
+     8.892,
      78,
      80
     ],
     [
-     8.92,
-     9.077,
+     8.906,
+     9.062,
      81,
      85
     ],
     [
-     9.091,
-     9.616,
+     9.077,
+     9.602,
      86,
      90
     ],
     [
-     10.597,
-     11.136,
+     10.582,
+     11.122,
      92,
      97
     ],
     [
-     12.116,
-     12.372,
+     12.102,
+     12.358,
      99,
      102
     ],
     [
-     12.386,
-     12.585,
+     12.372,
+     12.571,
      103,
      107
     ],
     [
-     12.599,
-     12.756,
+     12.585,
+     12.741,
      108,
      111
     ],
     [
-     12.77,
-     12.869,
+     12.756,
+     12.855,
      112,
      115
     ],
     [
-     12.884,
-     13.423,
+     12.869,
+     13.409,
      116,
      122
     ],
     [
-     13.636,
-     13.821,
+     13.622,
+     13.807,
      124,
      127
     ],
     [
-     13.835,
-     13.977,
+     13.821,
+     13.963,
      128,
      130
     ],
     [
-     13.991,
-     14.418,
+     13.977,
+     14.403,
      131,
      135
     ],
     [
-     14.688,
-     14.83,
+     14.673,
+     14.815,
      137,
      139
     ],
     [
-     14.844,
-     14.986,
+     14.83,
+     14.972,
      140,
      143
     ],
     [
-     15.0,
-     15.099,
+     14.986,
+     15.085,
      144,
      147
     ],
     [
-     15.114,
-     15.568,
+     15.099,
+     15.554,
      148,
      155
     ],
     [
-     15.582,
-     16.321,
+     15.568,
+     16.307,
      156,
      161
     ],
     [
-     17.301,
-     17.429,
+     17.287,
+     17.415,
      163,
      165
     ],
     [
-     17.443,
-     17.557,
+     17.429,
+     17.543,
      166,
      169
     ],
     [
-     17.571,
-     17.741,
+     17.557,
+     17.727,
      170,
      173
     ],
     [
-     17.756,
-     17.869,
+     17.741,
+     17.855,
      174,
      177
     ],
     [
-     17.884,
-     18.381,
+     17.869,
+     18.366,
      178,
      187
     ],
     [
-     18.395,
-     18.75,
+     18.381,
+     18.736,
      188,
      191
     ],
     [
-     19.73,
-     19.872,
+     19.716,
+     19.858,
      193,
      196
     ],
     [
-     19.886,
-     20.114,
+     19.872,
+     20.099,
      197,
      200
     ],
     [
-     20.128,
-     20.327,
+     20.114,
+     20.312,
      201,
      205
     ],
     [
-     20.341,
-     20.923,
+     20.327,
+     20.909,
      206,
      212
     ],
     [
-     21.094,
-     21.293,
+     21.08,
+     21.278,
      214,
      218
     ],
     [
-     21.307,
-     21.477,
+     21.293,
+     21.463,
      219,
      223
     ],
     [
-     21.491,
-     21.818,
+     21.477,
+     21.804,
      224,
      230
     ],
     [
-     21.832,
-     22.401,
+     21.818,
+     22.386,
      231,
      236
     ],
     [
-     23.381,
-     23.75,
+     23.366,
+     23.736,
      238,
      242
     ],
     [
-     23.764,
-     24.332,
+     23.75,
+     24.318,
      243,
      251
     ],
     [
-     24.347,
-     24.631,
+     24.332,
+     24.616,
      252,
      256
     ],
     [
-     24.645,
-     24.815,
+     24.631,
+     24.801,
      257,
      261
     ],
     [
-     24.83,
-     25.057,
+     24.815,
+     25.043,
      262,
      265
     ],
     [
-     25.071,
-     25.213,
+     25.057,
+     25.199,
      266,
      268
     ],
     [
-     25.227,
-     25.668,
+     25.213,
+     25.653,
      269,
      275
     ],
     [
-     25.682,
-     26.222,
+     25.668,
+     26.207,
      276,
      280
     ]
    ],
-   "duration": 26.82
+   "duration": 26.81
   },
   {
    "id": "intro-2",
    "kind": "intro",
-   "scene": "sea",
-   "text": "A long time ago, before your story began, Dada was a sailor. He sailed a great big ship across the great big ocean. He learned to read the stars like a map, so he always knew the way. And when something broke on the ship, even in the middle of a storm, Dada was the one who quietly fixed it.",
-   "audio": "/storytime/my-own-home/intro-2.mp3",
-   "key": "0f7553a34b1f9d21",
+   "scene": "workbench",
+   "text": "Dada is far, far away, on the other side of the wide, wide sea. Mama says he is very busy, helping people and keeping the world safe while you sleep. He never likes to talk about it. If anybody asks, he just smiles and says, \"Oh, it's nothing. I just like to fix things.\"",
+   "key": "d830f92acae2ef97",
+   "audio": "/storytime/my-own-home/d830f92acae2ef97.mp3",
    "words": [
     [
      0.107,
-     0.235,
+     0.533,
      0,
-     1
+     4
     ],
     [
-     0.249,
      0.547,
-     2,
-     6
+     0.732,
+     5,
+     7
     ],
     [
-     0.561,
-     0.845,
-     7,
+     0.746,
+     1.272,
+     8,
      11
     ],
     [
-     0.86,
-     1.286,
-     12,
-     15
-    ],
-    [
-     1.47,
-     1.854,
-     17,
-     23
-    ],
-    [
-     1.868,
-     2.024,
-     24,
-     28
-    ],
-    [
-     2.039,
-     2.38,
-     29,
-     34
-    ],
-    [
-     2.394,
-     2.976,
-     35,
-     40
-    ],
-    [
-     3.175,
-     3.559,
-     42,
-     46
-    ],
-    [
-     3.573,
-     3.772,
-     47,
-     50
-    ],
-    [
-     3.786,
-     3.843,
-     51,
-     52
-    ],
-    [
-     3.857,
-     4.496,
-     53,
-     59
-    ],
-    [
-     5.483,
-     5.682,
-     61,
-     63
-    ],
-    [
-     5.696,
-     6.023,
-     64,
-     70
-    ],
-    [
-     6.037,
-     6.108,
-     71,
-     72
-    ],
-    [
-     6.122,
-     6.477,
-     73,
-     78
-    ],
-    [
-     6.491,
-     6.719,
-     79,
-     82
-    ],
-    [
-     6.733,
-     7.045,
-     83,
-     87
-    ],
-    [
-     7.06,
-     7.443,
-     88,
-     94
-    ],
-    [
-     7.457,
-     7.571,
-     95,
-     98
-    ],
-    [
-     7.585,
-     7.898,
-     99,
-     104
-    ],
-    [
-     7.912,
-     8.139,
-     105,
-     108
-    ],
-    [
-     8.153,
-     8.722,
-     109,
-     114
-    ],
-    [
-     9.702,
-     9.901,
-     116,
-     118
-    ],
-    [
-     9.915,
-     10.185,
-     119,
-     126
-    ],
-    [
-     10.199,
-     10.298,
-     127,
-     129
-    ],
-    [
-     10.312,
-     10.54,
-     130,
-     134
-    ],
-    [
-     10.554,
-     10.653,
-     135,
-     138
-    ],
-    [
-     10.668,
-     11.08,
-     139,
-     144
-    ],
-    [
-     11.094,
-     11.278,
-     145,
-     149
-    ],
-    [
-     11.293,
-     11.349,
-     150,
-     151
-    ],
-    [
-     11.364,
-     11.79,
-     152,
-     155
-    ],
-    [
-     11.989,
-     12.159,
-     157,
-     159
-    ],
-    [
-     12.173,
-     12.33,
-     160,
-     162
-    ],
-    [
-     12.344,
-     12.741,
-     163,
-     169
-    ],
-    [
-     12.756,
-     12.898,
-     170,
-     174
-    ],
-    [
-     12.912,
-     13.026,
-     175,
-     178
-    ],
-    [
-     13.04,
-     13.452,
-     179,
-     182
-    ],
-    [
-     14.432,
-     14.616,
-     184,
-     187
-    ],
-    [
-     14.631,
-     14.83,
-     188,
-     192
-    ],
-    [
-     14.844,
-     15.227,
-     193,
-     202
-    ],
-    [
-     15.241,
-     15.526,
-     203,
-     208
-    ],
-    [
-     15.54,
-     15.668,
-     209,
-     211
-    ],
-    [
-     15.682,
-     15.781,
-     212,
-     215
-    ],
-    [
-     15.795,
-     16.25,
-     216,
-     220
-    ],
-    [
-     16.463,
-     16.705,
-     222,
-     226
-    ],
-    [
-     16.719,
-     16.818,
-     227,
-     229
-    ],
-    [
-     16.832,
-     16.918,
-     230,
-     233
-    ],
-    [
-     16.932,
-     17.244,
-     234,
-     240
-    ],
-    [
-     17.259,
-     17.344,
-     241,
-     243
-    ],
-    [
-     17.358,
-     17.429,
-     244,
-     245
-    ],
-    [
-     17.443,
-     17.983,
-     246,
-     251
-    ],
-    [
-     18.224,
-     18.665,
-     253,
-     257
-    ],
-    [
-     18.679,
-     18.878,
-     258,
-     261
-    ],
-    [
-     18.892,
-     19.006,
-     262,
-     265
-    ],
-    [
-     19.02,
-     19.29,
-     266,
-     269
-    ],
-    [
-     19.304,
-     19.432,
-     270,
-     273
-    ],
-    [
-     19.446,
-     19.957,
-     274,
-     281
-    ],
-    [
-     19.972,
-     20.398,
-     282,
-     287
-    ],
-    [
-     20.412,
-     20.71,
-     288,
-     290
-    ]
-   ],
-   "duration": 21.31
-  },
-  {
-   "id": "intro-3",
-   "kind": "intro",
-   "scene": "blossoms",
-   "text": "One spring, in a faraway land where the trees turn pink with cherry blossoms, the sailor met Mama. They walked under the blossoms, and the petals fell like soft pink snow. And there, in the land of cherry blossoms, your family began.",
-   "audio": "/storytime/my-own-home/intro-3.mp3",
-   "key": "ea45316d5913c47c",
-   "words": [
-    [
-     0.107,
-     0.448,
-     0,
-     3
-    ],
-    [
-     0.462,
-     1.002,
-     4,
-     10
-    ],
-    [
-     1.186,
-     1.286,
-     12,
-     14
-    ],
-    [
-     1.3,
-     1.357,
-     15,
+     1.428,
+     1.698,
+     13,
      16
     ],
     [
-     1.371,
-     1.939,
+     1.712,
+     2.195,
      17,
-     24
+     21
     ],
     [
-     1.953,
-     2.351,
-     25,
+     2.394,
+     2.536,
+     23,
+     25
+    ],
+    [
+     2.55,
+     2.649,
+     26,
      29
     ],
     [
-     2.365,
-     2.493,
+     2.664,
+     2.962,
      30,
      35
     ],
     [
-     2.507,
-     2.621,
-     36,
-     39
-    ],
-    [
-     2.635,
-     3.033,
-     40,
-     45
-    ],
-    [
-     3.047,
-     3.345,
-     46,
-     50
-    ],
-    [
-     3.36,
-     3.715,
-     51,
-     55
-    ],
-    [
-     3.729,
-     3.871,
-     56,
-     60
-    ],
-    [
-     3.885,
-     4.226,
-     61,
-     67
-    ],
-    [
-     4.24,
-     5.007,
-     68,
-     76
-    ],
-    [
-     5.149,
-     5.263,
-     78,
-     81
-    ],
-    [
-     5.277,
-     5.732,
-     82,
-     88
-    ],
-    [
-     5.746,
-     5.959,
-     89,
-     92
-    ],
-    [
-     5.973,
-     6.541,
-     93,
-     97
-    ],
-    [
-     7.528,
-     7.685,
-     99,
-     103
-    ],
-    [
-     7.699,
-     8.04,
-     104,
-     110
-    ],
-    [
-     8.054,
-     8.253,
-     111,
-     116
-    ],
-    [
-     8.267,
-     8.366,
-     117,
-     120
-    ],
-    [
-     8.381,
-     9.148,
-     121,
-     129
-    ],
-    [
-     9.389,
-     9.531,
-     131,
-     134
-    ],
-    [
-     9.545,
-     9.631,
-     135,
-     138
-    ],
-    [
-     9.645,
-     10.099,
-     139,
-     145
-    ],
-    [
-     10.114,
-     10.355,
-     146,
-     150
-    ],
-    [
-     10.369,
-     10.611,
-     151,
-     155
-    ],
-    [
-     10.625,
-     11.009,
-     156,
-     160
-    ],
-    [
-     11.023,
-     11.293,
-     161,
-     165
-    ],
-    [
-     11.307,
-     11.832,
-     166,
-     170
-    ],
-    [
-     12.812,
-     13.026,
-     172,
-     175
-    ],
-    [
-     13.04,
-     13.509,
-     176,
-     181
-    ],
-    [
-     13.665,
-     13.793,
-     183,
-     185
-    ],
-    [
-     13.807,
-     13.906,
-     186,
-     189
-    ],
-    [
-     13.92,
-     14.233,
-     190,
-     194
-    ],
-    [
-     14.247,
-     14.332,
-     195,
-     197
-    ],
-    [
-     14.347,
-     14.687,
-     198,
-     204
-    ],
-    [
-     14.702,
-     15.469,
-     205,
-     213
-    ],
-    [
-     15.582,
-     15.739,
-     215,
-     219
-    ],
-    [
-     15.753,
-     16.165,
-     220,
-     226
-    ],
-    [
-     16.179,
-     16.804,
-     227,
-     232
-    ]
-   ],
-   "duration": 17.4
-  },
-  {
-   "id": "intro-4",
-   "kind": "intro",
-   "scene": "workbench",
-   "text": "Now Dada is far, far away, on the other side of the wide, wide sea. Mama says he is very busy, helping people and keeping the world safe while you sleep. He never likes to talk about it. If anybody asks, he just smiles and says, \"Oh, it's nothing. I just like to fix things.\"",
-   "audio": "/storytime/my-own-home/intro-4.mp3",
-   "key": "c1ebb0d78b283ee7",
-   "words": [
-    [
-     0.107,
-     0.348,
-     0,
-     3
-    ],
-    [
-     0.362,
-     0.803,
-     4,
-     8
-    ],
-    [
-     0.817,
-     1.016,
-     9,
-     11
-    ],
-    [
-     1.03,
-     1.556,
-     12,
-     15
-    ],
-    [
-     1.726,
-     1.996,
-     17,
-     20
-    ],
-    [
-     2.01,
-     2.479,
-     21,
-     25
-    ],
-    [
-     2.692,
-     2.834,
-     27,
-     29
-    ],
-    [
-     2.848,
-     2.948,
-     30,
-     33
-    ],
-    [
-     2.962,
+     2.976,
      3.26,
-     34,
-     39
+     36,
+     40
     ],
     [
      3.274,
-     3.558,
-     40,
-     44
+     3.345,
+     41,
+     43
     ],
     [
-     3.573,
-     3.644,
-     45,
+     3.36,
+     3.459,
+     44,
      47
     ],
     [
-     3.658,
-     3.757,
+     3.473,
+     3.914,
      48,
-     51
+     52
     ],
     [
-     3.772,
-     4.212,
-     52,
-     56
-    ],
-    [
+     4.098,
      4.397,
-     4.695,
-     58,
+     54,
+     58
+    ],
+    [
+     4.411,
+     4.922,
+     59,
      62
     ],
     [
-     4.709,
-     5.22,
-     63,
-     66
+     5.909,
+     6.321,
+     64,
+     68
     ],
     [
-     6.207,
-     6.619,
-     68,
-     72
+     6.335,
+     6.648,
+     69,
+     73
     ],
     [
-     6.634,
+     6.662,
+     6.776,
+     74,
+     76
+    ],
+    [
+     6.79,
+     6.932,
+     77,
+     79
+    ],
+    [
      6.946,
-     73,
-     77
-    ],
-    [
-     6.96,
-     7.074,
-     78,
-     80
-    ],
-    [
-     7.088,
      7.23,
-     81,
-     83
+     80,
+     84
     ],
     [
      7.244,
-     7.528,
-     84,
-     88
+     7.727,
+     85,
+     89
     ],
     [
-     7.543,
-     8.026,
-     89,
-     93
+     7.983,
+     8.324,
+     91,
+     98
     ],
     [
-     8.281,
-     8.622,
-     95,
-     102
+     8.338,
+     8.878,
+     99,
+     105
     ],
     [
-     8.636,
-     9.176,
-     103,
+     8.892,
+     9.034,
+     106,
      109
     ],
     [
-     9.19,
-     9.332,
+     9.048,
+     9.389,
      110,
-     113
+     117
     ],
     [
-     9.347,
-     9.687,
-     114,
+     9.403,
+     9.503,
+     118,
      121
     ],
     [
-     9.702,
-     9.801,
-     122,
-     125
-    ],
-    [
+     9.517,
      9.815,
-     10.114,
-     126,
-     131
+     122,
+     127
     ],
     [
-     10.128,
-     10.54,
-     132,
-     136
+     9.83,
+     10.241,
+     128,
+     132
     ],
     [
-     10.554,
-     10.724,
-     137,
+     10.256,
+     10.426,
+     133,
+     138
+    ],
+    [
+     10.44,
+     10.568,
+     139,
      142
     ],
     [
-     10.739,
-     10.866,
+     10.582,
+     11.136,
      143,
-     146
+     148
     ],
     [
-     10.881,
-     11.435,
-     147,
+     12.116,
+     12.287,
+     150,
      152
     ],
     [
-     12.415,
-     12.585,
-     154,
-     156
+     12.301,
+     12.614,
+     153,
+     158
     ],
     [
-     12.599,
-     12.912,
-     157,
-     162
+     12.628,
+     12.969,
+     159,
+     164
     ],
     [
-     12.926,
-     13.267,
-     163,
-     168
+     12.983,
+     13.082,
+     165,
+     167
     ],
     [
-     13.281,
-     13.381,
-     169,
-     171
-    ],
-    [
+     13.097,
      13.395,
-     13.693,
-     172,
-     176
+     168,
+     172
     ],
     [
-     13.707,
+     13.409,
+     13.722,
+     173,
+     178
+    ],
+    [
+     13.736,
      14.02,
-     177,
-     182
+     179,
+     181
     ],
     [
-     14.034,
-     14.318,
+     15.0,
+     15.199,
      183,
      185
     ],
     [
-     15.298,
-     15.497,
-     187,
-     189
+     15.213,
+     15.767,
+     186,
+     193
     ],
     [
-     15.511,
-     16.065,
-     190,
-     197
+     15.781,
+     16.349,
+     194,
+     198
     ],
     [
-     16.08,
-     16.648,
-     198,
+     16.477,
+     16.577,
+     200,
      202
     ],
     [
-     16.776,
-     16.875,
-     204,
-     206
-    ],
-    [
+     16.591,
      16.889,
-     17.187,
-     207,
-     211
+     203,
+     207
     ],
     [
-     17.202,
-     17.756,
-     212,
+     16.903,
+     17.457,
+     208,
+     214
+    ],
+    [
+     17.472,
+     17.614,
+     215,
      218
     ],
     [
-     17.77,
-     17.912,
+     17.628,
+     18.139,
      219,
-     222
+     223
     ],
     [
-     17.926,
-     18.438,
-     223,
-     227
+     18.338,
+     18.693,
+     226,
+     228
     ],
     [
-     18.636,
-     18.992,
+     18.849,
+     19.077,
      230,
-     232
+     234
     ],
     [
-     19.148,
-     19.375,
-     234,
-     238
+     19.091,
+     19.716,
+     235,
+     242
     ],
     [
-     19.389,
-     20.014,
-     239,
-     246
+     20.696,
+     20.866,
+     244,
+     245
     ],
     [
-     20.994,
+     20.881,
+     21.151,
+     246,
+     250
+    ],
+    [
      21.165,
-     248,
-     249
+     21.349,
+     251,
+     255
     ],
     [
-     21.179,
-     21.449,
-     250,
-     254
-    ],
-    [
+     21.364,
      21.463,
-     21.648,
-     255,
-     259
+     256,
+     258
     ],
     [
-     21.662,
-     21.761,
-     260,
+     21.477,
+     21.832,
+     259,
      262
     ],
     [
-     21.776,
-     22.131,
+     21.847,
+     22.528,
      263,
-     266
-    ],
-    [
-     22.145,
-     22.827,
-     267,
-     273
+     269
     ]
    ],
-   "duration": 23.43
+   "duration": 23.13
   },
   {
-   "id": "intro-5",
+   "id": "intro-3",
    "kind": "intro",
    "scene": "letter",
    "text": "But every so often, when the stars are just right, Dada sends a story across the ocean, all the way to your window. Tonight's story is about a girl named Pip, who wanted a home with no corners at all. Are you ready? Here we go.",
-   "audio": "/storytime/my-own-home/intro-5.mp3",
-   "key": "a7712db69b7b1263",
+   "key": "854d03a10d9ff68d",
+   "audio": "/storytime/my-own-home/854d03a10d9ff68d.mp3",
    "words": [
     [
      0.107,
@@ -1599,8 +977,8 @@
    "kind": "title",
    "scene": "cover",
    "text": "My Own Home, My Own Dome.",
-   "audio": "/storytime/my-own-home/cover.mp3",
-   "key": "585ea96b913b773f",
+   "key": "43b1da5de9af645d",
+   "audio": "/storytime/my-own-home/43b1da5de9af645d.mp3",
    "words": [
     [
      0.107,
@@ -1643,11 +1021,11 @@
   },
   {
    "id": "s1",
-   "stanza": 1,
    "scene": "town",
    "text": "In a town full of boxes, all stacked up so tall,\nlived a girl named Pip Pine who said, \"Boxes? Not all!\nA box has four corners, and corners grow dust.\nI want a round home. A round home! I must!\"",
-   "audio": "/storytime/my-own-home/s1.mp3",
-   "key": "b89e53c0f1cbe59f",
+   "kind": "page",
+   "key": "cbc9380753cb9cbc",
+   "audio": "/storytime/my-own-home/cbc9380753cb9cbc.mp3",
    "words": [
     [
      0.107,
@@ -1900,11 +1278,11 @@
   },
   {
    "id": "s2",
-   "stanza": 2,
    "scene": "dream",
    "text": "\"A dome!\" Pip decided. \"A dome I will build,\nwith a roof like the sky when the sky is all filled\nwith the curve of the morning, the bend of the sun --\na home with no corners! Not one! Not a one!\"",
-   "audio": "/storytime/my-own-home/s2.mp3",
-   "key": "a145add4ca5898d9",
+   "kind": "page",
+   "key": "c67eeaabf8874b5d",
+   "audio": "/storytime/my-own-home/c67eeaabf8874b5d.mp3",
    "words": [
     [
      0.107,
@@ -2163,11 +1541,11 @@
   },
   {
    "id": "s3",
-   "stanza": 3,
    "scene": "lumber",
    "text": "So she marched past the lumber yard, stacked to the eaves\nwith boards wrapped in plastic and tags on their sleeves.\n\"No thank you,\" said Pip. \"I won't buy all my sticks.\nI will find them, and split them, and fit them like bricks.\"",
-   "audio": "/storytime/my-own-home/s3.mp3",
-   "key": "e69a08f09ca9fce9",
+   "kind": "page",
+   "key": "caa79ecb95637387",
+   "audio": "/storytime/my-own-home/caa79ecb95637387.mp3",
    "words": [
     [
      0.107,
@@ -2438,11 +1816,11 @@
   },
   {
    "id": "s4",
-   "stanza": 4,
    "scene": "log",
    "text": "At the edge of the forest a fallen pine lay,\njust as round as a barrel and long as a day.\n\"Hello, Mister Log,\" Pip said, tipping her hat.\n\"Would you like to be home? Would you, please, become that?\"",
-   "audio": "/storytime/my-own-home/s4.mp3",
-   "key": "e998037a33c02571",
+   "kind": "page",
+   "key": "3b62a42b4ee37474",
+   "audio": "/storytime/my-own-home/3b62a42b4ee37474.mp3",
    "words": [
     [
      0.107,
@@ -2689,11 +2067,11 @@
   },
   {
    "id": "s5",
-   "stanza": 5,
    "scene": "tools",
    "text": "The log didn't answer (most logs never talk),\nso Pip took the silence as \"Yes!\" and a \"Walk!\"\nShe fetched one good saw and one bright chalky line,\none level, one tape, and one lunch box. Just fine.",
-   "audio": "/storytime/my-own-home/s5.mp3",
-   "key": "81dcb86a5c80e054",
+   "kind": "page",
+   "key": "7c093c1ca7203c8c",
+   "audio": "/storytime/my-own-home/7c093c1ca7203c8c.mp3",
    "words": [
     [
      0.107,
@@ -2928,11 +2306,11 @@
   },
   {
    "id": "s6",
-   "stanza": 6,
    "scene": "zzzip",
    "text": "Zzzip! went the saw, and the log split in two.\nZzzip! went the saw, and the twos split anew.\nThen halves became quarters, and quarters made eight --\neight wedges like pie slices stacked on a plate.",
-   "audio": "/storytime/my-own-home/s6.mp3",
-   "key": "03071ee5c3e7330b",
+   "kind": "page",
+   "key": "702e402c1d7f965c",
+   "audio": "/storytime/my-own-home/702e402c1d7f965c.mp3",
    "words": [
     [
      0.107,
@@ -3155,11 +2533,11 @@
   },
   {
    "id": "s7",
-   "stanza": 7,
    "scene": "wedges",
    "text": "\"A wedge,\" Pip declared, \"is a bone of my dome!\nEach wedge is a rib of my own little home.\nI'll cut them to length -- not too short, not too long --\nfor a strut that's too short makes a dome that goes wrong.\"",
-   "audio": "/storytime/my-own-home/s7.mp3",
-   "key": "c468dfac7dc74230",
+   "kind": "page",
+   "key": "a52480f16cf57637",
+   "audio": "/storytime/my-own-home/a52480f16cf57637.mp3",
    "words": [
     [
      0.107,
@@ -3424,11 +2802,11 @@
   },
   {
    "id": "s8",
-   "stanza": 8,
    "scene": "chalk",
    "text": "She measured one strut, just the longest of all,\nand she wrote it in chalk on the side of the wall.\n\"From this one little number,\" said Pip with a grin,\n\"I can count out the whole of the house I'll live in!\"",
-   "audio": "/storytime/my-own-home/s8.mp3",
-   "key": "d3326f7f23f50167",
+   "kind": "page",
+   "key": "a60d66e1e7378749",
+   "audio": "/storytime/my-own-home/a60d66e1e7378749.mp3",
    "words": [
     [
      0.107,
@@ -3693,11 +3071,11 @@
   },
   {
    "id": "s9",
-   "stanza": 9,
    "scene": "measure",
    "text": "\"How tall? And how wide? And how much will it weigh?\nHow many triangles? How long will it stay?\nIt's all in the number. The number's the key.\nIf I know my long strut, then my dome will know me.\"",
-   "audio": "/storytime/my-own-home/s9.mp3",
-   "key": "bb30c0e75727b0ce",
+   "kind": "page",
+   "key": "983ea40d705c3c27",
+   "audio": "/storytime/my-own-home/983ea40d705c3c27.mp3",
    "words": [
     [
      0.107,
@@ -3944,11 +3322,11 @@
   },
   {
    "id": "s10",
-   "stanza": 10,
    "scene": "pinwheel",
    "text": "Then wedge after wedge went in pinwheels of three,\neach one leaning on one, like a hug, don't you see?\nNo nails at the corners, no hubs made of tin,\njust a wedge holding wedge holding wedge holding in.",
-   "audio": "/storytime/my-own-home/s10.mp3",
-   "key": "96c041f3a640c21e",
+   "kind": "page",
+   "key": "c6b764a627eceb59",
+   "audio": "/storytime/my-own-home/c6b764a627eceb59.mp3",
    "words": [
     [
      0.107,
@@ -4189,11 +3567,11 @@
   },
   {
    "id": "s11",
-   "stanza": 11,
    "scene": "rising",
    "text": "Triangle! Triangle! Up the ring rose,\nlittle triangle windows in tidy round rows,\nand the rows bent together and curved toward the top,\ntill the very last triangle -- click! -- made it stop.",
-   "audio": "/storytime/my-own-home/s11.mp3",
-   "key": "358a19fd45a6dd5b",
+   "kind": "page",
+   "key": "ef7aa46a3608d936",
+   "audio": "/storytime/my-own-home/ef7aa46a3608d936.mp3",
    "words": [
     [
      0.107,
@@ -4392,11 +3770,11 @@
   },
   {
    "id": "s12",
-   "stanza": 12,
    "scene": "neighbours",
    "text": "The neighbours came running. \"What IS that?\" they cried.\n\"It is round on the outside! It's round on the inside!\"\n\"It's my home,\" Pip said proudly. \"My dome. It is mine.\nI can tell you its weight. I can tell you each line.\"",
-   "audio": "/storytime/my-own-home/s12.mp3",
-   "key": "0f97839273539e07",
+   "kind": "page",
+   "key": "c4e0de33ec5f36cc",
+   "audio": "/storytime/my-own-home/c4e0de33ec5f36cc.mp3",
    "words": [
     [
      0.107,
@@ -4661,11 +4039,11 @@
   },
   {
    "id": "s13",
-   "stanza": 13,
    "scene": "ledger",
    "text": "\"I can tell you the wood and the screws that it took.\nI can tell you the hours -- they're all in my book.\nThere's no secret, no guess, no 'oh, roughly, we think' --\njust numbers you count, written down in black ink.\"",
-   "audio": "/storytime/my-own-home/s13.mp3",
-   "key": "3e19aa7b456fef08",
+   "kind": "page",
+   "key": "95dee24190f037df",
+   "audio": "/storytime/my-own-home/95dee24190f037df.mp3",
    "words": [
     [
      0.107,
@@ -4924,11 +4302,11 @@
   },
   {
    "id": "s14",
-   "stanza": 14,
    "scene": "panel",
    "text": "Then a boy from the boxes came up with a frown.\n\"My dome has a hole, and a panel fell down.\"\nPip asked, \"What's your long strut?\" He said, \"Same as yours!\"\n\"Then my panels fit yours, like the doors fit their doors!\"",
-   "audio": "/storytime/my-own-home/s14.mp3",
-   "key": "666a5dcc491c4708",
+   "kind": "page",
+   "key": "a37fc87480f573f8",
+   "audio": "/storytime/my-own-home/a37fc87480f573f8.mp3",
    "words": [
     [
      0.107,
@@ -5193,11 +4571,11 @@
   },
   {
    "id": "s15",
-   "stanza": 15,
    "scene": "club",
    "text": "So the kids with same domes started up a big club,\nwhere they swapped out their panels and shared tools and grub,\nand they learned from each other which way the wind blows,\nand which wedge goes where, and how everyone grows.",
-   "audio": "/storytime/my-own-home/s15.mp3",
-   "key": "5b3ab1d6ee80dec6",
+   "kind": "page",
+   "key": "70a7803d44e3ddea",
+   "audio": "/storytime/my-own-home/70a7803d44e3ddea.mp3",
    "words": [
     [
      0.107,
@@ -5456,11 +4834,11 @@
   },
   {
    "id": "s16",
-   "stanza": 16,
    "scene": "night",
    "text": "Now the town full of boxes has domes on the hill,\nlittle round ones and big ones, and more coming still.\nAnd at night, when the sky makes a dome of its own,\nPip curls up in hers. \"My own dome. My own home.\"",
-   "audio": "/storytime/my-own-home/s16.mp3",
-   "key": "acfab8b1f1d01677",
+   "kind": "page",
+   "key": "94c31aad88802dfa",
+   "audio": "/storytime/my-own-home/94c31aad88802dfa.mp3",
    "words": [
     [
      0.107,
@@ -5733,9 +5111,9 @@
    "id": "outro",
    "kind": "outro",
    "scene": "goodnight",
-   "text": "The end. Goodnight, Annika. Goodnight, Arama. Look, Dada's star is shining right over your house tonight. He wanted me to tell you three things. Be kind. Be curious. And always help each other build. He'll send another story soon. Sweet dreams.",
-   "audio": "/storytime/my-own-home/outro.mp3",
-   "key": "61a5c13633410206",
+   "text": "The end. Goodnight, Annika. Goodnight, Amara. Look, Dada's star is shining right over your house tonight. He wanted me to tell you three things. Be kind. Be curious. And always help each other build. He'll send another story soon. Sweet dreams.",
+   "key": "ec2c566abea6af2b",
+   "audio": "/storytime/my-own-home/ec2c566abea6af2b.mp3",
    "words": [
     [
      0.107,
@@ -5763,241 +5141,229 @@
     ],
     [
      4.162,
-     4.73,
+     4.744,
      28,
      37
     ],
     [
-     4.915,
-     5.483,
+     4.943,
+     5.54,
      39,
      44
     ],
     [
-     6.463,
-     6.974,
+     6.52,
+     7.031,
      46,
      50
     ],
     [
-     7.159,
-     7.585,
+     7.216,
+     7.642,
      52,
      58
     ],
     [
-     7.599,
-     7.94,
+     7.656,
+     7.997,
      59,
      63
     ],
     [
-     7.955,
-     8.125,
+     8.011,
+     8.182,
      64,
      66
     ],
     [
-     8.139,
-     8.651,
+     8.196,
+     8.707,
      67,
      74
     ],
     [
-     8.665,
-     8.991,
+     8.722,
+     9.048,
      75,
      80
     ],
     [
-     9.006,
-     9.219,
+     9.062,
+     9.276,
      81,
      85
     ],
     [
-     9.233,
-     9.375,
+     9.29,
+     9.432,
      86,
      90
     ],
     [
-     9.389,
-     9.687,
+     9.446,
+     9.744,
      91,
      96
     ],
     [
-     9.702,
-     10.27,
+     9.759,
+     10.327,
      97,
      104
     ],
     [
-     11.25,
-     11.435,
+     11.307,
+     11.491,
      106,
      108
     ],
     [
-     11.449,
-     11.832,
+     11.506,
+     11.889,
      109,
      115
     ],
     [
-     11.847,
-     11.974,
+     11.903,
+     12.031,
      116,
      118
     ],
     [
-     11.989,
-     12.074,
+     12.045,
+     12.131,
      119,
      121
     ],
     [
-     12.088,
-     12.344,
+     12.145,
+     12.401,
      122,
      126
     ],
     [
-     12.358,
-     12.486,
+     12.415,
+     12.543,
      127,
      130
     ],
     [
-     12.5,
-     12.77,
+     12.557,
+     12.827,
      131,
      136
     ],
     [
-     12.784,
-     13.523,
+     12.841,
+     13.58,
      137,
      143
     ],
     [
-     14.503,
-     14.673,
+     14.56,
+     14.73,
      145,
      147
     ],
     [
-     14.688,
-     15.327,
+     14.744,
+     15.384,
      148,
      152
     ],
     [
-     16.307,
-     16.477,
+     16.364,
+     16.534,
      154,
      156
     ],
     [
-     16.491,
-     17.315,
+     16.548,
+     17.372,
      157,
      164
     ],
     [
-     18.295,
-     18.537,
+     18.352,
+     18.594,
      166,
      169
     ],
     [
-     18.551,
-     18.906,
+     18.608,
+     18.963,
      170,
      176
     ],
     [
-     18.92,
-     19.134,
+     18.977,
+     19.19,
      177,
      181
     ],
     [
-     19.148,
-     19.304,
+     19.205,
+     19.361,
      182,
      186
     ],
     [
-     19.318,
-     19.545,
+     19.375,
+     19.602,
      187,
      192
     ],
     [
-     19.56,
-     20.057,
+     19.616,
+     20.114,
      193,
      198
     ],
     [
-     21.037,
-     21.278,
+     21.094,
+     21.335,
      200,
      205
     ],
     [
-     21.293,
-     21.562,
+     21.349,
+     21.619,
      206,
      210
     ],
     [
-     21.577,
-     21.946,
+     21.634,
+     22.003,
      211,
      218
     ],
     [
-     21.96,
-     22.315,
+     22.017,
+     22.372,
      219,
      224
     ],
     [
-     22.33,
-     22.855,
+     22.386,
+     22.912,
      225,
      229
     ],
     [
-     23.835,
-     24.247,
+     23.892,
+     24.304,
      231,
      236
     ],
     [
-     24.261,
-     24.972,
+     24.318,
+     25.028,
      237,
      243
     ]
    ],
-   "duration": 25.57
+   "duration": 25.63
   }
  ],
- "figures": {
-  "longIn": 72,
-  "shortIn": 63.67,
-  "members": 120,
-  "triangles": 40,
-  "woodCuft": 65.22,
-  "frameLb": 2478,
-  "frameCost": 2465,
-  "hours": "37.5",
-  "diameterFt": 19.42,
-  "heightFt": 9.71
- },
- "runtime": 434.9
+ "runtime": 393.2
 }

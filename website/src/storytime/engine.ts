@@ -26,7 +26,7 @@ export const PEOPLE = {
   n4:     { name: "a neighbour", height: 1.1, skin: "#ad805c", shirt: "#e9e5da", shirt2: "#c9c4b8", pants: "#33337a", hair: "#4a2e1c", hairStyle: "ponytail", belly: 0.88 },
   mama:   { name: "Mama", height: 1.62, skin: "#c99572", shirt: "#7fa9c9", shirt2: "#5f89a9", pants: "#3a3f52", hair: "#1d140e", hairStyle: "long", belly: 0.92 },
   annika: { name: "Annika", height: 1.12, skin: "#c99572", shirt: "#f2c94c", shirt2: "#d9ae36", pants: "#5a6b8f", hair: "#1d140e", hairStyle: "long", belly: 0.88 },
-  arama:  { name: "Arama", height: 0.98, skin: "#c99572", shirt: "#7cc7a8", shirt2: "#5fae8e", pants: "#5a6b8f", hair: "#1d140e", hairStyle: "curly", belly: 0.88 },
+  amara:  { name: "Amara", height: 0.98, skin: "#c99572", shirt: "#7cc7a8", shirt2: "#5fae8e", pants: "#5a6b8f", hair: "#1d140e", hairStyle: "curly", belly: 0.88 },
   dada:   { name: "Dada", height: 1.82, skin: "#e0ac86", shirt: "#26324f", shirt2: "#1b243a", pants: "#3a3f52", hair: "#4a3020", hairStyle: "short", beard: "#17120e", beardStyle: "scruff", sailorCap: true, belly: 1.0 },
 };
 
@@ -378,7 +378,7 @@ export class Storyworld {
     const model = this.makeDome(); model.scale.setScalar(0.07); model.position.set(0.55, 2.2, 0.89); g.add(model);
     for (let k = 0; k < 4; k++) this.box(g, -0.3 + k * 0.12, 2.0 + (k % 2) * 0.05, 0.9 + k * 0.004, 0.42, 0.3, 0.004, "#efe6d2");
     this.box(g, 1.1, 2.5, 0.95, 0.4, 0.2, 0.16, "#c8432f");                    // a toolbox
-    this.benchDada = new Character(THREE, "dada-bench", PEOPLE.dada, g); this.benchDada.place(0.6, 1.25, 0); this.benchDada.ground = () => 0;
+    this.benchDada = new Character(THREE, "dada-bench", { ...PEOPLE.dada, sailorCap: false }, g);   // no sailor cap: the origin story is on hold this.benchDada.place(0.6, 1.25, 0); this.benchDada.ground = () => 0;
     this.hooks.push((dt) => { if (g.visible) this.benchDada.update(dt); });
     return g;
   }

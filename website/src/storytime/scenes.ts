@@ -88,7 +88,7 @@ function farPerson(w, key, def, place) {
 function family(w, place, at) {
   // Mama and the two of them on the blanket, looking up at the sky
   const P = w.places[place].position, y0 = at?.y ?? 0;
-  const m = farPerson(w, "mama-" + place, PEOPLE.mama, place), a = farPerson(w, "annika-" + place, PEOPLE.annika, place), r = farPerson(w, "arama-" + place, PEOPLE.arama, place);
+  const m = farPerson(w, "mama-" + place, PEOPLE.mama, place), a = farPerson(w, "annika-" + place, PEOPLE.annika, place), r = farPerson(w, "amara-" + place, PEOPLE.amara, place);
   m.place(0, y0 + 0.15, 0); a.place(-0.65, y0, 0); r.place(0.62, y0 - 0.05, 0);
   for (const c of [m, a, r]) { c.ground = () => -0.3 * c.k; c.place(c.root.position.x, c.root.position.y, 0); act(c, "sit"); c.expr = "smile"; }
   return { m, a, r, P };
@@ -137,9 +137,10 @@ export function makeScenes(w: Storyworld, F: Figures) {
       w.benchDada.root.visible = true; act(w.benchDada, "hammer"); w.benchDada.expr = "neutral";
       w.tick = (t) => act(w.benchDada, Math.floor(t / 4) % 2 ? "think" : "hammer");
       return S.keys({ dur, keys: [
-        { pos: P.clone().add(V(-0.9, -1.6, 1.9)), target: P.clone().add(V(0.6, 2.0, 1.2)), fov: 40 },
-        { pos: P.clone().add(V(-0.2, -0.3, 1.85)), target: P.clone().add(V(0.6, 2.2, 1.0)), fov: 38 },
-        { pos: P.clone().add(V(0.1, 0.5, 1.55)), target: P.clone().add(V(0.6, 2.2, 0.98)), fov: 34 },
+        // past his left shoulder, never through him (he stands at 0.6, 1.25), onto the little dome on the bench
+        { pos: P.clone().add(V(-1.0, -1.6, 1.9)), target: P.clone().add(V(0.6, 2.0, 1.2)), fov: 40 },
+        { pos: P.clone().add(V(-0.6, -0.4, 1.8)), target: P.clone().add(V(0.55, 2.2, 1.0)), fov: 38 },
+        { pos: P.clone().add(V(-0.4, 0.6, 1.5)), target: P.clone().add(V(0.55, 2.2, 0.95)), fov: 34 },
       ] });
     },
     letter(dur) {
@@ -188,7 +189,7 @@ export function makeScenes(w: Storyworld, F: Figures) {
     },
     tools(dur) {
       stage(w, "hill", ["stump", "log"], "golden");
-      const p = who(w, "pip", -3.15, -3.0, 0, "point");
+      const p = who(w, "pip", -5.25, -3.75, 0, "point");
       lookTo(p, -4.3, -3.4);
       return S.orbit({ subject: V(-4.3, -3.4, 0.45), radius: 2.1, height: 1.0, from: -80, sweep: 70, dur, fov: 40 });
     },
@@ -215,11 +216,11 @@ export function makeScenes(w: Storyworld, F: Figures) {
       stage(w, "hill", ["dome"], "day");
       who(w, "pip", R + 1.1, -R * 0.6, 240, "think", { expr: "far" });
       const items = [
-        [`${F.diameterFt} ft wide`, V(-R * 0.7, -R - 0.3, 0.6)],
+        [`${F.diameterFt} ft wide`, V(-R * 0.8, -R * 0.95, H * 0.45)],
         [`${F.heightFt} ft tall`, V(0.4, -0.2, H + 0.65)],
         [`${F.triangles} triangles`, V(-R * 0.9, -R * 0.2, H * 0.75)],
         [`${fmt(F.frameLb)} lb`, V(R * 0.9, -R * 0.1, H * 0.7)],
-        [`${F.members} wedges`, V(R * 0.6, -R - 0.4, 0.35)],
+        [`${F.members} wedges`, V(R * 0.95, -R * 0.75, H * 0.35)],
       ];
       const tags = items.map(([t, at]) => tag(w, t, at, { size: 0.55 }));
       w.tick = (t) => tags.forEach((s, i) => (s.material.opacity = Math.min(1, Math.max(0, (t - 1.5 - i * (dur - 4) / items.length) * 2))));
@@ -251,7 +252,7 @@ export function makeScenes(w: Storyworld, F: Figures) {
       writeBoard(w, ["Pip's book", `wood: ${F.woodCuft} cu ft`, `frame: $${fmt(F.frameCost)}`, `${F.hours} hours`], { bg: "#f3ead2", fg: "#3b2a1a" });
       w.board.position.set(R + 1.2, -R + 0.2, 0);
       const p = who(w, "pip", R + 0.2, -R - 0.5, 210, "talk", { speaking: true });
-      return S.dollyIn({ from: V(R + 0.6, -R - 4.2, 1.5), subject: V(R + 1.2, -R + 0.2, 1.25), dist: 0.35, dur, fov: 40 });
+      return S.dollyIn({ from: V(R + 0.6, -R - 4.2, 1.5), subject: V(R + 1.2, -R + 0.2, 1.45), dist: 0.62, dur, fov: 40 });
     },
     panel(dur) {
       stage(w, "hill", ["dome", "panel"], "day");
@@ -298,4 +299,65 @@ export function makeScenes(w: Storyworld, F: Figures) {
       ] });
     },
   };
+}
+
+/** Every scene a page can be set in, for the Story Studio's picker: name, what it shows, and which book page it re-stages. */
+export const SCENES: { name: string; label: string; group: string }[] = [
+  { name: "stars", label: "Mama and the two of them on the blanket, Dada's star", group: "Bedtime" },
+  { name: "workbench", label: "Dada's workbench far away, under the lamp", group: "Bedtime" },
+  { name: "letter", label: "A glowing story crossing the ocean at night", group: "Bedtime" },
+  { name: "goodnight", label: "Goodnight: the blanket, the star over the house", group: "Bedtime" },
+  { name: "sea", label: "The ship at dusk (origin story -- on hold)", group: "On hold" },
+  { name: "blossoms", label: "The cherry-blossom path (origin story -- on hold)", group: "On hold" },
+  { name: "cover", label: "Title card over the finished dome", group: "The hill" },
+  { name: "town", label: "The town of boxes", group: "The hill" },
+  { name: "dream", label: "A dream of a dome, glowing", group: "The hill" },
+  { name: "lumber", label: "Walking past the lumber yard", group: "The hill" },
+  { name: "log", label: "The fallen pine", group: "The hill" },
+  { name: "tools", label: "The tools on the stump", group: "The hill" },
+  { name: "zzzip", label: "The log splitting into eight wedges", group: "The hill" },
+  { name: "wedges", label: "Holding up a wedge by the stack", group: "The hill" },
+  { name: "chalk", label: "The longest strut, in chalk", group: "The hill" },
+  { name: "measure", label: "What the number tells: width, height, weight", group: "The hill" },
+  { name: "pinwheel", label: "Close on the pinwheel at the top", group: "The hill" },
+  { name: "rising", label: "The dome rising ring by ring", group: "The hill" },
+  { name: "neighbours", label: "The neighbours come running", group: "The hill" },
+  { name: "ledger", label: "Pip's book of numbers", group: "The hill" },
+  { name: "panel", label: "The boy with the fallen panel", group: "The hill" },
+  { name: "club", label: "The dome club swapping panels", group: "The hill" },
+  { name: "night", label: "Domes on the hill at night", group: "The hill" },
+];
+
+/** Camera moves a page can use instead of its scene's own: the Episode Director's shot library. */
+export const SHOTS: { name: string; label: string }[] = [
+  { name: "scene", label: "The scene's own move" },
+  { name: "hold", label: "Hold (a slow breath in)" },
+  { name: "dollyIn", label: "Dolly in" },
+  { name: "dollyOut", label: "Dolly out" },
+  { name: "slide", label: "Slide sideways" },
+  { name: "pan", label: "Pan" },
+  { name: "crane", label: "Crane up" },
+  { name: "pedestal", label: "Pedestal up" },
+  { name: "dollyZoom", label: "Dolly zoom (vertigo)" },
+  { name: "orbit", label: "Orbit" },
+  { name: "reveal", label: "Reveal (low to high)" },
+  { name: "spiral", label: "Spiral down" },
+  { name: "flyover", label: "Drone flyover" },
+];
+
+/** The page's scene, shot another way: the new move starts where the scene's camera starts, on the same subject. */
+export function reshoot(w: Storyworld, shot, name: string, dur: number) {
+  const S = w.shots, first = shot.at(0), from = first.pos.clone(), subject = first.target.clone();
+  const flat = Math.hypot(from.x - subject.x, from.y - subject.y), fov = first.fov || 40;
+  const from_deg = Math.atan2(from.y - subject.y, from.x - subject.x) * 180 / Math.PI;
+  switch (name) {
+    case "orbit": return S.orbit({ subject, radius: flat, height: from.z - subject.z, from: from_deg, sweep: 70, dur, fov });
+    case "reveal": return S.reveal({ subject, radius: flat, dur, fov });
+    case "spiral": return S.spiral({ subject, radius: flat, height: Math.max(2, from.z - subject.z + 3), turns: 0.4, dur, fov });
+    case "flyover": return S.flyover({ subject, radius: flat, height: Math.max(3, from.z), dur, fov });
+    case "dollyZoom": return S.dollyZoom({ from, subject, dur, fovFrom: fov * 0.8, fovTo: fov * 1.6 });
+    case "crane": return S.crane({ from, subject, rise: Math.max(2, flat * 0.5), back: flat * 0.3, dur, fov });
+    case "pedestal": return S.pedestal({ from, subject, rise: 1.5, dur, fov });
+    default: return S[name] ? S[name]({ from, subject, dur, fov }) : shot;
+  }
 }
