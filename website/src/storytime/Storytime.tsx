@@ -7,7 +7,9 @@
 // Built for a tablet at bedtime: big buttons that hide themselves while the narrator reads, the
 // screen kept awake, a soft lullaby, and one tap to start when the tablet will not let a page make
 // sound on its own. A page with no recorded narration yet is read by the tablet's own voice.
-// The Story Studio embeds the same player (embedded) to preview a draft as it is written.
+// The Story Studio embeds the same player (embedded) to preview a draft as it is written, and
+// StoryRender.tsx draws the same world frame by frame for the film
+// (`py -3.12 -m sketch_claude storytime <slug>`, sketch_claude/storytime_render.py).
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Storyworld } from "./engine";

@@ -137,9 +137,10 @@ export function makeScenes(w: Storyworld, F: Figures) {
       w.benchDada.root.visible = true; act(w.benchDada, "hammer"); w.benchDada.expr = "neutral";
       w.tick = (t) => act(w.benchDada, Math.floor(t / 4) % 2 ? "think" : "hammer");
       return S.keys({ dur, keys: [
-        { pos: P.clone().add(V(-0.9, -1.6, 1.9)), target: P.clone().add(V(0.6, 2.0, 1.2)), fov: 40 },
-        { pos: P.clone().add(V(-0.2, -0.3, 1.85)), target: P.clone().add(V(0.6, 2.2, 1.0)), fov: 38 },
-        { pos: P.clone().add(V(0.1, 0.5, 1.55)), target: P.clone().add(V(0.6, 2.2, 0.98)), fov: 34 },
+        // past his left shoulder, never through him (he stands at 0.6, 1.25), onto the little dome on the bench
+        { pos: P.clone().add(V(-1.0, -1.6, 1.9)), target: P.clone().add(V(0.6, 2.0, 1.2)), fov: 40 },
+        { pos: P.clone().add(V(-0.6, -0.4, 1.8)), target: P.clone().add(V(0.55, 2.2, 1.0)), fov: 38 },
+        { pos: P.clone().add(V(-0.4, 0.6, 1.5)), target: P.clone().add(V(0.55, 2.2, 0.95)), fov: 34 },
       ] });
     },
     letter(dur) {
@@ -188,7 +189,7 @@ export function makeScenes(w: Storyworld, F: Figures) {
     },
     tools(dur) {
       stage(w, "hill", ["stump", "log"], "golden");
-      const p = who(w, "pip", -3.15, -3.0, 0, "point");
+      const p = who(w, "pip", -5.25, -3.75, 0, "point");
       lookTo(p, -4.3, -3.4);
       return S.orbit({ subject: V(-4.3, -3.4, 0.45), radius: 2.1, height: 1.0, from: -80, sweep: 70, dur, fov: 40 });
     },
@@ -215,11 +216,11 @@ export function makeScenes(w: Storyworld, F: Figures) {
       stage(w, "hill", ["dome"], "day");
       who(w, "pip", R + 1.1, -R * 0.6, 240, "think", { expr: "far" });
       const items = [
-        [`${F.diameterFt} ft wide`, V(-R * 0.7, -R - 0.3, 0.6)],
+        [`${F.diameterFt} ft wide`, V(-R * 0.8, -R * 0.95, H * 0.45)],
         [`${F.heightFt} ft tall`, V(0.4, -0.2, H + 0.65)],
         [`${F.triangles} triangles`, V(-R * 0.9, -R * 0.2, H * 0.75)],
         [`${fmt(F.frameLb)} lb`, V(R * 0.9, -R * 0.1, H * 0.7)],
-        [`${F.members} wedges`, V(R * 0.6, -R - 0.4, 0.35)],
+        [`${F.members} wedges`, V(R * 0.95, -R * 0.75, H * 0.35)],
       ];
       const tags = items.map(([t, at]) => tag(w, t, at, { size: 0.55 }));
       w.tick = (t) => tags.forEach((s, i) => (s.material.opacity = Math.min(1, Math.max(0, (t - 1.5 - i * (dur - 4) / items.length) * 2))));
@@ -251,7 +252,7 @@ export function makeScenes(w: Storyworld, F: Figures) {
       writeBoard(w, ["Pip's book", `wood: ${F.woodCuft} cu ft`, `frame: $${fmt(F.frameCost)}`, `${F.hours} hours`], { bg: "#f3ead2", fg: "#3b2a1a" });
       w.board.position.set(R + 1.2, -R + 0.2, 0);
       const p = who(w, "pip", R + 0.2, -R - 0.5, 210, "talk", { speaking: true });
-      return S.dollyIn({ from: V(R + 0.6, -R - 4.2, 1.5), subject: V(R + 1.2, -R + 0.2, 1.25), dist: 0.35, dur, fov: 40 });
+      return S.dollyIn({ from: V(R + 0.6, -R - 4.2, 1.5), subject: V(R + 1.2, -R + 0.2, 1.45), dist: 0.62, dur, fov: 40 });
     },
     panel(dur) {
       stage(w, "hill", ["dome", "panel"], "day");

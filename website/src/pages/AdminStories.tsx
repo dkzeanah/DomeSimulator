@@ -11,6 +11,9 @@
 //            the tablet's own voice, and the narrator switch lets a grown-up read any of it.
 //   Publish /kids reads the published version; saving and publishing land in the audit log and
 //            as events (story.version, story.published) automations can act on.
+//   Film     the published version renders as a film (landscape, phone cut, captions, a release
+//            folder in deliverables/) with `py -3.12 -m sketch_claude storytime <slug> --site ...`:
+//            the same world, the same camera moves and the same narration, frame by frame.
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -249,6 +252,16 @@ export default function AdminStories() {
                       <p className="text-xs muted">Or record any page yourself below. Until then the tablet's own voice reads them, and a grown-up can always switch the narrator off and read.</p>
                     </div>
                   )}
+                </Panel>
+                <Panel kicker="Film" title="Make it a video">
+                  <div className="grid gap-2 text-sm">
+                    <p className="muted">
+                      The published version renders as a film from the project: this world, these camera moves and this narration, frame by frame,
+                      with the words burned in. Out comes a wide cut, a phone cut, captions and a release folder (thumbnails and post copy) in deliverables/.
+                    </p>
+                    <code className="panel-2 p-2 text-xs break-all select-all">py -3.12 -m sketch_claude storytime {story.slug} --site {SITE}</code>
+                    <p className="text-xs muted">Add --stills first to see one picture per page, or --pages 0-3 --draft for a short rehearsal.{live ? "" : " Publish a version first."}</p>
+                  </div>
                 </Panel>
               </div>
             </div>

@@ -29,6 +29,7 @@ const Reset = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Res
 const Verify = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Verify })));
 const Kids = lazy(() => import("./pages/Kids"));
 const AdminStories = lazy(() => import("./pages/AdminStories"));
+const StoryRender = lazy(() => import("./storytime/StoryRender"));
 const MediaPage = lazy(() => import("./pages/Media"));
 const Portal = lazy(() => import("./pages/Portal"));
 const Card = lazy(() => import("./pages/Card"));
@@ -44,6 +45,8 @@ createRoot(document.getElementById("root")!).render(
       <SessionProvider>
         <Suspense fallback={<div className="p-8 muted">Loading...</div>}>
           <Routes>
+            {/* the film renderer (sketch_claude storytime): bare, no site chrome */}
+            <Route path="storytime-render" element={<StoryRender />} />
             <Route element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="book" element={<Book />} />
