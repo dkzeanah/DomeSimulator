@@ -1,0 +1,1557 @@
+{
+ "id": "s01e10",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E10",
+ "title": "The Storm",
+ "logline": "All of them, with Dale, Dusty, Mr. Yarrow and a raccoon, inside the dome while the storm takes the roof off the house. They agree on one thing, and then they don't.",
+ "rating": "PG-13",
+ "status": "scripted",
+ "written_by": "claude",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: the radio",
+   "at": "inside",
+   "mood": "storm",
+   "sun": [
+    200,
+    12
+   ],
+   "place": {
+    "hank": [
+     -1.3,
+     -0.75,
+     300.0
+    ],
+    "krystal": [
+     -0.22,
+     -1.48,
+     351.0
+    ],
+    "maya": [
+     1.02,
+     -1.1,
+     403.0
+    ],
+    "cody": [
+     1.5,
+     0.11,
+     454.0
+    ],
+    "jet": [
+     0.84,
+     1.24,
+     506.0
+    ],
+    "dale": [
+     -0.44,
+     1.43,
+     557.0
+    ],
+    "dusty": [
+     -1.4,
+     0.55,
+     609.0
+    ]
+   },
+   "view": {
+    "step": 999,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "person"
+    ],
+    "door": 0
+   }
+  },
+  {
+   "k": "card",
+   "text": "PREVIOUSLY",
+   "sub": "The last panel went up in the rain and Dusty set it. Dale hung up on a network to hold a ladder. Then the roof came off the house, and Anna ran next door for Mr. Yarrow.",
+   "secs": 4.2,
+   "music": "sting"
+  },
+  {
+   "k": "music",
+   "name": "rain",
+   "secs": 30
+  },
+  {
+   "k": "flash",
+   "secs": 0.2,
+   "sfx": "boom"
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Anna. Anna, come in. This is base. This is the dome. Over.",
+   "act": "phone",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   },
+   "earring": true
+  },
+  {
+   "k": "sfx",
+   "name": "snap"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "I've got him! I've got Mr. Yarrow! His ankle's bad, I can't, I can't carry him on my own. We're at the hedge. Over.",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Nobody else goes out there. Nobody. I've already got one kid in it.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Mrs. H. I'm the guy who runs. Let me run toward something for once.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium",
+    "toward": "krystal"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "...Go. Go! And come back. Both of you, all three of you, come back.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    0.0,
+    -3.4
+   ],
+   "speed": 2.0,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Hedge is east. Keep the wind on your left. Don't stand under anything.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "dusty"
+   }
+  },
+  {
+   "k": "flash",
+   "secs": 0.3,
+   "sfx": "boom"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "door",
+    "from": [
+     0.0,
+     1.2,
+     1.4
+    ],
+    "dist": 0.6,
+    "lens": 30
+   },
+   "dur": 4,
+   "wait": true
+  },
+  {
+   "k": "wait",
+   "s": 1.4
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 10: The Storm",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "The door: three more",
+   "at": "inside",
+   "mood": "storm",
+   "sun": [
+    200,
+    12
+   ],
+   "place": {
+    "hank": [
+     -1.3,
+     -0.75,
+     300.0
+    ],
+    "krystal": [
+     -0.22,
+     -1.48,
+     351.0
+    ],
+    "maya": [
+     1.02,
+     -1.1,
+     403.0
+    ],
+    "cody": [
+     1.5,
+     0.11,
+     454.0
+    ],
+    "jet": [
+     0.84,
+     1.24,
+     506.0
+    ],
+    "dale": [
+     -0.44,
+     1.43,
+     557.0
+    ],
+    "dusty": [
+     0.2,
+     -1.4,
+     0
+    ],
+    "anna": [
+     -0.5,
+     -1.7,
+     10
+    ],
+    "yarrow": [
+     0.7,
+     -1.8,
+     -10
+    ]
+   },
+   "view": {
+    "step": 999,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "person"
+    ],
+    "door": 60
+   }
+  },
+  {
+   "k": "music",
+   "name": "rain",
+   "secs": 26
+  },
+  {
+   "k": "act",
+   "who": "yarrow",
+   "act": "lean"
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Got him. Got them. Everybody's here. Shut it. Shut the door.",
+   "act": "lift",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "He walked the last part himself. He's very stubborn. He says hello.",
+   "act": "talk",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "I did not say hello. I said 'put me down, young man,' and he didn't.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Get over here. All three of you. You're soaked. You're perfect. You're soaked.",
+   "act": "cheer",
+   "expr": "smile",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "krystal",
+     "anna",
+     "dusty",
+     "yarrow"
+    ],
+    "dir": [
+     0.1,
+     -1,
+     -0.2
+    ],
+    "lens": 28
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "Also in the dome: one raccoon and four babies. Nobody votes on it.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "scene",
+   "name": "Night: one thing",
+   "at": "inside",
+   "mood": "storm",
+   "sun": [
+    200,
+    12
+   ],
+   "place": {
+    "hank": [
+     -1.5,
+     -0.55,
+     290.0
+    ],
+    "krystal": [
+     -0.8,
+     -1.39,
+     330.0
+    ],
+    "anna": [
+     0.28,
+     -1.58,
+     370.0
+    ],
+    "maya": [
+     1.23,
+     -1.03,
+     410.0
+    ],
+    "cody": [
+     1.6,
+     -0.0,
+     450.0
+    ],
+    "jet": [
+     1.23,
+     1.03,
+     490.0
+    ],
+    "dale": [
+     0.28,
+     1.58,
+     530.0
+    ],
+    "dusty": [
+     -0.8,
+     1.39,
+     570.0
+    ],
+    "yarrow": [
+     -1.5,
+     0.55,
+     610.0
+    ]
+   },
+   "view": {
+    "step": 999,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "person"
+    ],
+    "door": 0
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 24,
+   "mood": "night"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "orbit",
+    "subject": [
+     0,
+     0,
+     1.0
+    ],
+    "radius": 1.0,
+    "height": 0.4,
+    "sweep": 140,
+    "lens": 24
+   },
+   "dur": 9,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Okay. New rule. Tonight, we agree on one thing. Anything. One thing.",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "We stay in the dome.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "We stay in the dome.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "We stay in the dome.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "We stay in the dome!",
+   "act": "cheer",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "We stay in the dome.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "That's the first time. All of us. Ever.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Mark the date. Somebody mark it. Jet, put it on a blockchain.",
+   "act": "lean",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "flash",
+   "secs": 0.3,
+   "sfx": "boom"
+  },
+  {
+   "k": "sfx",
+   "name": "clatter"
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "That was my greenhouse.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "close"
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 16
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "wait",
+   "s": 0.4
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "The door seam. Dad, it's moving. The wind's getting under the door panel.",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Somebody hold the panel flat while I drive the screws. It has to sit flush. Flush, on the fold.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    0.1,
+    -1.6
+   ],
+   "speed": 1.6,
+   "wait": true
+  },
+  {
+   "k": "act",
+   "who": "dusty",
+   "act": "lift"
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Got it. I've got it. I'm not letting go.",
+   "act": "lift",
+   "expr": "glare",
+   "cam": {
+    "kind": "low",
+    "who": "dusty",
+    "dist": 2.0,
+    "lens": 22
+   }
+  },
+  {
+   "k": "walk",
+   "who": "hank",
+   "to": [
+    0.5,
+    -1.5
+   ],
+   "speed": 1.6,
+   "wait": true
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "hammer"
+  },
+  {
+   "k": "figure",
+   "big": "{fold}° between two panels",
+   "small": "each gives half: a seam is a promise two panels keep to each other",
+   "secs": 5
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Each panel gives half the fold. You hold your half, I'll hold mine.",
+   "act": "hammer",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "dusty",
+    "dist": 2.4
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "It's holding.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "I didn't run.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "No. You didn't.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close",
+    "toward": "dusty"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 14,
+   "mood": "tense"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "The photo albums. They're in the hall closet. If I go now, there's a gap between the—",
+   "act": "talk",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Nobody, and I mean nobody, is leaving this dome until that storm is done.",
+   "act": "stomp",
+   "expr": "glare",
+   "cam": {
+    "kind": "low",
+    "who": "anna",
+    "dist": 2.2,
+    "lens": 22
+   },
+   "stomp": true
+  },
+  {
+   "k": "meme",
+   "style": "zoom",
+   "text": "",
+   "secs": 0.8,
+   "who": "krystal",
+   "sfx": "boom"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "...Yes, ma'am.",
+   "act": "idle",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Did Anna just...",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Anna just did the foot.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Somebody else can hold it for one night.",
+   "act": "crossed",
+   "expr": "smile",
+   "cam": {
+    "kind": "two",
+    "a": "krystal",
+    "b": "anna",
+    "dist": 2.6
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 0
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Bean put this in my coat pocket before she left. She said to put it up somewhere it's true.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "Mr. Yarrow pins it to a strut: one round house in crayon, a black scribbled sky, no other houses.",
+   "secs": 3.8
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "She drew it in June.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Your house was heavier than this one, Hank. It had corners. The wind had something to hold.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "close",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "figure",
+   "big": "{sheets_words} sheets of skin over {sqft} sq ft",
+   "small": "no flat wall to push, no eave to lift: shaped right, the lightest house is the one that stands",
+   "secs": 6
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 30,
+   "mood": "inner"
+  },
+  {
+   "k": "thought",
+   "who": "hank",
+   "title": "",
+   "frags": [
+    {
+     "text": "Krystal holds. Krystal's the ring at the bottom, nobody sees it, everything stands on it,",
+     "rate": "+10%",
+     "pause": 0.35,
+     "word": "Krystal holds"
+    },
+    {
+     "text": "Anna goes. Anna goes so the rest of us can stay, and then she comes back, she always comes back,",
+     "rate": "+16%",
+     "pause": 0.3,
+     "word": "Anna goes"
+    },
+    {
+     "text": "Maya says it. Maya says the true thing so the rest of us don't have to, and now she says it softer,",
+     "rate": "+18%",
+     "pause": 0.3,
+     "word": "Maya says it"
+    },
+    {
+     "text": "Cody sees it. Cody sees it coming so we get, so we get ready,",
+     "rate": "-4%",
+     "pause": 0.35,
+     "word": "Cody sees it"
+    },
+    {
+     "text": "Jet hides it so we have to find it, and when we find it, it's, it's always water and batteries and a radio,",
+     "rate": "+22%",
+     "pause": 0.3,
+     "word": "Jet hides it"
+    },
+    {
+     "text": "and I just build the thing. The thing you all come home to. That's all. That's all I do.",
+     "rate": "-24%",
+     "pause": 0.6,
+     "word": "come home"
+    }
+   ],
+   "ghosts": [
+    "think",
+    "point",
+    "idle",
+    "measure",
+    "shrug",
+    "wave"
+   ]
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Dad.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "You said all of that out loud.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Did I?",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Every word. Every single word, baby.",
+   "act": "idle",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "'Now she says it softer.'",
+   "act": "crossed",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "I always come back.",
+   "act": "idle",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "You left yourself out.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "I was getting to me.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "You were not getting to you. You never get to you. Twenty years I've known you and you've never once got to you.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "flash",
+   "secs": 0.15,
+   "sfx": "boom"
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's passing. Listen. It's further away.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "scene",
+   "name": "Dawn: the network",
+   "at": "inside",
+   "mood": "golden",
+   "sun": [
+    85,
+    6
+   ],
+   "place": {
+    "hank": [
+     -1.5,
+     -0.55,
+     290.0
+    ],
+    "krystal": [
+     -0.8,
+     -1.39,
+     330.0
+    ],
+    "anna": [
+     0.28,
+     -1.58,
+     370.0
+    ],
+    "maya": [
+     1.23,
+     -1.03,
+     410.0
+    ],
+    "cody": [
+     1.6,
+     -0.0,
+     450.0
+    ],
+    "jet": [
+     1.23,
+     1.03,
+     490.0
+    ],
+    "dale": [
+     0.28,
+     1.58,
+     530.0
+    ],
+    "dusty": [
+     -0.8,
+     1.39,
+     570.0
+    ],
+    "yarrow": [
+     -1.5,
+     0.55,
+     610.0
+    ]
+   },
+   "view": {
+    "step": 999,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "person"
+    ],
+    "door": 70
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 18,
+   "mood": "hope"
+  },
+  {
+   "k": "act",
+   "who": "dale",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "It's Marty. The network called back. Of course they did. They want a show.",
+   "act": "phone",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Not Hank's show. Not my show. A show about you. All of you. In this. They want to call it 'Level With Me.'",
+   "act": "phone",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Yes.",
+   "act": "cheer",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Absolutely not.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Only if I'm a producer.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "I'll host!",
+   "act": "cheer",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "We'll see.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "We'd have to agree on it.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "So that's a no.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "scene",
+   "name": "Morning: the only thing standing",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    85,
+    8
+   ],
+   "place": {
+    "hank": [
+     0.5,
+     -3.9,
+     -20
+    ],
+    "krystal": [
+     -1.4,
+     -4.2,
+     20
+    ],
+    "anna": [
+     -2.3,
+     -4.6,
+     -10
+    ],
+    "maya": [
+     1.4,
+     -4.6,
+     40
+    ],
+    "cody": [
+     -1.0,
+     -3.6,
+     10
+    ],
+    "jet": [
+     -0.4,
+     -4.5,
+     0
+    ],
+    "dale": [
+     2.2,
+     -4.0,
+     60
+    ],
+    "dusty": [
+     -2.9,
+     -4.0,
+     -20
+    ],
+    "yarrow": [
+     3.0,
+     -3.2,
+     80
+    ]
+   },
+   "view": {
+    "step": 999,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "person"
+    ],
+    "door": 80
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 20,
+   "mood": "hope"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "crane",
+    "subject": "dome",
+    "from": [
+     0.4,
+     -7.4,
+     0.8
+    ],
+    "rise": 6.0,
+    "back": 3.0,
+    "lens": 24
+   },
+   "dur": 9,
+   "wait": true
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "Morning. On a flattened street, one thing is standing.",
+   "secs": 3.4
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "The roses?",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "One. I got one. In a pot. It was by the hedge.",
+   "act": "lift",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium",
+    "toward": "yarrow"
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "One is plenty. My wife started with one.",
+   "act": "lean",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "walk",
+   "who": "maya",
+   "to": [
+    0.2,
+    -2.6
+   ],
+   "speed": 1.0,
+   "wait": true
+  },
+  {
+   "k": "act",
+   "who": "maya",
+   "act": "point"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Ten.",
+   "act": "point",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "CURSE TALLY: 10. On the dome's door, this time. Embraced.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "scene",
+   "name": "Coda: Cody",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    85,
+    8
+   ],
+   "place": {
+    "cody": [
+     0.3,
+     -3.7,
+     0
+    ],
+    "yarrow": [
+     3.0,
+     -3.2,
+     80
+    ],
+    "krystal": [
+     -1.4,
+     -4.2,
+     20
+    ]
+   },
+   "view": {
+    "step": 999,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "person"
+    ],
+    "door": 80
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 9
+  },
+  {
+   "k": "expr",
+   "who": "cody",
+   "expr": "vision"
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "vision",
+   "who": "cody",
+   "label": "the street",
+   "beats": [
+    {
+     "k": "scene",
+     "name": "the street, later",
+     "at": "yard",
+     "mood": "day",
+     "sun": [
+      140,
+      40
+     ],
+     "place": {},
+     "view": {
+      "step": 999,
+      "explode": 0.0,
+      "tagsOff": [
+       "furniture",
+       "person"
+      ],
+      "door": 80
+     }
+    },
+    {
+     "k": "music",
+     "name": "pad",
+     "secs": 6,
+     "mood": "hope"
+    },
+    {
+     "k": "cam",
+     "cam": {
+      "kind": "move",
+      "move": "flyover",
+      "subject": "dome",
+      "radius": 11,
+      "height": 7,
+      "lens": 22
+     },
+     "dur": 5.5,
+     "wait": false
+    },
+    {
+     "k": "wait",
+     "s": 2.0
+    },
+    {
+     "k": "flash",
+     "secs": 0.12,
+     "sfx": "chime"
+    },
+    {
+     "k": "wait",
+     "s": 2.4
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "They're going to want one. All of them. The whole street.",
+   "act": "vision",
+   "expr": "vision",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Then you'd better all learn to agree.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "medium",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Never.",
+   "act": "laugh",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 1.0
+  },
+  {
+   "k": "credits",
+   "secs": 8
+  }
+ ]
+}

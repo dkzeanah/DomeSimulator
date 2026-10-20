@@ -1,0 +1,1224 @@
+{
+ "id": "s01e03",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E3",
+ "title": "Frequency",
+ "logline": "Krystal babysits Mr. Yarrow's four-year-old, Bean, who builds a rounder dome out of straws than Hank's crew can out of wood. Maya is suspended for being right at a teacher.",
+ "rating": "PG-13",
+ "status": "scripted",
+ "written_by": "claude",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: Bean",
+   "at": "hedge",
+   "mood": "day",
+   "sun": [
+    120,
+    45
+   ],
+   "place": {
+    "hank": [
+     4.95,
+     0.5,
+     -90
+    ],
+    "yarrow": [
+     6.1,
+     0.6,
+     90
+    ],
+    "krystal": [
+     4.8,
+     1.3,
+     -120
+    ],
+    "bean": [
+     5.2,
+     -0.4,
+     -60
+    ]
+   },
+   "view": {
+    "step": 9,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "card",
+   "text": "PREVIOUSLY",
+   "sub": "Jet blacked out the street. Hank showed him where the load goes and sent the rig to the garage. Dale's agent called. And at three in the morning, Dusty's car was outside.",
+   "secs": 4.2,
+   "music": "sting"
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Mrs. Hardwick. My granddaughter, Bean. Her parents are at a wedding. She bites only when she's correct.",
+   "act": "peek",
+   "cam": {
+    "kind": "ots",
+    "over": "krystal",
+    "at": "yarrow",
+    "lens": 50
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Oh my gosh. Hi, Bean. I love her. Can I keep her? Hank, can we keep her?",
+   "act": "cheer",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "bean"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "bean"
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "Is that a ball house?",
+   "act": "point",
+   "cam": {
+    "kind": "low",
+    "who": "bean",
+    "dist": 1.8,
+    "lens": 28
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "It's a dome. Geodesic. It's going to be a, it's, yes. A ball house.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "bean"
+   }
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "It's a bad ball.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "bean",
+    "size": "close"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Correct, you see. Five o'clock, Mrs. Hardwick.",
+   "act": "peek",
+   "cam": {
+    "kind": "two",
+    "a": "yarrow",
+    "b": "krystal",
+    "dist": 3.2
+   },
+   "pad": 0.4
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 3: Frequency",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "The yard: ring three won't round",
+   "at": "yard",
+   "mood": "day",
+   "sun": [
+    150,
+    50
+   ],
+   "place": {
+    "hank": [
+     0.5,
+     -3.9,
+     -20
+    ],
+    "jet": [
+     -0.4,
+     -4.5,
+     0
+    ],
+    "cody": [
+     -1.0,
+     -3.6,
+     10
+    ],
+    "krystal": [
+     -2.4,
+     -4.8,
+     40
+    ],
+    "bean": [
+     -1.6,
+     -5.2,
+     20
+    ]
+   },
+   "view": {
+    "step": 9,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 18,
+   "mood": "warm"
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "hammer"
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "lift"
+  },
+  {
+   "k": "act",
+   "who": "cody",
+   "act": "measure"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's lumpy. Why is it lumpy? We cut everything right this time.",
+   "act": "lift",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   },
+   "earring": false
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's not lumpy. It's honest. You can see every corner.",
+   "act": "measure",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Bean's making one too. With straws. And tape. And she's very serious about it.",
+   "act": "laugh",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "bean"
+   }
+  },
+  {
+   "k": "act",
+   "who": "bean",
+   "act": "measure"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "bean",
+    "from": [
+     -1.0,
+     -7.6,
+     1.0
+    ],
+    "dist": 0.5,
+    "lens": 40
+   },
+   "dur": 5,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "Mine is rounder.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "bean",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It is. It is rounder. A four-year-old is beating us with drinking straws.",
+   "act": "facepalm",
+   "cam": {
+    "kind": "two",
+    "a": "jet",
+    "b": "cody",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "How many straws did you use, Bean?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "bean"
+   }
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "All of them.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "bean",
+    "size": "close"
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "thought",
+   "who": "hank",
+   "title": "",
+   "frags": [
+    {
+     "text": "All of them. All of them, she cut every one smaller,",
+     "rate": "+16%",
+     "pause": 0.3,
+     "word": "smaller"
+    },
+    {
+     "text": "little triangles, more of them, and the curve just, just shows up,",
+     "rate": "+24%",
+     "pause": 0.25,
+     "word": "the curve"
+    },
+    {
+     "text": "a circle is a polygon that didn't give up,",
+     "rate": "-10%",
+     "pause": 0.4,
+     "word": "didn't give up"
+    },
+    {
+     "text": "we split every face in {freq_words}. She didn't count. She just kept going,",
+     "rate": "+20%",
+     "pause": 0.3,
+     "word": "{freq_words}"
+    },
+    {
+     "text": "the more you divide, the less you guess,",
+     "rate": "-6%",
+     "pause": 0.35,
+     "word": "divide"
+    },
+    {
+     "text": "patience is just a, a frequency. Go smaller. Go slower. Go round.",
+     "rate": "-26%",
+     "pause": 0.4,
+     "word": "round"
+    }
+   ],
+   "ghosts": [
+    "think",
+    "point",
+    "measure",
+    "shrug",
+    "hammer",
+    "facepalm"
+   ]
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "Frequency.",
+     "rate": "-10%",
+     "pause": 0.4
+    },
+    {
+     "text": "That's, she found, the more pieces, the rounder, that's the whole word.",
+     "rate": "+26%",
+     "pause": 0.3
+    },
+    {
+     "text": "Ours is a {freq_words}. Hers is... all of them.",
+     "rate": "-6%"
+    }
+   ],
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "figure",
+   "big": "{freq_words}-frequency: {panels} panels",
+   "small": "split every big face into smaller ones and the dome gets rounder: frequency is resolution",
+   "secs": 6
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "So we should've used straws.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "We should've used her.",
+   "act": "laugh",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "hank",
+     "jet",
+     "cody",
+     "bean"
+    ],
+    "dir": [
+     0.1,
+     1,
+     -0.3
+    ],
+    "lens": 30
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "act",
+   "who": "cody",
+   "act": "peek"
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Something's in the frame. Top ring. It has a face.",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's a raccoon. A raccoon moved into the dome. It has more walls than us now.",
+   "act": "peek",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "side": -1
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "CURSE TALLY: 3. A raccoon has moved into the dome.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "scene",
+   "name": "The kitchen door: suspended",
+   "at": "patio",
+   "mood": "golden",
+   "sun": [
+    255,
+    20
+   ],
+   "place": {
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "maya": [
+     0.4,
+     9.6,
+     180
+    ],
+    "bean": [
+     -0.6,
+     7.6,
+     20
+    ]
+   },
+   "view": {
+    "step": 9,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 12
+  },
+  {
+   "k": "walk",
+   "who": "maya",
+   "to": [
+    0.3,
+    9.0
+   ],
+   "speed": 1.4,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Before you hear it from the college: I'm suspended. A week.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   },
+   "keepExpr": true
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Maya Hardwick. What did you say. Word for word.",
+   "act": "hips",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "maya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "He said a cantilever is 'basically a shelf.' In front of everybody. It is not basically a shelf. So I drew him the moment diagram. On his board. With his marker.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Was he wrong?",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "He was so wrong.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "toward": "krystal"
+   }
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "Your nose is doing the face.",
+   "act": "point",
+   "cam": {
+    "kind": "low",
+    "who": "bean",
+    "dist": 1.6,
+    "lens": 26
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Even the toddler.",
+   "act": "facepalm",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "bean",
+    "dist": 2.8
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "frags": [
+    {
+     "text": "Okay. Okay, here's the thing, and I love you, and I'm laughing, because Bean,",
+     "rate": "+10%",
+     "pause": 0.3
+    },
+    {
+     "text": "but listen.",
+     "rate": "-15%",
+     "pause": 0.6
+    }
+   ],
+   "act": "talk",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "You were right. And you are going to apologise anyway.",
+   "act": "stomp",
+   "expr": "glare",
+   "cam": {
+    "kind": "low",
+    "who": "krystal",
+    "dist": 2.2,
+    "lens": 22
+   },
+   "stomp": true
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "For being right?",
+   "act": "crossed",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "For being right AT him. In front of everybody. Next time, be right FOR him. Then he hears it.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close",
+    "toward": "maya"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "...Bean got praised for saying the dome was a bad ball.",
+   "act": "crossed",
+   "expr": "sideeyeL",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Bean's four. When you're four, it's charming. When you're eighteen, it's a week.",
+   "act": "laugh",
+   "cam": {
+    "kind": "two",
+    "a": "krystal",
+    "b": "maya",
+    "dist": 3.2
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "scene",
+   "name": "The patio: Anna on the road",
+   "at": "patio",
+   "mood": "dusk",
+   "sun": [
+    262,
+    6
+   ],
+   "place": {
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "hank": [
+     1.1,
+     8.6,
+     100
+    ],
+    "jet": [
+     0.7,
+     7.1,
+     20
+    ]
+   },
+   "view": {
+    "step": 9,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "hide": [
+    "anna"
+   ]
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 22,
+   "mood": "sad"
+  },
+  {
+   "k": "act",
+   "who": "krystal",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Mom? Can you hear me? We're at this, the, it's so beautiful, there's a, a—",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "freeze",
+   "text": "VIDEO CALL: FROZEN. Anna, mid-word, for eleven minutes.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Baby, you froze. You're frozen. Okay. I'm just going to talk to your face.",
+   "act": "phone",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Maya got suspended for being right. Bean beat your father with straws. There is a raccoon living in the dome. And I think the station stopped...",
+   "act": "phone",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Never mind.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Sorry! Sorry, you froze! What did I miss?",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Nothing, baby. Nothing. Have fun.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "She missed the raccoon.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "She missed a lot of things.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close",
+    "toward": "krystal"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "scene",
+   "name": "The bench: five dollars a word",
+   "at": "studio",
+   "mood": "dusk",
+   "sun": [
+    262,
+    6
+   ],
+   "place": {
+    "dale": [
+     -5.0,
+     -2.0,
+     -60
+    ],
+    "jet": [
+     -3.8,
+     -1.2,
+     150
+    ]
+   },
+   "view": {
+    "step": 9,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 12,
+   "mood": "warm"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Rizz. What is rizz. Don't laugh. Marty sent me a script and it's got 'rizz' in it nine times.",
+   "act": "phone",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Five dollars a word.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "dale"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Highway robbery. Fine.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Rizz is charm. Like, game. You have negative rizz.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "In my day we called that 'a personality,' and it was free.",
+   "act": "lean",
+   "expr": "smirk",
+   "cam": {
+    "kind": "two",
+    "a": "dale",
+    "b": "jet",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Level with me, kid. Is the script any good?",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's good. It's just not you.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "dale"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "That's what makes it good.",
+   "act": "crossed",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   },
+   "pad": 0.7
+  },
+  {
+   "k": "scene",
+   "name": "The yard: Bean helps",
+   "at": "yard",
+   "mood": "dusk",
+   "sun": [
+    250,
+    8
+   ],
+   "place": {
+    "hank": [
+     0.6,
+     -3.4,
+     -10
+    ],
+    "bean": [
+     0.0,
+     -3.6,
+     0
+    ],
+    "cody": [
+     1.6,
+     -4.4,
+     30
+    ]
+   },
+   "view": {
+    "step": 9,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 0
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Hold this. That's a screw. You hand it to me when I say 'screw.' That's the most important job on the site.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "bean"
+   }
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "Screw.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "bean",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "I didn't say it yet.",
+   "act": "laugh",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "bean",
+    "dist": 2.6
+   }
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "You were thinking it really loud.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "bean",
+    "size": "close"
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "hammer"
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "First piece of skin's on. It looks like a house now. A little.",
+   "act": "idle",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The yard: the drawing",
+   "at": "yard",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "cody": [
+     0.3,
+     -3.7,
+     0
+    ],
+    "bean": [
+     0.9,
+     -3.9,
+     -40
+    ]
+   },
+   "view": {
+    "step": 9,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 14
+  },
+  {
+   "k": "walk",
+   "who": "bean",
+   "to": [
+    0.7,
+    -3.6
+   ],
+   "speed": 0.8,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "I drew your dream.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "bean",
+    "size": "close",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Which dream?",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "In crayon: one round house. No other houses. A black sky, scribbled hard.",
+   "secs": 4
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "The one with the round house by itself. And the sky is angry.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "bean",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Where did you see this, Bean?",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "line",
+   "who": "bean",
+   "text": "In your head. You think it really loud.",
+   "act": "crossed",
+   "cam": {
+    "kind": "low",
+    "who": "bean",
+    "dist": 1.6,
+    "lens": 30
+   },
+   "pad": 1.2
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ]
+}

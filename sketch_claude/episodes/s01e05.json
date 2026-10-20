@@ -1,0 +1,1327 @@
+{
+ "id": "s01e05",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E5",
+ "title": "Debugging",
+ "logline": "A scammer who knows the address says Jet owes him. Cody's friend Priya wires the dome like a program and explains loops with the jig; Hank's longest spiral finds the bug in Jet's plan. At 3 a.m. somebody knocks.",
+ "rating": "PG-13",
+ "status": "scripted",
+ "written_by": "claude",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: the message",
+   "at": "patio",
+   "mood": "day",
+   "sun": [
+    120,
+    40
+   ],
+   "place": {
+    "jet": [
+     -0.4,
+     9.6,
+     180
+    ]
+   },
+   "view": {
+    "step": 11,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "card",
+   "text": "PREVIOUSLY",
+   "sub": "Anna turned the dome into a pink set. Maya told the whole table where Dusty sleeps. Cody saw Dusty running from a fire. And in the morning, Hank's truck was gone.",
+   "secs": 4.2,
+   "music": "sting"
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 10
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "phone"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "jet",
+    "from": [
+     0.6,
+     6.0,
+     1.3
+    ],
+    "dist": 0.5,
+    "lens": 40
+   },
+   "dur": 5,
+   "wait": false
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "meme",
+   "style": "pov",
+   "text": "UNKNOWN: you owe us 0.8. we know the round house. we know the hedge.",
+   "secs": 4.2
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "No. No no no. How do they know about the hedge?",
+   "act": "phone",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   },
+   "earring": false
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "meme",
+   "style": "pov",
+   "text": "UNKNOWN: friday.",
+   "secs": 2.6
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Okay. Okay. Be cool. You're a professional. You have three burner phones.",
+   "act": "phone",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close",
+    "side": -1
+   },
+   "pad": 0.4
+  },
+  {
+   "k": "place",
+   "who": "krystal",
+   "at": [
+    -1.6,
+    8.0,
+    -60
+   ]
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Has anybody seen my yellow envelope? And has anybody seen Anna? Her car's gone.",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Nope! Nobody. Not a thing. Why would I.",
+   "act": "shrug",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "krystal"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "On the fridge, under the curse tally, there is a note from Anna. Nobody reads it.",
+   "secs": 3.6
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 5: Debugging",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "The yard: the dome is a program",
+   "at": "yard",
+   "mood": "day",
+   "sun": [
+    150,
+    50
+   ],
+   "place": {
+    "hank": [
+     0.5,
+     -3.9,
+     -20
+    ],
+    "cody": [
+     -1.6,
+     -4.0,
+     30
+    ],
+    "priya": [
+     -0.8,
+     -3.4,
+     20
+    ],
+    "jet": [
+     -0.4,
+     -4.5,
+     0
+    ]
+   },
+   "view": {
+    "step": 11,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 22,
+   "mood": "hope"
+  },
+  {
+   "k": "lower",
+   "who": "priya"
+  },
+  {
+   "k": "line",
+   "who": "priya",
+   "text": "Okay, so it's a program. Every panel is the same function. You call it {panels} times with different numbers.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "priya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "That's, yes. That's exactly, who are you?",
+   "act": "cheer",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "priya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Priya. From robotics. She's the one I talk to first.",
+   "act": "idle",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Cody has a friend. Mark it on the fridge.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "priya",
+   "text": "The jig is a loop. Same input, same output, every time. That's why the panels match.",
+   "act": "measure",
+   "cam": {
+    "kind": "single",
+    "who": "priya",
+    "size": "medium",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "And if the jig's wrong?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "priya",
+   "text": "Then every panel is wrong. The same way. All at once. That's a bug.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "priya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "figure",
+   "big": "one jig, {panels} panels",
+   "small": "a pattern repeated is a loop; a wrong number inside it is a bug everywhere at once",
+   "secs": 6
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "That's why you check the jig, not the panel. You fix it once, at the source, and it's fixed everywhere.",
+   "act": "measure",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "priya",
+    "dist": 3.2
+   }
+  },
+  {
+   "k": "line",
+   "who": "priya",
+   "text": "I'm wiring the lights as a loop too. One circuit, called round the ring. Can I use your drill?",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "priya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "You can use anything you want.",
+   "act": "laugh",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   },
+   "pad": 0.4
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "He never lets ME use the drill.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "You set the drill on fire.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Once!",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "place",
+   "who": "maya",
+   "at": [
+    1.9,
+    -4.8,
+    60
+   ]
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Priya. Your third light's wired backwards. The loop runs, but that one's upside down.",
+   "act": "point",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium",
+    "toward": "priya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "priya",
+   "text": "...Oh. You're right. Thank you.",
+   "act": "measure",
+   "cam": {
+    "kind": "single",
+    "who": "priya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "I said it nicely, right? That was nice. Somebody tell Mom that was nice.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "priya",
+    "dist": 3.0
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "scene",
+   "name": "The kitchen door: the ear",
+   "at": "patio",
+   "mood": "golden",
+   "sun": [
+    255,
+    22
+   ],
+   "place": {
+    "krystal": [
+     -0.4,
+     8.4,
+     -60
+    ],
+    "jet": [
+     0.6,
+     8.8,
+     110
+    ]
+   },
+   "view": {
+    "step": 11,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 10,
+   "mood": "warm"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Come here. Come into the light. What is that.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "A... mosquito.",
+   "act": "ear",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   },
+   "earring": false
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "A mosquito. On your ear. With a hoop through it.",
+   "act": "laugh",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "ear"
+  },
+  {
+   "k": "prop",
+   "who": "jet",
+   "prop": "earring",
+   "on": true
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's a statement.",
+   "act": "ear",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close",
+    "toward": "krystal"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "It's a statement that's green, baby. That's infected. Car. Urgent care. Now.",
+   "act": "hips",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "You're not mad?",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Oh, I'm mad. I'm going to be mad in the car. And then we're going to talk about why you hide things from me.",
+   "act": "crossed",
+   "cam": {
+    "kind": "two",
+    "a": "krystal",
+    "b": "jet",
+    "dist": 3.0
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "CURSE TALLY: 5. An infected ear. And the raccoon has had babies.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "scene",
+   "name": "The bench, night: the bug",
+   "at": "studio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "hank": [
+     -5.2,
+     -1.3,
+     -90
+    ],
+    "dale": [
+     -5.2,
+     -2.8,
+     -90
+    ],
+    "jet": [
+     -4.2,
+     -0.6,
+     -150
+    ],
+    "cody": [
+     -4.0,
+     -3.4,
+     40
+    ],
+    "priya": [
+     -3.4,
+     -2.2,
+     100
+    ]
+   },
+   "view": {
+    "step": 11,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 14
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Okay. I owe some people. Online. They say I owe them. And they know where we live.",
+   "act": "crossed",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "How much?",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Point eight.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Point eight what?",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Coin.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close",
+    "toward": "dale"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Is that a lot?",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It was a little. Now it's a lot.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "thought",
+   "who": "hank",
+   "title": "",
+   "frags": [
+    {
+     "text": "They know the address. How. He didn't post it, he's, he's paranoid, he'd never,",
+     "rate": "+20%",
+     "pause": 0.3,
+     "word": "the address"
+    },
+    {
+     "text": "same name. Same name on every, every account, J, E, T,",
+     "rate": "+28%",
+     "pause": 0.2,
+     "word": "same name"
+    },
+    {
+     "text": "same password everywhere. A jig. He built himself a jig.",
+     "rate": "-6%",
+     "pause": 0.35,
+     "word": "a jig"
+    },
+    {
+     "text": "one wrong number in the jig and every panel, every panel's wrong at once,",
+     "rate": "+24%",
+     "pause": 0.25,
+     "word": "every panel"
+    },
+    {
+     "text": "they didn't find him. He told them. He told them over and over. He repeated himself to them,",
+     "rate": "+12%",
+     "pause": 0.3,
+     "word": "repeated"
+    },
+    {
+     "text": "the bug isn't the debt. The bug is the pattern.",
+     "rate": "-18%",
+     "pause": 0.4,
+     "word": "the pattern"
+    },
+    {
+     "text": "fix it at the jig.",
+     "rate": "-30%",
+     "pause": 0.4,
+     "word": "the jig"
+    }
+   ],
+   "ghosts": [
+    "think",
+    "point",
+    "measure",
+    "shrug",
+    "hammer",
+    "facepalm"
+   ]
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "What's your password?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "I'm not telling you my password.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Is it the same everywhere?",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "...It's a good password.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's 'dome' with a zero for the O. And your birthday.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "HOW.",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "You say it out loud when you type.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "line",
+   "who": "priya",
+   "text": "Then they have everything. Your wallet, your email, your gaming account. Your gaming account has your address on it.",
+   "act": "phone",
+   "cam": {
+    "kind": "single",
+    "who": "priya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "priya",
+   "text": "And there's no debt. This is a script. They send it to everybody they get into. 'We know where you live.' It's a template.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "priya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "So there's nobody coming.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "There's nobody coming, kid. There's a guy in a basement who knows your birthday.",
+   "act": "lean",
+   "cam": {
+    "kind": "two",
+    "a": "dale",
+    "b": "jet",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Change it at the source. Every account. Different every time. Tonight.",
+   "act": "measure",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Every account? That's like forty accounts.",
+   "act": "facepalm",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Then it's like forty cuts. You've done forty cuts.",
+   "act": "idle",
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.6,
+    "lens": 26
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "First rule of being paranoid, kid. Be right about the right thing.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "scene",
+   "name": "3:07 a.m.: the knock",
+   "at": "patio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "jet": [
+     -1.0,
+     9.4,
+     -120
+    ],
+    "dale": [
+     -0.2,
+     9.8,
+     -110
+    ]
+   },
+   "view": {
+    "step": 11,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "heart",
+   "secs": 10
+  },
+  {
+   "k": "meme",
+   "style": "pov",
+   "text": "3:07 A.M.",
+   "secs": 2.0
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "wait",
+   "s": 0.5
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "wait",
+   "s": 0.5
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's them. Priya was wrong. That's them.",
+   "act": "peek",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Stay behind me.",
+   "act": "crossed",
+   "cam": {
+    "kind": "low",
+    "who": "dale",
+    "dist": 2.4,
+    "lens": 24
+   }
+  },
+  {
+   "k": "walk",
+   "who": "dale",
+   "to": [
+    -3.6,
+    8.8
+   ],
+   "speed": 1.0,
+   "wait": false
+  },
+  {
+   "k": "walk",
+   "who": "jet",
+   "to": [
+    -2.6,
+    9.2
+   ],
+   "speed": 0.9,
+   "wait": true
+  },
+  {
+   "k": "place",
+   "who": "dusty",
+   "at": [
+    -6.6,
+    8.2,
+    90
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    -4.6,
+    8.6
+   ],
+   "speed": 0.9,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "You almost got a lamp in the face, Letterman.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "two",
+    "a": "dale",
+    "b": "dusty",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "I brought the truck back. I filled it. Mostly. Half.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "place",
+   "who": "hank",
+   "at": [
+    -1.2,
+    9.6,
+    -120
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "hank",
+   "to": [
+    -2.9,
+    9.4
+   ],
+   "speed": 1.0,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "I'm sorry, Mr. H. I didn't have anywhere to... I'm sorry.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "close",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Garage is open. There's a cot. Don't touch the rig.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Where's Anna?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "close"
+   }
+  },
+  {
+   "k": "place",
+   "who": "krystal",
+   "at": [
+    -1.0,
+    9.8,
+    -110
+   ]
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "With you. She's with you. She left yesterday. To find you.",
+   "act": "hips",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "dusty"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "...No.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 16,
+   "mood": "sad"
+  },
+  {
+   "k": "walk",
+   "who": "krystal",
+   "to": [
+    0.6,
+    10.0
+   ],
+   "speed": 1.2,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "'Gone to find him. Don't worry. Love, A.' It was on the fridge. Under the curse. The whole time.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "She's out there looking for him. And he's here.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close",
+    "side": -1
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "act",
+   "who": "krystal",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Hiii, it's Anna! I'm probably doing something amazing. Leave a vibe!",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Baby, it's Mom. He's here. He's safe. Come home.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "scene",
+   "name": "Tag: the schedule",
+   "at": "studio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "hank": [
+     -5.0,
+     -1.6,
+     -60
+    ],
+    "dale": [
+     -4.4,
+     -2.4,
+     -120
+    ]
+   },
+   "view": {
+    "step": 11,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 9
+  },
+  {
+   "k": "act",
+   "who": "dale",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Hank. Channel 47. Email. Three weeks. They've scheduled your last episode.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Then we make it a good one.",
+   "act": "idle",
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.4,
+    "lens": 24
+   },
+   "pad": 1.0
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ]
+}

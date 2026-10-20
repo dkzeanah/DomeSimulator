@@ -1,0 +1,1466 @@
+{
+ "id": "s01e04",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E4",
+ "title": "Play House",
+ "logline": "Anna and Dusty come home early and turn the dome into a pink influencer set. Maya works out where Dusty sleeps and says it at dinner. Cody sees Dusty running from a fire. Dusty takes Hank's truck.",
+ "rating": "PG-13",
+ "status": "scripted",
+ "written_by": "claude",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: home early",
+   "at": "patio",
+   "mood": "golden",
+   "sun": [
+    255,
+    22
+   ],
+   "place": {
+    "hank": [
+     1.3,
+     8.4,
+     90
+    ],
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "maya": [
+     0.0,
+     10.0,
+     180
+    ],
+    "jet": [
+     0.7,
+     7.1,
+     20
+    ],
+    "cody": [
+     -0.6,
+     7.1,
+     -15
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "card",
+   "text": "PREVIOUSLY",
+   "sub": "A four-year-old out-built the crew with straws. Maya was suspended for being right at the wrong man. Anna froze on a video call. And Bean drew Cody's storm.",
+   "secs": 4.2,
+   "music": "sting"
+  },
+  {
+   "k": "place",
+   "who": "anna",
+   "at": [
+    -6.0,
+    8.0,
+    100
+   ]
+  },
+  {
+   "k": "place",
+   "who": "dusty",
+   "at": [
+    -6.6,
+    7.4,
+    100
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "anna",
+   "to": [
+    -2.4,
+    7.5
+   ],
+   "speed": 1.4,
+   "wait": false
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    -3.1,
+    8.0
+   ],
+   "speed": 1.2,
+   "wait": false
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "anna",
+     "dusty"
+    ],
+    "dir": [
+     -0.3,
+     1,
+     -0.2
+    ],
+    "lens": 35,
+    "at": [
+     -4.5,
+     8.0,
+     0.8
+    ]
+   },
+   "dur": 4,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Surprise! We're back! Early! Isn't that the best?",
+   "act": "wave",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Did the coast close?",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   },
+   "earring": false
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Car stuff.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Car stuff.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "toward": "dusty"
+   },
+   "keepExpr": true
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "And I have news. A brand wants to sponsor me. Pillows. Organic ones. And I need a set. And Dad has the coolest set in the whole state.",
+   "act": "talk",
+   "expr": "smile",
+   "cam": {
+    "kind": "two",
+    "a": "anna",
+    "b": "dusty",
+    "dist": 3.2
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "It's a, it's not a set, it's a, it's half a building.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Half a building is so in right now.",
+   "act": "cheer",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 0.4
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 4: Play House",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "The yard: the pink set",
+   "at": "yard",
+   "mood": "day",
+   "sun": [
+    140,
+    48
+   ],
+   "place": {
+    "anna": [
+     0.2,
+     -2.8,
+     10
+    ],
+    "hank": [
+     1.6,
+     -4.6,
+     40
+    ],
+    "cody": [
+     -1.0,
+     -3.6,
+     10
+    ],
+    "dusty": [
+     -2.9,
+     -4.0,
+     -20
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 20,
+   "mood": "warm"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "reveal",
+    "subject": "dome",
+    "radius": 7.5,
+    "lens": 26
+   },
+   "dur": 6,
+   "wait": true
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "The dome, reprogrammed: three hundred feet of pink chiffon, a ring light, four organic pillows.",
+   "secs": 3.6
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "It's not a dome. It's a brand. Hashtag dome life. Hashtag round is the new square.",
+   "act": "phone",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It looks like a jellyfish got married.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "It, huh. It works. It holds the fabric. Same frame.",
+     "pause": 0.35
+    },
+    {
+     "text": "Same frame, different, it's whatever you hang on it.",
+     "rate": "+14%"
+    }
+   ],
+   "act": "think",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "figure",
+   "big": "{panels} panels, {kinds_words} shapes",
+   "small": "the same frame can be dressed as anybody's house: a workshop, a stage, a pillow commercial",
+   "secs": 5.5
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Yes! Totally organic. Yes, it's my dad's, it's... it's my house. It's my house.",
+   "act": "phone",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Babe, you're glowing. Literally. The light's on your face. Ow. It's very bright.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The bench: so bad it's good",
+   "at": "studio",
+   "mood": "day",
+   "sun": [
+    140,
+    48
+   ],
+   "place": {
+    "dale": [
+     -4.8,
+     -1.8,
+     -90
+    ],
+    "jet": [
+     -3.4,
+     -2.2,
+     100
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Hey, fellow... no. No. I can't. I can't say 'fellow kids.' Burn it. Burn the phone.",
+   "act": "facepalm",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Do it again but meaner. Be old at them. They love that.",
+   "act": "phone",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "dale"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Listen up, you avocado-toast-eating, mental-health-day-taking... you know what, I've got a deck to stain. Goodbye.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "low",
+    "who": "dale",
+    "dist": 2.6,
+    "lens": 26
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's it. That's the one. It's so bad it's good.",
+   "act": "cheer",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "I hate that that's a category.",
+   "act": "crossed",
+   "cam": {
+    "kind": "two",
+    "a": "dale",
+    "b": "jet",
+    "dist": 3.0
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "scene",
+   "name": "The hedge: things built by other people",
+   "at": "hedge",
+   "mood": "golden",
+   "sun": [
+    255,
+    22
+   ],
+   "place": {
+    "anna": [
+     4.9,
+     -0.5,
+     -60
+    ],
+    "yarrow": [
+     6.1,
+     0.6,
+     90
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 14,
+   "mood": "sad"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Mr. Yarrow! Do you like it? The set? You can be in a video. Old is so in right now.",
+   "act": "wave",
+   "expr": "smile",
+   "cam": {
+    "kind": "ots",
+    "over": "anna",
+    "at": "yarrow",
+    "lens": 50
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "It suits you. Things built by other people usually do.",
+   "act": "peek",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "close",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "yarrow"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Aw. Thank you!",
+   "act": "cheer",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.4
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Wait.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "scene",
+   "name": "The yard: where do you live",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    255,
+    18
+   ],
+   "place": {
+    "maya": [
+     0.9,
+     -4.2,
+     -70
+    ],
+    "dusty": [
+     -0.6,
+     -4.0,
+     80
+    ],
+    "cody": [
+     1.8,
+     -5.0,
+     20
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 14
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Level with me, Dusty. Where do you live?",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium",
+    "toward": "dusty"
+   },
+   "keepExpr": true
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Around.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Around the corner? Around the driveway? Around three in the morning?",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "You know, at State, in the semifinal, I had nineteen points in the second half, and the scout from—",
+   "act": "flex",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Thirty. You lost by thirty.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Not the point, man.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "close",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Jet saw your car. Outside. At three a.m. Every night since June.",
+   "act": "crossed",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "dusty",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Don't.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "close"
+   },
+   "pad": 0.7
+  },
+  {
+   "k": "scene",
+   "name": "The yard: a small fire",
+   "at": "yard",
+   "mood": "dusk",
+   "sun": [
+    250,
+    8
+   ],
+   "place": {
+    "anna": [
+     0.1,
+     -2.9,
+     10
+    ],
+    "jet": [
+     1.0,
+     -4.0,
+     30
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "snap"
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "cheer"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Is the chiffon supposed to smell like that?",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Ring light. Ring light! It's on the fabric!",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "flash",
+   "secs": 0.15,
+   "sfx": "whoosh"
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "stomp"
+  },
+  {
+   "k": "sfx",
+   "name": "stomp"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's out. It's out. Small fire. Nobody worries about small fires.",
+   "act": "flex",
+   "cam": {
+    "kind": "two",
+    "a": "jet",
+    "b": "anna",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "CURSE TALLY: 4. A small fire. Nobody worries about small fires.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "scene",
+   "name": "Dinner: nobody waited",
+   "at": "patio",
+   "mood": "dusk",
+   "sun": [
+    262,
+    6
+   ],
+   "place": {
+    "hank": [
+     1.3,
+     8.4,
+     90
+    ],
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "cody": [
+     -0.6,
+     7.1,
+     -15
+    ],
+    "jet": [
+     0.7,
+     7.1,
+     20
+    ],
+    "maya": [
+     0.0,
+     10.0,
+     180
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 12,
+   "mood": "warm"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Should we wait for, for Anna?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "krystal"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "She said five minutes forty minutes ago. Eat. It's tacos. Tacos don't wait.",
+   "act": "laugh",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "carry"
+  },
+  {
+   "k": "act",
+   "who": "cody",
+   "act": "idle"
+  },
+  {
+   "k": "wait",
+   "s": 1.2
+  },
+  {
+   "k": "place",
+   "who": "anna",
+   "at": [
+    -4.6,
+    7.4,
+    90
+   ]
+  },
+  {
+   "k": "place",
+   "who": "dusty",
+   "at": [
+    -5.2,
+    8.0,
+    90
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "anna",
+   "to": [
+    -2.2,
+    7.6
+   ],
+   "speed": 1.3,
+   "wait": false
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    -2.9,
+    8.2
+   ],
+   "speed": 1.2,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "I'm here! I'm— oh. You ate.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "We saved you a taco. Cody saved it. Cody, where's the—",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "I ate it. I'm sorry. It was looking at me.",
+   "act": "shrug",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "You didn't wait.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 12
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "You want to talk about waiting? Dusty sleeps in his car. On our street. Since June.",
+   "act": "crossed",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.2
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Maya.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close",
+    "toward": "maya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "What? It's true.",
+   "act": "shrug",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Maya!",
+   "act": "hips",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Nice. That's... real nice. Thanks for dinner, Mrs. H.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    -6.8,
+    8.4
+   ],
+   "speed": 1.4,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "He has nowhere to go, and you made it a show.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "two",
+    "a": "anna",
+    "b": "maya",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "You made a show. In Dad's dome. With pillows.",
+   "act": "crossed",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Okay. Okay, it's, can we, everybody's a little bit—",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Right. Everybody's a little bit. Thanks, Dad.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "walk",
+   "who": "anna",
+   "to": [
+    -6.0,
+    7.6
+   ],
+   "speed": 1.4,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "She was right, though. Maya. You were right.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "maya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Then why do I feel like I lost?",
+   "act": "crossed",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "scene",
+   "name": "The yard, late: Cody",
+   "at": "yard",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "cody": [
+     0.3,
+     -3.7,
+     0
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 9
+  },
+  {
+   "k": "expr",
+   "who": "cody",
+   "expr": "vision"
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "vision",
+   "who": "cody",
+   "label": "fire",
+   "beats": [
+    {
+     "k": "scene",
+     "name": "fire",
+     "at": "patio",
+     "mood": "night",
+     "sun": [
+      60,
+      30
+     ],
+     "place": {
+      "dusty": [
+       -2.0,
+       9.8,
+       -90
+      ]
+     },
+     "view": {
+      "step": 10,
+      "explode": 0.0,
+      "tagsOff": [
+       "furniture",
+       "skin",
+       "glass"
+      ]
+     }
+    },
+    {
+     "k": "music",
+     "name": "heart",
+     "secs": 6
+    },
+    {
+     "k": "walk",
+     "who": "dusty",
+     "to": [
+      -7.0,
+      8.6
+     ],
+     "speed": 2.6,
+     "wait": false
+    },
+    {
+     "k": "cam",
+     "cam": {
+      "kind": "move",
+      "move": "slide",
+      "subject": [
+       -4.5,
+       9.2,
+       1.0
+      ],
+      "from": [
+       -4.0,
+       5.4,
+       1.2
+      ],
+      "dist": 3.2,
+      "lens": 35
+     },
+     "dur": 3.5,
+     "wait": false
+    },
+    {
+     "k": "flash",
+     "secs": 0.3,
+     "sfx": "boom"
+    },
+    {
+     "k": "wait",
+     "s": 1.0
+    },
+    {
+     "k": "flash",
+     "secs": 0.2,
+     "sfx": "boom"
+    },
+    {
+     "k": "wait",
+     "s": 1.4
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "He's running.",
+   "act": "vision",
+   "expr": "vision",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "place",
+   "who": "jet",
+   "at": [
+    1.4,
+    -4.4,
+    -30
+   ]
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Who's running? From what?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Dusty. From a fire.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close",
+    "toward": "jet"
+   },
+   "pad": 0.7
+  },
+  {
+   "k": "scene",
+   "name": "Dawn: the driveway",
+   "at": "patio",
+   "mood": "overcast",
+   "sun": [
+    90,
+    6
+   ],
+   "place": {
+    "hank": [
+     -3.8,
+     8.6,
+     90
+    ],
+    "krystal": [
+     -3.0,
+     9.4,
+     120
+    ],
+    "jet": [
+     -3.4,
+     7.6,
+     60
+    ]
+   },
+   "view": {
+    "step": 10,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 14,
+   "mood": "sad"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "pan",
+    "subject": [
+     -7.4,
+     8.4,
+     1.0
+    ],
+    "from": [
+     -1.2,
+     6.2,
+     1.4
+    ],
+    "sweep": 40,
+    "lens": 30
+   },
+   "dur": 5,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Dad. Your truck.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Where's the truck? Hank, where's the truck?",
+   "act": "hips",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "He took it.",
+     "rate": "-12%",
+     "pause": 0.6
+    },
+    {
+     "text": "The kid with nowhere to go took the, took my truck somewhere.",
+     "rate": "-4%"
+    }
+   ],
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "And Anna?",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Her car's still here.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "He went alone.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.8,
+    "lens": 26
+   },
+   "pad": 1.0
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ]
+}

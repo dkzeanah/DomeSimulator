@@ -82,6 +82,7 @@ def set_pieces(spec: M.Spec) -> dict:
         "diameter_m": t["diameter_m"], "height_m": t["height_m"], "floor_m2": t["floor_m2"],
         "hex_side_m": hexc["sides_m"][1], "hex_base_m": hexc["sides_m"][0], "hex_count": hexc["count"],
         "tail": 90 - min(hexc["angles"]), "sheets": t["sheets"], "rings": t["rings"],
+        "frequency": spec.frequency, "kinds": len(t["classes"]),
     }
     return {"pieces": [enc(p) for p in pieces], "prop": [enc(p) for p in loose], "figures": _clean(figures),
             "bench_at": BENCH_AT, "saw_at": SAW_AT, "bench_top": SH.BENCH_Z - M.D("deck_h_m"), "ground": -M.D("deck_h_m")}
@@ -100,17 +101,19 @@ def voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz") ->
         return out
     tmp = out.with_suffix(".part")
 
-    async def go():
-        await edge_tts.Communicate(text, voice_name, rate=rate, pitch=pitch).save(str(tmp))
-    # the service now and then answers with no audio; it nearly always works on a second try
+    async def go(p):
+        await edge_tts.Communicate(text, voice_name, rate=rate, pitch=p).save(str(tmp))
+    # the service now and then answers with no audio; it nearly always works on a second try. Some
+    # voices (Emma) refuse small pitch shifts for long stretches: the last tries use the voice's own
+    # pitch, which nobody can hear the difference of, rather than leave the line silent.
     import time
-    for attempt in range(4):
+    for attempt in range(6):
         try:
-            asyncio.run(go())
+            asyncio.run(go(pitch if attempt < 3 else "+0Hz"))
             if tmp.exists() and tmp.stat().st_size > 0:
                 break
         except Exception:
-            if attempt == 3:
+            if attempt == 5:
                 raise
         time.sleep(0.8 * (attempt + 1))
     tmp.replace(out)

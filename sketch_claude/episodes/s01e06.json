@@ -1,0 +1,1330 @@
+{
+ "id": "s01e06",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E6",
+ "title": "Tension and Compression",
+ "logline": "The garage burns with Jet's rig in it and Dusty runs. The family splits over insurance money, and Krystal breaks: there is no money. She has been paying for everything since January, alone.",
+ "rating": "PG-13",
+ "status": "scripted",
+ "written_by": "claude",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: the garage",
+   "at": "patio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "jet": [
+     -1.8,
+     9.6,
+     -110
+    ],
+    "cody": [
+     -1.0,
+     9.9,
+     -120
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "card",
+   "text": "PREVIOUSLY",
+   "sub": "Jet's debt was a scam and a password said out loud. Priya turned the dome into a program. Dusty brought the truck back at three in the morning and Hank gave him the garage. Anna went looking for him. And the station scheduled Hank's last show.",
+   "secs": 4.2,
+   "music": "sting"
+  },
+  {
+   "k": "music",
+   "name": "heart",
+   "secs": 10
+  },
+  {
+   "k": "flash",
+   "secs": 0.25,
+   "sfx": "boom"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Is that... that's orange. Why is the garage orange?",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   },
+   "earring": false
+  },
+  {
+   "k": "flash",
+   "secs": 0.3,
+   "sfx": "boom"
+  },
+  {
+   "k": "place",
+   "who": "dusty",
+   "at": [
+    -2.4,
+    10.0,
+    -90
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    -7.0,
+    8.6
+   ],
+   "speed": 2.6,
+   "wait": false
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "slide",
+    "subject": [
+     -4.5,
+     9.2,
+     1.0
+    ],
+    "from": [
+     -4.0,
+     5.4,
+     1.2
+    ],
+    "dist": 3.2,
+    "lens": 35
+   },
+   "dur": 3.2,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "He's running. It's what I saw. It's exactly what I saw.",
+   "act": "vision",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "place",
+   "who": "krystal",
+   "at": [
+    0.6,
+    9.8,
+    -100
+   ]
+  },
+  {
+   "k": "place",
+   "who": "hank",
+   "at": [
+    1.4,
+    9.6,
+    -100
+   ]
+  },
+  {
+   "k": "place",
+   "who": "maya",
+   "at": [
+    0.0,
+    10.1,
+    -110
+   ]
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Everybody out! Everybody, now! Out of the house, to the yard, go, go, GO!",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "low",
+    "who": "krystal",
+    "dist": 2.4,
+    "lens": 22
+   }
+  },
+  {
+   "k": "flash",
+   "secs": 0.2,
+   "sfx": "boom"
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 6: Tension and Compression",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "Dawn: a shelter for a week",
+   "at": "yard",
+   "mood": "overcast",
+   "sun": [
+    95,
+    6
+   ],
+   "place": {
+    "hank": [
+     0.8,
+     -1.0,
+     200
+    ],
+    "krystal": [
+     -0.6,
+     -0.8,
+     140
+    ],
+    "maya": [
+     0.2,
+     0.9,
+     260
+    ],
+    "jet": [
+     -1.2,
+     0.4,
+     100
+    ],
+    "cody": [
+     1.4,
+     0.3,
+     220
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 26,
+   "mood": "sad"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "crane",
+    "subject": "dome",
+    "from": [
+     0.4,
+     -6.2,
+     0.8
+    ],
+    "rise": 3.5,
+    "back": 2.0,
+    "lens": 28
+   },
+   "dur": 7,
+   "wait": true
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "The dome, reprogrammed: five sleeping bags, one camping stove, the only roof they have that didn't burn. It doesn't have a roof.",
+   "secs": 4.2
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Where's Dusty?",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   },
+   "keepExpr": true
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Gone. He ran. Cody saw it. Cody saw it before it happened.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "I told you. I told all of you. I TOLD you.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "I saw him running. I didn't see what from.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "The rig was in there. All four. The fire department said it started at the rig.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "I put it there. I said it's an address.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   },
+   "pad": 0.7
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "CURSE TALLY: 6. The garage. The jig. Four mining rigs. Not the dome.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "scene",
+   "name": "The patio: two camps",
+   "at": "patio",
+   "mood": "day",
+   "sun": [
+    140,
+    45
+   ],
+   "place": {
+    "hank": [
+     1.3,
+     8.4,
+     90
+    ],
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "cody": [
+     -0.6,
+     7.1,
+     -15
+    ],
+    "jet": [
+     0.7,
+     7.1,
+     20
+    ],
+    "maya": [
+     0.0,
+     10.0,
+     180
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 18
+  },
+  {
+   "k": "act",
+   "who": "krystal",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Yes. Hardwick. H, A, R... yes, I'll hold. I'll hold forever. Holding is my thing.",
+   "act": "phone",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Insurance pays, we finish the dome. It's the only room we have that the curse can't get.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "maya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "I'm with Dad. Finish it.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Or, hear me out, we fix the house we actually live in, instead of a science project with a raccoon in it.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "I'm with Maya. Rebuild the garage. With better wiring. For... reasons.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Not for your rigs, Jet!",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "jet",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "The dome is cheaper than the garage and it's already, it's half up, it's, the frame's paid for—",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "With what money, Dad? The show's ending!",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "frags": [
+    {
+     "text": "Ha. Ha ha. Yes. I'm still holding.",
+     "rate": "+10%",
+     "pause": 0.3
+    },
+    {
+     "text": "Okay. Thank you. No, thank you. Bye.",
+     "rate": "-10%",
+     "pause": 0.6
+    }
+   ],
+   "act": "phone",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.2
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "What did they say?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "krystal"
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 30,
+   "mood": "sad"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "There's no money.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "What do you mean there's no—",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "I let the insurance go in March. Because I was paying the electric. And the mortgage. And the rental on your show's equipment, Hank. For a year.",
+   "act": "crossed",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "The station pays the rental.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "The station stopped paying in January.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Mom.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "I didn't tell you because you'd stop building. And you were happy. You were all... so loud and so happy.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "act",
+   "who": "krystal",
+   "act": "facepalm"
+  },
+  {
+   "k": "wait",
+   "s": 1.6
+  },
+  {
+   "k": "thought",
+   "who": "hank",
+   "title": "",
+   "frags": [
+    {
+     "text": "The mail lady. Since when are you the mail lady. Since January.",
+     "rate": "-10%",
+     "pause": 0.4,
+     "word": "January"
+    },
+    {
+     "text": "everything I pushed out, everything, she pulled back in,",
+     "rate": "+18%",
+     "pause": 0.3,
+     "word": "pulled back in"
+    },
+    {
+     "text": "compression is loud, the beam, the stick, you see it, you hear it,",
+     "rate": "+24%",
+     "pause": 0.25,
+     "word": "loud"
+    },
+    {
+     "text": "tension is quiet. The ring at the bottom. Nobody sees the ring at the bottom.",
+     "rate": "-12%",
+     "pause": 0.4,
+     "word": "the ring"
+    },
+    {
+     "text": "push on the top and the bottom wants to spread, and something has to hold it in,",
+     "rate": "+16%",
+     "pause": 0.3,
+     "word": "hold it in"
+    },
+    {
+     "text": "I never once asked who was holding.",
+     "rate": "-30%",
+     "pause": 0.5,
+     "word": "who was holding"
+    }
+   ],
+   "ghosts": [
+    "think",
+    "measure",
+    "shrug",
+    "facepalm",
+    "idle",
+    "point"
+   ]
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Krystal. Level with me. How long have you been carrying it?",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close",
+    "toward": "krystal"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Since before you had a show.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 1.0
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "frags": [
+    {
+     "text": "Okay.",
+     "rate": "-10%",
+     "pause": 0.4
+    },
+    {
+     "text": "Okay. So here's what's going to happen.",
+     "rate": "-4%",
+     "pause": 0.3
+    }
+   ],
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "We stop fighting about money we don't have. Everybody in this family works. And we finish that dome, because it is the only thing we own that this curse cannot burn.",
+   "act": "stomp",
+   "expr": "glare",
+   "cam": {
+    "kind": "low",
+    "who": "krystal",
+    "dist": 2.2,
+    "lens": 22
+   },
+   "stomp": true
+  },
+  {
+   "k": "meme",
+   "style": "zoom",
+   "text": "",
+   "secs": 0.8,
+   "who": "jet",
+   "sfx": "boom"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Yes ma'am.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Yes ma'am.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "That's the first thing we've ever agreed on.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "scene",
+   "name": "The yard: the base ring",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    255,
+    18
+   ],
+   "place": {
+    "hank": [
+     1.2,
+     -3.0,
+     -40
+    ],
+    "jet": [
+     0.2,
+     -2.8,
+     20
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 0
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Push on the top.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "grunt"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Now the bottom. Feel it? The bottom wants to spread out. Every push on the top shoves the bottom outward.",
+   "act": "measure",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "So why doesn't it?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "The base ring. All the way round, pulling in. Nobody looks at the base. It's not the pretty part.",
+   "act": "point",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "jet",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "figure",
+   "big": "{sticks_words} sticks push; the base ring pulls",
+   "small": "some members push, some pull, and the shape holds because both do",
+   "secs": 6
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Mom's the base.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Your mom's the base.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   },
+   "pad": 0.7
+  },
+  {
+   "k": "scene",
+   "name": "The hedge: the safe one",
+   "at": "hedge",
+   "mood": "golden",
+   "sun": [
+    255,
+    18
+   ],
+   "place": {
+    "hank": [
+     4.95,
+     0.5,
+     -90
+    ],
+    "yarrow": [
+     6.1,
+     0.6,
+     90
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "I have a spare room, Hank. Two, if you don't mind the cat.",
+   "act": "peek",
+   "cam": {
+    "kind": "ots",
+    "over": "hank",
+    "at": "yarrow",
+    "lens": 50
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "We've got the dome.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "yarrow"
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "You've got a frame and a great deal of pride.",
+   "act": "peek",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Bean rang me last night. She says the round house is the safe one. She was very firm about it.",
+   "act": "peek",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "close",
+    "toward": "hank"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "scene",
+   "name": "The ashes: the jacket",
+   "at": "patio",
+   "mood": "overcast",
+   "sun": [
+    95,
+    10
+   ],
+   "place": {
+    "maya": [
+     -3.4,
+     9.8,
+     -60
+    ],
+    "cody": [
+     -2.6,
+     9.0,
+     -80
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 18,
+   "mood": "sad"
+  },
+  {
+   "k": "act",
+   "who": "maya",
+   "act": "measure"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Cody. It's his jacket. The letterman. It's burned on the inside. Like he was wrapping something in it.",
+   "act": "lift",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "The rig.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium",
+    "toward": "maya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "He dragged Jet's rig out. That's why it's in the driveway. He didn't start it. He carried it out.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Then why did he run?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Because nobody was supposed to know he lived in our garage. And I'm the one who made sure everybody knew.",
+   "act": "crossed",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "side": -1
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Are you going to tell them?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "...Not yet. Not like last time.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "scene",
+   "name": "The bar, alone",
+   "at": "studio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "dale": [
+     -5.0,
+     -2.2,
+     -70
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 1
+  },
+  {
+   "k": "act",
+   "who": "dale",
+   "act": "phone"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "dale",
+    "from": [
+     -2.4,
+     -3.6,
+     1.4
+    ],
+    "dist": 0.5,
+    "lens": 40
+   },
+   "dur": 6,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Hank. It's me. No, I'm fine. I'm at the bar. The bar is my kitchen. I'm the bartender. It's a very small bar.",
+   "act": "phone",
+   "expr": "far"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "I took the meeting. They want me. They want me to be young, Hank. I'm fifty-eight. I have a hip that knows when it's going to rain.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Tell the kid his ear looks better. Don't tell him I said it.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close",
+    "side": -1
+   },
+   "pad": 1.0
+  },
+  {
+   "k": "scene",
+   "name": "Night: Anna's phone",
+   "at": "yard",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "krystal": [
+     0.6,
+     -0.6,
+     200
+    ],
+    "hank": [
+     -0.4,
+     -0.9,
+     150
+    ],
+    "jet": [
+     -1.0,
+     0.6,
+     100
+    ],
+    "cody": [
+     1.2,
+     0.8,
+     230
+    ]
+   },
+   "view": {
+    "step": 12,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 12
+  },
+  {
+   "k": "act",
+   "who": "krystal",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Hiii, it's Anna! I'm probably doing something amazing. Leave a vibe!",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "She's not answering. Twelve times. She always answers by twelve.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "She will.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Is that a vision or a guess?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's a guess.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   },
+   "pad": 1.2
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ]
+}

@@ -30,7 +30,8 @@ SETS = {"studio": "Hank's Hardware Hour bench and table saw, x -7..-3, y -5..1 (
         "yard": "the dome site: the dome at the origin, door facing -y, the porch from y -2.5 to -4.9 (|x| < 1.6)",
         "hedge": "the neighbour's hedge at x 5.6; Mr. Yarrow stands behind it at about 6.1,0.6 facing -x",
         "inside": "inside the finished dome, floor radius about 2.2 m"}
-TOKENS = "{bevel} {bevel_spoken} {fold} {fold_spoken} {tail} {panels} {panels_words} {sticks_words} {cuts_words} {sqft} {sqft_words} {ft_words}"
+TOKENS = ("{bevel} {bevel_spoken} {fold} {fold_spoken} {tail} {panels} {panels_words} {sticks_words} {cuts_words} {sqft} {sqft_words} {ft_words} "
+          "{rings_words} {freq_words} {kinds_words} {height_ft_words} {sheets_words}")
 
 
 def load(name: str) -> dict:
@@ -112,6 +113,11 @@ def check(ep: dict, series: dict) -> list[str]:
                     problems.append(f"{at}: {w!r} placed but not in the cast")
             if k == "line" and not (b.get("text") or b.get("frags")):
                 problems.append(f"{at}: a line with nothing to say")
+            # every {figure} must be one the engine fills from the model, or it reaches the screen as braces
+            said = [b.get("text"), b.get("big"), b.get("small"), b.get("sub"), *[f.get("text") for f in b.get("frags", []) if isinstance(f, dict)]]
+            for tok in re.findall(r"\{(\w+)\}", " ".join(x for x in said if isinstance(x, str))):
+                if "{" + tok + "}" not in TOKENS:
+                    problems.append(f"{at}: {{{tok}}} is not a figure the model provides")
             if k == "vision":
                 walk(b.get("beats", []), f"{at} > ")
             cam = b.get("cam") or {}
@@ -227,7 +233,7 @@ def coverage(season_id: str) -> dict:
             walk(ep["beats"])
             row["quirks"] = q
             for c in series["cast"]:
-                if c not in row["lines"] and c not in ("yarrow", "dusty"):
+                if c not in row["lines"] and c not in ("yarrow", "dusty", "bean", "priya"):
                     out["warnings"].append(f"{e['number']}: {series['cast'][c]['name']} has no lines")
             if q["thought"] > 1:
                 out["warnings"].append(f"{e['number']}: {q['thought']} thought spirals (the rule is at most one)")
