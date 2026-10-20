@@ -356,10 +356,10 @@
    "text": "Four of them. Huh. They're warm.",
    "act": "measure",
    "cam": {
-    "kind": "single",
-    "who": "hank",
-    "size": "medium",
-    "toward": "jet"
+    "kind": "two",
+    "a": "hank",
+    "b": "jet",
+    "dist": 3.4
    }
   },
   {
@@ -1464,9 +1464,18 @@
    "text": "I have a lawyer. I don't, but I could.",
    "act": "lean",
    "cam": {
-    "kind": "single",
-    "who": "dale",
-    "size": "medium"
+    "kind": "wide",
+    "who": [
+     "dale",
+     "maya",
+     "krystal"
+    ],
+    "dir": [
+     -0.4,
+     1,
+     -0.25
+    ],
+    "lens": 32
    }
   },
   {
@@ -1673,12 +1682,12 @@
     "jet": [
      -4.4,
      9.4,
-     -120
+     110
     ],
     "cody": [
      -3.9,
      10.0,
-     -130
+     115
     ]
    },
    "view": {
@@ -1773,7 +1782,8 @@
    "cam": {
     "kind": "single",
     "who": "cody",
-    "size": "close"
+    "size": "medium",
+    "toward": "jet"
    },
    "pad": 1.2
   },
