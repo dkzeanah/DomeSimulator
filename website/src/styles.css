@@ -76,3 +76,15 @@ h1, h2, h3, .display { font-family: var(--font-display); letter-spacing: 0.01em;
 .world-splat.miss { background: #2a5ac8; box-shadow: 0 0 0 1px #000; }
 .world-splat.heal { background: #2a9a3a; box-shadow: 0 0 0 1px #000; }
 .world-splat.xp { background: transparent; color: #ffe24a; font-size: 12px; }
+
+/* ---------------------------------------------------------------- bedtime storytime (/kids) */
+.story-btn { display: grid; place-items: center; height: 4.5rem; width: 4.5rem; border-radius: 9999px; color: #fff;
+  background: rgba(10, 14, 30, 0.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.18); }
+.story-btn:active { transform: scale(0.94); }
+.story-btn-big { height: 6rem; width: 6rem; background: #ffd36b; color: #2a1d0a; border: none; box-shadow: 0 0 40px rgba(255, 211, 107, 0.35); }
+@keyframes story-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.story-pulse { animation: story-pulse 2.6s ease-in-out infinite; }
+@keyframes story-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.story-fade { animation: story-fade 1.6s ease-out both; }
+@keyframes story-dim { from { background: rgba(2, 3, 8, 0); } to { background: rgba(2, 3, 8, 0.82); } }
+.story-dim { animation: story-dim 6s ease-in both; }

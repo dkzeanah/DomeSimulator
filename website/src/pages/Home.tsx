@@ -38,7 +38,7 @@ function Hero({ focus }: { focus: Focus }) {
         <h1 className="text-4xl sm:text-6xl font-bold mt-2 max-w-3xl leading-[1.05]">{facts.kidsBook.title}</h1>
         <p className="mt-3 max-w-2xl text-lg">One girl, one fallen pine and one saw -- and a round home with no corners, built wedge by wedge. The whole build, told in rhyme for reading aloud.</p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link className="btn" to="/kids">Read the opening{priceOf("my-own-home-my-own-dome")}</Link>
+          <Link className="btn" to="/kids">Watch the bedtime story -- free</Link>
           <Link className="btn-ghost !border-white/40" to="/book">The grown-ups' book</Link>
         </div>
       </>
