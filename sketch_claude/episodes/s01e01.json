@@ -1,0 +1,1892 @@
+{
+ "id": "s01e01",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E1",
+ "title": "Half the Fold",
+ "logline": "The station threatens to cancel Hank's show, Maya gets fired, Jet has a new hole in his ear, and Anna announces she's leaving with Dusty. Krystal puts her foot down: nobody leaves until the dome stands. Hank's first ring is wrong, and so is everything else, until he sees it.",
+ "rating": "PG-13",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model. Frags make stop-and-go speech: each piece its own pace and pause.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: the last good taping",
+   "at": "studio",
+   "mood": "day",
+   "sun": [
+    330,
+    50
+   ],
+   "place": {
+    "hank": [
+     -5.2,
+     -1.3,
+     -90
+    ],
+    "dale": [
+     -5.2,
+     -2.8,
+     -90
+    ],
+    "jet": [
+     -3.4,
+     -3.9,
+     125
+    ]
+   },
+   "view": {
+    "step": 6,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "card",
+   "text": "HANK'S HARDWARE HOUR",
+   "sub": "Channel 47. Rolling.",
+   "secs": 3.0,
+   "music": "sting"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "crane",
+    "from": [
+     -0.4,
+     -4.4,
+     0.6
+    ],
+    "subject": "jigHigh",
+    "rise": 1.4,
+    "back": -2.0,
+    "lens": 28
+   },
+   "dur": 6,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "act": "wave",
+   "after": "idle",
+   "frags": [
+    {
+     "text": "Welcome back. Today we're building a geodesic dome, and I want you to notice something.",
+     "pause": 0.2
+    },
+    {
+     "text": "There's no hub. No bracket in the middle.",
+     "rate": "-8%",
+     "pause": 0.3
+    },
+    {
+     "text": "Every piece holds the next piece. That's it. That's the whole trick.",
+     "rate": "+6%"
+    }
+   ]
+  },
+  {
+   "k": "lower",
+   "who": "hank"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Folks, he says that about marriage too. Ask him how that's going.",
+   "act": "lean",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "dale"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "{panels_words} panels. Built flat, on a jig. A kid could do it.",
+   "act": "point",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "dale",
+    "dist": 3.4
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "A kid could, sure. This generation? They'd need the jig to have a Wi-Fi password and a mental health day.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "toward": "jet",
+    "size": "medium",
+    "side": -1
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "ear"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "I'm literally holding your cue cards, Dale.",
+   "act": "ear",
+   "earring": true,
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "toward": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "jet"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "And you're holding them upside down, champ.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "act": "think",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "jet",
+    "size": "close"
+   },
+   "frags": [
+    {
+     "text": "Jet. Is that-",
+     "rate": "+10%",
+     "pause": 0.35
+    },
+    {
+     "text": "is that a, is that new,",
+     "rate": "+25%",
+     "pause": 0.25
+    },
+    {
+     "text": "never mind. Hold the cards.",
+     "rate": "-10%"
+    }
+   ]
+  },
+  {
+   "k": "prop",
+   "who": "jet",
+   "prop": "earring",
+   "on": false
+  },
+  {
+   "k": "walk",
+   "who": "hank",
+   "to": [
+    -5.2,
+    -1.6
+   ],
+   "speed": 1.2,
+   "wait": false
+  },
+  {
+   "k": "gag",
+   "name": "handPanel",
+   "who": "hank"
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "lift"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "wide"
+   },
+   "dur": 3.0,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "And when it's square on the jig, it'll take your whole weight.",
+   "act": "lift"
+  },
+  {
+   "k": "gag",
+   "name": "burstPanel"
+  },
+  {
+   "k": "sfx",
+   "name": "clatter"
+  },
+  {
+   "k": "wait",
+   "s": 0.3
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "fall"
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "wait",
+   "s": 0.6
+  },
+  {
+   "k": "meme",
+   "style": "freeze",
+   "text": "The Hardwicks are cursed. This is not a figure of speech.",
+   "secs": 3.0,
+   "sfx": "scratch"
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 14
+  },
+  {
+   "k": "act",
+   "who": "dale",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Hank. The station. They're saying if the numbers don't turn around by storm season, we're done.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "toward": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "idle"
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Then we make them turn.",
+   "act": "idle",
+   "pad": 0.6,
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.4
+   }
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 1: Half the Fold",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "The patio: the announcement",
+   "at": "patio",
+   "mood": "golden",
+   "sun": [
+    255,
+    18
+   ],
+   "place": {
+    "hank": [
+     1.3,
+     8.4,
+     90
+    ],
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "cody": [
+     -0.6,
+     7.1,
+     -15
+    ],
+    "jet": [
+     0.7,
+     7.1,
+     20
+    ],
+    "maya": [
+     0.0,
+     10.0,
+     180
+    ]
+   },
+   "view": {
+    "step": 6,
+    "explode": 0.16,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 20,
+   "mood": "warm"
+  },
+  {
+   "k": "act",
+   "who": "krystal",
+   "act": "laugh"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Who wants the burger that fell on the ground? Nobody? I'll take it. Five-second rule is a lifestyle.",
+   "act": "laugh",
+   "expr": "smile",
+   "cam": {
+    "kind": "move",
+    "move": "slide",
+    "from": [
+     0.2,
+     4.4,
+     1.4
+    ],
+    "subject": [
+     0.0,
+     8.2,
+     0.9
+    ],
+    "dist": 2.4,
+    "lens": 32
+   }
+  },
+  {
+   "k": "lower",
+   "who": "krystal"
+  },
+  {
+   "k": "walk",
+   "who": "maya",
+   "to": [
+    0.3,
+    9.3
+   ],
+   "speed": 1.4,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "I got fired.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "keepExpr": true,
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "maya"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "From the hardware store? Maya. What did you say?",
+   "act": "hips",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "toward": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Nothing.",
+   "act": "crossed",
+   "expr": "sideeyeL",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "toward": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "She told a man his deck was a hate crime against wood.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "cody"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "It was. It was a hate crime against wood. He used drywall screws.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "cody",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Drywall screws on a deck. She's... honestly she's not wrong.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Hank.",
+   "act": "hips",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "toward": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "She's very wrong.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Where's Anna? Has anybody seen Anna today? Or this week?",
+   "act": "talk",
+   "cam": {
+    "kind": "two",
+    "a": "krystal",
+    "b": "hank",
+    "dist": 3.4,
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "She's off doing an Anna thing. For us, supposedly.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "place",
+   "who": "anna",
+   "at": [
+    -6.0,
+    8.0,
+    100
+   ]
+  },
+  {
+   "k": "place",
+   "who": "dusty",
+   "at": [
+    -6.6,
+    7.4,
+    100
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "anna",
+   "to": [
+    -2.4,
+    7.5
+   ],
+   "speed": 1.3,
+   "wait": false
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    -3.1,
+    8.0
+   ],
+   "speed": 1.2,
+   "wait": false
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "wave"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "anna",
+     "dusty"
+    ],
+    "at": [
+     -4.5,
+     8.0,
+     0.8
+    ],
+    "dir": [
+     -0.3,
+     1,
+     -0.2
+    ],
+    "lens": 35
+   },
+   "dur": 4.5,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Hiii! Family! Okay, don't freak out. I have news, and it's, like, the best news.",
+   "act": "wave",
+   "expr": "smile"
+  },
+  {
+   "k": "lower",
+   "who": "anna"
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Mr. H. Mrs. H. Little dudes.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "dusty"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Dusty.",
+   "act": "crossed",
+   "expr": "glare",
+   "keepExpr": true,
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "toward": "dusty",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Dusty and I are driving to the coast. For the summer. Maybe for, like, ever. He knows the road.",
+   "act": "talk",
+   "expr": "smile",
+   "cam": {
+    "kind": "two",
+    "a": "anna",
+    "b": "dusty",
+    "dist": 3.2
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Drove it for the state semifinal. Two thousand and... a while ago. We won.",
+   "act": "flex",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "toward": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "They lost by thirty.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 10
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Forever? Anna, honey, you can't even keep a plant alive for a weekend.",
+   "act": "hips",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "toward": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "If she goes, I get the car. I'm calling it. Legally.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "You're sixteen. You can't legally call anything.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "jet",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "We have never agreed on one single thing as a family. Statistically, we're due.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "thought",
+   "who": "hank",
+   "title": "",
+   "frags": [
+    {
+     "text": "If she goes, the table has four corners and a gap.",
+     "rate": "+14%",
+     "pause": 0.35,
+     "word": "a gap"
+    },
+    {
+     "text": "If she stays, she's still leaving. Just slower.",
+     "rate": "-12%",
+     "pause": 0.4,
+     "word": "slower"
+    },
+    {
+     "text": "Panel, panel, the fold between them, thirteen, no, {fold_spoken},",
+     "rate": "+28%",
+     "pause": 0.2,
+     "word": "{fold}°"
+    },
+    {
+     "text": "you can't hold a panel by squeezing it.",
+     "rate": "-6%",
+     "pause": 0.35,
+     "word": "squeezing"
+    },
+    {
+     "text": "You hold it by giving. Each side gives half. Half the, half the,",
+     "rate": "+22%",
+     "pause": 0.3,
+     "word": "giving"
+    },
+    {
+     "text": "half the fold.",
+     "rate": "-30%",
+     "pause": 0.4,
+     "word": "half"
+    }
+   ],
+   "ghosts": [
+    "think",
+    "point",
+    "measure",
+    "shrug",
+    "hammer",
+    "facepalm"
+   ]
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   },
+   "frags": [
+    {
+     "text": "Half the fold.",
+     "rate": "-10%",
+     "pause": 0.5
+    },
+    {
+     "text": "No. Yes. That's the, it's not, the panel, I mean the ring,",
+     "rate": "+30%",
+     "pause": 0.25
+    },
+    {
+     "text": "I have to go outside.",
+     "rate": "+0%"
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Is Dad okay? Is this a dad thing or a medical thing?",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Nobody, and I mean nobody, is leaving this family until that thing in the yard is standing up.",
+   "act": "stomp",
+   "stomp": true,
+   "expr": "glare",
+   "cam": {
+    "kind": "low",
+    "who": "krystal",
+    "dist": 2.2,
+    "lens": 22
+   }
+  },
+  {
+   "k": "meme",
+   "style": "zoom",
+   "who": "dusty",
+   "text": "",
+   "secs": 0.8,
+   "sfx": "boom"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Hank. How long?",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "toward": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "One ring a week, give or take...",
+     "rate": "-4%",
+     "pause": 0.3
+    },
+    {
+     "text": "ten weeks.",
+     "rate": "-15%"
+    }
+   ],
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "That's the whole summer!",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "toward": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Then it's a whole summer.",
+   "act": "crossed",
+   "pad": 0.5,
+   "cam": {
+    "kind": "low",
+    "who": "krystal",
+    "dist": 2.6,
+    "lens": 26
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Okay! Cool. Cool cool cool. I'll be around. Like, around around.",
+   "act": "phone",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "walk",
+   "who": "anna",
+   "to": [
+    -4.8,
+    8.6
+   ],
+   "speed": 1.2,
+   "wait": false
+  },
+  {
+   "k": "walk",
+   "who": "dusty",
+   "to": [
+    -5.4,
+    8.0
+   ],
+   "speed": 1.2,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "And she's gone. Again. Mid-sentence.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "krystal",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The yard: the first ring is wrong",
+   "at": "yard",
+   "mood": "dusk",
+   "sun": [
+    245,
+    8
+   ],
+   "place": {
+    "hank": [
+     0.6,
+     -3.6,
+     -20
+    ],
+    "jet": [
+     -0.5,
+     -4.3,
+     10
+    ],
+    "cody": [
+     1.5,
+     -4.5,
+     30
+    ]
+   },
+   "view": {
+    "step": 6,
+    "explode": 0.16,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 26,
+   "mood": "night"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "flyover",
+    "subject": "dome",
+    "radius": 8.5,
+    "height": 4.5,
+    "lens": 24
+   },
+   "dur": 6.0,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Every panel's got a gap. You can see the sky through it. It's like a sad colander.",
+   "act": "point",
+   "earring": true,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "toward": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "act": "measure",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "side": -1
+   },
+   "frags": [
+    {
+     "text": "Because I cut every stick to take the whole fold.",
+     "pause": 0.25
+    },
+    {
+     "text": "Each one trying to, to be the whole joint.",
+     "rate": "+14%",
+     "pause": 0.3
+    },
+    {
+     "text": "Nobody gives, so nothing meets.",
+     "rate": "-12%"
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Sounds like dinner.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "You know they can track a table saw now? Bluetooth. That's how they get you.",
+   "act": "lean",
+   "cam": {
+    "kind": "two",
+    "a": "jet",
+    "b": "cody",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Who's they?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "toward": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Exactly. You don't know. That's how good they are.",
+   "act": "point",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "toward": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "walk",
+   "who": "hank",
+   "to": [
+    4.95,
+    0.5
+   ],
+   "speed": 1.5,
+   "wait": false
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "slide",
+    "from": [
+     2.8,
+     -4.6,
+     1.3
+    ],
+    "subject": [
+     4.2,
+     -0.8,
+     1.0
+    ],
+    "dist": 2.6,
+    "lens": 35
+   },
+   "dur": 4.0,
+   "wait": true
+  },
+  {
+   "k": "scene",
+   "name": "The hedge: what Mr. Yarrow sees",
+   "at": "hedge",
+   "mood": "dusk",
+   "sun": [
+    245,
+    8
+   ],
+   "place": {
+    "hank": [
+     4.95,
+     0.5,
+     -90
+    ],
+    "yarrow": [
+     6.1,
+     0.6,
+     90
+    ]
+   },
+   "view": {
+    "step": 6,
+    "explode": 0.16
+   }
+  },
+  {
+   "k": "act",
+   "who": "yarrow",
+   "act": "peek"
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "You built that ring the way you argue, Hank. Every panel trying to win.",
+   "act": "peek",
+   "cam": {
+    "kind": "ots",
+    "over": "hank",
+    "at": "yarrow",
+    "lens": 50
+   }
+  },
+  {
+   "k": "lower",
+   "who": "yarrow"
+  },
+  {
+   "k": "figure",
+   "big": "{fold}° ÷ 2 = {bevel}°",
+   "small": "two panels share the fold between them",
+   "secs": 6
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "{fold_spoken} degrees between two panels. Each one bevels half. {bevel_spoken}. Not one degree more, not one less.",
+   "act": "peek",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "toward": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "I know. I figured it out an hour ago. In my head. In about six heads.",
+   "act": "think",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "yarrow",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Then stop telling me and go and tell them. Goodnight, Hank.",
+   "act": "peek",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "yarrow",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The bench, at night: Hank teaches",
+   "at": "studio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "hank": [
+     -5.2,
+     -1.4,
+     -90
+    ],
+    "jet": [
+     -5.0,
+     -0.4,
+     -150
+    ],
+    "cody": [
+     -5.0,
+     -3.0,
+     -30
+    ]
+   },
+   "view": {
+    "step": 6,
+    "explode": 0.16,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 0
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "from": [
+     -3.4,
+     -1.9,
+     1.3
+    ],
+    "subject": "jig",
+    "dist": 0.45,
+    "lens": 40
+   },
+   "dur": 5,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Stick on the line. Bevel out, outer face down. Rail behind it. Now it lands in the same place every time.",
+   "act": "measure"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Why are you showing me? Cody's the one who reads manuals for fun.",
+   "act": "crossed",
+   "earring": true,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "toward": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Cody's got his own cut. This one's yours. Tail first. {tail} degrees.",
+   "act": "point",
+   "cam": {
+    "kind": "ots",
+    "over": "jet",
+    "at": "hank",
+    "lens": 50
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "measure"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "You saw it. The ear. Back at the taping.",
+   "act": "measure",
+   "earring": true,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Saw what? Hands where I can see them. Blade's sharp.",
+   "act": "idle",
+   "pad": 0.6,
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Dad.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "vision",
+   "who": "cody",
+   "label": "the storm",
+   "beats": [
+    {
+     "k": "scene",
+     "name": "the storm",
+     "at": "yard",
+     "mood": "storm",
+     "sun": [
+      200,
+      15
+     ],
+     "place": {},
+     "view": {
+      "step": 999,
+      "explode": 0,
+      "door": 0,
+      "tagsOff": [
+       "furniture"
+      ]
+     }
+    },
+    {
+     "k": "music",
+     "name": "rain",
+     "secs": 8
+    },
+    {
+     "k": "cam",
+     "cam": {
+      "kind": "move",
+      "move": "spiral",
+      "subject": "dome",
+      "radius": 9,
+      "height": 5,
+      "turns": 0.35,
+      "lens": 24
+     },
+     "dur": 6.5,
+     "wait": false
+    },
+    {
+     "k": "wait",
+     "s": 1.4
+    },
+    {
+     "k": "flash",
+     "secs": 0.25,
+     "sfx": "boom"
+    },
+    {
+     "k": "wait",
+     "s": 2.0
+    },
+    {
+     "k": "flash",
+     "secs": 0.18,
+     "sfx": "boom"
+    },
+    {
+     "k": "wait",
+     "s": 2.4
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's going to stand. When everything else doesn't.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "toward": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "When everything else doesn't what? Cody. Cody, that's a creepy sentence.",
+   "act": "point",
+   "cam": {
+    "kind": "two",
+    "a": "jet",
+    "b": "cody",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Do the cut again. Slower.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "place",
+   "who": "dale",
+   "at": [
+    -6.0,
+    1.6,
+    170
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "dale",
+   "to": [
+    -4.4,
+    -0.2
+   ],
+   "speed": 1.3,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Look at this. Three generations of men and one of them's wearing jewellery.",
+   "act": "lean",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "dale",
+     "jet",
+     "hank"
+    ],
+    "dir": [
+     -1,
+     0.2,
+     -0.2
+    ],
+    "lens": 30
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's a statement, Dale.",
+   "act": "ear",
+   "earring": false,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "toward": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "So's a mugshot, kid. Hand me a stick. I'll show you how we lost fingers in my day, and we were grateful.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "toward": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "Montage: the ring, again",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    80,
+    12
+   ],
+   "place": {
+    "hank": [
+     0.5,
+     -3.9,
+     -20
+    ],
+    "krystal": [
+     -1.4,
+     -4.2,
+     20
+    ],
+    "maya": [
+     1.4,
+     -4.6,
+     40
+    ],
+    "jet": [
+     -0.4,
+     -4.5,
+     0
+    ],
+    "cody": [
+     -1.0,
+     -3.6,
+     10
+    ],
+    "dale": [
+     2.2,
+     -4.0,
+     60
+    ],
+    "anna": [
+     -5.3,
+     6.9,
+     200
+    ],
+    "dusty": [
+     -5.9,
+     6.3,
+     190
+    ]
+   },
+   "view": {
+    "step": 1,
+    "explode": 0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 16,
+   "mood": "hope"
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 1
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "hammer"
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "lift"
+  },
+  {
+   "k": "act",
+   "who": "cody",
+   "act": "measure"
+  },
+  {
+   "k": "act",
+   "who": "maya",
+   "act": "carry"
+  },
+  {
+   "k": "act",
+   "who": "krystal",
+   "act": "crossed"
+  },
+  {
+   "k": "act",
+   "who": "dale",
+   "act": "lean"
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "phone"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "spiral",
+    "subject": "dome",
+    "radius": 8.5,
+    "height": 5,
+    "turns": 0.5,
+    "lens": 28
+   },
+   "dur": 9,
+   "wait": false
+  },
+  {
+   "k": "build",
+   "from": 1,
+   "to": 7,
+   "every": 0.9
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "anna",
+     "dusty"
+    ],
+    "dir": [
+     0.3,
+     1,
+     -0.2
+    ],
+    "lens": 40
+   },
+   "dur": 3.2,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Wait, are they building it right now? Why didn't anybody tell me?",
+   "act": "phone",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dusty",
+   "text": "Babe. They told you. Twice. You were on the phone.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "dusty",
+    "toward": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "That one's going to fit. I can feel it.",
+   "act": "crossed",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Don't jinx it. We're cursed. Remember the fridge list.",
+   "act": "carry",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "krystal",
+    "dist": 3.2
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "It fits.",
+   "act": "cheer",
+   "pad": 0.5,
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.6,
+    "lens": 24
+   }
+  },
+  {
+   "k": "scene",
+   "name": "Tag: dawn",
+   "at": "patio",
+   "mood": "golden",
+   "sun": [
+    80,
+    6
+   ],
+   "place": {
+    "hank": [
+     0.7,
+     8.0,
+     120
+    ],
+    "krystal": [
+     -0.5,
+     8.4,
+     -60
+    ]
+   },
+   "view": {
+    "step": 7,
+    "explode": 0
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 18,
+   "mood": "sad"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "The station called me too. They wanted to know if you'd take a buyout. Quietly.",
+   "act": "talk",
+   "expr": "sad",
+   "cam": {
+    "kind": "ots",
+    "over": "hank",
+    "at": "krystal",
+    "lens": 50
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "krystal",
+    "size": "close"
+   },
+   "frags": [
+    {
+     "text": "Quietly.",
+     "rate": "-20%",
+     "pause": 0.6
+    },
+    {
+     "text": "I've never done anything quietly in my life.",
+     "rate": "-4%"
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "I know. That's why I said no for you.",
+   "act": "crossed",
+   "expr": "smile",
+   "pad": 0.6,
+   "cam": {
+    "kind": "two",
+    "a": "krystal",
+    "b": "hank",
+    "dist": 3.2,
+    "side": -1
+   }
+  },
+  {
+   "k": "scene",
+   "name": "Coda: Cody, at the frame",
+   "at": "yard",
+   "mood": "overcast",
+   "sun": [
+    100,
+    10
+   ],
+   "place": {
+    "cody": [
+     0.3,
+     -3.7,
+     0
+    ]
+   },
+   "view": {
+    "step": 7,
+    "explode": 0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 9
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "from": [
+     0.6,
+     -7.5,
+     1.4
+    ],
+    "subject": "cody",
+    "dist": 0.55,
+    "lens": 40
+   },
+   "dur": 5,
+   "wait": false
+  },
+  {
+   "k": "expr",
+   "who": "cody",
+   "expr": "vision"
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "wait",
+   "s": 1.6
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Closer.",
+   "act": "vision",
+   "expr": "vision",
+   "pad": 1.2
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ]
+}

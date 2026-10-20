@@ -153,17 +153,16 @@ def title_page(title: str) -> Image.Image:
     return page
 
 
-def numbers_page() -> Image.Image:
-    """For the grown-ups: where the numbers in the pictures come from."""
+NUMBERS_HEAD = "For the grown-ups: the numbers"
+
+
+def numbers_text() -> list[str]:
+    """The end page's paragraphs, worked out from the model: shared by this PDF and the Book Studio."""
     from wedge_book import tokens
     import seed_model
 
     d = kp.sheet()
-    page = Image.new("RGB", (PAGE, PAGE), PAPER)
-    draw = ImageDraw.Draw(page)
-    draw.text((MARGIN, MARGIN), "For the grown-ups: the numbers", font=ImageFont.truetype(kp.FONT_TITLE, 96), fill=ACCENT)
-    body = ImageFont.truetype(FONT_VERSE, 60)
-    paras = [
+    return [
         f"Pip's dome is a real one. Every number in the pictures is worked out by the same code that "
         f"designs the dome in {outline.TITLE}, from one measurement: the longest strut, "
         f"{d['longIn']} inches. From it come {d['diameterFt']:g} feet across, {d['heightFt']:g} feet tall, "
@@ -178,6 +177,15 @@ def numbers_page() -> Image.Image:
         "Domes with the same longest strut take the same panels. On zeanahlab.com/domes, people "
         "with the same size dome find each other -- just like Pip's club.",
     ]
+
+
+def numbers_page() -> Image.Image:
+    """For the grown-ups: where the numbers in the pictures come from."""
+    page = Image.new("RGB", (PAGE, PAGE), PAPER)
+    draw = ImageDraw.Draw(page)
+    draw.text((MARGIN, MARGIN), NUMBERS_HEAD, font=ImageFont.truetype(kp.FONT_TITLE, 96), fill=ACCENT)
+    body = ImageFont.truetype(FONT_VERSE, 60)
+    paras = numbers_text()
     y = MARGIN + 230
     for para in paras:
         words, line = _typeset(para).split(), ""

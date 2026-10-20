@@ -1,0 +1,1152 @@
+{
+ "schema": 1,
+ "title": "My Own Home, My Own Dome",
+ "page": {
+  "w": 8.5,
+  "h": 8.5,
+  "margin": 0.637,
+  "bleed": 0.125,
+  "paper": "#faf4e6"
+ },
+ "styles": {
+  "body": {
+   "font": "Georgia",
+   "size": 12,
+   "leading": 1.4,
+   "colour": "#2c1e14",
+   "align": "left",
+   "weight": 400,
+   "italic": false
+  },
+  "title": {
+   "font": "Rockwell Extra Bold, Rockwell",
+   "size": 40,
+   "leading": 1.05,
+   "colour": "#fff4de",
+   "align": "center",
+   "weight": 800,
+   "italic": false
+  },
+  "heading": {
+   "font": "Rockwell Extra Bold, Rockwell",
+   "size": 24,
+   "leading": 1.2,
+   "colour": "#964818",
+   "align": "left",
+   "weight": 700,
+   "italic": false
+  },
+  "caption": {
+   "font": "Georgia",
+   "size": 9,
+   "leading": 1.3,
+   "colour": "#6e5c48",
+   "align": "left",
+   "weight": 400,
+   "italic": true
+  },
+  "folio": {
+   "font": "Bookman Old Style",
+   "size": 9,
+   "leading": 1,
+   "colour": "#8c7860",
+   "align": "center",
+   "weight": 400,
+   "italic": false
+  },
+  "verse": {
+   "font": "Bookman Old Style",
+   "size": 20,
+   "leading": 1.42,
+   "colour": "#2c1e14",
+   "align": "left",
+   "weight": 400,
+   "italic": false
+  },
+  "title-dark": {
+   "font": "Rockwell Extra Bold, Rockwell",
+   "size": 34,
+   "leading": 1.1,
+   "colour": "#964818",
+   "align": "center",
+   "weight": 800,
+   "italic": false
+  },
+  "byline": {
+   "font": "Bookman Old Style",
+   "size": 14,
+   "leading": 1.3,
+   "colour": "#2c1e14",
+   "align": "center",
+   "weight": 400,
+   "italic": false
+  },
+  "cover-byline": {
+   "font": "Bookman Old Style",
+   "size": 13,
+   "leading": 1.3,
+   "colour": "#ffecc8",
+   "align": "center",
+   "weight": 700,
+   "italic": false
+  },
+  "small": {
+   "font": "Bookman Old Style",
+   "size": 9,
+   "leading": 1.5,
+   "colour": "#6e5c48",
+   "align": "center",
+   "weight": 400,
+   "italic": false
+  },
+  "end": {
+   "font": "Bookman Old Style",
+   "size": 13,
+   "leading": 1.45,
+   "colour": "#2c1e14",
+   "align": "left",
+   "weight": 400,
+   "italic": false
+  }
+ },
+ "pages": [
+  {
+   "id": "p4dface16",
+   "name": "Cover",
+   "frames": [
+    {
+     "id": "ff7630823",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 8.5,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-and-her-dome-at-sunset-v2.jpg",
+     "fit": "cover",
+     "name": "cover picture"
+    },
+    {
+     "id": "faa35fedf",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 3.06,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "rgba(18,12,8,0.45)",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "title shade"
+    },
+    {
+     "id": "f161ba37d",
+     "kind": "text",
+     "x": 0.4,
+     "y": 0.5,
+     "w": 7.7,
+     "h": 1.9,
+     "rot": 0,
+     "text": "My Own Home,\nMy Own Dome",
+     "style": "title",
+     "name": "title"
+    },
+    {
+     "id": "f241365e1",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 7.6925,
+     "w": 8.5,
+     "h": 0.8075,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "rgba(18,12,8,0.6)",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "byline band"
+    },
+    {
+     "id": "fc1975d75",
+     "kind": "text",
+     "x": 0.4,
+     "y": 7.862500000000001,
+     "w": 7.7,
+     "h": 0.4,
+     "rot": 0,
+     "text": "A rhyming picture book  ·  Donovan Zeanah",
+     "style": "cover-byline",
+     "name": "byline"
+    }
+   ]
+  },
+  {
+   "id": "ped9995b8",
+   "name": "Title page",
+   "frames": [
+    {
+     "id": "f45591ee3",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 2.55,
+     "w": 7.226666666666667,
+     "h": 1.2,
+     "rot": 0,
+     "text": "My Own Home, My Own Dome",
+     "style": "title-dark"
+    },
+    {
+     "id": "f19d52705",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 3.825,
+     "w": 7.226666666666667,
+     "h": 0.9,
+     "rot": 0,
+     "text": "written by\n\n**Donovan Zeanah**",
+     "style": "byline"
+    },
+    {
+     "id": "f3d7c2de5",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.63,
+     "w": 7.226666666666667,
+     "h": 1.1,
+     "rot": 0,
+     "text": "Every picture is drawn in the same world as the grown-ups' book,\nThe 40 Hour Cabin: the same dome, the same log, the same saw.\nCopyright © 2026 Donovan Zeanah.  zeanahlab.com/kids",
+     "style": "small"
+    }
+   ]
+  },
+  {
+   "id": "pc44f764b",
+   "name": "Spread 1",
+   "frames": [
+    {
+     "id": "f7c65fac4",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-in-the-town-of-boxes-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f5293496b",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f5ba8b50a",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "In a town full of boxes, all stacked up so tall,\nlived a girl named Pip Pine who said, “Boxes? Not all!\nA box has four corners, and corners grow dust.\nI want a round home. A round home! I must!”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f0ed02c80",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "1",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p63bafe5a",
+   "name": "Spread 2",
+   "frames": [
+    {
+     "id": "fe678ebb9",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-dreams-of-a-round-home-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f71e65033",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fbee58420",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "“A dome!” Pip decided. “A dome I will build,\nwith a roof like the sky when the sky is all filled\nwith the curve of the morning, the bend of the sun —\na home with no corners! Not one! Not a one!”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f5ab5da88",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "2",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p10297f99",
+   "name": "Spread 3",
+   "frames": [
+    {
+     "id": "fc30dec22",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-walks-past-the-lumber-yard-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f3ba3ecfc",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f4213ad8f",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "So she marched past the lumber yard, stacked to the eaves\nwith boards wrapped in plastic and tags on their sleeves.\n“No thank you,” said Pip. “I won’t buy all my sticks.\nI will find them, and split them, and fit them like bricks.”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f06837769",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "3",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p6d3f2e6f",
+   "name": "Spread 4",
+   "frames": [
+    {
+     "id": "f5240a417",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-meets-the-fallen-pine-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "fafc5a0be",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fd1fd653f",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "At the edge of the forest a fallen pine lay,\njust as round as a barrel and long as a day.\n“Hello, Mister Log,” Pip said, tipping her hat.\n“Would you like to be home? Would you, please, become that?”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "fb175303f",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "4",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p779d49d2",
+   "name": "Spread 5",
+   "frames": [
+    {
+     "id": "fc94072c9",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-and-her-saw-tape-level-and-lunch-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f9f205b3b",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fb4db809d",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "The log didn’t answer (most logs never talk),\nso Pip took the silence as “Yes!” and a “Walk!”\nShe fetched one good saw and one bright chalky line,\none level, one tape, and one lunch box. Just fine.",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f6aada1d9",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "5",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "pdf8d82e9",
+   "name": "Spread 6",
+   "frames": [
+    {
+     "id": "f35535afc",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/the-log-split-into-eight-wedges.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f120a82fb",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fef2a4cf4",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "Zzzip! went the saw, and the log split in two.\nZzzip! went the saw, and the twos split anew.\nThen halves became quarters, and quarters made eight —\neight wedges like pie slices stacked on a plate.",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "fdb7fd563",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "6",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p30fcd0da",
+   "name": "Spread 7",
+   "frames": [
+    {
+     "id": "fc7a7efd1",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-and-the-stack-of-wedges-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "fdcac9400",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f7072ec15",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "“A wedge,” Pip declared, “is a bone of my dome!\nEach wedge is a rib of my own little home.\nI’ll cut them to length — not too short, not too long —\nfor a strut that’s too short makes a dome that goes wrong.”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f60fb8798",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "7",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p5ad81a24",
+   "name": "Spread 8",
+   "frames": [
+    {
+     "id": "f2493213d",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/the-longest-strut-in-chalk-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "fdc1491ce",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f5e6acfd6",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "She measured one strut, just the longest of all,\nand she wrote it in chalk on the side of the wall.\n“From this one little number,” said Pip with a grin,\n“I can count out the whole of the house I’ll live in!”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f8de3d80a",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "8",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p1aed9cfd",
+   "name": "Spread 9",
+   "frames": [
+    {
+     "id": "fe21f3266",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/the-dome-measured-across-and-tall-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f7c61640b",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fe643628f",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "“How tall? And how wide? And how much will it weigh?\nHow many triangles? How long will it stay?\nIt’s all in the number. The number’s the key.\nIf I know my long strut, then my dome will know me.”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f8170991c",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "9",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p1520b5e9",
+   "name": "Spread 10",
+   "frames": [
+    {
+     "id": "fba60ad72",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/wedges-in-pinwheels-of-three.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f0493c352",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f81e497ec",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "Then wedge after wedge went in pinwheels of three,\neach one leaning on one, like a hug, don’t you see?\nNo nails at the corners, no hubs made of tin,\njust a wedge holding wedge holding wedge holding in.",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f85c3f468",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "10",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p9bfb5356",
+   "name": "Spread 11",
+   "frames": [
+    {
+     "id": "fc309ecec",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-and-the-last-triangles-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "fb016f290",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fb2ab4e4e",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "Triangle! Triangle! Up the ring rose,\nlittle triangle windows in tidy round rows,\nand the rows bent together and curved toward the top,\ntill the very last triangle — click! — made it stop.",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f92e1cdff",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "11",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p0ea5b6aa",
+   "name": "Spread 12",
+   "frames": [
+    {
+     "id": "fe12e1bec",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/the-neighbours-come-running-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "fdb1a72c8",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f1e38b6aa",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "The neighbours came running. “What IS that?” they cried.\n“It is round on the outside! It’s round on the inside!”\n“It’s my home,” Pip said proudly. “My dome. It is mine.\nI can tell you its weight. I can tell you each line.”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "fbca8bede",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "12",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p1c766920",
+   "name": "Spread 13",
+   "frames": [
+    {
+     "id": "f3b145dab",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pips-dome-written-down.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f27801e6e",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fbf66bffb",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "“I can tell you the wood and the screws that it took.\nI can tell you the hours — they’re all in my book.\nThere’s no secret, no guess, no ‘oh, roughly, we think’ —\njust numbers you count, written down in black ink.”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f0339e027",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "13",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p57e5c857",
+   "name": "Spread 14",
+   "frames": [
+    {
+     "id": "f89f97906",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/pip-and-the-boy-with-a-fallen-panel-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f1bb3cf34",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "fb6e5aa23",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "Then a boy from the boxes came up with a frown.\n“My dome has a hole, and a panel fell down.”\nPip asked, “What’s your long strut?” He said, “Same as yours!”\n“Then my panels fit yours, like the doors fit their doors!”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f1e75099d",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "14",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "pcc4c2f9f",
+   "name": "Spread 15",
+   "frames": [
+    {
+     "id": "f315a1b24",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/the-dome-club-trading-panels-v2.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "f937fb5ac",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f5744f501",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "So the kids with same domes started up a big club,\nwhere they swapped out their panels and shared tools and grub,\nand they learned from each other which way the wind blows,\nand which wedge goes where, and how everyone grows.",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f300d8e7f",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "15",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p3fe2ec52",
+   "name": "Spread 16",
+   "frames": [
+    {
+     "id": "f053fe067",
+     "kind": "image",
+     "x": 0.0,
+     "y": 0.0,
+     "w": 8.5,
+     "h": 5.863333333333333,
+     "rot": 0,
+     "src": "assets/images/scenes/domes-on-the-hill-at-night.jpg",
+     "fit": "cover",
+     "name": "picture"
+    },
+    {
+     "id": "fcf6e8c9b",
+     "kind": "shape",
+     "x": 0.0,
+     "y": 5.8533333333333335,
+     "w": 8.5,
+     "h": 0.03,
+     "rot": 0,
+     "shape": "rect",
+     "fill": "#784e2e",
+     "stroke": "",
+     "strokeW": 0,
+     "name": "rule"
+    },
+    {
+     "id": "f241f02e2",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 6.0633333333333335,
+     "w": 7.226666666666667,
+     "h": 1.8866666666666667,
+     "rot": 0,
+     "text": "Now the town full of boxes has domes on the hill,\nlittle round ones and big ones, and more coming still.\nAnd at night, when the sky makes a dome of its own,\nPip curls up in hers. “My own dome. My own home.”",
+     "style": "verse",
+     "name": "verse"
+    },
+    {
+     "id": "f4fef00f2",
+     "kind": "text",
+     "x": 0.0,
+     "y": 8.05,
+     "w": 8.5,
+     "h": 0.3,
+     "rot": 0,
+     "text": "16",
+     "style": "folio",
+     "name": "folio"
+    }
+   ]
+  },
+  {
+   "id": "p876a2cc3",
+   "name": "For the grown-ups",
+   "frames": [
+    {
+     "id": "f41c1be3f",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 0.6366666666666667,
+     "w": 7.226666666666667,
+     "h": 0.8,
+     "rot": 0,
+     "text": "For the grown-ups: the numbers",
+     "style": "heading"
+    },
+    {
+     "id": "ffcb1c779",
+     "kind": "text",
+     "x": 0.6366666666666667,
+     "y": 1.5866666666666667,
+     "w": 7.226666666666667,
+     "h": 6.276666666666666,
+     "rot": 0,
+     "text": "Pip’s dome is a real one. Every number in the pictures is worked out by the same code that designs the dome in The 40 Hour Cabin, from one measurement: the longest strut, 72 inches. From it come 19.42 feet across, 9.71 feet tall, 40 triangles and 120 wedges.\n\nThe frame weight, 2,478 pounds, is the wood alone: 65.22 cubic feet of green pine at 38 pounds a cubic foot, a published density. The screws and glue are priced in the model, not weighed. The 37.5 hours of frame work are the book’s own count.\n\nThe pictures are drawn in the book’s 3-D world, which is built from a heavier 15-inch log than the 12-inch log the numbers are for, so the frame reads at picture size. The shape is the same.\n\nDomes with the same longest strut take the same panels. On zeanahlab.com/domes, people with the same size dome find each other — just like Pip’s club.",
+     "style": "end"
+    }
+   ]
+  }
+ ],
+ "source": {
+  "imported_from": "kids_book.build",
+  "verse": "books/my-own-home-my-own-dome/verse.md",
+  "note": "The verse and pictures were the kids_book engine's; edits here are the layout's own."
+ }
+}

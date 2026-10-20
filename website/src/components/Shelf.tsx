@@ -8,7 +8,7 @@ import { book as bookFacts } from "../lib/facts";
 import Buy from "./Buy";
 import { ErrorLine, Panel } from "./ui";
 
-function Waitlist({ source, label }: { source: string; label: string }) {
+export function Waitlist({ source, label }: { source: string; label: string }) {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);

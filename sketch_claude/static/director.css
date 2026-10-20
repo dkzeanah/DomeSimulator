@@ -1,0 +1,75 @@
+[hidden] { display: none !important; }
+:root { --bg: #17181b; --panel: #202226; --panel2: #2a2d32; --line: #3a3d44; --ink: #e9e6df; --muted: #9a978f; --accent: #e07a3f; --sel: #5b9cff; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { font: 13px/1.35 "Segoe UI", system-ui, sans-serif; color: var(--ink); background: var(--bg); display: grid;
+       grid-template-rows: auto 1fr 250px; overflow: hidden; }
+button, select, input, textarea, .btn { font: inherit; color: inherit; }
+button, .btn { background: var(--panel2); border: 1px solid var(--line); border-radius: 5px; padding: 4px 9px; cursor: pointer; text-decoration: none; }
+button:hover, .btn:hover { border-color: #5a5e66; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #1b1a17; font-weight: 700; }
+button.on { background: #3a3f48; border-color: #6a6f78; }
+select, input[type=number], input[type=text], input:not([type]), textarea { background: #15161a; border: 1px solid var(--line); border-radius: 4px; padding: 3px 6px; }
+textarea { width: 100%; resize: vertical; }
+.muted { color: var(--muted); }
+.grow { flex: 1; }
+.bar { display: flex; align-items: center; gap: 10px; padding: 6px 12px; background: var(--panel); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.brand b { font-size: 14px; } .tag { color: var(--accent); font-size: 11px; font-weight: 700; margin-left: 6px; }
+.transport { display: flex; align-items: center; gap: 4px; }
+.transport button { min-width: 34px; }
+.clock { font-family: Consolas, monospace; font-size: 14px; margin-left: 8px; }
+.status { color: var(--muted); font-size: 12px; max-width: 420px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+main { display: grid; grid-template-columns: 1fr 390px; min-height: 0; }
+.view { display: grid; place-items: center; min-width: 0; min-height: 0; background: #0d0e10; padding: 8px; }
+.frame { position: relative; width: 100%; max-height: 100%; aspect-ratio: 16 / 9; max-width: calc((100vh - 330px) * 16 / 9); background: #000; }
+.frame canvas { width: 100%; height: 100%; display: block; }
+.cine-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.shotinfo { position: absolute; left: 8px; top: 8px; font: 11px Consolas, monospace; color: #fff; background: #0008; padding: 2px 6px; border-radius: 3px; pointer-events: none; }
+.side { background: var(--panel); border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+.tabs { display: flex; flex-wrap: wrap; gap: 2px; padding: 6px; border-bottom: 1px solid var(--line); }
+.tabs button { padding: 3px 8px; font-size: 12px; }
+.tab { display: none; padding: 10px; overflow: auto; flex: 1; }
+.tab.on { display: block; }
+.tab h3 { margin: 4px 0 8px; font-size: 14px; }
+.tab label { display: flex; align-items: center; gap: 6px; margin: 5px 0; }
+.tab label > span:first-child { min-width: 78px; color: var(--muted); }
+.tab .row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.kv { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--line); padding: 2px 0; }
+.bars .b { display: flex; align-items: center; gap: 6px; margin: 3px 0; font-size: 12px; }
+.bars .b i { display: block; height: 10px; border-radius: 2px; }
+.script .ln { padding: 3px 5px; border-radius: 4px; cursor: pointer; display: grid; grid-template-columns: 52px 1fr; gap: 6px; font-size: 12px; }
+.script .ln:hover { background: var(--panel2); }
+.script .ln.sel { background: #2b3b58; }
+.script .ln .t { color: var(--muted); font-family: Consolas, monospace; }
+.script .ln.scene { font-weight: 700; color: var(--accent); margin-top: 6px; }
+.script .who { font-weight: 700; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+.thumbs figure { margin: 0; font-size: 11px; color: var(--muted); cursor: pointer; }
+.thumbs img { width: 100%; display: block; border-radius: 3px; }
+.dir .moves { display: flex; flex-wrap: wrap; gap: 4px; }
+.dir .moves button { font-size: 12px; padding: 3px 7px; }
+.job { border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; margin: 6px 0; background: #1a1b1f; }
+.job pre { max-height: 110px; overflow: auto; font-size: 11px; white-space: pre-wrap; margin: 4px 0 0; }
+.out a { display: block; color: var(--sel); text-decoration: none; font-size: 12px; }
+
+.timeline { background: var(--panel); border-top: 1px solid var(--line); display: grid; grid-template-rows: auto 1fr; min-height: 0; }
+.tl-bar { display: flex; align-items: center; gap: 10px; padding: 4px 10px; border-bottom: 1px solid var(--line); font-size: 12px; }
+.tl-bar label { display: flex; align-items: center; gap: 5px; }
+.legend span { display: inline-flex; align-items: center; gap: 4px; margin-left: 10px; }
+.legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.tl-body { display: grid; grid-template-columns: 96px 1fr; min-height: 0; }
+.tl-labels { border-right: 1px solid var(--line); }
+.tl-labels div { height: var(--h); display: flex; align-items: center; padding-left: 8px; font-size: 11px; color: var(--muted); border-bottom: 1px solid #2a2c31; }
+.tl-scroll { overflow-x: auto; overflow-y: hidden; position: relative; }
+.tl-canvas { position: relative; height: 100%; cursor: text; }
+.tl-track { position: absolute; left: 0; right: 0; border-bottom: 1px solid #2a2c31; }
+.blk { position: absolute; top: 2px; bottom: 2px; border-radius: 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 10.5px;
+       padding: 1px 4px; color: #111; cursor: pointer; border: 1px solid #0005; }
+.blk:hover { filter: brightness(1.15); }
+.blk.sel { outline: 2px solid var(--sel); outline-offset: 0; z-index: 2; }
+.blk.thumb { padding: 0; background: #000; }
+.blk.thumb img { height: 100%; display: block; }
+.tick { position: absolute; top: 0; height: 18px; border-left: 1px solid #555; font-size: 10px; color: var(--muted); padding-left: 3px; }
+.tl-head { position: absolute; top: 0; bottom: 0; width: 2px; background: #ff4d4d; z-index: 5; pointer-events: none; }
+.tl-head::before { content: ""; position: absolute; top: 0; left: -5px; border: 6px solid transparent; border-top-color: #ff4d4d; }

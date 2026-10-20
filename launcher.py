@@ -30,10 +30,20 @@ import render_presets
 
 ROOT = Path(__file__).resolve().parent
 
+#: The domes the launcher's sketch-claude tab can draw a plan set for (the app offers any size).
+_SKETCH_SIZES = {
+    "16 ft reference (4.88 m)": {},
+    "4 m": {"diameter_m": 4.0},
+    "15 ft (4.57 m)": {"diameter_m": 4.572},
+    "5 m": {"diameter_m": 5.0},
+    "6 m": {"diameter_m": 6.0},
+    "2V hemisphere, 4 m": {"frequency": 2, "cut": "1/2", "diameter_m": 4.0},
+}
+
 #: The sidebar's groups, in order, and which tools sit in each. A tool not
 #: listed lands in "Other", so adding a tab never makes it disappear.
 NAV_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("Design & build", ("Dome Creator", "Dome Forge", "Dome Composer",
+    ("Design & build", ("Dome Creator", "Dome Forge", "Dome Composer", "sketch-claude",
                         "Raw Wedge Dome", "Assembly Line",
                         "Assembly Line (Simple)", "Flatten Utility")),
     ("Films & media", ("Masterclass", "Re-render Queue", "My Voice", "Presenter Studio",
@@ -1928,6 +1938,42 @@ def main() -> int:
     ttk.Separator(foot).pack(fill="x")
     launch_button(foot, "Launch Raw Wedge Dome", go_raw_wedge)
 
+    # ---- sketch-claude: Dome Sketch ---------------------------------------
+    sc_tab = tab("sketch-claude")
+    sc_head = ttk.Frame(sc_tab, padding=14)
+    sc_head.pack(fill="both", expand=True)
+    intro(sc_head, "Dome Sketch (sketch-claude) is a SketchUp-style modeller for the framed-panel "
+          "dome. It opens in your web browser: orbit, pan and zoom the dome, click any stick to see "
+          "its length and saw settings, measure with the tape, cut a section, explode it, step "
+          "through the build, and switch between scenes (exterior, frame, panel map, floor plan, "
+          "inside). Change the size, the geodesic, the skin, the door and the windows and the whole "
+          "model is re-solved.")
+    note(sc_head, "Make plan set draws the full construction set as a numbered PDF in deliverables: "
+         "materials, every panel and stick, the cut list, each step of the jig method with drawings, "
+         "the base layout, the door, the sheet layout, a floor plan and a showcase. Render showcase "
+         "makes the promotional pictures in their own numbered folder. Every figure is computed from "
+         "the model; the inputs it was told are listed on the last sheet.")
+    sc_size = LabeledCombo(sc_head, "Dome to draw", list(_SKETCH_SIZES), "16 ft reference (4.88 m)")
+    sc_size.pack(fill="x", pady=3)
+    note(sc_head, "Only the plan-set and showcase buttons use this; inside the app you choose the dome yourself.")
+
+    def _sc_spec() -> list[str]:
+        import json as _json
+        return ["--spec", _json.dumps(_SKETCH_SIZES.get(sc_size.var.get(), {}))]
+
+    launch_button(sc_head, "Open Dome Sketch (in the browser)",
+                  lambda: run_module("sketch_claude", ["serve"], "Dome Sketch"))
+    launch_button(sc_head, "Make plan set (PDF)",
+                  lambda: run_module("sketch_claude", ["plans", *_sc_spec()], "sketch-claude plan set"))
+    launch_button(sc_head, "Render showcase pictures",
+                  lambda: run_module("sketch_claude", ["showcase", *_sc_spec()], "sketch-claude showcase"))
+    launch_button(sc_head, "Open the Episode Director (Level With Me)",
+                  lambda: run_module("sketch_claude", ["serve", "--page", "director"], "Episode Director"))
+    launch_button(sc_head, "Render episode S1E1 (MP4 release)",
+                  lambda: run_module("sketch_claude", ["episode", "--episode", "s01e01"], "Level With Me S1E1 render"))
+    launch_button(sc_head, "Self-test",
+                  lambda: run_module("sketch_claude", ["selftest"], "sketch-claude self-test"))
+
     # ---- Beat Studio ------------------------------------------------------
 
     # ------------------------------------------------------------------
@@ -3040,10 +3086,10 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 22
+        expected = 23
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 33
+        expected_buttons = 39
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks

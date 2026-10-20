@@ -2,5 +2,5 @@
 numpy>=1.26,<3
 sounddevice>=0.5,<1
 # Presentation Voice uses the same online neural TTS as the films.
-edge-tts>=7.2.8,<8
+edge-tts>=7.3.1,<8   # 7.2.8 and older get HTTP 403 from the speech endpoint (Oct 2026)
 imageio-ffmpeg>=0.6,<1

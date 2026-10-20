@@ -65,6 +65,17 @@
   "copy_of": null,
   "prompt": null
  },
+ "chainsaw": {
+  "name": "chainsaw",
+  "version": 1,
+  "file": "images/illustrations/chainsaw.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "An orange chainsaw with a silver bar and chain."
+ },
  "chainsaw-kit-flat-lay": {
   "name": "chainsaw-kit-flat-lay",
   "version": 1,
@@ -119,6 +130,17 @@
   "original": "08123fd6-046a-4110-b5a7-87d5517e768a.png",
   "copy_of": null,
   "prompt": null
+ },
+ "fallen-pine-log": {
+  "name": "fallen-pine-log",
+  "version": 1,
+  "file": "images/illustrations/fallen-pine-log.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "A fallen pine log from the side, its cut end showing growth rings."
  },
  "fallen-tree-forest": {
   "name": "fallen-tree-forest",
@@ -516,6 +538,28 @@
   "copy_of": null,
   "prompt": null
  },
+ "golden-sun": {
+  "name": "golden-sun",
+  "version": 1,
+  "file": "images/illustrations/golden-sun.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "A golden sun with twelve rays."
+ },
+ "log-end-split-eight-ways": {
+  "name": "log-end-split-eight-ways",
+  "version": 1,
+  "file": "images/illustrations/log-end-split-eight-ways.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "The end of a log split into eight wedges, opened apart, bark on each back."
+ },
  "log-split-eight-wedges-painted": {
   "name": "log-split-eight-wedges-painted",
   "version": 1,
@@ -560,6 +604,17 @@
   "copy_of": null,
   "prompt": null
  },
+ "night-sky-with-stars": {
+  "name": "night-sky-with-stars",
+  "version": 1,
+  "file": "images/illustrations/night-sky-with-stars.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "A navy night sky full of stars and a crescent moon: a wide background strip."
+ },
  "one-tree-every-rung-value-ladder": {
   "name": "one-tree-every-rung-value-ladder",
   "version": 1,
@@ -570,6 +625,28 @@
   "original": "image-1789236638297.png",
   "copy_of": null,
   "prompt": null
+ },
+ "one-wedge": {
+  "name": "one-wedge",
+  "version": 1,
+  "file": "images/illustrations/one-wedge.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "One wedge split from a log: the sharp point, two sawn faces, the curved bark back."
+ },
+ "pine-tree": {
+  "name": "pine-tree",
+  "version": 1,
+  "file": "images/illustrations/pine-tree.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "A tall pine in four tiers on a short brown trunk."
  },
  "pinwheel-hub-closeup": {
   "name": "pinwheel-hub-closeup",
@@ -757,6 +834,28 @@
   "original": null,
   "copy_of": null,
   "prompt": null
+ },
+ "pip-splits-the-log": {
+  "name": "pip-splits-the-log",
+  "version": 1,
+  "file": "images/illustrations/pip-splits-the-log.svg",
+  "category": "illustrations",
+  "note": "Drawn by DeepSeek in the Book Studio.",
+  "origin": "deepseek",
+  "original": null,
+  "copy_of": null,
+  "prompt": "Pip, a girl with long brown hair and a green hard hat, swings a splitting maul down onto a pine log standing on a stump; the log is opening into wedges, chips flying, pine trees behind, warm afternoon light."
+ },
+ "pip-standing": {
+  "name": "pip-standing",
+  "version": 1,
+  "file": "images/illustrations/pip-standing.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "Pip, a girl with long brown hair, a green hard hat, a hi-vis vest and red trousers, smiling."
  },
  "pip-walks-past-the-lumber-yard": {
   "name": "pip-walks-past-the-lumber-yard",
@@ -967,6 +1066,17 @@
   "copy_of": null,
   "prompt": null
  },
+ "rolling-green-hills": {
+  "name": "rolling-green-hills",
+  "version": 1,
+  "file": "images/illustrations/rolling-green-hills.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "Two bands of rolling green hills under a sunset sky: a wide background strip."
+ },
  "seam-key-cross-section": {
   "name": "seam-key-cross-section",
   "version": 1,
@@ -1010,6 +1120,39 @@
   "original": "6593b78b-4e7f-49da-a257-2ed5980be985.png",
   "copy_of": null,
   "prompt": null
+ },
+ "solver-2v-dome-frame": {
+  "name": "solver-2v-dome-frame",
+  "version": 1,
+  "file": "images/illustrations/solver-2v-dome-frame.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "The solver's 2V dome as a bare frame: 65 struts meeting at 26 nodes."
+ },
+ "solver-2v-dome-panelled": {
+  "name": "solver-2v-dome-panelled",
+  "version": 1,
+  "file": "images/illustrations/solver-2v-dome-panelled.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "The solver's 2V wedge dome closed in, seen from a little above, its triangles shaded by the light."
+ },
+ "splitting-maul": {
+  "name": "splitting-maul",
+  "version": 1,
+  "file": "images/illustrations/splitting-maul.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "A splitting maul: a steel head on a wooden handle."
  },
  "the-40-hour-cabin-timberframe-cover": {
   "name": "the-40-hour-cabin-timberframe-cover",
@@ -1120,6 +1263,28 @@
   "original": null,
   "copy_of": null,
   "prompt": null
+ },
+ "town-of-boxes": {
+  "name": "town-of-boxes",
+  "version": 1,
+  "file": "images/illustrations/town-of-boxes.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "A row of tall boxy buildings with lit windows: the town of boxes."
+ },
+ "triangle-of-three-wedges": {
+  "name": "triangle-of-three-wedges",
+  "version": 1,
+  "file": "images/illustrations/triangle-of-three-wedges.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "One triangle panel framed by three wedge struts in a pinwheel."
  },
  "utility-core-column-interior": {
   "name": "utility-core-column-interior",
@@ -1593,6 +1758,17 @@
   "original": null,
   "copy_of": null,
   "prompt": null
+ },
+ "white-cloud": {
+  "name": "white-cloud",
+  "version": 1,
+  "file": "images/illustrations/white-cloud.svg",
+  "category": "illustrations",
+  "note": "Drawn by books.studio.elements (Claude's starter library).",
+  "origin": "claude",
+  "original": null,
+  "copy_of": null,
+  "prompt": "A soft white cloud."
  },
  "zeanah-lab-workshop-collage": {
   "name": "zeanah-lab-workshop-collage",
