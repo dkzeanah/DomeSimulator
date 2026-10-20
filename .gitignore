@@ -117,3 +117,7 @@ website/.dev.vars
 # PDFs stay local (books, plates, exports): none are tracked. Older ones
 # remain in history; the files themselves are on disk only.
 *.pdf
+
+# Dome Sketch (sketch-claude): cached character voices and rehearsal takes
+tmp/sketch-claude-voices/
+tmp/sketch-claude-drafts/

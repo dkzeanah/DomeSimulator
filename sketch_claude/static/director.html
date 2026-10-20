@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Episode Director</title>
+<link rel="stylesheet" href="/static/director.css">
+<script type="importmap">{"imports": {"three": "/static/vendor/three.module.min.js"}}</script>
+</head>
+<body>
+<header class="bar">
+  <div class="brand"><b>Episode Director</b><span class="tag">sketch-claude</span></div>
+  <select id="episode" title="Episode"></select>
+  <div class="transport">
+    <button id="t-start" title="To the start (Home)">&#9198;</button>
+    <button id="t-prev" title="Previous shot ([)">&#9664;&#9664;</button>
+    <button id="t-play" class="primary" title="Play / pause (Space)">&#9654;</button>
+    <button id="t-next" title="Next shot (])">&#9654;&#9654;</button>
+    <span class="clock"><output id="t-now">0:00.0</output> / <output id="t-total">-:--</output></span>
+  </div>
+  <span id="status" class="status">Loading the world...</span>
+  <span class="grow"></span>
+  <button id="b-compile" title="Re-time the episode from its beats">Re-time</button>
+  <button id="b-board" title="A thumbnail at every shot, in one pass">Storyboard</button>
+  <a class="btn" href="/" target="_blank" title="The modeller, in its own tab">Dome Sketch &#8599;</a>
+</header>
+
+<main>
+  <section class="view">
+    <div class="frame" id="frame"><canvas id="gl"></canvas><div id="shotinfo" class="shotinfo"></div></div>
+  </section>
+  <aside class="side">
+    <nav class="tabs" id="tabs">
+      <button data-t="inspect" class="on">Inspector</button><button data-t="script">Script</button><button data-t="cast">Cast</button>
+      <button data-t="stats">Analysis</button><button data-t="camera">Camera</button><button data-t="render">Render</button>
+    </nav>
+    <div class="tab on" id="tab-inspect"><p class="muted">Click a block on the timeline, or a line in the Script, to see and edit its beat.</p></div>
+    <div class="tab" id="tab-script"><input id="sc-filter" placeholder="Filter the script"><div id="script" class="script"></div></div>
+    <div class="tab" id="tab-cast"><div id="cast"></div></div>
+    <div class="tab" id="tab-stats"><div id="stats"></div></div>
+    <div class="tab" id="tab-camera"><div id="camera"></div></div>
+    <div class="tab" id="tab-render"><div id="render"></div></div>
+  </aside>
+</main>
+
+<section class="timeline" id="timeline">
+  <div class="tl-bar">
+    <label>Zoom <input type="range" id="tl-zoom" min="4" max="160" value="14"></label>
+    <button id="tl-fit">Fit</button>
+    <label class="chk"><input type="checkbox" id="tl-follow" checked> Follow</label>
+    <span class="grow"></span>
+    <span id="tl-legend" class="legend"></span>
+  </div>
+  <div class="tl-body" id="tl-body">
+    <div class="tl-labels" id="tl-labels"></div>
+    <div class="tl-scroll" id="tl-scroll"><div class="tl-canvas" id="tl-canvas"><div class="tl-head" id="tl-head"></div></div></div>
+  </div>
+</section>
+<script type="module" src="/static/director.js"></script>
+</body>
+</html>

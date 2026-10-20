@@ -9,6 +9,7 @@ body { font: 13px/1.35 "Segoe UI", system-ui, sans-serif; color: var(--ink); bac
 button, select, input { font: inherit; color: inherit; }
 button { background: var(--btn); border: 1px solid var(--line); border-radius: 5px; padding: 4px 9px; cursor: pointer; }
 button:hover { border-color: #a9a59b; }
+.btn { background: var(--btn); border: 1px solid var(--line); border-radius: 5px; padding: 4px 9px; color: inherit; text-decoration: none; }
 button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
 button.on { background: var(--btn-on); border-color: #a9a59b; }
 select, input[type=number] { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 2px 5px; }

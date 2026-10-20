@@ -36,6 +36,14 @@ HERE = Path(__file__).resolve().parent
 STATIC = HERE / "static"
 ROOT = HERE.parent
 PORT = 8767
+EPISODES = HERE / "episodes"
+
+
+def _episode_file(eid: str) -> Path:
+    import re as _re
+    if not _re.fullmatch(r"s\d{2}e\d{2}", eid):
+        raise ValueError("episodes are named like s01e01")
+    return EPISODES / f"{eid}.json"
 
 PRESETS = {
     "reference": {"label": "16 ft reference (4.88 m)", "spec": {"frequency": 3, "cut": "5/8", "diameter_m": M.D("diameter_m")}},
@@ -109,9 +117,9 @@ def scene(spec: M.Spec) -> dict:
 JOBS: dict[str, dict] = {}
 
 
-def start_job(kind: str, spec: M.Spec) -> dict:
+def start_job(kind: str, spec: M.Spec, extra: list[str] | None = None) -> dict:
     jid = f"{kind}-{int(time.time() * 1000)}"
-    cmd = [sys.executable, "-m", "sketch_claude", kind, "--spec", json.dumps(spec.to_dict())]
+    cmd = [sys.executable, "-m", "sketch_claude", kind, "--spec", json.dumps(spec.to_dict()), *(extra or [])]
     job = {"id": jid, "kind": kind, "state": "running", "log": "", "started": time.time(), "ended": None, "output": None,
            "title": spec.title}
     JOBS[jid] = job
@@ -138,7 +146,9 @@ def start_job(kind: str, spec: M.Spec) -> dict:
 def outputs() -> list[dict]:
     import medialib
     out = []
-    for slug in (f"{TAG}-plans", f"{TAG}-showcase"):
+    import medialib as _ml
+    slugs = {o.slug for o in _ml.outputs() if o.slug.startswith(TAG)}
+    for slug in sorted(slugs):
         for o in medialib.outputs(slug):
             folder = Path(o.folder) if hasattr(o, "folder") else None
             files = sorted(p for p in (folder.iterdir() if folder and folder.is_dir() else []) if p.suffix.lower() in (".pdf", ".png", ".jpg", ".md"))
@@ -187,6 +197,19 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if u.path in ("/", "/index.html"):
                 return self._file(STATIC / "index.html")
+            if u.path in ("/director", "/director/"):
+                return self._file(STATIC / "director.html")
+            if u.path == "/api/series":
+                return self._file(EPISODES / "series.json")
+            if u.path == "/api/episodes":
+                eps = []
+                for f in sorted(EPISODES.glob("s[0-9][0-9]e[0-9][0-9].json")):
+                    d = json.loads(f.read_text(encoding="utf-8"))
+                    eps.append({"id": d["id"], "number": d.get("number", d["id"]), "title": d.get("title", "")})
+                return self._json(eps)
+            if u.path.startswith("/api/episode/"):
+                f = _episode_file(u.path.rsplit("/", 1)[1])
+                return self._file(f) if f.is_file() else self._err(404, "no such episode")
             if u.path.startswith("/static/"):
                 f = (STATIC / u.path[len("/static/"):]).resolve()
                 if not f.is_relative_to(STATIC) or not f.is_file():
@@ -209,10 +232,61 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:      # the page shows the message
             return self._err(500, f"{type(e).__name__}: {e}")
 
+    def do_PUT(self):
+        u = urlparse(self.path)
+        try:
+            if u.path.startswith("/api/episode/"):
+                f = _episode_file(u.path.rsplit("/", 1)[1])
+                d = self._body()
+                if not isinstance(d.get("beats"), list):
+                    return self._err(400, "an episode needs a list of beats")
+                kept = None
+                if f.exists():
+                    import datetime as _dt
+                    keep = EPISODES / ".versions"
+                    keep.mkdir(exist_ok=True)
+                    kept = keep / f"{f.stem}-{_dt.datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
+                    kept.write_bytes(f.read_bytes())
+                f.write_text(json.dumps(d, indent=1, ensure_ascii=False), encoding="utf-8")
+                return self._json({"ok": True, "kept": kept.relative_to(ROOT).as_posix() if kept else None})
+            return self._err(404, "not found")
+        except Exception as e:
+            return self._err(400, f"{type(e).__name__}: {e}")
+
     def do_POST(self):
         u = urlparse(self.path)
         try:
+            if u.path.startswith("/api/render/"):
+                from . import episode_server as E
+                q = {k: v[0] for k, v in parse_qs(u.query).items()}
+                n = int(self.headers.get("Content-Length") or 0)
+                raw = self.rfile.read(n)
+                if u.path == "/api/render/start":
+                    b = json.loads(raw or b"{}")
+                    return self._json(E.render_start(b.get("slug", "take"), int(b.get("fps", 30)), bool(b.get("draft"))))
+                if u.path == "/api/render/frame":
+                    return self._json(E.render_frame(q["id"], raw, int(q["n"])))
+                if u.path == "/api/render/finish":
+                    k = int.from_bytes(raw[:4], "little")
+                    meta = json.loads(raw[4:4 + k].decode("utf-8"))
+                    return self._json(E.render_finish(meta["id"], raw[4 + k:], meta))
+                if u.path == "/api/render/abort":
+                    return self._json(E.render_abort(q.get("id", "")))
+            if u.path == "/api/recording":
+                from . import episode_server as E
+                n = int(self.headers.get("Content-Length") or 0)
+                raw = self.rfile.read(n)
+                k = int.from_bytes(raw[:4], "little")
+                meta = json.loads(raw[4:4 + k].decode("utf-8"))
+                return self._json(E.save_recording(raw[4 + k:], meta))
             b = self._body()
+            if u.path == "/api/voice":
+                from . import episode_server as E
+                f = E.voice(b["text"], b.get("voice", "en-US-GuyNeural"), b.get("rate", "+0%"), b.get("pitch", "+0Hz"))
+                return self._send(200, f.read_bytes(), "audio/mpeg")
+            if u.path == "/api/set":
+                from . import episode_server as E
+                return self._json(E.set_pieces(M.Spec.from_dict(b.get("spec") or {})))
             spec = M.Spec.from_dict(b.get("spec") or {})
             if u.path == "/api/model":
                 return self._json(scene(spec))
@@ -220,8 +294,14 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(start_job("plans", spec))
             if u.path == "/api/showcase":
                 return self._json(start_job("showcase", spec))
+            if u.path == "/api/episode-render":
+                extra = ["--episode", str(b.get("episode", "s01e01"))] + (["--draft"] if b.get("draft") else [])
+                return self._json(start_job("episode", spec, extra))
+            if u.path == "/api/episode":
+                return self._json(start_job("episode", spec, ["--draft"] if b.get("draft") else []))
             return self._err(404, "not found")
         except Exception as e:
+            print(f"[server] {u.path}: {type(e).__name__}: {e}", flush=True)
             return self._err(400, f"{type(e).__name__}: {e}")
 
 

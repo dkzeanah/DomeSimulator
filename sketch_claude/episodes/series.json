@@ -1,0 +1,23 @@
+{
+  "title": "Level With Me",
+  "logline": "Hank Hardwick hosts the worst-rated home-improvement show on local cable. At home his wife runs the house and his three nearly-grown kids are trying to leave it. In the backyard, he is building a dome.",
+  "rating": "PG-13",
+  "tone": "Family sitcom: quick insults, warm under it. The dome is the backyard project, never the point; its figures come from the model.",
+  "show_within": "Hank's Hardware Hour",
+  "cast": {
+    "hank":   {"name": "Hank Hardwick", "role": "dad; host of Hank's Hardware Hour", "voice": "en-US-GuyNeural", "rate": "+6%", "pitch": "+0Hz",
+               "height": 1.80, "skin": "#e2b08a", "shirt": "#b8432f", "shirt2": "#7d2a1d", "pants": "#3f5878", "hair": "#5a3b26", "hairStyle": "short", "belly": 1.14, "toolbelt": true, "colour": "#c8553d"},
+    "denise": {"name": "Denise Hardwick", "role": "mom; ER nurse; runs the house", "voice": "en-US-AriaNeural", "rate": "+4%", "pitch": "+0Hz",
+               "height": 1.68, "skin": "#c98e6a", "shirt": "#3e8c8a", "shirt2": "#2b6866", "pants": "#3e8c8a", "hair": "#2a1a12", "hairStyle": "bun", "belly": 0.94, "colour": "#3e8c8a"},
+    "maya":   {"name": "Maya Hardwick", "role": "19, the oldest; films everything", "voice": "en-US-AvaNeural", "rate": "+6%", "pitch": "+0Hz",
+               "height": 1.70, "skin": "#d9a27e", "shirt": "#2c2b33", "shirt2": "#46444f", "pants": "#4c6a8f", "hair": "#3a2418", "hairStyle": "ponytail", "belly": 0.9, "necklace": true, "colour": "#8a6ad1"},
+    "tyler":  {"name": "Tyler Hardwick", "role": "18, the middle one; lives at the gym", "voice": "en-US-BrianNeural", "rate": "+2%", "pitch": "-2Hz",
+               "height": 1.89, "skin": "#d39a76", "shirt": "#c23b3b", "shirt2": "#8e2424", "pants": "#5b5d63", "hair": "#4a3020", "hairStyle": "buzz", "belly": 1.16, "sleeveless": true, "colour": "#d1803b"},
+    "cody":   {"name": "Cody Hardwick", "role": "17, the youngest; has a plan for everything", "voice": "en-US-EricNeural", "rate": "+8%", "pitch": "+2Hz",
+               "height": 1.76, "skin": "#dba27f", "shirt": "#3f6d5a", "shirt2": "#2c4f40", "pants": "#2f3440", "hair": "#2e1e14", "hairStyle": "curly", "belly": 0.92, "glasses": true, "hoodie": true, "colour": "#4f9a6a"},
+    "dale":   {"name": "Dale Plumb", "role": "co-host; measures twice", "voice": "en-US-ChristopherNeural", "rate": "-6%", "pitch": "-2Hz",
+               "height": 1.86, "skin": "#d9a07c", "shirt": "#4f6f4a", "shirt2": "#2f4a2c", "pants": "#6b5a43", "hair": "#7a5a3a", "hairStyle": "short", "beard": "#6b4a2e", "glasses": true, "belly": 1.05, "colour": "#6a8a4a"},
+    "yarrow": {"name": "Mr. Yarrow", "role": "the neighbour over the hedge", "voice": "en-GB-RyanNeural", "rate": "-8%", "pitch": "-3Hz",
+               "height": 1.84, "skin": "#d7a585", "shirt": "#8a7a5a", "shirt2": "#5e5338", "pants": "#4c4a42", "hair": "#cfcac0", "hairStyle": "hat", "belly": 1.0, "colour": "#a08a5a"}
+  }
+}

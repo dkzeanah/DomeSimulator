@@ -1967,6 +1967,10 @@ def main() -> int:
                   lambda: run_module("sketch_claude", ["plans", *_sc_spec()], "sketch-claude plan set"))
     launch_button(sc_head, "Render showcase pictures",
                   lambda: run_module("sketch_claude", ["showcase", *_sc_spec()], "sketch-claude showcase"))
+    launch_button(sc_head, "Open the Episode Director (Level With Me)",
+                  lambda: run_module("sketch_claude", ["serve", "--page", "director"], "Episode Director"))
+    launch_button(sc_head, "Render episode S1E1 (MP4 release)",
+                  lambda: run_module("sketch_claude", ["episode", "--episode", "s01e01"], "Level With Me S1E1 render"))
     launch_button(sc_head, "Self-test",
                   lambda: run_module("sketch_claude", ["selftest"], "sketch-claude self-test"))
 
@@ -3085,7 +3089,7 @@ def main() -> int:
         expected = 23
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 37
+        expected_buttons = 39
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks

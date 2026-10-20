@@ -117,6 +117,33 @@ async function api(path, body) {
   return j;
 }
 
+function makePieceGroup(p) {
+    const v = decode(p.v, Float32Array), t = decode(p.t, Uint32Array), e = decode(p.e, Uint32Array);
+    const g = new THREE.Group();
+    g.userData.piece = p;
+    if (t.length) {
+      const pos = new Float32Array(t.length * 3);
+      for (let i = 0; i < t.length; i++) { pos[i * 3] = v[t[i] * 3]; pos[i * 3 + 1] = v[t[i] * 3 + 1]; pos[i * 3 + 2] = v[t[i] * 3 + 2]; }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+      geo.computeVertexNormals();
+      const mesh = new THREE.Mesh(geo, faceMat(p.material, "base"));
+      mesh.castShadow = p.tag !== "site" && p.tag !== "glass";
+      mesh.receiveShadow = true;
+      mesh.userData.piece = p;
+      g.add(mesh); g.userData.mesh = mesh;
+    }
+    if (e.length && p.tag !== "site") {
+      const lp = new Float32Array(e.length * 3);
+      for (let i = 0; i < e.length; i++) { lp[i * 3] = v[e[i] * 3]; lp[i * 3 + 1] = v[e[i] * 3 + 1]; lp[i * 3 + 2] = v[e[i] * 3 + 2]; }
+      const lg = new THREE.BufferGeometry();
+      lg.setAttribute("position", new THREE.BufferAttribute(lp, 3));
+      const lines = new THREE.LineSegments(lg, p.tag === "skin" || p.tag === "glass" ? edgeSoft : edgeMat);
+      g.add(lines); g.userData.lines = lines;
+    }
+  return g;
+}
+
 let buildToken = 0;
 async function load(spec, keepView = false) {
   const token = ++buildToken;
@@ -130,29 +157,7 @@ async function load(spec, keepView = false) {
     S.pieces.clear(); S.groups.clear(); S.selected.clear();
     S.panelCls = new Map(data.pieces.filter((p) => p.tag === "frame").map((p) => [p.group, p.info.cls]));
     for (const p of data.pieces) {
-      const v = decode(p.v, Float32Array), t = decode(p.t, Uint32Array), e = decode(p.e, Uint32Array);
-      const g = new THREE.Group();
-      g.userData.piece = p;
-      if (t.length) {
-        const pos = new Float32Array(t.length * 3);
-        for (let i = 0; i < t.length; i++) { pos[i * 3] = v[t[i] * 3]; pos[i * 3 + 1] = v[t[i] * 3 + 1]; pos[i * 3 + 2] = v[t[i] * 3 + 2]; }
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-        geo.computeVertexNormals();
-        const mesh = new THREE.Mesh(geo, faceMat(p.material, "base"));
-        mesh.castShadow = p.tag !== "site" && p.tag !== "glass";
-        mesh.receiveShadow = true;
-        mesh.userData.piece = p;
-        g.add(mesh); g.userData.mesh = mesh;
-      }
-      if (e.length && p.tag !== "site") {
-        const lp = new Float32Array(e.length * 3);
-        for (let i = 0; i < e.length; i++) { lp[i * 3] = v[e[i] * 3]; lp[i * 3 + 1] = v[e[i] * 3 + 1]; lp[i * 3 + 2] = v[e[i] * 3 + 2]; }
-        const lg = new THREE.BufferGeometry();
-        lg.setAttribute("position", new THREE.BufferAttribute(lp, 3));
-        const lines = new THREE.LineSegments(lg, p.tag === "skin" || p.tag === "glass" ? edgeSoft : edgeMat);
-        g.add(lines); g.userData.lines = lines;
-      }
+      const g = makePieceGroup(p);
       g.matrixAutoUpdate = false;
       world.add(g);
       S.pieces.set(p.id, g);
@@ -694,14 +699,34 @@ $("#section").oninput = () => { S.section.t = $("#section").value / 100; syncSec
 $("#sec-axis").onchange = () => { S.section.axis = $("#sec-axis").value; syncSection(); };
 
 // ---------------------------------------------------------------- loop
-function frame(now) {
+let lastNow = 0;
+function renderFrame(dt, now) {
   if (anim) anim(now);
-  controls.update();
+  for (const h of ctx.hooks) h(dt, now);
+  if (controls.enabled) controls.update();
   if (camera === ortho) syncOrtho();
   renderer.render(scene, camera);
+  for (const h of ctx.post) h(dt, now);
   placeLabels();
+}
+function frame(now) {
+  const dt = Math.min(0.1, lastNow ? (now - lastNow) / 1000 : 0.016);
+  lastNow = now;
+  if (!ctx.offline) renderFrame(dt, now);      // an offline render drives the frames itself
   requestAnimationFrame(frame);
 }
+
+// What the Director (cine.js, cast.js, episode.js) needs from the modeller.
+const ctx = {
+  THREE, scene, world, renderer, persp, controls, canvas, S, api, decode, faceMat, edgeMat, sun, hemi, lamp, makePieceGroup,
+  hooks: [], post: [], offline: false, renderFrame, applyTransforms, applyVisibility, applyStyle, zoomExtents, bounds, goScene, SCENES, setTool,
+  get camera() { return camera; }, setProjection, toast, both, mm, deg,
+  setView(v) { S.explode = v.explode ?? S.explode; S.step = v.step ?? S.step; S.door = v.door ?? S.door;
+               if (v.tagsOff) S.tagsOff = new Set(v.tagsOff); if (v.style) { S.style = v.style; $("#style").value = v.style; }
+               $("#explode").value = S.explode * 100; $("#step").value = S.step; $("#door").value = S.door;
+               applyStyle(); applyTransforms(); applyVisibility(); renderTags(); },
+};
+window.domeSketch = ctx;
 
 // ---------------------------------------------------------------- start
 (async function start() {
@@ -709,6 +734,8 @@ function frame(now) {
   $("#tag").textContent = S.defaults.tag;
   $("#preset").innerHTML = `<option value="">Choose...</option>` + Object.entries(S.defaults.presets).map(([k, p]) => `<option value="${k}">${esc(p.label)}</option>`).join("");
   $("#f-cut").innerHTML = S.defaults.cuts.map((c) => `<option value="${c.frequency}|${c.cut}">${c.frequency}V ${c.cut}</option>`).join("");
+  const urlSpec = new URLSearchParams(location.search).get("spec");
+  if (urlSpec) { try { Object.assign(S.defaults.spec, JSON.parse(urlSpec)); } catch { /* the default dome */ } }
   fillForm(S.defaults.spec);
   S.spec = S.defaults.spec;
   setTool("select");
@@ -718,4 +745,5 @@ function frame(now) {
   renderScenes(); renderTags();
   goScene(SCENES[0]);
   pollJobs();
+
 })();
