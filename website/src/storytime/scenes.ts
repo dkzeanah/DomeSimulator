@@ -88,7 +88,7 @@ function farPerson(w, key, def, place) {
 function family(w, place, at) {
   // Mama and the two of them on the blanket, looking up at the sky
   const P = w.places[place].position, y0 = at?.y ?? 0;
-  const m = farPerson(w, "mama-" + place, PEOPLE.mama, place), a = farPerson(w, "annika-" + place, PEOPLE.annika, place), r = farPerson(w, "arama-" + place, PEOPLE.arama, place);
+  const m = farPerson(w, "mama-" + place, PEOPLE.mama, place), a = farPerson(w, "annika-" + place, PEOPLE.annika, place), r = farPerson(w, "amara-" + place, PEOPLE.amara, place);
   m.place(0, y0 + 0.15, 0); a.place(-0.65, y0, 0); r.place(0.62, y0 - 0.05, 0);
   for (const c of [m, a, r]) { c.ground = () => -0.3 * c.k; c.place(c.root.position.x, c.root.position.y, 0); act(c, "sit"); c.expr = "smile"; }
   return { m, a, r, P };
@@ -298,4 +298,65 @@ export function makeScenes(w: Storyworld, F: Figures) {
       ] });
     },
   };
+}
+
+/** Every scene a page can be set in, for the Story Studio's picker: name, what it shows, and which book page it re-stages. */
+export const SCENES: { name: string; label: string; group: string }[] = [
+  { name: "stars", label: "Mama and the two of them on the blanket, Dada's star", group: "Bedtime" },
+  { name: "workbench", label: "Dada's workbench far away, under the lamp", group: "Bedtime" },
+  { name: "letter", label: "A glowing story crossing the ocean at night", group: "Bedtime" },
+  { name: "goodnight", label: "Goodnight: the blanket, the star over the house", group: "Bedtime" },
+  { name: "sea", label: "The ship at dusk (origin story -- on hold)", group: "On hold" },
+  { name: "blossoms", label: "The cherry-blossom path (origin story -- on hold)", group: "On hold" },
+  { name: "cover", label: "Title card over the finished dome", group: "The hill" },
+  { name: "town", label: "The town of boxes", group: "The hill" },
+  { name: "dream", label: "A dream of a dome, glowing", group: "The hill" },
+  { name: "lumber", label: "Walking past the lumber yard", group: "The hill" },
+  { name: "log", label: "The fallen pine", group: "The hill" },
+  { name: "tools", label: "The tools on the stump", group: "The hill" },
+  { name: "zzzip", label: "The log splitting into eight wedges", group: "The hill" },
+  { name: "wedges", label: "Holding up a wedge by the stack", group: "The hill" },
+  { name: "chalk", label: "The longest strut, in chalk", group: "The hill" },
+  { name: "measure", label: "What the number tells: width, height, weight", group: "The hill" },
+  { name: "pinwheel", label: "Close on the pinwheel at the top", group: "The hill" },
+  { name: "rising", label: "The dome rising ring by ring", group: "The hill" },
+  { name: "neighbours", label: "The neighbours come running", group: "The hill" },
+  { name: "ledger", label: "Pip's book of numbers", group: "The hill" },
+  { name: "panel", label: "The boy with the fallen panel", group: "The hill" },
+  { name: "club", label: "The dome club swapping panels", group: "The hill" },
+  { name: "night", label: "Domes on the hill at night", group: "The hill" },
+];
+
+/** Camera moves a page can use instead of its scene's own: the Episode Director's shot library. */
+export const SHOTS: { name: string; label: string }[] = [
+  { name: "scene", label: "The scene's own move" },
+  { name: "hold", label: "Hold (a slow breath in)" },
+  { name: "dollyIn", label: "Dolly in" },
+  { name: "dollyOut", label: "Dolly out" },
+  { name: "slide", label: "Slide sideways" },
+  { name: "pan", label: "Pan" },
+  { name: "crane", label: "Crane up" },
+  { name: "pedestal", label: "Pedestal up" },
+  { name: "dollyZoom", label: "Dolly zoom (vertigo)" },
+  { name: "orbit", label: "Orbit" },
+  { name: "reveal", label: "Reveal (low to high)" },
+  { name: "spiral", label: "Spiral down" },
+  { name: "flyover", label: "Drone flyover" },
+];
+
+/** The page's scene, shot another way: the new move starts where the scene's camera starts, on the same subject. */
+export function reshoot(w: Storyworld, shot, name: string, dur: number) {
+  const S = w.shots, first = shot.at(0), from = first.pos.clone(), subject = first.target.clone();
+  const flat = Math.hypot(from.x - subject.x, from.y - subject.y), fov = first.fov || 40;
+  const from_deg = Math.atan2(from.y - subject.y, from.x - subject.x) * 180 / Math.PI;
+  switch (name) {
+    case "orbit": return S.orbit({ subject, radius: flat, height: from.z - subject.z, from: from_deg, sweep: 70, dur, fov });
+    case "reveal": return S.reveal({ subject, radius: flat, dur, fov });
+    case "spiral": return S.spiral({ subject, radius: flat, height: Math.max(2, from.z - subject.z + 3), turns: 0.4, dur, fov });
+    case "flyover": return S.flyover({ subject, radius: flat, height: Math.max(3, from.z), dur, fov });
+    case "dollyZoom": return S.dollyZoom({ from, subject, dur, fovFrom: fov * 0.8, fovTo: fov * 1.6 });
+    case "crane": return S.crane({ from, subject, rise: Math.max(2, flat * 0.5), back: flat * 0.3, dur, fov });
+    case "pedestal": return S.pedestal({ from, subject, rise: 1.5, dur, fov });
+    default: return S[name] ? S[name]({ from, subject, dur, fov }) : shot;
+  }
 }

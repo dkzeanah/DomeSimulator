@@ -14,3 +14,8 @@ TEST_CHECKOUT=1
 # STRIPE_SECRET_KEY=
 # STRIPE_WEBHOOK_SECRET=
 PUBLIC_URL=http://127.0.0.1:8788
+
+# Local-only owner test account for the zeanahlab-pages-ownertest launch config (ADMIN_EMAILS=owner-test@example.test).
+# It exists only in the local D1 (.wrangler/); sign up once with these on http://127.0.0.1:8789.
+OWNER_TEST_EMAIL=owner-test@example.test
+OWNER_TEST_PASSWORD=local-2i_PD7vwxpjBuutU

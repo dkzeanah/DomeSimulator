@@ -21,6 +21,7 @@ export const SCOPES: Record<string, string> = {
   "campaigns:draft": "Write campaign drafts (saved, never sent).",
   "campaigns:propose_send": "Propose sending a campaign; the owner approves before anything goes.",
   "catalogue:propose": "Propose a price or product-state change; the owner approves before it applies.",
+  "stories:write": "Bedtime stories: save new versions (never publish) and upload narration (scripts/export_storytime.py).",
 };
 
 export interface AgentKey { id: number; name: string; prefix: string; scopes: string[]; rate_per_min: number }
@@ -103,6 +104,16 @@ export const TOOLS = [
     input: { type: "object", required: ["action", "product", "reason"], properties: {
       action: { enum: ["price.set", "product.status"] }, product: { type: "string" }, price: { type: "string", description: "price key, e.g. standard" },
       amount: { type: "number" }, status: { enum: ["live", "preorder", "waitlist", "hidden"] }, reason: { type: "string" } } } },
+  { name: "get_story_narration_todo", scope: "stories:write", method: "GET", path: "/api/agent/stories/{slug}/narration", approval: false,
+    description: "A bedtime story's pages that have no narration yet in version v (default the newest): id, narration key, the words to show and the words to speak, and the voice.",
+    input: { type: "object", required: ["slug"], properties: { slug: { type: "string" }, v: { type: "integer" } } } },
+  { name: "upload_story_narration", scope: "stories:write", method: "POST", path: "/api/agent/stories/{slug}/narration", approval: false,
+    description: "Upload one page's narration: its key, base64 audio, contentType, duration in seconds and word timings [[t0, t1, charStart, charEnd], ...].",
+    input: { type: "object", required: ["slug", "key", "audio", "duration"], properties: { slug: { type: "string" }, key: { type: "string" }, audio: { type: "string" },
+      contentType: { type: "string" }, duration: { type: "number" }, words: { type: "array" } } } },
+  { name: "save_story_version", scope: "stories:write", method: "POST", path: "/api/agent/stories/{slug}/versions", approval: false,
+    description: "Save a new version of a bedtime story (append-only; only the owner publishes). doc is {title, series, voice, figures, pages: [{id, kind, scene, shot, text}]}.",
+    input: { type: "object", required: ["slug", "doc"], properties: { slug: { type: "string" }, doc: { type: "object" }, note: { type: "string" } } } },
   { name: "get_proposal", scope: null, method: "GET", path: "/api/agent/proposals/{id}", approval: false,
     description: "Whether a proposal this key made was approved, rejected or is still waiting.",
     input: { type: "object", required: ["id"], properties: { id: { type: "integer" } } } },

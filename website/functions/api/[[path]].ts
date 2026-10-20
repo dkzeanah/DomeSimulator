@@ -11,6 +11,7 @@ import "../_lib/studio_routes";  // home focus, invite codes, promo codes, dome 
 import "../_lib/project_routes"; // the owner's projects and tasks
 import "../_lib/media";          // the Media page: the latest YouTube videos, cached
 import "../_lib/game_routes";    // the Portal world: saves and public chat
+import "../_lib/stories";        // bedtime stories (/kids) and the Story Studio
 
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
