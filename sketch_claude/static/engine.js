@@ -30,10 +30,11 @@ export function words(n) {
 const spoken = (x) => { const [a, b] = r1(x).split("."); return `${words(+a)} point ${words(+b)}`; };
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-export const SHOT_KINDS = ["single", "two", "ots", "wide", "move"];
+export const SHOT_KINDS = ["single", "two", "ots", "wide", "low", "move"];
 export const MOVES = ["hold", "dollyIn", "dollyOut", "orbit", "slide", "pan", "crane", "pedestal", "dollyZoom", "reveal", "flyover", "spiral"];
 export const ACTS = ["idle", "talk", "point", "wave", "shrug", "hips", "think", "facepalm", "cheer", "laugh", "hammer", "carry", "lift",
-                     "crank", "measure", "flex", "grunt", "peek", "phone", "sit", "fall"];
+                     "crank", "measure", "flex", "grunt", "peek", "phone", "sit", "fall", "stomp", "crossed", "vision", "ear", "lean", "spiral"];
+export const EXPRS = ["neutral", "sideeye", "sideeyeL", "glare", "wide", "smile", "smirk", "sad", "vision", "far"];
 
 export class Engine {
   constructor(world, cine, set, series, figures) {
@@ -49,7 +50,8 @@ export class Engine {
     this.fill = new this.T.DirectionalLight(0xfff1e0, 1.1);
     world.scene.add(this.fill, this.fill.target);
     world.hooks.push((dt, now) => {
-      for (const c of Object.values(this.cast)) c.update(dt, now);
+      for (const c of Object.values(this.cast)) c.update(this.frozen && this.frozen !== c ? 0 : dt, now);
+      for (const gh of this.ghosts || []) gh.update(dt, now);
       this.set.update(dt);
       const cam = world.persp, d = new this.T.Vector3();
       cam.getWorldDirection(d);
@@ -102,13 +104,17 @@ export class Engine {
   }
   ownedBy(o, chars) { for (let p = o; p; p = p.parent) if (chars.some((c) => c.root === p)) return true; return false; }
   /** Move a camera round its subject (and up a little) until nothing stands between them. */
-  unblock(pos, target, subjects) {
+  unblock(pos, target, subjects, also = []) {
     const ray = new this.T.Raycaster(), meshes = this.meshesForRays(), chars = subjects.map((w) => this.cast[w]).filter(Boolean);
-    const blocked = (p) => {
-      const d = p.clone().sub(target), L = d.length();
-      ray.set(target, d.normalize()); ray.far = L;
+    const others = Object.values(this.cast).filter((c) => c.root.visible);
+    const rayHit = (from, p) => {
+      const d = p.clone().sub(from), L = d.length();
+      ray.set(from, d.normalize()); ray.far = L;
       return ray.intersectObjects(meshes, false).some((h) => h.distance > 0.25 && h.distance < L - 0.15 && !this.ownedBy(h.object, chars));
     };
+    // a camera standing inside somebody: the rays see only front faces, so check the bodies directly
+    const inBody = (p) => others.some((c) => { const r = c.root.position; return Math.hypot(p.x - r.x, p.y - r.y) < 0.42 && p.z < r.z + 1.95 * c.k; });
+    const blocked = (p) => inBody(p) || rayHit(target, p) || also.some((q) => rayHit(q, p));
     if (!blocked(pos)) return pos;
     const rel = pos.clone().sub(target);
     for (const lift of [0, 0.35, 0.8]) for (const a of [25, -25, 50, -50, 80, -80, 120, -120]) for (const k of [1, 0.75, 1.3]) {
@@ -124,6 +130,12 @@ export class Engine {
     const k = spec.kind, V = (x, y, z) => new this.T.Vector3(x, y, z);
     if (k === "single") return this.camSingle(spec.who, spec.toward ? this.cast[spec.toward] : null, spec, dur);
     if (k === "two") return this.camTwo(spec.a, spec.b, spec, dur);
+    if (k === "low") {
+      // the hero angle from knee height, looking up: the shot for putting a foot down
+      const c = this.cast[spec.who], h = c.headWorld(), fwd = new this.T.Vector3(-Math.sin(c.yaw), Math.cos(c.yaw), 0);
+      const pos = h.clone().addScaledVector(fwd, spec.dist || 2.2); pos.z = c.root.position.z + 0.7;
+      return this.shots.hold({ from: this.unblock(pos, h, [spec.who], [c.chestWorld()]), subject: h.clone().add(new this.T.Vector3(0, 0, -0.1)), fov: fovForLens(spec.lens || 24), drift: 0.12, dur });
+    }
     if (k === "ots") return this.camOts(spec.over, spec.at, spec, dur);
     if (k === "wide") {
       const pts = (spec.who || []).map((w) => this.cast[w].chestWorld());
@@ -177,6 +189,7 @@ export class Engine {
     if (!spec) return "";
     if (spec.kind === "single") return `${spec.size || "medium"} ${spec.who}${spec.toward ? " to " + spec.toward : ""}`;
     if (spec.kind === "two") return `two-shot ${spec.a} & ${spec.b}`;
+    if (spec.kind === "low") return `low angle ${spec.who}`;
     if (spec.kind === "ots") return `over ${spec.over} on ${spec.at}`;
     if (spec.kind === "wide") return `wide ${(spec.who || []).join(", ")}`;
     if (spec.kind === "move") return `${spec.move}${typeof spec.subject === "string" ? " on " + spec.subject : ""}`;
@@ -192,13 +205,14 @@ export class Engine {
   // ------------------------------------------------------------ the beats
   wait(s) { return clock.wait(s / Math.max(this.timeScale, 1e-6)); }
 
-  async say(ch, text) {
+  async say(ch, text, { rate, fx } = {}) {
     let buf = null;
-    try { buf = await this.voices.fetchLine(ch.def, text); } catch { buf = null; }
+    const def = rate ? { ...ch.def, rate } : ch.def;
+    try { buf = await this.voices.fetchLine(def, text); } catch { buf = null; }
     const dur = buf ? buf.duration : 0.4 + text.length * 0.055, t0 = clock.now();
     if (buf) {
-      this.events.push({ kind: "voice", buf, t: t0 / 1000, dur });
-      if (this.mode === "play") this.playBuffer(buf, 0);
+      this.events.push({ kind: "voice", buf, t: t0 / 1000, dur, fx });
+      if (this.mode === "play") this.playBuffer(buf, 0, fx);
     }
     const env = buf ? this.voices.envelope(buf) : null;
     ch.speaking = true;
@@ -206,21 +220,131 @@ export class Engine {
     await clock.wait(dur);
     ch.speaking = false; ch.talkFn = null; ch.talk = 0;
   }
-  playBuffer(buf, offset) {
-    const ac = this.voices.ac, s = ac.createBufferSource(); s.buffer = buf; s.connect(this.voices.master);
+  /** A line spoken in pieces: stop and go, fast then slow, a stutter, a trailing thought. */
+  async sayParts(ch, parts, W, onPart, fx) {
+    for (const [i, f] of parts.entries()) {
+      onPart?.(i, f);
+      await W(this.say(ch, this.fillText(f.text), { rate: f.rate, fx }));
+      if (f.pause) await W(this.wait(f.pause));
+    }
+  }
+  parts(b) { return (b.frags || [b.text]).map((f) => (typeof f === "string" ? { text: f, pause: b.frags ? 0.16 : 0 } : f)); }
+  innerBus(ac, dest) {
+    // the inside of Hank's head: a long hall of a reverb and a darker tone
+    const n = ac.sampleRate * 2.6, ir = ac.createBuffer(2, n, ac.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.4); }
+    const conv = ac.createConvolver(); conv.buffer = ir;
+    const lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2600;
+    const dry = ac.createGain(); dry.gain.value = 0.7; const wet = ac.createGain(); wet.gain.value = 0.55;
+    const inp = ac.createGain(); inp.connect(lp); lp.connect(dry); lp.connect(conv); conv.connect(wet); dry.connect(dest); wet.connect(dest);
+    return inp;
+  }
+  playBuffer(buf, offset, fx) {
+    const ac = this.voices.ac, s = ac.createBufferSource(); s.buffer = buf;
+    if (fx === "inner") { this.liveInner ||= this.innerBus(ac, this.voices.master); s.connect(this.liveInner); } else s.connect(this.voices.master);
     s.start(ac.currentTime + 0.01, Math.max(0, offset));
     (this.live ||= new Set()).add(s); s.onended = () => this.live.delete(s);
   }
 
-  async beat(b, i, g) {
+  // ------------------------------------------------------------ Hank's thought spirals, Cody's visions
+  makeGhost(ch, act, at, yaw) {
+    const gh = new Character(this.T, `${ch.id}-ghost`, ch.def, this.w.scene);
+    gh.root.traverse((o) => { if (o.isMesh) { o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = 0.0; o.material.depthWrite = false; o.castShadow = false; } });
+    gh.ground = ch.ground; gh.place(at.x, at.y, yaw * 180 / Math.PI); gh.do(act || "spiral"); gh.root.position.z = ch.root.position.z;
+    gh.alpha = 0; gh.want = 0.32;
+    const up = gh.update.bind(gh);
+    gh.update = (dt, now) => { up(dt, now); gh.alpha += (gh.want - gh.alpha) * Math.min(1, dt * 4); gh.root.traverse((o) => { if (o.isMesh && o.material.side !== this.T.BackSide) o.material.opacity = gh.alpha; else if (o.isMesh) o.material.opacity = gh.alpha * 0.6; }); };
+    return gh;
+  }
+  clearGhosts() { for (const gh of this.ghosts || []) this.w.scene.remove(gh.root); this.ghosts = []; }
+
+  async thought(b, W, mark) {
+    const ch = this.cast[b.who], cine = this.cine, parts = this.parts(b);
+    // how long it lasts: every fragment's voice and pause, known before it starts
+    let total = 1.6;
+    for (const f of parts) { const buf = await this.voices.fetchLine(f.rate ? { ...ch.def, rate: f.rate } : ch.def, this.fillText(f.text)).catch(() => null); total += (buf ? buf.duration : 1.5) + (f.pause || 0.16); }
+    this.band.snap(); this.band.pad(total + 1, "inner");
+    cine.grade = "inner"; this.frozen = ch;
+    ch.do("spiral"); ch.expr = "far";
+    // the permutations: copies of him, each a different angle on the problem, in a ring
+    const n = Math.min(6, Math.max(3, parts.length)), c0 = ch.root.position.clone();
+    const acts = b.ghosts || ["think", "point", "measure", "shrug", "hammer", "facepalm"];
+    this.ghosts = [];
+    for (let k = 0; k < n; k++) {
+      const a = (k / n) * Math.PI * 2 + 0.4, at = c0.clone().add(new this.T.Vector3(Math.cos(a) * 1.15, Math.sin(a) * 1.15, 0));
+      this.ghosts.push(this.makeGhost(ch, acts[k % acts.length], at, -Math.atan2(c0.x - at.x, c0.y - at.y)));
+    }
+    // the camera circles his head, slow and close
+    const h = ch.headWorld(), r = 1.9, a0 = Math.atan2(-Math.cos(ch.yaw), Math.sin(ch.yaw)) * 0 + ch.yaw + Math.PI / 2;
+    cine.play({ dur: total, at: (t) => {
+      const ang = a0 + t * 2.4, rr = r - 0.4 * Math.sin(t * Math.PI);
+      return { pos: new this.T.Vector3(h.x + Math.cos(ang) * rr, h.y + Math.sin(ang) * rr, h.z + 0.25 - 0.3 * t), target: h, fov: fovForLens(32 + 20 * t), roll: Math.sin(t * 5) * 0.05 };
+    } });
+    this.shotLog.push({ t: clock.now() / 1000, dur: total, label: `inside ${b.who}'s head`, kind: "move", move: "thought" });
+    cine.title(this.fillText(b.title || "", ""), "", 1600, "inner");
+    let said = "";
+    await this.sayParts(ch, parts, W, (i, f) => {
+      const g = this.ghosts[i % this.ghosts.length];
+      for (const o of this.ghosts) o.want = o === g ? 0.62 : 0.2;
+      said += (said ? " " : "") + this.fillText(f.text);
+      cine.subtitle = { name: "(" + ch.def.name.split(" ")[0] + ", thinking)", text: this.fillText(f.text) };
+      cine.title(this.fillText(f.word || f.text.split(/[ ,.?!-]+/).filter((w) => w.length > 3).slice(-1)[0] || f.text), "", 2600, "word",
+                 { at: g.headWorld(), drift: (i % 2 ? 1 : -1) });
+    }, "inner");
+    await W(this.wait(0.5));
+    this.band.snap();
+    this.clearGhosts(); this.frozen = null; cine.grade = null; cine.subtitle = null; ch.expr = null; ch.do("idle");
+    mark.who = b.who; mark.text = said;
+  }
+
+  snapshot() {
+    const cs = {};
+    for (const [k, c] of Object.entries(this.cast)) cs[k] = { pos: c.root.position.clone(), yaw: c.yaw, vis: c.root.visible, act: c.action, expr: c.expr, ear: c.showEarring };
+    const S = this.w.S;
+    return { cs, view: { step: S.step, explode: S.explode, door: S.door, tagsOff: [...S.tagsOff] }, mood: this.w.mood };
+  }
+  restore(sn) {
+    for (const [k, v] of Object.entries(sn.cs)) { const c = this.cast[k]; c.place(v.pos.x, v.pos.y, v.yaw * 180 / Math.PI); c.root.visible = v.vis; c.do(v.act); c.expr = v.expr; c.showEarring = v.ear; }
+    this.w.setView(sn.view); this.w.setMood(sn.mood);
+  }
+
+  async vision(b, i, g, W, mark) {
+    const ch = this.cast[b.who], cine = this.cine;
+    ch.do("vision"); ch.expr = "vision";
+    this.band.chime();
+    // the flash: a punch on his eyes, a white-out, and we are somewhere else
+    const h = ch.headWorld(), from = this.w.persp.position.clone(), close = h.clone().add(from.clone().sub(h).normalize().multiplyScalar(0.55));
+    cine.play({ dur: 0.7, at: (t) => ({ pos: from.clone().lerp(close, Math.min(1, t * 1.4)), target: h, fov: fovForLens(50 + 60 * t) }) });
+    this.shotLog.push({ t: clock.now() / 1000, dur: 0.7, label: `${b.who} sees it`, kind: "meme" });
+    await W(this.wait(0.55));
+    cine.flash = { t0: clock.now(), dur: 0.5 };
+    const sn = this.snapshot();
+    cine.grade = "vision";
+    this.sceneLog.push({ t: clock.now() / 1000, name: `${ch.def.name.split(" ")[0]}'s vision: ${b.label || ""}`.trim(), i, vision: true });
+    for (const sub of b.beats || []) await this.beat(sub, i, g, true);
+    cine.flash = { t0: clock.now(), dur: 0.45 };
+    this.band.chime();
+    await W(this.wait(0.2));
+    cine.grade = null;
+    this.restore(sn);
+    ch.expr = "wide"; ch.do("idle");
+    this.shoot({ kind: "single", who: b.who, size: "close" }, 1.6, i);
+    this.sceneLog.push({ t: clock.now() / 1000, name: this.sceneName || "", i, resume: true });
+    await W(this.wait(1.0));
+    ch.expr = null;
+    mark.who = b.who;
+  }
+
+  async beat(b, i, g, nested = false) {
     const c = this.cast, w = this.w, cine = this.cine;
     const W = async (p) => { const r = await p; if (g !== this.gen) throw new Error("stopped"); return r; };
     const mark = { i, k: b.k, t0: clock.now() / 1000 };
     switch (b.k) {
       case "scene": {
-        this.sceneLog.push({ t: mark.t0, name: b.name, i });
+        if (!nested) { this.sceneLog.push({ t: mark.t0, name: b.name, i }); this.sceneName = b.name; cine.grade = null; }
         cine.stop();
-        for (const ch of Object.values(c)) { ch.root.visible = false; ch.look = null; ch.do("idle"); ch.drop("phone"); }
+        w.setMood(b.mood || "day");
+        for (const ch of Object.values(c)) { ch.root.visible = false; ch.look = null; ch.do("idle"); ch.drop("phone"); ch.expr = null; }
         for (const [who, p] of Object.entries(b.place || {})) { c[who].place(...p); c[who].root.visible = true; }
         for (const who of b.hide || []) c[who].root.visible = false;
         if (b.view) w.setView(b.view);
@@ -232,18 +356,25 @@ export class Engine {
         break;
       }
       case "line": {
-        const ch = c[b.who], text = this.fillText(b.text);
+        const ch = c[b.who], parts = this.parts(b), text = parts.map((f) => this.fillText(f.text)).join(" ");
         const others = b.listeners ?? Object.keys(c).filter((k) => k !== b.who && c[k].root.visible && c[k].root.position.distanceTo(ch.root.position) < 7);
         for (const o of others) c[o].look = ch.headWorld();
         if (b.act) ch.do(b.act);
         if (b.act === "phone") this.set.phone(ch);
-        const buf = await W(this.voices.fetchLine(ch.def, text).catch(() => null));
-        const dur = (buf ? buf.duration : 0.4 + text.length * 0.055) + (b.pad ?? 0.25);
+        if (b.expr) ch.expr = b.expr;
+        if (b.earring !== undefined) ch.showEarring = b.earring;
+        if (b.stomp) { ch.do("stomp"); this.band.stomp(); }
+        let dur = b.pad ?? 0.25;
+        for (const f of parts) {
+          const buf = await W(this.voices.fetchLine(f.rate ? { ...ch.def, rate: f.rate } : ch.def, this.fillText(f.text)).catch(() => null));
+          dur += (buf ? buf.duration : 0.4 + f.text.length * 0.055) + (f.pause || 0);
+        }
         if (b.cam) this.shoot(b.cam, dur + 0.15, i);
-        cine.subtitle = { name: ch.def.name.split(" ")[0], text };
         mark.who = b.who; mark.text = text;
-        await W(this.say(ch, text));
+        let shown = "";
+        await W(this.sayParts(ch, parts, W, (k, f) => { shown += (shown ? " " : "") + this.fillText(f.text); cine.subtitle = { name: ch.def.name.split(" ")[0], text: shown }; }));
         cine.subtitle = null;
+        if (b.expr && !b.keepExpr) ch.expr = null;
         if (b.after) ch.do(b.after); else if (b.act === "talk" || !b.act) ch.do("idle");
         await W(this.wait(b.pad ?? 0.25));
         break;
@@ -259,7 +390,7 @@ export class Engine {
       case "cam": { this.shoot(b.cam, b.dur || 3, i); if (b.wait) await W(this.wait(b.dur || 3)); break; }
       case "wait": await W(this.wait(b.s || 1)); break;
       case "sfx": this.band[b.name]?.(); break;
-      case "music": this.band[b.name]?.(b.bars); break;
+      case "music": this.band[b.name]?.(...(b.name === "theme" ? [b.bars] : b.name === "piano" ? [b.motif || 0] : [b.secs || 8, b.mood])); break;
       case "view": w.setView(b.view); break;
       case "build": {
         for (let s = b.from; s <= b.to; s++) { w.setView({ step: s }); await W(this.wait(b.every || 0.5)); }
@@ -285,6 +416,13 @@ export class Engine {
         break;
       }
       case "meme": await W(this.meme(b, W)); break;
+      case "thought": await W(this.thought(b, W, mark)); break;
+      case "vision": await W(this.vision(b, i, g, W, mark)); break;
+      case "expr": c[b.who].expr = b.expr === "neutral" ? null : b.expr; mark.who = b.who; break;
+      case "prop": if (b.prop === "earring") c[b.who].showEarring = !!b.on; if (b.prop === "phone") (b.on ? this.set.phone(c[b.who]) : c[b.who].drop("phone")); mark.who = b.who; break;
+      case "mood": w.setMood(b.mood); break;
+      case "place": { const ch = c[b.who]; ch.place(...b.at); ch.root.visible = b.visible ?? true; mark.who = b.who; break; }
+      case "flash": cine.flash = { t0: clock.now(), dur: b.secs || 0.3 }; if (b.sfx) this.band[b.sfx]?.(); break;
       case "credits": {
         const names = Object.values(this.series.cast).map((d) => d.name).join(" · ");
         cine.title(this.series.title.toUpperCase(), `${names}   |   made in Dome Sketch (sketch-claude); every figure from the model`, (b.secs || 6) * 1000, "card");
@@ -294,6 +432,7 @@ export class Engine {
       }
     }
     mark.t1 = clock.now() / 1000;
+    if (nested) mark.nested = true;
     this.marks.push(mark);
   }
 
@@ -332,7 +471,8 @@ export class Engine {
     this.stopped = false; this.marks = []; this.shotLog = []; this.sceneLog = []; this.events = [];
     for (const s of this.live || []) { try { s.stop(); } catch { /* done */ } }
     this.live = new Set();
-    this.cine.stop(); this.cine.titles = []; this.cine.subtitle = null; this.cine.freeze = false; this.cine.time = 0;
+    this.cine.stop(); this.cine.titles = []; this.cine.subtitle = null; this.cine.freeze = false; this.cine.time = 0; this.cine.grade = null; this.cine.flash = null;
+    this.clearGhosts(); this.frozen = null; this.w.setMood("day");
     this.timeScale = 1;
     this.gen = (this.gen || 0) + 1;          // whatever was running before is dropped, never woken
     clock.offline = true; clock.t = 0; clock.timers = [];
@@ -345,9 +485,16 @@ export class Engine {
   }
 
   async preload(beats, onProgress) {
-    const lines = beats.filter((b) => b.k === "line");
+    const jobs = [];
+    const walk = (list) => {
+      for (const b of list) {
+        if (b.k === "line" || b.k === "thought") for (const f of this.parts(b)) jobs.push([f.rate ? { ...this.series.cast[b.who], rate: f.rate } : this.series.cast[b.who], this.fillText(f.text)]);
+        if (b.k === "vision") walk(b.beats || []);
+      }
+    };
+    walk(beats);
     let n = 0;
-    await Promise.all(lines.map(async (b) => { await this.voices.fetchLine(this.series.cast[b.who], this.fillText(b.text)).catch(() => null); onProgress?.(++n, lines.length); }));
+    await Promise.all(jobs.map(async ([def, text]) => { await this.voices.fetchLine(def, text).catch(() => null); onProgress?.(++n, jobs.length); }));
   }
 
   // advance the world by one frame of virtual time
@@ -413,7 +560,7 @@ export class Engine {
     if (this.mode !== "paused" || Math.abs(clock.t / 1000 - from) > 0.05) await this.seek(beats, from);
     await this.voices.ac.resume();
     const now = clock.t / 1000;
-    for (const e of this.events) if (e.kind === "voice" && e.t <= now && e.t + e.dur > now) { this.mode = "play"; this.playBuffer(e.buf, now - e.t); }
+    for (const e of this.events) if (e.kind === "voice" && e.t <= now && e.t + e.dur > now) { this.mode = "play"; this.playBuffer(e.buf, now - e.t, e.fx); }
     this.mode = "play";
     let last = performance.now();
     const pending = this.pending;
@@ -510,8 +657,13 @@ export class Engine {
     const sr = 48000, off = new OfflineAudioContext(2, Math.ceil(sr * (seconds + 1)), sr);
     const master = off.createGain(); master.connect(off.destination);
     const band = new Band({ ac: off, master });
+    let inner = null;
     for (const e of this.events) {
-      if (e.kind === "voice") { const s = off.createBufferSource(); s.buffer = e.buf; s.connect(master); s.start(e.t); }
+      if (e.kind === "voice") {
+        const s = off.createBufferSource(); s.buffer = e.buf;
+        if (e.fx === "inner") { inner ||= this.innerBus(off, master); s.connect(inner); } else s.connect(master);
+        s.start(e.t);
+      }
       else { band.at = e.t + 0.02; band[e.fn](...(e.args || [])); }
     }
     return wavBytes(await off.startRendering());

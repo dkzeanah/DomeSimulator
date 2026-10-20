@@ -6,7 +6,7 @@
 import { createWorld } from "/static/world.js";
 import { Cine, makeShots, fovForLens, fmtTime } from "/static/cine.js";
 import { EpisodeSet } from "/static/set.js";
-import { Engine, ACTS, MOVES, SHOT_KINDS } from "/static/engine.js";
+import { Engine, ACTS, MOVES, SHOT_KINDS, EXPRS } from "/static/engine.js";
 import { clock } from "/static/clock.js";
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -14,9 +14,9 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<
 const tfmt = (s) => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, "0")}`;
 const status = (s) => ($("#status").textContent = s);
 
-const TRACKS = [["ruler", "", 18], ["scenes", "Scenes", 22], ["board", "Storyboard", 48], ["shots", "Shots", 24], ["dialogue", "Dialogue", 30],
+const TRACKS = [["ruler", "", 18], ["scenes", "Scenes", 22], ["board", "Storyboard", 48], ["shots", "Shots", 24], ["inner", "Inside heads", 20], ["dialogue", "Dialogue", 30],
                 ["action", "Action", 20], ["sound", "Sound", 20], ["graphics", "Graphics", 20]];
-const ACTION_KINDS = new Set(["walk", "act", "face", "gag", "build", "view"]);
+const ACTION_KINDS = new Set(["walk", "act", "face", "gag", "build", "view", "place", "expr", "prop"]);
 const GRAPHIC_KINDS = new Set(["card", "meme", "figure", "lower", "credits"]);
 
 const D = { ep: null, series: null, engine: null, world: null, cine: null, tl: null, sel: null, t: 0, zoom: 14, thumbs: [], freeCam: false, busy: false, dirty: false };
@@ -26,7 +26,7 @@ async function boot() {
   const epId = qs.get("episode") || "s01e01";
   D.series = await (await fetch("/api/series")).json();
   const list = await (await fetch("/api/episodes")).json();
-  $("#episode").innerHTML = list.map((e) => `<option value="${e.id}" ${e.id === epId ? "selected" : ""}>${esc(e.number)}: ${esc(e.title)}</option>`).join("");
+  $("#episode").innerHTML = list.map((e) => `<option value="${e.id}" ${e.id === epId ? "selected" : ""}>${esc(e.number)}: ${esc(e.title)}${e.status && e.status !== "scripted" ? " (" + esc(e.status) + ")" : ""}</option>`).join("");
   $("#episode").onchange = () => { location.search = `?episode=${$("#episode").value}`; };
   D.ep = await (await fetch(`/api/episode/${epId}`)).json();
   document.title = `${D.ep.number} ${D.ep.title} - Episode Director`;
@@ -158,7 +158,9 @@ function drawTimeline() {
   for (const [k, label, h] of TRACKS) T[k] = track(k, label, h);
   const step = Z > 60 ? 1 : Z > 25 ? 5 : Z > 10 ? 10 : 30;
   for (let s = 0; s <= tl.total; s += step) { const t = document.createElement("div"); t.className = "tick"; t.style.left = `${s * Z}px`; t.textContent = fmtTime(s); T.ruler.append(t); }
-  tl.scenes.forEach((s, i) => blk(T.scenes, s.t, s.end, s.name, ["#c9a46b", "#8fb0c9", "#a9c48b", "#d6a0a0", "#b8a3d6", "#d8cd7c"][i % 6], s.i, `${s.name}  ${tfmt(s.t)} - ${tfmt(s.end)}`));
+  let si = 0;
+  tl.scenes.forEach((s) => { const col = s.vision ? "#d7b8ff" : ["#c9a46b", "#8fb0c9", "#a9c48b", "#d6a0a0", "#b8a3d6", "#d8cd7c"][(s.resume ? si - 1 : si++) % 6];
+    blk(T.scenes, s.t, s.end, s.name, col, s.i, `${s.name}  ${tfmt(s.t)} - ${tfmt(s.end)}`); });
   tl.shots.forEach((s, i) => {
     const b = blk(T.shots, s.t, s.t + s.shown, `${s.label}`, s.kind === "move" ? "#e0a36b" : s.kind === "meme" ? "#ff7a7a" : "#9db8d9", s.beat,
                   `Shot ${i + 1}: ${s.label}${s.lens ? ", " + s.lens + " mm" : ""}  ${tfmt(s.t)}, ${s.shown.toFixed(1)} s on screen`);
@@ -168,7 +170,10 @@ function drawTimeline() {
     th.dataset.shot = i;
   });
   for (const m of tl.marks) {
-    if (m.k === "line") blk(T.dialogue, m.t0, m.t1, `${D.series.cast[m.who].name.split(" ")[0]}: ${m.text}`, colourOf(m.who), m.i, `${tfmt(m.t0)}  ${m.text}`);
+    if (m.k === "thought") blk(T.inner, m.t0, m.t1, `Hank thinking: ${m.text || ""}`, "#9d7bff", m.i, `${tfmt(m.t0)}  inside ${m.who}'s head: ${m.text || ""}`);
+    else if (m.k === "vision") blk(T.inner, m.t0, m.t1, `${m.who}'s vision`, "#d7b8ff", m.i);
+    else if (m.nested && m.k !== "line") continue;
+    else if (m.k === "line") blk(T.dialogue, m.t0, m.t1, `${D.series.cast[m.who].name.split(" ")[0]}: ${m.text}`, colourOf(m.who), m.i, `${tfmt(m.t0)}  ${m.text}`);
     else if (ACTION_KINDS.has(m.k)) {
       const b = D.ep.beats[m.i];
       blk(T.action, m.t0, Math.max(m.t1, m.t0 + 0.6), `${m.k}${b.who ? " " + b.who : ""}${b.act ? " " + b.act : ""}${b.name ? " " + b.name : ""}`, "#c7c2b6", m.i);
@@ -208,9 +213,13 @@ function renderInspector() {
   if (m) html += `<p class="muted">${tfmt(m.t0)} to ${tfmt(m.t1)} (${(m.t1 - m.t0).toFixed(2)} s)</p>`;
   if (b.k === "line") {
     const c = b.cam || {};
+    const pieces = b.frags ? b.frags.map((x) => (typeof x === "string" ? x : `${x.text} | ${x.rate || ""} | ${x.pause ?? ""}`)).join("\n") : b.text;
     html += `<label><span>Who</span><select id="f-who">${opt(cast, b.who)}</select></label>
-      <label><span>Line</span></label><textarea id="f-text" rows="4">${esc(b.text)}</textarea>
-      <p class="muted">Spoken as: ${esc(D.engine.fillText(b.text))}</p>
+      <label><span>Line</span></label><textarea id="f-text" rows="5">${esc(pieces)}</textarea>
+      <p class="muted">One line is spoken whole. Several lines are spoken as pieces, stop and go; each can carry its pace and pause: <code>text | +20% | 0.3</code></p>
+      <p class="muted">Spoken as: ${esc(D.engine.parts(b).map((x) => D.engine.fillText(x.text)).join(" / "))}</p>
+      <label><span>Face</span><select id="f-expr">${opt(["", ...EXPRS], b.expr || "")}</select></label>
+      <div class="row"><label><input type="checkbox" id="f-ear" ${b.earring ? "checked" : ""}> earring showing</label><label><input type="checkbox" id="f-stomp" ${b.stomp ? "checked" : ""}> foot comes down</label></div>
       <label><span>Action</span><select id="f-act">${opt(["", ...ACTS], b.act || "")}</select></label>
       <label><span>Then</span><select id="f-after">${opt(["", ...ACTS], b.after || "")}</select></label>
       <label><span>Pause after</span><input id="f-pad" type="number" step="0.05" value="${b.pad ?? 0.25}"> s</label>
@@ -232,7 +241,15 @@ function renderInspector() {
     let nb;
     try { nb = JSON.parse($("#f-json").value); } catch (e) { status(`The JSON does not parse: ${e.message}`); return null; }
     if (b.k === "line") {
-      nb.who = $("#f-who").value; nb.text = $("#f-text").value; nb.pad = +$("#f-pad").value;
+      nb.who = $("#f-who").value; nb.pad = +$("#f-pad").value;
+      const rows = $("#f-text").value.split("\n").map((x) => x.trim()).filter(Boolean);
+      if (rows.length > 1) {
+        nb.frags = rows.map((r) => { const [text, rate, pause] = r.split("|").map((x) => x.trim()); const o = { text }; if (rate) o.rate = rate; if (pause) o.pause = +pause; return o; });
+        delete nb.text;
+      } else { nb.text = (rows[0] || "").split("|")[0].trim(); delete nb.frags; }
+      if ($("#f-expr").value) nb.expr = $("#f-expr").value; else delete nb.expr;
+      if ($("#f-ear").checked) nb.earring = true; else if (nb.earring) nb.earring = false;
+      if ($("#f-stomp").checked) nb.stomp = true; else delete nb.stomp;
       if ($("#f-act").value) nb.act = $("#f-act").value; else delete nb.act;
       if ($("#f-after").value) nb.after = $("#f-after").value; else delete nb.after;
       const kind = $("#f-kind").value, who = $("#f-cwho").value, to = $("#f-ctoward").value, lens = +$("#f-lens").value || undefined;
@@ -275,8 +292,13 @@ function renderScript() {
   $("#script").innerHTML = D.ep.beats.map((b, i) => {
     const m = D.tl?.marks.find((x) => x.i === i), t = m ? fmtTime(m.t0) : "";
     if (b.k === "scene") return `<div class="ln scene" data-beat="${i}"><span class="t">${t}</span><span>${esc(b.name)}</span></div>`;
+    if (b.k === "thought" || b.k === "vision") {
+      const what = b.k === "thought" ? `HANK THINKS: ${D.engine.parts(b).map((f) => D.engine.fillText(f.text)).join(" / ")}` : `CODY'S VISION: ${b.label || ""} (${(b.beats || []).length} beats)`;
+      if (f && !what.toLowerCase().includes(f)) return "";
+      return `<div class="ln" data-beat="${i}"><span class="t">${t}</span><span style="color:#b9a3ff"><i>${esc(what)}</i></span></div>`;
+    }
     if (b.k === "line") {
-      const text = D.engine.fillText(b.text);
+      const text = D.engine.parts(b).map((x) => D.engine.fillText(x.text)).join(b.frags ? " / " : " ");
       if (f && !(`${b.who} ${text}`.toLowerCase().includes(f))) return "";
       return `<div class="ln" data-beat="${i}"><span class="t">${t}</span><span><span class="who" style="color:${colourOf(b.who)}">${esc(D.series.cast[b.who].name.split(" ")[0].toUpperCase())}</span>${b.act ? ` <i class="muted">(${esc(b.act)})</i>` : ""} ${esc(text)}</span></div>`;
     }

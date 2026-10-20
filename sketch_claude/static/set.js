@@ -92,6 +92,16 @@ export class EpisodeSet {
       m.position.set(-3.6 + i * 0.9, 9.9 - Math.sin(i / 8 * Math.PI) * 0.5, G + 2.6 - Math.sin(i / 8 * Math.PI) * 0.35);
       this.group.add(m);
     }
+    // the driveway at the side of the house, and Dusty's car: a red coupe he cannot afford
+    this.box(-7.4, 7.6, G + 0.02, 3.2, 7.5, 0.04, "#a7a39b", false);
+    const cx = -7.4, cy = 8.4;
+    this.box(cx, cy, G + 0.55, 1.8, 4.2, 0.6, "#a3202c");
+    this.box(cx, cy - 0.2, G + 1.05, 1.6, 2.0, 0.45, "#a3202c");
+    this.box(cx, cy - 0.2, G + 1.06, 1.62, 1.7, 0.36, "#2b3440", false);       // the glass
+    for (const [dx, dy] of [[-0.85, -1.4], [0.85, -1.4], [-0.85, 1.4], [0.85, 1.4]]) {
+      const wh = new T.Mesh(new T.CylinderGeometry(0.34, 0.34, 0.24, 18), this.mat("#1d1b18")); wh.rotation.z = Math.PI / 2;
+      wh.position.set(cx + dx, cy + dy, G + 0.34); wh.castShadow = true; this.group.add(wh);
+    }
     for (const [x, y] of [[-4.2, 7.0], [4.4, 7.4]]) {                         // planters
       this.box(x, y, G + 0.25, 0.6, 0.6, 0.5, "#b8735a");
       const b = new T.Mesh(new T.SphereGeometry(0.45, 10, 8), this.mat("#5f8a4c")); b.position.set(x, y, G + 0.85); b.castShadow = true; this.group.add(b);

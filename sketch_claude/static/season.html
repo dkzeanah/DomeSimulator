@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Season Planner</title>
+<link rel="stylesheet" href="/static/director.css">
+<style>
+  body { display: block; overflow: auto; height: auto; min-height: 100%; }
+  .wrap { display: grid; grid-template-columns: 360px 1fr; gap: 0; min-height: calc(100vh - 46px); }
+  .col { padding: 12px 14px; border-right: 1px solid var(--line); background: var(--panel); }
+  .main { padding: 12px 16px; min-width: 0; }
+  h2 { font-size: 15px; margin: 14px 0 8px; } h2:first-child { margin-top: 0; }
+  textarea.big { min-height: 120px; }
+  .eps { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+  .ep { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .ep header { display: flex; align-items: baseline; gap: 8px; } .ep header b { font-size: 14px; } .ep .n { color: var(--accent); font-weight: 700; }
+  .badge { font-size: 11px; padding: 1px 7px; border-radius: 9px; background: #3a3f48; } .badge.scripted { background: #2e6b45; } .badge.draft { background: #6b5a2e; } .badge.skeleton { background: #4a4a6b; }
+  .ep p { margin: 0; font-size: 12.5px; } .ep .lab { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+  .tone { display: flex; height: 6px; border-radius: 3px; overflow: hidden; } .tone i:first-child { background: #b84a5a; } .tone i:last-child { background: #e0c25a; }
+  .ep .row { margin: 4px 0 0; }
+  .ep[open] .edit { display: block; } .edit { display: none; }
+  .edit label { display: block; margin: 5px 0; font-size: 12px; color: var(--muted); } .edit textarea, .edit input { width: 100%; }
+  table.grid { border-collapse: collapse; font-size: 12px; width: 100%; } table.grid th, table.grid td { border: 1px solid var(--line); padding: 4px 5px; vertical-align: top; }
+  table.grid th { background: #1a1b1f; position: sticky; top: 0; } table.grid td[contenteditable]:focus { outline: 1px solid var(--sel); background: #1a2233; }
+  table.grid td.empty { background: #2a1d1d; }
+  .scroll { overflow: auto; max-height: 420px; border: 1px solid var(--line); border-radius: 6px; }
+  .cast .c { border-left: 4px solid; padding: 4px 8px; margin: 7px 0; background: #1a1b1f; font-size: 12px; }
+  .warn { color: #e9b36a; font-size: 12px; margin: 3px 0; }
+  svg.curve { width: 100%; height: 120px; background: #15161a; border: 1px solid var(--line); border-radius: 6px; }
+  .heat td { text-align: center; }
+</style>
+<script type="importmap">{"imports": {"three": "/static/vendor/three.module.min.js"}}</script>
+</head>
+<body>
+<header class="bar">
+  <div class="brand"><b>Season Planner</b><span class="tag">sketch-claude</span></div>
+  <b id="title"></b>
+  <span class="grow"></span>
+  <span id="status" class="status"></span>
+  <button id="save" class="primary">Save the season</button>
+  <a class="btn" href="/director" target="_blank">Episode Director &#8599;</a>
+</header>
+<div class="wrap">
+  <aside class="col">
+    <h2>Season arc</h2><textarea id="arc" class="big" rows="8"></textarea>
+    <h2>Writers' room <span class="muted">(never on screen)</span></h2><div id="themes"></div>
+    <h2>Cast</h2><div id="cast" class="cast"></div>
+  </aside>
+  <section class="main">
+    <h2>Episodes</h2><div id="eps" class="eps"></div>
+    <h2>Threads across the season</h2><p class="muted">Each cell is what that thread does in that episode. Click to write; an empty cell is a gap.</p><div class="scroll"><table id="threads" class="grid"></table></div>
+    <h2>Tone across the season</h2><svg id="curve" class="curve" viewBox="0 0 1000 120" preserveAspectRatio="none"></svg>
+    <h2>What the scripts contain</h2><div id="warnings"></div><div class="scroll"><table id="cover" class="grid heat"></table></div>
+  </section>
+</div>
+<script type="module" src="/static/season.js"></script>
+</body>
+</html>

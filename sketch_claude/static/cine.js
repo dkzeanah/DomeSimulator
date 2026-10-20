@@ -103,7 +103,24 @@ export class Cine {
         g.fillText(`REC ${fmtTime((clock.now() - this.recording.t0) / 1000)}`, r.x + 36 * devicePixelRatio, r.y + 27 * devicePixelRatio);
       }
     }
+    if (this.grade === "inner" || this.grade === "vision") {
+      const cx = r.x + r.w / 2, cy = r.y + r.h / 2, R = Math.hypot(r.w, r.h) / 2;
+      const vg = g.createRadialGradient(cx, cy, R * (this.grade === "inner" ? 0.25 : 0.4), cx, cy, R);
+      vg.addColorStop(0, "rgba(0,0,0,0)");
+      vg.addColorStop(1, this.grade === "inner" ? "rgba(10,0,30,0.85)" : "rgba(255,240,255,0.6)");
+      g.fillStyle = vg; g.fillRect(r.x, r.y, r.w, r.h);
+      if (this.grade === "vision") {
+        // the shimmer at the edge of a vision: slow rings
+        const ph = (clock.now() / 900) % 1;
+        g.strokeStyle = "rgba(255,255,255,0.18)"; g.lineWidth = r.h * 0.01;
+        for (let k = 0; k < 3; k++) { g.beginPath(); g.arc(cx, cy, R * (0.55 + ((ph + k / 3) % 1) * 0.5), 0, Math.PI * 2); g.stroke(); }
+      }
+    }
     this.drawTitles(g, r, live ? devicePixelRatio : w / 1280);
+    if (this.flash) {
+      const k = 1 - (clock.now() - this.flash.t0) / (this.flash.dur * 1000);
+      if (k > 0) { g.fillStyle = `rgba(255,255,255,${Math.min(1, k * 1.4)})`; g.fillRect(r.x, r.y, r.w, r.h); } else this.flash = null;
+    }
     if (this.fade > 0) { g.fillStyle = `rgba(0,0,0,${this.fade})`; g.fillRect(r.x, r.y, r.w, r.h); }
   }
 
@@ -133,6 +150,22 @@ export class Cine {
         g.fillText(t.text, r.x + r.w / 2, r.y + r.h * 0.47);
         if (t.sub) { g.fillStyle = "#e9e4d8"; g.font = `${r.h * 0.04}px "Segoe UI", sans-serif`; g.fillText(t.sub, r.x + r.w / 2, r.y + r.h * 0.6); }
         g.textAlign = "left";
+      } else if (t.kind === "word") {
+        // a word from the thought, hanging by the copy of him that thought it, drifting up
+        const life = (now - t.from) / (t.until - t.from);
+        const p = t.at.clone(); p.z += 0.25 + life * 0.5; p.x += (t.drift || 1) * life * 0.25;
+        const v = p.project(this.ctx.persp);
+        if (v.z < 1) {
+          const x = r.x + (v.x + 1) / 2 * r.w, y = r.y + (1 - v.y) / 2 * r.h, fs = r.h * 0.05;
+          g.font = `italic 700 ${fs}px Georgia, serif`; g.textAlign = "center";
+          g.fillStyle = "rgba(255,230,160,0.95)"; g.shadowColor = "rgba(120,60,255,0.9)"; g.shadowBlur = fs * 0.6;
+          g.fillText(t.text, x, y); g.shadowBlur = 0; g.textAlign = "left";
+        }
+      } else if (t.kind === "inner") {
+        if (t.text) {
+          const fs = r.h * 0.035; g.font = `italic ${fs}px Georgia, serif`; g.textAlign = "center"; g.fillStyle = "rgba(255,240,210,0.85)";
+          g.fillText(t.text, r.x + r.w / 2, r.y + r.h * 0.12); g.textAlign = "left";
+        }
       } else if (t.kind === "lower") {
         const x = r.x + r.w * 0.06, y = r.y + r.h * 0.74;
         g.fillStyle = "rgba(24,22,19,0.82)"; g.fillRect(x, y, r.w * 0.3, r.h * 0.09);
@@ -188,8 +221,14 @@ export class Cine {
     this.titles.push({ text, sub, from: now, until: now + ms, kind, ...extra });
   }
 
+  gradeFilter() {
+    if (this.freeze) return "grayscale(1) contrast(1.15) brightness(0.92)";
+    return { inner: "hue-rotate(-28deg) saturate(1.5) contrast(1.12) brightness(0.88)",
+             vision: "sepia(0.55) saturate(1.6) hue-rotate(205deg) brightness(1.18) contrast(0.92)",
+             night: "saturate(0.85) brightness(0.95)" }[this.grade] || "";
+  }
   compose() {
-    const f = this.freeze ? "grayscale(1) contrast(1.15) brightness(0.92)" : "";
+    const f = this.gradeFilter();
     if (this.ctx.canvas.style.filter !== f) this.ctx.canvas.style.filter = f;
     const o = this.overlay, g = o.getContext("2d");
     g.clearRect(0, 0, o.width, o.height);
@@ -201,7 +240,7 @@ export class Cine {
       const sw = src.width, sh = src.height, want = W / H;
       let cw = sw, ch = sw / want;
       if (ch > sh) { ch = sh; cw = sh * want; }
-      pg.filter = this.freeze ? "grayscale(1) contrast(1.15) brightness(0.92)" : "none";
+      pg.filter = this.gradeFilter() || "none";
       pg.drawImage(src, (sw - cw) / 2, (sh - ch) / 2, cw, ch, 0, 0, W, H);
       pg.filter = "none";
       this.drawGraphics(pg, W, H, false);

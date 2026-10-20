@@ -46,11 +46,16 @@ def selftest() -> None:
     print("ok: a plan sheet prints")
     # the episodes: every beat a kind the engine plays, every speaker in the cast
     series = json.loads((ROOT / "sketch_claude" / "episodes" / "series.json").read_text(encoding="utf-8"))
-    kinds = {"scene", "line", "walk", "act", "face", "cam", "wait", "sfx", "music", "view", "build", "lower", "figure", "card", "gag", "meme", "credits"}
+    kinds = {"scene", "line", "walk", "act", "face", "cam", "wait", "sfx", "music", "view", "build", "lower", "figure", "card", "gag", "meme", "credits",
+             "thought", "vision", "expr", "prop", "mood", "flash", "place"}
     for f in sorted((ROOT / "sketch_claude" / "episodes").glob("s[0-9][0-9]e[0-9][0-9].json")):
         ep = json.loads(f.read_text(encoding="utf-8"))
         lines = 0
-        for i, b in enumerate(ep["beats"]):
+        flat = []
+        for b in ep["beats"]:
+            flat.append(b)
+            flat.extend(b.get("beats", []) if b.get("k") == "vision" else [])
+        for i, b in enumerate(flat):
             assert b["k"] in kinds, f"{f.name} beat {i}: unknown kind {b['k']}"
             for key in ("who",):
                 if key in b:
@@ -58,7 +63,7 @@ def selftest() -> None:
             for who in (b.get("place") or {}):
                 assert who in series["cast"], f"{f.name} beat {i}: {who} is not in the cast"
             lines += b["k"] == "line"
-        print(f"ok: {f.stem}: {len(ep['beats'])} beats, {lines} lines, every speaker in the cast")
+        print(f"ok: {f.stem}: {len(flat)} beats, {lines} lines, every speaker in the cast")
     print("sketch_claude selftest OK")
 
 

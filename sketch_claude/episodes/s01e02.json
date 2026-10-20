@@ -1,0 +1,1066 @@
+{
+ "id": "s01e02",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E2",
+ "title": "Load Path",
+ "logline": "Jet turns the half-built dome into a crypto mining room, the power fails across the street, and Hank has to show him where the load goes without telling him he's wrong.",
+ "rating": "PG-13",
+ "status": "draft",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: the bench, after hours",
+   "at": "studio",
+   "mood": "night",
+   "sun": [
+    30,
+    20
+   ],
+   "place": {
+    "hank": [
+     -5.4,
+     -1.5,
+     -90
+    ],
+    "dale": [
+     -5.2,
+     -2.9,
+     -90
+    ]
+   },
+   "view": {
+    "step": 6,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   },
+   "panelOnBench": true
+  },
+  {
+   "k": "card",
+   "text": "HANK'S HARDWARE HOUR",
+   "sub": "Channel 47. Taping in 3... 2...",
+   "secs": 3.0,
+   "music": "sting"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "from": [
+     -3.8,
+     -1.8,
+     1.2
+    ],
+    "subject": "jig",
+    "dist": 0.5,
+    "lens": 35
+   },
+   "dur": 5,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   },
+   "frags": [
+    {
+     "text": "Last week we cut every stick to take the whole fold. It didn't work.",
+     "pause": 0.2
+    },
+    {
+     "text": "So this week we give half. Each panel gives half the fold.",
+     "rate": "-6%",
+     "pause": 0.3
+    },
+    {
+     "text": "And then the load has somewhere to go.",
+     "rate": "+8%"
+    }
+   ]
+  },
+  {
+   "k": "lower",
+   "who": "hank"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "He means the load of garbage we're building. Folks, this dome is a metaphor for my back.",
+   "act": "lean",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "dale"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "A geodesic dome is {panels} panels. Every panel shares its edge with the next. The load goes down through the triangles to the ground. Six paths. Always six.",
+   "act": "measure",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "dale",
+    "dist": 3.2
+   }
+  },
+  {
+   "k": "figure",
+   "big": "6 load paths",
+   "small": "triangles share the weight",
+   "secs": 5
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Six paths. Like my ex-wives. None of them lead anywhere good.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "act": "think",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "dale",
+    "size": "close"
+   },
+   "frags": [
+    {
+     "text": "Six paths, six kids, no, five kids, six if you count Dusty,",
+     "rate": "+20%",
+     "pause": 0.25
+    },
+    {
+     "text": "which I don't, but the table counts him, the table has six chairs,",
+     "rate": "+28%",
+     "pause": 0.2
+    },
+    {
+     "text": "and one is empty, and one is always leaving,",
+     "rate": "-10%",
+     "pause": 0.4
+    },
+    {
+     "text": "and the load goes down through the ones who stay.",
+     "rate": "-14%"
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Anyway. Triangles. They share the load. That's the whole trick.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The yard: Jet's new room",
+   "at": "yard",
+   "mood": "day",
+   "sun": [
+    120,
+    50
+   ],
+   "place": {
+    "jet": [
+     0.4,
+     -3.2,
+     0
+    ],
+    "cody": [
+     -1.2,
+     -4.0,
+     30
+    ]
+   },
+   "view": {
+    "step": 2,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 12
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "crane",
+    "from": [
+     2.0,
+     -6.0,
+     0.8
+    ],
+    "subject": "dome",
+    "rise": 2.0,
+    "back": -1.0,
+    "lens": 28
+   },
+   "dur": 6,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's not a dome. It's a data center. I'm mining crypto. It's going to pay for college. Or a car. Probably a car.",
+   "act": "point",
+   "earring": true,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "toward": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "jet"
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "You don't have a computer.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "I have five. They're in the dome. I ran an extension cord from the garage. It's fine.",
+   "act": "ear",
+   "earring": true,
+   "cam": {
+    "kind": "two",
+    "a": "jet",
+    "b": "cody",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "powerDown"
+  },
+  {
+   "k": "mood",
+   "mood": "overcast"
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "The whole street just went dark.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "jet",
+     "cody"
+    ],
+    "dir": [
+     0.5,
+     1,
+     -0.3
+    ],
+    "lens": 35
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's not on me. That's the grid. The grid is fragile, Cody. That's why I have a bunker.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The patio: the blackout",
+   "at": "patio",
+   "mood": "dusk",
+   "sun": [
+    250,
+    10
+   ],
+   "place": {
+    "krystal": [
+     0.0,
+     8.3,
+     180
+    ],
+    "maya": [
+     0.5,
+     7.2,
+     10
+    ],
+    "hank": [
+     -1.4,
+     8.1,
+     90
+    ]
+   },
+   "view": {
+    "step": 5,
+    "explode": 0.16,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 20,
+   "mood": "tense"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "The whole street is out. Mrs. Kowalski's oxygen machine is on battery. She's ninety-four. She's not on battery.",
+   "act": "hips",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "krystal"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "It's Jet. He's got a server farm in the dome. I saw him running cable at six this morning.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "toward": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "maya"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "A server farm. In the dome. The dome that's not finished. The dome that's holding up the, the, the roof of itself.",
+   "act": "facepalm",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Hank. Go look at your son's load path.",
+   "act": "stomp",
+   "stomp": true,
+   "expr": "glare",
+   "cam": {
+    "kind": "low",
+    "who": "krystal",
+    "dist": 2.2,
+    "lens": 22
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The yard: the load path",
+   "at": "yard",
+   "mood": "dusk",
+   "sun": [
+    240,
+    6
+   ],
+   "place": {
+    "hank": [
+     0.8,
+     -3.4,
+     -30
+    ],
+    "jet": [
+     -0.2,
+     -4.2,
+     20
+    ],
+    "cody": [
+     1.6,
+     -4.6,
+     40
+    ]
+   },
+   "view": {
+    "step": 1,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 14
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "flyover",
+    "subject": "dome",
+    "radius": 7.5,
+    "height": 3.5,
+    "lens": 24
+   },
+   "dur": 5,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "You've got five machines pulling off one cord. That cord goes to the garage. The garage goes to the house. The house goes to the street. The street goes to the transformer. And the transformer goes, 'no.'",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "So I need a bigger cord.",
+   "act": "crossed",
+   "earring": true,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "No. You need to spread the load. One cord takes all of it. Six cords share it. That's what the triangles do. Every panel takes a piece.",
+   "act": "measure",
+   "cam": {
+    "kind": "ots",
+    "over": "jet",
+    "at": "hank",
+    "lens": 50
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "He's saying you're the transformer. You're going to blow.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "I'm not going to blow. I'm going to pay off the people I owe.",
+   "act": "ear",
+   "earring": false,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "music",
+   "name": "heart",
+   "secs": 6
+  },
+  {
+   "k": "expr",
+   "who": "hank",
+   "expr": "sad"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "What people?",
+   "act": "idle",
+   "pad": 0.5,
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Nobody. Forget it. I'll fix the cord.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The studio: Dale's offer",
+   "at": "studio",
+   "mood": "day",
+   "sun": [
+    150,
+    40
+   ],
+   "place": {
+    "dale": [
+     -5.2,
+     -2.0,
+     -90
+    ],
+    "hank": [
+     -4.6,
+     -3.6,
+     160
+    ]
+   },
+   "view": {
+    "step": 6,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 18,
+   "mood": "sad"
+  },
+  {
+   "k": "act",
+   "who": "dale",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "My agent called. There's a show. 'Dale Does It.' Built for the TikTok. They want me to react to videos. That's the whole show. I react.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "lower",
+   "who": "dale"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "You hate the youth.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "I hate them so much. But they pay. Hank, they pay in exposure. Exposure to what, I don't know. But it's more than channel 47 pays.",
+   "act": "lean",
+   "cam": {
+    "kind": "two",
+    "a": "dale",
+    "b": "hank",
+    "dist": 3.4
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Then take it. I'll be fine. I've got a dome.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "You've got half a dome and a kid mining fake money in it. That's not a retirement plan.",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "It's a load path. Everything finds its way down eventually.",
+   "act": "idle",
+   "pad": 0.6,
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.4
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The patio: Maya's interview",
+   "at": "patio",
+   "mood": "day",
+   "sun": [
+    140,
+    45
+   ],
+   "place": {
+    "maya": [
+     0.4,
+     8.0,
+     180
+    ],
+    "krystal": [
+     -1.2,
+     8.2,
+     90
+    ]
+   },
+   "view": {
+    "step": 5,
+    "explode": 0.16,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 14,
+   "mood": "warm"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Interview at the lumber yard. I wore a collared shirt. I was polite. I said 'yes, sir' and 'no, sir' and 'that's a load-bearing wall, sir.'",
+   "act": "talk",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "And?",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "toward": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "And then the manager said they don't hire girls for the yard. So I said, 'Then who's going to tell you your load path is wrong?' And he said, 'Get out.'",
+   "act": "crossed",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Maya.",
+   "act": "hips",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "toward": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "I know. I know. My mouth. But he was wrong, Mom. The load path was wrong.",
+   "act": "talk",
+   "expr": "sad",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "krystal",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Sometimes you have to let the wrong thing stand so you can get close enough to fix it.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "That sounds like something Dad would say.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "He's not wrong about everything. Just the important stuff.",
+   "act": "laugh",
+   "expr": "smile",
+   "cam": {
+    "kind": "two",
+    "a": "krystal",
+    "b": "maya",
+    "dist": 3.2,
+    "side": -1
+   }
+  },
+  {
+   "k": "scene",
+   "name": "The yard: the fix",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    80,
+    12
+   ],
+   "place": {
+    "hank": [
+     0.6,
+     -3.8,
+     -20
+    ],
+    "jet": [
+     -0.4,
+     -4.4,
+     10
+    ],
+    "cody": [
+     1.2,
+     -4.5,
+     30
+    ]
+   },
+   "view": {
+    "step": 1,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 1
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "from": [
+     2.4,
+     -5.6,
+     1.2
+    ],
+    "subject": "jet",
+    "dist": 0.6,
+    "lens": 40
+   },
+   "dur": 4,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "You're going to run six cords. One from each triangle. Each one takes a sixth of the load. Then the whole thing shares.",
+   "act": "measure",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's six cords. That's more cords than I have.",
+   "act": "crossed",
+   "earring": true,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Then you're going to make six cords. From the spool in the garage. You're going to cut, strip, and land each one. And you're going to test it before you plug it in.",
+   "act": "point",
+   "cam": {
+    "kind": "ots",
+    "over": "jet",
+    "at": "hank",
+    "lens": 50
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "You're not going to yell at me?",
+   "act": "idle",
+   "earring": true,
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "I'm going to hand you a saw. Yelling is for people who don't have a saw.",
+   "act": "idle",
+   "pad": 0.5,
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "measure"
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "The car outside is back.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "expr",
+   "who": "hank",
+   "expr": "wide"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "What car?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "toward": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "The one that was there at three a.m. It's back.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 8
+  },
+  {
+   "k": "scene",
+   "name": "Coda: the car",
+   "at": "yard",
+   "mood": "night",
+   "sun": [
+    20,
+    10
+   ],
+   "place": {
+    "cody": [
+     0.2,
+     -3.6,
+     0
+    ]
+   },
+   "view": {
+    "step": 7,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "from": [
+     0.6,
+     -7.0,
+     1.4
+    ],
+    "subject": "cody",
+    "dist": 0.55,
+    "lens": 40
+   },
+   "dur": 5,
+   "wait": false
+  },
+  {
+   "k": "expr",
+   "who": "cody",
+   "expr": "vision"
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "wait",
+   "s": 1.6
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's still there. At three a.m.",
+   "act": "vision",
+   "expr": "vision",
+   "pad": 1.2
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ],
+ "drafted_by": "deepseek"
+}

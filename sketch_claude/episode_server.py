@@ -102,7 +102,17 @@ def voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz") ->
 
     async def go():
         await edge_tts.Communicate(text, voice_name, rate=rate, pitch=pitch).save(str(tmp))
-    asyncio.run(go())
+    # the service now and then answers with no audio; it nearly always works on a second try
+    import time
+    for attempt in range(4):
+        try:
+            asyncio.run(go())
+            if tmp.exists() and tmp.stat().st_size > 0:
+                break
+        except Exception:
+            if attempt == 3:
+                raise
+        time.sleep(0.8 * (attempt + 1))
     tmp.replace(out)
     return out
 

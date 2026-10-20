@@ -39,6 +39,13 @@ PORT = 8767
 EPISODES = HERE / "episodes"
 
 
+def _season_id(sid: str) -> str:
+    import re as _re
+    if not _re.fullmatch(r"season\d{2}", sid):
+        raise ValueError("seasons are named like season01")
+    return sid
+
+
 def _episode_file(eid: str) -> Path:
     import re as _re
     if not _re.fullmatch(r"s\d{2}e\d{2}", eid):
@@ -199,13 +206,23 @@ class Handler(BaseHTTPRequestHandler):
                 return self._file(STATIC / "index.html")
             if u.path in ("/director", "/director/"):
                 return self._file(STATIC / "director.html")
+            if u.path in ("/season", "/season/"):
+                return self._file(STATIC / "season.html")
+            if u.path.startswith("/api/season/"):
+                from . import writers as WR
+                parts = u.path.split("/")[3:]
+                sid = _season_id(parts[0])
+                if len(parts) == 1:
+                    return self._file(EPISODES / f"{sid}.json")
+                if parts[1] == "coverage":
+                    return self._json(WR.coverage(sid))
             if u.path == "/api/series":
                 return self._file(EPISODES / "series.json")
             if u.path == "/api/episodes":
                 eps = []
                 for f in sorted(EPISODES.glob("s[0-9][0-9]e[0-9][0-9].json")):
                     d = json.loads(f.read_text(encoding="utf-8"))
-                    eps.append({"id": d["id"], "number": d.get("number", d["id"]), "title": d.get("title", "")})
+                    eps.append({"id": d["id"], "number": d.get("number", d["id"]), "title": d.get("title", ""), "status": d.get("status", "scripted")})
                 return self._json(eps)
             if u.path.startswith("/api/episode/"):
                 f = _episode_file(u.path.rsplit("/", 1)[1])
@@ -235,6 +252,13 @@ class Handler(BaseHTTPRequestHandler):
     def do_PUT(self):
         u = urlparse(self.path)
         try:
+            if u.path.startswith("/api/season/"):
+                from . import writers as WR
+                sid = _season_id(u.path.split("/")[3])
+                d = self._body()
+                if not isinstance(d.get("episodes"), list):
+                    return self._err(400, "a season needs a list of episodes")
+                return self._json({"ok": True, "kept": WR.save(sid, d)})
             if u.path.startswith("/api/episode/"):
                 f = _episode_file(u.path.rsplit("/", 1)[1])
                 d = self._body()
@@ -294,6 +318,21 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(start_job("plans", spec))
             if u.path == "/api/showcase":
                 return self._json(start_job("showcase", spec))
+            if u.path.startswith("/api/season/"):
+                from . import writers as WR
+                parts = u.path.split("/")[3:]
+                sid, what, eid = _season_id(parts[0]), parts[1], str(b.get("episode", ""))
+                _episode_file(eid)
+                if what == "skeleton":
+                    if (EPISODES / f"{eid}.json").exists() and not b.get("replace"):
+                        return self._err(409, f"{eid} already has a script; pass replace to keep it as a version and start again")
+                    ep = WR.skeleton(sid, eid)
+                    return self._json({"ok": True, "kept": WR.save(eid, ep), "beats": len(ep["beats"])})
+                if what == "draft":
+                    ep = WR.draft(sid, eid)
+                    kept = WR.save(eid, ep)
+                    return self._json({"ok": True, "kept": kept, "beats": len(ep["beats"]), "notes": ep.get("draft_notes", [])})
+                return self._err(404, "not found")
             if u.path == "/api/episode-render":
                 extra = ["--episode", str(b.get("episode", "s01e01"))] + (["--draft"] if b.get("draft") else [])
                 return self._json(start_job("episode", spec, extra))

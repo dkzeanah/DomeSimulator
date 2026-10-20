@@ -1,0 +1,329 @@
+{
+ "id": "season01",
+ "series": "Level With Me",
+ "title": "Season One: The Curse",
+ "arc": "Channel 47 is about to cancel Hank's show, a storm Cody keeps seeing is coming, and the Hardwicks are coming apart: Anna is leaving with Dusty, Maya's mouth costs her a job and nearly a friend, Jet's schemes pull dangerous people toward the house, and Krystal is holding it all together with one foot planted. Through all of it Hank builds the dome, and the family keeps reprogramming it into whatever the week's disaster needs. In the finale the storm arrives, the dome is the only thing standing, and all six of them are inside it, still arguing.",
+ "threads": [
+  {
+   "id": "curse",
+   "name": "The curse",
+   "owner": "family",
+   "kind": "running",
+   "about": "Every episode, one improbable misfortune. The family keeps a tally on the fridge. It is a joke until it isn't."
+  },
+  {
+   "id": "storm",
+   "name": "The storm",
+   "owner": "cody",
+   "kind": "mystery",
+   "about": "Cody's visions of a dome standing alone in a storm. Each vision shows a little more, and in E9 the forecast catches up."
+  },
+  {
+   "id": "show",
+   "name": "Channel 47",
+   "owner": "hank",
+   "kind": "pressure",
+   "about": "Hank's Hardware Hour is losing to a teenager's TikTok. The station wants him out; Dale is being courted to host something 'younger'."
+  },
+  {
+   "id": "anna_leaves",
+   "name": "Anna's road",
+   "owner": "anna",
+   "kind": "arc",
+   "about": "Anna plans to leave on a long road trip with Dusty. She keeps missing the family moments, and the family keeps not noticing until it is too late. She learns where home is."
+  },
+  {
+   "id": "maya_mouth",
+   "name": "Maya's mouth",
+   "owner": "maya",
+   "kind": "arc",
+   "about": "Maya loses the hardware-store job for saying the true thing out loud, then nearly loses Cody's trust. She learns when to keep the side-eye and when to speak."
+  },
+  {
+   "id": "jet_hustle",
+   "name": "Jet's hustle",
+   "owner": "jet",
+   "kind": "arc",
+   "about": "Burner phones, a mining rig in the dome, a debt to people online who know the address. The earring keeps coming and going. Hank never lectures him; he hands him a saw."
+  },
+  {
+   "id": "krystal_foot",
+   "name": "Krystal's foot",
+   "owner": "krystal",
+   "kind": "arc",
+   "about": "The silly one who becomes the head of the house when it counts. She is carrying more than anyone knows: the bills."
+  },
+  {
+   "id": "dale_youth",
+   "name": "Dale vs. the youth",
+   "owner": "dale",
+   "kind": "arc",
+   "about": "Dale can't stand Jet's generation and is offered a show built for it. He ends up the only adult Jet listens to."
+  },
+  {
+   "id": "dome",
+   "name": "The dome's programs",
+   "owner": "hank",
+   "kind": "spine",
+   "about": "The dome's state from the frame to the finished shelter: it goes up a ring or two each episode and becomes something different each time."
+  }
+ ],
+ "episodes": [
+  {
+   "id": "s01e01",
+   "number": "S1E1",
+   "title": "Half the Fold",
+   "status": "scripted",
+   "logline": "Anna announces she's leaving with Dusty, the station threatens Hank's show, and Hank's first dome ring comes out wrong. Krystal puts her foot down: nobody leaves until it stands.",
+   "plots": {
+    "A": "Hank's crooked first ring, the thought spiral that finds the error (half the fold), and the night he teaches Jet and Cody the jig.",
+    "B": "Anna's announcement; she misses the family dinner where the decision is made.",
+    "C": "Maya's side-eye at a customer costs her the store job; Jet hides a new piercing."
+   },
+   "dome_program": "a frame: the family argues about what it is for",
+   "hidden_lesson": "Two panels meet at a fold, and each gives half of it.",
+   "threads": {
+    "curse": "The deck collapses on taping day.",
+    "storm": "First vision: a dome alone in a storm.",
+    "show": "The station manager's call.",
+    "anna_leaves": "The announcement.",
+    "maya_mouth": "Fired.",
+    "jet_hustle": "New piercing, hidden.",
+    "krystal_foot": "Nobody leaves until it stands.",
+    "dale_youth": "Dale versus Jet, round one.",
+    "dome": "Ring one, wrong; then right."
+   },
+   "tone": {
+    "drama": 0.65,
+    "comedy": 0.35
+   },
+   "cliffhanger": "Cody sees the storm again, closer."
+  },
+  {
+   "id": "s01e02",
+   "number": "S1E2",
+   "title": "Load Path",
+   "status": "outline",
+   "logline": "Jet turns the half-built dome into a crypto mining room, the power fails across the street, and Hank has to show him where the load goes without telling him he's wrong.",
+   "plots": {
+    "A": "Jet's rigs trip the neighbourhood; men in a car start watching the house.",
+    "B": "Dale's agent pitches him a 'Gen Z' show; he hates himself for being tempted.",
+    "C": "Maya job-hunts; every interview ends in a side-eye."
+   },
+   "dome_program": "a server room",
+   "hidden_lesson": "Every load finds a path to the ground; triangles give it six.",
+   "threads": {
+    "curse": "Blackout on the one hot night.",
+    "jet_hustle": "The rig; the debt begins.",
+    "dale_youth": "The offer.",
+    "show": "Ratings card.",
+    "dome": "Ring two."
+   },
+   "tone": {
+    "drama": 0.6,
+    "comedy": 0.4
+   },
+   "cliffhanger": "The car outside is still there at 3 a.m."
+  },
+  {
+   "id": "s01e03",
+   "number": "S1E3",
+   "title": "Frequency",
+   "status": "outline",
+   "logline": "Krystal babysits the neighbour's four-year-old, who builds a better dome out of straws than Hank's crew; Maya mouths off to the wrong teacher.",
+   "plots": {
+    "A": "The toddler's straw dome; Hank's spiral on resolution and patience.",
+    "B": "Maya suspended from community college; Krystal's foot comes down on her.",
+    "C": "Anna, on a video call from the road, misses the whole thing."
+   },
+   "dome_program": "a toy",
+   "hidden_lesson": "More, smaller triangles make a rounder dome: frequency is resolution.",
+   "threads": {
+    "maya_mouth": "Suspended.",
+    "anna_leaves": "Video call, frozen screen.",
+    "krystal_foot": "The kitchen verdict.",
+    "dome": "The skin goes on the first section."
+   },
+   "tone": {
+    "drama": 0.5,
+    "comedy": 0.5
+   },
+   "cliffhanger": "The toddler draws Cody's storm."
+  },
+  {
+   "id": "s01e04",
+   "number": "S1E4",
+   "title": "Play House",
+   "status": "outline",
+   "logline": "Anna comes home early with Dusty and turns the dome into a pink influencer set; Maya and Dusty go to war; Cody sees Dusty running.",
+   "plots": {
+    "A": "The set, the sponsorship, and the moment Anna realises nobody waited for her at dinner.",
+    "B": "Maya vs. Dusty.",
+    "C": "Cody's vision of Dusty fleeing a fire."
+   },
+   "dome_program": "a stage",
+   "hidden_lesson": "The same frame can be anybody's house.",
+   "threads": {
+    "anna_leaves": "Home, briefly.",
+    "storm": "The vision changes: fire before the storm.",
+    "maya_mouth": "She's right about Dusty and still loses.",
+    "dome": "Windows."
+   },
+   "tone": {
+    "drama": 0.6,
+    "comedy": 0.4
+   },
+   "cliffhanger": "Dusty takes Hank's truck."
+  },
+  {
+   "id": "s01e05",
+   "number": "S1E5",
+   "title": "Debugging",
+   "status": "outline",
+   "logline": "Jet's debt comes to the door; Cody's coder friend wires the dome like a program; Hank's longest spiral finds the bug in Jet's plan.",
+   "plots": {
+    "A": "The men from the car; Hank, Dale and Jet in the dome at night.",
+    "B": "Cody's friend teaches loops with the panel jig.",
+    "C": "Jet's ear gets infected; Krystal finds out."
+   },
+   "dome_program": "a computer: every panel a line of code",
+   "hidden_lesson": "A pattern repeated is a loop; a wrong number repeated is a bug, everywhere at once.",
+   "threads": {
+    "jet_hustle": "The debt, paid the hard way.",
+    "dale_youth": "Dale stands between Jet and the door.",
+    "krystal_foot": "The earring discovered.",
+    "dome": "Wiring."
+   },
+   "tone": {
+    "drama": 0.75,
+    "comedy": 0.25
+   },
+   "cliffhanger": "Channel 47 schedules Hank's last episode."
+  },
+  {
+   "id": "s01e06",
+   "number": "S1E6",
+   "title": "Tension and Compression",
+   "status": "outline",
+   "logline": "The garage burns. The family splits into two camps over the insurance money and the dome, and Krystal discovers she has been the only one paying the bills.",
+   "plots": {
+    "A": "The fire and the split.",
+    "B": "Krystal's secret ledger.",
+    "C": "Dale at the bar, alone, calls Hank."
+   },
+   "dome_program": "a shelter for a week",
+   "hidden_lesson": "Some members pull, some push, and the shape holds because both do.",
+   "threads": {
+    "curse": "Fire.",
+    "krystal_foot": "She breaks before she plants her foot.",
+    "dale_youth": "Lonely Dale.",
+    "dome": "The family sleeps in it."
+   },
+   "tone": {
+    "drama": 0.85,
+    "comedy": 0.15
+   },
+   "cliffhanger": "Anna doesn't answer her phone."
+  },
+  {
+   "id": "s01e07",
+   "number": "S1E7",
+   "title": "The Hub That Isn't There",
+   "status": "outline",
+   "logline": "Hank's final taping, with the kids as crew; Dale announces he's taking the new show; the dome's panels meet without a hub and so does the family, almost.",
+   "plots": {
+    "A": "The live finale; everything goes wrong on air and the clip goes viral.",
+    "B": "Dale's goodbye.",
+    "C": "Maya keeps her mouth shut once, and it matters."
+   },
+   "dome_program": "a studio",
+   "hidden_lesson": "Nothing has to sit in the middle for the corners to hold.",
+   "threads": {
+    "show": "Cancelled; then viral.",
+    "dale_youth": "He leaves, sort of.",
+    "maya_mouth": "Silence, chosen.",
+    "dome": "The door."
+   },
+   "tone": {
+    "drama": 0.55,
+    "comedy": 0.45
+   },
+   "cliffhanger": "The viral clip shows Cody's storm in the sky behind them."
+  },
+  {
+   "id": "s01e08",
+   "number": "S1E8",
+   "title": "Pinwheel",
+   "status": "outline",
+   "logline": "The family plans a surprise for Anna's return and forgets to tell her; Anna, alone at a motel, works out that she's always been the one doing things for them.",
+   "plots": {
+    "A": "Anna's night.",
+    "B": "The surprise that becomes a fight.",
+    "C": "Jet removes the earring for good, then doesn't."
+   },
+   "dome_program": "a gift",
+   "hidden_lesson": "In a pinwheel, each piece holds the next one, all the way round.",
+   "threads": {
+    "anna_leaves": "She turns the car around.",
+    "jet_hustle": "Out, for now.",
+    "dome": "The skylight."
+   },
+   "tone": {
+    "drama": 0.8,
+    "comedy": 0.2
+   },
+   "cliffhanger": "The storm warning."
+  },
+  {
+   "id": "s01e09",
+   "number": "S1E9",
+   "title": "Ninety-Nine Panels",
+   "status": "outline",
+   "logline": "Storm prep. Jet's paranoia is finally useful; Cody's vision becomes a forecast; the last panels go up in the rain.",
+   "plots": {
+    "A": "The race to finish.",
+    "B": "Jet's bunker supplies.",
+    "C": "Mr. Yarrow refuses to leave his roses."
+   },
+   "dome_program": "a refuge",
+   "hidden_lesson": "The whole is stronger than the strongest piece in it.",
+   "threads": {
+    "storm": "Here.",
+    "jet_hustle": "Redeemed.",
+    "dome": "The last panel."
+   },
+   "tone": {
+    "drama": 0.75,
+    "comedy": 0.25
+   },
+   "cliffhanger": "The house roof goes."
+  },
+  {
+   "id": "s01e10",
+   "number": "S1E10",
+   "title": "The Storm",
+   "status": "outline",
+   "logline": "All six of them, Dale, Dusty and Mr. Yarrow inside the dome while the storm takes everything else. They agree on one thing, and then they don't.",
+   "plots": {
+    "A": "The night.",
+    "B": "Hank finally says what he thinks, all of it, in one spiral the family can hear.",
+    "C": "Dusty, for once, does the brave thing."
+   },
+   "dome_program": "home",
+   "hidden_lesson": "Shaped right, the lightest house is the one that stands.",
+   "threads": {
+    "curse": "The curse, embraced.",
+    "storm": "Through it.",
+    "anna_leaves": "Home.",
+    "show": "A new offer, from the network.",
+    "krystal_foot": "She lets someone else plant it.",
+    "dome": "Standing."
+   },
+   "tone": {
+    "drama": 0.7,
+    "comedy": 0.3
+   },
+   "cliffhanger": "Morning: the dome stands alone in a flattened street, and Cody sees something new."
+  }
+ ]
+}

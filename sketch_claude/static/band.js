@@ -6,7 +6,9 @@ export class Band {
     this.ac = out.ac; this.out = this.ac.createGain(); this.out.gain.value = 0.55; this.out.connect(out.master);
     this.gate = gate;
     const beat = 60 / 116;
-    this.length = { theme: (bars = 2) => (bars * 4 + 2) * beat, sting: () => 60 / 130 * 2.2, scratch: () => 0.5, boom: () => 1.2, airhorn: () => 1.1 };
+    this.length = { theme: (bars = 2) => (bars * 4 + 2) * beat, sting: () => 60 / 130 * 2.2, scratch: () => 0.5, boom: () => 1.2, airhorn: () => 1.1,
+                    pad: (secs = 8) => secs, tension: (secs = 8) => secs, piano: (m = 0) => 6, heart: (secs = 6) => secs, chime: () => 1.6,
+                    stomp: () => 0.6, rain: (secs = 10) => secs, snap: () => 0.4 };
     for (const fn of CUES) {
       const real = this[fn].bind(this);
       this[fn] = (...args) => {
@@ -93,6 +95,57 @@ export class Band {
       this.env(lp, t + s, 0.01, 0.07, d); o.start(t + s); o.stop(t + s + d + 0.05);
     }
   }
+
+  // ---- the drama: beds that sit under a scene, so a quiet moment is never dead air
+  chord(mood) {
+    // root-position triads and sevenths, by mood, around A2..A4
+    return { warm: [220, 277.2, 329.6, 415.3], sad: [220, 261.6, 329.6, 392], tense: [207.7, 246.9, 293.7, 349.2],
+             inner: [196, 246.9, 293.7, 370], hope: [261.6, 329.6, 392, 493.9], night: [174.6, 220, 261.6, 329.6] }[mood] || [220, 277.2, 329.6];
+  }
+  pad(secs = 8, mood = "warm") {
+    const t = this.timeBase() + 0.02, notes = this.chord(mood);
+    for (const [i, f] of notes.entries()) for (const det of [-7, 7]) {
+      const o = this.ac.createOscillator(); o.type = i % 2 ? "triangle" : "sawtooth"; o.frequency.value = f / (i === 0 ? 2 : 1); o.detune.value = det;
+      const lp = this.ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = mood === "inner" ? 900 : 1300; lp.Q.value = 0.5;
+      const g = this.ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.022, t + Math.min(2.5, secs / 3));
+      g.gain.setValueAtTime(0.022, t + Math.max(0.1, secs - 2)); g.gain.linearRampToValueAtTime(0.0001, t + secs);
+      o.connect(lp); lp.connect(g); g.connect(this.out); o.start(t); o.stop(t + secs + 0.1);
+    }
+  }
+  tension(secs = 8) {
+    // a low drone that pulses, rising a semitone across its length
+    const t = this.timeBase() + 0.02, o = this.ac.createOscillator(); o.type = "sawtooth";
+    o.frequency.setValueAtTime(55, t); o.frequency.linearRampToValueAtTime(58.3, t + secs);
+    const lp = this.ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 320;
+    const g = this.ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.09, t + 1.5); g.gain.linearRampToValueAtTime(0.0001, t + secs);
+    const lfo = this.ac.createOscillator(); lfo.frequency.value = 1.6; const lg = this.ac.createGain(); lg.gain.value = 0.04; lfo.connect(lg); lg.connect(g.gain);
+    o.connect(lp); lp.connect(g); g.connect(this.out); o.start(t); lfo.start(t); o.stop(t + secs + 0.1); lfo.stop(t + secs + 0.1);
+  }
+  piano(motif = 0) {
+    // the family motif: four notes and a held fifth, a little different each time
+    const t = this.timeBase() + 0.02, M = [[440, 392, 349.2, 329.6, 261.6], [329.6, 349.2, 392, 440, 523.3], [261.6, 329.6, 293.7, 246.9, 220]][motif % 3];
+    M.forEach((f, i) => {
+      const at = t + i * 0.55, o = this.ac.createOscillator(), o2 = this.ac.createOscillator(); o.type = "triangle"; o2.type = "sine"; o.frequency.value = f; o2.frequency.value = f * 2;
+      const g = this.ac.createGain(); g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.12, at + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, at + (i === M.length - 1 ? 3.2 : 1.4));
+      o.connect(g); o2.connect(g); g.connect(this.out); o.start(at); o2.start(at); o.stop(at + 3.4); o2.stop(at + 3.4);
+    });
+  }
+  heart(secs = 6) { const t = this.timeBase() + 0.02; for (let b = 0; b < secs / 0.85; b++) { this.kick(t + b * 0.85); this.kick(t + b * 0.85 + 0.2); } }
+  chime() {
+    const t = this.timeBase() + 0.02;
+    [1318.5, 1568, 1975.5, 2637].forEach((f, i) => { const o = this.ac.createOscillator(); o.type = "sine"; o.frequency.value = f; this.env(o, t + i * 0.07, 0.005, 0.06, 1.3); o.start(t + i * 0.07); o.stop(t + 1.6); });
+    const n = this.noise(1.2), bp = this.ac.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.setValueAtTime(800, t); bp.frequency.exponentialRampToValueAtTime(6000, t + 1); n.connect(bp); this.env(bp, t, 0.3, 0.12, 0.8); n.start(t);
+  }
+  stomp() { const t = this.timeBase() + 0.01; this.kick(t); this.kick(t + 0.01); const n = this.noise(0.2), lp = this.ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 260; n.connect(lp); this.env(lp, t, 0.002, 0.8, 0.18); n.start(t); }
+  rain(secs = 10) {
+    const t = this.timeBase() + 0.02, n = this.noise(secs), hp = this.ac.createBiquadFilter(); hp.type = "bandpass"; hp.frequency.value = 2500; hp.Q.value = 0.4;
+    const g = this.ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.18, t + 2); g.gain.linearRampToValueAtTime(0.0001, t + secs);
+    n.connect(hp); hp.connect(g); g.connect(this.out); n.start(t);
+    const w = this.noise(secs), lp = this.ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 400;
+    const wg = this.ac.createGain(); wg.gain.setValueAtTime(0.0001, t); wg.gain.linearRampToValueAtTime(0.22, t + 3); wg.gain.linearRampToValueAtTime(0.0001, t + secs); w.connect(lp); lp.connect(wg); wg.connect(this.out); w.start(t);
+  }
+  snap() { const t = this.timeBase() + 0.01, n = this.noise(0.3), bp = this.ac.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.setValueAtTime(4000, t); bp.frequency.exponentialRampToValueAtTime(300, t + 0.3); n.connect(bp); this.env(bp, t, 0.003, 0.5, 0.28); n.start(t); }
 }
 
-export const CUES = ["theme", "sting", "rimshot", "saw", "clatter", "thud", "whoosh", "boom", "scratch", "airhorn"];
+export const CUES = ["theme", "sting", "rimshot", "saw", "clatter", "thud", "whoosh", "boom", "scratch", "airhorn",
+                     "pad", "tension", "piano", "heart", "chime", "stomp", "rain", "snap"];

@@ -80,9 +80,10 @@ export class Character {
     this.part(sph(0.025), d.skin, this.head, [0, 0.11 * k, 0.09 * k]);                            // nose
     for (const s of [-1, 1]) {                                                                         // eyes and brows
       this.part(sph(0.022), "#f7f3ea", this.head, [s * 0.042 * k, 0.093 * k, 0.122 * k], false);
-      this.part(sph(0.012), "#1d1b18", this.head, [s * 0.042 * k, 0.113 * k, 0.122 * k], false);
+      const pupil = this.part(sph(0.012), "#1d1b18", this.head, [s * 0.042 * k, 0.113 * k, 0.122 * k], false);
+      pupil.userData.home = pupil.position.clone(); this.pupils = (this.pupils || []).concat(pupil);
       const brow = this.part(box(0.045, 0.012, 0.012), d.hair === "#cfcac0" ? "#9a958c" : d.hair, this.head, [s * 0.043 * k, 0.108 * k, 0.153 * k], false);
-      brow.rotation.y = s * 0.15; this.brows = (this.brows || []).concat(brow);
+      brow.rotation.y = s * 0.15; brow.userData.home = brow.position.clone(); brow.userData.side = s; this.brows = (this.brows || []).concat(brow);
     }
     this.mouth = this.part(box(0.06, 0.012, 0.016), "#6a2a24", this.head, [0, 0.106 * k, 0.05 * k], false);
     const hairC = d.hair;
@@ -90,6 +91,34 @@ export class Character {
     if (d.hairStyle === "long") {
       this.part(sph(0.12), hairC, this.head, [0, -0.015 * k, 0.13 * k]).scale.set(1.02, 1, 0.7);
       this.part(up(cap(0.1, 0.16)), hairC, this.head, [0, -0.045 * k, 0.02 * k]).scale.set(1.15, 0.7, 1);
+    }
+    if (d.hairStyle === "princess") {
+      // long, full princess hair: a crown of it, then a fall down the back past the shoulder blades
+      this.part(sph(0.123), hairC, this.head, [0, -0.012 * k, 0.13 * k]).scale.set(1.06, 1.02, 0.74);
+      this.part(up(cap(0.11, 0.34)), hairC, this.head, [0, -0.07 * k, -0.08 * k]).scale.set(1.25, 0.6, 1);
+      for (const sd of [-1, 1]) this.part(up(cap(0.04, 0.22)), hairC, this.head, [sd * 0.1 * k, 0.02 * k, -0.02 * k]);
+      this.part(new T.TorusGeometry(0.06 * k, 0.008 * k, 5, 14), "#e9d9a8", this.head, [0, -0.05 * k, 0.2 * k]).rotation.x = 1.0;
+    }
+    if (d.hairStyle === "long" && !d.longDone) {
+      // long and straight with a side part, down past the shoulders (the original "long" adds a second fall)
+      this.part(up(cap(0.095, 0.24)), hairC, this.head, [0.01 * k, -0.06 * k, -0.04 * k]).scale.set(1.2, 0.6, 1);
+      this.part(up(cap(0.035, 0.18)), hairC, this.head, [-0.105 * k, 0.015 * k, 0.0]);
+    }
+    if (d.hairStyle === "shoulder") {
+      // a shoulder-length cut: fuller sides that stop at the jaw-to-shoulder line
+      this.part(sph(0.122), hairC, this.head, [0, -0.012 * k, 0.13 * k]).scale.set(1.06, 1.02, 0.7);
+      this.part(up(cap(0.105, 0.1)), hairC, this.head, [0, -0.04 * k, 0.03 * k]).scale.set(1.18, 0.82, 1);
+    }
+    if (d.hairStyle === "spiky") {
+      this.part(sph(0.117), hairC, this.head, [0, -0.01 * k, 0.125 * k]).scale.set(1, 1, 0.55);
+      for (const [x, y, a] of [[-0.05, 0.04, -0.4], [0, 0.05, 0], [0.05, 0.04, 0.4], [-0.03, -0.02, -0.2], [0.03, -0.02, 0.2]]) {
+        const c = this.part(new T.ConeGeometry(0.028 * k, 0.09 * k, 6).rotateX(Math.PI / 2), hairC, this.head, [x * k, y * k, 0.22 * k], false);
+        c.rotation.y = a; c.rotation.x = -0.3;
+      }
+    }
+    if (d.hairStyle === "swoop") {
+      this.part(sph(0.12), hairC, this.head, [0, -0.012 * k, 0.135 * k]).scale.set(1.02, 1.02, 0.66);
+      const q = this.part(sph(0.07), hairC, this.head, [0.03 * k, 0.07 * k, 0.2 * k]); q.scale.set(1.5, 0.9, 0.6);
     }
     if (d.hairStyle === "buzz") this.part(sph(0.117), hairC, this.head, [0, -0.01 * k, 0.125 * k]).scale.set(1, 1, 0.55);
     if (d.hairStyle === "curly") {
@@ -110,7 +139,16 @@ export class Character {
       this.part(new T.CylinderGeometry(0.1 * k, 0.12 * k, 0.11 * k, 16).rotateX(Math.PI / 2), "#b59a62", this.head, [0, 0, 0.23 * k]);
       this.part(new T.CylinderGeometry(0.121 * k, 0.121 * k, 0.02 * k, 16).rotateX(Math.PI / 2), "#5b4a2c", this.head, [0, 0, 0.19 * k], false);
     }
-    if (d.beard) this.part(sph(0.1), d.beard, this.head, [0, 0.035 * k, 0.04 * k]).scale.set(1, 0.8, 0.75);
+    if (d.beard && d.beardStyle === "scruff") {
+      // a short black beard and moustache: scruff along the jaw, a bar over the lip
+      this.part(sph(0.105), d.beard, this.head, [0, 0.022 * k, 0.04 * k], false).scale.set(1.04, 0.86, 0.62);
+      this.part(box(0.07, 0.016, 0.014), d.beard, this.head, [0, 0.111 * k, 0.068 * k], false);
+    } else if (d.beard) this.part(sph(0.1), d.beard, this.head, [0, 0.035 * k, 0.04 * k]).scale.set(1, 0.8, 0.75);
+    if (d.earring) {
+      // the self-pierced left ear: a small silver hoop, shown or hidden by the script
+      this.earring = this.part(new T.TorusGeometry(0.014 * k, 0.003 * k, 5, 12), "#d6d9de", this.head, [0.118 * k, 0.0, 0.06 * k], false);
+      this.earring.rotation.y = Math.PI / 2;
+    }
     if (d.glasses) {
       for (const s of [-1, 1]) {
         const g = new T.Mesh(new T.TorusGeometry(0.028 * k, 0.005 * k, 6, 14), this.mat("#2b2925"));
@@ -222,6 +260,17 @@ export class Character {
       case "flex": { const s = Math.min(1, t * 4); P.arm[1] = [0.2, -1.5 * s, 2.3 * s]; P.arm[-1] = [0.2, 1.5 * s, 2.3 * s]; P.lean = -0.06; break; }
       case "grunt": { const s = Math.sin(Math.min(1, t * 3) * Math.PI); P.arm[1] = [0.3, -1.2 * s, 2.0 * s]; P.arm[-1] = [0.3, 1.2 * s, 2.0 * s]; P.headPitch = -0.3 * s; P.lean = -0.1 * s; break; }
       case "peek": P.arm[1] = [0.1, -0.1, 0.2]; P.arm[-1] = [0.1, 0.1, 0.2]; P.hipsZ = -0.05 + 0.03 * Math.sin(t * 2); break;
+      case "stomp": {
+        // the foot comes down: one knee up, then the stamp, arms folding as it lands
+        const s = Math.min(1, t * 3), up = t < 0.25 ? Math.sin(t / 0.25 * Math.PI / 2) : Math.max(0, 1 - (t - 0.25) * 8);
+        P.leg[1] = [0.9 * up, -1.2 * up]; P.arm[1] = [0.9 * s, 0.6 * s, 2.2 * s]; P.arm[-1] = [0.9 * s, -0.6 * s, 2.2 * s]; P.lean = -0.06 * s; P.headPitch = -0.1 * s;
+        break;
+      }
+      case "crossed": P.arm[1] = [0.9, 0.6, 2.2]; P.arm[-1] = [0.9, -0.6, 2.2]; P.lean = -0.04; break;
+      case "vision": P.arm[1] = [1.6, -0.5, 2.5]; P.arm[-1] = [1.6, 0.5, 2.5]; P.headPitch = -0.15; P.lean = -0.05; break;
+      case "ear": P.arm[-1] = [1.5, 0.45, 2.3]; P.headYaw = -0.3; break;
+      case "lean": P.lean = -0.08; P.arm[1] = [0.2, -0.2, 0.4]; P.arm[-1] = [0.35, 0.25, 1.4]; P.hipsZ = -0.02; break;
+      case "spiral": { const w = Math.sin(t * 2.3); P.arm[1] = [1.2 + 0.3 * w, -0.4, 2.0]; P.arm[-1] = [0.6 - 0.3 * w, 0.4, 1.2 + 0.4 * Math.sin(t * 3.1)]; P.headPitch = -0.15 + 0.1 * Math.sin(t * 1.7); P.headYaw = 0.3 * Math.sin(t * 0.9); break; }
       case "phone": P.arm[1] = [1.2, -0.25, 1.45]; P.arm[-1] = [0.1, 0.12, 0.2]; P.headPitch = 0.1; break;
       case "fall": break;
       case "sit": P.leg[1] = [1.45, -1.5]; P.leg[-1] = [1.45, -1.5]; P.hipsZ = -0.44; P.arm[1] = [0.6, -0.1, 0.9]; P.arm[-1] = [0.6, 0.1, 0.9]; break;
@@ -265,6 +314,21 @@ export class Character {
     r.rotation.x = f * 1.45;
     r.position.z = this.ground(r.position.x, r.position.y) + f * 0.18;
     if (this.fallen > 0) { this.legs[1].hip.rotation.x += f * 0.6; this.legs[-1].hip.rotation.x += f * 0.9; }
+    // the face: side-eye, glare, wide eyes, a smile, a smirk
+    const E = { neutral: [0, 0, 0, 0], sideeye: [1, 0, -0.012, 0.1], sideeyeL: [-1, 0, -0.012, 0.1], glare: [0, 0, -0.016, 0.35],
+                wide: [0, 0.006, 0.014, -0.1], smile: [0, 0, 0.004, 0], smirk: [0.4, 0, -0.006, 0.18], sad: [0, -0.004, 0.006, -0.3],
+                vision: [0, 0.008, 0.016, -0.2], far: [0.3, 0.004, 0.004, 0] }[this.expr || "neutral"] || [0, 0, 0, 0];
+    for (const p of this.pupils || []) {
+      const h = p.userData.home;
+      p.position.x += (h.x + E[0] * 0.016 * this.k - p.position.x) * Math.min(1, dt * 12);
+      p.position.z += (h.z + E[1] * this.k - p.position.z) * Math.min(1, dt * 12);
+    }
+    for (const b of this.brows || []) {
+      const h = b.userData.home, sd = b.userData.side;
+      b.position.z += (h.z + E[2] * this.k - b.position.z) * Math.min(1, dt * 12);
+      b.rotation.y += (sd * (0.15 + E[3]) - b.rotation.y) * Math.min(1, dt * 12);
+    }
+    if (this.earring) this.earring.visible = !!this.showEarring;
     // the mouth flaps with the voice
     if (this.talkFn) this.talk = this.talkFn(now);
     this.mouth.scale.z += ((1 + this.talk * 5) - this.mouth.scale.z) * Math.min(1, dt * 18);
