@@ -5,7 +5,7 @@
     py -3.12 -m sketch_claude storytime my-own-home --pages 0-3 --draft    # a rehearsal of a few pages
     py -3.12 -m sketch_claude storytime my-own-home --finish deliverables/0587-storytime-my-own-home   # add a missing phone cut + release
     py -3.12 -m sketch_claude storytime the-lighthouse --site https://zeanahlab.com   # a Studio story
-    py -3.12 -m sketch_claude storytime the-long-watch --private        # a private story, narrated in website/private:
+    py -3.12 -m sketch_claude storytime <a-private-story> --private     # a private story, narrated in website/private:
                                                                         # its film stays there too (gitignored)
 
 The story is the manifest the children's player reads: the copy baked into the site
