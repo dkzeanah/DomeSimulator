@@ -14,6 +14,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Storyworld } from "./engine";
 import { makeScenes, reshoot } from "./scenes";
+import { motes } from "./places";
 import type { Manifest, StoryPage } from "./Storytime";
 
 const GAP = 1.4;
@@ -108,6 +109,8 @@ export default function StoryRender() {
       w.sun.shadow.mapSize.set(2048, 2048);
       await w.loadDome();
       w.build();
+      const ethereal = m.style === "ethereal";
+      if (ethereal) { w.ethereal = true; motes(w).visible = true; }
       const scenes = makeScenes(w, m.figures as never) as Record<string, (d: number) => { dur: number }>;
       const g = out.getContext("2d")!;
       let n = Math.max(0, Number(q.get("base") || 0)), inflight: Promise<unknown>[] = [];
@@ -144,6 +147,15 @@ export default function StoryRender() {
           if (stills && f !== still) continue;
           g.drawImage(gl, 0, 0);
           const t = f / fps;
+          if (ethereal) {
+            // the player's vignette and warm glow (styles.css .story-vignette)
+            const v = g.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.35, W / 2, H * 0.45, Math.hypot(W, H) * 0.6);
+            v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(0.6, "rgba(8,6,20,0.2)"); v.addColorStop(1, "rgba(4,3,12,0.5)");
+            g.fillStyle = v; g.fillRect(0, 0, W, H);
+          }
+          // the dissolve into each page: brief for every story, long for an ethereal one (as the player does it)
+          const veil = Math.max(0, 1 - t / (ethereal ? 2.2 : 0.7));
+          if (veil > 0) { g.fillStyle = `rgba(5,7,15,${veil * veil * (3 - 2 * veil)})`; g.fillRect(0, 0, W, H); }
           if (p.kind === "title") drawTitle(g, W, H, m, t); else drawWords(g, W, H, p, t);
           if (stills) { await shoot(0, `${String(i + 1).padStart(2, "0")}-${p.id}-${p.scene}.png`); break; }
           await shoot(n++);

@@ -9,7 +9,7 @@
         Print the SQL that seeds the story's first version and its baked narration into D1.
 
     py -3.12 website/scripts/export_storytime.py my-own-home --site https://zeanahlab.com [--version N] [--push]
-    py -3.12 website/scripts/export_storytime.py the-long-watch --site https://zeanahlab.com --push
+    py -3.12 website/scripts/export_storytime.py <a-private-story> --site https://zeanahlab.com --push
         A story in website/private/stories/ (gitignored) is private: it is never baked into the site,
         its first push creates it link-only, and its narration goes to R2 behind its link.
         Work against the live Story Studio with an agent key (env ZL_AGENT_KEY, scope
@@ -40,6 +40,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 STORIES = ROOT / "website" / "src" / "storytime" / "stories"
 PRIVATE = ROOT / "website" / "private" / "stories"      # gitignored: stories only a link opens (/mykids)
+PRIVATE_OUT = ROOT / "website" / "private" / "storytime"  # a private story's narration, for review films (gitignored)
 OUT = ROOT / "website" / "public" / "storytime"
 GAP = 1.4
 
@@ -141,11 +142,11 @@ def resolved(story_id: str) -> dict:
 
 
 def bake(story_id: str) -> dict:
-    if is_private(story_id):
-        # a private story's words and voice must never land in website/public (that is the public site)
-        raise SystemExit(f"{story_id} is private: push it with --site and --push instead (it is narrated on the site, behind its link)")
+    # a private story's words and voice never land in website/public (that is the public site): its
+    # narration is baked beside it in website/private, for a review film (sketch_claude storytime --private)
+    private = is_private(story_id)
     doc = resolved(story_id)
-    out = OUT / story_id
+    out = (PRIVATE_OUT if private else OUT) / story_id
     out.mkdir(parents=True, exist_ok=True)
     mf = out / "manifest.json"
     old = {}
@@ -161,14 +162,14 @@ def bake(story_id: str) -> dict:
         else:
             words = place_words(p["text"], speak_retry(speakable(p["text"]), doc["voice"], audio))
             print(f"spoke {p['id']}: {len(words)} words", flush=True)
-        pages.append({**p, "key": key, "audio": f"/storytime/{story_id}/{key}.mp3", "words": words,
+        pages.append({**p, "key": key, "audio": (f"private:storytime/{story_id}/{key}.mp3" if private else f"/storytime/{story_id}/{key}.mp3"), "words": words,
                       "duration": round((words[-1][1] if words else 2.0) + 0.6, 2)})
     # narration nothing reads any more goes; a page that changes back is spoken again
     keep = {p["key"] for p in pages}
     for f in out.glob("*.mp3"):
         if f.stem not in keep:
             f.unlink()
-    manifest = {"id": story_id, "slug": story_id, "title": doc["title"], "series": doc["series"], "voice": doc["voice"],
+    manifest = {"id": story_id, "slug": story_id, "title": doc["title"], "series": doc["series"], "style": doc.get("style"), "voice": doc["voice"],
                 "figures": doc.get("figures", {}), "pages": pages, "runtime": round(sum(p["duration"] + GAP for p in pages), 1)}
     mf.write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{story_id}: {len(pages)} pages, about {manifest['runtime'] / 60:.1f} minutes", flush=True)

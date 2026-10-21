@@ -5,6 +5,8 @@
     py -3.12 -m sketch_claude storytime my-own-home --pages 0-3 --draft    # a rehearsal of a few pages
     py -3.12 -m sketch_claude storytime my-own-home --finish deliverables/0587-storytime-my-own-home   # add a missing phone cut + release
     py -3.12 -m sketch_claude storytime the-lighthouse --site https://zeanahlab.com   # a Studio story
+    py -3.12 -m sketch_claude storytime the-long-watch --private        # a private story, narrated in website/private:
+                                                                        # its film stays there too (gitignored)
 
 The story is the manifest the children's player reads: the copy baked into the site
 (``website/public/storytime/<slug>/manifest.json``) or, with ``--site``, the version the Story
@@ -53,7 +55,15 @@ RATE = 48_000
 
 # ---------------------------------------------------------------- the story
 
-def load_manifest(slug: str, site: str | None) -> dict:
+PRIVATE = SITE / "private"          # gitignored: a private story's narration and its review films
+
+
+def load_manifest(slug: str, site: str | None, private: bool = False) -> dict:
+    if private:
+        f = PRIVATE / "storytime" / slug / "manifest.json"
+        if not f.exists():
+            raise SystemExit(f"no private narration for {slug}: run py -3.12 website/scripts/export_storytime.py {slug} first")
+        return json.loads(f.read_text(encoding="utf-8"))
     if site:
         with urllib.request.urlopen(f"{site.rstrip('/')}/api/stories/{slug}") as r:
             m = json.loads(r.read())
@@ -69,6 +79,9 @@ def audio_file(m: dict, url: str | None, cache: Path) -> Path | None:
     """A page's narration on disk: the site's own baked file, or fetched from the live site."""
     if not url:
         return None
+    if url.startswith("private:"):
+        f = PRIVATE / url[len("private:"):]
+        return f if f.exists() else None
     if url.startswith("/storytime/"):
         f = SITE / "public" / url.lstrip("/")
         if f.exists():
@@ -359,20 +372,26 @@ def _release(folder: Path, name: str, m: dict, timeline: list[dict], land: Path,
         f"Rendered by sketch_claude storytime at {land.name}.",
     ]
     (rel / "description.md").write_text("\n".join(desc) + "\n", encoding="utf-8")
-    try:
-        import medialib
-        medialib.write_index()
-    except Exception:
-        pass
+    if not str(folder).startswith(str(PRIVATE)):
+        try:
+            import medialib
+            medialib.write_index()
+        except Exception:
+            pass
     return {"folder": folder.relative_to(ROOT).as_posix(), "video": land.relative_to(ROOT).as_posix(),
             "phone": phone.relative_to(ROOT).as_posix() if phone else None, "thumbs": thumbs}
 
 
 def render(slug: str, site: str | None = None, pages: tuple[int, int] | None = None, draft: bool = False, phone: bool = True,
-           fps: int = 30, timeout_s: float = 4 * 3600) -> dict:
-    m = load_manifest(slug, site)
+           fps: int = 30, timeout_s: float = 4 * 3600, private: bool = False) -> dict:
+    m = load_manifest(slug, site, private)
     ensure_build()
-    if draft:
+    if private:
+        # a private story's film stays in website/private (gitignored), never in the numbered library or its index
+        folder = PRIVATE / "renders" / f"{slug}-{time.strftime('%Y%m%d-%H%M%S')}"
+        folder.mkdir(parents=True)
+        name = slug
+    elif draft:
         folder = ROOT / "tmp" / "storytime-drafts" / f"{slug}-{time.strftime('%Y%m%d-%H%M%S')}"
         folder.mkdir(parents=True)
         name = f"storytime-{slug}"
@@ -424,11 +443,13 @@ def finish(folder: Path, slug: str, site: str | None = None, fps: int = 30, time
     return _release(folder, name, m, timeline, land, tall, captions(m, timeline))
 
 
-def stills(slug: str, site: str | None = None, size: tuple[int, int] = (1920, 1080)) -> Path:
-    """One still per page at 60% through it, words drawn in: tmp/storytime-stills/<slug>-<time>/."""
-    m = load_manifest(slug, site)
+def stills(slug: str, site: str | None = None, size: tuple[int, int] = (1920, 1080), private: bool = False) -> Path:
+    """One still per page at 60% through it, words drawn in: tmp/storytime-stills/<slug>-<time>/
+    (a private story's go to website/private/renders/stills-...)."""
+    m = load_manifest(slug, site, private)
     ensure_build()
-    out = ROOT / "tmp" / "storytime-stills" / f"{slug}-{size[0]}x{size[1]}-{time.strftime('%Y%m%d-%H%M%S')}"
+    base = PRIVATE / "renders" if private else ROOT / "tmp" / "storytime-stills"
+    out = base / f"{'stills-' if private else ''}{slug}-{size[0]}x{size[1]}-{time.strftime('%Y%m%d-%H%M%S')}"
     out.mkdir(parents=True)
     _run_page(m, f"w={size[0]}&h={size[1]}&fps=30&stills=1", None, out, size, 1800)
     return out

@@ -80,6 +80,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--stills", action="store_true", help="storytime: one still per page instead of the film")
     ap.add_argument("--no-phone", action="store_true", help="storytime: the landscape cut only")
     ap.add_argument("--finish", help="storytime: add the missing phone cut and release to this deliverables folder")
+    ap.add_argument("--private", action="store_true", help="storytime: a private story (narration and film in website/private, gitignored)")
     ap.add_argument("--port", type=int, default=8767)
     ap.add_argument("--no-browser", action="store_true")
     ap.add_argument("--page", default="", help="serve: open this page instead of the modeller (director)")
@@ -110,7 +111,7 @@ def main(argv: list[str] | None = None) -> int:
     if a.command == "storytime":
         from sketch_claude import storytime_render as ST
         if a.stills:
-            out = ST.stills(a.story, a.site)
+            out = ST.stills(a.story, a.site, private=a.private)
             print(f"OUTPUT {out.relative_to(ROOT).as_posix()}", flush=True)
             return 0
         if a.finish:
@@ -118,7 +119,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"OUTPUT {out['folder']}", flush=True)
             return 0
         pages = tuple(int(x) for x in a.pages.split("-")) if a.pages else None
-        out = ST.render(a.story, a.site, pages=pages, draft=a.draft, phone=not a.no_phone)
+        out = ST.render(a.story, a.site, pages=pages, draft=a.draft, phone=not a.no_phone, private=a.private)
         print(f"OUTPUT {out['folder']}", flush=True)
         return 0
     if a.command == "showcase":

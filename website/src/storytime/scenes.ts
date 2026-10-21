@@ -329,9 +329,10 @@ function memoryScenes(w, S) {
       d.place(0, 1.35, 0); act(d, "measure"); d.expr = "far";
       w.tick = (t) => act(d, t % 9 < 5 ? "measure" : "think");
       return S.keys({ dur, keys: [
+        // in from the back of the bridge, round past the consoles to his face at the wheel, then out to the night
         { pos: P("bridge", -3.4, -2.6, 2.2), target: P("bridge", 0, 2.4, 1.6), fov: 42 },
-        { pos: P("bridge", -1.6, -0.6, 1.9), target: P("bridge", 0, 2.0, 1.5), fov: 38 },
-        { pos: P("bridge", 1.2, 0.4, 1.8), target: P("bridge", 0.6, 3.6, 2.6), fov: 36 },
+        { pos: P("bridge", -2.6, 1.0, 1.8), target: P("bridge", 0, 1.4, 1.5), fov: 38 },
+        { pos: P("bridge", -1.4, 2.6, 1.7), target: P("bridge", 0, 1.3, 1.55), fov: 36 },
       ] });
     },
     deck(dur) {
