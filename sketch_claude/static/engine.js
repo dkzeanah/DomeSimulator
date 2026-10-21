@@ -16,6 +16,8 @@ import { clock } from "/static/clock.js";
 import { Band } from "/static/band.js";
 
 const FPS = 30;
+// the breath after a line when the script gives none (the clips themselves carry almost no air now)
+const GAP = 0.14;
 const r1 = (x) => (Math.round(x * 10) / 10).toFixed(1);
 export function words(n) {
   const ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen",
@@ -41,6 +43,7 @@ export class Engine {
     this.w = world; this.cine = cine; this.set = set; this.series = series; this.T = world.THREE;
     this.shots = makeShots(this.T);
     this.voices = new Voices(cine);
+    this.voices.pace = series.pace || "+0%";      // the whole cast a little quicker than the voices' own reading pace
     this.events = [];
     this.band = new Band(this.voices, { audible: () => this.mode === "play", log: (fn, args) => this.events.push({ kind: "band", fn, args, t: clock.now() / 1000 }) });
     this.cast = {};
@@ -231,7 +234,7 @@ export class Engine {
       if (f.pause) await W(this.wait(f.pause));
     }
   }
-  parts(b) { return (b.frags || [b.text]).map((f) => (typeof f === "string" ? { text: f, pause: b.frags ? 0.16 : 0 } : f)); }
+  parts(b) { return (b.frags || [b.text]).map((f) => (typeof f === "string" ? { text: f, pause: b.frags ? 0.1 : 0 } : f)); }
   innerBus(ac, dest) {
     // the inside of Hank's head: a long hall of a reverb and a darker tone
     const n = ac.sampleRate * 2.6, ir = ac.createBuffer(2, n, ac.sampleRate);
@@ -367,7 +370,7 @@ export class Engine {
         if (b.expr) ch.expr = b.expr;
         if (b.earring !== undefined) ch.showEarring = b.earring;
         if (b.stomp) { ch.do("stomp"); this.band.stomp(); }
-        let dur = b.pad ?? 0.25;
+        let dur = b.pad ?? GAP;
         for (const f of parts) {
           const buf = await W(this.voices.fetchLine(f.rate ? { ...ch.def, rate: f.rate } : ch.def, this.fillText(f.text)).catch(() => null));
           dur += (buf ? buf.duration : 0.4 + f.text.length * 0.055) + (f.pause || 0);
@@ -379,7 +382,7 @@ export class Engine {
         cine.subtitle = null;
         if (b.expr && !b.keepExpr) ch.expr = null;
         if (b.after) ch.do(b.after); else if (b.act === "talk" || !b.act) ch.do("idle");
-        await W(this.wait(b.pad ?? 0.25));
+        await W(this.wait(b.pad ?? GAP));
         break;
       }
       case "walk": {

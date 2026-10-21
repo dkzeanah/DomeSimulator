@@ -28,6 +28,7 @@ from .solids import Mesh
 
 ROOT = Path(__file__).resolve().parents[1]
 VOICE_CACHE = ROOT / "tmp" / "sketch-claude-voices"
+TRIM_TAIL = 0.08          # seconds of air kept after the last word of a clip (and 0.03 s before the first)
 
 #: Where the studio bench and the table saw stand, beside the dome (metres; the dome is at the origin).
 BENCH_AT = (-6.2, -2.0)
@@ -92,7 +93,8 @@ def set_pieces(spec: M.Spec) -> dict:
 # Voices
 # ----------------------------------------------------------------------
 
-def voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz") -> Path:
+def raw_voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz") -> Path:
+    """The recording exactly as Edge TTS returns it (cached by its words, voice, rate and pitch)."""
     import edge_tts
     key = hashlib.sha1(json.dumps([text, voice_name, rate, pitch]).encode("utf-8")).hexdigest()[:20]
     VOICE_CACHE.mkdir(parents=True, exist_ok=True)
@@ -102,7 +104,8 @@ def voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz") ->
     tmp = out.with_suffix(".part")
 
     async def go(p):
-        await edge_tts.Communicate(text, voice_name, rate=rate, pitch=p).save(str(tmp))
+        # a request the service never answers would hang a whole render: give up on it and try again
+        await asyncio.wait_for(edge_tts.Communicate(text, voice_name, rate=rate, pitch=p).save(str(tmp)), timeout=30)
     # the service now and then answers with no audio; it nearly always works on a second try. Some
     # voices (Emma) refuse small pitch shifts for long stretches: the last tries use the voice's own
     # pitch, which nobody can hear the difference of, rather than leave the line silent.
@@ -117,6 +120,28 @@ def voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz") ->
                 raise
         time.sleep(0.8 * (attempt + 1))
     tmp.replace(out)
+    return out
+
+
+def voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz") -> Path:
+    """A line as the cast says it: the raw recording with its dead air cut away.
+
+    Edge TTS pads every clip with about 0.2 s of silence before the words and 0.8 s after them,
+    so a line said in three stop-and-go pieces carried three seconds of nothing and every line
+    sounded slow and choppy. The clip keeps a breath at each end (0.03 s before, TRIM_TAIL after); the
+    pauses that are meant -- a fragment's `pause`, a line's `pad` -- are the engine's, and exact."""
+    raw = raw_voice(text, voice_name, rate, pitch)
+    out = raw.with_name(raw.stem + "-t.mp3")
+    if out.exists() and out.stat().st_size > 0:
+        return out
+    part = out.with_suffix(".part.mp3")
+    edge = "silenceremove=start_periods=1:start_duration=0:start_threshold=-48dB:start_silence=0.03"
+    r = subprocess.run([_ffmpeg(), "-y", "-v", "error", "-i", str(raw), "-af",
+                        f"{edge},areverse,{edge},areverse,apad=pad_dur={TRIM_TAIL}",
+                        "-ar", "24000", "-ac", "1", "-c:a", "libmp3lame", "-q:a", "2", str(part)], capture_output=True, text=True)
+    if r.returncode or not part.exists() or part.stat().st_size < 200:
+        return raw                      # an untrimmed line is better than a missing one
+    part.replace(out)
     return out
 
 

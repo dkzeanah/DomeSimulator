@@ -339,6 +339,12 @@ export class Character {
 }
 
 // ---------------------------------------------------------------- voices
+/** Two Edge TTS rates added: "+4%" and "+10%" make "+14%". */
+export function addRate(a = "+0%", b = "+0%") {
+  const n = (parseFloat(a) || 0) + (parseFloat(b) || 0);
+  return `${n >= 0 ? "+" : ""}${Math.round(n)}%`;
+}
+
 export class Voices {
   constructor(cine) {
     this.ac = new (window.AudioContext || window.webkitAudioContext)();
@@ -351,6 +357,7 @@ export class Voices {
     cine.audio = this;
   }
   async fetchLine(def, text) {
+    def = { ...def, rate: addRate(def.rate, this.pace) };
     const key = `${def.voice}|${def.rate}|${def.pitch}|${text}`;
     if (this.cache.has(key)) return this.cache.get(key);
     const p = (async () => {
