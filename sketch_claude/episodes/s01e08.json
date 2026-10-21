@@ -1,0 +1,1397 @@
+{
+ "id": "s01e08",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E8",
+ "title": "Pinwheel",
+ "logline": "Maya calls Anna with the truth about Dusty. The family plans a surprise for her return and forgets to tell her. Alone at a motel, Anna works out that she has always been the one who goes, and turns the car around.",
+ "rating": "PG-13",
+ "status": "scripted",
+ "written_by": "claude",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Maya: the call",
+   "at": "hedge",
+   "mood": "dusk",
+   "sun": [
+    262,
+    6
+   ],
+   "place": {
+    "maya": [
+     5.0,
+     0.2,
+     -80
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "card",
+   "text": "PREVIOUSLY",
+   "sub": "The last show went out live and four million people watched Hank think. Dale said goodbye on air. Maya kept her mouth shut. Anna watched it alone, two states away. And the storm was in the sky behind them, early.",
+   "secs": 4.2,
+   "music": "sting"
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 30,
+   "mood": "sad"
+  },
+  {
+   "k": "act",
+   "who": "maya",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Don't hang up. Please. Anna, don't hang up. I was wrong about him.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "...Okay. I'm listening.",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "The fire. He didn't start it. He dragged Jet's rig out of the garage with his jacket around it. I found the jacket. It's burned on the inside.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "He ran because nobody was supposed to know he lived in our garage. And I'm the one who told the whole table where he slept.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "side": -1
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Why are you telling me this?",
+   "act": "talk",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "Because you'd want to know. And because I'm practising. Saying things for people instead of at them.",
+   "act": "phone",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 8: Pinwheel",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "Anna: the motel lot",
+   "at": "patio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "anna": [
+     -6.3,
+     7.3,
+     200
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 1
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "phone"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "anna",
+    "from": [
+     -5.0,
+     4.4,
+     1.3
+    ],
+    "dist": 0.5,
+    "lens": 40
+   },
+   "dur": 6,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "He's not here, Maya. He hasn't been here for a week. I came all this way to find him and he was in our garage.",
+   "act": "phone",
+   "expr": "sad"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "I'm always the one who goes. Isn't that funny? I go get things. The sponsor. Dusty. I was going to bring home money for the dome.",
+   "act": "phone",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "And every time I get back, you've all already done it. Together.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close",
+    "side": -1
+   },
+   "pad": 1.0
+  },
+  {
+   "k": "scene",
+   "name": "Cody: a road at night",
+   "at": "yard",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "cody": [
+     0.3,
+     -3.7,
+     0
+    ],
+    "krystal": [
+     1.4,
+     -4.4,
+     -40
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 9
+  },
+  {
+   "k": "expr",
+   "who": "cody",
+   "expr": "vision"
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "vision",
+   "who": "cody",
+   "label": "a car on a dark road",
+   "beats": [
+    {
+     "k": "scene",
+     "name": "a dark road",
+     "at": "patio",
+     "mood": "night",
+     "sun": [
+      60,
+      30
+     ],
+     "place": {
+      "anna": [
+       -6.4,
+       8.4,
+       90
+      ]
+     },
+     "view": {
+      "step": 14,
+      "explode": 0.0,
+      "tagsOff": [
+       "furniture",
+       "skin",
+       "glass"
+      ]
+     }
+    },
+    {
+     "k": "music",
+     "name": "heart",
+     "secs": 5
+    },
+    {
+     "k": "cam",
+     "cam": {
+      "kind": "move",
+      "move": "orbit",
+      "subject": "anna",
+      "radius": 3.2,
+      "height": 0.6,
+      "sweep": 120,
+      "lens": 32
+     },
+     "dur": 4.5,
+     "wait": false
+    },
+    {
+     "k": "act",
+     "who": "anna",
+     "act": "phone"
+    },
+    {
+     "k": "wait",
+     "s": 2.2
+    },
+    {
+     "k": "flash",
+     "secs": 0.12,
+     "sfx": "chime"
+    },
+    {
+     "k": "wait",
+     "s": 1.4
+    }
+   ]
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Mom. Set a plate.",
+   "act": "vision",
+   "expr": "vision",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "For who, baby?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "For Anna. She's turning the car around. Not yet. But she is.",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close",
+    "toward": "krystal"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "scene",
+   "name": "Krystal: the surprise",
+   "at": "patio",
+   "mood": "day",
+   "sun": [
+    140,
+    45
+   ],
+   "place": {
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "jet": [
+     0.7,
+     7.1,
+     20
+    ],
+    "hank": [
+     1.3,
+     8.4,
+     90
+    ],
+    "maya": [
+     0.0,
+     10.0,
+     180
+    ],
+    "cody": [
+     -0.6,
+     7.1,
+     -15
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 16,
+   "mood": "hope"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "A surprise. For Anna. A real one. Nobody leaves her out of anything ever again. Starting with this.",
+   "act": "point",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "We finish the skylight for her. She always wanted to see stars from inside.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "And we make it pink.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "We are not making it pink.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "We are making it a LITTLE pink. Jet, you're in charge of the skylight.",
+   "act": "laugh",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Me? You're putting ME in charge of the hole in the roof?",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   },
+   "earring": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "You're good with holes.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "sfx",
+   "name": "rimshot"
+  },
+  {
+   "k": "scene",
+   "name": "Jet: the earring",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    255,
+    18
+   ],
+   "place": {
+    "jet": [
+     0.2,
+     -2.9,
+     20
+    ],
+    "hank": [
+     1.2,
+     -3.4,
+     -40
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 14,
+   "mood": "warm"
+  },
+  {
+   "k": "prop",
+   "who": "jet",
+   "prop": "earring",
+   "on": true
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "ear"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "I'm done. No more holes. In me, I mean. The roof's still getting one.",
+   "act": "ear",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "hank"
+   },
+   "earring": true
+  },
+  {
+   "k": "prop",
+   "who": "jet",
+   "prop": "earring",
+   "on": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Your ear. Your call.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "place",
+   "who": "dale",
+   "at": [
+    3.4,
+    -5.6,
+    140
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "dale",
+   "to": [
+    1.9,
+    -4.2
+   ],
+   "speed": 1.2,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Kid. Emergency. My first taping was a disaster. They put me next to a teenager who does skincare and I called her 'young lady' eleven times.",
+   "act": "facepalm",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Oh no. Oh, Dale. Eleven?",
+   "act": "laugh",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "dale"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "I need a consultant. A real one. Paid. Here, it's from the wardrobe lady. They want me 'edgy.'",
+   "act": "point",
+   "cam": {
+    "kind": "two",
+    "a": "dale",
+    "b": "jet",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "Dale holds out a tiny silver stud. It is the least edgy object ever made.",
+   "secs": 3.2
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "...You want me to wear it on your show?",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "I want you on my show. The stud's optional. Don't make me say it twice, it hurts my hip.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "prop",
+   "who": "jet",
+   "prop": "earring",
+   "on": true
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Okay. Okay. Rule one. Don't try to be young. Be old at them. They love that.",
+   "act": "point",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "I'm always old at them.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's why it works.",
+   "act": "cheer",
+   "cam": {
+    "kind": "two",
+    "a": "jet",
+    "b": "dale",
+    "dist": 3.0
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "scene",
+   "name": "Hank: the skylight",
+   "at": "yard",
+   "mood": "dusk",
+   "sun": [
+    250,
+    8
+   ],
+   "place": {
+    "hank": [
+     0.3,
+     -0.3,
+     180
+    ],
+    "dale": [
+     -0.8,
+     -1.2,
+     120
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 28,
+   "mood": "inner"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "pedestal",
+    "subject": "dome",
+    "from": [
+     0.2,
+     -1.6,
+     1.2
+    ],
+    "rise": 2.0,
+    "lens": 24
+   },
+   "dur": 6,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "All those sticks round the top, and not one of them touching anything in the middle. How does that stay up?",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "thought",
+   "who": "hank",
+   "title": "",
+   "frags": [
+    {
+     "text": "Round the top, a pinwheel, each one leaning on the next one,",
+     "rate": "+14%",
+     "pause": 0.3,
+     "word": "a pinwheel"
+    },
+    {
+     "text": "take one out and they all, all of them, the whole crown comes down,",
+     "rate": "+24%",
+     "pause": 0.25,
+     "word": "all of them"
+    },
+    {
+     "text": "there's no first piece in a pinwheel. Nobody starts it. Everybody holds the next,",
+     "rate": "-6%",
+     "pause": 0.35,
+     "word": "no first piece"
+    },
+    {
+     "text": "she's been holding the next one all summer. Driving off to get the, the money, the boy, the,",
+     "rate": "+20%",
+     "pause": 0.3,
+     "word": "holding"
+    },
+    {
+     "text": "and the last piece holds the first one back, that's the trick, that's how it closes,",
+     "rate": "+12%",
+     "pause": 0.3,
+     "word": "holds the first"
+    },
+    {
+     "text": "who's holding Anna?",
+     "rate": "-32%",
+     "pause": 0.6,
+     "word": "Anna"
+    }
+   ],
+   "ghosts": [
+    "think",
+    "point",
+    "measure",
+    "idle",
+    "shrug",
+    "lift"
+   ]
+  },
+  {
+   "k": "figure",
+   "big": "{panels} panels, round to the top",
+   "small": "in a pinwheel each piece holds the next one, all the way round, and the last holds the first",
+   "secs": 5.5
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Each one holds the next. All the way round. And the last one holds the first one back. Otherwise it's just a, a pile.",
+   "act": "measure",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "dale"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "That's beautiful, Hank. I hate it.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "phone"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "Anna. It's Dad. I, uh.",
+     "rate": "-8%",
+     "pause": 0.5
+    },
+    {
+     "text": "The skylight's in. You can see the, you can see stars. From the inside.",
+     "rate": "+6%",
+     "pause": 0.4
+    },
+    {
+     "text": "You always did the, the things. For us. Out there. And I never once,",
+     "rate": "+14%",
+     "pause": 0.4
+    },
+    {
+     "text": "Come home. That's all. That's the whole message.",
+     "rate": "-12%"
+    }
+   ],
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "Anna: the voicemail",
+   "at": "patio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "anna": [
+     -6.3,
+     7.3,
+     200
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 20,
+   "mood": "hope"
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "phone"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "anna",
+    "from": [
+     -5.0,
+     4.4,
+     1.3
+    ],
+    "dist": 0.45,
+    "lens": 45
+   },
+   "dur": 7,
+   "wait": false
+  },
+  {
+   "k": "wait",
+   "s": 2.0
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "They're the ones who stay. I'm the one who goes.",
+   "act": "phone",
+   "expr": "far"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Somebody has to be the one who comes back.",
+   "act": "idle",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 0.8
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "ANNA TURNS THE CAR AROUND.",
+   "secs": 2.6,
+   "sfx": "whoosh"
+  },
+  {
+   "k": "scene",
+   "name": "The yard: HOEM",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    80,
+    10
+   ],
+   "place": {
+    "hank": [
+     0.5,
+     -3.9,
+     -20
+    ],
+    "krystal": [
+     -1.4,
+     -4.2,
+     20
+    ],
+    "maya": [
+     1.4,
+     -4.6,
+     40
+    ],
+    "jet": [
+     -0.4,
+     -4.5,
+     0
+    ],
+    "cody": [
+     -1.0,
+     -3.6,
+     10
+    ],
+    "dale": [
+     2.2,
+     -4.0,
+     60
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 14
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "It says HOEM. The banner says H, O, E, M.",
+   "act": "point",
+   "expr": "glare",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "The printer did that. I did not do that. I'm in charge of the hole.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "It's fine! It's charming! It's a choice!",
+   "act": "laugh",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It should say 'Welcome Back.'",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "It should say 'Welcome Home.' Back is for people who visit.",
+   "act": "crossed",
+   "cam": {
+    "kind": "two",
+    "a": "maya",
+    "b": "cody",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "It should say 'Free Lasagna.' People come for lasagna.",
+   "act": "lean",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "CURSE TALLY: 8. The banner says HOEM.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "place",
+   "who": "anna",
+   "at": [
+    -5.6,
+    -6.4,
+    40
+   ]
+  },
+  {
+   "k": "walk",
+   "who": "anna",
+   "to": [
+    -2.4,
+    -4.8
+   ],
+   "speed": 1.1,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Is this... for me?",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "It was supposed to be a surprise.",
+   "act": "crossed",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "You forgot to tell me.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's... that's how surprises work.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "laugh"
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "I know. I know! I'm just... I'm here for it. I'm actually here for one.",
+   "act": "laugh",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Get over here.",
+   "act": "cheer",
+   "expr": "smile",
+   "cam": {
+    "kind": "wide",
+    "who": [
+     "anna",
+     "krystal",
+     "maya",
+     "hank"
+    ],
+    "dir": [
+     0.1,
+     1,
+     -0.3
+    ],
+    "lens": 30
+   }
+  },
+  {
+   "k": "walk",
+   "who": "anna",
+   "to": [
+    -1.6,
+    -4.4
+   ],
+   "speed": 1.2,
+   "wait": true
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "It says HOEM.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "It's perfect. Don't fix it.",
+   "act": "idle",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "scene",
+   "name": "Night: the warning",
+   "at": "yard",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "cody": [
+     0.4,
+     -3.8,
+     0
+    ],
+    "hank": [
+     1.2,
+     -4.4,
+     -30
+    ],
+    "anna": [
+     -0.6,
+     -4.2,
+     30
+    ]
+   },
+   "view": {
+    "step": 14,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 12
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "wait",
+   "s": 0.4
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "wait",
+   "s": 0.4
+  },
+  {
+   "k": "sfx",
+   "name": "chime"
+  },
+  {
+   "k": "act",
+   "who": "cody",
+   "act": "phone"
+  },
+  {
+   "k": "meme",
+   "style": "pov",
+   "text": "NATIONAL WEATHER SERVICE: STORM WARNING. Landfall in 72 hours. Prepare to shelter in place.",
+   "secs": 4.2
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Seventy-two hours.",
+   "act": "phone",
+   "expr": "vision",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Is it the one? Your one?",
+   "act": "idle",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "medium",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's the one.",
+   "act": "idle",
+   "expr": "vision",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close",
+    "toward": "anna"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "And we've got a ring to go, and no skin.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.6,
+    "lens": 26
+   },
+   "pad": 1.0
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ]
+}

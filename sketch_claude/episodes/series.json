@@ -51,6 +51,12 @@
                "quirk": "Letterman jacket, a car he can't afford, a story about the state semi-final. Charming, empty, and somehow always around."},
     "yarrow": {"name": "Mr. Yarrow", "role": "the neighbour over the hedge", "voice": "en-GB-RyanNeural", "rate": "-8%", "pitch": "-3Hz",
                "height": 1.84, "skin": "#d7a585", "shirt": "#8a7a5a", "shirt2": "#5e5338", "pants": "#4c4a42", "hair": "#cfcac0", "hairStyle": "hat", "belly": 1.0, "colour": "#a08a5a",
-               "quirk": "Says the true thing nobody wants to hear, then goes back to his roses."}
+               "quirk": "Says the true thing nobody wants to hear, then goes back to his roses."},
+    "bean":   {"name": "Bean Yarrow", "role": "4; Mr. Yarrow's granddaughter", "voice": "en-US-AnaNeural", "rate": "+6%", "pitch": "+4Hz",
+               "height": 1.02, "skin": "#d7a585", "shirt": "#f2c94c", "shirt2": "#d9ae36", "pants": "#c2577a", "hair": "#3b2416", "hairStyle": "ponytail", "belly": 0.86, "colour": "#f2c94c",
+               "quirk": "Says exactly what she sees, which is usually the thing everyone else is too polite to. Builds with whatever is on the table."},
+    "priya":  {"name": "Priya Nair", "role": "17; Cody's friend who codes", "voice": "en-US-MichelleNeural", "rate": "+8%", "pitch": "+0Hz",
+               "height": 1.62, "skin": "#a8714f", "shirt": "#3a4a8c", "shirt2": "#2a3668", "pants": "#2f3440", "hair": "#17120e", "hairStyle": "bun", "glasses": true, "hoodie": true, "belly": 0.9, "colour": "#5a6ad1",
+               "quirk": "Sees everything as a program. Explains loops with whatever is in reach. The only person Cody talks to first."}
   }
 }

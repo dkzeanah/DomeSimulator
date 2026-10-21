@@ -14,9 +14,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Storyworld } from "./engine";
 import { makeScenes, reshoot } from "./scenes";
+import { motes } from "./places";
 
 export interface StoryPage { id: string; kind?: string; scene: string; shot?: string; text: string; key?: string; audio: string | null; words: [number, number, number, number][]; duration: number }
-export interface Manifest { id: string; slug?: string; version?: number | null; title: string; series?: string; pages: StoryPage[]; figures: Record<string, number | string>; runtime: number }
+export interface Manifest { id: string; slug?: string; version?: number | null; title: string; series?: string; style?: string | null; pages: StoryPage[]; figures: Record<string, number | string>; runtime: number }
 
 const GAP = 1.4;            // seconds of quiet between pages, as the manifest's runtime counts them
 const PREF = "storytime.narrator";
@@ -122,6 +123,8 @@ export default function Storytime({ src, manifest: given, embedded = false, jump
     w.loadDome().then(() => {
       if (!alive) return;
       w.build();
+      // the ethereal telling: light drifting through every scene (the vignette and the long fades are in the page)
+      if (mRef.current?.style === "ethereal") { w.ethereal = true; motes(w).visible = true; }
       scenesRef.current = makeScenes(w, (mRef.current?.figures || {}) as never) as never;
       setReady(true);
       const loop = (now: number) => {
@@ -287,7 +290,9 @@ export default function Storytime({ src, manifest: given, embedded = false, jump
   const showChrome = chrome || !playing;
   const spans = p ? spansOf(p) : [];
   const reading = narrator && (playing || word >= 0);
-  const big = embedded ? "text-[0.95rem] sm:text-[1.1rem]" : "text-[1.25rem] sm:text-[1.6rem] lg:text-[1.85rem]";
+  // a long page sets its words smaller, so the picture keeps the upper two thirds of the screen
+  const long = text.length > 280;
+  const big = embedded ? "text-[0.95rem] sm:text-[1.1rem]" : long ? "text-[1.05rem] sm:text-[1.3rem] lg:text-[1.5rem]" : "text-[1.25rem] sm:text-[1.6rem] lg:text-[1.85rem]";
 
   return (
     <div ref={rootRef}
@@ -301,6 +306,9 @@ export default function Storytime({ src, manifest: given, embedded = false, jump
            if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
          }}>
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+      {manifest?.style === "ethereal" && <div className="story-vignette pointer-events-none absolute inset-0" />}
+      {/* a dissolve between pages: brief for every story, long and slow for an ethereal one */}
+      <div key={page} className={`pointer-events-none absolute inset-0 bg-[#05070f] ${manifest?.style === "ethereal" ? "story-veil-long" : "story-veil"}`} />
       <audio ref={audioRef} preload="auto" playsInline />
 
       {/* the cover's title, lettered over the dome */}

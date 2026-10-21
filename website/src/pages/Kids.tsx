@@ -73,7 +73,7 @@ export default function Kids() {
             <button className="btn" onClick={() => { setStory(true); window.scrollTo(0, 0); }}>Play it</button>
           </Panel>
           {others.length > 1 && (
-            <Panel kicker="Dada's Stories" title="More bedtime stories">
+            <Panel kicker="Bedtime Stories" title="More bedtime stories">
               <ul className="grid gap-2">
                 {others.map((o) => (
                   <li key={o.slug}><Link className={`btn-ghost w-full justify-start ${o.slug === slug ? "accent font-semibold" : ""}`} to={o.slug === FIRST ? "/kids" : `/kids/${o.slug}`} onClick={() => { setStory(true); window.scrollTo(0, 0); }}>{o.title}</Link></li>

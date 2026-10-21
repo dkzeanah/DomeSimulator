@@ -9,6 +9,9 @@
         Print the SQL that seeds the story's first version and its baked narration into D1.
 
     py -3.12 website/scripts/export_storytime.py my-own-home --site https://zeanahlab.com [--version N] [--push]
+    py -3.12 website/scripts/export_storytime.py the-long-watch --site https://zeanahlab.com --push
+        A story in website/private/stories/ (gitignored) is private: it is never baked into the site,
+        its first push creates it link-only, and its narration goes to R2 behind its link.
         Work against the live Story Studio with an agent key (env ZL_AGENT_KEY, scope
         stories:write). --push saves the local JSON as a new version; otherwise the script asks the
         site which pages of version N (default: the newest) have no narration, speaks them and
@@ -36,6 +39,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 STORIES = ROOT / "website" / "src" / "storytime" / "stories"
+PRIVATE = ROOT / "website" / "private" / "stories"      # gitignored: stories only a link opens (/mykids)
 OUT = ROOT / "website" / "public" / "storytime"
 GAP = 1.4
 
@@ -107,9 +111,20 @@ def figures() -> dict:
             "diameterFt": d["diameterFt"], "heightFt": d["heightFt"]}
 
 
+def source(story_id: str) -> Path:
+    for d in (STORIES, PRIVATE):
+        if (d / f"{story_id}.json").exists():
+            return d / f"{story_id}.json"
+    raise SystemExit(f"no story called {story_id} in {STORIES} or {PRIVATE}")
+
+
+def is_private(story_id: str) -> bool:
+    return source(story_id).parent == PRIVATE
+
+
 def resolved(story_id: str) -> dict:
     """The story as the Studio stores it: every page's own words, the voice, the figures."""
-    story = json.loads((STORIES / f"{story_id}.json").read_text(encoding="utf-8"))
+    story = json.loads(source(story_id).read_text(encoding="utf-8"))
     verse = stanzas(ROOT / story["verse"]) if story.get("verse") else []
     pages = []
     for p in story["pages"]:
@@ -118,12 +133,17 @@ def resolved(story_id: str) -> dict:
         q.setdefault("kind", "page")
         pages.append(q)
     doc = {"title": story["title"], "series": story.get("series", ""), "voice": story["voice"], "pages": pages}
+    if story.get("style"):
+        doc["style"] = story["style"]
     if story.get("figures") != "none":
         doc["figures"] = figures()
     return doc
 
 
 def bake(story_id: str) -> dict:
+    if is_private(story_id):
+        # a private story's words and voice must never land in website/public (that is the public site)
+        raise SystemExit(f"{story_id} is private: push it with --site and --push instead (it is narrated on the site, behind its link)")
     doc = resolved(story_id)
     out = OUT / story_id
     out.mkdir(parents=True, exist_ok=True)
@@ -167,6 +187,20 @@ def sql(story_id: str) -> str:
     return "\n".join(lines)
 
 
+def sql_version(story_id: str, n: int, note: str) -> str:
+    """SQL that adds the baked story as the next version of a story already in D1, with its narration, and publishes it."""
+    m = json.loads((OUT / story_id / "manifest.json").read_text(encoding="utf-8"))
+    doc = resolved(story_id)
+    q = lambda s: "'" + str(s).replace("'", "''") + "'"
+    now = "2026-10-20T00:00:00Z"
+    # the next free version number, so a version saved in the Studio meanwhile is never in the way
+    lines = [f"INSERT INTO story_versions(story, n, doc, note, author, created_at) SELECT {q(story_id)}, COALESCE(MAX(n), 0) + 1, {q(json.dumps(doc, ensure_ascii=False))}, {q(note)}, 'seed', {q(now)} FROM story_versions WHERE story = {q(story_id)};"]
+    for p in m["pages"]:
+        lines.append(f"INSERT OR REPLACE INTO story_audio(story, key, src, content_type, words, duration, voice, created_at) VALUES({q(story_id)}, {q(p['key'])}, {q('static:' + p['audio'])}, 'audio/mpeg', {q(json.dumps(p['words']))}, {p['duration']}, {q(doc['voice']['name'])}, {q(now)});")
+    lines.append(f"UPDATE stories SET live_version = (SELECT MAX(n) FROM story_versions WHERE story = {q(story_id)}), series = {q(doc['series'])}, updated_at = {q(now)} WHERE slug = {q(story_id)};")
+    return "\n".join(lines)
+
+
 def call(site: str, method: str, path: str, body: dict | None = None) -> dict:
     key = os.environ.get("ZL_AGENT_KEY")
     if not key:
@@ -179,7 +213,7 @@ def call(site: str, method: str, path: str, body: dict | None = None) -> dict:
 
 def sync(story_id: str, site: str, version: int | None, push: bool) -> None:
     if push:
-        r = call(site, "POST", f"/agent/stories/{story_id}/versions", {"doc": resolved(story_id), "note": f"from {story_id}.json"})
+        r = call(site, "POST", f"/agent/stories/{story_id}/versions", {"doc": resolved(story_id), "note": f"from {story_id}.json", "private": is_private(story_id)})
         print(f"saved version {r['n']}", flush=True)
         version = r["n"]
     todo = call(site, "GET", f"/agent/stories/{story_id}/narration" + (f"?v={version}" if version else ""))
@@ -204,11 +238,15 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("story", nargs="?", default="my-own-home")
     ap.add_argument("--sql", action="store_true")
+    ap.add_argument("--sql-version", type=int, help="the SQL that adds and publishes this version number of a story already in D1")
+    ap.add_argument("--note", default="")
     ap.add_argument("--site")
     ap.add_argument("--version", type=int)
     ap.add_argument("--push", action="store_true")
     a = ap.parse_args()
-    if a.sql:
+    if a.sql_version:
+        print(sql_version(a.story, a.sql_version, a.note))
+    elif a.sql:
         print(sql(a.story))
     elif a.site:
         sync(a.story, a.site, a.version, a.push)

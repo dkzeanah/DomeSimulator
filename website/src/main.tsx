@@ -30,6 +30,7 @@ const Verify = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Ve
 const Kids = lazy(() => import("./pages/Kids"));
 const AdminStories = lazy(() => import("./pages/AdminStories"));
 const StoryRender = lazy(() => import("./storytime/StoryRender"));
+const MyKids = lazy(() => import("./pages/MyKids"));
 const MediaPage = lazy(() => import("./pages/Media"));
 const Portal = lazy(() => import("./pages/Portal"));
 const Card = lazy(() => import("./pages/Card"));
@@ -47,6 +48,8 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             {/* the film renderer (sketch_claude storytime): bare, no site chrome */}
             <Route path="storytime-render" element={<StoryRender />} />
+            {/* a private story, by its link only: no site chrome, no listing */}
+            <Route path="mykids" element={<MyKids />} />
             <Route element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="book" element={<Book />} />

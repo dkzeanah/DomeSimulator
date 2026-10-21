@@ -1,0 +1,1220 @@
+{
+ "id": "s01e07",
+ "season": "season01",
+ "series": "Level With Me",
+ "number": "S1E7",
+ "title": "The Hub That Isn't There",
+ "logline": "Hank's last show goes out live from the dome with the kids as crew. Everything breaks, Dale says goodbye on air, Maya keeps her mouth shut, and Hank's thought spiral happens in front of four million people.",
+ "rating": "PG-13",
+ "status": "scripted",
+ "written_by": "claude",
+ "notes": "Hyper-drama, slight comedy. Text in {braces} is filled from the model.",
+ "beats": [
+  {
+   "k": "scene",
+   "name": "Cold open: ninety seconds",
+   "at": "yard",
+   "mood": "day",
+   "sun": [
+    140,
+    48
+   ],
+   "place": {
+    "hank": [
+     0.4,
+     -3.4,
+     0
+    ],
+    "dale": [
+     -0.7,
+     -3.5,
+     10
+    ],
+    "krystal": [
+     2.6,
+     -5.4,
+     30
+    ],
+    "jet": [
+     0.6,
+     -6.2,
+     180
+    ],
+    "cody": [
+     -1.6,
+     -5.6,
+     140
+    ],
+    "maya": [
+     2.2,
+     -3.6,
+     -60
+    ]
+   },
+   "view": {
+    "step": 13,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "card",
+   "text": "PREVIOUSLY",
+   "sub": "The garage burned with Jet's rig in it. Dusty ran. Krystal told them there was no money, there hadn't been since January, and put her foot down: they finish the dome. Maya found Dusty's jacket in the ashes. And Anna stopped answering.",
+   "secs": 4.2,
+   "music": "sting"
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 10
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Ninety seconds! Jet, camera. Cody, boom. Maya, props. Maya, smile.",
+   "act": "point",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "I am smiling.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   },
+   "keepExpr": true
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "I'm live on four platforms. The station said we could stream it ourselves since they're firing us anyway.",
+   "act": "phone",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Is my hair doing the thing?",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Your hair has been doing the thing since nineteen ninety-eight.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium",
+    "toward": "dale"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "And we're live in five, four...",
+   "act": "point",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close"
+   },
+   "pad": 1.4
+  },
+  {
+   "k": "card",
+   "text": "LEVEL WITH ME",
+   "sub": "Episode 7: The Hub That Isn't There",
+   "secs": 4,
+   "music": "theme"
+  },
+  {
+   "k": "scene",
+   "name": "Before: the porch",
+   "at": "yard",
+   "mood": "day",
+   "sun": [
+    140,
+    48
+   ],
+   "place": {
+    "hank": [
+     0.9,
+     -4.6,
+     -30
+    ],
+    "jet": [
+     0.0,
+     -4.4,
+     40
+    ]
+   },
+   "view": {
+    "step": 13,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 16,
+   "mood": "warm"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Dad. Level with me. Are we going to be okay? The money. The show. All of it.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium",
+    "toward": "hank"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "We're going to be...",
+     "rate": "-10%",
+     "pause": 0.6
+    },
+    {
+     "text": "loud. We're going to be very loud.",
+     "rate": "+6%"
+    }
+   ],
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's not an answer.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "It's the only one I've got that's true. Go check your battery. And the earring's crooked.",
+   "act": "point",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "jet",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "ear"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "You SAW it? You've always seen it?",
+   "act": "ear",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Saw what? Battery.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "card",
+   "text": "HANK'S HARDWARE HOUR",
+   "sub": "The last one. Live, from the backyard.",
+   "secs": 3,
+   "music": "sting"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "crane",
+    "subject": "dome",
+    "from": [
+     0.4,
+     -7.6,
+     0.7
+    ],
+    "rise": 2.0,
+    "back": 1.0,
+    "lens": 28
+   },
+   "dur": 5,
+   "wait": false
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "Welcome back. For the last time. Today: the hub that isn't there.",
+     "pause": 0.3
+    },
+    {
+     "text": "Most domes have a hub at every corner. A steel, a, a fist that holds the sticks together.",
+     "rate": "+10%",
+     "pause": 0.3
+    },
+    {
+     "text": "This one doesn't. Look.",
+     "rate": "-10%"
+    }
+   ],
+   "act": "wave",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   },
+   "after": "idle"
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Every panel meets the next one edge to edge. There's nothing in the middle of the corner. Nothing. And it holds.",
+   "act": "point",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "jigHigh",
+    "from": [
+     1.8,
+     -5.4,
+     1.6
+    ],
+    "dist": 0.5,
+    "lens": 40
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Folks, it's like a family. Nobody's in charge and somehow it's still standing. Mostly out of spite.",
+   "act": "lean",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "act",
+   "who": "jet",
+   "act": "phone"
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "LIVE: the feed is upside down.",
+   "secs": 2.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "It's upside down. It's upside down! I'm fixing it. Don't look at the chat.",
+   "act": "phone",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "He held my cue cards upside down in episode one. It's a family tradition.",
+   "act": "crossed",
+   "cam": {
+    "kind": "two",
+    "a": "dale",
+    "b": "hank",
+    "dist": 3.4
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "LIVE: a raccoon.",
+   "secs": 2.0,
+   "sfx": "airhorn"
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Raccoon. On the porch. With babies. Hold still, everybody, it's—",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "It's taking the props. It's taking the props, Dad, it took the level!",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Let it. It, it lives here. It's been here longer than the door.",
+   "act": "laugh",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "CURSE TALLY: 7. Live television.",
+   "secs": 3.2,
+   "sfx": "scratch"
+  },
+  {
+   "k": "place",
+   "who": "yarrow",
+   "at": [
+    6.1,
+    0.6,
+    90
+   ]
+  },
+  {
+   "k": "line",
+   "who": "yarrow",
+   "text": "Best show you've ever done, Hank. Pity it's the last one. Pity about the raccoon.",
+   "act": "peek",
+   "cam": {
+    "kind": "single",
+    "who": "yarrow",
+    "size": "medium",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "He's a regular, Mr. Yarrow.",
+   "act": "wave",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium",
+    "toward": "yarrow"
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 26,
+   "mood": "sad"
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Folks. Before we hang the door. I've got news, and I'd rather you heard it from me than from a teenager with a ring light.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "This is my last show with Hank. I'm going somewhere... younger. They made me an offer, and I'm fifty-eight, and I took it.",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.4
+  },
+  {
+   "k": "act",
+   "who": "maya",
+   "act": "point"
+  },
+  {
+   "k": "expr",
+   "who": "maya",
+   "expr": "glare"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "maya",
+    "from": [
+     3.4,
+     -6.0,
+     1.4
+    ],
+    "dist": 0.5,
+    "lens": 45
+   },
+   "dur": 3.0,
+   "wait": true
+  },
+  {
+   "k": "meme",
+   "style": "zoom",
+   "text": "",
+   "secs": 0.9,
+   "who": "maya",
+   "sfx": "boom"
+  },
+  {
+   "k": "act",
+   "who": "maya",
+   "act": "crossed"
+  },
+  {
+   "k": "expr",
+   "who": "maya",
+   "expr": "far"
+  },
+  {
+   "k": "wait",
+   "s": 1.6
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "You, uh.",
+     "rate": "-10%",
+     "pause": 0.6
+    },
+    {
+     "text": "You should, of course you, it's a good, it's good.",
+     "rate": "+18%",
+     "pause": 0.4
+    }
+   ],
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close",
+    "toward": "dale"
+   }
+  },
+  {
+   "k": "thought",
+   "who": "hank",
+   "title": "",
+   "frags": [
+    {
+     "text": "Dale's leaving. The show's ending. The camera's upside down. There's a raccoon with my level,",
+     "rate": "+24%",
+     "pause": 0.25,
+     "word": "leaving"
+    },
+    {
+     "text": "and it's, look at it, it's holding,",
+     "rate": "-8%",
+     "pause": 0.4,
+     "word": "holding"
+    },
+    {
+     "text": "nobody in the middle. Nobody holding the corner. Every edge just holding the next edge,",
+     "rate": "+16%",
+     "pause": 0.3,
+     "word": "the next edge"
+    },
+    {
+     "text": "I'm not the hub. I was never the hub. I thought if I let go, the corner,",
+     "rate": "+20%",
+     "pause": 0.3,
+     "word": "never the hub"
+    },
+    {
+     "text": "there is no hub. There's just us. Edge to edge.",
+     "rate": "-26%",
+     "pause": 0.5,
+     "word": "edge to edge"
+    }
+   ],
+   "ghosts": [
+    "think",
+    "point",
+    "idle",
+    "shrug",
+    "measure",
+    "wave"
+   ]
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "frags": [
+    {
+     "text": "There's no hub, folks.",
+     "rate": "-8%",
+     "pause": 0.5
+    },
+    {
+     "text": "Nothing in the middle. Every piece just holds the next one. That's the show. That was the whole show.",
+     "rate": "-4%"
+    }
+   ],
+   "act": "idle",
+   "cam": {
+    "kind": "low",
+    "who": "hank",
+    "dist": 2.6,
+    "lens": 26
+   }
+  },
+  {
+   "k": "figure",
+   "big": "{panels} panels, no hubs",
+   "small": "nothing has to sit in the middle for the corners to hold",
+   "secs": 5
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Don't do this to me on air, Hank. I'm wearing mascara.",
+   "act": "facepalm",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Hang the door with me. One more time.",
+   "act": "point",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "dale",
+    "dist": 3.0
+   }
+  },
+  {
+   "k": "act",
+   "who": "hank",
+   "act": "lift"
+  },
+  {
+   "k": "act",
+   "who": "dale",
+   "act": "lift"
+  },
+  {
+   "k": "sfx",
+   "name": "thud"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "And we're clear. We're clear! That's the show!",
+   "act": "cheer",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "scene",
+   "name": "After: what Maya didn't say",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    255,
+    18
+   ],
+   "place": {
+    "krystal": [
+     1.6,
+     -4.4,
+     -50
+    ],
+    "maya": [
+     0.6,
+     -4.2,
+     60
+    ]
+   },
+   "view": {
+    "step": 13,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 14,
+   "mood": "warm"
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "You didn't say it. On air. I saw your face. You had a whole paragraph.",
+   "act": "crossed",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "maya"
+   }
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "He needed to say it more than I needed to say it back.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 0.8
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Look at you. Being right for somebody.",
+   "act": "laugh",
+   "expr": "smile",
+   "cam": {
+    "kind": "two",
+    "a": "krystal",
+    "b": "maya",
+    "dist": 3.0
+   },
+   "pad": 0.5
+  },
+  {
+   "k": "scene",
+   "name": "The door: two men",
+   "at": "yard",
+   "mood": "golden",
+   "sun": [
+    255,
+    14
+   ],
+   "place": {
+    "hank": [
+     0.5,
+     -2.9,
+     160
+    ],
+    "dale": [
+     -0.5,
+     -3.0,
+     200
+    ]
+   },
+   "view": {
+    "step": 13,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 0
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "You know I'd take a bullet for you. For the record. Off the record. Whatever record.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium",
+    "toward": "hank"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "I know. Take the show.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "They're going to make me wear a hoodie.",
+   "act": "crossed",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Wear the hoodie, Dale.",
+   "act": "laugh",
+   "cam": {
+    "kind": "two",
+    "a": "hank",
+    "b": "dale",
+    "dist": 2.8
+   }
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "And the kid. Jet. He's... he listens to me. I don't know why. Nobody listens to me.",
+   "act": "idle",
+   "expr": "far",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "Because you don't pretend to like him.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "close",
+    "toward": "dale"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "I do like him. Don't tell him.",
+   "act": "crossed",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "close"
+   },
+   "pad": 0.6
+  },
+  {
+   "k": "scene",
+   "name": "A motel lot, two states away",
+   "at": "patio",
+   "mood": "night",
+   "sun": [
+    60,
+    30
+   ],
+   "place": {
+    "anna": [
+     -6.3,
+     7.3,
+     200
+    ]
+   },
+   "view": {
+    "step": 13,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "piano",
+   "motif": 1
+  },
+  {
+   "k": "act",
+   "who": "anna",
+   "act": "phone"
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "dollyIn",
+    "subject": "anna",
+    "from": [
+     -5.0,
+     4.4,
+     1.3
+    ],
+    "dist": 0.5,
+    "lens": 40
+   },
+   "dur": 6,
+   "wait": false
+  },
+  {
+   "k": "meme",
+   "style": "caption",
+   "text": "Anna, alone in her car outside a motel, watching a clip with four million views.",
+   "secs": 3.4
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "They did the last show. In the yard. Everybody had a job.",
+   "act": "phone",
+   "expr": "sad"
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "line",
+   "who": "anna",
+   "text": "Without me.",
+   "act": "phone",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "anna",
+    "size": "close"
+   },
+   "pad": 1.2
+  },
+  {
+   "k": "scene",
+   "name": "The patio: four million",
+   "at": "patio",
+   "mood": "dusk",
+   "sun": [
+    262,
+    6
+   ],
+   "place": {
+    "hank": [
+     1.3,
+     8.4,
+     90
+    ],
+    "krystal": [
+     -1.2,
+     8.2,
+     -90
+    ],
+    "cody": [
+     -0.6,
+     7.1,
+     -15
+    ],
+    "jet": [
+     0.7,
+     7.1,
+     20
+    ],
+    "maya": [
+     0.0,
+     10.0,
+     180
+    ],
+    "dale": [
+     2.4,
+     7.6,
+     110
+    ]
+   },
+   "view": {
+    "step": 13,
+    "explode": 0.0,
+    "tagsOff": [
+     "furniture",
+     "skin",
+     "glass"
+    ]
+   }
+  },
+  {
+   "k": "music",
+   "name": "pad",
+   "secs": 10,
+   "mood": "hope"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "Dad. Four million. Four MILLION. The raccoon has a fan account.",
+   "act": "phone",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "medium"
+   },
+   "earring": true
+  },
+  {
+   "k": "line",
+   "who": "dale",
+   "text": "Of course it does. The raccoon's got more rizz than me.",
+   "act": "lean",
+   "expr": "smirk",
+   "cam": {
+    "kind": "single",
+    "who": "dale",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Four million people saw your father cry about corners.",
+   "act": "laugh",
+   "expr": "smile",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "line",
+   "who": "hank",
+   "text": "I didn't cry. It was, there was sawdust.",
+   "act": "shrug",
+   "cam": {
+    "kind": "single",
+    "who": "hank",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "pov",
+   "text": "COMMENTS: 'the dad thinks out loud like my brain at 3am'  'who is the side-eye girl'  'the raccoon deserves its own show'",
+   "secs": 4.2
+  },
+  {
+   "k": "line",
+   "who": "maya",
+   "text": "'Who is the side-eye girl.' Great. My face is internationally known.",
+   "act": "crossed",
+   "expr": "sideeye",
+   "cam": {
+    "kind": "single",
+    "who": "maya",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "Where's Anna in it? Is Anna in it?",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "medium",
+    "toward": "jet"
+   }
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "...No. She wasn't here.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "wait",
+   "s": 1.0
+  },
+  {
+   "k": "music",
+   "name": "tension",
+   "secs": 14
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "Pause it. There. Look behind you. Over the dome.",
+   "act": "point",
+   "expr": "wide",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "medium"
+   }
+  },
+  {
+   "k": "meme",
+   "style": "freeze",
+   "text": "In the clip, over the dome: a cloud shaped exactly like the one Cody keeps seeing.",
+   "secs": 3.6,
+   "sfx": "scratch"
+  },
+  {
+   "k": "line",
+   "who": "jet",
+   "text": "That's just a cloud.",
+   "act": "idle",
+   "cam": {
+    "kind": "single",
+    "who": "jet",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "It's early.",
+   "act": "idle",
+   "expr": "vision",
+   "cam": {
+    "kind": "single",
+    "who": "cody",
+    "size": "close"
+   }
+  },
+  {
+   "k": "line",
+   "who": "krystal",
+   "text": "What's early, baby?",
+   "act": "idle",
+   "expr": "sad",
+   "cam": {
+    "kind": "single",
+    "who": "krystal",
+    "size": "close",
+    "toward": "cody"
+   }
+  },
+  {
+   "k": "line",
+   "who": "cody",
+   "text": "The storm.",
+   "act": "idle",
+   "expr": "vision",
+   "cam": {
+    "kind": "low",
+    "who": "cody",
+    "dist": 2.4,
+    "lens": 24
+   },
+   "pad": 1.2
+  },
+  {
+   "k": "credits",
+   "secs": 6.5
+  }
+ ]
+}

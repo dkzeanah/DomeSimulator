@@ -1,7 +1,7 @@
 {
   "id": "my-own-home",
   "title": "My Own Home, My Own Dome",
-  "series": "Dada's Stories",
+  "series": "Bedtime Stories",
   "voice": {
     "name": "en-US-JennyNeural",
     "rate": "-12%",
@@ -13,19 +13,13 @@
       "id": "intro-1",
       "kind": "intro",
       "scene": "stars",
-      "text": "Hello, Annika. Hello, Amara. Are you all cozy? Pull your blanket up, right up to your chin. There. Now look out the window, way up high, at all the twinkly stars. Do you see the brightest one? The one that blinks, like it's saying hello? Mama Kristine says that one is Dada's star."
+      "text": "Hello, little one. Are you all cozy? Pull your blanket up, right up to your chin. There. Now look out the window, way up high, at all the twinkly stars. Do you see the brightest one? The one that blinks, like it's saying hello? That one is watching over you tonight."
     },
     {
       "id": "intro-2",
       "kind": "intro",
-      "scene": "workbench",
-      "text": "Dada is far, far away, on the other side of the wide, wide sea. Mama says he is very busy, helping people and keeping the world safe while you sleep. He never likes to talk about it. If anybody asks, he just smiles and says, \"Oh, it's nothing. I just like to fix things.\""
-    },
-    {
-      "id": "intro-3",
-      "kind": "intro",
       "scene": "letter",
-      "text": "But every so often, when the stars are just right, Dada sends a story across the ocean, all the way to your window. Tonight's story is about a girl named Pip, who wanted a home with no corners at all. Are you ready? Here we go."
+      "text": "Every so often, when the stars are just right, a story drifts across the ocean, all the way to your window. Tonight's story is about a girl named Pip, who wanted a home with no corners at all. Are you ready? Here we go."
     },
     {
       "id": "cover",
@@ -117,7 +111,7 @@
       "id": "outro",
       "kind": "outro",
       "scene": "goodnight",
-      "text": "The end. Goodnight, Annika. Goodnight, Amara. Look, Dada's star is shining right over your house tonight. He wanted me to tell you three things. Be kind. Be curious. And always help each other build. He'll send another story soon. Sweet dreams."
+      "text": "The end. Goodnight, little one. Look, the brightest star is shining right over your house tonight. Remember three things. Be kind. Be curious. And always help each other build. Sweet dreams."
     }
   ]
 }

@@ -65,7 +65,10 @@ export class Engine {
     return { bevel: r1(f.bevel), bevel_spoken: spoken(f.bevel), fold: r1(f.fold), fold_spoken: spoken(f.fold), tail: r1(f.tail),
              panels: String(f.panels), panels_words: cap(words(f.panels)), sticks_words: words(f.sticks), cuts_words: words(f.cuts),
              sqft: String(Math.round(f.floor_m2 * 10.7639)), sqft_words: cap(words(Math.round(f.floor_m2 * 10.7639))),
-             ft_words: words(Math.round(f.diameter_m / 0.3048)) };
+             ft_words: words(Math.round(f.diameter_m / 0.3048)),
+             // the season's lessons: how the frame is built up, all from the model
+             rings_words: words(f.rings), freq_words: words(f.frequency), kinds_words: words(f.kinds),
+             height_ft_words: words(Math.round(f.height_m / 0.3048)), sheets_words: words(f.sheets) };
   }
   fillText(s) { return (s || "").replace(/\{(\w+)\}/g, (m, k) => this.tokens[k] ?? m); }
 

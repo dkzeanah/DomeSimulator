@@ -148,7 +148,16 @@ export class Cine {
         g.fillStyle = t.color || "#f2d48a"; g.textAlign = "center";
         g.font = `800 ${r.h * 0.11}px "Segoe UI", sans-serif`;
         g.fillText(t.text, r.x + r.w / 2, r.y + r.h * 0.47);
-        if (t.sub) { g.fillStyle = "#e9e4d8"; g.font = `${r.h * 0.04}px "Segoe UI", sans-serif`; g.fillText(t.sub, r.x + r.w / 2, r.y + r.h * 0.6); }
+        if (t.sub) {
+          // the line under the title wraps to the frame (a "previously" runs to several lines)
+          g.fillStyle = "#e9e4d8"; g.font = `${r.h * 0.04}px "Segoe UI", sans-serif`;
+          const max = r.w * 0.78, lines = [];
+          for (const word of String(t.sub).split(/\s+/)) {
+            const cur = lines.length ? lines[lines.length - 1] : null;
+            if (cur !== null && g.measureText(cur + " " + word).width <= max) lines[lines.length - 1] = cur + " " + word; else lines.push(word);
+          }
+          lines.forEach((ln, k) => g.fillText(ln, r.x + r.w / 2, r.y + r.h * (0.6 + k * 0.06)));
+        }
         g.textAlign = "left";
       } else if (t.kind === "word") {
         // a word from the thought, hanging by the copy of him that thought it, drifting up
