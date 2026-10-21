@@ -303,7 +303,8 @@
    "cam": {
     "kind": "single",
     "who": "cody",
-    "size": "medium"
+    "size": "medium",
+    "side": -1
    }
   },
   {
@@ -419,10 +420,10 @@
    "act": "phone",
    "expr": "smirk",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "medium",
-    "toward": "dale"
+    "kind": "two",
+    "a": "jet",
+    "b": "dale",
+    "dist": 3.0
    },
    "earring": true
   },

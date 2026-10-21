@@ -793,14 +793,14 @@
    ],
    "place": {
     "hank": [
-     0.5,
-     -2.9,
+     0.6,
+     -4.6,
      160
     ],
     "dale": [
-     -0.5,
-     -3.0,
-     200
+     -0.6,
+     -4.5,
+     -160
     ]
    },
    "view": {
@@ -819,16 +819,42 @@
    "motif": 0
   },
   {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "hold",
+    "subject": [
+     0.0,
+     -4.5,
+     1.3
+    ],
+    "from": [
+     0.3,
+     -9.2,
+     1.7
+    ],
+    "lens": 32
+   },
+   "dur": 3,
+   "wait": false
+  },
+  {
    "k": "line",
    "who": "dale",
    "text": "You know I'd take a bullet for you. For the record. Off the record. Whatever record.",
    "act": "idle",
    "expr": "far",
    "cam": {
-    "kind": "single",
-    "who": "dale",
-    "size": "medium",
-    "toward": "hank"
+    "kind": "wide",
+    "who": [
+     "dale"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -837,9 +863,16 @@
    "text": "I know. Take the show.",
    "act": "idle",
    "cam": {
-    "kind": "single",
-    "who": "hank",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "hank"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    }
   },
   {
@@ -849,9 +882,16 @@
    "act": "crossed",
    "expr": "sad",
    "cam": {
-    "kind": "single",
-    "who": "dale",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "dale"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    }
   },
   {
@@ -860,10 +900,17 @@
    "text": "Wear the hoodie, Dale.",
    "act": "laugh",
    "cam": {
-    "kind": "two",
-    "a": "hank",
-    "b": "dale",
-    "dist": 2.8
+    "kind": "wide",
+    "who": [
+     "hank",
+     "dale"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 55
    }
   },
   {
@@ -873,9 +920,16 @@
    "act": "idle",
    "expr": "far",
    "cam": {
-    "kind": "single",
-    "who": "dale",
-    "size": "medium"
+    "kind": "wide",
+    "who": [
+     "dale"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -884,10 +938,16 @@
    "text": "Because you don't pretend to like him.",
    "act": "idle",
    "cam": {
-    "kind": "single",
-    "who": "hank",
-    "size": "close",
-    "toward": "dale"
+    "kind": "wide",
+    "who": [
+     "hank"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    },
    "pad": 0.6
   },
@@ -898,9 +958,16 @@
    "act": "crossed",
    "expr": "smirk",
    "cam": {
-    "kind": "single",
-    "who": "dale",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "dale"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    },
    "pad": 0.6
   },

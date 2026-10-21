@@ -64,10 +64,10 @@
    "text": "Mrs. Hardwick. My granddaughter, Bean. Her parents are at a wedding. She bites only when she's correct.",
    "act": "peek",
    "cam": {
-    "kind": "ots",
-    "over": "krystal",
-    "at": "yarrow",
-    "lens": 50
+    "kind": "single",
+    "who": "yarrow",
+    "size": "medium",
+    "toward": "krystal"
    }
   },
   {
@@ -1152,10 +1152,10 @@
    "text": "I drew your dream.",
    "act": "point",
    "cam": {
-    "kind": "single",
-    "who": "bean",
-    "size": "close",
-    "toward": "cody"
+    "kind": "two",
+    "a": "cody",
+    "b": "bean",
+    "dist": 2.6
    }
   },
   {

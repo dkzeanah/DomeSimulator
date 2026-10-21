@@ -173,25 +173,25 @@
     50
    ],
    "place": {
+    "priya": [
+     -1.5,
+     -4.5,
+     -158
+    ],
     "hank": [
-     0.5,
-     -3.9,
-     -20
+     1.4,
+     -4.6,
+     158
     ],
     "cody": [
-     -1.6,
-     -4.0,
-     30
-    ],
-    "priya": [
-     -0.8,
-     -3.4,
-     20
+     -0.6,
+     -4.2,
+     -171
     ],
     "jet": [
-     -0.4,
-     -4.5,
-     0
+     0.5,
+     -4.3,
+     171
     ]
    },
    "view": {
@@ -203,6 +203,26 @@
      "glass"
     ]
    }
+  },
+  {
+   "k": "cam",
+   "cam": {
+    "kind": "move",
+    "move": "hold",
+    "subject": [
+     0.0,
+     -4.4,
+     1.3
+    ],
+    "from": [
+     0.3,
+     -9.2,
+     1.7
+    ],
+    "lens": 30
+   },
+   "dur": 3,
+   "wait": false
   },
   {
    "k": "music",
@@ -220,9 +240,16 @@
    "text": "Okay, so it's a program. Every panel is the same function. You call it {panels} times with different numbers.",
    "act": "point",
    "cam": {
-    "kind": "single",
-    "who": "priya",
-    "size": "medium"
+    "kind": "wide",
+    "who": [
+     "priya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -232,10 +259,16 @@
    "act": "cheer",
    "expr": "wide",
    "cam": {
-    "kind": "single",
-    "who": "hank",
-    "size": "medium",
-    "toward": "priya"
+    "kind": "wide",
+    "who": [
+     "hank"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -245,9 +278,16 @@
    "act": "idle",
    "expr": "smile",
    "cam": {
-    "kind": "single",
-    "who": "cody",
-    "size": "medium"
+    "kind": "wide",
+    "who": [
+     "cody"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -256,9 +296,16 @@
    "text": "Cody has a friend. Mark it on the fridge.",
    "act": "lean",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "medium"
+    "kind": "wide",
+    "who": [
+     "jet"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -267,10 +314,16 @@
    "text": "The jig is a loop. Same input, same output, every time. That's why the panels match.",
    "act": "measure",
    "cam": {
-    "kind": "single",
-    "who": "priya",
-    "size": "medium",
-    "toward": "hank"
+    "kind": "wide",
+    "who": [
+     "priya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -279,9 +332,16 @@
    "text": "And if the jig's wrong?",
    "act": "idle",
    "cam": {
-    "kind": "single",
-    "who": "cody",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "cody"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    }
   },
   {
@@ -290,9 +350,16 @@
    "text": "Then every panel is wrong. The same way. All at once. That's a bug.",
    "act": "point",
    "cam": {
-    "kind": "single",
-    "who": "priya",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "priya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    }
   },
   {
@@ -307,10 +374,17 @@
    "text": "That's why you check the jig, not the panel. You fix it once, at the source, and it's fixed everywhere.",
    "act": "measure",
    "cam": {
-    "kind": "two",
-    "a": "hank",
-    "b": "priya",
-    "dist": 3.2
+    "kind": "wide",
+    "who": [
+     "hank",
+     "priya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.2
+    ],
+    "lens": 40
    }
   },
   {
@@ -319,9 +393,16 @@
    "text": "I'm wiring the lights as a loop too. One circuit, called round the ring. Can I use your drill?",
    "act": "talk",
    "cam": {
-    "kind": "single",
-    "who": "priya",
-    "size": "medium"
+    "kind": "wide",
+    "who": [
+     "priya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -330,9 +411,16 @@
    "text": "You can use anything you want.",
    "act": "laugh",
    "cam": {
-    "kind": "single",
-    "who": "hank",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "hank"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    },
    "pad": 0.4
   },
@@ -342,10 +430,16 @@
    "text": "He never lets ME use the drill.",
    "act": "crossed",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "close",
-    "toward": "cody"
+    "kind": "wide",
+    "who": [
+     "jet"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    }
   },
   {
@@ -355,9 +449,16 @@
    "act": "idle",
    "expr": "far",
    "cam": {
-    "kind": "single",
-    "who": "cody",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "cody"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    }
   },
   {
@@ -366,18 +467,25 @@
    "text": "Once!",
    "act": "shrug",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "close"
+    "kind": "wide",
+    "who": [
+     "jet"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 70
    }
   },
   {
    "k": "place",
    "who": "maya",
    "at": [
-    1.9,
-    -4.8,
-    60
+    2.2,
+    -4.9,
+    149
    ]
   },
   {
@@ -387,10 +495,16 @@
    "act": "point",
    "expr": "sideeye",
    "cam": {
-    "kind": "single",
-    "who": "maya",
-    "size": "medium",
-    "toward": "priya"
+    "kind": "wide",
+    "who": [
+     "maya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -399,9 +513,16 @@
    "text": "...Oh. You're right. Thank you.",
    "act": "measure",
    "cam": {
-    "kind": "single",
-    "who": "priya",
-    "size": "medium"
+    "kind": "wide",
+    "who": [
+     "priya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.15
+    ],
+    "lens": 50
    }
   },
   {
@@ -411,10 +532,17 @@
    "act": "crossed",
    "expr": "smirk",
    "cam": {
-    "kind": "two",
-    "a": "maya",
-    "b": "priya",
-    "dist": 3.0
+    "kind": "wide",
+    "who": [
+     "maya",
+     "priya"
+    ],
+    "dir": [
+     0.05,
+     1,
+     -0.2
+    ],
+    "lens": 40
    },
    "pad": 0.5
   },
