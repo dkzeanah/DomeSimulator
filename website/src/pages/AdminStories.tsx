@@ -29,7 +29,7 @@ interface Page { id: string; kind?: string; scene: string; shot?: string; text: 
 interface Doc { title: string; series?: string; voice: Voice; figures?: Record<string, unknown>; pages: Page[] }
 interface StoryItem { slug: string; title: string; series: string; status: string; liveVersion: number | null; latest: number; versions: number; updatedAt: string }
 interface Detail {
-  story: { slug: string; title: string; series: string; status: string; liveVersion: number | null };
+  story: { slug: string; title: string; series: string; status: string; liveVersion: number | null; shareKey?: string | null };
   versions: { n: number; note: string; author: string; createdAt: string }[];
   version: { n: number; note: string; doc: Doc };
   manifest: Manifest & { narrated: number };
@@ -40,6 +40,7 @@ const VOICES: { name: string; label: string; rate: string }[] = [
   { name: "en-US-AriaNeural", label: "Aria, bright", rate: "-10%" },
   { name: "en-US-AnaNeural", label: "Ana, a child's voice", rate: "-8%" },
   { name: "en-US-GuyNeural", label: "Guy, warm", rate: "-10%" },
+  { name: "en-US-AndrewNeural", label: "Andrew, gentle and low", rate: "-10%" },
   { name: "mine", label: "My own voice (record each page here)", rate: "+0%" },
 ];
 const KINDS = ["intro", "title", "page", "outro"];
@@ -162,12 +163,32 @@ export default function AdminStories() {
                 <li key={s.slug}>
                   <button className={`w-full text-left panel-2 px-3 py-2 ${s.slug === slug ? "ring-2 ring-[var(--accent)]" : ""}`} onClick={() => setSlug(s.slug)}>
                     <span className="font-semibold block leading-snug">{s.title}</span>
-                    <span className="text-xs muted">{s.status === "live" ? `live: v${s.liveVersion}` : s.status} -- {s.versions} version{s.versions === 1 ? "" : "s"}</span>
+                    <span className="text-xs muted">{s.status === "live" ? `live: v${s.liveVersion}` : s.status === "unlisted" ? `private link${s.liveVersion ? `: v${s.liveVersion}` : ""}` : s.status} -- {s.versions} version{s.versions === 1 ? "" : "s"}</span>
                   </button>
                 </li>
               ))}
               {!list.length && <li className="muted text-sm">No stories yet.</li>}
             </ul>
+          </Panel>
+          <Panel title="Import a story file">
+            <form className="grid gap-2 text-sm" onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget as HTMLFormElement;
+              const file = (form.elements.namedItem("file") as HTMLInputElement).files?.[0];
+              const priv = (form.elements.namedItem("private") as HTMLInputElement).checked;
+              if (!file) return;
+              void act(async () => {
+                const doc = JSON.parse(await file.text());
+                const slug = String(doc.id || doc.slug || file.name.replace(/\.json$/i, "")).toLowerCase();
+                const r = await api<{ slug: string; n: number; created: boolean }>("/admin/stories/import", { body: { slug, doc, private: priv, note: `imported from ${file.name}` } });
+                form.reset(); await loadList(); setSlug(r.slug); await load(r.slug);
+              }, "Imported. Publish it to make it readable; a private story stays behind its link.");
+            }}>
+              <input className="field" name="file" type="file" accept=".json,application/json" required />
+              <label className="flex gap-2 items-center"><input type="checkbox" name="private" defaultChecked /> Private: only a link opens it (never on /kids)</label>
+              <p className="text-xs muted">A story file from website/private/stories/ stays off GitHub; this puts it straight into the Studio. Its narration then comes from the script, your own recordings, or the tablet's voice.</p>
+              <button className="btn">Import</button>
+            </form>
           </Panel>
           <Panel title="A new story">
             <form className="grid gap-2 text-sm" onSubmit={(e) => {
@@ -235,7 +256,7 @@ export default function AdminStories() {
                     <div className="flex flex-wrap gap-2">
                       <button className="btn-ghost" disabled={dirty || shown === live} onClick={() => act(async () => {
                         await api(`/admin/stories/${story.slug}/publish`, { body: { n: shown } }); await load(story.slug, shown); await loadList();
-                      }, `v${shown} is live at /kids${story.slug === "my-own-home" ? "" : `/${story.slug}`}.`)}>{shown === live ? `v${shown} is live` : `Publish v${shown}`}</button>
+                      }, story.status === "unlisted" ? `v${shown} is published behind its private link.` : `v${shown} is live at /kids${story.slug === "my-own-home" ? "" : `/${story.slug}`}.`)}>{shown === live ? `v${shown} is live` : `Publish v${shown}`}</button>
                       {story.status === "live" && <button className="btn-ghost" onClick={() => act(async () => { await api(`/admin/stories/${story.slug}`, { method: "PATCH", body: { status: "hidden" } }); await loadList(); await load(story.slug, shown); }, "Hidden from /kids.")}>Hide from /kids</button>}
                       {story.status === "hidden" && live && <button className="btn-ghost" onClick={() => act(async () => { await api(`/admin/stories/${story.slug}`, { method: "PATCH", body: { status: "live" } }); await loadList(); await load(story.slug, shown); }, "Back on /kids.")}>Show on /kids again</button>}
                       <a className="btn-ghost" href={story.slug === "my-own-home" ? "/kids" : `/kids/${story.slug}`} target="_blank" rel="noopener">Open /kids</a>
@@ -252,6 +273,27 @@ export default function AdminStories() {
                       <p className="text-xs muted">Or record any page yourself below. Until then the tablet's own voice reads them, and a grown-up can always switch the narrator off and read.</p>
                     </div>
                   )}
+                </Panel>
+                <Panel kicker={story.status === "unlisted" ? "Private" : "Sharing"} title="Private link">
+                  <div className="grid gap-2 text-sm">
+                    {story.shareKey ? (
+                      <>
+                        <p className="muted">{story.status === "unlisted" ? "Only people with this link can open the story. It is never listed on /kids." : "This story is also public on /kids; the link opens it directly."}</p>
+                        <code className="panel-2 p-2 text-xs break-all select-all">{`${SITE}/mykids?k=${story.shareKey}`}</code>
+                        <div className="flex flex-wrap gap-2">
+                          <button className="btn-ghost" onClick={() => { void navigator.clipboard?.writeText(`${SITE}/mykids?k=${story.shareKey}`); setMsg("Link copied."); }}>Copy link</button>
+                          <button className="btn-ghost" onClick={() => { if (confirm("Make a new link? The old one stops working, for everyone who has it.")) void act(async () => { await api(`/admin/stories/${story.slug}/link`, { body: {} }); await load(story.slug, shown); await loadList(); }, "New link made. The old one no longer opens the story."); }}>New link</button>
+                          <button className="btn-ghost" onClick={() => act(async () => { await api(`/admin/stories/${story.slug}/link`, { body: { off: true } }); await load(story.slug, shown); }, "Link turned off.")}>Turn the link off</button>
+                        </div>
+                        {!live && <p className="text-xs muted">Publish a version first; the link opens the published one.</p>}
+                      </>
+                    ) : (
+                      <>
+                        <p className="muted">Make this story open by a private link only (at /mykids), for you and whoever you send it to. It won't be listed on /kids.</p>
+                        <button className="btn-ghost justify-self-start" onClick={() => act(async () => { await api(`/admin/stories/${story.slug}/link`, { body: {} }); await load(story.slug, shown); await loadList(); }, "Private link made.")}>Make a private link</button>
+                      </>
+                    )}
+                  </div>
                 </Panel>
                 <Panel kicker="Film" title="Make it a video">
                   <div className="grid gap-2 text-sm">

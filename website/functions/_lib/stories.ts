@@ -14,19 +14,20 @@
 // voice ("mine").
 
 import { agentAuth } from "./agent";
+import { randomToken } from "./crypto";
 import { requireAdmin } from "./auth";
 import { Ctx, HttpError, body, json, nowIso, text } from "./http";
 import { audit, emit } from "./ops";
 import api from "./routes";
 
-export const STORY_STATUSES = ["draft", "live", "hidden"] as const;
+export const STORY_STATUSES = ["draft", "live", "unlisted", "hidden"] as const;   // unlisted: only with its private link
 const SLUG = /^[a-z0-9][a-z0-9-]{1,58}[a-z0-9]$/;
 const GAP = 1.4;
 
 export interface Voice { name: string; rate?: string; pitch?: string }
 export interface Page { id: string; kind?: string; scene: string; shot?: string; text: string }
-export interface Doc { title: string; series?: string; voice: Voice; figures?: Record<string, unknown>; pages: Page[] }
-interface StoryRow { slug: string; title: string; series: string; status: string; live_version: number | null; sort: number; created_at: string; updated_at: string }
+export interface Doc { title: string; series?: string; style?: string; voice: Voice; figures?: Record<string, unknown>; pages: Page[] }
+interface StoryRow { slug: string; title: string; series: string; status: string; live_version: number | null; sort: number; share_key: string | null; created_at: string; updated_at: string }
 interface AudioRow { key: string; src: string; content_type: string; words: string; duration: number; voice: string; created_at: string }
 
 export const speakable = (t: string) => t.replace(/\s+--\s+/g, ", ").replace(/\n/g, " ");
@@ -63,6 +64,7 @@ function checkDoc(raw: unknown): Doc {
     return page;
   });
   const doc: Doc = { title, series: String(d.series || "").slice(0, 80), voice, pages };
+  if (d.style === "ethereal") doc.style = "ethereal";           // the slow, dreamlike telling: drifting light, long fades
   if (d.figures && typeof d.figures === "object") doc.figures = d.figures as Record<string, unknown>;
   if (JSON.stringify(doc).length > 200_000) throw new HttpError(400, "That story is too long to save.");
   return doc;
@@ -96,7 +98,7 @@ async function manifest(ctx: Ctx, slug: string, doc: Doc, n: number | null) {
     const a = audio.get(keys[i]);
     return { ...p, key: keys[i], audio: a ? audioUrl(slug, a) : null, words: a ? JSON.parse(a.words) : [], duration: a ? a.duration : readingTime(p.text) };
   });
-  return { id: slug, slug, version: n, title: doc.title, series: doc.series, voice: doc.voice, figures: doc.figures || {}, pages,
+  return { id: slug, slug, version: n, title: doc.title, series: doc.series, style: doc.style || null, voice: doc.voice, figures: doc.figures || {}, pages,
            runtime: Math.round(pages.reduce((s, p) => s + p.duration + GAP, 0) * 10) / 10,
            narrated: pages.filter((p) => p.audio).length };
 }
@@ -137,10 +139,20 @@ api.get("/stories", async (ctx) => {
   return json({ stories: rows.map((s) => ({ slug: s.slug, title: s.title, series: s.series })) });
 });
 
+/** A private story by its link (/mykids?k=...): only the published version, only while the link is current. */
+api.get("/stories/by-link/:key", async (ctx) => {
+  const k = String(ctx.params.key || "");
+  const s = k.length >= 20 ? await ctx.env.DB.prepare("SELECT * FROM stories WHERE share_key = ? AND status IN ('unlisted', 'live')").bind(k).first<StoryRow>() : null;
+  if (!s || !s.live_version) throw new HttpError(404, "This link doesn't open a story. Ask for a new one.");
+  const ver = await versionOf(ctx, s.slug, s.live_version);
+  const m = await manifest(ctx, s.slug, ver.doc, ver.n);
+  return new Response(JSON.stringify(m), { headers: { "Content-Type": "application/json", "Cache-Control": "private, no-store", "X-Robots-Tag": "noindex" } });
+});
+
 api.get("/stories/:slug", async (ctx) => {
   const s = await storyOf(ctx, ctx.params.slug);
   const v = Number(ctx.url.searchParams.get("v")) || null;
-  if (v || s.status !== "live" || !s.live_version) requireAdmin(ctx);    // drafts and old versions: the owner's preview only
+  if (v || s.status !== "live" || !s.live_version) requireAdmin(ctx);    // drafts, private stories and old versions: the owner's preview only
   const ver = await versionOf(ctx, s.slug, v || s.live_version);
   return json(await manifest(ctx, s.slug, ver.doc, ver.n));
 });
@@ -178,12 +190,12 @@ api.post("/admin/stories", async (ctx) => {
     doc = { ...from.doc, title, pages: from.doc.pages.filter((p) => p.kind === "intro" || p.kind === "outro") };
   }
   doc = doc || {
-    title, series: "Dada's Stories", voice: { name: "en-US-JennyNeural", rate: "-12%", pitch: "+0Hz" },
+    title, series: "Bedtime Stories", voice: { name: "en-US-JennyNeural", rate: "-12%", pitch: "+0Hz" },
     pages: [
-      { id: "intro-1", kind: "intro", scene: "stars", text: "Hello, Annika. Hello, Amara. Are you all cozy? Look out the window, way up high. Do you see Dada's star?" },
+      { id: "intro-1", kind: "intro", scene: "stars", text: "Hello, little one. Are you all cozy? Look out the window, way up high. Do you see the brightest star?" },
       { id: "cover", kind: "title", scene: "cover", text: `${title}.` },
       { id: "p1", kind: "page", scene: "town", text: "" },
-      { id: "outro", kind: "outro", scene: "goodnight", text: "The end. Goodnight, Annika. Goodnight, Amara. Sweet dreams." },
+      { id: "outro", kind: "outro", scene: "goodnight", text: "The end. Goodnight, little one. Sweet dreams." },
     ],
   };
   await ctx.env.DB.prepare("INSERT INTO stories(slug, title, series, status, live_version, sort, created_at, updated_at) VALUES(?, ?, ?, 'draft', NULL, 0, ?, ?)")
@@ -200,7 +212,7 @@ api.get("/admin/stories/:slug", async (ctx) => {
   const v = Number(ctx.url.searchParams.get("v")) || null;
   const ver = await versionOf(ctx, s.slug, v);
   return json({
-    story: { slug: s.slug, title: s.title, series: s.series, status: s.status, liveVersion: s.live_version },
+    story: { slug: s.slug, title: s.title, series: s.series, status: s.status, liveVersion: s.live_version, shareKey: s.share_key },
     versions: versions.map((x) => ({ n: x.n, note: x.note, author: x.author, createdAt: x.created_at })),
     version: { n: ver.n, note: ver.note, doc: ver.doc },
     manifest: await manifest(ctx, s.slug, ver.doc, ver.n),
@@ -229,7 +241,9 @@ api.post("/admin/stories/:slug/publish", async (ctx) => {
   const s = await storyOf(ctx, ctx.params.slug);
   const b = await body(ctx);
   const ver = await versionOf(ctx, s.slug, Number(b.n) || null);
-  await ctx.env.DB.prepare("UPDATE stories SET status = 'live', live_version = ?, title = ?, updated_at = ? WHERE slug = ?").bind(ver.n, ver.doc.title, nowIso(), s.slug).run();
+  // a private story stays private when a new version is published; anything else goes on /kids
+  const status = s.status === "unlisted" ? "unlisted" : "live";
+  await ctx.env.DB.prepare("UPDATE stories SET status = ?, live_version = ?, title = ?, updated_at = ? WHERE slug = ?").bind(status, ver.n, ver.doc.title, nowIso(), s.slug).run();
   await audit(ctx, "story.publish", `story:${s.slug}`, { n: ver.n });
   await emit(ctx, "story.published", { story: s.slug, version: ver.n, title: ver.doc.title });
   return json({ ok: true, liveVersion: ver.n });
@@ -242,7 +256,7 @@ api.patch("/admin/stories/:slug", async (ctx) => {
   const sets: string[] = [], vals: unknown[] = [];
   if ("status" in b) {
     const st = String(b.status);
-    if (!(STORY_STATUSES as readonly string[]).includes(st)) throw new HttpError(400, "status is draft, live or hidden.");
+    if (!(STORY_STATUSES as readonly string[]).includes(st)) throw new HttpError(400, "status is draft, live, unlisted or hidden.");
     if (st === "live" && !s.live_version) throw new HttpError(400, "Publish a version first.");
     sets.push("status = ?"); vals.push(st);
   }
@@ -252,6 +266,40 @@ api.patch("/admin/stories/:slug", async (ctx) => {
   await ctx.env.DB.prepare(`UPDATE stories SET ${sets.join(", ")} WHERE slug = ?`).bind(...vals, s.slug).run();
   await audit(ctx, "story.edit", `story:${s.slug}`, b);
   return json({ ok: true });
+});
+
+/** A new private link: the story becomes link-only (unlisted), and any earlier link stops working. */
+api.post("/admin/stories/:slug/link", async (ctx) => {
+  requireAdmin(ctx);
+  const s = await storyOf(ctx, ctx.params.slug);
+  const b = await body(ctx);
+  if (b.off) {
+    await ctx.env.DB.prepare("UPDATE stories SET share_key = NULL, updated_at = ? WHERE slug = ?").bind(nowIso(), s.slug).run();
+    await audit(ctx, "story.link_off", `story:${s.slug}`);
+    return json({ shareKey: null });
+  }
+  const key = randomToken(18);
+  const status = s.status === "live" ? "live" : "unlisted";
+  await ctx.env.DB.prepare("UPDATE stories SET share_key = ?, status = ?, updated_at = ? WHERE slug = ?").bind(key, status, nowIso(), s.slug).run();
+  await audit(ctx, "story.link", `story:${s.slug}`);
+  return json({ shareKey: key, status });
+});
+
+/** A whole story from a file (the Studio's import): a new story, or a new version of one that exists. */
+api.post("/admin/stories/import", async (ctx) => {
+  const u = requireAdmin(ctx);
+  const b = await body(ctx);
+  const slug = String(b.slug || "").trim().toLowerCase();
+  if (!SLUG.test(slug)) throw new HttpError(400, "The story's address is 3-60 lowercase letters, digits and dashes.");
+  const doc = checkDoc(b.doc);
+  const exists = await ctx.env.DB.prepare("SELECT 1 FROM stories WHERE slug = ?").bind(slug).first();
+  if (!exists) {
+    await ctx.env.DB.prepare("INSERT INTO stories(slug, title, series, status, live_version, sort, created_at, updated_at) VALUES(?, ?, ?, ?, NULL, 0, ?, ?)")
+      .bind(slug, doc.title, doc.series || "", b.private ? "unlisted" : "draft", nowIso(), nowIso()).run();
+  }
+  const n = await saveVersion(ctx, slug, doc, text(b, "note", { max: 300 }) || "imported", u.email);
+  await audit(ctx, "story.import", `story:${slug}`, { n, created: !exists });
+  return json({ slug, n, created: !exists }, 201);
 });
 
 /** The owner's own voice, recorded in the Studio, page by page. */
@@ -289,8 +337,15 @@ api.post("/agent/stories/:slug/narration", async (ctx) => {
 
 api.post("/agent/stories/:slug/versions", async (ctx) => {
   const key = await agentAuth(ctx, "stories:write");
-  const s = await storyOf(ctx, ctx.params.slug);
   const b = await body(ctx);
+  // the first push of a story creates it: private (link-only) when asked, otherwise a draft; only the owner publishes
+  if (!(await ctx.env.DB.prepare("SELECT 1 FROM stories WHERE slug = ?").bind(ctx.params.slug).first())) {
+    if (!SLUG.test(ctx.params.slug)) throw new HttpError(400, "The story's address is 3-60 lowercase letters, digits and dashes.");
+    const doc = checkDoc(b.doc);
+    await ctx.env.DB.prepare("INSERT INTO stories(slug, title, series, status, live_version, sort, created_at, updated_at) VALUES(?, ?, ?, ?, NULL, 0, ?, ?)")
+      .bind(ctx.params.slug, doc.title, doc.series || "", b.private ? "unlisted" : "draft", nowIso(), nowIso()).run();
+  }
+  const s = await storyOf(ctx, ctx.params.slug);
   const n = await saveVersion(ctx, s.slug, b.doc, text(b, "note", { max: 300 }) || "", `agent:${key.name}`);
   await audit(ctx, "story.version", `story:${s.slug}`, { n }, { kind: "agent", id: key.id, name: key.name });
   return json({ n }, 201);

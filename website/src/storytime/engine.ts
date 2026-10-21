@@ -24,10 +24,10 @@ export const PEOPLE = {
   n2:     { name: "a neighbour", height: 1.12, skin: "#80573e", shirt: "#d9692f", shirt2: "#b5552a", pants: "#2e5157", hair: "#1d140e", hairStyle: "curly", belly: 0.9 },
   n3:     { name: "a neighbour", height: 1.7, skin: "#c79470", shirt: "#62a05a", shirt2: "#4a8044", pants: "#5b4630", hair: "#2a1a12", hairStyle: "bun", belly: 1.0 },
   n4:     { name: "a neighbour", height: 1.1, skin: "#ad805c", shirt: "#e9e5da", shirt2: "#c9c4b8", pants: "#33337a", hair: "#4a2e1c", hairStyle: "ponytail", belly: 0.88 },
-  mama:   { name: "Mama", height: 1.62, skin: "#c99572", shirt: "#7fa9c9", shirt2: "#5f89a9", pants: "#3a3f52", hair: "#1d140e", hairStyle: "long", belly: 0.92 },
-  annika: { name: "Annika", height: 1.12, skin: "#c99572", shirt: "#f2c94c", shirt2: "#d9ae36", pants: "#5a6b8f", hair: "#1d140e", hairStyle: "long", belly: 0.88 },
-  amara:  { name: "Amara", height: 0.98, skin: "#c99572", shirt: "#7cc7a8", shirt2: "#5fae8e", pants: "#5a6b8f", hair: "#1d140e", hairStyle: "curly", belly: 0.88 },
-  dada:   { name: "Dada", height: 1.82, skin: "#e0ac86", shirt: "#26324f", shirt2: "#1b243a", pants: "#3a3f52", hair: "#4a3020", hairStyle: "short", beard: "#17120e", beardStyle: "scruff", sailorCap: true, belly: 1.0 },
+  parent: { name: "a parent", height: 1.62, skin: "#c99572", shirt: "#7fa9c9", shirt2: "#5f89a9", pants: "#3a3f52", hair: "#1d140e", hairStyle: "long", belly: 0.92 },
+  kidA:   { name: "a child", height: 1.12, skin: "#c99572", shirt: "#f2c94c", shirt2: "#d9ae36", pants: "#5a6b8f", hair: "#1d140e", hairStyle: "long", belly: 0.88 },
+  kidB:   { name: "a little one", height: 0.98, skin: "#c99572", shirt: "#7cc7a8", shirt2: "#5fae8e", pants: "#5a6b8f", hair: "#1d140e", hairStyle: "curly", belly: 0.88 },
+  maker:  { name: "a maker", height: 1.82, skin: "#e0ac86", shirt: "#26324f", shirt2: "#1b243a", pants: "#3a3f52", hair: "#4a3020", hairStyle: "short", beard: "#17120e", beardStyle: "scruff", sailorCap: true, belly: 1.0 },
 };
 
 // ------------------------------------------------------------------ moods: sky, sun, fill, fog
@@ -35,11 +35,19 @@ const MOODS = {
   day:    { sky: ["#8fbde8", "#d6e8f2", "#f3efe2"], hemi: 1.2, sun: 1.7, sunCol: 0xfff3dd, fog: [0xd6e8f2, 0.012], sunAt: [-0.5, -0.7, 0.75] },
   golden: { sky: ["#6f7db4", "#f0ad78", "#f8dcab"], hemi: 0.95, sun: 2.0, sunCol: 0xffc48a, fog: [0xf0c49a, 0.016], sunAt: [-0.85, -0.4, 0.3] },
   dusk:   { sky: ["#2d3766", "#a65f7c", "#e89a6c"], hemi: 0.6, sun: 0.9, sunCol: 0xff9f74, fog: [0x6a5070, 0.02], sunAt: [-0.9, 0.2, 0.12] },
-  night:  { sky: ["#040712", "#0f1834", "#25304d"], hemi: 0.35, sun: 0.5, sunCol: 0x9fb2ff, fog: [0x0f1834, 0.022], sunAt: [0.4, 0.6, 0.7] },
+  night:  { sky: ["#040712", "#101a3a", "#2a3556"], hemi: 0.5, sun: 0.7, sunCol: 0x9fb2ff, fog: [0x0f1834, 0.022], sunAt: [0.4, 0.6, 0.7] },
   dream:  { sky: ["#8e7fc9", "#f2b8c9", "#fde8d0"], hemi: 1.3, sun: 1.2, sunCol: 0xffe2f0, fog: [0xf2c8d8, 0.02], sunAt: [-0.5, -0.6, 0.6] },
   blossom:{ sky: ["#9fc5ea", "#f6d6e4", "#fbeee6"], hemi: 1.25, sun: 1.5, sunCol: 0xfff0f4, fog: [0xf6dbe6, 0.03], sunAt: [-0.4, -0.7, 0.7] },
-  lamp:   { sky: ["#05070f", "#0d1328", "#1a2038"], hemi: 0.25, sun: 0.0, sunCol: 0x9fb2ff, fog: null, sunAt: [0.4, 0.6, 0.7] },
+  lamp:   { sky: ["#05070f", "#0d1328", "#1a2038"], hemi: 0.25, sun: 0.0, sunCol: 0x9fb2ff, fog: null, sunAt: [0.4, 0.6, 0.7], stars: true },
+  moon:   { sky: ["#03060f", "#0a1630", "#203a5c"], hemi: 0.4, sun: 0.9, sunCol: 0xcfdcff, fog: [0x0e1d36, 0.006], sunAt: [0, 0.9, 0.2], stars: true },
+  bridge: { sky: ["#03060f", "#0a1630", "#162a48"], hemi: 0.18, sun: 0.0, sunCol: 0x9fb2ff, fog: null, sunAt: [0.4, 0.6, 0.7] },
+  sea:    { sky: ["#6fa8dc", "#bcd8ef", "#e9f1f6"], hemi: 1.15, sun: 1.8, sunCol: 0xfff6e6, fog: [0xc6dcec, 0.008], sunAt: [-0.4, -0.6, 0.8] },
+  city:   { sky: ["#07081a", "#1c1840", "#4a2f5e"], hemi: 0.35, sun: 0.25, sunCol: 0xb0a0ff, fog: [0x241c40, 0.012], sunAt: [0.4, 0.6, 0.7] },
+  snow:   { sky: ["#9fbfe0", "#dbe8f4", "#f6f8fb"], hemi: 1.35, sun: 1.3, sunCol: 0xfff8f0, fog: [0xe6eef6, 0.03], sunAt: [-0.5, -0.6, 0.6] },
+  autumn: { sky: ["#241d40", "#7a4452", "#e0823e"], hemi: 0.85, sun: 1.0, sunCol: 0xff9a5a, fog: [0x3a2430, 0.03], sunAt: [-0.9, 0.2, 0.12] },
+  rain:   { sky: ["#111827", "#26304a", "#3a4660"], hemi: 0.7, sun: 0.45, sunCol: 0xb0c4e0, fog: [0x26304a, 0.028], sunAt: [0.4, 0.6, 0.7] },
 };
+MOODS.night.stars = true;
 
 export class Storyworld {
   constructor(canvas) {
@@ -80,7 +88,7 @@ export class Storyworld {
     this.hemi.intensity = m.hemi; this.sun.intensity = m.sun; this.sun.color.setHex(m.sunCol);
     this.sun.position.copy(focus).add(V(...m.sunAt).multiplyScalar(40)); this.sun.target.position.copy(focus);
     this.scene.fog = m.fog ? new THREE.FogExp2(m.fog[0], m.fog[1]) : null;
-    this.stars.visible = name === "night" || name === "lamp";
+    this.stars.visible = !!m.stars;
     this.stars.position.copy(focus); this.stars.updateMatrixWorld(true);
     this.moodName = name;
   }
@@ -95,10 +103,10 @@ export class Storyworld {
     const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const pts = new THREE.Points(g, new THREE.PointsMaterial({ color: 0xfff6dc, size: 1.4, sizeAttenuation: false, fog: false }));
     const grp = new THREE.Group(); grp.add(pts);
-    // the moon, and Dada's star: the brightest one, that blinks hello
+    // the moon, and the brightest star, the one that blinks hello
     const moon = new THREE.Mesh(new THREE.SphereGeometry(6, 24, 16), new THREE.MeshBasicMaterial({ color: 0xfaf2d4, fog: false }));
     moon.position.set(110, 90, 75); grp.add(moon);
-    const star = this.dadaStar = new THREE.Sprite(new THREE.SpriteMaterial({ map: starTexture(), color: 0xfff1c0, fog: false, depthWrite: false, transparent: true }));
+    const star = this.brightStar = new THREE.Sprite(new THREE.SpriteMaterial({ map: starTexture(), color: 0xfff1c0, fog: false, depthWrite: false, transparent: true }));
     star.position.set(-40, 120, 95); star.scale.set(16, 16, 1); grp.add(star);
     grp.visible = false;
     this.scene.add(grp);
@@ -320,7 +328,7 @@ export class Storyworld {
     this.cyl(ship, [1.4, 0, 1.2], [1.4, 0, 7.5], 0.1, "#5a3a22", 8);
     const sail = new THREE.Mesh(new THREE.PlaneGeometry(3, 4.6), this.mat("#f4efe2", { side: THREE.DoubleSide })); sail.position.set(1.4, 0.05, 4.6); sail.rotation.x = Math.PI / 2; ship.add(sail);
     const light = new THREE.PointLight(0xffc88a, 4, 12, 1.5); light.position.set(-1.2, -1.2, 2); ship.add(light);
-    this.sailor = new Character(THREE, "dada-sailor", PEOPLE.dada, ship); this.sailor.place(2.6, 0.2, 90); this.sailor.root.position.z = 1.21; this.sailor.ground = () => 1.21;
+    this.sailor = new Character(THREE, "sailor", PEOPLE.maker, ship); this.sailor.place(2.6, 0.2, 90); this.sailor.root.position.z = 1.21; this.sailor.ground = () => 1.21;
     this.hooks.push((dt) => { if (!g.visible) return; const t = this.time; ship.rotation.x = Math.sin(t * 0.9) * 0.06; ship.rotation.y = Math.sin(t * 0.7) * 0.03; ship.position.z = Math.sin(t * 1.1) * 0.15; this.sailor.update(dt); });
     // a lighthouse on a rock, its beam turning
     const lh = new THREE.Group(); lh.position.set(-26, 34, 0); g.add(lh);
@@ -378,8 +386,8 @@ export class Storyworld {
     const model = this.makeDome(); model.scale.setScalar(0.07); model.position.set(0.55, 2.2, 0.89); g.add(model);
     for (let k = 0; k < 4; k++) this.box(g, -0.3 + k * 0.12, 2.0 + (k % 2) * 0.05, 0.9 + k * 0.004, 0.42, 0.3, 0.004, "#efe6d2");
     this.box(g, 1.1, 2.5, 0.95, 0.4, 0.2, 0.16, "#c8432f");                    // a toolbox
-    this.benchDada = new Character(THREE, "dada-bench", { ...PEOPLE.dada, sailorCap: false }, g);   // no sailor cap: the origin story is on hold this.benchDada.place(0.6, 1.25, 0); this.benchDada.ground = () => 0;
-    this.hooks.push((dt) => { if (g.visible) this.benchDada.update(dt); });
+    this.benchMaker = new Character(THREE, "bench-maker", { ...PEOPLE.maker, sailorCap: false }, g); this.benchMaker.place(0.6, 1.25, 0); this.benchMaker.ground = () => 0;
+    this.hooks.push((dt) => { if (g.visible) this.benchMaker.update(dt); });
     return g;
   }
 
