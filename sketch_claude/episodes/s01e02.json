@@ -225,13 +225,13 @@
    "place": {
     "jet": [
      0.3,
-     -2.9,
-     0
+     -4.6,
+     176
     ],
     "cody": [
      -1.2,
-     -4.0,
-     30
+     -4.5,
+     -165
     ]
    },
    "view": {
@@ -307,9 +307,15 @@
    "text": "It's a cave with no walls.",
    "act": "crossed",
    "cam": {
-    "kind": "single",
-    "who": "cody",
-    "size": "close"
+    "kind": "move",
+    "move": "hold",
+    "subject": "cody",
+    "from": [
+     -0.9,
+     -6.7,
+     1.55
+    ],
+    "lens": 70
    }
   },
   {
@@ -319,10 +325,15 @@
    "act": "shrug",
    "expr": "smirk",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "close",
-    "toward": "cody"
+    "kind": "move",
+    "move": "hold",
+    "subject": "jet",
+    "from": [
+     0.0,
+     -6.8,
+     1.55
+    ],
+    "lens": 70
    }
   },
   {
@@ -339,10 +350,22 @@
    "who": "hank",
    "to": [
     1.0,
-    -4.1
+    -4.7
    ],
    "speed": 1.2,
    "wait": true
+  },
+  {
+   "k": "face",
+   "who": "hank",
+   "at": [
+    0.6,
+    -9.0
+   ]
+  },
+  {
+   "k": "wait",
+   "s": 0.5
   },
   {
    "k": "prop",
@@ -935,14 +958,14 @@
    ],
    "place": {
     "hank": [
-     1.2,
-     -3.6,
-     -40
+     1.1,
+     -4.6,
+     165
     ],
     "jet": [
-     0.1,
-     -3.0,
-     20
+     -0.1,
+     -4.4,
+     -175
     ]
    },
    "view": {
@@ -1066,9 +1089,10 @@
    "act": "idle",
    "expr": "wide",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "close"
+    "kind": "ots",
+    "over": "hank",
+    "at": "jet",
+    "lens": 50
    }
   },
   {
@@ -1089,10 +1113,10 @@
    "text": "...Into the ground?",
    "act": "shrug",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "close",
-    "toward": "hank"
+    "kind": "ots",
+    "over": "hank",
+    "at": "jet",
+    "lens": 50
    }
   },
   {
@@ -1101,9 +1125,10 @@
    "text": "Through every triangle it could find. It split up and went down all of them at once. Nothing had to carry it alone.",
    "act": "measure",
    "cam": {
-    "kind": "single",
-    "who": "hank",
-    "size": "medium"
+    "kind": "ots",
+    "over": "jet",
+    "at": "hank",
+    "lens": 50
    }
   },
   {
@@ -1130,9 +1155,10 @@
    "text": "So I need more wires.",
    "act": "think",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "medium"
+    "kind": "ots",
+    "over": "hank",
+    "at": "jet",
+    "lens": 50
    }
   },
   {
@@ -1141,9 +1167,10 @@
    "text": "You need more roads. Move them to the garage. Garage has its own circuit.",
    "act": "idle",
    "cam": {
-    "kind": "single",
-    "who": "hank",
-    "size": "close"
+    "kind": "ots",
+    "over": "jet",
+    "at": "hank",
+    "lens": 50
    }
   },
   {
@@ -1152,10 +1179,10 @@
    "text": "Is that a punishment?",
    "act": "crossed",
    "cam": {
-    "kind": "single",
-    "who": "jet",
-    "size": "close",
-    "toward": "hank"
+    "kind": "ots",
+    "over": "hank",
+    "at": "jet",
+    "lens": 50
    }
   },
   {
@@ -1164,10 +1191,10 @@
    "text": "It's an address.",
    "act": "idle",
    "cam": {
-    "kind": "low",
-    "who": "hank",
-    "dist": 2.6,
-    "lens": 26
+    "kind": "ots",
+    "over": "jet",
+    "at": "hank",
+    "lens": 40
    },
    "pad": 0.7
   },
@@ -1332,34 +1359,34 @@
    ],
    "place": {
     "hank": [
-     0.5,
-     -3.9,
-     -20
+     0.62,
+     -4.42,
+     172
     ],
     "krystal": [
-     -1.4,
-     -4.2,
-     20
+     -1.75,
+     -4.58,
+     201
     ],
     "maya": [
-     1.4,
-     -4.6,
-     40
+     1.75,
+     -4.58,
+     159
     ],
     "jet": [
-     -0.4,
-     -4.5,
-     0
+     -0.5,
+     -4.42,
+     186
     ],
     "cody": [
-     -1.0,
-     -3.6,
-     10
+     -1.25,
+     -4.49,
+     195
     ],
     "dale": [
-     2.2,
-     -4.0,
-     60
+     2.75,
+     -4.85,
+     147
     ]
    },
    "view": {
@@ -1500,8 +1527,8 @@
    "k": "walk",
    "who": "anna",
    "to": [
-    -2.6,
-    -4.8
+    -2.7,
+    -4.9
    ],
    "speed": 1.3,
    "wait": false
@@ -1510,8 +1537,8 @@
    "k": "walk",
    "who": "dusty",
    "to": [
-    -3.2,
-    -4.4
+    -3.5,
+    -5.1
    ],
    "speed": 1.2,
    "wait": false
@@ -1533,6 +1560,26 @@
    },
    "dur": 3,
    "wait": true
+  },
+  {
+   "k": "face",
+   "who": "anna",
+   "at": [
+    -1.6,
+    -9.0
+   ]
+  },
+  {
+   "k": "face",
+   "who": "dusty",
+   "at": [
+    -2.4,
+    -9.0
+   ]
+  },
+  {
+   "k": "wait",
+   "s": 0.5
   },
   {
    "k": "line",
