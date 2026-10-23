@@ -10,7 +10,7 @@ import { convert, firstTouch, recordVisit, report, visitorOf } from "./analytics
 import { checkClick, enqueue, enroll, queueCampaign, queueConfirm, queueSample, readSubscriberToken, suppress, tick } from "./mail";
 import { audit, emit } from "./ops";
 import { levelOfInvite, livePromo, redeemInvite } from "./studio";
-import { queueOrderReceipt, receiptKey } from "./fulfillment";
+import { queueOrderReceipt, receiptKey, toolCredits } from "./fulfillment";
 
 const api = new Router();
 export default api;
@@ -20,7 +20,7 @@ export default api;
 // an order keeps the price it was sold at.
 
 export interface Product {
-  slug: string; kind: "digital" | "physical" | "service" | "amazon"; title: string; subtitle: string; blurb: string;
+  slug: string; kind: "digital" | "physical" | "service" | "amazon" | "tool"; title: string; subtitle: string; blurb: string;
   file_key: string | null; status: string; ships_note: string | null; ship_countries: string | null; external_url: string | null; sort: number;
 }
 export interface Price { product: string; key: string; label: string; amount_cents: number; currency: string; honor: number; honor_prompt: string | null; active: number; sort: number; gated: number }
@@ -642,7 +642,7 @@ api.post("/checkout", async (ctx) => {
   const promo = prod && typedPromo ? await livePromo(ctx, prod.slug, typedPromo) : null;
   if (typedPromo && !promo) throw new HttpError(400, "That promo code is not valid for this book. Clear it to pay the full price.");
   const pr = prod ? await price(ctx, prod.slug, promo?.price_key || text(b, "price", { max: 40 }) || "standard") : null;
-  if (!prod || !pr || pr.amount_cents <= 0 || !["digital", "physical", "service"].includes(prod.kind) || !["live", "preorder"].includes(prod.status)) {
+  if (!prod || !pr || pr.amount_cents <= 0 || !["digital", "physical", "service", "tool"].includes(prod.kind) || !["live", "preorder"].includes(prod.status)) {
     throw new HttpError(404, "That is not for sale right now.");
   }
   if (pr.gated && !promo && ctx.user?.role !== "friend") throw new HttpError(403, "That price needs a promo code.");
@@ -659,7 +659,7 @@ api.post("/checkout", async (ctx) => {
   const ownerCopy = b.ownerCopy === true;
   if (ownerCopy) {
     if (ctx.user?.role !== "admin") throw new HttpError(403, "Only the owner can take a copy without paying.");
-    if (prod.kind !== "digital") throw new HttpError(400, "An owner copy is for a digital book.");
+    if (prod.kind !== "digital" && prod.kind !== "tool") throw new HttpError(400, "An owner copy is for a digital book or a tool.");
   }
   const mode = ownerCopy ? "owner" : checkoutMode(ctx.env);
   if (!mode) throw new HttpError(503, "The shop opens soon. Leave your email on the sample page and you will hear first.");
@@ -683,6 +683,7 @@ api.post("/checkout", async (ctx) => {
     ref, slug: prod.slug, cents: pr.amount_cents, currency: pr.currency, email: e,
     name: `${prod.title}${prod.subtitle ? `: ${prod.subtitle}` : ""}${pr.key !== "standard" ? ` (${pr.label})` : ""}`,
     description: prod.kind === "service" ? "A one-on-one design session."
+      : prod.kind === "tool" ? "Cut lists solved for your own dome (PDF), made from your receipt page."
       : physical ? (prod.ships_note || "A printed book.")
       : prod.status === "preorder" ? (prod.ships_note || "Digital edition (PDF), delivered when finished.") : "Digital edition (PDF). Every future edition included.",
     shipTo: physical ? (prod.ship_countries || "US").split(",").map((c) => c.trim()).filter(Boolean) : undefined,
@@ -692,7 +693,7 @@ api.post("/checkout", async (ctx) => {
   return json({ url: session.url, test: false }, 201);
 });
 
-interface OrderRow {
+export interface OrderRow {
   id: number; ref: string; key_hash: string; book_slug: string; amount_cents: number; currency: string; email: string | null; user_id: number | null;
   subscriber_id: number | null; status: string; provider: string; provider_session: string | null; marketing_consent: number; created_at: string; paid_at: string | null;
   price_key: string | null; honor_note: string | null; ship_name: string | null; ship_address: string | null; fulfillment: string | null;
@@ -700,7 +701,7 @@ interface OrderRow {
   promo_code: string | null;
 }
 
-async function loadOrder(ctx: Ctx) {
+export async function loadOrder(ctx: Ctx) {
   const o = await ctx.env.DB.prepare("SELECT * FROM orders WHERE ref = ?").bind(ctx.params.ref).first<OrderRow>();
   const key = ctx.url.searchParams.get("key") || "";
   const owner = ctx.user && o && (o.user_id === ctx.user.id || (!o.user_id && ctx.user.email_verified_at && normaliseEmail(o.email || "") === normaliseEmail(ctx.user.email)));
@@ -731,6 +732,7 @@ async function markPaid(ctx: Ctx, o: OrderRow, session?: Record<string, any> | n
       amount: `$${(o.amount_cents / 100).toFixed(o.amount_cents % 100 ? 2 : 0)}`, subscriberId: sub.id, source: src?.s || "direct",
     });
     await event(ctx, "sale", p?.kind === "service" ? "A design session was booked"
+      : p?.kind === "tool" ? `${p.title} was bought`
       : p?.kind === "physical" ? `A ${p.subtitle || p.title} was ordered` : `A copy of ${p?.title || "the book"} was bought`);
   }
   const paidOrder = (await ctx.env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(o.id).first<OrderRow>())!;
@@ -751,6 +753,7 @@ async function publicOrder(ctx: Ctx, o: OrderRow, key: string) {
     priceKey: o.price_key, honorNote: o.honor_note, fulfillment: o.fulfillment, shipsNote: p?.kind === "physical" || (p?.kind === "digital" && p.status === "preorder") ? p.ships_note : null,
     downloadUrl: paid && digital ? `/api/orders/${o.ref}/download${key ? `?key=${encodeURIComponent(key)}` : ""}` : null,
     codebaseUrl: paid ? x?.codebaseUrl || "" : "",
+    cutlistUrl: paid && (await toolCredits(ctx, o.book_slug, "cutlist")) ? `/cutlist/${o.ref}${key ? `?key=${encodeURIComponent(key)}` : ""}` : "",
     bookingNote: paid && p?.kind === "service" ? x?.bookingNote || "" : "",
     test: o.provider === "test",
     owned: Boolean(ctx.user && o.user_id === ctx.user.id), emailDelivery: delivery?.status || null,

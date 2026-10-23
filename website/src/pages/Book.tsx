@@ -56,7 +56,7 @@ export default function Book() {
         </Panel>
 
         <div className="grid gap-6 content-start">
-          <Shelf only={["the-40-hour-cabin", "triangular-book", "2-trees", "design-session"]} />
+          <Shelf only={["the-40-hour-cabin", "wedge-builder", "triangular-book", "2-trees", "design-session"]} />
           <p className="text-xs muted">The stem cell itself is priced at {usd(facts.price.stemCell)} by <code>kickstarter.cost_stack()</code>.</p>
         </div>
       </div>

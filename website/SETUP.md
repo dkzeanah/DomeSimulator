@@ -276,3 +276,40 @@ After `migrations/0008_studio.sql` is applied (`npm run db:remote`) and the site
 - **Dome classes** (`/domes`): every figure comes from `npm run facts`, which also writes
   `src/generated/dome-classes.json` (one class per whole inch of longest strut, solved by
   `seed_model`).
+
+## The Wedge Builder (cut lists for a buyer's own dome)
+
+A buyer types their dome's size and their logs and gets a PDF cut list: the saw setups, the
+cut families, which round of which log each wedge comes from, the jigs and the seams. The
+website only takes the request and hands over the PDF. **Your computer does the solving**,
+with the project's `wedge_builder` package, so a request waits until you run the render
+script below.
+
+**Once:**
+
+1. Put the tables online: `npm run db:remote` (adds `migrations/0015_cutlists.sql`).
+2. Make an agent key with only the **cutlists:render** box ticked (Admin -> Agents and keys).
+   Copy it; it is shown once.
+3. The Wedge Builder starts **hidden** at a placeholder $79. Set its price and put it *live*
+   on *Backers and orders* when you are ready. It then shows on the book page's shelf.
+
+**Who gets cut lists:** the rows in the `tool_grants` table. As seeded, one Wedge Builder
+order makes 25 cut lists and the complete edition of the book makes 1. Change a row to change
+the offer. A cut list the solver refuses (logs too short for the size, say) shows the buyer
+the reason and does not use up their credit.
+
+**Rendering the queue** (from the project folder, with the key from step 2):
+
+```bash
+set ZL_AGENT_KEY=zl_...
+py -3.12 website/scripts/render_cutlists.py --site https://www.zeanahlab.com --watch
+```
+
+`--watch` keeps looking every minute until you close the window. Leave it out to render
+what is waiting and stop. Each buyer is emailed when theirs is ready, and you keep a copy of
+every PDF in `website/private/cutlists/` (never committed). A new request also fires the
+`cutlist.requested` event, so an automation can notify you. The whole queue is at
+`/api/admin/cutlists`.
+
+To try a cut list yourself without the website: `py -3.12 -m wedge_builder --diameter-ft 19.4
+--log-in 10 --log-ft 16`. Before changing the solver, run `py -3.12 -m wedge_builder.selftest`.

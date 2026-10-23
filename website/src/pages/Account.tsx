@@ -398,7 +398,7 @@ function Profile() {
 
 interface LibraryOrder {
   ref: string; status: string; amountCents: number; currency: string; paidAt: string | null;
-  book: { title: string; kind: string }; downloadUrl: string | null; shipsNote: string | null;
+  book: { title: string; kind: string }; downloadUrl: string | null; cutlistUrl: string; shipsNote: string | null;
 }
 
 function MyBooks() {
@@ -415,6 +415,7 @@ function MyBooks() {
       <h3 className="text-xl font-semibold">{o.book.title}</h3>
       <p className="text-sm muted">{o.status === "paid" ? "Paid" : o.status} · {money(o.amountCents,o.currency)} · Order {o.ref}</p>
       {o.downloadUrl && <a className="btn justify-self-start" href={o.downloadUrl}>Download the book (PDF)</a>}
+      {o.cutlistUrl && <Link className="btn-ghost justify-self-start" to={o.cutlistUrl}>Your cut lists</Link>}
       {o.status === "paid" && o.book.kind === "digital" && !o.downloadUrl && <p className="text-sm">{o.shipsNote || "Your download is temporarily unavailable. Contact owner@zeanahlab.com with the order reference above."}</p>}
       <Link className="underline text-sm" to={`/thanks/${encodeURIComponent(o.ref)}`}>View receipt</Link>
     </article>)}

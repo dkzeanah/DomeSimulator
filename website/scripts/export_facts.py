@@ -40,6 +40,7 @@ CELL_OUT = SITE / "src" / "generated" / "cell-wall.json"
 LESSONS_OUT = SITE / "public" / "portal" / "masterclass.json"
 ASSEMBLY_OUT = SITE / "public" / "portal" / "assembly" / "lines.json"
 FOUNDATION_OUT = SITE / "src" / "generated" / "foundation.json"
+WEDGE_BUILDER_OUT = SITE / "src" / "generated" / "wedge-builder.json"
 
 
 def dome_mesh() -> dict:
@@ -84,6 +85,17 @@ def classes() -> dict:
 
 KIDS_VERSE = ROOT / "books" / "my-own-home-my-own-dome" / "verse.md"
 KIDS_PREVIEW_STANZAS = 4
+
+
+def wedge_builder() -> dict:
+    """What a cut-list request may ask for (wedge_builder.design): the order form and the API
+    check the same limits and options the solver does, so none of the three can drift."""
+    from wedge_builder import design
+    return {"limits": {k: {"min": lo, "max": hi} for k, (lo, hi) in design.LIMITS.items()},
+            "orientations": [{"key": k, "label": v} for k, v in design.ORIENTATIONS.items()],
+            "seamJoins": [{"key": k, "label": v} for k, v in design.SEAM_JOINS.items()],
+            "defaults": design.defaults(),
+            "source": "wedge_builder/design.py"}
 
 
 def kids_book() -> dict:

@@ -117,6 +117,24 @@ def reference(long_chord_in: float = 72.0, log_in: float = 12.0) -> dict:
     return result
 
 
+def dome_budget(long_edge_in: float, log_in: float, blank_in: float, trunk_ft: float,
+                finished_ft: float | None = None) -> dict:
+    """The same takeoff as ``reference`` for one buyer's dome (wedge_builder's cut list):
+    their nominal long edge, their log diameter, their longest raw blank and their usable
+    log length in place of the declared reference constants. ``finished_ft`` is the
+    buyer's own solved frame stock when their wedge orientation is not the default."""
+    import seed_model as seed
+    geo = seed.seed_geometry(_positive(long_edge_in, "long edge"), _positive(log_in, "log diameter"))
+    result = _budget([(f.count, f.area_sqft, f.perimeter_in) for f in geo.faces],
+                     sum(f.count * f.perimeter_in for f in geo.faces) / 12,
+                     geo.member_stock_ft if finished_ft is None else finished_ft,
+                     geo.member_count, log_in, seed.SEED_RADIAL_SPLITS,
+                     blank_in, trunk_ft, D["opening_inset_fraction"])
+    result.update(long_in=geo.long_edge_in, short_in=geo.short_edge_in,
+                  panel_count=sum(f.count for f in geo.faces), scale_basis="the buyer's long edge")
+    return result
+
+
 @lru_cache(maxsize=1)
 def live() -> dict:
     """The infill tool's max-FINISHED-member case, explicitly a different scale."""

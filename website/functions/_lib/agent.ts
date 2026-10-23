@@ -22,6 +22,7 @@ export const SCOPES: Record<string, string> = {
   "campaigns:propose_send": "Propose sending a campaign; the owner approves before anything goes.",
   "catalogue:propose": "Propose a price or product-state change; the owner approves before it applies.",
   "stories:write": "Bedtime stories: save new versions (never publish) and upload narration (scripts/export_storytime.py).",
+  "cutlists:render": "Wedge Builder cut lists: claim a buyer's request, upload its PDF or say why it failed (scripts/render_cutlists.py).",
 };
 
 export interface AgentKey { id: number; name: string; prefix: string; scopes: string[]; rate_per_min: number }
@@ -114,6 +115,15 @@ export const TOOLS = [
   { name: "save_story_version", scope: "stories:write", method: "POST", path: "/api/agent/stories/{slug}/versions", approval: false,
     description: "Save a new version of a bedtime story (append-only; only the owner publishes). doc is {title, series, voice, figures, pages: [{id, kind, scene, shot, text}]}.",
     input: { type: "object", required: ["slug", "doc"], properties: { slug: { type: "string" }, doc: { type: "object" }, note: { type: "string" } } } },
+  { name: "claim_cutlist", scope: "cutlists:render", method: "POST", path: "/api/agent/cutlists/claim", approval: false,
+    description: "Claim the oldest Wedge Builder request waiting to be rendered: {job: {ref, order, params, attempt}} or {job: null}. params is wedge_builder.design.Request as JSON.",
+    input: { type: "object", properties: {} } },
+  { name: "finish_cutlist", scope: "cutlists:render", method: "POST", path: "/api/agent/cutlists/{ref}/done", approval: false,
+    description: "Upload a claimed cut list's PDF (base64), its design id and a summary {logs, families, rounds, setups, jigs}. The buyer is emailed.",
+    input: { type: "object", required: ["ref", "pdf"], properties: { ref: { type: "string" }, pdf: { type: "string" }, design: { type: "string" }, summary: { type: "object" } } } },
+  { name: "fail_cutlist", scope: "cutlists:render", method: "POST", path: "/api/agent/cutlists/{ref}/failed", approval: false,
+    description: "Mark a claimed cut list failed with a reason the buyer can read (it is shown to them, and their credit is returned).",
+    input: { type: "object", required: ["ref", "error"], properties: { ref: { type: "string" }, error: { type: "string" } } } },
   { name: "get_proposal", scope: null, method: "GET", path: "/api/agent/proposals/{id}", approval: false,
     description: "Whether a proposal this key made was approved, rejected or is still waiting.",
     input: { type: "object", required: ["id"], properties: { id: { type: "integer" } } } },

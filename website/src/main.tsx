@@ -16,6 +16,7 @@ const Kit = lazy(() => import("./pages/Kit"));
 const Account = lazy(() => import("./pages/Account"));
 const Recyclers = lazy(() => import("./pages/Recyclers"));
 const Thanks = lazy(() => import("./pages/Thanks"));
+const CutList = lazy(() => import("./pages/CutList"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Confirm = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Confirm })));
 const Unsubscribe = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Unsubscribe })));
@@ -62,6 +63,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="account/*" element={<Account />} />
               <Route path="recyclers" element={<Recyclers />} />
               <Route path="thanks/:ref" element={<Thanks />} />
+              <Route path="cutlist/:ref" element={<CutList />} />
               <Route path="checkout/test/:ref" element={<Thanks test />} />
               <Route path="kids" element={<Kids />} />
               <Route path="kids/:story" element={<Kids />} />

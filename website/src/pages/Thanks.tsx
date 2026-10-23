@@ -7,7 +7,7 @@ import { ErrorLine, Panel } from "../components/ui";
 import { api, money } from "../lib/api";
 import { useSession } from "../lib/session";
 
-interface Order { ref: string; status: string; amountCents: number; currency: string; email: string; book: { title: string; subtitle: string; kind: string }; downloadUrl: string | null; codebaseUrl: string; bookingNote: string; test: boolean; shipsNote: string | null; honorNote: string | null; fulfillment: string | null; owned: boolean; emailDelivery: string | null }
+interface Order { ref: string; status: string; amountCents: number; currency: string; email: string; book: { title: string; subtitle: string; kind: string }; downloadUrl: string | null; codebaseUrl: string; cutlistUrl: string; bookingNote: string; test: boolean; shipsNote: string | null; honorNote: string | null; fulfillment: string | null; owned: boolean; emailDelivery: string | null }
 
 export default function Thanks({ test = false }: { test?: boolean }) {
   const { ref } = useParams();
@@ -62,6 +62,10 @@ export default function Thanks({ test = false }: { test?: boolean }) {
               {order.emailDelivery === "sent" ? <p className="text-sm muted">A download link was emailed to {order.email}.</p>
                 : ["queued", "sending"].includes(order.emailDelivery || "") ? <p className="text-sm muted">Your download email is queued for {order.email}. You can download here immediately.</p>
                 : <p className="text-sm muted">Your download is available here even if the email does not arrive. Keep this private receipt link.</p>}
+            </>}
+            {order.cutlistUrl && <>
+              <p>{order.book.kind === "tool" ? "Make your first cut list now: type your dome's size and your logs." : "Your book comes with a cut list solved for your own dome."}</p>
+              <Link className={order.book.kind === "tool" ? "btn text-center" : "btn-ghost text-center"} to={order.cutlistUrl}>Make my cut list</Link>
             </>}
             {order.codebaseUrl && <a className="btn-ghost text-center" href={order.codebaseUrl}>The codebase</a>}
             {order.bookingNote && <p>{order.bookingNote}</p>}

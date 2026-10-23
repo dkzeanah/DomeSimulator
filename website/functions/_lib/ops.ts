@@ -20,6 +20,7 @@ export const TRIGGERS: Record<string, string> = {
   "subscriber.left": "Someone unsubscribes. Fields: subscriberId.",
   "member.joined": "Someone makes an account. Fields: userId, subscriberId, source.",
   "order.paid": "An order is paid. Fields: ref, product, price, amount, amount_cents, subscriberId, source.",
+  "cutlist.requested": "A buyer asks the Wedge Builder for a cut list (render it with website/scripts/render_cutlists.py). Fields: ref, order, product, diameter_ft.",
   "listing.created": "A network listing is added. Fields: listingId, kind, title.",
   "proposal.created": "An agent (or Workers AI) proposes an action for you to approve. Fields: proposalId, action, key, reason.",
   "task.created": "A task is added on the projects board. Fields: taskId, project, title, due (YYYY-MM-DD or empty).",

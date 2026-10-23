@@ -1,5 +1,5 @@
 // Every edition, from the catalogue: the digital book, the triangular book, the Amazon
-// paperback and the design session. Prices and states are the database's.
+// paperback, the design session and the Wedge Builder. Prices and states are the database's.
 
 import { useState } from "react";
 import { api, money } from "../lib/api";
@@ -51,6 +51,14 @@ function Card({ p }: { p: Product }) {
       <Panel kicker="One on one" title={`${p.title}, ${money(lowest)}`}>
         <p className="text-sm muted mb-3">{p.blurb}</p>
         <Buy product={p} cta="Book a session" />
+      </Panel>
+    );
+  }
+  if (p.kind === "tool") {
+    return (
+      <Panel kicker="Solved for your dome" title={`${p.title}, ${money(lowest)}`}>
+        <p className="text-sm muted mb-3">{p.blurb}</p>
+        <Buy product={p} cta="Get my cut list" />
       </Panel>
     );
   }

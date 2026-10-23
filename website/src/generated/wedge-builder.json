@@ -1,0 +1,52 @@
+{
+  "limits": {
+    "diameter_ft": {
+      "min": 8.0,
+      "max": 40.0
+    },
+    "log_in": {
+      "min": 4.0,
+      "max": 24.0
+    },
+    "log_ft": {
+      "min": 4.0,
+      "max": 60.0
+    }
+  },
+  "orientations": [
+    {
+      "key": "point_dome_in",
+      "label": "Point to the dome's centre"
+    },
+    {
+      "key": "point_panel_in",
+      "label": "Point to the panel's centre"
+    },
+    {
+      "key": "point_dome_out",
+      "label": "Point to the sky"
+    },
+    {
+      "key": "point_panel_out",
+      "label": "Point across the seam"
+    }
+  ],
+  "seamJoins": [
+    {
+      "key": "raw_trapezoid",
+      "label": "Raw faces with a trapezoid key"
+    },
+    {
+      "key": "shaved_flat",
+      "label": "Shaved faces with a flat key"
+    }
+  ],
+  "defaults": {
+    "diameter_ft": 19.4,
+    "log_in": 12.0,
+    "log_ft": 16.0,
+    "orientation": "point_dome_in",
+    "seam_join": "raw_trapezoid"
+  },
+  "source": "wedge_builder/design.py"
+}
