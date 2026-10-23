@@ -1,9 +1,46 @@
 # The library
 
-570 outputs of 384 concepts, 25.38 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+607 outputs of 402 concepts, 31.26 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
 
 | # | output | iteration | made | kind | size |
 |---|---|---|---|---|---|
+| 0608 | [sketch-claude-level-with-me-s01e09-the-last-panel](0608-sketch-claude-level-with-me-s01e09-the-last-panel-v2/sketch-claude-level-with-me-s01e09-the-last-panel-v2.mp4) | v2 | 2026-10-22 | video | 203.7 MB |
+| 0607 | [sketch-claude-level-with-me-s01e08-pinwheel](0607-sketch-claude-level-with-me-s01e08-pinwheel-v2/sketch-claude-level-with-me-s01e08-pinwheel-v2.mp4) | v2 | 2026-10-22 | video | 324.8 MB |
+| 0606 | [sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there](0606-sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there-v2/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there-v2.mp4) | v2 | 2026-10-22 | video | 240.6 MB |
+| 0605 | [sketch-claude-level-with-me-s01e06-tension-and-compression](0605-sketch-claude-level-with-me-s01e06-tension-and-compression-v2/sketch-claude-level-with-me-s01e06-tension-and-compression-v2.mp4) | v2 | 2026-10-22 | video | 200.9 MB |
+| 0604 | [sketch-claude-level-with-me-s01e05-debugging](0604-sketch-claude-level-with-me-s01e05-debugging-v2/sketch-claude-level-with-me-s01e05-debugging-v2.mp4) | v2 | 2026-10-22 | video | 277.3 MB |
+| 0603 | [sketch-claude-level-with-me-s01e04-play-house](0603-sketch-claude-level-with-me-s01e04-play-house-v2/sketch-claude-level-with-me-s01e04-play-house-v2.mp4) | v2 | 2026-10-22 | video | 167.8 MB |
+| 0602 | [sketch-claude-level-with-me-s01e03-frequency](0602-sketch-claude-level-with-me-s01e03-frequency-v2/sketch-claude-level-with-me-s01e03-frequency-v2.mp4) | v2 | 2026-10-22 | video | 172.8 MB |
+| 0601 | [sketch-claude-level-with-me-s01e02-load-path](0601-sketch-claude-level-with-me-s01e02-load-path-v4/sketch-claude-level-with-me-s01e02-load-path-v4.mp4) | v4 | 2026-10-22 | video | 274.5 MB |
+| 0600 | [sketch-claude-level-with-me-s01e01-half-the-fold](0600-sketch-claude-level-with-me-s01e01-half-the-fold-v4/sketch-claude-level-with-me-s01e01-half-the-fold-v4.mp4) | v4 | 2026-10-22 | video | 299.3 MB |
+| 0599 | [sketch-claude-level-with-me-s01e02-load-path](0599-sketch-claude-level-with-me-s01e02-load-path-v3/sketch-claude-level-with-me-s01e02-load-path-v3.mp4) | v3 | 2026-10-22 | video | 280.7 MB |
+| 0598 | [sketch-claude-level-with-me-s01e01-half-the-fold](0598-sketch-claude-level-with-me-s01e01-half-the-fold-v3/sketch-claude-level-with-me-s01e01-half-the-fold-v3.mp4) | v3 | 2026-10-22 | video | 295.7 MB |
+| 0597 | [sketch-claude-level-with-me-s01e10-the-storm](0597-sketch-claude-level-with-me-s01e10-the-storm/sketch-claude-level-with-me-s01e10-the-storm.mp4) | v1 | 2026-10-21 | video | 302.3 MB |
+| 0596 | [sketch-claude-level-with-me-s01e09-the-last-panel](0596-sketch-claude-level-with-me-s01e09-the-last-panel/sketch-claude-level-with-me-s01e09-the-last-panel.mp4) | v1 | 2026-10-21 | video | 208.7 MB |
+| 0595 | [sketch-claude-level-with-me-s01e08-pinwheel](0595-sketch-claude-level-with-me-s01e08-pinwheel/sketch-claude-level-with-me-s01e08-pinwheel.mp4) | v1 | 2026-10-21 | video | 327.0 MB |
+| 0594 | [sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there](0594-sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there.mp4) | v1 | 2026-10-21 | video | 249.2 MB |
+| 0593 | [sketch-claude-level-with-me-s01e06-tension-and-compression](0593-sketch-claude-level-with-me-s01e06-tension-and-compression/sketch-claude-level-with-me-s01e06-tension-and-compression.mp4) | v1 | 2026-10-21 | video | 212.1 MB |
+| 0592 | [sketch-claude-level-with-me-s01e05-debugging](0592-sketch-claude-level-with-me-s01e05-debugging/sketch-claude-level-with-me-s01e05-debugging.mp4) | v1 | 2026-10-21 | video | 287.4 MB |
+| 0591 | [sketch-claude-level-with-me-s01e04-play-house](0591-sketch-claude-level-with-me-s01e04-play-house/sketch-claude-level-with-me-s01e04-play-house.mp4) | v1 | 2026-10-21 | video | 172.3 MB |
+| 0590 | [sketch-claude-level-with-me-s01e03-frequency](0590-sketch-claude-level-with-me-s01e03-frequency/sketch-claude-level-with-me-s01e03-frequency.mp4) | v1 | 2026-10-21 | video | 175.6 MB |
+| 0589 | [sketch-claude-level-with-me-s01e02-load-path](0589-sketch-claude-level-with-me-s01e02-load-path-v2/sketch-claude-level-with-me-s01e02-load-path-v2.mp4) | v2 | 2026-10-20 | video | 289.0 MB |
+| 0588 | [sketch-claude-level-with-me-s01e02-load-path](0588-sketch-claude-level-with-me-s01e02-load-path/sketch-claude-level-with-me-s01e02-load-path.mp4) | v1 | 2026-10-20 | video | 288.3 MB |
+| 0587 | [storytime-my-own-home](0587-storytime-my-own-home/storytime-my-own-home.mp4) | v1 | 2026-10-20 | video | 277.6 MB |
+| 0586 | [sketch-claude-level-with-me-s01e01-half-the-fold](0586-sketch-claude-level-with-me-s01e01-half-the-fold-v2/sketch-claude-level-with-me-s01e01-half-the-fold-v2.mp4) | v2 | 2026-10-20 | video | 248.9 MB |
+| 0585 | [sketch-claude-level-with-me-s01e01-half-the-fold](0585-sketch-claude-level-with-me-s01e01-half-the-fold/sketch-claude-level-with-me-s01e01-half-the-fold.mp4) | v1 | 2026-10-19 | video | 0.0 MB |
+| 0584 | [sketch-gpt-nearly-level-s01e01](0584-sketch-gpt-nearly-level-s01e01/sketch-gpt-nearly-level-s01e01.mp4) | v1 | 2026-10-19 | video | 18.4 MB |
+| 0583 | [sketch_gpt_pilot-stills](0583-sketch_gpt_pilot-stills-v2/nearly-level_0003.50s.png) | v2 | 2026-10-19 | image | 1.2 MB |
+| 0582 | [sketch-gpt-nearly-level-edit](0582-sketch-gpt-nearly-level-edit-v2/README.md) | v2 | 2026-10-19 | image | 1.4 MB |
+| 0581 | [sketch_gpt_pilot-stills](0581-sketch_gpt_pilot-stills) | v1 | 2026-10-19 | empty | 0.0 MB |
+| 0580 | [sketch-gpt-nearly-level-edit](0580-sketch-gpt-nearly-level-edit/README.md) | v1 | 2026-10-19 | image | 1.4 MB |
+| 0579 | [sketch-claude-plans](0579-sketch-claude-plans-v2/sketch-claude-plans-v2.pdf) | v2 | 2026-10-19 | document | 13.2 MB |
+| 0578 | [sketch-claude-showcase](0578-sketch-claude-showcase/clear-day.png) | v1 | 2026-10-19 | image | 10.5 MB |
+| 0577 | [sketch-claude-plans](0577-sketch-claude-plans/sketch-claude-plans.pdf) | v1 | 2026-10-19 | document | 13.2 MB |
+| 0576 | [sketch-gpt](0576-sketch-gpt-v2/sketch-gpt-guide.pdf) | v2 | 2026-10-19 | document | 9.7 MB |
+| 0575 | [sketch-gpt](0575-sketch-gpt/sketch-gpt-guide.pdf) | v1 | 2026-10-19 | document | 9.7 MB |
+| 0574 | [my-own-home-my-own-dome](0574-my-own-home-my-own-dome-v3/my-own-home-my-own-dome-v3.pdf) | v3 | 2026-10-17 | document | 7.8 MB |
+| 0573 | [my-own-home-my-own-dome](0573-my-own-home-my-own-dome-v2/my-own-home-my-own-dome-v2.pdf) | v2 | 2026-10-16 | document | 7.8 MB |
+| 0572 | [my-own-home-my-own-dome](0572-my-own-home-my-own-dome/my-own-home-my-own-dome.pdf) | v1 | 2026-10-16 | document | 8.1 MB |
 | 0571 | [the-40-hour-cabin-sample](0571-the-40-hour-cabin-sample-v6/the-40-hour-cabin-sample-v6.pdf) | v6 | 2026-10-16 | document | 4.4 MB |
 | 0570 | [snowball-manuscript](0570-snowball-manuscript/snowball-manuscript.epub) | v1 | 2026-10-14 | book | 0.4 MB |
 | 0569 | [closing-the-triangle-teaser](0569-closing-the-triangle-teaser/closing-the-triangle-teaser.mp4) | v1 | 2026-10-14 | video | 53.5 MB |

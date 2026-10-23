@@ -39,11 +39,12 @@ from pathlib import Path
 
 from .audio import resolve_executable
 from .deliverables import DELIVERABLE_BY_LESSON, OUTPUT_DIR
-from .lesson_registry import get_lesson
+from .lesson_loader import get_lesson
 
 RELEASE_DIR = Path("deliverables/releases")
 
 HASHTAG_BANK: dict[str, tuple[str, ...]] = {
+    "sketch_gpt_pilot": ("#NearlyLevel", "#SketchGPT", "#FamilyComedy", "#DomeLife", "#DIYComedy", "#AnimatedSitcom"),
     "seed_pitch": (
         # The owner's own five come first, in their order.
         "#diy", "#construction", "#geodesicdome", "#realestate", "#tinyhome",

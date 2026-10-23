@@ -1,0 +1,12 @@
+shot,in_s,out_s,move,focus,lens_mm,speaker,dialogue,action
+shot-01,0.0,7.0,crane,family,28,cal,Today we build one shelf. No apps. No drama.,point
+shot-02,7.0,13.0,slide left,june,42,june,Bold of you to ban the two things keeping this family employed.,shrug
+shot-03,13.0,20.0,push in,theo,42,theo,I made it smart. It sends a notification when something falls off.,talk
+shot-04,20.0,25.0,pan,milo,42,milo,"So... a shelf with anxiety. Finally, furniture that gets me.",react
+shot-05,25.0,32.0,dolly zoom,cal,42,cal,The bubble is centered. The wall must be wrong.,point
+shot-06,32.0,38.0,slide right,mara,42,mara,"Honey, that's the camera app. You're leveling the selfie.",facepalm
+shot-07,38.0,44.0,orbit,june,42,june,Keep rolling. This is the first renovation with a reaction channel.,talk
+shot-08,44.0,52.0,push in,milo,42,milo,What if we just put the books on the table? It's been a shelf with legs this whole time.,shrug
+shot-09,52.0,58.0,pull out,family,28,mara,Great. Now somebody improve this home by doing the damn dishes.,point
+shot-10,58.0,63.0,hold,cal,42,cal,Next week: a dishwasher. I'm thinking Bluetooth.,talk
+closing-title,63.0,66.0,crane,dome,28,,Nearly Level. Same family. Fewer right angles.,talk

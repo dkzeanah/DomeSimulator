@@ -1,0 +1,4 @@
+setup,mitre_deg,bevel_deg,members,edge_families,axial_run_min_in,axial_run_max_in,wedge_orientation,bevel_equals_half_sector,half_sector_deg,note
+BUTT_SETUP_01,34.431000,22.500000,60,A B,2.905199,2.905199,point_dome_in,True,22.500000,cradle holds ONE sawn face down with the point against the fence; bevel is set once for the whole dome; blank runs long on the point side
+BUTT_SETUP_02,21.138000,22.500000,30,B,2.232989,2.232989,point_dome_in,True,22.500000,cradle holds ONE sawn face down with the point against the fence; bevel is set once for the whole dome; blank runs long on the point side
+BUTT_SETUP_03,30.000000,22.500000,30,A,2.651309,2.651309,point_dome_in,True,22.500000,cradle holds ONE sawn face down with the point against the fence; bevel is set once for the whole dome; blank runs long on the point side

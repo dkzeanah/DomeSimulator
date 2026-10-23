@@ -1,0 +1,43 @@
+{
+  "name": "sketch-gpt",
+  "facts": {
+    "panels": 40,
+    "members": 120,
+    "nominal_long_edge_in": 72.0,
+    "dome_width_in": 221.5932146766182,
+    "dome_height_in": 116.4984471899924,
+    "deck_area_sqft": 688.1909602355868,
+    "deck_top_in": 18.0
+  },
+  "assumptions": [
+    [
+      "Units",
+      "All model and CSV lengths are inches; drawings are fit-to-page, not cutting templates."
+    ],
+    [
+      "Furniture",
+      "Illustrative props in inches: bed 60 x 80; table 42 x 26 x 28; counter 60 x 24 x 36."
+    ],
+    [
+      "Skin",
+      "Existing solver offset and 0.25-inch display thickness; no envelope specification implied."
+    ],
+    [
+      "Finish",
+      "Palette and glazed triangles are presentation choices, not specified materials."
+    ],
+    [
+      "Construction",
+      "Geometry study. Fasteners, bracing, anchors, loads and services require design."
+    ],
+    [
+      "Access",
+      "No door is cut into structural members. Door, egress and room clearances remain unresolved."
+    ]
+  ],
+  "baseline_fabrication": true,
+  "edited": false,
+  "operation_count": 0,
+  "operations": [],
+  "note": "Solver schedules describe the baseline; edited geometry requires fabrication reconciliation."
+}

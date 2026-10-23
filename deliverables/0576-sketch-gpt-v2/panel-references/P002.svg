@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460.0" height="437.1" viewBox="0 0 460.0 437.1">
+<rect width="100%" height="100%" fill="white"/>
+<polygon points="40.265,396.719 422.286,396.719 284.523,40.402" fill="none" stroke="#1976a8" stroke-width="2"/>
+<text x="12" y="22" font-family="monospace" font-size="14">PANEL 002 / BAB / EXTERIOR VIEW / POINT_DOME_IN</text>
+<text x="12" y="40" font-family="monospace" font-size="12" fill="#aa00aa">MAGENTA GUIDE = CLEAN VERTEX CUT</text>
+<text x="250" y="40" font-family="monospace" font-size="12" fill="#0087a8">CYAN GUIDE = FLUSH BUTT CUT PLANE</text>
+<text x="12" y="56" font-family="monospace" font-size="11">WEDGE SIDES: RED / GREEN; PINWHEEL RECEIVER = GREEN; ORANGE = +8.0in SACRIFICIAL TAIL</text>
+<line x1="47.135" y1="396.719" x2="283.723" y2="51.593" stroke="#c57800" stroke-width="1.5"/>
+<line x1="283.723" y1="51.593" x2="310.862" y2="12.002" stroke="#ff8800" stroke-width="4" stroke-opacity="0.55"/>
+<polyline points="47.135,396.719 36.000,396.719 37.782,396.719 39.604,396.719 41.459,396.719 43.337,396.719 45.232,396.719 47.135,396.719 49.038,396.719 50.933,396.719 52.812,396.719 54.666,396.719 56.488,396.719 58.270,396.719 47.135,396.719" fill="none" stroke="#cc00cc" stroke-width="2"/>
+<polyline points="283.723,51.593 273.411,50.391 273.897,52.282 274.424,54.171 274.992,56.048 275.597,57.906 276.236,59.737 276.908,61.534 277.609,63.287 278.336,64.991 279.086,66.637 279.856,68.219 280.642,69.730 281.442,71.163 283.723,51.593" fill="none" stroke="#00a8d6" stroke-width="2"/>
+<text x="170.429" y="219.156" font-family="monospace" font-size="10">WOOD_P002_E0 A finished=70.788in jigblank=78.788in</text>
+<line x1="281.245" y1="45.184" x2="415.310" y2="391.937" stroke="#c57800" stroke-width="1.5"/>
+<line x1="415.310" y1="391.937" x2="432.620" y2="436.707" stroke="#ff8800" stroke-width="4" stroke-opacity="0.55"/>
+<polyline points="281.245,45.184 287.541,36.000 286.533,37.470 285.503,38.973 284.455,40.502 283.393,42.052 282.321,43.615 281.245,45.184 280.169,46.754 279.098,48.317 278.035,49.867 276.987,51.396 275.957,52.899 274.949,54.369 281.245,45.184" fill="none" stroke="#cc00cc" stroke-width="2"/>
+<polyline points="415.310,391.937 421.606,382.753 419.942,382.524 418.257,382.335 416.561,382.187 414.858,382.081 413.158,382.017 411.467,381.996 409.792,382.017 408.141,382.081 406.521,382.187 404.938,382.335 403.400,382.524 401.912,382.753 415.310,391.937" fill="none" stroke="#00a8d6" stroke-width="2"/>
+<text x="353.278" y="213.561" font-family="monospace" font-size="10">WOOD_P002_E1 B finished=63.011in jigblank=71.011in</text>
+<line x1="420.437" y1="391.937" x2="50.413" y2="391.937" stroke="#c57800" stroke-width="1.5"/>
+<line x1="50.413" y1="391.937" x2="2.413" y2="391.937" stroke="#ff8800" stroke-width="4" stroke-opacity="0.55"/>
+<polyline points="420.437,391.937 423.988,401.121 423.420,399.652 422.839,398.149 422.248,396.619 421.649,395.070 421.044,393.507 420.437,391.937 419.831,390.367 419.226,388.804 418.627,387.255 418.036,385.725 417.455,384.223 416.886,382.753 420.437,391.937" fill="none" stroke="#cc00cc" stroke-width="2"/>
+<polyline points="50.413,391.937 55.253,401.121 56.538,399.652 57.797,398.149 59.025,396.619 60.216,395.070 61.364,393.507 62.466,391.937 63.516,390.367 64.510,388.804 65.444,387.255 66.314,385.725 67.115,384.223 67.845,382.753 50.413,391.937" fill="none" stroke="#00a8d6" stroke-width="2"/>
+<text x="240.425" y="386.937" font-family="monospace" font-size="10">WOOD_P002_E2 B finished=62.262in jigblank=70.262in</text>
+</svg>

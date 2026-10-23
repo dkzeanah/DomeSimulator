@@ -1,0 +1,31 @@
+{
+ "schema": 1,
+ "ops": [],
+ "visible": {
+  "foundation": true,
+  "foundation_deck": false,
+  "foundation_jig": true,
+  "dome": true,
+  "dome_skin": false,
+  "dome_jig": true,
+  "zome": true,
+  "zome_skin": false,
+  "zome_jig": true,
+  "mine": true,
+  "person": true
+ },
+ "locked": {
+  "foundation": false,
+  "foundation_deck": false,
+  "foundation_jig": false,
+  "dome": false,
+  "dome_skin": false,
+  "dome_jig": false,
+  "zome": false,
+  "zome_skin": false,
+  "zome_jig": false,
+  "mine": false,
+  "person": false
+ },
+ "active": "mine"
+}

@@ -68,6 +68,10 @@ class Deliverable:
 # they were rendered before the label layout became configurable, and
 # they default to ``raw`` so a re-render reproduces what shipped.
 DELIVERABLES: tuple[Deliverable, ...] = (
+    Deliverable("sketch_gpt_pilot", "sketch-gpt-nearly-level-s01e01.mp4",
+                "Original PG-13 family comedy animatic. Five articulated characters, "
+                "editable cinematic shots and captions, in the solver's Cabin World. "
+                "Its closing series title is its own outro; no synthesized dialogue by default."),
     Deliverable("hex", "hex-dome-masterclass.mp4",
                 "Hexagonal domes: one strut length, twelve pentagons, "
                 "and what frequency costs."),
@@ -414,7 +418,7 @@ DELIVERABLES = DELIVERABLES + tuple(
                 f"Cabin World re-render of {item.filename}: the same chapters on "
                 "the exhibit platform, with cinematic cameras.", compose=True)
     for item in DELIVERABLES
-    if not item.lesson.startswith("cabin_")) + (
+    if not item.lesson.startswith("cabin_") and item.lesson != "sketch_gpt_pilot") + (
     Deliverable("cabin_seam", "cabin-the-seam-does-four-jobs.mp4",
                 "Cabin World re-render of the-seam-does-four-jobs.mp4.", compose=True),
     Deliverable("cabin_2v", "cabin-2v-geodesic-dome-masterclass.mp4",

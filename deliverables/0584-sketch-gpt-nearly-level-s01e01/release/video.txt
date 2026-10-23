@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSim\deliverables\0584-sketch-gpt-nearly-level-s01e01\sketch-gpt-nearly-level-s01e01.mp4
+portrait:  C:\Users\Don\Desktop\DomeSim\deliverables\0584-sketch-gpt-nearly-level-s01e01\sketch-gpt-nearly-level-s01e01-vertical.mp4

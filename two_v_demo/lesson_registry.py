@@ -59,6 +59,7 @@ from .lesson_world_chatgpt import WORLD_CHATGPT_LESSON
 from .lesson_zome import ZOME_LESSON
 from .lesson_pvtwo import PVTWO_LESSON
 from .lessons import TWO_V_LESSON, Lesson
+from .lesson_sketch_gpt_episode import SKETCH_GPT_EPISODE
 
 
 LESSONS: dict[str, Lesson] = {
@@ -85,7 +86,7 @@ LESSONS: dict[str, Lesson] = {
                    CABIN_SHOP_LESSON, CABIN_CELL_WALL_LESSON,
                    SKY_WEB_LESSON, EVERY_PIECE_LESSON, CABIN_STYLES_LESSON,
                    WEDGE_BEYOND_LESSON, STAPLE_LESSON, PROMO_LESSON,
-                   TRIANGLE_FILL_LESSON)
+                   TRIANGLE_FILL_LESSON, SKETCH_GPT_EPISODE)
 }
 
 # Every earlier film, re-staged in the Cabin World (two_v_demo/cabin_stage.py):
@@ -96,6 +97,8 @@ from .cabin_stage import restage as _restage
 for _key in [k for k in LESSONS if not k.startswith("cabin_")]:
     # A drama's own camera direction is its storytelling: keep it. So is the
     # harvest's, which follows one thin tree down and round its wedges.
+    if _key == "sketch_gpt_pilot":
+        continue  # already a directed Cabin World production, not an exhibit
     LESSONS.setdefault(f"cabin_{_key}", _restage(
         LESSONS[_key], keep_original_cameras=_key in ("drama", "series", "harvest")))
 

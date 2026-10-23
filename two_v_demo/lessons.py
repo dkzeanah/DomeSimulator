@@ -150,6 +150,10 @@ class Lesson:
     """Direction the light travels, when a lesson brings its own sun.
     ``None`` keeps the renderer's house light."""
 
+    ui_fn: Callable[..., object] | None = None
+    """Optional transparent overlay painter (app, width, height), for directed
+    productions with their own caption and framing typography."""
+
     def validate(self) -> None:
         """Fail loudly at load time rather than mid-render."""
         if not self.chapters:

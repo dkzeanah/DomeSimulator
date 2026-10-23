@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -42,6 +43,9 @@ WORK = ROOT / "two_v_demo_output"
 
 def preset_fields(lesson: str) -> dict:
     """The film's render preset, house defaults filled in."""
+    if lesson == "sketch_gpt_pilot":
+        from two_v_demo.cinema_preset import EPISODE_PRESET
+        return dict(EPISODE_PRESET.applied())
     import render_presets as rp
     from two_v_demo.deliverables import DELIVERABLE_BY_LESSON
 
@@ -55,7 +59,7 @@ def preset_fields(lesson: str) -> dict:
 
 
 def chapters(lesson: str, compose_segments: bool):
-    from two_v_demo.lesson_registry import get_lesson
+    from two_v_demo.lesson_loader import get_lesson
 
     film = get_lesson(lesson)
     if compose_segments:
@@ -160,7 +164,10 @@ def fit_pace(lesson: str, compose_segments: bool, pace: float, work: Path, progr
 def run_ticket(fields: dict) -> int:
     import launcher_common as lc
     lc.write_config("two_v_masterclass", fields)
-    return subprocess.run([sys.executable, "two_v_masterclass.py"], cwd=str(ROOT)).returncode
+    env=os.environ.copy()
+    if fields.get("episode_project"):
+        env["SKETCH_GPT_EPISODE_PROJECT"]=str(fields["episode_project"])
+    return subprocess.run([sys.executable, "two_v_masterclass.py"], cwd=str(ROOT),env=env).returncode
 
 
 def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: bool = False,
@@ -173,6 +180,10 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
         fields["fps"] = str(fps)
     if size:
         fields["size"] = size
+        if "orientation_sizes" in fields:
+            w,h=map(int,size.lower().split('x'))
+            fields['orientation_sizes']={'landscape':f'{max(w,h)}x{min(w,h)}',
+                                         'portrait':f'{min(w,h)}x{max(w,h)}'}
     fields["orientation"] = "landscape" if landscape_only else "both"
     mine = voice == "mine"
     # The renderer's own teaser speaks in the house (online) voice, which can be refused (403)
@@ -186,12 +197,19 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
     where = target(fields)
     print(f"{lesson}: {fields['export_video']}")
     print(f"  a new numbered output, after {where.parent.name if where.parent.exists() else 'none yet'}")
-    print(f"  voice {'mine at x%g' % pace if mine else fields['voice']}; "
+    voice_label=('captioned / no audio' if fields.get('no_narration') else ('mine at x%g' % pace if mine else fields['voice']))
+    print(f"  voice {voice_label}; "
           f"{'landscape only' if landscape_only else 'landscape + phone cut'}; "
           f"segments {'on' if fields.get('compose_segments') else 'off'}; teaser {'on' if teaser else 'off'}")
     if dry_run:
         return 0
     where = claim(fields)
+    if lesson == "sketch_gpt_pilot":
+        # Freeze this take before the renderer starts: subsequent director edits
+        # cannot change a film that is rendering or its phone companion.
+        from world3d.cinema import load_episode
+        source=load_episode().save(where.parent / "episode.json")
+        fields["episode_project"]=str(source.resolve())
     print(f"  into {where.relative_to(ROOT)}")
     if mine:
         where.parent.mkdir(parents=True, exist_ok=True)
@@ -210,11 +228,18 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
 
 
 def stills(lesson: str, *, stages: tuple[str, ...] = (), at: float = 0.5) -> int:
-    import render_presets as rp
     import medialib
-    preset = rp.PRESET_BY_KEY.get(f"{lesson}_stills")
-    fields = dict(preset.applied()) if preset else {**preset_fields(lesson), "action": "shots",
-                                                     "shots": rp.chapter_shots(lesson), "no_narration": True}
+    if lesson == 'sketch_gpt_pilot':
+        _, chs=chapters(lesson,False)
+        clock=0.; marks=[]
+        for c in chs:
+            marks.append(str(clock+c.duration*.5)); clock+=c.duration
+        fields={**preset_fields(lesson),'action':'shots','shots':','.join(marks),'no_narration':True}
+    else:
+        import render_presets as rp
+        preset = rp.PRESET_BY_KEY.get(f"{lesson}_stills")
+        fields = dict(preset.applied()) if preset else {**preset_fields(lesson), "action": "shots",
+                                                         "shots": rp.chapter_shots(lesson), "no_narration": True}
     if not 0 <= at < 1:
         raise SystemExit("--at must lie between zero and one, with one excluded")
     if stages or at != 0.5:

@@ -43,7 +43,7 @@ _SKETCH_SIZES = {
 #: The sidebar's groups, in order, and which tools sit in each. A tool not
 #: listed lands in "Other", so adding a tab never makes it disappear.
 NAV_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("Design & build", ("Dome Creator", "Dome Forge", "Dome Composer", "sketch-claude",
+    ("Design & build", ("Dome Creator", "Dome Forge", "Dome Composer", "sketch-gpt", "sketch-claude",
                         "Raw Wedge Dome", "Assembly Line",
                         "Assembly Line (Simple)", "Flatten Utility")),
     ("Films & media", ("Masterclass", "Re-render Queue", "My Voice", "Presenter Studio",
@@ -1938,6 +1938,25 @@ def main() -> int:
     ttk.Separator(foot).pack(fill="x")
     launch_button(foot, "Launch Raw Wedge Dome", go_raw_wedge)
 
+    # ---- sketch-gpt -------------------------------------------------------
+    sketch_tab = tab("sketch-gpt")
+    sketch_head = ttk.Frame(sketch_tab, padding=14)
+    sketch_head.pack(fill="both", expand=True)
+    intro(sketch_head, "sketch-gpt is the dome drawing studio: orbit the actual solver's "
+          "pieces, inspect and edit members, compare material palettes, and explore a furnished "
+          "cutaway. Export an illustrated PDF guide, every panel's reference drawing, the original "
+          "fabrication schedules, editable OBJ models, landscape and portrait promotional stills.")
+    note(sketch_head, "The studio shares world3d's solids and operation log, and keeps its own saved "
+         "project. Each export creates a new numbered release in deliverables. Furniture and enclosure "
+         "are design studies; connections, openings, services and approvals remain project-specific. "
+         "Edited views are flagged separately from the baseline solver's fabrication schedules.")
+    launch_button(sketch_head, "Open sketch-gpt drawing studio",
+                  lambda: run_module("world3d.sketch_gpt", [], "sketch-gpt"))
+    launch_button(sketch_head, "Open cinematic director / Nearly Level episode",
+                  lambda: run_module("world3d.sketch_gpt", ["--director"], "sketch-gpt director"))
+    launch_button(sketch_head, "Export sketch-gpt guide and showcase release",
+                  lambda: run_module("world3d.sketch_gpt", ["--export"], "sketch-gpt release"))
+
     # ---- sketch-claude: Dome Sketch ---------------------------------------
     sc_tab = tab("sketch-claude")
     sc_head = ttk.Frame(sc_tab, padding=14)
@@ -1953,13 +1972,13 @@ def main() -> int:
          "the base layout, the door, the sheet layout, a floor plan and a showcase. Render showcase "
          "makes the promotional pictures in their own numbered folder. Every figure is computed from "
          "the model; the inputs it was told are listed on the last sheet.")
-    sc_size = LabeledCombo(sc_head, "Dome to draw", list(_SKETCH_SIZES), "16 ft reference (4.88 m)")
-    sc_size.pack(fill="x", pady=3)
+    sketch_claude_size = LabeledCombo(sc_head, "Dome to draw", list(_SKETCH_SIZES), "16 ft reference (4.88 m)")
+    sketch_claude_size.pack(fill="x", pady=3)
     note(sc_head, "Only the plan-set and showcase buttons use this; inside the app you choose the dome yourself.")
 
     def _sc_spec() -> list[str]:
         import json as _json
-        return ["--spec", _json.dumps(_SKETCH_SIZES.get(sc_size.var.get(), {}))]
+        return ["--spec", _json.dumps(_SKETCH_SIZES.get(sketch_claude_size.var.get(), {}))]
 
     launch_button(sc_head, "Open Dome Sketch (in the browser)",
                   lambda: run_module("sketch_claude", ["serve"], "Dome Sketch"))
@@ -3086,10 +3105,10 @@ def main() -> int:
         # spawning intercepted above), then tear down. Used by the
         # automated verification pass; never set by normal launches.
         root.update()
-        expected = 23
+        expected = 24
         # One tab per tool, but not one button per tab: the Project Agent tab
         # has a second button that writes the Ollama authoring prompt.
-        expected_buttons = 39
+        expected_buttons = 42
         notebook_tabs = notebook.tabs()
         assert len(notebook_tabs) == expected, notebook_tabs
         assert len(smoke_callbacks) == expected_buttons, smoke_callbacks

@@ -986,6 +986,8 @@ class MasterclassApp:
         return equations
 
     def draw_ui(self, width: int, height: int) -> object:
+        if self.lesson.ui_fn is not None:
+            return self.lesson.ui_fn(self,width,height)
         # A chapter may override the lesson's style, which is how a
         # four-second sting goes full-frame inside a teaching lesson.
         chapter = self.chapters[self.chapter_index]
@@ -2622,14 +2624,14 @@ def _build_release(lesson_key: str, cut: Path,
     print(release.summary())
 
 
-def parse_size(value: str) -> tuple[int, int]:
+def parse_size(value: str, minimum: tuple[int,int] = (960,540)) -> tuple[int, int]:
     try:
         width_text, height_text = value.lower().split("x", 1)
         width, height = int(width_text), int(height_text)
     except (ValueError, AttributeError) as exc:
         raise ValueError("size must look like 1600x900") from exc
-    if width < 960 or height < 540:
-        raise ValueError("minimum supported size is 960x540")
+    if width < minimum[0] or height < minimum[1]:
+        raise ValueError(f"minimum supported size is {minimum[0]}x{minimum[1]}")
     return width, height
 
 
@@ -2707,7 +2709,7 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
     # Imported here, not at module scope: the lesson modules import this
     # module's render kit, so the registry can only be built once this
     # module has finished loading.
-    from .lesson_registry import get_lesson, lesson_menu
+    from .lesson_loader import get_lesson, lesson_menu
 
     # A multi-film beat render names several lessons at once, which get_lesson cannot
     # resolve. Dispatch it before the single-lesson lookup rather than after it.
@@ -3005,6 +3007,9 @@ def main(default_lesson: str = "2v", *, config: dict | None = None) -> int:
     if orientation in ("landscape", "portrait"):
         from .frame import size_for as frame_size
         size = frame_size(orientation)
+        requested_sizes=cfg.get("orientation_sizes") or {}
+        if orientation in requested_sizes:
+            size=parse_size(requested_sizes[orientation],(540,960) if orientation=='portrait' else (960,540))
     app = MasterclassApp(
         size=size,
         fullscreen=bool(cfg.get("fullscreen", False)),

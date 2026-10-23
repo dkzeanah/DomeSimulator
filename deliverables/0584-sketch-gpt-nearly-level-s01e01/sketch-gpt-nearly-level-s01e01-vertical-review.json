@@ -1,0 +1,119 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-10-20T04:13:28.827550+00:00",
+  "lesson": "sketch_gpt_pilot",
+  "title": "Nearly Level: S01E01 / Shelf Esteem",
+  "chapters": [
+    {
+      "slug": "shot-01",
+      "title": "Cal / The family has entered the chat.",
+      "narration": [
+        "Today we build one shelf. No apps. No drama."
+      ],
+      "start": 0.0,
+      "end": 7.0
+    },
+    {
+      "slug": "shot-02",
+      "title": "June / UNPAID FAMILY IT DEPARTMENT",
+      "narration": [
+        "Bold of you to ban the two things keeping this family employed."
+      ],
+      "start": 7.0,
+      "end": 13.0
+    },
+    {
+      "slug": "shot-03",
+      "title": "Theo / DISRUPTING GRAVITY",
+      "narration": [
+        "I made it smart. It sends a notification when something falls off."
+      ],
+      "start": 13.0,
+      "end": 20.0
+    },
+    {
+      "slug": "shot-04",
+      "title": "Milo / SELF-AWARE SHELVING",
+      "narration": [
+        "So... a shelf with anxiety. Finally, furniture that gets me."
+      ],
+      "start": 20.0,
+      "end": 25.0
+    },
+    {
+      "slug": "shot-05",
+      "title": "Cal / CONFIDENCE: LOAD BEARING",
+      "narration": [
+        "The bubble is centered. The wall must be wrong."
+      ],
+      "start": 25.0,
+      "end": 32.0
+    },
+    {
+      "slug": "shot-06",
+      "title": "Mara / CHECK THE TOOL, CAL",
+      "narration": [
+        "Honey, that's the camera app. You're leveling the selfie."
+      ],
+      "start": 32.0,
+      "end": 38.0
+    },
+    {
+      "slug": "shot-07",
+      "title": "June / SHELF ESTEEM: EPISODE ONE",
+      "narration": [
+        "Keep rolling. This is the first renovation with a reaction channel."
+      ],
+      "start": 38.0,
+      "end": 44.0
+    },
+    {
+      "slug": "shot-08",
+      "title": "Milo / ACCIDENTALLY INVENTS A TABLE",
+      "narration": [
+        "What if we just put the books on the table? It's been a shelf with legs this whole time."
+      ],
+      "start": 44.0,
+      "end": 52.0
+    },
+    {
+      "slug": "shot-09",
+      "title": "Mara / HOME IMPROVEMENT: DISHES DLC",
+      "narration": [
+        "Great. Now somebody improve this home by doing the damn dishes."
+      ],
+      "start": 52.0,
+      "end": 58.0
+    },
+    {
+      "slug": "shot-10",
+      "title": "Cal / TO BE CONTINUED. UNFORTUNATELY.",
+      "narration": [
+        "Next week: a dishwasher. I'm thinking Bluetooth."
+      ],
+      "start": 58.0,
+      "end": 63.0
+    },
+    {
+      "slug": "closing-title",
+      "title": "Nearly Level / NEXT TIME: THE BLUETOOTH DISHWASHER",
+      "narration": [
+        "Nearly Level. Same family. Fewer right angles."
+      ],
+      "start": 63.0,
+      "end": 66.0
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "540x960",
+    "fps": 12,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+0%",
+    "voice_pitch": "+0Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": true
+  }
+}
