@@ -6,6 +6,7 @@ and running this is the whole release step.
 
     py -3.12 scripts/upload_books.py --local     # into wrangler's local R2, for npm run preview
     py -3.12 scripts/upload_books.py --remote    # into the real bucket (asks wrangler to log in)
+    py -3.12 scripts/upload_books.py --remote --bucket zeanahlab-books-staging   # the staging site's
 """
 
 from __future__ import annotations
@@ -56,6 +57,7 @@ def main() -> int:
     where = ap.add_mutually_exclusive_group(required=True)
     where.add_argument("--local", action="store_true")
     where.add_argument("--remote", action="store_true")
+    ap.add_argument("--bucket", default=BUCKET, choices=[BUCKET, "zeanahlab-books-staging"])
     a = ap.parse_args()
     npx = shutil.which("npx") or shutil.which("npx.cmd")
     if not npx:
@@ -64,7 +66,7 @@ def main() -> int:
     for key, pdf in books():
         mb = pdf.stat().st_size / 1e6
         print(f"{key}  <-  {pdf.relative_to(ROOT)}  ({mb:.1f} MB)")
-        cmd = [npx, "wrangler", "r2", "object", "put", f"{BUCKET}/{key}", "--file", str(pdf),
+        cmd = [npx, "wrangler", "r2", "object", "put", f"{a.bucket}/{key}", "--file", str(pdf),
                "--content-type", "application/pdf", "--local" if a.local else "--remote"]
         r = subprocess.run(cmd, cwd=SITE)
         if r.returncode:

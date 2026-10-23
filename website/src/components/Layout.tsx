@@ -16,6 +16,11 @@ const NAV = [
   ["/media", "Media"],
 ] as const;
 
+// The staging site runs the very build that "Promote to live" publishes, so it can only tell
+// itself apart by its address: anything but the live domains (and this computer) says so.
+const LIVE_HOSTS = ["www.zeanahlab.com", "zeanahlab.com", "localhost", "127.0.0.1"];
+const STAGING = typeof window !== "undefined" && !LIVE_HOSTS.includes(window.location.hostname);
+
 export default function Layout() {
   const { me, setMe, notify } = useSession();
   const [open, setOpen] = useState(false);
@@ -32,6 +37,11 @@ export default function Layout() {
   useEffect(() => { trackView(loc.pathname); }, [loc.pathname]);
   return (
     <div className="min-h-screen flex flex-col">
+      {STAGING && (
+        <div role="status" className="text-center text-xs font-semibold py-1.5" style={{ background: "#b45309", color: "#fff" }}>
+          STAGING -- a copy for checking changes. Orders here are test orders and no email is sent.
+        </div>
+      )}
       <header className="sticky top-0 z-40 border-b" style={{ borderColor: "var(--line)", background: "color-mix(in srgb, var(--bg) 88%, transparent)", backdropFilter: "blur(8px)" }}>
         <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2 font-semibold" onClick={() => setOpen(false)}>

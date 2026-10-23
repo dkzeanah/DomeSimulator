@@ -32,3 +32,34 @@ bucket_name = "zeanahlab-books"
 # Cloudflare's own GPUs; every call is logged in ai_runs. functions/_lib/ai.ts.
 [ai]
 binding = "AI"
+
+# ---------------------------------------------------------------- the staging site
+# Every deployment that is not the production branch (main) is a Pages PREVIEW and uses these
+# bindings instead of the ones above: its own database and its own file store, so testing never
+# touches a real customer. In practice that is the `staging` branch, served at
+# staging.zeanahlab.pages.dev and https://dev.zeanahlab.com behind Cloudflare Access (owner only).
+#   * The data is a COPY of live, made on demand: py -3.12 scripts/staging.py refresh
+#   * Its secrets are the Preview ones in Pages: SESSION_SECRET and ADMIN_EMAILS only. No Stripe
+#     keys (checkout runs in test mode), no MAILER_TOKEN (the mail program never collects from
+#     here, so nothing queued on staging is ever sent), no OPS_TOKEN (no clock).
+#   * What passes on staging goes live with the "Promote to live" button
+#     (.github/workflows/website.yml), which publishes the same build to main.
+# Pages does not inherit bindings into an environment, so each one is restated here.
+[env.preview.vars]
+PUBLIC_URL = "https://dev.zeanahlab.com"
+OWNER_USERNAME = "shortcircuiter"
+TEST_CHECKOUT = "1"
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "zeanahlab-staging"
+# filled in by `py -3.12 scripts/staging.py setup` when it creates the database
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+[[env.preview.r2_buckets]]
+binding = "BOOKS"
+bucket_name = "zeanahlab-books-staging"
+
+[env.preview.ai]
+binding = "AI"

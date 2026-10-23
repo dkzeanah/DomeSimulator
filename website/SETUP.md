@@ -195,9 +195,9 @@ In GitHub: **Settings → Secrets and variables → Actions**, add
   `gh secret set CLOUDFLARE_API_TOKEN --repo dkzeanah/DomeSimulator`.
 - `CLOUDFLARE_ACCOUNT_ID` -- shown on the right of the Cloudflare dashboard home.
 
-From then on, every change to `website/` merged into `main` is built, the database updated
-and the site published (`.github/workflows/website.yml`). A pull request only builds, so a
-broken page never goes live.
+From then on, a change to `website/` pushed to the `staging` branch is built and published
+to the staging site, and nothing reaches zeanahlab.com until you press **Promote to live**
+(see "Staging, then live" below). A pull request or a push to `main` only builds.
 
 ## 10. The clock, automations, members and agents (Workers Paid)
 
@@ -313,3 +313,52 @@ every PDF in `website/private/cutlists/` (never committed). A new request also f
 
 To try a cut list yourself without the website: `py -3.12 -m wedge_builder --diameter-ft 19.4
 --log-in 10 --log-ft 16`. Before changing the solver, run `py -3.12 -m wedge_builder.selftest`.
+
+## Staging, then live
+
+There are two copies of the site. **Staging** (https://dev.zeanahlab.com, only you can open
+it) is where a change is looked at. **Live** (www.zeanahlab.com) changes only when you say so.
+
+| | Staging | Live |
+|---|---|---|
+| Published by | a push to the `staging` branch | the **Promote to live** button |
+| Database | `zeanahlab-staging`: a copy of live, refreshed when you ask | `zeanahlab` |
+| Book files | `zeanahlab-books-staging` | `zeanahlab-books` |
+| Payments | test mode, no card is charged | Stripe |
+| Email | never sent (no mail token) | sent |
+| A banner saying "STAGING" | yes | no |
+
+**The routine:**
+
+1. Push your change to `staging`. Two minutes later it is on the staging site.
+2. To look at it with today's real data first, refresh staging's copy:
+   `py -3.12 scripts/staging.py refresh`. This also rehearses any new database change on
+   real data, exactly as going live will apply it.
+3. Happy with it? In GitHub: **Actions -> website -> Run workflow -> Run workflow** (leave the
+   box blank). It publishes *the same build you looked at* to zeanahlab.com, applies its
+   database changes to the live database, and moves `main` to it.
+4. Changed your mind after? Cloudflare -> Workers & Pages -> zeanahlab -> **Deployments** ->
+   the previous production deployment -> **Rollback**. That is instant, but it puts back the
+   pages and the code, **not the database**. So database changes only ever ADD (a table, a
+   column, a row) and never rename or remove, and the previous site keeps working.
+
+To promote an older staging build, type its run number (from the Actions list) in the box.
+
+**Once, to set staging up:**
+
+1. `py -3.12 scripts/staging.py setup` makes the staging database and file store, writes the
+   database's id into `wrangler.toml` (commit that), copies the books, and prints the two
+   **Preview** secrets to paste into Cloudflare (Settings -> Variables and Secrets ->
+   Preview): `SESSION_SECRET` and `ADMIN_EMAILS`. Nothing else goes under Preview.
+2. `py -3.12 scripts/staging.py refresh` gives it its first copy of live data.
+3. Make the `staging` branch and push it. The first push publishes the staging site.
+4. Custom domain: Workers & Pages -> zeanahlab -> Custom domains -> **Set up a domain** ->
+   `dev.zeanahlab.com`. Then in DNS, change that record to a CNAME pointing at
+   `staging.zeanahlab.pages.dev`, so it shows staging and not live.
+5. Lock it: Zero Trust -> Access -> Applications -> **Add** a self-hosted app for
+   `dev.zeanahlab.com` that allows only your email. Also under zeanahlab -> Settings ->
+   General, switch on **Access policy** for preview deployments, so the `*.pages.dev`
+   addresses are locked too.
+
+`py -3.12 scripts/staging.py refresh --local` rehearses the same refresh between this
+computer's two local databases.

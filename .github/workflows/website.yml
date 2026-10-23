@@ -1,9 +1,20 @@
-# zeanahlab.com: on a pull request, build (typecheck + bundle). On a push to main that
-# touches website/, build, apply D1 migrations, and deploy to Cloudflare Pages.
-# Two repository secrets, set once (website/SETUP.md step 6):
-#   CLOUDFLARE_API_TOKEN   -- a token with Pages:Edit and D1:Edit on this account
+# zeanahlab.com: build everywhere, publish to staging by push, go live only by a button.
+#
+#   * A pull request, or a push to main: build (typecheck + bundle). Nothing is published.
+#   * A push to `staging` that touches website/: build, apply the D1 migrations to the STAGING
+#     database, and publish to the staging site (staging.zeanahlab.pages.dev, dev.zeanahlab.com).
+#     The build is kept for 90 days.
+#   * "Promote to live" (Actions -> website -> Run workflow): takes the build of the newest
+#     successful staging run (or the run id you type), checks out that run's commit, applies its
+#     migrations to the LIVE database, publishes that same build to production, and moves main to
+#     that commit when main can fast-forward. Undo: Cloudflare -> Pages -> zeanahlab ->
+#     Deployments -> an earlier production deploy -> Rollback (pages and code only, not the data).
+#
+# Two repository secrets, set once (website/SETUP.md step 9):
+#   CLOUDFLARE_API_TOKEN   -- Pages:Edit, D1:Edit, Workers R2 Storage:Edit on this account
 #   CLOUDFLARE_ACCOUNT_ID
-# The site's own secrets (SESSION_SECRET, Stripe, Resend...) live in Cloudflare, not here.
+# The site's own secrets (SESSION_SECRET, Stripe, the mail token...) live in Cloudflare, not here;
+# staging has its own Preview set (website/wrangler.toml, [env.preview]).
 
 name: website
 
@@ -11,19 +22,27 @@ on:
   pull_request:
     paths: ["website/**", ".github/workflows/website.yml"]
   push:
-    branches: [main]
+    branches: [main, staging]
     paths: ["website/**", ".github/workflows/website.yml"]
+  workflow_dispatch:
+    inputs:
+      staging_run:
+        description: "Staging run id to promote (blank = the newest successful staging run)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
 
 concurrency:
-  # a pull request's build and the push to main never share a queue, so one cannot cancel the other
+  # a pull request's build and a push never share a queue, so one cannot cancel the other;
+  # a promotion is never cancelled by anything
   group: website-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
 jobs:
   build:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -43,12 +62,13 @@ jobs:
         with:
           name: dist
           path: website/dist
+          retention-days: 90
 
-  deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
     needs: build
     runs-on: ubuntu-latest
-    environment: production
+    environment: staging
     defaults:
       run:
         working-directory: website
@@ -67,7 +87,68 @@ jobs:
         with:
           name: dist
           path: website/dist
-      - name: Apply database migrations
+      - name: Apply database migrations (staging database)
+        run: npx wrangler d1 migrations apply zeanahlab-staging --remote --env preview
+      - name: Publish to the staging site
+        run: npx wrangler pages deploy dist --project-name zeanahlab --branch staging --commit-hash ${{ github.sha }}
+
+  promote:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write   # to move main to the promoted commit
+      actions: read     # to find the staging run and download its build
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Find the staging build
+        id: run
+        env:
+          WANTED: ${{ inputs.staging_run }}
+        run: |
+          if [ -n "$WANTED" ]; then
+            gh run view "$WANTED" --repo "$GITHUB_REPOSITORY" --json databaseId,headSha,headBranch,conclusion,event > run.json
+          else
+            gh run list --repo "$GITHUB_REPOSITORY" --workflow website.yml --branch staging --event push --status success --limit 1 \
+              --json databaseId,headSha,headBranch,conclusion,event --jq '.[0]' > run.json
+          fi
+          cat run.json
+          id=$(jq -r '.databaseId // empty' run.json); sha=$(jq -r '.headSha // empty' run.json)
+          branch=$(jq -r '.headBranch' run.json); ok=$(jq -r '.conclusion' run.json); ev=$(jq -r '.event' run.json)
+          if [ -z "$id" ] || [ "$branch" != "staging" ] || [ "$ok" != "success" ] || [ "$ev" != "push" ]; then
+            echo "::error::No successful staging push run to promote."; exit 1
+          fi
+          echo "id=$id" >> "$GITHUB_OUTPUT"; echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Promoting staging run $id (commit $sha)" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.run.outputs.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci
+        working-directory: website
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: website/dist
+          run-id: ${{ steps.run.outputs.id }}
+          github-token: ${{ github.token }}
+      - name: Apply database migrations (LIVE database)
+        working-directory: website
         run: npx wrangler d1 migrations apply zeanahlab --remote
-      - name: Deploy to Cloudflare Pages
-        run: npx wrangler pages deploy dist --project-name zeanahlab --branch main
+      - name: Publish the staged build to production
+        working-directory: website
+        run: npx wrangler pages deploy dist --project-name zeanahlab --branch main --commit-hash ${{ steps.run.outputs.sha }}
+      - name: Move main to the promoted commit
+        run: |
+          if git push origin "${{ steps.run.outputs.sha }}:refs/heads/main"; then
+            echo "main is now ${{ steps.run.outputs.sha }}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::The site is live, but main could not fast-forward to ${{ steps.run.outputs.sha }}; merge staging into main by hand."
+          fi
