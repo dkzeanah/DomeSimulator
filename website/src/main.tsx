@@ -17,6 +17,9 @@ const Account = lazy(() => import("./pages/Account"));
 const Recyclers = lazy(() => import("./pages/Recyclers"));
 const Thanks = lazy(() => import("./pages/Thanks"));
 const CutList = lazy(() => import("./pages/CutList"));
+const WedgeCalculator = lazy(() => import("./pages/WedgeCalculator"));
+const EpisodeList = lazy(() => import("./pages/Episodes").then((m) => ({ default: m.EpisodeList })));
+const EpisodePage = lazy(() => import("./pages/Episodes").then((m) => ({ default: m.EpisodePage })));
 const Admin = lazy(() => import("./pages/Admin"));
 const Confirm = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Confirm })));
 const Unsubscribe = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Unsubscribe })));
@@ -68,6 +71,9 @@ createRoot(document.getElementById("root")!).render(
               <Route path="kids" element={<Kids />} />
               <Route path="kids/:story" element={<Kids />} />
               <Route path="media" element={<MediaPage />} />
+              <Route path="episodes" element={<EpisodeList />} />
+              <Route path="calculator" element={<WedgeCalculator />} />
+              <Route path="episodes/:slug" element={<EpisodePage />} />
               <Route path="portal" element={<Portal />} />
               <Route path="portal/:space" element={<Portal />} />
               <Route path="portal/house/:owner" element={<Portal />} />

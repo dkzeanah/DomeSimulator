@@ -1,5 +1,5 @@
-"""py -3.12 -m sketch_claude {serve|plans|showcase|episode|storytime|selftest} -- see the package docstring
-(storytime: sketch_claude/storytime_render.py)."""
+"""py -3.12 -m sketch_claude {serve|plans|showcase|episode|storytime|lesson|selftest} -- see the package docstring
+(storytime: sketch_claude/storytime_render.py; lesson: sketch_claude/lesson_web.py, e.g. `lesson 2v --stills`)."""
 
 from __future__ import annotations
 
@@ -70,11 +70,11 @@ def selftest() -> None:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="sketch_claude", description="Dome Sketch (sketch-claude): model a panel dome, draw its plans.")
-    ap.add_argument("command", nargs="?", default="serve", choices=("serve", "plans", "showcase", "episode", "storytime", "selftest"))
+    ap.add_argument("command", nargs="?", default="serve", choices=("serve", "plans", "showcase", "episode", "storytime", "lesson", "selftest"))
     ap.add_argument("--draft", action="store_true", help="episode: a rehearsal render, kept in tmp/ instead of the library")
     ap.add_argument("--episode", default="s01e01", help="episode: which one (sketch_claude/episodes/<id>.json)")
     ap.add_argument("--spec", default="{}", help="the dome as JSON (see model.Spec); defaults to the reference dome")
-    ap.add_argument("story", nargs="?", default="my-own-home", help="storytime: which bedtime story (its slug)")
+    ap.add_argument("story", nargs="?", default="my-own-home", help="storytime: which bedtime story (its slug); lesson: the lesson key (e.g. 2v)")
     ap.add_argument("--site", help="storytime: read the story the Story Studio published on this site, not the baked copy")
     ap.add_argument("--pages", help="storytime: a run of pages, e.g. 0-3 (a rehearsal)")
     ap.add_argument("--stills", action="store_true", help="storytime: one still per page instead of the film")
@@ -95,6 +95,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"drawing the plan set for {spec.title}", flush=True)
         out = build_plans(spec)
         print(f"OUTPUT {out.relative_to(ROOT).as_posix()}", flush=True)
+        return 0
+    if a.command == "lesson":
+        from sketch_claude.lesson_web import headless
+        key = a.story if a.story != "my-own-home" else "2v"
+        for r in headless(key, "stills" if a.stills else "render", draft=a.draft):
+            print(f"OUTPUT {json.dumps(r)}", flush=True)
         return 0
     if a.command == "episode":
         from sketch_claude.episode_server import render_headless

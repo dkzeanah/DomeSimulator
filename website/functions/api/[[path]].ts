@@ -13,6 +13,7 @@ import "../_lib/media";          // the Media page: the latest YouTube videos, c
 import "../_lib/game_routes";    // the Portal world: saves and public chat
 import "../_lib/stories";        // bedtime stories (/kids) and the Story Studio
 import "../_lib/cutlists";       // the Wedge Builder: cut lists queued here, rendered on the owner's machine
+import "../_lib/episodes";       // /episodes: the films, streamed from R2 with ranges
 
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env } = context;

@@ -208,6 +208,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._file(STATIC / "director.html")
             if u.path in ("/season", "/season/"):
                 return self._file(STATIC / "season.html")
+            if u.path in ("/lesson", "/lesson/"):
+                return self._file(STATIC / "lesson.html")
+            if u.path.startswith("/api/lesson/"):
+                from . import lesson_web as L
+                return self._json(L.public_spec(u.path.rsplit("/", 1)[1]))
             if u.path.startswith("/api/season/"):
                 from . import writers as WR
                 parts = u.path.split("/")[3:]
@@ -296,6 +301,13 @@ class Handler(BaseHTTPRequestHandler):
                     return self._json(E.render_finish(meta["id"], raw[4 + k:], meta))
                 if u.path == "/api/render/abort":
                     return self._json(E.render_abort(q.get("id", "")))
+            if u.path in ("/api/lesson-finish", "/api/lesson-still"):
+                from . import lesson_web as L
+                q = {k: v[0] for k, v in parse_qs(u.query).items()}
+                raw = self.rfile.read(int(self.headers.get("Content-Length") or 0))
+                if u.path == "/api/lesson-still":
+                    return self._json(L.save_still(q["lesson"], q.get("orient", "landscape"), int(q["n"]), raw))
+                return self._json(L.finish(q["id"], json.loads(raw or b"{}")))
             if u.path == "/api/recording":
                 from . import episode_server as E
                 n = int(self.headers.get("Content-Length") or 0)

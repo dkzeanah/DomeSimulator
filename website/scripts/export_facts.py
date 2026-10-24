@@ -41,6 +41,7 @@ LESSONS_OUT = SITE / "public" / "portal" / "masterclass.json"
 ASSEMBLY_OUT = SITE / "public" / "portal" / "assembly" / "lines.json"
 FOUNDATION_OUT = SITE / "src" / "generated" / "foundation.json"
 WEDGE_BUILDER_OUT = SITE / "src" / "generated" / "wedge-builder.json"
+MILLING_OUT = SITE / "src" / "generated" / "wedge-milling.json"
 
 
 def dome_mesh() -> dict:
@@ -159,6 +160,9 @@ def main() -> int:
     found, found_files = portal_spaces_export.foundation()
     blobs.update(found_files)
     outputs[FOUNDATION_OUT] = json.dumps(found, separators=(",", ":"), ensure_ascii=False) + "\n"
+    outputs[WEDGE_BUILDER_OUT] = json.dumps(wedge_builder(), indent=2, ensure_ascii=False) + "\n"
+    from two_v_demo import wedge_geometry
+    outputs[MILLING_OUT] = json.dumps(wedge_geometry.milling_table(), separators=(",", ":")) + "\n"
     if a.check:
         stale = [p for p, text in outputs.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
         stale += [p for p, blob in blobs.items() if not p.exists() or p.read_bytes() != blob]

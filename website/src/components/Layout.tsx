@@ -10,9 +10,11 @@ const NAV = [
   ["/start", "Free Pages"],
   ["/book", "The Book"],
   ["/build", "The Build"],
+  ["/calculator", "Calculator"],
   ["/network", "Pads"],
   ["/back", "Back It"],
   ["/kit", "Kit"],
+  ["/episodes", "Episodes"],
   ["/media", "Media"],
 ] as const;
 

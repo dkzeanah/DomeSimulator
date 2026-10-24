@@ -5,6 +5,7 @@
 export interface Env {
   DB: D1Database;
   BOOKS?: R2Bucket;
+  MEDIA?: R2Bucket; // the films on /episodes (zeanahlab-media), shared by the live site and staging
   PUBLIC_URL?: string;
   SESSION_SECRET?: string;
   ADMIN_EMAILS?: string;

@@ -1,0 +1,42 @@
+{
+  "_what": "Owner's edits to the episode list (scripts/export_episodes.py). exclude: slugs never shown. include: slugs shown even if the rules skip them. titles / series: by slug.",
+  "exclude": [],
+  "include": [],
+  "titles": {
+    "2v-masterclass": "2V Geodesic Masterclass (original cut)",
+    "hex-dome-masterclass": "Hex Dome Masterclass",
+    "zome-construction-masterclass": "Zome Construction Masterclass",
+    "assembly-line-energy-masterclass": "The Assembly Line: An Energy Masterclass",
+    "dome_housing_case": "The Dome Housing Case",
+    "dome_case_manufacturing": "Manufacturing",
+    "dome_case_bare_shell": "The Bare Shell",
+    "dome_case_more_room": "More Room",
+    "dome_case_triangles": "Triangles",
+    "dome_case_benchmark": "The Benchmark",
+    "dome_case_energy": "Energy",
+    "dome_case_resilience": "Resilience",
+    "dome_case_financing": "Financing",
+    "dome_case_utility_core": "The Utility Core",
+    "dome_case_market_fit": "Market Fit",
+    "hubless-compound-cut": "The Hubless Compound Cut",
+    "frankendome-montage": "Frankendome: The Montage",
+    "frankendome-build": "Frankendome: The Build",
+    "dome-kickstarter": "The Dome Kickstarter",
+    "every-dome-in-the-world": "Every Dome in the World",
+    "ten-dome-builds-master-20260829-135242-chatgpt": "Ten Dome Builds",
+    "eight-cuts-to-a-house": "Eight Cuts to a House",
+    "the-vance-network-mini-series": "The Vance Network (original cut)",
+    "why-build-this-way": "Why Build This Way",
+    "two-trees-all-at-once": "Two Trees, All at Once (original cut)",
+    "the-20-dollar-pine": "The $20 Pine",
+    "the-sky-web": "The Sky Web",
+    "the-cell-wall": "The Cell Wall",
+    "the-seam-does-four-jobs": "The Seam Does Four Jobs (original cut)",
+    "stem-cell-hero-cut": "A House You Can Take Apart (original cut)",
+    "stem-cell-utility-core-build": "Build One Utility Core (original cut)"
+  },
+  "series": {
+    "the-sky-web": "Films",
+    "the-cell-wall": "Films"
+  }
+}
