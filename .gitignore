@@ -121,3 +121,6 @@ website/.dev.vars
 # Dome Sketch (sketch-claude): cached character voices and rehearsal takes
 tmp/sketch-claude-voices/
 tmp/sketch-claude-drafts/
+
+# the owner's own unlocked Dome Sketch (mysketch/serve.py), kept apart from the website's copy
+mysketch/

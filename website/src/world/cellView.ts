@@ -10,7 +10,7 @@ const box = (w: number, h: number, d: number, colour: string, opacity = 1) =>
   new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: colour, transparent: opacity < 1, opacity, flatShading: true }));
 
 /** Where the air goes in each mode: a path of points in the section (x: outside -6 to room +6). */
-const PATHS: Record<string, [number, number][]> = {
+export const PATHS: Record<string, [number, number][]> = {
   INTAKE: [[-7, 1], [-1.2, 1.5], [0, 3], [0, 6], [1.2, 7.5], [7, 7]],
   EXHAUST: [[7, 7], [1.2, 7.5], [0, 6], [0, 3], [-1.2, 1.5], [-7, 1]],
   CONDENSE: [[7, 7], [1.2, 7.5], [0, 6], [0, 2.4], [0, 1.2], [-1.2, 1], [-7, 1]],
@@ -19,7 +19,7 @@ const PATHS: Record<string, [number, number][]> = {
   DRY_SUPPLY: [[2.5, 1], [2.5, 4], [7, 4.5]],
   CLOSED: [], IDLE: [],
 };
-const MODE_COLOUR: Record<string, string> = {
+export const MODE_COLOUR: Record<string, string> = {
   INTAKE: "#6fdc9b", EXHAUST: "#e8b45a", CONDENSE: "#7cc4f0", FRAME_LOOP: "#d47ac0", PURGE: "#f08a5a", DRY_SUPPLY: "#9aa4ff", CLOSED: "#888", IDLE: "#888",
 };
 

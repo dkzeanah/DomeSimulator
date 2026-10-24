@@ -8,7 +8,11 @@
   ways, their whole-dome figures and the seats are bundled.
 * **Cell Wall & Seams** is `two_v_demo.cell_wall` and `two_v_demo.seam_climate`: the layer stack,
   the router's scenarios and interlocks, the seam controller's constants, modes and the owner's
-  weathers, and the dome's seam bands. The browser re-runs the small exact parts -- the dew point,
+  weathers, the dome's seam bands, every function's own computed check (foam, glue, vacuum,
+  rain, fire, filter, heat, cool, cage, fog, flotation, living surface, the local net, the bus,
+  the extras), and the reference dome itself -- its nodes, triangles and seams, each seam's band,
+  the rim ports and belt low points, the lower triangles and every triangle's hops from the rim
+  -- so the stage draws the skin on the solver's dome. The browser re-runs the small exact parts -- the dew point,
   the controller's three questions, the wall's temperature profile, the interlocks -- and
   scripts/test_portal_spaces.mjs checks them against the Python.
 * **Dome Assembly Line** is `al_build`: each product line's dome built element by element at its
@@ -216,8 +220,69 @@ def cell_wall() -> dict:
             "skin": cw.skin(), "complexity": cw.complexity(),
             "heatSplit": {"room": cw.heat_split("room"), "osb": cw.heat_split("osb")},
             "networks": {"triangles": n.triangles, "seams": n.seams},
+            # every function's own check, with the layer it belongs to
+            "checks": [{"key": key, "title": title, "layer": layer, "figures": _plain(getattr(cw, key)())}
+                       for key, title, layer in CELL_CHECKS],
         },
+        "dome": _cell_dome(),
     }, 17)          # full precision: the browser re-runs these and is tested against the Python
+
+
+# The cell wall's checks, each with the layer it belongs to ("" for the whole wall)
+CELL_CHECKS = (
+    ("groove", "The groove in each strut", "core"), ("seam_room", "What fits in a seam", "core"),
+    ("foam", "Foam in the cavity", "core"), ("glue", "Glue: flood and bead", "core"),
+    ("vacuum", "Vacuum: the clamp", "vacuum"), ("rain", "Rain to the tank", "water"),
+    ("fire", "Fire water: the sprinkler", "water"), ("fire_evap", "Fire water: evaporating it", "water"),
+    ("air_filter", "The intake filter", "filter"), ("vent_dry", "Drying a wet cavity by vent", "air_in"),
+    ("heating", "Heating", "thermal"), ("cooling", "Cooling", "thermal"),
+    ("cage", "The Faraday cage", "cage"), ("fog", "Fog out, smoke in", "fog"),
+    ("flotation", "Flotation", "airbag"), ("living", "The living surface", "living"),
+    ("local_net", "The local net: cell to cell", "bus"), ("bus", "The CAN bus", "bus"),
+    ("extras", "And the rest", ""), ("multipliers", "What one wall does", ""),
+)
+
+
+def _plain(x):
+    """A check's figures as JSON: dicts and lists through, numpy numbers to floats."""
+    if isinstance(x, dict):
+        return {str(k): _plain(v) for k, v in x.items()}
+    if isinstance(x, (list, tuple)):
+        return [_plain(v) for v in x]
+    if isinstance(x, (bool, str)) or x is None:
+        return x
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return str(x)
+
+
+def _cell_dome() -> dict:
+    """The reference dome the cell wall is reckoned on (channel_facts.reference_model): inches, z up."""
+    from two_v_demo import cell_wall as cw
+    from two_v_demo import channel_facts as cf
+    from two_v_demo import seam_climate as scl
+    model = cf.reference_model()
+    topo = model.topology
+    band_of = {}
+    for key, seams in scl.classify(model).items():
+        for q in seams:
+            band_of[q.seam_id] = key
+    r = topo.sphere_radius_in
+    levels = sorted({round(float(v[2]) / r, 3) for v in topo.vertices})
+    level = lambda v: round(float(v[2]) / r, 3)
+    hops = cw.local_net()["hops"]
+    return {
+        "radiusIn": float(r),
+        "vertices": [[float(c) for c in v] for v in topo.vertices],
+        "faces": [{"v": [int(i) for i in f.vertices], "type": f.face_type, "hops": int(hops.get(f.index, hops.get(str(f.index), -1)))}
+                  for f in topo.faces],
+        "seams": [{"id": q.seam_id, "v": [int(q.edge_key[0]), int(q.edge_key[1])], "type": q.edge_type, "band": band_of.get(q.seam_id, ""),
+                   "faces": [int(q.face_a), int(q.face_b)]} for q in model.seams],
+        "rimPorts": [i for i, v in enumerate(topo.vertices) if level(v) == levels[0]],
+        "lowPoints": [i for i, v in enumerate(topo.vertices) if level(v) == levels[1]],
+        "lowerFaces": [int(i) for i in cw.lower_faces()],
+    }
 
 
 # ----------------------------------------------------------------------
