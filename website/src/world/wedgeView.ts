@@ -1,6 +1,8 @@
 // The raw-wedge simulator's meshes on the 3D Wedge Method space's stage: the solved dome, member
 // by member (with its seam keys and the head stock the jig flush-cuts away), or one panel's jig
-// at one step of its walk-through. Inches, z up, in the simulator; feet, y up, here.
+// at one step of its walk-through. Inches, z up, in the simulator; feet, y up, here. For an
+// alternating build the members can be tinted by which way their panel points, the dome raised
+// band by band, and the matched seams (in/in or out/out, where the faces do not cancel) lit.
 
 import * as THREE from "three";
 import type { JigHead, MeshBuffers, MeshHead } from "./wedge";
@@ -37,7 +39,15 @@ function bounds(buf: MeshBuffers, scale: number, parts: PartHead[]) {
   return { lo, hi };
 }
 
-export interface DomeView { explode: number; keys: boolean; offcuts: boolean; family: "A" | "B" | null; picked: string | null }
+export interface DomeView {
+  explode: number; keys: boolean; offcuts: boolean; family: "A" | "B" | null; picked: string | null;
+  /** Each panel's band (1 the ground ring), and the highest band to draw: the dome going up. */
+  bandOf?: number[]; maxBand?: number;
+  /** Tint each member by which way its panel points. */
+  pointsOf?: ("in" | "out")[];
+  /** Seam keys to light up (the matched seams, or one picked seam). */
+  hot?: Set<string>;
+}
 
 export function drawDome(head: MeshHead, buf: MeshBuffers, view: DomeView): { group: THREE.Group; scale: number } {
   const g = new THREE.Group();
@@ -49,14 +59,16 @@ export function drawDome(head: MeshHead, buf: MeshBuffers, view: DomeView): { gr
   const origin = new THREE.Vector3((lo.x + hi.x) / 2, (lo.y + hi.y) / 2, lo.z);
   const normals = head.faceNormals;
   const mats = new Map<string, THREE.Material>();
-  const mat = (kind: "solid" | "dim" | "glow" | "ghost") => {
+  const EMISSIVE: Record<string, string> = { glow: "#ffb347", in: "#4a2a00", out: "#002a4a", hot: "#ff2a1a" };
+  const mat = (kind: "solid" | "dim" | "glow" | "ghost" | "in" | "out" | "hot") => {
     if (!mats.has(kind)) mats.set(kind, new THREE.MeshLambertMaterial({
       vertexColors: true, flatShading: true, side: THREE.DoubleSide,
       transparent: kind === "dim" || kind === "ghost", opacity: kind === "dim" ? 0.18 : kind === "ghost" ? 0.55 : 1, depthWrite: kind !== "dim" && kind !== "ghost",
-      emissive: kind === "glow" ? new THREE.Color("#ffb347") : new THREE.Color(0), emissiveIntensity: kind === "glow" ? 0.6 : 0,
+      emissive: new THREE.Color(EMISSIVE[kind] ?? "#000000"), emissiveIntensity: EMISSIVE[kind] ? 0.6 : 0,
     }));
     return mats.get(kind)!;
   };
+  const shown = (faces: number[]) => !view.bandOf || view.maxBand === undefined || faces.every((f) => (view.bandOf![f] ?? 0) <= view.maxBand!);
   const shift = (faces: number[]) => {
     const n = new THREE.Vector3();
     for (const f of faces) n.add(new THREE.Vector3(normals[f][0], normals[f][2], -normals[f][1]));
@@ -66,14 +78,16 @@ export function drawDome(head: MeshHead, buf: MeshBuffers, view: DomeView): { gr
     if (p.kind === "key" && !view.keys) continue;
     if (p.kind === "offcut" && !view.offcuts) continue;
     if (!p.v[1]) continue;
+    const faces = "faces" in p && Array.isArray(p.faces) ? (p.faces as number[]) : [(p as { face: number }).face];
+    if (!shown(faces)) continue;
     const geo = partGeometry(buf, head.scale, head.palette, p, s, origin);
     let m: THREE.Material;
     if (p.kind === "member") {
       const fam = (p as { type?: string }).type;
-      m = p.id === view.picked ? mat("glow") : view.family && fam !== view.family ? mat("dim") : mat("solid");
-    } else m = p.kind === "offcut" ? mat("ghost") : view.family ? mat("dim") : mat("solid");
+      m = p.id === view.picked ? mat("glow") : view.family && fam !== view.family ? mat("dim")
+        : view.pointsOf ? mat(view.pointsOf[faces[0]] === "out" ? "out" : "in") : mat("solid");
+    } else m = p.kind === "offcut" ? mat("ghost") : p.kind === "key" && view.hot?.has(p.id as string) ? mat("hot") : view.family || view.hot?.size ? mat("dim") : mat("solid");
     const mesh = new THREE.Mesh(geo, m);
-    const faces = "faces" in p && Array.isArray(p.faces) ? (p.faces as number[]) : [(p as { face: number }).face];
     mesh.position.copy(shift(faces));
     mesh.castShadow = p.kind === "member";
     const q = p as Record<string, unknown>;
