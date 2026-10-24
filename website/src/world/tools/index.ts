@@ -6,7 +6,9 @@
 import { lazy, type ComponentType, type LazyExoticComponent, type RefObject } from "react";
 import type { World } from "../engine";
 
-export interface ToolProps { world: RefObject<World | null>; colour: string }
+/** studio: the portal is fullscreen -- the tool shows its whole studio (every setting, every
+ *  editor); otherwise its standard operation: presets and the few controls that matter most. */
+export interface ToolProps { world: RefObject<World | null>; colour: string; studio?: boolean }
 
 export const TOOLS: Record<string, LazyExoticComponent<ComponentType<ToolProps>>> = {
   "dome-creator": lazy(() => import("../CreatorPanel")),

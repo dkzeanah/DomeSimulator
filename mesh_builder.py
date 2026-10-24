@@ -434,7 +434,9 @@ def build_dome_mesh(model: DomeModel, events: list | None = None,
     mark("Floor layout & section markings", 1.5, (ox, oy, fh))
 
     # ---- 3. frame: struts from the base ring upward ----
-    profile = shape.profile(width, flip=getattr(cfg, "wedge_flip", False))
+    # a wedge's bark faces in, out, or alternates piece by piece (DomeConfig.wedge_flips)
+    profiles = (shape.profile(width, flip=False), shape.profile(width, flip=True))
+    profile = profiles[1 if getattr(cfg, "wedge_flip", False) else 0]
     smooth = shape.kind == "circle"
     hubless = cfg.frame_style == "Hubless Doubled"
     strut_hours = 0.08 if hubless else 0.12
@@ -479,8 +481,17 @@ def build_dome_mesh(model: DomeModel, events: list | None = None,
     else:
         ordered_struts = sorted(
             model.struts, key=lambda s: float((s[0][2] + s[1][2]) * 0.5))
+    # which way each piece's bark faces: per panel on a hubless frame (its three members
+    # together), per strut otherwise; read before the struts are put in raising order
+    orig = {id(st): k for k, st in enumerate(model.struts)}
+    flips = (cfg.wedge_flips(len(model.struts) // 3 if hubless else len(model.struts))
+             if hasattr(cfg, "wedge_flips") else [])
     n_struts = len(ordered_struts)
-    for i, (p0, p1, _length) in enumerate(ordered_struts):
+    for i, strut in enumerate(ordered_struts):
+        p0, p1, _length = strut
+        if shape.kind == "wedge" and flips:
+            k = orig.get(id(strut), i)
+            profile = profiles[1 if flips[k // 3 if hubless else k] else 0]
         mid = (p0 + p1) * 0.5
         radial = normalize(mid - center)
         axis_dir = normalize(p1 - p0)

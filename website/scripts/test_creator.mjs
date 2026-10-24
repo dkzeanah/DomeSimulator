@@ -1,4 +1,4 @@
-// The Portal's Dome Creator against the desktop Dome Creator: 160 designs, each built by
+// The Portal's Dome Creator against the desktop Dome Creator: 240 designs, each built by
 // dome_model.DomeModel and by src/world/creator.ts, every figure compared.
 //
 //   npm run test:creator          (asks the Creator for fresh cases, then compares)
@@ -29,7 +29,12 @@ try {
     ["frame_cost", "frameCost"], ["hub_weight", "hubWeight"], ["hub_cost", "hubCost"], ["panel_weight", "panelWeight"],
     ["panel_cost", "panelCost"], ["foundation_area", "foundationArea"], ["foundation_weight", "foundationWeight"],
     ["foundation_cost", "foundationCost"], ["structure_weight", "structureWeight"], ["total_cost", "totalCost"],
-    ["solar_watts", "solarWatts"], ["bolt_count", "boltCount"], ["trees_required", "treesRequired"]];
+    ["solar_watts", "solarWatts"], ["bolt_count", "boltCount"], ["trees_required", "treesRequired"],
+    ["layer_weight", "layerWeight"], ["layer_cost", "layerCost"], ["wall_area", "wallArea"], ["wall_weight", "wallWeight"],
+    ["wall_cost", "wallCost"], ["wire_len", "wireLen"], ["wire_cost", "wireCost"], ["pex_len", "pexLen"], ["drain_len", "drainLen"],
+    ["plumbing_cost", "plumbingCost"], ["prop_count", "propCount"], ["prop_weight", "propWeight"], ["prop_cost", "propCost"],
+    ["prop_watts", "propWatts"], ["trunk_stock_count", "trunkStockCount"], ["assigned_sections", "assignedSections"],
+    ["hardware_screws", "hardwareScrews"], ["wedge_splits", "wedgeSplits"], ["wedge_log_diameter", "wedgeLogDiameter"]];
   let checks = 0, worst = 0;
   for (const [i, c] of cases.entries()) {
     const d = design(c.config);
@@ -41,9 +46,14 @@ try {
       checks++;
     }
     assert.deepEqual(d.strutClasses.map((s) => [s.name, s.length, s.count]), c.strutClasses, `case ${i} strut classes`);
-    checks++;
-    // the fit-out the Portal leaves out really is zero for these designs
-    for (const k of ["wall_cost", "wire_cost", "plumbing_cost", "prop_cost"]) assert.equal(c.answers[k], 0, `case ${i} ${k}`);
+    assert.equal(d.walls.length, c.answers.wall_count, `case ${i} wall count`);
+    assert.equal(d.wedgePanelRows.length, c.wedgePanels.length, `case ${i} wedge panels`);
+    for (const [j, [name, ft, logFt]] of c.wedgePanels.entries()) {
+      const row = d.wedgePanelRows[j];
+      assert.equal(row.name, name, `case ${i} wedge panel ${j}`);
+      for (const [want, got] of [[ft, row.wedgeFt], [logFt, row.logFt]]) assert.ok(Math.abs(got - want) <= Math.max(1e-6, want * 1e-6), `case ${i} ${name}: ${want} vs ${got}`);
+    }
+    checks += 3;
   }
   console.log(`PASS ${checks} checks over ${cases.length} designs; largest relative difference ${worst.toExponential(2)}`);
 } finally {

@@ -200,7 +200,7 @@ HUB_STYLES = ["Node Puck", "Metal Brackets"]
 
 BOLT_COST = 1.6            # per through-bolt in hubless mode
 BOLT_WEIGHT = 0.09
-WEDGES_PER_TREE = 4        # split a log in half, then quarters
+WEDGES_PER_TREE = 4        # the quarter wedge: a log split in half, then quarters (each wedge shape has its own splits)
 
 
 @dataclass
@@ -211,7 +211,8 @@ class DomeConfig:
     strut_width: float = 0.06     # m
     frame_style: str = "Hub & Strut"
     hub_style: str = "Node Puck"
-    wedge_flip: bool = False      # quarter wedge: curve outward instead
+    wedge_flip: bool = False      # a wedge's curve outward instead (kept for old designs: wedge_orientation says it now)
+    wedge_orientation: str = "Inside"     # materials.WEDGE_ORIENTATIONS: Inside, Outside or Alternating
     frame_material: int = 4       # index into FRAME_MATERIALS (timber)
     frame_color: int = 0          # index into FRAME_COLORS (material color)
     trunk_stock_length: float = 0.0       # m; 0 = not tracked
@@ -253,6 +254,7 @@ class DomeConfig:
             "frame_style": self.frame_style,
             "hub_style": self.hub_style,
             "wedge_flip": self.wedge_flip,
+            "wedge_orientation": self.wedge_orientation,
         }
 
     @staticmethod
@@ -326,7 +328,18 @@ class DomeConfig:
         if data.get("hub_style") in HUB_STYLES:
             cfg.hub_style = data["hub_style"]
         cfg.wedge_flip = bool(data.get("wedge_flip", False))
+        from materials import WEDGE_ORIENTATIONS
+        orient = data.get("wedge_orientation")
+        cfg.wedge_orientation = orient if orient in WEDGE_ORIENTATIONS else ("Outside" if cfg.wedge_flip else "Inside")
         return cfg
+
+    def wedge_flips(self, count: int) -> list[bool]:
+        """Which of `count` frame pieces (panels on a hubless frame, struts otherwise) curve
+        outward: none, all, or every other one -- the alternating build."""
+        orient = self.wedge_orientation if self.wedge_orientation != "Inside" or not self.wedge_flip else "Outside"
+        if orient == "Alternating":
+            return [i % 2 == 1 for i in range(count)]
+        return [orient == "Outside"] * count
 
 
 @dataclass
@@ -606,10 +619,12 @@ class DomeModel:
         hub_weight += bolt_weight
         hub_cost += bolt_cost
 
-        # Quarter wedges are harvested four to a log.
+        # Wedges are harvested `splits` to a log: four quarters, eight eighths, sixteen sixteenths.
         trees_required = 0
+        wedge_log_diameter = 0.0
         if shape.kind == "wedge":
-            trees_required = math.ceil(len(self.struts) / WEDGES_PER_TREE)
+            trees_required = math.ceil(len(self.struts) / shape.splits)
+            wedge_log_diameter = 2.0 * shape.wedge_radius(cfg.strut_width)
         trunk_stock_count = 0
         trunk_longest = max(groups.keys(), default=0.0)
         trunk_too_short = False
@@ -635,6 +650,17 @@ class DomeModel:
             panel_weight += p.area * t.area_weight
             panel_cost += p.area * t.cost_per_m2
             solar_watts += p.area * t.watts_per_m2
+
+        # Wedge-cut panels: the stock each takes (materials.wedge_panel), per type.
+        import materials as _mats
+        wedge_panel_rows = []
+        for name, g in sorted(panel_groups.items()):
+            if name.startswith("Wedge Cut 1/"):
+                wp = _mats.wedge_panel(int(name.rsplit("/", 1)[1]))
+                wedge_panel_rows.append({"name": name, "splits": wp.splits, "area": g["area"],
+                                         "wedge_ft": g["area"] * wp.wedge_ft_per_m2,
+                                         "log_ft": g["area"] * wp.log_ft_per_m2,
+                                         "recovery": wp.recovery, "log_in": wp.log_in, "kerf_in": wp.kerf_in})
 
         covered_area = sum(p.area for p in self.layer_covered_panels())
         layer_rows = []
@@ -761,6 +787,10 @@ class DomeModel:
             "hub_style": cfg.hub_style,
             "bolt_count": bolt_count,
             "trees_required": trees_required,
+            "wedge_splits": shape.splits if shape.kind == "wedge" else 0,
+            "wedge_log_diameter": wedge_log_diameter,
+            "wedge_orientation": cfg.wedge_orientation,
+            "wedge_panel_rows": wedge_panel_rows,
             "trunk_stock_length": cfg.trunk_stock_length,
             "trunk_circumference": cfg.trunk_circumference,
             "trunk_stock_count": trunk_stock_count,
@@ -802,7 +832,9 @@ class DomeModel:
             add(f"   {label}: {count:3d} x {length:.2f} m")
         if s["trees_required"]:
             add(f"Trees to harvest: {s['trees_required']} logs "
-                f"({WEDGES_PER_TREE} quarter-wedges each)")
+                f"({s['wedge_splits']} wedges each, "
+                f"{s['wedge_log_diameter'] * 39.3701:.1f} in across; "
+                f"bark {s['wedge_orientation'].lower()})")
         if s["trunk_stock_count"]:
             add(f"Tree trunks:      {s['trunk_stock_count']} x "
                 f"{s['trunk_stock_length']:.2f} m stock "
@@ -830,6 +862,10 @@ class DomeModel:
                 f"{g['weight']:8.1f} kg  ${g['cost']:,.0f}")
         if s["solar_watts"] > 0:
             add(f"   Solar capacity:  {s['solar_watts'] / 1000.0:.2f} kW")
+        for r in s["wedge_panel_rows"]:
+            add(f"   {r['name']} stock: {r['wedge_ft']:,.0f} ft of wedges, "
+                f"{r['log_ft']:,.0f} ft of {r['log_in']:.0f} in log "
+                f"({r['recovery'] * 100:.0f}% of the log is panel)")
         add("")
         add("-- CLADDING LAYERS " + "-" * 43)
         if s["layer_rows"]:

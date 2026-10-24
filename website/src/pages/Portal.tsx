@@ -346,7 +346,7 @@ export default function Portal({ island = false }: { island?: boolean }) {
       {/* the tool's own controls render once, into the element the control panel and fullscreen share */}
       {space && createPortal(
         Tool ? (
-          <Suspense fallback={<p className="muted text-xs">Loading the tool...</p>}><Tool world={world} colour={space.colour} /></Suspense>
+          <Suspense fallback={<p className="muted text-xs">Loading the tool...</p>}><Tool world={world} colour={space.colour} studio={full} /></Suspense>
         ) : (
           <>
             <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: space.colour }}>Control panel</p>
@@ -365,9 +365,9 @@ export default function Portal({ island = false }: { island?: boolean }) {
           <div className="absolute left-3 top-3 text-[#f4efe6] text-xs pointer-events-none" style={{ textShadow: "0 1px 4px #000" }}>
             <p className="text-[10px] uppercase tracking-[0.25em] font-semibold" style={{ color: toolTab.colour }}>Fullscreen editor</p>
             <p className="text-lg font-bold">{toolTab.title}</p>
-            <p className="opacity-90">Drag to look, W A S D to walk, click a piece to inspect it. Esc leaves.</p>
+            <p className="opacity-90">The full studio: every setting is on the right. Drag to look, W A S D to walk, click a piece to work on it. Esc leaves.</p>
           </div>
-          <aside className="absolute right-0 top-0 bottom-0 w-[min(420px,92vw)] overflow-y-auto p-3" style={{ background: "color-mix(in srgb, var(--panel) 94%, transparent)", borderLeft: `3px solid ${toolTab.colour}`, zIndex: 8 }}>
+          <aside className="absolute right-0 top-0 bottom-0 w-[min(560px,46vw)] max-sm:w-[92vw] overflow-y-auto p-3" style={{ background: "color-mix(in srgb, var(--panel) 94%, transparent)", borderLeft: `3px solid ${toolTab.colour}`, zIndex: 8 }}>
             <div className="flex items-center justify-between mb-2">
               <p className="font-bold" style={{ color: toolTab.colour }}>{toolTab.title}</p>
               <button className="btn-ghost !py-1 text-sm" onClick={leaveFull}>Leave fullscreen</button>

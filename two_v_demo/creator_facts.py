@@ -144,9 +144,9 @@ def axes() -> tuple[Axis, ...]:
              "one of three stacked layers over the sheathing"),
         Axis("Foundation", "foundation", named(materials.FOUNDATION_TYPES),
              "shell", "what the dome stands on"),
-        Axis("Wedge curve", "wedge_flip",
-             (("Inside", False), ("Outside", True)), "shell",
-             "which way a split log's bark faces"),
+        Axis("Wedge curve", "wedge_orientation",
+             tuple((name, name) for name in materials.WEDGE_ORIENTATIONS), "shell",
+             "which way a split log's bark faces: in, out, or alternating panel by panel"),
         Axis("Partitions", "partitions",
              tuple((name, name) for name in workshop.PARTITION_MODES),
              "fitout", "markings, low walls, full walls, or nothing"),
@@ -292,12 +292,13 @@ def distinct_shells() -> int:
     than rows in a product of menus.
     """
     styles = sum(2 if changes else 1 for _, changes in hub_style_effect())
-    shapes = sum(2 if changes else 1 for _, changes in wedge_curve_effect())
+    curves = len(simulator()["materials"].WEDGE_ORIENTATIONS)
+    shapes = sum(curves if changes else 1 for _, changes in wedge_curve_effect())
     total = styles * shapes
     for item in axes():
         if item.group != "shell":
             continue
-        if item.key in ("frame_style", "hub_style", "strut_shape", "wedge_flip"):
+        if item.key in ("frame_style", "hub_style", "strut_shape", "wedge_orientation"):
             continue
         count = item.count ** LAYER_SLOTS if item.key == "layers" else item.count
         total *= count
