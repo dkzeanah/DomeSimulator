@@ -19,6 +19,10 @@
   stations (every element's mesh, material cost, labor and weight), and the editable assumptions
   its unit economics, throughput and break-even are worked from. The browser re-runs those sums
   (crew and wage change them) and scripts/test_portal_spaces.mjs checks them against `al_build`.
+  For the factory floor (`assembly_line.py`, the desktop demo): a run of production specs drawn
+  by `al_build.random_spec` from a fixed seed -- each its own catalog, mesh and elements, with the
+  floor point a worker carries each element to -- and the demo's pacing, phases, disruptions and
+  cost-sensitivity factors.
 * **Foundation & Pads** is `world3d.structures` (the pentagon of half trunks, its star, its piers,
   its deck and its layout on the ground, as the solver builds them) and `pad_deck` (the platform a
   seed dome stands on, priced board by board from the lumber receipt, five ways, over a range of
@@ -302,8 +306,13 @@ def _al_spec(dtype: str, layout: str | None = None):
 def _al_line(dtype: str, layout: str | None = None) -> tuple[bytes, dict]:
     """One product line's dome, element by element: its mesh, and what each element costs. A home
     is built differently for each layout (its interior), so each layout is its own catalog."""
-    import al_build as A
     spec = _al_spec(dtype, layout)
+    return _al_line_from(spec, f"{dtype}-{spec.layout.lower()}")
+
+
+def _al_line_from(spec, name: str) -> tuple[bytes, dict]:
+    import al_build as A
+    dtype = spec.dtype
     cat, _info = A.build_dome_catalog(spec)
     verts = np.asarray(cat.b.vertices, dtype=np.float64).reshape(-1, 11)
     opaque = np.asarray(cat.b.opaque, dtype=np.int64)
@@ -320,18 +329,51 @@ def _al_line(dtype: str, layout: str | None = None) -> tuple[bytes, dict]:
     blob += opaque.astype("<u2").tobytes() + trans.astype("<u2").tobytes()
     elements = [{"stage": e.stage, "category": e.category, "label": e.label, "cost": e.material_cost,
                  "labor": e.labor_min, "weight": e.weight, "o": [e.o0, e.o1], "t": [e.t0, e.t1],
-                 "at": [float(x) for x in e.centroid]} for e in cat.elements]
+                 "at": [float(x) for x in e.centroid], "fp": [float(e.floor_point[0]), float(e.floor_point[1])]} for e in cat.elements]
     t = spec.type
     return blob, {
         "key": dtype, "name": t.name, "tagline": t.tagline, "stages": [st.key for st in spec.stages],
         "radius": spec.radius, "frequency": spec.frequency, "layout": spec.layout, "floorArea": spec.floor_area,
         "priceBase": t.price_base, "pricePerM2": t.price_per_m2, "elements": elements,
-        "mesh": {"file": f"/portal/assembly/{dtype}-{spec.layout.lower()}.bin", "vertices": int(len(verts)), "opaque": int(len(opaque)),
+        "mesh": {"file": f"/portal/assembly/{name}.bin", "vertices": int(len(verts)), "opaque": int(len(opaque)),
                  "transparent": int(len(trans)), "scale": scale, "palette": [list(c) for c in palette]},
     }
 
 
+AL_RUNS = 12          # production specs exported for the factory floor
+AL_SEED = 2026        # the seed they are drawn with, so the run is the same every export
+
+
+def _al_run(spec, n: int) -> tuple[bytes, dict, dict]:
+    """One production spec as the factory builds it: mesh blob, head (in lines.json) and its elements."""
+    import al_build as A
+    blob, head = _al_line_from(spec, f"run-{n}")
+    head.update({"serial": spec.serial, "model": spec.name, "cladding": spec.cladding, "claddingRgb": list(spec.cladding_color),
+                 "accent": list(spec.accent), "floorR": spec.floor_radius, "price": spec.sale_price, "monthly": spec.monthly_payment,
+                 "elementsFile": f"/portal/assembly/run-{n}.json"})
+    elements = head.pop("elements")
+    return blob, head, {"elements": elements}
+
+
+def _factory() -> dict:
+    """The desktop demo's pacing (assembly_line.py), read from it where it is code."""
+    import assembly_line as AL
+    phases = [{"kind": ph.kind, "station": ph.station, "dur": ph.dur} for ph in AL.build_phases()]
+    return {
+        "placeAnimPerLaborMin": AL.PLACE_ANIM_PER_LABOR_MIN, "walkSpeed": AL.ANIM_WALK_SPEED, "travelSecs": AL.TRAVEL_SECS,
+        "phases": phases,
+        # assembly_line.App.inject: what each disruption does to the line
+        "disruptions": [{"key": "supply", "label": "Supply delay", "stall": 6.0, "note": "the station starved for 6 minute-equivalents"},
+                        {"key": "breakdown", "label": "Machine breakdown", "stall": 8.0, "note": "maintenance responding"},
+                        {"key": "absence", "label": "Worker absence", "crew": -1, "note": "the station's crew one short"}],
+        # assembly_line.App._econ_with_sensitivity: which costs each factor moves, and cycle_sensitivity's steps
+        "sensitivity": {"lumber": ["frame", "floor", "hub"], "resin": ["fiberglass", "shingle", "wrap"], "wage": [],
+                        "levels": [1.0, 1.2, 0.85]},
+    }
+
+
 def assembly_line() -> tuple[dict, dict[Path, bytes]]:
+    import random
     import al_build as A
     files, lines = {}, []
     for dtype in A.DOME_TYPE_LIST:
@@ -339,8 +381,16 @@ def assembly_line() -> tuple[dict, dict[Path, bytes]]:
             blob, head = _al_line(dtype, layout)
             files[AL_DIR / f"{dtype}-{head['layout'].lower()}.bin"] = blob
             lines.append(head)
+    rng = random.Random(AL_SEED)
+    runs = []
+    for n in range(1, AL_RUNS + 1):
+        blob, head, els = _al_run(A.random_spec(n, rng), n)
+        files[AL_DIR / f"run-{n}.bin"] = blob
+        files[AL_DIR / f"run-{n}.json"] = json.dumps(_trim(els, 17), separators=(",", ":")).encode("utf-8")
+        runs.append(head)
     return _trim({
         "_generated_by": "website/scripts/portal_spaces_export.py from al_build -- do not edit",
+        "factory": _factory(), "runs": runs,
         "assumptions": A.ASSUMPTIONS,
         "stages": [{"key": st.key, "title": st.title, "desc": st.desc, "colour": list(st.colour if hasattr(st, "colour") else st.color)}
                    for st in A._STAGE_LIST],

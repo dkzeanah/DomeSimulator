@@ -5,7 +5,9 @@
 // scale_scenarios(), line for line. scripts/test_portal_spaces.mjs checks them against al_build.
 
 export type Assumptions = Record<string, number | string | Record<string, number>>;
-export interface Element { stage: string; category: string; label: string; cost: number; labor: number; weight: number; o: [number, number]; t: [number, number]; at: [number, number, number] }
+export interface Element { stage: string; category: string; label: string; cost: number; labor: number; weight: number; o: [number, number]; t: [number, number]; at: [number, number, number]
+  /** Where on the deck a worker carries it (al_build's floor_point), metres from the centre. */
+  fp: [number, number] }
 export interface MeshHead { file: string; vertices: number; opaque: number; transparent: number; scale: number; palette: number[][] }
 export interface Line { key: string; name: string; tagline: string; stages: string[]; radius: number; frequency: number; layout: string; floorArea: number; priceBase: number; pricePerM2: number; elements: Element[]; mesh: MeshHead }
 export interface Stage { key: string; title: string; desc: string; colour: number[] }
@@ -94,3 +96,56 @@ export function scaleScenarios(singlePerYear: number, margin: number, price: num
     return { lines, units_per_year: units, revenue: units * price, gross_profit: units * margin, capex: n(a, "line_capex") * lines };
   });
 }
+
+// ----------------------------------------------------------------------
+// The factory floor (assembly_line.py, the desktop demo)
+// ----------------------------------------------------------------------
+
+export interface Phase { kind: string; station: number; dur: number }
+export interface Disruption { key: string; label: string; stall?: number; crew?: number; note: string }
+export interface Factory { placeAnimPerLaborMin: number; walkSpeed: number; travelSecs: number; phases: Phase[]; disruptions: Disruption[];
+  sensitivity: { lumber: string[]; resin: string[]; wage: string[]; levels: number[] } }
+/** A production spec on the factory floor: a Line (so every sum above takes it) plus its own make-up. */
+export interface Run extends Line { serial: number; model: string; cladding: string; claddingRgb: number[]; accent: number[]; floorR: number; price: number; monthly: number; elementsFile: string }
+export interface FactoryLines extends Lines { factory: Factory; runs: Run[] }
+
+const runEls = new Map<string, Promise<Element[]>>();
+/** A run's elements live in their own file; fetch them when the run comes up. */
+export function loadRun(run: Run): Promise<Run> {
+  let p = runEls.get(run.elementsFile);
+  if (!p) {
+    p = fetch(run.elementsFile).then((r) => { if (!r.ok) throw new Error(`${run.elementsFile}: ${r.status}`); return r.json(); }).then((j) => j.elements as Element[]);
+    p.catch(() => runEls.delete(run.elementsFile));
+    runEls.set(run.elementsFile, p);
+  }
+  return p.then((elements) => ({ ...run, elements }));
+}
+
+/** assembly_line.build_phases, for a line of this many stations. */
+export function phasesFor(f: Factory, stations: number): Phase[] {
+  const dur = (kind: string) => f.phases.find((p) => p.kind === kind)?.dur ?? 1;
+  const out: Phase[] = [{ kind: "intro", station: -1, dur: dur("intro") }];
+  for (let i = 0; i < stations; i++) out.push({ kind: "travel", station: i, dur: f.travelSecs }, { kind: "work", station: i, dur: 0 });
+  for (const kind of ["tocrane", "hook", "lift", "carry", "lower", "unhook", "park"]) out.push({ kind, station: -1, dur: dur(kind) });
+  return out;
+}
+
+/** assembly_line.App._econ_with_sensitivity: lumber moves the frame and floor, resin the fiberglass
+ *  and shingles, the wage the labor; the price stays. */
+export function econWithSensitivity(line: Line, layout: string, a: Assumptions, f: Factory, s: { lumber: number; resin: number; wage: number }) {
+  const base = unitEconomics(line, layout, a);
+  let material = 0;
+  for (const e of line.elements) material += e.cost * (f.sensitivity.lumber.includes(e.category) ? s.lumber : f.sensitivity.resin.includes(e.category) ? s.resin : 1);
+  const labor_cost = base.labor_cost * s.wage;
+  const total_cost = material + labor_cost + base.overhead;
+  const margin = base.price - total_cost;
+  return { ...base, material, labor_cost, total_cost, margin, margin_pct: base.price ? (margin / base.price) * 100 : 0 };
+}
+
+/** assembly_line.App._build_days: the unit's labor over the crew over the shift. */
+export const buildDays = (line: Line, a: Assumptions, crew: number) => laborMinutes(line) / 60 / Math.max(1, crew) / n(a, "shift_hours_per_day");
+
+/** ProductionRun.final_record: what the yard keeps of a finished unit. */
+export interface YardRecord { serial: number; name: string; dtype: string; radius: number; frequency: number; layout: string; cladding: string; rgb: number[];
+  floorArea: number; material: number; laborCost: number; overhead: number; totalCost: number; price: number; margin: number; monthly: number;
+  laborHours: number; steps: number; distanceM: number; solarKw: number; rValue: number; created: string; seconds: number }
