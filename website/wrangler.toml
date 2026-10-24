@@ -54,7 +54,7 @@ TEST_CHECKOUT = "1"
 binding = "DB"
 database_name = "zeanahlab-staging"
 # filled in by `py -3.12 scripts/staging.py setup` when it creates the database
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "a609b928-4242-48c3-9886-167dc0d32d91"
 migrations_dir = "migrations"
 
 [[env.preview.r2_buckets]]

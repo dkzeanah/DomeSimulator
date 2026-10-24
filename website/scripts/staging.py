@@ -109,8 +109,12 @@ def setup() -> None:
         sys.exit("uploading the books failed")
     print("\nNow, in Cloudflare: Workers & Pages -> zeanahlab -> Settings -> Variables and Secrets.")
     print("Switch the environment to PREVIEW and add exactly these two secrets (nothing else):")
-    print(f"  SESSION_SECRET = {secrets.token_urlsafe(48)}")
-    print("  ADMIN_EMAILS   = the email you sign in with")
+    # written to a gitignored file, not the screen: it is a secret
+    PRIVATE.mkdir(parents=True, exist_ok=True)
+    note = PRIVATE / "preview-secrets.txt"
+    if not note.exists():
+        note.write_text(f"SESSION_SECRET = {secrets.token_urlsafe(48)}\nADMIN_EMAILS   = the email you sign in with\n", encoding="utf-8")
+    print(f"  SESSION_SECRET and ADMIN_EMAILS -- the values are in {note}")
     print("If any Stripe, MAILER_TOKEN or OPS_TOKEN value is listed under Preview, delete it there.")
 
 
