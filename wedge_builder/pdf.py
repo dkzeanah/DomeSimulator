@@ -21,7 +21,7 @@ from reportlab.lib.units import inch
 from reportlab.platypus import (KeepTogether, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table,
                                 TableStyle)
 
-from .design import ORIENTATIONS, SEAM_JOINS, Design, feet, inches
+from .design import ORIENTATIONS, PATTERNS, SEAM_JOINS, Design, feet, inches
 
 INK = colors.HexColor("#1f2328")
 MUTED = colors.HexColor("#5b636b")
@@ -269,6 +269,67 @@ def _logs_drawing(d: Design, width: float) -> Drawing:
     return dr
 
 
+# ---------------------------------------------------------------- the alternating build
+
+def _orientation_view(d: Design, width: float, height: float) -> Drawing:
+    """The dome from above, each panel numbered, pale where its wedges point in and dark where they point out."""
+    topo, o = d.model.topology, d.model.panel_orientations
+    V = topo.vertices
+    lo, hi = V[:, :2].min(axis=0), V[:, :2].max(axis=0)
+    s = min((width - 20) / (hi[0] - lo[0]), (height - 20) / (hi[1] - lo[1]))
+    ox = (width - s * (hi[0] - lo[0])) / 2 - s * lo[0]
+    oy = (height - s * (hi[1] - lo[1])) / 2 - s * lo[1]
+    dr = Drawing(width, height)
+    for i in sorted(range(len(topo.faces)), key=lambda i: float(topo.faces[i].center[2])):
+        f = topo.faces[i]
+        pts = [v for vi in f.vertices for v in (ox + s * V[vi, 0], oy + s * V[vi, 1])]
+        inn = o[i] == "point_dome_in"
+        dr.add(Polygon(pts, fillColor=colors.HexColor("#f3dfb4" if inn else "#5a3a24"), strokeColor=INK, strokeWidth=0.6))
+        dr.add(String(ox + s * float(f.center[0]), oy + s * float(f.center[1]) - 2.5, f"{i + 1}", fontName="Helvetica-Bold",
+                      fontSize=6.5, fillColor=INK if inn else colors.white, textAnchor="middle"))
+    return dr
+
+
+def _pattern_page(d: Design) -> list:
+    sim, model = d.sim, d.model
+    topo, o = model.topology, model.panel_orientations
+    bands = sim.panel_bands(topo)
+    word = lambda i: "IN" if o[i] == "point_dome_in" else "OUT"
+    pair = lambda se: "in/out" if o[se.face_a] != o[se.face_b] else ("in/in" if o[se.face_a] == "point_dome_in" else "out/out")
+    out = [Paragraph("Which way each panel points", H1), Paragraph(
+        "Alternating the wedges cancels their angle: where an in-pointing wedge meets an out-pointing one, their sawn "
+        "faces were parallel before the fold, so the key fills only the fold. Where two wedges pointing the same way meet "
+        "(a matched seam), the key fills more. Build ground up, band by band, walking round each band in the order listed.", P)]
+    out.append(Table([[_orientation_view(d, W * 0.55, 3.0 * inch), Paragraph(
+        "Pale: the wedge's point faces the dome's centre (IN). Dark: it faces the sky (OUT); that panel sits one log radius "
+        "further out so both kinds share one shell thickness. Numbers are panel numbers, seen from above.", SMALL)]],
+        colWidths=[W * 0.58, W * 0.42]))
+    rows = [["Seam kind", "Seams", "Key fills (each)", "Against in/out on that edge"]]
+    kinds = {}
+    for se in model.seams:
+        alt = sim.seam_face_gap_deg(model.config, "point_dome_in", "point_dome_out", se.inward_a, se.normal_a, se.inward_b, se.normal_b)
+        k = kinds.setdefault((se.edge_type, pair(se)), [0, se.raw_gap_angle_deg, se.raw_gap_angle_deg - alt])
+        k[0] += 1
+    for (et, pr), (n, gap, extra) in sorted(kinds.items()):
+        rows.append([f"{et} seams, {pr}", n, deg(gap), "the same" if abs(extra) < 1e-6 else f"+{extra:.2f}\u00b0"])
+    out.append(_table(rows, [1.6 * inch, 0.7 * inch, 1.3 * inch, W - 3.6 * inch]))
+    out.append(Spacer(1, 4))
+    rows = [["Band", "Walk order: panel (type) IN / OUT", "Matched seams it closes"]]
+    for b in sorted(set(bands)):
+        ring = sim.ring_order(topo, [i for i in range(len(bands)) if bands[i] == b])
+        closes = [se for se in model.seams if max(bands[se.face_a], bands[se.face_b]) == b and pair(se) != "in/out"]
+        rows.append([_b(str(b)), ", ".join(f"{i + 1} ({topo.faces[i].face_type}) {word(i)}" for i in ring),
+                     ", ".join(f"{se.seam_id} {pair(se)}" for se in closes) or "none"])
+    out.append(_table(rows, [0.45 * inch, W * 0.62, W - 0.45 * inch - W * 0.62], size=7))
+    out.append(Spacer(1, 4))
+    out.append(Paragraph(
+        "Why not every seam can alternate: the apex and the five vertices just above the second band each have five panels "
+        "round them. In and out cannot alternate round an odd number, so each needs at least one matched seam. This "
+        "pattern puts them where they cost least.", SMALL))
+    out.append(PageBreak())
+    return out
+
+
 # ---------------------------------------------------------------- pages
 
 def build(d: Design, path: Path, made_for: str = "") -> Path:
@@ -307,7 +368,7 @@ def build(d: Design, path: Path, made_for: str = "") -> Path:
         ["Floor diameter", f"{req.diameter_ft:g} ft", "Floor area", f"{d.floor_area_sqft:,.0f} sq ft"],
         ["Log diameter (small end)", f"{req.log_in:g} in", "Height (centreline)", feet(height)],
         ["Usable log length", f"{req.log_ft:g} ft", "Long / short edge", f"{topo.long_edge_in:.2f} / {topo.short_edge_in:.2f} in"],
-        ["Wedge orientation", ORIENTATIONS[req.orientation], "Panels / members / seams", f"{len(topo.faces)} / {len(d.model.members)} / {sum(x['count'] for x in d.seams)}"],
+        ["Wedge orientation", PATTERNS[req.pattern] if req.mixed else ORIENTATIONS[req.orientation], "Panels / members / seams", f"{len(topo.faces)} / {len(d.model.members)} / {sum(x['count'] for x in d.seams)}"],
         ["Seam join", SEAM_JOINS[req.seam_join], "Saw setups / cut families / jigs", f"{len(d.setups)} / {len(d.families)} / {len(d.variants)}"],
         ["", "", "Logs / rounds", f"{len(d.logs)} logs, {len(d.rounds)} rounds"],
         ["", "", "Frame stock finished / raw", f"{total_finished:,.0f} ft / {total_raw:,.0f} ft"],
@@ -358,9 +419,12 @@ def build(d: Design, path: Path, made_for: str = "") -> Path:
     bevel = abs(float(d.setups[0]["bevel_deg"]))
     half_note = ", half the wedge's sector angle" if math.isclose(bevel, 180 / cfg.radial_splits, abs_tol=1e-3) else ""
     rows = [["Setup", "Mitre", "Bevel", "Members", "Edge types", "Point runs long by", "Families"]]
+    if req.mixed:
+        rows[0][2] = "Bevel (tilt)"
     for st in d.setups:
         fams = ", ".join(f.name for f in d.families if f.butt_setup == st["name"])
-        rows.append([_b(st["name"]), deg(abs(float(st["mitre_deg"]))), deg(abs(float(st["bevel_deg"]))), st["count"], st["edge_types"],
+        tilt = "" if not req.mixed else (" (in)" if float(st["bevel_deg"]) > 0 else " (out)")
+        rows.append([_b(st["name"]), deg(abs(float(st["mitre_deg"]))), deg(abs(float(st["bevel_deg"]))) + tilt, st["count"], st["edge_types"],
                      inches(float(st["run_max"])), fams])
     s.append(_table(rows, [0.55 * inch, 0.7 * inch, 0.65 * inch, 0.7 * inch, 0.8 * inch, 1.45 * inch, W - 4.85 * inch]))
     s.append(Spacer(1, 6))
@@ -371,7 +435,16 @@ def build(d: Design, path: Path, made_for: str = "") -> Path:
         "in the stick's own frame: the mitre in the plane of the panel, the bevel out of it. Hold the wedge in a cradle "
         "matching its orientation on the jig. The cut runs a long way down the stick because the face it lands on leans "
         "away, which is why the blank runs long on the point side.", P))
+    if req.mixed:
+        s.append(Spacer(1, 4))
+        s.append(Paragraph(
+            "<b>In and out panels.</b> A wedge for an out-pointing panel takes the same bevel tilted the other way: it is "
+            "the same cut with the wedge turned over in the cradle. The setups marked (out) are those. Keep the in and out "
+            "sticks of a family in separate stacks, marked IN and OUT.", P))
     s.append(PageBreak())
+
+    if req.mixed:
+        s += _pattern_page(d)
 
     # ---- 4. cut families
     s.append(Paragraph("Cut families", H1))

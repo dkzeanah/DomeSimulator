@@ -94,6 +94,8 @@ def wedge_builder() -> dict:
     return {"limits": {k: {"min": lo, "max": hi} for k, (lo, hi) in design.LIMITS.items()},
             "orientations": [{"key": k, "label": v} for k, v in design.ORIENTATIONS.items()],
             "seamJoins": [{"key": k, "label": v} for k, v in design.SEAM_JOINS.items()],
+            "patterns": [{"key": k, "label": v} for k, v in design.PATTERNS.items()],
+            "groundIn": [{"key": k, "label": v} for k, v in design.GROUND_IN.items()],
             "defaults": design.defaults(),
             "source": "wedge_builder/design.py"}
 

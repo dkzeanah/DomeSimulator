@@ -62,7 +62,9 @@ def simulator() -> ModuleType:
 def model(orientation: str = "point_dome_in",
           seam_join_mode: str = "raw_trapezoid",
           long_edge_in: float | None = None,
-          trunk_diameter_in: float | None = None):
+          trunk_diameter_in: float | None = None,
+          orientation_pattern: str = "uniform",
+          pattern_ground_in: str = "auto"):
     """The solved physical dome in one wedge orientation.
 
     Cached because building it solves 120 members and 55 seams, and the film asks for
@@ -71,10 +73,16 @@ def model(orientation: str = "point_dome_in",
     ``long_edge_in`` and ``trunk_diameter_in`` are left at the simulator's own defaults
     unless a caller has a reason to move them -- the seed-dome costing does, because a
     product line is defined by the stick it is cut from.
+
+    ``orientation_pattern`` other than "uniform" mixes point-in and point-out panels
+    (the alternating build, :mod:`alternating_build`); ``orientation`` is then ignored.
     """
     sim = simulator()
     fields: dict[str, object] = {"wedge_orientation": orientation,
                                  "seam_join_mode": seam_join_mode}
+    if orientation_pattern != "uniform":
+        fields.update(wedge_orientation="point_dome_in", orientation_pattern=orientation_pattern,
+                      pattern_ground_in=pattern_ground_in)
     if long_edge_in is not None:
         fields["long_edge_in"] = float(long_edge_in)
     if trunk_diameter_in is not None:

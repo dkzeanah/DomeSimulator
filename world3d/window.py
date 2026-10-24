@@ -195,6 +195,14 @@ class App:
             self._toggle(("foundation_jig", "dome_jig", "zome_jig"))
         elif k == pygame.K_b:
             w.message = f"cut list: {w.doc.export_cut_list()}"
+        elif k == pygame.K_n and not ctrl:
+            w.next_band()
+        elif k == pygame.K_m and not ctrl:
+            w.next_pattern()
+        elif k == pygame.K_k and not ctrl:
+            _aim(self.cam, *VIEWS["alt_dome"])
+            self.cam.fly_mode = True
+            w.message = w.alt_line()
         elif k == pygame.K_F1:
             self.show_help = not self.show_help
         elif k == pygame.K_F2:

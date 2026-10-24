@@ -28,7 +28,7 @@ interface Job {
   created_at: string; claimed_at: string | null; done_at: string | null;
 }
 
-type Params = { diameter_ft: number; log_in: number; log_ft: number; orientation: string; seam_join: string; label: string };
+type Params = { diameter_ft: number; log_in: number; log_ft: number; orientation: string; seam_join: string; label: string; pattern: string; ground_in: string };
 
 /** The request, checked as wedge_builder.design.Request.from_json checks it. */
 function params(b: Record<string, unknown>): Params {
@@ -43,7 +43,14 @@ function params(b: Record<string, unknown>): Params {
   if (!wb.orientations.some((o) => o.key === orientation)) throw new HttpError(400, "Pick one of the wedge orientations.");
   if (!wb.seamJoins.some((o) => o.key === seam)) throw new HttpError(400, "Pick one of the seam joins.");
   const name = (text(b, "label", { max: 60 }) || "").replace(/\s+/g, " ").trim();
-  return { diameter_ft: out.diameter_ft, log_in: out.log_in, log_ft: out.log_ft, orientation, seam_join: seam, label: name };
+  const pattern = String(b.pattern || "uniform");
+  const ground = String(b.ground_in || "auto");
+  if (!wb.patterns.some((o) => o.key === pattern)) throw new HttpError(400, "Pick one of the build patterns.");
+  if (!wb.groundIn.some((o) => o.key === ground)) throw new HttpError(400, "Pick which ground panels point in.");
+  // a mixed dome chooses in and out itself and uses raw trapezoid seams (wedge_builder.design)
+  const mixed = pattern !== "uniform";
+  return { diameter_ft: out.diameter_ft, log_in: out.log_in, log_ft: out.log_ft, orientation: mixed ? "point_dome_in" : orientation,
+    seam_join: mixed ? "raw_trapezoid" : seam, label: name, pattern, ground_in: mixed ? ground : "auto" };
 }
 
 function label(k: string) {
@@ -79,7 +86,7 @@ api.get("/orders/:ref/cutlists", async (ctx) => {
   const queued = (await ctx.env.DB.prepare("SELECT COUNT(*) n FROM cutlists WHERE status IN ('queued', 'rendering')").first<{ n: number }>())!.n;
   return json({
     order: { ref: a.order.ref, product: title?.title || a.order.book_slug }, credits: a.credits, used: a.used, queueLength: queued,
-    form: { limits: wb.limits, orientations: wb.orientations, seamJoins: wb.seamJoins, defaults: wb.defaults },
+    form: { limits: wb.limits, orientations: wb.orientations, seamJoins: wb.seamJoins, patterns: wb.patterns, groundIn: wb.groundIn, defaults: wb.defaults },
     jobs: a.jobs.map((j) => publicJob(j, a.order.ref, a.key)),
   });
 });

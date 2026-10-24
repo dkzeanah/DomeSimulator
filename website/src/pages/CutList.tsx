@@ -10,7 +10,10 @@ import { api } from "../lib/api";
 
 type Key = "diameter_ft" | "log_in" | "log_ft";
 interface Option { key: string; label: string }
-interface Form { limits: Record<Key, { min: number; max: number }>; orientations: Option[]; seamJoins: Option[]; defaults: Record<Key, number> & { orientation: string; seam_join: string } }
+interface Form {
+  limits: Record<Key, { min: number; max: number }>; orientations: Option[]; seamJoins: Option[]; patterns: Option[]; groundIn: Option[];
+  defaults: Record<Key, number> & { orientation: string; seam_join: string; pattern: string; ground_in: string };
+}
 interface Job {
   ref: string; status: "queued" | "rendering" | "done" | "failed"; error: string | null; design: string | null; pdfUrl: string | null; createdAt: string; doneAt: string | null;
   params: Record<Key, number> & { orientation: string; seam_join: string; label: string };
@@ -87,6 +90,26 @@ export default function CutList() {
               </label>
             ))}
             <label className="grid gap-1">
+              <span className="text-sm font-semibold">Build pattern</span>
+              <select className="field" value={f.pattern} onChange={(e) => setF({ ...f, pattern: e.target.value })}>
+                {s.form.patterns.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
+              </select>
+              <span className="text-xs muted">
+                Alternating panels point in and out, so the faces across a seam cancel and the key fills only the dome's own fold.
+                The cut list then says which way every panel points, band by band from the ground.
+              </span>
+            </label>
+            {f.pattern && f.pattern !== "uniform" && (
+              <label className="grid gap-1">
+                <span className="text-sm font-semibold">Which ground panels point in</span>
+                <select className="field" value={f.ground_in} onChange={(e) => setF({ ...f, ground_in: e.target.value })}>
+                  {s.form.groundIn.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
+                </select>
+                <span className="text-xs muted">If you have already stood your ground panels, pick what you built. Otherwise leave it: the better choice puts every unavoidable matched seam where it costs least.</span>
+              </label>
+            )}
+            {(!f.pattern || f.pattern === "uniform") && <>
+            <label className="grid gap-1">
               <span className="text-sm font-semibold">Which way the wedge's point faces</span>
               <select className="field" value={f.orientation} onChange={(e) => setF({ ...f, orientation: e.target.value })}>
                 {s.form.orientations.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
@@ -99,6 +122,7 @@ export default function CutList() {
                 {s.form.seamJoins.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
               </select>
             </label>
+            </>}
             <label className="grid gap-1">
               <span className="text-sm font-semibold">A name for it (optional)</span>
               <input className="field" maxLength={60} placeholder="e.g. the back meadow cabin" value={f.label ?? ""} onChange={(e) => setF({ ...f, label: e.target.value })} />

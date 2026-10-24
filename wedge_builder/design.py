@@ -32,6 +32,16 @@ SEAM_JOINS = {
     "raw_trapezoid": "Raw faces with a trapezoid key",
     "shaved_flat": "Shaved faces with a flat key",
 }
+# Every panel the same way (the orientation above), or panels pointing in and out so the
+# faces across a seam cancel (alternating_build). A mixed dome uses raw trapezoid seams.
+PATTERNS = {
+    "uniform": "Every panel the same way",
+    "alternate_ground": "Ground panels alternate in and out (the rest solved)",
+    "alternate_lower": "The lower ring of twenty alternates (the rest solved)",
+    "least_angle": "Every panel solved for the least extra seam angle",
+}
+GROUND_IN = {"auto": "Whichever is better", "AAA": "The equilateral ground panels point in",
+             "BAB": "The isosceles ground panels point in"}
 
 # What a request may ask for. The limits are the range the solver has been checked over
 # by selftest, not a structural limit: nothing here says a dome of any size will stand.
@@ -50,7 +60,7 @@ def defaults() -> dict:
     import seed_model
     return {"diameter_ft": round(2 * seed_model.SEED_LONG_EDGE_IN * _edge_per_radius() / 12.0, 1),
             "log_in": float(seed_model.SEED_TRUNK_DIAMETER_IN), "log_ft": DEFAULT_LOG_FT,
-            "orientation": "point_dome_in", "seam_join": "raw_trapezoid"}
+            "orientation": "point_dome_in", "seam_join": "raw_trapezoid", "pattern": "uniform", "ground_in": "auto"}
 
 
 @dataclass(frozen=True)
@@ -62,6 +72,12 @@ class Request:
     orientation: str = "point_dome_in"
     seam_join: str = "raw_trapezoid"
     label: str = ""
+    pattern: str = "uniform"
+    ground_in: str = "auto"
+
+    @property
+    def mixed(self) -> bool:
+        return self.pattern != "uniform"
 
     @classmethod
     def from_json(cls, data: dict) -> "Request":
@@ -81,12 +97,27 @@ class Request:
         if seam not in SEAM_JOINS:
             raise ValueError("seam_join must be one of " + ", ".join(SEAM_JOINS))
         label = " ".join(str(data.get("label") or "").split())[:60]
-        return cls(number("diameter_ft"), number("log_in"), number("log_ft"), orientation, seam, label)
+        pattern = str(data.get("pattern") or "uniform")
+        ground_in = str(data.get("ground_in") or "auto")
+        if pattern not in PATTERNS:
+            raise ValueError("pattern must be one of " + ", ".join(PATTERNS))
+        if ground_in not in GROUND_IN:
+            raise ValueError("ground_in must be one of " + ", ".join(GROUND_IN))
+        if pattern != "uniform":
+            # in and out are the pattern's to choose; its seams are raw trapezoid
+            orientation, seam = "point_dome_in", "raw_trapezoid"
+        else:
+            ground_in = "auto"
+        return cls(number("diameter_ft"), number("log_in"), number("log_ft"), orientation, seam, label, pattern, ground_in)
 
     def key(self) -> str:
         """The design's id: the same request always solves to the same dome."""
+        fields = {k: v for k, v in asdict(self).items() if k != "label"}
+        if not self.mixed:                   # a uniform dome keeps the id it had before patterns existed
+            fields.pop("pattern")
+            fields.pop("ground_in")
         raw = json.dumps({k: round(float(v), 6) if isinstance(v, (int, float)) else v
-                          for k, v in asdict(self).items() if k != "label"}, sort_keys=True)
+                          for k, v in fields.items()}, sort_keys=True)
         return hashlib.sha256(raw.encode()).hexdigest()[:10]
 
 
@@ -215,7 +246,8 @@ def solve(request: Request) -> Design:
     long_edge = long_edge_for(request.diameter_ft)
     try:
         model = bridge.model(orientation=request.orientation, seam_join_mode=request.seam_join,
-                             long_edge_in=round(long_edge, 6), trunk_diameter_in=request.log_in)
+                             long_edge_in=round(long_edge, 6), trunk_diameter_in=request.log_in,
+                             orientation_pattern=request.pattern, pattern_ground_in=request.ground_in)
         sim.validate_topology(model.topology)
         sim.validate_physical_model(model)
     except (AssertionError, ValueError) as e:
