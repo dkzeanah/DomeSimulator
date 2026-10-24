@@ -1,6 +1,7 @@
-// The paid tools, three ways in: Dome Sketch's own page (/sketch), the trial of every tool
-// (/software), and each account's own links (/mylinks), which show only what that account may open
-// (the owner sees everything). Access comes from /api/me/tools (functions/_lib/tools.ts).
+// The paid tools, four ways in: every tool on one page (/tools, the nav's Tools menu), Dome
+// Sketch's own page (/sketch), the trial of every tool (/software), and each account's own links
+// (/mylinks), which show only what that account may open (the owner sees everything). Access comes
+// from /api/me/tools (functions/_lib/tools.ts).
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,7 +10,8 @@ import { ErrorLine, Panel } from "../components/ui";
 import { api } from "../lib/api";
 import { useCatalogue } from "../lib/catalogue";
 import { useMeta } from "../lib/meta";
-import { useSession } from "../lib/session";
+import { isStaff, useSession } from "../lib/session";
+import { TOOL_GROUPS } from "../lib/toolsMenu";
 import grid from "../generated/sketch-grid.json";
 
 interface Tool { key: string; title: string; blurb: string; href: string; access: boolean; why: string; credits?: number; used?: number; local?: boolean; buy?: string }
@@ -167,6 +169,41 @@ export function MyLinksPage() {
           ))}
         </section>
       )}
+    </div>
+  );
+}
+
+/** Every tool, grouped as the nav's Tools menu groups them, each marked open or locked for this account. */
+export function ToolsPage() {
+  useMeta("Tools", "Every dome tool on the site: Dome Sketch, the wedge calculator, the Wedge Builder, the Portal and more.", "/tools");
+  const { tools, me } = useTools();
+  const access = new Map((tools || []).map((t) => [t.key, t.access]));
+  const staff = isStaff(me);
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-10 grid gap-8">
+      <div>
+        <p className="text-xs uppercase tracking-[0.2em] accent font-semibold">Tools</p>
+        <h1 className="text-4xl sm:text-5xl font-bold mt-1">Every tool</h1>
+        <p className="mt-2 muted max-w-3xl">Each runs on the project's own solvers. {me ? "Locked ones say how to open them." : "Sign in to see which ones are yours."}</p>
+      </div>
+      {TOOL_GROUPS.filter((g) => !g.staff || staff).map((g) => (
+        <section key={g.title} className="grid gap-3">
+          <h2 className="text-2xl font-semibold">{g.title}</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {g.items.map((t) => {
+              const locked = me && access.has(t.key) && !access.get(t.key);
+              return (
+                <Panel key={t.key} kicker={t.external ? "On your computer: py -3.12 -m sketch_claude serve" : locked ? "Locked" : me && access.get(t.key) ? "Yours" : "Open"} title={t.label}>
+                  <p className="text-sm mb-3">{t.blurb}</p>
+                  {t.external ? <a className="btn" href={t.to} target="_blank" rel="noopener">Open</a>
+                    : locked ? <Link className="btn-ghost" to={`/software#${t.key === "domesketch" ? "dome-sketch" : t.key === "wedgebuilder" ? "wedge-builder" : t.key}`}>How to open it</Link>
+                    : <Link className="btn" to={t.to}>Open</Link>}
+                </Panel>
+              );
+            })}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }

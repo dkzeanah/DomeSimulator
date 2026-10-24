@@ -15,8 +15,9 @@ export const isRealStaff = (me: Me | null) => me?.realRole === "admin" || me?.re
 
 /** Look at the whole site as a regular member would, or go back. The server reads the zl_view
  *  cookie and treats staff as a member while it says "user"; it never adds rights to anyone. */
-export function setViewAsUser(on: boolean) {
-  document.cookie = on ? "zl_view=user; path=/; SameSite=Lax; max-age=86400" : "zl_view=; path=/; SameSite=Lax; max-age=0";
+export type ViewMode = "admin" | "user" | "guest";
+export function setViewAs(mode: ViewMode) {
+  document.cookie = mode === "admin" ? "zl_view=; path=/; SameSite=Lax; max-age=0" : `zl_view=${mode}; path=/; SameSite=Lax; max-age=86400`;
   window.location.reload();
 }
 
@@ -30,6 +31,8 @@ export type StepKey = (typeof JOIN_STEPS)[number]["key"];
 
 interface Session {
   me: Me | null;
+  /** Set while staff view the site signed out: who they really are. */
+  viewAs: { mode: "guest"; realRole: string } | null;
   refresh: () => Promise<void>;
   setMe: (m: Me | null) => void;
   steps: Record<StepKey, boolean>;
@@ -51,6 +54,7 @@ function load(): Record<StepKey, boolean> {
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [me, setMe] = useState<Me | null>(null);
+  const [viewAs, setViewAsState] = useState<Session["viewAs"]>(null);
   const [steps, setSteps] = useState(load);
   const [toast, setToast] = useState<Session["toast"]>(null);
 
@@ -72,8 +76,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [notify]);
 
   const refresh = useCallback(async () => {
-    const r = await api<{ user: Me | null }>("/me").catch(() => ({ user: null }));
+    const r = await api<{ user: Me | null; viewAs?: Session["viewAs"] }>("/me").catch(() => ({ user: null, viewAs: null }));
     setMe(r.user);
+    setViewAsState(r.viewAs ?? null);
   }, []);
 
   useEffect(() => { void refresh(); }, [refresh]);
@@ -88,7 +93,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }).catch(() => undefined);
   }, [me]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <Ctx.Provider value={{ me, refresh, setMe, steps, mark, toast, notify }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ me, viewAs, refresh, setMe, steps, mark, toast, notify }}>{children}</Ctx.Provider>;
 }
 
 export function useSession() {

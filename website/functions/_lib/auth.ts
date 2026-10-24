@@ -6,8 +6,8 @@ import { hmac, randomToken, sameString, sha256Hex } from "./crypto";
 import { Ctx, Env, HttpError, User, nowIso } from "./http";
 
 export const COOKIE = "zl_sid";
-/** "user" while the owner or a manager looks at the site as a regular member would. It only ever
- *  takes rights away: a member who sets it is still a member. */
+/** "user" while the owner or a manager looks at the site as a regular member would, "guest" as a
+ *  visitor who is not signed in. It only ever takes rights away: a member who sets it is still a member. */
 export const VIEW_COOKIE = "zl_view";
 const SESSION_DAYS = 30;
 
@@ -164,7 +164,9 @@ export async function loadUser(ctx: Ctx): Promise<User | null> {
     if (r.meta.changes) row.username = own;
   }
   // viewing as a regular member: every check below this sees a member, and /me says who they really are
-  if (isStaffRole(role) && readCookie(ctx.request, VIEW_COOKIE) === "user") {
+  const view = isStaffRole(role) ? readCookie(ctx.request, VIEW_COOKIE) : null;
+  if (view === "guest") { ctx.viewAs = { mode: "guest", realRole: role }; return null; }
+  if (view === "user") {
     row.real_role = role;
     row.role = "member";
   }

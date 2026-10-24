@@ -743,7 +743,7 @@ window.domeSketch = ctx;
   requestAnimationFrame(frame);
   await load(S.defaults.spec);
   renderScenes(); renderTags();
-  goScene(SCENES[0]);
+  if (S.data) goScene(SCENES[0]);   // nothing loaded (the server said why): the page stays usable
   pollJobs();
 
 })();

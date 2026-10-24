@@ -57,17 +57,28 @@ async function model(spec) {
   const want = snap(spec);
   let id = designId(want);
   let r = await realFetch(`/api/sketch/design/${id}`);
+  // the open designs, nearest to what was asked first: same geodesic, then size
+  const far = (t) => { const s = grid.designs[t].spec;
+    return (s.frequency === want.frequency && s.cut === want.cut ? 0 : 100) + Math.abs(s.diameter_m - want.diameter_m); };
+  const trials = [...grid.trial].sort((a, b) => far(a) - far(b));
   if (r.status === 402) {
     locked = true;
     banner("Trial: two designs are open. Every size, door and window choice, and the build pack, come with Dome Sketch ($10, or free with the book).",
            "/software#dome-sketch", "Unlock");
-    // the open design nearest to what was asked: same geodesic first, then size
-    const far = (t) => { const s = grid.designs[t].spec;
-      return (s.frequency === want.frequency && s.cut === want.cut ? 0 : 100) + Math.abs(s.diameter_m - want.diameter_m); };
-    id = grid.trial.includes(id) ? id : [...grid.trial].sort((a, b) => far(a) - far(b))[0];
+    id = grid.trial.includes(id) ? id : trials[0];
     r = await realFetch(`/api/sketch/design/${id}`);
   }
-  if (!r.ok) return json({ error: (await r.json().catch(() => ({}))).error || "That design could not be loaded." }, r.status);
+  // a design not on the server yet (they are published one by one): show another one that is
+  for (const t of trials) {
+    if (r.ok || r.status === 402) break;
+    if (t === id) continue;
+    const r2 = await realFetch(`/api/sketch/design/${t}`);
+    if (r2.ok) { banner("That design is not online yet, so here is one that is. Every design is being published; try it again shortly."); id = t; r = r2; }
+  }
+  if (!r.ok) {
+    banner("The designs are still being published to the website. Try again in a few minutes.");
+    return json({ error: (await r.json().catch(() => ({}))).error || "That design could not be loaded." }, r.status);
+  }
   const data = apply(await r.json(), want);
   const shown = { ...data.spec, ...grid.designs[id].spec, skin: want.skin, furnish: want.furnish, porch: want.porch, stove: want.stove, people: want.people };
   data.spec = shown;

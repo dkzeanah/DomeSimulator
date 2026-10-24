@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
 import { trackView } from "../lib/track";
-import { isRealStaff, isStaff, setViewAsUser, useSession } from "../lib/session";
+import { isRealStaff, isStaff, setViewAs, useSession, type ViewMode } from "../lib/session";
 import { Toast } from "./ui";
+import { TOOL_GROUPS } from "../lib/toolsMenu";
 
 const NAV = [
   ["/portal", "Portal"],
   ["/start", "Free Pages"],
   ["/book", "The Book"],
   ["/build", "The Build"],
-  ["/sketch", "Dome Sketch"],
-  ["/calculator", "Calculator"],
   ["/network", "Pads"],
   ["/back", "Back It"],
   ["/kit", "Kit"],
@@ -25,7 +24,7 @@ const LIVE_HOSTS = ["www.zeanahlab.com", "zeanahlab.com", "localhost", "127.0.0.
 const STAGING = typeof window !== "undefined" && !LIVE_HOSTS.includes(window.location.hostname);
 
 export default function Layout() {
-  const { me, setMe, notify } = useSession();
+  const { me, viewAs, setMe, notify } = useSession();
   const [open, setOpen] = useState(false);
   const loc = useLocation();
   const go = useNavigate();
@@ -40,7 +39,7 @@ export default function Layout() {
   useEffect(() => { trackView(loc.pathname); }, [loc.pathname]);
   return (
     <div className="min-h-screen flex flex-col">
-      {isRealStaff(me) && <ViewAs asUser={!!me?.viewingAsUser} />}
+      {(isRealStaff(me) || viewAs) && <ViewAs mode={viewAs ? "guest" : me?.viewingAsUser ? "user" : "admin"} />}
       {STAGING && (
         <div role="status" className="text-center text-xs font-semibold py-1.5" style={{ background: "#b45309", color: "#fff" }}>
           STAGING -- a copy for checking changes. Orders here are test orders and no email is sent.
@@ -56,7 +55,8 @@ export default function Layout() {
             {NAV.map(([to, label]) => (
               <NavLink key={to} to={to} className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>{label}</NavLink>
             ))}
-            {me && isStaff(me) && <NavLink to="/admin/studio" className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>Studio</NavLink>}
+            <ToolsMenu staff={isStaff(me)} />
+            {me && isStaff(me) && <NavLink to="/admin/studio" className={({ isActive }) => (isActive || loc.pathname.startsWith("/admin") ? "accent" : "muted hover:text-[var(--ink)]")}>Admin</NavLink>}
             {me && <NavLink to="/mylinks" className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>My Links</NavLink>}
             <NavLink to="/account" className="btn-ghost !py-1.5">{me ? me.displayName : "Sign in"}</NavLink>
             {me && <button type="button" className="muted hover:text-[var(--ink)] text-sm" onClick={signOut}>Sign out</button>}
@@ -65,9 +65,23 @@ export default function Layout() {
         </div>
         {open && (
           <nav className="md:hidden border-t px-4 py-3 grid gap-3" style={{ borderColor: "var(--line)" }}>
-            {[...NAV, ...(me ? [["/mylinks", "My Links"] as const] : []), ...(me && isStaff(me) ? [["/admin/studio", "Studio"] as const] : []), ["/account", me ? me.displayName : "Sign in"] as const].map(([to, label]) => (
+            {[...NAV, ...(me ? [["/mylinks", "My Links"] as const] : []), ...(me && isStaff(me) ? [["/admin/studio", "Admin"] as const] : []), ["/account", me ? me.displayName : "Sign in"] as const].map(([to, label]) => (
               <NavLink key={to} to={to} onClick={() => setOpen(false)}>{label}</NavLink>
             ))}
+            <details className="grid gap-2">
+              <summary className="cursor-pointer">Tools</summary>
+              <div className="grid gap-2 pl-3 pt-2">
+                <NavLink to="/tools" onClick={() => setOpen(false)}>All tools</NavLink>
+                {TOOL_GROUPS.filter((g) => !g.staff || isStaff(me)).map((g) => (
+                  <div key={g.title} className="grid gap-1.5">
+                    <p className="text-[11px] uppercase tracking-[0.15em] muted">{g.title}</p>
+                    {g.items.map((t) => t.external
+                      ? <a key={t.key} href={t.to} target="_blank" rel="noopener">{t.label} &#8599;</a>
+                      : <NavLink key={t.key} to={t.to} onClick={() => setOpen(false)}>{t.label}</NavLink>)}
+                  </div>
+                ))}
+              </div>
+            </details>
             {me && <button type="button" className="text-left" onClick={signOut}>Sign out</button>}
           </nav>
         )}
@@ -95,20 +109,58 @@ export default function Layout() {
   );
 }
 
-/** The owner's switch: the site as they see it, or as a signed-in member with nothing bought sees it. */
-function ViewAs({ asUser }: { asUser: boolean }) {
-  const btn = (on: boolean, label: string) => (
-    <button type="button" onClick={() => on !== asUser && setViewAsUser(on)} aria-pressed={on === asUser}
+/** The owner's switch: the site as they see it, as a signed-in member with nothing bought sees it,
+ *  or as a visitor who is not signed in. */
+function ViewAs({ mode }: { mode: ViewMode }) {
+  const btn = (m: ViewMode, label: string) => (
+    <button type="button" onClick={() => m !== mode && setViewAs(m)} aria-pressed={m === mode}
       className="px-2.5 py-0.5 rounded-full"
-      style={on === asUser ? { background: "#fff", color: "#111" } : { color: "inherit", opacity: 0.85 }}>{label}</button>
+      style={m === mode ? { background: "#fff", color: "#111" } : { color: "inherit", opacity: 0.85 }}>{label}</button>
   );
+  const say = mode === "user" ? "Viewing the site as a regular member: admin pages and owner access are off."
+    : mode === "guest" ? "Viewing the site signed out, as a visitor sees it."
+    : "View the site as:";
   return (
     <div role="status" className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold py-1 px-4"
-      style={{ background: asUser ? "#1d4ed8" : "#26303d", color: "#fff" }}>
-      <span>{asUser ? "Viewing the site as a regular member: admin pages and owner access are off." : "View the site as:"}</span>
+      style={{ background: mode === "user" ? "#1d4ed8" : mode === "guest" ? "#7c2d92" : "#26303d", color: "#fff" }}>
+      <span>{say}</span>
       <span className="inline-flex rounded-full p-0.5" style={{ background: "rgba(255,255,255,.15)" }}>
-        {btn(false, "Admin")}{btn(true, "Regular member")}
+        {btn("admin", "Admin")}{btn("user", "Regular member")}{btn("guest", "Signed out")}
       </span>
+    </div>
+  );
+}
+
+/** The Tools menu: every tool, grouped (src/lib/toolsMenu.ts); the label itself goes to /tools. */
+function ToolsMenu({ staff }: { staff: boolean }) {
+  const [open, setOpen] = useState(false);
+  const loc = useLocation();
+  useEffect(() => setOpen(false), [loc.pathname]);
+  const groups = TOOL_GROUPS.filter((g) => !g.staff || staff);
+  const here = loc.pathname === "/tools" || groups.some((g) => g.items.some((t) => !t.external && loc.pathname.startsWith(t.to.split("#")[0]) && t.to !== "/"));
+  return (
+    <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+      <button type="button" className={here ? "accent" : "muted hover:text-[var(--ink)]"} aria-expanded={open} aria-haspopup="menu"
+        onClick={() => setOpen(!open)} onKeyDown={(e) => { if (e.key === "Escape") setOpen(false); }}>Tools &#9662;</button>
+      {open && (
+        <div role="menu" className="absolute right-0 top-full pt-2 z-50">
+          <div className="panel p-3 grid gap-3 w-[min(560px,90vw)] sm:grid-cols-2 text-sm shadow-xl">
+            {groups.map((g) => (
+              <div key={g.title} className="grid gap-1 content-start">
+                <p className="text-[11px] uppercase tracking-[0.15em] muted font-semibold">{g.title}</p>
+                {g.items.map((t) => t.external ? (
+                  <a key={t.key} role="menuitem" href={t.to} target="_blank" rel="noopener" className="rounded px-2 py-1 hover:bg-[var(--line)]">
+                    <span className="font-semibold">{t.label} &#8599;</span><span className="block text-xs muted">{t.blurb}</span></a>
+                ) : (
+                  <Link key={t.key} role="menuitem" to={t.to} className="rounded px-2 py-1 hover:bg-[var(--line)]">
+                    <span className="font-semibold">{t.label}</span><span className="block text-xs muted">{t.blurb}</span></Link>
+                ))}
+              </div>
+            ))}
+            <Link to="/tools" className="sm:col-span-2 text-center underline text-xs">All tools on one page</Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

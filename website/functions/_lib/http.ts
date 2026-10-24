@@ -53,6 +53,8 @@ export interface Ctx {
   url: URL;
   params: Record<string, string>;
   user: User | null;
+  /** Staff looking at the site signed out (the zl_view cookie): there is no user, and /me says who they are. */
+  viewAs?: { mode: "guest"; realRole: string };
   /** cookies to set on the way out */
   setCookies: string[];
   /** keep working after the response has gone (Pages' waitUntil) */
