@@ -42,7 +42,7 @@ const STEPS: Step[] = [
   { title: "Fell a pine", text: "Right-click a pine and choose Fell. The chainsaw is in your pack.", target: "isl:tree:0" },
   { title: "Buck it", text: "The pine is down. Click it to buck the trunk into sections the length of the long strut.", target: "isl:tree:0" },
   { title: "The block", text: "Take your log section to Splitter Sage at the block.", target: "isl:npc:sage" },
-  { title: "Split it eight ways", text: "Click the block to split the section: in half, in quarters, in eighths.", target: "isl:block" },
+  { title: "Split it eight ways", text: "Click the block to rip the section with the chainsaw: in half, in quarters, in eighths.", target: "isl:block" },
   { title: "The saw", text: "Take your wedges to Sawyer Sol at the saw.", target: "isl:npc:sol" },
   { title: "Two lengths", text: `Click the saw to cut the struts for one triangle: ${JIG_A} A and ${JIG_B} B.`, target: "isl:saw" },
   { title: "The jig", text: "Take your struts to Jig Master Jo.", target: "isl:npc:jo" },
@@ -126,12 +126,12 @@ export function createIsland(world: World, store: Store, game: AreaGame, changed
       say("npc", "Click to walk. Right-click anything for its options. Follow the yellow arrow to Forester Finn."),
     ] : null,
     finn: () => T().step === 1 ? [
-      say("npc", "Here is a chainsaw. A pine this size gives sections the length of the long strut, and every section gives eight wedges."),
+      say("npc", `Get your chainsaw out. A pine this size gives sections the length of the long strut, and the same saw rips every section into ${W.declared.splits} wedges.`),
       say("npc", "Fell from the side away from the path, and never alone. Right-click a pine and choose Fell."),
     ] : null,
     sage: () => T().step === 4 ? [
-      say("npc", `A section ${F.logIn} in across splits through the pith: in half, then quarters, then eighths. Each eighth is a ${360 / W.declared.splits}° wedge.`),
-      say("npc", "Halves first, always: the split follows the grain, and the grain runs truest through the middle. Click the block."),
+      say("npc", `A section ${F.logIn} in across is ripped with the chainsaw, straight down through the pith: in half, then quarters, then eighths. Each eighth is a ${360 / W.declared.splits}° wedge, 1/${W.declared.splits} of the round.`),
+      say("npc", "Halves first, always: every cut runs radially, through the middle, so each wedge keeps the grain from bark to pith. Stand the section on the block and click it."),
     ] : null,
     sol: () => T().step === 6 ? [
       say("npc", `Two lengths, that is all. A for the ${F.strutsA} long edges, ${inch(A.nominal)} nominal; B for the ${F.strutsB} short ones, ${inch(B.nominal)}. Framing each triangle on its own takes ${A.count} long and ${B.count} short.`),
@@ -161,14 +161,19 @@ export function createIsland(world: World, store: Store, game: AreaGame, changed
   const finishTalk = (npc: string) => {
     const step = T().step;
     if (npc === "isl:gale" && step === 0) set(1);
-    else if (npc === "isl:finn" && step === 1) { s.give("chainsaw", 1); s.say("Forester Finn hands you a chainsaw.", "quest"); set(2); }
-    else if (npc === "isl:sage" && step === 4) { if (!s.count("maul")) s.give("maul", 1); s.say("Splitter Sage lends you a maul.", "quest"); set(5, 0); }
+    else if (npc === "isl:finn" && step === 1) {
+      if (s.count("chainsaw")) s.say("Forester Finn checks the chain on your chainsaw and hands it back.", "quest");
+      else { s.give("chainsaw", 1); s.say("Forester Finn hands you a chainsaw.", "quest"); }
+      set(2);
+    }
+    else if (npc === "isl:sage" && step === 4) { if (!s.count("chainsaw")) s.give("chainsaw", 1); s.say("Splitter Sage stands your section on the block. Your chainsaw does the splitting.", "quest"); set(5, 0); }
     else if (npc === "isl:sol" && step === 6) set(7, 0);
     else if (npc === "isl:jo" && step === 8) set(9, 0);
     else if (npc === "isl:bo" && step === 10) set(11, 0);
     else if (npc === "isl:bo" && step === 12) { s.give("screws", 12); s.say("Builder Bo gives you a box of structural screws.", "quest"); set(13, 0); }
     else if (npc === "isl:gale2" && step === 15) {
-      s.addXp("splitting", 500); s.addXp("framing", 500); s.addXp("paneling", 400);
+      s.addXp("forestry", 300); s.addXp("splitting", 300); s.addXp("milling", 200); s.addXp("framing", 300);
+      s.addXp("rigging", 200); s.addXp("roofing", 200); s.addXp("paneling", 200);
       s.give("coins", 50);
       if (!s.s.badges.includes("Islander")) s.s.badges.push("Islander");
       s.say("Congratulations! You have built a wedge dome from standing trees. You earn the Islander badge.", "quest");
@@ -196,23 +201,24 @@ export function createIsland(world: World, store: Store, game: AreaGame, changed
     if (id.startsWith("isl:tree:")) {
       const first = id === "isl:tree:0";
       if (first && step === 3) return [{ label: "Buck", target: "Felled pine", colour: "#3ad6ff", run: () => work(id, 4, "You buck the trunk...", () => {
-        s.give("section", 1); s.addXp("splitting", 40); world.splat("player", "+40 Splitting", "xp");
+        s.give("section", 1); s.addXp("forestry", 40); world.splat("player", "+40 Forestry", "xp");
         s.say(`You buck the trunk into sections. You keep one; the crew stacks the rest. The dome takes ${G.logsAtSplits}.`); set(4);
       }) }, ex("A felled pine, ready to buck.")];
       if (first && step >= 4) return [ex("A stump, and the crew's sections.")];
       return [{ label: "Fell", target: t.name, colour: "#3ad6ff", run: () => {
         if (step !== 2) { s.say(step < 2 ? "You need a chainsaw, and Forester Finn's word, first." : "One pine is enough for the lesson."); return; }
         if (!first) { s.say("Forester Finn marked the nearest pine for you."); return; }
-        work(id, 5, "You rev the chainsaw and cut the notch...", () => { felling = 0; feltF = 0; s.addXp("splitting", 60); world.splat("player", "+60 Splitting", "xp"); });
+        work(id, 5, "You rev the chainsaw and cut the notch...", () => { felling = 0; feltF = 0; s.addXp("forestry", 60); world.splat("player", "+60 Forestry", "xp"); });
       } }, ex("A straight pine about a foot across. Good wedges in it.")];
     }
     if (id === "isl:block") return [{ label: "Split", target: t.name, colour: "#3ad6ff", run: () => {
       if (step !== 5) { s.say(step < 5 ? "You have nothing to split yet." : "The section is already eighths."); return; }
+      if (!s.count("chainsaw")) { s.say("You need your chainsaw. Forester Finn gave you one."); return; }
       const names = ["in half", "into quarters", "into eighths"];
-      work(id, 3, `You split the section ${names[n]}...`, () => {
+      work(id, 3, `You rip the section ${names[n]} with the chainsaw...`, () => {
         s.addXp("splitting", 30); world.splat("player", "+30 Splitting", "xp");
         if (n + 1 < 3) { set(5, n + 1); return; }
-        s.take("section", 1); s.give("wedge", W.declared.splits); s.say(`Eight wedges, each a ${360 / W.declared.splits}° sector with its bark on the back.`); set(6);
+        s.take("section", 1); s.give("wedge", W.declared.splits); s.say(`${W.declared.splits} wedges, each 1/${W.declared.splits} of the section: a ${360 / W.declared.splits}° sector with its bark on the back.`); set(6);
       });
     } }, ex("A stump for splitting on.")];
     if (id === "isl:saw") return [{ label: "Cut", target: t.name, colour: "#3ad6ff", run: () => {
@@ -221,7 +227,7 @@ export function createIsland(world: World, store: Store, game: AreaGame, changed
       if (!s.count("wedge")) { s.say("You need a wedge."); return; }
       work(id, 3, `You cut a ${isA ? "long A" : "short B"} strut...`, () => {
         if (!s.take("wedge", 1)) { s.say("You need a wedge."); return; }
-        s.give(isA ? "strutA" : "strutB", 1); s.addXp("framing", 25); world.splat("player", "+25 Framing", "xp");
+        s.give(isA ? "strutA" : "strutB", 1); s.addXp("milling", 25); world.splat("player", "+25 Milling", "xp");
         s.say(isA ? `An A strut: a blank about ${inch(A.blankMax)}, its butt ${inch(A.buttSetback)} back from the vertex.` : `A B strut: a blank about ${inch(B.blankMax)}, its butt ${inch(B.buttSetback)} back.`);
         if (n + 1 < 3) set(7, n + 1); else { s.say("Three struts for one triangle. The other wedges go to the crew."); set(8); }
       });
@@ -247,8 +253,8 @@ export function createIsland(world: World, store: Store, game: AreaGame, changed
         if (crew) { s.say("The crew is on it. Watch."); return; }
         work(id, 2, step === 11 ? "You raise a panel and bolt it to its neighbours..." : step === 13 ? "You set a key in a seam and screw it home..." : "You fit a sheet over a triangle...", () => {
           const k = n + 1;
-          if (step === 11) { if (n === 0) s.take("panel", 1); s.addXp("framing", 30); }
-          if (step === 13) { s.take("screws", 4); s.addXp("framing", 20); }
+          if (step === 11) { if (n === 0) s.take("panel", 1); s.addXp("rigging", 30); }
+          if (step === 13) { s.take("screws", 4); s.addXp("roofing", 20); }
           if (step === 14) s.addXp("paneling", 30);
           set(step, k);
           if (k >= YOU_DO) { crew = step === 11 ? "panels" : step === 13 ? "keys" : "skin"; s.say("The crew joins in."); }

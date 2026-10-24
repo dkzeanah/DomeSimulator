@@ -1,24 +1,48 @@
 // The Portal world's interface, laid out the way RuneScape players expect: hover text top
 // left, a right-click menu where you click, the chatbox bottom left (dialogue shows there too),
-// the side panel bottom right (inventory, skills, quests, badges, keys), the hitpoints orb and
-// the action bar along the bottom.
+// the action bar along the bottom, and Old School RuneScape's control panel bottom right: a row of
+// tabs above and below one box -- combat, skills (every house-building job, by stage), quests, the
+// backpack, worn equipment, this portal's own controls, badges; then keys, settings, the world
+// map, home and fullscreen. The orbs and the minimap are Portal.tsx's.
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Pick } from "../engine";
 import type { AreaGame, Option } from "./area";
 import { useChat } from "./chat";
-import { LORE, QUESTS, SKILLS, itemById, levelForXp, nextLevelXp, xpForLevel, type Lore } from "./content";
+import { LORE, QUESTS, SKILLS, STAGES, combatLevel, itemById, levelForXp, nextLevelXp, xpForLevel, type Lore, type SkillKey } from "./content";
 import { registerKeys, typing, useKeyList } from "./keys";
 import { BAR_SIZE, type Store } from "./store";
 
-type Tab = "inv" | "skills" | "quests" | "badges" | "keys";
-const TABS: { key: Tab; label: string; icon: string; hot: string }[] = [
-  { key: "inv", label: "Inventory", icon: "\u{1f392}", hot: "I" },
+type Tab = "combat" | "skills" | "quests" | "inv" | "worn" | "tool" | "badges" | "keys" | "settings";
+const TOP: { key: Tab; label: string; icon: string; hot: string }[] = [
+  { key: "combat", label: "Combat options", icon: "⚔", hot: "F1" },
   { key: "skills", label: "Skills", icon: "\u{1f4ca}", hot: "K" },
   { key: "quests", label: "Quests", icon: "\u{1f4dc}", hot: "J" },
-  { key: "badges", label: "Badges", icon: "\u{1f3c5}", hot: "B" },
-  { key: "keys", label: "Keys", icon: "⌨", hot: "?" },
+  { key: "inv", label: "Inventory", icon: "\u{1f392}", hot: "I" },
+  { key: "worn", label: "Worn equipment", icon: "\u{1f6e1}", hot: "F5" },
+  { key: "tool", label: "This portal's controls", icon: "\u{1f6e0}", hot: "F6" },
+  { key: "badges", label: "Badges and lore", icon: "\u{1f3c5}", hot: "B" },
 ];
+const FKEYS: Record<string, Tab> = { F1: "combat", F2: "skills", F3: "quests", F4: "inv", F5: "worn", F6: "tool" };
+
+/** A portal's own controls, shown in the control panel's tool tab. The element is moved, not
+ *  re-made, so the tool keeps its settings between the tab and fullscreen. */
+export interface ToolTab { title: string; icon?: string; colour: string; host: HTMLElement; fullscreen?: () => void }
+
+/** Put a kept element (a tool's panel) inside this box while it is shown. */
+export function HostSlot({ host, className }: { host: HTMLElement; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.appendChild(host);
+    return () => { if (host.parentNode === el) el.removeChild(host); };
+  }, [host]);
+  return <div ref={ref} className={className} />;
+}
+
+const stone = { background: "#3e3529", border: "2px solid #000", color: "#f4efe6" } as const;
+const tabBtn = (on: boolean) => ({ background: on ? "#7a3a1a" : "#4a3f30", borderRight: "1px solid #000", color: "#fff" });
 
 export const ACTIONS: Record<string, { label: string; icon: string; hint: string }> = {
   eat: { label: "Eat", icon: "\u{1f95c}", hint: "Eat the first food in your bag" },
@@ -32,16 +56,23 @@ export const ACTIONS: Record<string, { label: string; icon: string; hint: string
 
 interface Menu { x: number; y: number; options: Option[] }
 
-export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn, folded, onSidePanel }: {
+export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn, tool, onWorldMap, onHome, onSidePanel, hidden }: {
   store: Store; game: AreaGame | null; pick: Pick | null; menuAt: Pick | null; onMenuClosed: () => void; signedIn: boolean;
-  /** Start with the side panel folded (a tool's space, where the tool's own panel wants the room). */
-  folded?: boolean;
+  /** This area's own controls: a tool's panel, or the house's build mode. */
+  tool?: ToolTab | null;
+  onWorldMap: () => void;
+  onHome: () => void;
   onSidePanel?: (open: boolean) => void;
+  /** Fullscreen: the HUD steps aside for the editor. */
+  hidden?: boolean;
 }) {
   const [, bump] = useState(0);
   useEffect(() => store.subscribe(() => bump((n) => n + 1)), [store]);
-  const [tab, setTab] = useState<Tab | null>(() => (folded || (typeof window !== "undefined" && window.innerWidth < 640) ? null : "inv"));
-  useEffect(() => { if (folded) setTab(null); }, [folded]);
+  const phone = typeof window !== "undefined" && window.innerWidth < 640;
+  const [tab, setTab] = useState<Tab | null>(() => (tool ? "tool" : phone ? null : "inv"));
+  // a tool's space opens on its controls; anywhere else the backpack
+  useEffect(() => { setTab(tool ? "tool" : phone ? null : "inv"); }, [Boolean(tool), tool?.title]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [skill, setSkill] = useState<SkillKey | null>(null);
   useEffect(() => { onSidePanel?.(tab !== null); }, [tab]); // eslint-disable-line react-hooks/exhaustive-deps
   const [menu, setMenu] = useState<Menu | null>(null);
   const [chatTab, setChatTab] = useState<"all" | "game" | "public">("all");
@@ -81,6 +112,8 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
     else if (key === "take") game.takeAll();
     else if (key === "talk") { const n = game.nearest("npc"); if (n) game.talk(n.slice(4)); else store.say("No teacher here."); }
     else if (key === "home") window.dispatchEvent(new CustomEvent("portal-home"));
+    else if (key === "spec") game.toggleSpec();
+    else if (key === "run") game.toggleRun();
     else if (key === "keys") setTab("keys");
   };
 
@@ -100,6 +133,8 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
         if (e.key === " " || e.key === "Enter") { if (!asking) game.next(); e.preventDefault(); return; }
       }
       if (/^[1-8]$/.test(e.key)) { doAction(s.bar[Number(e.key) - 1]); e.preventDefault(); return; }
+      if (FKEYS[e.key]) { const t = FKEYS[e.key]; if (t !== "tool" || tool) setTab((x) => (x === t ? null : t)); e.preventDefault(); return; }
+      if (e.key.toLowerCase() === "r" && game) { game.toggleRun(); return; }
       const k = e.key.toLowerCase();
       if (k === "i") setTab((t) => (t === "inv" ? null : "inv"));
       else if (k === "k") setTab((t) => (t === "skills" ? null : "skills"));
@@ -121,7 +156,10 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
   ]), []);
   useEffect(() => registerKeys("Interface", [
     { keys: "1 - 8", does: "The action bar's slots" },
+    { keys: "F1 - F6", does: "Combat, skills, quests, inventory, equipment, this portal's controls" },
     { keys: "I K J B", does: "Inventory, skills, quest journal, badges" },
+    { keys: "R", does: "Run on or off" },
+    { keys: "Click the minimap", does: "Walk there" },
     { keys: "? or /", does: "This list" },
     { keys: "Enter", does: "Talk in public chat" },
     { keys: "Space", does: "Continue a conversation; 1-3 answers a question" },
@@ -135,7 +173,6 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
     return o && o.label !== "Cancel" ? o : null;
   }, [game, pick]);
 
-  const hp = s.hp, max = store.maxHp();
   const guide = game?.script?.guide() ?? null;
   const d = game?.dialog;
   const log = store.log;
@@ -182,7 +219,7 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
       )}
 
       {/* the chatbox, where conversations happen too */}
-      <div className="absolute left-3 bottom-3 w-[min(460px,calc(100%-24px))] text-[13px]" style={{ zIndex: 5 }}>
+      <div className="absolute left-3 bottom-3 w-[min(460px,calc(100%-24px))] text-[13px]" style={{ zIndex: 5, display: hidden && !d && !game?.menu && !game?.prompt ? "none" : undefined }}>
         {game?.prompt ? (
           <form className="p-3 text-center" style={{ background: "#d8cba8", border: "2px solid #3a2e1e", color: "#1a1206", minHeight: 130 }}
             onSubmit={(e) => { e.preventDefault(); game.answerPrompt(promptText); setPromptText(""); }}>
@@ -257,12 +294,8 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
         )}
       </div>
 
-      {/* hitpoints and the action bar */}
-      <div className={`absolute bottom-3 max-[1180px]:bottom-[200px] left-1/2 -translate-x-1/2 ${folded ? "max-[1180px]:left-3 max-[1180px]:translate-x-0" : ""} flex items-end gap-2 max-sm:bottom-auto max-sm:top-[118px] max-sm:left-auto max-sm:right-3 max-sm:translate-x-0 max-sm:flex-col`} style={{ zIndex: 6 }}>
-        <div className="w-12 h-12 rounded-full grid place-items-center text-sm font-bold shadow-lg" title="Hitpoints"
-          style={{ background: `conic-gradient(#c82a1a ${(hp / max) * 360}deg, #3a1a14 0)`, border: "2px solid #000", color: "#fff", textShadow: "0 1px 1px #000" }}>
-          {hp}
-        </div>
+      {/* the action bar */}
+      <div className={`absolute bottom-3 max-[1180px]:bottom-[200px] left-1/2 -translate-x-1/2 ${tab === "tool" ? "max-[1180px]:left-3 max-[1180px]:translate-x-0" : ""} flex items-end gap-2 max-sm:bottom-auto max-sm:top-[190px] max-sm:left-auto max-sm:right-3 max-sm:translate-x-0 max-sm:flex-col`} style={{ zIndex: 6, display: hidden ? "none" : undefined }}>
         <div className="flex gap-1 p-1 max-sm:flex-col" style={{ background: panelBox, border: "2px solid #000" }} role="toolbar" aria-label="Action bar">
           {Array.from({ length: BAR_SIZE }, (_, i) => {
             const k = s.bar[i];
@@ -279,10 +312,81 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
         </div>
       </div>
 
-      {/* the side panel */}
-      <div className="absolute right-3 bottom-3 w-[min(250px,calc(100%-24px))]" style={{ zIndex: 5 }}>
+      {/* the control panel: tabs above and below one box, Old School RuneScape's */}
+      <div className={`absolute right-3 bottom-3 ${tab === "tool" ? "w-[min(400px,calc(100%-24px))]" : "w-[min(252px,calc(100%-24px))]"}`} style={{ zIndex: 5, display: hidden ? "none" : undefined }}>
+        <div className="flex" role="tablist" style={{ ...stone, borderBottom: tab ? "none" : undefined }}>
+          {TOP.map((t) => {
+            const off = t.key === "tool" && !tool;
+            return (
+              <button key={t.key} role="tab" aria-selected={tab === t.key} disabled={off} title={off ? "No controls in this area" : `${t.key === "tool" && tool ? tool.title : t.label} (${t.hot})`}
+                className="flex-1 h-8 grid place-items-center text-base disabled:opacity-30" onClick={() => setTab(tab === t.key ? null : t.key)}
+                style={{ ...tabBtn(tab === t.key), ...(t.key === "tool" && tool ? { boxShadow: `inset 0 -3px 0 ${tool.colour}` } : {}) }}>{t.key === "tool" && tool?.icon ? tool.icon : t.icon}</button>
+            );
+          })}
+        </div>
         {tab && (
-          <div className="p-2 mb-1 h-[min(300px,45vh)] overflow-y-auto text-[12px]" style={{ background: panelBox, border: "2px solid #000", color: "#f4efe6" }}>
+          <div className={`p-2 overflow-y-auto text-[12px] ${tab === "tool" ? "h-[min(540px,56vh)]" : "h-[min(300px,42vh)]"}`} style={{ ...stone, borderTop: "none", borderBottom: "none" }}>
+            {tab === "combat" && (() => {
+              const w = store.weapon(), worn = s.worn.weapon ? itemById(s.worn.weapon) : null;
+              const names = ["Accurate", "Controlled", "Defensive"], gives = ["Attack XP", "Attack, Strength and Defence XP", "Defence XP"];
+              return (
+                <div className="grid gap-2">
+                  <div className="flex items-center justify-between">
+                    <p className="font-bold">{worn ? `${worn.icon} ${worn.name}` : "Unarmed"}</p>
+                    <p>Combat Lvl: <b style={{ color: "#ffe24a" }}>{combatLevel((k) => store.level(k))}</b></p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1">
+                    {w.styles.map((st, i) => (
+                      <button key={st} className="p-2 text-left" style={{ background: s.style === i ? "#7a3a1a" : "#2b241a", border: "1px solid #000" }} onClick={() => game?.setStyle(i)}>
+                        <b>{st}</b><span className="block opacity-80">{names[i]}</span><span className="block text-[10px] opacity-60">{gives[i]}</span>
+                      </button>
+                    ))}
+                  </div>
+                  {w.spec ? (
+                    <button className="relative h-7 w-full text-[11px] font-semibold" title={`${w.spec.name}: ${w.spec.blurb} Costs ${w.spec.cost}%.`}
+                      style={{ background: "#1a1a1a", border: `1px solid ${game?.specOn ? "#ffe24a" : "#000"}` }} onClick={() => game?.toggleSpec()}>
+                      <span className="absolute inset-y-0 left-0" style={{ width: `${s.spec}%`, background: game?.specOn ? "#c8a21a" : "#3a8a2a" }} />
+                      <span className="relative">Special attack: {Math.floor(s.spec)}%{game?.specOn ? " (armed)" : ""}</span>
+                    </button>
+                  ) : <p className="opacity-60">This weapon has no special attack.</p>}
+                  {w.spec && <p className="opacity-70">{w.spec.name}: {w.spec.blurb} Costs {w.spec.cost}%; refills 10% every 30 seconds.</p>}
+                </div>
+              );
+            })()}
+            {tab === "worn" && (() => {
+              const worn = s.worn.weapon ? itemById(s.worn.weapon) : null, w = store.weapon();
+              const slot = (label: string, content?: ReactNode, onClick?: () => void, title?: string) => (
+                <button key={label} className="w-11 h-11 grid place-items-center text-xl" style={{ background: "#2b241a", border: "1px solid #000", opacity: content ? 1 : 0.45 }}
+                  title={title || `${label}: empty`} onClick={onClick} disabled={!onClick}>{content ?? <span className="text-[9px] opacity-70">{label}</span>}</button>
+              );
+              return (
+                <div className="grid gap-3">
+                  <div className="grid gap-1 justify-center" style={{ gridTemplateColumns: "repeat(3, 44px)" }}>
+                    <span />{slot("Head")}<span />
+                    {slot("Cape")}{slot("Neck")}{slot("Ammo")}
+                    {slot("Weapon", worn?.icon, worn ? () => game?.unwield() : undefined, worn ? `${worn.name}: click to remove` : undefined)}{slot("Body")}{slot("Shield")}
+                    <span />{slot("Legs")}<span />
+                    {slot("Hands")}{slot("Feet")}{slot("Ring")}
+                  </div>
+                  <div style={{ background: "#2b241a", border: "1px solid #000" }} className="p-2">
+                    <p className="font-semibold">Equipment bonuses</p>
+                    <p>Attack: +{w.attack}</p><p>Strength: +{w.strength}</p>
+                    <p>Speed: {w.speed} ticks ({(w.speed * 0.6).toFixed(1)} s)</p>
+                  </div>
+                  <p className="opacity-60">Right-click a weapon in your bag and Wield it to change weapons.</p>
+                </div>
+              );
+            })()}
+            {/* not while fullscreen holds the tool: the slot mounts again after, and takes it back */}
+            {tab === "tool" && tool && !hidden && (
+              <div className="grid gap-2" style={{ color: "var(--ink)" }}>
+                <div className="flex items-center justify-between gap-2 px-1" style={{ color: "#f4efe6" }}>
+                  <p className="font-bold" style={{ color: tool.colour }}>{tool.title}</p>
+                  {tool.fullscreen && <button className="text-[11px] px-2 py-0.5" style={{ background: "#2b241a", border: "1px solid #000" }} onClick={tool.fullscreen} title="Stand inside it, first person, with these controls beside you">&#x26F6; Fullscreen</button>}
+                </div>
+                <HostSlot host={tool.host} className="panel p-3 text-sm" />
+              </div>
+            )}
             {tab === "inv" && (
               <div className="grid grid-cols-4 gap-1">
                 {s.inv.map((x, i) => {
@@ -295,7 +399,7 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
                         e.preventDefault();
                         if (!it || !game) return;
                         const opts: Option[] = [
-                          { label: it.heals ? "Eat" : it.lore ? "Read" : "Use", target: it.name, colour: "#ff9a3a", run: () => game.use(i) },
+                          { label: it.heals ? "Eat" : it.lore ? "Read" : it.weapon ? "Wield" : "Use", target: it.name, colour: "#ff9a3a", run: () => game.use(i) },
                           { label: "Put on action bar", target: it.name, colour: "#ff9a3a", run: () => { const free = s.bar.indexOf(null); if (free < 0) store.say("Your action bar is full. Right-click a slot to empty it."); else { s.bar[free] = `item:${it.id}`; store.emit(); } } },
                           { label: "Examine", target: it.name, colour: "#ff9a3a", run: () => store.say(it.examine) },
                           { label: "Drop", target: it.name, colour: "#ff9a3a", run: () => game.drop(i) },
@@ -310,23 +414,54 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
                 })}
               </div>
             )}
-            {tab === "skills" && (
-              <>
-                <div className="grid grid-cols-2 gap-1">
-                  {SKILLS.map((k) => {
-                    const xp = s.xp[k.key], lv = levelForXp(xp), next = nextLevelXp(lv);
-                    const pct = lv >= 99 ? 100 : ((xp - xpForLevel(lv)) / (next - xpForLevel(lv))) * 100;
+            {tab === "skills" && (() => {
+              const lv = (k: SkillKey) => levelForXp(s.xp[k]);
+              const open = skill ? SKILLS.find((k) => k.key === skill)! : null;
+              if (open) {
+                const xp = s.xp[open.key], l = lv(open.key), next = nextLevelXp(l);
+                return (
+                  <div className="grid gap-1.5">
+                    <button className="underline text-[11px] text-left" onClick={() => setSkill(null)}>&larr; All skills</button>
+                    <p className="font-bold text-sm">{open.icon} {open.name} <span style={{ color: "#ffe24a" }}>{l}</span></p>
+                    <p className="opacity-80">{STAGES.find((x) => x.key === open.stage)!.name}</p>
+                    <p>{open.blurb}</p>
+                    <p>{xp.toLocaleString()} XP{l < 99 ? `; ${(next - xp).toLocaleString()} to level ${l + 1}` : ""}</p>
+                    <p style={{ color: open.trainedBy ? "#3ac83a" : "#ffb03a" }}>{open.trainedBy ? `Trained by: ${open.trainedBy}` : "No way to train it in the world yet: it arrives as the house build mode does."}</p>
+                  </div>
+                );
+              }
+              return (
+                <div className="grid gap-2">
+                  {STAGES.map((st) => {
+                    const list = SKILLS.filter((k) => k.stage === st.key);
                     return (
-                      <div key={k.key} className="p-1 relative" style={{ background: "#3a3226", border: "1px solid #000" }} title={`${k.name}: ${k.blurb}\n${xp.toLocaleString()} XP${lv < 99 ? `, ${(next - xp).toLocaleString()} to level ${lv + 1}` : ""}`}>
-                        <div className="flex justify-between"><span>{k.icon} {k.name}</span><b style={{ color: "#ffe24a" }}>{lv}</b></div>
-                        <div className="h-1 mt-0.5 bg-black/50"><div className="h-full" style={{ width: `${pct}%`, background: "#3ac83a" }} /></div>
+                      <div key={st.key}>
+                        <p className="flex justify-between font-semibold text-[11px]" title={st.blurb}>
+                          <span style={{ color: "#ffb03a" }}>{st.name}</span><span className="opacity-70">{list.reduce((a, k) => a + lv(k.key), 0)}</span>
+                        </p>
+                        <div className="grid grid-cols-3 gap-0.5 mt-0.5">
+                          {list.map((k) => {
+                            const xp = s.xp[k.key], l = lv(k.key), next = nextLevelXp(l);
+                            const pct = l >= 99 ? 100 : ((xp - xpForLevel(l)) / (next - xpForLevel(l))) * 100;
+                            return (
+                              <button key={k.key} className="p-1 text-left" style={{ background: "#2b241a", border: "1px solid #000", opacity: k.trainedBy ? 1 : 0.7 }}
+                                title={`${k.name}: ${k.blurb}\n${xp.toLocaleString()} XP${l < 99 ? `, ${(next - xp).toLocaleString()} to level ${l + 1}` : ""}\n${k.trainedBy ? `Trained by: ${k.trainedBy}` : "Not trainable in the world yet."}`}
+                                onClick={() => setSkill(k.key)}>
+                                <span className="flex justify-between items-baseline gap-1"><span className="truncate">{k.icon}</span><b style={{ color: "#ffe24a" }}>{l}</b></span>
+                                <span className="block truncate text-[10px] opacity-80">{k.name}</span>
+                                <span className="block h-0.5 mt-0.5 bg-black/50"><span className="block h-full" style={{ width: `${pct}%`, background: "#3ac83a" }} /></span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     );
                   })}
+                  <p className="text-center">Total level: <b style={{ color: "#ffe24a" }}>{store.total()}</b> &middot; Combat: <b style={{ color: "#ffe24a" }}>{combatLevel(lv)}</b></p>
+                  <p className="opacity-60 text-center">Every job a house takes, by the stage it happens in. Dimmed skills cannot be trained yet.</p>
                 </div>
-                <p className="mt-2 text-center">Total level: <b style={{ color: "#ffe24a" }}>{store.total()}</b></p>
-              </>
-            )}
+              );
+            })()}
             {tab === "quests" && (
               journal ? (() => {
                 const q = QUESTS.find((x) => x.id === journal)!, st = store.quest(q.id);
@@ -387,13 +522,30 @@ export default function HUD({ store, game, pick, menuAt, onMenuClosed, signedIn,
                 ))}
               </div>
             )}
+            {tab === "settings" && (
+              <div className="grid gap-2">
+                <p className="font-semibold">Settings</p>
+                <label className="flex items-center justify-between gap-2"><span>Run (R)</span>
+                  <input type="checkbox" checked={s.run} onChange={() => game?.toggleRun()} /></label>
+                <label className="flex items-center justify-between gap-2"><span>Auto retaliate</span>
+                  <input type="checkbox" checked={game?.autoRetaliate ?? true} onChange={() => { if (game) { game.autoRetaliate = !game.autoRetaliate; bump((n) => n + 1); } }} /></label>
+                <p className="opacity-70">Run energy: {Math.floor(s.energy)}%. It drains while you run and comes back while you walk or stand.</p>
+              </div>
+            )}
           </div>
         )}
-        <div className="flex gap-1 justify-end" role="tablist">
-          {TABS.map((t) => (
-            <button key={t.key} role="tab" aria-selected={tab === t.key} title={`${t.label} (${t.hot})`}
-              className="w-9 h-8 grid place-items-center text-base" onClick={() => setTab(tab === t.key ? null : t.key)}
-              style={{ background: tab === t.key ? "#7a3a1a" : "#3a3226", border: "2px solid #000", color: "#fff" }}>{t.icon}</button>
+        <div className="flex" style={{ ...stone, borderTop: tab ? "none" : undefined }}>
+          {[
+            { key: "keys", icon: "⌨", label: "Keys and controls (?)", on: tab === "keys", run: () => setTab(tab === "keys" ? null : "keys") },
+            { key: "settings", icon: "⚙", label: "Settings", on: tab === "settings", run: () => setTab(tab === "settings" ? null : "settings") },
+            { key: "map", icon: "\u{1f5fa}", label: "World map", on: false, run: onWorldMap },
+            { key: "home", icon: "\u{1f3e0}", label: "Home: back to the plaza", on: false, run: onHome },
+            { key: "full", icon: "⛶", label: tool?.fullscreen ? "Fullscreen: stand inside this portal's model" : "No fullscreen in this area", on: false, run: tool?.fullscreen },
+            { key: "chat", icon: "\u{1f4ac}", label: chatOpen ? "Fold the chat" : "Open the chat", on: chatOpen, run: () => setChatOpen(!chatOpen) },
+            { key: "hide", icon: "▾", label: "Fold this panel", on: false, run: () => setTab(null) },
+          ].map((b) => (
+            <button key={b.key} className="flex-1 h-8 grid place-items-center text-base disabled:opacity-30" title={b.label} aria-label={b.label}
+              disabled={!b.run} onClick={b.run} style={tabBtn(b.on)}>{b.icon}</button>
           ))}
         </div>
       </div>

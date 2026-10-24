@@ -1,6 +1,7 @@
 // One area's game: the teachers, monsters, objects and loot standing in it, what a click or a
-// right-click on each of them offers, combat on RuneScape's 0.6-second tick, drops, and quest
-// progress. The player lives in the Store; this runs while the area is open.
+// right-click on each of them offers, combat on RuneScape's 0.6-second tick (its accuracy and
+// max-hit formulas, the wielded weapon's bonuses, combat styles and the special attack), run
+// energy, drops, and quest progress. The player lives in the Store; this runs while the area is open.
 
 import { Thing, World, type Pick } from "../engine";
 import { housePortalMesh, idle, logPileMesh, lootMesh, monsterMesh, npcMesh } from "../entities";
@@ -14,6 +15,17 @@ export const TICK_MS = 600;
 const MELEE = 3.3;          // ft: close enough to swing
 const LEASH = 22;           // ft from home before a monster gives up
 const LOOT_TICKS = 150;     // 90 s on the ground
+const SPEC_REGEN = 50;      // ticks per 10% of special attack energy (RuneScape's 30 s)
+// what one tick of running costs and one tick of anything else gives back, in % of run energy
+const RUN_COST = 0.65, RUN_REGEN = 0.9;
+/** The three styles' stance bonuses and where their XP goes: accurate, controlled, defensive. */
+const STYLES = [
+  { attack: 3, strength: 0, defence: 0, xp: ["attack"] as const },
+  { attack: 1, strength: 1, defence: 1, xp: ["attack", "strength", "defence"] as const },
+  { attack: 0, strength: 0, defence: 3, xp: ["defence"] as const },
+];
+/** The seed model's radial splits, as the cuts that make them: halves, quarters, eighths. */
+const RIPS = Math.round(Math.log2(F.wedgesPerLog));
 
 export interface Option { label: string; target: string; colour?: string; run: () => void }
 /** RuneScape's chatbox menu ("Select an Option") and its text prompt ("Enter name:"). */
@@ -52,6 +64,10 @@ export class AreaGame {
   script: AreaScript | null = null;
   prompt: Prompt | null = null;
   fighting: string | null = null;
+  /** The special attack is armed: the next swing uses it. */
+  specOn = false;
+  /** Fight back when something attacks you and you are not already fighting. */
+  autoRetaliate = true;
   private mobs = new Map<string, Mob>();
   private loot = new Map<string, Loot>();
   private cool = 0;
@@ -79,6 +95,35 @@ export class AreaGame {
     window.addEventListener("dome-creator-design", this.onCreator);
     this.timer = window.setInterval(() => this.step(), TICK_MS);
     this.markers();
+    this.world.setWeapon(this.store.weapon().look && this.store.s.worn.weapon ? this.store.weapon().look : null);
+    this.world.setRun(this.store.s.run && this.store.s.energy > 0);
+  }
+
+  /** What is in the walker's hand follows what is worn. */
+  syncWeapon() { this.world.setWeapon(this.store.s.worn.weapon ? this.store.weapon().look : null); }
+
+  /** Run on or off (no energy, no running). */
+  toggleRun(on = !this.store.s.run) {
+    const s = this.store;
+    if (on && s.s.energy < 1) { s.say("You are too tired to run."); return; }
+    s.s.run = on; this.world.setRun(on); s.emit();
+  }
+
+  /** Arm the weapon's special attack for the next swing (or disarm it). */
+  toggleSpec() {
+    const s = this.store, spec = s.weapon().spec;
+    if (!spec) { s.say("This weapon has no special attack."); return; }
+    if (!this.specOn && s.s.spec < spec.cost) { s.say(`You need ${spec.cost}% special attack energy. You have ${Math.floor(s.s.spec)}%.`); return; }
+    this.specOn = !this.specOn; this.changed();
+  }
+
+  setStyle(i: number) { this.store.s.style = i; this.store.emit(); }
+
+  /** Home: back to the plaza at once (from another area, Portal.tsx takes you to the hilltop). */
+  homeTeleport() {
+    this.fighting = null; this.specOn = false;
+    if (this.area === "hub") { this.world.teleport(0, 17); this.store.say("You teleport home to the plaza."); return true; }
+    return false;
   }
 
   dispose() {
@@ -234,6 +279,7 @@ export class AreaGame {
         this.store.setQuest(q.id, { stage: 1 });
         this.store.say(`You have started a new quest: ${q.name}.`, "quest");
       }
+      if (npc === "sam" && !this.store.count("chainsaw") && this.store.give("chainsaw", 1)) this.store.say("Splitter Sam hands you a chainsaw.", "quest");
       this.changed();
     });
   }
@@ -271,13 +317,18 @@ export class AreaGame {
     this.markers();
   }
 
+  /** Rip one section from the pile with the chainsaw: halves, quarters, eighths, then its wedges. */
   split(id: string) {
+    const s = this.store;
+    if (!s.count("chainsaw")) { s.say("You need a chainsaw to rip a section. Splitter Sam has a spare: talk to him."); return; }
     this.world.walkNear(id, 4, () => {
       this.fighting = null;
-      this.splitting = 3;   // three ticks of swinging, then a wedge
-      this.store.say("You swing at the log...");
+      this.ripped = 0;
+      this.splitting = 2;
+      s.say("You rev the chainsaw and rip the section in half...");
     });
   }
+  private ripped = 0;
 
   private takeLoot(key: string, item: string) {
     this.world.walkNear(key, 1.8, () => {
@@ -342,17 +393,26 @@ export class AreaGame {
     this.tick++;
     this.script?.tick?.();
     const s = this.store, p = this.world.playerAt();
-    // splitting the log pile
+    // ripping a section from the log pile: each cut doubles the pieces, the last leaves the wedges
     if (this.splitting > 0 && --this.splitting === 0) {
-      if (s.give("wedge", 1)) {
-        s.addXp("splitting", 15);
-        this.world.splat("player", "+15 Splitting", "xp");
+      this.ripped++;
+      s.addXp("splitting", 15);
+      this.world.splat("player", "+15 Splitting", "xp");
+      if (this.ripped < RIPS) {
+        s.say(`... into ${2 ** (this.ripped + 1) === F.wedgesPerLog ? "eighths" : "quarters"}...`);
+        this.splitting = 2;
+      } else if (s.give("wedge", F.wedgesPerLog)) {
         if (Math.random() < 0.3) s.give("bark", 1);
-        s.say("You split off a wedge.");
+        s.say(`The section falls apart into ${F.wedgesPerLog} wedges, each ${`1/${F.wedgesPerLog}`} of the round.`);
         this.questInventory();
-        if (s.count("wedge") < F.wedgesPerLog && s.freeSlots() > 0) this.splitting = 3;
       } else s.say("You don't have enough inventory space.");
     }
+    // run energy and the special attack's
+    if (s.s.run && this.world.isMoving()) {
+      s.s.energy = Math.max(0, s.s.energy - RUN_COST);
+      if (s.s.energy <= 0) { s.s.run = false; this.world.setRun(false); s.say("You are out of run energy."); }
+    } else if (s.s.energy < 100) s.s.energy = Math.min(100, s.s.energy + RUN_REGEN);
+    if (this.tick % SPEC_REGEN === 0 && s.s.spec < 100) s.s.spec = Math.min(100, s.s.spec + 10);
     // regeneration: a hitpoint every ten ticks
     if (this.tick % 10 === 0 && s.s.hp < s.maxHp()) { s.s.hp++; s.emit(); }
     if (this.cool > 0) this.cool--;
@@ -374,9 +434,11 @@ export class AreaGame {
         if (d > MELEE) this.world.moveThing(m.key, p.x + (at.x - p.x) / d * 2.4, p.z + (at.z - p.z) / d * 2.4);
         else if (--m.cool <= 0) {
           m.cool = m.def.speed;
-          const hit = this.roll((m.def.level + 8) * 64, (s.level("upkeep") + 8) * 64);
+          this.world.attackAnim(m.key);
+          const hit = this.roll((m.def.level + 9) * 64, (s.level("defence") + 9 + STYLES[s.s.style].defence) * 64);
           const dmg = hit ? rnd(0, m.def.maxHit) : 0;
           s.s.hp = Math.max(0, s.s.hp - dmg);
+          if (this.autoRetaliate && !this.fighting && !this.splitting) this.fighting = m.key;
           this.world.splat("player", String(dmg), dmg ? "hit" : "miss");
           this.world.setBar("player", s.s.hp / s.maxHp());
           s.emit();
@@ -396,17 +458,27 @@ export class AreaGame {
       const d = Math.hypot(at.x - p.x, at.z - p.z);
       if (d > MELEE) this.world.walkNear(f.key, MELEE - 0.4, () => undefined);
       else if (this.cool <= 0) {
-        this.cool = 4;
+        const w = s.weapon(), st = STYLES[s.s.style];
+        this.cool = w.speed;
         this.world.face(f.key);
         f.angry = true;
-        const power = s.power();
-        const hit = this.roll((s.level("upkeep") + 8) * (64 + power * 4), (f.def.level + 8) * 64);
-        const maxHit = 1 + Math.floor(s.level("upkeep") / 6) + Math.floor(power / 2);
-        const dmg = hit ? Math.min(f.hp, rnd(1, maxHit)) : 0;
+        // the special attack, if armed and paid for
+        const spec = this.specOn && w.spec && s.s.spec >= w.spec.cost ? w.spec : null;
+        this.specOn = false;
+        if (spec) { s.s.spec -= spec.cost; s.s.energy = Math.min(100, s.s.energy + 10); this.world.splat("player", spec.name, "xp"); }
+        this.world.attackAnim("player", spec ? "spec" : "hit");
+        // RuneScape's melee: effective levels, the attack roll against the defence roll, the max hit
+        const effAtt = s.level("attack") + 8 + st.attack, effStr = s.level("strength") + 8 + st.strength;
+        const hit = this.roll(effAtt * (w.attack + 64) * (spec ? spec.accuracy : 1), (f.def.level + 9) * 64);
+        const maxHit = Math.floor(0.5 + (effStr * (w.strength + 64)) / 640);
+        const dmg = hit ? Math.min(f.hp, rnd(0, maxHit)) : 0;
         f.hp -= dmg;
         this.world.splat(f.key, String(dmg), dmg ? "hit" : "miss");
         this.world.setBar(f.key, f.hp / f.def.hp);
-        if (dmg) { s.addXp("upkeep", dmg * 4); s.addXp("hitpoints", dmg * 1.33); }
+        if (dmg) {
+          for (const k of st.xp) s.addXp(k, (dmg * 4) / st.xp.length);
+          s.addXp("hitpoints", dmg * 1.33);
+        }
         if (f.hp <= 0) this.kill(f);
       }
     } else if (this.fighting) this.fighting = null;
@@ -480,8 +552,11 @@ export class AreaGame {
       return;
     }
     if (item.lore) { this.read(item.lore); return; }
+    if (item.weapon) { if (s.wield(slot)) { this.specOn = false; this.syncWeapon(); } return; }
     s.say(item.examine);
   }
+
+  unwield() { this.store.unwield(); this.specOn = false; this.syncWeapon(); }
 
   read(id: string) {
     const s = this.store, l = loreById(id);

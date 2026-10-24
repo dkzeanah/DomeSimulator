@@ -3,8 +3,14 @@
 // gateway to each tool round it, teachers on the plaza and the things that destroy buildings
 // out past the gateways; /portal/<tool> is that tool's own space and control panel.
 // docs/portal-world.md is the plan.
+//
+// Round the minimap, as in Old School RuneScape: the hitpoints, run and special attack orbs, home
+// (straight back to the plaza) and the world map; a click on the minimap walks there. A tool's
+// controls sit in the control panel's tool tab, and go fullscreen: the space seen first person,
+// with the same controls docked beside it.
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { api } from "../lib/api";
 import { useMeta } from "../lib/meta";
@@ -13,7 +19,7 @@ import { World, hubGates, THREE, type Gate, type Pick } from "../world/engine";
 import { AreaGame, type HouseTrip } from "../world/game/area";
 import { HOUSE_STYLES, houseStyle } from "../world/game/content";
 import { buildEstate } from "../world/estates";
-import HUD from "../world/game/HUD";
+import HUD, { HostSlot } from "../world/game/HUD";
 import { Store, clean, hasProgress, loadLocal, type Save } from "../world/game/store";
 import { SPACES, spaceByKey, type Space } from "../world/spaces";
 import { TOOLS } from "../world/tools";
@@ -96,10 +102,21 @@ export default function Portal({ island = false }: { island?: boolean }) {
   const [leaving, setLeaving] = useState<string | null>(null);
   const [pick, setPick] = useState<Pick | null>(null);
   const [menuAt, setMenuAt] = useState<Pick | null>(null);
-  // a phone has no room for the panel over the world: it folds to a button
-  const [panel, setPanel] = useState(() => typeof window === "undefined" || window.innerWidth >= 640);
-  // the game's side panel (inventory, skills...) shares the right edge with the tool's panel
-  const [sideOpen, setSideOpen] = useState(true);
+  const [worldMap, setWorldMap] = useState(false);
+  const [full, setFull] = useState(false);
+  const page = useRef<HTMLDivElement>(null);
+  // the world fills the window below whatever the site puts above it (the header, the staging or
+  // view-as banners), so the control panel's bottom row is never cut off
+  const [above, setAbove] = useState(56);
+  useEffect(() => {
+    const f = () => { const el = page.current; if (el) setAbove(Math.max(0, el.getBoundingClientRect().top + window.scrollY)); };
+    f(); window.addEventListener("resize", f);
+    return () => window.removeEventListener("resize", f);
+  }, []);
+  const bigMap = useRef<HTMLCanvasElement>(null);
+  // the tool's panel and the house's build mode render once into kept elements, which the
+  // control panel's tab and the fullscreen dock take turns to hold
+  const toolHost = useMemo(() => document.createElement("div"), []);
   const s = store();
   const saveLoaded = useAccountSave(s, Boolean(me));
   const { house, missing } = useHouse(owner, me, s);
@@ -179,7 +196,7 @@ export default function Portal({ island = false }: { island?: boolean }) {
     else s.say(arrive ?? "You are back on the hilltop.");
     const home = () => (house ? w.walkPoint(0, 96) : space ? w.walkPoint(0, -30) : w.walkPoint(0, 17));
     window.addEventListener("portal-home", home);
-    return () => { window.removeEventListener("portal-home", home); g.dispose(); game.current = null; w.dispose(); world.current = null; };
+    return () => { window.removeEventListener("portal-home", home); g.dispose(); game.current = null; w.dispose(); world.current = null; setFull(false); };
   }, [key, owner, house?.style, house?.owner, island, islandMod, saveLoaded && fresh]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // the house portal's trips
@@ -205,8 +222,60 @@ export default function Portal({ island = false }: { island?: boolean }) {
     return () => window.removeEventListener("portal-house", on);
   }, [me, go, s]);
 
+  /** Home teleport: on the hilltop, straight to the plaza; anywhere else, straight to the hilltop. */
+  const homeTeleport = () => {
+    if (game.current?.homeTeleport()) return;
+    s.say("You teleport home.");
+    go("/portal", { state: { from: "home" } });
+  };
+
+  // the world map follows the world while it is open
+  useEffect(() => {
+    if (!worldMap) return;
+    let raf = 0;
+    const draw = () => { if (bigMap.current && world.current) world.current.drawWorldMap(bigMap.current); raf = requestAnimationFrame(draw); };
+    draw();
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape" || e.key.toLowerCase() === "m") setWorldMap(false); };
+    window.addEventListener("keydown", esc);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("keydown", esc); };
+  }, [worldMap]);
+  useEffect(() => {
+    const open = (e: KeyboardEvent) => { if (e.key.toLowerCase() === "m" && !(e.target as HTMLElement)?.closest?.("input, textarea, select")) setWorldMap((x) => !x); };
+    window.addEventListener("keydown", open);
+    return () => window.removeEventListener("keydown", open);
+  }, []);
+
+  // fullscreen: the browser's, and the walker's eyes
+  const enterFull = () => {
+    setFull(true);
+    world.current?.setFirstPerson(true);
+    page.current?.requestFullscreen?.().catch(() => undefined);
+  };
+  const leaveFull = () => {
+    setFull(false);
+    world.current?.setFirstPerson(false);
+    if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
+  };
+  useEffect(() => {
+    const f = () => { if (!document.fullscreenElement && full) { setFull(false); world.current?.setFirstPerson(false); } };
+    document.addEventListener("fullscreenchange", f);
+    return () => document.removeEventListener("fullscreenchange", f);
+  }, [full]);
+
+  const hp = s.s.hp, maxHp = s.maxHp(), spec = game.current ? s.weapon().spec : undefined;
+  const orb = (label: string, value: string, frac: number, colour: string, onClick?: () => void, lit?: boolean, title?: string) => (
+    <button className="relative w-10 h-10 rounded-full grid place-items-center text-[11px] font-bold shadow-lg disabled:cursor-default" disabled={!onClick} onClick={onClick}
+      title={title || label} aria-label={title || label}
+      style={{ background: `conic-gradient(${colour} ${Math.max(0, Math.min(1, frac)) * 360}deg, #2a201a 0)`, border: `2px solid ${lit ? "#ffe24a" : "#000"}`, color: "#fff", textShadow: "0 1px 1px #000" }}>
+      <span className="leading-none text-center">{value}<span className="block text-[8px] font-semibold opacity-90">{label}</span></span>
+    </button>
+  );
+
+  const toolTab = space && Tool ? { title: space.name, colour: space.colour, host: toolHost, fullscreen: enterFull }
+    : building && house ? { title: "Build mode", icon: "\u{1f3e0}", colour: "#b07cff", host: toolHost } : null;
+
   return (
-    <div className="relative w-full overflow-hidden select-none" style={{ height: "calc(100dvh - 56px)", background: "#0d1117" }}>
+    <div ref={page} className="relative w-full overflow-hidden select-none" style={{ height: full ? "100dvh" : `calc(100dvh - ${above}px)`, background: "#0d1117" }}>
       <canvas ref={canvas} className="absolute inset-0 w-full h-full block touch-none" style={{ cursor: pick?.thing || pick?.gate || pick?.part ? "pointer" : "crosshair" }}
         aria-label={space ? `${space.name}: a 3-D space` : "The portal hub: a 3-D world of the project's tools"} />
       <div ref={labels} className="absolute inset-0 pointer-events-none" aria-hidden />
@@ -222,10 +291,9 @@ export default function Portal({ island = false }: { island?: boolean }) {
       )}
       {owner && !house && !missing && <div className="absolute inset-0 grid place-items-center text-[#f4efe6]" style={{ zIndex: 20 }}>Finding the house...</div>}
 
-      {/* build mode: how your house is built */}
-      {building && house && (
-        <aside className="absolute right-3 top-[118px] sm:top-[156px] panel p-4 text-sm overflow-y-auto w-[min(320px,calc(100%-24px))]"
-          style={{ background: "color-mix(in srgb, var(--panel) 92%, transparent)", maxHeight: "calc(100% - 156px - 56px)", zIndex: 4 }}>
+      {/* build mode: how your house is built (shown in the control panel's tool tab) */}
+      {building && house && createPortal(
+        <div>
           <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: "#b07cff" }}>Build mode</p>
           <p className="font-semibold mt-1">How your house is built</p>
           <p className="text-xs muted">Visitors who type your name at the house portal see it this way.</p>
@@ -244,19 +312,30 @@ export default function Portal({ island = false }: { island?: boolean }) {
           </ul>
           <p className="text-[11px] muted mt-2">Building it piece by piece, room by room, is the next phase (docs/portal-world.md).</p>
           <Link className="btn-ghost !py-1.5 inline-block mt-2" to={`/portal/house/${house.owner}`}>Leave build mode</Link>
-        </aside>
-      )}
+        </div>, toolHost)}
 
       {/* where you are (on the island the lesson's box stands here instead) */}
-      <div className="absolute left-3 top-3 max-w-sm text-[#f4efe6] pointer-events-none" style={{ display: island ? "none" : undefined }}>
+      <div className="absolute left-3 top-3 max-w-sm text-[#f4efe6] pointer-events-none" style={{ display: island || full ? "none" : undefined }}>
         <p className="text-[10px] uppercase tracking-[0.25em] text-[#e8b45a] font-semibold">{house ? (building ? "Your house, build mode" : "A house") : space ? "A tool's space" : "Zeanah Lab"}</p>
         <h1 className="text-xl sm:text-2xl font-bold leading-tight" style={{ textShadow: "0 2px 8px rgba(0,0,0,.6)" }}>{house ? house.title : space ? space.name : "The Portal"}</h1>
         <p className="text-xs mt-0.5 opacity-90 max-sm:hidden" style={{ textShadow: "0 1px 6px rgba(0,0,0,.7)" }}>{house ? `${house.line[0].toUpperCase()}${house.line.slice(1)}. The portal by the gate takes you back.` : space ? space.blurb : "A world of dome know-how. Right-click anything."}</p>
       </div>
 
-      {/* the minimap, and the camera buttons beside it */}
-      <canvas ref={map} width={150} height={150} className="absolute right-3 top-3 w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] rounded-full shadow-lg pointer-events-none" aria-hidden />
-      <div className="absolute top-3 right-[116px] sm:right-[156px] flex flex-col gap-1">
+      {/* the minimap: click it to walk there; the orbs beside it, home and the world map below */}
+      <div className="absolute right-3 top-3" style={{ zIndex: 4, display: full ? "none" : undefined }}>
+        <canvas ref={map} width={150} height={150} className="block w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] rounded-full shadow-lg cursor-pointer"
+          aria-label="Minimap: click to walk there" onClick={(e) => world.current?.walkMinimap(e.clientX, e.clientY)} />
+        <button className="absolute -left-1 -bottom-1 w-8 h-8 rounded-full grid place-items-center text-base shadow-lg" title="Home: straight back to the plaza" aria-label="Home teleport"
+          style={{ background: "#3e3529", border: "2px solid #000" }} onClick={homeTeleport}>&#x1f3e0;</button>
+        <button className="absolute -right-1 -bottom-1 w-8 h-8 rounded-full grid place-items-center text-base shadow-lg" title="World map (M)" aria-label="World map"
+          style={{ background: "#3e3529", border: "2px solid #000" }} onClick={() => setWorldMap(true)}>&#x1f5fa;</button>
+      </div>
+      <div className="absolute top-3 right-[112px] sm:right-[152px] flex flex-col gap-1.5" style={{ zIndex: 4, display: full ? "none" : undefined }}>
+        {orb("HP", String(hp), hp / maxHp, "#c82a1a", undefined, false, `Hitpoints: ${hp} of ${maxHp}`)}
+        {orb("Run", String(Math.floor(s.s.energy)), s.s.energy / 100, s.s.run ? "#e8c43a" : "#8a7a3a", () => game.current?.toggleRun(), s.s.run, `Run ${s.s.run ? "on" : "off"} (R): ${Math.floor(s.s.energy)}% energy. Running is twice as fast.`)}
+        {spec && orb("Spec", String(Math.floor(s.s.spec)), s.s.spec / 100, "#3ab0d8", () => game.current?.toggleSpec(), Boolean(game.current?.specOn), `${spec.name}: ${spec.blurb} Costs ${spec.cost}%.`)}
+      </div>
+      <div className="absolute top-3 right-[160px] sm:right-[200px] flex flex-col gap-1" style={{ zIndex: 4, display: full ? "none" : undefined }}>
         {[["Turn left", "↺", () => world.current?.turn(0.4)], ["Turn right", "↻", () => world.current?.turn(-0.4)],
           ["Zoom in", "+", () => world.current?.zoom(0.8)], ["Zoom out", "−", () => world.current?.zoom(1.25)]].map(([label, glyph, fn]) => (
           <button key={label as string} className="w-7 h-7 grid place-items-center text-sm rounded" style={{ background: "rgba(43,36,26,.85)", border: "1px solid #000", color: "#fff" }}
@@ -264,31 +343,54 @@ export default function Portal({ island = false }: { island?: boolean }) {
         ))}
       </div>
 
-      {/* the tool's own controls */}
-      {space && !panel && (
-        <button className="absolute right-3 top-[118px] sm:top-[156px] btn-ghost !py-1.5 text-sm" style={{ background: "color-mix(in srgb, var(--panel) 90%, transparent)", borderColor: space.colour }}
-          onClick={() => setPanel(true)}>Controls</button>
-      )}
-      {space && panel && (
-        <aside className={`absolute right-3 top-[118px] sm:top-[156px] panel p-4 text-sm overflow-y-auto ${Tool ? "w-[min(340px,calc(100%-24px))]" : "w-[min(300px,calc(100%-24px))]"}`}
-          style={{ background: "color-mix(in srgb, var(--panel) 92%, transparent)", maxHeight: sideOpen ? "calc(100% - 156px - 380px)" : "calc(100% - 156px - 56px)", minHeight: 120, zIndex: 4 }}>
-          {Tool ? (
-            <Suspense fallback={<p className="muted text-xs">Loading the tool...</p>}><Tool world={world} colour={space.colour} /></Suspense>
-          ) : (
-            <>
-              <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: space.colour }}>Control panel</p>
-              <p className="font-semibold mt-1">Coming to this space</p>
-              <ul className="mt-2 space-y-1">
-                {space.controls.map((c) => <li key={c} className="flex gap-2"><span aria-hidden style={{ color: space.colour }}>&#9656;</span><span>{c}</span></li>)}
-              </ul>
-              <p className="text-xs muted mt-3">Ported from <code>{space.ports}</code>.</p>
-            </>
-          )}
-          <div className="flex gap-2 mt-3">
-            <Link className="btn-ghost !py-1.5 inline-block" to="/portal" state={{ from: space.key }}>Back to the hilltop</Link>
-            <button className="btn-ghost !py-1.5" onClick={() => setPanel(false)}>Fold</button>
+      {/* the tool's own controls render once, into the element the control panel and fullscreen share */}
+      {space && createPortal(
+        Tool ? (
+          <Suspense fallback={<p className="muted text-xs">Loading the tool...</p>}><Tool world={world} colour={space.colour} /></Suspense>
+        ) : (
+          <>
+            <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: space.colour }}>Control panel</p>
+            <p className="font-semibold mt-1">Coming to this space</p>
+            <ul className="mt-2 space-y-1">
+              {space.controls.map((c) => <li key={c} className="flex gap-2"><span aria-hidden style={{ color: space.colour }}>&#9656;</span><span>{c}</span></li>)}
+            </ul>
+            <p className="text-xs muted mt-3">Ported from <code>{space.ports}</code>.</p>
+          </>
+        ), toolHost)}
+
+      {/* fullscreen: inside the space, first person, the controls docked on the right */}
+      {full && toolTab && (
+        <>
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-white/80 text-xl" aria-hidden>+</div>
+          <div className="absolute left-3 top-3 text-[#f4efe6] text-xs pointer-events-none" style={{ textShadow: "0 1px 4px #000" }}>
+            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold" style={{ color: toolTab.colour }}>Fullscreen editor</p>
+            <p className="text-lg font-bold">{toolTab.title}</p>
+            <p className="opacity-90">Drag to look, W A S D to walk, click a piece to inspect it. Esc leaves.</p>
           </div>
-        </aside>
+          <aside className="absolute right-0 top-0 bottom-0 w-[min(420px,92vw)] overflow-y-auto p-3" style={{ background: "color-mix(in srgb, var(--panel) 94%, transparent)", borderLeft: `3px solid ${toolTab.colour}`, zIndex: 8 }}>
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-bold" style={{ color: toolTab.colour }}>{toolTab.title}</p>
+              <button className="btn-ghost !py-1 text-sm" onClick={leaveFull}>Leave fullscreen</button>
+            </div>
+            <HostSlot host={toolHost} className="text-sm" />
+          </aside>
+        </>
+      )}
+
+      {/* the world map */}
+      {worldMap && (
+        <div className="absolute inset-0 grid place-items-center bg-black/60 p-3" style={{ zIndex: 35 }} onClick={() => setWorldMap(false)}>
+          <div className="p-2 shadow-2xl" style={{ background: "#3e3529", border: "3px solid #000", color: "#f4efe6" }} onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-1 pb-1.5">
+              <p className="font-bold">World map: {island ? "Wedge Island" : house ? house.title : space ? space.name : "The hilltop"}</p>
+              <button className="text-sm underline" onClick={() => setWorldMap(false)}>Close (Esc)</button>
+            </div>
+            <canvas ref={bigMap} width={640} height={640} className="block w-[min(640px,calc(100vw-48px),calc(100dvh-140px))] aspect-square cursor-pointer"
+              aria-label="World map: click to walk there"
+              onClick={(e) => { const w = world.current; if (!w || !bigMap.current) return; const at = w.worldMapPoint(bigMap.current, e.clientX, e.clientY); w.walkPoint(at.x, at.z); setWorldMap(false); }} />
+            <p className="text-[11px] opacity-80 pt-1.5 px-1">Yellow: people. Red: monsters. Orange: loot. Coloured rings: gateways. Click anywhere to walk there.{!island && !house && !space ? "" : " The home button takes you to the hilltop."}</p>
+          </div>
+        </div>
       )}
 
       {/* the nearest gateway */}
@@ -299,7 +401,7 @@ export default function Portal({ island = false }: { island?: boolean }) {
       )}
 
       <HUD store={s} game={game.current} pick={pick} menuAt={menuAt} onMenuClosed={() => setMenuAt(null)} signedIn={Boolean(me)}
-        folded={Boolean((Tool && panel) || building)} onSidePanel={setSideOpen} />
+        tool={toolTab} onWorldMap={() => setWorldMap(true)} onHome={homeTeleport} hidden={full} />
 
       {/* through the gateway */}
       <div className="absolute inset-0 grid place-items-center pointer-events-none transition-opacity duration-500"
