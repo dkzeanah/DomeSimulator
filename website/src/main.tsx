@@ -18,6 +18,10 @@ const Recyclers = lazy(() => import("./pages/Recyclers"));
 const Thanks = lazy(() => import("./pages/Thanks"));
 const CutList = lazy(() => import("./pages/CutList"));
 const WedgeCalculator = lazy(() => import("./pages/WedgeCalculator"));
+const SketchPage = lazy(() => import("./pages/Tools").then((m) => ({ default: m.SketchPage })));
+const SoftwarePage = lazy(() => import("./pages/Tools").then((m) => ({ default: m.SoftwarePage })));
+const MyLinksPage = lazy(() => import("./pages/Tools").then((m) => ({ default: m.MyLinksPage })));
+const AdminTools = lazy(() => import("./pages/AdminTools"));
 const EpisodeList = lazy(() => import("./pages/Episodes").then((m) => ({ default: m.EpisodeList })));
 const EpisodePage = lazy(() => import("./pages/Episodes").then((m) => ({ default: m.EpisodePage })));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -73,6 +77,10 @@ createRoot(document.getElementById("root")!).render(
               <Route path="media" element={<MediaPage />} />
               <Route path="episodes" element={<EpisodeList />} />
               <Route path="calculator" element={<WedgeCalculator />} />
+              <Route path="sketch" element={<SketchPage />} />
+              <Route path="software" element={<SoftwarePage />} />
+              <Route path="mylinks" element={<MyLinksPage />} />
+              <Route path="admin/tools" element={<AdminTools />} />
               <Route path="episodes/:slug" element={<EpisodePage />} />
               <Route path="portal" element={<Portal />} />
               <Route path="portal/:space" element={<Portal />} />

@@ -5,10 +5,20 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { api } from "./api";
 
 export interface MyDome { longIn: number; status: string; note: string }
-export interface Me { id: number; email: string; username: string; displayName: string; role: string; bio: string; city: string; region: string; country: string; publicProfile: boolean; emailVerified?: boolean; dome: MyDome | null }
+export interface Me { id: number; email: string; username: string; displayName: string; role: string; bio: string; city: string; region: string; country: string; publicProfile: boolean; emailVerified?: boolean; dome: MyDome | null; realRole?: string; viewingAsUser?: boolean }
 
 /** The owner (admin) or a manager: may open the admin pages. */
 export const isStaff = (me: Me | null) => me?.role === "admin" || me?.role === "manager";
+
+/** Staff by their real role, even while they view the site as a regular member. */
+export const isRealStaff = (me: Me | null) => me?.realRole === "admin" || me?.realRole === "manager";
+
+/** Look at the whole site as a regular member would, or go back. The server reads the zl_view
+ *  cookie and treats staff as a member while it says "user"; it never adds rights to anyone. */
+export function setViewAsUser(on: boolean) {
+  document.cookie = on ? "zl_view=user; path=/; SameSite=Lax; max-age=86400" : "zl_view=; path=/; SameSite=Lax; max-age=0";
+  window.location.reload();
+}
 
 export const JOIN_STEPS = [
   { key: "read", label: "Read what the book proves", unlock: "the free sample" },

@@ -6,6 +6,9 @@ import { hmac, randomToken, sameString, sha256Hex } from "./crypto";
 import { Ctx, Env, HttpError, User, nowIso } from "./http";
 
 export const COOKIE = "zl_sid";
+/** "user" while the owner or a manager looks at the site as a regular member would. It only ever
+ *  takes rights away: a member who sets it is still a member. */
+export const VIEW_COOKIE = "zl_view";
 const SESSION_DAYS = 30;
 
 export function normaliseEmail(e: string) {
@@ -160,6 +163,11 @@ export async function loadUser(ctx: Ctx): Promise<User | null> {
     const r = await ctx.env.DB.prepare("UPDATE users SET username = ? WHERE id = ? AND NOT EXISTS (SELECT 1 FROM users WHERE username = ?)").bind(own, row.id, own).run();
     if (r.meta.changes) row.username = own;
   }
+  // viewing as a regular member: every check below this sees a member, and /me says who they really are
+  if (isStaffRole(role) && readCookie(ctx.request, VIEW_COOKIE) === "user") {
+    row.real_role = role;
+    row.role = "member";
+  }
   return row;
 }
 
@@ -187,6 +195,7 @@ export function publicUser(u: User | null) {
   if (!u) return null;
   return {
     id: u.id, email: u.email, username: u.username || "", displayName: u.display_name, role: u.role,
+    realRole: u.real_role || u.role, viewingAsUser: Boolean(u.real_role),
     dome: u.dome_long_in ? { longIn: u.dome_long_in, status: u.dome_status || "planning", note: u.dome_note || "" } : null,
     bio: u.bio || "", city: u.city || "", region: u.region || "", country: u.country || "",
     publicProfile: Boolean(u.public_profile), createdAt: u.created_at, emailVerified: Boolean(u.email_verified_at),

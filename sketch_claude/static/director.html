@@ -32,9 +32,10 @@
   </section>
   <aside class="side">
     <nav class="tabs" id="tabs">
-      <button data-t="inspect" class="on">Inspector</button><button data-t="script">Script</button><button data-t="cast">Cast</button>
+      <button data-t="outline">Outline</button><button data-t="inspect" class="on">Inspector</button><button data-t="script">Script</button><button data-t="cast">Cast</button>
       <button data-t="stats">Analysis</button><button data-t="camera">Camera</button><button data-t="render">Render</button>
     </nav>
+    <div class="tab" id="tab-outline"><div id="outline" class="outline"></div></div>
     <div class="tab on" id="tab-inspect"><p class="muted">Click a block on the timeline, or a line in the Script, to see and edit its beat.</p></div>
     <div class="tab" id="tab-script"><input id="sc-filter" placeholder="Filter the script"><div id="script" class="script"></div></div>
     <div class="tab" id="tab-cast"><div id="cast"></div></div>

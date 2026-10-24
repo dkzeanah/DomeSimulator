@@ -29,6 +29,7 @@ async function boot() {
   $("#episode").innerHTML = list.map((e) => `<option value="${e.id}" ${e.id === epId ? "selected" : ""}>${esc(e.number)}: ${esc(e.title)}${e.status && e.status !== "scripted" ? " (" + esc(e.status) + ")" : ""}</option>`).join("");
   $("#episode").onchange = () => { location.search = `?episode=${$("#episode").value}`; };
   D.ep = await (await fetch(`/api/episode/${epId}`)).json();
+  D.templates = await beatTemplates(list);
   document.title = `${D.ep.number} ${D.ep.title} - Episode Director`;
   let spec = {};
   try { spec = JSON.parse(qs.get("spec") || "{}"); } catch { spec = {}; }
@@ -89,7 +90,7 @@ async function compile() {
     $("#t-total").textContent = tfmt(tl.total);
     status(`${tfmt(tl.total)} runtime: ${tl.scenes.length} scenes, ${tl.shots.length} shots, ${tl.marks.filter((m) => m.k === "line").length} lines (timed in ${tl.took.toFixed(1)} s)`);
     D.thumbs = [];
-    drawTimeline(); renderScript(); renderStats(); renderCastTab();
+    drawTimeline(); renderScript(); renderStats(); renderCastTab(); renderOutline();
   } catch (e) { status(`Could not time the episode: ${e.message}`); console.error(e); }
   D.busy = false;
 }
@@ -197,6 +198,7 @@ function selectBeat(i, jump = true) {
   document.querySelectorAll(".blk.sel").forEach((e) => e.classList.remove("sel"));
   document.querySelectorAll(`.blk[data-beat="${i}"]`).forEach((e) => e.classList.add("sel"));
   document.querySelectorAll(".script .ln").forEach((e) => e.classList.toggle("sel", +e.dataset.beat === i));
+  document.querySelectorAll(".outline .ob").forEach((e) => e.classList.toggle("sel", +e.dataset.beat === i));
   showTab("inspect");
   renderInspector();
   const m = D.tl?.marks.find((x) => x.i === i);
@@ -234,8 +236,8 @@ function renderInspector() {
   }
   html += `<details ${b.k === "line" ? "" : "open"}><summary>All of the beat (JSON)</summary><textarea id="f-json" rows="9" spellcheck="false">${esc(JSON.stringify(b, null, 1))}</textarea></details>
     <div class="row"><button id="i-apply" class="primary">Apply and re-time</button><button id="i-play">Play from here</button></div>
-    <div class="row"><button id="i-up">Move up</button><button id="i-down">Move down</button><button id="i-dup">Duplicate</button><button id="i-line">+ Line after</button><button id="i-del">Delete</button></div>
-    <div class="row"><button id="i-save">Save episode</button><button id="i-revert">Revert to saved</button></div>`;
+    <div class="row"><button id="i-up">Move up</button><button id="i-down">Move down</button><button id="i-dup">Duplicate</button><select id="i-kind" title="What to add after this beat">${kindOptions()}</select><button id="i-add">+ Add after</button><button id="i-del">Delete</button></div>
+    <div class="row"><button id="i-save">Save episode</button><button id="i-saveas">Save as new episode...</button><button id="i-revert">Revert to saved</button></div>`;
   box.innerHTML = html;
   const read = () => {
     let nb;
@@ -273,9 +275,10 @@ function renderInspector() {
   $("#i-up").onclick = () => move(-1);
   $("#i-down").onclick = () => move(1);
   $("#i-dup").onclick = () => { D.ep.beats.splice(i + 1, 0, JSON.parse(JSON.stringify(b))); redo(i + 1); };
-  $("#i-line").onclick = () => { D.ep.beats.splice(i + 1, 0, { k: "line", who: b.who || "hank", text: "New line.", act: "talk" }); redo(i + 1); };
+  $("#i-add").onclick = () => { D.ep.beats.splice(i + 1, 0, newBeat($("#i-kind").value, b)); redo(i + 1); };
   $("#i-del").onclick = async () => { if (!confirm("Delete this beat?")) return; D.ep.beats.splice(i, 1); D.dirty = true; D.sel = null; await compile(); renderInspector(); };
   $("#i-save").onclick = saveEpisode;
+  $("#i-saveas").onclick = saveAsNew;
   $("#i-revert").onclick = async () => { D.ep = await (await fetch(`/api/episode/${D.ep.id}`)).json(); D.dirty = false; await compile(); renderInspector(); };
 }
 
@@ -284,6 +287,117 @@ async function saveEpisode() {
   const j = await r.json();
   status(r.ok ? `Saved ${D.ep.id}${j.kept ? "; the previous version is kept as " + j.kept : ""}` : `Save failed: ${j.error}`);
   if (r.ok) D.dirty = false;
+}
+
+// ------------------------------------------------------------------ composing: the outline, the beat palette, new episodes
+//
+// The Outline is the episode as a writer sees it: scene by scene, who is in each (the scene's
+// own placings), and every beat in order with its time in the cut. Drag a beat to move it; the
+// episode re-times from its voices exactly as the render will. "+ Add" inserts any kind of beat,
+// started from a real one: the first of that kind in the season's own scripts, so a new beat
+// carries the options the renderer actually reads.
+
+const KIND_NAMES = { scene: "Scene", line: "Line (dialogue)", act: "Action", walk: "Walk", face: "Face someone", expr: "Expression",
+  place: "Place someone", cam: "Camera shot", card: "Title card", lower: "Lower third", figure: "Figure on screen", meme: "Meme hit",
+  gag: "Gag", thought: "Inside a head", vision: "Vision", music: "Music cue", sfx: "Sound effect", wait: "Wait", prop: "Prop",
+  build: "Build step", credits: "Credits", flash: "Flash", mood: "Lighting mood", view: "Dome view (explode, build step, tags)" };
+
+async function beatTemplates(list) {
+  const out = {};
+  for (const e of list) {
+    try {
+      const ep = await (await fetch(`/api/episode/${e.id}`)).json();
+      for (const b of ep.beats || []) if (!out[b.k]) out[b.k] = JSON.parse(JSON.stringify(b));
+    } catch { /* an unreadable episode gives no templates */ }
+  }
+  return out;
+}
+
+function kindOptions() {
+  const kinds = Object.keys(D.templates || {}).length ? Object.keys(D.templates) : Object.keys(KIND_NAMES);
+  return kinds.sort((a, b) => (KIND_NAMES[a] || a).localeCompare(KIND_NAMES[b] || b))
+    .map((k) => `<option value="${k}" ${k === "line" ? "selected" : ""}>${esc(KIND_NAMES[k] || k)}</option>`).join("");
+}
+
+function newBeat(kind, near) {
+  const t = JSON.parse(JSON.stringify(D.templates?.[kind] || { k: kind }));
+  if (kind === "line") Object.assign(t, { who: near?.who || Object.keys(D.series.cast)[0], text: "New line.", act: "talk" }), delete t.frags, delete t.cam;
+  if (kind === "scene") t.name = "New scene";
+  return t;
+}
+
+function summary(b) {
+  const who = (x) => (D.series.cast[x]?.name || x || "").split(" ")[0];
+  switch (b.k) {
+    case "line": return `${who(b.who)}: ${b.text || (b.frags || []).map((f) => (typeof f === "string" ? f : f.text)).join(" ")}`;
+    case "scene": return b.name || "";
+    case "card": case "lower": case "credits": return b.text || b.title || "";
+    case "cam": return D.engine.label(b.cam) || b.cam?.kind || "";
+    case "walk": return `${who(b.who)} walks${b.to ? " to " + (Array.isArray(b.to) ? b.to.map((x) => +x.toFixed?.(1) || x).join(", ") : b.to) : ""}`;
+    case "act": case "expr": case "face": case "gag": return `${who(b.who)} ${b.act || b.expr || b.at || b.name || ""}`;
+    case "music": case "sfx": return b.name || b.cue || b.fn || "";
+    case "wait": return `${b.secs ?? b.dur ?? ""} s`;
+    default: return Object.entries(b).filter(([k]) => k !== "k").slice(0, 2).map(([k, v]) => `${k} ${typeof v === "object" ? "..." : v}`).join(", ");
+  }
+}
+
+function renderOutline() {
+  const box = $("#outline");
+  if (!box || !D.ep) return;
+  const marks = new Map((D.tl?.marks || []).map((m) => [m.i, m]));
+  const groups = [];
+  D.ep.beats.forEach((b, i) => {
+    if (b.k === "scene" || !groups.length) groups.push({ head: b.k === "scene" ? i : null, beats: [] });
+    if (b.k !== "scene") groups[groups.length - 1].beats.push(i);
+  });
+  box.innerHTML = groups.map((g) => {
+    const sc = g.head !== null ? D.ep.beats[g.head] : null;
+    const idx = [g.head, ...g.beats].filter((x) => x !== null);
+    const t0 = Math.min(...idx.map((i) => marks.get(i)?.t0 ?? Infinity)), t1 = Math.max(...idx.map((i) => marks.get(i)?.t1 ?? -Infinity));
+    const cast = sc?.place ? Object.keys(sc.place) : [];
+    const lines = g.beats.filter((i) => D.ep.beats[i].k === "line").length;
+    return `<section class="scn"><header data-beat="${g.head ?? g.beats[0]}"><b>${esc(sc ? sc.name : "Before the first scene")}</b>
+      ${sc ? `<span class="muted">${esc(sc.at || "")} · ${esc(sc.mood || "")}</span>` : ""}
+      ${isFinite(t0) ? `<span class="muted">${tfmt(t0)} - ${tfmt(t1)} (${(t1 - t0).toFixed(0)} s)</span>` : ""}
+      <span class="muted">${lines} lines</span>
+      ${cast.map((c) => `<span class="chip" style="background:${colourOf(c)}">${esc((D.series.cast[c]?.name || c).split(" ")[0])}</span>`).join("")}</header>
+      ${g.beats.map((i) => { const b = D.ep.beats[i], m = marks.get(i); return `<div class="ob${D.sel === i ? " sel" : ""}" draggable="true" data-beat="${i}">
+        <span class="kind" style="${b.k === "line" ? `color:${colourOf(b.who)}` : ""}">${esc(b.k)}</span><span>${esc(summary(b)).slice(0, 140)}</span><span class="t">${m ? tfmt(m.t0) : ""}</span></div>`; }).join("")}
+    </section>`;
+  }).join("") + `<div class="add"><select id="o-kind">${kindOptions()}</select><button id="o-add">+ Add at the end</button>
+    <button id="o-save">Save episode</button><button id="o-saveas">Save as new episode...</button></div>
+    <p class="muted">Drag a beat onto another to move it before that one. Click a beat to edit it in the Inspector; click a scene to edit the scene.</p>`;
+  box.querySelectorAll("[data-beat]").forEach((el) => {
+    el.onclick = () => selectBeat(+el.dataset.beat);
+    if (!el.classList.contains("ob")) return;
+    el.ondragstart = (e) => { e.dataTransfer.setData("text/plain", el.dataset.beat); };
+    el.ondragover = (e) => { e.preventDefault(); el.classList.add("drop"); };
+    el.ondragleave = () => el.classList.remove("drop");
+    el.ondrop = async (e) => {
+      e.preventDefault(); el.classList.remove("drop");
+      const from = +e.dataTransfer.getData("text/plain"), to = +el.dataset.beat;
+      if (from === to) return;
+      const [b] = D.ep.beats.splice(from, 1);
+      D.ep.beats.splice(from < to ? to - 1 : to, 0, b);
+      D.dirty = true; D.sel = null;
+      await compile();
+    };
+  });
+  $("#o-add").onclick = async () => { D.ep.beats.push(newBeat($("#o-kind").value, D.ep.beats[D.ep.beats.length - 1])); D.dirty = true; await compile(); selectBeat(D.ep.beats.length - 1); };
+  $("#o-save").onclick = saveEpisode;
+  $("#o-saveas").onclick = saveAsNew;
+}
+
+async function saveAsNew() {
+  const id = (prompt("The new episode's id (season and episode, like s01e11):", "") || "").trim().toLowerCase();
+  if (!/^s\d{2}e\d{2}$/.test(id)) { if (id) status("An episode id looks like s01e11."); return; }
+  const exists = [...$("#episode").options].some((o) => o.value === id);
+  if (exists && !confirm(`${id} already exists. Replace it? (Its current version is kept.)`)) return;
+  const title = prompt("Its title:", D.ep.title) || D.ep.title;
+  const ep = { ...JSON.parse(JSON.stringify(D.ep)), id, number: id.toUpperCase().replace(/^S0?(\d+)E0?(\d+)$/, "S$1E$2"), title, status: "draft" };
+  const r = await fetch(`/api/episode/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(ep) });
+  if (!r.ok) { status(`Could not save ${id}: ${(await r.json()).error}`); return; }
+  location.search = `?episode=${id}`;
 }
 
 // ------------------------------------------------------------------ the script

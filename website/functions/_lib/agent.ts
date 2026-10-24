@@ -22,6 +22,7 @@ export const SCOPES: Record<string, string> = {
   "campaigns:propose_send": "Propose sending a campaign; the owner approves before anything goes.",
   "catalogue:propose": "Propose a price or product-state change; the owner approves before it applies.",
   "stories:write": "Bedtime stories: save new versions (never publish) and upload narration (scripts/export_storytime.py).",
+  "packs:render": "Dome Sketch build packs: claim a buyer's design, upload its PDF or say why it failed (scripts/render_packs.py).",
   "cutlists:render": "Wedge Builder cut lists: claim a buyer's request, upload its PDF or say why it failed (scripts/render_cutlists.py).",
 };
 

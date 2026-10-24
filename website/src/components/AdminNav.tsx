@@ -14,6 +14,7 @@ const PAGES: [string, string][] = [
   ["/admin/users", "Members"],
   ["/admin/ops", "Automations"],
   ["/admin/agents", "Agents and keys"],
+  ["/admin/tools", "Tools and releases"],
 ];
 
 export default function AdminNav() {

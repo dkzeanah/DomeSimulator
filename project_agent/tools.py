@@ -688,7 +688,49 @@ def _prop(prop_type: str, description: str, enum: list[str] | None = None,
     return schema
 
 
+def _t_web_episodes(args: dict) -> dict:
+    from . import web_engine
+    return web_engine.episodes(args)
+
+
+def _t_web_episode_render(args: dict) -> dict:
+    from . import web_engine
+    return web_engine.episode_render(args)
+
+
+def _t_web_lesson(args: dict) -> dict:
+    from . import web_engine
+    return web_engine.lesson(args)
+
+
 TOOLS: dict[str, dict] = {
+    "web_episodes": {
+        "call": _t_web_episodes,
+        "description": ("Level With Me episodes on the web engine (sketch_claude/episodes): with no "
+                        "episode, list them all; with one (s01e03), validate it with writers.check and "
+                        "count its beats by kind. Validate before any render. Guide: docs/llm-episode-guide.md."),
+        "schema": _schema("web_episodes", "List the episodes, or validate one.",
+                          {"episode": _prop("string", "An episode id like s01e03; omit to list.")}, []),
+    },
+    "web_episode_render": {
+        "call": _t_web_episode_render,
+        "description": ("Render an episode headless on the web engine (py -3.12 -m sketch_claude episode). "
+                        "draft=true (the default) renders into tmp/ to check; draft=false makes the release "
+                        "in a new numbered deliverables folder. Checks the folder for the landscape cut, phone "
+                        "cut, captions, thumbnails and description. Always a draft first."),
+        "schema": _schema("web_episode_render", "Render one episode, draft or release.",
+                          {"episode": _prop("string", "An episode id like s01e03."),
+                           "draft": _prop("boolean", "true: a rehearsal into tmp/; false: the release.")}, ["episode"]),
+    },
+    "web_lesson": {
+        "call": _t_web_lesson,
+        "description": ("A two_v_demo lesson film on the web engine (sketch_claude/lesson_web.py): mode=stills "
+                        "draws one frame per chapter in landscape and phone into tmp/lesson-stills/<lesson>/ to "
+                        "look at; mode=render makes the film and its release. Stills first, always."),
+        "schema": _schema("web_lesson", "Stills or the film for a lesson on the web engine.",
+                          {"lesson": _prop("string", "The lesson key, e.g. 2v."),
+                           "mode": _prop("string", "stills or render.", enum=["stills", "render"])}, ["lesson"]),
+    },
     "sync_knowledge": {
         "call": _t_sync_knowledge,
         "description": ("Rebuild the project knowledge base from the repo's own "

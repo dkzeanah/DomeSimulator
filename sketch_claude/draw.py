@@ -233,16 +233,17 @@ class Sheet:
             group.sort(key=lambda g: -g[0])
             n = len(group)
             lo, hi = bounds
-            gap = size * 1.9
+            # a label's further lines hang below its leader, so the gap under one grows with its lines
+            gap = [size * 1.9 + (g[2].count("\n")) * size * 1.15 for g in group]
             ys = [g[0] for g in group]
             # spread them so they never overlap, keeping each near its anchor
             for i in range(1, n):
-                ys[i] = min(ys[i], ys[i - 1] - gap)
+                ys[i] = min(ys[i], ys[i - 1] - gap[i - 1])
             if ys and ys[-1] < lo:
                 shift = lo - ys[-1]
                 ys = [y + shift for y in ys]
             for i in range(n - 2, -1, -1):
-                ys[i] = max(ys[i], ys[i + 1] + gap)
+                ys[i] = max(ys[i], ys[i + 1] + gap[i])
             ys = [min(y, hi) for y in ys]
             lx = placed.x - pad if s == "l" else placed.x + placed.w + pad
             for (ay, ax, label), ly in zip(group, ys):

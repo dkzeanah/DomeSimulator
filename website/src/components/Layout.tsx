@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
 import { trackView } from "../lib/track";
-import { isStaff, useSession } from "../lib/session";
+import { isRealStaff, isStaff, setViewAsUser, useSession } from "../lib/session";
 import { Toast } from "./ui";
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   ["/start", "Free Pages"],
   ["/book", "The Book"],
   ["/build", "The Build"],
+  ["/sketch", "Dome Sketch"],
   ["/calculator", "Calculator"],
   ["/network", "Pads"],
   ["/back", "Back It"],
@@ -39,6 +40,7 @@ export default function Layout() {
   useEffect(() => { trackView(loc.pathname); }, [loc.pathname]);
   return (
     <div className="min-h-screen flex flex-col">
+      {isRealStaff(me) && <ViewAs asUser={!!me?.viewingAsUser} />}
       {STAGING && (
         <div role="status" className="text-center text-xs font-semibold py-1.5" style={{ background: "#b45309", color: "#fff" }}>
           STAGING -- a copy for checking changes. Orders here are test orders and no email is sent.
@@ -55,6 +57,7 @@ export default function Layout() {
               <NavLink key={to} to={to} className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>{label}</NavLink>
             ))}
             {me && isStaff(me) && <NavLink to="/admin/studio" className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>Studio</NavLink>}
+            {me && <NavLink to="/mylinks" className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>My Links</NavLink>}
             <NavLink to="/account" className="btn-ghost !py-1.5">{me ? me.displayName : "Sign in"}</NavLink>
             {me && <button type="button" className="muted hover:text-[var(--ink)] text-sm" onClick={signOut}>Sign out</button>}
           </nav>
@@ -62,7 +65,7 @@ export default function Layout() {
         </div>
         {open && (
           <nav className="md:hidden border-t px-4 py-3 grid gap-3" style={{ borderColor: "var(--line)" }}>
-            {[...NAV, ...(me && isStaff(me) ? [["/admin/studio", "Studio"] as const] : []), ["/account", me ? me.displayName : "Sign in"] as const].map(([to, label]) => (
+            {[...NAV, ...(me ? [["/mylinks", "My Links"] as const] : []), ...(me && isStaff(me) ? [["/admin/studio", "Studio"] as const] : []), ["/account", me ? me.displayName : "Sign in"] as const].map(([to, label]) => (
               <NavLink key={to} to={to} onClick={() => setOpen(false)}>{label}</NavLink>
             ))}
             {me && <button type="button" className="text-left" onClick={signOut}>Sign out</button>}
@@ -77,6 +80,7 @@ export default function Layout() {
           <p>Every number on this site is computed by the project's own open code, or counted from real records.</p>
           <p className="flex flex-wrap gap-x-4 gap-y-1">
             <Link to="/card">Contact</Link>
+            <Link to="/software">Software</Link>
             <Link to="/kids">Kids' book</Link>
             <Link to="/domes">Dome classes</Link>
             <Link to="/recyclers">Recyclers</Link>
@@ -87,6 +91,24 @@ export default function Layout() {
         </div>
       </footer>}
       <Toast />
+    </div>
+  );
+}
+
+/** The owner's switch: the site as they see it, or as a signed-in member with nothing bought sees it. */
+function ViewAs({ asUser }: { asUser: boolean }) {
+  const btn = (on: boolean, label: string) => (
+    <button type="button" onClick={() => on !== asUser && setViewAsUser(on)} aria-pressed={on === asUser}
+      className="px-2.5 py-0.5 rounded-full"
+      style={on === asUser ? { background: "#fff", color: "#111" } : { color: "inherit", opacity: 0.85 }}>{label}</button>
+  );
+  return (
+    <div role="status" className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold py-1 px-4"
+      style={{ background: asUser ? "#1d4ed8" : "#26303d", color: "#fff" }}>
+      <span>{asUser ? "Viewing the site as a regular member: admin pages and owner access are off." : "View the site as:"}</span>
+      <span className="inline-flex rounded-full p-0.5" style={{ background: "rgba(255,255,255,.15)" }}>
+        {btn(false, "Admin")}{btn(true, "Regular member")}
+      </span>
     </div>
   );
 }
