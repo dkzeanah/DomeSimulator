@@ -317,7 +317,7 @@ api.post("/logout", async (ctx) => {
   return json({ ok: true }, 200, ctx);
 });
 
-api.get("/me", async (ctx) => json({ user: publicUser(ctx.user) }));
+api.get("/me", async (ctx) => json({ user: publicUser(ctx.user), viewAs: ctx.viewAs ?? null }));
 
 api.patch("/me", async (ctx) => {
   const u = requireUser(ctx);

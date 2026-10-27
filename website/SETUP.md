@@ -344,6 +344,12 @@ it) is where a change is looked at. **Live** (www.zeanahlab.com) changes only wh
 
 To promote an older staging build, type its run number (from the Actions list) in the box.
 
+Promoting moves `main` to the promoted commit when it can. If `main` has commits staging
+does not (merging a pull request on GitHub adds one), the site still goes live and the run
+warns. Then merge `main` into `staging` once, and the next promotion moves it again. A
+brand-new `staging` branch pushed at the same commit as `main` starts no run, because
+nothing in `website/` changed. Push a real change to start the first one.
+
 **Once, to set staging up:**
 
 1. `py -3.12 scripts/staging.py setup` makes the staging database and file store, writes the

@@ -10,6 +10,10 @@
   own fabrication jig for one panel.
 * **The zome** -- :mod:`wedge_zome.geometry`: every stick of every panel. Its jig is
   the zome world's jig table, with its rulers.
+* **The alternating dome** -- the same solver with ``orientation_pattern``: panels whose
+  wedges point in (light wood) and out (dark wood), so that facing seam faces cancel
+  (:mod:`alternating_build`). Its keys show every seam, red where the two wedges match.
+  It stands on the ground beside the first dome and can be grown band by band.
 
 Each also has a skin layer: the foundation's deck, the dome's triangles, the
 zome's panels. Units are inches, z up, the ground at z = 0.
@@ -17,6 +21,7 @@ zome's panels. Units are inches, z up, the ground at z = 0.
 
 from __future__ import annotations
 
+import copy
 import math
 from functools import lru_cache
 
@@ -31,6 +36,11 @@ ZOME_AT = np.array([640.0, 0.0, 0.0])
 FOUNDATION_JIG_AT = np.array([0.0, -600.0, 0.0])
 DOME_JIG_AT = np.array([-560.0, 0.0, 0.0])
 ZOME_JIG_AT = np.array([640.0, -430.0, 0.0])
+ALT_DOME_AT = np.array([0.0, 640.0, 0.0])
+
+#: The alternating dome's patterns, in the order the M key steps through them, and the one shown.
+ALT_PATTERNS = ("alternate_ground", "alternate_lower", "least_angle")
+ALT = {"pattern": "alternate_ground"}
 
 WOOD = (0.86, 0.66, 0.42, 1.0)
 WOOD_B = (0.78, 0.55, 0.32, 1.0)
@@ -43,6 +53,10 @@ JIG = (0.60, 0.62, 0.66, 1.0)
 STAKE = (0.85, 0.30, 0.20, 1.0)
 STRING = (0.95, 0.85, 0.20, 1.0)
 PERSON = (0.22, 0.42, 0.66, 1.0)
+WOOD_IN = (1.00, 0.88, 0.62, 1.0)       # point in: pale pine
+WOOD_OUT = (0.30, 0.17, 0.10, 1.0)      # point out: dark walnut
+KEY_ALT = (0.95, 0.86, 0.38, 1.0)       # an in/out seam: the key fills the fold alone
+KEY_MATCHED = (0.86, 0.18, 0.14, 1.0)   # a matched seam: the key fills more
 
 #: The layers, in the panel's order: (key, label, structure, on at start).
 LAYERS: tuple[tuple[str, str, str, bool], ...] = (
@@ -55,6 +69,8 @@ LAYERS: tuple[tuple[str, str, str, bool], ...] = (
     ("zome", "Zome: wedge sticks", "zome", True),
     ("zome_skin", "Zome: skin", "zome", False),
     ("zome_jig", "Zome: jig table", "zome", True),
+    ("alt_dome", "Alternating dome: in (light) / out (dark)", "alt_dome", True),
+    ("alt_keys", "Alternating dome: keys (red = matched)", "alt_dome", True),
     ("mine", "My pieces", "", True),
     ("person", "Six-foot person", "", True),
 )
@@ -252,6 +268,55 @@ def zome_jig() -> list[Piece]:
 
 
 # ----------------------------------------------------------------------
+# The alternating dome
+# ----------------------------------------------------------------------
+
+def alt_plan():
+    from alternating_build import plan as ap
+    return ap.plan(ALT["pattern"])
+
+
+@lru_cache(maxsize=4)
+def _alt_pieces(pattern: str) -> tuple:
+    import geodesic_raw_wedge_dome_dihedral as d
+    from alternating_build import plan as ap
+    p = ap.plan(pattern)
+    m = p.model
+    members, keys = [], []
+    for k, member in enumerate(m.members):
+        acc = d.MeshAccumulator()
+        d.add_raw_sector_member(acc, m, member)
+        md = acc.finish()
+        panel = p.panels[member.face_index]
+        word = ap.WORD[panel.orientation]
+        members.append(Piece(f"AD{k + 1:03d}", "alt_dome",
+                             f"panel {panel.index + 1} ({panel.face_type}) band {panel.band}, point {word}: {member.member_id}",
+                             pc.from_mesh(md.vertices, md.indices), WOOD_IN if word == "IN" else WOOD_OUT, "member",
+                             {"band": panel.band, "orientation": word, "edge_type": member.edge_type,
+                              "stock_in": round(float(member.physical_stock_length_in), 2)}))
+    for k, (seam, info) in enumerate(zip(m.seams, p.seams)):
+        acc = d.MeshAccumulator()
+        d.add_rigid_spacer(acc, m, seam)
+        md = acc.finish()
+        if not len(md.indices):
+            continue
+        keys.append(Piece(f"AK{k + 1:02d}", "alt_keys",
+                          f"{seam.seam_id} {info.pair}: key fills {info.gap_deg:.2f} deg (fold {info.fold_deg:.2f})",
+                          pc.from_mesh(md.vertices, md.indices), KEY_MATCHED if info.matched else KEY_ALT, "jig",
+                          {"band": info.band, "pair": info.pair, "gap_deg": round(info.gap_deg, 2)}))
+    both = _recentre(members + keys, ALT_DOME_AT)
+    return both[:len(members)], both[len(members):]
+
+
+def alt_dome() -> list[Piece]:
+    return [copy.copy(p) for p in _alt_pieces(ALT["pattern"])[0]]
+
+
+def alt_keys() -> list[Piece]:
+    return [copy.copy(p) for p in _alt_pieces(ALT["pattern"])[1]]
+
+
+# ----------------------------------------------------------------------
 
 def person(at=(200.0, -300.0)) -> list[Piece]:
     """A six-foot person for scale: declared, not derived."""
@@ -265,6 +330,7 @@ def person(at=(200.0, -300.0)) -> list[Piece]:
 BUILDERS = {"foundation": foundation, "foundation_deck": foundation_deck, "foundation_jig": foundation_jig,
             "dome": dome, "dome_skin": dome_skin, "dome_jig": dome_jig,
             "zome": zome, "zome_skin": zome_skin, "zome_jig": zome_jig,
+            "alt_dome": alt_dome, "alt_keys": alt_keys,
             "mine": lambda: [], "person": person}
 
 
@@ -310,3 +376,8 @@ def validate_structures() -> None:
             assert np.all(np.isfinite(p.points())), (key, p.pid)
     dz = min(float(p.points()[:, 2].min()) for p in layers["dome"])
     assert abs(dz - foundation_top()) < 6.0, dz
+    # the alternating dome: 120 members, light and dark, on the ground, every seam keyed
+    alt = layers["alt_dome"]
+    assert len(alt) == 120 and {p.meta["orientation"] for p in alt} == {"IN", "OUT"}
+    assert abs(min(float(p.points()[:, 2].min()) for p in alt + layers["alt_keys"])) < 1e-6
+    assert len(layers["alt_keys"]) == 55, len(layers["alt_keys"])

@@ -45,19 +45,73 @@ export const F = {
 // Skills
 // ----------------------------------------------------------------------
 
-export const SKILLS = [
-  { key: "geometry", name: "Geometry", icon: "△", blurb: "Icosahedra, frequency, chord factors, strut classes, angles." },
-  { key: "splitting", name: "Splitting", icon: "\u{1fa93}", blurb: "Logs to wedges: grain, splits, yield." },
-  { key: "framing", name: "Framing", icon: "⌂", blurb: "Members, joints, pinwheels, raising the frame." },
-  { key: "paneling", name: "Paneling", icon: "◩", blurb: "Closing the triangles: infill, glazing, skins." },
-  { key: "foundations", name: "Foundations", icon: "⬢", blurb: "Pads, piers, decks, footings, hookups." },
-  { key: "climate", name: "Climate", icon: "☁", blurb: "Water, condensation, seams, insulation, air." },
-  { key: "upkeep", name: "Upkeep", icon: "⚔", blurb: "Defending a building against what destroys it." },
-  { key: "trading", name: "Trading", icon: "⚖", blurb: "Costs, materials and the exchange." },
-  { key: "teaching", name: "Teaching", icon: "✎", blurb: "Hosting lessons for others." },
-  { key: "hitpoints", name: "Hitpoints", icon: "♥", blurb: "How much punishment you can take." },
+/** The stages of building a house, in the order the work happens, and combat. Every job a house
+ *  takes falls in one of them. */
+export const STAGES = [
+  { key: "combat", name: "Combat", blurb: "Fighting what destroys buildings." },
+  { key: "plan", name: "1. Plan and design", blurb: "Before a shovel goes in: the site, the design, the rules, the money." },
+  { key: "timber", name: "2. Timber", blurb: "Standing trees to frame stock: fell, buck, split, cut." },
+  { key: "site", name: "3. Site and foundation", blurb: "Clear and grade the ground, pour or set the base, bring in the services." },
+  { key: "structure", name: "4. Structure", blurb: "The frame, and getting it up." },
+  { key: "envelope", name: "5. Envelope", blurb: "Closing it in against water, wind and cold." },
+  { key: "systems", name: "6. Systems", blurb: "Water, power, heat and air." },
+  { key: "finish", name: "7. Interior and finish", blurb: "Linings, floors, trim and coatings." },
+  { key: "after", name: "8. Grounds and upkeep", blurb: "The land round it, and keeping it standing." },
+  { key: "job", name: "9. Running the job", blurb: "The work that holds all the others together." },
 ] as const;
+export type StageKey = (typeof STAGES)[number]["key"];
+
+/** trainedBy: where in the game the skill earns XP today; empty while nothing trains it yet. */
+export const SKILLS = [
+  { key: "attack", name: "Attack", icon: "\u{1f5e1}", stage: "combat", blurb: "How often your blows land.", trainedBy: "Fighting with the Flick (accurate) style." },
+  { key: "strength", name: "Strength", icon: "\u{1f4aa}", stage: "combat", blurb: "How hard your blows land.", trainedBy: "Fighting with the Lash (controlled) style." },
+  { key: "defence", name: "Defence", icon: "\u{1f6e1}", stage: "combat", blurb: "How often blows miss you.", trainedBy: "Fighting with the Deflect (defensive) or Lash style." },
+  { key: "hitpoints", name: "Hitpoints", icon: "♥", stage: "combat", blurb: "How much punishment you can take.", trainedBy: "Any damage you deal." },
+
+  { key: "geometry", name: "Geometry and Design", icon: "△", stage: "plan", blurb: "Icosahedra, frequency, chord factors, strut classes, angles: the design itself.", trainedBy: "Tutor Tess's quest, and the geometry lore pages." },
+  { key: "surveying", name: "Site Survey", icon: "\u{1f9ed}", stage: "plan", blurb: "Reading the land: slope, sun, water, soil, setbacks, where the house goes.", trainedBy: "" },
+  { key: "permitting", name: "Permits and Codes", icon: "\u{1f4cb}", stage: "plan", blurb: "Zoning, building codes, drawings for the inspector, the paper trail.", trainedBy: "" },
+  { key: "trading", name: "Estimating and Trading", icon: "⚖", stage: "plan", blurb: "Quantities, costs, buying materials, and the exchange.", trainedBy: "" },
+
+  { key: "forestry", name: "Forestry", icon: "\u{1f332}", stage: "timber", blurb: "Choosing, felling and bucking trees safely with a chainsaw.", trainedBy: "Felling and bucking the pine on Wedge Island." },
+  { key: "splitting", name: "Splitting", icon: "\u{1fa93}", stage: "timber", blurb: "Sections to wedges: halves, quarters, eighths, along the grain.", trainedBy: "Ripping log sections with the chainsaw: the hub's log pile, the island's block." },
+  { key: "milling", name: "Milling", icon: "\u{1fa9a}", stage: "timber", blurb: "Cutting wedges to strut length: butt cuts, saw setups, the cut list.", trainedBy: "The saw bench on Wedge Island." },
+
+  { key: "sitework", name: "Site Work", icon: "\u{1f69c}", stage: "site", blurb: "Clearing, excavation, grading and drainage.", trainedBy: "" },
+  { key: "foundations", name: "Foundations", icon: "⬢", stage: "site", blurb: "Pads, piers, footings, decks and the base ring.", trainedBy: "The foundation lore pages." },
+  { key: "utilities", name: "Utilities", icon: "\u{1f50c}", stage: "site", blurb: "Hookups: water, sewer or septic, power and data to the pad.", trainedBy: "" },
+
+  { key: "framing", name: "Framing and Joinery", icon: "⌂", stage: "structure", blurb: "Members, pinwheel joints, the jig, the panel frames.", trainedBy: "The jig on Wedge Island, and the framing lore pages." },
+  { key: "rigging", name: "Rigging and Raising", icon: "\u{1fa9d}", stage: "structure", blurb: "Lifting panels into place: ropes, winch, ladders, the order they go up.", trainedBy: "Raising panels at the Wedge Island site." },
+
+  { key: "paneling", name: "Paneling and Sheathing", icon: "◩", stage: "envelope", blurb: "Closing the triangles: infill, sheathing, skins.", trainedBy: "Sheathing the Wedge Island dome." },
+  { key: "roofing", name: "Seams and Waterproofing", icon: "\u{1f327}", stage: "envelope", blurb: "Seam keys, laps, membranes and flashing: water runs over, never in.", trainedBy: "Keying the seams on Wedge Island." },
+  { key: "glazing", name: "Windows and Doors", icon: "\u{1fa9f}", stage: "envelope", blurb: "Openings: framing them, glazing, hanging and sealing.", trainedBy: "" },
+  { key: "climate", name: "Insulation and Climate", icon: "☁", stage: "envelope", blurb: "Condensation, dew point, insulation, the breathing wall.", trainedBy: "Warden Wren's quest, and the climate lore pages." },
+
+  { key: "plumbing", name: "Plumbing", icon: "\u{1f6b0}", stage: "systems", blurb: "Supply, drains, vents and fixtures.", trainedBy: "" },
+  { key: "electrical", name: "Electrical", icon: "⚡", stage: "systems", blurb: "Service, circuits, wiring in the seams, solar and batteries.", trainedBy: "" },
+  { key: "hvac", name: "Heating and Ventilation", icon: "\u{1f525}", stage: "systems", blurb: "Stoves, heat pumps, fresh air and exhaust.", trainedBy: "" },
+
+  { key: "interiors", name: "Interior Linings", icon: "\u{1f9f1}", stage: "finish", blurb: "Drywall, boards and panelling over the frame.", trainedBy: "" },
+  { key: "flooring", name: "Flooring", icon: "\u{1f7eb}", stage: "finish", blurb: "Subfloor to finished floor: boards, tile, the loft deck.", trainedBy: "" },
+  { key: "carpentry", name: "Finish Carpentry", icon: "\u{1fa9b}", stage: "finish", blurb: "Trim, stairs, cabinets and built-ins.", trainedBy: "" },
+  { key: "coatings", name: "Paint and Coatings", icon: "\u{1f58c}", stage: "finish", blurb: "Stains, oils, paint and sealers, inside and out.", trainedBy: "" },
+
+  { key: "landscaping", name: "Landscaping", icon: "\u{1f33f}", stage: "after", blurb: "Paths, planting, drainage and the land round the house.", trainedBy: "" },
+  { key: "upkeep", name: "Upkeep and Repair", icon: "\u{1f527}", stage: "after", blurb: "Inspecting, repairing and keeping rot, pests and the wet out.", trainedBy: "The rot lore page." },
+
+  { key: "management", name: "Project Management", icon: "\u{1f4c5}", stage: "job", blurb: "Scheduling, crews, deliveries, inspections, the budget.", trainedBy: "" },
+  { key: "safety", name: "Site Safety", icon: "\u{1f9ba}", stage: "job", blurb: "Chainsaws, heights, lifting, PPE and first aid.", trainedBy: "" },
+  { key: "teaching", name: "Teaching", icon: "✎", stage: "job", blurb: "Hosting lessons for others.", trainedBy: "" },
+] as const satisfies readonly { key: string; name: string; icon: string; stage: StageKey; blurb: string; trainedBy: string }[];
 export type SkillKey = (typeof SKILLS)[number]["key"];
+
+/** RuneScape's combat level, from the combat skills. */
+export function combatLevel(lv: (k: SkillKey) => number) {
+  const base = 0.25 * (lv("defence") + lv("hitpoints"));
+  return Math.floor(base + 0.325 * (lv("attack") + lv("strength")));
+}
 
 /** RuneScape's experience table: the XP a level needs. */
 export function xpForLevel(level: number) {
@@ -131,11 +185,16 @@ export const loreById = (id: string) => LORE.find((l) => l.id === id);
 // Items
 // ----------------------------------------------------------------------
 
-export interface Item { id: string; name: string; icon: string; examine: string; stack?: boolean; heals?: number; power?: number; lore?: string; value: number }
+/** A weapon: RuneScape's bonuses, its speed in ticks, and its special attack if it has one. */
+export interface Weapon { look: "whip" | "mallet" | "maul"; attack: number; strength: number; speed: number; styles: [string, string, string]; spec?: { name: string; cost: number; accuracy: number; blurb: string } }
+export interface Item { id: string; name: string; icon: string; examine: string; stack?: boolean; heals?: number; weapon?: Weapon; lore?: string; value: number }
+
+/** The fraction of a section one wedge is: the seed model's radial splits. */
+const PER_SECTION = `1/${F.wedgesPerLog}`;
 
 export const ITEMS: Item[] = [
   { id: "coins", name: "Dome credits", icon: "\u{1fa99}", examine: "The world's currency. Spent at the exchange, one day.", stack: true, value: 1 },
-  { id: "wedge", name: "Split wedge", icon: "\u{1fab5}", examine: `A ${F.wedgesPerLog}th of a log, split along the grain.`, value: 6 },
+  { id: "wedge", name: `Wedge (${PER_SECTION})`, icon: "\u{1fab5}", examine: `One ${PER_SECTION} of a log section, ripped radially through the pith with the chainsaw.`, stack: true, value: 6 },
   { id: "bark", name: "Bark strip", icon: "\u{1f342}", examine: "Peeled off a wedge. The frame is better without it.", value: 1 },
   { id: "screws", name: "Structural screws", icon: "\u{1f529}", examine: "They hold a pinwheel joint together.", stack: true, value: 1 },
   { id: "hose", name: "Seam hose", icon: "〰", examine: "Compressible tube that seals the seam between two panels.", stack: true, value: 2 },
@@ -143,14 +202,19 @@ export const ITEMS: Item[] = [
   { id: "panel", name: "Triangle panel", icon: "▲", examine: "A closed bay, ready to fit.", value: 20 },
   { id: "mix", name: "Trail mix", icon: "\u{1f95c}", examine: "Builder's lunch. Heals 6.", heals: 6, value: 3 },
   { id: "coffee", name: "Thermos of coffee", icon: "☕", examine: "Heals 10, and the afternoon.", heals: 10, value: 6 },
-  { id: "mallet", name: "Mallet", icon: "\u{1f528}", examine: "Better than bare hands against a grub. +2 power.", power: 2, value: 15 },
-  { id: "maul", name: "Splitting maul", icon: "\u{1fa93}", examine: "For logs, mostly. +5 power.", power: 5, value: 60 },
+  { id: "whip", name: "Abyssal whip", icon: "➰", examine: "A weapon from the abyss. +82 slash attack, +82 strength, four ticks a swing. Special: Energy Drain.", value: 120000,
+    weapon: { look: "whip", attack: 82, strength: 82, speed: 4, styles: ["Flick", "Lash", "Deflect"],
+      spec: { name: "Energy Drain", cost: 50, accuracy: 1.25, blurb: "25% more accurate; drains the target and gives you 10% run energy." } } },
+  { id: "mallet", name: "Mallet", icon: "\u{1f528}", examine: "Better than bare hands against a grub. +8 crush, +10 strength.", value: 15,
+    weapon: { look: "mallet", attack: 8, strength: 10, speed: 5, styles: ["Pound", "Pummel", "Block"] } },
+  { id: "maul", name: "Splitting maul", icon: "\u{1fa93}", examine: "For logs, mostly. +20 crush, +25 strength, slow.", value: 60,
+    weapon: { look: "maul", attack: 20, strength: 25, speed: 6, styles: ["Pound", "Pummel", "Block"] } },
   // Wedge Island's tools and what they make (src/world/game/island.ts)
   { id: "chainsaw", name: "Chainsaw", icon: "\u{1fa9a}", examine: "Fells a pine and bucks it into sections. Never alone.", value: 80 },
   { id: "section", name: "Log section", icon: "\u{1fab5}", examine: `A pine bucked to the long strut's length, ${F.longIn} in, about ${F.logIn} in across.`, value: 12 },
   { id: "strutA", name: "A strut", icon: "\u{1f4cf}", examine: `A wedge cut for one of the ${F.strutsA} long edges (${F.longIn} in nominal).`, value: 10 },
   { id: "strutB", name: "B strut", icon: "\u{1f4d0}", examine: `A wedge cut for one of the ${F.strutsB} short edges (${F.shortIn} in nominal).`, value: 9 },
-  { id: "meter", name: "Moisture meter", icon: "\u{1f4df}", examine: "Finds the damp before it finds you. +3 power against the wet.", power: 3, value: 40 },
+  { id: "meter", name: "Moisture meter", icon: "\u{1f4df}", examine: "Finds the damp before it finds you.", value: 40 },
   ...LORE.map((l) => ({ id: `lore:${l.id}`, name: `Lore: ${l.title}`, icon: "\u{1f4dc}", examine: "A page of dome know-how. Read it.", lore: l.id, value: 0 })),
 ];
 export const itemById = (id: string) => ITEMS.find((i) => i.id === id);
@@ -255,7 +319,7 @@ export const npcById = (id: string) => NPCS.find((n) => n.id === id)!;
 /** Things in the world that are not people or monsters. */
 export const OBJECTS: { id: string; name: string; area: string; at: [number, number]; examine: string; options: string[] }[] = [
   { id: "logpile", name: "Log pile", area: "hub", at: [-19, 25], options: ["Split", "Examine"],
-    examine: `Pine logs about ${F.logIn} inches across. Each one splits into ${F.wedgesPerLog} wedges.` },
+    examine: `Pine sections about ${F.logIn} inches across, bucked to the long strut's length. The chainsaw rips each into ${F.wedgesPerLog} wedges: halves, quarters, eighths.` },
   // RuneScape's house portal: your house, your house in build mode, or anybody's by name
   { id: "houseportal", name: "House portal", area: "hub", at: [-30, 30], options: ["Enter", "Home", "Build mode", "Friend's house", "Examine"],
     examine: "The portal to the members' houses. Type a member's name, or 1 to 5 for the five grand houses." },
@@ -296,10 +360,10 @@ export const TALK: Record<string, (stage: number) => { lines: Line[]; question?:
   sam: (stage) => {
     if (stage === 0) return { lines: [
       { who: "npc", text: "We don't buy boards here. We split logs." },
-      { who: "npc", text: `Halve it, quarter it, halve again: ${F.wedgesPerLog} wedges, and every one runs with the grain.` },
-      { who: "npc", text: `Go and split that pile. Bring me ${F.wedgesPerLog} wedges.` },
+      { who: "npc", text: `Rip a section with the chainsaw, straight down through the pith: halves, quarters, then eighths. ${F.wedgesPerLog} wedges, each ${PER_SECTION} of the round, every one running with the grain.` },
+      { who: "npc", text: `Go and split a section from that pile. Bring me its ${F.wedgesPerLog} wedges.` },
     ] };
-    if (stage === 1) return { lines: [{ who: "npc", text: `Right-click the log pile and Split it. ${F.wedgesPerLog} wedges.` }] };
+    if (stage === 1) return { lines: [{ who: "npc", text: `Right-click the log pile and Split a section with your chainsaw. ${F.wedgesPerLog} wedges.` }] };
     if (stage === 2) return { lines: [{ who: "npc", text: "Good wedges. One question before you go." }], question: {
       ask: "Why split a log into wedges instead of sawing it into boards?",
       choices: [
@@ -327,4 +391,7 @@ export const TALK: Record<string, (stage: number) => { lines: Line[]; question?:
   },
 };
 
-export const START_ITEMS: [string, number][] = [["mallet", 1], ["mix", 3], ["coins", 25]];
+export const START_ITEMS: [string, number][] = [["chainsaw", 1], ["mix", 3], ["coins", 25]];
+/** What every character starts wielding, and the levels they start at (RuneScape's pure). */
+export const START_WEAPON = "whip";
+export const START_LEVELS: Partial<Record<SkillKey, number>> = { attack: 60, strength: 60, hitpoints: 10 };   // store.ts adds the hitpoints the 60s earn

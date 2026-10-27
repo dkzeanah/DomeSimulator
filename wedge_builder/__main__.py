@@ -20,11 +20,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--orientation", default="point_dome_in", choices=list(design.ORIENTATIONS))
     ap.add_argument("--seam-join", default="raw_trapezoid", choices=list(design.SEAM_JOINS))
     ap.add_argument("--label", default="")
+    ap.add_argument("--pattern", default="uniform", choices=list(design.PATTERNS),
+                    help="uniform, or wedges pointing in and out panel by panel (alternating_build)")
+    ap.add_argument("--ground-in", default="auto", choices=list(design.GROUND_IN))
     ap.add_argument("--out", type=Path)
     a = ap.parse_args(argv)
     try:
         req = design.Request.from_json({"diameter_ft": a.diameter_ft, "log_in": a.log_in, "log_ft": a.log_ft,
-                                        "orientation": a.orientation, "seam_join": a.seam_join, "label": a.label})
+                                        "orientation": a.orientation, "seam_join": a.seam_join, "label": a.label,
+                                        "pattern": a.pattern, "ground_in": a.ground_in})
         d = design.solve(req)
     except ValueError as e:
         print(e, file=sys.stderr)

@@ -45,7 +45,12 @@ export interface WorldOptions {
 interface Ent {
   thing: Thing; group: THREE.Group; x: number; z: number; tx: number; tz: number; speed: number; height: number;
   bar: HTMLDivElement | null; frac: number | null; seed: number; animate?: (g: THREE.Group, t: number, seed: number) => void;
+  /** When its last attack started (clock seconds), for the lunge; -1 when it is not attacking. */
+  lunge: number;
 }
+
+/** What the walker can hold: a weapon's look, by item id (src/world/game/content.ts). */
+export type Held = "whip" | "mallet" | "maul" | null;
 
 const WALK = 11;                 // ft per second
 const PLAYER_R = 1.2;
@@ -267,9 +272,42 @@ function walker() {
   const arm = () => { const p = new THREE.Group(); const m = new THREE.Mesh(new THREE.BoxGeometry(0.4, 1.9, 0.45), shirt); m.position.y = -0.95; p.add(m); p.position.y = 4.3; return p; };
   const l = leg(), r = leg(), la = arm(), ra = arm();
   l.position.x = -0.38; r.position.x = 0.38; la.position.x = -0.98; ra.position.x = 0.98;
+  // the right hand, at the end of the arm: whatever the walker wields hangs here
+  const hand = new THREE.Group(); hand.position.y = -1.85; ra.add(hand);
   g.add(body, head, hat, l, r, la, ra);
   g.traverse((o) => { if ((o as THREE.Mesh).isMesh) (o as THREE.Mesh).castShadow = true; });
-  return { group: g, legs: [l, r], arms: [la, ra] };
+  return { group: g, legs: [l, r], arms: [la, ra], hand };
+}
+
+/** A weapon in the hand, pointing forward. The whip's lash is a chain of segments that curls. */
+function heldMesh(kind: Held) {
+  const g = new THREE.Group();
+  if (!kind) return { group: g, lash: [] as THREE.Group[] };
+  const lash: THREE.Group[] = [];
+  if (kind === "whip") {
+    const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.95, 8), new THREE.MeshLambertMaterial({ color: "#2a2230" }));
+    grip.rotation.x = Math.PI / 2; grip.position.z = 0.35; g.add(grip);
+    const pommel = new THREE.Mesh(new THREE.SphereGeometry(0.16, 8, 6), new THREE.MeshStandardMaterial({ color: "#7a1830", emissive: "#3a0818", roughness: 0.5 }));
+    pommel.position.z = -0.12; g.add(pommel);
+    const mat = new THREE.MeshLambertMaterial({ color: "#5a1626" });
+    let parent: THREE.Object3D = g, z = 0.82;
+    for (let i = 0; i < 9; i++) {
+      const seg = new THREE.Group(); seg.position.z = z;
+      const m = new THREE.Mesh(new THREE.CylinderGeometry(0.06 - i * 0.005, 0.07 - i * 0.005, 0.62, 6), mat);
+      m.rotation.x = Math.PI / 2; m.position.z = 0.31; seg.add(m);
+      parent.add(seg); lash.push(seg); parent = seg; z = 0.6;
+    }
+  } else {
+    const wood = new THREE.MeshLambertMaterial({ color: "#8a5a2a" });
+    const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.1, kind === "maul" ? 2.6 : 1.6, 8), wood);
+    handle.rotation.x = Math.PI / 2; handle.position.z = kind === "maul" ? 1.1 : 0.7; g.add(handle);
+    const head = new THREE.Mesh(kind === "maul" ? new THREE.BoxGeometry(0.42, 0.5, 1.1) : new THREE.BoxGeometry(0.5, 0.5, 0.8),
+      new THREE.MeshLambertMaterial({ color: kind === "maul" ? "#6a6e74" : "#9a6a3a" }));
+    head.position.z = kind === "maul" ? 2.35 : 1.45; head.rotation.y = Math.PI / 2; g.add(head);
+  }
+  g.rotation.x = 0.35;                               // a little down from straight ahead
+  g.traverse((o) => { if ((o as THREE.Mesh).isMesh) (o as THREE.Mesh).castShadow = true; });
+  return { group: g, lash };
 }
 
 // ----------------------------------------------------------------------
@@ -309,6 +347,13 @@ export class World {
   private hintArrow: THREE.Mesh | null = null;
   private hintId: string | null = null;
   private hintHeight = 9;
+  private running = false;
+  private moved = false;
+  private held: { group: THREE.Group; lash: THREE.Group[] } = { group: new THREE.Group(), lash: [] };
+  private swing: { t0: number; kind: "hit" | "spec" } | null = null;
+  private specRing: THREE.Mesh | null = null;
+  private firstPerson = false;
+  private lookPitch = -0.08;
 
   constructor(private canvas: HTMLCanvasElement, private opts: WorldOptions) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -499,7 +544,8 @@ export class World {
       if (!this.drag.moved && Math.hypot(dx, dy) < 6) return;
       this.drag.moved = true;
       this.yaw -= dx * 0.006;
-      this.pitch = Math.min(1.25, Math.max(0.18, this.pitch + dy * 0.005));
+      if (this.firstPerson) this.lookPitch = Math.min(1.2, Math.max(-1.2, this.lookPitch - dy * 0.005));
+      else this.pitch = Math.min(1.25, Math.max(0.18, this.pitch + dy * 0.005));
       this.drag.x = e.clientX; this.drag.y = e.clientY;
     });
     on(c, "pointerup", (e: PointerEvent) => {
@@ -603,7 +649,7 @@ export class World {
     group.position.set(x, groundHeight(this.opts.kind, x, z), z);
     if (o.facing !== undefined) group.rotation.y = o.facing;
     this.scene.add(group);
-    this.ents.set(thing.id, { thing, group, x, z, tx: x, tz: z, speed: o.speed ?? 4, height: o.height ?? 5, bar: null, frac: null, seed: Math.random() * 10, animate: o.animate });
+    this.ents.set(thing.id, { thing, group, x, z, tx: x, tz: z, speed: o.speed ?? 4, height: o.height ?? 5, bar: null, frac: null, seed: Math.random() * 10, animate: o.animate, lunge: -1 });
   }
 
   removeThing(id: string) {
@@ -682,6 +728,101 @@ export class World {
   private domeGroup: THREE.Group | null = null;
 
   zoom(f: number) { this.dist = Math.min(80, Math.max(12, this.dist * f)); }
+
+  /** RuneScape's run: twice the walking pace while it is on. */
+  setRun(on: boolean) { this.running = on; }
+  /** Whether the walker moved on the last frame: run energy drains only while running somewhere. */
+  isMoving() { return this.moved; }
+
+  /** Put a weapon in the walker's hand (null: empty-handed). */
+  setWeapon(kind: Held) {
+    this.player.hand.remove(this.held.group);
+    this.held = heldMesh(kind);
+    this.player.hand.add(this.held.group);
+  }
+
+  /** A swing: the walker's lash (or the special attack's spin), or a monster's lunge. */
+  attackAnim(id: string, kind: "hit" | "spec" = "hit") {
+    const t = this.clock.elapsedTime;
+    if (id === "player") { this.swing = { t0: t, kind }; return; }
+    const e = this.ents.get(id);
+    if (e) e.lunge = t;
+  }
+
+  /** Stand in the space at eye height and look round it (a tool's fullscreen editor), or go back. */
+  setFirstPerson(on: boolean) {
+    this.firstPerson = on;
+    this.player.group.visible = !on;
+    this.lookPitch = -0.08;
+    if (this.playerBar) this.playerBar.style.visibility = on ? "hidden" : "";
+  }
+
+  /** How far the area runs from its centre, feet: what the world map shows. */
+  areaRadius() { return this.opts.kind === "hub" ? 76 : this.opts.kind === "house" ? ESTATE_R + 8 : 46; }
+
+  /** Where on the ground a click on the minimap lands (it turns with the camera), or null off the map. */
+  minimapPoint(clientX: number, clientY: number) {
+    const m = this.opts.minimap;
+    if (!m) return null;
+    const r = m.getBoundingClientRect(), half = m.width / 2;
+    const sx = ((clientX - r.left) / r.width) * m.width - half, sy = ((clientY - r.top) / r.height) * m.height - half;
+    if (Math.hypot(sx, sy) > half - 2) return null;
+    const scale = half / (this.opts.kind === "hub" ? 62 : this.opts.kind === "house" ? 90 : 46);
+    // undo the map's turn: it is drawn rotated by the camera's yaw about the walker
+    const c = Math.cos(-this.yaw), sn = Math.sin(-this.yaw);
+    const p = this.player.group.position;
+    return { x: p.x + (sx * c - sy * sn) / scale, z: p.z + (sx * sn + sy * c) / scale };
+  }
+
+  /** Walk to where the minimap was clicked, as in RuneScape. */
+  walkMinimap(clientX: number, clientY: number) {
+    const at = this.minimapPoint(clientX, clientY);
+    if (at) this.walkPoint(at.x, at.z);
+    return Boolean(at);
+  }
+
+  /** The whole area, north up: the world map. */
+  drawWorldMap(c: HTMLCanvasElement) {
+    const ctx = c.getContext("2d")!, w = c.width, half = w / 2, R = this.areaRadius(), k = half / R;
+    const X = (x: number) => half + x * k, Z = (z: number) => half + z * k;
+    ctx.clearRect(0, 0, w, w);
+    ctx.fillStyle = "#1d2a14"; ctx.fillRect(0, 0, w, w);
+    ctx.fillStyle = this.opts.space?.ground || "#4f6a2a";
+    ctx.beginPath(); ctx.arc(half, half, (this.opts.kind === "hub" ? 70 : this.opts.kind === "house" ? ESTATE_R : 42) * k, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "rgba(140,115,80,0.95)";
+    ctx.beginPath(); ctx.arc(half, half, 15.5 * k, 0, Math.PI * 2); ctx.fill();
+    if (this.opts.kind === "hub") {
+      ctx.strokeStyle = "rgba(140,115,80,0.95)"; ctx.lineWidth = 4 * k;
+      for (const g of this.gates) { ctx.beginPath(); ctx.moveTo(half, half); ctx.lineTo(X(g.gate.at.x), Z(g.gate.at.y)); ctx.stroke(); }
+      ctx.fillStyle = "#c8914e"; ctx.beginPath(); ctx.arc(half, half, mesh.radiusFt * k, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.fillStyle = "rgba(240,232,214,0.85)";
+    for (const ob of this.obstacles) { ctx.beginPath(); ctx.arc(X(ob.x), Z(ob.z), ob.r * k, 0, Math.PI * 2); ctx.fill(); }
+    ctx.font = "600 12px Inter, Segoe UI, sans-serif"; ctx.textAlign = "center";
+    for (const g of this.gates) {
+      ctx.fillStyle = g.gate.colour; ctx.beginPath(); ctx.arc(X(g.gate.at.x), Z(g.gate.at.y), 6, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#000"; ctx.fillText(g.gate.name, X(g.gate.at.x) + 1, Z(g.gate.at.y) - 9);
+      ctx.fillStyle = "#fff"; ctx.fillText(g.gate.name, X(g.gate.at.x), Z(g.gate.at.y) - 10);
+    }
+    ctx.font = "11px Inter, Segoe UI, sans-serif";
+    for (const e of this.ents.values()) {
+      const kind = e.thing.kind;
+      ctx.fillStyle = kind === "npc" ? "#ffe24a" : kind === "monster" ? "#ff4a3a" : kind === "loot" ? "#ff9a3a" : "#e8e0d0";
+      ctx.beginPath(); ctx.arc(X(e.x), Z(e.z), kind === "object" ? 4 : 3.2, 0, Math.PI * 2); ctx.fill();
+      if (kind === "npc" || kind === "object") { ctx.fillStyle = "#fff"; ctx.fillText(e.thing.name, X(e.x), Z(e.z) + 15); }
+    }
+    const p = this.player.group.position;
+    ctx.save(); ctx.translate(X(p.x), Z(p.z)); ctx.rotate(-this.player.group.rotation.y + Math.PI);
+    ctx.fillStyle = "#fff"; ctx.strokeStyle = "#000"; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0, -9); ctx.lineTo(6, 6); ctx.lineTo(-6, 6); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.restore();
+  }
+
+  /** Where on the ground a click on the world map lands. */
+  worldMapPoint(c: HTMLCanvasElement, clientX: number, clientY: number) {
+    const r = c.getBoundingClientRect(), R = this.areaRadius();
+    return { x: (((clientX - r.left) / r.width) * 2 - 1) * R, z: (((clientY - r.top) / r.height) * 2 - 1) * R };
+  }
   turn(rad: number) { this.yaw += rad; }
 
   private walkTo(cx: number, cy: number) {
@@ -727,8 +868,13 @@ export class World {
     const k = this.keys, p = this.player.group.position;
     if (k.has("arrowleft") || k.has("q")) this.yaw += dt * 1.8;
     if (k.has("arrowright") || k.has("e")) this.yaw -= dt * 1.8;
-    if (k.has("arrowup")) this.pitch = Math.min(1.25, this.pitch + dt);
-    if (k.has("arrowdown")) this.pitch = Math.max(0.18, this.pitch - dt);
+    if (this.firstPerson) {
+      if (k.has("arrowup")) this.lookPitch = Math.min(1.2, this.lookPitch + dt);
+      if (k.has("arrowdown")) this.lookPitch = Math.max(-1.2, this.lookPitch - dt);
+    } else {
+      if (k.has("arrowup")) this.pitch = Math.min(1.25, this.pitch + dt);
+      if (k.has("arrowdown")) this.pitch = Math.max(0.18, this.pitch - dt);
+    }
     // where to go: the keys, or the clicked point
     const move = new THREE.Vector2();
     const fwd = new THREE.Vector2(-Math.sin(this.yaw), -Math.cos(this.yaw)), right = new THREE.Vector2(-fwd.y, fwd.x);
@@ -756,8 +902,9 @@ export class World {
       if (move.length() < 0.4) { this.target = null; move.set(0, 0); }
     }
     const moving = move.lengthSq() > 0;
+    this.moved = moving;
     if (moving) {
-      move.normalize().multiplyScalar(WALK * dt);
+      move.normalize().multiplyScalar(WALK * (this.running ? 2 : 1) * dt);
       let nx = p.x + move.x, nz = p.z + move.y;
       // the dome, a space's stage or a house's buildings: walk round each, the shorter way,
       // instead of stopping at its edge
@@ -778,7 +925,7 @@ export class World {
       if (rr > lim) { nx *= lim / rr; nz *= lim / rr; }
       this.player.group.rotation.y = Math.atan2(nx - p.x, nz - p.z);
       p.x = nx; p.z = nz;
-      this.stepT += dt * 9;
+      this.stepT += dt * (this.running ? 14 : 9);
     } else {
       this.stepT *= 0.85;
     }
@@ -786,6 +933,7 @@ export class World {
     const swing = Math.sin(this.stepT) * (moving ? 0.6 : 0);
     this.player.legs[0].rotation.x = swing; this.player.legs[1].rotation.x = -swing;
     this.player.arms[0].rotation.x = -swing * 0.8; this.player.arms[1].rotation.x = swing * 0.8;
+    this.animateSwing(t);
     if (this.marker.visible) {
       const m = this.marker.material as THREE.MeshBasicMaterial;
       m.opacity = Math.max(0, m.opacity - dt * 0.9);
@@ -800,8 +948,15 @@ export class World {
       target.z + Math.cos(this.yaw) * Math.cos(this.pitch) * this.dist);
     cp.y = Math.max(cp.y, groundHeight(this.opts.kind, cp.x, cp.z) + 2);
     // the first frame starts where the camera belongs; after that it follows smoothly
-    if (this.frameNo === 0) this.camera.position.copy(cp); else this.camera.position.lerp(cp, 1 - Math.pow(0.0005, dt));
-    this.camera.lookAt(target);
+    if (this.firstPerson) {
+      // eye height, looking where the walker would walk
+      const eye = new THREE.Vector3(p.x, p.y + 5.6, p.z);
+      this.camera.position.copy(eye);
+      this.camera.lookAt(eye.x - Math.sin(this.yaw) * Math.cos(this.lookPitch), eye.y + Math.sin(this.lookPitch), eye.z - Math.cos(this.yaw) * Math.cos(this.lookPitch));
+    } else {
+      if (this.frameNo === 0) this.camera.position.copy(cp); else this.camera.position.lerp(cp, 1 - Math.pow(0.0005, dt));
+      this.camera.lookAt(target);
+    }
     for (const g of this.gates) {
       g.swirl.uniforms.t.value = t;
       // a gateway between the camera and the walker would fill the view: it steps aside until the
@@ -821,6 +976,15 @@ export class World {
       }
       e.group.position.set(e.x, groundHeight(this.opts.kind, e.x, e.z), e.z);
       e.animate?.(e.group, t, e.seed);
+      // an attack: a quick lunge at the walker, and a squash
+      if (e.lunge >= 0) {
+        const age = t - e.lunge, k = age < 0.36 ? Math.sin((age / 0.36) * Math.PI) : 0;
+        if (age >= 0.36) e.lunge = -1;
+        const dx2 = p.x - e.x, dz2 = p.z - e.z, d2 = Math.hypot(dx2, dz2) || 1;
+        e.group.position.x += (dx2 / d2) * 1.3 * k; e.group.position.z += (dz2 / d2) * 1.3 * k;
+        e.group.scale.set(1 + 0.12 * k, 1 - 0.18 * k, 1 + 0.12 * k);
+        if (k > 0) e.group.rotation.y = Math.atan2(dx2, dz2);
+      }
     }
     // near a gateway, and through it
     let near: Gate | null = null;
@@ -830,6 +994,39 @@ export class World {
       if (d < 1.6 && !this.entering) { this.entering = true; this.opts.onEnter(g.gate); }
     }
     if (near !== this.near) { this.near = near; this.opts.onNear(near); }
+  }
+
+  /** The right arm winds up behind and snaps forward; the lash curls, then cracks straight. The
+   *  special attack spins the walker round once inside a flash of light. */
+  private animateSwing(t: number) {
+    const lash = this.held.lash;
+    if (!this.swing) { lash.forEach((seg, i) => { seg.rotation.x = 0.12 + i * 0.015 * Math.sin(t * 2 + i); }); return; }
+    const { t0, kind } = this.swing, dur = kind === "spec" ? 0.9 : 0.5, f = (t - t0) / dur;
+    if (f >= 1) {
+      this.swing = null;
+      if (this.specRing) this.specRing.visible = false;
+      return;
+    }
+    const ease = (x: number) => 1 - Math.pow(1 - x, 3);
+    const up = 2.5, down = -1.35;
+    const a = f < 0.4 ? up * ease(f / 0.4) : up + (down - up) * ease((f - 0.4) / 0.6);
+    this.player.arms[1].rotation.x = a;
+    const curl = f < 0.4 ? 0.32 : 0.32 - 0.42 * ease((f - 0.4) / 0.6);
+    lash.forEach((seg) => { seg.rotation.x = curl; });
+    if (kind === "spec") {
+      this.player.group.rotation.y += (Math.PI * 2 / dur) * (1 / 60);
+      if (!this.specRing) {
+        this.specRing = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.16, 8, 40),
+          new THREE.MeshBasicMaterial({ color: "#c07aff", transparent: true, depthWrite: false }));
+        this.specRing.rotation.x = Math.PI / 2;
+        this.scene.add(this.specRing);
+      }
+      const ring = this.specRing, pp = this.player.group.position;
+      ring.visible = true;
+      ring.position.set(pp.x, pp.y + 2.6, pp.z);
+      ring.scale.setScalar(0.6 + f * 1.8);
+      (ring.material as THREE.MeshBasicMaterial).opacity = 1 - f;
+    }
   }
 
   /** Gateway names float above their rings, in the labels layer. */

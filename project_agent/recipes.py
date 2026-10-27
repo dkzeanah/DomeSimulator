@@ -13,6 +13,9 @@ Recipe catalogue:
 * ``presenter`` — validate/stage a Presentation, stills, optional export.
 * ``film``    — the teaching-film loop: claims → scaffold → constants →
                 narration → register → selftest → stills → export → verify.
+* ``episode`` — a Level With Me episode on the web engine: validate → draft
+                render → check → release render → check (docs/llm-episode-guide.md).
+* ``web_lesson`` — a lesson film on the web engine: stills → film + release.
 """
 
 from __future__ import annotations
@@ -487,7 +490,43 @@ def recipe_film(params: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def recipe_episode(params: dict) -> dict:
+    """A Level With Me episode on the web engine, the way the season was made: validate the
+    script, render a draft and check what it left, then render the release and check that."""
+    eid = str(params.get("episode") or "")
+    run_id = time.strftime("%Y%m%d-%H%M%S") + f"-episode-{eid}"
+    ctx = RecipeContext(run_id, params)
+    print(f"== recipe episode {eid} (run {run_id}) ==")
+    ctx.step("validate the script (writers.check)", "web_episodes", {"episode": eid}, gate=_gate_ok)
+    ctx.step("draft render, into tmp/", "web_episode_render", {"episode": eid, "draft": True}, gate=_gate_ok)
+    if params.get("draft_only"):
+        manifest = ctx.finish("done", "draft rendered and checked; look at it before the release")
+        return {"ok": True, "manifest": str(manifest)}
+    result = ctx.step("release render, into deliverables/", "web_episode_render", {"episode": eid, "draft": False}, gate=_gate_ok)
+    manifest = ctx.finish("done", f"released: {result.get('folder')}")
+    return {"ok": True, "folder": result.get("folder"), "manifest": str(manifest)}
+
+
+def recipe_web_lesson(params: dict) -> dict:
+    """A lesson film on the web engine: stills in both orientations, then the film and its release."""
+    key = str(params.get("lesson") or "2v")
+    run_id = time.strftime("%Y%m%d-%H%M%S") + f"-weblesson-{key}"
+    ctx = RecipeContext(run_id, params)
+    print(f"== recipe web_lesson {key} (run {run_id}) ==")
+    stills = ctx.step("stills, landscape and phone", "web_lesson", {"lesson": key, "mode": "stills"}, gate=_gate_ok)
+    if not params.get("render"):
+        manifest = ctx.finish("done", f"{len(stills.get('stills', []))} stills to look at; run again with render=true for the film")
+        return {"ok": True, "stills": stills.get("stills", []), "manifest": str(manifest)}
+    result = ctx.step("the film and its release", "web_lesson", {"lesson": key, "mode": "render"}, gate=_gate_ok)
+    manifest = ctx.finish("done", f"released: {result.get('outputs')}")
+    return {"ok": True, "outputs": result.get("outputs"), "manifest": str(manifest)}
+
+
 RECIPES: dict[str, dict] = {
+    "episode": {"label": "web-engine episode: validate -> draft render -> check -> release render -> check",
+                "run": recipe_episode},
+    "web_lesson": {"label": "web-engine lesson film: stills (both orientations) -> film + release",
+                   "run": recipe_web_lesson},
     "claims": {"label": "text -> classified claims + resolution ledger",
                "run": recipe_claims},
     "stills": {"label": "render + review stills from any world",

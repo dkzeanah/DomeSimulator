@@ -5,6 +5,9 @@
 export interface Env {
   DB: D1Database;
   BOOKS?: R2Bucket;
+  MEDIA?: R2Bucket; // the films on /episodes (zeanahlab-media), shared by the live site and staging
+  GITHUB_TOKEN?: string; // the dashboard's staging -> live button: Actions read and write on the repository
+  GITHUB_REPO?: string; // owner/name; defaults to dkzeanah/DomeSimulator
   PUBLIC_URL?: string;
   SESSION_SECRET?: string;
   ADMIN_EMAILS?: string;
@@ -26,6 +29,8 @@ export interface User {
   password_hash: string;
   display_name: string;
   role: string;
+  /** Set while staff view the site as a regular member (the zl_view cookie): the role they really have. */
+  real_role?: string;
   bio: string | null;
   city: string | null;
   region: string | null;
@@ -48,6 +53,8 @@ export interface Ctx {
   url: URL;
   params: Record<string, string>;
   user: User | null;
+  /** Staff looking at the site signed out (the zl_view cookie): there is no user, and /me says who they are. */
+  viewAs?: { mode: "guest"; realRole: string };
   /** cookies to set on the way out */
   setCookies: string[];
   /** keep working after the response has gone (Pages' waitUntil) */

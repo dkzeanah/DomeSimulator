@@ -39,6 +39,50 @@ export function Head({ children }: { children: ReactNode }) {
   return <p className="text-xs font-semibold mt-1">{children}</p>;
 }
 
+/** A studio's sections: a row of tabs and the one that is open. */
+export function Tabs<T extends string>({ tabs, value, onChange, colour }: { tabs: [T, string][]; value: T; onChange: (v: T) => void; colour: string }) {
+  return (
+    <div className="flex flex-wrap gap-1 border-b pb-1.5" role="tablist" style={{ borderColor: "var(--line)" }}>
+      {tabs.map(([v, text]) => (
+        <button key={v} role="tab" aria-selected={value === v} className={`px-2 py-1 text-xs rounded-t ${value === v ? "font-semibold" : "muted"}`}
+          style={value === v ? { color: colour, boxShadow: `inset 0 -2px 0 ${colour}` } : undefined} onClick={() => onChange(v)}>{text}</button>
+      ))}
+    </div>
+  );
+}
+
+export function Select({ label, value, options, onChange, disabled }: { label: string; value: string; options: (string | [string, string])[]; onChange: (v: string) => void; disabled?: boolean }) {
+  return (
+    <label className="grid gap-0.5 text-xs">
+      <span className="muted">{label}</span>
+      <select className="field !py-1 text-sm" value={value} disabled={disabled} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => { const [v, t] = typeof o === "string" ? [o, o] : o; return <option key={v} value={v}>{t}</option>; })}
+      </select>
+    </label>
+  );
+}
+
+/** A count with minus and plus. */
+export function Stepper({ label, value, min = 0, max = 99, onChange, note }: { label: string; value: number; min?: number; max?: number; onChange: (v: number) => void; note?: string }) {
+  return (
+    <div className="flex items-center justify-between gap-2 text-xs py-0.5">
+      <span className="muted">{label}{note && <span className="opacity-70"> {note}</span>}</span>
+      <span className="flex items-center gap-1">
+        <button className="btn-ghost !py-0 !px-1.5" aria-label={`Fewer ${label}`} disabled={value <= min} onClick={() => onChange(Math.max(min, value - 1))}>&minus;</button>
+        <span className="num w-6 text-center font-semibold">{value}</span>
+        <button className="btn-ghost !py-0 !px-1.5" aria-label={`More ${label}`} disabled={value >= max} onClick={() => onChange(Math.min(max, value + 1))}>+</button>
+      </span>
+    </div>
+  );
+}
+
+/** Save a text file to the visitor's computer. */
+export function download(name: string, text: string, type = "application/json") {
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = document.createElement("a"); a.href = url; a.download = name; a.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
 export const ftIn = (inches: number) => {
   const ft = Math.floor(inches / 12), rest = inches - ft * 12;
   return ft ? `${ft} ft ${rest.toFixed(1)} in` : `${rest.toFixed(1)} in`;

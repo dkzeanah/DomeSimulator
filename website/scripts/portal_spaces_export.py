@@ -8,13 +8,21 @@
   ways, their whole-dome figures and the seats are bundled.
 * **Cell Wall & Seams** is `two_v_demo.cell_wall` and `two_v_demo.seam_climate`: the layer stack,
   the router's scenarios and interlocks, the seam controller's constants, modes and the owner's
-  weathers, and the dome's seam bands. The browser re-runs the small exact parts -- the dew point,
+  weathers, the dome's seam bands, every function's own computed check (foam, glue, vacuum,
+  rain, fire, filter, heat, cool, cage, fog, flotation, living surface, the local net, the bus,
+  the extras), and the reference dome itself -- its nodes, triangles and seams, each seam's band,
+  the rim ports and belt low points, the lower triangles and every triangle's hops from the rim
+  -- so the stage draws the skin on the solver's dome. The browser re-runs the small exact parts -- the dew point,
   the controller's three questions, the wall's temperature profile, the interlocks -- and
   scripts/test_portal_spaces.mjs checks them against the Python.
 * **Dome Assembly Line** is `al_build`: each product line's dome built element by element at its
   stations (every element's mesh, material cost, labor and weight), and the editable assumptions
   its unit economics, throughput and break-even are worked from. The browser re-runs those sums
   (crew and wage change them) and scripts/test_portal_spaces.mjs checks them against `al_build`.
+  For the factory floor (`assembly_line.py`, the desktop demo): a run of production specs drawn
+  by `al_build.random_spec` from a fixed seed -- each its own catalog, mesh and elements, with the
+  floor point a worker carries each element to -- and the demo's pacing, phases, disruptions and
+  cost-sensitivity factors.
 * **Foundation & Pads** is `world3d.structures` (the pentagon of half trunks, its star, its piers,
   its deck and its layout on the ground, as the solver builds them) and `pad_deck` (the platform a
   seed dome stands on, priced board by board from the lumber receipt, five ways, over a range of
@@ -216,8 +224,69 @@ def cell_wall() -> dict:
             "skin": cw.skin(), "complexity": cw.complexity(),
             "heatSplit": {"room": cw.heat_split("room"), "osb": cw.heat_split("osb")},
             "networks": {"triangles": n.triangles, "seams": n.seams},
+            # every function's own check, with the layer it belongs to
+            "checks": [{"key": key, "title": title, "layer": layer, "figures": _plain(getattr(cw, key)())}
+                       for key, title, layer in CELL_CHECKS],
         },
+        "dome": _cell_dome(),
     }, 17)          # full precision: the browser re-runs these and is tested against the Python
+
+
+# The cell wall's checks, each with the layer it belongs to ("" for the whole wall)
+CELL_CHECKS = (
+    ("groove", "The groove in each strut", "core"), ("seam_room", "What fits in a seam", "core"),
+    ("foam", "Foam in the cavity", "core"), ("glue", "Glue: flood and bead", "core"),
+    ("vacuum", "Vacuum: the clamp", "vacuum"), ("rain", "Rain to the tank", "water"),
+    ("fire", "Fire water: the sprinkler", "water"), ("fire_evap", "Fire water: evaporating it", "water"),
+    ("air_filter", "The intake filter", "filter"), ("vent_dry", "Drying a wet cavity by vent", "air_in"),
+    ("heating", "Heating", "thermal"), ("cooling", "Cooling", "thermal"),
+    ("cage", "The Faraday cage", "cage"), ("fog", "Fog out, smoke in", "fog"),
+    ("flotation", "Flotation", "airbag"), ("living", "The living surface", "living"),
+    ("local_net", "The local net: cell to cell", "bus"), ("bus", "The CAN bus", "bus"),
+    ("extras", "And the rest", ""), ("multipliers", "What one wall does", ""),
+)
+
+
+def _plain(x):
+    """A check's figures as JSON: dicts and lists through, numpy numbers to floats."""
+    if isinstance(x, dict):
+        return {str(k): _plain(v) for k, v in x.items()}
+    if isinstance(x, (list, tuple)):
+        return [_plain(v) for v in x]
+    if isinstance(x, (bool, str)) or x is None:
+        return x
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return str(x)
+
+
+def _cell_dome() -> dict:
+    """The reference dome the cell wall is reckoned on (channel_facts.reference_model): inches, z up."""
+    from two_v_demo import cell_wall as cw
+    from two_v_demo import channel_facts as cf
+    from two_v_demo import seam_climate as scl
+    model = cf.reference_model()
+    topo = model.topology
+    band_of = {}
+    for key, seams in scl.classify(model).items():
+        for q in seams:
+            band_of[q.seam_id] = key
+    r = topo.sphere_radius_in
+    levels = sorted({round(float(v[2]) / r, 3) for v in topo.vertices})
+    level = lambda v: round(float(v[2]) / r, 3)
+    hops = cw.local_net()["hops"]
+    return {
+        "radiusIn": float(r),
+        "vertices": [[float(c) for c in v] for v in topo.vertices],
+        "faces": [{"v": [int(i) for i in f.vertices], "type": f.face_type, "hops": int(hops.get(f.index, hops.get(str(f.index), -1)))}
+                  for f in topo.faces],
+        "seams": [{"id": q.seam_id, "v": [int(q.edge_key[0]), int(q.edge_key[1])], "type": q.edge_type, "band": band_of.get(q.seam_id, ""),
+                   "faces": [int(q.face_a), int(q.face_b)]} for q in model.seams],
+        "rimPorts": [i for i, v in enumerate(topo.vertices) if level(v) == levels[0]],
+        "lowPoints": [i for i, v in enumerate(topo.vertices) if level(v) == levels[1]],
+        "lowerFaces": [int(i) for i in cw.lower_faces()],
+    }
 
 
 # ----------------------------------------------------------------------
@@ -237,8 +306,13 @@ def _al_spec(dtype: str, layout: str | None = None):
 def _al_line(dtype: str, layout: str | None = None) -> tuple[bytes, dict]:
     """One product line's dome, element by element: its mesh, and what each element costs. A home
     is built differently for each layout (its interior), so each layout is its own catalog."""
-    import al_build as A
     spec = _al_spec(dtype, layout)
+    return _al_line_from(spec, f"{dtype}-{spec.layout.lower()}")
+
+
+def _al_line_from(spec, name: str) -> tuple[bytes, dict]:
+    import al_build as A
+    dtype = spec.dtype
     cat, _info = A.build_dome_catalog(spec)
     verts = np.asarray(cat.b.vertices, dtype=np.float64).reshape(-1, 11)
     opaque = np.asarray(cat.b.opaque, dtype=np.int64)
@@ -255,18 +329,51 @@ def _al_line(dtype: str, layout: str | None = None) -> tuple[bytes, dict]:
     blob += opaque.astype("<u2").tobytes() + trans.astype("<u2").tobytes()
     elements = [{"stage": e.stage, "category": e.category, "label": e.label, "cost": e.material_cost,
                  "labor": e.labor_min, "weight": e.weight, "o": [e.o0, e.o1], "t": [e.t0, e.t1],
-                 "at": [float(x) for x in e.centroid]} for e in cat.elements]
+                 "at": [float(x) for x in e.centroid], "fp": [float(e.floor_point[0]), float(e.floor_point[1])]} for e in cat.elements]
     t = spec.type
     return blob, {
         "key": dtype, "name": t.name, "tagline": t.tagline, "stages": [st.key for st in spec.stages],
         "radius": spec.radius, "frequency": spec.frequency, "layout": spec.layout, "floorArea": spec.floor_area,
         "priceBase": t.price_base, "pricePerM2": t.price_per_m2, "elements": elements,
-        "mesh": {"file": f"/portal/assembly/{dtype}-{spec.layout.lower()}.bin", "vertices": int(len(verts)), "opaque": int(len(opaque)),
+        "mesh": {"file": f"/portal/assembly/{name}.bin", "vertices": int(len(verts)), "opaque": int(len(opaque)),
                  "transparent": int(len(trans)), "scale": scale, "palette": [list(c) for c in palette]},
     }
 
 
+AL_RUNS = 12          # production specs exported for the factory floor
+AL_SEED = 2026        # the seed they are drawn with, so the run is the same every export
+
+
+def _al_run(spec, n: int) -> tuple[bytes, dict, dict]:
+    """One production spec as the factory builds it: mesh blob, head (in lines.json) and its elements."""
+    import al_build as A
+    blob, head = _al_line_from(spec, f"run-{n}")
+    head.update({"serial": spec.serial, "model": spec.name, "cladding": spec.cladding, "claddingRgb": list(spec.cladding_color),
+                 "accent": list(spec.accent), "floorR": spec.floor_radius, "price": spec.sale_price, "monthly": spec.monthly_payment,
+                 "elementsFile": f"/portal/assembly/run-{n}.json"})
+    elements = head.pop("elements")
+    return blob, head, {"elements": elements}
+
+
+def _factory() -> dict:
+    """The desktop demo's pacing (assembly_line.py), read from it where it is code."""
+    import assembly_line as AL
+    phases = [{"kind": ph.kind, "station": ph.station, "dur": ph.dur} for ph in AL.build_phases()]
+    return {
+        "placeAnimPerLaborMin": AL.PLACE_ANIM_PER_LABOR_MIN, "walkSpeed": AL.ANIM_WALK_SPEED, "travelSecs": AL.TRAVEL_SECS,
+        "phases": phases,
+        # assembly_line.App.inject: what each disruption does to the line
+        "disruptions": [{"key": "supply", "label": "Supply delay", "stall": 6.0, "note": "the station starved for 6 minute-equivalents"},
+                        {"key": "breakdown", "label": "Machine breakdown", "stall": 8.0, "note": "maintenance responding"},
+                        {"key": "absence", "label": "Worker absence", "crew": -1, "note": "the station's crew one short"}],
+        # assembly_line.App._econ_with_sensitivity: which costs each factor moves, and cycle_sensitivity's steps
+        "sensitivity": {"lumber": ["frame", "floor", "hub"], "resin": ["fiberglass", "shingle", "wrap"], "wage": [],
+                        "levels": [1.0, 1.2, 0.85]},
+    }
+
+
 def assembly_line() -> tuple[dict, dict[Path, bytes]]:
+    import random
     import al_build as A
     files, lines = {}, []
     for dtype in A.DOME_TYPE_LIST:
@@ -274,8 +381,16 @@ def assembly_line() -> tuple[dict, dict[Path, bytes]]:
             blob, head = _al_line(dtype, layout)
             files[AL_DIR / f"{dtype}-{head['layout'].lower()}.bin"] = blob
             lines.append(head)
+    rng = random.Random(AL_SEED)
+    runs = []
+    for n in range(1, AL_RUNS + 1):
+        blob, head, els = _al_run(A.random_spec(n, rng), n)
+        files[AL_DIR / f"run-{n}.bin"] = blob
+        files[AL_DIR / f"run-{n}.json"] = json.dumps(_trim(els, 17), separators=(",", ":")).encode("utf-8")
+        runs.append(head)
     return _trim({
         "_generated_by": "website/scripts/portal_spaces_export.py from al_build -- do not edit",
+        "factory": _factory(), "runs": runs,
         "assumptions": A.ASSUMPTIONS,
         "stages": [{"key": st.key, "title": st.title, "desc": st.desc, "colour": list(st.colour if hasattr(st, "colour") else st.color)}
                    for st in A._STAGE_LIST],

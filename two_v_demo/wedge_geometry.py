@@ -292,6 +292,169 @@ def tree_yield(log: LogModel = DEFAULT_LOG) -> TreeYield:
 
 
 # ----------------------------------------------------------------------
+# Splitting finer: what each split costs in kerf, exactly
+# ----------------------------------------------------------------------
+
+SPLITS = (2, 4, 8, 16, 32, 64)
+"""Halves to sixty-fourths. Every split doubles the last: each pass cuts every piece in two."""
+
+FINE_SPLITS_MIN_DIAMETER_IN = 20.0
+"""The owner's rule (2026-10): sixty-fourths and thirty-seconds only from logs at least this
+big. Declared, not derived; the table shows what it protects against."""
+
+KERFS_IN = (
+    (0.125, "bandsaw mill"),
+    (0.25, "circular saw / small chainsaw"),
+    (0.375, "ripping chainsaw"),
+)
+"""Saw kerfs to compare. Typical widths, declared; measure your own chain or blade."""
+
+LUMBER_SIZES = ((2.0, 4.0), (2.0, 6.0), (4.0, 4.0), (1.0, 6.0))
+"""Full-dimension rough-sawn sizes (thickness, width) a mill would cut from the same log."""
+
+
+@dataclass(frozen=True)
+class SplitSection:
+    """One log section split radially into ``splits`` wedges with a saw of ``kerf_in``."""
+
+    diameter_in: float
+    splits: int
+    kerf_in: float
+    wedge_area_in2: float          # what is left of one wedge after both faces lose half a kerf
+    point_setback_in: float        # how far from the pith the wedge's point now starts
+    bark_chord_in: float           # the wedge's width across its bark face
+    depth_in: float                # pith-side point to bark: the member's depth
+
+    @property
+    def log_area_in2(self) -> float:
+        return math.pi * (self.diameter_in * 0.5) ** 2
+
+    @property
+    def wood_area_in2(self) -> float:
+        return self.splits * self.wedge_area_in2
+
+    @property
+    def recovery(self) -> float:
+        return self.wood_area_in2 / self.log_area_in2
+
+    @property
+    def kerf_loss(self) -> float:
+        return 1.0 - self.recovery
+
+    @property
+    def cut_length_in(self) -> float:
+        """Total length of saw cut across the face: every wedge face is half a cut, and n radii."""
+        return self.splits * self.diameter_in * 0.5
+
+    @property
+    def usable(self) -> bool:
+        """Left with any wood at all (the kerf has not eaten the whole wedge)."""
+        return self.wedge_area_in2 > 0.0
+
+
+def split_section(diameter_in: float, splits: int, kerf_in: float, samples: int = 720) -> SplitSection:
+    """The exact cross-section of one wedge after the radial cuts that make it.
+
+    Each wedge is a sector of angle 360/splits. The saw takes half its kerf off each of the
+    wedge's two radial faces, so what is left is bounded by two lines parallel to those faces,
+    kerf/2 inside them, and the bark. Those two lines meet on the wedge's centre line at
+    (kerf/2) / sin(half angle) from the pith: the finer the split, the further out the point
+    starts, and the more of the log's heart goes to sawdust. Area by the shoelace formula on the
+    exact boundary (the arc sampled finely), not by a strip estimate.
+    """
+    r = diameter_in * 0.5
+    half = math.pi / splits
+    h = kerf_in * 0.5
+    setback = h / math.sin(half)
+    chord = 2.0 * r * math.sin(half)
+    if setback >= r:
+        return SplitSection(diameter_in, splits, kerf_in, 0.0, setback, chord, 0.0)
+    # the offset face from the new point, at +half, meets the bark where |P0 + t u| = r
+    ux, uy = math.cos(half), math.sin(half)
+    b = setback * ux
+    t = -b + math.sqrt(b * b - (setback * setback - r * r))
+    edge_x, edge_y = setback + t * ux, t * uy
+    phi = math.atan2(edge_y, edge_x)
+    arc = np.linspace(-phi, phi, samples)
+    xs = np.concatenate(([setback], r * np.cos(arc)))
+    ys = np.concatenate(([0.0], r * np.sin(arc)))
+    area = 0.5 * abs(float(np.dot(xs, np.roll(ys, -1)) - np.dot(ys, np.roll(xs, -1))))
+    return SplitSection(diameter_in, splits, kerf_in, area, setback, chord, r - setback)
+
+
+@dataclass(frozen=True)
+class LumberYield:
+    """A round section sawn into rectangles the way a mill saws: parallel rows, kerf between all."""
+
+    diameter_in: float
+    thickness_in: float
+    width_in: float
+    kerf_in: float
+    pieces: tuple[tuple[float, float], ...]   # lower-left corner of every piece, log centre at 0, 0
+
+    @property
+    def count(self) -> int:
+        return len(self.pieces)
+
+    @property
+    def recovery(self) -> float:
+        return self.count * self.thickness_in * self.width_in / (math.pi * (self.diameter_in * 0.5) ** 2)
+
+
+def lumber_yield(diameter_in: float, thickness_in: float, width_in: float, kerf_in: float) -> LumberYield:
+    """Rows of ``thickness_in`` across the log with a kerf between rows, each row as many pieces
+    of ``width_in`` (a kerf between each) as its narrower edge allows. The stack of rows is
+    centred on the pith, as a sawyer would open the log, so it is symmetric."""
+    r = diameter_in * 0.5
+    pitch = thickness_in + kerf_in
+    rows = int((2.0 * r + kerf_in) // pitch)
+    while rows > 0:
+        stack = rows * pitch - kerf_in
+        bottom = -stack * 0.5
+        pieces: list[tuple[float, float]] = []
+        for k in range(rows):
+            y0 = bottom + k * pitch
+            worst = max(abs(y0), abs(y0 + thickness_in))
+            if worst >= r:
+                pieces = []
+                break
+            chord = 2.0 * math.sqrt(r * r - worst * worst)
+            n = int((chord + kerf_in) // (width_in + kerf_in))
+            span = n * (width_in + kerf_in) - kerf_in
+            pieces += [(-span * 0.5 + j * (width_in + kerf_in), y0) for j in range(n)]
+        if pieces or rows == 1:
+            break
+        rows -= 1
+    return LumberYield(diameter_in, thickness_in, width_in, kerf_in, tuple(pieces))
+
+
+def milling_table(diameters=tuple(range(6, 41)), kerfs=None) -> dict:
+    """Every diameter, kerf and split, and every lumber size, for the calculator page."""
+    kerfs = kerfs or tuple(k for k, _ in KERFS_IN)
+    rows = []
+    for d in diameters:
+        for k in kerfs:
+            wedges = []
+            for n in SPLITS:
+                s = split_section(float(d), n, k)
+                wedges.append({"splits": n, "recovery": round(s.recovery, 5), "wedgeArea": round(s.wedge_area_in2, 4),
+                               "setback": round(s.point_setback_in, 4), "chord": round(s.bark_chord_in, 4),
+                               "depth": round(s.depth_in, 4), "cutLength": round(s.cut_length_in, 3),
+                               "allowed": n < 32 or d >= FINE_SPLITS_MIN_DIAMETER_IN})
+            lumber = []
+            for t, w in LUMBER_SIZES:
+                y = lumber_yield(float(d), t, w, k)
+                lumber.append({"size": f"{t:g}x{w:g}", "t": t, "w": w, "count": y.count, "recovery": round(y.recovery, 5),
+                               "pieces": [[round(x, 3), round(yy, 3)] for x, yy in y.pieces]})
+            rows.append({"diameter": d, "kerf": k, "wedges": wedges, "lumber": lumber})
+    return {"splits": list(SPLITS), "fineMinDiameter": FINE_SPLITS_MIN_DIAMETER_IN,
+            "kerfs": [{"in": k, "label": label} for k, label in KERFS_IN],
+            "lumberSizes": [f"{t:g}x{w:g}" for t, w in LUMBER_SIZES],
+            "boardFootIn3": CUBIC_INCHES_PER_BOARD_FOOT, "rows": rows,
+            "source": "two_v_demo/wedge_geometry.py: split_section, lumber_yield"}
+
+
+# ----------------------------------------------------------------------
 # The panel: three members, one pinwheel, no mitres
 # ----------------------------------------------------------------------
 
@@ -792,8 +955,27 @@ def wedge_report() -> str:
     return "\n".join(lines)
 
 
+def validate_milling() -> None:
+    """The split-section arithmetic against what it must agree with."""
+    # with no kerf a wedge is exactly a sector
+    s0 = split_section(12.0, 8, 0.0)
+    assert abs(s0.wedge_area_in2 - sector_area_in2(12.0, 8)) < 1e-3, s0.wedge_area_in2
+    # eighths: the exact kerf is the module's four-diameter strip estimate less the overlap at the pith
+    s = split_section(12.0, 8, 0.25)
+    strips = 4.0 * 12.0 * 0.25
+    assert 0.0 < strips - (s.log_area_in2 - s.wood_area_in2) < 0.5, strips
+    for d in (8.0, 20.0, 36.0):
+        rec = [split_section(d, n, 0.25).recovery for n in SPLITS]
+        assert all(a > b for a, b in zip(rec, rec[1:])), rec          # every finer split costs more
+    # a mill-sawn log keeps less than its eighths, and kerf only ever takes pieces away
+    for d in (12.0, 20.0):
+        assert lumber_yield(d, 2.0, 4.0, 0.25).recovery < split_section(d, 8, 0.25).recovery
+        assert lumber_yield(d, 2.0, 4.0, 0.25).count <= sum(two_by_four_packing(d))
+
+
 def validate_wedge_geometry() -> None:
     """Prove the model before a frame of the lesson renders."""
+    validate_milling()
     log = DEFAULT_LOG
     assert log.sections == 5, log.sections
     assert log.struts_per_tree == 80, log.struts_per_tree

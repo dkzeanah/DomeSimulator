@@ -1,0 +1,3221 @@
+{
+ "_generated_by": "website/scripts/export_episodes.py -- do not edit",
+ "episodes": [
+  {
+   "slug": "cabin-stem-cell-utility-core-build",
+   "seq": 360,
+   "version": 2,
+   "series": "Cabin World",
+   "title": "Build one utility core",
+   "description": "7.2 hours practised. 17.2 for your first.\n\nThis is not the pitch. This is the work.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Build one utility core"
+    },
+    {
+     "t": 36,
+     "title": "What has to be on the bench"
+    },
+    {
+     "t": 64,
+     "title": "Build the chase on the bench"
+    },
+    {
+     "t": 104,
+     "title": "Drain first, because it is the one you cannot re-route"
+    },
+    {
+     "t": 136,
+     "title": "Water, then prove it before anything electrical exists"
+    },
+    {
+     "t": 184,
+     "title": "Power last, into a core already known to be dry"
+    },
+    {
+     "t": 226,
+     "title": "Close it, prove the cap, stand it up"
+    },
+    {
+     "t": 264,
+     "title": "Everything you buy for one"
+    },
+    {
+     "t": 303,
+     "title": "One core, every dome"
+    },
+    {
+     "t": 335,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 353,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-30",
+   "duration": 374.5,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/cabin-stem-cell-utility-core-build/v2/cabin-stem-cell-utility-core-build.mp4",
+    "bytes": 132133965
+   },
+   "vertical": {
+    "key": "episodes/cabin-stem-cell-utility-core-build/v2/cabin-stem-cell-utility-core-build-vertical.mp4",
+    "bytes": 129799468
+   },
+   "captions": {
+    "key": "episodes/cabin-stem-cell-utility-core-build/v2/cabin-stem-cell-utility-core-build.vtt"
+   },
+   "thumb": {
+    "key": "episodes/cabin-stem-cell-utility-core-build/v2/cabin-stem-cell-utility-core-build.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "cabin-two-trees-all-at-once",
+   "seq": 322,
+   "version": 1,
+   "series": "Cabin World",
+   "title": "Two Trees, All at Once",
+   "description": "The whole woodpile is standing up.\n\nIt will take me 2 whole pine trees to harvest all of the wood a 300 square foot house needs. No lumber yard and no delivery truck, just the trees already standing on the property, and one small chainsaw.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Two trees"
+    },
+    {
+     "t": 15,
+     "title": "The fell line"
+    },
+    {
+     "t": 41,
+     "title": "All at once"
+    },
+    {
+     "t": 67,
+     "title": "Why split it"
+    },
+    {
+     "t": 98,
+     "title": "Measured, and guessed"
+    },
+    {
+     "t": 125,
+     "title": "What it took"
+    },
+    {
+     "t": 157,
+     "title": "What the house numbers rest on"
+    },
+    {
+     "t": 193,
+     "title": "Where a house's time goes"
+    },
+    {
+     "t": 235,
+     "title": "Where a house's money goes"
+    },
+    {
+     "t": 266,
+     "title": "Labor is not most of it"
+    },
+    {
+     "t": 317,
+     "title": "The trailer is built the other way"
+    },
+    {
+     "t": 360,
+     "title": "What the fortnight is worth"
+    },
+    {
+     "t": 412,
+     "title": "Every part of the house"
+    },
+    {
+     "t": 446,
+     "title": "Where the saving comes from"
+    },
+    {
+     "t": 493,
+     "title": "What this does not show"
+    },
+    {
+     "t": 547,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 562,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-29",
+   "duration": 582.2,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/cabin-two-trees-all-at-once/v1/cabin-two-trees-all-at-once.mp4",
+    "bytes": 147048641
+   },
+   "vertical": {
+    "key": "episodes/cabin-two-trees-all-at-once/v1/cabin-two-trees-all-at-once-vertical.mp4",
+    "bytes": 251455493
+   },
+   "captions": {
+    "key": "episodes/cabin-two-trees-all-at-once/v1/cabin-two-trees-all-at-once.vtt"
+   },
+   "thumb": {
+    "key": "episodes/cabin-two-trees-all-at-once/v1/cabin-two-trees-all-at-once.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "cabin-dome-house-lookbook",
+   "seq": 312,
+   "version": 1,
+   "series": "Cabin World",
+   "title": "The Dome House Lookbook",
+   "description": "In a dome, how tall a thing can be depends on where it stands.\n\nThis is a sixteen metre dome with nothing in it. The posts show how much room there is overhead as you walk out from the middle: eight metres under the crown, and less every step after that.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "A room with no straight walls"
+    },
+    {
+     "t": 25,
+     "title": "The same shell, furnished"
+    },
+    {
+     "t": 50,
+     "title": "The cast"
+    },
+    {
+     "t": 74,
+     "title": "Hair is geometry"
+    },
+    {
+     "t": 103,
+     "title": "Four ways to dress the same eight people"
+    },
+    {
+     "t": 134,
+     "title": "The layer underneath"
+    },
+    {
+     "t": 158,
+     "title": "A hem is a landmark, not a number"
+    },
+    {
+     "t": 187,
+     "title": "Cycle it, turn it, drop it"
+    },
+    {
+     "t": 213,
+     "title": "What the dome refuses"
+    },
+    {
+     "t": 242,
+     "title": "The other set"
+    },
+    {
+     "t": 267,
+     "title": "One shell, one catalogue, one editor"
+    },
+    {
+     "t": 291,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 310,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-28",
+   "duration": 332.1,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/cabin-dome-house-lookbook/v1/cabin-dome-house-lookbook.mp4",
+    "bytes": 169369818
+   },
+   "vertical": {
+    "key": "episodes/cabin-dome-house-lookbook/v1/cabin-dome-house-lookbook-vertical.mp4",
+    "bytes": 139959499
+   },
+   "captions": {
+    "key": "episodes/cabin-dome-house-lookbook/v1/cabin-dome-house-lookbook.vtt"
+   },
+   "thumb": {
+    "key": "episodes/cabin-dome-house-lookbook/v1/cabin-dome-house-lookbook.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "cabin-the-seam-does-four-jobs",
+   "seq": 307,
+   "version": 1,
+   "series": "Cabin World",
+   "title": "The seam does four jobs",
+   "description": "55 seams, 309 feet of void.\n\nTwo sawn faces meeting at an angle cannot close flush.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "The channel is already there"
+    },
+    {
+     "t": 28,
+     "title": "What is actually in there"
+    },
+    {
+     "t": 52,
+     "title": "Rain in at the ridge"
+    },
+    {
+     "t": 82,
+     "title": "The air barrier"
+    },
+    {
+     "t": 124,
+     "title": "Drying the wood"
+    },
+    {
+     "t": 155,
+     "title": "Condensing on purpose"
+    },
+    {
+     "t": 208,
+     "title": "What it costs"
+    },
+    {
+     "t": 249,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 269,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-28",
+   "duration": 290.6,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/cabin-the-seam-does-four-jobs/v1/cabin-the-seam-does-four-jobs.mp4",
+    "bytes": 137737178
+   },
+   "vertical": {
+    "key": "episodes/cabin-the-seam-does-four-jobs/v1/cabin-the-seam-does-four-jobs-vertical.mp4",
+    "bytes": 105224043
+   },
+   "captions": {
+    "key": "episodes/cabin-the-seam-does-four-jobs/v1/cabin-the-seam-does-four-jobs.vtt"
+   },
+   "thumb": {
+    "key": "episodes/cabin-the-seam-does-four-jobs/v1/cabin-the-seam-does-four-jobs.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "cabin-the-vance-network-mini-series",
+   "seq": 304,
+   "version": 1,
+   "series": "Cabin World",
+   "title": "THE VANCE NETWORK: the complete mini-series",
+   "description": "How dare you enter the High Council Dome without my permission!\n\nHow dare you enter the High Council Dome without my permission!",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "The High Council Dome: Cold Hook"
+    },
+    {
+     "t": 8,
+     "title": "The High Council Dome: Escalation"
+    },
+    {
+     "t": 25,
+     "title": "The High Council Dome: Reveal"
+    },
+    {
+     "t": 45,
+     "title": "The High Council Dome: Cliffhanger"
+    },
+    {
+     "t": 60,
+     "title": "The Charges: Cold Hook"
+    },
+    {
+     "t": 68,
+     "title": "The Charges: Escalation"
+    },
+    {
+     "t": 86,
+     "title": "The Charges: Reveal"
+    },
+    {
+     "t": 106,
+     "title": "The Charges: Cliffhanger"
+    },
+    {
+     "t": 122,
+     "title": "The Base Ring: Cold Hook"
+    },
+    {
+     "t": 130,
+     "title": "The Base Ring: Escalation"
+    },
+    {
+     "t": 150,
+     "title": "The Base Ring: Reveal"
+    },
+    {
+     "t": 170,
+     "title": "The Base Ring: Cliffhanger"
+    },
+    {
+     "t": 186,
+     "title": "The Originals: Cold Hook"
+    },
+    {
+     "t": 194,
+     "title": "The Originals: Escalation"
+    },
+    {
+     "t": 212,
+     "title": "The Originals: Reveal"
+    },
+    {
+     "t": 232,
+     "title": "The Originals: Cliffhanger"
+    },
+    {
+     "t": 248,
+     "title": "The Vote: Cold Hook"
+    },
+    {
+     "t": 256,
+     "title": "The Vote: Escalation"
+    },
+    {
+     "t": 276,
+     "title": "The Vote: Reveal"
+    },
+    {
+     "t": 296,
+     "title": "The Vote: Cliffhanger"
+    },
+    {
+     "t": 312,
+     "title": "The Name: Cold Hook"
+    },
+    {
+     "t": 320,
+     "title": "The Name: Escalation"
+    },
+    {
+     "t": 338,
+     "title": "The Name: Reveal"
+    },
+    {
+     "t": 360,
+     "title": "The Name: Cliffhanger"
+    },
+    {
+     "t": 376,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 391,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-10-02",
+   "duration": 411.2,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/cabin-the-vance-network-mini-series/v1/cabin-the-vance-network-mini-series.mp4",
+    "bytes": 29187651
+   },
+   "vertical": {
+    "key": "episodes/cabin-the-vance-network-mini-series/v1/cabin-the-vance-network-mini-series-vertical.mp4",
+    "bytes": 52884964
+   },
+   "captions": {
+    "key": "episodes/cabin-the-vance-network-mini-series/v1/cabin-the-vance-network-mini-series.vtt"
+   },
+   "thumb": {
+    "key": "episodes/cabin-the-vance-network-mini-series/v1/cabin-the-vance-network-mini-series.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "cabin-stem-cell-hero-cut",
+   "seq": 288,
+   "version": 1,
+   "series": "Cabin World",
+   "title": "A house you can take apart",
+   "description": "19.4 feet across. 277 square feet.\n\nThis is a house you can take apart.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "A house you can take apart"
+    },
+    {
+     "t": 11,
+     "title": "The frame is already on your land"
+    },
+    {
+     "t": 22,
+     "title": "A dome is a head, and it wears hats"
+    },
+    {
+     "t": 40,
+     "title": "It gets warmer every winter"
+    },
+    {
+     "t": 50,
+     "title": "The insulation is a thousand t-shirts"
+    },
+    {
+     "t": 63,
+     "title": "Twelve thousand, and here is the invoice"
+    },
+    {
+     "t": 77,
+     "title": "And it can be better later"
+    },
+    {
+     "t": 89,
+     "title": "It needs three kinds of people"
+    },
+    {
+     "t": 103,
+     "title": "Every number is a model you can run"
+    },
+    {
+     "t": 113,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 128,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-28",
+   "duration": 146.8,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/cabin-stem-cell-hero-cut/v1/cabin-stem-cell-hero-cut.mp4",
+    "bytes": 74444260
+   },
+   "vertical": {
+    "key": "episodes/cabin-stem-cell-hero-cut/v1/cabin-stem-cell-hero-cut-vertical.mp4",
+    "bytes": 58218597
+   },
+   "captions": {
+    "key": "episodes/cabin-stem-cell-hero-cut/v1/cabin-stem-cell-hero-cut.vtt"
+   },
+   "thumb": {
+    "key": "episodes/cabin-stem-cell-hero-cut/v1/cabin-stem-cell-hero-cut.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "closing-the-triangle",
+   "seq": 568,
+   "version": 3,
+   "series": "Films",
+   "title": "Closing the Triangle",
+   "description": "The same wedges, again.\n\nThe frame is done: three wedges round every one of these 40 triangles. Now close the middles, with the same wedges.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Closing the triangle"
+    },
+    {
+     "t": 8,
+     "title": "One wedge"
+    },
+    {
+     "t": 21,
+     "title": "A pair, points in"
+    },
+    {
+     "t": 36,
+     "title": "Slide it to a bowtie"
+    },
+    {
+     "t": 50,
+     "title": "Filled nested"
+    },
+    {
+     "t": 61,
+     "title": "Filled bowtie"
+    },
+    {
+     "t": 71,
+     "title": "Side by side"
+    },
+    {
+     "t": 78,
+     "title": "The whole dome, nested"
+    },
+    {
+     "t": 92,
+     "title": "Slide them all"
+    },
+    {
+     "t": 105,
+     "title": "Dial it in each triangle"
+    },
+    {
+     "t": 117,
+     "title": "Cut flush"
+    },
+    {
+     "t": 132,
+     "title": "The book's count"
+    },
+    {
+     "t": 147,
+     "title": "In trees"
+    },
+    {
+     "t": 157,
+     "title": "Two layouts, two counts"
+    },
+    {
+     "t": 184,
+     "title": "Rings"
+    },
+    {
+     "t": 212,
+     "title": "Parallel"
+    },
+    {
+     "t": 239,
+     "title": "Across"
+    },
+    {
+     "t": 265,
+     "title": "Chevron"
+    },
+    {
+     "t": 290,
+     "title": "Louvers"
+    },
+    {
+     "t": 300,
+     "title": "Or cover it"
+    },
+    {
+     "t": 332,
+     "title": "Covered, across"
+    },
+    {
+     "t": 356,
+     "title": "Covered, chevron"
+    },
+    {
+     "t": 383,
+     "title": "Every fill, side by side"
+    },
+    {
+     "t": 400,
+     "title": "The dial"
+    },
+    {
+     "t": 415,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 429,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-10-14",
+   "duration": 444.7,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/closing-the-triangle/v3/closing-the-triangle.mp4",
+    "bytes": 151490231
+   },
+   "vertical": {
+    "key": "episodes/closing-the-triangle/v3/closing-the-triangle-vertical.mp4",
+    "bytes": 139343494
+   },
+   "captions": {
+    "key": "episodes/closing-the-triangle/v3/closing-the-triangle.vtt"
+   },
+   "thumb": {
+    "key": "episodes/closing-the-triangle/v3/closing-the-triangle.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "concept-wedge-coverage",
+   "seq": 554,
+   "version": 1,
+   "series": "Films",
+   "title": "How Much Tree Closes a Dome",
+   "description": "One dome, every triangle closed with wedges: four trees, or seven, and you choose which.\n\nThe dome's frame is 120 wedge members: 678 feet of wedge, cut from one log after another. Close every triangle with more wedges, laid in pairs with their points facing in, and the pairs can nest tight or open into a bowtie. Nested, a pair covers one wedge face; opened, two. That one choice moves the whole dome between 1,796 and 2,913 feet of wedge.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "How Much Tree Closes a Dome"
+    },
+    {
+     "t": 30,
+     "title": "The numbers we are working from"
+    },
+    {
+     "t": 47,
+     "title": "The frame"
+    },
+    {
+     "t": 60,
+     "title": "Closing the triangles"
+    },
+    {
+     "t": 73,
+     "title": "Your choice of trees"
+    },
+    {
+     "t": 89,
+     "title": "Where it fits the dome"
+    },
+    {
+     "t": 103,
+     "title": "What it will not do"
+    }
+   ],
+   "made": "2026-10-14",
+   "duration": 118.5,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/concept-wedge-coverage/v1/concept-wedge-coverage.mp4",
+    "bytes": 42249945
+   },
+   "vertical": {
+    "key": "episodes/concept-wedge-coverage/v1/concept-wedge-coverage-vertical.mp4",
+    "bytes": 34547821
+   },
+   "captions": {
+    "key": "episodes/concept-wedge-coverage/v1/concept-wedge-coverage.vtt"
+   },
+   "thumb": {
+    "key": "episodes/concept-wedge-coverage/v1/concept-wedge-coverage.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-house-that-was-a-tree",
+   "seq": 543,
+   "version": 1,
+   "series": "Films",
+   "title": "The House That Was a Tree",
+   "description": "Now it's a house.\n\nThis was a tree. Now it's a house. And it cost less than a used car: $12,036.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "This was a tree"
+    },
+    {
+     "t": 8,
+     "title": "The cheapest part"
+    },
+    {
+     "t": 15,
+     "title": "The papercuts"
+    },
+    {
+     "t": 28,
+     "title": "The biggest cut"
+    },
+    {
+     "t": 38,
+     "title": "Fifteen hands"
+    },
+    {
+     "t": 45,
+     "title": "So I cut them out"
+    },
+    {
+     "t": 52,
+     "title": "Two lengths"
+    },
+    {
+     "t": 60,
+     "title": "Even the floor"
+    },
+    {
+     "t": 71,
+     "title": "The whole bill"
+    },
+    {
+     "t": 78,
+     "title": "The trees"
+    },
+    {
+     "t": 84,
+     "title": "Not yet"
+    },
+    {
+     "t": 94,
+     "title": "Who it's for"
+    }
+   ],
+   "made": "2026-10-14",
+   "duration": 104.5,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-house-that-was-a-tree/v1/the-house-that-was-a-tree.mp4",
+    "bytes": 40615860
+   },
+   "vertical": {
+    "key": "episodes/the-house-that-was-a-tree/v1/the-house-that-was-a-tree-vertical.mp4",
+    "bytes": 47948774
+   },
+   "captions": {
+    "key": "episodes/the-house-that-was-a-tree/v1/the-house-that-was-a-tree.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-house-that-was-a-tree/v1/the-house-that-was-a-tree.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-staple-house",
+   "seq": 529,
+   "version": 1,
+   "series": "Films",
+   "title": "The Staple House",
+   "description": "What a dome should be.\n\nWhen people ask me what this dome is, I don't say shelter. I say it's a McDouble. Cheap, fast, reliable, consistent, known everywhere. Not the five-course meal. The staple the whole menu stands on.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "The staple house"
+    },
+    {
+     "t": 13,
+     "title": "What a staple is"
+    },
+    {
+     "t": 30,
+     "title": "A first home, not a last one"
+    },
+    {
+     "t": 43,
+     "title": "The papercuts"
+    },
+    {
+     "t": 63,
+     "title": "None of it is the house"
+    },
+    {
+     "t": 76,
+     "title": "Fifteen sets of hands"
+    },
+    {
+     "t": 92,
+     "title": "The biggest papercut"
+    },
+    {
+     "t": 109,
+     "title": "The staple's bill"
+    },
+    {
+     "t": 127,
+     "title": "Side by side"
+    },
+    {
+     "t": 141,
+     "title": "Not like for like"
+    },
+    {
+     "t": 161,
+     "title": "A baseline"
+    },
+    {
+     "t": 189,
+     "title": "A family event"
+    },
+    {
+     "t": 211,
+     "title": "The first rung"
+    },
+    {
+     "t": 226,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 240,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-10-14",
+   "duration": 256.5,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-staple-house/v1/the-staple-house.mp4",
+    "bytes": 73255057
+   },
+   "vertical": {
+    "key": "episodes/the-staple-house/v1/the-staple-house-vertical.mp4",
+    "bytes": 98540900
+   },
+   "captions": {
+    "key": "episodes/the-staple-house/v1/the-staple-house.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-staple-house/v1/the-staple-house.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "beyond-the-dome-building-with-wedges",
+   "seq": 502,
+   "version": 1,
+   "series": "Films",
+   "title": "Beyond the Dome: Building With Wedges",
+   "description": "The same wedges, other buildings.\n\nThe dome on this hill is framed from 120 wedges split from logs with one chainsaw. This film is about everything else those wedges can build. A zome, framed from the same pile. Square posts, made from wedges on demand. A roof whose pitch is already in the log. An octagon, a set of joints, and a seam that carries water. And it starts where every wedge does: with a log.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Beyond the dome"
+    },
+    {
+     "t": 30,
+     "title": "Why wedges"
+    },
+    {
+     "t": 62,
+     "title": "The wedge, measured"
+    },
+    {
+     "t": 87,
+     "title": "Square on demand"
+    },
+    {
+     "t": 133,
+     "title": "Back to back"
+    },
+    {
+     "t": 160,
+     "title": "Split finer, get boards"
+    },
+    {
+     "t": 193,
+     "title": "Shims from the same log"
+    },
+    {
+     "t": 221,
+     "title": "The skew is a roof pitch"
+    },
+    {
+     "t": 248,
+     "title": "The octagon is in the log"
+    },
+    {
+     "t": 272,
+     "title": "Joints wedges make easy"
+    },
+    {
+     "t": 303,
+     "title": "The pinwheel"
+    },
+    {
+     "t": 333,
+     "title": "The seam is a channel"
+    },
+    {
+     "t": 359,
+     "title": "Against the mill"
+    },
+    {
+     "t": 389,
+     "title": "A zome from the same pile"
+    },
+    {
+     "t": 413,
+     "title": "Wedges, back out"
+    },
+    {
+     "t": 453,
+     "title": "One bevel for every cut"
+    },
+    {
+     "t": 483,
+     "title": "A panel on the jig"
+    },
+    {
+     "t": 507,
+     "title": "The other way: square sticks"
+    },
+    {
+     "t": 540,
+     "title": "What it takes"
+    },
+    {
+     "t": 561,
+     "title": "Meeting the square world"
+    },
+    {
+     "t": 588,
+     "title": "Buildings that suit wedges"
+    },
+    {
+     "t": 614,
+     "title": "Built by veterans"
+    },
+    {
+     "t": 648,
+     "title": "Safety at the log"
+    },
+    {
+     "t": 679,
+     "title": "Split everything. Square on demand."
+    }
+   ],
+   "made": "2026-10-14",
+   "duration": 590.9,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/beyond-the-dome-building-with-wedges/v1/beyond-the-dome-building-with-wedges.mp4",
+    "bytes": 164740000
+   },
+   "vertical": {
+    "key": "episodes/beyond-the-dome-building-with-wedges/v1/beyond-the-dome-building-with-wedges-vertical.mp4",
+    "bytes": 147432888
+   },
+   "captions": {
+    "key": "episodes/beyond-the-dome-building-with-wedges/v1/beyond-the-dome-building-with-wedges.vtt"
+   },
+   "thumb": {
+    "key": "episodes/beyond-the-dome-building-with-wedges/v1/beyond-the-dome-building-with-wedges.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "every-piece-numbered",
+   "seq": 474,
+   "version": 1,
+   "series": "Films",
+   "title": "Every Piece, Numbered: Filling the Triangles and Framing the Floor",
+   "description": "A triangle and a floor, cut by the numbers.\n\nTwo things are built from wood in this film. One of the dome's forty triangles, filled with wedges split from a log. And the floor the whole dome stands on, framed from five twenty-foot half trunks. Every piece of both has a number. Every number has a length, an angle, and a way of cutting it, worked out by one calculator and shown on the saw before anyone picks up a blade.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Every piece, numbered"
+    },
+    {
+     "t": 30,
+     "title": "What is solved, what is assumed"
+    },
+    {
+     "t": 69,
+     "title": "Two triangles, forty panels"
+    },
+    {
+     "t": 91,
+     "title": "The frame is a tray"
+    },
+    {
+     "t": 124,
+     "title": "Seventeen wedges"
+    },
+    {
+     "t": 150,
+     "title": "A number on every piece"
+    },
+    {
+     "t": 174,
+     "title": "Cut one, on the mitre saw"
+    },
+    {
+     "t": 209,
+     "title": "Cut two, and an offcut to keep"
+    },
+    {
+     "t": 237,
+     "title": "Too steep for the saw"
+    },
+    {
+     "t": 266,
+     "title": "Ten ways to fill one triangle"
+    },
+    {
+     "t": 295,
+     "title": "Rounds, and the gaps cut to fit"
+    },
+    {
+     "t": 324,
+     "title": "Turn it over"
+    },
+    {
+     "t": 348,
+     "title": "Five trunks, one pentagon"
+    },
+    {
+     "t": 382,
+     "title": "Every corner, one cut"
+    },
+    {
+     "t": 414,
+     "title": "A star across it"
+    },
+    {
+     "t": 447,
+     "title": "Joists between the points"
+    },
+    {
+     "t": 467,
+     "title": "A joist on the saw"
+    },
+    {
+     "t": 497,
+     "title": "Where the weight goes"
+    },
+    {
+     "t": 536,
+     "title": "43 piers, each sized"
+    },
+    {
+     "t": 554,
+     "title": "Seven ways to frame the floor"
+    },
+    {
+     "t": 585,
+     "title": "The most to spare, the heaviest pier"
+    },
+    {
+     "t": 617,
+     "title": "Or lay it on gravel"
+    },
+    {
+     "t": 649,
+     "title": "Trunks, quarters or lumber"
+    },
+    {
+     "t": 676,
+     "title": "The dome on its floor"
+    },
+    {
+     "t": 688,
+     "title": "What these numbers are not"
+    },
+    {
+     "t": 721,
+     "title": "Cut by the numbers"
+    }
+   ],
+   "made": "2026-10-12",
+   "duration": 645.7,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/every-piece-numbered/v1/every-piece-numbered.mp4",
+    "bytes": 193814605
+   },
+   "vertical": {
+    "key": "episodes/every-piece-numbered/v1/every-piece-numbered-vertical.mp4",
+    "bytes": 186687502
+   },
+   "captions": {
+    "key": "episodes/every-piece-numbered/v1/every-piece-numbered.vtt"
+   },
+   "thumb": {
+    "key": "episodes/every-piece-numbered/v1/every-piece-numbered.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-sky-web",
+   "seq": 467,
+   "version": 2,
+   "series": "Films",
+   "title": "The Sky Web",
+   "description": "",
+   "chapters": [],
+   "made": "2026-10-12",
+   "duration": 1334.7,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-sky-web/v2/the-sky-web.mp4",
+    "bytes": 281806504
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/the-sky-web/v2/the-sky-web.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-sky-web/v2/the-sky-web.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-panel-method-3v-dome",
+   "seq": 418,
+   "version": 2,
+   "series": "Films",
+   "title": "The Panel Method: A Three-Frequency Dome, Framed on a Jig",
+   "description": "Same hill, two methods.\n\nOn this hill stand two domes framed two different ways. One is the wedge dome: 120 members split from logs with a chainsaw, carrying their angles in their own shape. The other is a three-frequency dome of framed panels: 105 triangles, each one its own small frame of sawn sticks, built flat on a jig, skinned in the shop, and screwed to its neighbours on site. It is how most small timber domes built from bought plans are made, and it is worth knowing properly.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Two ways to frame a dome"
+    },
+    {
+     "t": 37,
+     "title": "A popular build, tried and true"
+    },
+    {
+     "t": 67,
+     "title": "Three frequency"
+    },
+    {
+     "t": 106,
+     "title": "Five eighths"
+    },
+    {
+     "t": 141,
+     "title": "A base that zig-zags"
+    },
+    {
+     "t": 174,
+     "title": "Two panels, over and over"
+    },
+    {
+     "t": 204,
+     "title": "Finish, then rip in half"
+    },
+    {
+     "t": 243,
+     "title": "Draw the jig with two arcs"
+    },
+    {
+     "t": 282,
+     "title": "Rails, and the line"
+    },
+    {
+     "t": 313,
+     "title": "Sticks that turn like a pinwheel"
+    },
+    {
+     "t": 359,
+     "title": "One bevel cannot be exact"
+    },
+    {
+     "t": 394,
+     "title": "Skin it in sections"
+    },
+    {
+     "t": 425,
+     "title": "A window is a panel with hinges"
+    },
+    {
+     "t": 453,
+     "title": "Raise it loose, then tighten"
+    },
+    {
+     "t": 492,
+     "title": "A floor the shape of the base"
+    },
+    {
+     "t": 527,
+     "title": "Hold it down"
+    },
+    {
+     "t": 552,
+     "title": "A zome without a bevel"
+    },
+    {
+     "t": 580,
+     "title": "The gap that is allowed"
+    },
+    {
+     "t": 618,
+     "title": "What each method asks of you"
+    },
+    {
+     "t": 654,
+     "title": "Two good roads"
+    },
+    {
+     "t": 679,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 698,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-10-03",
+   "duration": 720.1,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-panel-method-3v-dome/v2/the-panel-method-3v-dome.mp4",
+    "bytes": 242131386
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/the-panel-method-3v-dome/v2/the-panel-method-3v-dome.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-panel-method-3v-dome/v2/the-panel-method-3v-dome.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-shop-the-campaign-buys",
+   "seq": 410,
+   "version": 1,
+   "series": "Films",
+   "title": "The Shop the Campaign Buys: A 10 x 5 Plasma Table and Its Router",
+   "description": "Two machine lines, one frame.\n\nPart of what backing this project pays for is a shop. Not a building: two machines. A plasma table that cuts a whole sheet of steel into the panels of a dome, and a router that cuts the jigs and the wooden panels. This film is what those two machines are, what they make, and what they cost when you build them rather than buy them. Here is the first thing the table makes: one 120 by 60 inch sheet of plate, 40 panels.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "The shop the campaign buys"
+    },
+    {
+     "t": 35,
+     "title": "One sheet, forty panels"
+    },
+    {
+     "t": 66,
+     "title": "How the panels fit"
+    },
+    {
+     "t": 99,
+     "title": "Almost fits"
+    },
+    {
+     "t": 127,
+     "title": "Welded up"
+    },
+    {
+     "t": 156,
+     "title": "What one sheet becomes"
+    },
+    {
+     "t": 187,
+     "title": "What it is not"
+    },
+    {
+     "t": 209,
+     "title": "A dome in plate"
+    },
+    {
+     "t": 246,
+     "title": "The table, by the plans' own rules"
+    },
+    {
+     "t": 286,
+     "title": "Long rails, joined"
+    },
+    {
+     "t": 321,
+     "title": "The number that has to be right"
+    },
+    {
+     "t": 352,
+     "title": "Motors that fit the pinion"
+    },
+    {
+     "t": 383,
+     "title": "Pilot arc and a floating head"
+    },
+    {
+     "t": 412,
+     "title": "What it costs, and what kind of number each is"
+    },
+    {
+     "t": 451,
+     "title": "The router head"
+    },
+    {
+     "t": 484,
+     "title": "Budgeted, and built"
+    },
+    {
+     "t": 521,
+     "title": "What the backing builds"
+    },
+    {
+     "t": 551,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 570,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-10-03",
+   "duration": 592.1,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-shop-the-campaign-buys/v1/the-shop-the-campaign-buys.mp4",
+    "bytes": 127675631
+   },
+   "vertical": {
+    "key": "episodes/the-shop-the-campaign-buys/v1/the-shop-the-campaign-buys-vertical.mp4",
+    "bytes": 120199960
+   },
+   "captions": {
+    "key": "episodes/the-shop-the-campaign-buys/v1/the-shop-the-campaign-buys.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-shop-the-campaign-buys/v1/the-shop-the-campaign-buys.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "linseed-oil-for-a-dome",
+   "seq": 344,
+   "version": 2,
+   "series": "Films",
+   "title": "Linseed Oil for a Dome: Uses, Limits and Method",
+   "description": "Where it earns a place in the build.\n\nThe Lost Handyman video offers 20 linseed oil tricks. Here we bring the useful ones into the wedge dome workshop. Start with the exposed interior wood, shelves, trim and hand tools. Then look at the seams, windows and weather skin, where a finish must work with the rest of the assembly. The source is a set of claims, not a comparison test. We will show the work, the quantities and the limits before calling anything a saving.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Linseed oil for a dome"
+    },
+    {
+     "t": 32,
+     "title": "Set up the rag station first"
+    },
+    {
+     "t": 72,
+     "title": "Read the exact can"
+    },
+    {
+     "t": 114,
+     "title": "Prepare the member"
+    },
+    {
+     "t": 158,
+     "title": "Two product labels, two schedules"
+    },
+    {
+     "t": 193,
+     "title": "Apply thinly, then wipe dry"
+    },
+    {
+     "t": 236,
+     "title": "Keep the seam doing its jobs"
+    },
+    {
+     "t": 278,
+     "title": "The outside needs a weather system"
+    },
+    {
+     "t": 325,
+     "title": "Declare the planning assumptions"
+    },
+    {
+     "t": 364,
+     "title": "Measure wood, not floor area"
+    },
+    {
+     "t": 405,
+     "title": "The oil allowance"
+    },
+    {
+     "t": 445,
+     "title": "The number that argues against it"
+    },
+    {
+     "t": 482,
+     "title": "Look after the builder's tools"
+    },
+    {
+     "t": 526,
+     "title": "Putty belongs to a specified window"
+    },
+    {
+     "t": 577,
+     "title": "Finish the parts people touch"
+    },
+    {
+     "t": 624,
+     "title": "Inspect, clean, then renew"
+    },
+    {
+     "t": 668,
+     "title": "A useful finish in the right places"
+    },
+    {
+     "t": 711,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 731,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-30",
+   "duration": 752.7,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/linseed-oil-for-a-dome/v2/linseed-oil-for-a-dome.mp4",
+    "bytes": 170982004
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/linseed-oil-for-a-dome/v2/linseed-oil-for-a-dome.vtt"
+   },
+   "thumb": {
+    "key": "episodes/linseed-oil-for-a-dome/v2/linseed-oil-for-a-dome.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-wedge-dome-explained",
+   "seq": 279,
+   "version": 1,
+   "series": "Films",
+   "title": "The Wedge Dome, Explained",
+   "description": "A whole house frame, before it is cut.\n\nThis is a house frame before it is cut. One log, ripped with a chainsaw straight through its heart into 8 wedges. Every stick in the dome behind it is one of those wedges. By the end of this film you will know what each one does, and what the gap between two of them can carry.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "One log"
+    },
+    {
+     "t": 24,
+     "title": "Point in, round face out"
+    },
+    {
+     "t": 45,
+     "title": "Two lengths, flat panels"
+    },
+    {
+     "t": 66,
+     "title": "No hubs"
+    },
+    {
+     "t": 90,
+     "title": "Every edge is two sticks"
+    },
+    {
+     "t": 112,
+     "title": "The V"
+    },
+    {
+     "t": 145,
+     "title": "The key"
+    },
+    {
+     "t": 168,
+     "title": "How much room"
+    },
+    {
+     "t": 189,
+     "title": "The sizes we assumed"
+    },
+    {
+     "t": 214,
+     "title": "Water and wire fit"
+    },
+    {
+     "t": 236,
+     "title": "Round ducts do not"
+    },
+    {
+     "t": 259,
+     "title": "The channel is the duct"
+    },
+    {
+     "t": 281,
+     "title": "Peltier plates and the three-way gate"
+    },
+    {
+     "t": 311,
+     "title": "What the plates are worth"
+    },
+    {
+     "t": 333,
+     "title": "If you want a duct: the key becomes a spacer"
+    },
+    {
+     "t": 361,
+     "title": "What the spacer costs"
+    },
+    {
+     "t": 381,
+     "title": "Or start with a bigger log"
+    },
+    {
+     "t": 413,
+     "title": "Printing the key in halves"
+    },
+    {
+     "t": 440,
+     "title": "What printing costs"
+    },
+    {
+     "t": 467,
+     "title": "Where the channels meet"
+    },
+    {
+     "t": 506,
+     "title": "Two rules"
+    },
+    {
+     "t": 532,
+     "title": "What the fitted seam costs"
+    },
+    {
+     "t": 549,
+     "title": "The wedge dome"
+    },
+    {
+     "t": 569,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 589,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-28",
+   "duration": 610.6,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-wedge-dome-explained/v1/the-wedge-dome-explained.mp4",
+    "bytes": 202134596
+   },
+   "vertical": {
+    "key": "episodes/the-wedge-dome-explained/v1/the-wedge-dome-explained-vertical.mp4",
+    "bytes": 171387438
+   },
+   "captions": {
+    "key": "episodes/the-wedge-dome-explained/v1/the-wedge-dome-explained.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-wedge-dome-explained/v1/the-wedge-dome-explained.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-seam-does-four-jobs",
+   "seq": 242,
+   "version": 1,
+   "series": "Films",
+   "title": "The Seam Does Four Jobs (original cut)",
+   "description": "55 seams, 309 feet of void.\n\nTwo sawn faces meeting at an angle cannot close flush.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "The channel is already there"
+    },
+    {
+     "t": 28,
+     "title": "What is actually in there"
+    },
+    {
+     "t": 52,
+     "title": "Rain in at the ridge"
+    },
+    {
+     "t": 82,
+     "title": "The air barrier"
+    },
+    {
+     "t": 124,
+     "title": "Drying the wood"
+    },
+    {
+     "t": 155,
+     "title": "Condensing on purpose"
+    },
+    {
+     "t": 208,
+     "title": "What it costs"
+    }
+   ],
+   "made": "2026-09-25",
+   "duration": 249.3,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-seam-does-four-jobs/v1/the-seam-does-four-jobs.mp4",
+    "bytes": 124718913
+   },
+   "vertical": {
+    "key": "episodes/the-seam-does-four-jobs/v1/the-seam-does-four-jobs-vertical.mp4",
+    "bytes": 98028746
+   },
+   "captions": {
+    "key": "episodes/the-seam-does-four-jobs/v1/the-seam-does-four-jobs.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-seam-does-four-jobs/v1/the-seam-does-four-jobs.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "stem-cell-hero-cut",
+   "seq": 227,
+   "version": 3,
+   "series": "Films",
+   "title": "A House You Can Take Apart (original cut)",
+   "description": "19.4 feet across. 277 square feet.\n\nThis is a house you can take apart.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "A house you can take apart"
+    },
+    {
+     "t": 11,
+     "title": "The frame is already on your land"
+    },
+    {
+     "t": 22,
+     "title": "A dome is a head, and it wears hats"
+    },
+    {
+     "t": 40,
+     "title": "It gets warmer every winter"
+    },
+    {
+     "t": 51,
+     "title": "The insulation is a thousand t-shirts"
+    },
+    {
+     "t": 63,
+     "title": "Twelve thousand, and here is the invoice"
+    },
+    {
+     "t": 78,
+     "title": "And it can be better later"
+    },
+    {
+     "t": 90,
+     "title": "It needs three kinds of people"
+    },
+    {
+     "t": 103,
+     "title": "Every number is a model you can run"
+    }
+   ],
+   "made": "2026-09-23",
+   "duration": 113.6,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/stem-cell-hero-cut/v3/stem-cell-hero-cut.mp4",
+    "bytes": 95924466
+   },
+   "vertical": {
+    "key": "episodes/stem-cell-hero-cut/v3/stem-cell-hero-cut-vertical.mp4",
+    "bytes": 77227522
+   },
+   "captions": {
+    "key": "episodes/stem-cell-hero-cut/v3/stem-cell-hero-cut.vtt"
+   },
+   "thumb": {
+    "key": "episodes/stem-cell-hero-cut/v3/stem-cell-hero-cut.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "stem-cell-utility-core-build",
+   "seq": 125,
+   "version": 1,
+   "series": "Films",
+   "title": "Build One Utility Core (original cut)",
+   "description": "7.2 hours practised. 17.2 for your first.\n\nThis is not the pitch. This is the work.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Build one utility core"
+    },
+    {
+     "t": 35,
+     "title": "What has to be on the bench"
+    },
+    {
+     "t": 63,
+     "title": "Build the chase on the bench"
+    },
+    {
+     "t": 104,
+     "title": "Drain first, because it is the one you cannot re-route"
+    },
+    {
+     "t": 136,
+     "title": "Water, then prove it before anything electrical exists"
+    },
+    {
+     "t": 183,
+     "title": "Power last, into a core already known to be dry"
+    },
+    {
+     "t": 226,
+     "title": "Close it, prove the cap, stand it up"
+    },
+    {
+     "t": 264,
+     "title": "Everything you buy for one"
+    },
+    {
+     "t": 303,
+     "title": "One core, every dome"
+    }
+   ],
+   "made": "2026-09-23",
+   "duration": 336.2,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/stem-cell-utility-core-build/v1/stem-cell-utility-core-build.mp4",
+    "bytes": 131918565
+   },
+   "vertical": {
+    "key": "episodes/stem-cell-utility-core-build/v1/stem-cell-utility-core-build-vertical.mp4",
+    "bytes": 153848824
+   },
+   "captions": {
+    "key": "episodes/stem-cell-utility-core-build/v1/stem-cell-utility-core-build.vtt"
+   },
+   "thumb": {
+    "key": "episodes/stem-cell-utility-core-build/v1/stem-cell-utility-core-build.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e01-half-the-fold",
+   "seq": 600,
+   "version": 4,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E1: Half the Fold",
+   "description": "# Level With Me, S1E1: Half the Fold\n\nThe station threatens to cancel Hank's show, Maya gets fired, Jet has a new hole in his ear, and Anna announces she's leaving with Dusty. Krystal puts her foot down: nobody leaves until the dome stands. Hank's first ring is wrong, and so is everything else, until he sees it.\n\n## Chapters\n\n0:00 Cold open: the last good taping\n1:06 The patio: the announcement\n3:09 The yard: the first ring is wrong\n3:39 The hedge: what Mr. Yarrow sees\n4:04 The bench, at night: Hank teaches\n4:32 Cody's vision: the storm\n4:38 The bench, at night: Hank teaches\n5:03 Montage: the ring, again\n5:28 Tag: dawn\n5:41 Coda: Cody, at the frame\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: the last good taping"
+    },
+    {
+     "t": 66,
+     "title": "The patio: the announcement"
+    },
+    {
+     "t": 189,
+     "title": "The yard: the first ring is wrong"
+    },
+    {
+     "t": 219,
+     "title": "The hedge: what Mr. Yarrow sees"
+    },
+    {
+     "t": 244,
+     "title": "The bench, at night: Hank teaches"
+    },
+    {
+     "t": 272,
+     "title": "Cody's vision: the storm"
+    },
+    {
+     "t": 278,
+     "title": "The bench, at night: Hank teaches"
+    },
+    {
+     "t": 303,
+     "title": "Montage: the ring, again"
+    },
+    {
+     "t": 328,
+     "title": "Tag: dawn"
+    },
+    {
+     "t": 341,
+     "title": "Coda: Cody, at the frame"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 351.5,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e01-half-the-fold/v4/sketch-claude-level-with-me-s01e01-half-the-fold.mp4",
+    "bytes": 178441273
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e01-half-the-fold/v4/sketch-claude-level-with-me-s01e01-half-the-fold-vertical.mp4",
+    "bytes": 119763755
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e01-half-the-fold/v4/sketch-claude-level-with-me-s01e01-half-the-fold.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e01-half-the-fold/v4/sketch-claude-level-with-me-s01e01-half-the-fold.jpg"
+   },
+   "episode": "S1E1"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e02-load-path",
+   "seq": 601,
+   "version": 4,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E2: Load Path",
+   "description": "# Level With Me, S1E2: Load Path\n\nJet turns the half-built dome into a crypto mining room and blacks out the street on the one hot night. Hank doesn't tell him he's wrong; he asks him where the load goes.\n\n## Chapters\n\n0:00 Cold open: the load\n1:08 The yard: a cave with no walls\n1:51 The patio: three interviews\n2:28 The patio: the one hot night\n3:21 The yard, dark: where does it go\n4:21 The bench, night: Dale's pilot\n4:48 Morning: ring two\n5:15 Tag: the mail lady\n5:23 3:07 a.m.\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: the load"
+    },
+    {
+     "t": 68,
+     "title": "The yard: a cave with no walls"
+    },
+    {
+     "t": 111,
+     "title": "The patio: three interviews"
+    },
+    {
+     "t": 148,
+     "title": "The patio: the one hot night"
+    },
+    {
+     "t": 201,
+     "title": "The yard, dark: where does it go"
+    },
+    {
+     "t": 261,
+     "title": "The bench, night: Dale's pilot"
+    },
+    {
+     "t": 288,
+     "title": "Morning: ring two"
+    },
+    {
+     "t": 315,
+     "title": "Tag: the mail lady"
+    },
+    {
+     "t": 323,
+     "title": "3:07 a.m."
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 342.2,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e02-load-path/v4/sketch-claude-level-with-me-s01e02-load-path.mp4",
+    "bytes": 167719539
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e02-load-path/v4/sketch-claude-level-with-me-s01e02-load-path-vertical.mp4",
+    "bytes": 105742765
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e02-load-path/v4/sketch-claude-level-with-me-s01e02-load-path.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e02-load-path/v4/sketch-claude-level-with-me-s01e02-load-path.jpg"
+   },
+   "episode": "S1E2"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e03-frequency",
+   "seq": 602,
+   "version": 2,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E3: Frequency",
+   "description": "# Level With Me, S1E3: Frequency\n\nKrystal babysits Mr. Yarrow's four-year-old, Bean, who builds a rounder dome out of straws than Hank's crew can out of wood. Maya is suspended for being right at a teacher.\n\n## Chapters\n\n0:00 Cold open: Bean\n0:39 The yard: ring three won't round\n1:55 The kitchen door: suspended\n2:46 The patio: Anna on the road\n3:22 The bench: five dollars a word\n3:49 The yard: Bean helps\n4:04 The yard: the drawing\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: Bean"
+    },
+    {
+     "t": 39,
+     "title": "The yard: ring three won't round"
+    },
+    {
+     "t": 115,
+     "title": "The kitchen door: suspended"
+    },
+    {
+     "t": 166,
+     "title": "The patio: Anna on the road"
+    },
+    {
+     "t": 202,
+     "title": "The bench: five dollars a word"
+    },
+    {
+     "t": 229,
+     "title": "The yard: Bean helps"
+    },
+    {
+     "t": 244,
+     "title": "The yard: the drawing"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 267.3,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e03-frequency/v2/sketch-claude-level-with-me-s01e03-frequency.mp4",
+    "bytes": 92481011
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e03-frequency/v2/sketch-claude-level-with-me-s01e03-frequency-vertical.mp4",
+    "bytes": 79726162
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e03-frequency/v2/sketch-claude-level-with-me-s01e03-frequency.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e03-frequency/v2/sketch-claude-level-with-me-s01e03-frequency.jpg"
+   },
+   "episode": "S1E3"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e04-play-house",
+   "seq": 603,
+   "version": 2,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E4: Play House",
+   "description": "# Level With Me, S1E4: Play House\n\nAnna and Dusty come home early and turn the dome into a pink influencer set. Maya works out where Dusty sleeps and says it at dinner. Cody sees Dusty running from a fire. Dusty takes Hank's truck.\n\n## Chapters\n\n0:00 Cold open: home early\n0:34 The yard: the pink set\n1:12 The bench: so bad it's good\n1:38 The hedge: things built by other people\n1:52 The yard: where do you live\n2:14 The yard: a small fire\n2:27 Dinner: nobody waited\n3:21 The yard, late: Cody\n3:22 Cody's vision: fire\n3:25 The yard, late: Cody\n3:30 Dawn: the driveway\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: home early"
+    },
+    {
+     "t": 34,
+     "title": "The yard: the pink set"
+    },
+    {
+     "t": 72,
+     "title": "The bench: so bad it's good"
+    },
+    {
+     "t": 98,
+     "title": "The hedge: things built by other people"
+    },
+    {
+     "t": 112,
+     "title": "The yard: where do you live"
+    },
+    {
+     "t": 134,
+     "title": "The yard: a small fire"
+    },
+    {
+     "t": 147,
+     "title": "Dinner: nobody waited"
+    },
+    {
+     "t": 201,
+     "title": "The yard, late: Cody"
+    },
+    {
+     "t": 202,
+     "title": "Cody's vision: fire"
+    },
+    {
+     "t": 205,
+     "title": "The yard, late: Cody"
+    },
+    {
+     "t": 210,
+     "title": "Dawn: the driveway"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 234.9,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e04-play-house/v2/sketch-claude-level-with-me-s01e04-play-house.mp4",
+    "bytes": 97010495
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e04-play-house/v2/sketch-claude-level-with-me-s01e04-play-house-vertical.mp4",
+    "bytes": 69882138
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e04-play-house/v2/sketch-claude-level-with-me-s01e04-play-house.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e04-play-house/v2/sketch-claude-level-with-me-s01e04-play-house.jpg"
+   },
+   "episode": "S1E4"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e05-debugging",
+   "seq": 604,
+   "version": 2,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E5: Debugging",
+   "description": "# Level With Me, S1E5: Debugging\n\nA scammer who knows the address says Jet owes him. Cody's friend Priya wires the dome like a program and explains loops with the jig; Hank's longest spiral finds the bug in Jet's plan. At 3 a.m. somebody knocks.\n\n## Chapters\n\n0:00 Cold open: the message\n0:36 The yard: the dome is a program\n1:37 The kitchen door: the ear\n2:05 The bench, night: the bug\n3:38 3:07 a.m.: the knock\n4:38 Tag: the schedule\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: the message"
+    },
+    {
+     "t": 36,
+     "title": "The yard: the dome is a program"
+    },
+    {
+     "t": 97,
+     "title": "The kitchen door: the ear"
+    },
+    {
+     "t": 125,
+     "title": "The bench, night: the bug"
+    },
+    {
+     "t": 218,
+     "title": "3:07 a.m.: the knock"
+    },
+    {
+     "t": 278,
+     "title": "Tag: the schedule"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 296.7,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e05-debugging/v2/sketch-claude-level-with-me-s01e05-debugging.mp4",
+    "bytes": 164221081
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e05-debugging/v2/sketch-claude-level-with-me-s01e05-debugging-vertical.mp4",
+    "bytes": 112442837
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e05-debugging/v2/sketch-claude-level-with-me-s01e05-debugging.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e05-debugging/v2/sketch-claude-level-with-me-s01e05-debugging.jpg"
+   },
+   "episode": "S1E5"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e06-tension-and-compression",
+   "seq": 605,
+   "version": 2,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E6: Tension and Compression",
+   "description": "# Level With Me, S1E6: Tension and Compression\n\nThe garage burns with Jet's rig in it and Dusty runs. The family splits over insurance money, and Krystal breaks: there is no money. She has been paying for everything since January, alone.\n\n## Chapters\n\n0:00 Cold open: the garage\n0:25 Dawn: a shelter for a week\n0:59 The patio: two camps\n3:07 The yard: the base ring\n3:27 The hedge: the safe one\n3:43 The ashes: the jacket\n4:06 The bar, alone\n4:32 Night: Anna's phone\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: the garage"
+    },
+    {
+     "t": 25,
+     "title": "Dawn: a shelter for a week"
+    },
+    {
+     "t": 59,
+     "title": "The patio: two camps"
+    },
+    {
+     "t": 187,
+     "title": "The yard: the base ring"
+    },
+    {
+     "t": 207,
+     "title": "The hedge: the safe one"
+    },
+    {
+     "t": 223,
+     "title": "The ashes: the jacket"
+    },
+    {
+     "t": 246,
+     "title": "The bar, alone"
+    },
+    {
+     "t": 272,
+     "title": "Night: Anna's phone"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 293.4,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e06-tension-and-compression/v2/sketch-claude-level-with-me-s01e06-tension-and-compression.mp4",
+    "bytes": 119192771
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e06-tension-and-compression/v2/sketch-claude-level-with-me-s01e06-tension-and-compression-vertical.mp4",
+    "bytes": 80764758
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e06-tension-and-compression/v2/sketch-claude-level-with-me-s01e06-tension-and-compression.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e06-tension-and-compression/v2/sketch-claude-level-with-me-s01e06-tension-and-compression.jpg"
+   },
+   "episode": "S1E6"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there",
+   "seq": 606,
+   "version": 2,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E7: The Hub That Isn't There",
+   "description": "# Level With Me, S1E7: The Hub That Isn't There\n\nHank's last show goes out live from the dome with the kids as crew. Everything breaks, Dale says goodbye on air, Maya keeps her mouth shut, and Hank's thought spiral happens in front of four million people.\n\n## Chapters\n\n0:00 Cold open: ninety seconds\n0:31 Before: the porch\n3:16 After: what Maya didn't say\n3:29 The door: two men\n3:55 A motel lot, two states away\n4:05 The patio: four million\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: ninety seconds"
+    },
+    {
+     "t": 31,
+     "title": "Before: the porch"
+    },
+    {
+     "t": 196,
+     "title": "After: what Maya didn't say"
+    },
+    {
+     "t": 209,
+     "title": "The door: two men"
+    },
+    {
+     "t": 235,
+     "title": "A motel lot, two states away"
+    },
+    {
+     "t": 245,
+     "title": "The patio: four million"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 292.0,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there/v2/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there.mp4",
+    "bytes": 148349623
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there/v2/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there-vertical.mp4",
+    "bytes": 91527029
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there/v2/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there/v2/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there.jpg"
+   },
+   "episode": "S1E7"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e08-pinwheel",
+   "seq": 607,
+   "version": 2,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E8: Pinwheel",
+   "description": "# Level With Me, S1E8: Pinwheel\n\nMaya calls Anna with the truth about Dusty. The family plans a surprise for her return and forgets to tell her. Alone at a motel, Anna works out that she has always been the one who goes, and turns the car around.\n\n## Chapters\n\n0:00 Maya: the call\n0:37 Anna: the motel lot\n0:55 Cody: a road at night\n0:56 Cody's vision: a car on a dark road\n1:00 Cody: a road at night\n1:08 Krystal: the surprise\n1:32 Jet: the earring\n2:22 Hank: the skylight\n3:30 Anna: the voicemail\n3:41 The yard: HOEM\n4:27 Night: the warning\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Maya: the call"
+    },
+    {
+     "t": 37,
+     "title": "Anna: the motel lot"
+    },
+    {
+     "t": 55,
+     "title": "Cody: a road at night"
+    },
+    {
+     "t": 56,
+     "title": "Cody's vision: a car on a dark road"
+    },
+    {
+     "t": 60,
+     "title": "Cody: a road at night"
+    },
+    {
+     "t": 68,
+     "title": "Krystal: the surprise"
+    },
+    {
+     "t": 92,
+     "title": "Jet: the earring"
+    },
+    {
+     "t": 142,
+     "title": "Hank: the skylight"
+    },
+    {
+     "t": 210,
+     "title": "Anna: the voicemail"
+    },
+    {
+     "t": 221,
+     "title": "The yard: HOEM"
+    },
+    {
+     "t": 267,
+     "title": "Night: the warning"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 286.6,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e08-pinwheel/v2/sketch-claude-level-with-me-s01e08-pinwheel.mp4",
+    "bytes": 217891864
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e08-pinwheel/v2/sketch-claude-level-with-me-s01e08-pinwheel-vertical.mp4",
+    "bytes": 105618615
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e08-pinwheel/v2/sketch-claude-level-with-me-s01e08-pinwheel.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e08-pinwheel/v2/sketch-claude-level-with-me-s01e08-pinwheel.jpg"
+   },
+   "episode": "S1E8"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e09-the-last-panel",
+   "seq": 608,
+   "version": 2,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E9: The Last Panel",
+   "description": "# Level With Me, S1E9: The Last Panel\n\nStorm prep. Jet's paranoia is finally useful, Cody's vision becomes the forecast, Dusty brings every screw the store had, and the panel that broke on the first day goes up last, in the rain.\n\n## Chapters\n\n0:00 Cold open: the bunker\n0:37 The patio: the forecast\n0:43 Cody's vision: the forecast\n0:47 The patio: the forecast\n1:11 The hedge: forty years of roses\n1:41 The driveway: every screw they had\n2:14 The yard: the network calls\n2:45 The last panel, in the rain\n3:48 Night: the roof\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: the bunker"
+    },
+    {
+     "t": 37,
+     "title": "The patio: the forecast"
+    },
+    {
+     "t": 43,
+     "title": "Cody's vision: the forecast"
+    },
+    {
+     "t": 47,
+     "title": "The patio: the forecast"
+    },
+    {
+     "t": 71,
+     "title": "The hedge: forty years of roses"
+    },
+    {
+     "t": 101,
+     "title": "The driveway: every screw they had"
+    },
+    {
+     "t": 134,
+     "title": "The yard: the network calls"
+    },
+    {
+     "t": 165,
+     "title": "The last panel, in the rain"
+    },
+    {
+     "t": 228,
+     "title": "Night: the roof"
+    }
+   ],
+   "made": "2026-10-22",
+   "duration": 249.6,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e09-the-last-panel/v2/sketch-claude-level-with-me-s01e09-the-last-panel.mp4",
+    "bytes": 123088157
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e09-the-last-panel/v2/sketch-claude-level-with-me-s01e09-the-last-panel-vertical.mp4",
+    "bytes": 79796633
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e09-the-last-panel/v2/sketch-claude-level-with-me-s01e09-the-last-panel.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e09-the-last-panel/v2/sketch-claude-level-with-me-s01e09-the-last-panel.jpg"
+   },
+   "episode": "S1E9"
+  },
+  {
+   "slug": "sketch-claude-level-with-me-s01e10-the-storm",
+   "seq": 597,
+   "version": 1,
+   "series": "Level With Me",
+   "title": "Level With Me, S1E10: The Storm",
+   "description": "# Level With Me, S1E10: The Storm\n\nAll of them, with Dale, Dusty, Mr. Yarrow and a raccoon, inside the dome while the storm takes the roof off the house. They agree on one thing, and then they don't.\n\n## Chapters\n\n0:00 Cold open: the radio\n0:49 The door: three more\n1:14 Night: one thing\n3:38 Dawn: the network\n4:04 Morning: the only thing standing\n4:30 Coda: Cody\n4:30 Cody's vision: the street\n4:35 Coda: Cody\n\n## Cast\n\n- Hank Hardwick, dad; host of Hank's Hardware Hour (voice: en-US-GuyNeural)\n- Krystal Hardwick, mom; puts her foot down (voice: en-US-AriaNeural)\n- Anna Hardwick, 20, the oldest; pronounced AH-nuh (voice: en-US-EmmaNeural)\n- Maya Hardwick, 18, second oldest; semi-tomboy (voice: en-US-AvaNeural)\n- Cody Hardwick, 17; stoic, wise beyond his years (voice: en-US-AndrewNeural)\n- Jet Hardwick, 16, the youngest; thinks he's cool (voice: en-US-BrianNeural)\n- Dale Plumb, co-host; the ball-buster (voice: en-US-ChristopherNeural)\n- Dusty Vance, peaked in high school; still the cool guy (voice: en-US-SteffanNeural)\n- Mr. Yarrow, the neighbour over the hedge (voice: en-GB-RyanNeural)\n- Bean Yarrow, 4; Mr. Yarrow's granddaughter (voice: en-US-AnaNeural)\n- Priya Nair, 17; Cody's friend who codes (voice: en-US-MichelleNeural)\n\n## Copy\n\nLevel With Me: The Hardwicks are cursed with chaos: storms find them, fires find them, and the six of them have never once agreed on anything. In the backyard, Hank is building a dome, and every time the family breaks, the dome becomes something new.\n\n#sitcom #comedy #familycomedy #diy #homeimprovement #geodesicdome #tinyhouse\n\nMade in Dome Sketch (sketch-claude): the dome, its sticks and every figure spoken are the model's own. Voices are synthesised (Microsoft Edge TTS); the music is synthesised in the browser; the characters are original.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Cold open: the radio"
+    },
+    {
+     "t": 49,
+     "title": "The door: three more"
+    },
+    {
+     "t": 74,
+     "title": "Night: one thing"
+    },
+    {
+     "t": 218,
+     "title": "Dawn: the network"
+    },
+    {
+     "t": 244,
+     "title": "Morning: the only thing standing"
+    },
+    {
+     "t": 270,
+     "title": "Coda: Cody"
+    },
+    {
+     "t": 270,
+     "title": "Cody's vision: the street"
+    },
+    {
+     "t": 275,
+     "title": "Coda: Cody"
+    }
+   ],
+   "made": "2026-10-21",
+   "duration": 290.8,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/sketch-claude-level-with-me-s01e10-the-storm/v1/sketch-claude-level-with-me-s01e10-the-storm.mp4",
+    "bytes": 193727563
+   },
+   "vertical": {
+    "key": "episodes/sketch-claude-level-with-me-s01e10-the-storm/v1/sketch-claude-level-with-me-s01e10-the-storm-vertical.mp4",
+    "bytes": 107532946
+   },
+   "captions": {
+    "key": "episodes/sketch-claude-level-with-me-s01e10-the-storm/v1/sketch-claude-level-with-me-s01e10-the-storm.vtt"
+   },
+   "thumb": {
+    "key": "episodes/sketch-claude-level-with-me-s01e10-the-storm/v1/sketch-claude-level-with-me-s01e10-the-storm.jpg"
+   },
+   "episode": "S1E10"
+  },
+  {
+   "slug": "2v-masterclass",
+   "seq": 2,
+   "version": 1,
+   "series": "Masterclasses",
+   "title": "2V Geodesic Masterclass (original cut)",
+   "description": "",
+   "chapters": [],
+   "made": "2026-07-27",
+   "duration": 316.0,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/2v-masterclass/v1/2v-masterclass.mp4",
+    "bytes": 95125023
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/2v-masterclass/v1/2v-masterclass.vtt"
+   },
+   "thumb": {
+    "key": "episodes/2v-masterclass/v1/2v-masterclass.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "hex-dome-masterclass",
+   "seq": 28,
+   "version": 1,
+   "series": "Masterclasses",
+   "title": "Hex Dome Masterclass",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-23",
+   "duration": 653.3,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/hex-dome-masterclass/v1/hex-dome-masterclass.mp4",
+    "bytes": 167470267
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/hex-dome-masterclass/v1/hex-dome-masterclass.vtt"
+   },
+   "thumb": {
+    "key": "episodes/hex-dome-masterclass/v1/hex-dome-masterclass.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "zome-construction-masterclass",
+   "seq": 29,
+   "version": 1,
+   "series": "Masterclasses",
+   "title": "Zome Construction Masterclass",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-23",
+   "duration": 612.9,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/zome-construction-masterclass/v1/zome-construction-masterclass.mp4",
+    "bytes": 152289752
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/zome-construction-masterclass/v1/zome-construction-masterclass.vtt"
+   },
+   "thumb": {
+    "key": "episodes/zome-construction-masterclass/v1/zome-construction-masterclass.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "assembly-line-energy-masterclass",
+   "seq": 31,
+   "version": 1,
+   "series": "Masterclasses",
+   "title": "The Assembly Line: An Energy Masterclass",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-23",
+   "duration": 750.6,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/assembly-line-energy-masterclass/v1/assembly-line-energy-masterclass.mp4",
+    "bytes": 144670119
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/assembly-line-energy-masterclass/v1/assembly-line-energy-masterclass.vtt"
+   },
+   "thumb": {
+    "key": "episodes/assembly-line-energy-masterclass/v1/assembly-line-energy-masterclass.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "cabin-2v-geodesic-masterclass",
+   "seq": 293,
+   "version": 1,
+   "series": "Masterclasses",
+   "title": "2V Geodesic Masterclass",
+   "description": "Your 72 in and 63.5 in members are already telling us the sphere.\n\nA 2V dome does not ask its two strut classes to be in the golden ratio.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "The question hidden in two boards"
+    },
+    {
+     "t": 22,
+     "title": "Why domes triangulate"
+    },
+    {
+     "t": 45,
+     "title": "The five regular starting points"
+    },
+    {
+     "t": 67,
+     "title": "Where the golden ratio really lives"
+    },
+    {
+     "t": 96,
+     "title": "Put the icosahedron on a unit sphere"
+    },
+    {
+     "t": 116,
+     "title": "Split every parent edge in half"
+    },
+    {
+     "t": 136,
+     "title": "Project the midpoints outward"
+    },
+    {
+     "t": 156,
+     "title": "Measure and group every chord"
+    },
+    {
+     "t": 178,
+     "title": "Four routes to the same answer"
+    },
+    {
+     "t": 203,
+     "title": "Audit the 72 in / 63.5 in dome"
+    },
+    {
+     "t": 225,
+     "title": "From radius to a cut list"
+    },
+    {
+     "t": 248,
+     "title": "Panels, hubs, and build sequence"
+    },
+    {
+     "t": 272,
+     "title": "Close the measurement loop"
+    },
+    {
+     "t": 295,
+     "title": "The whole transformation"
+    },
+    {
+     "t": 315,
+     "title": "Do the one thing"
+    },
+    {
+     "t": 335,
+     "title": "Follow the experiments"
+    }
+   ],
+   "made": "2026-09-28",
+   "duration": 356.7,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/cabin-2v-geodesic-masterclass/v1/cabin-2v-geodesic-masterclass.mp4",
+    "bytes": 122913465
+   },
+   "vertical": {
+    "key": "episodes/cabin-2v-geodesic-masterclass/v1/cabin-2v-geodesic-masterclass-vertical.mp4",
+    "bytes": 121983441
+   },
+   "captions": {
+    "key": "episodes/cabin-2v-geodesic-masterclass/v1/cabin-2v-geodesic-masterclass.vtt"
+   },
+   "thumb": {
+    "key": "episodes/cabin-2v-geodesic-masterclass/v1/cabin-2v-geodesic-masterclass.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "storytime-my-own-home",
+   "seq": 587,
+   "version": 1,
+   "series": "Bedtime Stories",
+   "title": "My Own Home, My Own Dome",
+   "description": "# My Own Home, My Own Dome\n\n*Dada's Stories* -- a bedtime story read aloud, about 7 minutes.\n\n## Chapters\n\n0:00 Hello\n1:11 Title\n1:15 The story\n6:06 Goodnight\n\n## YouTube\n\nMy Own Home, My Own Dome: a bedtime story, read aloud with the words on screen. In a town full of boxes, all stacked up so tall, Free to watch and read along at zeanahlab.com/kids.\n\n#bedtimestory #storytime #readaloud #kidsbooks #picturebook #domehome\n\n## Facebook\n\nTonight's bedtime story: My Own Home, My Own Dome. Read aloud, the words lighting up as they're spoken -- or switch the narrator off at zeanahlab.com/kids and read it to them yourself.\n\n## Instagram\n\nMy Own Home, My Own Dome -- a bedtime story in rhyme. Watch it free at zeanahlab.com/kids.\n\n#bedtimestory #storytime #readaloud #kidsbooks #geodesicdome #buildwithkids\n\n## How it was made\n\nThe pictures are the storytime's own 3-D world (website/src/storytime), the dome is the wedge-dome solver's own model, the narration is synthesised (Microsoft Edge TTS) or the owner's own voice, and the lullaby is synthesised. Rendered by sketch_claude storytime at storytime-my-own-home.mp4.",
+   "chapters": [
+    {
+     "t": 0,
+     "title": "Hello"
+    },
+    {
+     "t": 71,
+     "title": "Title"
+    },
+    {
+     "t": 75,
+     "title": "The story"
+    },
+    {
+     "t": 366,
+     "title": "Goodnight"
+    }
+   ],
+   "made": "2026-10-20",
+   "duration": 393.2,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/storytime-my-own-home/v1/storytime-my-own-home.mp4",
+    "bytes": 141809657
+   },
+   "vertical": {
+    "key": "episodes/storytime-my-own-home/v1/storytime-my-own-home-vertical.mp4",
+    "bytes": 133124011
+   },
+   "captions": {
+    "key": "episodes/storytime-my-own-home/v1/storytime-my-own-home.vtt"
+   },
+   "thumb": {
+    "key": "episodes/storytime-my-own-home/v1/storytime-my-own-home.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_housing_case",
+   "seq": 3,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "The Dome Housing Case",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 805.8,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_housing_case/v1/dome_housing_case.mp4",
+    "bytes": 113026885
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_housing_case/v1/dome_housing_case.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_housing_case/v1/dome_housing_case.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_manufacturing",
+   "seq": 4,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "Manufacturing",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 228.9,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_manufacturing/v1/dome_case_manufacturing.mp4",
+    "bytes": 29509552
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_manufacturing/v1/dome_case_manufacturing.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_manufacturing/v1/dome_case_manufacturing.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_bare_shell",
+   "seq": 5,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "The Bare Shell",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 130.4,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_bare_shell/v1/dome_case_bare_shell.mp4",
+    "bytes": 6662267
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_bare_shell/v1/dome_case_bare_shell.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_bare_shell/v1/dome_case_bare_shell.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_more_room",
+   "seq": 6,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "More Room",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 122.4,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_more_room/v1/dome_case_more_room.mp4",
+    "bytes": 6200606
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_more_room/v1/dome_case_more_room.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_more_room/v1/dome_case_more_room.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_triangles",
+   "seq": 7,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "Triangles",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 137.9,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_triangles/v1/dome_case_triangles.mp4",
+    "bytes": 11606039
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_triangles/v1/dome_case_triangles.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_triangles/v1/dome_case_triangles.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_benchmark",
+   "seq": 8,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "The Benchmark",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 117.0,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_benchmark/v1/dome_case_benchmark.mp4",
+    "bytes": 14917140
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_benchmark/v1/dome_case_benchmark.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_benchmark/v1/dome_case_benchmark.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_energy",
+   "seq": 9,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "Energy",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 142.8,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_energy/v1/dome_case_energy.mp4",
+    "bytes": 19835006
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_energy/v1/dome_case_energy.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_energy/v1/dome_case_energy.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_resilience",
+   "seq": 10,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "Resilience",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 140.3,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_resilience/v1/dome_case_resilience.mp4",
+    "bytes": 15991852
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_resilience/v1/dome_case_resilience.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_resilience/v1/dome_case_resilience.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_financing",
+   "seq": 11,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "Financing",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 110.8,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_financing/v1/dome_case_financing.mp4",
+    "bytes": 14603877
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_financing/v1/dome_case_financing.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_financing/v1/dome_case_financing.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_utility_core",
+   "seq": 12,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "The Utility Core",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 115.2,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_utility_core/v1/dome_case_utility_core.mp4",
+    "bytes": 21206030
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_utility_core/v1/dome_case_utility_core.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_utility_core/v1/dome_case_utility_core.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome_case_market_fit",
+   "seq": 13,
+   "version": 1,
+   "series": "The Dome Case",
+   "title": "Market Fit",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-01",
+   "duration": 140.5,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome_case_market_fit/v1/dome_case_market_fit.mp4",
+    "bytes": 18241244
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome_case_market_fit/v1/dome_case_market_fit.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome_case_market_fit/v1/dome_case_market_fit.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "hubless-compound-cut",
+   "seq": 33,
+   "version": 1,
+   "series": "Early films",
+   "title": "The Hubless Compound Cut",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-26",
+   "duration": 556.3,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/hubless-compound-cut/v1/hubless-compound-cut.mp4",
+    "bytes": 84708282
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/hubless-compound-cut/v1/hubless-compound-cut.vtt"
+   },
+   "thumb": {
+    "key": "episodes/hubless-compound-cut/v1/hubless-compound-cut.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "frankendome-montage",
+   "seq": 39,
+   "version": 6,
+   "series": "Early films",
+   "title": "Frankendome: The Montage",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-29",
+   "duration": 731.8,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/frankendome-montage/v6/frankendome-montage.mp4",
+    "bytes": 235758165
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/frankendome-montage/v6/frankendome-montage.vtt"
+   },
+   "thumb": {
+    "key": "episodes/frankendome-montage/v6/frankendome-montage.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "frankendome-build",
+   "seq": 40,
+   "version": 2,
+   "series": "Early films",
+   "title": "Frankendome: The Build",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-29",
+   "duration": 658.9,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/frankendome-build/v2/frankendome-build.mp4",
+    "bytes": 150864915
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/frankendome-build/v2/frankendome-build.vtt"
+   },
+   "thumb": {
+    "key": "episodes/frankendome-build/v2/frankendome-build.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "dome-kickstarter",
+   "seq": 42,
+   "version": 2,
+   "series": "Early films",
+   "title": "The Dome Kickstarter",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-29",
+   "duration": 492.3,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/dome-kickstarter/v2/dome-kickstarter.mp4",
+    "bytes": 126699760
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/dome-kickstarter/v2/dome-kickstarter.vtt"
+   },
+   "thumb": {
+    "key": "episodes/dome-kickstarter/v2/dome-kickstarter.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "every-dome-in-the-world",
+   "seq": 45,
+   "version": 1,
+   "series": "Early films",
+   "title": "Every Dome in the World",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-29",
+   "duration": 600.1,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/every-dome-in-the-world/v1/every-dome-in-the-world.mp4",
+    "bytes": 131249959
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/every-dome-in-the-world/v1/every-dome-in-the-world.vtt"
+   },
+   "thumb": {
+    "key": "episodes/every-dome-in-the-world/v1/every-dome-in-the-world.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "ten-dome-builds-master-20260829-135242-chatgpt",
+   "seq": 47,
+   "version": 1,
+   "series": "Early films",
+   "title": "Ten Dome Builds",
+   "description": "",
+   "chapters": [],
+   "made": "2026-08-29",
+   "duration": 1056.9,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/ten-dome-builds-master-20260829-135242-chatgpt/v1/ten-dome-builds-master-20260829-135242-chatgpt.mp4",
+    "bytes": 219175142
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/ten-dome-builds-master-20260829-135242-chatgpt/v1/ten-dome-builds-master-20260829-135242-chatgpt.vtt"
+   },
+   "thumb": {
+    "key": "episodes/ten-dome-builds-master-20260829-135242-chatgpt/v1/ten-dome-builds-master-20260829-135242-chatgpt.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "eight-cuts-to-a-house",
+   "seq": 50,
+   "version": 1,
+   "series": "Early films",
+   "title": "Eight Cuts to a House",
+   "description": "",
+   "chapters": [],
+   "made": "2026-09-01",
+   "duration": 1210.2,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/eight-cuts-to-a-house/v1/eight-cuts-to-a-house.mp4",
+    "bytes": 219307070
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/eight-cuts-to-a-house/v1/eight-cuts-to-a-house.vtt"
+   },
+   "thumb": {
+    "key": "episodes/eight-cuts-to-a-house/v1/eight-cuts-to-a-house.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-vance-network-mini-series",
+   "seq": 51,
+   "version": 1,
+   "series": "Early films",
+   "title": "The Vance Network (original cut)",
+   "description": "",
+   "chapters": [],
+   "made": "2026-09-01",
+   "duration": 376.0,
+   "width": 1080,
+   "height": 1920,
+   "video": {
+    "key": "episodes/the-vance-network-mini-series/v1/the-vance-network-mini-series.mp4",
+    "bytes": 15636018
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/the-vance-network-mini-series/v1/the-vance-network-mini-series.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-vance-network-mini-series/v1/the-vance-network-mini-series.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "why-build-this-way",
+   "seq": 68,
+   "version": 1,
+   "series": "Early films",
+   "title": "Why Build This Way",
+   "description": "",
+   "chapters": [],
+   "made": "2026-09-12",
+   "duration": 599.5,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/why-build-this-way/v1/why-build-this-way.mp4",
+    "bytes": 243630836
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/why-build-this-way/v1/why-build-this-way.vtt"
+   },
+   "thumb": {
+    "key": "episodes/why-build-this-way/v1/why-build-this-way.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "two-trees-all-at-once",
+   "seq": 69,
+   "version": 3,
+   "series": "Early films",
+   "title": "Two Trees, All at Once (original cut)",
+   "description": "",
+   "chapters": [],
+   "made": "2026-09-12",
+   "duration": 546.6,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/two-trees-all-at-once/v3/two-trees-all-at-once.mp4",
+    "bytes": 175142996
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/two-trees-all-at-once/v3/two-trees-all-at-once.vtt"
+   },
+   "thumb": {
+    "key": "episodes/two-trees-all-at-once/v3/two-trees-all-at-once.jpg"
+   },
+   "episode": null
+  },
+  {
+   "slug": "the-20-dollar-pine",
+   "seq": 71,
+   "version": 1,
+   "series": "Early films",
+   "title": "The $20 Pine",
+   "description": "",
+   "chapters": [],
+   "made": "2026-09-12",
+   "duration": 581.4,
+   "width": 1920,
+   "height": 1080,
+   "video": {
+    "key": "episodes/the-20-dollar-pine/v1/the-20-dollar-pine.mp4",
+    "bytes": 117820099
+   },
+   "vertical": null,
+   "captions": {
+    "key": "episodes/the-20-dollar-pine/v1/the-20-dollar-pine.vtt"
+   },
+   "thumb": {
+    "key": "episodes/the-20-dollar-pine/v1/the-20-dollar-pine.jpg"
+   },
+   "episode": null
+  }
+ ]
+}

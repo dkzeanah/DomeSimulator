@@ -39,6 +39,22 @@ def main() -> int:
             except Exception as e:  # noqa: BLE001 -- the point is to report any crash
                 failures += 1
                 print(f"FAIL {dia:5g} ft  {log:4g} in  {length:4g} ft  {o:15s} {j:13s} {type(e).__name__}: {e}")
+        for (dia, log, length), pattern in itertools.product(cases[1:3], [k for k in design.PATTERNS if k != "uniform"]):
+            req = design.Request.from_json({"diameter_ft": dia, "log_in": log, "log_ft": length, "pattern": pattern})
+            t = time.time()
+            try:
+                d = design.solve(req)
+                bad = [c[0] for c in d.checks if not c[1]]
+                if bad:
+                    raise AssertionError("; ".join(bad))
+                out = pdf.build(d, Path(tmp) / f"{req.key()}.pdf")
+                print(f"ok   {dia:5g} ft  {log:4g} in  {length:4g} ft  {pattern:29s} {len(d.families)} families, "
+                      f"{len(d.setups)} setups, {len(d.variants)} jigs, {out.stat().st_size / 1024:,.0f} KB, {time.time() - t:.1f}s")
+            except ValueError as e:
+                print(f"no   {dia:5g} ft  {log:4g} in  {length:4g} ft  {pattern:29s} {e}")
+            except Exception as e:  # noqa: BLE001
+                failures += 1
+                print(f"FAIL {dia:5g} ft  {log:4g} in  {length:4g} ft  {pattern:29s} {type(e).__name__}: {e}")
     for bad in ({"diameter_ft": 2, "log_in": 10, "log_ft": 16}, {"diameter_ft": 20, "log_in": "x", "log_ft": 16},
                 {"diameter_ft": 20, "log_in": 10, "log_ft": 16, "orientation": "sideways"}, {"diameter_ft": 20, "log_in": 10}):
         try:

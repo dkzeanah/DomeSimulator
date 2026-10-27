@@ -234,8 +234,9 @@ def s_glance(ps: PlanSet):
     pl = s.image(img, X0, Y0, 140, 140)
     s.text("PLAN", pl.x + pl.w + 6, pl.y + 10, 7.5, "Sans-B")
     s.para(f"""
-The base is a {t['base_edges']}-sided ring. On this cut {t['tapered']} of its edges rise from one corner height to the
-other by {mm(t['taper_m'])} and {t['level']} are level, so the base sections under them are made in two shapes
+The base is a {t['base_edges']}-sided ring. {(f"On this cut {t['tapered']} of its edges rise from one corner height to the "
+f"other by {mm(t['taper_m'])} and {t['level']} are level, so the base sections under them are made in two shapes")
+if t['tapered'] else "On this cut every corner is at one height, so every base section is a level board"}
 (sheet {_sheet_no(ps, 'Base Layout')}). Inside, the floor is {t['floor_m2']:.1f} m² and the frame is
 {both(t['inside_height_m'] - t['base_top_m'] + M.D('base_h_m') + M.D('plate_t_m'))} high at the top on the inside.
 """, pl.x + pl.w + 6, pl.y + 130, w * 2 - 150, 8.2)
@@ -270,30 +271,7 @@ def s_materials(ps: PlanSet):
         s.text("•  " + k, X0 + 4, y - 4, 8.2)
         y -= 12.5
     D = M.D
-    base_lengths = [b["length_m"] for b in t["base_sections"]]
-    base_boards = M._boards_needed(base_lengths + base_lengths, D("board_l_m"), D("kerf_m")) * 2 // 2
-    plates = math.ceil(sum(base_lengths) / D("board_l_m") * (1 + D("waste")))
-    deck_boards = math.ceil(t["deck_m2"] / D("deck_board_m") / D("deck_board_l_m") * (1 + D("waste")))
-    porch = (D("porch_w_m") * D("deck_front_m")) if sp.porch else 0.0
-    porch_boards = math.ceil(porch / D("deck_board_m") / D("deck_board_l_m") * (1 + D("waste")))
-    door = t["door"]
-    rows = [
-        ("2x3 studs, 8 ft (each ripped into two sticks)", f"{t['boards']}", f"{t['stick_count']} sticks, {t['stick_m']:.0f} m of stick"),
-        ("1/2 in plywood, 4x8 sheets, for the skin", f"{t['sheets']}", f"{t['skin_m2']:.1f} m² of panel, nested on sheet {_sheet_no(ps, 'Sheet Layout')}"),
-        ("Window glazing, 1/4 in polycarbonate", f"{t['glass_m2']:.1f} m²", f"{t['windows']} windows, {t['skylights']} skylight panels"),
-        ("2x6, 8 ft, base boards", f"{math.ceil(sum(base_lengths) / D('board_l_m') * (1 + D('waste')))}", f"{len(base_lengths)} sections, {sum(base_lengths):.1f} m"),
-        ("Pressure-treated 2x4, 8 ft, bottom plates", f"{plates}", f"{sum(base_lengths):.1f} m"),
-        ("2x4, 8 ft, door posts and head", "3" if door else "0", (f"posts {mm(door['H'])}, head {mm(2 * door['X'])}" if door else "")),
-        ("3/4 in plywood, door cards", "1" if door else "0", "two cards from one sheet"),
-        ("2x8 joists and rim, deck framing", f"{2 * t['base_edges']}", f"one joist to each base corner, one rim board each side"),
-        ("5/4x6 decking, 12 ft", f"{deck_boards + porch_boards}", f"floor {t['deck_m2']:.1f} m²" + (f", porch {porch:.1f} m²" if porch else "")),
-        ("75 mm (3 in) screws, panel corners", f"{t['screws_corner']}", f"{t['corners']} corners x {int(D('screws_per_corner'))}"),
-        ("75 mm (3 in) screws, panel to panel", f"{t['screws_seam']}", f"{t['seam_m']:.0f} m of seam, both sides every {mm(D('seam_screw_m'))}"),
-        ("Staples", f"{t['staples']}", f"every {mm(D('staple_m'))} round each skinned panel"),
-        ("Seam tape", f"{t['tape_m']:.0f} m", f"{t['seam_m']:.0f} m of seam plus {D('waste') * 100:.0f}%"),
-        ("Shingles or cladding", f"{t['skin_m2'] * (1 + D('waste')):.1f} m²", "over the plywood skin"),
-        ("Piers", f"{t['base_edges'] // 3 + 1 + (4 if sp.porch else 0)}", "under every third corner, the centre and the porch"),
-    ]
+    rows = [(q[0], q[1], q[2]) for q in quantities(ps)]
     x = X0 + 210
     y = s.top - 6
     y -= s.heading("Materials", x, y)
@@ -301,6 +279,84 @@ def s_materials(ps: PlanSet):
     s.para(f"""Quantities for screws, staples and sheet goods use the spacings and the {D('waste') * 100:.0f}% allowance declared on
 sheet {_sheet_no(ps, 'Declared Inputs and Checks')}; lumber is counted by laying every cut length out on a stock board
 (first fit, longest first, a kerf between cuts).""", x, Y0 + 40, X1 - x, 7.6, color=GREY)
+
+
+
+#: Typical US retail prices, October 2026: DECLARED ESTIMATES, not quotes. They exist so the
+#: price sheet can multiply the counted quantities by something; replace them with your yard's.
+#: key -> (what is priced, US dollars, per)
+PRICE_ESTIMATES = {
+    "stud_2x3": ("2x3 stud, 8 ft", 4.25, "each"),
+    "ply_half": ("1/2 in plywood, 4x8", 38.00, "sheet"),
+    "polycarb": ("1/4 in polycarbonate", 45.00, "m²"),
+    "board_2x6": ("2x6, 8 ft", 9.50, "each"),
+    "pt_2x4": ("pressure-treated 2x4, 8 ft", 7.50, "each"),
+    "board_2x4": ("2x4, 8 ft", 4.75, "each"),
+    "ply_34": ("3/4 in plywood, 4x8", 55.00, "sheet"),
+    "joist_2x8": ("2x8, 10 ft", 16.00, "each"),
+    "deck_54x6": ("5/4x6 decking, 12 ft", 14.00, "each"),
+    "screws_3in": ("75 mm screws", 12.00, "100"),
+    "staples": ("staples", 8.00, "1000"),
+    "tape": ("seam tape", 0.60, "m"),
+    "shingles": ("shingles or cladding", 18.00, "m²"),
+    "pier": ("precast pier block", 12.00, "each"),
+}
+
+
+def quantities(ps: "PlanSet") -> list[tuple[str, str, str, str, float]]:
+    """Every material, counted from the model: (item, qty as printed, counted from, price key, qty as a number).
+    The materials sheet prints the first three; the price sheet multiplies the last two."""
+    t, sp, D = ps.t, ps.m.spec, M.D
+    base_lengths = [b["length_m"] for b in t["base_sections"]]
+    base_boards = math.ceil(sum(base_lengths) / D("board_l_m") * (1 + D("waste")))
+    plates = math.ceil(sum(base_lengths) / D("board_l_m") * (1 + D("waste")))
+    deck_boards = math.ceil(t["deck_m2"] / D("deck_board_m") / D("deck_board_l_m") * (1 + D("waste")))
+    porch = (D("porch_w_m") * D("deck_front_m")) if sp.porch else 0.0
+    porch_boards = math.ceil(porch / D("deck_board_m") / D("deck_board_l_m") * (1 + D("waste")))
+    door = t["door"]
+    shingles = t["skin_m2"] * (1 + D("waste"))
+    piers = t["base_edges"] // 3 + 1 + (4 if sp.porch else 0)
+    return [
+        ("2x3 studs, 8 ft (each ripped into two sticks)", f"{t['boards']}", f"{t['stick_count']} sticks, {t['stick_m']:.0f} m of stick", "stud_2x3", t["boards"]),
+        ("1/2 in plywood, 4x8 sheets, for the skin", f"{t['sheets']}", f"{t['skin_m2']:.1f} m² of panel, nested on sheet {_sheet_no(ps, 'Sheet Layout')}", "ply_half", t["sheets"]),
+        ("Window glazing, 1/4 in polycarbonate", f"{t['glass_m2']:.1f} m²", f"{t['windows']} windows, {t['skylights']} skylight panels", "polycarb", t["glass_m2"]),
+        ("2x6, 8 ft, base boards", f"{base_boards}", f"{len(base_lengths)} sections, {sum(base_lengths):.1f} m", "board_2x6", base_boards),
+        ("Pressure-treated 2x4, 8 ft, bottom plates", f"{plates}", f"{sum(base_lengths):.1f} m", "pt_2x4", plates),
+        ("2x4, 8 ft, door posts and head", "3" if door else "0", (f"posts {mm(door['H'])}, head {mm(2 * door['X'])}" if door else ""), "board_2x4", 3 if door else 0),
+        ("3/4 in plywood, door cards", "1" if door else "0", "two cards from one sheet", "ply_34", 1 if door else 0),
+        ("2x8 joists and rim, deck framing", f"{2 * t['base_edges']}", f"one joist to each base corner, one rim board each side", "joist_2x8", 2 * t["base_edges"]),
+        ("5/4x6 decking, 12 ft", f"{deck_boards + porch_boards}", f"floor {t['deck_m2']:.1f} m²" + (f", porch {porch:.1f} m²" if porch else ""), "deck_54x6", deck_boards + porch_boards),
+        ("75 mm (3 in) screws, panel corners", f"{t['screws_corner']}", f"{t['corners']} corners x {int(D('screws_per_corner'))}", "screws_3in", t["screws_corner"]),
+        ("75 mm (3 in) screws, panel to panel", f"{t['screws_seam']}", f"{t['seam_m']:.0f} m of seam, both sides every {mm(D('seam_screw_m'))}", "screws_3in", t["screws_seam"]),
+        ("Staples", f"{t['staples']}", f"every {mm(D('staple_m'))} round each skinned panel", "staples", t["staples"]),
+        ("Seam tape", f"{t['tape_m']:.0f} m", f"{t['seam_m']:.0f} m of seam plus {D('waste') * 100:.0f}%", "tape", t["tape_m"]),
+        ("Shingles or cladding", f"{shingles:.1f} m²", "over the plywood skin", "shingles", shingles if sp.skin == "cabin" else 0.0),
+        ("Piers", f"{piers}", "under every third corner, the centre and the porch", "pier", piers),
+    ]
+
+
+def s_prices(ps: PlanSet):
+    """What the counted materials cost at the declared prices: an estimate, said so on the sheet."""
+    s = ps.sheet("Price Estimate", "the materials sheet's quantities at declared typical prices")
+    rows, total = [], 0.0
+    for item, qty_text, _from, key, qty in quantities(ps):
+        label, price, per = PRICE_ESTIMATES[key]
+        units = qty / (100 if per == "100" else 1000 if per == "1000" else 1)
+        line = units * price
+        total += line
+        rows.append((item, qty_text, f"${price:,.2f} / {per}", f"${line:,.0f}"))
+    rows.append(("Total, materials", "", "", f"${total:,.0f}"))
+    y = s.top - 6
+    y -= s.heading("Materials at estimated prices", X0, y)
+    s.table(X0, y - 2, [("Item", 300, "l"), ("Qty", 70, "r"), ("Price used", 120, "r"), ("Cost", X1 - X0 - 490, "r")], rows, 7.6)
+    s.para(f"""These are ESTIMATES. The quantities are counted from your design; the prices are typical US retail figures
+declared in this program (October 2026), not quotes, and prices vary by region, season and grade. Ring your
+lumber yard with the materials sheet (sheet {_sheet_no(ps, 'Tools and Materials')}) and replace them. Not included:
+tools, fasteners for the deck, the door leaf's hardware, paint or oil, delivery, permits, and your time.""",
+           X0, Y0 + 70, X1 - X0, 7.8, color=GREY)
+
+
+s_prices.title = "Price Estimate"
 
 
 def s_exploded(ps: PlanSet):
@@ -325,9 +381,10 @@ def s_exploded(ps: PlanSet):
     if part:
         items.append((at(part.id), f"Partial panels\n{t['partial']} round the door"))
     base = [p for p in m.pieces if p.tag == "base" and p.id.endswith("board")]
-    tap = next(p for p in base if p.info["tapered"])
+    tap = next((p for p in base if p.info["tapered"]), None)
     lev = next((p for p in base if not p.info["tapered"]), None)
-    items.append((at(tap.id), f"Tapered base sections\n{sum(1 for b in base if b.info['tapered'])}"))
+    if tap:
+        items.append((at(tap.id), f"Tapered base sections\n{sum(1 for b in base if b.info['tapered'])}"))
     if lev:
         items.append((at(lev.id), f"Level base sections\n{sum(1 for b in base if not b.info['tapered'])}"))
     plate = next(p for p in m.pieces if p.id.endswith("plate"))
@@ -905,33 +962,40 @@ Run weather-strip round the sash's face so rain cannot run under it.
 """, X0, s.top - 6, 236, 8.3)
 
 
+def _section(groups, kind, m):
+    """A section of this kind to draw: one of plain panels if the dome has one, else any whole one,
+    else None (a 2V dome has no whole hexagon; on some cuts every hexagon holds a window)."""
+    whole = {p.face for p in m.panels if not p.partial}
+    plain = {p.face for p in m.panels if not p.partial and not p.window and not p.skylight}
+    of_kind = [fs for k, fs in groups if k == kind]
+    return next((fs for fs in of_kind if set(fs) <= plain), None) or next((fs for fs in of_kind if set(fs) <= whole), None)
+
+
 def s_sections_step(ps: PlanSet):
     t, m = ps.t, ps.m
     s = _step(ps, 9, "Pre-Assemble Sections", "panels screwed together in the shop into pentagons and hexagons")
     groups = t["section_groups"]
     face_ids = {p.face: p.id for p in m.panels if not p.partial}
-    plain = {p.face for p in m.panels if not p.partial and not p.window and not p.skylight}
-    pent = next(fs for k, fs in groups if k == "pentagon" and set(fs) <= plain)
-    hexa = next(fs for k, fs in groups if k == "hexagon" and set(fs) <= plain)
+    shown = [(name, fs) for name in ("pentagon", "hexagon") if (fs := _section(groups, name, m))]
     w = (X1 - X0 - 250) / 2
-    for i, (name, fs) in enumerate((("pentagon", pent), ("hexagon", hexa))):
+    for i, (name, fs) in enumerate(shown):
         ids = {face_ids[f] for f in fs if f in face_ids}
         pieces = [q for q in m.pieces if q.tag == "frame" and q.group in ids]
         cen = np.mean([q.mesh.centre for q in pieces], axis=0)
         nrm = M.unit(cen - np.array(m.landmarks["centre"]))
         img = ps.shots.scene(f"section-{name}", pieces, -nrm + np.array([0.2, 0.1, -0.3]), size=(900, 900), fov=28)
-        pl = s.image(img, X0 + 250 + i * w, Y0 + 130, w, s.top - Y0 - 140)
+        pl = s.image(img, X0 + 250 + (i if len(shown) > 1 else 0.5) * w, Y0 + 130, w, s.top - Y0 - 140)
         s.text(f"{name.upper()} SECTION: {len(fs)} panels", pl.x + pl.w / 2, pl.y - 8, 7.6, "Sans-B", anchor="c")
     p_sec, h_sec, single = t["sections_counts"]
     s.para(f"""
 Before covering, screw panels together in the shop into sections. A section covers in one piece, so it goes up faster,
 seals better, and can be taken off again to repair one part of the dome without stripping the rest.
 
-This dome makes {p_sec} pentagon sections (5 panels round a five-way corner) and {h_sec} hexagon sections (6 round a six-way
-corner); the other {single} panels go up one at a time.
+This dome makes {p_sec} pentagon sections (5 panels round a five-way corner){f" and {h_sec} hexagon sections (6 round a six-way corner)" if h_sec else ""};
+the other {single} panels go up one at a time.
 
-Lay the panels of a section out with their bottoms down. In a hexagon the panels are nearly equilateral, so mark each
-one's base before you start. Clamp two panels with their bevels meeting, check the faces are flush, and drive the seam
+Lay the panels of a section out with their bottoms down.{" In a hexagon the panels are nearly equilateral, so mark each "
+"one's base before you start." if h_sec else ""} Clamp two panels with their bevels meeting, check the faces are flush, and drive the seam
 screws {mm(M.D('seam_screw_m'))} apart from both sides alternately.
 """, X0, s.top - 6, 236, 8.3)
     # the groups on a plan
@@ -955,8 +1019,7 @@ def s_covering(ps: PlanSet):
     t, m = ps.t, ps.m
     s = _step(ps, 10, "Cover the Sections", "skin in the shop, staples on the bevel where the seams will hide them")
     groups = t["section_groups"]
-    plain = {p.face for p in m.panels if not p.partial and not p.window and not p.skylight}
-    hexa = next(fs for k, fs in groups if k == "hexagon" and set(fs) <= plain)
+    hexa = _section(groups, "hexagon", m) or _section(groups, "pentagon", m)
     face_ids = {p.face: p.id for p in m.panels if not p.partial}
     ids = {face_ids[f] for f in hexa if f in face_ids}
     pieces = [q for q in m.pieces if q.group in ids and q.tag in ("frame", "skin", "glass")]
@@ -1004,19 +1067,21 @@ def s_base_step(ps: PlanSet):
     img = ps.shots.shot("step-base", cam, R.SKETCH, pieces_view)
     pl = s.image(img, X0 + 250, Y0, X1 - X0 - 330, s.top - Y0)
     base = [p for p in m.pieces if p.tag == "base" and p.id.endswith("board")]
-    tap = next(p for p in base if p.info["tapered"])
-    lev = next((p for p in base if not p.info["tapered"]), tap)
+    tap = next((p for p in base if p.info["tapered"]), None)
+    lev = next((p for p in base if not p.info["tapered"]), None)
     plate = next(p for p in m.pieces if p.id.endswith("plate"))
     joist = next(p for p in m.pieces if p.id.startswith("deck-joist"))
-    s.callouts(pl, cam, [(tap.mesh.centre, "tapered base section"), (lev.mesh.centre, "level base section"),
-                         (plate.mesh.centre, "PT bottom plate"), (np.array([0, 0, 0.0]), "deck: one joist to\neach base corner")], 7.0)
+    s.callouts(pl, cam, [(b.mesh.centre, f"{name} base section") for b, name in ((tap, "tapered"), (lev, "level")) if b] +
+                        [(plate.mesh.centre, "PT bottom plate"), (np.array([0, 0, 0.0]), "deck: one joist to\neach base corner")], 7.0)
     s.para(f"""
 Build the deck first: piers, a girder ring, {t['base_edges']} joists running out to the base corners and a rim board between
 each pair, then decking. Its outline is the base's own {t['base_edges']}-sided ring; check its diagonals before you deck it.
 
-On a {ps.m.spec.cut} cut the base is not level: it zig-zags between two corner heights, {mm(t['taper_m'])} apart. So the
-base sections come in two shapes. {sum(1 for b in base if not b.info['tapered'])} are level boards; {sum(1 for b in base if b.info['tapered'])}
-taper from low to high (sheet {_sheet_no(ps, 'Base Layout')} gives them all). Each is a board on edge, standing on a
+{(f"On a {ps.m.spec.cut} cut the base is not level: it zig-zags between two corner heights, {mm(t['taper_m'])} apart. So the "
+f"base sections come in two shapes. {sum(1 for b in base if not b.info['tapered'])} are level boards; {sum(1 for b in base if b.info['tapered'])} "
+f"taper from low to high") if tap else
+f"On a {ps.m.spec.cut} cut the base is level: every corner is at one height, so all {len(base)} base sections are level boards"}
+(sheet {_sheet_no(ps, 'Base Layout')} gives them all). Each is a board on edge, standing on a
 pressure-treated plate, its ends mitred {deg(t['base_mitre'])} so neighbours meet at the corners.
 
 Lay the sections out on the deck, check every corner against the base layout and stake or screw them down. Getting this
@@ -1085,10 +1150,12 @@ def s_base_layout(ps: PlanSet):
     s.dim(q[0], q[1], f"{both(tb['length_m'])}", off=-10, size=6.4)
     s.dim(q[3], q[0], f"{mm(tb['low_m'])}", off=8, size=6.2)
     s.dim(q[1], q[2], f"{mm(tb['high_m'])}", off=8, size=6.2)
-    s.text("a tapered base board, outside face", (q[0][0] + q[1][0]) / 2, q[2][1] + 14, 7, "Sans-B", anchor="c")
+    s.text(f"a {'tapered' if tb['tapered'] else 'level'} base board, outside face", (q[0][0] + q[1][0]) / 2, q[2][1] + 14, 7, "Sans-B", anchor="c")
     s.para(f"""Heights are from the top of the bottom plate. The ring is not a regular polygon: its corners sit on two radii because
 the {ps.m.spec.cut} cut passes between two rows of the sphere's vertices, so set out each corner from the centre by its own radius
-and check the side lengths.""", x, y - 150, X1 - x, 7.4, color=GREY)
+and check the side lengths.""" if tb["tapered"] else f"""Heights are from the top of the bottom plate. Every corner of the
+{ps.m.spec.cut} cut is at one height, so the corners lie on one circle: set each out from the centre at the same radius and
+check the side lengths.""", x, y - 150, X1 - x, 7.4, color=GREY)
 
 
 def s_assembly(ps: PlanSet):
@@ -1290,7 +1357,7 @@ s_base_layout.title = "Base Layout"
 s_nest.title = "Sheet Layout"
 s_declared.title = "Declared Inputs and Checks"
 
-SHEETS = [s_cover, s_welcome, s_glance, s_materials, s_exploded, s_panel_map, s_panel_dims, s_angles, s_sections, s_cutlist,
+SHEETS = [s_cover, s_welcome, s_glance, s_materials, s_prices, s_exploded, s_panel_map, s_panel_dims, s_angles, s_sections, s_cutlist,
           s_stick_details, s_step_rip, s_step_jig, s_step_rails, s_step_tails, s_step_heads, s_step_assemble, s_partials,
           s_windows, s_sections_step, s_covering, s_base_step, s_base_layout, s_assembly, s_door, s_finish, s_nest,
           s_floor_plan, s_gallery, s_declared]

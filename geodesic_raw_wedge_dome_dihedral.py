@@ -295,6 +295,25 @@ class DomeConfig:
     #   point_panel_out : point -> across the panel edge / seam
     wedge_orientation: str = "point_dome_in"
 
+    # MIXED IN/OUT PANELS (the owner's alternating build, 2026-10).
+    #   uniform          : every panel uses wedge_orientation (the historical dome).
+    #   alternate_ground : the ten ground panels alternate point-in / point-out around the
+    #                      base ring; every panel above is then solved for the least extra
+    #                      seam angle (solve_orientation_pattern).
+    #   alternate_lower  : the whole lower ring of twenty (ground panels and the inverted
+    #                      panels between them) alternates; the rest solved the same way.
+    #   least_angle      : every panel solved, nothing fixed.
+    # Only point_dome_in and point_dome_out mix. Where an in-wedge meets an out-wedge across
+    # a seam their sawn faces are parallel before the fold, so the gap left for the key is
+    # the fold angle alone instead of sector-minus-fold (both in) or sector-plus-fold (both
+    # out). An out-pointing panel in a mixed dome is lifted one log radius outward so its
+    # point is on the outer face and its arc on the inner: the same shell band as the
+    # in-pointing panels, which is what lets the two faces bear on each other.
+    orientation_pattern: str = "uniform"
+    # Which ground-panel type points IN for the alternate_* patterns: "auto" (the one with
+    # the least extra seam angle), "AAA" or "BAB".
+    pattern_ground_in: str = "auto"
+
     # CRITICAL NODE-CLEANING RULE:
     # The receiving/through end is NOT allowed to protrude freely past a dome vertex.
     # Its physical cut is the plane of the incoming mathematical triangle edge,
@@ -409,6 +428,12 @@ class DomeConfig:
                 "wedge_orientation must be point_dome_in, point_panel_in, "
                 "point_dome_out, or point_panel_out"
             )
+        if self.orientation_pattern not in ORIENTATION_PATTERNS:
+            raise ValueError("orientation_pattern must be one of " + ", ".join(ORIENTATION_PATTERNS))
+        if self.pattern_ground_in not in {"auto", "AAA", "BAB"}:
+            raise ValueError("pattern_ground_in must be auto, AAA or BAB")
+        if self.orientation_pattern != "uniform" and self.seam_join_mode != "raw_trapezoid":
+            raise ValueError("a mixed in/out pattern is solved for raw_trapezoid seams only")
         if self.vertex_trim_mode != "triangle_envelope":
             raise ValueError("vertex_trim_mode must be triangle_envelope")
         if self.hose_outer_diameter_in <= 0:
@@ -542,6 +567,9 @@ class MemberInfo:
     physical_stock_length_in: float
     volume_equivalent_length_in: float
 
+    # The panel's own orientation; differs from config.wedge_orientation only in a mixed dome.
+    orientation: str = ""
+
     @property
     def length_in(self) -> float:
         """Backward-compatible alias: physical maximum stock length, not nominal edge."""
@@ -611,6 +639,8 @@ class DomePhysicalModel:
     members: list[MemberInfo]
     seams: list[SeamInfo]
     joints: list[PanelJointInfo]
+    # One orientation per panel (face index order). Empty for a uniform dome.
+    panel_orientations: list[str] = field(default_factory=list)
 
     @property
     def base_edges(self) -> list[EdgeInfo]:
@@ -797,6 +827,29 @@ WEDGE_ORIENTATION_ORDER = (
 )
 
 
+ORIENTATION_PATTERNS = ("uniform", "alternate_ground", "alternate_lower", "least_angle")
+MIXED_ORIENTATIONS = ("point_dome_in", "point_dome_out")
+
+
+def panel_config(config: "DomeConfig", orientation: str) -> "DomeConfig":
+    """The configuration one panel is cut with: the dome's own, or the same with this panel's orientation."""
+    return config if orientation == config.wedge_orientation else replace(config, wedge_orientation=orientation)
+
+
+def member_config(model: "DomePhysicalModel", member: "MemberInfo") -> "DomeConfig":
+    return panel_config(model.config, member.orientation or model.config.wedge_orientation)
+
+
+def section_z_offset_in(config: "DomeConfig") -> float:
+    """How far a panel's sector point sits out from the reference surface.
+
+    Zero in a uniform dome. In a mixed in/out dome an out-pointing panel is lifted one log
+    radius so its wood occupies the same shell band as the in-pointing panels."""
+    if config.orientation_pattern != "uniform" and config.wedge_orientation == "point_dome_out":
+        return config.trunk_diameter_in * 0.5
+    return 0.0
+
+
 def wedge_orientation_rotation_deg(orientation: str) -> float:
     """Rotation of the raw sector about the strut axis in the local (panel-in, dome-out) plane.
 
@@ -872,12 +925,261 @@ def _geometry_sector_local_points(config: DomeConfig) -> list[tuple[float, float
     """Exact raw-sector boundary after applying the selected 0/90/180/270-degree rotation."""
     r = config.trunk_diameter_in * 0.5
     half = math.radians((360.0 / config.radial_splits) * 0.5)
-    points: list[tuple[float, float]] = [(0.0, 0.0)]
+    z0 = section_z_offset_in(config)
+    points: list[tuple[float, float]] = [(0.0, z0)]
     for i in range(config.arc_segments + 1):
         angle = -half + 2.0 * half * i / config.arc_segments
         y, z = rotate_sector_yz(r * math.sin(angle), r * math.cos(angle), config.wedge_orientation)
-        points.append((y, z))
+        points.append((y, z + z0))
     return points
+
+
+
+# ----------------------------------------------------------------------------
+# MIXED IN/OUT PANELS: which panel points which way, and the seam between them
+# ----------------------------------------------------------------------------
+def _face_has_base_edge(topology: "GeodesicTopology", face: "FaceInfo") -> bool:
+    a, b, c = face.vertices
+    return any(topology.edges[tuple(sorted(e))].is_base for e in ((a, b), (b, c), (c, a)))
+
+
+def panel_bands(topology: "GeodesicTopology") -> list[int]:
+    """Build band of every panel, ground up: 1 is the ground panels (a base edge on the
+    ground), then each distinct centre height above them, lowest first."""
+    ground = [_face_has_base_edge(topology, f) for f in topology.faces]
+    heights = sorted({round(float(f.center[2]), 6) for f, g in zip(topology.faces, ground) if not g})
+    return [1 if g else 2 + heights.index(round(float(f.center[2]), 6)) for f, g in zip(topology.faces, ground)]
+
+
+def ring_order(topology: "GeodesicTopology", faces: list[int]) -> list[int]:
+    """Panels in the order a builder walks round the dome (by bearing from its centre)."""
+    return sorted(faces, key=lambda i: math.atan2(float(topology.faces[i].center[1]), float(topology.faces[i].center[0])))
+
+
+def seam_face_gap_deg(config: "DomeConfig", orientation_a: str, orientation_b: str,
+                      inward_a: np.ndarray, normal_a: np.ndarray,
+                      inward_b: np.ndarray, normal_b: np.ndarray) -> float:
+    """Angle between the two sawn seam faces that meet across a seam (0-90 degrees)."""
+    (ya, za), _ = sector_radial_vectors(panel_config(config, orientation_a))
+    (yb, zb), _ = sector_radial_vectors(panel_config(config, orientation_b))
+    a = angle_between_deg(ya * inward_a + za * normal_a, yb * inward_b + zb * normal_b)
+    return min(a, 180.0 - a)
+
+
+def solve_orientation_pattern(config: "DomeConfig", topology: "GeodesicTopology",
+                              face_edge_frames: dict) -> list[str]:
+    """One orientation per panel for config.orientation_pattern.
+
+    The cost of a seam is the angle its key must fill beyond the dome's own fold there
+    (zero where an in-wedge meets an out-wedge). The fixed panels come from the pattern;
+    every other panel is chosen by an exact search, ground band first, so the result is
+    the least total extra angle any assignment can reach, not a rule of thumb. Ties go to
+    point-in, which is tried first."""
+    n = len(topology.faces)
+    if config.orientation_pattern == "uniform":
+        return [config.wedge_orientation] * n
+    IN, OUT = MIXED_ORIENTATIONS
+    seams: list[tuple[int, int, dict]] = []
+    neighbours: dict[int, list[tuple[int, int]]] = defaultdict(list)
+    for edge in topology.edges.values():
+        if edge.is_base:
+            continue
+        fa, fb = edge.adjacent_faces
+        _, _, _, ia = face_edge_frames[(fa, edge.key)]
+        _, _, _, ib = face_edge_frames[(fb, edge.key)]
+        na, nb = topology.faces[fa].normal, topology.faces[fb].normal
+        fold = angle_between_deg(na, nb)
+        cost = {}
+        for xa, oa in enumerate((IN, OUT)):
+            for xb, ob in enumerate((IN, OUT)):
+                cost[(xa, xb)] = max(0.0, seam_face_gap_deg(config, oa, ob, ia, na, ib, nb) - fold)
+        k = len(seams)
+        seams.append((fa, fb, cost))
+        neighbours[fa].append((k, fb))
+        neighbours[fb].append((k, fa))
+
+    bands = panel_bands(topology)
+    ground = [i for i in range(n) if bands[i] == 1]
+    lower = ground + [i for i in range(n) if bands[i] != 1
+                      and any(topology.vertices[v][2] <= 1e-6 for v in topology.faces[i].vertices)]
+    order = sorted(range(n), key=lambda i: (bands[i], math.atan2(float(topology.faces[i].center[1]),
+                                                                  float(topology.faces[i].center[0]))))
+
+    def seam_cost(k: int, a: int, xa: int, xb: int) -> float:
+        fa, _fb, cost = seams[k]
+        return cost[(xa, xb)] if fa == a else cost[(xb, xa)]
+
+    def search(fixed: dict) -> tuple:
+        free = [i for i in order if i not in fixed]
+        x = dict(fixed)
+        best: list = [math.inf, None]
+        start = sum(seam_cost(k, fa, x[fa], x[fb]) for k, (fa, fb, _) in enumerate(seams) if fa in x and fb in x)
+
+        def bound(i: int) -> float:
+            total = 0.0
+            for f in free[i:]:
+                total += min(sum(seam_cost(k, f, o, x[g]) for k, g in neighbours[f] if g in x) for o in (0, 1))
+            return total
+
+        def rec(i: int, cost: float) -> None:
+            if cost + bound(i) >= best[0] - 1e-9:
+                return
+            if i == len(free):
+                best[0], best[1] = cost, dict(x)
+                return
+            f = free[i]
+            for o in (0, 1):
+                add = sum(seam_cost(k, f, o, x[g]) for k, g in neighbours[f] if g in x)
+                x[f] = o
+                rec(i + 1, cost + add)
+                del x[f]
+
+        rec(0, start)
+        return best[0], best[1]
+
+    pattern, choice = config.orientation_pattern, config.pattern_ground_in
+    candidates: list[dict] = []
+    if pattern == "alternate_ground":
+        ring = ring_order(topology, ground)
+        types = [topology.faces[i].face_type for i in ring]
+        if any(types[k] == types[(k + 1) % len(types)] for k in range(len(types))):
+            raise ValueError("the ground panels do not alternate in type around the ring")
+        for t in (("AAA", "BAB") if choice == "auto" else (choice,)):
+            candidates.append({i: 0 if topology.faces[i].face_type == t else 1 for i in ground})
+    elif pattern == "alternate_lower":
+        if len(lower) != 2 * len(ground):
+            raise ValueError("the lower ring is not ground and inverted panels in turn")
+        # pattern_ground_in "AAA"/"BAB" both mean the ground panels point in here
+        for g in ((0, 1) if choice == "auto" else (0,)):
+            candidates.append({i: (g if bands[i] == 1 else 1 - g) for i in lower})
+    else:
+        candidates.append({})
+    best_cost, best_x = math.inf, None
+    for fixed in candidates:
+        c, xx = search(fixed)
+        if c < best_cost - 1e-9:
+            best_cost, best_x = c, xx
+    return [MIXED_ORIENTATIONS[best_x[i]] for i in range(n)]
+
+
+def _convex_overlap_area(p: list, q: list) -> float:
+    """Area shared by two convex polygons (Sutherland-Hodgman)."""
+    def ccw(poly):
+        area = sum(poly[i][0] * poly[(i + 1) % len(poly)][1] - poly[(i + 1) % len(poly)][0] * poly[i][1]
+                   for i in range(len(poly)))
+        return poly if area >= 0 else poly[::-1]
+    out, clip = ccw(p), ccw(q)
+    for i in range(len(clip)):
+        if not out:
+            return 0.0
+        a, b = clip[i], clip[(i + 1) % len(clip)]
+
+        def inside(pt, a=a, b=b):
+            return (b[0] - a[0]) * (pt[1] - a[1]) - (b[1] - a[1]) * (pt[0] - a[0]) >= 0
+        src, out = out, []
+        for j in range(len(src)):
+            cur, prv = src[j], src[j - 1]
+            if inside(cur):
+                if not inside(prv):
+                    out.append(_line_cross(prv, cur, a, b))
+                out.append(cur)
+            elif inside(prv):
+                out.append(_line_cross(prv, cur, a, b))
+    if len(out) < 3:
+        return 0.0
+    return 0.5 * abs(sum(out[i][0] * out[(i + 1) % len(out)][1] - out[(i + 1) % len(out)][0] * out[i][1]
+                         for i in range(len(out))))
+
+
+def _line_cross(p1, p2, a, b):
+    x1, y1 = p1
+    x2, y2 = p2
+    x3, y3 = a
+    x4, y4 = b
+    den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    if abs(den) < 1e-15:
+        return p2
+    t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den
+    return (x1 + t * (x2 - x1), y1 + t * (y2 - y1))
+
+
+def _mixed_seam(cfg_a: "DomeConfig", cfg_b: "DomeConfig", tangent: np.ndarray,
+                inward_a: np.ndarray, normal_a: np.ndarray,
+                inward_b: np.ndarray, normal_b: np.ndarray) -> dict:
+    """Seat an in-wedge against an out-wedge across one seam.
+
+    Both members move the same distance from the seam line until their sections just
+    touch, solved on the true cross-sections (arc included), not on the face lines alone.
+    The two seam faces then meet along one line and open by the fold angle; that wedge of
+    air is the key. Returns the offset, the contact line and the two open face ends, as
+    offsets from the seam's start point."""
+    bisector = normalize(normal_a + normal_b)
+    across = normalize(np.cross(tangent, bisector))
+
+    def to2(v):
+        return (float(np.dot(v, across)), float(np.dot(v, bisector)))
+    ia, na, ib, nb = to2(inward_a), to2(normal_a), to2(inward_b), to2(normal_b)
+    key = (cfg_a.wedge_orientation, cfg_b.wedge_orientation, cfg_a.trunk_diameter_in, cfg_a.radial_splits,
+           cfg_a.arc_segments, cfg_a.orientation_pattern) + tuple(round(v, 9) for v in ia + na + ib + nb)
+    found = _MIXED_SEAM_CACHE.get(key)
+    if found is None:
+        found = _MIXED_SEAM_CACHE[key] = _seat_mixed_sections(cfg_a, cfg_b, ia, na, ib, nb)
+    d, contact, open_a, open_b = found
+    to3 = lambda q: q[0] * across + q[1] * bisector
+    return {"offset": d, "contact": to3(contact), "open_a": to3(open_a), "open_b": to3(open_b)}
+
+
+_MIXED_SEAM_CACHE: dict = {}
+
+
+def _seat_mixed_sections(cfg_a, cfg_b, ia, na, ib, nb):
+    """The 2-D seat, in the seam's cross-section (across, bisector): offset, contact and open ends."""
+    def base(cfg, inward, normal):
+        return [(y * inward[0] + z * normal[0], y * inward[1] + z * normal[1]) for y, z in _geometry_sector_local_points(cfg)]
+    sec_a, sec_b = base(cfg_a, ia, na), base(cfg_b, ib, nb)
+
+    def overlap(d):
+        return _convex_overlap_area([(x + d * ia[0], y + d * ia[1]) for x, y in sec_a],
+                                    [(x + d * ib[0], y + d * ib[1]) for x, y in sec_b])
+
+    r = cfg_a.trunk_diameter_in * 0.5
+    # Walk the two sections toward each other from well apart until they first overlap;
+    # pushed much further they would pass through each other and stop overlapping again.
+    hi = 2.0 * r
+    if overlap(hi) > 1e-12:
+        raise ValueError("mixed seam: the two sections overlap even when well apart")
+    step = r / 32.0
+    lo = hi - step
+    while overlap(lo) <= 1e-12:
+        hi, lo = lo, lo - step
+        if lo < -2.0 * r:
+            raise ValueError("mixed seam: the two sections never meet")
+    for _ in range(60):
+        mid = 0.5 * (lo + hi)
+        if overlap(mid) > 1e-12:
+            lo = mid
+        else:
+            hi = mid
+    d = hi
+    faces = []
+    for cfg, inward, normal in ((cfg_a, ia, na), (cfg_b, ib, nb)):
+        (sy, sz), _ = sector_radial_vectors(cfg)
+        z0 = section_z_offset_in(cfg)
+        p0 = np.array([d * inward[0] + z0 * normal[0], d * inward[1] + z0 * normal[1]])
+        faces.append((p0, p0 + np.array([sy * inward[0] + sz * normal[0], sy * inward[1] + sz * normal[1]])))
+
+    def dist(point, seg):
+        a, b = seg
+        ab = b - a
+        t = clamp(float(np.dot(point - a, ab) / max(float(np.dot(ab, ab)), 1e-18)), 0.0, 1.0)
+        return float(np.linalg.norm(point - (a + t * ab)))
+
+    ends = [(dist(pt, faces[1 - side]), side, k) for side in (0, 1) for k, pt in enumerate(faces[side])]
+    _, side, k = min(ends)
+    contact = faces[side][k]
+    open_a = max(faces[0], key=lambda pt: float(np.linalg.norm(pt - contact)))
+    open_b = max(faces[1], key=lambda pt: float(np.linalg.norm(pt - contact)))
+    return d, contact, open_a, open_b
 
 
 def _plane_intersection_parameter(
@@ -911,7 +1213,6 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
 
     radius = config.trunk_diameter_in * 0.5
     sector_angle_deg = 360.0 / config.radial_splits
-    (seam_y, seam_z), (receiver_y, receiver_z) = sector_radial_vectors(config)
 
     # Face-edge frames define the local panel-in (+Y) and dome-out (+Z) directions.
     # The raw sector is then rotated in this plane according to wedge_orientation.
@@ -922,6 +1223,10 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
             key = tuple(sorted(e))
             face_edge_frames[(face.index, key)] = face_edge_inward(topology.vertices, face, key)
 
+    # Every panel's own orientation (all the same unless a mixed pattern is asked for).
+    orientations = solve_orientation_pattern(config, topology, face_edge_frames)
+    face_configs = [panel_config(config, o) for o in orientations]
+
     seams: list[SeamInfo] = []
     seam_offsets: dict[tuple[int, tuple[int, int]], float] = {}
     seam_counter = {"A": 0, "B": 0}
@@ -931,6 +1236,7 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
             only_face = edge.adjacent_faces[0]
             # Place the selected SEAM_FACE outer corner on the ideal base-edge line in
             # the panel plane. This is the fold=0 specialization of the interior solver.
+            (seam_y, _), _ = sector_radial_vectors(face_configs[only_face])
             seam_offsets[(only_face, edge.key)] = -seam_y
             continue
 
@@ -942,34 +1248,55 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
 
         fold = angle_between_deg(face_a.normal, face_b.normal)
         internal_dihedral = 180.0 - fold
+        cfg_a, cfg_b = face_configs[face_a_idx], face_configs[face_b_idx]
 
-        # Keep the exact same physical radial face assigned as SEAM_FACE while the whole
-        # sector rotates. Solve the member offset so the outer endpoint of that face from
-        # both panels lands on one common seam ridge. For legacy orientation this reduces
-        # exactly to d = lateral - outward*tan(fold/2).
-        d = -seam_y - seam_z * math.tan(math.radians(fold * 0.5))
-        seam_offsets[(face_a_idx, edge.key)] = d
-        seam_offsets[(face_b_idx, edge.key)] = d
+        if cfg_a.wedge_orientation == cfg_b.wedge_orientation:
+            (seam_y, seam_z), _ = sector_radial_vectors(cfg_a)
+            z0 = section_z_offset_in(cfg_a)
+            # Keep the exact same physical radial face assigned as SEAM_FACE while the whole
+            # sector rotates. Solve the member offset so the outer endpoint of that face from
+            # both panels lands on one common seam ridge. For legacy orientation this reduces
+            # exactly to d = lateral - outward*tan(fold/2). z0 is a mixed dome's band lift.
+            d = -seam_y - (seam_z + z0) * math.tan(math.radians(fold * 0.5))
+            seam_offsets[(face_a_idx, edge.key)] = d
+            seam_offsets[(face_b_idx, edge.key)] = d
 
-        p_a_start = start + d * inward_a
-        p_a_end = end + d * inward_a
-        p_b_start = start + d * inward_b
-        p_b_end = end + d * inward_b
+            p_a_start = start + d * inward_a + z0 * face_a.normal
+            p_a_end = end + d * inward_a + z0 * face_a.normal
+            p_b_start = start + d * inward_b + z0 * face_b.normal
+            p_b_end = end + d * inward_b + z0 * face_b.normal
 
-        seam_vec_a = seam_y * inward_a + seam_z * face_a.normal
-        seam_vec_b = seam_y * inward_b + seam_z * face_b.normal
-        apex_a_start = p_a_start + seam_vec_a
-        apex_a_end = p_a_end + seam_vec_a
-        apex_b_start = p_b_start + seam_vec_b
-        apex_b_end = p_b_end + seam_vec_b
+            seam_vec_a = seam_y * inward_a + seam_z * face_a.normal
+            seam_vec_b = seam_y * inward_b + seam_z * face_b.normal
+            apex_a_start = p_a_start + seam_vec_a
+            apex_a_end = p_a_end + seam_vec_a
+            apex_b_start = p_b_start + seam_vec_b
+            apex_b_end = p_b_end + seam_vec_b
 
-        # Numerical averaging tolerates tiny floating-point disagreement while preserving
-        # the mathematically common ridge. raw_gap is the ACTUAL included angle between
-        # the two selected seam faces after orientation, not sector_angle-fold by assumption.
-        apex_start = (apex_a_start + apex_b_start) * 0.5
-        apex_end = (apex_a_end + apex_b_end) * 0.5
-        spacer_base = float(np.linalg.norm(p_a_start - p_b_start))
-        raw_gap = angle_between_deg(seam_vec_a, seam_vec_b)
+            # Numerical averaging tolerates tiny floating-point disagreement while preserving
+            # the mathematically common ridge. raw_gap is the ACTUAL included angle between
+            # the two selected seam faces after orientation, not sector_angle-fold by assumption.
+            apex_start = (apex_a_start + apex_b_start) * 0.5
+            apex_end = (apex_a_end + apex_b_end) * 0.5
+            spacer_base = float(np.linalg.norm(p_a_start - p_b_start))
+            raw_gap = angle_between_deg(seam_vec_a, seam_vec_b)
+        else:
+            # An in-wedge against an out-wedge: their faces were parallel before the fold,
+            # so they bear on each other along one line and open by the fold angle alone.
+            mixed = _mixed_seam(cfg_a, cfg_b, tangent, inward_a, face_a.normal, inward_b, face_b.normal)
+            d = float(mixed["offset"])
+            seam_offsets[(face_a_idx, edge.key)] = d
+            seam_offsets[(face_b_idx, edge.key)] = d
+            run = end - start
+            apex_start = start + mixed["contact"]
+            apex_end = apex_start + run
+            p_a_start = start + mixed["open_a"]
+            p_a_end = p_a_start + run
+            p_b_start = start + mixed["open_b"]
+            p_b_end = p_b_start + run
+            spacer_base = float(np.linalg.norm(p_a_start - p_b_start))
+            raw_gap = seam_face_gap_deg(config, cfg_a.wedge_orientation, cfg_b.wedge_orientation,
+                                        inward_a, face_a.normal, inward_b, face_b.normal)
         if raw_gap <= 1.0e-7 or raw_gap >= 179.999999:
             hose_max_radius = 0.0
         else:
@@ -1045,12 +1372,15 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
             )
         provisional_by_face[face.index] = provisional
 
-    local_points = _geometry_sector_local_points(config)
     members: list[MemberInfo] = []
     joints: list[PanelJointInfo] = []
 
     for face in topology.faces:
         pms = provisional_by_face[face.index]
+        face_config = face_configs[face.index]
+        local_points = _geometry_sector_local_points(face_config)
+        _, (receiver_y, receiver_z) = sector_radial_vectors(face_config)
+        z0 = section_z_offset_in(face_config)
 
         # Precompute every member's PANEL_INTERIOR radial-face plane. The interior radial
         # vector is +inward +outward. The opposite radial face is reserved for the inter-panel seam.
@@ -1060,14 +1390,14 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
             inward = pm["inward"]  # type: ignore[assignment]
             normal = pm["face_normal"]  # type: ignore[assignment]
             point_origin = pm["point_origin"]  # type: ignore[assignment]
-            if config.wedge_orientation == "point_panel_out":
+            if face_config.wedge_orientation == "point_panel_out":
                 # With the sector point aimed across the seam, the curved raw-log arc is
                 # the surface facing the center of the triangle. There is no flat radial
                 # face on that side. Keep the pinwheel solver valid by using the tangent
                 # plane at the midpoint of that curved arc as its receiving datum. This
                 # represents line/tangent contact to the untouched round surface; a real
                 # build would use a saddle/notch/compliant pad if broad bearing is wanted.
-                arc_y, arc_z = rotate_sector_yz(0.0, radius, config.wedge_orientation)
+                arc_y, arc_z = rotate_sector_yz(0.0, radius, face_config.wedge_orientation)
                 arc_mid = point_origin + arc_y * inward + arc_z * normal
                 plane_normal = normalize(arc_y * inward + arc_z * normal)
                 if float(np.dot(plane_normal, inward)) < 0.0:
@@ -1081,7 +1411,7 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
                 # raw radial face carried through the 90-degree rotation.
                 if float(np.dot(plane_normal, inward)) < 0.0:
                     plane_normal = -plane_normal
-                interior_planes.append((point_origin, plane_normal))
+                interior_planes.append((point_origin + z0 * normal, plane_normal))
 
         # Butt-contact polygons: member i is cut by member i+1's interior-side plane.
         butt_points_by_member: list[np.ndarray] = []
@@ -1167,8 +1497,9 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
         theta = math.radians(sector_angle_deg)
         centroid_radius = 4.0 * radius * math.sin(theta * 0.5) / (3.0 * theta)
         centroid_y, centroid_z = rotate_sector_yz(
-            0.0, centroid_radius, config.wedge_orientation
+            0.0, centroid_radius, face_config.wedge_orientation
         )
+        centroid_z += z0
 
         for i, pm in enumerate(pms):
             receiver_i = (i + 1) % 3
@@ -1249,6 +1580,7 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
                 physical_axis_length_in=axis_length,
                 physical_stock_length_in=stock_length,
                 volume_equivalent_length_in=volume_length,
+                orientation=face_config.wedge_orientation,
             )
             members.append(member)
 
@@ -1273,7 +1605,8 @@ def build_physical_model(config: DomeConfig) -> DomePhysicalModel:
                 )
             )
 
-    model = DomePhysicalModel(config=config, topology=topology, members=members, seams=seams, joints=joints)
+    model = DomePhysicalModel(config=config, topology=topology, members=members, seams=seams, joints=joints,
+                              panel_orientations=[] if config.orientation_pattern == "uniform" else orientations)
     validate_physical_model(model)
     return model
 
@@ -1431,6 +1764,13 @@ def _cut_plane_components(member: MemberInfo, normal: np.ndarray) -> tuple[float
     return x, y, z, yaw, pitch
 
 
+def seam_orientation_label(model: DomePhysicalModel, seam: SeamInfo) -> str:
+    """The seam's orientation: the dome's, or both sides' in a mixed dome (a/b)."""
+    if not model.panel_orientations:
+        return model.config.wedge_orientation
+    return f"{model.panel_orientations[seam.face_a]}/{model.panel_orientations[seam.face_b]}"
+
+
 def export_bom(model: DomePhysicalModel, path: str | Path) -> None:
     """Export fabrication quantities with nominal geometry and solved physical cuts separated."""
     path = Path(path)
@@ -1485,7 +1825,7 @@ def export_bom(model: DomePhysicalModel, path: str | Path) -> None:
                     m.receives_member_id,
                     m.butt_into_member_id,
                     m.handedness,
-                    cfg.wedge_orientation,
+                    m.orientation or cfg.wedge_orientation,
                     cfg.vertex_trim_mode,
                     f"{sector_area_in2:.6f}",
                     f"{volume_ft3:.8f}",
@@ -1525,7 +1865,7 @@ def export_bom(model: DomePhysicalModel, path: str | Path) -> None:
                     "",
                     "",
                     "",
-                    cfg.wedge_orientation,
+                    seam_orientation_label(model, s),
                     "",
                     f"{area:.6f}",
                     f"{volume_ft3:.8f}",
@@ -1574,11 +1914,11 @@ def export_cut_schedule(model: DomePhysicalModel, path: str | Path) -> None:
             writer.writerow(
                 [
                     f"PANEL_{m.face_index + 1:03d}", face.face_type, m.member_id, m.local_edge_index,
-                    m.edge_type, model.config.wedge_orientation, f"{m.nominal_length_in:.6f}", f"{m.physical_stock_length_in:.6f}",
+                    m.edge_type, m.orientation or model.config.wedge_orientation, f"{m.nominal_length_in:.6f}", f"{m.physical_stock_length_in:.6f}",
                     "RECEIVING", "CLEAN_GEODESIC_VERTEX_TRIANGLE_ENVELOPE",
                     f"{rx:.9f}", f"{ry:.9f}", f"{rz:.9f}", f"{ryaw:.6f}", f"{rpitch:.6f}",
                     f"{m.receiving_axis_setback_in:.6f}", m.receives_member_id,
-                    pinwheel_receiver_surface_label(model.config),
+                    pinwheel_receiver_surface_label(member_config(model, m)),
                     f"{model.config.jig_butt_hangoff_in:.6f}",
                     f"{m.physical_stock_length_in + model.config.jig_butt_hangoff_in:.6f}",
                     "AFTER_ASSEMBLY",
@@ -1591,11 +1931,11 @@ def export_cut_schedule(model: DomePhysicalModel, path: str | Path) -> None:
             writer.writerow(
                 [
                     f"PANEL_{m.face_index + 1:03d}", face.face_type, m.member_id, m.local_edge_index,
-                    m.edge_type, model.config.wedge_orientation, f"{m.nominal_length_in:.6f}", f"{m.physical_stock_length_in:.6f}",
+                    m.edge_type, m.orientation or model.config.wedge_orientation, f"{m.nominal_length_in:.6f}", f"{m.physical_stock_length_in:.6f}",
                     "BUTT", "CYCLIC_PINWHEEL_END_TO_RECEIVER_INTERIOR_FACE",
                     f"{bx:.9f}", f"{by:.9f}", f"{bz:.9f}", f"{byaw:.6f}", f"{bpitch:.6f}",
                     f"{m.butt_setback_in:.6f}", m.butt_into_member_id,
-                    pinwheel_receiver_surface_label(model.config),
+                    pinwheel_receiver_surface_label(member_config(model, m)),
                     f"{model.config.jig_butt_hangoff_in:.6f}",
                     f"{m.physical_stock_length_in + model.config.jig_butt_hangoff_in:.6f}",
                     "BEFORE_ASSEMBLY",
@@ -1657,11 +1997,12 @@ def export_panel_jig_svg(model: DomePhysicalModel, panel_index: int, path: str |
     parts.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{width:.1f}" height="{height:.1f}" viewBox="0 0 {width:.1f} {height:.1f}">')
     parts.append('<rect width="100%" height="100%" fill="white"/>')
     parts.append(f'<polygon points="{points_string(tri)}" fill="none" stroke="#1976a8" stroke-width="2"/>')
-    orientation = html.escape(model.config.wedge_orientation.upper())
+    panel_cfg = member_config(model, members[0]) if members else model.config
+    orientation = html.escape(panel_cfg.wedge_orientation.upper())
     parts.append(f'<text x="12" y="22" font-family="monospace" font-size="14">PANEL {panel_index+1:03d} / {html.escape(face.face_type)} / EXTERIOR VIEW / {orientation}</text>')
     parts.append('<text x="12" y="40" font-family="monospace" font-size="12" fill="#aa00aa">MAGENTA GUIDE = CLEAN VERTEX CUT</text>')
     parts.append('<text x="250" y="40" font-family="monospace" font-size="12" fill="#0087a8">CYAN GUIDE = FLUSH BUTT CUT PLANE</text>')
-    parts.append(f'<text x="12" y="56" font-family="monospace" font-size="11">WEDGE SIDES: RED / GREEN; PINWHEEL RECEIVER = {html.escape(pinwheel_receiver_surface_label(model.config))}; ORANGE = +{model.config.jig_butt_hangoff_in:.1f}in SACRIFICIAL TAIL</text>')
+    parts.append(f'<text x="12" y="56" font-family="monospace" font-size="11">WEDGE SIDES: RED / GREEN; PINWHEEL RECEIVER = {html.escape(pinwheel_receiver_surface_label(panel_cfg))}; ORANGE = +{model.config.jig_butt_hangoff_in:.1f}in SACRIFICIAL TAIL</text>')
 
     for m in members:
         origin = m.nominal_start + m.point_offset_in * m.inward
@@ -1708,7 +2049,8 @@ def _panel_variant_signature(model: DomePhysicalModel, panel_index: int) -> tupl
     # A rotated jig is the same physical recipe; canonicalize cyclic rotations while
     # preserving handedness (do not mirror/reverse the order).
     rotations = [tuple(recipes[i:] + recipes[:i]) for i in range(3)]
-    return (model.config.wedge_orientation, face.face_type, min(rotations))
+    return (members[0].orientation or model.config.wedge_orientation if members else model.config.wedge_orientation,
+            face.face_type, min(rotations))
 
 
 
@@ -1764,7 +2106,6 @@ def export_jig_cut_sequence(model: DomePhysicalModel, path: str | Path) -> None:
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    receiver_surface = pinwheel_receiver_surface_label(model.config)
     with path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
@@ -1784,8 +2125,8 @@ def export_jig_cut_sequence(model: DomePhysicalModel, path: str | Path) -> None:
                 writer.writerow([
                     f"PANEL_{face.index + 1:03d}", face.face_type,
                     "1_BUTT_OFF_JIG", step, "COMPOUND_BUTT_TO_RECEIVER_INTERIOR_FACE",
-                    member.member_id, member.butt_into_member_id, receiver_surface,
-                    model.config.wedge_orientation,
+                    member.member_id, member.butt_into_member_id, pinwheel_receiver_surface_label(member_config(model, member)),
+                    member.orientation or model.config.wedge_orientation,
                     f"{model.config.jig_butt_hangoff_in:.6f}",
                     f"{member.physical_stock_length_in:.6f}",
                     f"{member.physical_stock_length_in + model.config.jig_butt_hangoff_in:.6f}",
@@ -1797,8 +2138,8 @@ def export_jig_cut_sequence(model: DomePhysicalModel, path: str | Path) -> None:
                 writer.writerow([
                     f"PANEL_{face.index + 1:03d}", face.face_type,
                     "2_HEAD_ON_JIG", step, "FLUSH_CUT_HEAD_AT_TRIANGLE_ENVELOPE_PLANE",
-                    member.member_id, member.receives_member_id, receiver_surface,
-                    model.config.wedge_orientation,
+                    member.member_id, member.receives_member_id, pinwheel_receiver_surface_label(member_config(model, member)),
+                    member.orientation or model.config.wedge_orientation,
                     f"{model.config.head_overfit_in:.6f}",
                     f"{member.physical_stock_length_in:.6f}",
                     f"{member.physical_stock_length_in + model.config.head_overfit_in:.6f}",
@@ -1825,9 +2166,9 @@ def butt_cut_setups(model: DomePhysicalModel) -> list[dict[str, object]]:
     itself leaning away: ``axial_run_in`` is how much further the sector's point reaches
     than its bark corner, and it is why the blank must be long on the point side.
     """
-    local = _geometry_sector_local_points(model.config)
     groups: dict[tuple[float, float], dict[str, object]] = {}
     for member in model.members:
+        local = _geometry_sector_local_points(member_config(model, member))
         _, _, _, mitre, bevel = _cut_plane_components(member, member.butt_plane_normal)
         key = (round(mitre, 3), round(bevel, 3))
         origin = member.nominal_start + member.point_offset_in * member.inward
@@ -1871,7 +2212,7 @@ def export_butt_cut_setups(model: DomePhysicalModel, path: str | Path) -> None:
                 f"{float(row['bevel_deg']):.6f}",
                 row["count"], row["edge_types"],
                 f"{float(row['run_min']):.6f}", f"{float(row['run_max']):.6f}",
-                model.config.wedge_orientation,
+                "mixed" if model.panel_orientations else model.config.wedge_orientation,
                 len(bevels) == 1 and abs(float(row["bevel_deg"])) == half_sector,
                 f"{half_sector:.6f}",
                 "cradle holds ONE sawn face down with the point against the fence; "
@@ -1930,11 +2271,12 @@ def export_fabrication_package(model: DomePhysicalModel, directory: str | Path) 
         variant_rows.append(
             [
                 variant_id,
-                model.config.wedge_orientation,
+                model.panel_orientations[representative] if model.panel_orientations else model.config.wedge_orientation,
                 f"PANEL_{representative + 1:03d}",
                 " ".join(f"PANEL_{i + 1:03d}" for i in panel_indices),
                 len(panel_indices),
-                pinwheel_receiver_surface_label(model.config),
+                pinwheel_receiver_surface_label(panel_config(model.config, model.panel_orientations[representative])
+                                                if model.panel_orientations else model.config),
                 f"{model.config.jig_butt_hangoff_in:.6f}",
                 f"{model.config.head_overfit_in:.6f}",
             ]
@@ -2209,19 +2551,17 @@ class LineAccumulator:
         return LineData(np.asarray(self.vertices, dtype=np.float32))
 
 
-def _mesh_sector_local_points(model: DomePhysicalModel) -> list[tuple[float, float]]:
-    """Return the exact rendered sector boundary after the configured axial rotation."""
-    cfg = model.config
+def _mesh_sector_local_points(model: DomePhysicalModel, member: MemberInfo | None = None) -> list[tuple[float, float]]:
+    """Return the exact rendered sector boundary after the axial rotation (of ``member``'s panel, in a mixed dome)."""
+    cfg = member_config(model, member) if member is not None else model.config
     r = cfg.trunk_diameter_in * 0.5
     half = math.radians((360.0 / cfg.radial_splits) * 0.5)
-    local: list[tuple[float, float]] = [(0.0, 0.0)]
+    z0 = section_z_offset_in(cfg)
+    local: list[tuple[float, float]] = [(0.0, z0)]
     for i in range(cfg.arc_segments + 1):
         angle = -half + (2.0 * half) * i / cfg.arc_segments
-        local.append(
-            rotate_sector_yz(
-                r * math.sin(angle), r * math.cos(angle), cfg.wedge_orientation
-            )
-        )
+        y, z = rotate_sector_yz(r * math.sin(angle), r * math.cos(angle), cfg.wedge_orientation)
+        local.append((y, z + z0))
     return local
 
 
@@ -2322,7 +2662,7 @@ def add_raw_sector_member(
     position_offset: np.ndarray | None = None,
 ) -> None:
     """Build one solved wood member, optionally with a longitudinal flat-key shave."""
-    raw_local = _mesh_sector_local_points(model)
+    raw_local = _mesh_sector_local_points(model, member)
     local, shaved_eval = _clip_local_polygon_to_flat_key(model, member, raw_local)
     offset = np.zeros(3, dtype=np.float64) if position_offset is None else np.asarray(position_offset, dtype=np.float64)
 
@@ -2389,7 +2729,7 @@ def add_jig_butt_hangoff(
     if hangoff <= 1.0e-9:
         return
 
-    raw_local = _mesh_sector_local_points(model)
+    raw_local = _mesh_sector_local_points(model, member)
     local, shaved_eval = _clip_local_polygon_to_flat_key(model, member, raw_local)
     if shaved_eval is None:
         butt_ring = [p.copy() for p in member.butt_contact_points]
@@ -2464,7 +2804,7 @@ def add_head_overfit(
     if overfit <= 1.0e-9:
         return
 
-    raw_local = _mesh_sector_local_points(model)
+    raw_local = _mesh_sector_local_points(model, member)
     local, shaved_eval = _clip_local_polygon_to_flat_key(model, member, raw_local)
     offset = np.zeros(3, dtype=np.float64) if position_offset is None else np.asarray(
         position_offset, dtype=np.float64)
@@ -2498,10 +2838,10 @@ def add_head_overfit(
 def build_flush_cut_lines(model: DomePhysicalModel, panel_index: int | None = None) -> LineData:
     """Bright ring on every head-end flush-cut plane, plus the offcut outline."""
     lines = LineAccumulator()
-    local = _mesh_sector_local_points(model)
     for member in model.members:
         if panel_index is not None and member.face_index != panel_index:
             continue
+        local = _mesh_sector_local_points(model, member)
         face_offset = model.topology.faces[member.face_index].normal * model.config.panel_explode_in
         ring = [p + face_offset for p in member.receiving_cut_points]
         for i in range(len(ring)):
@@ -2742,7 +3082,7 @@ def build_fabrication_jig(
     # Preserve the chosen cross-section rotation but lift the panel so no part of a
     # dome-out/sideways sector falls through the jig base. The point axis therefore need
     # not be the lowest feature in all four orientations.
-    profile_min_z = min(z for _, z in _mesh_sector_local_points(model))
+    profile_min_z = min(z for _, z in _mesh_sector_local_points(model, members[0] if members else None))
     wood_lift = max(0.0, -profile_min_z)
     wood_shift = shift + np.array([0.0, 0.0, wood_lift], dtype=np.float64)
 
@@ -2807,7 +3147,7 @@ def build_fabrication_jig(
             b = verts_local[(i + 1) % 3] + shift + np.array([0.0, 0.0, 0.04])
             lines.add(a, b, JIG_IDEAL_COLOR)
 
-    profile = _mesh_sector_local_points(model)
+    profile = _mesh_sector_local_points(model, members[0] if members else None)
 
     for member in members:
         on_bench = member.member_id in staged_ids

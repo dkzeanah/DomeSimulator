@@ -6,6 +6,12 @@
     py -3.12 -m film make cabin_wedge_beyond --voice mine --pace 1.5
     py -3.12 -m film stills cabin_wedge_beyond         # one still per chapter, to look at first
     py -3.12 -m film teaser cabin_wedge_beyond --voice mine --pace 1.5
+    py -3.12 -m film make 2v --engine web              # the same film on the web engine (sketch_claude/lesson_web.py)
+    py -3.12 -m film stills 2v --engine web            # its stills, both orientations, to look at first
+
+``--engine web`` renders in the browser engine instead of moderngl: the same lesson, its own
+words and the house voice, numbers computed for the screen, landscape and a framed phone cut,
+the release. The moderngl engine stays the default until every film has a web stage.
 
 Before this there were four ways to make a film -- the launcher's Masterclass tab,
 staged per-film scripts (narrate / plan / render, written out by hand each time),
@@ -307,8 +313,10 @@ def main(argv: list[str] | None = None) -> int:
         seg.add_argument("--no-segments", dest="segments", action="store_false")
         p.add_argument("--fps", type=int)
         p.add_argument("--size")
+        p.add_argument("--engine", choices=("moderngl", "web"), default="moderngl")
     st = sub.add_parser("stills")
     st.add_argument("lesson")
+    st.add_argument("--engine", choices=("moderngl", "web"), default="moderngl")
     st.add_argument("--chapters", default="", help="comma-separated chapter slugs; default is every chapter")
     st.add_argument("--at", type=float, default=0.5, help="progress within each chapter, from zero up to one")
     t = sub.add_parser("teaser")
@@ -318,6 +326,11 @@ def main(argv: list[str] | None = None) -> int:
     a = ap.parse_args(argv)
     if a.cmd == "list":
         list_films()
+        return 0
+    if getattr(a, "engine", "moderngl") == "web" and a.cmd in ("make", "stills"):
+        from sketch_claude.lesson_web import headless
+        for r in headless(a.lesson, "stills" if a.cmd == "stills" else "render"):
+            print(f"OUTPUT {json.dumps(r)}", flush=True)
         return 0
     if a.cmd in ("show", "make"):
         return make(a.lesson, voice=a.voice, pace=a.pace, landscape_only=a.landscape_only,

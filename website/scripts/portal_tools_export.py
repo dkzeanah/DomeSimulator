@@ -9,7 +9,11 @@ brought to the web, and a browser can run neither. So this exports what they com
   * for each of its four wedge orientations, its own solved meshes, member by member
     (public/portal/wedge/<orientation>.bin), so the space shows the simulator's dome rather
     than a sketch of one;
-  * the cut and seam tables over a grid of long edges and trunk diameters.
+  * the same for each alternating build (``orientation_pattern``: panels pointing in and out,
+    so the sawn faces at a seam cancel), with `alternating_build.plan`'s reading of it --
+    which way every panel points, the bands and the walk round each, every seam's pair, gap,
+    fold and the degrees a matched seam costs against an in/out one;
+  * the cut and seam tables over a grid of long edges and trunk diameters, for all of them.
 * **The zome** is `wedge_zome.geometry`, which is small, exact plane geometry. The browser
   re-solves it (zome.ts) from the zonohedron and the wedge's cross-section, which come from
   here, and scripts/test_portal_tools.mjs checks that solve against
@@ -43,6 +47,15 @@ ZOME_SIDE = (18.0, 72.0, 1.0)
 # The wedge method's grid: long edges and trunk diameters the cut tables are solved for
 WEDGE_LONG = [48.0, 60.0, 72.0, 84.0, 96.0]
 WEDGE_TRUNK = [6.0, 8.0, 10.0, 12.0, 14.0]
+
+# The alternating builds the solver offers (orientation_pattern, pattern_ground_in), by the key
+# the browser uses; "auto" is the solver's own choice of which ground panels point in.
+PATTERNS = [
+    ("alt_ground", "alternate_ground", "auto", "Alternating: the ground ring"),
+    ("alt_ground_aaa", "alternate_ground", "AAA", "Alternating: the ground ring, AAA panels in"),
+    ("alt_lower", "alternate_lower", "auto", "Alternating: the whole lower ring"),
+    ("least_angle", "least_angle", "auto", "Alternating: every panel solved"),
+]
 
 
 # ----------------------------------------------------------------------
@@ -186,11 +199,11 @@ def pack(parts: list[tuple[dict, object]], name: str) -> tuple[bytes, dict]:
                   "palette": [list(c) for c in palette], "parts": header, "bytes": len(blob)}
 
 
-def wedge_mesh_file(orientation: str) -> tuple[bytes, dict]:
+def wedge_mesh_file(orientation: str, model=None) -> tuple[bytes, dict]:
     """The simulator's own solved dome, member by member: each member, its head offcut
     (the stock flush-cut away on the jig) and each seam key."""
     sim = raw_wedge_bridge.simulator()
-    model = raw_wedge_bridge.model(orientation)
+    model = model if model is not None else raw_wedge_bridge.model(orientation)
 
     def one(fn, *args):
         acc = sim.MeshAccumulator()
@@ -208,7 +221,24 @@ def wedge_mesh_file(orientation: str) -> tuple[bytes, dict]:
               for s in model.seams]
     blob, head = pack(parts, orientation)
     head["faceNormals"] = [[float(x) for x in f.normal] for f in model.topology.faces]
+    head["faceCentres"] = [[float(x) for x in f.center] for f in model.topology.faces]
     return blob, head
+
+
+def pattern_plan(plan) -> dict:
+    """alternating_build.plan's reading of one mixed dome, for the browser."""
+    word = {"point_dome_in": "in", "point_dome_out": "out"}
+    return {
+        "ground": plan.ground_in,
+        "panels": [{"type": q.face_type, "band": q.band, "walk": q.walk, "points": word[q.orientation],
+                    "height": q.height_in} for q in plan.panels],
+        "seams": [{"id": q.seam_id, "type": q.edge_type, "a": q.a, "b": q.b, "pair": q.pair, "gap": q.gap_deg,
+                   "fold": q.fold_deg, "alt": q.alt_gap_deg, "extra": q.extra_deg, "key": q.key_width_in, "band": q.band}
+                  for q in plan.seams],
+        "bands": [{"band": b, "panels": ring, "summary": plan.band_summary(b)} for b, ring in sorted(plan.bands.items())],
+        "rings": plan.vertex_rings,
+        "matched": len(plan.matched()), "extraDeg": plan.total_extra_deg(), "pairs": dict(plan.counts()),
+    }
 
 
 JIG_PANEL = 5          # the panel the simulator's own jig walk-through and the film use
@@ -253,11 +283,28 @@ def wedge_tables() -> tuple[dict, dict[Path, bytes]]:
         for L in WEDGE_LONG:
             for d in WEDGE_TRUNK:
                 grid[f"{o}|{L:g}|{d:g}"] = wedge_summary(raw_wedge_bridge.model(o, "raw_trapezoid", L, d))
+    from alternating_build import plan as alt
+    for key, pattern, ground, _label in PATTERNS:
+        for L in WEDGE_LONG:
+            for d in WEDGE_TRUNK:
+                pl = alt.plan(pattern, ground, L, d)
+                grid[f"{key}|{L:g}|{d:g}"] = {**wedge_summary(pl.model), "matched": len(pl.matched()),
+                                              "extraDeg": pl.total_extra_deg(), "pairs": dict(pl.counts())}
     meshes, files = {}, {}
     for o in orients:
         blob, head = wedge_mesh_file(o)
         meshes[o] = head
         files[WEDGE_MESH_DIR / f"{o}.bin"] = blob
+    patterns = []
+    for key, pattern, ground, label in PATTERNS:
+        pl = alt.plan(pattern, ground)
+        blob, head = wedge_mesh_file(key, pl.model)
+        meshes[key] = head
+        files[WEDGE_MESH_DIR / f"{key}.bin"] = blob
+        patterns.append({"key": key, "pattern": pattern, "label": label, "blurb": alt.PATTERNS[pattern], **pattern_plan(pl)})
+    # what the matched (in/in) seam costs on each edge type, uniform builds for comparison
+    uniform_gaps = {o: {t: next(f["gap"] for f in grid[f"{o}|{defaults.long_edge_in:g}|{defaults.trunk_diameter_in:g}"]["families"] if f["type"] == t)
+                        for t in ("A", "B")} for o in orients}
     blob, jig = jig_file()
     files[WEDGE_MESH_DIR / "jig.bin"] = blob
     labels = {"point_dome_in": "Point to the dome's centre", "point_panel_in": "Point into its own panel",
@@ -275,6 +322,7 @@ def wedge_tables() -> tuple[dict, dict[Path, bytes]]:
                      "dryDensity": defaults.dry_wood_density_lb_ft3, "greenDensity": defaults.green_wood_density_lb_ft3,
                      "keyNose": defaults.trapezoid_nose_depth_in},
         "grid": _trim(grid), "meshes": _trim(meshes), "jig": _trim(jig),
+        "patterns": _trim(patterns), "uniformGaps": _trim(uniform_gaps),
     }, files
 
 

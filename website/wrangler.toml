@@ -27,6 +27,12 @@ migrations_dir = "migrations"
 binding = "BOOKS"
 bucket_name = "zeanahlab-books"
 
+# The films on /episodes (scripts/export_episodes.py uploads them). Staging reads the same
+# store: it holds only public films, and staging never writes to it.
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "zeanahlab-media"
+
 # Workers AI (Workers Paid): reads new listings for spam, writes the Monday report's short
 # reading and update drafts, answers the owner's questions from counted numbers. Runs on
 # Cloudflare's own GPUs; every call is logged in ai_runs. functions/_lib/ai.ts.
@@ -60,6 +66,10 @@ migrations_dir = "migrations"
 [[env.preview.r2_buckets]]
 binding = "BOOKS"
 bucket_name = "zeanahlab-books-staging"
+
+[[env.preview.r2_buckets]]
+binding = "MEDIA"
+bucket_name = "zeanahlab-media"
 
 [env.preview.ai]
 binding = "AI"

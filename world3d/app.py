@@ -18,6 +18,10 @@ THE WORLD (as in the dome and zome worlds)
     Shift                 faster      R  camera back to the start        L  camera to the next jig
     Left click            select the piece under the crosshair: length, section, board feet
     G  ground grid    V  wood on / off    P  skins on / off    T  jigs on / off
+THE ALTERNATING DOME (wedges pointing in and out, panel by panel)
+    N  build it up one band at a time, from the ground (N again past the top: the whole dome)
+    M  the next pattern: ground ring alternating / lower ring of twenty / least angle
+    K  camera to it
     B  cut list to the library        F12  screenshot     F1  these controls     F2  readout on / off
     Esc                   free the mouse; Esc again quits
 EDITING (new)
@@ -51,6 +55,7 @@ STEPS = (1.0, 3.0, 6.0, 12.0, 24.0)
 SELECT = (1.0, 0.86, 0.30, 1.0)
 GRASS = (0.42, 0.55, 0.30, 1.0)
 TRANSPARENT = {"dome_skin", "zome_skin"}
+BANDED = {"alt_dome", "alt_keys"}
 
 VIEWS = {
     "overview": ((-700.0, -1150.0, 620.0), (260.0, 0.0, 60.0)),
@@ -60,6 +65,7 @@ VIEWS = {
     "foundation_jig": ((0.0, -1050.0, 330.0), (0.0, -600.0, 0.0)),
     "dome_jig": ((-560.0, -260.0, 160.0), (-560.0, 0.0, 30.0)),
     "zome_jig": ((640.0, -640.0, 140.0), (640.0, -430.0, 30.0)),
+    "alt_dome": ((-190.0, 880.0, 160.0), (0.0, 640.0, 50.0)),     # the lit side
 }
 
 
@@ -84,6 +90,7 @@ class World:
         self.section = "wedge"
         self.step = 6.0
         self.grid = True
+        self.build_band: int | None = None    # the alternating dome up to this band; None = all of it
         self.message = "Click a piece. F1 for every control."
 
     # -- meshes ----------------------------------------------------------
@@ -91,6 +98,8 @@ class World:
         d = _dome()
         acc = d.MeshAccumulator()
         for p in self.doc.layers.get(key, []):
+            if key in BANDED and self.build_band is not None and p.meta.get("band", 0) > self.build_band:
+                continue
             colour = SELECT if p.pid == self.selected else p.colour
             for poly, _t in p.solid.faces:
                 n = np.cross(poly[1] - poly[0], poly[2] - poly[0])
@@ -130,6 +139,30 @@ class World:
             act = " <- new pieces go here" if key == self.doc.active else ""
             rows.append((key, f"{dot}  {label} ({n})  {lock}{act}"))
         return rows
+
+    # -- the alternating dome ---------------------------------------------
+    def next_band(self) -> None:
+        bands = sorted(st.alt_plan().bands)
+        b = self.build_band
+        self.build_band = bands[0] if b is None else (None if b >= bands[-1] else b + 1)
+        self.message = self.alt_line()
+
+    def next_pattern(self) -> None:
+        pats = st.ALT_PATTERNS
+        st.ALT["pattern"] = pats[(pats.index(st.ALT["pattern"]) + 1) % len(pats)]
+        self.doc.base.update({k: st.BUILDERS[k]() for k in BANDED})
+        self.doc.replay()
+        self.message = self.alt_line()
+
+    def alt_line(self) -> str:
+        from alternating_build import plan as ap
+        p = st.alt_plan()
+        c = p.counts()
+        head = (f"ALTERNATING DOME ({p.pattern.replace('_', ' ')}): {c['in/out']} seams alternate, "
+                f"{c['in/in'] + c['out/out']} matched (+{p.total_extra_deg():.2f} deg in all)")
+        if self.build_band is None:
+            return head + f"; all {len(p.bands)} bands shown (N: grow it from the ground)"
+        return head + "; up to " + p.band_summary(self.build_band)
 
     def info_lines(self) -> list[str]:
         lines = [f"TOOL: {self.tool.upper()}   section for new struts: {self.section}   "
@@ -294,7 +327,7 @@ def render_still(path: Path, view: str = "overview", world: World | None = None,
         s = panel_surface(world, ss)
         renderer.upload_overlay("panel", s)
         renderer.render_overlay("panel", w * ss, h * ss, 24, 24)
-        i = text_surface(world.info_lines(), int(900 * ss), ss)
+        i = text_surface(world.info_lines(), int(1500 * ss), ss)
         renderer.upload_overlay("info", i)
         renderer.render_overlay("info", w * ss, h * ss, 24, h * ss - i.get_height() - 24)
     img = Image.frombytes("RGBA", (w * ss, h * ss), fbo.read(components=4)).transpose(Image.FLIP_TOP_BOTTOM)
@@ -344,13 +377,20 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--select")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--frames", type=int, default=0)
+    ap.add_argument("--band", type=int, help="the alternating dome up to this band (a still)")
+    ap.add_argument("--pattern", choices=st.ALT_PATTERNS, help="the alternating dome's pattern")
     a = ap.parse_args(argv)
+    if a.pattern:
+        st.ALT["pattern"] = a.pattern
     if a.selftest:
         selftest()
         return 0
     if a.still:
         w = World()
         w.selected = a.select
+        w.build_band = a.band
+        if a.band or a.view == "alt_dome":
+            w.message = w.alt_line()
         print(render_still(Path(a.still), a.view, w))
         return 0
     from .window import App

@@ -41,12 +41,46 @@
       "label": "Shaved faces with a flat key"
     }
   ],
+  "patterns": [
+    {
+      "key": "uniform",
+      "label": "Every panel the same way"
+    },
+    {
+      "key": "alternate_ground",
+      "label": "Ground panels alternate in and out (the rest solved)"
+    },
+    {
+      "key": "alternate_lower",
+      "label": "The lower ring of twenty alternates (the rest solved)"
+    },
+    {
+      "key": "least_angle",
+      "label": "Every panel solved for the least extra seam angle"
+    }
+  ],
+  "groundIn": [
+    {
+      "key": "auto",
+      "label": "Whichever is better"
+    },
+    {
+      "key": "AAA",
+      "label": "The equilateral ground panels point in"
+    },
+    {
+      "key": "BAB",
+      "label": "The isosceles ground panels point in"
+    }
+  ],
   "defaults": {
     "diameter_ft": 19.4,
     "log_in": 12.0,
     "log_ft": 16.0,
     "orientation": "point_dome_in",
-    "seam_join": "raw_trapezoid"
+    "seam_join": "raw_trapezoid",
+    "pattern": "uniform",
+    "ground_in": "auto"
   },
   "source": "wedge_builder/design.py"
 }

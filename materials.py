@@ -54,21 +54,27 @@ FRAME_MATERIALS: list[FrameMaterial] = [
 @dataclass(frozen=True)
 class StrutShape:
     name: str
-    kind: str                 # "circle", "square", "rect", "hex"
+    kind: str                 # "circle", "square", "rect", "hex", "wedge"
     hollow: bool
     depth_ratio: float        # depth = width * depth_ratio (radial direction)
     sides: int                # sides used for round rendering
+    splits: int = 4           # a wedge: how many radial pieces its log is split into
 
     def wall_thickness(self, width: float) -> float:
         return min(max(0.10 * width, 0.002), 0.006)
+
+    def wedge_radius(self, width: float) -> float:
+        """A wedge's log radius, pith to bark, when its bark chord spans the strut width: the
+        chord of a 1/n sector is 2 r sin(180/n). For the quarter wedge that is width / sqrt 2."""
+        return width / (2.0 * math.sin(math.pi / self.splits))
 
     def cross_section_area(self, width: float) -> float:
         """Solid material area of the cross section, in m^2."""
         w = width
         if self.kind == "wedge":
-            # Quarter of a log whose split faces span the strut width.
-            s = w / math.sqrt(2.0)
-            return math.pi * s * s / 4.0
+            # One 1/n sector of a log whose bark chord spans the strut width.
+            s = self.wedge_radius(w)
+            return math.pi * s * s / self.splits
         if self.kind == "circle":
             if self.hollow:
                 t = self.wall_thickness(w)
@@ -91,19 +97,20 @@ class StrutShape:
     ) -> list[tuple[float, float]]:
         """2D cross-section outline (u = tangent, v = radial), CCW.
 
-        For the quarter wedge, the right-angle corner (the two split
-        faces of the log) points radially outward and the bark arc bulges
-        inward — the panel recess forms naturally against the curve.
-        `flip` turns the curve outward instead.
+        For a wedge, the point (where the two split faces of the log
+        meet) points radially outward and the bark arc bulges inward — the
+        panel recess forms naturally against the curve. `flip` turns the
+        curve outward instead.
         """
         w = width * 0.5
         if self.kind == "wedge":
-            s = width / math.sqrt(2.0)
+            s = self.wedge_radius(width)
+            half = 180.0 / self.splits
             corner_v = s * 0.5
             points = [(0.0, corner_v)]
             arc_steps = 8
             for i in range(arc_steps + 1):
-                theta = math.radians(-45.0 + 90.0 * i / arc_steps)
+                theta = math.radians(-half + 2.0 * half * i / arc_steps)
                 points.append((
                     s * math.sin(theta),
                     corner_v - s * math.cos(theta),
@@ -134,7 +141,7 @@ class StrutShape:
         if self.kind == "rect":
             return width * self.depth_ratio
         if self.kind == "wedge":
-            return width / math.sqrt(2.0)
+            return self.wedge_radius(width)
         return width
 
 
@@ -147,7 +154,14 @@ STRUT_SHAPES: list[StrutShape] = [
     StrutShape("Dimensional Lumber", "rect", False, 2.2, 4),
     StrutShape("Hex Strut", "hex", False, 1.0, 6),
     StrutShape("Quarter Wedge", "wedge", False, 0.707, 9),
+    # the owner's finer splits: halves, quarters, eighths (and sixteenths) of the round
+    StrutShape("Eighth Wedge", "wedge", False, 0.707, 9, splits=8),
+    StrutShape("Sixteenth Wedge", "wedge", False, 0.707, 9, splits=16),
 ]
+
+#: How a wedge strut's bark faces: inward, outward, or alternating panel by panel (the
+#: alternating build, where an in-wedge meets an out-wedge and their sawn faces cancel).
+WEDGE_ORIENTATIONS = ("Inside", "Outside", "Alternating")
 
 
 @dataclass(frozen=True)
@@ -188,6 +202,66 @@ PANEL_TYPES: list[PanelType] = [
     PanelType("Precast Concrete", 92.0, 125.0, (0.61, 0.62, 0.60), 1.0,
               MAT_CONCRETE, False, False),
 ]
+
+# ---------------------------------------------------------------------------
+# Wedge-cut panels: a triangle closed with wedges split 1/16, 1/32 or 1/64 of a log
+# ---------------------------------------------------------------------------
+#
+# The Triangle Infill tool's method (infill/, docs/wedge-building-methodology.md): wedges laid
+# side by side, points alternating, nested so the slab is solid, and cut down to the frame's
+# own thickness. The thickness is the infill tool's (infill.frame.Spec, a 12 in log split
+# eight ways); each wedge's section is two_v_demo.wedge_geometry.split_section's, kerf and all;
+# the footage is infill.methodology.coverage_length at full engagement. The wood is the
+# Creator's Whole Tree Trunk. A finer split does not make a lighter panel -- the slab is the
+# same wood -- it makes more, narrower pieces, more cuts and more sawdust.
+
+WEDGE_PANEL_SPLITS = (16, 32, 64)
+WEDGE_PANEL_LOG_IN = 20.0          # wedge_geometry.FINE_SPLITS_MIN_DIAMETER_IN: the least log 1/32 and 1/64 may come from
+WEDGE_PANEL_KERF_IN = 0.375        # wedge_geometry.KERFS_IN: a ripping chainsaw, the owner's tool
+
+
+@dataclass(frozen=True)
+class WedgePanel:
+    """What one square metre of a wedge-cut panel takes."""
+    splits: int
+    log_in: float
+    kerf_in: float
+    thickness_m: float
+    chord_in: float
+    wedge_area_in2: float
+    depth_in: float
+    allowed: bool
+    wedge_ft_per_m2: float     # wedge stock laid, at full engagement
+    log_ft_per_m2: float       # log length split for it (each log foot gives `splits` wedge feet)
+    pieces_per_m2: float       # wedges across one metre of panel, per metre of run
+    recovery: float            # the share of the log that is not sawdust
+
+
+def wedge_panel(splits: int, log_in: float = WEDGE_PANEL_LOG_IN,
+                kerf_in: float = WEDGE_PANEL_KERF_IN) -> WedgePanel:
+    from infill.frame import Spec
+    from infill.methodology import coverage_length
+    from two_v_demo.wedge_geometry import FINE_SPLITS_MIN_DIAMETER_IN, split_section
+    sec = split_section(float(log_in), int(splits), float(kerf_in))
+    thick_in = Spec().thickness_in
+    sqft_per_m2 = 1.0 / (0.3048 ** 2)
+    pitch_in = (2.0 - 1.0) * sec.bark_chord_in     # fully engaged pairs: the slab is solid
+    wedge_ft = coverage_length(sqft_per_m2, pitch_in)
+    return WedgePanel(int(splits), float(log_in), float(kerf_in), thick_in * 0.0254,
+                      sec.bark_chord_in, sec.wedge_area_in2, sec.depth_in,
+                      bool(splits < 32 or log_in >= FINE_SPLITS_MIN_DIAMETER_IN) and sec.depth_in >= thick_in,
+                      wedge_ft, wedge_ft / splits, 2.0 * 39.3701 / pitch_in, sec.recovery)
+
+
+def _wedge_panel_type(splits: int) -> PanelType:
+    wood = next(m for m in FRAME_MATERIALS if m.name == "Whole Tree Trunk")
+    wp = wedge_panel(splits)
+    weight = wp.thickness_m * wood.density           # kg/m^2: a solid slab of the frame's thickness
+    return PanelType(f"Wedge Cut 1/{splits}", weight, weight * wood.cost_per_kg * 1.15,
+                     (0.66, 0.48, 0.30), 1.0, MAT_WOOD, True, False)
+
+
+PANEL_TYPES.extend(_wedge_panel_type(n) for n in WEDGE_PANEL_SPLITS)
 
 PANEL_TYPE_BY_NAME = {p.name: p for p in PANEL_TYPES}
 
