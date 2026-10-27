@@ -112,6 +112,7 @@ FILMS: tuple[FilmPlan, ...] = (
     FilmPlan("seam", "teach", "seam"),
     FilmPlan("cabin_seam_climate", "teach", "seam"),
     FilmPlan("cabin_cell_wall", "teach", "seam"),
+    FilmPlan("cabin_irori", "teach", "seam"),
     FilmPlan("why_build", "teach", "economics"),
     FilmPlan("pine_value", "teach", "economics"),
     FilmPlan("cabin_staple", "teach", "economics"),

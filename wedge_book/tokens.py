@@ -516,6 +516,39 @@ def _worked_tokens(add) -> None:
         lambda: _table_text([(n, f"{v:g} {u}", k) for n, v, u, k, _w in lo.CONSTANTS], (16, 26, 12)))
     add("lin.source", "the video the linseed film adapts",
         lambda: f"{lo.SOURCE['title']}, by {lo.SOURCE['creator']}")
+    # The irori, from the irori film's own module.
+    from two_v_demo import irori as io
+
+    iof = io.facts()
+    add("iro.floor_m2", "the solver dome's floor, m2", lambda: f"{iof['floor_m2']:.1f}")
+    add("iro.floor_ft2", "the solver dome's floor, ft2", lambda: f"{iof['floor_ft2']:.0f}")
+    add("iro.sides", "sides of the dome's base", lambda: str(iof["base_sides"]))
+    add("iro.apex_m", "apex above the floor, m", lambda: f"{iof['apex_m']:.2f}")
+    add("iro.apex_ft", "apex above the floor, ft", lambda: f"{iof['apex_m'] / 0.3048:.1f}")
+    add("iro.rod_m", "apex hub to the pothook, m", lambda: f"{iof['rod_m']:.2f}")
+    add("iro.rod_ft", "apex hub to the pothook, ft", lambda: f"{iof['rod_m'] / 0.3048:.1f}")
+    add("iro.hearth_m", "the hearth with its border, m square", lambda: f"{iof['hearth_outer_m']:.2f}")
+    add("iro.hearth_pct", "the hearth's share of the floor, %", lambda: f"{iof['hearth_share'] * 100:.1f}")
+    add("iro.circle_m", "the hearth and four seated people, m square", lambda: f"{2 * iof['seat_out_m']:.1f}")
+    add("iro.circle_m2", "that square's area, m2", lambda: f"{iof['circle_m2']:.2f}")
+    add("iro.circle_pct", "that square's share of the floor, %", lambda: f"{iof['circle_share'] * 100:.0f}")
+    add("iro.seat_room_m", "seat back to the base ring, m", lambda: f"{iof['seat_room_m']:.2f}")
+    add("iro.headroom_m", "seated headroom under the frame, m", lambda: f"{iof['seat_headroom_m']:.2f}")
+    add("iro.rh_in", "outside air warmed, relative humidity %", lambda: f"{iof['rh_in'] * 100:.0f}")
+    add("iro.emc_out", "wood moisture in the outside air, %", lambda: f"{iof['emc_out']:.0f}")
+    add("iro.emc_in", "wood moisture in the warmed air, %", lambda: f"{iof['emc_in']:.0f}")
+    add("iro.volume_m3", "air inside the dome's facets, m3", lambda: f"{iof['volume_m3']:.0f}")
+    add("iro.volume_ft3", "air inside the dome's facets, ft3", lambda: f"{iof['volume_ft3']:,.0f}")
+    add("iro.flue_m", "flue from hood to apex, m", lambda: f"{iof['flue_m']:.2f}")
+    add("iro.flue_ft", "flue from hood to apex, ft", lambda: f"{iof['flue_m'] / 0.3048:.1f}")
+    for key in ("hearth_side_m", "frame_w_m", "pit_depth_m", "seat_depth_m", "seated_head_m",
+                "pot_hang_m", "hood_m", "out_t_c", "in_t_c"):
+        add(f"iro.{key}", f"irori constant {key}", lambda k=key: f"{io.C[k]:g}")
+    add("iro.out_rh", "outside relative humidity, %", lambda: f"{io.C['out_rh'] * 100:.0f}")
+    add("iro.constants_table", "the irori constants, with their kind",
+        lambda: _table_text([(n, f"{v:g} {u}", k) for n, v, u, k, _w in io.CONSTANTS], (16, 16, 12)))
+    add("iro.source", "the article the irori chapter paraphrases",
+        lambda: f"{io.SOURCE['title']}, {io.SOURCE['creator']} ({io.SOURCE['licence']})")
     # The compound-cut audit and the assembly-line energy audit, by section.
     from two_v_demo import energetics as en, sawing as sw
 

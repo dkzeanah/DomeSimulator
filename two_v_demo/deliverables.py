@@ -288,6 +288,12 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "Source-audited linseed-oil workshop: interior finishing, seam "
                 "compatibility, glazing limits, tool care, rag safety and a "
                 "solver-derived material and labour allowance.", compose=True),
+    Deliverable("cabin_irori", "the-irori-under-the-dome.mp4",
+                "The Japanese sunken hearth in the solver's dome: the pothook from "
+                "the apex hub, the drying rack from the upper ring, the seats and "
+                "what they cost the floor, warm air and wood moisture, and why an "
+                "open charcoal fire needs a hood, a flue and an alarm in a tight dome.",
+                compose=True),
     Deliverable("cabin_wedge_explained", "the-wedge-dome-explained.mp4",
                 "The whole method in the Cabin World, and the channel in every "
                 "seam: what fits (water, wire), what does not (a round duct), "

@@ -306,6 +306,18 @@ PRESETS: tuple[RenderPreset, ...] = (
         fields={"lesson": "cabin_linseed_oil", "action": "shots",
                 "shots": chapter_shots("cabin_linseed_oil")},
     ),
+    _video("cabin_irori", "cabin_irori", "the-irori-under-the-dome.mp4",
+           "THE IRORI UNDER THE DOME. A Japanese sunken hearth in the solver's dome: "
+           "pothook from the apex, seats, wood moisture, and the carbon-monoxide case "
+           "for a hood and flue.",
+           compose_segments=True),
+    RenderPreset(
+        key="cabin_irori_stills",
+        label="the irori under the dome -- one still per chapter",
+        summary="Inspect every irori chapter before rendering the film.",
+        fields={"lesson": "cabin_irori", "action": "shots",
+                "shots": chapter_shots("cabin_irori")},
+    ),
     _video("cabin_wedge_explained", "cabin_wedge_explained", "the-wedge-dome-explained.mp4",
            "THE WEDGE DOME, EXPLAINED. The whole method in the Cabin World, and the "
            "channel in every seam: what fits in it (water, wire), what does not (a "

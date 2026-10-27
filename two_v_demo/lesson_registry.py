@@ -12,6 +12,7 @@ from .lesson_build import BUILD_LESSON
 from .lesson_cabin_pilot import CABIN_PILOT_LESSON
 from .lesson_cabin_wedge_explained import CABIN_WEDGE_EXPLAINED_LESSON
 from .lesson_cabin_linseed_oil import CABIN_LINSEED_OIL_LESSON
+from .lesson_cabin_irori import CABIN_IRORI_LESSON
 from .lesson_cabin_panel_method import CABIN_PANEL_METHOD_LESSON
 from .lesson_cabin_shop import CABIN_SHOP_LESSON
 from .lesson_seam_climate import CABIN_SEAM_CLIMATE_LESSON
@@ -81,7 +82,7 @@ LESSONS: dict[str, Lesson] = {
                    PITCH_HERO_LESSON,
                    CABIN_PILOT_LESSON,
                    CABIN_WEDGE_EXPLAINED_LESSON,
-                   CABIN_LINSEED_OIL_LESSON,
+                   CABIN_LINSEED_OIL_LESSON, CABIN_IRORI_LESSON,
                    CABIN_SEAM_CLIMATE_LESSON, CABIN_PANEL_METHOD_LESSON,
                    CABIN_SHOP_LESSON, CABIN_CELL_WALL_LESSON,
                    SKY_WEB_LESSON, EVERY_PIECE_LESSON, CABIN_STYLES_LESSON,
