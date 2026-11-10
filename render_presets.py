@@ -396,6 +396,15 @@ PRESETS: tuple[RenderPreset, ...] = (
            "for every cut. Every figure from square_book and wedge_zome.",
            compose_segments=True),
 
+    _video("cabin_wedge_grammar", "cabin_wedge_grammar", "the-wedge-as-a-structural-member.mp4",
+           "THE WEDGE AS A STRUCTURAL MEMBER. The film of Part 16: why a two-frequency "
+           "dome is the wedge's natural home, then the split sector as a general member "
+           "-- the equal-area blade (strong-axis I up, weak-axis down), the connection "
+           "law (loose vs glued, n-squared), the reversed-taper dyad, the separated-chord "
+           "beam, hollow column and box, which split suits which job, and the honest "
+           "closer: a second moment is not a load. Every figure from two_v_demo.wedge_grammar.",
+           compose_segments=True),
+
     _video("cabin_triangle_fill", "cabin_triangle_fill", "closing-the-triangle.mp4",
            "CLOSING THE TRIANGLE. Pairs of wedges, points in, nested to bowtie, filling a "
            "true-size dome triangle course by course; every pair laid, not estimated.",
@@ -448,6 +457,19 @@ PRESETS: tuple[RenderPreset, ...] = (
             "lesson": "cabin_wedge_beyond",
             "action": "shots",
             "shots": chapter_shots("cabin_wedge_beyond"),
+        },
+    ),
+
+    RenderPreset(
+        key="cabin_wedge_grammar_stills",
+        label="the wedge as a structural member -- one still per chapter",
+        summary="A still from each chapter of the Part 16 film, with no "
+                "narration and no video encode.",
+        fields={
+            "lesson": "cabin_wedge_grammar",
+            "action": "shots",
+            "shots": chapter_shots("cabin_wedge_grammar"),
+            "no_narration": True,
         },
     ),
 

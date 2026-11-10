@@ -18,6 +18,7 @@ const KEY = qs.get("lesson") || "2v";
 let ORIENT = qs.get("orient") === "phone" ? "phone" : "landscape";
 const log = (s) => { console.log(s); const el = document.getElementById("status"); if (el) el.textContent = s.replace(/^\[lesson[^\]]*\]\s*/, ""); };
 
+const STILL_AT = Math.min(0.999, Math.max(0, parseFloat(qs.get("at") || "0.62")));   // where in each chapter a still is taken
 const L = { spec: null, stage: null, renderer: null, scene: null, cam: null, W: 1920, H: 1080, pg: null };
 
 async function boot() {
@@ -87,7 +88,7 @@ function drawFrame(t) {
   // the chapter's own camera direction (the moderngl film's), the stage's framing, a slow drift
   const f = L.stage.frame(c.stage);
   const dir = (f.dir ? f.dir.clone() : new THREE.Vector3(...c.camera).normalize());
-  const drift = (t - c.start) * (f.dir ? 0.012 : 0.035);
+  const drift = (t - c.start) * (f.drift ?? (f.dir ? 0.012 : 0.035));
   dir.applyAxisAngle(new THREE.Vector3(0, 0, 1), drift);
   // the room the graphics leave: the sheet takes the right third of a wide frame, the lower
   // half of a phone frame. Put the subject in the middle of what is left, and stand back far
@@ -96,7 +97,9 @@ function drawFrame(t) {
   const fx = phone ? 0.5 : sheet ? 0.33 : 0.5, fy = phone ? 0.34 : 0.48, room = phone ? 0.86 : sheet ? 0.6 : 0.86;
   const hfov = 2 * Math.atan(Math.tan((L.cam.fov * Math.PI) / 360) * L.cam.aspect);
   const fit = f.half / Math.tan(hfov / 2) / room;
-  const dist = Math.max(f.dist * (phone ? 1.05 : 1.0), fit * 1.08) * (1.04 - 0.04 * p);
+  // and its height: the phone keeps the top half for the subject, a wide frame most of it
+  const fitV = f.halfH ? f.halfH / Math.tan((L.cam.fov * Math.PI) / 360) / (phone ? 0.5 : 0.78) : 0;
+  const dist = Math.max(f.dist * (phone ? 1.05 : 1.0), fit * 1.08, fitV * 1.08) * (1.04 - 0.04 * p);
   L.cam.setViewOffset(L.W, L.H, (0.5 - fx) * L.W, (0.5 - fy) * L.H, L.W, L.H);
   L.cam.position.copy(f.target).addScaledVector(dir, dist);
   L.cam.lookAt(f.target);
@@ -128,6 +131,11 @@ function overlays(g, W, H, t, i, c, p) {
   // the brand, top right (landscape) or under the badge (phone)
   g.font = `700 ${16 * k}px Inter, Segoe UI, sans-serif`; g.fillStyle = MUTED; g.textAlign = phone ? "left" : "right";
   g.fillText(L.spec.brand, phone ? bx : W - 40 * k, phone ? by + bh + 28 * k : by + 22 * k);
+  if (c.note) {
+    // e.g. "movement drawn 5x life size": what the picture exaggerates, said on the frame itself
+    g.font = `600 ${15 * k}px Inter, Segoe UI, sans-serif`; g.fillStyle = "#ffd27a";
+    g.fillText(c.note, phone ? bx : W - 40 * k, phone ? by + bh + 54 * k : by + 46 * k);
+  }
   g.textAlign = "left";
   // the title card
   const hold = L.spec.titleHold, a = local < hold ? Math.min(1, local / 0.35, (hold - local) / 0.45 + 0.0) : 0;
@@ -151,7 +159,7 @@ function overlays(g, W, H, t, i, c, p) {
     g.globalAlpha = Math.min(1, (local - hold * 0.7) / 0.5);
     g.fillStyle = "rgba(10,13,20,0.80)"; rr(g, sx, sy, sw, sh, 16 * k); g.fill();
     g.strokeStyle = "rgba(255,210,122,0.35)"; g.lineWidth = 1.5 * k; rr(g, sx, sy, sw, sh, 16 * k); g.stroke();
-    g.fillStyle = GOLD; g.font = `700 ${17 * k}px Inter, Segoe UI, sans-serif`; g.fillText("THE ARITHMETIC", sx + 24 * k, sy + 36 * k);
+    g.fillStyle = GOLD; g.font = `700 ${17 * k}px Inter, Segoe UI, sans-serif`; g.fillText(c.sheetTitle || "THE ARITHMETIC", sx + 24 * k, sy + 36 * k);
     eqs.forEach((e, j) => {
       const due = c.speechStart + c.speech * (0.12 + 0.75 * (j / Math.max(1, eqs.length)));
       const on = Math.max(0, Math.min(1, (t - due) / 0.4));
@@ -164,7 +172,7 @@ function overlays(g, W, H, t, i, c, p) {
     g.globalAlpha = 1;
     if (c.computed) {
       g.fillStyle = MUTED; g.font = `500 ${14 * k}px Inter, Segoe UI, sans-serif`;
-      g.fillText("computed by two_v_demo/geometry.py", sx + 24 * k, sy + sh - 18 * k);
+      g.fillText(`computed by ${L.spec.computedBy || "two_v_demo/geometry.py"}`, sx + 24 * k, sy + sh - 18 * k);
     }
   }
   // captions: the release's own subtitle cues
@@ -213,7 +221,7 @@ const blob = (type, q) => new Promise((r) => document.getElementById("program").
 async function stills() {
   try {
     for (const [n, c] of L.spec.chapters.entries()) {
-      drawFrame(c.start + c.duration * 0.62);
+      drawFrame(c.start + c.duration * STILL_AT);
       await post(`/api/lesson-still?lesson=${KEY}&orient=${ORIENT}&n=${n}`, await blob("image/png"));
       log(`[lesson] still ${n + 1} of ${L.spec.chapters.length}`);
     }

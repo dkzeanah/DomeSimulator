@@ -53,6 +53,9 @@ def handle(h, method: str):
     u = urlparse(h.path)
     q = {k: v[0] for k, v in parse_qs(u.query).items()}
     p = u.path
+    from books.studio import proof as PF
+    if PF.handles(p):                             # the Proof Desk (books.studio.proof)
+        return PF.handle(h, method)
     try:
         if method == "GET" and p in ("/studio", "/studio/"):
             return h._file(STATIC / "studio.html")

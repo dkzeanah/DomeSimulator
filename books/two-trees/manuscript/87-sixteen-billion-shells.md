@@ -1,12 +1,12 @@
 ---
 chapter: 87
-title: Sixteen Billion Shells
+title: Thirty-Five Billion Shells
 strand: explain
 status: draft
 target: 3780
 updated: 2026-10-03
 ---
-# 87. Sixteen Billion Shells
+# 87. Thirty-Five Billion Shells
 
 *Every building the menus can make, counted from the menus themselves — and the honest deduction that half of them are the same building*
 
@@ -97,7 +97,7 @@ The tool's own arithmetic notices, counts the combinations that are genuinely
 a different building, and gets {{space.distinct_shells}}.
 
 That is {{space.inert_pct}} per cent of the shell menu doing nothing at all —
-very nearly half. It is not a bug and it is not a scandal; it is what happens
+about half. It is not a bug and it is not a scandal; it is what happens
 when you offer a colour for a thing that has no surface, and the honest
 response is to count it, print it, and let the reader see which menus are
 decoration. A catalogue that quietly reported the bigger number would be
@@ -111,11 +111,11 @@ finish or a fit-out. That is why the earlier chapters spent their length on
 those four and treated colour as a paragraph.
 
 **A menu can lie about its own size.** {{space.panels}} panel types sounds
-like sixteen buildings. It is one building and sixteen surfaces, and the
+like {{space.panels}} buildings. It is one building and {{space.panels}} surfaces, and the
 chapter on skins said so in its own terms: the shape is fixed, the skin is
 chosen.
 
-## Why the book does not describe sixteen billion buildings
+## Why the book does not describe thirty-five billion buildings
 
 At {{space.seconds}} seconds each, showing every distinct shell would take
 {{space.years}} years of film.
@@ -130,7 +130,7 @@ of the {{space.distinct_shells}} themselves from a small number of rules.
 Three points for a reader deciding what to build:
 
 1. **A space this large is an argument against shopping and for deciding.**
-   Nobody can browse sixteen billion options. Everybody can answer four
+   Nobody can browse thirty-five billion options. Everybody can answer four
    questions about their own land.
 2. **The menus that cost nothing are the ones to change your mind about.**
    Frame colour, panel colour and the wedge curve cost nothing and can be

@@ -285,6 +285,12 @@ figure.illustration-slot .slot-box { border: 1px dashed var(--rule);
   nav.toc a { color: #000; }
   h1, h2, h3 { page-break-after: avoid; }
   figure, img, table { page-break-inside: avoid; }
+  /* A figure must fit on one page with its caption, or Chrome breaks it
+     across two and prints the rest at the next page's top edge. The text
+     area is 11in - 20mm - 22mm = 9.35in; the figure's own margins, the
+     picture's and up to four caption lines take about 2.1in of it. */
+  figure img { max-height: 7.25in; width: auto; }
+  section.cover img { max-height: none; width: 100%; }
   nav.toc { page-break-after: always; }
   section.matter-title { page-break-after: always; }
   section.matter-orientation { page-break-after: avoid; }

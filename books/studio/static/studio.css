@@ -89,3 +89,5 @@ pre#bd-log { white-space: pre-wrap; font-size: 11px; background: #111; padding: 
 .prop pre { white-space: pre-wrap; margin: 0; font-size: 11px; background: #111; padding: 4px; max-height: 120px; overflow: auto }
 
 main > section { min-width: 0 }
+
+.btnlink { color: var(--accent); text-decoration: none; border: 1px solid var(--line); border-radius: 4px; padding: 3px 8px } .btnlink:hover { border-color: var(--accent) }

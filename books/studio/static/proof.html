@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proof Desk</title>
+<link rel="stylesheet" href="/studio/static/studio.css">
+<link rel="stylesheet" href="/studio/static/proof.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark">&#9650;</span> Proof Desk</div>
+  <select id="book" title="The book"></select>
+  <select id="build" title="Which printed copy (numbered build) to proof"></select>
+  <div class="tools" role="toolbar" aria-label="Tools">
+    <button id="t-hand" class="on" title="Read: click a page to open it (V)">&#8598;</button>
+    <button id="t-note" title="Note: drag a box on the page to pin a note to it (N)">&#9998;</button>
+  </div>
+  <div class="zoom"><button id="zout" title="Zoom out (-)">&minus;</button><span id="zval">100%</span><button id="zin" title="Zoom in (+)">+</button><button id="zfit" title="Fit the page (0)">Fit</button></div>
+  <div class="seg" role="group" aria-label="View">
+    <button id="v-page" class="on" title="One page">Page</button><button id="v-spread" title="Facing pages, as the printed book opens (S)">Spread</button>
+  </div>
+  <div class="pager"><button id="prev" title="Previous page (Left arrow)">&#8249;</button>
+    <input id="pno" type="number" min="1" value="1" title="Go to page"><span id="pcount" class="muted">/ 0</span>
+    <button id="next" title="Next page (Right arrow)">&#8250;</button></div>
+  <label class="toggle" title="KDP's least margins, drawn on the page"><input type="checkbox" id="o-kdp" checked> KDP margins</label>
+  <label class="toggle" title="Where the printing on the page actually starts and stops"><input type="checkbox" id="o-box" checked> Printed area</label>
+  <label class="toggle" title="Pinned notes"><input type="checkbox" id="o-notes" checked> Notes</label>
+  <span class="grow"></span>
+  <input id="find" type="search" placeholder="Find in the book (Ctrl F)" title="Find a phrase on the printed pages">
+  <span id="status" class="status"></span>
+  <a class="btnlink" href="/studio" title="Back to the Book Layout Studio">Studio</a>
+</header>
+
+<main class="proof">
+  <aside class="left">
+    <div class="ph"><b>Pages</b><span class="grow"></span><select id="filter" title="Show only some pages">
+      <option value="all">all</option><option value="notes">with notes</option><option value="flagged">flagged by preflight</option>
+      <option value="changed">changed since the last build</option><option value="found">found</option></select></div>
+    <div id="thumbs" class="pages"></div>
+  </aside>
+
+  <section class="board" id="board">
+    <div class="paste" id="paste"><div id="spread" class="spread"></div></div>
+    <div id="notepop" class="notepop" hidden>
+      <div class="row"><b>New note</b><span class="grow"></span>
+        <select id="np-kind"><option value="fix">fix</option><option value="question">question</option><option value="note">note</option><option value="ok">ok</option></select></div>
+      <div id="np-under" class="muted small"></div>
+      <textarea id="np-text" rows="3" placeholder="What is wrong here, or what to check"></textarea>
+      <div class="row"><button id="np-ask" title="Hand this spot to the agent instead">Ask the agent</button><span class="grow"></span><button id="np-cancel">Cancel</button><button id="np-save" class="primary">Pin</button></div>
+    </div>
+  </section>
+
+  <aside class="right">
+    <nav class="rtabs" id="rtabs">
+      <button data-tab="page" class="on">Page</button><button data-tab="notes">Notes <span id="ncount" class="pill"></span></button>
+      <button data-tab="source">Source</button><button data-tab="pre">Preflight <span id="pfcount" class="pill"></span></button>
+      <button data-tab="agent">Agent</button><button data-tab="cert">Certify</button>
+    </nav>
+
+    <section class="rtab on" data-tab="page">
+      <div id="pageinfo"></div>
+    </section>
+
+    <section class="rtab" data-tab="notes">
+      <div class="row"><select id="nshow"><option value="page">this page</option><option value="open">all open</option><option value="all">all</option></select>
+        <span class="grow"></span><a id="nreport" class="btnlink" target="_blank" title="Every note as a Markdown list">Report</a></div>
+      <div class="muted small">Pick the &#9998; tool and drag a box on the page to pin a note to that spot.</div>
+      <div id="notes" class="notes"></div>
+    </section>
+
+    <section class="rtab" data-tab="source">
+      <div class="muted small" id="srcwhere">The chapter this page's words come from opens here. A fix goes into the chapter; rebuild to print a new copy.</div>
+      <select id="chapter" title="Chapter"></select>
+      <textarea id="srctext" class="code" spellcheck="true" rows="24"></textarea>
+      <div class="row"><span id="srcstate" class="muted small"></span><span class="grow"></span>
+        <button id="srcrevert" title="Put back what the file holds">Revert</button><button id="srcsave" class="primary" title="Save the chapter (Ctrl S); the old text is kept as a version">Save</button></div>
+      <h4>Print a new copy</h4>
+      <div class="muted small">Runs the book's own build. The copy lands in the library as the next numbered build; this one stays as it is.</div>
+      <div class="row"><code id="buildcmd" class="small"></code></div>
+      <div class="row"><button id="rebuild">Rebuild the book</button><span id="buildstate" class="muted small"></span></div>
+      <pre id="buildlog" class="promptbox" hidden></pre>
+    </section>
+
+    <section class="rtab" data-tab="pre">
+      <div class="row"><label>Paper <select id="paper">
+        <option value="black-white">black ink, white paper</option><option value="black-cream">black ink, cream paper</option>
+        <option value="standard-color">standard colour</option><option value="premium-color">premium colour</option></select></label>
+        <button id="rerun" title="Run the checks again">Run</button></div>
+      <div id="pfsum" class="pfsum"></div>
+      <div id="checks" class="checks"></div>
+      <h4>Cover for this book</h4>
+      <div id="cover" class="small"></div>
+      <h4>Compare with another build</h4>
+      <div class="row"><select id="cmp"></select><button id="cmpgo">Compare</button></div>
+      <div id="cmpout" class="small muted"></div>
+      <details class="small"><summary>The rules these checks hold the file to</summary><div id="rules"></div></details>
+    </section>
+
+    <section class="rtab" data-tab="agent">
+      <div class="muted small">DeepSeek reads the pages and the chapters. It proposes every change; nothing changes until you apply it.</div>
+      <div class="chips" id="asks">
+        <button data-ask="Proofread this page: spelling, grammar, repeated words, typos. Propose a fix for each one.">Proofread this page</button>
+        <button data-ask="Check this page's layout: margins, pictures, headings left at the bottom, lines cut off. Pin a note for each problem.">Check the layout</button>
+        <button data-ask="Run the preflight and explain every failing or warning check in plain words, with what to do about each.">Explain the preflight</button>
+        <button data-ask="Tighten the prose on this page without changing its meaning or any figure. Propose each edit.">Tighten the prose</button>
+        <button data-ask="Go through the open notes and propose a manuscript fix for each one you can; reply on the rest.">Work the open notes</button>
+      </div>
+      <div id="chat" class="chat"></div>
+      <div id="proposals" class="proposals"></div>
+      <textarea id="ask" rows="3" placeholder="Ask about this page, or say what to change (Ctrl Enter sends)"></textarea>
+      <div class="row"><span id="agentstate" class="muted small"></span><span class="grow"></span><button id="send" class="primary">Send</button></div>
+    </section>
+
+    <section class="rtab" data-tab="cert">
+      <div class="muted small">A certificate records this exact file: its fingerprint (SHA-256), every check, the notes, and your statement. Upload the file it names; if the file changes, the certificate no longer matches it.</div>
+      <div id="certsum" class="pfsum"></div>
+      <label>Your statement<textarea id="statement" rows="3">I have read this file page by page and approve it for printing as the paperback interior.</textarea></label>
+      <label>Signed<input id="by" value="Donovan Zeanah"></label>
+      <label class="toggle"><input type="checkbox" id="acceptw"> I accept the warnings listed above</label>
+      <div class="row"><span class="grow"></span><button id="certify" class="primary">Certify this build</button></div>
+      <div id="certmsg" class="small"></div>
+      <h4>Certificates</h4>
+      <div id="certs" class="certs"></div>
+    </section>
+  </aside>
+</main>
+<script src="/studio/static/proof.js"></script>
+</body>
+</html>

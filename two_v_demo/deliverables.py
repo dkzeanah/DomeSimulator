@@ -356,6 +356,14 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "method beside it, the buildings wedges suit and the crews that "
                 "could build them.",
                 compose=True),
+    Deliverable("cabin_wedge_grammar", "the-wedge-as-a-structural-member.mp4",
+                "The film of Part 16 of the 40 Hour Cabin, in the Cabin World: why a "
+                "two-frequency dome is the wedge's natural home, then the split sector "
+                "as a general structural member -- the equal-area blade, the connection "
+                "law, the reversed-taper dyad, the beam, hollow column and box built at "
+                "true proportion, which split suits which job, and the honest closer: a "
+                "second moment is not a load. Every figure from two_v_demo.wedge_grammar.",
+                compose=True),
     Deliverable("cabin_triangle_fill", "closing-the-triangle.mp4",
                 "Filling a dome triangle with pairs of wedges, shown: one wedge end-on, a pair "
                 "sliding from nested to bowtie with its reach measured, a true-size triangle "
@@ -408,6 +416,14 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "vessel, a 3V dome in plate sized to the sheet, and the router head "
                 "on the same frame -- paid, quoted and estimated prices kept apart.",
                 compose=True),
+    Deliverable("rings", "why-a-wedge-stays-true.mp4",
+                "Which way the rings run, on the web engine: wood shrinks more round "
+                "the rings than across them, so a face on a radius or a ring stays "
+                "true and any other bends. The seed log sawn into studs that cup, "
+                "lean and check each their own way (and keep moving after S-DRY), "
+                "against its wedges, which all close by the same angle; then dry "
+                "first, key last, and what a wedge still does (grain_shrink.py).",
+                compose=True),
 )
 
 
@@ -418,7 +434,8 @@ DELIVERABLES = DELIVERABLES + tuple(
                 f"Cabin World re-render of {item.filename}: the same chapters on "
                 "the exhibit platform, with cinematic cameras.", compose=True)
     for item in DELIVERABLES
-    if not item.lesson.startswith("cabin_") and item.lesson != "sketch_gpt_pilot") + (
+    # a web-engine film has no moderngl pictures to re-stage (Lesson.engine)
+    if not item.lesson.startswith("cabin_") and item.lesson not in ("sketch_gpt_pilot", "rings")) + (
     Deliverable("cabin_seam", "cabin-the-seam-does-four-jobs.mp4",
                 "Cabin World re-render of the-seam-does-four-jobs.mp4.", compose=True),
     Deliverable("cabin_2v", "cabin-2v-geodesic-dome-masterclass.mp4",

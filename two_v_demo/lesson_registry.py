@@ -19,6 +19,7 @@ from .lesson_cell_wall import CABIN_CELL_WALL_LESSON
 from .lesson_sky_web import SKY_WEB_LESSON
 from .lesson_every_piece import EVERY_PIECE_LESSON
 from .lesson_wedge_beyond import WEDGE_BEYOND_LESSON
+from .lesson_wedge_grammar import WEDGE_GRAMMAR_LESSON
 from .lesson_staple import STAPLE_LESSON
 from .lesson_promo import PROMO_LESSON
 from .lesson_triangle_fill import TRIANGLE_FILL_LESSON
@@ -58,6 +59,7 @@ from .lesson_world import WORLD_LESSON
 from .lesson_world_chatgpt import WORLD_CHATGPT_LESSON
 from .lesson_zome import ZOME_LESSON
 from .lesson_pvtwo import PVTWO_LESSON
+from .lesson_rings import RINGS_LESSON
 from .lessons import TWO_V_LESSON, Lesson
 from .lesson_sketch_gpt_episode import SKETCH_GPT_EPISODE
 
@@ -85,8 +87,10 @@ LESSONS: dict[str, Lesson] = {
                    CABIN_SEAM_CLIMATE_LESSON, CABIN_PANEL_METHOD_LESSON,
                    CABIN_SHOP_LESSON, CABIN_CELL_WALL_LESSON,
                    SKY_WEB_LESSON, EVERY_PIECE_LESSON, CABIN_STYLES_LESSON,
-                   WEDGE_BEYOND_LESSON, STAPLE_LESSON, PROMO_LESSON,
-                   TRIANGLE_FILL_LESSON, SKETCH_GPT_EPISODE)
+                   WEDGE_BEYOND_LESSON, WEDGE_GRAMMAR_LESSON,
+                   STAPLE_LESSON, PROMO_LESSON,
+                   TRIANGLE_FILL_LESSON, SKETCH_GPT_EPISODE,
+                   RINGS_LESSON)
 }
 
 # Every earlier film, re-staged in the Cabin World (two_v_demo/cabin_stage.py):
@@ -99,6 +103,8 @@ for _key in [k for k in LESSONS if not k.startswith("cabin_")]:
     # harvest's, which follows one thin tree down and round its wedges.
     if _key == "sketch_gpt_pilot":
         continue  # already a directed Cabin World production, not an exhibit
+    if LESSONS[_key].engine == "web":
+        continue  # its pictures exist only on the web engine; there is nothing to restage
     LESSONS.setdefault(f"cabin_{_key}", _restage(
         LESSONS[_key], keep_original_cameras=_key in ("drama", "series", "harvest")))
 

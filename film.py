@@ -327,7 +327,14 @@ def main(argv: list[str] | None = None) -> int:
     if a.cmd == "list":
         list_films()
         return 0
-    if getattr(a, "engine", "moderngl") == "web" and a.cmd in ("make", "stills"):
+    web_only = False
+    if a.cmd in ("make", "stills"):
+        from two_v_demo.lesson_registry import get_lesson
+        try:
+            web_only = get_lesson(a.lesson).engine == "web"   # its pictures exist only on the web engine
+        except ValueError:
+            pass
+    if (web_only or getattr(a, "engine", "moderngl") == "web") and a.cmd in ("make", "stills"):
         from sketch_claude.lesson_web import headless
         for r in headless(a.lesson, "stills" if a.cmd == "stills" else "render"):
             print(f"OUTPUT {json.dumps(r)}", flush=True)

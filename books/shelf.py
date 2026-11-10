@@ -52,7 +52,7 @@ SHELF: tuple[Book, ...] = (
          "py -3.12 -m square_book.build", "square-on-demand", "Claude", "proof",
          "Building with wedges: pairs into squares, shims, joints."),
     Book("two-trees", "The 40 Hour Cabin: 2V Geodesic Dome Wedge Method (the Amazon paperback)",
-         "books/two-trees", "two_v_demo.book", "py -3.12 two_v_demo/book_app.py --headless export",
+         "books/two-trees", "two_v_demo.book", "py -3.12 -m two_v_demo.book_app --headless pdf",
          "2-trees", "DeepSeek", "on Amazon", "Its manuscript was edited by another agent; see its README."),
     Book("domology", "Domology (three books in one)", "domology", "domology", "py -3.12 -m domology.build",
          "domology-interior", "Claude", "engine and plates done; manuscript in progress"),

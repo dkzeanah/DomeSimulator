@@ -1,0 +1,99 @@
+{
+  "project": "DomeSim",
+  "root": "C:\\Users\\Don\\Desktop\\DomeSim",
+  "indexed_at": "2026-10-29 21:12",
+  "indexed_files": 668,
+  "indexed_lines": 316050,
+  "indexed_symbols": 15234,
+  "indexing_python": "3.12.10",
+  "source_suffixes": [
+    ".py",
+    ".pyw"
+  ],
+  "parse_errors": [
+    {
+      "path": "dflat.py",
+      "error": "syntax error line 3: leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers"
+    }
+  ],
+  "coverage_limit": "Python index only; scanner exclusions, 2MB file size and traversal/file caps apply. Includes vendor and generated Python; not equivalent to first-party source inventory.",
+  "non_python_followup": [
+    "website React/TypeScript",
+    "web JavaScript/TypeScript",
+    "SQL/schema/configuration",
+    "Markdown/docs/instructions"
+  ],
+  "stale_checks": "Existing Atlas short-body-hash check. New MCP withholds bodies detected stale.",
+  "source_rewrites": false,
+  "model_comparison_run": false,
+  "mcp_tools": 4,
+  "tests": "13 focused tests passed (MCP retrieval, existing media/delegation compatibility)",
+  "remaining_refactor_work": [
+    "Coverage classification and full-file fingerprints",
+    "Representative normal-vs-Atlas agent benchmark",
+    "Baseline tests and prioritized bounded refactor candidates",
+    "One verified change at a time, then refresh index"
+  ],
+  "top_directories": [
+    {
+      "folder": "two_v_demo",
+      "files": 172,
+      "lines": 119160
+    },
+    {
+      "folder": "(root)",
+      "files": 75,
+      "lines": 69014
+    },
+    {
+      "folder": "wedge_book",
+      "files": 28,
+      "lines": 17982
+    },
+    {
+      "folder": "F5-TTS",
+      "files": 46,
+      "lines": 13828
+    },
+    {
+      "folder": "local_voice_studio",
+      "files": 25,
+      "lines": 8441
+    },
+    {
+      "folder": "infill",
+      "files": 21,
+      "lines": 7785
+    },
+    {
+      "folder": "dome_forge",
+      "files": 11,
+      "lines": 6909
+    },
+    {
+      "folder": "exports",
+      "files": 52,
+      "lines": 6567
+    },
+    {
+      "folder": "sketch_claude",
+      "files": 15,
+      "lines": 6465
+    },
+    {
+      "folder": "project_agent",
+      "files": 25,
+      "lines": 6269
+    },
+    {
+      "folder": "domology",
+      "files": 16,
+      "lines": 6045
+    },
+    {
+      "folder": "presenter",
+      "files": 11,
+      "lines": 5662
+    }
+  ]
+}
