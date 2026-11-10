@@ -374,6 +374,7 @@ def _table() -> dict[str, Token]:
     _franken_tokens(add)
     _hub_tokens(add)
     _pixel_tokens(add)
+    _grammar_tokens(add)
 
     # -- cross-references --------------------------------------------
     for chapter in book.chapters:
@@ -2522,6 +2523,60 @@ def _ring_tokens(add) -> None:
     add("ring.old_lpk", "litres per kWh it assumed", n(pr.C["old_litres_per_kwh"], 2))
     add("ring.old_kpl", "kWh a litre it implied", n(day["old_kwh_per_litre"], 2))
     add("ring.new_kpl", "kWh a litre now", n(day["kwh_per_litre"], 2))
+
+
+def _grammar_tokens(add) -> None:
+    """``grammar``: the wedge as a general structural member, from
+    :mod:`two_v_demo.wedge_grammar`.  The family at equal area, the
+    connection law's two limits, the selection gates and the pairing rules --
+    every figure the same solver the dome is built from, and the cited
+    precedent that keeps it honestly geometry rather than a rating."""
+    from two_v_demo import wedge_grammar as g, wedge_why_facts as yf
+
+    def block(fn):
+        return lambda: "\n".join(fn()[:-1]).rstrip()
+
+    add("grammar.families", "the equal-area split families, worked", block(g.steps_families))
+    add("grammar.composite", "the loose and composite limits of a bundle, worked",
+        block(g.steps_composite))
+    add("grammar.gates", "the three selection gates at both ends of the tree, worked",
+        block(g.steps_gates))
+    add("grammar.pairing", "opposite-sector mates and the reversed-taper dyad, worked",
+        block(g.steps_pairing))
+    add("grammar.sources", "the cited precedent, with its caveats", g.sources_table)
+
+    rows = {r.splits: r for r in g.equal_area_families()}
+    fat = {r.splits: r for r in g.three_gate(g.BUTT_CIRCUMFERENCE_IN)}
+    finest = max(n for n, r in fat.items() if r.area_vs_stud >= 1.0)
+
+    add("grammar.stud_area", "a dressed 2x4's cross-section, sq in",
+        lambda: f"{yf.dressed_stud().area_in2:.2f}")
+    add("grammar.w32_strong", "W32's strong-axis I, times a 2x4's",
+        lambda: f"{rows[32].i_strong_vs_stud:.2f}")
+    add("grammar.w32_weak", "W32's weak-axis I, times a 2x4's",
+        lambda: f"{rows[32].i_weak_vs_stud:.2f}")
+    add("grammar.w64_strong", "W64's strong-axis I, times a 2x4's",
+        lambda: f"{rows[64].i_strong_vs_stud:.2f}")
+    add("grammar.w64_weak", "W64's weak-axis I, times a 2x4's",
+        lambda: f"{rows[64].i_weak_vs_stud:.2f}")
+    add("grammar.glue8", "stiffness of eight glued planks over eight loose ones",
+        lambda: f"{g.lamina_stack_bounds()[-1].premium:.0f}")
+    add("grammar.families_n", "how many split families the grammar compares",
+        lambda: f"{len(g.FAMILIES)}")
+    add("grammar.finest_fat", "the finest split still holding a 2x4's wood at the fat end",
+        lambda: g.family_name(finest))
+    add("grammar.fat_round", "the example pine's fat-end circumference, in",
+        lambda: f"{g.BUTT_CIRCUMFERENCE_IN:.0f}")
+    add("grammar.thin_round", "the example pine's thin-end circumference, in",
+        lambda: f"{g.TOP_CIRCUMFERENCE_IN:.0f}")
+    add("grammar.kerf", "the ripping chainsaw's kerf, in",
+        lambda: f"{g.CHAINSAW_KERF_IN:g}")
+    add("grammar.w64_kerf_fat", "a quarter-inch cut as a share of a fat-end W64's rim, %",
+        lambda: f"{fat[64].kerf_fraction * 100:.0f}")
+    add("grammar.sources_n", "how many pieces of precedent the grammar cites",
+        lambda: f"{len(g.SOURCES)}")
+    add("grammar.juvenile_pct", "cited: tested-property loss from juvenile wood, loblolly pine (USDA)",
+        lambda: "30")
 
 
 if __name__ == "__main__":

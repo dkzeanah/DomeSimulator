@@ -142,8 +142,27 @@ def equations_2v() -> dict[str, list[str]]:
     }
 
 
+def stage_rings() -> dict:
+    """Why a Wedge Stays True: every end-grain scene, meshed and dried by grain_shrink's map."""
+    from two_v_demo import grain_shrink as gs
+    return gs.web_stage()
+
+
+def equations_rings() -> dict[str, list[str]]:
+    from two_v_demo import grain_shrink as gs
+    return gs.equations()
+
+
 #: Lessons with a web stage of their own: (stage data, equations). Add a lesson here to give it one.
-WEB_STAGES = {"2v": (stage_2v, equations_2v)}
+WEB_STAGES = {"2v": (stage_2v, equations_2v), "rings": (stage_rings, equations_rings)}
+
+
+def _meta(key: str) -> dict:
+    """What the sheet says about where its numbers come from, and any sheet with its own heading."""
+    if key == "rings":
+        from two_v_demo import grain_shrink as gs
+        return {"computedBy": "two_v_demo/grain_shrink.py", "sheetTitles": dict(gs.SHEET_TITLES)}
+    return {"computedBy": "two_v_demo/geometry.py", "sheetTitles": {}}
 
 
 # ----------------------------------------------------------------------
@@ -177,6 +196,9 @@ def spec(key: str) -> dict:
     rate = lesson.voice_rate or A.DEFAULT_RATE
     stage, eqs = WEB_STAGES.get(key, (None, None))
     computed = eqs() if eqs else {}
+    stage_data = stage() if stage else _generic_stage()
+    meta = _meta(key)
+    notes = stage_data.get("notes", {})
     chapters, durations, speech, clips = [], [], [], []
     t = 0.0
     for i, ch in enumerate(lesson.chapters):
@@ -189,6 +211,8 @@ def spec(key: str) -> dict:
                          # the sheet says "computed" only where a computed number is on it
                          "computed": ch.slug in computed and any(re.search(r"\d\.\d", e) for e in computed[ch.slug]),
                          "stage": ch.stage if stage else "generic",
+                         "sheetTitle": meta["sheetTitles"].get(ch.slug, "THE ARITHMETIC"),
+                         "note": notes.get(ch.stage, "") if stage else "",
                          "camera": list(ch.camera), "start": round(t, 4), "duration": round(dur, 4),
                          "speechStart": round(t + A.SPEECH_DELAY, 4), "speech": round(spoken, 4)})
         durations.append(dur)
@@ -197,7 +221,7 @@ def spec(key: str) -> dict:
         t += dur
     return {"key": key, "title": lesson.title, "brand": lesson.brand, "fps": FPS, "titleHold": TITLE_HOLD,
             "total": round(t, 4), "chapters": chapters, "captions": _caption_cues(lesson, durations, speech),
-            "stage": stage() if stage else _generic_stage(),
+            "stage": stage_data, "computedBy": meta["computedBy"],
             "voice": {"name": A.DEFAULT_VOICE, "rate": rate, "pitch": A.DEFAULT_PITCH}, "_clips": clips,
             "measured": {"long_in": MEASURED_LONG_IN, "short_in": MEASURED_SHORT_IN} if key == "2v" else None}
 
@@ -336,8 +360,10 @@ def save_still(key: str, orient: str, n: int, png: bytes) -> dict:
 # Headless: the same page, in a Chrome this process starts
 # ----------------------------------------------------------------------
 
-def headless(key: str, mode: str = "render", draft: bool = False, port: int | None = None, timeout_s: float = 3 * 3600) -> list[dict]:
-    """``mode`` is "render" (landscape, then phone) or "stills". Returns what each pass produced."""
+def headless(key: str, mode: str = "render", draft: bool = False, port: int | None = None, timeout_s: float = 3 * 3600,
+             at: float | None = None) -> list[dict]:
+    """``mode`` is "render" (landscape, then phone) or "stills". Returns what each pass produced.
+    ``at`` is how far into each chapter a still is taken (the page's default, 0.62, if None)."""
     import tempfile
     import threading
     from two_v_demo.book_export import _chrome_path
@@ -353,7 +379,8 @@ def headless(key: str, mode: str = "render", draft: bool = False, port: int | No
     for orient in ("landscape", "phone"):
         size = "1920,1080" if orient == "landscape" else "1080,1920"
         url = (f"http://127.0.0.1:{httpd.server_address[1]}/lesson?lesson={key}&orient={orient}"
-               f"&{'stills' if mode == 'stills' else 'autorender'}=1&draft={'1' if draft else '0'}")
+               f"&{'stills' if mode == 'stills' else 'autorender'}=1&draft={'1' if draft else '0'}"
+               + (f"&at={at:g}" if at is not None and mode == "stills" else ""))
         profile = tempfile.mkdtemp(prefix="lesson-chrome-")
         before = len(E.FINISHED)
         proc = subprocess.Popen([chrome, "--headless=new", f"--user-data-dir={profile}", f"--window-size={size}",

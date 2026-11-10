@@ -9,7 +9,7 @@ updated: 2026-09-17
 
 # 74. Every Other Way of Doing It
 
-*Eight frame materials, eight strut sections, sixteen panel types, nine claddings and eleven foundations -- all priced on this dome, so the choice is a comparison instead of a preference*
+*Every frame material, strut section, panel type, cladding and foundation -- all priced on this dome, so the choice is a comparison instead of a preference*
 
 ## Every Other Way of Doing It
 
@@ -21,9 +21,9 @@ same dome, from the wedge book's own catalogues, so the
 book's choice is a comparison instead of a preference.
 
 The five tables below are the breadth of the whole geodesic
-world, compressed onto one page: eight frame materials from
-whole-tree trunks to structural steel, eight strut sections
-from round tube to the quarter wedge, sixteen panel types from
+world, compressed onto one page: {{space.materials}} frame materials from
+whole-tree trunks to structural steel, {{space.sections_shapes}} strut sections
+from round tube to the sixteenth wedge, {{space.panels}} panel types from
 open frames to precast concrete, nine claddings from nothing
 to a poured shell, eleven foundations from gravel to a
 treehouse platform. Every option is costed on the reference
@@ -44,7 +44,7 @@ which is the one property the tables cannot print but the
 chapter can state, and it is the property the whole method was
 built to buy.
 
-![Eight materials, eight sections, sixteen panels, nine claddings, eleven foundations, priced on one dome.](../../deliverables/book/figures/breadth-tables.png)
+![Every material, section, panel, cladding and foundation, priced on one dome.](../../deliverables/book/figures/breadth-tables.png)
 
 ## What the prices say
 

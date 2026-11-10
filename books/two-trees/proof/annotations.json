@@ -1,0 +1,46 @@
+[
+ {
+  "id": "e254c13465",
+  "build": "0405-2-trees-v45",
+  "page": 76,
+  "rect": [
+   50,
+   0,
+   550,
+   110
+  ],
+  "kind": "fix",
+  "text": "The bottom of the figure from page 75 is printed here, at the very top edge. Keep the figure and its caption together on page 75.",
+  "status": "open",
+  "author": "claude",
+  "anchor": "The same stick, four ways up.",
+  "created": "2026-10-24 19:33",
+  "replies": []
+ },
+ {
+  "id": "a21c1d8704",
+  "build": "0405-2-trees-v45",
+  "page": 140,
+  "rect": null,
+  "kind": "question",
+  "text": "Layout, not wording: this page's inside margin is 0.708 in and the inside edge is on the right, while the facing page 139 has its inside edge on the left (0.695 in). Check the recto/verso pairing here — one of the two pages looks mirrored. Also, the bottom margin on this page is 0.36 in, well inside KDP's 0.25 in minimum, so no action needed there.",
+  "status": "open",
+  "author": "agent",
+  "anchor": "C H A P T E R 2 7 · H O W TO",
+  "created": "2026-10-24 19:34",
+  "replies": []
+ },
+ {
+  "id": "ce6ff6d0e6",
+  "build": "0405-2-trees-v45",
+  "page": 140,
+  "rect": null,
+  "kind": "question",
+  "text": "Owner decision: the escape-route paragraph on this page repeats the front matter's rule almost word for word (page 9: \"walk the route back and to the side, opposite the planned fall... A tree falls in seconds and the escape takes seconds; the route being pre-walked is the entire margin\"). I proposed changing only the closing phrase to \"the whole margin\". If you would rather cut the restatement here and point back to the front matter, that is a bigger edit than a wording fix and is yours to call.",
+  "status": "open",
+  "author": "agent",
+  "anchor": "C H A P T E R 2 7 · H O W TO",
+  "created": "2026-10-24 19:34",
+  "replies": []
+ }
+]

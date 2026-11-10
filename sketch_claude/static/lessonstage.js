@@ -125,8 +125,9 @@ export class Stage {
   look(name) {
     if (!this.looks[name]) {
       const g = new this.T.Group(); g.visible = false; this.root.add(g);
-      const builder = this["build_" + name] || this.build_generic;
-      this.looks[name] = { g, pose: builder.call(this, g) || (() => {}) };
+      const sec = this._sec(name);
+      const pose = sec ? this.build_section(g, sec) : (this["build_" + name] || this.build_generic).call(this, g);
+      this.looks[name] = { g, pose: pose || (() => {}) };
     }
     return this.looks[name];
   }
@@ -143,6 +144,13 @@ export class Stage {
    *  overrides the chapter's own camera direction (a diagram that must be seen square). */
   frame(stage) {
     const T = this.T;
+    const sec = this._sec(stage);
+    if (sec) {
+      // an end-grain diagram: seen nearly square, drifting only a few degrees, framed to its own extent
+      const l = this._secLayout(sec);
+      return { target: new T.Vector3(l.cx, 0, l.cz), dist: 3.0, half: l.halfW, halfH: l.halfH,
+               dir: new T.Vector3(...sec.dir).normalize(), drift: 0.0025 };
+    }
     const sphereStages = new Set(["coordinates", "icosahedron", "midpoints", "projection", "classes"]);
     if (sphereStages.has(stage)) return { target: new T.Vector3(0, 0, LIFT), dist: 9.2, half: S * 1.15 };
     if (stage === "derivations") { this.look("derivations"); return { target: new T.Vector3(0, 0, LIFT), dist: 8.4, half: S * 1.1, dir: this.derivDir }; }
@@ -412,6 +420,182 @@ export class Stage {
     };
   }
 }
+
+// ------------------------------------------------------------ end-grain sections
+// The face of every piece is coloured by its *green* distance from the pith, so the growth rings
+// are painted on the wood and move with it as it dries: a ring that straightens is the wood
+// straightening it, not a drawing on top.
+const RING_IN = 0.25;                                      // drawn ring spacing, inches (a picture, not a figure)
+const TONES = { store: 0, log: 1, wedge: 2, key: 3 };
+const SIDES = { store: 0xd9b27e, log: 0xcfa678, wedge: 0xd9b27e, key: 0x8f9aa6 };
+const FACE_VS = `attribute float aR; varying float vR;
+void main() { vR = aR; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+const FACE_FS = `uniform float uBark, uRing, uAlpha, uDim, uTone; varying float vR;
+void main() {
+  vec3 early = vec3(0.95, 0.83, 0.64), late = vec3(0.72, 0.48, 0.28);
+  float ph = fract(vR / uRing);
+  float lw = smoothstep(0.55, 0.70, ph) * (1.0 - smoothstep(0.90, 1.0, ph));
+  vec3 c = mix(early, late, lw);
+  c = mix(vec3(0.42, 0.28, 0.17), c, smoothstep(0.06, 0.22, vR));
+  if (uBark > 0.0) c = mix(c, vec3(0.30, 0.21, 0.15), smoothstep(uBark - 0.34, uBark - 0.28, vR));
+  if (uTone > 2.5) c = vec3(0.60, 0.65, 0.70);
+  c *= 1.0 - 0.62 * uDim;
+  gl_FragColor = vec4(c, uAlpha);
+}`;
+
+Stage.prototype._sec = function (stage) { return this.d.sections ? this.d.sections[stage] : null; };
+
+/** Where a section scene sits in the world: inches -> world units (U), and scene y = 0 at z0, so the
+ *  lowest thing in it (pieces, where they pull apart to, labels, arrows) just clears the plinth. */
+Stage.prototype._secLayout = function (sec) {
+  if (sec._lay) return sec._lay;
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  const take = (x, y) => { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; };
+  for (const pc of sec.pieces) {
+    const ex = pc.explode || [0, 0];
+    for (let i = 0; i < pc.g.length; i += 2) { take(pc.g[i], pc.g[i + 1]); take(pc.g[i] + ex[0], pc.g[i + 1] + ex[1]); }
+  }
+  for (const lb of sec.labels || []) take(lb.at[0], lb.at[1]);
+  for (const a of sec.arrows || []) { take(a.from[0], a.from[1]); if (a.to) take(a.to[0], a.to[1]); }
+  const U = sec.U, z0 = 0.3 + (sec.lift || 0) - y0 * U;
+  const halfH = ((y1 - y0) / 2) * U + 0.35;
+  // labels keep about the same size on screen however big the scene is
+  const sf = Math.max((((x1 - x0) / 2) * U + 0.35) / 3.2, halfH / 1.8, 0.55);
+  // and the frame must hold a label's text, not just its anchor (a sprite is about 0.36 x size per character)
+  let wx0 = x0 * U, wx1 = x1 * U;
+  for (const lb of sec.labels || []) {
+    const hw = 0.18 * lb.text.length * lb.size * sf;
+    wx0 = Math.min(wx0, lb.at[0] * U - hw); wx1 = Math.max(wx1, lb.at[0] * U + hw);
+  }
+  sec._lay = { U, z0, cx: (wx0 + wx1) / 2, cz: z0 + ((y0 + y1) / 2) * U, halfW: (wx1 - wx0) / 2 + 0.35, halfH, sf };
+  return sec._lay;
+};
+
+Stage.prototype._secPiece = function (sec, pc, lay) {
+  const T = this.T, n = pc.g.length / 2, D = sec.depth || 1.1, back = pc.back ?? (pc.vanish ? 0.012 : 0.0);
+  const front = new T.BufferGeometry(), pos = new Float32Array(n * 3);
+  front.setAttribute("position", new T.BufferAttribute(pos, 3));
+  front.setAttribute("aR", new T.BufferAttribute(new Float32Array(pc.r0), 1));
+  front.setIndex(pc.tri);
+  const face = new T.Mesh(front, new T.ShaderMaterial({
+    uniforms: { uBark: { value: pc.bark || 0 }, uRing: { value: RING_IN }, uAlpha: { value: 1 }, uDim: { value: 0 },
+                uTone: { value: TONES[pc.tone] ?? 0 } },
+    vertexShader: FACE_VS, fragmentShader: FACE_FS, transparent: true, side: T.DoubleSide }));
+  const L = pc.loop, m = L.length, spos = new Float32Array(m * 6), idx = [];
+  for (let i = 0; i < m; i++) { const j = (i + 1) % m; idx.push(i, j, m + j, i, m + j, m + i); }
+  const side = new T.BufferGeometry();
+  side.setAttribute("position", new T.BufferAttribute(spos, 3));
+  side.setIndex(idx);
+  const walls = new T.Mesh(side, new T.MeshStandardMaterial({ color: SIDES[pc.tone] ?? SIDES.store, roughness: 0.85,
+                                                                side: T.DoubleSide, transparent: true }));
+  face.frustumCulled = walls.frustumCulled = false;
+  walls.castShadow = true;
+  return { pc, face, walls, front, side, pos, spos, n, m, D, back, shaded: false };
+};
+
+Stage.prototype._secPose = function (it, lay, k, e) {
+  const { pc, pos, spos, n, m, D, back } = it, g = pc.g, d = pc.d, L = pc.loop, U = lay.U;
+  const ex = (pc.explode ? pc.explode[0] : 0) * e, ey = (pc.explode ? pc.explode[1] : 0) * e;
+  for (let i = 0; i < n; i++) {
+    pos[3 * i] = (g[2 * i] + (d[2 * i] - g[2 * i]) * k + ex) * U;
+    pos[3 * i + 1] = back;
+    pos[3 * i + 2] = lay.z0 + (g[2 * i + 1] + (d[2 * i + 1] - g[2 * i + 1]) * k + ey) * U;
+  }
+  for (let i = 0; i < m; i++) {
+    const v = L[i];
+    spos[3 * i] = spos[3 * (m + i)] = pos[3 * v];
+    spos[3 * i + 2] = spos[3 * (m + i) + 2] = pos[3 * v + 2];
+    spos[3 * i + 1] = back + 0.002; spos[3 * (m + i) + 1] = back + D;
+  }
+  it.front.attributes.position.needsUpdate = true;
+  it.side.attributes.position.needsUpdate = true;
+  if (!it.shaded) { it.side.computeVertexNormals(); it.shaded = true; }
+};
+
+Stage.prototype._secInk = function (ln) {
+  const T = this.T, n = ln.g.length / 2, pos = new Float32Array(n * 6), geo = new T.BufferGeometry(), idx = [];
+  geo.setAttribute("position", new T.BufferAttribute(pos, 3));
+  for (let i = 0; i < n - 1; i++) { const a = 2 * i; idx.push(a, a + 1, a + 3, a, a + 3, a + 2); }
+  geo.setIndex(idx);
+  const mesh = new T.Mesh(geo, new T.MeshBasicMaterial({ color: new T.Color(ln.color), transparent: true, opacity: 0,
+                                                         side: T.DoubleSide, depthWrite: false }));
+  mesh.frustumCulled = false; mesh.renderOrder = 3;
+  return { ln, mesh, geo, pos, n, cx: new Float32Array(n), cz: new Float32Array(n) };
+};
+
+Stage.prototype._secInkPose = function (it, lay, k) {
+  const { ln, pos, n, cx, cz } = it, U = lay.U, w = Math.max(ln.width * U, 0.014) * 0.5;
+  for (let i = 0; i < n; i++) {
+    cx[i] = (ln.g[2 * i] + (ln.d[2 * i] - ln.g[2 * i]) * k) * U;
+    cz[i] = lay.z0 + (ln.g[2 * i + 1] + (ln.d[2 * i + 1] - ln.g[2 * i + 1]) * k) * U;
+  }
+  for (let i = 0; i < n; i++) {
+    const a = Math.max(0, i - 1), b = Math.min(n - 1, i + 1);
+    let tx = cx[b] - cx[a], tz = cz[b] - cz[a];
+    const l = Math.hypot(tx, tz) || 1; tx /= l; tz /= l;
+    pos[6 * i] = cx[i] - tz * w; pos[6 * i + 1] = -0.01; pos[6 * i + 2] = cz[i] + tx * w;
+    pos[6 * i + 3] = cx[i] + tz * w; pos[6 * i + 4] = -0.01; pos[6 * i + 5] = cz[i] - tx * w;
+  }
+  it.geo.attributes.position.needsUpdate = true;
+};
+
+/** A scene declared by two_v_demo/grain_shrink.py scenes(): built once, posed by progress. */
+Stage.prototype.build_section = function (g, sec) {
+  const T = this.T, lay = this._secLayout(sec), U = lay.U;
+  const pieces = sec.pieces.map((pc) => { const it = this._secPiece(sec, pc, lay); g.add(it.face, it.walls); return it; });
+  const inks = (sec.lines || []).map((ln) => { const it = this._secInk(ln); g.add(it.mesh); return it; });
+  // a piece's green outline, drawn still from the moment it starts to dry: the wood moves away from it
+  if (sec.dry) for (const pc of sec.pieces) {
+    if (!pc.ghost) continue;
+    const pts = [];
+    for (const v of [...pc.loop, pc.loop[0]]) pts.push(pc.g[2 * v], pc.g[2 * v + 1]);
+    const it = this._secInk({ g: pts, d: pts, color: "#fff7e8", width: 0.03, alpha: 0.75,
+                              appear: [sec.dry[0] - 0.03, sec.dry[0] + 0.04] });
+    g.add(it.mesh); inks.push(it);
+  }
+  const at = (x, y, out = -0.3) => new T.Vector3(x * U, out, lay.z0 + y * U);
+  const labels = (sec.labels || []).map((lb) => {
+    const s = this.label(lb.text, lb.size * lay.sf, lb.color);
+    s.position.copy(at(lb.at[0], lb.at[1])); g.add(s);
+    return { lb, s };
+  });
+  const arrows = (sec.arrows || []).map((a) => {
+    const grp = new T.Group(), col = new T.Color(a.color);
+    const p0 = at(a.from[0], a.from[1], -0.03);
+    const p1 = a.to ? at(a.to[0], a.to[1], -0.03) : p0.clone().add(new T.Vector3(0, -a.out * U, 0));
+    const dir = p1.clone().sub(p0).normalize();
+    const shaft = this.struts([[p0, p1.clone().addScaledVector(dir, -0.16 * lay.sf), col.getHex()]], 0.035 * lay.sf);
+    const head = new T.Mesh(new T.ConeGeometry(0.1 * lay.sf, 0.28 * lay.sf, 18), new T.MeshStandardMaterial({ color: col, roughness: 0.5 }));
+    head.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), dir);
+    head.position.copy(p1).addScaledVector(dir, -0.14 * lay.sf);
+    const lab = this.label(a.label, 0.24 * lay.sf, a.color);
+    lab.position.copy(p1).add(new T.Vector3(0, -0.2, 0.28 * lay.sf));
+    grp.add(shaft, head, lab); g.add(grp);
+    return { a, grp, lab };
+  });
+  return (p) => {
+    const k = sec.dry ? span(p, sec.dry[0], sec.dry[1]) : 0;
+    const e = sec.explodeAt ? span(p, sec.explodeAt[0], sec.explodeAt[1]) : 0;
+    for (const it of pieces) {
+      let a = span(p, it.pc.appear[0], it.pc.appear[1]);
+      if (it.pc.vanish) a *= 1 - span(p, it.pc.vanish[0], it.pc.vanish[1]);
+      const on = a > 0.002;
+      it.face.visible = it.walls.visible = on;
+      if (!on) continue;
+      it.face.material.uniforms.uAlpha.value = a;
+      it.face.material.uniforms.uDim.value = it.pc.dim ? 1 : 0;
+      it.walls.material.opacity = a; it.walls.material.depthWrite = a > 0.5;
+      this._secPose(it, lay, k, e);
+    }
+    for (const it of inks) {
+      const a = span(p, it.ln.appear[0], it.ln.appear[1]);
+      it.mesh.visible = a > 0.002; it.mesh.material.opacity = a * (it.ln.alpha ?? 1);
+      if (it.mesh.visible) this._secInkPose(it, lay, k);
+    }
+    for (const { lb, s } of labels) { const a = span(p, lb.appear[0], lb.appear[1]); s.visible = a > 0.002; s.material.opacity = a; }
+    for (const { a, grp, lab } of arrows) { const o = span(p, a.appear[0], a.appear[1]); grp.visible = o > 0.002; lab.material.opacity = o; }
+  };
+};
 
 function key(a, b) { return a < b ? `${a}-${b}` : `${b}-${a}`; }
 function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }

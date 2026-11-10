@@ -3196,10 +3196,9 @@ PART_FUTURE = Part(
         ),
         Chapter(
             _NEXT_NUMBER + 22, "Every Other Way of Doing It",
-            "Eight frame materials, eight strut sections, sixteen panel "
-            "types, nine claddings and eleven foundations -- all priced on "
-            "this dome, so the choice is a comparison instead of a "
-            "preference",
+            "Every frame material, strut section, panel type, cladding and "
+            "foundation -- all priced on this dome, so the choice is a "
+            "comparison instead of a preference",
             "reference",
             (
                 _p("opener", "Every Other Way of Doing It",
@@ -3212,9 +3211,8 @@ PART_FUTURE = Part(
                    "option costed on the reference quantities.",
                    words=420,
                    figures=(_f("breadth-tables",
-                               "Eight materials, eight sections, sixteen "
-                               "panels, nine claddings, eleven "
-                               "foundations, priced on one dome.", PLOT,
+                               "Every material, section, panel, cladding "
+                               "and foundation, priced on one dome.", PLOT,
                                plot="breadth_tables"),)),
                 _p("text", "What the prices say",
                    "The pattern across all five catalogues: the reference "
@@ -3753,13 +3751,13 @@ PART_FUTURE = Part(
             ref="modules",
         ),
         Chapter(
-            _NEXT_NUMBER + 35, "Sixteen Billion Shells",
+            _NEXT_NUMBER + 35, "Thirty-Five Billion Shells",
             "Every building the menus can make, counted from the menus "
             "themselves -- and the honest deduction that half of them are "
             "the same building",
             "explain",
             (
-                _p("opener", "Sixteen Billion Shells",
+                _p("opener", "Thirty-Five Billion Shells",
                    "The tool offers {{space.menus}} menus and four dials. "
                    "Multiply them honestly and the catalogue is not a "
                    "catalogue at all: it is a space so large that the "
@@ -3789,7 +3787,7 @@ PART_FUTURE = Part(
                    "cent of the menu is decoration, and the tool argues "
                    "with itself about it rather than rounding it away.",
                    words=760),
-                _p("text", "Why the book does not describe sixteen billion "
+                _p("text", "Why the book does not describe thirty-five billion "
                    "buildings",
                    "At {{space.seconds}} seconds each, showing every one "
                    "would take {{space.years}} years of film. Which is the "

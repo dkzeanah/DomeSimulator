@@ -94,6 +94,19 @@ def run_headless(action: str, root: Path, out_dir: Path,
             print(f"  {key}: {results[key]}")
         return 1 if failed else 0
 
+    if action == "pdf":
+        # The print copy, for a build script or the Proof Desk: the next
+        # numbered PDF in the library, without opening a viewer.
+        from . import book_export
+        try:
+            report = book_export.export_pdf(root, out_dir, strict=strict)
+        except Exception as exc:  # noqa: BLE001 - say why, in the log
+            print(f"could not build the book: {exc}")
+            return 1
+        print(report.summary)
+        print(f"wrote {report.path}")
+        return 1 if report.figures_missing else 0
+
     if action in ("read_html", "read_pdf"):
         from . import book_export
         try:
@@ -135,7 +148,7 @@ def run_headless(action: str, root: Path, out_dir: Path,
         return 0
 
     print(f"unknown action {action!r}; choose from studio, read_html, "
-          "read_pdf, outline, audit, progress, scaffold, render_figures, "
+          "read_pdf, pdf, outline, audit, progress, scaffold, render_figures, "
           "export, selftest")
     return 2
 

@@ -49,22 +49,28 @@ Here is the consequence you have to plan for.
 A wedge dried from green down to {{wood.mc}} percent moisture closes from
 {{cut.sector}} degrees to {{wood.sector_dry}}: {{wood.close}} degrees. The V in
 every seam is the sector angle less the fold between the two panels (Chapter
-{{ch.pinwheel}}), and each of the two members turns its face away by half of
-that. So the V opens by the whole of it:
+{{ch.pinwheel}}), and the fold belongs to the dome, not to the wood: it does
+not change. So the V **closes** by the whole of it, each of the two members
+turning its face in by half:
 
     the tighter V, cut green        {{wood.gap_green}} deg
     the same V, once dry            {{wood.gap_dry}} deg
     width at the room side, green   {{wood.open_green}} in
     width at the room side, dry     {{wood.open_dry}} in
 
-The width at the room side barely changes, because the faces also get shorter
-as the wood shrinks across the rings: {{cut.depth}} inches deep becomes
-{{wood.depth_dry}}. What changes is the **tilt**. Each face swings
-{{wood.tilt}} inches at the room side, so a key cut to fit the green V now
-touches along one edge and rocks.
+The faces also get shorter as the wood shrinks across the rings:
+{{cut.depth}} inches deep becomes {{wood.depth_dry}}. Both narrow the V at the
+room side. Each face swings {{wood.tilt}} inches in there, so a key cut to fit
+the green V is now too wide at the room side: it bears on its room-side edges,
+stands proud of the seam, and touches neither face along its depth.
 
 That is small, and it is enough. A key is only worth its space if it bears on
 both faces for its whole depth.
+
+> **A correction.** Earlier drafts of this chapter said the V *opens* as the
+> frame dries and that a key cut green would rock in it. The sign was
+> backwards: the sector is what shrinks, the fold is fixed, so the V closes.
+> The rule that follows is the same.
 
 **The rule: dry the frame, then make the keys.** Split and build green if you
 must, because green wood cuts and splits more easily. But print or cut the keys
