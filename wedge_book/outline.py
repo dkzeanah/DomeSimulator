@@ -754,7 +754,7 @@ CH_SEAM_MODULE = Chapter(
     ))
 
 CH_BOM = Chapter(
-    number=86, ref="bom", strand="reference",
+    number=87, ref="bom", strand="reference",
     title="Every Part, Priced",
     deck="The column, the pad, the hardware, the power bench and the water "
          "bench -- the whole bill, with a source on every line",
@@ -1005,6 +1005,29 @@ CH_RING = Chapter(
            words=340),
     ))
 
+CH_IRORI = Chapter(
+    number=39, ref="irori", strand="explain",
+    title="A Fire in the Middle of the Floor",
+    deck="The Japanese irori puts the hearth where a dome has its centre: the "
+         "hook hangs from the apex, the seats fit, the warm air dries the frame "
+         "-- and the open smoke is the one thing a tight dome cannot take",
+    derives=("two_v_demo.irori.facts",),
+    pages=(
+        _p("opener", "A fire in the middle of the floor",
+           "The sunken hearth, and why a dome's centre is its place.", words=360),
+        _p("text", "The hook, the seats and the rack",
+           "What hangs from the apex and who sits where.", words=520,
+           figures=(_f("plate-irori-hook", "The pothook, hung from the apex hub."),
+                    _f("plate-irori-seats", "Four seats, the lowest by the entry."))),
+        _p("worked", "What the circle costs the floor",
+           "Declared inputs, then the fit, honestly counted.", words=380),
+        _p("worked", "Warm air and wet wood",
+           "The one claim about the building the book can compute.", words=320),
+        _p("text", "The smoke, and the fix",
+           "Carbon monoxide in a tight room; a hood and a flue.", words=420,
+           figures=(_f("plate-irori-flue", "Keep the circle, give the fire a chimney."),)),
+    ))
+
 PART_WATER = Part(
     number=6, title="The Seam at Work",
     epigraph="Send air toward the wood only when it is drier than the water "
@@ -1014,7 +1037,7 @@ PART_WATER = Part(
             "which way its air moves, what each level of the dome does, where "
             "the desiccant belongs, and the metal that makes it work.",
     chapters=(CH_CHANNEL, CH_DEWPOINT, CH_LEVELS, CH_BREATHE, CH_DESICCANT, CH_METAL,
-              CH_RING))
+              CH_RING, CH_IRORI))
 
 
 # ----------------------------------------------------------------------
@@ -1022,7 +1045,7 @@ PART_WATER = Part(
 # ----------------------------------------------------------------------
 
 CH_FLOOR = Chapter(
-    number=39, ref="floor", strand="howto",
+    number=40, ref="floor", strand="howto",
     title="The Floor Is the Other Thing to Get Right",
     deck="It carries everything you own, you touch it all day, and it is "
          "where the ground sends its water",
@@ -1046,7 +1069,7 @@ CH_FLOOR = Chapter(
     ))
 
 CH_PAD = Chapter(
-    number=42, ref="pad", strand="explain",
+    number=43, ref="pad", strand="explain",
     title="A Pad, Not a Plot",
     deck="The ground is the one thing you cannot take with you, so stop "
          "buying it",
@@ -1067,7 +1090,7 @@ CH_PAD = Chapter(
 # ----------------------------------------------------------------------
 
 CH_TREE_WORTH = Chapter(
-    number=43, ref="tree_worth", strand="explain",
+    number=44, ref="tree_worth", strand="explain",
     title="A Twenty-Dollar Pine Is Not a Twenty-Dollar Pine",
     deck="One tree priced on every rung: on the stump, burned, sawn, split, built "
          "in, and carried on a mortgage -- the wood never changes, the use does",
@@ -1082,7 +1105,7 @@ CH_TREE_WORTH = Chapter(
     ))
 
 CH_HANDS = Chapter(
-    number=44, ref="hands", strand="explain",
+    number=45, ref="hands", strand="explain",
     title="Fifteen Sets of Hands",
     deck="Every machine and every middleman between a tree and a stud, counted -- "
          "and the same frame bought at the rack, with everything nobody counts",
@@ -1097,7 +1120,7 @@ CH_HANDS = Chapter(
     ))
 
 CH_HOUR = Chapter(
-    number=45, ref="hour", strand="explain",
+    number=46, ref="hour", strand="explain",
     title="How Much Shelter Does an Hour Buy",
     deck="Not how cheap the house is: how much house an hour of your life buys, "
          "how debt multiplies it, and the wage above which you should just buy",
@@ -1116,7 +1139,7 @@ CH_HOUR = Chapter(
     ))
 
 CH_HOUSE_MONEY = Chapter(
-    number=46, ref="house_money", strand="reference",
+    number=47, ref="house_money", strand="reference",
     title="Where a House's Money Goes",
     deck="The builders' own survey of a new house, the factory's split of a "
          "trailer, and where the dome's saving actually comes from",
@@ -1133,7 +1156,7 @@ CH_HOUSE_MONEY = Chapter(
     ))
 
 CH_PRICED = Chapter(
-    number=47, ref="priced", strand="reference",
+    number=48, ref="priced", strand="reference",
     title="What It Costs, Line by Line",
     deck="The invoice, the price guide, the pad, the stay and the factory -- every "
          "figure typed in declared before anything is claimed",
@@ -1148,7 +1171,7 @@ CH_PRICED = Chapter(
     ))
 
 CH_STAPLE = Chapter(
-    number=48, ref="staple", strand="explain",
+    number=49, ref="staple", strand="explain",
     title="The Staple House",
     deck="The owner's McDouble: cheap, fast, known, the same every time -- the first "
          "rung of housing built to be a staple instead of a project, and the papercuts "
@@ -1177,7 +1200,7 @@ PART_ECON = Part(
 
 
 CH_PENTAGON = Chapter(
-    number=40, ref="pentagon", strand="howto",
+    number=41, ref="pentagon", strand="howto",
     title="The Pentagon From Five Logs",
     deck="Five 20 ft half trunks and the star inside them: the golden ratio splits every "
          "diagonal so one log gives one long piece and one short -- the centreline lengths, "
@@ -1192,7 +1215,7 @@ CH_PENTAGON = Chapter(
     ))
 
 CH_WORLD = Chapter(
-    number=41, ref="world", strand="howto",
+    number=42, ref="world", strand="howto",
     title="One World, Three Structures",
     deck="The foundation, the dome and the zome on one hilltop, with their jigs and skins: a "
          "layers panel, and every piece selectable, sawn, deleted, added, moved or copied, "
@@ -1219,7 +1242,7 @@ PART_FLOOR = Part(
 # ----------------------------------------------------------------------
 
 CH_NETWORK = Chapter(
-    number=49, ref="network", strand="explain",
+    number=50, ref="network", strand="explain",
     title="Why a Network Beats a Park",
     deck="An RV park rents you a slot for a week. This rents you a "
          "foundation for a decade, and both sides come out ahead",
@@ -1252,7 +1275,7 @@ CH_NETWORK = Chapter(
     ))
 
 CH_PAD_KIT = Chapter(
-    number=50, ref="pad_kit", strand="explain",
+    number=51, ref="pad_kit", strand="explain",
     title="What a Pad Actually Is",
     deck="A deck, a rim, three pipes up the middle and a meter at the edge -- "
          "and the line between the host's half and the tenant's that never moves",
@@ -1273,7 +1296,7 @@ CH_PAD_KIT = Chapter(
     ))
 
 CH_HOST = Chapter(
-    number=51, ref="host", strand="explain",
+    number=52, ref="host", strand="explain",
     title="What a Host Earns, Line by Line",
     deck="The cheapest pad that works, the ten-thousand-dollar target it misses, "
          "the rents that would repay it, and the bill a host stops paying",
@@ -1291,7 +1314,7 @@ CH_HOST = Chapter(
     ))
 
 CH_TENANT = Chapter(
-    number=52, ref="tenant", strand="explain",
+    number=53, ref="tenant", strand="explain",
     title="A House That Moves, and Grows",
     deck="Start small, reallocate the rooms as life changes, add a layer when you "
          "can afford it, and take all of it with you when you go",
@@ -1310,7 +1333,7 @@ CH_TENANT = Chapter(
     ))
 
 CH_TURNS = Chapter(
-    number=53, ref="turns", strand="explain",
+    number=54, ref="turns", strand="explain",
     title="The Pad Turns, and the Site Shares",
     deck="A rotating base, cells on the shell, a bathhouse so a house can carry "
          "no plumbing -- and the surplus power a tenant cannot use",
@@ -1325,7 +1348,7 @@ CH_TURNS = Chapter(
     ))
 
 CH_WHY_ME = Chapter(
-    number=54, ref="why_me", strand="story",
+    number=55, ref="why_me", strand="story",
     title="Who This Is For",
     deck="A nineteen-year-old with nowhere steady to live, a single mother working "
          "two shifts, and a man on his seventh holiday watching a rental portfolio",
@@ -1357,7 +1380,7 @@ PART_NETWORK = Part(
 # ----------------------------------------------------------------------
 
 CH_ALTERNATIVES = Chapter(
-    number=61, ref="alternatives", strand="reference",
+    number=62, ref="alternatives", strand="reference",
     title="Every Other Way of Doing It",
     deck="Eight frame materials, eight sections, sixteen panels, nine "
          "claddings and twelve foundations -- priced on this dome, not in "
@@ -1381,7 +1404,7 @@ CH_ALTERNATIVES = Chapter(
     ))
 
 CH_FLOATING = Chapter(
-    number=76, ref="floating", strand="explain",
+    number=77, ref="floating", strand="explain",
     title="Hang It Between Two Trees",
     deck="The most speculative corner of the method: a mast, three cables, "
          "and no ground at all -- priced, and explicitly not rated",
@@ -1400,7 +1423,7 @@ CH_FLOATING = Chapter(
     ))
 
 CH_SKYWEB = Chapter(
-    number=77, ref="skyweb", strand="howto",
+    number=78, ref="skyweb", strand="howto",
     title="Build It in the Air",
     deck="An X of wire rope between four living trees, a 12 V winch, and forty "
          "triangles hung on three cords each, then gathered to one point, "
@@ -1446,7 +1469,7 @@ CH_SKYWEB = Chapter(
     ))
 
 CH_HUBBED = Chapter(
-    number=72, ref="hubbed", strand="howto",
+    number=73, ref="hubbed", strand="howto",
     title="If You Build It on Hubs",
     deck="The conventional two-frequency dome, for anybody with a hub system "
          "and no splitting maul: two lengths, one deduction, two bevels, and "
@@ -1466,7 +1489,7 @@ CH_HUBBED = Chapter(
     ))
 
 CH_FRANKEN = Chapter(
-    number=73, ref="franken", strand="story",
+    number=74, ref="franken", strand="story",
     title="The Frankendome",
     deck="A hundred and twenty sticks of no particular description, brackets "
          "folded out of a washing machine, ten days, and half a year standing",
@@ -1481,7 +1504,7 @@ CH_FRANKEN = Chapter(
     ))
 
 CH_EMPIRE = Chapter(
-    number=74, ref="empire", strand="story",
+    number=75, ref="empire", strand="story",
     title="The Evil Dome Empire",
     deck="A house as a platform, a business plan built on ink cartridges, the "
          "one catastrophic weakness in it -- and then the serious part",
@@ -1498,7 +1521,7 @@ CH_EMPIRE = Chapter(
     ))
 
 CH_FULLER = Chapter(
-    number=75, ref="fuller", strand="story",
+    number=76, ref="fuller", strand="story",
     title="So a Mother Could Raise Her Child",
     deck="A single mother, a repossessed trailer, the school lunches I would not "
          "take -- and the sentence of Buckminster Fuller's that made this a mission",
@@ -1527,7 +1550,7 @@ PART_VARIATIONS = Part(
 # ----------------------------------------------------------------------
 
 CH_TOOLING = Chapter(
-    number=83, ref="tooling", strand="reference",
+    number=84, ref="tooling", strand="reference",
     title="The Software That Wrote This Book",
     deck="Eight three-dimensional worlds, a cost model and a solver -- what "
          "each one is for, what it can do, and how to open it",
@@ -1541,7 +1564,7 @@ CH_TOOLING = Chapter(
     ))
 
 CH_WORLDS = Chapter(
-    number=85, ref="worlds", strand="reference",
+    number=86, ref="worlds", strand="reference",
     title="What Each World Shows You",
     deck="One picture from every three-dimensional environment in the "
          "project, with what it is for and what to do in it",
@@ -1575,7 +1598,7 @@ CH_WORLDS = Chapter(
     ))
 
 CH_SCREEN = Chapter(
-    number=84, ref="screen", strand="explain",
+    number=85, ref="screen", strand="explain",
     title="From One Number to a Lit Pixel",
     deck="How every picture in this book was drawn: a strut given a body, a "
          "camera placed with two angles, three matrices, one divide, one "
@@ -1592,7 +1615,7 @@ CH_SCREEN = Chapter(
     ))
 
 CH_EVERY_PIECE = Chapter(
-    number=87, ref="everypiece", strand="howto",
+    number=88, ref="everypiece", strand="howto",
     title="Every Piece, Numbered",
     deck="The calculator that fills a triangle and frames the floor: every "
          "piece numbered, every cut set up on the saw before the blade turns, "
@@ -1650,7 +1673,7 @@ CH_EVERY_PIECE = Chapter(
 
 
 CH_STY_CABIN = Chapter(
-    number=78, ref="stycabin", strand="explain",
+    number=79, ref="stycabin", strand="explain",
     title="The Cabin in the Creator",
     deck="The forty-hour cabin's dome rebuilt in the Dome Creator at its own size -- "
          "the same struts and panels -- priced line by line, with every place the "
@@ -1667,7 +1690,7 @@ CH_STY_CABIN = Chapter(
     ))
 
 CH_STY_TWELVE = Chapter(
-    number=79, ref="stytwelve", strand="howto",
+    number=80, ref="stytwelve", strand="howto",
     title="Twelve Ways to Dress One Frame",
     deck="The cabin's frame in the skin, colours and foundation of each of the "
          "Creator's twelve designs: rendered, priced, weighed and timed",
@@ -1687,7 +1710,7 @@ CH_STY_TWELVE = Chapter(
     ))
 
 CH_STY_MENUS = Chapter(
-    number=80, ref="stymenus", strand="howto",
+    number=81, ref="stymenus", strand="howto",
     title="One Menu at a Time",
     deck="Every frame material, every panel, every cladding and every foundation "
          "on the bare cabin in turn -- which menu moves the money, and by how much",
@@ -1701,7 +1724,7 @@ CH_STY_MENUS = Chapter(
     ))
 
 CH_STY_GRID = Chapter(
-    number=81, ref="stygrid", strand="reference",
+    number=82, ref="stygrid", strand="reference",
     title="Every Skin on Every Frame",
     deck="The permutations in full: every panel on every frame material, every "
          "cladding on every foundation, each a priced rebuild of the cabin -- and "
@@ -1715,7 +1738,7 @@ CH_STY_GRID = Chapter(
     ))
 
 CH_STY_PRICES = Chapter(
-    number=82, ref="styprices", strand="reference",
+    number=83, ref="styprices", strand="reference",
     title="The Price List, Item by Item",
     deck="Every unit price the Creator uses, as declared -- frame, panels, cladding, "
          "foundations, fixings, wire and pipe -- and every piece of equipment it can "
@@ -1937,7 +1960,7 @@ PART_MATHS = Part(
 # ----------------------------------------------------------------------
 
 CH_ZOME = Chapter(
-    number=55, ref="zome", strand="explain",
+    number=56, ref="zome", strand="explain",
     title="A Zome Is Not a Piece of a Sphere",
     deck="Swept from a star of directions instead of subdivided from a "
          "solid -- which is why every panel comes out flat, guaranteed",
@@ -1961,7 +1984,7 @@ CH_ZOME = Chapter(
     ))
 
 CH_HEX = Chapter(
-    number=58, ref="hex", strand="explain",
+    number=59, ref="hex", strand="explain",
     title="Exactly Twelve Pentagons, Always",
     deck="A sheet of hexagons will not curve. Curvature is bought with "
          "missing angle, and the price is always twelve pentagons",
@@ -1982,7 +2005,7 @@ CH_HEX = Chapter(
     ))
 
 CH_ZOME_FLAT = Chapter(
-    number=57, ref="zome_flat", strand="howto",
+    number=58, ref="zome_flat", strand="howto",
     title="A Zome Without a Bevel",
     deck="Four identical sticks to a panel, a miter at each end and no "
          "bevel anywhere -- and the gap on the outside that the method "
@@ -2002,7 +2025,7 @@ CH_ZOME_FLAT = Chapter(
     ))
 
 CH_PANEL_GEO = Chapter(
-    number=59, ref="panel_geo", strand="explain",
+    number=60, ref="panel_geo", strand="explain",
     title="Three Frequency, Five Eighths",
     deck="The dome most bought plans build: a three-frequency sphere cut "
          "below its middle, a base that zig-zags, and two panel shapes",
@@ -2029,7 +2052,7 @@ CH_PANEL_GEO = Chapter(
     ))
 
 CH_PANEL_JIG = Chapter(
-    number=60, ref="panel_jig", strand="howto",
+    number=61, ref="panel_jig", strand="howto",
     title="A Panel on a Jig",
     deck="Rip, draw, rail, pinwheel, skin, raise: the framed-panel method "
          "start to finish, and the bevel no single saw setting gets right",
@@ -2057,7 +2080,7 @@ CH_PANEL_JIG = Chapter(
     ))
 
 CH_ZOME_BUILD = Chapter(
-    number=56, ref="zome_build", strand="howto",
+    number=57, ref="zome_build", strand="howto",
     title="Building a Zome, Ring by Ring",
     deck="Two numbers -- a count and a pitch -- give the parts list, the level "
          "rings, the templates, the hub schedule and the one repeated floor cut",
@@ -2093,7 +2116,7 @@ PART_SHAPES = Part(
 # ----------------------------------------------------------------------
 
 CH_FRAMING = Chapter(
-    number=62, ref="framing", strand="explain",
+    number=63, ref="framing", strand="explain",
     title="Hubs, or No Hubs",
     deck="The trade this whole method is an answer to, counted across "
          "twelve designs rather than argued",
@@ -2110,7 +2133,7 @@ CH_FRAMING = Chapter(
     ))
 
 CH_CREATOR = Chapter(
-    number=63, ref="creator", strand="reference",
+    number=64, ref="creator", strand="reference",
     title="Twelve Buildings, One Tool",
     deck="Every finish, floor division and fit-out the Dome Creator will "
          "put on a shell, priced against each other",
@@ -2129,7 +2152,7 @@ CH_CREATOR = Chapter(
     ))
 
 CH_TWELVE = Chapter(
-    number=64, ref="twelve", strand="reference",
+    number=65, ref="twelve", strand="reference",
     title="The Twelve, One at a Time",
     deck="Every design the Dome Creator ships, rebuilt from its preset and "
          "read off its own bill of materials -- from a seven-thousand-dollar "
@@ -2145,7 +2168,7 @@ CH_TWELVE = Chapter(
     ))
 
 CH_CHOICES = Chapter(
-    number=65, ref="choices", strand="explain",
+    number=66, ref="choices", strand="explain",
     title="What Every Choice Costs",
     deck="Which menu is the expensive one, where the hours go, what the fit-out "
          "adds, how many domes the menus make -- and what no model prices",
@@ -2181,7 +2204,7 @@ PART_CATALOGUE = Part(
 # ----------------------------------------------------------------------
 
 CH_STEMCELL = Chapter(
-    number=66, ref="stemcell", strand="explain",
+    number=67, ref="stemcell", strand="explain",
     title="Why We Call It a Stem Cell",
     deck="One body, undifferentiated, that becomes fifteen different "
          "buildings depending on what you put in it",
@@ -2198,7 +2221,7 @@ CH_STEMCELL = Chapter(
     ))
 
 CH_CORE = Chapter(
-    number=67, ref="core", strand="explain",
+    number=68, ref="core", strand="explain",
     title="Sink the Money Into the Part That Moves",
     deck="The utility core is thirty per cent of the dome and the only "
          "part that transfers -- so it is the part worth overbuilding",
@@ -2221,7 +2244,7 @@ CH_CORE = Chapter(
     ))
 
 CH_SEEDS = Chapter(
-    number=69, ref="seeds", strand="reference",
+    number=70, ref="seeds", strand="reference",
     title="Fifteen Buildings From One Body",
     deck="The catalogue a homestead wants second, priced from the same "
          "frame and the same core",
@@ -2243,7 +2266,7 @@ CH_SEEDS = Chapter(
     ))
 
 CH_CORE_BUILD = Chapter(
-    number=68, ref="core_build", strand="howto",
+    number=69, ref="core_build", strand="howto",
     title="Build One Utility Core",
     deck="Fourteen steps in five stages: drain first, water proved before anything "
          "electrical exists, power last into a core already known to be dry",
@@ -2259,7 +2282,7 @@ CH_CORE_BUILD = Chapter(
     ))
 
 CH_TEN = Chapter(
-    number=70, ref="ten", strand="explain",
+    number=71, ref="ten", strand="explain",
     title="Ten Reasons This Shape",
     deck="Less skin for the same floor, nothing for the wind to push on, a parts list "
          "that does not grow with the house -- and the stem wall, brim and paint "
@@ -2278,7 +2301,7 @@ CH_TEN = Chapter(
     ))
 
 CH_ARTICLE = Chapter(
-    number=71, ref="article", strand="explain",
+    number=72, ref="article", strand="explain",
     title="The Standard Article, and What the Money Is For",
     deck="Twelve thousand dollars with the invoice on the page, the four ways to build "
          "the same dome, running it on nothing, and two campaigns' asks as lists",
@@ -2320,7 +2343,7 @@ PART_STEMCELL = Part(
 # ----------------------------------------------------------------------
 
 CH_WHY2V = Chapter(
-    number=88, ref="why2v", strand="explain",
+    number=89, ref="why2v", strand="explain",
     title="Why a Two-Frequency Dome",
     deck="Of all the buildings a pile of split wedges could frame, the "
          "two-frequency geodesic hemisphere is the one that asks the wedge for "
@@ -2371,7 +2394,7 @@ CH_WHY2V = Chapter(
     ))
 
 CH_FAMILIES = Chapter(
-    number=89, ref="families", strand="explain",
+    number=90, ref="families", strand="explain",
     title="Area Was Never the Argument",
     deck="Hold the wood constant and split it finer, and the eighth, "
          "sixteenth, thirty-second and sixty-fourth of a log are not four "
@@ -2403,7 +2426,7 @@ CH_FAMILIES = Chapter(
     ))
 
 CH_GRAIN = Chapter(
-    number=90, ref="grain", strand="explain",
+    number=91, ref="grain", strand="explain",
     title="Follow the Grain",
     deck="Wood is three different materials along three axes, and a radial "
          "split is the one conversion that keeps all three on the member "
@@ -2427,7 +2450,7 @@ CH_GRAIN = Chapter(
     ))
 
 CH_CONNECT = Chapter(
-    number=91, ref="connect", strand="explain",
+    number=92, ref="connect", strand="explain",
     title="The Wedges Supply Material; the Connections Make the Structure",
     deck="A bundle is not a beam until something carries the shear between "
          "its parts -- and the gap between a stack that slides and a stack "
@@ -2455,7 +2478,7 @@ CH_CONNECT = Chapter(
     ))
 
 CH_DYAD = Chapter(
-    number=92, ref="dyad", strand="howto",
+    number=93, ref="dyad", strand="howto",
     title="Mirror the Wedge, Reverse the Taper",
     deck="One sector is a part; two opposing sectors, one turned end for "
          "end, are a structural unit -- symmetric, taper cancelled, with two "
@@ -2481,7 +2504,7 @@ CH_DYAD = Chapter(
     ))
 
 CH_ARCHETYPES = Chapter(
-    number=93, ref="archetypes", strand="explain",
+    number=94, ref="archetypes", strand="explain",
     title="What the Shape Wants to Become",
     deck="A handful of assemblies that fit the wood rather than fight it: "
          "the axial stick, the separated-chord beam, the hollow column, the "
@@ -2506,7 +2529,7 @@ CH_ARCHETYPES = Chapter(
     ))
 
 CH_NODES = Chapter(
-    number=94, ref="nodes", strand="explain",
+    number=95, ref="nodes", strand="explain",
     title="Standardize the Node, Not the Tree",
     deck="Trying to machine every wedge identical throws away the whole "
          "advantage; standardize the five interfaces instead, and let the "
@@ -2530,7 +2553,7 @@ CH_NODES = Chapter(
     ))
 
 CH_PITH = Chapter(
-    number=95, ref="pith", strand="explain",
+    number=96, ref="pith", strand="explain",
     title="Keep the Point, or Cut It Off",
     deck="Every full sector runs to the pith, and the pith is the youngest, "
          "weakest, most-checked wood -- so the best member may be the one "
@@ -2556,7 +2579,7 @@ CH_PITH = Chapter(
     ))
 
 CH_RATING = Chapter(
-    number=96, ref="rating", strand="reference",
+    number=97, ref="rating", strand="reference",
     title="A Second Moment Is Not a Load",
     deck="Everything in this part is geometry. A stamped working load comes "
          "from testing the primitive, then the node, then the bundle, then "

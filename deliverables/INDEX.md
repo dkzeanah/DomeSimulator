@@ -1,10 +1,13 @@
 # The library
 
-608 outputs of 403 concepts, 31.45 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
+611 outputs of 406 concepts, 31.86 GB. One folder per output, numbered in the order it was made, every file of it inside. Rebuilt by `py -3.12 -m medialib`.
 
 | # | output | iteration | made | kind | size |
 |---|---|---|---|---|---|
+| 0612 | [cabin_irori-teaser](0612-cabin_irori-teaser/cabin_irori-teaser.mp4) | v1 | 2026-11-10 | video | 15.4 MB |
+| 0611 | [the-irori-under-the-dome](0611-the-irori-under-the-dome/the-irori-under-the-dome.mp4) | v1 | 2026-11-10 | video | 389.6 MB |
 | 0610 | [web-why-a-wedge-stays-true](0610-web-why-a-wedge-stays-true/web-why-a-wedge-stays-true.mp4) | v1 | 2026-11-09 | video | 185.5 MB |
+| 0609 | [cabin_irori-stills](0609-cabin_irori-stills/cabin_irori_0017.00s.png) | v1 | 2026-10-27 | image | 5.2 MB |
 | 0608 | [sketch-claude-level-with-me-s01e09-the-last-panel](0608-sketch-claude-level-with-me-s01e09-the-last-panel-v2/sketch-claude-level-with-me-s01e09-the-last-panel-v2.mp4) | v2 | 2026-10-22 | video | 203.7 MB |
 | 0607 | [sketch-claude-level-with-me-s01e08-pinwheel](0607-sketch-claude-level-with-me-s01e08-pinwheel-v2/sketch-claude-level-with-me-s01e08-pinwheel-v2.mp4) | v2 | 2026-10-22 | video | 324.8 MB |
 | 0606 | [sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there](0606-sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there-v2/sketch-claude-level-with-me-s01e07-the-hub-that-isn-t-there-v2.mp4) | v2 | 2026-10-22 | video | 240.6 MB |

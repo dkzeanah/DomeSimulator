@@ -1,0 +1,83 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-11-10T12:52:07.359034+00:00",
+  "lesson": "teaser_cabin_irori",
+  "title": "The Irori: A Sunken Hearth Under the Dome's Apex: the teaser",
+  "chapters": [
+    {
+      "slug": "purpose",
+      "title": "DOMESIM",
+      "narration": [
+        "The Japanese irori, under the wedge dome's apex."
+      ],
+      "start": 0.0,
+      "end": 4.784
+    },
+    {
+      "slug": "hook",
+      "title": "The hook that moves the pot",
+      "narration": [
+        "The jizaikagi hangs from the apex hub."
+      ],
+      "start": 4.784,
+      "end": 8.8
+    },
+    {
+      "slug": "inputs",
+      "title": "Declare the inputs",
+      "narration": [
+        "Choices we made, put on screen before we use them."
+      ],
+      "start": 8.8,
+      "end": 13.224
+    },
+    {
+      "slug": "hidana",
+      "title": "The rack overhead",
+      "narration": [
+        "A drying lattice, hung from the upper ring."
+      ],
+      "start": 13.224,
+      "end": 17.528
+    },
+    {
+      "slug": "under",
+      "title": "A pit in a raised floor",
+      "narration": [
+        "The box between the piers."
+      ],
+      "start": 17.528,
+      "end": 20.927999999999997
+    },
+    {
+      "slug": "teaser_cta",
+      "title": "THE FULL FILM",
+      "narration": [
+        "The full film works every number on screen. It is linked below."
+      ],
+      "start": 20.927999999999997,
+      "end": 25.879999999999995
+    },
+    {
+      "slug": "teaser_outreach",
+      "title": "YOUR TURN",
+      "narration": [
+        "Where would you build one? Tell me, and send this to one person who should see it."
+      ],
+      "start": 25.879999999999995,
+      "end": 31.887999999999995
+    }
+  ],
+  "render_config": {
+    "orientation": "portrait",
+    "size": "1080x1920",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+8%",
+    "voice_pitch": "-2Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}

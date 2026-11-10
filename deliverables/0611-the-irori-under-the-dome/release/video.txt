@@ -1,0 +1,2 @@
+landscape: C:\Users\Don\Desktop\DomeSimulator\deliverables\0611-the-irori-under-the-dome\the-irori-under-the-dome.mp4
+portrait:  C:\Users\Don\Desktop\DomeSimulator\deliverables\0611-the-irori-under-the-dome\the-irori-under-the-dome-vertical.mp4
