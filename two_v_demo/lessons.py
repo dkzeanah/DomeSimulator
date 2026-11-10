@@ -154,10 +154,19 @@ class Lesson:
     """Optional transparent overlay painter (app, width, height), for directed
     productions with their own caption and framing typography."""
 
+    engine: str = "any"
+    """Which renderer can draw it. ``any`` is every film made before the web
+    engine: moderngl by default, the web engine on ``--engine web``. ``web``
+    is a film whose pictures exist only on the web engine
+    (``sketch_claude/static/lessonstage.js``): ``film make`` renders it there
+    without being told, and it gets no moderngl Cabin World re-render."""
+
     def validate(self) -> None:
         """Fail loudly at load time rather than mid-render."""
         if not self.chapters:
             raise ValueError(f"lesson {self.key!r} has no chapters")
+        if self.engine not in ("any", "web"):
+            raise ValueError(f"lesson {self.key!r} has unknown engine {self.engine!r}")
         if self.label_layout not in ("raw", "declutter"):
             raise ValueError(
                 f"lesson {self.key!r} has unknown label layout "

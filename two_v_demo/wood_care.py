@@ -5,9 +5,12 @@ from that which the geometry alone does not say:
 
 * **it moves as it dries.** Wood shrinks about twice as much round the rings
   as across them, so a sector's angle *closes* as it dries. The seam's V is
-  the sector angle less the fold (:mod:`two_v_demo.channel_facts`), so a key
-  fitted green is loose by the same amount once the frame is dry
-  (:func:`sector_after_drying`). The same freedom is why a split wedge checks
+  the sector angle less the fold (:mod:`two_v_demo.channel_facts`), and the
+  fold is the dome's, not the wood's, so the V *closes* by the same amount and
+  a key fitted green is too wide for it once the frame is dry
+  (:func:`sector_after_drying`). (This module used to say the V opened and the
+  key went loose: the sign was backwards. Corrected November 2026, on camera
+  in :mod:`two_v_demo.lesson_rings` and in the book's chapter 17.) The same freedom is why a split wedge checks
   less than a squared, boxed-heart timber: it can close its angle instead of
   tearing.
 * **it is finished on the outside only.** The bark face can be charred
@@ -112,15 +115,16 @@ class Drying:
 
     @property
     def face_tilt_in(self) -> float:
-        """How far each sawn face swings at the room side as the angle opens.
+        """How far each sawn face swings in at the room side as the V closes.
 
-        The width barely changes (the faces shorten as they tilt), but a key
-        cut to the green V now bears on one edge only."""
+        The ridge, where the faces meet, holds; each face turns in about it by
+        half the close, so a key cut to the green V is too wide at the room
+        side by twice this and bears on its room-side edges only."""
         return self.depth_dry_in * math.sin(math.radians(self.close_deg / 2))
 
 
 def sector_after_drying(mc: float | None = None) -> Drying:
-    """A green 45-degree sector, dried: its angle closes and the V opens."""
+    """A green 45-degree sector, dried: its angle closes, and the seam's V closes with it."""
     import seed_model
     import seed_world
 
@@ -133,7 +137,9 @@ def sector_after_drying(mc: float | None = None) -> Drying:
     theta_dry = theta * (1.0 - tang) / (1.0 - rad)
     close = theta - theta_dry
     tight = min(cf.seam_types(), key=lambda t: t.gap_deg)
-    gap_dry = tight.gap_deg + close          # each face turns away by half of it
+    # V = sector - fold (channel_facts), and the fold is the dome's: the V closes by the whole of
+    # the sector's close, each face turning in by half. (Was "+ close" until November 2026.)
+    gap_dry = tight.gap_deg - close
     depth_dry = r * (1.0 - rad)
     s = math.sin(math.radians(theta / 2))
     thick = 2 * r * s / (1 + s)
@@ -257,9 +263,12 @@ def report() -> str:
 
 def validate_wood_care() -> None:
     d = sector_after_drying()
-    # Tangential shrinkage beats radial, so the sector closes and the V opens.
+    # Tangential shrinkage beats radial, so the sector closes, and the V (sector less the
+    # dome's fold) closes with it.
     assert C["shrink_tangential"] > C["shrink_radial"]
-    assert 0 < d.close_deg < 3 and d.gap_dry_deg > d.gap_green_deg
+    assert 0 < d.close_deg < 3 and d.gap_dry_deg < d.gap_green_deg
+    tight = min(cf.seam_types(), key=lambda t: t.gap_deg)
+    assert abs((d.sector_dry_deg - tight.fold_deg) - d.gap_dry_deg) < 1e-9
     assert d.opening_dry_in != d.opening_green_in
     # Green wood never shrinks above fibre saturation.
     assert shrinkage_fraction(0.35) == 0.0 and shrinkage_fraction(0.0) == 1.0

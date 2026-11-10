@@ -103,9 +103,13 @@ def raw_voice(text: str, voice_name: str, rate: str = "+0%", pitch: str = "+0Hz"
         return out
     tmp = out.with_suffix(".part")
 
+    # a whole chapter (a hundred words and more) can take the service most of a minute when it is
+    # slow, so the wait grows with the words; a short line keeps the old thirty seconds
+    wait = max(30.0, 0.6 * len(text.split()))
+
     async def go(p):
         # a request the service never answers would hang a whole render: give up on it and try again
-        await asyncio.wait_for(edge_tts.Communicate(text, voice_name, rate=rate, pitch=p).save(str(tmp)), timeout=30)
+        await asyncio.wait_for(edge_tts.Communicate(text, voice_name, rate=rate, pitch=p).save(str(tmp)), timeout=wait)
     # the service now and then answers with no audio; it nearly always works on a second try. Some
     # voices (Emma) refuse small pitch shifts for long stretches: the last tries use the voice's own
     # pitch, which nobody can hear the difference of, rather than leave the line silent.

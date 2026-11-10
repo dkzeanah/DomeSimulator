@@ -383,6 +383,9 @@ CH_GREEN = Chapter(
          "less than a squared timber, and why the key is cut last",
     derives=("two_v_demo.wood_care.sector_after_drying",
              "two_v_demo.seam_climate.C"),
+    corrects="This chapter said the seam's V opens as the frame dries, and "
+             "that a key cut green would rock in it. The V closes: it is the "
+             "sector angle less the fold, and only the sector shrinks.",
     pages=(
         _p("opener", "Green wood moves, and a split moves least",
            "What drying does to a 45-degree sector, told from the seam.",
