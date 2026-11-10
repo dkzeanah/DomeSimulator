@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "voice_profile": "en-US-AndrewMultilingualNeural",
+  "track": "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-narration.m4a",
+  "clips": [
+    "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-30631225c8\\chapter_01.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-30631225c8\\chapter_02.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-30631225c8\\chapter_03.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-30631225c8\\chapter_04.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-30631225c8\\chapter_05.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-30631225c8\\chapter_06.mp3",
+    "C:\\Users\\Don\\Desktop\\DomeSimulator\\deliverables\\0612-cabin_irori-teaser\\cabin_irori-teaser-voice-en-US-AndrewMultilingualNeural-8-2Hz-0-30631225c8\\chapter_07.mp3"
+  ],
+  "chapter_durations": [
+    4.784,
+    4.016,
+    4.4239999999999995,
+    4.303999999999999,
+    3.4,
+    4.952,
+    6.007999999999999
+  ],
+  "speech_durations": [
+    3.384,
+    2.616,
+    3.024,
+    2.904,
+    1.656,
+    3.552,
+    4.608
+  ],
+  "chapter_starts": [
+    0.0,
+    4.784,
+    8.8,
+    13.224,
+    17.528,
+    20.927999999999997,
+    25.879999999999995
+  ],
+  "speech_delay": 0.55,
+  "review_words_sha256": "3a14e110abcc480bd47771e28327ec88433cc2aeac27dd26f45376bfe05781ef"
+}

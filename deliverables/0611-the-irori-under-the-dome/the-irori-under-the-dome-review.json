@@ -1,0 +1,171 @@
+{
+  "schema": "domesim.video-source.v1",
+  "created": "2026-11-10T12:06:44.119506+00:00",
+  "lesson": "cabin_irori",
+  "title": "The Irori: A Sunken Hearth Under the Dome's Apex",
+  "chapters": [
+    {
+      "slug": "purpose",
+      "title": "A fire in the middle of the floor",
+      "narration": [
+        "For centuries, Japanese farmhouses were built around a hole in the floor. The irori is a sunken hearth: a square pit lined with stone, burning charcoal, in the middle of the main room. A dome has its middle exactly where an irori wants to be, straight under the apex. So we put one in the solver's dome and checked what fits and what does not. Most of it fits beautifully. One part does not, and we will show you that number too."
+      ],
+      "start": 0.0,
+      "end": 34.3
+    },
+    {
+      "slug": "hearth",
+      "title": "A square pit, lined with stone",
+      "narration": [
+        "Here is the hearth in plan. A wooden border frames the opening and gives you a ledge for a cup. Inside it, stone lines the pit, and a deep bed of ash fills it. The charcoal sits in the ash. Ash is the insulation: it keeps the heat off the floor beneath and lets you bank the fire for the night. Food can be buried in it to roast, and skewered fish stood up around the coals. Our pit is 0.90 metres across inside, a size we chose for a three-metre dome."
+      ],
+      "start": 34.3,
+      "end": 72.6
+    },
+    {
+      "slug": "hook",
+      "title": "The hook that moves the pot",
+      "narration": [
+        "The pot hangs from a jizaikagi: an iron rod inside a bamboo tube, with a lever that locks it. The lever is often carved as a fish. Lift the kettle and the fish tilts and lets the rod slide; let go and friction holds it. Raise it to simmer, lower it to boil. In a farmhouse it hung from a beam. In the dome it hangs from the apex hub, where every member climbs to. The solver puts the apex 2.96 m (9.7 ft) above the floor, so the hook assembly spans 2.66 m (8.7 ft) from hub to hook."
+      ],
+      "start": 72.6,
+      "end": 114.1
+    },
+    {
+      "slug": "jobs",
+      "title": "Seven jobs for one fire",
+      "narration": [
+        "The irori did six jobs at once. It heated the whole room from the middle. It cooked. At night it was the light. A lattice above it dried clothes, food and firewood. Its coals were kept alive to light everything else, in the days before matches. And it was where the family gathered, every meal and every evening. There was a seventh job, for the building: its warm air dried the timbers, and its smoke coated them. Two of those jobs, light and keeping fire, are done better now by a lamp and a match."
+      ],
+      "start": 114.1,
+      "end": 155.004
+    },
+    {
+      "slug": "seats",
+      "title": "Everyone has a place",
+      "narration": [
+        "Each person had a fixed seat. The yokoza, on the far side from the entry, belonged to the head of the household. The seats on either side went to the head's wife and to guests. The kijiri, nearest the entry, was the lowest seat, often the children's, beside the firewood. Names and customs varied from region to region. A round room with a centre is already arranged for this, and in the dome the entry side is the one facing you."
+      ],
+      "start": 155.004,
+      "end": 188.904
+    },
+    {
+      "slug": "inputs",
+      "title": "Declare the inputs",
+      "narration": [
+        "Before we test the fit, here is what we chose rather than measured. A pit 0.90 metres wide inside, with a 0.10 metre border. 0.75 metres of floor for each person sitting at a side. A seated head height of 0.95 metres. A smoke hood with its underside at 1.80 metres. And for the drying test, outside air at 5 degrees and 90 percent humidity, warmed to 20 degrees. Change any of these and every figure after it changes with it."
+      ],
+      "start": 188.904,
+      "end": 229.688
+    },
+    {
+      "slug": "fit",
+      "title": "What the circle costs the floor",
+      "narration": [
+        "The solver's dome stands on a 10-sided base with 25.7 square metres of floor, 277 square feet. The hearth with its border takes 4.7 percent of that. That is the flattering number. The honest one counts the people: the hearth and four seated people need a square 2.6 metres on a side, 26 percent of the floor, in the middle, where you cannot put a bed. It does fit: the seat backs stop 1.51 metres short of the base ring, and a seated head clears the frame by at least 1.54 metres."
+      ],
+      "start": 229.688,
+      "end": 268.67199999999997
+    },
+    {
+      "slug": "dry",
+      "title": "Warm air dries the frame",
+      "narration": [
+        "The article says the irori's warm air lowered the moisture in the house's wood and slowed decay. That part we can work out. Outside air at 5 degrees and 90 percent humidity, warmed to 20 degrees with no water added, falls to 34 percent. The Wood Handbook's equilibrium formula says wood left in the cold, damp air settles near 21 percent moisture, and in the warmed air near 7 percent. Decay fungi need wet wood, so that is the right direction by a long way. It is where the wood ends up after weeks, not how fast it gets there."
+      ],
+      "start": 268.67199999999997,
+      "end": 310.17199999999997
+    },
+    {
+      "slug": "hidana",
+      "title": "The rack overhead",
+      "narration": [
+        "Above many irori hung a wooden lattice called the hidana. Clothes, food and green wood dried on it in the rising heat, and it spread out sparks before they reached the roof. The dome has a ready place to hang one. The ring of hubs just below the apex is directly above the hearth, so four cords to four of those hubs carry the lattice level, out of a standing person's way. Nothing on it should be anywhere near the coals, and nothing should drip into them."
+      ],
+      "start": 310.17199999999997,
+      "end": 346.472
+    },
+    {
+      "slug": "smoke",
+      "title": "What the smoke did for a thatched roof",
+      "narration": [
+        "The article makes a second claim about the building: tar in the smoke soaked into the beams and thatch and helped keep insects and water out. That is the source's claim, not something this film has tested. It also names the cost. The smoke filled the house and caused eye disease and other illness. Watch where the smoke goes in a dome. A thatched roof leaks smoke everywhere. A dome concentrates it under the apex, the one place this book has worked hardest to seal."
+      ],
+      "start": 346.472,
+      "end": 381.972
+    },
+    {
+      "slug": "co",
+      "title": "The number that argues against it",
+      "narration": [
+        "Here is the number that argues against it. The solver's dome holds 47 cubic metres of air, 1,674 cubic feet. A farmhouse with an irori was tall, open to its roof, and leaky by design. This book spends whole chapters making the dome tight. Charcoal burns without much visible smoke, but it makes carbon monoxide, which you cannot see or smell, and burning charcoal in a closed room is a known cause of carbon monoxide poisoning. So, plainly: do not burn an open charcoal irori in a sealed dome."
+      ],
+      "start": 381.972,
+      "end": 421.364
+    },
+    {
+      "slug": "flue",
+      "title": "Keep the circle, give the fire a chimney",
+      "narration": [
+        "The answer keeps everything people loved about the irori and removes the smoke. A steel hood over the pit, its underside 1.80 metres up, and a flue straight up through the apex: 1.16 m (3.8 ft) of pipe from hood to hub before it leaves the shell. The apex is already the dome's one designed penetration, the same exit this book gives a wood stove. Use a listed appliance or a design an inspector will approve, follow its clearances to the timber, give it a supply of combustion air, and fit a carbon monoxide alarm. The hook can hang beside the hood or from it."
+      ],
+      "start": 421.364,
+      "end": 464.864
+    },
+    {
+      "slug": "under",
+      "title": "A pit in a raised floor",
+      "narration": [
+        "The Cabin World's floor stands on piers, with air beneath it, so the pit cannot be dug into the ground. It becomes a box framed into the floor, hanging between the joists. Ours is 0.30 metres deep, which leaves room under the pad. It must be noncombustible and separated from the framing, holding the ash bed that keeps the heat from the floor. How it is lined, how far it stands off the joists and how it is supported are set by the appliance's instructions and your local code, not by this film."
+      ],
+      "start": 464.864,
+      "end": 503.56399999999996
+    },
+    {
+      "slug": "close",
+      "title": "A circle with a chimney",
+      "narration": [
+        "So the irori and the dome agree about almost everything. Both put the fire in the middle. The hook hangs from the apex, the drying rack from the ring below it, and four people sit round it with room behind them. It costs 26 percent of the floor, and that is the price of the gathering. What does not carry over is the open smoke. Give the fire a hood, a flue and an alarm, and you keep the oldest arrangement of a home: everyone facing the same fire."
+      ],
+      "start": 503.56399999999996,
+      "end": 540.664
+    },
+    {
+      "slug": "cta_share",
+      "title": "Do the one thing",
+      "narration": [
+        "If any of this was worth your time, send it to one person who can",
+        "carry it further than I can. That is the whole ask. One share from",
+        "somebody with reach does more for this than a month of me in a field",
+        "with a chainsaw."
+      ],
+      "start": 540.664,
+      "end": 559.512
+    },
+    {
+      "slug": "outro",
+      "title": "Follow the experiments",
+      "narration": [
+        "Everything is documented, including the parts that failed.",
+        "Instagram, Donovan Zeanah. Facebook dot com slash zeanah. TikTok,",
+        "short circuiter five. GitHub dot com slash d k zeanah. Zeanah Lab dot",
+        "com and a Kickstarter for Frankendome are both coming soon."
+      ],
+      "start": 559.512,
+      "end": 580.688
+    }
+  ],
+  "render_config": {
+    "orientation": "landscape",
+    "compose_segments": true,
+    "size": "1920x1080",
+    "fps": 30,
+    "voice": "en-US-AndrewMultilingualNeural",
+    "voice_rate": "+0%",
+    "voice_pitch": "+0Hz",
+    "voice_volume": "+0%",
+    "video_encoder": "libx264",
+    "video_preset": "medium",
+    "no_narration": false
+  }
+}
