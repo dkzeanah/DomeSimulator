@@ -2304,10 +2304,294 @@ PART_STEMCELL = Part(
     chapters=(CH_STEMCELL, CH_CORE, CH_CORE_BUILD, CH_SEEDS, CH_TEN, CH_ARTICLE))
 
 
+# ----------------------------------------------------------------------
+# PART 16 -- The wedge as a structural member
+#
+# Everything before this builds one dome. This part is the idea the dome
+# is one instance of: the split sector is not a cheaper stud, it is a
+# radial structural blade, and the same member makes beams, columns,
+# trusses and shells once you stop asking it to be a rectangle. Its
+# numbers are the dome's own section engine (wedge_why_facts.Section),
+# read at equal area across the split families, and it ends where honesty
+# makes it end -- a second moment is geometry, not a stamped load.
+# ----------------------------------------------------------------------
+
+CH_WHY2V = Chapter(
+    number=88, ref="why2v", strand="explain",
+    title="Why a Two-Frequency Dome",
+    deck="Of all the buildings a pile of split wedges could frame, the "
+         "two-frequency geodesic hemisphere is the one that asks the wedge for "
+         "exactly what it is good at and forgives everything it is not",
+    derives=("wedge_book.numbers.quantities",
+             "two_v_demo.wedge_geometry.member_classes"),
+    pages=(
+        _p("opener", "Why a two-frequency dome",
+           "Before the deep dive into the member, the shape it is a member of: "
+           "why 2V, specifically, is the wedge's natural home.", words=460,
+           figures=(_f("standard-dome",
+                       "The reference build: a two-frequency hemisphere, framed "
+                       "from split wedges."),),
+           beats=("a frequency is how many times each face of the base solid is "
+                  "subdivided",
+                  "1V is too coarse to be a dome; 3V and up multiply lengths, "
+                  "angles and joints",
+                  "2V is the coarsest shape that is still a usable dome",
+                  "and coarse is exactly what a split, variable stick wants")),
+        _p("text", "Two lengths, and a tree makes two lengths",
+           "Why the 2V's two-chord frame matches what a bucked log produces.",
+           words=460,
+           beats=("a 2V hemisphere has exactly two edge lengths, A and B",
+                  "the whole frame is two cut lengths, repeated",
+                  "a log bucked to one section length gives near-identical "
+                  "struts -- two sorted lengths, not forty")),
+        _p("text", "The shell loads the blade where the blade is strong",
+           "The dome asks for axial work; the wedge is an axial member.",
+           words=440,
+           beats=("Part 1: a dome resolves its loads axially",
+                  "the wedge is a deep blade -- superb axially, weak across",
+                  "point it inward and its depth is the dome's own radius",
+                  "the triangulated shell braces the weak axis for free")),
+        _p("text", "The sector is the seam budget",
+           "The eighth-of-a-log angle and the 2V's seams are the same number.",
+           words=440,
+           beats=("an A seam folds and leaves a gap; a B seam folds and leaves "
+                  "a gap",
+                  "each fold plus its gap sums to the sector angle",
+                  "the angle split out of the tree is the angle the 2V seam "
+                  "needs")),
+        _p("text", "Coarse enough to forgive a split stick",
+           "Why a low frequency is a feature, not a compromise, for this wood.",
+           words=360,
+           beats=("few, large joints carry more tolerance than many small ones",
+                  "a natural wedge is variable; 2V tolerates variation best",
+                  "finer frequencies demand an accuracy the wood will not give")),
+    ))
+
+CH_FAMILIES = Chapter(
+    number=89, ref="families", strand="explain",
+    title="Area Was Never the Argument",
+    deck="Hold the wood constant and split it finer, and the eighth, "
+         "sixteenth, thirty-second and sixty-fourth of a log are not four "
+         "sizes of one stick -- they are four shapes, and the fine one is a "
+         "blade",
+    derives=("two_v_demo.wedge_grammar.equal_area_families",),
+    pages=(
+        _p("opener", "Area was never the argument",
+           "Pick up Chapter 15's crossover and push it: the sector's shape, "
+           "not its quantity of wood, is the whole point.", words=420,
+           figures=(_f("grammar-families",
+                       "The same two-by-four's worth of wood, split four "
+                       "ways. The finer the split, the deeper and narrower "
+                       "the blade."),),
+           beats=("area decides axial load; a beam is decided by I and S",
+                  "hold the area at one dressed two-by-four",
+                  "split W8, W16, W32, W64 and compare the shapes",
+                  "strong-axis stiffness climbs, weak-axis stiffness falls")),
+        _p("worked", "The family, at equal area",
+           "The equal-area table, every number from the same Section the "
+           "dome is solved with.", words=520),
+        _p("text", "Why a blade is not a defect",
+           "What a deep narrow section is good at, and what stabilises the "
+           "direction it is bad at.", words=420,
+           beats=("a W32 has nearly three times the stud's strong-axis I",
+                  "and under half its weak-axis I",
+                  "so a fine wedge is a flange, a rib, a lamella -- not a "
+                  "little joist")),
+    ))
+
+CH_GRAIN = Chapter(
+    number=90, ref="grain", strand="explain",
+    title="Follow the Grain",
+    deck="Wood is three different materials along three axes, and a radial "
+         "split is the one conversion that keeps all three on the member "
+         "instead of erasing them into a rectangle",
+    derives=("two_v_demo.wedge_grammar.ORTHOTROPY_AXES",
+             "two_v_demo.wedge_grammar.three_gate"),
+    pages=(
+        _p("opener", "Three axes, not one",
+           "Longitudinal, radial, tangential -- and why the saw that makes a "
+           "wedge preserves them.", words=380,
+           beats=("L is along the tree, stiffest and strongest",
+                  "R is pith to bark -- the sector's depth",
+                  "T is round the rings -- the sector's width")),
+        _p("text", "Area is inventory, not equivalence",
+           "Replace one metric with three: how much wood, how it is "
+           "distributed, and whether a connector can land on it.", words=460,
+           beats=("area tells you the axial job it can do",
+                  "I and S tell you how it bends",
+                  "the face width tells you whether a joint can reach it",
+                  "so 'one-point-four two-by-fours by area' is not a grade")),
+    ))
+
+CH_CONNECT = Chapter(
+    number=91, ref="connect", strand="explain",
+    title="The Wedges Supply Material; the Connections Make the Structure",
+    deck="A bundle is not a beam until something carries the shear between "
+         "its parts -- and the gap between a stack that slides and a stack "
+         "that does not is the whole value of the joint",
+    derives=("two_v_demo.wedge_grammar.lamina_stack_bounds",
+             "two_v_demo.wedge_grammar.separated_chord_bounds"),
+    pages=(
+        _p("opener", "Add wood, add a load path",
+           "The law this part turns on, stated as plainly as Chapter 15's "
+           "seam theorem.", words=420,
+           figures=(_f("grammar-composite",
+                       "The same wood, loose and glued. For planks the glued "
+                       "beam is n-squared stiffer; a separated chord does "
+                       "better still."),),
+           beats=("loose, n members are n times one member's stiffness",
+                  "glued, the parallel-axis theorem makes it n-cubed",
+                  "so the two limits differ by n-squared",
+                  "the real member lives between them, set by the connector")),
+        _p("worked", "The two limits, computed",
+           "Stacked planks and separated chords, each at its loose and its "
+           "composite bound.", words=520),
+        _p("text", "Reinforce where the demand is",
+           "The recursive move: add material where the force is, and the "
+           "load path to activate it, not six feet of extra wood.", words=420),
+    ))
+
+CH_DYAD = Chapter(
+    number=92, ref="dyad", strand="howto",
+    title="Mirror the Wedge, Reverse the Taper",
+    deck="One sector is a part; two opposing sectors, one turned end for "
+         "end, are a structural unit -- symmetric, taper cancelled, with two "
+         "broad faces a connector can hold",
+    derives=("two_v_demo.wedge_grammar.opposite_mate",),
+    pages=(
+        _p("opener", "A part, and a primitive",
+           "Why a single sector is not symmetric about the way it bends, and "
+           "what to do about it.", words=380,
+           figures=(_f("grammar-dyad",
+                       "The dyad: a sector and its mate from the far side of "
+                       "the log, reversed fat-to-thin so the pair runs "
+                       "parallel."),),
+           beats=("a sector's point and bark lie at different distances from "
+                  "its neutral axis",
+                  "mirror it and the assembly is symmetric")),
+        _p("worked", "The mate, and the reversal",
+           "Pair sector i with i plus half the split count, then turn one end "
+           "for end so the taper averages out.", words=420,
+           beats=("the opposite mate is i + N/2, modulo N",
+                  "reversing fat-to-thin cancels the lengthwise variation",
+                  "keep the original index so the mate is always findable")),
+    ))
+
+CH_ARCHETYPES = Chapter(
+    number=93, ref="archetypes", strand="explain",
+    title="What the Shape Wants to Become",
+    deck="A handful of assemblies that fit the wood rather than fight it: "
+         "the axial stick, the separated-chord beam, the hollow column, the "
+         "box, the space frame and the rib shell",
+    derives=("two_v_demo.wedge_grammar.separated_chord_bounds",),
+    pages=(
+        _p("opener", "Six things, not six hundred",
+           "A small set of archetypes the sector geometry asks for.",
+           words=420,
+           figures=(_f("grammar-archetypes",
+                       "The separated-chord beam, the hollow column and the "
+                       "box, each drawn from the real split sections."),),
+           beats=("single sectors go where the load is axial",
+                  "put the depth away from the neutral axis for bending",
+                  "close the section into a box or ring for torsion")),
+        _p("text", "The separated-chord beam",
+           "Opposing sectors as chords, a light web between -- the research "
+           "precedent's own topology.", words=420),
+        _p("text", "The hollow column and the box",
+           "Spread the material round a void: more buckling resistance, and a "
+           "service core up the middle.", words=420),
+    ))
+
+CH_NODES = Chapter(
+    number=94, ref="nodes", strand="explain",
+    title="Standardize the Node, Not the Tree",
+    deck="Trying to machine every wedge identical throws away the whole "
+         "advantage; standardize the five interfaces instead, and let the "
+         "members stay variable",
+    derives=("two_v_demo.wedge_grammar.separated_chord_bounds",
+             "two_v_demo.wedge_grammar.DYAD"),
+    pages=(
+        _p("opener", "The interface is the product",
+           "Why the repeatable part is the fitting, not the stick.",
+           words=400,
+           beats=("a natural wedge is variable; a shoe is not",
+                  "connect shoe to shoe, not arbitrary wood face to face")),
+        _p("text", "Five fittings",
+           "End shoe, side saddle, shear spline, bundle collar, node hub -- "
+           "what each one does and where it goes.", words=520,
+           beats=("the two flat radial faces are where a connector should "
+                  "land, not the point",
+                  "the spline is what turns a pair of chords composite",
+                  "the collar holds a bundle's cross-section without machining "
+                  "the whole member")),
+    ))
+
+CH_PITH = Chapter(
+    number=95, ref="pith", strand="explain",
+    title="Keep the Point, or Cut It Off",
+    deck="Every full sector runs to the pith, and the pith is the youngest, "
+         "weakest, most-checked wood -- so the best member may be the one "
+         "with its point removed",
+    derives=("two_v_demo.wedge_geometry.split_section",
+             "two_v_demo.wedge_grammar.SOURCES"),
+    pages=(
+        _p("opener", "The point is the weakest wood",
+           "Juvenile core, drying checks, and the knife-edge tip.", words=420,
+           beats=("the apex is the extreme fibre and the juvenile heart at "
+                  "once",
+                  "cited: juvenile wood can cost up to a third of tested "
+                  "strength in loblolly pine")),
+        _p("text", "The annular sector, and the member's identity",
+           "Truncate the point to a flat datum, and carry each member's "
+           "origin with it.", words=460,
+           beats=("removing the point changes A, I, S -- a hypothesis to "
+                  "test, not a free gain",
+                  "a traceable member record keeps tree, section, index and "
+                  "mate usable information",
+                  "sort defects to the job: long and clear to chords, short "
+                  "and knotty to triangulated frames")),
+    ))
+
+CH_RATING = Chapter(
+    number=96, ref="rating", strand="reference",
+    title="A Second Moment Is Not a Load",
+    deck="Everything in this part is geometry. A stamped working load comes "
+         "from testing the primitive, then the node, then the bundle, then "
+         "the building -- and the book says so rather than pretending",
+    derives=("two_v_demo.wedge_grammar.SOURCES",),
+    pages=(
+        _p("opener", "Where the honesty is",
+           "Why a computed section is not an allowable stress, and what the "
+           "difference costs you in process.", words=420,
+           beats=("these numbers carry no species, grade, knot or moisture",
+                  "a crossover diameter is geometry; a working load is a test")),
+        _p("steps", "From a shape to a stamp",
+           "The development path, in order: primitive, connection, recursive "
+           "operators, component families, then design values.", words=520),
+        _p("safety", "What this part rests on",
+           "The cited precedent, each line with the caveat its own authors "
+           "put on it, and the code route a new system actually takes.",
+           words=360),
+    ))
+
+PART_GRAMMAR = Part(
+    number=16, title="The Wedge as a Structural Member",
+    epigraph="The dome is one building the wedge can make. The member is more "
+             "general than the building.",
+    promise="Why the two-frequency dome is the member's natural home; then "
+            "what a split sector is as structure -- a deep blade, not a cheaper "
+            "stud -- the beams, columns and frames its shape wants to become, "
+            "the connection that turns a bundle into one member, the pairing "
+            "that cancels the tree's variation, and the honest road from a "
+            "second moment to a stamped load.",
+    chapters=(CH_WHY2V, CH_FAMILIES, CH_GRAIN, CH_CONNECT, CH_DYAD,
+              CH_ARCHETYPES, CH_NODES, CH_PITH, CH_RATING))
+
+
 PARTS: tuple[Part, ...] = (PART_RIGHT, PART_MATHS, PART_STICK, PART_PANEL,
                            PART_SKIN, PART_WATER, PART_FLOOR, PART_ECON, PART_NETWORK, PART_SHAPES,
                            PART_CATALOGUE, PART_STEMCELL, PART_VARIATIONS,
-                           PART_STYLE, PART_TOOLS)
+                           PART_STYLE, PART_TOOLS, PART_GRAMMAR)
 
 BOOK = Book(title=TITLE, subtitle=SUBTITLE, front=FRONT, parts=PARTS,
             back=BACK)

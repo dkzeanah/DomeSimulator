@@ -19,6 +19,7 @@ from .lesson_cell_wall import CABIN_CELL_WALL_LESSON
 from .lesson_sky_web import SKY_WEB_LESSON
 from .lesson_every_piece import EVERY_PIECE_LESSON
 from .lesson_wedge_beyond import WEDGE_BEYOND_LESSON
+from .lesson_wedge_grammar import WEDGE_GRAMMAR_LESSON
 from .lesson_staple import STAPLE_LESSON
 from .lesson_promo import PROMO_LESSON
 from .lesson_triangle_fill import TRIANGLE_FILL_LESSON
@@ -85,7 +86,8 @@ LESSONS: dict[str, Lesson] = {
                    CABIN_SEAM_CLIMATE_LESSON, CABIN_PANEL_METHOD_LESSON,
                    CABIN_SHOP_LESSON, CABIN_CELL_WALL_LESSON,
                    SKY_WEB_LESSON, EVERY_PIECE_LESSON, CABIN_STYLES_LESSON,
-                   WEDGE_BEYOND_LESSON, STAPLE_LESSON, PROMO_LESSON,
+                   WEDGE_BEYOND_LESSON, WEDGE_GRAMMAR_LESSON,
+                   STAPLE_LESSON, PROMO_LESSON,
                    TRIANGLE_FILL_LESSON, SKETCH_GPT_EPISODE)
 }
 

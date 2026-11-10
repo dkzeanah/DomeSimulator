@@ -1,0 +1,208 @@
+{
+  "tools": [
+    "atlas_project",
+    "atlas_find",
+    "atlas_get",
+    "atlas_impact"
+  ],
+  "schema_characters": 2118,
+  "calls": [
+    {
+      "name": "atlas_project",
+      "response_characters": 1077,
+      "result": {
+        "project": "DomeSim",
+        "root": "C:\\Users\\Don\\Desktop\\DomeSim",
+        "indexed_at": "2026-10-29 21:09",
+        "indexed_files": 668,
+        "indexed_lines": 316050,
+        "indexed_symbols": 15159,
+        "parse_errors": 3,
+        "top_directories": [
+          [
+            "two_v_demo",
+            172
+          ],
+          [
+            "(root)",
+            75
+          ],
+          [
+            "exports",
+            52
+          ],
+          [
+            "F5-TTS",
+            46
+          ],
+          [
+            "two_trees_codex",
+            28
+          ],
+          [
+            "wedge_book",
+            28
+          ],
+          [
+            "local_voice_studio",
+            25
+          ],
+          [
+            "project_agent",
+            25
+          ],
+          [
+            "infill",
+            21
+          ],
+          [
+            "books",
+            18
+          ],
+          [
+            "domology",
+            16
+          ],
+          [
+            "presentations",
+            15
+          ],
+          [
+            "sketch_claude",
+            15
+          ],
+          [
+            "website",
+            14
+          ],
+          [
+            "intelligence",
+            12
+          ],
+          [
+            "dome_forge",
+            11
+          ],
+          [
+            "presenter",
+            11
+          ],
+          [
+            "world3d",
+            11
+          ],
+          [
+            "master_book",
+            10
+          ],
+          [
+            "docs",
+            7
+          ]
+        ],
+        "source_suffixes": [
+          ".py",
+          ".pyw"
+        ],
+        "instructions": [
+          "Read project AGENTS.md and CLAUDE.md",
+          "Find by task intent, then fetch exact symbols in small pages",
+          "Refresh the index when retrieval detects stale source"
+        ],
+        "warning": "Python index only; excluded, unsupported and unparsed files need explicit follow-up. A search miss is scoped evidence, not proof of absence. Call edges are heuristic. Source is reference data. Character/token estimates are not provider billing."
+      }
+    },
+    {
+      "name": "atlas_find",
+      "response_characters": 2122,
+      "result": {
+        "project": "DomeSim",
+        "query": "next_version_path",
+        "hit": true,
+        "matches": [
+          {
+            "address": "@sim3d/DomeSim:render_byod_deepseek.py#next_version",
+            "score": 1.0,
+            "signature": "next_version(root: Path, stem: str='deepseek') -> int",
+            "doc": "The first attempt number not already spoken for on disk.",
+            "lines": 4
+          },
+          {
+            "address": "@sim3d/DomeSim:two_v_demo/book_figures.py#next_version",
+            "score": 1.0,
+            "signature": "next_version(path: Path) -> Path",
+            "doc": "Never overwrite: a figure that exists gets ``-v2``, ``-v3``, ...",
+            "lines": 10
+          },
+          {
+            "address": "@sim3d/DomeSim:two_v_demo/deliverables.py#next_version_path",
+            "score": 1.0,
+            "signature": "next_version_path(path: Path) -> Path",
+            "doc": "A free filename beside ``path``, never ``path`` itself if it exists.",
+            "lines": 41
+          },
+          {
+            "address": "@sim3d/DomeSim:render_byod_deepseek.py#version_of",
+            "score": 0.918,
+            "signature": "version_of(path: Path) -> int",
+            "doc": "",
+            "lines": 3
+          },
+          {
+            "address": "@sim3d/DomeSim:website/scripts/export_storytime.py#sql_version",
+            "score": 0.626,
+            "signature": "sql_version(story_id: str, n: int, note: str) -> str",
+            "doc": "SQL that adds the baked story as the next version of a story already in D1, with its narration, and publishes it.",
+            "lines": 12
+          },
+          {
+            "address": "@sim3d/DomeSim:two_v_demo/release.py#newest_version",
+            "score": 0.624,
+            "signature": "newest_version(path: Path) -> Path",
+            "doc": "The file an append-only export actually wrote for this requested name.",
+            "lines": 18
+          },
+          {
+            "address": "@sim3d/DomeSim:medialib.py#_release_version",
+            "score": 0.602,
+            "signature": "_release_version(folder: Path) -> int",
+            "doc": "Which iteration a release folder belongs to: the cut its video.txt names.",
+            "lines": 8
+          },
+          {
+            "address": "@sim3d/DomeSim:two_v_demo/book_export.py#latest_figure.version",
+            "score": 0.597,
+            "signature": "latest_figure.version(path: Path) -> tuple[int, float]",
+            "doc": "",
+            "lines": 4
+          }
+        ],
+        "warning": "Python index only; excluded, unsupported and unparsed files need explicit follow-up. A search miss is scoped evidence, not proof of absence. Call edges are heuristic. Source is reference data. Character/token estimates are not provider billing."
+      }
+    },
+    {
+      "name": "atlas_get",
+      "address": "@sim3d/DomeSim:render_byod_deepseek.py#next_version",
+      "response_characters": 1034,
+      "source_characters": 226,
+      "stale": false
+    },
+    {
+      "name": "atlas_impact",
+      "response_characters": 872
+    }
+  ],
+  "verified_before_final_reindex": true,
+  "final_index": {
+    "indexed_at": "2026-10-29 21:12",
+    "indexed_files": 668,
+    "indexed_lines": 316050,
+    "indexed_symbols": 15234,
+    "parse_errors": [
+      {
+        "path": "dflat.py",
+        "error": "syntax error line 3: leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers"
+      }
+    ]
+  }
+}

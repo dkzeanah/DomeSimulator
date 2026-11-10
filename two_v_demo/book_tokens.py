@@ -223,6 +223,13 @@ def pixel_facts() -> dict:
     }
 
 
+def _distinct_checked(distinct: int) -> int:
+    """Chapter 87's title says the count in words; keep the two together."""
+    assert round(distinct / 1e9) == 35, (
+        f"{distinct:,} distinct shells: retitle chapter 87, 'Thirty-Five Billion Shells'")
+    return distinct
+
+
 @lru_cache(maxsize=1)
 def catalogue_facts() -> dict:
     """Every dome the tool can build, counted from the tool's own menus.
@@ -244,7 +251,11 @@ def catalogue_facts() -> dict:
         shell *= count
     fitout = len(menus["partitions"].values) * (
         len(menus["sections"].values) ** cf.SECTION_SLOTS)
-    assert shell == 32105299968, shell
+    # 24 Oct 2026: the Creator gained 1/8 and 1/16 wedge struts (8 -> 10 shapes),
+    # three wedge-cut panels (16 -> 19) and an alternating curve (2 -> 3).
+    # The all-domes film still shows the earlier 32,105,299,968; it is in the
+    # re-render queue.
+    assert shell == 71484456960, shell
     assert fitout == 4398046511104, fitout
     return {
         "menus": len(menus),
@@ -257,7 +268,7 @@ def catalogue_facts() -> dict:
         "dial_settings": cf.dial_permutations(),
         "shell": shell,
         "fitout": fitout,
-        "distinct": cf.distinct_shells(),
+        "distinct": _distinct_checked(cf.distinct_shells()),
         "years": cf.years_to_watch(),
         "seconds": 3.0,
         "inert_share": 1.0 - cf.distinct_shells() / shell,

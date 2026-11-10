@@ -356,6 +356,14 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "method beside it, the buildings wedges suit and the crews that "
                 "could build them.",
                 compose=True),
+    Deliverable("cabin_wedge_grammar", "the-wedge-as-a-structural-member.mp4",
+                "The film of Part 16 of the 40 Hour Cabin, in the Cabin World: why a "
+                "two-frequency dome is the wedge's natural home, then the split sector "
+                "as a general structural member -- the equal-area blade, the connection "
+                "law, the reversed-taper dyad, the beam, hollow column and box built at "
+                "true proportion, which split suits which job, and the honest closer: a "
+                "second moment is not a load. Every figure from two_v_demo.wedge_grammar.",
+                compose=True),
     Deliverable("cabin_triangle_fill", "closing-the-triangle.mp4",
                 "Filling a dome triangle with pairs of wedges, shown: one wedge end-on, a pair "
                 "sliding from nested to bowtie with its reach measured, a true-size triangle "

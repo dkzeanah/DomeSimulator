@@ -4,6 +4,17 @@ Claude Code reads this file automatically at the start of every session in this
 directory, so anything written here applies without being repeated. Add rules by editing
 this file; there is no GUI step and nothing to enable.
 
+## Atlas context for code work
+
+The project MCP server `atlas` provides `atlas_project`, `atlas_find`, `atlas_get`
+and `atlas_impact`. Start with project status, search by task intent, and retrieve
+only the relevant symbol pages and callers. Follow `next_start_line` for more;
+refresh the index when a stale-source result is returned. Do not paste the entire
+project index into each request. See `docs/atlas-workflow.md` for setup and limits.
+The current symbol index covers Python, not every language or document. Use a
+bounded native read when evidence is missing, including imports/module-level code,
+and state the gap. Recorded call edges are hints, not proof that a refactor is safe.
+
 ## Never overwrite a deliverable
 
 **Rendered output is append-only.** A video, a fabrication package or an export that
