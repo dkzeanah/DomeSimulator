@@ -347,7 +347,9 @@
  },
  "trial": [
   "3v5-8-4.88m-door1-win5-sky1",
-  "2v1-2-4.00m-door1-win3-sky0"
+  "2v1-2-4.00m-door1-win3-sky0",
+  "k-wedge",
+  "k-stove"
  ],
  "designs": {
   "2v1-2-4.00m-door1-win0-sky1": {
@@ -10429,6 +10431,826 @@
    "floor_m2": 49.74,
    "height_m": 5.247,
    "bytes": 915007
+  },
+  "k-wedge": {
+   "spec": {
+    "kind": "wedge",
+    "diameter_m": 5.913119999999998,
+    "log_m": 0.30479999999999996,
+    "log_len_m": 4.876799999999999,
+    "orientation": "point_dome_in",
+    "seam_join": "raw_trapezoid",
+    "pattern": "uniform",
+    "ground_in": "auto",
+    "keys": true,
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge dome, 19.4 ft",
+   "kind": "wedge",
+   "bytes": 526823
+  },
+  "k-wedge-alt": {
+   "spec": {
+    "kind": "wedge",
+    "diameter_m": 5.913119999999998,
+    "log_m": 0.30479999999999996,
+    "log_len_m": 4.876799999999999,
+    "orientation": "point_dome_in",
+    "seam_join": "raw_trapezoid",
+    "pattern": "alternate_ground",
+    "ground_in": "auto",
+    "keys": true,
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge dome, 19.4 ft",
+   "kind": "wedge",
+   "bytes": 535685
+  },
+  "k-wedge-big": {
+   "spec": {
+    "kind": "wedge",
+    "diameter_m": 7.924799999999999,
+    "log_m": 0.4064,
+    "log_len_m": 4.876799999999999,
+    "orientation": "point_dome_in",
+    "seam_join": "raw_trapezoid",
+    "pattern": "uniform",
+    "ground_in": "auto",
+    "keys": true,
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge dome, 26.0 ft",
+   "kind": "wedge",
+   "bytes": 530692
+  },
+  "k-zome": {
+   "spec": {
+    "kind": "zome",
+    "log_m": 0.30479999999999996,
+    "side_m": 0.0,
+    "hand": "ccw",
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge zome",
+   "kind": "zome",
+   "bytes": 165482
+  },
+  "k-stove": {
+   "spec": {
+    "kind": "stove",
+    "frequency": 2,
+    "cut": "1/2",
+    "size_by": "edge",
+    "edge_m": 0.4572,
+    "diameter_m": 0.8635999999999999,
+    "plate_m": 0.00635,
+    "flue_m": 0.15239999999999998,
+    "legs_m": 0.15239999999999998,
+    "hearth": true,
+    "room": true,
+    "people": true
+   },
+   "title": "2V steel dome wood stove",
+   "kind": "stove",
+   "bytes": 154599
+  },
+  "k-stove-1v": {
+   "spec": {
+    "kind": "stove",
+    "frequency": 1,
+    "cut": "3/4",
+    "size_by": "edge",
+    "edge_m": 0.4572,
+    "diameter_m": 0.8635999999999999,
+    "plate_m": 0.00635,
+    "flue_m": 0.15239999999999998,
+    "legs_m": 0.15239999999999998,
+    "hearth": true,
+    "room": true,
+    "people": true
+   },
+   "title": "1V steel dome wood stove",
+   "kind": "stove",
+   "bytes": 120130
+  },
+  "k-tank": {
+   "spec": {
+    "kind": "tank",
+    "frequency": 2,
+    "cut": "1/2",
+    "diameter_m": 2.4383999999999997,
+    "plate_m": 0.004762499999999999,
+    "floor_m": 0.00635,
+    "manway_m": 0.508,
+    "water": true,
+    "people": true
+   },
+   "title": "2V steel dome water tank",
+   "kind": "tank",
+   "bytes": 158644
+  },
+  "k-tank-12": {
+   "spec": {
+    "kind": "tank",
+    "frequency": 3,
+    "cut": "5/8",
+    "diameter_m": 3.6575999999999995,
+    "plate_m": 0.004762499999999999,
+    "floor_m": 0.00635,
+    "manway_m": 0.508,
+    "water": true,
+    "people": true
+   },
+   "title": "3V steel dome water tank",
+   "kind": "tank",
+   "bytes": 264516
   }
- }
+ },
+ "kinds": {
+  "wedge": {
+   "label": "Wedge dome",
+   "form": [
+    {
+     "key": "diameter_m",
+     "label": "Floor diameter",
+     "type": "len",
+     "min": 2.4383999999999997,
+     "max": 12.191999999999998,
+     "step": 0.0254
+    },
+    {
+     "key": "log_m",
+     "label": "Log (small end)",
+     "type": "len",
+     "min": 0.1016,
+     "max": 0.6095999999999999,
+     "step": 0.0127
+    },
+    {
+     "key": "log_len_m",
+     "label": "Log length",
+     "type": "len",
+     "min": 1.2191999999999998,
+     "max": 18.287999999999997,
+     "step": 0.3048
+    },
+    {
+     "key": "pattern",
+     "label": "Panels",
+     "type": "select",
+     "options": [
+      [
+       "uniform",
+       "Every panel the same way"
+      ],
+      [
+       "alternate_ground",
+       "Ground panels alternate in and out (the rest solved)"
+      ],
+      [
+       "alternate_lower",
+       "The lower ring of twenty alternates (the rest solved)"
+      ],
+      [
+       "least_angle",
+       "Every panel solved for the least extra seam angle"
+      ]
+     ]
+    },
+    {
+     "key": "orientation",
+     "label": "Wedge points",
+     "type": "select",
+     "options": [
+      [
+       "point_dome_in",
+       "Point to the dome's centre"
+      ],
+      [
+       "point_panel_in",
+       "Point to the panel's centre"
+      ],
+      [
+       "point_dome_out",
+       "Point to the sky"
+      ],
+      [
+       "point_panel_out",
+       "Point across the seam"
+      ]
+     ]
+    },
+    {
+     "key": "seam_join",
+     "label": "Seams",
+     "type": "select",
+     "options": [
+      [
+       "raw_trapezoid",
+       "Raw faces with a trapezoid key"
+      ],
+      [
+       "shaved_flat",
+       "Shaved faces with a flat key"
+      ]
+     ]
+    },
+    {
+     "key": "ground_in",
+     "label": "Ground panels in",
+     "type": "select",
+     "options": [
+      [
+       "auto",
+       "Whichever is better"
+      ],
+      [
+       "AAA",
+       "The equilateral ground panels point in"
+      ],
+      [
+       "BAB",
+       "The isosceles ground panels point in"
+      ]
+     ]
+    },
+    {
+     "key": "keys",
+     "label": "Seam keys",
+     "type": "check"
+    },
+    {
+     "key": "skin",
+     "label": "Skin",
+     "type": "check"
+    },
+    {
+     "key": "people",
+     "label": "Person",
+     "type": "check"
+    }
+   ]
+  },
+  "zome": {
+   "label": "Wedge zome",
+   "form": [
+    {
+     "key": "log_m",
+     "label": "Log (small end)",
+     "type": "len",
+     "min": 0.15239999999999998,
+     "max": 0.6095999999999999,
+     "step": 0.0127
+    },
+    {
+     "key": "side_m",
+     "label": "Panel side (0: the book's)",
+     "type": "len",
+     "min": 0.0,
+     "max": 1.5,
+     "step": 0.01
+    },
+    {
+     "key": "hand",
+     "label": "Pinwheel",
+     "type": "select",
+     "options": [
+      [
+       "ccw",
+       "Counter-clockwise"
+      ],
+      [
+       "cw",
+       "Clockwise"
+      ]
+     ]
+    },
+    {
+     "key": "skin",
+     "label": "Skin",
+     "type": "check"
+    },
+    {
+     "key": "people",
+     "label": "Person",
+     "type": "check"
+    }
+   ]
+  },
+  "panel": {
+   "label": "Framed-panel dome",
+   "form": [
+    {
+     "key": "fc",
+     "label": "Geodesic",
+     "type": "cut",
+     "options": [
+      [
+       "2|1/2",
+       "2V 1/2"
+      ],
+      [
+       "3|5/8",
+       "3V 5/8"
+      ],
+      [
+       "3|1/2",
+       "3V 1/2"
+      ],
+      [
+       "4|1/2",
+       "4V 1/2"
+      ],
+      [
+       "4|5/8",
+       "4V 5/8"
+      ]
+     ]
+    },
+    {
+     "key": "diameter_m",
+     "label": "Diameter",
+     "type": "len",
+     "min": 2,
+     "max": 12,
+     "step": 0.05
+    },
+    {
+     "key": "stick_w_m",
+     "label": "Stick width",
+     "type": "len",
+     "min": 0.015,
+     "max": 0.12,
+     "step": 0.001
+    },
+    {
+     "key": "stick_d_m",
+     "label": "Stick depth",
+     "type": "len",
+     "min": 0.015,
+     "max": 0.2,
+     "step": 0.001
+    },
+    {
+     "key": "riser_m",
+     "label": "Pony wall",
+     "type": "len",
+     "min": 0,
+     "max": 1.5,
+     "step": 0.05
+    },
+    {
+     "key": "skin",
+     "label": "Skin",
+     "type": "select",
+     "options": [
+      [
+       "cabin",
+       "Cabin: plywood and shingles"
+      ],
+      [
+       "clear",
+       "Greenhouse: clear"
+      ],
+      [
+       "none",
+       "None: frame only"
+      ]
+     ]
+    },
+    {
+     "key": "windows",
+     "label": "Windows",
+     "type": "int",
+     "min": 0,
+     "max": 12,
+     "step": 1
+    },
+    {
+     "key": "door",
+     "label": "Door",
+     "type": "check"
+    },
+    {
+     "key": "skylight",
+     "label": "Skylight",
+     "type": "check"
+    },
+    {
+     "key": "stove",
+     "label": "Stove",
+     "type": "check"
+    },
+    {
+     "key": "porch",
+     "label": "Porch",
+     "type": "check"
+    },
+    {
+     "key": "furnish",
+     "label": "Furnished",
+     "type": "check"
+    },
+    {
+     "key": "people",
+     "label": "Person",
+     "type": "check"
+    },
+    {
+     "key": "door_w_m",
+     "label": "Door width",
+     "type": "len",
+     "min": 0.6,
+     "max": 1.4,
+     "step": 0.01
+    },
+    {
+     "key": "door_h_m",
+     "label": "Door height",
+     "type": "len",
+     "min": 1.6,
+     "max": 2.4,
+     "step": 0.01
+    }
+   ]
+  },
+  "stove": {
+   "label": "Steel dome wood stove",
+   "form": [
+    {
+     "key": "fc",
+     "label": "Geodesic",
+     "type": "cut",
+     "options": [
+      [
+       "1|3/4",
+       "1V 3/4"
+      ],
+      [
+       "2|1/2",
+       "2V 1/2"
+      ],
+      [
+       "3|1/2",
+       "3V 1/2"
+      ],
+      [
+       "3|5/8",
+       "3V 5/8"
+      ],
+      [
+       "4|1/2",
+       "4V 1/2"
+      ]
+     ]
+    },
+    {
+     "key": "size_by",
+     "label": "Size by",
+     "type": "select",
+     "options": [
+      [
+       "edge",
+       "Largest member (longest plate edge)"
+      ],
+      [
+       "diameter",
+       "Diameter"
+      ]
+     ]
+    },
+    {
+     "key": "edge_m",
+     "label": "Largest member",
+     "type": "len",
+     "min": 0.15,
+     "max": 1.2,
+     "step": 0.0016
+    },
+    {
+     "key": "diameter_m",
+     "label": "Diameter",
+     "type": "len",
+     "min": 0.3,
+     "max": 3.0,
+     "step": 0.01
+    },
+    {
+     "key": "plate_m",
+     "label": "Plate",
+     "type": "len",
+     "min": 0.002,
+     "max": 0.02,
+     "step": 0.0005
+    },
+    {
+     "key": "flue_m",
+     "label": "Flue",
+     "type": "len",
+     "min": 0.075,
+     "max": 0.25,
+     "step": 0.0127
+    },
+    {
+     "key": "legs_m",
+     "label": "Legs",
+     "type": "len",
+     "min": 0.0,
+     "max": 0.6,
+     "step": 0.0127
+    },
+    {
+     "key": "hearth",
+     "label": "Hearth pad",
+     "type": "check"
+    },
+    {
+     "key": "room",
+     "label": "Room",
+     "type": "check"
+    },
+    {
+     "key": "people",
+     "label": "Person",
+     "type": "check"
+    }
+   ]
+  },
+  "tank": {
+   "label": "Steel dome water tank",
+   "form": [
+    {
+     "key": "fc",
+     "label": "Geodesic",
+     "type": "cut",
+     "options": [
+      [
+       "1|3/4",
+       "1V 3/4"
+      ],
+      [
+       "2|1/2",
+       "2V 1/2"
+      ],
+      [
+       "3|1/2",
+       "3V 1/2"
+      ],
+      [
+       "3|5/8",
+       "3V 5/8"
+      ],
+      [
+       "4|1/2",
+       "4V 1/2"
+      ]
+     ]
+    },
+    {
+     "key": "diameter_m",
+     "label": "Diameter",
+     "type": "len",
+     "min": 0.6,
+     "max": 8.0,
+     "step": 0.05
+    },
+    {
+     "key": "plate_m",
+     "label": "Shell plate",
+     "type": "len",
+     "min": 0.002,
+     "max": 0.02,
+     "step": 0.0005
+    },
+    {
+     "key": "floor_m",
+     "label": "Floor plate",
+     "type": "len",
+     "min": 0.002,
+     "max": 0.025,
+     "step": 0.0005
+    },
+    {
+     "key": "manway_m",
+     "label": "Manway",
+     "type": "len",
+     "min": 0.3,
+     "max": 0.8,
+     "step": 0.0127
+    },
+    {
+     "key": "water",
+     "label": "Water",
+     "type": "check"
+    },
+    {
+     "key": "people",
+     "label": "Person",
+     "type": "check"
+    }
+   ]
+  }
+ },
+ "kindPresets": [
+  {
+   "id": "k-wedge",
+   "key": "wedge",
+   "kind": "wedge",
+   "spec": {
+    "kind": "wedge",
+    "diameter_m": 5.913119999999998,
+    "log_m": 0.30479999999999996,
+    "log_len_m": 4.876799999999999,
+    "orientation": "point_dome_in",
+    "seam_join": "raw_trapezoid",
+    "pattern": "uniform",
+    "ground_in": "auto",
+    "keys": true,
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge dome, 19.4 ft",
+   "label": "The Wedge Dome (flagship)",
+   "group": "The wedge method"
+  },
+  {
+   "id": "k-wedge-alt",
+   "key": "wedge-alt",
+   "kind": "wedge",
+   "spec": {
+    "kind": "wedge",
+    "diameter_m": 5.913119999999998,
+    "log_m": 0.30479999999999996,
+    "log_len_m": 4.876799999999999,
+    "orientation": "point_dome_in",
+    "seam_join": "raw_trapezoid",
+    "pattern": "alternate_ground",
+    "ground_in": "auto",
+    "keys": true,
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge dome, 19.4 ft",
+   "label": "Alternating Wedge Dome (in / out panels)",
+   "group": "The wedge method"
+  },
+  {
+   "id": "k-wedge-big",
+   "key": "wedge-big",
+   "kind": "wedge",
+   "spec": {
+    "kind": "wedge",
+    "diameter_m": 7.924799999999999,
+    "log_m": 0.4064,
+    "log_len_m": 4.876799999999999,
+    "orientation": "point_dome_in",
+    "seam_join": "raw_trapezoid",
+    "pattern": "uniform",
+    "ground_in": "auto",
+    "keys": true,
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge dome, 26.0 ft",
+   "label": "Wedge Dome, 26 ft from 16 in logs",
+   "group": "The wedge method"
+  },
+  {
+   "id": "k-zome",
+   "key": "zome",
+   "kind": "zome",
+   "spec": {
+    "kind": "zome",
+    "log_m": 0.30479999999999996,
+    "side_m": 0.0,
+    "hand": "ccw",
+    "skin": false,
+    "people": true
+   },
+   "title": "Wedge zome",
+   "label": "The Wedge Zome",
+   "group": "The wedge method"
+  },
+  {
+   "id": "k-stove",
+   "key": "stove",
+   "kind": "stove",
+   "spec": {
+    "kind": "stove",
+    "frequency": 2,
+    "cut": "1/2",
+    "size_by": "edge",
+    "edge_m": 0.4572,
+    "diameter_m": 0.8635999999999999,
+    "plate_m": 0.00635,
+    "flue_m": 0.15239999999999998,
+    "legs_m": 0.15239999999999998,
+    "hearth": true,
+    "room": true,
+    "people": true
+   },
+   "title": "2V steel dome wood stove",
+   "label": "Dome Wood Stove (18 in largest member)",
+   "group": "All-steel domes"
+  },
+  {
+   "id": "k-stove-1v",
+   "key": "stove-1v",
+   "kind": "stove",
+   "spec": {
+    "kind": "stove",
+    "frequency": 1,
+    "cut": "3/4",
+    "size_by": "edge",
+    "edge_m": 0.4572,
+    "diameter_m": 0.8635999999999999,
+    "plate_m": 0.00635,
+    "flue_m": 0.15239999999999998,
+    "legs_m": 0.15239999999999998,
+    "hearth": true,
+    "room": true,
+    "people": true
+   },
+   "title": "1V steel dome wood stove",
+   "label": "Compact stove: 1V, 18 in plates",
+   "group": "All-steel domes"
+  },
+  {
+   "id": "k-tank",
+   "key": "tank",
+   "kind": "tank",
+   "spec": {
+    "kind": "tank",
+    "frequency": 2,
+    "cut": "1/2",
+    "diameter_m": 2.4383999999999997,
+    "plate_m": 0.004762499999999999,
+    "floor_m": 0.00635,
+    "manway_m": 0.508,
+    "water": true,
+    "people": true
+   },
+   "title": "2V steel dome water tank",
+   "label": "Dome Water Tank, 8 ft",
+   "group": "All-steel domes"
+  },
+  {
+   "id": "k-tank-12",
+   "key": "tank-12",
+   "kind": "tank",
+   "spec": {
+    "kind": "tank",
+    "frequency": 3,
+    "cut": "5/8",
+    "diameter_m": 3.6575999999999995,
+    "plate_m": 0.004762499999999999,
+    "floor_m": 0.00635,
+    "manway_m": 0.508,
+    "water": true,
+    "people": true
+   },
+   "title": "3V steel dome water tank",
+   "label": "Dome Water Tank, 12 ft 3V 5/8",
+   "group": "All-steel domes"
+  }
+ ],
+ "packs": {
+  "k-wedge": {
+   "name": "wedge-dome-19-4-ft-fabrication.zip",
+   "bytes": 440803
+  },
+  "k-wedge-alt": {
+   "name": "wedge-dome-19-4-ft-fabrication.zip",
+   "bytes": 451858
+  },
+  "k-wedge-big": {
+   "name": "wedge-dome-26-0-ft-fabrication.zip",
+   "bytes": 443750
+  },
+  "k-zome": {
+   "name": "wedge-zome-fabrication.zip",
+   "bytes": 51533
+  },
+  "k-stove": {
+   "name": "2v-steel-dome-wood-stove-fabrication.zip",
+   "bytes": 52132
+  },
+  "k-stove-1v": {
+   "name": "1v-steel-dome-wood-stove-fabrication.zip",
+   "bytes": 40600
+  },
+  "k-tank": {
+   "name": "2v-steel-dome-water-tank-fabrication.zip",
+   "bytes": 60843
+  },
+  "k-tank-12": {
+   "name": "3v-steel-dome-water-tank-fabrication.zip",
+   "bytes": 108291
+  }
+ },
+ "default": "k-wedge"
 }

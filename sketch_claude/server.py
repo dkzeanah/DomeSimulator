@@ -2,8 +2,13 @@
 
     GET  /                       the app
     GET  /static/<file>          its script, styles and three.js
-    GET  /api/defaults           the default spec, the presets and the declared inputs
-    POST /api/model              {spec} -> every piece's geometry, and the tables
+    GET  /api/defaults           the kinds of dome, their forms, the presets (the flagship first)
+    POST /api/model              {spec} -> every piece's geometry, and the tables (any kind: kinds.py)
+    POST /api/stills             {name, shots: [{file, caption, png}]} -> a new numbered folder of the
+                                 page's own renders, with captions.md
+    POST /api/export             {spec, format, units} -> one file to download: dxf, csv, materials,
+                                 obj, stl, glb or zip (exports.py), from the scene the page draws
+    POST /api/export-pack        {spec} -> every export in a new numbered folder in deliverables/
     POST /api/plans              {spec} -> start a plan-set PDF job
     POST /api/showcase           {spec} -> start a showcase-renders job
     GET  /api/jobs               the jobs and how they are going
@@ -30,6 +35,7 @@ from urllib.parse import parse_qs, urlparse
 import numpy as np
 
 from . import TAG
+from . import kinds as KD
 from . import model as M
 
 HERE = Path(__file__).resolve().parent
@@ -164,6 +170,31 @@ def outputs() -> list[dict]:
     return out
 
 
+def save_stills(b: dict) -> dict:
+    """The page's own renders, saved as they were drawn: a new numbered folder, never an old one."""
+    import re as _re
+
+    import medialib
+
+    shots = b.get("shots") or []
+    if not shots:
+        raise ValueError("no pictures to save")
+    name = _re.sub(r"[^a-z0-9]+", "-", str(b.get("name") or "renders").lower()).strip("-")[:60] or "renders"
+    folder, _version = medialib.new_output(f"{TAG}-{name}")
+    lines = [f"# {b.get('title') or name}", "", f"Rendered in Dome Sketch ({TAG}) from the page's own 3-D view.", ""]
+    for s in shots:
+        stem = _re.sub(r"[^a-z0-9]+", "-", str(s.get("file") or "shot").lower()).strip("-") or "shot"
+        data = str(s.get("png") or "")
+        if not data.startswith("data:image/png;base64,"):
+            raise ValueError("each shot is a PNG data URL")
+        (folder / f"{stem}.png").write_bytes(base64.b64decode(data.split(",", 1)[1]))
+        lines += [f"## {stem}.png", "", str(s.get("caption") or ""), ""]
+    if b.get("facts"):
+        lines += ["## The design's figures", ""] + [f"* {k}: {v}" for k, v in b["facts"]] + [""]
+    (folder / "captions.md").write_text("\n".join(lines), encoding="utf-8")
+    return {"folder": folder.relative_to(ROOT).as_posix(), "files": len(shots)}
+
+
 # ----------------------------------------------------------------------
 # HTTP
 # ----------------------------------------------------------------------
@@ -238,7 +269,11 @@ class Handler(BaseHTTPRequestHandler):
                     return self._err(404, "not found")
                 return self._file(f)
             if u.path == "/api/defaults":
-                return self._json({"spec": M.Spec().to_dict(), "presets": PRESETS, "tag": TAG,
+                d = KD.defaults()
+                first = next(p for p in d["presets"] if p["key"] == d["default"])
+                from . import exports as X
+                return self._json({"spec": first["spec"], "presets": d["presets"], "kinds": d["kinds"], "tag": TAG, "edition": "full",
+                                   "exports": [[k, v[2]] for k, v in X.FORMATS.items()] + [["pack", "Save all to deliverables (new folder)"]],
                                    "cuts": [{"frequency": f, "cut": c} for f, c in M.CUTS],
                                    "declared": {k: {"value": d.value, "unit": d.unit, "why": d.why, "kind": d.kind} for k, d in M.DECLARED.items()}})
             if u.path == "/api/jobs":
@@ -323,9 +358,33 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == "/api/set":
                 from . import episode_server as E
                 return self._json(E.set_pieces(M.Spec.from_dict(b.get("spec") or {})))
-            spec = M.Spec.from_dict(b.get("spec") or {})
             if u.path == "/api/model":
-                return self._json(scene(spec))
+                return self._json(KD.scene(b.get("spec") or {}))
+            if u.path == "/api/stills":
+                return self._json(save_stills(b))
+            if u.path == "/api/export":
+                from . import exports as X
+                from . import costing as CO
+                sc = KD.scene(b.get("spec") or {})
+                sc["tables"]["materials"] = CO.reprice(sc["tables"]["materials"], b.get("prices"))
+                name, ctype, data = X.one(sc, str(b.get("format", "zip")), str(b.get("units", "ftin")))
+                self.send_response(200)
+                self.send_header("Content-Type", ctype)
+                self.send_header("Content-Length", str(len(data)))
+                self.send_header("Content-Disposition", f'attachment; filename="{name}"')
+                self.send_header("Cache-Control", "no-store")
+                self.end_headers()
+                self.wfile.write(data)
+                return None
+            if u.path == "/api/export-pack":
+                from . import exports as X
+                out = X.write_pack(b.get("spec") or {})
+                out["folder"] = Path(out["folder"]).relative_to(ROOT).as_posix()
+                return self._json(out)
+            if u.path in ("/api/plans", "/api/showcase") and KD.kind_of(b.get("spec")) != "panel":
+                return self._err(400, "The PDF plan set and the showcase job draw framed-panel domes. For this one, use Render "
+                                      "(the page's own pictures) and the cut list and build guide on the page.")
+            spec = M.Spec.from_dict(b.get("spec") or {})
             if u.path == "/api/plans":
                 return self._json(start_job("plans", spec))
             if u.path == "/api/showcase":

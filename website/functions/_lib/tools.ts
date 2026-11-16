@@ -4,7 +4,12 @@
 //
 //   GET  /api/me/tools                    every tool, whether this account may open it, and where
 //   GET  /api/sketch/design/:id           one solved Dome Sketch design (R2 sketch/<id>.json.gz);
-//                                         the trial designs open to anyone, the rest need "domesketch"
+//                                         the trial designs open to anyone as their trial copy (no build
+//                                         steps, no drawings past the first cards: sketch/trial/<id>.json.gz),
+//                                         everything else, and the whole design, need "domesketch"
+//   GET  /api/sketch/edition              {edition: "full" | "trial"} for this visitor
+//   GET  /api/sketch/export/:id           the design's fabrication pack (R2 sketch/x/<id>.zip: DXF, CSV,
+//                                         OBJ, STL, glTF), for "domesketch" only
 //   POST /api/sketch/packs {spec}         queue a build pack for the design (needs "buildpack" credit)
 //   GET  /api/sketch/packs                this account's packs; GET .../:ref/pdf downloads one
 //   /api/agent/packs/*                    the render script (scope packs:render), as for cut lists
@@ -18,7 +23,8 @@ import { audit, emit } from "./ops";
 import api from "./routes";
 import grid from "../../src/generated/sketch-grid.json";
 
-type Grid = { cuts: { frequency: number; cut: string }[]; diameters: number[]; windows: number[]; trial: string[]; designs: Record<string, { spec: Record<string, unknown>; title: string }> };
+type Grid = { cuts: { frequency: number; cut: string }[]; diameters: number[]; windows: number[]; trial: string[];
+  designs: Record<string, { spec: Record<string, unknown>; title: string; kind?: string }>; packs?: Record<string, { name: string; bytes: number }> };
 const G = grid as unknown as Grid;
 
 export interface ToolCard { key: string; title: string; blurb: string; href: string; access: boolean; why: string; credits?: number; used?: number; local?: boolean; buy?: string }
@@ -51,7 +57,8 @@ api.get("/me/tools", async (ctx) => {
       blurb: "A cut list solved for your own wedge dome and logs: saw setups, cut families, the log plan, jigs, seams.",
       why: admin ? "owner" : g.cutlist ? "from your receipt (My books)" : "comes with the book or the Wedge Builder", buy: "wedge-builder" },
     { key: "calculator", title: "Wedge calculator", href: "/calculator", access: true, blurb: "Wedges or lumber: what each split keeps of a log, at your kerf.", why: "free" },
-    { key: "episodes", title: "Episodes", href: "/episodes", access: true, blurb: "Every film, free to watch.", why: "free" },
+    { key: "episodes", title: "Episodes", href: "/episodes", access: true, blurb: "Level With Me: the dome's own series, free to watch.", why: "free" },
+    { key: "films", title: "Films", href: "/films", access: true, blurb: "Every other film: the method, the cabin films, the masterclasses.", why: "free" },
     { key: "trial", title: "Software trial", href: "/software", access: true, blurb: "Try the tools before you buy.", why: "free" },
   ];
   if (admin) {
@@ -80,14 +87,18 @@ async function mayDesign(ctx: Ctx) {
   return ((await grantsOf(ctx, u)).domesketch ?? 0) > 0;
 }
 
+api.get("/sketch/edition", async (ctx) => json({ edition: (await mayDesign(ctx)) ? "full" : "trial" }));
+
 api.get("/sketch/design/:id", async (ctx) => {
   const id = ctx.params.id;
   if (!G.designs[id]) throw new HttpError(404, "No such design.");
-  if (!G.trial.includes(id) && !(await mayDesign(ctx))) {
+  const full = await mayDesign(ctx);
+  if (!G.trial.includes(id) && !full) {
     throw new HttpError(402, "This design is in the full Dome Sketch. It comes with the book, or $10 on its own.");
   }
   if (!ctx.env.MEDIA) throw new HttpError(503, "The design store is not connected yet.");
-  const obj = await ctx.env.MEDIA.get(`sketch/${id}.json.gz`);
+  // a visitor who has not bought it gets the trial copy: nothing paid is in it to read out of the page
+  const obj = (!full && await ctx.env.MEDIA.get(`sketch/trial/${id}.json.gz`)) || await ctx.env.MEDIA.get(`sketch/${id}.json.gz`);
   if (!obj) throw new HttpError(404, "That design has not been uploaded yet.");
   // already gzipped: hand it to the browser as it is
   return new Response(obj.body, {
@@ -96,12 +107,24 @@ api.get("/sketch/design/:id", async (ctx) => {
   } as ResponseInit);
 });
 
+api.get("/sketch/export/:id", async (ctx) => {
+  const id = ctx.params.id;
+  const pack = G.packs?.[id];
+  if (!pack) throw new HttpError(404, "This design has no fabrication pack online; framed-panel domes have their build pack.");
+  if (!(await mayDesign(ctx))) throw new HttpError(402, "The cutting files and models come with the full Dome Sketch.");
+  if (!ctx.env.MEDIA) throw new HttpError(503, "The design store is not connected yet.");
+  const obj = await ctx.env.MEDIA.get(`sketch/x/${id}.zip`);
+  if (!obj) throw new HttpError(404, "That pack has not been uploaded yet.");
+  return new Response(obj.body, { headers: { "Content-Type": "application/zip", "Content-Disposition": `attachment; filename="${pack.name}"`,
+                                             "Cache-Control": "private, max-age=86400" } });
+});
+
 /** A design this site can build a pack for: a solved structural design plus the page-side options. */
 function checkSpec(raw: unknown): Record<string, unknown> {
   const s = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
   const pick = { frequency: Number(s.frequency), cut: String(s.cut), diameter_m: Number(s.diameter_m), door: Boolean(s.door),
                  windows: Number(s.windows), skylight: Boolean(s.skylight) };
-  const hit = Object.entries(G.designs).find(([, d]) => ["frequency", "cut", "diameter_m", "door", "windows", "skylight"]
+  const hit = Object.entries(G.designs).find(([, d]) => (!d.kind || d.kind === "panel") && ["frequency", "cut", "diameter_m", "door", "windows", "skylight"]
     .every((k) => String(d.spec[k]) === String((pick as Record<string, unknown>)[k])));
   if (!hit) throw new HttpError(400, "That design is not one the site can solve. Pick it from the form.");
   const skin = ["cabin", "clear", "none"].includes(String(s.skin)) ? String(s.skin) : "cabin";

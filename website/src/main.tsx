@@ -25,6 +25,7 @@ const ToolsPage = lazy(() => import("./pages/Tools").then((m) => ({ default: m.T
 const AdminTools = lazy(() => import("./pages/AdminTools"));
 const EpisodeList = lazy(() => import("./pages/Episodes").then((m) => ({ default: m.EpisodeList })));
 const EpisodePage = lazy(() => import("./pages/Episodes").then((m) => ({ default: m.EpisodePage })));
+const FilmList = lazy(() => import("./pages/Episodes").then((m) => ({ default: m.FilmList })));
 const Admin = lazy(() => import("./pages/Admin"));
 const Confirm = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Confirm })));
 const Unsubscribe = lazy(() => import("./pages/Mailbox").then((m) => ({ default: m.Unsubscribe })));
@@ -77,6 +78,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="kids/:story" element={<Kids />} />
               <Route path="media" element={<MediaPage />} />
               <Route path="episodes" element={<EpisodeList />} />
+              <Route path="films" element={<FilmList />} />
               <Route path="calculator" element={<WedgeCalculator />} />
               <Route path="sketch" element={<SketchPage />} />
               <Route path="software" element={<SoftwarePage />} />
@@ -84,6 +86,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="tools" element={<ToolsPage />} />
               <Route path="admin/tools" element={<AdminTools />} />
               <Route path="episodes/:slug" element={<EpisodePage />} />
+              <Route path="films/:slug" element={<EpisodePage />} />
               <Route path="portal" element={<Portal />} />
               <Route path="portal/:space" element={<Portal />} />
               <Route path="portal/house/:owner" element={<Portal />} />

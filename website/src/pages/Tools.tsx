@@ -99,7 +99,7 @@ const TRIAL: { key: string; title: string; trial: string[]; full: string[]; try?
     trial: ["Two complete designs: the 16 ft reference and a 4 m 2V", "Every view, style, section, explode and build step", "Each design's cut list and measurements"],
     full: ["Every geodesic, size, door, window and skylight choice", "Skin, furnishings and porch on any design", "Build packs: the full plan set as a PDF, for your design exactly"] },
   { key: "wedge-builder", title: "Wedge Builder", try: ["/calculator", "Try the wedge calculator"],
-    trial: ["The wedge calculator: what each split keeps of a log, at your kerf", "Every film on Episodes"],
+    trial: ["The wedge calculator: what each split keeps of a log, at your kerf", "Every film on Films"],
     full: ["A cut list for your own wedge dome and logs: saw setups, cut families, log plan, jigs, seams", "Alternating in/out builds, band by band"] },
   { key: "studio", title: "Episode Director and the Season room", note: "The owner's production tools for the films (not sold).",
     trial: ["The finished episodes, on Episodes"], full: [] },

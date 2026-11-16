@@ -4,19 +4,22 @@ from __future__ import annotations
 """
 JIG FOCUS WORLD
 
-A dedicated wrapper around the full raw-wedge geodesic dome single-file engine.
+A dedicated wrapper around the live raw-wedge solver (geodesic_raw_wedge_dome_dihedral).
 This launches directly into a jig-centric view so the fabrication fixture,
 member orientation, sacrificial butt hang-off, and cut guides are easier to study.
+
+It used to wrap geodesic_raw_wedge_dome_single, an older copy of the solver that predates
+the jig hang-off and head overfit, so it crashed on the first frame
+('DomeConfig' object has no attribute 'jig_butt_hangoff_in').
 
 Run:
     python jig_focus_world.py
 """
 
-from pathlib import Path
 import math
 import sys
 
-import geodesic_raw_wedge_dome_single as base
+import geodesic_raw_wedge_dome_dihedral as base
 
 
 class JigFocusWorldApp(base.DomeWorldApp):
@@ -49,7 +52,7 @@ class JigFocusWorldApp(base.DomeWorldApp):
         self._upload_jig()
         self.focus_view_iso()
         self._refresh_hud(force=True)
-        self.print_controls()
+        # the base app's __init__ already printed the controls (this class's print_controls)
 
     def _combined_bounds(self) -> tuple[base.np.ndarray, base.np.ndarray]:
         meshes: list[base.MeshData] = []

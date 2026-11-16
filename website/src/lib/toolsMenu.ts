@@ -23,7 +23,8 @@ export const TOOL_GROUPS: ToolGroup[] = [
     items: [
       { key: "mylinks", label: "My Links", to: "/mylinks", blurb: "The tools your account can open, and your build packs." },
       { key: "trial", label: "Software trial", to: "/software", blurb: "Try each tool before you buy it." },
-      { key: "episodes", label: "Episodes", to: "/episodes", blurb: "Every film, free to watch." },
+      { key: "episodes", label: "Episodes", to: "/episodes", blurb: "Level With Me: the dome's own series." },
+      { key: "films", label: "Films", to: "/films", blurb: "Every other film, free to watch." },
     ],
   },
   {

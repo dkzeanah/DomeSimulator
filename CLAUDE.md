@@ -45,6 +45,16 @@ exists; a rebuilt folder (a release) goes beside the first as `-v2`.
   it will do; `--voice mine --pace 1.5` for the owner's voice; `stills`, `teaser`). It
   claims the next numbered folder first and renders into it. Do not write a new staged
   script per film.
+* **Dome designs and their pictures come from Dome Sketch** (`py -3.12 -m sketch_claude serve`,
+  the paid program). Every dome type is a kind in `sketch_claude/kinds.py` (the wedge dome,
+  the flagship, first; the zome; framed-panel domes; the steel stove and tank in `metal.py`),
+  each with its cut cards and build steps. A render of a dome is made there (Render /
+  Render presets), from the page's own view, never by a separate script.
+  `kinds.validate_kinds()` checks every preset. Its cutting files and models (`exports.py`: DXF,
+  CSV, OBJ/STL/glTF; `py -3.12 -m sketch_claude export --preset <key>` writes a new numbered folder)
+  and its materials and cost (`costing.py`, which the plan set's price sheet also reads) come from
+  the same scene the page draws. The online copy is `web_catalogue.py` plus
+  `website/public/sketch-app/web-shim.js`; a visitor who has not bought it gets trial copies only.
 * **The 3-D world is `py -3.12 -m world3d`**: the foundation, the dome and the zome, their
   jigs and skins, built by their own solvers; edits are an operation log replayed on top.
   Add new structures there, not in another single-purpose window.

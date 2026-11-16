@@ -27,6 +27,7 @@ from PIL import Image
 from reportlab.pdfgen import canvas
 
 from . import TAG
+from . import costing as CO
 from . import draw as Dr
 from . import model as M
 from . import render as R
@@ -282,40 +283,19 @@ sheet {_sheet_no(ps, 'Declared Inputs and Checks')}; lumber is counted by laying
 
 
 
-#: Typical US retail prices, October 2026: DECLARED ESTIMATES, not quotes. They exist so the
-#: price sheet can multiply the counted quantities by something; replace them with your yard's.
-#: key -> (what is priced, US dollars, per)
-PRICE_ESTIMATES = {
-    "stud_2x3": ("2x3 stud, 8 ft", 4.25, "each"),
-    "ply_half": ("1/2 in plywood, 4x8", 38.00, "sheet"),
-    "polycarb": ("1/4 in polycarbonate", 45.00, "m²"),
-    "board_2x6": ("2x6, 8 ft", 9.50, "each"),
-    "pt_2x4": ("pressure-treated 2x4, 8 ft", 7.50, "each"),
-    "board_2x4": ("2x4, 8 ft", 4.75, "each"),
-    "ply_34": ("3/4 in plywood, 4x8", 55.00, "sheet"),
-    "joist_2x8": ("2x8, 10 ft", 16.00, "each"),
-    "deck_54x6": ("5/4x6 decking, 12 ft", 14.00, "each"),
-    "screws_3in": ("75 mm screws", 12.00, "100"),
-    "staples": ("staples", 8.00, "1000"),
-    "tape": ("seam tape", 0.60, "m"),
-    "shingles": ("shingles or cladding", 18.00, "m²"),
-    "pier": ("precast pier block", 12.00, "each"),
-}
+#: The declared typical prices live in costing.py, which the page's materials table reads too.
+PRICE_ESTIMATES = CO.PRICE_ESTIMATES
 
 
 def quantities(ps: "PlanSet") -> list[tuple[str, str, str, str, float]]:
     """Every material, counted from the model: (item, qty as printed, counted from, price key, qty as a number).
     The materials sheet prints the first three; the price sheet multiplies the last two."""
     t, sp, D = ps.t, ps.m.spec, M.D
-    base_lengths = [b["length_m"] for b in t["base_sections"]]
-    base_boards = math.ceil(sum(base_lengths) / D("board_l_m") * (1 + D("waste")))
-    plates = math.ceil(sum(base_lengths) / D("board_l_m") * (1 + D("waste")))
-    deck_boards = math.ceil(t["deck_m2"] / D("deck_board_m") / D("deck_board_l_m") * (1 + D("waste")))
-    porch = (D("porch_w_m") * D("deck_front_m")) if sp.porch else 0.0
-    porch_boards = math.ceil(porch / D("deck_board_m") / D("deck_board_l_m") * (1 + D("waste")))
+    c = CO.panel_counts(t, sp)          # the page's materials table counts from the same function
+    base_lengths, base_boards, plates = c["base_lengths"], c["base_boards"], c["plates"]
+    deck_boards, porch, porch_boards = c["deck_boards"], c["porch_m2"], c["porch_boards"]
     door = t["door"]
-    shingles = t["skin_m2"] * (1 + D("waste"))
-    piers = t["base_edges"] // 3 + 1 + (4 if sp.porch else 0)
+    shingles, piers = c["shingles_m2"], c["piers"]
     return [
         ("2x3 studs, 8 ft (each ripped into two sticks)", f"{t['boards']}", f"{t['stick_count']} sticks, {t['stick_m']:.0f} m of stick", "stud_2x3", t["boards"]),
         ("1/2 in plywood, 4x8 sheets, for the skin", f"{t['sheets']}", f"{t['skin_m2']:.1f} m² of panel, nested on sheet {_sheet_no(ps, 'Sheet Layout')}", "ply_half", t["sheets"]),
@@ -511,35 +491,8 @@ the head's compound cut is on the cut list.""", X0, Y0 + 52, X1 - X0, 7.8, color
 
 
 def _stick_outline(m: M.Model, piece_id: str):
-    """A stick laid on the bench: its outer and inner faces in 2-D, the stick's length along x."""
-    p = next(q for q in m.pieces if q.id == piece_id)
-    panel = next(q for q in m.panels if q.id == p.info["panel"])
-    k = p.info["k"]
-    n = len(panel.poly)
-    a, b = panel.poly[k], panel.poly[(k + 1) % n]
-    e = M.unit(b - a)
-    u = M.unit(np.cross(panel.normal, b - a))
-    V = p.mesh.verts - a
-    xs, ys, zs = V @ e, V @ u, V @ (-panel.normal)
-    outer = [(x, y) for x, y, z in zip(xs, ys, zs) if abs(z) < 1e-6]
-    inner = [(x, y) for x, y, z in zip(xs, ys, zs) if abs(z - m.spec.stick_d_m) < 1e-6]
-    def hull(P):
-        P = sorted(set((round(x, 9), round(y, 9)) for x, y in P))
-        if len(P) < 3:
-            return P
-        def cross(o, a, b):
-            return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
-        lo, up = [], []
-        for q in P:
-            while len(lo) >= 2 and cross(lo[-2], lo[-1], q) <= 0:
-                lo.pop()
-            lo.append(q)
-        for q in reversed(P):
-            while len(up) >= 2 and cross(up[-2], up[-1], q) <= 0:
-                up.pop()
-            up.append(q)
-        return lo[:-1] + up[:-1]
-    return hull(outer), hull(inner), p
+    """A stick laid on the bench (model.stick_outline): outer and inner faces in 2-D, length along x."""
+    return M.stick_outline(m, piece_id)
 
 
 def _stretch(pts2d, box, k_y: float):

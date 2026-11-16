@@ -6,31 +6,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dome Sketch | Zeanah Lab -- Dome Sketch</title>
 <link rel="stylesheet" href="/sketch-app/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M6 30 Q20 2 34 30 Z' fill='%23c45e29'/%3E%3C/svg%3E">
 <script type="importmap">{"imports": {"three": "/sketch-app/vendor/three.module.min.js"}}</script>
 </head>
 <body>
 <header class="bar">
   <div class="brand"><svg viewBox="0 0 40 40" class="mark" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 27 Q20 2 34 27 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 27 L16 15 L24 15 L29 27 M16 15 L20 27 L24 15 M13 21 L27 21" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="18" y="21" width="4" height="6" fill="#c45e29"/></svg>
     <div><b>Dome Sketch</b><span class="tag" id="tag">sketch-claude</span></div></div>
-  <div class="tools" role="toolbar" aria-label="Tools">
-    <button data-tool="select" class="on" title="Select (Space) - click a piece; double-click selects its whole panel; Shift adds"><svg viewBox="0 0 24 24"><path d="M5 3 L19 13 L12 14 L9 21 Z"/></svg></button>
-    <button data-tool="orbit" title="Orbit (O) - or drag with the middle button"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="4.5" fill="none" stroke-width="2"/><path d="M12 3 v18" stroke-width="2"/><path d="M18 9 l3 3 l-3 3" fill="none" stroke-width="2"/></svg></button>
-    <button data-tool="pan" title="Pan (H) - or drag with the right button"><svg viewBox="0 0 24 24"><path d="M12 2 l3 4 h-2 v5 h5 v-2 l4 3 l-4 3 v-2 h-5 v5 h2 l-3 4 l-3 -4 h2 v-5 h-5 v2 l-4 -3 l4 -3 v2 h5 v-5 h-2 z"/></svg></button>
-    <button id="extents" title="Zoom extents (Shift Z)"><svg viewBox="0 0 24 24"><path d="M3 9 V3 h6 M15 3 h6 v6 M21 15 v6 h-6 M9 21 H3 v-6" fill="none" stroke-width="2"/><circle cx="12" cy="12" r="3"/></svg></button>
-    <span class="sep"></span>
-    <button data-tool="tape" title="Tape measure (T) - click two points; they snap to corners"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="13" height="10" rx="2" fill="none" stroke-width="2"/><path d="M15 15 h7" stroke-width="2"/><circle cx="8.5" cy="13" r="2"/></svg></button>
-    <button data-tool="section" title="Section plane (P) - cut the model to see inside"><svg viewBox="0 0 24 24"><path d="M4 7 l8 -4 l8 4 v10 l-8 4 l-8 -4 z" fill="none" stroke-width="1.6"/><path d="M2 13 h20" stroke-width="2.4" stroke="#c45e29"/></svg></button>
-    <span class="sep"></span>
-    <select id="view" title="Standard views"><option value="">Views</option><option value="iso">Iso</option><option value="top">Top</option><option value="front">Front</option><option value="right">Right</option><option value="back">Back</option><option value="left">Left</option></select>
-    <button id="proj" title="Perspective / parallel projection">Persp</button>
-    <select id="style" title="Face style"><option value="sketch">Sketch</option><option value="shaded">Shaded</option><option value="mono">Monochrome</option><option value="xray">X-ray</option><option value="hidden">Hidden line</option><option value="wire">Wireframe</option></select>
-    <label class="chk" title="Sun shadows"><input type="checkbox" id="shadows" checked> Shadows</label>
-  </div>
+  <div class="seg" id="units" role="radiogroup" aria-label="Units" title="Units for every number on the page"></div>
   <span class="grow"></span>
-  <a class="btn" href="/director" target="_blank" title="Shoot episodes in a separate copy of this world">Episode Director &#8599;</a>
-  <button id="snap" title="Save the view as a PNG">Export view</button>
-  <button id="plans" class="primary" title="Draw the full plan set for this dome: a new numbered PDF">Make plan set</button>
-  <button id="showcase" title="Render the showcase pictures: a new numbered folder">Render showcase</button>
+  <button id="guide" class="pro" title="Build it step by step, piece by piece (B)">Build guide</button>
+  <button id="printcut" class="pro" title="The visual cut list, laid out to print">Print cut list</button>
+  <button id="render" title="Render this design from the page's own view: a new numbered folder in deliverables/">Render</button>
+  <button id="renderall" title="Render every preset, the wedge dome first: one new numbered folder each">Render presets</button>
+  <span class="menu"><button id="export-btn" title="Cut files (DXF), the cut list and materials (CSV), the 3-D model (OBJ, STL, glTF), or the view as a picture">Export &#9662;</button>
+    <div class="popover menu-pop" id="export-menu" hidden></div></span>
+  <button id="plans" class="primary" title="Draw the full plan set for this dome: a new numbered PDF (framed-panel domes)">Make plan set</button>
+  <button id="showcase" title="Render the showcase pictures in the plan-set style (framed-panel domes)">Showcase</button>
+  <a class="btn" href="/director" target="_blank" title="Shoot episodes in a separate copy of this world">Director &#8599;</a>
 </header>
 <nav class="scenes" id="scenes" aria-label="Scenes"></nav>
 
@@ -38,30 +31,71 @@
   <aside class="tray left">
     <details open><summary>Dome</summary>
       <div class="form" id="form">
+        <label>Type <select id="kind"></select></label>
         <label>Preset <select id="preset"></select></label>
-        <label>Geodesic <select id="f-cut"></select></label>
-        <label>Diameter <span class="unit"><input id="f-diameter_m" type="number" step="0.05" min="2" max="12"> m</span></label>
-        <label>Stick width <span class="unit"><input id="f-stick_w_m" type="number" step="0.001" min="0.015" max="0.12"> m</span></label>
-        <label>Stick depth <span class="unit"><input id="f-stick_d_m" type="number" step="0.001" min="0.015" max="0.2"> m</span></label>
-        <label>Pony wall <span class="unit"><input id="f-riser_m" type="number" step="0.05" min="0" max="1.5"> m</span></label>
-        <label>Skin <select id="f-skin"><option value="cabin">Cabin: plywood and shingles</option><option value="clear">Greenhouse: clear</option><option value="none">None: frame only</option></select></label>
-        <label>Windows <input id="f-windows" type="number" step="1" min="0" max="12"></label>
-        <div class="checks">
-          <label><input type="checkbox" id="f-door"> Door</label><label><input type="checkbox" id="f-skylight"> Skylight</label>
-          <label><input type="checkbox" id="f-stove"> Stove</label><label><input type="checkbox" id="f-porch"> Porch</label>
-          <label><input type="checkbox" id="f-furnish"> Furnished</label><label><input type="checkbox" id="f-people"> Person</label>
-        </div>
-        <label>Door opening <span class="unit"><input id="f-door_w_m" type="number" step="0.01" min="0.6" max="1.4"> x <input id="f-door_h_m" type="number" step="0.01" min="1.6" max="2.4"> m</span></label>
+        <div id="fields"></div>
       </div>
       <div id="summary" class="summary"></div>
     </details>
+    <details><summary>Designs</summary><div id="designs" class="designs"></div></details>
     <details open><summary>Tags</summary><div id="tags" class="tags"></div></details>
     <details open><summary>Outliner</summary><div id="outliner" class="outliner"></div></details>
+    <details><summary>Declared inputs</summary><div id="declared" class="declared"></div></details>
   </aside>
 
   <section class="stage" id="stage">
     <canvas id="gl"></canvas>
     <div id="labels" class="labels"></div>
+
+    <div class="ftb" id="ftb" role="toolbar" aria-label="Tools">
+      <div class="ftb-grip" id="ftb-grip" title="Drag to move the toolbar; double-click to dock it">&#8942;&#8942;</div>
+      <div class="ftb-body" id="ftb-body">
+        <div class="grp">
+          <button data-tool="select" class="on" title="Select (Space): click a piece; double-click its whole panel; Shift adds"><svg viewBox="0 0 24 24"><path d="M5 3 L19 13 L12 14 L9 21 Z"/></svg></button>
+          <button data-tool="orbit" title="Orbit (O), or drag with the middle button"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="4.5" fill="none" stroke-width="2"/><path d="M12 3 v18" stroke-width="2"/><path d="M18 9 l3 3 l-3 3" fill="none" stroke-width="2"/></svg></button>
+          <button data-tool="pan" title="Pan (H), or drag with the right button"><svg viewBox="0 0 24 24"><path d="M12 2 l3 4 h-2 v5 h5 v-2 l4 3 l-4 3 v-2 h-5 v5 h2 l-3 4 l-3 -4 h2 v-5 h-5 v2 l-4 -3 l4 -3 v2 h5 v-5 h-2 z"/></svg></button>
+          <button id="extents" title="Zoom extents (Shift Z)"><svg viewBox="0 0 24 24"><path d="M3 9 V3 h6 M15 3 h6 v6 M21 15 v6 h-6 M9 21 H3 v-6" fill="none" stroke-width="2"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
+        <div class="grp">
+          <button data-tool="tape" title="Tape measure (T): click two points; they snap to corners"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="13" height="10" rx="2" fill="none" stroke-width="2"/><path d="M15 15 h7" stroke-width="2"/><circle cx="8.5" cy="13" r="2"/></svg></button>
+          <button data-tool="dim" title="Dimension (D): a measurement that stays, saved with the design"><svg viewBox="0 0 24 24"><path d="M3 18 H21 M3 14 v8 M21 14 v8" fill="none" stroke-width="2"/><path d="M6 18 l3 -2 v4 z M18 18 l-3 -2 v4 z"/><text x="12" y="11" font-size="8" text-anchor="middle" stroke="none">1.2</text></svg></button>
+          <button data-tool="line" title="Line (L): draw a line or strut between corners"><svg viewBox="0 0 24 24"><path d="M4 20 L20 4" stroke-width="2.4"/><circle cx="4" cy="20" r="2.2"/><circle cx="20" cy="4" r="2.2"/></svg></button>
+          <button data-tool="note" title="Note (N): pin a text note to a point"><svg viewBox="0 0 24 24"><path d="M4 4 h16 v12 h-9 l-5 4 v-4 h-2 z" fill="none" stroke-width="2"/><path d="M8 9 h8 M8 12 h5" stroke-width="1.6"/></svg></button>
+        </div>
+        <div class="grp">
+          <button data-tool="paint" title="Paint (K): click a piece. Shift: its whole family. Alt: its whole material"><svg viewBox="0 0 24 24"><path d="M5 11 l7 -7 l7 7 l-7 7 z" fill="none" stroke-width="2"/><path d="M19 13 q2 3 0 5 q-2 -2 0 -5 z"/></svg></button>
+          <input type="color" id="paintcol" value="#c45e29" title="Paint colour">
+          <button data-tool="erase" title="Eraser (E): click a line, dimension, note or painted piece"><svg viewBox="0 0 24 24"><path d="M4 16 l9 -9 l7 7 l-6 6 h-6 z" fill="none" stroke-width="2"/><path d="M9 11 l6 6" stroke-width="2"/></svg></button>
+        </div>
+        <div class="grp">
+          <button data-tool="section" title="Section plane (P): cut the model to see inside"><svg viewBox="0 0 24 24"><path d="M4 7 l8 -4 l8 4 v10 l-8 4 l-8 -4 z" fill="none" stroke-width="1.6"/><path d="M2 13 h20" stroke-width="2.4" stroke="#c45e29"/></svg></button>
+          <select id="view" title="Standard views"><option value="">Views</option><option value="iso">Iso</option><option value="top">Top</option><option value="front">Front</option><option value="right">Right</option><option value="back">Back</option><option value="left">Left</option></select>
+          <button id="proj" title="Perspective / parallel projection">Persp</button>
+        </div>
+        <div class="grp">
+          <select id="style" title="Face style"><option value="sketch">Sketch</option><option value="shaded">Shaded</option><option value="mono">Monochrome</option><option value="xray">X-ray</option><option value="hidden">Hidden line</option><option value="wire">Wireframe</option></select>
+          <select id="theme" title="Colour theme"><option value="sketch">Daylight</option><option value="blueprint">Blueprint</option><option value="timber">Timber</option><option value="steel">Steel</option><option value="present">Presentation</option><option value="night">Night</option></select>
+          <label class="chk" title="Sun shadows"><input type="checkbox" id="shadows" checked> Sun</label>
+          <button id="settings-btn" title="Edges, skin, background, drawings">&#9881;</button>
+        </div>
+        <div class="grp">
+          <button id="undo" title="Undo a drawing or paint (Ctrl Z)">&#8630;</button>
+          <button id="redo" title="Redo (Ctrl Y)">&#8631;</button>
+        </div>
+      </div>
+      <button class="ftb-fold" id="ftb-fold" title="Fold the toolbar">&#9664;</button>
+    </div>
+
+    <div class="popover" id="settings" hidden>
+      <h4>Style</h4>
+      <label>Edges <select id="edges"><option value="strong">Strong</option><option value="soft">Soft</option><option value="off">Off</option></select></label>
+      <label>Skin and water <input type="range" id="skinop" min="5" max="100" value="100"></label>
+      <label>Background <input type="color" id="bgcol" value="#c9dbee"> <button id="bgreset">Theme</button></label>
+      <h4>Drawings</h4>
+      <div class="row"><button id="marks-export">Export</button><button id="marks-import">Import</button><button id="marks-clear">Clear all</button></div>
+      <input type="file" id="marks-file" accept="application/json" hidden>
+    </div>
+
     <div class="sliders">
       <label>Explode <input type="range" id="explode" min="0" max="150" value="0"></label>
       <label>Build <input type="range" id="step" min="0" max="40" value="40"><span id="step-v"></span></label>
@@ -69,14 +103,27 @@
       <label>Sun <input type="range" id="sun" min="0" max="360" value="215"></label>
       <label id="sec-wrap" hidden>Section <input type="range" id="section" min="0" max="100" value="45"><select id="sec-axis"><option value="z">level</option><option value="y">front</option><option value="x">side</option></select></label>
     </div>
+
+    <div class="buildpanel" id="buildpanel" hidden>
+      <div class="bp-head"><span id="bp-phase" class="bp-phase"></span><span id="bp-count" class="muted"></span><span class="grow"></span>
+        <select id="bp-jump" title="Go to a step"></select><button id="bp-close" title="Close the build guide (Esc)">&#10005;</button></div>
+      <h3 id="bp-title"></h3>
+      <div id="bp-text" class="bp-text"></div>
+      <div id="bp-tools" class="bp-tools"></div>
+      <div id="bp-check" class="bp-check"></div>
+      <div class="bp-nav"><button id="bp-prev">&#9664; Back</button><button id="bp-play">&#9654; Play</button><button id="bp-next" class="primary">Next &#9654;</button>
+        <span class="grow"></span><button id="bp-print" class="pro" title="Every step with its picture, to print">Print the step book</button></div>
+      <div class="bp-bar"><div id="bp-fill"></div></div>
+    </div>
     <div id="busy" class="busy" hidden>Solving the dome...</div>
   </section>
 
   <aside class="tray right">
     <details open><summary>Entity Info</summary><div id="info" class="info"><p class="muted">Select a piece. Double-click selects its whole panel.</p></div>
       <div class="row"><button id="hide">Hide</button><button id="isolate">Isolate</button><button id="unhide">Unhide all</button></div></details>
-    <details><summary>Cut list</summary><div id="cutlist" class="cutlist"></div></details>
-    <details open><summary>Plans and renders</summary>
+    <details open><summary>Cut list</summary><div id="cutlist" class="cutlist cards"></div></details>
+    <details><summary>Materials and cost</summary><div id="materials" class="materials"></div></details>
+    <details><summary>Plans and renders</summary>
       <p class="muted">Every job writes a new numbered folder in <code>deliverables/</code>; nothing is overwritten.</p>
       <div id="jobs"></div>
       <div id="outputs"></div></details>
@@ -88,6 +135,7 @@
   <span class="grow"></span>
   <span class="vcb"><span id="vcb-label">Measurements</span><output id="vcb"></output></span>
 </footer>
+<div class="modal" id="compare" hidden></div>
 <script type="module" src="/sketch-app/app.js"></script>
 </body>
 </html>

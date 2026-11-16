@@ -1175,6 +1175,38 @@ def _stick_rows(pieces: list[Piece]) -> list[dict]:
     return out
 
 
+def stick_outline(m: "Model", piece_id: str):
+    """A stick laid on the bench: its outer and inner faces in 2-D, the stick's length along x."""
+    p = next(q for q in m.pieces if q.id == piece_id)
+    panel = next(q for q in m.panels if q.id == p.info["panel"])
+    k = p.info["k"]
+    n = len(panel.poly)
+    a, b = panel.poly[k], panel.poly[(k + 1) % n]
+    e = unit(b - a)
+    u = unit(np.cross(panel.normal, b - a))
+    V = p.mesh.verts - a
+    xs, ys, zs = V @ e, V @ u, V @ (-panel.normal)
+    outer = [(x, y) for x, y, z in zip(xs, ys, zs) if abs(z) < 1e-6]
+    inner = [(x, y) for x, y, z in zip(xs, ys, zs) if abs(z - m.spec.stick_d_m) < 1e-6]
+    def hull(P):
+        P = sorted(set((round(x, 9), round(y, 9)) for x, y in P))
+        if len(P) < 3:
+            return P
+        def cross(o, a, b):
+            return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+        lo, up = [], []
+        for q in P:
+            while len(lo) >= 2 and cross(lo[-2], lo[-1], q) <= 0:
+                lo.pop()
+            lo.append(q)
+        for q in reversed(P):
+            while len(up) >= 2 and cross(up[-2], up[-1], q) <= 0:
+                up.pop()
+            up.append(q)
+        return lo[:-1] + up[:-1]
+    return hull(outer), hull(inner), p
+
+
 def _boards_needed(lengths: list[float], board: float, kerf: float) -> int:
     """First-fit decreasing: how many boards the sticks come out of (each board ripped into two sticks)."""
     bins: list[float] = []

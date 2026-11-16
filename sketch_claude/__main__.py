@@ -1,4 +1,4 @@
-"""py -3.12 -m sketch_claude {serve|plans|showcase|episode|storytime|lesson|selftest} -- see the package docstring
+"""py -3.12 -m sketch_claude {serve|plans|showcase|episode|storytime|lesson|selftest|export} -- see the package docstring
 (storytime: sketch_claude/storytime_render.py; lesson: sketch_claude/lesson_web.py, e.g. `lesson 2v --stills`)."""
 
 from __future__ import annotations
@@ -23,6 +23,8 @@ def selftest() -> None:
 
     for line in M.validate():
         print("ok:", line)
+    from sketch_claude import kinds
+    kinds.validate_kinds()          # every dome type: the wedge dome, zome, panel, stove, tank
     for spec in (M.Spec(frequency=2, cut="1/2", diameter_m=4.0), M.Spec(diameter_m=6.0), M.Spec(door=False, skin="clear")):
         m = M.build(spec)
         t = m.tables
@@ -70,7 +72,8 @@ def selftest() -> None:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="sketch_claude", description="Dome Sketch (sketch-claude): model a panel dome, draw its plans.")
-    ap.add_argument("command", nargs="?", default="serve", choices=("serve", "plans", "showcase", "episode", "storytime", "lesson", "selftest"))
+    ap.add_argument("command", nargs="?", default="serve", choices=("serve", "plans", "showcase", "episode", "storytime", "lesson", "selftest", "export"))
+    ap.add_argument("--preset", help="export: a preset's key (wedge, stove, tank, reference...) instead of --spec")
     ap.add_argument("--draft", action="store_true", help="episode: a rehearsal render, kept in tmp/ instead of the library")
     ap.add_argument("--episode", default="s01e01", help="episode: which one (sketch_claude/episodes/<id>.json)")
     ap.add_argument("--spec", default="{}", help="the dome as JSON (see model.Spec); defaults to the reference dome")
@@ -85,6 +88,18 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--no-browser", action="store_true")
     ap.add_argument("--page", default="", help="serve: open this page instead of the modeller (director)")
     a = ap.parse_args(argv)
+    if a.command == "export":          # any kind of dome, so before the framed-panel spec is read
+        # every export of one design (DXF, CSV, OBJ/STL/glTF, materials) into a new numbered folder
+        from sketch_claude import exports, kinds
+        d = json.loads(a.spec)
+        if a.preset:
+            d = next((p["spec"] for p in kinds.presets() if p["key"] == a.preset), None)
+            if d is None:
+                print(f"no preset {a.preset!r}; presets: {', '.join(p['key'] for p in kinds.presets())}", flush=True)
+                return 2
+        out = exports.write_pack(d)
+        print(f"OUTPUT {out['folder']}", flush=True)
+        return 0
     from sketch_claude import model as M
     spec = M.Spec.from_dict(json.loads(a.spec))
     if a.command == "selftest":
