@@ -5,17 +5,32 @@ import { trackView } from "../lib/track";
 import { isRealStaff, isStaff, setViewAs, useSession, type ViewMode } from "../lib/session";
 import { Toast } from "./ui";
 import { TOOL_GROUPS } from "../lib/toolsMenu";
+import { facts } from "../lib/facts";
 
 const NAV = [
-  ["/portal", "Portal"],
-  ["/start", "Free Pages"],
+  ["/mission", "Mission"],
   ["/book", "The Book"],
-  ["/build", "The Build"],
-  ["/network", "Pads"],
-  ["/back", "Back It"],
-  ["/kit", "Kit"],
-  ["/episodes", "Episodes"],
-  ["/media", "Media"],
+  ["/studio", "Studio"],
+  ["/work", "Work"],
+  ["/episodes", "Films"],
+  ["/network", "Network"],
+] as const;
+
+/** Everything else the site holds, one menu deep: the places people take part and read. */
+const EXPLORE = [
+  { title: "Read and watch", items: [
+    ["/start", "Free pages", "The opening of the book, free"],
+    ["/kids", "The kids' book", "The build, told in rhyme"],
+    ["/films", "Every film", "Lessons, cases and early cuts"],
+    ["/media", "Media", "Pictures and clips"],
+  ] },
+  { title: "Take part", items: [
+    ["/portal", "The Portal", "Every tool as a place in one 3-D world"],
+    ["/build", "The Build", "The first dome, step by step"],
+    ["/back", "Back it", "Founder plaques, one per panel"],
+    ["/domes", "Dome classes", "One strut names your dome"],
+    ["/kit", "Kit and press", "Letters, logos, the press kit"],
+  ] },
 ] as const;
 
 // The staging site runs the very build that "Promote to live" publishes, so it can only tell
@@ -45,31 +60,44 @@ export default function Layout() {
           STAGING -- a copy for checking changes. Orders here are test orders and no email is sent.
         </div>
       )}
-      <header className="sticky top-0 z-40 border-b" style={{ borderColor: "var(--line)", background: "color-mix(in srgb, var(--bg) 88%, transparent)", backdropFilter: "blur(8px)" }}>
-        <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2 font-semibold" onClick={() => setOpen(false)}>
-            <img src="/mark.svg" alt="" className="w-7 h-7" />
-            <span className="display text-xl">Zeanah Lab</span>
+      <header className="yin sticky top-0 z-40 border-b" style={{ borderColor: "var(--line)", background: "color-mix(in srgb, var(--bg) 86%, transparent)", backdropFilter: "blur(10px)" }}>
+        <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-2.5 shrink-0" onClick={() => setOpen(false)}>
+            <img src="/mark.svg" alt="" className="w-8 h-8" />
+            <span className="leading-none">
+              <span className="display text-[1.35rem] font-semibold block">Zeanah Lab</span>
+              <span className="mono text-[9.5px] tracking-[0.2em] uppercase muted hidden sm:block mt-0.5">timber &middot; code &middot; home</span>
+            </span>
           </Link>
-          <nav className="hidden md:flex items-center gap-5 text-sm">
+          <nav className="hidden lg:flex items-center gap-6 text-[0.9rem]">
             {NAV.map(([to, label]) => (
               <NavLink key={to} to={to} className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>{label}</NavLink>
             ))}
+            <ExploreMenu />
             <ToolsMenu staff={isStaff(me)} />
+          </nav>
+          <div className="hidden lg:flex items-center gap-3 text-sm">
             {me && isStaff(me) && <NavLink to="/admin/studio" className={({ isActive }) => (isActive || loc.pathname.startsWith("/admin") ? "accent" : "muted hover:text-[var(--ink)]")}>Admin</NavLink>}
             {me && <NavLink to="/mylinks" className={({ isActive }) => (isActive ? "accent" : "muted hover:text-[var(--ink)]")}>My Links</NavLink>}
-            <NavLink to="/account" className="btn-ghost !py-1.5">{me ? me.displayName : "Sign in"}</NavLink>
-            {me && <button type="button" className="muted hover:text-[var(--ink)] text-sm" onClick={signOut}>Sign out</button>}
-          </nav>
-          <button className="md:hidden btn-ghost !py-1.5" aria-expanded={open} onClick={() => setOpen(!open)}>Menu</button>
+            <NavLink to="/account" className="muted hover:text-[var(--ink)]">{me ? me.displayName : "Sign in"}</NavLink>
+            {me && <button type="button" className="muted hover:text-[var(--ink)]" onClick={signOut}>Sign out</button>}
+            <Link to="/start" className="btn !py-2 !px-3.5 text-sm">Read free</Link>
+          </div>
+          <button className="lg:hidden btn-ghost !py-1.5" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "Close" : "Menu"}</button>
         </div>
         {open && (
-          <nav className="md:hidden border-t px-4 py-3 grid gap-3" style={{ borderColor: "var(--line)" }}>
+          <nav className="lg:hidden border-t px-4 py-4 grid gap-3 max-h-[80vh] overflow-y-auto" style={{ borderColor: "var(--line)" }}>
             {[...NAV, ...(me ? [["/mylinks", "My Links"] as const] : []), ...(me && isStaff(me) ? [["/admin/studio", "Admin"] as const] : []), ["/account", me ? me.displayName : "Sign in"] as const].map(([to, label]) => (
-              <NavLink key={to} to={to} onClick={() => setOpen(false)}>{label}</NavLink>
+              <NavLink key={to} to={to} className="display text-lg" onClick={() => setOpen(false)}>{label}</NavLink>
             ))}
-            <details className="grid gap-2">
-              <summary className="cursor-pointer">Tools</summary>
+            {EXPLORE.map((g) => (
+              <div key={g.title} className="grid gap-2 pt-2">
+                <p className="eyebrow">{g.title}</p>
+                {g.items.map(([to, label]) => <NavLink key={to} to={to} onClick={() => setOpen(false)}>{label}</NavLink>)}
+              </div>
+            ))}
+            <details className="grid gap-2 pt-2">
+              <summary className="cursor-pointer eyebrow">Tools</summary>
               <div className="grid gap-2 pl-3 pt-2">
                 <NavLink to="/tools" onClick={() => setOpen(false)}>All tools</NavLink>
                 {TOOL_GROUPS.filter((g) => !g.staff || isStaff(me)).map((g) => (
@@ -82,29 +110,87 @@ export default function Layout() {
                 ))}
               </div>
             </details>
-            {me && <button type="button" className="text-left" onClick={signOut}>Sign out</button>}
+            <Link to="/start" className="btn text-center mt-2" onClick={() => setOpen(false)}>Read free</Link>
+            {me && <button type="button" className="text-left muted" onClick={signOut}>Sign out</button>}
           </nav>
         )}
       </header>
       <main className="flex-1">
         <Outlet />
       </main>
-      {!loc.pathname.startsWith("/portal") && <footer className="border-t mt-16" style={{ borderColor: "var(--line)" }}>
-        <div className="mx-auto max-w-6xl px-4 py-8 text-sm muted grid gap-2 sm:flex sm:justify-between">
-          <p>Every number on this site is computed by the project's own open code, or counted from real records.</p>
-          <p className="flex flex-wrap gap-x-4 gap-y-1">
-            <Link to="/card">Contact</Link>
-            <Link to="/software">Software</Link>
-            <Link to="/kids">Kids' book</Link>
-            <Link to="/domes">Dome classes</Link>
-            <Link to="/recyclers">Recyclers</Link>
-            <Link to="/privacy">Privacy</Link>
-            <Link to="/kit">Press &amp; letters</Link>
-            <a href="https://github.com/dkzeanah/DomeSimulator">The code</a>
-          </p>
-        </div>
-      </footer>}
+      {!loc.pathname.startsWith("/portal") && <SiteFooter />}
       <Toast />
+    </div>
+  );
+}
+
+const FOOTER = [
+  ["The lab", [["/mission", "Mission"], ["/work", "Work and projects"], ["/studio", "Studio"], ["/card", "Contact"]]],
+  ["The build", [["/book", "The 40 Hour Cabin"], ["/start", "Free pages"], ["/build", "The Build"], ["/domes", "Dome classes"], ["/network", "Pad network"]]],
+  ["Software", [["/software", "Try the tools"], ["/sketch", "Dome Sketch"], ["/calculator", "Wedge calculator"], ["/tools", "All tools"]]],
+  ["More", [["/episodes", "Films"], ["/kids", "Kids' book"], ["/back", "Back it"], ["/kit", "Press and letters"], ["/recyclers", "Recyclers"], ["/privacy", "Privacy"]]],
+] as const;
+
+function SiteFooter() {
+  return (
+    <footer className="yin border-t relative overflow-hidden" style={{ borderColor: "var(--line)" }}>
+      <div aria-hidden className="absolute inset-0 grid-lines opacity-60" />
+      <div className="relative mx-auto max-w-6xl px-4 pt-14 pb-8">
+        <div className="grid gap-10 lg:grid-cols-[1.3fr_2fr]">
+          <div>
+            <Link to="/" className="flex items-center gap-2.5">
+              <img src="/mark.svg" alt="" className="w-9 h-9" />
+              <span className="display text-2xl font-semibold">Zeanah Lab</span>
+            </Link>
+            <p className="muted mt-4 max-w-sm leading-relaxed">{facts.site.tagline}</p>
+            <p className="mono text-xs muted mt-4">Computed, never claimed: every number on this site comes from the project's own open code, or is counted from real records.</p>
+            <div className="flex flex-wrap gap-2 mt-5">
+              {facts.site.links.map((l) => <a key={l.url} href={l.url} className="tag hover:text-[var(--ink)]" target="_blank" rel="noopener">{l.label}</a>)}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-sm">
+            {FOOTER.map(([title, links]) => (
+              <div key={title} className="grid gap-2 content-start">
+                <p className="eyebrow">{title}</p>
+                {links.map(([to, label]) => <Link key={to} to={to} className="muted hover:text-[var(--ink)]">{label}</Link>)}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-12 pt-6 border-t flex flex-wrap justify-between gap-3 text-xs muted mono" style={{ borderColor: "var(--line)" }}>
+          <span>&copy; {new Date().getFullYear()} Zeanah Lab &middot; {facts.bookFacts.digital.author}</span>
+          <a href="https://github.com/dkzeanah/DomeSimulator" className="hover:text-[var(--ink)]">The code is open &#8599;</a>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/** Reading and taking part, one menu deep, beside the Tools menu. */
+function ExploreMenu() {
+  const [open, setOpen] = useState(false);
+  const loc = useLocation();
+  useEffect(() => setOpen(false), [loc.pathname]);
+  const here = EXPLORE.some((g) => g.items.some(([to]) => loc.pathname.startsWith(to)));
+  return (
+    <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+      <button type="button" className={here ? "accent" : "muted hover:text-[var(--ink)]"} aria-expanded={open} aria-haspopup="menu"
+        onClick={() => setOpen(!open)} onKeyDown={(e) => { if (e.key === "Escape") setOpen(false); }}>Explore &#9662;</button>
+      {open && (
+        <div role="menu" className="absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50">
+          <div className="panel p-4 grid gap-4 w-[min(520px,90vw)] sm:grid-cols-2 text-sm">
+            {EXPLORE.map((g) => (
+              <div key={g.title} className="grid gap-1 content-start">
+                <p className="eyebrow mb-1">{g.title}</p>
+                {g.items.map(([to, label, blurb]) => (
+                  <Link key={to} role="menuitem" to={to} className="rounded px-2 py-1.5 hover:bg-[var(--panel-2)]">
+                    <span className="font-semibold">{label}</span><span className="block text-xs muted">{blurb}</span></Link>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -147,12 +233,12 @@ function ToolsMenu({ staff }: { staff: boolean }) {
           <div className="panel p-3 grid gap-3 w-[min(560px,90vw)] sm:grid-cols-2 text-sm shadow-xl">
             {groups.map((g) => (
               <div key={g.title} className="grid gap-1 content-start">
-                <p className="text-[11px] uppercase tracking-[0.15em] muted font-semibold">{g.title}</p>
+                <p className="eyebrow mb-1">{g.title}</p>
                 {g.items.map((t) => t.external ? (
-                  <a key={t.key} role="menuitem" href={t.to} target="_blank" rel="noopener" className="rounded px-2 py-1 hover:bg-[var(--line)]">
+                  <a key={t.key} role="menuitem" href={t.to} target="_blank" rel="noopener" className="rounded px-2 py-1.5 hover:bg-[var(--panel-2)]">
                     <span className="font-semibold">{t.label} &#8599;</span><span className="block text-xs muted">{t.blurb}</span></a>
                 ) : (
-                  <Link key={t.key} role="menuitem" to={t.to} className="rounded px-2 py-1 hover:bg-[var(--line)]">
+                  <Link key={t.key} role="menuitem" to={t.to} className="rounded px-2 py-1.5 hover:bg-[var(--panel-2)]">
                     <span className="font-semibold">{t.label}</span><span className="block text-xs muted">{t.blurb}</span></Link>
                 ))}
               </div>

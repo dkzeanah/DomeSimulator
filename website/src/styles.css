@@ -1,61 +1,113 @@
 @import "tailwindcss";
 
-/* A temple, not a store: night stone, sunset gold, structure lines. One palette, two
-   themes; every colour is a token. */
+/* Timber and code. Two grounds that hold each other -- yin, the code: charcoal with a moss
+   cast and a drafting grid; yang, the timber: birch, parchment, rust and growth rings -- with
+   one amber, the fall leaf, that belongs to both. Every colour is a token; .yin and .yang pin a section to one ground
+   whatever the visitor's theme, which is how a page alternates between the two. */
 @theme {
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Fraunces", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
-  --color-stone-950: #0d1117;
-  --color-gold: #e8b45a;
-  --color-ember: #e07a3c;
-  --color-sky: #7cc4f0;
-  --color-leaf: #6fdc9b;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-stone-950: #0e1210;
+  --color-gold: #e2a54e;
+  --color-ember: #c8642c;
+  --color-sky: #82b3c2;
+  --color-leaf: #8fae6e;
+  --color-moss: #5f7a4c;
+  --color-rust: #a4501f;
+  --color-birch: #f3ede2;
 }
 
-:root {
-  --bg: #0d1117;
-  --panel: #151b24;
-  --panel-2: #1c2430;
-  --line: #2b3646;
-  --ink: #ece6da;
-  --muted: #9aa4b2;
-  --accent: #e8b45a;
+:root, .yin {
+  --bg: #0e1210;
+  --bg-2: #121815;
+  --panel: #151b18;
+  --panel-2: #1b231f;
+  --line: #2a342e;
+  --ink: #eee7da;
+  --muted: #a1a99f;
+  --accent: #e2a54e;
   --accent-ink: #1a1206;
+  --accent-2: #8fae6e;
+  --grid: rgba(226, 165, 78, 0.07);
+  --shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 18px 40px -24px rgba(0,0,0,0.7);
 }
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
-    --bg: #f6f1e7;
-    --panel: #fffaf0;
-    --panel-2: #f0e8d8;
-    --line: #d9ccb4;
-    --ink: #1d1a15;
-    --muted: #5d5649;
-    --accent: #a8641a;
+    --bg: #f5f0e6;
+    --bg-2: #efe8db;
+    --panel: #fbf8f2;
+    --panel-2: #f1eadd;
+    --line: #ddd1bd;
+    --ink: #1d1b16;
+    --muted: #5f594e;
+    --accent: #a4501f;
     --accent-ink: #fffaf0;
+    --accent-2: #5f7a4c;
+    --grid: rgba(95, 122, 76, 0.09);
+    --shadow: 0 18px 40px -28px rgba(60, 40, 20, 0.35);
   }
 }
 
+/* after the media query so a pinned section wins in either theme */
+.yin {
+  --bg: #0e1210; --bg-2: #121815; --panel: #151b18; --panel-2: #1b231f; --line: #2a342e;
+  --ink: #eee7da; --muted: #a1a99f; --accent: #e2a54e; --accent-ink: #1a1206; --accent-2: #8fae6e;
+  --grid: rgba(226, 165, 78, 0.07); --shadow: 0 18px 40px -24px rgba(0,0,0,0.7);
+}
+.yang {
+  --bg: #f5f0e6; --bg-2: #efe8db; --panel: #fbf8f2; --panel-2: #f1eadd; --line: #ddd1bd;
+  --ink: #1d1b16; --muted: #5f594e; --accent: #a4501f; --accent-ink: #fffaf0; --accent-2: #5f7a4c;
+  --grid: rgba(95, 122, 76, 0.09); --shadow: 0 18px 40px -28px rgba(60, 40, 20, 0.35);
+}
+.yin, .yang { background: var(--bg); color: var(--ink); }
+
 html, body { background: var(--bg); color: var(--ink); }
-body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
-h1, h2, h3, .display { font-family: var(--font-display); letter-spacing: 0.01em; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h1, h2, h3, .display { font-family: var(--font-display); letter-spacing: -0.01em; font-optical-sizing: auto; }
+h1 { font-weight: 600; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+a { text-underline-offset: 4px; }
 
 @layer components {
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
-.panel-2 { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+.panel-2 { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; }
 .muted { color: var(--muted); }
 .accent { color: var(--accent); }
-.btn { background: var(--accent); color: var(--accent-ink); font-weight: 600; border-radius: 10px; padding: 0.7rem 1.1rem; display: inline-block; }
+.accent-2 { color: var(--accent-2); }
+.btn { background: var(--accent); color: var(--accent-ink); font-weight: 600; border-radius: 6px; padding: 0.7rem 1.15rem; display: inline-block;
+  border: 1px solid var(--accent); transition: filter .15s, transform .15s; letter-spacing: 0.01em; }
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: translateY(1px); }
 .btn:disabled { opacity: 0.5; }
-.btn-ghost { border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 1.1rem; display: inline-block; }
-.field { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0.65rem 0.8rem; width: 100%; color: var(--ink); }
+.btn-ghost { border: 1px solid var(--line); border-radius: 6px; padding: 0.7rem 1.15rem; display: inline-block; transition: border-color .15s, background .15s; }
+.btn-ghost:hover { border-color: var(--accent); }
+.field { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 0.65rem 0.8rem; width: 100%; color: var(--ink); }
 .field:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 .tri { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
 .num { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-mono); }
+
+/* the brand's small type: a monospaced eyebrow, like a label on a drawing */
+.eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; border: 1px solid var(--line); border-radius: 999px; padding: 0.15rem 0.6rem; color: var(--muted); display: inline-block; }
+.rule { height: 1px; background: linear-gradient(90deg, var(--accent), transparent); opacity: .6; }
+.link-arrow { color: var(--accent); font-weight: 600; display: inline-flex; gap: .35rem; align-items: center; }
+.link-arrow::after { content: "\2192"; transition: transform .15s; }
+.link-arrow:hover::after { transform: translateX(3px); }
+.lift { transition: transform .2s, border-color .2s; }
+.lift:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+
+/* the technical half of the texture: a drafting grid, faded toward the edges */
+.grid-lines { background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px; mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 78%); }
+/* the woods half: growth rings, as faint as a grain */
+.rings { background-image: repeating-radial-gradient(circle at 85% 20%, transparent 0 22px, var(--grid) 22px 23px); }
 
 /* the level-up: a bar that fills when a real number moves */
-.xp-track { height: 10px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--line); overflow: hidden; }
-.xp-fill { height: 100%; background: linear-gradient(90deg, var(--color-ember), var(--accent)); transition: width 700ms cubic-bezier(.2,.8,.2,1); }
+.xp-track { height: 8px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--line); overflow: hidden; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--color-moss), var(--accent)); transition: width 700ms cubic-bezier(.2,.8,.2,1); }
 }
 
 @keyframes rise { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }

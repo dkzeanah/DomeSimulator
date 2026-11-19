@@ -49,12 +49,15 @@ const DomeClassPage = lazy(() => import("./pages/Domes").then((m) => ({ default:
 const AdminStudio = lazy(() => import("./pages/AdminStudio"));
 const AdminProjects = lazy(() => import("./pages/AdminProjects"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Mission = lazy(() => import("./pages/Mission"));
+const Studio = lazy(() => import("./pages/Studio"));
+const Work = lazy(() => import("./pages/Work"));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <SessionProvider>
-        <Suspense fallback={<div className="p-8 muted">Loading...</div>}>
+        <Suspense fallback={<div className="p-8 muted mono text-sm">Loading...</div>}>
           <Routes>
             {/* the film renderer (sketch_claude storytime): bare, no site chrome */}
             <Route path="storytime-render" element={<StoryRender />} />
@@ -62,6 +65,9 @@ createRoot(document.getElementById("root")!).render(
             <Route path="mykids" element={<MyKids />} />
             <Route element={<Layout />}>
               <Route index element={<Home />} />
+              <Route path="mission" element={<Mission />} />
+              <Route path="studio" element={<Studio />} />
+              <Route path="work" element={<Work />} />
               <Route path="book" element={<Book />} />
               <Route path="sample" element={<Sample />} />
               <Route path="start" element={<Start />} />
