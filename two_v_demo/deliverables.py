@@ -72,6 +72,9 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "Original PG-13 family comedy animatic. Five articulated characters, "
                 "editable cinematic shots and captions, in the solver's Cabin World. "
                 "Its closing series title is its own outro; no synthesized dialogue by default."),
+    Deliverable("2v", "2v-masterclass.mp4",
+                "The first film: the 2V geodesic dome, from the icosahedron to a cut "
+                "list, made in the launcher's Masterclass tab before this list existed."),
     Deliverable("hex", "hex-dome-masterclass.mp4",
                 "Hexagonal domes: one strut length, twelve pentagons, "
                 "and what frequency costs."),
@@ -284,6 +287,9 @@ DELIVERABLES: tuple[Deliverable, ...] = (
                 "test. 7.2 hours practised, 17.2 for a first build, which is "
                 "the number nobody quotes.",
                 compose=False),
+    Deliverable("seam", "the-seam-does-four-jobs.mp4",
+                "What one wedge seam does at once: holds the panels true, carries "
+                "the load, keeps the weather out and leaves a channel for services."),
     Deliverable("cabin_linseed_oil", "linseed-oil-for-a-dome.mp4",
                 "Source-audited linseed-oil workshop: interior finishing, seam "
                 "compatibility, glazing limits, tool care, rag safety and a "
@@ -440,8 +446,9 @@ DELIVERABLES = DELIVERABLES + tuple(
                 f"Cabin World re-render of {item.filename}: the same chapters on "
                 "the exhibit platform, with cinematic cameras.", compose=True)
     for item in DELIVERABLES
-    # a web-engine film has no moderngl pictures to re-stage (Lesson.engine)
-    if not item.lesson.startswith("cabin_") and item.lesson not in ("sketch_gpt_pilot", "rings")) + (
+    # a web-engine film has no moderngl pictures to re-stage (Lesson.engine); the 2V
+    # masterclass and the seam film have their own entries just below, with their names
+    if not item.lesson.startswith("cabin_") and item.lesson not in ("sketch_gpt_pilot", "rings", "2v", "seam")) + (
     Deliverable("cabin_seam", "cabin-the-seam-does-four-jobs.mp4",
                 "Cabin World re-render of the-seam-does-four-jobs.mp4.", compose=True),
     Deliverable("cabin_2v", "cabin-2v-geodesic-dome-masterclass.mp4",
@@ -649,6 +656,6 @@ def validate_deliverables() -> None:
     # be rendered once and then quietly forgotten.
     # cabin_pilot is the Cabin World's worked example, copied rather than shipped.
     unlisted = set(LESSONS) - set(keys) - {"cabin_pilot"}
-    assert unlisted == {"2v"}, (
+    assert not unlisted, (
         f"lessons missing from the deliverable list: {sorted(unlisted)}"
     )

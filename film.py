@@ -224,6 +224,11 @@ def make(lesson: str, *, voice: str = "", pace: float = 1.0, landscape_only: boo
     code = run_ticket(fields)
     import medialib
     medialib.write_index()
+    try:                       # RENDER_COMMANDS.txt: every video and the command that makes it again
+        import render_commands
+        render_commands.write()
+    except Exception as e:     # never fail a finished render over its bookkeeping
+        print(f"RENDER_COMMANDS.txt not refreshed ({e}); run py -3.12 -m render_commands")
     if code == 0:
         print(f"done; the film's folder: {Path(fields['export_video']).parent.relative_to(ROOT)}")
         if teaser and mine:

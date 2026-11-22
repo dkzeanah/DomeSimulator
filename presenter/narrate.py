@@ -37,13 +37,13 @@ def _slug(text: str, voice: str, rate: str) -> str:
 
 def synthesize_segment(text: str, path: Path, voice: str,
                        rate: str = "-3%", pitch: str = "-2Hz") -> None:
-    import edge_tts
-    communicate = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch)
-    if hasattr(communicate, "save_sync"):
-        communicate.save_sync(str(path))
-    else:                                    # pragma: no cover
-        import asyncio
-        asyncio.run(communicate.save(str(path)))
+    """One line of narration, through the films' own synthesizer (two_v_demo.audio), so it
+    gets the same patient retries: the public speech service throttles and drops requests,
+    and one failure used to end the whole export."""
+    import asyncio
+
+    from two_v_demo.audio import _synthesize_one
+    asyncio.run(_synthesize_one(text, Path(path), voice, rate, pitch, "+0%", print))
 
 
 def prepare_narration(segments: list[str], cache_dir: Path, voice: str,

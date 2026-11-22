@@ -299,7 +299,26 @@
    "title": "The Tree That Fell Down",
    "deck": "A storm, a pine on the ground, and a question nobody had asked",
    "body": "One night there was a big storm.\n\nThe wind pushed and pushed on a tall pine tree at the edge of the woods. The\ntree bent, and swayed, and creaked. And in the morning, when the sun came up,\nthe tree was lying down on the ground.\n\nIts roots were sticking up in the air, still holding on to the dirt. Its top\nwas lost in the bushes. And in between was the trunk: long, and straight, and\nround, like the biggest pencil you have ever seen.\n\nMost people who walk past a fallen tree see a problem. *It's in the way. It\nwill rot. Somebody should cut it up for firewood.*\n\nBut the builder in this story looked at the tree and asked a different\nquestion.\n\n*What if this tree could become a house?*\n\nThat sounds silly at first. Houses are made of boards from the store, aren't\nthey? Flat, square boards, all the same.\n\nBut here is a secret about boards. Every board in the store started out as a\nround tree, just like this one. Somebody cut the tree down. Somebody dragged it\nout of the woods. A truck carried it to a mill. Big saws cut it into squares,\nand a lot of the round tree was cut away and thrown on a pile. Then the boards\nwere dried, and smoothed, and sorted, and loaded on another truck, and carried\nto a store, and stacked on a shelf, and sold.\n\nThat is a lot of hands, and a lot of trucks, and a lot of waiting, before a\nsingle board reaches the house.\n\nAnd this tree was already here. Right where the house could be.\n\nSo the builder made a plan: no mill, no truck, no store. Just the tree, a\nsmall saw, a lot of careful thinking -- and a lot of help from the shape of\nthe tree itself.\n\nThe rest of this book is that plan.\n\n:::box do \"Try it together\"\nGo for a walk and look for a fallen tree or a big fallen branch. When you\nfind one:\n\n1. Find where it is straight, and where it starts to bend or branch.\n2. Wrap a piece of string around the fattest straight part, and mark the\n   string with your finger. That is how fat the tree is *all the way round*.\n3. Walk along it and count your steps from the fat end to where the straight\n   part stops.\n\nTake the string home. You will use it again on rung two.\n:::\n\n:::box why \"For the grown-up\"\nThe method in this book builds a cabin frame from trees split on the spot with\none chainsaw. The reference dome is {{dome.diameter_ft}} feet across with\n{{dome.floor_sqft}} square feet of floor, framed from {{dome.members}} wooden\nmembers. What matters about a tree at this stage is only three things: how\nfat it is at the bottom, how fat at the top of the straight part, and how long\nthat straight part is. Everything else in the plan is worked out from those.\n:::\n\n:::box wonder \"Wonder question\"\nHow many different people do you think touch a board before it gets to the\nstore?\n:::\n",
-   "frames": [],
+   "frames": [
+    {
+     "type": "image",
+     "asset": "assets/images/cover-art/wedge-method-cover-art-v5.png",
+     "x": 10,
+     "y": 5,
+     "w": 45,
+     "h": 60,
+     "caption": ""
+    },
+    {
+     "type": "image",
+     "asset": "assets/images/illustrations/solver-2v-dome-frame.svg",
+     "x": 10,
+     "y": 5,
+     "w": 45,
+     "h": 60,
+     "caption": ""
+    }
+   ],
    "status": "done",
    "source": "books/master-edition/manuscript/rung1/01-tree.md",
    "refs": {
@@ -1913,7 +1932,7 @@
  ],
  "notes": [],
  "source": "master_book.outline (imported; the engine's own build still prints the Master Edition)",
- "saved": "2026-10-14T05:18:14",
+ "saved": "2026-11-16T04:10:09",
  "layout": {
   "graph": {
    "wonder/tree": {

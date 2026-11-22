@@ -45,6 +45,14 @@ exists; a rebuilt folder (a release) goes beside the first as `-v2`.
   it will do; `--voice mine --pace 1.5` for the owner's voice; `stills`, `teaser`). It
   claims the next numbered folder first and renders into it. Do not write a new staged
   script per film.
+* **`RENDER_COMMANDS.txt` (repository root) is how every video comes back** on a new
+  machine, with no AI: one command per video, run from a clone of the repository. It is
+  written by `py -3.12 -m render_commands` from the code that makes each video (the film
+  registry, the episodes, the bedtime stories, the presentations, the Cabin World
+  re-stagings); `film make` rewrites it after every render. `py -3.12 -m render_commands
+  --check` fails when it is stale or when the library holds a video no line makes. A video
+  made some other way than these gets its source added to `render_commands.py` before the
+  work is reported done.
 * **Dome designs and their pictures come from Dome Sketch** (`py -3.12 -m sketch_claude serve`,
   the paid program). Every dome type is a kind in `sketch_claude/kinds.py` (the wedge dome,
   the flagship, first; the zome; framed-panel domes; the steel stove and tank in `metal.py`),

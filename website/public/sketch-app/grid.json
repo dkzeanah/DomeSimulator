@@ -371,7 +371,7 @@
    "sticks": 146,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 389071
+   "bytes": 473739
   },
   "2v1-2-4.00m-door1-win0-sky0": {
    "spec": {
@@ -392,7 +392,7 @@
    "sticks": 146,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 386558
+   "bytes": 471209
   },
   "2v1-2-4.00m-door1-win3-sky1": {
    "spec": {
@@ -413,7 +413,7 @@
    "sticks": 146,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 392681
+   "bytes": 476983
   },
   "2v1-2-4.00m-door1-win3-sky0": {
    "spec": {
@@ -434,7 +434,7 @@
    "sticks": 146,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 390185
+   "bytes": 474745
   },
   "2v1-2-4.00m-door1-win5-sky1": {
    "spec": {
@@ -455,7 +455,7 @@
    "sticks": 146,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 393886
+   "bytes": 478050
   },
   "2v1-2-4.00m-door1-win5-sky0": {
    "spec": {
@@ -476,7 +476,7 @@
    "sticks": 146,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 391388
+   "bytes": 475809
   },
   "2v1-2-4.00m-door0-win0-sky1": {
    "spec": {
@@ -497,7 +497,7 @@
    "sticks": 120,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 317417
+   "bytes": 359586
   },
   "2v1-2-4.00m-door0-win0-sky0": {
    "spec": {
@@ -518,7 +518,7 @@
    "sticks": 120,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 311168
+   "bytes": 353683
   },
   "2v1-2-4.00m-door0-win3-sky1": {
    "spec": {
@@ -539,7 +539,7 @@
    "sticks": 120,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 321026
+   "bytes": 362831
   },
   "2v1-2-4.00m-door0-win3-sky0": {
    "spec": {
@@ -560,7 +560,7 @@
    "sticks": 120,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 314794
+   "bytes": 357221
   },
   "2v1-2-4.00m-door0-win5-sky1": {
    "spec": {
@@ -581,7 +581,7 @@
    "sticks": 120,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 322229
+   "bytes": 363892
   },
   "2v1-2-4.00m-door0-win5-sky0": {
    "spec": {
@@ -602,7 +602,7 @@
    "sticks": 120,
    "floor_m2": 11.76,
    "height_m": 2.178,
-   "bytes": 315996
+   "bytes": 358284
   },
   "2v1-2-4.50m-door1-win0-sky1": {
    "spec": {
@@ -623,7 +623,7 @@
    "sticks": 134,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 376938
+   "bytes": 444333
   },
   "2v1-2-4.50m-door1-win0-sky0": {
    "spec": {
@@ -644,7 +644,7 @@
    "sticks": 134,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 370907
+   "bytes": 438638
   },
   "2v1-2-4.50m-door1-win3-sky1": {
    "spec": {
@@ -665,7 +665,7 @@
    "sticks": 134,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 380294
+   "bytes": 447316
   },
   "2v1-2-4.50m-door1-win3-sky0": {
    "spec": {
@@ -686,7 +686,7 @@
    "sticks": 134,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 374282
+   "bytes": 441922
   },
   "2v1-2-4.50m-door1-win5-sky1": {
    "spec": {
@@ -707,7 +707,7 @@
    "sticks": 134,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 381413
+   "bytes": 448292
   },
   "2v1-2-4.50m-door1-win5-sky0": {
    "spec": {
@@ -728,7 +728,7 @@
    "sticks": 134,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 375400
+   "bytes": 442897
   },
   "2v1-2-4.50m-door0-win0-sky1": {
    "spec": {
@@ -749,7 +749,7 @@
    "sticks": 120,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 321571
+   "bytes": 363817
   },
   "2v1-2-4.50m-door0-win0-sky0": {
    "spec": {
@@ -770,7 +770,7 @@
    "sticks": 120,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 315541
+   "bytes": 358118
   },
   "2v1-2-4.50m-door0-win3-sky1": {
    "spec": {
@@ -791,7 +791,7 @@
    "sticks": 120,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 324927
+   "bytes": 366798
   },
   "2v1-2-4.50m-door0-win3-sky0": {
    "spec": {
@@ -812,7 +812,7 @@
    "sticks": 120,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 318915
+   "bytes": 361400
   },
   "2v1-2-4.50m-door0-win5-sky1": {
    "spec": {
@@ -833,7 +833,7 @@
    "sticks": 120,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 326046
+   "bytes": 367774
   },
   "2v1-2-4.50m-door0-win5-sky0": {
    "spec": {
@@ -854,7 +854,7 @@
    "sticks": 120,
    "floor_m2": 14.88,
    "height_m": 2.428,
-   "bytes": 320033
+   "bytes": 362377
   },
   "2v1-2-4.88m-door1-win0-sky1": {
    "spec": {
@@ -875,7 +875,7 @@
    "sticks": 134,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 380069
+   "bytes": 447434
   },
   "2v1-2-4.88m-door1-win0-sky0": {
    "spec": {
@@ -896,7 +896,7 @@
    "sticks": 134,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 374045
+   "bytes": 441750
   },
   "2v1-2-4.88m-door1-win3-sky1": {
    "spec": {
@@ -917,7 +917,7 @@
    "sticks": 134,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 383294
+   "bytes": 450291
   },
   "2v1-2-4.88m-door1-win3-sky0": {
    "spec": {
@@ -938,7 +938,7 @@
    "sticks": 134,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 377287
+   "bytes": 444904
   },
   "2v1-2-4.88m-door1-win5-sky1": {
    "spec": {
@@ -959,7 +959,7 @@
    "sticks": 134,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 384371
+   "bytes": 451228
   },
   "2v1-2-4.88m-door1-win5-sky0": {
    "spec": {
@@ -980,7 +980,7 @@
    "sticks": 134,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 378362
+   "bytes": 445836
   },
   "2v1-2-4.88m-door0-win0-sky1": {
    "spec": {
@@ -1001,7 +1001,7 @@
    "sticks": 120,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 324397
+   "bytes": 366641
   },
   "2v1-2-4.88m-door0-win0-sky0": {
    "spec": {
@@ -1022,7 +1022,7 @@
    "sticks": 120,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 318371
+   "bytes": 360952
   },
   "2v1-2-4.88m-door0-win3-sky1": {
    "spec": {
@@ -1043,7 +1043,7 @@
    "sticks": 120,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 327619
+   "bytes": 369496
   },
   "2v1-2-4.88m-door0-win3-sky0": {
    "spec": {
@@ -1064,7 +1064,7 @@
    "sticks": 120,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 321613
+   "bytes": 364107
   },
   "2v1-2-4.88m-door0-win5-sky1": {
    "spec": {
@@ -1085,7 +1085,7 @@
    "sticks": 120,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 328697
+   "bytes": 370434
   },
   "2v1-2-4.88m-door0-win5-sky0": {
    "spec": {
@@ -1106,7 +1106,7 @@
    "sticks": 120,
    "floor_m2": 17.5,
    "height_m": 2.618,
-   "bytes": 322688
+   "bytes": 365040
   },
   "2v1-2-5.00m-door1-win0-sky1": {
    "spec": {
@@ -1127,7 +1127,7 @@
    "sticks": 134,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 381511
+   "bytes": 448968
   },
   "2v1-2-5.00m-door1-win0-sky0": {
    "spec": {
@@ -1148,7 +1148,7 @@
    "sticks": 134,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 375685
+   "bytes": 443495
   },
   "2v1-2-5.00m-door1-win3-sky1": {
    "spec": {
@@ -1169,7 +1169,7 @@
    "sticks": 134,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 384737
+   "bytes": 451831
   },
   "2v1-2-5.00m-door1-win3-sky0": {
    "spec": {
@@ -1190,7 +1190,7 @@
    "sticks": 134,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 378928
+   "bytes": 446649
   },
   "2v1-2-5.00m-door1-win5-sky1": {
    "spec": {
@@ -1211,7 +1211,7 @@
    "sticks": 134,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 385814
+   "bytes": 452769
   },
   "2v1-2-5.00m-door1-win5-sky0": {
    "spec": {
@@ -1232,7 +1232,7 @@
    "sticks": 134,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 380005
+   "bytes": 447584
   },
   "2v1-2-5.00m-door0-win0-sky1": {
    "spec": {
@@ -1253,7 +1253,7 @@
    "sticks": 120,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 325647
+   "bytes": 367945
   },
   "2v1-2-5.00m-door0-win0-sky0": {
    "spec": {
@@ -1274,7 +1274,7 @@
    "sticks": 120,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 319824
+   "bytes": 362469
   },
   "2v1-2-5.00m-door0-win3-sky1": {
    "spec": {
@@ -1295,7 +1295,7 @@
    "sticks": 120,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 328875
+   "bytes": 370808
   },
   "2v1-2-5.00m-door0-win3-sky0": {
    "spec": {
@@ -1316,7 +1316,7 @@
    "sticks": 120,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 323067
+   "bytes": 365627
   },
   "2v1-2-5.00m-door0-win5-sky1": {
    "spec": {
@@ -1337,7 +1337,7 @@
    "sticks": 120,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 329952
+   "bytes": 371744
   },
   "2v1-2-5.00m-door0-win5-sky0": {
    "spec": {
@@ -1358,7 +1358,7 @@
    "sticks": 120,
    "floor_m2": 18.37,
    "height_m": 2.678,
-   "bytes": 324142
+   "bytes": 366560
   },
   "2v1-2-5.50m-door1-win0-sky1": {
    "spec": {
@@ -1379,7 +1379,7 @@
    "sticks": 134,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 384251
+   "bytes": 452204
   },
   "2v1-2-5.50m-door1-win0-sky0": {
    "spec": {
@@ -1400,7 +1400,7 @@
    "sticks": 134,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 378646
+   "bytes": 447021
   },
   "2v1-2-5.50m-door1-win3-sky1": {
    "spec": {
@@ -1421,7 +1421,7 @@
    "sticks": 134,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 387358
+   "bytes": 454888
   },
   "2v1-2-5.50m-door1-win3-sky0": {
    "spec": {
@@ -1442,7 +1442,7 @@
    "sticks": 134,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 381770
+   "bytes": 450000
   },
   "2v1-2-5.50m-door1-win5-sky1": {
    "spec": {
@@ -1463,7 +1463,7 @@
    "sticks": 134,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 388396
+   "bytes": 455791
   },
   "2v1-2-5.50m-door1-win5-sky0": {
    "spec": {
@@ -1484,7 +1484,7 @@
    "sticks": 134,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 382804
+   "bytes": 450891
   },
   "2v1-2-5.50m-door0-win0-sky1": {
    "spec": {
@@ -1505,7 +1505,7 @@
    "sticks": 120,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 328629
+   "bytes": 371410
   },
   "2v1-2-5.50m-door0-win0-sky0": {
    "spec": {
@@ -1526,7 +1526,7 @@
    "sticks": 120,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 323022
+   "bytes": 366225
   },
   "2v1-2-5.50m-door0-win3-sky1": {
    "spec": {
@@ -1547,7 +1547,7 @@
    "sticks": 120,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 331734
+   "bytes": 374091
   },
   "2v1-2-5.50m-door0-win3-sky0": {
    "spec": {
@@ -1568,7 +1568,7 @@
    "sticks": 120,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 326146
+   "bytes": 369203
   },
   "2v1-2-5.50m-door0-win5-sky1": {
    "spec": {
@@ -1589,7 +1589,7 @@
    "sticks": 120,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 332771
+   "bytes": 374992
   },
   "2v1-2-5.50m-door0-win5-sky0": {
    "spec": {
@@ -1610,7 +1610,7 @@
    "sticks": 120,
    "floor_m2": 22.23,
    "height_m": 2.928,
-   "bytes": 327180
+   "bytes": 370094
   },
   "2v1-2-6.00m-door1-win0-sky1": {
    "spec": {
@@ -1631,7 +1631,7 @@
    "sticks": 142,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 399614
+   "bytes": 474340
   },
   "2v1-2-6.00m-door1-win0-sky0": {
    "spec": {
@@ -1652,7 +1652,7 @@
    "sticks": 142,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 394229
+   "bytes": 469391
   },
   "2v1-2-6.00m-door1-win3-sky1": {
    "spec": {
@@ -1673,7 +1673,7 @@
    "sticks": 142,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 402725
+   "bytes": 477031
   },
   "2v1-2-6.00m-door1-win3-sky0": {
    "spec": {
@@ -1694,7 +1694,7 @@
    "sticks": 142,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 397354
+   "bytes": 472366
   },
   "2v1-2-6.00m-door1-win5-sky1": {
    "spec": {
@@ -1715,7 +1715,7 @@
    "sticks": 142,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 403759
+   "bytes": 477925
   },
   "2v1-2-6.00m-door1-win5-sky0": {
    "spec": {
@@ -1736,7 +1736,7 @@
    "sticks": 142,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 398391
+   "bytes": 473264
   },
   "2v1-2-6.00m-door0-win0-sky1": {
    "spec": {
@@ -1757,7 +1757,7 @@
    "sticks": 120,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 332294
+   "bytes": 375149
   },
   "2v1-2-6.00m-door0-win0-sky0": {
    "spec": {
@@ -1778,7 +1778,7 @@
    "sticks": 120,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 326909
+   "bytes": 370198
   },
   "2v1-2-6.00m-door0-win3-sky1": {
    "spec": {
@@ -1799,7 +1799,7 @@
    "sticks": 120,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 335404
+   "bytes": 377839
   },
   "2v1-2-6.00m-door0-win3-sky0": {
    "spec": {
@@ -1820,7 +1820,7 @@
    "sticks": 120,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 330034
+   "bytes": 373173
   },
   "2v1-2-6.00m-door0-win5-sky1": {
    "spec": {
@@ -1841,7 +1841,7 @@
    "sticks": 120,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 336439
+   "bytes": 378731
   },
   "2v1-2-6.00m-door0-win5-sky0": {
    "spec": {
@@ -1862,7 +1862,7 @@
    "sticks": 120,
    "floor_m2": 26.45,
    "height_m": 3.178,
-   "bytes": 331071
+   "bytes": 374070
   },
   "2v1-2-7.00m-door1-win0-sky1": {
    "spec": {
@@ -1883,7 +1883,7 @@
    "sticks": 142,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 407006
+   "bytes": 481704
   },
   "2v1-2-7.00m-door1-win0-sky0": {
    "spec": {
@@ -1904,7 +1904,7 @@
    "sticks": 142,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 401816
+   "bytes": 476945
   },
   "2v1-2-7.00m-door1-win3-sky1": {
    "spec": {
@@ -1925,7 +1925,7 @@
    "sticks": 142,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 409728
+   "bytes": 484005
   },
   "2v1-2-7.00m-door1-win3-sky0": {
    "spec": {
@@ -1946,7 +1946,7 @@
    "sticks": 142,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 404554
+   "bytes": 479535
   },
   "2v1-2-7.00m-door1-win5-sky1": {
    "spec": {
@@ -1967,7 +1967,7 @@
    "sticks": 142,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 410638
+   "bytes": 484781
   },
   "2v1-2-7.00m-door1-win5-sky0": {
    "spec": {
@@ -1988,7 +1988,7 @@
    "sticks": 142,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 405462
+   "bytes": 480304
   },
   "2v1-2-7.00m-door0-win0-sky1": {
    "spec": {
@@ -2009,7 +2009,7 @@
    "sticks": 120,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 339605
+   "bytes": 382543
   },
   "2v1-2-7.00m-door0-win0-sky0": {
    "spec": {
@@ -2030,7 +2030,7 @@
    "sticks": 120,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 334415
+   "bytes": 377781
   },
   "2v1-2-7.00m-door0-win3-sky1": {
    "spec": {
@@ -2051,7 +2051,7 @@
    "sticks": 120,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 342327
+   "bytes": 384841
   },
   "2v1-2-7.00m-door0-win3-sky0": {
    "spec": {
@@ -2072,7 +2072,7 @@
    "sticks": 120,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 337153
+   "bytes": 380371
   },
   "2v1-2-7.00m-door0-win5-sky1": {
    "spec": {
@@ -2093,7 +2093,7 @@
    "sticks": 120,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 343237
+   "bytes": 385614
   },
   "2v1-2-7.00m-door0-win5-sky0": {
    "spec": {
@@ -2114,7 +2114,7 @@
    "sticks": 120,
    "floor_m2": 36.0,
    "height_m": 3.678,
-   "bytes": 338062
+   "bytes": 381141
   },
   "2v1-2-8.00m-door1-win0-sky1": {
    "spec": {
@@ -2135,7 +2135,7 @@
    "sticks": 136,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 404002
+   "bytes": 467484
   },
   "2v1-2-8.00m-door1-win0-sky0": {
    "spec": {
@@ -2156,7 +2156,7 @@
    "sticks": 136,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 399451
+   "bytes": 463359
   },
   "2v1-2-8.00m-door1-win3-sky1": {
    "spec": {
@@ -2177,7 +2177,7 @@
    "sticks": 136,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 406460
+   "bytes": 469524
   },
   "2v1-2-8.00m-door1-win3-sky0": {
    "spec": {
@@ -2198,7 +2198,7 @@
    "sticks": 136,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 401925
+   "bytes": 465690
   },
   "2v1-2-8.00m-door1-win5-sky1": {
    "spec": {
@@ -2219,7 +2219,7 @@
    "sticks": 136,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 407279
+   "bytes": 470204
   },
   "2v1-2-8.00m-door1-win5-sky0": {
    "spec": {
@@ -2240,7 +2240,7 @@
    "sticks": 136,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 402745
+   "bytes": 466370
   },
   "2v1-2-8.00m-door0-win0-sky1": {
    "spec": {
@@ -2261,7 +2261,7 @@
    "sticks": 120,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 347411
+   "bytes": 390393
   },
   "2v1-2-8.00m-door0-win0-sky0": {
    "spec": {
@@ -2282,7 +2282,7 @@
    "sticks": 120,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 342862
+   "bytes": 386268
   },
   "2v1-2-8.00m-door0-win3-sky1": {
    "spec": {
@@ -2303,7 +2303,7 @@
    "sticks": 120,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 349870
+   "bytes": 392436
   },
   "2v1-2-8.00m-door0-win3-sky0": {
    "spec": {
@@ -2324,7 +2324,7 @@
    "sticks": 120,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 345335
+   "bytes": 388598
   },
   "2v1-2-8.00m-door0-win5-sky1": {
    "spec": {
@@ -2345,7 +2345,7 @@
    "sticks": 120,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 350689
+   "bytes": 393114
   },
   "2v1-2-8.00m-door0-win5-sky0": {
    "spec": {
@@ -2366,7 +2366,7 @@
    "sticks": 120,
    "floor_m2": 47.02,
    "height_m": 4.178,
-   "bytes": 346155
+   "bytes": 389280
   },
   "3v1-2-4.00m-door1-win0-sky1": {
    "spec": {
@@ -2387,7 +2387,7 @@
    "sticks": 228,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 509384
+   "bytes": 608822
   },
   "3v1-2-4.00m-door1-win0-sky0": {
    "spec": {
@@ -2408,7 +2408,7 @@
    "sticks": 228,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 505381
+   "bytes": 604889
   },
   "3v1-2-4.00m-door1-win3-sky1": {
    "spec": {
@@ -2429,7 +2429,7 @@
    "sticks": 228,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 513258
+   "bytes": 612345
   },
   "3v1-2-4.00m-door1-win3-sky0": {
    "spec": {
@@ -2450,7 +2450,7 @@
    "sticks": 228,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 509273
+   "bytes": 608711
   },
   "3v1-2-4.00m-door1-win5-sky1": {
    "spec": {
@@ -2471,7 +2471,7 @@
    "sticks": 228,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 515840
+   "bytes": 614673
   },
   "3v1-2-4.00m-door1-win5-sky0": {
    "spec": {
@@ -2492,7 +2492,7 @@
    "sticks": 228,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 511855
+   "bytes": 611040
   },
   "3v1-2-4.00m-door0-win0-sky1": {
    "spec": {
@@ -2513,7 +2513,7 @@
    "sticks": 225,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 463463
+   "bytes": 525800
   },
   "3v1-2-4.00m-door0-win0-sky0": {
    "spec": {
@@ -2534,7 +2534,7 @@
    "sticks": 225,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 456791
+   "bytes": 519432
   },
   "3v1-2-4.00m-door0-win3-sky1": {
    "spec": {
@@ -2555,7 +2555,7 @@
    "sticks": 225,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 467339
+   "bytes": 529321
   },
   "3v1-2-4.00m-door0-win3-sky0": {
    "spec": {
@@ -2576,7 +2576,7 @@
    "sticks": 225,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 460682
+   "bytes": 523243
   },
   "3v1-2-4.00m-door0-win5-sky1": {
    "spec": {
@@ -2597,7 +2597,7 @@
    "sticks": 225,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 469921
+   "bytes": 531645
   },
   "3v1-2-4.00m-door0-win5-sky0": {
    "spec": {
@@ -2618,7 +2618,7 @@
    "sticks": 225,
    "floor_m2": 12.2,
    "height_m": 1.861,
-   "bytes": 463263
+   "bytes": 525566
   },
   "3v1-2-4.50m-door1-win0-sky1": {
    "spec": {
@@ -2639,7 +2639,7 @@
    "sticks": 232,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 518177
+   "bytes": 616499
   },
   "3v1-2-4.50m-door1-win0-sky0": {
    "spec": {
@@ -2660,7 +2660,7 @@
    "sticks": 232,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 514178
+   "bytes": 612584
   },
   "3v1-2-4.50m-door1-win3-sky1": {
    "spec": {
@@ -2681,7 +2681,7 @@
    "sticks": 232,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 521918
+   "bytes": 619894
   },
   "3v1-2-4.50m-door1-win3-sky0": {
    "spec": {
@@ -2702,7 +2702,7 @@
    "sticks": 232,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 517935
+   "bytes": 616268
   },
   "3v1-2-4.50m-door1-win5-sky1": {
    "spec": {
@@ -2723,7 +2723,7 @@
    "sticks": 232,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 524418
+   "bytes": 622181
   },
   "3v1-2-4.50m-door1-win5-sky0": {
    "spec": {
@@ -2744,7 +2744,7 @@
    "sticks": 232,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 520435
+   "bytes": 618554
   },
   "3v1-2-4.50m-door0-win0-sky1": {
    "spec": {
@@ -2765,7 +2765,7 @@
    "sticks": 225,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 468409
+   "bytes": 530727
   },
   "3v1-2-4.50m-door0-win0-sky0": {
    "spec": {
@@ -2786,7 +2786,7 @@
    "sticks": 225,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 461736
+   "bytes": 524369
   },
   "3v1-2-4.50m-door0-win3-sky1": {
    "spec": {
@@ -2807,7 +2807,7 @@
    "sticks": 225,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 472149
+   "bytes": 534119
   },
   "3v1-2-4.50m-door0-win3-sky0": {
    "spec": {
@@ -2828,7 +2828,7 @@
    "sticks": 225,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 465493
+   "bytes": 528052
   },
   "3v1-2-4.50m-door0-win5-sky1": {
    "spec": {
@@ -2849,7 +2849,7 @@
    "sticks": 225,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 474648
+   "bytes": 536360
   },
   "3v1-2-4.50m-door0-win5-sky0": {
    "spec": {
@@ -2870,7 +2870,7 @@
    "sticks": 225,
    "floor_m2": 15.44,
    "height_m": 2.072,
-   "bytes": 467993
+   "bytes": 530297
   },
   "3v1-2-4.88m-door1-win0-sky1": {
    "spec": {
@@ -2891,7 +2891,7 @@
    "sticks": 240,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 533326
+   "bytes": 633867
   },
   "3v1-2-4.88m-door1-win0-sky0": {
    "spec": {
@@ -2912,7 +2912,7 @@
    "sticks": 240,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 526655
+   "bytes": 627514
   },
   "3v1-2-4.88m-door1-win3-sky1": {
    "spec": {
@@ -2933,7 +2933,7 @@
    "sticks": 240,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 536931
+   "bytes": 637113
   },
   "3v1-2-4.88m-door1-win3-sky0": {
    "spec": {
@@ -2954,7 +2954,7 @@
    "sticks": 240,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 530276
+   "bytes": 631053
   },
   "3v1-2-4.88m-door1-win5-sky1": {
    "spec": {
@@ -2975,7 +2975,7 @@
    "sticks": 240,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 539338
+   "bytes": 639317
   },
   "3v1-2-4.88m-door1-win5-sky0": {
    "spec": {
@@ -2996,7 +2996,7 @@
    "sticks": 240,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 532684
+   "bytes": 633261
   },
   "3v1-2-4.88m-door0-win0-sky1": {
    "spec": {
@@ -3017,7 +3017,7 @@
    "sticks": 225,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 471757
+   "bytes": 534116
   },
   "3v1-2-4.88m-door0-win0-sky0": {
    "spec": {
@@ -3038,7 +3038,7 @@
    "sticks": 225,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 465085
+   "bytes": 527729
   },
   "3v1-2-4.88m-door0-win3-sky1": {
    "spec": {
@@ -3059,7 +3059,7 @@
    "sticks": 225,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 475362
+   "bytes": 537366
   },
   "3v1-2-4.88m-door0-win3-sky0": {
    "spec": {
@@ -3080,7 +3080,7 @@
    "sticks": 225,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 468707
+   "bytes": 531268
   },
   "3v1-2-4.88m-door0-win5-sky1": {
    "spec": {
@@ -3101,7 +3101,7 @@
    "sticks": 225,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 477769
+   "bytes": 539567
   },
   "3v1-2-4.88m-door0-win5-sky0": {
    "spec": {
@@ -3122,7 +3122,7 @@
    "sticks": 225,
    "floor_m2": 18.16,
    "height_m": 2.231,
-   "bytes": 471116
+   "bytes": 533478
   },
   "3v1-2-5.00m-door1-win0-sky1": {
    "spec": {
@@ -3143,7 +3143,7 @@
    "sticks": 240,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 534780
+   "bytes": 636288
   },
   "3v1-2-5.00m-door1-win0-sky0": {
    "spec": {
@@ -3164,7 +3164,7 @@
    "sticks": 240,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 528111
+   "bytes": 629924
   },
   "3v1-2-5.00m-door1-win3-sky1": {
    "spec": {
@@ -3185,7 +3185,7 @@
    "sticks": 240,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 538392
+   "bytes": 639550
   },
   "3v1-2-5.00m-door1-win3-sky0": {
    "spec": {
@@ -3206,7 +3206,7 @@
    "sticks": 240,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 531738
+   "bytes": 633483
   },
   "3v1-2-5.00m-door1-win5-sky1": {
    "spec": {
@@ -3227,7 +3227,7 @@
    "sticks": 240,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 540800
+   "bytes": 641734
   },
   "3v1-2-5.00m-door1-win5-sky0": {
    "spec": {
@@ -3248,7 +3248,7 @@
    "sticks": 240,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 534149
+   "bytes": 635676
   },
   "3v1-2-5.00m-door0-win0-sky1": {
    "spec": {
@@ -3269,7 +3269,7 @@
    "sticks": 225,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 473367
+   "bytes": 536792
   },
   "3v1-2-5.00m-door0-win0-sky0": {
    "spec": {
@@ -3290,7 +3290,7 @@
    "sticks": 225,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 466697
+   "bytes": 530403
   },
   "3v1-2-5.00m-door0-win3-sky1": {
    "spec": {
@@ -3311,7 +3311,7 @@
    "sticks": 225,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 476978
+   "bytes": 540054
   },
   "3v1-2-5.00m-door0-win3-sky0": {
    "spec": {
@@ -3332,7 +3332,7 @@
    "sticks": 225,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 470325
+   "bytes": 533963
   },
   "3v1-2-5.00m-door0-win5-sky1": {
    "spec": {
@@ -3353,7 +3353,7 @@
    "sticks": 225,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 479387
+   "bytes": 542243
   },
   "3v1-2-5.00m-door0-win5-sky0": {
    "spec": {
@@ -3374,7 +3374,7 @@
    "sticks": 225,
    "floor_m2": 19.07,
    "height_m": 2.282,
-   "bytes": 472734
+   "bytes": 536150
   },
   "3v1-2-5.50m-door1-win0-sky1": {
    "spec": {
@@ -3395,7 +3395,7 @@
    "sticks": 240,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 537675
+   "bytes": 634574
   },
   "3v1-2-5.50m-door1-win0-sky0": {
    "spec": {
@@ -3416,7 +3416,7 @@
    "sticks": 240,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 531427
+   "bytes": 628642
   },
   "3v1-2-5.50m-door1-win3-sky1": {
    "spec": {
@@ -3437,7 +3437,7 @@
    "sticks": 240,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 541271
+   "bytes": 637822
   },
   "3v1-2-5.50m-door1-win3-sky0": {
    "spec": {
@@ -3458,7 +3458,7 @@
    "sticks": 240,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 535038
+   "bytes": 632175
   },
   "3v1-2-5.50m-door1-win5-sky1": {
    "spec": {
@@ -3479,7 +3479,7 @@
    "sticks": 240,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 541271
+   "bytes": 637822
   },
   "3v1-2-5.50m-door1-win5-sky0": {
    "spec": {
@@ -3500,7 +3500,7 @@
    "sticks": 240,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 535038
+   "bytes": 632175
   },
   "3v1-2-5.50m-door0-win0-sky1": {
    "spec": {
@@ -3521,7 +3521,7 @@
    "sticks": 225,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 477856
+   "bytes": 541251
   },
   "3v1-2-5.50m-door0-win0-sky0": {
    "spec": {
@@ -3542,7 +3542,7 @@
    "sticks": 225,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 471606
+   "bytes": 535295
   },
   "3v1-2-5.50m-door0-win3-sky1": {
    "spec": {
@@ -3563,7 +3563,7 @@
    "sticks": 225,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 481451
+   "bytes": 544491
   },
   "3v1-2-5.50m-door0-win3-sky0": {
    "spec": {
@@ -3584,7 +3584,7 @@
    "sticks": 225,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 475217
+   "bytes": 538823
   },
   "3v1-2-5.50m-door0-win5-sky1": {
    "spec": {
@@ -3605,7 +3605,7 @@
    "sticks": 225,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 481451
+   "bytes": 544491
   },
   "3v1-2-5.50m-door0-win5-sky0": {
    "spec": {
@@ -3626,7 +3626,7 @@
    "sticks": 225,
    "floor_m2": 23.07,
    "height_m": 2.492,
-   "bytes": 475217
+   "bytes": 538823
   },
   "3v1-2-6.00m-door1-win0-sky1": {
    "spec": {
@@ -3647,7 +3647,7 @@
    "sticks": 240,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 541491
+   "bytes": 638974
   },
   "3v1-2-6.00m-door1-win0-sky0": {
    "spec": {
@@ -3668,7 +3668,7 @@
    "sticks": 240,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 535239
+   "bytes": 633101
   },
   "3v1-2-6.00m-door1-win3-sky1": {
    "spec": {
@@ -3689,7 +3689,7 @@
    "sticks": 240,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 544962
+   "bytes": 642048
   },
   "3v1-2-6.00m-door1-win3-sky0": {
    "spec": {
@@ -3710,7 +3710,7 @@
    "sticks": 240,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 538728
+   "bytes": 636472
   },
   "3v1-2-6.00m-door1-win5-sky1": {
    "spec": {
@@ -3731,7 +3731,7 @@
    "sticks": 240,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 544962
+   "bytes": 642048
   },
   "3v1-2-6.00m-door1-win5-sky0": {
    "spec": {
@@ -3752,7 +3752,7 @@
    "sticks": 240,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 538728
+   "bytes": 636472
   },
   "3v1-2-6.00m-door0-win0-sky1": {
    "spec": {
@@ -3773,7 +3773,7 @@
    "sticks": 225,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 481306
+   "bytes": 545531
   },
   "3v1-2-6.00m-door0-win0-sky0": {
    "spec": {
@@ -3794,7 +3794,7 @@
    "sticks": 225,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 475054
+   "bytes": 539625
   },
   "3v1-2-6.00m-door0-win3-sky1": {
    "spec": {
@@ -3815,7 +3815,7 @@
    "sticks": 225,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 484777
+   "bytes": 548607
   },
   "3v1-2-6.00m-door0-win3-sky0": {
    "spec": {
@@ -3836,7 +3836,7 @@
    "sticks": 225,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 478544
+   "bytes": 542997
   },
   "3v1-2-6.00m-door0-win5-sky1": {
    "spec": {
@@ -3857,7 +3857,7 @@
    "sticks": 225,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 484777
+   "bytes": 548607
   },
   "3v1-2-6.00m-door0-win5-sky0": {
    "spec": {
@@ -3878,7 +3878,7 @@
    "sticks": 225,
    "floor_m2": 27.45,
    "height_m": 2.703,
-   "bytes": 478544
+   "bytes": 542997
   },
   "3v1-2-7.00m-door1-win0-sky1": {
    "spec": {
@@ -3899,7 +3899,7 @@
    "sticks": 246,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 556929
+   "bytes": 655062
   },
   "3v1-2-7.00m-door1-win0-sky0": {
    "spec": {
@@ -3920,7 +3920,7 @@
    "sticks": 246,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 550899
+   "bytes": 649404
   },
   "3v1-2-7.00m-door1-win3-sky1": {
    "spec": {
@@ -3941,7 +3941,7 @@
    "sticks": 246,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 560135
+   "bytes": 657866
   },
   "3v1-2-7.00m-door1-win3-sky0": {
    "spec": {
@@ -3962,7 +3962,7 @@
    "sticks": 246,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 554125
+   "bytes": 652507
   },
   "3v1-2-7.00m-door1-win5-sky1": {
    "spec": {
@@ -3983,7 +3983,7 @@
    "sticks": 246,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 560135
+   "bytes": 657866
   },
   "3v1-2-7.00m-door1-win5-sky0": {
    "spec": {
@@ -4004,7 +4004,7 @@
    "sticks": 246,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 554125
+   "bytes": 652507
   },
   "3v1-2-7.00m-door0-win0-sky1": {
    "spec": {
@@ -4025,7 +4025,7 @@
    "sticks": 225,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 490326
+   "bytes": 554661
   },
   "3v1-2-7.00m-door0-win0-sky0": {
    "spec": {
@@ -4046,7 +4046,7 @@
    "sticks": 225,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 484295
+   "bytes": 548970
   },
   "3v1-2-7.00m-door0-win3-sky1": {
    "spec": {
@@ -4067,7 +4067,7 @@
    "sticks": 225,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 493533
+   "bytes": 557468
   },
   "3v1-2-7.00m-door0-win3-sky0": {
    "spec": {
@@ -4088,7 +4088,7 @@
    "sticks": 225,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 487519
+   "bytes": 552079
   },
   "3v1-2-7.00m-door0-win5-sky1": {
    "spec": {
@@ -4109,7 +4109,7 @@
    "sticks": 225,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 493533
+   "bytes": 557468
   },
   "3v1-2-7.00m-door0-win5-sky0": {
    "spec": {
@@ -4130,7 +4130,7 @@
    "sticks": 225,
    "floor_m2": 37.37,
    "height_m": 3.124,
-   "bytes": 487519
+   "bytes": 552079
   },
   "3v1-2-8.00m-door1-win0-sky1": {
    "spec": {
@@ -4151,7 +4151,7 @@
    "sticks": 238,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 551981
+   "bytes": 639874
   },
   "3v1-2-8.00m-door1-win0-sky0": {
    "spec": {
@@ -4172,7 +4172,7 @@
    "sticks": 238,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 546369
+   "bytes": 634694
   },
   "3v1-2-8.00m-door1-win3-sky1": {
    "spec": {
@@ -4193,7 +4193,7 @@
    "sticks": 238,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 555072
+   "bytes": 642542
   },
   "3v1-2-8.00m-door1-win3-sky0": {
    "spec": {
@@ -4214,7 +4214,7 @@
    "sticks": 238,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 549477
+   "bytes": 637658
   },
   "3v1-2-8.00m-door1-win5-sky1": {
    "spec": {
@@ -4235,7 +4235,7 @@
    "sticks": 238,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 555072
+   "bytes": 642542
   },
   "3v1-2-8.00m-door1-win5-sky0": {
    "spec": {
@@ -4256,7 +4256,7 @@
    "sticks": 238,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 549477
+   "bytes": 637658
   },
   "3v1-2-8.00m-door0-win0-sky1": {
    "spec": {
@@ -4277,7 +4277,7 @@
    "sticks": 225,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 498403
+   "bytes": 563793
   },
   "3v1-2-8.00m-door0-win0-sky0": {
    "spec": {
@@ -4298,7 +4298,7 @@
    "sticks": 225,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 492791
+   "bytes": 558615
   },
   "3v1-2-8.00m-door0-win3-sky1": {
    "spec": {
@@ -4319,7 +4319,7 @@
    "sticks": 225,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 501494
+   "bytes": 566465
   },
   "3v1-2-8.00m-door0-win3-sky0": {
    "spec": {
@@ -4340,7 +4340,7 @@
    "sticks": 225,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 495899
+   "bytes": 561577
   },
   "3v1-2-8.00m-door0-win5-sky1": {
    "spec": {
@@ -4361,7 +4361,7 @@
    "sticks": 225,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 501494
+   "bytes": 566465
   },
   "3v1-2-8.00m-door0-win5-sky0": {
    "spec": {
@@ -4382,7 +4382,7 @@
    "sticks": 225,
    "floor_m2": 48.81,
    "height_m": 3.544,
-   "bytes": 495899
+   "bytes": 561577
   },
   "3v5-8-4.00m-door1-win0-sky1": {
    "spec": {
@@ -4403,7 +4403,7 @@
    "sticks": 323,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 631706
+   "bytes": 746009
   },
   "3v5-8-4.00m-door1-win0-sky0": {
    "spec": {
@@ -4424,7 +4424,7 @@
    "sticks": 323,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 625016
+   "bytes": 739629
   },
   "3v5-8-4.00m-door1-win3-sky1": {
    "spec": {
@@ -4445,7 +4445,7 @@
    "sticks": 323,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 635578
+   "bytes": 749573
   },
   "3v5-8-4.00m-door1-win3-sky0": {
    "spec": {
@@ -4466,7 +4466,7 @@
    "sticks": 323,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 628906
+   "bytes": 743494
   },
   "3v5-8-4.00m-door1-win5-sky1": {
    "spec": {
@@ -4487,7 +4487,7 @@
    "sticks": 323,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 636870
+   "bytes": 750722
   },
   "3v5-8-4.00m-door1-win5-sky0": {
    "spec": {
@@ -4508,7 +4508,7 @@
    "sticks": 323,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 630198
+   "bytes": 744634
   },
   "3v5-8-4.00m-door0-win0-sky1": {
    "spec": {
@@ -4529,7 +4529,7 @@
    "sticks": 315,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 576659
+   "bytes": 650040
   },
   "3v5-8-4.00m-door0-win0-sky0": {
    "spec": {
@@ -4550,7 +4550,7 @@
    "sticks": 315,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 569970
+   "bytes": 643662
   },
   "3v5-8-4.00m-door0-win3-sky1": {
    "spec": {
@@ -4571,7 +4571,7 @@
    "sticks": 315,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 580532
+   "bytes": 653556
   },
   "3v5-8-4.00m-door0-win3-sky0": {
    "spec": {
@@ -4592,7 +4592,7 @@
    "sticks": 315,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 573860
+   "bytes": 647473
   },
   "3v5-8-4.00m-door0-win5-sky1": {
    "spec": {
@@ -4613,7 +4613,7 @@
    "sticks": 315,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 581826
+   "bytes": 654739
   },
   "3v5-8-4.00m-door0-win5-sky0": {
    "spec": {
@@ -4634,7 +4634,7 @@
    "sticks": 315,
    "floor_m2": 12.2,
    "height_m": 2.591,
-   "bytes": 575153
+   "bytes": 648656
   },
   "3v5-8-4.50m-door1-win0-sky1": {
    "spec": {
@@ -4655,7 +4655,7 @@
    "sticks": 317,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 624444
+   "bytes": 720185
   },
   "3v5-8-4.50m-door1-win0-sky0": {
    "spec": {
@@ -4676,7 +4676,7 @@
    "sticks": 317,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 617755
+   "bytes": 713801
   },
   "3v5-8-4.50m-door1-win3-sky1": {
    "spec": {
@@ -4697,7 +4697,7 @@
    "sticks": 317,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 628316
+   "bytes": 723697
   },
   "3v5-8-4.50m-door1-win3-sky0": {
    "spec": {
@@ -4718,7 +4718,7 @@
    "sticks": 317,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 621646
+   "bytes": 717601
   },
   "3v5-8-4.50m-door1-win5-sky1": {
    "spec": {
@@ -4739,7 +4739,7 @@
    "sticks": 317,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 629608
+   "bytes": 724896
   },
   "3v5-8-4.50m-door1-win5-sky0": {
    "spec": {
@@ -4760,7 +4760,7 @@
    "sticks": 317,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 622936
+   "bytes": 718797
   },
   "3v5-8-4.50m-door0-win0-sky1": {
    "spec": {
@@ -4781,7 +4781,7 @@
    "sticks": 315,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 582160
+   "bytes": 655550
   },
   "3v5-8-4.50m-door0-win0-sky0": {
    "spec": {
@@ -4802,7 +4802,7 @@
    "sticks": 315,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 575472
+   "bytes": 649165
   },
   "3v5-8-4.50m-door0-win3-sky1": {
    "spec": {
@@ -4823,7 +4823,7 @@
    "sticks": 315,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 586033
+   "bytes": 659062
   },
   "3v5-8-4.50m-door0-win3-sky0": {
    "spec": {
@@ -4844,7 +4844,7 @@
    "sticks": 315,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 579364
+   "bytes": 652968
   },
   "3v5-8-4.50m-door0-win5-sky1": {
    "spec": {
@@ -4865,7 +4865,7 @@
    "sticks": 315,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 587324
+   "bytes": 660240
   },
   "3v5-8-4.50m-door0-win5-sky0": {
    "spec": {
@@ -4886,7 +4886,7 @@
    "sticks": 315,
    "floor_m2": 15.44,
    "height_m": 2.893,
-   "bytes": 580653
+   "bytes": 654145
   },
   "3v5-8-4.88m-door1-win0-sky1": {
    "spec": {
@@ -4907,7 +4907,7 @@
    "sticks": 309,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 614349
+   "bytes": 698164
   },
   "3v5-8-4.88m-door1-win0-sky0": {
    "spec": {
@@ -4928,7 +4928,7 @@
    "sticks": 309,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 607861
+   "bytes": 691965
   },
   "3v5-8-4.88m-door1-win3-sky1": {
    "spec": {
@@ -4949,7 +4949,7 @@
    "sticks": 309,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 618090
+   "bytes": 701562
   },
   "3v5-8-4.88m-door1-win3-sky0": {
    "spec": {
@@ -4970,7 +4970,7 @@
    "sticks": 309,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 611619
+   "bytes": 695646
   },
   "3v5-8-4.88m-door1-win5-sky1": {
    "spec": {
@@ -4991,7 +4991,7 @@
    "sticks": 309,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 620585
+   "bytes": 703848
   },
   "3v5-8-4.88m-door1-win5-sky0": {
    "spec": {
@@ -5012,7 +5012,7 @@
    "sticks": 309,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 614116
+   "bytes": 697940
   },
   "3v5-8-4.88m-door0-win0-sky1": {
    "spec": {
@@ -5033,7 +5033,7 @@
    "sticks": 315,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 585225
+   "bytes": 658774
   },
   "3v5-8-4.88m-door0-win0-sky0": {
    "spec": {
@@ -5054,7 +5054,7 @@
    "sticks": 315,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 578738
+   "bytes": 652574
   },
   "3v5-8-4.88m-door0-win3-sky1": {
    "spec": {
@@ -5075,7 +5075,7 @@
    "sticks": 315,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 588966
+   "bytes": 662171
   },
   "3v5-8-4.88m-door0-win3-sky0": {
    "spec": {
@@ -5096,7 +5096,7 @@
    "sticks": 315,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 582495
+   "bytes": 656257
   },
   "3v5-8-4.88m-door0-win5-sky1": {
    "spec": {
@@ -5117,7 +5117,7 @@
    "sticks": 315,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 591461
+   "bytes": 664456
   },
   "3v5-8-4.88m-door0-win5-sky0": {
    "spec": {
@@ -5138,7 +5138,7 @@
    "sticks": 315,
    "floor_m2": 18.16,
    "height_m": 3.122,
-   "bytes": 584992
+   "bytes": 658550
   },
   "3v5-8-5.00m-door1-win0-sky1": {
    "spec": {
@@ -5159,7 +5159,7 @@
    "sticks": 309,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 615968
+   "bytes": 699783
   },
   "3v5-8-5.00m-door1-win0-sky0": {
    "spec": {
@@ -5180,7 +5180,7 @@
    "sticks": 309,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 609478
+   "bytes": 693579
   },
   "3v5-8-5.00m-door1-win3-sky1": {
    "spec": {
@@ -5201,7 +5201,7 @@
    "sticks": 309,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 619708
+   "bytes": 703172
   },
   "3v5-8-5.00m-door1-win3-sky0": {
    "spec": {
@@ -5222,7 +5222,7 @@
    "sticks": 309,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 613236
+   "bytes": 697265
   },
   "3v5-8-5.00m-door1-win5-sky1": {
    "spec": {
@@ -5243,7 +5243,7 @@
    "sticks": 309,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 622201
+   "bytes": 705443
   },
   "3v5-8-5.00m-door1-win5-sky0": {
    "spec": {
@@ -5264,7 +5264,7 @@
    "sticks": 309,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 615729
+   "bytes": 699534
   },
   "3v5-8-5.00m-door0-win0-sky1": {
    "spec": {
@@ -5285,7 +5285,7 @@
    "sticks": 315,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 586790
+   "bytes": 660341
   },
   "3v5-8-5.00m-door0-win0-sky0": {
    "spec": {
@@ -5306,7 +5306,7 @@
    "sticks": 315,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 580301
+   "bytes": 654138
   },
   "3v5-8-5.00m-door0-win3-sky1": {
    "spec": {
@@ -5327,7 +5327,7 @@
    "sticks": 315,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 590532
+   "bytes": 663731
   },
   "3v5-8-5.00m-door0-win3-sky0": {
    "spec": {
@@ -5348,7 +5348,7 @@
    "sticks": 315,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 584059
+   "bytes": 657821
   },
   "3v5-8-5.00m-door0-win5-sky1": {
    "spec": {
@@ -5369,7 +5369,7 @@
    "sticks": 315,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 593024
+   "bytes": 665999
   },
   "3v5-8-5.00m-door0-win5-sky0": {
    "spec": {
@@ -5390,7 +5390,7 @@
    "sticks": 315,
    "floor_m2": 19.07,
    "height_m": 3.194,
-   "bytes": 586553
+   "bytes": 660091
   },
   "3v5-8-5.50m-door1-win0-sky1": {
    "spec": {
@@ -5411,7 +5411,7 @@
    "sticks": 329,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 647970
+   "bytes": 747007
   },
   "3v5-8-5.50m-door1-win0-sky0": {
    "spec": {
@@ -5432,7 +5432,7 @@
    "sticks": 329,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 641480
+   "bytes": 740813
   },
   "3v5-8-5.50m-door1-win3-sky1": {
    "spec": {
@@ -5453,7 +5453,7 @@
    "sticks": 329,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 651582
+   "bytes": 750276
   },
   "3v5-8-5.50m-door1-win3-sky0": {
    "spec": {
@@ -5474,7 +5474,7 @@
    "sticks": 329,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 645108
+   "bytes": 744370
   },
   "3v5-8-5.50m-door1-win5-sky1": {
    "spec": {
@@ -5495,7 +5495,7 @@
    "sticks": 329,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 653989
+   "bytes": 752480
   },
   "3v5-8-5.50m-door1-win5-sky0": {
    "spec": {
@@ -5516,7 +5516,7 @@
    "sticks": 329,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 647515
+   "bytes": 746573
   },
   "3v5-8-5.50m-door0-win0-sky1": {
    "spec": {
@@ -5537,7 +5537,7 @@
    "sticks": 315,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 592260
+   "bytes": 665701
   },
   "3v5-8-5.50m-door0-win0-sky0": {
    "spec": {
@@ -5558,7 +5558,7 @@
    "sticks": 315,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 585769
+   "bytes": 659505
   },
   "3v5-8-5.50m-door0-win3-sky1": {
    "spec": {
@@ -5579,7 +5579,7 @@
    "sticks": 315,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 595872
+   "bytes": 668968
   },
   "3v5-8-5.50m-door0-win3-sky0": {
    "spec": {
@@ -5600,7 +5600,7 @@
    "sticks": 315,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 589397
+   "bytes": 663059
   },
   "3v5-8-5.50m-door0-win5-sky1": {
    "spec": {
@@ -5621,7 +5621,7 @@
    "sticks": 315,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 598280
+   "bytes": 671172
   },
   "3v5-8-5.50m-door0-win5-sky0": {
    "spec": {
@@ -5642,7 +5642,7 @@
    "sticks": 315,
    "floor_m2": 23.07,
    "height_m": 3.496,
-   "bytes": 591805
+   "bytes": 665267
   },
   "3v5-8-6.00m-door1-win0-sky1": {
    "spec": {
@@ -5663,7 +5663,7 @@
    "sticks": 329,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 653687
+   "bytes": 753798
   },
   "3v5-8-6.00m-door1-win0-sky0": {
    "spec": {
@@ -5684,7 +5684,7 @@
    "sticks": 329,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 647417
+   "bytes": 747878
   },
   "3v5-8-6.00m-door1-win3-sky1": {
    "spec": {
@@ -5705,7 +5705,7 @@
    "sticks": 329,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 657176
+   "bytes": 756910
   },
   "3v5-8-6.00m-door1-win3-sky0": {
    "spec": {
@@ -5726,7 +5726,7 @@
    "sticks": 329,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 650924
+   "bytes": 751284
   },
   "3v5-8-6.00m-door1-win5-sky1": {
    "spec": {
@@ -5747,7 +5747,7 @@
    "sticks": 329,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 659504
+   "bytes": 758979
   },
   "3v5-8-6.00m-door1-win5-sky0": {
    "spec": {
@@ -5768,7 +5768,7 @@
    "sticks": 329,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 653251
+   "bytes": 753348
   },
   "3v5-8-6.00m-door0-win0-sky1": {
    "spec": {
@@ -5789,7 +5789,7 @@
    "sticks": 315,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 597618
+   "bytes": 672225
   },
   "3v5-8-6.00m-door0-win0-sky0": {
    "spec": {
@@ -5810,7 +5810,7 @@
    "sticks": 315,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 591348
+   "bytes": 666302
   },
   "3v5-8-6.00m-door0-win3-sky1": {
    "spec": {
@@ -5831,7 +5831,7 @@
    "sticks": 315,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 601107
+   "bytes": 675336
   },
   "3v5-8-6.00m-door0-win3-sky0": {
    "spec": {
@@ -5852,7 +5852,7 @@
    "sticks": 315,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 594855
+   "bytes": 669708
   },
   "3v5-8-6.00m-door0-win5-sky1": {
    "spec": {
@@ -5873,7 +5873,7 @@
    "sticks": 315,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 603435
+   "bytes": 677405
   },
   "3v5-8-6.00m-door0-win5-sky0": {
    "spec": {
@@ -5894,7 +5894,7 @@
    "sticks": 315,
    "floor_m2": 27.45,
    "height_m": 3.798,
-   "bytes": 597182
+   "bytes": 671776
   },
   "3v5-8-7.00m-door1-win0-sky1": {
    "spec": {
@@ -5915,7 +5915,7 @@
    "sticks": 337,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 673627
+   "bytes": 780817
   },
   "3v5-8-7.00m-door1-win0-sky0": {
    "spec": {
@@ -5936,7 +5936,7 @@
    "sticks": 337,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 667576
+   "bytes": 775107
   },
   "3v5-8-7.00m-door1-win3-sky1": {
    "spec": {
@@ -5957,7 +5957,7 @@
    "sticks": 337,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 676987
+   "bytes": 783782
   },
   "3v5-8-7.00m-door1-win3-sky0": {
    "spec": {
@@ -5978,7 +5978,7 @@
    "sticks": 337,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 670954
+   "bytes": 778370
   },
   "3v5-8-7.00m-door1-win5-sky1": {
    "spec": {
@@ -5999,7 +5999,7 @@
    "sticks": 337,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 679225
+   "bytes": 785763
   },
   "3v5-8-7.00m-door1-win5-sky0": {
    "spec": {
@@ -6020,7 +6020,7 @@
    "sticks": 337,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 673193
+   "bytes": 780351
   },
   "3v5-8-7.00m-door0-win0-sky1": {
    "spec": {
@@ -6041,7 +6041,7 @@
    "sticks": 315,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 606595
+   "bytes": 681312
   },
   "3v5-8-7.00m-door0-win0-sky0": {
    "spec": {
@@ -6062,7 +6062,7 @@
    "sticks": 315,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 600545
+   "bytes": 675604
   },
   "3v5-8-7.00m-door0-win3-sky1": {
    "spec": {
@@ -6083,7 +6083,7 @@
    "sticks": 315,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 609955
+   "bytes": 684276
   },
   "3v5-8-7.00m-door0-win3-sky0": {
    "spec": {
@@ -6104,7 +6104,7 @@
    "sticks": 315,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 603922
+   "bytes": 678861
   },
   "3v5-8-7.00m-door0-win5-sky1": {
    "spec": {
@@ -6125,7 +6125,7 @@
    "sticks": 315,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 612194
+   "bytes": 686258
   },
   "3v5-8-7.00m-door0-win5-sky0": {
    "spec": {
@@ -6146,7 +6146,7 @@
    "sticks": 315,
    "floor_m2": 37.37,
    "height_m": 4.401,
-   "bytes": 606160
+   "bytes": 680844
   },
   "3v5-8-8.00m-door1-win0-sky1": {
    "spec": {
@@ -6167,7 +6167,7 @@
    "sticks": 337,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 685486
+   "bytes": 793952
   },
   "3v5-8-8.00m-door1-win0-sky0": {
    "spec": {
@@ -6188,7 +6188,7 @@
    "sticks": 337,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 679639
+   "bytes": 788545
   },
   "3v5-8-8.00m-door1-win3-sky1": {
    "spec": {
@@ -6209,7 +6209,7 @@
    "sticks": 337,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 688595
+   "bytes": 796640
   },
   "3v5-8-8.00m-door1-win3-sky0": {
    "spec": {
@@ -6230,7 +6230,7 @@
    "sticks": 337,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 682763
+   "bytes": 791520
   },
   "3v5-8-8.00m-door1-win5-sky1": {
    "spec": {
@@ -6251,7 +6251,7 @@
    "sticks": 337,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 690667
+   "bytes": 798435
   },
   "3v5-8-8.00m-door1-win5-sky0": {
    "spec": {
@@ -6272,7 +6272,7 @@
    "sticks": 337,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 684833
+   "bytes": 793310
   },
   "3v5-8-8.00m-door0-win0-sky1": {
    "spec": {
@@ -6293,7 +6293,7 @@
    "sticks": 315,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 618369
+   "bytes": 694571
   },
   "3v5-8-8.00m-door0-win0-sky0": {
    "spec": {
@@ -6314,7 +6314,7 @@
    "sticks": 315,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 612522
+   "bytes": 689154
   },
   "3v5-8-8.00m-door0-win3-sky1": {
    "spec": {
@@ -6335,7 +6335,7 @@
    "sticks": 315,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 621478
+   "bytes": 697254
   },
   "3v5-8-8.00m-door0-win3-sky0": {
    "spec": {
@@ -6356,7 +6356,7 @@
    "sticks": 315,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 615647
+   "bytes": 692138
   },
   "3v5-8-8.00m-door0-win5-sky1": {
    "spec": {
@@ -6377,7 +6377,7 @@
    "sticks": 315,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 623550
+   "bytes": 699049
   },
   "3v5-8-8.00m-door0-win5-sky0": {
    "spec": {
@@ -6398,7 +6398,7 @@
    "sticks": 315,
    "floor_m2": 48.81,
    "height_m": 5.004,
-   "bytes": 617717
+   "bytes": 693927
   },
   "4v1-2-4.00m-door1-win0-sky1": {
    "spec": {
@@ -6419,7 +6419,7 @@
    "sticks": 477,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 838379
+   "bytes": 989307
   },
   "4v1-2-4.00m-door1-win0-sky0": {
    "spec": {
@@ -6440,7 +6440,7 @@
    "sticks": 477,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 830605
+   "bytes": 982023
   },
   "4v1-2-4.00m-door1-win3-sky1": {
    "spec": {
@@ -6461,7 +6461,7 @@
    "sticks": 477,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 842370
+   "bytes": 992998
   },
   "4v1-2-4.00m-door1-win3-sky0": {
    "spec": {
@@ -6482,7 +6482,7 @@
    "sticks": 477,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 834611
+   "bytes": 985838
   },
   "4v1-2-4.00m-door1-win5-sky1": {
    "spec": {
@@ -6503,7 +6503,7 @@
    "sticks": 477,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 845034
+   "bytes": 995493
   },
   "4v1-2-4.00m-door1-win5-sky0": {
    "spec": {
@@ -6524,7 +6524,7 @@
    "sticks": 477,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 837276
+   "bytes": 988203
   },
   "4v1-2-4.00m-door0-win0-sky1": {
    "spec": {
@@ -6545,7 +6545,7 @@
    "sticks": 480,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 792317
+   "bytes": 896039
   },
   "4v1-2-4.00m-door0-win0-sky0": {
    "spec": {
@@ -6566,7 +6566,7 @@
    "sticks": 480,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 784542
+   "bytes": 888573
   },
   "4v1-2-4.00m-door0-win3-sky1": {
    "spec": {
@@ -6587,7 +6587,7 @@
    "sticks": 480,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 796308
+   "bytes": 899630
   },
   "4v1-2-4.00m-door0-win3-sky0": {
    "spec": {
@@ -6608,7 +6608,7 @@
    "sticks": 480,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 788550
+   "bytes": 892528
   },
   "4v1-2-4.00m-door0-win5-sky1": {
    "spec": {
@@ -6629,7 +6629,7 @@
    "sticks": 480,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 798972
+   "bytes": 902104
   },
   "4v1-2-4.00m-door0-win5-sky0": {
    "spec": {
@@ -6650,7 +6650,7 @@
    "sticks": 480,
    "floor_m2": 12.36,
    "height_m": 2.178,
-   "bytes": 791213
+   "bytes": 894925
   },
   "4v1-2-4.50m-door1-win0-sky1": {
    "spec": {
@@ -6671,7 +6671,7 @@
    "sticks": 487,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 853835
+   "bytes": 1006583
   },
   "4v1-2-4.50m-door1-win0-sky0": {
    "spec": {
@@ -6692,7 +6692,7 @@
    "sticks": 487,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 846063
+   "bytes": 999138
   },
   "4v1-2-4.50m-door1-win3-sky1": {
    "spec": {
@@ -6713,7 +6713,7 @@
    "sticks": 487,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 857824
+   "bytes": 1010223
   },
   "4v1-2-4.50m-door1-win3-sky0": {
    "spec": {
@@ -6734,7 +6734,7 @@
    "sticks": 487,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 850069
+   "bytes": 1003104
   },
   "4v1-2-4.50m-door1-win5-sky1": {
    "spec": {
@@ -6755,7 +6755,7 @@
    "sticks": 487,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 860487
+   "bytes": 1012673
   },
   "4v1-2-4.50m-door1-win5-sky0": {
    "spec": {
@@ -6776,7 +6776,7 @@
    "sticks": 487,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 852732
+   "bytes": 1005580
   },
   "4v1-2-4.50m-door0-win0-sky1": {
    "spec": {
@@ -6797,7 +6797,7 @@
    "sticks": 480,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 796478
+   "bytes": 900251
   },
   "4v1-2-4.50m-door0-win0-sky0": {
    "spec": {
@@ -6818,7 +6818,7 @@
    "sticks": 480,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 788708
+   "bytes": 892797
   },
   "4v1-2-4.50m-door0-win3-sky1": {
    "spec": {
@@ -6839,7 +6839,7 @@
    "sticks": 480,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 800468
+   "bytes": 903886
   },
   "4v1-2-4.50m-door0-win3-sky0": {
    "spec": {
@@ -6860,7 +6860,7 @@
    "sticks": 480,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 792714
+   "bytes": 896754
   },
   "4v1-2-4.50m-door0-win5-sky1": {
    "spec": {
@@ -6881,7 +6881,7 @@
    "sticks": 480,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 803132
+   "bytes": 906301
   },
   "4v1-2-4.50m-door0-win5-sky0": {
    "spec": {
@@ -6902,7 +6902,7 @@
    "sticks": 480,
    "floor_m2": 15.64,
    "height_m": 2.428,
-   "bytes": 795376
+   "bytes": 899149
   },
   "4v1-2-4.88m-door1-win0-sky1": {
    "spec": {
@@ -6923,7 +6923,7 @@
    "sticks": 482,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 850659
+   "bytes": 998621
   },
   "4v1-2-4.88m-door1-win0-sky0": {
    "spec": {
@@ -6944,7 +6944,7 @@
    "sticks": 482,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 842888
+   "bytes": 991182
   },
   "4v1-2-4.88m-door1-win3-sky1": {
    "spec": {
@@ -6965,7 +6965,7 @@
    "sticks": 482,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 854653
+   "bytes": 1002261
   },
   "4v1-2-4.88m-door1-win3-sky0": {
    "spec": {
@@ -6986,7 +6986,7 @@
    "sticks": 482,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 846899
+   "bytes": 995116
   },
   "4v1-2-4.88m-door1-win5-sky1": {
    "spec": {
@@ -7007,7 +7007,7 @@
    "sticks": 482,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 857315
+   "bytes": 1004707
   },
   "4v1-2-4.88m-door1-win5-sky0": {
    "spec": {
@@ -7028,7 +7028,7 @@
    "sticks": 482,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 849561
+   "bytes": 997567
   },
   "4v1-2-4.88m-door0-win0-sky1": {
    "spec": {
@@ -7049,7 +7049,7 @@
    "sticks": 480,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 801035
+   "bytes": 904119
   },
   "4v1-2-4.88m-door0-win0-sky0": {
    "spec": {
@@ -7070,7 +7070,7 @@
    "sticks": 480,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 793263
+   "bytes": 896695
   },
   "4v1-2-4.88m-door0-win3-sky1": {
    "spec": {
@@ -7091,7 +7091,7 @@
    "sticks": 480,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 805028
+   "bytes": 907799
   },
   "4v1-2-4.88m-door0-win3-sky0": {
    "spec": {
@@ -7112,7 +7112,7 @@
    "sticks": 480,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 797273
+   "bytes": 900676
   },
   "4v1-2-4.88m-door0-win5-sky1": {
    "spec": {
@@ -7133,7 +7133,7 @@
    "sticks": 480,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 807692
+   "bytes": 910214
   },
   "4v1-2-4.88m-door0-win5-sky0": {
    "spec": {
@@ -7154,7 +7154,7 @@
    "sticks": 480,
    "floor_m2": 18.4,
    "height_m": 2.618,
-   "bytes": 799936
+   "bytes": 903083
   },
   "4v1-2-5.00m-door1-win0-sky1": {
    "spec": {
@@ -7175,7 +7175,7 @@
    "sticks": 481,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 850470
+   "bytes": 997682
   },
   "4v1-2-5.00m-door1-win0-sky0": {
    "spec": {
@@ -7196,7 +7196,7 @@
    "sticks": 481,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 842699
+   "bytes": 990285
   },
   "4v1-2-5.00m-door1-win3-sky1": {
    "spec": {
@@ -7217,7 +7217,7 @@
    "sticks": 481,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 854343
+   "bytes": 1001212
   },
   "4v1-2-5.00m-door1-win3-sky0": {
    "spec": {
@@ -7238,7 +7238,7 @@
    "sticks": 481,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 846587
+   "bytes": 994095
   },
   "4v1-2-5.00m-door1-win5-sky1": {
    "spec": {
@@ -7259,7 +7259,7 @@
    "sticks": 481,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 856929
+   "bytes": 1003594
   },
   "4v1-2-5.00m-door1-win5-sky0": {
    "spec": {
@@ -7280,7 +7280,7 @@
    "sticks": 481,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 849172
+   "bytes": 996470
   },
   "4v1-2-5.00m-door0-win0-sky1": {
    "spec": {
@@ -7301,7 +7301,7 @@
    "sticks": 480,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 802268
+   "bytes": 905650
   },
   "4v1-2-5.00m-door0-win0-sky0": {
    "spec": {
@@ -7322,7 +7322,7 @@
    "sticks": 480,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 794494
+   "bytes": 898212
   },
   "4v1-2-5.00m-door0-win3-sky1": {
    "spec": {
@@ -7343,7 +7343,7 @@
    "sticks": 480,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 806140
+   "bytes": 909201
   },
   "4v1-2-5.00m-door0-win3-sky0": {
    "spec": {
@@ -7364,7 +7364,7 @@
    "sticks": 480,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 798384
+   "bytes": 902068
   },
   "4v1-2-5.00m-door0-win5-sky1": {
    "spec": {
@@ -7385,7 +7385,7 @@
    "sticks": 480,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 808727
+   "bytes": 911540
   },
   "4v1-2-5.00m-door0-win5-sky0": {
    "spec": {
@@ -7406,7 +7406,7 @@
    "sticks": 480,
    "floor_m2": 19.31,
    "height_m": 2.678,
-   "bytes": 800969
+   "bytes": 904403
   },
   "4v1-2-5.50m-door1-win0-sky1": {
    "spec": {
@@ -7427,7 +7427,7 @@
    "sticks": 477,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 849246
+   "bytes": 988061
   },
   "4v1-2-5.50m-door1-win0-sky0": {
    "spec": {
@@ -7448,7 +7448,7 @@
    "sticks": 477,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 841479
+   "bytes": 980611
   },
   "4v1-2-5.50m-door1-win3-sky1": {
    "spec": {
@@ -7469,7 +7469,7 @@
    "sticks": 477,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 853122
+   "bytes": 991569
   },
   "4v1-2-5.50m-door1-win3-sky0": {
    "spec": {
@@ -7490,7 +7490,7 @@
    "sticks": 477,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 845365
+   "bytes": 984406
   },
   "4v1-2-5.50m-door1-win5-sky1": {
    "spec": {
@@ -7511,7 +7511,7 @@
    "sticks": 477,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 855707
+   "bytes": 993911
   },
   "4v1-2-5.50m-door1-win5-sky0": {
    "spec": {
@@ -7532,7 +7532,7 @@
    "sticks": 477,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 847952
+   "bytes": 986749
   },
   "4v1-2-5.50m-door0-win0-sky1": {
    "spec": {
@@ -7553,7 +7553,7 @@
    "sticks": 480,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 808728
+   "bytes": 912206
   },
   "4v1-2-5.50m-door0-win0-sky0": {
    "spec": {
@@ -7574,7 +7574,7 @@
    "sticks": 480,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 800958
+   "bytes": 904747
   },
   "4v1-2-5.50m-door0-win3-sky1": {
    "spec": {
@@ -7595,7 +7595,7 @@
    "sticks": 480,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 812601
+   "bytes": 915765
   },
   "4v1-2-5.50m-door0-win3-sky0": {
    "spec": {
@@ -7616,7 +7616,7 @@
    "sticks": 480,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 804844
+   "bytes": 908594
   },
   "4v1-2-5.50m-door0-win5-sky1": {
    "spec": {
@@ -7637,7 +7637,7 @@
    "sticks": 480,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 815186
+   "bytes": 918095
   },
   "4v1-2-5.50m-door0-win5-sky0": {
    "spec": {
@@ -7658,7 +7658,7 @@
    "sticks": 480,
    "floor_m2": 23.37,
    "height_m": 2.928,
-   "bytes": 807430
+   "bytes": 910922
   },
   "4v1-2-6.00m-door1-win0-sky1": {
    "spec": {
@@ -7679,7 +7679,7 @@
    "sticks": 488,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 868681
+   "bytes": 1013183
   },
   "4v1-2-6.00m-door1-win0-sky0": {
    "spec": {
@@ -7700,7 +7700,7 @@
    "sticks": 488,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 860911
+   "bytes": 1005715
   },
   "4v1-2-6.00m-door1-win3-sky1": {
    "spec": {
@@ -7721,7 +7721,7 @@
    "sticks": 488,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 872550
+   "bytes": 1016673
   },
   "4v1-2-6.00m-door1-win3-sky0": {
    "spec": {
@@ -7742,7 +7742,7 @@
    "sticks": 488,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 864797
+   "bytes": 1009501
   },
   "4v1-2-6.00m-door1-win5-sky1": {
    "spec": {
@@ -7763,7 +7763,7 @@
    "sticks": 488,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 875134
+   "bytes": 1019051
   },
   "4v1-2-6.00m-door1-win5-sky0": {
    "spec": {
@@ -7784,7 +7784,7 @@
    "sticks": 488,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 867380
+   "bytes": 1011871
   },
   "4v1-2-6.00m-door0-win0-sky1": {
    "spec": {
@@ -7805,7 +7805,7 @@
    "sticks": 480,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 813304
+   "bytes": 916951
   },
   "4v1-2-6.00m-door0-win0-sky0": {
    "spec": {
@@ -7826,7 +7826,7 @@
    "sticks": 480,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 805533
+   "bytes": 909480
   },
   "4v1-2-6.00m-door0-win3-sky1": {
    "spec": {
@@ -7847,7 +7847,7 @@
    "sticks": 480,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 817172
+   "bytes": 920482
   },
   "4v1-2-6.00m-door0-win3-sky0": {
    "spec": {
@@ -7868,7 +7868,7 @@
    "sticks": 480,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 809419
+   "bytes": 913308
   },
   "4v1-2-6.00m-door0-win5-sky1": {
    "spec": {
@@ -7889,7 +7889,7 @@
    "sticks": 480,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 819756
+   "bytes": 922823
   },
   "4v1-2-6.00m-door0-win5-sky0": {
    "spec": {
@@ -7910,7 +7910,7 @@
    "sticks": 480,
    "floor_m2": 27.81,
    "height_m": 3.178,
-   "bytes": 812002
+   "bytes": 915640
   },
   "4v1-2-7.00m-door1-win0-sky1": {
    "spec": {
@@ -7931,7 +7931,7 @@
    "sticks": 486,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 876996
+   "bytes": 1015257
   },
   "4v1-2-7.00m-door1-win0-sky0": {
    "spec": {
@@ -7952,7 +7952,7 @@
    "sticks": 486,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 869225
+   "bytes": 1007774
   },
   "4v1-2-7.00m-door1-win3-sky1": {
    "spec": {
@@ -7973,7 +7973,7 @@
    "sticks": 486,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 880605
+   "bytes": 1018512
   },
   "4v1-2-7.00m-door1-win3-sky0": {
    "spec": {
@@ -7994,7 +7994,7 @@
    "sticks": 486,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 872851
+   "bytes": 1011323
   },
   "4v1-2-7.00m-door1-win5-sky1": {
    "spec": {
@@ -8015,7 +8015,7 @@
    "sticks": 486,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 881807
+   "bytes": 1019597
   },
   "4v1-2-7.00m-door1-win5-sky0": {
    "spec": {
@@ -8036,7 +8036,7 @@
    "sticks": 486,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 874052
+   "bytes": 1012407
   },
   "4v1-2-7.00m-door0-win0-sky1": {
    "spec": {
@@ -8057,7 +8057,7 @@
    "sticks": 480,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 825717
+   "bytes": 929371
   },
   "4v1-2-7.00m-door0-win0-sky0": {
    "spec": {
@@ -8078,7 +8078,7 @@
    "sticks": 480,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 817946
+   "bytes": 921890
   },
   "4v1-2-7.00m-door0-win3-sky1": {
    "spec": {
@@ -8099,7 +8099,7 @@
    "sticks": 480,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 829326
+   "bytes": 932631
   },
   "4v1-2-7.00m-door0-win3-sky0": {
    "spec": {
@@ -8120,7 +8120,7 @@
    "sticks": 480,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 821571
+   "bytes": 925439
   },
   "4v1-2-7.00m-door0-win5-sky1": {
    "spec": {
@@ -8141,7 +8141,7 @@
    "sticks": 480,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 830528
+   "bytes": 933736
   },
   "4v1-2-7.00m-door0-win5-sky0": {
    "spec": {
@@ -8162,7 +8162,7 @@
    "sticks": 480,
    "floor_m2": 37.85,
    "height_m": 3.678,
-   "bytes": 822774
+   "bytes": 926545
   },
   "4v1-2-8.00m-door1-win0-sky1": {
    "spec": {
@@ -8183,7 +8183,7 @@
    "sticks": 493,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 892324
+   "bytes": 1021831
   },
   "4v1-2-8.00m-door1-win0-sky0": {
    "spec": {
@@ -8204,7 +8204,7 @@
    "sticks": 493,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 884550
+   "bytes": 1014344
   },
   "4v1-2-8.00m-door1-win3-sky1": {
    "spec": {
@@ -8225,7 +8225,7 @@
    "sticks": 493,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 895935
+   "bytes": 1025089
   },
   "4v1-2-8.00m-door1-win3-sky0": {
    "spec": {
@@ -8246,7 +8246,7 @@
    "sticks": 493,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 888178
+   "bytes": 1017895
   },
   "4v1-2-8.00m-door1-win5-sky1": {
    "spec": {
@@ -8267,7 +8267,7 @@
    "sticks": 493,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 898334
+   "bytes": 1027237
   },
   "4v1-2-8.00m-door1-win5-sky0": {
    "spec": {
@@ -8288,7 +8288,7 @@
    "sticks": 493,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 890575
+   "bytes": 1020042
   },
   "4v1-2-8.00m-door0-win0-sky1": {
    "spec": {
@@ -8309,7 +8309,7 @@
    "sticks": 480,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 837665
+   "bytes": 942414
   },
   "4v1-2-8.00m-door0-win0-sky0": {
    "spec": {
@@ -8330,7 +8330,7 @@
    "sticks": 480,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 829891
+   "bytes": 934928
   },
   "4v1-2-8.00m-door0-win3-sky1": {
    "spec": {
@@ -8351,7 +8351,7 @@
    "sticks": 480,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 841276
+   "bytes": 945673
   },
   "4v1-2-8.00m-door0-win3-sky0": {
    "spec": {
@@ -8372,7 +8372,7 @@
    "sticks": 480,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 833519
+   "bytes": 938483
   },
   "4v1-2-8.00m-door0-win5-sky1": {
    "spec": {
@@ -8393,7 +8393,7 @@
    "sticks": 480,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 843674
+   "bytes": 947863
   },
   "4v1-2-8.00m-door0-win5-sky0": {
    "spec": {
@@ -8414,7 +8414,7 @@
    "sticks": 480,
    "floor_m2": 49.44,
    "height_m": 4.178,
-   "bytes": 835917
+   "bytes": 940665
   },
   "4v5-8-4.00m-door1-win0-sky1": {
    "spec": {
@@ -8435,7 +8435,7 @@
    "sticks": 527,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 914078
+   "bytes": 1068389
   },
   "4v5-8-4.00m-door1-win0-sky0": {
    "spec": {
@@ -8456,7 +8456,7 @@
    "sticks": 527,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 906304
+   "bytes": 1060944
   },
   "4v5-8-4.00m-door1-win3-sky1": {
    "spec": {
@@ -8477,7 +8477,7 @@
    "sticks": 527,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 918073
+   "bytes": 1072068
   },
   "4v5-8-4.00m-door1-win3-sky0": {
    "spec": {
@@ -8498,7 +8498,7 @@
    "sticks": 527,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 910316
+   "bytes": 1064938
   },
   "4v5-8-4.00m-door1-win5-sky1": {
    "spec": {
@@ -8519,7 +8519,7 @@
    "sticks": 527,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 919404
+   "bytes": 1073300
   },
   "4v5-8-4.00m-door1-win5-sky0": {
    "spec": {
@@ -8540,7 +8540,7 @@
    "sticks": 527,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 911647
+   "bytes": 1066183
   },
   "4v5-8-4.00m-door0-win0-sky1": {
    "spec": {
@@ -8561,7 +8561,7 @@
    "sticks": 525,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 866882
+   "bytes": 983468
   },
   "4v5-8-4.00m-door0-win0-sky0": {
    "spec": {
@@ -8582,7 +8582,7 @@
    "sticks": 525,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 859108
+   "bytes": 975993
   },
   "4v5-8-4.00m-door0-win3-sky1": {
    "spec": {
@@ -8603,7 +8603,7 @@
    "sticks": 525,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 870877
+   "bytes": 987087
   },
   "4v5-8-4.00m-door0-win3-sky0": {
    "spec": {
@@ -8624,7 +8624,7 @@
    "sticks": 525,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 863120
+   "bytes": 979842
   },
   "4v5-8-4.00m-door0-win5-sky1": {
    "spec": {
@@ -8645,7 +8645,7 @@
    "sticks": 525,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 872208
+   "bytes": 988304
   },
   "4v5-8-4.00m-door0-win5-sky0": {
    "spec": {
@@ -8666,7 +8666,7 @@
    "sticks": 525,
    "floor_m2": 12.43,
    "height_m": 2.713,
-   "bytes": 864451
+   "bytes": 981043
   },
   "4v5-8-4.50m-door1-win0-sky1": {
    "spec": {
@@ -8687,7 +8687,7 @@
    "sticks": 529,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 923776
+   "bytes": 1079843
   },
   "4v5-8-4.50m-door1-win0-sky0": {
    "spec": {
@@ -8708,7 +8708,7 @@
    "sticks": 529,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 916003
+   "bytes": 1072500
   },
   "4v5-8-4.50m-door1-win3-sky1": {
    "spec": {
@@ -8729,7 +8729,7 @@
    "sticks": 529,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 927767
+   "bytes": 1083582
   },
   "4v5-8-4.50m-door1-win3-sky0": {
    "spec": {
@@ -8750,7 +8750,7 @@
    "sticks": 529,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 920009
+   "bytes": 1076277
   },
   "4v5-8-4.50m-door1-win5-sky1": {
    "spec": {
@@ -8771,7 +8771,7 @@
    "sticks": 529,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 930435
+   "bytes": 1085917
   },
   "4v5-8-4.50m-door1-win5-sky0": {
    "spec": {
@@ -8792,7 +8792,7 @@
    "sticks": 529,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 922679
+   "bytes": 1078827
   },
   "4v5-8-4.50m-door0-win0-sky1": {
    "spec": {
@@ -8813,7 +8813,7 @@
    "sticks": 525,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 873628
+   "bytes": 990051
   },
   "4v5-8-4.50m-door0-win0-sky0": {
    "spec": {
@@ -8834,7 +8834,7 @@
    "sticks": 525,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 865856
+   "bytes": 982617
   },
   "4v5-8-4.50m-door0-win3-sky1": {
    "spec": {
@@ -8855,7 +8855,7 @@
    "sticks": 525,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 877620
+   "bytes": 993734
   },
   "4v5-8-4.50m-door0-win3-sky0": {
    "spec": {
@@ -8876,7 +8876,7 @@
    "sticks": 525,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 869863
+   "bytes": 986602
   },
   "4v5-8-4.50m-door0-win5-sky1": {
    "spec": {
@@ -8897,7 +8897,7 @@
    "sticks": 525,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 880287
+   "bytes": 996138
   },
   "4v5-8-4.50m-door0-win5-sky0": {
    "spec": {
@@ -8918,7 +8918,7 @@
    "sticks": 525,
    "floor_m2": 15.74,
    "height_m": 3.029,
-   "bytes": 872531
+   "bytes": 989021
   },
   "4v5-8-4.88m-door1-win0-sky1": {
    "spec": {
@@ -8939,7 +8939,7 @@
    "sticks": 531,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 928799
+   "bytes": 1079381
   },
   "4v5-8-4.88m-door1-win0-sky0": {
    "spec": {
@@ -8960,7 +8960,7 @@
    "sticks": 531,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 921028
+   "bytes": 1071977
   },
   "4v5-8-4.88m-door1-win3-sky1": {
    "spec": {
@@ -8981,7 +8981,7 @@
    "sticks": 531,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 932673
+   "bytes": 1082902
   },
   "4v5-8-4.88m-door1-win3-sky0": {
    "spec": {
@@ -9002,7 +9002,7 @@
    "sticks": 531,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 924918
+   "bytes": 1075787
   },
   "4v5-8-4.88m-door1-win5-sky1": {
    "spec": {
@@ -9023,7 +9023,7 @@
    "sticks": 531,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 933966
+   "bytes": 1084080
   },
   "4v5-8-4.88m-door1-win5-sky0": {
    "spec": {
@@ -9044,7 +9044,7 @@
    "sticks": 531,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 926210
+   "bytes": 1076965
   },
   "4v5-8-4.88m-door0-win0-sky1": {
    "spec": {
@@ -9065,7 +9065,7 @@
    "sticks": 525,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 878381
+   "bytes": 994406
   },
   "4v5-8-4.88m-door0-win0-sky0": {
    "spec": {
@@ -9086,7 +9086,7 @@
    "sticks": 525,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 870610
+   "bytes": 986995
   },
   "4v5-8-4.88m-door0-win3-sky1": {
    "spec": {
@@ -9107,7 +9107,7 @@
    "sticks": 525,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 882255
+   "bytes": 997916
   },
   "4v5-8-4.88m-door0-win3-sky0": {
    "spec": {
@@ -9128,7 +9128,7 @@
    "sticks": 525,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 874500
+   "bytes": 990793
   },
   "4v5-8-4.88m-door0-win5-sky1": {
    "spec": {
@@ -9149,7 +9149,7 @@
    "sticks": 525,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 883548
+   "bytes": 999111
   },
   "4v5-8-4.88m-door0-win5-sky0": {
    "spec": {
@@ -9170,7 +9170,7 @@
    "sticks": 525,
    "floor_m2": 18.51,
    "height_m": 3.27,
-   "bytes": 875792
+   "bytes": 991988
   },
   "4v5-8-5.00m-door1-win0-sky1": {
    "spec": {
@@ -9191,7 +9191,7 @@
    "sticks": 531,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 930938
+   "bytes": 1081560
   },
   "4v5-8-5.00m-door1-win0-sky0": {
    "spec": {
@@ -9212,7 +9212,7 @@
    "sticks": 531,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 923186
+   "bytes": 1074147
   },
   "4v5-8-5.00m-door1-win3-sky1": {
    "spec": {
@@ -9233,7 +9233,7 @@
    "sticks": 531,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 934813
+   "bytes": 1085073
   },
   "4v5-8-5.00m-door1-win3-sky0": {
    "spec": {
@@ -9254,7 +9254,7 @@
    "sticks": 531,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 927078
+   "bytes": 1077961
   },
   "4v5-8-5.00m-door1-win5-sky1": {
    "spec": {
@@ -9275,7 +9275,7 @@
    "sticks": 531,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 936105
+   "bytes": 1086246
   },
   "4v5-8-5.00m-door1-win5-sky0": {
    "spec": {
@@ -9296,7 +9296,7 @@
    "sticks": 531,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 928370
+   "bytes": 1079130
   },
   "4v5-8-5.00m-door0-win0-sky1": {
    "spec": {
@@ -9317,7 +9317,7 @@
    "sticks": 525,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 880699
+   "bytes": 996767
   },
   "4v5-8-5.00m-door0-win0-sky0": {
    "spec": {
@@ -9338,7 +9338,7 @@
    "sticks": 525,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 872947
+   "bytes": 989357
   },
   "4v5-8-5.00m-door0-win3-sky1": {
    "spec": {
@@ -9359,7 +9359,7 @@
    "sticks": 525,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 884573
+   "bytes": 1000267
   },
   "4v5-8-5.00m-door0-win3-sky0": {
    "spec": {
@@ -9380,7 +9380,7 @@
    "sticks": 525,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 876838
+   "bytes": 993149
   },
   "4v5-8-5.00m-door0-win5-sky1": {
    "spec": {
@@ -9401,7 +9401,7 @@
    "sticks": 525,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 885864
+   "bytes": 1001458
   },
   "4v5-8-5.00m-door0-win5-sky0": {
    "spec": {
@@ -9422,7 +9422,7 @@
    "sticks": 525,
    "floor_m2": 19.43,
    "height_m": 3.346,
-   "bytes": 878129
+   "bytes": 994345
   },
   "4v5-8-5.50m-door1-win0-sky1": {
    "spec": {
@@ -9443,7 +9443,7 @@
    "sticks": 530,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 934727
+   "bytes": 1084521
   },
   "4v5-8-5.50m-door1-win0-sky0": {
    "spec": {
@@ -9464,7 +9464,7 @@
    "sticks": 530,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 926955
+   "bytes": 1077053
   },
   "4v5-8-5.50m-door1-win3-sky1": {
    "spec": {
@@ -9485,7 +9485,7 @@
    "sticks": 530,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 938602
+   "bytes": 1088044
   },
   "4v5-8-5.50m-door1-win3-sky0": {
    "spec": {
@@ -9506,7 +9506,7 @@
    "sticks": 530,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 930846
+   "bytes": 1080865
   },
   "4v5-8-5.50m-door1-win5-sky1": {
    "spec": {
@@ -9527,7 +9527,7 @@
    "sticks": 530,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 939894
+   "bytes": 1089221
   },
   "4v5-8-5.50m-door1-win5-sky0": {
    "spec": {
@@ -9548,7 +9548,7 @@
    "sticks": 530,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 932138
+   "bytes": 1082046
   },
   "4v5-8-5.50m-door0-win0-sky1": {
    "spec": {
@@ -9569,7 +9569,7 @@
    "sticks": 525,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 885829
+   "bytes": 1002104
   },
   "4v5-8-5.50m-door0-win0-sky0": {
    "spec": {
@@ -9590,7 +9590,7 @@
    "sticks": 525,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 878057
+   "bytes": 994640
   },
   "4v5-8-5.50m-door0-win3-sky1": {
    "spec": {
@@ -9611,7 +9611,7 @@
    "sticks": 525,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 889704
+   "bytes": 1005614
   },
   "4v5-8-5.50m-door0-win3-sky0": {
    "spec": {
@@ -9632,7 +9632,7 @@
    "sticks": 525,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 881948
+   "bytes": 998438
   },
   "4v5-8-5.50m-door0-win5-sky1": {
    "spec": {
@@ -9653,7 +9653,7 @@
    "sticks": 525,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 890996
+   "bytes": 1006807
   },
   "4v5-8-5.50m-door0-win5-sky0": {
    "spec": {
@@ -9674,7 +9674,7 @@
    "sticks": 525,
    "floor_m2": 23.51,
    "height_m": 3.663,
-   "bytes": 883240
+   "bytes": 999634
   },
   "4v5-8-6.00m-door1-win0-sky1": {
    "spec": {
@@ -9695,7 +9695,7 @@
    "sticks": 527,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 934271
+   "bytes": 1072876
   },
   "4v5-8-6.00m-door1-win0-sky0": {
    "spec": {
@@ -9716,7 +9716,7 @@
    "sticks": 527,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 926497
+   "bytes": 1065413
   },
   "4v5-8-6.00m-door1-win3-sky1": {
    "spec": {
@@ -9737,7 +9737,7 @@
    "sticks": 527,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 938128
+   "bytes": 1076366
   },
   "4v5-8-6.00m-door1-win3-sky0": {
    "spec": {
@@ -9758,7 +9758,7 @@
    "sticks": 527,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 930372
+   "bytes": 1069197
   },
   "4v5-8-6.00m-door1-win5-sky1": {
    "spec": {
@@ -9779,7 +9779,7 @@
    "sticks": 527,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 938128
+   "bytes": 1076366
   },
   "4v5-8-6.00m-door1-win5-sky0": {
    "spec": {
@@ -9800,7 +9800,7 @@
    "sticks": 527,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 930372
+   "bytes": 1069197
   },
   "4v5-8-6.00m-door0-win0-sky1": {
    "spec": {
@@ -9821,7 +9821,7 @@
    "sticks": 525,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 891816
+   "bytes": 1008229
   },
   "4v5-8-6.00m-door0-win0-sky0": {
    "spec": {
@@ -9842,7 +9842,7 @@
    "sticks": 525,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 884043
+   "bytes": 1000765
   },
   "4v5-8-6.00m-door0-win3-sky1": {
    "spec": {
@@ -9863,7 +9863,7 @@
    "sticks": 525,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 895673
+   "bytes": 1011726
   },
   "4v5-8-6.00m-door0-win3-sky0": {
    "spec": {
@@ -9884,7 +9884,7 @@
    "sticks": 525,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 887917
+   "bytes": 1004557
   },
   "4v5-8-6.00m-door0-win5-sky1": {
    "spec": {
@@ -9905,7 +9905,7 @@
    "sticks": 525,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 895673
+   "bytes": 1011726
   },
   "4v5-8-6.00m-door0-win5-sky0": {
    "spec": {
@@ -9926,7 +9926,7 @@
    "sticks": 525,
    "floor_m2": 27.98,
    "height_m": 3.98,
-   "bytes": 887917
+   "bytes": 1004557
   },
   "4v5-8-7.00m-door1-win0-sky1": {
    "spec": {
@@ -9947,7 +9947,7 @@
    "sticks": 519,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 933006
+   "bytes": 1059519
   },
   "4v5-8-7.00m-door1-win0-sky0": {
    "spec": {
@@ -9968,7 +9968,7 @@
    "sticks": 519,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 925252
+   "bytes": 1052050
   },
   "4v5-8-7.00m-door1-win3-sky1": {
    "spec": {
@@ -9989,7 +9989,7 @@
    "sticks": 519,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 936616
+   "bytes": 1062779
   },
   "4v5-8-7.00m-door1-win3-sky0": {
    "spec": {
@@ -10010,7 +10010,7 @@
    "sticks": 519,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 928879
+   "bytes": 1055603
   },
   "4v5-8-7.00m-door1-win5-sky1": {
    "spec": {
@@ -10031,7 +10031,7 @@
    "sticks": 519,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 939024
+   "bytes": 1064942
   },
   "4v5-8-7.00m-door1-win5-sky0": {
    "spec": {
@@ -10052,7 +10052,7 @@
    "sticks": 519,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 931287
+   "bytes": 1057766
   },
   "4v5-8-7.00m-door0-win0-sky1": {
    "spec": {
@@ -10073,7 +10073,7 @@
    "sticks": 525,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 905071
+   "bytes": 1021553
   },
   "4v5-8-7.00m-door0-win0-sky0": {
    "spec": {
@@ -10094,7 +10094,7 @@
    "sticks": 525,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 897316
+   "bytes": 1014080
   },
   "4v5-8-7.00m-door0-win3-sky1": {
    "spec": {
@@ -10115,7 +10115,7 @@
    "sticks": 525,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 908681
+   "bytes": 1024806
   },
   "4v5-8-7.00m-door0-win3-sky0": {
    "spec": {
@@ -10136,7 +10136,7 @@
    "sticks": 525,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 900943
+   "bytes": 1017628
   },
   "4v5-8-7.00m-door0-win5-sky1": {
    "spec": {
@@ -10157,7 +10157,7 @@
    "sticks": 525,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 911088
+   "bytes": 1027007
   },
   "4v5-8-7.00m-door0-win5-sky0": {
    "spec": {
@@ -10178,7 +10178,7 @@
    "sticks": 525,
    "floor_m2": 38.08,
    "height_m": 4.614,
-   "bytes": 903350
+   "bytes": 1019828
   },
   "4v5-8-8.00m-door1-win0-sky1": {
    "spec": {
@@ -10199,7 +10199,7 @@
    "sticks": 539,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 972796
+   "bytes": 1115634
   },
   "4v5-8-8.00m-door1-win0-sky0": {
    "spec": {
@@ -10220,7 +10220,7 @@
    "sticks": 539,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 965022
+   "bytes": 1108150
   },
   "4v5-8-8.00m-door1-win3-sky1": {
    "spec": {
@@ -10241,7 +10241,7 @@
    "sticks": 539,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 976404
+   "bytes": 1118887
   },
   "4v5-8-8.00m-door1-win3-sky0": {
    "spec": {
@@ -10262,7 +10262,7 @@
    "sticks": 539,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 968648
+   "bytes": 1111700
   },
   "4v5-8-8.00m-door1-win5-sky1": {
    "spec": {
@@ -10283,7 +10283,7 @@
    "sticks": 539,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 978816
+   "bytes": 1121049
   },
   "4v5-8-8.00m-door1-win5-sky0": {
    "spec": {
@@ -10304,7 +10304,7 @@
    "sticks": 539,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 971058
+   "bytes": 1113858
   },
   "4v5-8-8.00m-door0-win0-sky1": {
    "spec": {
@@ -10325,7 +10325,7 @@
    "sticks": 525,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 916744
+   "bytes": 1034291
   },
   "4v5-8-8.00m-door0-win0-sky0": {
    "spec": {
@@ -10346,7 +10346,7 @@
    "sticks": 525,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 908970
+   "bytes": 1026805
   },
   "4v5-8-8.00m-door0-win3-sky1": {
    "spec": {
@@ -10367,7 +10367,7 @@
    "sticks": 525,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 920352
+   "bytes": 1037545
   },
   "4v5-8-8.00m-door0-win3-sky0": {
    "spec": {
@@ -10388,7 +10388,7 @@
    "sticks": 525,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 912596
+   "bytes": 1030358
   },
   "4v5-8-8.00m-door0-win5-sky1": {
    "spec": {
@@ -10409,7 +10409,7 @@
    "sticks": 525,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 922763
+   "bytes": 1039705
   },
   "4v5-8-8.00m-door0-win5-sky0": {
    "spec": {
@@ -10430,7 +10430,7 @@
    "sticks": 525,
    "floor_m2": 49.74,
    "height_m": 5.247,
-   "bytes": 915007
+   "bytes": 1032516
   },
   "k-wedge": {
    "spec": {

@@ -319,8 +319,23 @@ def selftest() -> int:
     return 0
 
 
-def main() -> int:
-    cfg = _lc.consume_config("presenter")
+def from_command_line(argv: list[str]) -> dict | None:
+    """``py -3.12 presenter_studio.py export <demo>``: one built-in presentation to a new
+    numbered folder in deliverables/, without the launcher (RENDER_COMMANDS.txt uses this)."""
+    if len(argv) != 2 or argv[0] != "export":
+        return None
+    key = argv[1]
+    if key not in DEMOS:
+        raise SystemExit(f"no presentation {key!r}; choose one of: {', '.join(DEMOS)}")
+    import medialib
+    out = medialib.new_path(DEMOS[key].rsplit(".", 1)[1] + ".mp4")
+    print(f"rendering {key} into {out}")
+    return {"action": "export", "demo": key, "export": str(out)}
+
+
+def main(argv: list[str] | None = None) -> int:
+    import sys
+    cfg = from_command_line(sys.argv[1:] if argv is None else argv) or _lc.consume_config("presenter")
 
     if cfg.get("action") == "selftest":
         return selftest()
