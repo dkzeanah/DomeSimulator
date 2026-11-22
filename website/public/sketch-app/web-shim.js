@@ -43,6 +43,18 @@ function kindPreset(spec) {
   return same.find((p) => key(p.spec) === key({ ...p.spec, ...spec })) || same[0] || null;
 }
 
+/** The preset a solved design is ("" if none) and its title: what the visitor is told is drawn. */
+function presetOf(id) {
+  const k = (grid.kindPresets || []).find((p) => p.id === id);
+  if (k) return k.key;
+  const p = Object.entries(grid.presets).find(([, p]) => designId(snap({ ...grid.defaults, ...p.spec })) === id);
+  return p ? p[0] : "";
+}
+function titleOf(id) {
+  const k = (grid.kindPresets || []).find((p) => p.id === id);
+  return k ? k.label : (grid.designs[id] || {}).title || "That design";
+}
+
 /** What the page does itself, from the full framed-panel design: the same pieces a real build with these options keeps. */
 function apply(data, spec) {
   const hideGroups = new Set(Object.entries(opts.groups).filter(([k]) => spec[k] === false).map(([, g]) => g));
@@ -73,14 +85,16 @@ function banner(text, href, label) {
 const UNLOCK = ["Trial: the wedge dome, the stove and two framed-panel domes are open to look round. Every design, the cut cards, the build guide and the cutting files come with Dome Sketch ($10, or free with the book).",
                 "/software#dome-sketch", "Unlock"];
 
+/** [id drawn, response, whether that is another design than the one asked for]. */
 async function fetchDesign(id, nearest) {
-  if (edition === "full") banner(null);        // a buyer's banner was about an earlier design
+  banner(...(edition === "full" ? [null] : UNLOCK));   // a banner about an earlier design is out of date
+  const asked = id;
   let r = await realFetch(`/api/sketch/design/${id}`);
   const open = [...grid.trial].sort((a, b) => nearest(a) - nearest(b));
   if (r.status === 402) {
-    banner(...UNLOCK);
     id = open[0];
     r = await realFetch(`/api/sketch/design/${id}`);
+    banner(`${titleOf(asked)} comes with Dome Sketch ($10, or free with the book). Shown instead: ${titleOf(id)}, which is open to look round.`, UNLOCK[1], UNLOCK[2]);
   }
   // a design not on the server yet (they are published one by one): show the nearest one that is
   for (const t of open) {
@@ -93,7 +107,7 @@ async function fetchDesign(id, nearest) {
     banner("The designs are still being published to the website. Try again in a few minutes.");
     return [null, json({ error: (await r.json().catch(() => ({}))).error || "That design could not be loaded." }, r.status)];
   }
-  return [id, r];
+  return [id, r, id !== asked];
 }
 
 async function model(spec) {
@@ -101,20 +115,22 @@ async function model(spec) {
   if (spec.kind && spec.kind !== "panel") {
     const p = kindPreset(spec);
     if (!p) return json({ error: "That kind of dome is not online yet." }, 404);
-    const [id, r] = await fetchDesign(p.id, (t) => (grid.designs[t].kind === spec.kind ? 0 : t === grid.default ? 1 : 2));
+    const [id, r, swapped] = await fetchDesign(p.id, (t) => (grid.designs[t].kind === spec.kind ? 0 : t === grid.default ? 1 : 2));
     if (!id) return r;
     current = id;
     const data = await r.json();
     data.spec = { ...grid.designs[id].spec };
+    if (swapped) data.preset = presetOf(id);   // the preset box names what is drawn
     return json(data);
   }
   const want = snap(spec);
   const far = (t) => { const s = grid.designs[t].spec;
     return (grid.designs[t].kind && grid.designs[t].kind !== "panel" ? 1000 : 0) + (s.frequency === want.frequency && s.cut === want.cut ? 0 : 100) + Math.abs(s.diameter_m - want.diameter_m); };
-  const [id, r] = await fetchDesign(designId(want), far);
+  const [id, r, swapped] = await fetchDesign(designId(want), far);
   if (!id) return r;
   current = id;
   const data = await r.json();
+  if (swapped) data.preset = presetOf(id);
   if (grid.designs[id].kind && grid.designs[id].kind !== "panel") { data.spec = { ...grid.designs[id].spec }; return json(data); }
   const shown = { ...data.spec, ...grid.designs[id].spec, kind: "panel", skin: want.skin, furnish: want.furnish, porch: want.porch, stove: want.stove, people: want.people };
   apply(data, shown);

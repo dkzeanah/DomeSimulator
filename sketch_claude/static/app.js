@@ -177,6 +177,7 @@ async function load(spec, keepView = false) {
     const data = await api("/api/model", { spec });
     if (token !== buildToken) return;
     S.data = data; S.spec = data.spec; S.kind = data.tables.kind || data.spec.kind || "panel";
+    if (typeof data.preset === "string") $("#preset").value = data.preset;   // online, an open design drawn in place of a locked one
     matCache.clear();
     world.clear();
     S.pieces.clear(); S.groups.clear(); S.selected.clear(); S.hidden.clear();
